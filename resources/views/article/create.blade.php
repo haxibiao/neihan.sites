@@ -10,9 +10,14 @@
   
 @endsection
 
-@section('body')
+@section('content')
 
 <div class="container">
+<ol class="breadcrumb">
+    <li><a href="/">懂点医</a></li>
+    <li class="active">添加文章</li>
+  </ol>
+
 <form action="/article" method="POST" role="form">
   {{ csrf_field() }}
   <legend>添加新的文章</legend>

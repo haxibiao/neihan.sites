@@ -11,6 +11,13 @@
 |
 */
 
-Route::get('/', 'WelcomeController@welcome');
+Route::get('/', 'IndexController@index');
+Route::get('/zhongyi', 'IndexController@zhongyi');
+Route::get('/xiyi', 'IndexController@xiyi');
 
 Route::resource('/article', 'ArticleController');
+Route::resource('/user', 'UserController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

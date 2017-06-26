@@ -10,7 +10,7 @@
   {{ $article->description }}
 @endsection
 
-@section('body')
+@section('content')
 <div class="container">
   <ol class="breadcrumb">
     <li><a href="/">懂点医</a></li>
