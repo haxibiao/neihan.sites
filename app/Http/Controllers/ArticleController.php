@@ -56,8 +56,7 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $article = Article::find($id);
-        // dd($article);
+        $article = Article::findOrFail($id);
         $article->body = str_replace("\n", '<br/>', $article->body);
 
         return view('article.show')->withArticle($article);
