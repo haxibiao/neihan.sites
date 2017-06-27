@@ -51,7 +51,8 @@
   </div>
   <div class="form-group">
     <label>正文</label>
-    <textarea rows="10" class="form-control"  name="body"></textarea>
+    <textarea class="hidden"  name="body"></textarea>
+    <div class="editable"></div>
   </div>
 
   <div class="form-group">
@@ -88,12 +89,25 @@
           $('#preview_images').innerHTML = '';
           for(var i in res) {
             var img_path = res[i];
-            $('#preview_images').append('<img src="/'+img_path+'" class="col-sm-3 img img-responsive"/>')
+            $('#preview_images').append('<img src="/'+img_path+'" class="col-sm-3 img img-responsive" onclick="select_image(this)"/>')
           }
         }).fail(function(res) {
             
         });
     });
   });
+
+  var select_image = function(img) {
+    var img_url = $(img).attr('src');
+    $('.editable').summernote('insertImage', img_url,function ($image) {
+      $image.attr('data-url-big', img_url.replace('small.jpg',''));
+    });
+
+  }
+
+  $('.editable').on('summernote.change', function(we, contents, $editable) {
+    $('textarea').val(contents);
+  });
+
 </script>
 @endpush

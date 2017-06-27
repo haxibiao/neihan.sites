@@ -16,6 +16,13 @@
     "jquery": "^3.1.1",
     "laravel-mix": "^1.0",
     "lodash": "^4.17.4",
-    "vue": "^2.1.10"
+    "vue": "^2.1.10",
+    "medium-editor-insert-plugin": "^2.3.2"
+  },
+  "dependencies": {
+    "codemirror": "^5.27.2",
+    "font-awesome": "^4.7.0",
+    "jquery-ui": "^1.12.1",
+    "summernote": "^0.8.4"
   }
 }
