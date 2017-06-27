@@ -55,15 +55,15 @@
 
                         <ul class="dropdown-menu" role="menu">
                           <li>
-                                <a href="/user/{{ Auth::user()->id }}">
-                                    个人主页
+                                <a href="/home">
+                                    个人面板
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();">
-                                    Logout
+                                    退出登录
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

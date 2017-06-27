@@ -28,7 +28,7 @@
   </div>
   <div class="form-group">
     <label>作者</label>
-    <input type="text" class="form-control" placeholder="作者" name="author">
+    <input type="text" class="form-control" placeholder="作者" name="author" value="{{ Auth::user()->name }}">
   </div>
   <div class="form-group">
     <label>关键词</label>
@@ -69,7 +69,7 @@
 <script type="text/javascript">
   $(function() {
     $('#add_image').click(function() {
-        $(this).parent().prepend('<input type="file" name="image[]">');
+        $('<input type="file" name="image[]">').insertBefore($(this));
     });
 
     $('#upload_image').click(function() {

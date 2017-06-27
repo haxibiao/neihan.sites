@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Article;
+use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index', 'show']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -35,17 +39,17 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $article = new Article();
-        $article->title = $request->get('title');
-        $article->keywords = $request->get('keywords');
+        $article              = new Article();
+        $article->title       = $request->get('title');
+        $article->keywords    = $request->get('keywords');
         $article->description = $request->get('description');
-        $article->author = $request->get('author');
-        $body = $request->get('body');
-        $body = str_replace('\r', '<br/>', $body);
-        $article->body = $body;
+        $article->author      = $request->get('author');
+        $body                 = $request->get('body');
+        $body                 = str_replace('\r', '<br/>', $body);
+        $article->body        = $body;
         $article->save();
 
-        return redirect()->to('/article/'.$article->id);
+        return redirect()->to('/article/' . $article->id);
     }
 
     /**
@@ -56,7 +60,7 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $article = Article::findOrFail($id);
+        $article       = Article::findOrFail($id);
         $article->body = str_replace("\n", '<br/>', $article->body);
 
         return view('article.show')->withArticle($article);
