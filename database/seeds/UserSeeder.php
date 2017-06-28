@@ -14,6 +14,7 @@ class UserSeeder extends Seeder {
 			'email' => 'author_test@haxibiao.com',
 		]);
 		$user->name = '江湖小郎中';
+		$user->qq = '258212404';
 		$user->password = bcrypt('mm1122');
 		$user->save();
 	}

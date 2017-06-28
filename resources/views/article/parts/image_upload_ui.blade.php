@@ -112,13 +112,13 @@
             </span>
         </td>
         <td>
-            <p class="name">
+            {{-- <p class="name">
                 {% if (file.url) { %}
                     <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
                 {% } else { %}
                     <span>{%=file.name%}</span>
                 {% } %}
-            </p>
+            </p> --}}
             {% if (file.error) { %}
                 <div><span class="label label-danger">出错</span> {%=file.error%}</div>
             {% } %}
@@ -174,11 +174,21 @@
     <script src="/js/upload/main.js"></script>
 
     <script type="text/javascript">
-        $('.preview img').click(function() {
-            var img_url = $(this).attr('src');
-            $('.editable').summernote('insertImage', img_url,function ($image) {
-              $image.attr('data-url-big', img_url.replace('small.jpg',''));
+
+        window.article_image_uploaded = function(){
+            $('.preview img').off('click');
+            $('.preview img').click(function(e) {
+                var img_url = $(this).attr('src');            
+                $('.editable').summernote('insertImage', img_url,function ($image) {
+                  $image.attr('data-url-big', img_url.replace('small.jpg',''));
+                });
+
+                var image_url_el = $('input[name="image_url"]');
+                image_url_el.val(img_url);
+                $('<input type="hidden" name="images[]" value="' + img_url + '">').insertBefore(image_url_el);
+                e.preventDefault();
+                return false;
             });
-        });
+        };
     </script>
 @endpush

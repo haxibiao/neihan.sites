@@ -22,6 +22,24 @@ class ImageController extends Controller
                 unlink($path_small);
             }
             $data[$path_small] = true;
+        } else {
+            //load exist ...
+            $images  = Image::where('count', 0)->get();
+            $http    = $request->secure() ? 'https://' : 'http://';
+            $baseUri = $http . $request->server('HTTP_HOST');
+            foreach ($images as $image) {
+                $filename = pathinfo($image->path)['filename'];
+                $file     = [
+                    'url'          => $baseUri . $image->path,
+                    'thumbnailUrl' => $baseUri . $image->path,
+                    'name'         => $filename,
+                    "type"         => "image/jpeg",
+                    "size"         => 0,
+                    'deleteUrl'    => url('/image?delete_filename=' . $filename),
+                    "deleteType"   => "GET",
+                ];
+                $data['files'][] = $file;
+            }
         }
         return $data;
     }
@@ -37,9 +55,9 @@ class ImageController extends Controller
         $index  = 1;
         $files  = [];
         foreach ($images as $file) {
-            $filename = time() . '.' . $index . '.jpg';
+            $filename = md5($file->path()) . $index . time() . '.' . '.jpg';
             $index++;
-            $path       = 'img/' . $filename;
+            $path       = '/img/' . $filename;
             $local_path = public_path('img/');
             $file->move($local_path, $filename);
 
@@ -47,14 +65,14 @@ class ImageController extends Controller
             $image->path = $path;
             $full_path   = $local_path . $filename;
             $img         = \ImageMaker::make($full_path);
-            $img->resize(320, null, function ($constraint) {
+            $img->resize(120, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
             $img->save($full_path . '.small.jpg');
             $image->path_small = $path . '.small.jpg';
             $image->save();
             $http    = $request->secure() ? 'https://' : 'http://';
-            $baseUri = $http . $request->server('HTTP_HOST') . '/';
+            $baseUri = $http . $request->server('HTTP_HOST');
             $files[] = [
                 'url'          => $baseUri . $image->path,
                 'thumbnailUrl' => $baseUri . $image->path,

@@ -72,17 +72,4 @@ $(function () {
         });
     }
 
-
-    window.article_image_uploaded = function(){
-        $('.preview img').off('click');
-        $('.preview img').click(function(e) {
-            var img_url = $(this).attr('src');            
-            $('.editable').summernote('insertImage', img_url,function ($image) {
-              $image.attr('data-url-big', img_url.replace('small.jpg',''));
-            });
-            e.preventDefault();
-            return false;
-        });
-    };
-
 });

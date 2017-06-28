@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateArticlesTable extends Migration
 {
@@ -20,6 +20,9 @@ class CreateArticlesTable extends Migration
             $table->string('description');
             $table->text('body');
             $table->string('author');
+            $table->integer('user_id');
+            $table->integer('category_id');
+            $table->string('image_url')->nullable();
             $table->timestamps();
         });
     }

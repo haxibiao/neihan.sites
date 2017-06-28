@@ -1,12 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\User;
-use App\Article;
 
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -47,9 +45,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
-        $articles = Article::where('user_id', $user->id)->paginate(10);
-        return view('user.show')->withUser($user)->withArticles($articles);
+        //
     }
 
     /**
@@ -72,14 +68,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        $user->qq = $request->get('qq');
-        $user->introduction = $request->get('introduction');
-        //save avatar ...
-
-        $user->save();
-
-        return redirect()->to('user/'.$user->id);
+        //
     }
 
     /**

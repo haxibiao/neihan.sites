@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\ArticleImage;
+use App\ArticleTag;
+use App\Category;
+use App\Tag;
+use App\Image;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -28,7 +33,8 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        return view('article.create');
+        $categories = Category::pluck('name', 'id');
+        return view('article.create')->withCategories($categories);
     }
 
     /**
@@ -44,10 +50,49 @@ class ArticleController extends Controller
         $article->keywords    = $request->get('keywords');
         $article->description = $request->get('description');
         $article->author      = $request->get('author');
+        $article->user_id     = $request->get('user_id');
+        $article->category_id = $request->get('category_id');
         $body                 = $request->get('body');
         $body                 = str_replace('\r', '<br/>', $body);
         $article->body        = $body;
+        $article->image_url   = $request->get('image_url');
         $article->save();
+
+        //tags
+        $keywords = preg_split("/(#|:|,|，|\s)/", $article->keywords);
+        foreach ($keywords as $word) {
+            $word = trim($word);
+            if (!empty($word)) {
+                $tag = Tag::firstOrNew([
+                    'name' => $word,
+                ]);
+                $tag->user_id = $request->user()->id;
+                $tag->save();
+
+                $article_tag = ArticleTag::firstOrNew([
+                    'article_id' => $article->id,
+                    'tag_id'     => $tag->id,
+                ]);
+                $article_tag->save();
+            }
+        }
+
+        //images
+        $imgs = $request->get('images');
+        foreach ($imgs as $img) {
+            $path = parse_url($img)['path'];
+            $image = Image::firstOrNew([
+                'path' => $path,
+            ]);
+            $image->count = $image->count + 1;
+            $image->save();
+            
+            $article_image = ArticleImage::firstOrNew([
+                'article_id' => $article->id,
+                'image_id'   => $image->id,
+            ]);
+            $article_image->save();
+        }
 
         return redirect()->to('/article/' . $article->id);
     }
@@ -60,7 +105,7 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $article       = Article::findOrFail($id);
+        $article       = Article::with('user')->with('category')->with('tags')->with('images')->findOrFail($id);
         $article->body = str_replace("\n", '<br/>', $article->body);
 
         return view('article.show')->withArticle($article);

@@ -25,27 +25,40 @@
 
       <div class="form-group">
         <label>标题</label>
-        <input type="text" class="form-control" placeholder="标题" name="title">
+        <input type="text" class="form-control" placeholder="标题" name="title" required="true">
       </div>
-      <div class="form-group">
-        <label>作者</label>
-        <input type="text" class="form-control" placeholder="作者" name="author" value="{{ Auth::user()->name }}">
+      <div class="row">        
+        <div class="col-md-6">
+          <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
+              {!! Form::label('category_id', '分类') !!}
+              {!! Form::select('category_id', $categories, null, ['id' => 'category_id', 'class' => 'form-control', 'required' => 'required']) !!}
+              <small class="text-danger">{{ $errors->first('category_id') }}</small>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>作者</label>
+            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+            <input type="text" class="form-control" placeholder="作者" name="author" value="{{ Auth::user()->name }}" readonly="true">
+          </div>
+        </div>
       </div>
       <div class="form-group">
         <label>关键词</label>
-        <input type="text" class="form-control" placeholder="关键词" name="keywords">
+        <input type="text" class="form-control" placeholder="关键词" name="keywords" required="true">
       </div>
       <div class="form-group">
         <label>简介</label>
-        <input type="text" class="form-control" placeholder="简介" name="description">
+        <input type="text" class="form-control" placeholder="简介" name="description" required="true">
       </div>
       <div class="form-group">
         <label>正文</label>
-        <textarea class="hidden"  name="body"></textarea>
+        <textarea class="hidden"  name="body" required="true"></textarea>
         <div class="editable"></div>
       </div>
 
       <div class="form-group">
+        <input type="hidden" name="image_url">
         <button type="submit" class="btn btn-danger">提交</button>
       </div>
 
