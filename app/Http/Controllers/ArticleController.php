@@ -16,9 +16,9 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        dd($request->server());
     }
 
     /**

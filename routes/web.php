@@ -21,4 +21,4 @@ Route::resource('/user', 'UserController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::post('/upload-image', 'ImageController@upload');
+Route::resource('/image', 'ImageController');

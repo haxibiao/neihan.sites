@@ -15,7 +15,6 @@
 
     <!-- Styles -->
     <link href="{{ mix('css/all.css') }}" rel="stylesheet">
-    {{-- <link href="/css/summernote.css" rel="stylesheet"> --}}
 
 </head>
 <body>
@@ -27,10 +26,6 @@
 
     <!-- Scripts -->
     <script src="{{ mix('js/all.js') }}"></script>
-    
-    <!-- include summernote css/js-->
-    {{-- <script src="/js/summernote.js"></script>
-    <script src="/js/summernote-zh-CN.js"></script> --}}
 
     <script type="text/javascript">
         $.ajaxSetup({
@@ -38,22 +33,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
-        var editor = $('.editable').summernote({
-            lang: 'zh-CN', // default: 'en-US',
-            height: 300,
-            // toolbar: [
-            //     // [groupName, [list of button]]
-            //     ['style', ['bold', 'italic', 'underline', 'clear']],
-            //     ['font', ['strikethrough', 'superscript', 'subscript']],
-            //     ['fontsize', ['fontsize']],
-            //     ['color', ['color']],
-            //     ['para', ['ul', 'ol', 'paragraph']],
-            //     ['height', ['height']]
-            //   ]
-          });
-    </script>
-    
+    </script>    
 
     @stack('scripts')
 </body>
