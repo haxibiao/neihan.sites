@@ -47,7 +47,7 @@ class ImageController extends Controller
             $image->path = $path;
             $full_path   = $local_path . $filename;
             $img         = \ImageMaker::make($full_path);
-            $img->resize(200, null, function ($constraint) {
+            $img->resize(320, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
             $img->save($full_path . '.small.jpg');
