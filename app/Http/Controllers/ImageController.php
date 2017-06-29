@@ -12,14 +12,18 @@ class ImageController extends Controller
         $data            = [];
         $delete_filename = $request->get('delete_filename');
         if (!empty($delete_filename)) {
-            $path = 'img/' . $delete_filename;
+            $path = '/img/' . $delete_filename;
             if (file_exists(public_path($path))) {
-                unlink($path);
+                unlink(public_path($path));
             }
             $data[$path] = true;
             $path_small  = $path . '.small.jpg';
             if (file_exists(public_path($path_small))) {
-                unlink($path_small);
+                unlink(public_path($path_small));
+            }
+            $image = Image::find(str_replace('.jpg', '', $delete_filename));
+            if ($image) {
+                $image->delete();
             }
             $data[$path_small] = true;
         } else {
@@ -51,12 +55,11 @@ class ImageController extends Controller
 
     public function store(Request $request)
     {
-        $images = $request->file('image');
-        $index  = 1;
-        $files  = [];
+        $images      = $request->file('image');
+        $image_index = get_image_index(Image::max('id'));
+        $files = [];
         foreach ($images as $file) {
-            $filename = md5($file->path()) . $index . time() . '.' . '.jpg';
-            $index++;
+            $filename   = $image_index . '.jpg';
             $path       = '/img/' . $filename;
             $local_path = public_path('img/');
             $file->move($local_path, $filename);
