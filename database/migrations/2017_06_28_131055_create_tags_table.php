@@ -18,6 +18,7 @@ class CreateTagsTable extends Migration
             $table->string('name');
             $table->integer('count')->default(0);
             $table->integer('user_id');
+            $table->integer('type');
             $table->timestamps();
         });
     }
