@@ -2,6 +2,7 @@
 /public/hot
 /public/storage
 /public/img
+/public/*.apk
 /storage/*.key
 /vendor
 /.idea
