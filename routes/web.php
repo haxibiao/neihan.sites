@@ -27,3 +27,6 @@ Route::resource('/image', 'ImageController');
 Route::get('/logshow', 'LogController@logShow');
 Route::get('/logclear', 'LogController@logClear');
 Route::get('/debug','LogController@debug');
+
+//weixin
+Route::get('/wechat', 'WechatController@serve');

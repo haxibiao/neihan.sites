@@ -178,6 +178,7 @@ return [
 		App\Providers\RouteServiceProvider::class,
 		Intervention\Image\ImageServiceProvider::class,
 		Collective\Html\HtmlServiceProvider::class,
+		Overtrue\LaravelWechat\ServiceProvider::class,
 
 	],
 
@@ -230,6 +231,7 @@ return [
 		'ImageMaker' => Intervention\Image\Facades\Image::class,
 		'Form' => Collective\Html\FormFacade::class,
       	'Html' => Collective\Html\HtmlFacade::class,
+      	'EasyWeChat' => Overtrue\LaravelWechat\Facade::class,
 	],
 
 ];
