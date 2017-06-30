@@ -18,7 +18,7 @@
     <li class="active">{{ $article->title }}</li>
   </ol>
 
-  <div class="jumbotron">
+  <div class="content">
     <h1>{{ $article->title }}</h1>
     <p>
       分类: {{ $article->category->name }}
@@ -43,7 +43,7 @@
       </div>
     </div>
     <div class="col-md-8">
-      <div class="panel panel-primary">
+      <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">相关图片</h3>
         </div>

@@ -19,11 +19,13 @@
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
              <ul class="nav navbar-nav">
-              <li class="active"><a href="/">首页 <span class="sr-only">(current)</span></a></li>
-              <li><a href="/zhongyi">中医</a></li>
-              <li class="dropdown">
+              <li class="{{ get_active_css('/') }}"><a href="/">首页 <span class="sr-only">(current)</span></a></li>
+              <li class="{{ get_active_css('zhongyi') }}"><a href="/zhongyi">中医</a></li>
+              <li class="dropdown {{ get_active_css('xiyi') }}">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">西医 <span class="caret"></span></a>
                 <ul class="dropdown-menu">
+                  <li><a href="/xiyi">西医</a></li>
+                  <li role="separator" class="divider"></li>
                   <li><a href="/xiyi/neikexue">内科学</a></li>
                   <li><a href="/xiyi/neikexue">外科学</a></li>
                   <li><a href="/xiyi/neikexue">妇产科学</a></li>

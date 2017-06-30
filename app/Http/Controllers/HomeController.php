@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\User;
 
-use Illuminate\Http\Request;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -26,7 +25,7 @@ class HomeController extends Controller
     public function index()
     {
         $users = User::all();
-        $user = Auth::user();
+        $user  = Auth::user();
         return view('home')->withUsers($users)->withUser($user);
     }
 }

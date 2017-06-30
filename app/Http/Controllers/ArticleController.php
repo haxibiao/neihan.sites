@@ -6,8 +6,8 @@ use App\Article;
 use App\ArticleImage;
 use App\ArticleTag;
 use App\Category;
-use App\Tag;
 use App\Image;
+use App\Tag;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -23,7 +23,10 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
-        dd($request->server());
+        $articles = Article::orderBy('id', 'desc')
+            ->where('status', '>=', 0)
+            ->paginate(10);
+        return view('article.index')->withArticles($articles);
     }
 
     /**
@@ -80,13 +83,13 @@ class ArticleController extends Controller
         //images
         $imgs = $request->get('images');
         foreach ($imgs as $img) {
-            $path = parse_url($img)['path'];
+            $path  = parse_url($img)['path'];
             $image = Image::firstOrNew([
                 'path' => $path,
             ]);
             $image->count = $image->count + 1;
             $image->save();
-            
+
             $article_image = ArticleImage::firstOrNew([
                 'article_id' => $article->id,
                 'image_id'   => $image->id,
@@ -142,6 +145,11 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $article = Article::find($id);
+        if ($article) {
+            $article->delete();
+        }
+
+        return redirect()->back();
     }
 }

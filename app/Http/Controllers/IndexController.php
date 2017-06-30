@@ -1,27 +1,42 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Article;
 
-use Illuminate\Http\Request;
+use App\Article;
+use App\Category;
 
 class IndexController extends Controller
 {
-    public function index() {
-    	$zhongyi_articles = Article::orderBy('id', 'desc')->take(6)->get();
-    	$xiyi_articles = Article::orderBy('id', 'desc')->take(6)->get();
-    	return view('index.index')
-    		->withZhongyiArticles($zhongyi_articles)
-    		->withXiyiArticles($xiyi_articles);
+    public function index()
+    {
+        $zhongyi_articles = Article::orderBy('id', 'desc')
+            ->where('status', '>', 0)
+            ->take(6)->get();
+        $xiyi_articles = Article::orderBy('id', 'desc')
+            ->where('status', '>', 0)
+            ->take(6)->get();
+        return view('index.index')
+            ->withZhongyiArticles($zhongyi_articles)
+            ->withXiyiArticles($xiyi_articles);
     }
 
-    public function zhongyi() {
-
-    	return view('index.zhongyi');
+    public function zhongyi()
+    {
+        $category = Category::where('name', '中医')->first();
+        $articles = Article::orderBy('id', 'desc')
+            ->where('status', '>=', 0)
+            ->where('category_id', $category->id)
+            ->paginate(10);
+        return view('index.zhongyi')->withArticles($articles);
     }
 
-    public function xiyi() {
-
-    	return view('index.xiyi');
+    public function xiyi()
+    {
+        $category = Category::where('name', '西医')->first();
+        $articles = Article::orderBy('id', 'desc')
+            ->where('status', '>=', 0)
+            ->where('category_id', $category->id)
+            ->paginate(10);
+        return view('index.xiyi')->withArticles($articles);
     }
 }

@@ -23,6 +23,7 @@ class CreateArticlesTable extends Migration
             $table->integer('user_id');
             $table->integer('category_id');
             $table->string('image_url')->nullable();
+            $table->integer('status')->default(0)->index();
             $table->timestamps();
         });
     }

@@ -1,6 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Request;
+
+function get_active_css($path)
+{
+    $active = '';
+    if (Request::path() == '/' && $path == '/') {
+        $active = 'active';
+    } else if (starts_with(Request::path(), $path)) {
+        $active = 'active';
+    }
+    return $active;
+}
 
 function get_avatar($user)
 {
