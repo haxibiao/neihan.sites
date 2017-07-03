@@ -190,5 +190,11 @@
                 return false;
             });
         };
+
+        window.setTimeout(function(){
+            $(function(){
+                window.article_image_uploaded();
+            });
+        }, 2000);
     </script>
 @endpush

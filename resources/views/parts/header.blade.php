@@ -37,12 +37,13 @@
                 </ul>
               </li>
             </ul>
-            <form class="navbar-form navbar-left">
+            
+            {{-- <form class="navbar-form navbar-left">
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="搜索...">
               </div>
               <button type="submit" class="btn btn-default">搜索</button>
-            </form>
+            </form> --}}
 
             <!-- Right Side Of Navbar -->
             <ul class="nav navbar-nav navbar-right">
