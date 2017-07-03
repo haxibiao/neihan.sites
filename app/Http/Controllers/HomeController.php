@@ -24,7 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::orderBy('id','desc')->take(10)->get();
         $user  = Auth::user();
         return view('home')->withUsers($users)->withUser($user);
     }

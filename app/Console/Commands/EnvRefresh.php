@@ -37,15 +37,14 @@ class EnvRefresh extends Command
      */
     public function handle()
     {
-        if ($this->option('prod')) {
-            $this->refresh_prod();
-        }
         if ($this->option('local')) {
-            $this->refresh_local();
+            return $this->refresh_local();
         }
+        $this->refresh_prod();
     }
 
-    function refresh_local() {
+    public function refresh_local()
+    {
         file_put_contents(base_path('.env'), file_get_contents(base_path('.env.local')));
     }
 
@@ -54,15 +53,15 @@ class EnvRefresh extends Command
         //db
         $webconfig = json_decode(file_get_contents('/etc/webconfig.json'));
         $this->updateEnv([
-                'APP_ENV' => 'prod',
-                'APP_DEBUG' => 'false',
-                'DB_HOST' => 'localhost',
-                'DB_USERNAME' => $webconfig->db_user,
-                'DB_PASSWORD' => $webconfig->db_passwd,
-                'MAIL_HOST' => $webconfig->mail_host,
-                'MAIL_USERNAME' => $webconfig->mail_user,
-                'MAIL_PASSWORD' => $webconfig->mail_passcode,
-            ]);
+            'APP_ENV'       => 'prod',
+            'APP_DEBUG'     => 'false',
+            'DB_HOST'       => 'localhost',
+            'DB_USERNAME'   => $webconfig->db_user,
+            'DB_PASSWORD'   => $webconfig->db_passwd,
+            'MAIL_HOST'     => $webconfig->mail_host,
+            'MAIL_USERNAME' => $webconfig->mail_user,
+            'MAIL_PASSWORD' => $webconfig->mail_passcode,
+        ]);
     }
 
     public function updateEnv($data = array())

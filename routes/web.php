@@ -24,6 +24,9 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('/image', 'ImageController');
 
+Route::get('/admin', 'AdminController@index');
+Route::get('/admin/users', 'AdminController@users');
+
 //logs
 Route::get('/logshow', 'LogController@logShow');
 Route::get('/logclear', 'LogController@logClear');

@@ -1,5 +1,5 @@
 @if(!is_in_app())
-<div class="container border-top">
+<div class="container border-top top30">
     <a class="navbar-brand" href="/">懂点医</a>
     <ul class="nav navbar-nav">
         <li class="active">
