@@ -177,10 +177,14 @@
 
         window.article_image_uploaded = function(){
             $('.preview img').off('click');
+            $('.preview img').each(function() {
+                $(this).addClass('img-responsive');
+            });
             $('.preview img').click(function(e) {
                 var img_url = $(this).attr('src');            
                 $('.editable').summernote('insertImage', img_url,function ($image) {
                   $image.attr('data-url-big', img_url.replace('small.jpg',''));
+                  $image.addClass('img-responsive');
                 });
 
                 var image_url_el = $('input[name="image_url"]');
@@ -195,6 +199,6 @@
             $(function(){
                 window.article_image_uploaded();
             });
-        }, 2000);
+        }, 1000);
     </script>
 @endpush

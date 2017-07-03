@@ -14,10 +14,10 @@ class IndexController extends Controller
         $this->handle_app_load();
 
         $zhongyi_articles = Article::orderBy('id', 'desc')
-            ->where('status', '>', 0)
+            ->where('status', '>=', 0)
             ->take(6)->get();
         $xiyi_articles = Article::orderBy('id', 'desc')
-            ->where('status', '>', 0)
+            ->where('status', '>=', 0)
             ->take(6)->get();
         return view('index.index')
             ->withZhongyiArticles($zhongyi_articles)

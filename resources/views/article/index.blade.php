@@ -31,11 +31,11 @@
     </a>
     <p>{{ $article->description }}</p>
 
-    @if(Auth::check() && Auth::user()->id == $article->user_id) 
+      <a class="btn btn-primary pull-right left10" href="/article/{{ $article->id }}/edit" role="button" target="_blank">编辑</a>
       {!! Form::open(['method' => 'delete', 'route' => ['article.destroy', $article->id], 'class' => 'form-horizontal']) !!}
         {!! Form::submit('删除', ['class' => 'btn btn-danger pull-right']) !!}                
       {!! Form::close() !!}
-    @endif
+    
   </div>
 </div>
 @endforeach

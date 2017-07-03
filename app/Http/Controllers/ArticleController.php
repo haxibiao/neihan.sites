@@ -6,15 +6,17 @@ use App\Article;
 use App\ArticleImage;
 use App\ArticleTag;
 use App\Category;
+use App\Http\Requests\ArticleRequest;
 use App\Image;
 use App\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show']);
+        $this->middleware('auth.editor')->except('show');
     }
     /**
      * Display a listing of the resource.
@@ -23,9 +25,12 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
-        $articles = Article::orderBy('id', 'desc')
-            ->where('status', '>=', 0)
-            ->paginate(10);
+        $query = Article::orderBy('id', 'desc')
+            ->where('status', '>=', 0);
+        if (Auth::user()->is_editor) {
+            $query = $query->where('user_id', Auth::user()->id);
+        }
+        $articles = $query->paginate(10);
         return view('article.index')->withArticles($articles);
     }
 
@@ -46,7 +51,7 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ArticleRequest $request)
     {
         $article              = new Article();
         $article->title       = $request->get('title');
@@ -55,33 +60,23 @@ class ArticleController extends Controller
         $article->author      = $request->get('author');
         $article->user_id     = $request->get('user_id');
         $article->category_id = $request->get('category_id');
-        $body                 = $request->get('body');
-        $body                 = str_replace('\r', '<br/>', $body);
-        $article->body        = $body;
+        $article->body        = $request->get('body');
         $article->image_url   = $request->get('image_url');
+        $article->is_has_pic  = !empty($article->image_url);
         $article->save();
 
         //tags
-        $keywords = preg_split("/(#|:|,|，|\s)/", $article->keywords);
-        foreach ($keywords as $word) {
-            $word = trim($word);
-            if (!empty($word)) {
-                $tag = Tag::firstOrNew([
-                    'name' => $word,
-                ]);
-                $tag->user_id = $request->user()->id;
-                $tag->save();
-
-                $article_tag = ArticleTag::firstOrNew([
-                    'article_id' => $article->id,
-                    'tag_id'     => $tag->id,
-                ]);
-                $article_tag->save();
-            }
-        }
+        $this->save_article_tags($article);
 
         //images
         $imgs = $request->get('images');
+        $this->save_article_images($imgs, $article);
+
+        return redirect()->to('/article/' . $article->id);
+    }
+
+    public function save_article_images($imgs, $article)
+    {
         if (is_array($imgs)) {
             foreach ($imgs as $img) {
                 $path  = parse_url($img)['path'];
@@ -98,8 +93,27 @@ class ArticleController extends Controller
                 $article_image->save();
             }
         }
+    }
 
-        return redirect()->to('/article/' . $article->id);
+    public function save_article_tags($article)
+    {
+        $keywords = preg_split("/(#|:|,|，|\s)/", $article->keywords);
+        foreach ($keywords as $word) {
+            $word = trim($word);
+            if (!empty($word)) {
+                $tag = Tag::firstOrNew([
+                    'name' => $word,
+                ]);
+                $tag->user_id = Auth::user()->id;
+                $tag->save();
+
+                $article_tag = ArticleTag::firstOrNew([
+                    'article_id' => $article->id,
+                    'tag_id'     => $tag->id,
+                ]);
+                $article_tag->save();
+            }
+        }
     }
 
     /**
@@ -124,7 +138,9 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        //
+        $article    = Article::findOrFail($id);
+        $categories = Category::pluck('name', 'id');
+        return view('article.edit')->withArticle($article)->withCategories($categories);
     }
 
     /**
@@ -136,7 +152,19 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $article = Article::findOrFail($id);
+        $article->update($request->all());
+        $article->is_has_pic = !empty($article->image_url);
+        $article->save();
+
+        //tags
+        $this->save_article_tags($article);
+
+        //images
+        $imgs = $request->get('images');
+        $this->save_article_images($imgs, $article);
+
+        return redirect()->to('/article/' . $article->id);
     }
 
     /**

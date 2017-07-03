@@ -19,16 +19,28 @@
   </ol>
 
   <div class="content">
-    <h1>{{ $article->title }}</h1>
-    <p>
-      分类: {{ $article->category->name }}
-    </p>
-    <p>
-      标签: @foreach($article->tags as $tag) {{  $tag->name  }} @endforeach
-    </p>
-    <p>
-      {!! $article->body !!}
-    </p>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title">{{ $article->title }}</h1>
+      </div>
+      <div class="panel-body">
+        <p>
+          作者: {{ $article->author }} , 发布时间：{{ $article->created_at }}
+        </p>
+        <p>
+          分类: {{ $article->category->name }}
+        </p>
+        <p>
+          关键词: @foreach($article->tags as $tag) <span class="label label-info">{{  $tag->name  }}</span> @endforeach
+        </p>
+        <p class="lead">
+          {{ $article->description }}
+        </p>
+        <p>
+          {!! $article->body !!}
+        </p>
+      </div>
+    </div>
   </div>
 
   <div class="row">

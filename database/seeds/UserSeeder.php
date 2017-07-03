@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
         $user->save();
 
         $user = User::firstOrNew([
-            'email' => 'ivan@haxibiao.com',
+            'email' => 'laozhang@haxibiao.com',
         ]);
         $user->name      = '老张';
         $user->qq        = '258212404';
@@ -32,6 +32,17 @@ class UserSeeder extends Seeder
         $user->introduction = '老张就是我...';
         $user->is_admin  = 0;
         $user->is_editor = 1;
+        $user->save();
+
+        $user = User::firstOrNew([
+            'email' => 'ivan@haxibiao.com',
+        ]);
+        $user->name      = 'ivan';
+        $user->qq        = '258212404';
+        $user->password  = bcrypt('mm1122');
+        $user->introduction = 'im ivan from haxibiao ...';
+        $user->is_admin  = 0;
+        $user->is_editor = 0;
         $user->save();
     }
 }
