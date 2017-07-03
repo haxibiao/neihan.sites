@@ -38,9 +38,9 @@ cd {{ $www }}
 
 @task('web_update', ['on' => ['hk002'], 'parallel' => true])
 cd {{ $www }}
-{{ $refresh_env_config }}
 {{ $clear_bootstrap_cache }}
 {{ $run_composer }}
+{{ $refresh_env_config }}
 {{ $run_migrate }}
 {{ $cache_clear }}
 @endtask
