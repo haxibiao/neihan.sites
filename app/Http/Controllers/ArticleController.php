@@ -82,19 +82,21 @@ class ArticleController extends Controller
 
         //images
         $imgs = $request->get('images');
-        foreach ($imgs as $img) {
-            $path  = parse_url($img)['path'];
-            $image = Image::firstOrNew([
-                'path' => $path,
-            ]);
-            $image->count = $image->count + 1;
-            $image->save();
+        if (is_array($imgs)) {
+            foreach ($imgs as $img) {
+                $path  = parse_url($img)['path'];
+                $image = Image::firstOrNew([
+                    'path' => $path,
+                ]);
+                $image->count = $image->count + 1;
+                $image->save();
 
-            $article_image = ArticleImage::firstOrNew([
-                'article_id' => $article->id,
-                'image_id'   => $image->id,
-            ]);
-            $article_image->save();
+                $article_image = ArticleImage::firstOrNew([
+                    'article_id' => $article->id,
+                    'image_id'   => $image->id,
+                ]);
+                $article_image->save();
+            }
         }
 
         return redirect()->to('/article/' . $article->id);
