@@ -2,6 +2,11 @@
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Cookie;
+
+function is_in_app() {
+    return Cookie::get('is_in_app', false) || Request::get('in_app');
+}
 
 function get_active_css($path)
 {

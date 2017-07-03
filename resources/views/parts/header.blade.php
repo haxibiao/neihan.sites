@@ -1,3 +1,4 @@
+@if(!is_in_app())
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container">
         <div class="navbar-header">
@@ -79,3 +80,4 @@
         </div>
     </div>
 </nav>
+@endif

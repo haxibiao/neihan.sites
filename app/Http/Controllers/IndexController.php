@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Cookie;
 use App\Article;
 use App\Category;
 
