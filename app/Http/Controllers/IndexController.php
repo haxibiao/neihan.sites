@@ -9,6 +9,8 @@ class IndexController extends Controller
 {
     public function index()
     {
+        $this->handle_app_load();
+
         $zhongyi_articles = Article::orderBy('id', 'desc')
             ->where('status', '>', 0)
             ->take(6)->get();
@@ -18,6 +20,13 @@ class IndexController extends Controller
         return view('index.index')
             ->withZhongyiArticles($zhongyi_articles)
             ->withXiyiArticles($xiyi_articles);
+    }
+
+    private function handle_app_load()
+    {
+        if (Request::get('in_app')) {
+            Cookie::queue('is_in_app', true, 60 * 24);
+        }
     }
 
     public function zhongyi()
