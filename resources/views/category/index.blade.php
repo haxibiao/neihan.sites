@@ -26,6 +26,12 @@
                 {!! Form::submit("删除", ['class' => 'btn btn-danger']) !!}
             </div>    
         {!! Form::close() !!}
+
+        {!! Form::open(['method' => 'get', 'route' => ['category.edit', $category->id], 'class' => 'form-horizontal']) !!}
+            <div class="btn-group pull-right right10">
+                {!! Form::submit("编辑", ['class' => 'btn btn-warning']) !!}
+            </div>        
+        {!! Form::close() !!}
         <h4 class="list-group-item-heading">{{ $category->name }} ({{ $category->name_en }})</h4>
         <p class="list-group-item-text"> {{ $category->description }} {{ $category->created_at->diffForHumans() }} 
         @if($category->user)
@@ -33,6 +39,7 @@
         @endif
         </p>
       </a>
+      {{-- <a class="btn btn-warning" href="/category/{{ $category->id }}/edit" role="button">编辑</a>  --}}
     </div>
   @endforeach
 

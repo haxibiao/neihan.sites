@@ -68,7 +68,9 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = Auth::user();
+        $category = Category::with('user')->find($id);
+        return view('category.edit')->withUser($user)->withCategory($category);
     }
 
     /**
@@ -80,7 +82,9 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $category = Category::find($id);
+        $category->update($request->except('_token'));
+        return redirect()->to('/category/' . $category->id);
     }
 
     /**

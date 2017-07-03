@@ -12,6 +12,11 @@
 
 @section('content')
 	<div class="container">
+		  <ol class="breadcrumb">
+		    <li><a href="/">懂点医</a></li>
+		    <li><a href="/category">分类列表</a></li>
+		    <li class="active">添加分类</li>
+		  </ol>
 		<div class="col-md-6">
 			{!! Form::open(['method' => 'POST', 'route' => 'category.store', 'class' => 'form-horizontal']) !!}
 	
