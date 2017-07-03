@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +20,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::with('user')->paginate(10);
+        return view('category.index')->withCategories($categories);
     }
 
     /**
@@ -23,7 +31,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $user = Auth::user();
+        return view('category.create')->withUser($user);
     }
 
     /**
@@ -34,7 +43,9 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = Category::firstOrNew($request->except('_token'));
+        $category->save();
+        return redirect()->to('/category/' . $category->id);
     }
 
     /**
@@ -45,7 +56,8 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $category = Category::with('user')->find($id);
+        return view('category.show')->withCategory($category);
     }
 
     /**

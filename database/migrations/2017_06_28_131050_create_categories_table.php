@@ -19,6 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->string('name_en');
             $table->string('description')->nullable();
             $table->string('logo')->nullable();
+            
             $table->integer('count')->default(0);
             $table->integer('user_id')->default(0)->index();
             $table->integer('parent_id')->default(0)->index();

@@ -17,6 +17,7 @@ Route::get('/xiyi', 'IndexController@xiyi');
 
 Route::resource('/article', 'ArticleController');
 Route::resource('/user', 'UserController');
+Route::resource('/category', 'CategoryController');
 
 Auth::routes();
 

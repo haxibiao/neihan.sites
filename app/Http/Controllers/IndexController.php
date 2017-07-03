@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Cookie;
 use App\Article;
 use App\Category;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Request;
 
 class IndexController extends Controller
 {
@@ -28,6 +28,8 @@ class IndexController extends Controller
     {
         if (Request::get('in_app')) {
             Cookie::queue('is_in_app', true, 60 * 24);
+        } else {
+            Cookie::queue(Cookie::forget('is_in_app'));
         }
     }
 
