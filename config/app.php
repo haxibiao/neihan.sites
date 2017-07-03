@@ -179,6 +179,7 @@ return [
 		Intervention\Image\ImageServiceProvider::class,
 		Collective\Html\HtmlServiceProvider::class,
 		Overtrue\LaravelWechat\ServiceProvider::class,
+		Collective\Remote\RemoteServiceProvider::class,
 
 	],
 

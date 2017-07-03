@@ -22,7 +22,7 @@ EOT;
 $refresh_env_config = <<<EOT
 chmod -R 777 .
 chown -R www:www .
-/bin/cp -rf .env.prod .env
+php artisan env:refresh --prod
 EOT;
 
 $run_composer = <<<EOT
