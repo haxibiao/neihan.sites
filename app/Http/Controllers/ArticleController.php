@@ -27,7 +27,7 @@ class ArticleController extends Controller
     {
         $query = Article::orderBy('id', 'desc')
             ->where('status', '>=', 0);
-        if (Auth::user()->is_editor) {
+        if (!Auth::user()->is_admin) {
             $query = $query->where('user_id', Auth::user()->id);
         }
         $articles = $query->paginate(10);

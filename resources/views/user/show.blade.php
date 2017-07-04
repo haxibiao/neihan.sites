@@ -31,7 +31,7 @@
     		@foreach($articles as $article)
 				<div class="media">
 					<a class="pull-left" href="/article/{{ $article->id }}">
-						<img class="media-object" src="{{ $article->image_url }}" alt="{{ $article->title }}">
+						<img class="media-object" src="{{ $article->image_url }}" alt="{{ $article->title }}" style="max-width: 200px">
 					</a>
 					<div class="media-body">
 						<a href="/article/{{ $article->id }}">
