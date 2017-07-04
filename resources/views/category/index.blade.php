@@ -29,7 +29,7 @@
       @foreach($categories as $id => $category)
         @if($category)
         <div class="top10">
-          <a href="/category/{{ $category->id }}" class="list-group-item left{{ $category->level*10 }}">
+          <a href="/category/{{ $category->id }}" class="list-group-item left{{ $category->level*10 }} {{ $category->level ? '' : 'active' }}">
             {!! Form::open(['method' => 'delete', 'route' => ['category.destroy', $category->id], 'class' => 'form-horizontal']) !!}
                 <div class="btn-group pull-right">
                     {!! Form::submit("删除", ['class' => 'btn btn-sm btn-danger']) !!}

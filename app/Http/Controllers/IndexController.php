@@ -60,29 +60,30 @@ class IndexController extends Controller
         }
     }
 
-    public function zhongyi()
+    public function category($name_en)
     {
-        $category       = Category::where('name', '中医')->first();
+        $category       = Category::where('name_en', $name_en)->first();
         $carousel_items = $this->get_carousel_items($category->id);
         $articles       = Article::orderBy('id', 'desc')
             ->where('status', '>=', 0)
             ->where('category_id', $category->id)
             ->paginate(10);
-        return view('index.zhongyi')
+        return view('index.category')
+            ->withCategory($category)
             ->withCarouselItems($carousel_items)
             ->withArticles($articles);
     }
 
-    public function xiyi()
-    {
-        $category       = Category::where('name', '西医')->first();
-        $carousel_items = $this->get_carousel_items($category->id);
-        $articles       = Article::orderBy('id', 'desc')
-            ->where('status', '>=', 0)
-            ->where('category_id', $category->id)
-            ->paginate(10);
-        return view('index.xiyi')
-            ->withCarouselItems($carousel_items)
-            ->withArticles($articles);
-    }
+    // public function xiyi()
+    // {
+    //     $category       = Category::where('name', '西医')->first();
+    //     $carousel_items = $this->get_carousel_items($category->id);
+    //     $articles       = Article::orderBy('id', 'desc')
+    //         ->where('status', '>=', 0)
+    //         ->where('category_id', $category->id)
+    //         ->paginate(10);
+    //     return view('index.xiyi')
+    //         ->withCarouselItems($carousel_items)
+    //         ->withArticles($articles);
+    // }
 }

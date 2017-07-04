@@ -12,8 +12,6 @@
 */
 
 Route::get('/', 'IndexController@index');
-Route::get('/zhongyi', 'IndexController@zhongyi');
-Route::get('/xiyi', 'IndexController@xiyi');
 
 Route::resource('/article', 'ArticleController');
 Route::resource('/user', 'UserController');
@@ -34,3 +32,6 @@ Route::get('/debug','LogController@debug');
 
 //weixin
 Route::get('/wechat', 'WechatController@serve');
+
+//last, use category name_en
+Route::get('/{name_en}', 'IndexController@category');

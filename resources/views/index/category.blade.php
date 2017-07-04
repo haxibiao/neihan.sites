@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('title')
-  中医
+  {{ $category->name }}
 @endsection
 @section('keywords')
-  中医
+  {{ $category->name }}
 @endsection
 @section('description')
-  中医
+  {{ $category->name }}
 @endsection
 
 @section('content')
@@ -14,14 +14,14 @@
     <ol class="breadcrumb">
     	<li><a href="/">{{ config('app.name') }}</a></li>
         <li class="active">
-            中医
+            {{ $category->name }}
         </li>
     </ol>
     @include('parts.carousel')
     <div class="panel panel-default top20">
         <div class="panel-heading">
             <h3 class="panel-title">
-                中医文章
+                {{ $category->name }}文章
             </h3>
         </div>
         <div class="panel-body">
