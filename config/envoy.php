@@ -1,7 +1,9 @@
 <?php
 
-$git = 'root@hk002:/data/www/dongdianyi.com';
-$www = '/data/www/dongdianyi.com';
+require 'envoydomain.php';
+
+$git = 'root@hk002:/data/www/' . $domain;
+$www = '/data/www/' . $domain;
 
 $hk001 = 'root@hk001';
 $hk002 = 'root@hk002';

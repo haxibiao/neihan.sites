@@ -15,4 +15,5 @@ sudo /bin/cp -rf package.json ../dongdianyao.com/
 sudo /bin/cp -rf webpack.mix.js ../dongdianyao.com/
 
 cd ../dongdianyao.com/
+git checkout config/envoydomain.php
 git checkout database/seeds/*
