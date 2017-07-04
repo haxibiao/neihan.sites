@@ -41,7 +41,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $categories = Category::pluck('name', 'id');
+        $categories = get_categories();
         return view('article.create')->withCategories($categories);
     }
 
@@ -139,7 +139,7 @@ class ArticleController extends Controller
     public function edit($id)
     {
         $article    = Article::findOrFail($id);
-        $categories = Category::pluck('name', 'id');
+        $categories = get_categories();
         return view('article.edit')->withArticle($article)->withCategories($categories);
     }
 

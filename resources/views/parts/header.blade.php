@@ -20,22 +20,46 @@
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
              <ul class="nav navbar-nav">
+              
               <li class="{{ get_active_css('/') }}"><a href="/">首页 <span class="sr-only">(current)</span></a></li>
-              <li class="{{ get_active_css('zhongyi') }}"><a href="/zhongyi">中医</a></li>
-              <li class="dropdown {{ get_active_css('xiyi') }}">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">西医 <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="/xiyi">西医</a></li>
-                  <li role="separator" class="divider"></li>
-                  <li><a href="/xiyi/neikexue">内科学</a></li>
-                  <li><a href="/xiyi/neikexue">外科学</a></li>
-                  <li><a href="/xiyi/neikexue">妇产科学</a></li>
-                  <li role="separator" class="divider"></li>
-                  <li><a href="/xiyi/neikexue">儿科学</a></li>
-                  <li role="separator" class="divider"></li>
-                  <li><a href="/xiyi/neikexue">神经病学</a></li>
-                </ul>
-              </li>
+              @foreach($category_items as $item)
+                @if($item->level == 0)
+                  @if(!$item->has_child)
+                    <li class="{{ get_active_css($item->name_en) }}"><a href="/{{ $item->name_en }}">{{ $item->name }}</a></li>
+                  @else 
+                    <li class="dropdown {{ get_active_css($item->name_en) }}">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $item->name }} <span class="caret"></span></a>
+                      <ul class="dropdown-menu menu-top">
+                        <li><a href="/{{ $item->name_en }}">{{ $item->name }}</a></li>
+                        <li role="separator" class="divider"></li>
+                        @foreach($category_items as $item_sub)
+                          @if($item_sub->parent_id == $item->id)
+                            {{-- <li><a href="/{{ $item_sub->name_en }}">{{ $item_sub->name }}</a></li> --}}
+                            @if(!$item_sub->has_child)
+                              <li class="{{ get_active_css($item_sub->name_en) }}"><a href="/{{ $item_sub->name_en }}">{{ $item_sub->name }}</a></li>
+                            @else 
+                              <li class="dropdown-submenu {{ get_active_css($item_sub->name_en) }}">
+                                <a tabindex="-1" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $item_sub->name }}</a>
+                                <ul class="dropdown-menu">
+                                  <li><a href="/{{ $item_sub->name_en }}">{{ $item_sub->name }}</a></li>
+                                  <li role="separator" class="divider"></li>
+                                  @foreach($category_items as $item_subsub)
+                                    @if($item_subsub->parent_id == $item_sub->id)
+                                      <li><a href="/{{ $item_subsub->name_en }}">{{ $item_subsub->name }}</a></li>
+                                    @endif
+                                  @endforeach
+                                </ul>
+                              </li>
+                            @endif
+                          @endif
+                        @endforeach
+                      </ul>
+                    </li>
+                  @endif
+                @endif
+              @endforeach
+              
+
             </ul>
             
             {{-- <form class="navbar-form navbar-left">

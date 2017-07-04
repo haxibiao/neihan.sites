@@ -13,7 +13,7 @@
 @section('content')
 	<div class="container">
 		  <ol class="breadcrumb">
-		    <li><a href="/">懂点医</a></li>
+		    <li><a href="/">{{ config('app.name') }}</a></li>
 		    <li><a href="/category">分类列表</a></li>
 		    <li class="active">添加分类</li>
 		  </ol>
@@ -32,9 +32,15 @@
 			        <small class="text-danger">{{ $errors->first('name_en') }}</small>
 			    </div>
 
+			    <div class="form-group{{ $errors->has('parent_id') ? ' has-error' : '' }}">
+		            {!! Form::label('parent_id', '上级分类') !!}
+		            {!! Form::select('parent_id',$categories, null, ['id' => 'parent_id', 'class' => 'form-control', 'required' => 'required']) !!}
+		            <small class="text-danger">{{ $errors->first('category_id') }}</small>
+		        </div>
+
 			    <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
 			        {!! Form::label('description', '分类描述') !!}
-			        {!! Form::textarea('description', null, ['class' => 'form-control', 'required' => 'required']) !!}
+			        {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
 			        <small class="text-danger">{{ $errors->first('description') }}</small>
 			    </div>
 

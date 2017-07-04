@@ -14,7 +14,7 @@
 
 <div class="container-fluid">
 <ol class="breadcrumb">
-    <li><a href="/">懂点医</a></li>
+    <li><a href="/">{{ config('app.name') }}</a></li>
     <li class="active">发布文章</li>
   </ol>
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,7 +21,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::with('user')->paginate(10);
+        $categories = get_categories(1);
         return view('category.index')->withCategories($categories);
     }
 
@@ -31,8 +32,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $user = Auth::user();
-        return view('category.create')->withUser($user);
+        $user       = Auth::user();
+        $categories = get_categories(0,1);
+        return view('category.create')->withUser($user)->withCategories($categories);
     }
 
     /**
@@ -41,11 +43,20 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         $category = Category::firstOrNew($request->except('_token'));
+        if ($category->parent_id == 0) {
+            $category->level = 0;
+        }
+        $parent = Category::find($category->parent_id);
+        if ($parent) {
+            $parent->has_child = 1;
+            $parent->save();
+            $category->level = $parent->level + 1;
+        }
         $category->save();
-        return redirect()->to('/category/' . $category->id);
+        return redirect()->to('/category');
     }
 
     /**
@@ -68,9 +79,10 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $user = Auth::user();
-        $category = Category::with('user')->find($id);
-        return view('category.edit')->withUser($user)->withCategory($category);
+        $user       = Auth::user();
+        $category   = Category::with('user')->find($id);
+        $categories = get_categories(0,1);
+        return view('category.edit')->withUser($user)->withCategory($category)->withCategories($categories);
     }
 
     /**
@@ -84,7 +96,19 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         $category->update($request->except('_token'));
-        return redirect()->to('/category/' . $category->id);
+        if ($category->parent_id == 0) {
+            $category->level = 0;
+        }
+
+        $parent = Category::find($category->parent_id);
+        if ($parent) {
+            $parent->has_child = 1;
+            $parent->save();
+            $category->level = $parent->level + 1;
+            $category->save();
+        }
+
+        return redirect()->to('/category');
     }
 
     /**
@@ -96,7 +120,7 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $category = Category::find($id);
-        if($category){
+        if ($category) {
             $category->delete();
         }
         return redirect()->back();

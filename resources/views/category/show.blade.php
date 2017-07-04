@@ -3,7 +3,7 @@
 @section('content')
 	<div class="container">
       <ol class="breadcrumb">
-        <li><a href="/">懂点医</a></li>
+        <li><a href="/">{{ config('app.name') }}</a></li>
         <li><a href="/category">分类列表</a></li>
         <li class="active">{{ $category->name }}</li>
       </ol>

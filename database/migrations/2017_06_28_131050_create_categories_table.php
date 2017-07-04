@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateCategoriesTable extends Migration
 {
@@ -19,11 +19,12 @@ class CreateCategoriesTable extends Migration
             $table->string('name_en');
             $table->string('description')->nullable();
             $table->string('logo')->nullable();
-            
+
             $table->integer('count')->default(0);
             $table->integer('user_id')->default(0)->index();
             $table->integer('parent_id')->default(0)->index();
-            $table->integer('level')->default(1)->index();
+            $table->boolean('has_child')->default(0)->index();
+            $table->integer('level')->default(0)->index();
             $table->integer('status')->default(0)->index();
             $table->timestamps();
         });

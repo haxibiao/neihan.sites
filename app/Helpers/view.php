@@ -1,10 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Request;
 
-function is_in_app() {
+function is_in_app()
+{
     return Cookie::get('is_in_app', false) || Request::get('in_app');
 }
 
@@ -66,4 +67,32 @@ function get_image_index($max_id)
         Cache::put('image_index', $id_new, 1);
     }
     return Cache::get('image_index');
+}
+
+function get_categories($full = 0, $for_parent = 0)
+{
+    $categories = [];
+    if ($for_parent) {
+        $categories[0] = null;
+    }
+    $category_items = \App\Category::where('status', '>=', 0)->get();
+    foreach ($category_items as $item) {
+        if ($item->level == 0) {
+            $categories[$item->id] = $full ? $item : $item->name;
+            if ($item->has_child) {
+                foreach ($category_items as $item_sub) {
+                    if ($item_sub->parent_id == $item->id) {
+                        $categories[$item_sub->id] = $full ? $item_sub : ' -- ' . $item_sub->name;
+                        foreach ($category_items as $item_subsub) {
+                            if ($item_subsub->parent_id == $item_sub->id) {
+                                $categories[$item_subsub->id] = $full ? $item_subsub : ' ---- ' . $item_subsub->name;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    $categories = \Illuminate\Support\Collection::make($categories);
+    return $categories;
 }

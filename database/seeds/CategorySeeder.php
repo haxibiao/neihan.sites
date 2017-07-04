@@ -17,12 +17,21 @@ class CategorySeeder extends Seeder
         		'name_en' => 'zhongyi'
         	]);
         $cate->user_id = 1;
+        $cate->level = 0;
         $cate->save();
         $cate = Category::firstOrNew([
         		'name' => '西医',
         		'name_en' => 'xiyi'
         	]);
         $cate->user_id = 1;
+        $cate->level = 0;
+        $cate->save();
+        $cate = Category::firstOrNew([
+                'name' => '兽医',
+                'name_en' => 'shouyi'
+            ]);
+        $cate->user_id = 1;
+        $cate->level = 0;
         $cate->save();
     }
 }

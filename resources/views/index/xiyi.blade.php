@@ -12,7 +12,7 @@
 @section('content')
 <div class="container">
     <ol class="breadcrumb">
-    	<li><a href="/">懂点医</a></li>
+    	<li><a href="/">{{ config('app.name') }}</a></li>
         <li class="active">
             西医
         </li>

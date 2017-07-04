@@ -11,6 +11,7 @@ class Category extends Model
 		'name_en',
 		'description',
 		'user_id',
+		'parent_id',
 	];
 
 	public function user() {
