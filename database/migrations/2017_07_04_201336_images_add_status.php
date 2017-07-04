@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ArticlesAddHasPic extends Migration
+class ImagesAddStatus extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class ArticlesAddHasPic extends Migration
      */
     public function up()
     {
-        Schema::table('articles', function (Blueprint $table) {
-            $table->index('image_url');
-            $table->boolean('is_has_pic');
+        Schema::table('images', function (Blueprint $table) {
+            $table->integer('status')->default(0)->index();
         });
     }
 
@@ -26,7 +25,7 @@ class ArticlesAddHasPic extends Migration
      */
     public function down()
     {
-        Schema::table('articles', function (Blueprint $table) {
+        Schema::table('images', function (Blueprint $table) {
             //
         });
     }

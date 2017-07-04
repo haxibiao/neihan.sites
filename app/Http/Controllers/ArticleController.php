@@ -62,7 +62,7 @@ class ArticleController extends Controller
         $article->category_id = $request->get('category_id');
         $article->body        = $request->get('body');
         $article->image_url   = $request->get('image_url');
-        $article->is_has_pic  = !empty($article->image_url);
+        $article->has_pic  = !empty($article->image_url);
         $article->save();
 
         //tags
@@ -154,7 +154,7 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
         $article->update($request->all());
-        $article->is_has_pic = !empty($article->image_url);
+        $article->has_pic = !empty($article->image_url);
         $article->save();
 
         //tags

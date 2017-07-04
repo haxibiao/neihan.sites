@@ -23,12 +23,13 @@ class ImageController extends Controller
             }
             $image = Image::find(str_replace('.jpg', '', $delete_filename));
             if ($image) {
-                $image->delete();
+                $image->status = -1;
+                $image->save();
             }
             $data[$path_small] = true;
         } else {
             //load exist ...
-            $images  = Image::where('count', 0)->get();
+            $images  = Image::where('status', '>=', 0)->where('count', 0)->get();
             $http    = $request->secure() ? 'https://' : 'http://';
             $baseUri = $http . $request->server('HTTP_HOST');
             foreach ($images as $image) {

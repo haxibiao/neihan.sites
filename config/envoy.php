@@ -27,8 +27,9 @@ php artisan env:refresh --prod
 EOT;
 
 $run_composer = <<<EOT
-composer install
+composer update
 composer dump-autoload
+git checkout .
 EOT;
 
 $run_migrate = <<<EOT

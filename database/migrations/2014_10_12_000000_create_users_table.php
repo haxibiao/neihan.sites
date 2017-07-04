@@ -23,6 +23,10 @@ class CreateUsersTable extends Migration
             $table->string('qq')->nullable();
             $table->string('introduction')->nullable();
             
+            $table->boolean('is_editor')->default(0)->index();
+            $table->boolean('is_admin')->default(0)->index();
+            $table->integer('status')->default(0)->index();
+            
             $table->rememberToken();
             $table->timestamps();
         });

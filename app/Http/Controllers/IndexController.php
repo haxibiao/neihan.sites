@@ -33,7 +33,7 @@ class IndexController extends Controller
         $carousel_items = [];
         $query          = Article::orderBy('id', 'desc')
             ->where('status', '>=', 0)
-            ->where('is_has_pic', 1);
+            ->where('has_pic', 1);
         if ($category_id) {
             $query = $query->where('category_id', $category_id);
         }
