@@ -13,14 +13,14 @@ class IndexController extends Controller
     {
         $this->handle_app_load();
 
-        $categories = get_categories();
+        $categories = get_categories(1);
         $data = [];
-        foreach($categories as $cate_id => $cate_name) {
+        foreach($categories as $cate_id => $cate) {
             $articles = Article::orderBy('id', 'desc')
                 ->where('category_id', $cate_id)
                 ->where('status', '>=', 0)
                 ->take(6)->get();
-            $data[$cate_name] = $articles;
+            $data[$cate->name] = $articles;
         }
 
         $carousel_items = $this->get_carousel_items();

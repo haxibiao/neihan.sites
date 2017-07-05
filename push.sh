@@ -1,9 +1,9 @@
 #!bin/bash
 
-php artisan push
+envoy run push
 
 cd ../dongdianyao.com
-php artisan push
+envoy run push
 
 cd ../dongmeiwei.com
-php artisan push
+envoy run push
