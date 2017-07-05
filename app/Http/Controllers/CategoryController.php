@@ -23,7 +23,12 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = get_categories(1);
-        return view('category.index')->withCategories($categories);
+        $cate_ids   = [];
+        foreach ($categories as $category) {
+            $cate_ids[] = $category->id;
+        }
+        $cates_miss = Category::whereNotIn('id', $cate_ids)->get();
+        return view('category.index')->withCategories($categories)->withCatesMiss($cates_miss);
     }
 
     public function name_en($name_en)
@@ -48,7 +53,7 @@ class CategoryController extends Controller
     public function create()
     {
         $user       = Auth::user();
-        $categories = get_categories(0,1);
+        $categories = get_categories(0, 1);
         return view('category.create')->withUser($user)->withCategories($categories);
     }
 
@@ -96,7 +101,7 @@ class CategoryController extends Controller
     {
         $user       = Auth::user();
         $category   = Category::with('user')->find($id);
-        $categories = get_categories(0,1);
+        $categories = get_categories(0, 1);
         return view('category.edit')->withUser($user)->withCategory($category)->withCategories($categories);
     }
 
