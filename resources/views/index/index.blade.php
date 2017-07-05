@@ -9,6 +9,9 @@
 @stop
 
 @section('content')
+
+<meta name="baidu-site-verification" content="1eDc5dWuPr"/>
+
 <div class="container">
     <ol class="breadcrumb">
         <li class="active">
