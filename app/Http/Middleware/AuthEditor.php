@@ -16,7 +16,7 @@ class AuthEditor
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::user()->is_editor) {
+        if (!Auth::check() || !Auth::user()->is_editor) {
             $request->session()->flash('message', '需要本站编辑身份!');
             // dd(session('message'));
             return abort(403);

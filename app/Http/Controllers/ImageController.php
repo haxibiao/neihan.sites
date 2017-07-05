@@ -22,6 +22,7 @@ class ImageController extends Controller
                 unlink(public_path($path_small));
             }
             $image = Image::find(str_replace('.jpg', '', $delete_filename));
+            return $image;
             if ($image) {
                 $image->status = -1;
                 $image->save();
@@ -30,17 +31,18 @@ class ImageController extends Controller
         } else {
             //load exist ...
             $images  = Image::where('status', '>=', 0)->where('count', 0)->get();
+            return $images;
             $http    = $request->secure() ? 'https://' : 'http://';
             $baseUri = $http . $request->server('HTTP_HOST');
             foreach ($images as $image) {
-                $filename = pathinfo($image->path)['filename'];
+                $filename = pathinfo($image->path)['path'];
                 $file     = [
                     'url'          => $baseUri . $image->path,
                     'thumbnailUrl' => $baseUri . $image->path,
                     'name'         => $filename,
                     "type"         => "image/jpeg",
                     "size"         => 0,
-                    'deleteUrl'    => url('/image?delete_filename=' . $filename),
+                    'deleteUrl'    => url('/image?d=' . $image->id),
                     "deleteType"   => "GET",
                 ];
                 $data['files'][] = $file;
@@ -80,10 +82,10 @@ class ImageController extends Controller
             $files[] = [
                 'url'          => $baseUri . $image->path,
                 'thumbnailUrl' => $baseUri . $image->path,
-                'name'         => $filename,
+                'name'         => $path,
                 "type"         => "image/jpeg",
                 "size"         => filesize($file->path()),
-                'deleteUrl'    => url('/image?delete_filename=' . $filename),
+                'deleteUrl'    => url('/image?d=' . $image->id),
                 "deleteType"   => "GET",
             ];
         }

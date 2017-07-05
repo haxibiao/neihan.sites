@@ -16,7 +16,7 @@ class AuthAdmin
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::user()->is_admin) {
+        if (!Auth::check() || !Auth::user()->is_admin) {
             $request->session()->flash('message', '需要本站管理员身份!');
             // dd(session('message'));
             return abort(403);

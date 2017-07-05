@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\ArticleImage;
 use App\ArticleTag;
-use App\Category;
 use App\Http\Requests\ArticleRequest;
 use App\Image;
 use App\Tag;
@@ -62,7 +61,7 @@ class ArticleController extends Controller
         $article->category_id = $request->get('category_id');
         $article->body        = $request->get('body');
         $article->image_url   = $request->get('image_url');
-        $article->has_pic  = !empty($article->image_url);
+        $article->has_pic     = !empty($article->image_url);
         $article->save();
 
         //tags
@@ -77,6 +76,34 @@ class ArticleController extends Controller
 
     public function save_article_images($imgs, $article)
     {
+        $article_with_images = Article::with('images')->find($article->id);
+        $images              = $article_with_images->images;
+
+        //TODO:: remove not using images relationship ...
+        $pattern_img = '/<img(.*?)>/';
+        preg_match_all($pattern_img, $article->body, $matches);
+        if (!empty($matches)) {
+            foreach ($images as $image) {
+                $item_exist_in_body = false;
+                foreach ($matches[0] as $img_tag) {
+                    if (str_contains($img_tag, $image->path)) {
+                        $item_exist_in_body = true;
+                    }
+                }
+                if (!$item_exist_in_body) {
+                    $article_image = ArticleImage::firstOrNew([
+                        'article_id' => $article->id,
+                        'image_id'   => $image->id,
+                    ]);
+                    if ($article_image->id) {
+                        $image->count = $image->count - 1;
+                        $image->save();
+                        $article_image->delete();
+                    }
+                }
+            }
+        }
+
         if (is_array($imgs)) {
             foreach ($imgs as $img) {
                 $path  = parse_url($img)['path'];
@@ -153,7 +180,13 @@ class ArticleController extends Controller
     public function update(Request $request, $id)
     {
         $article = Article::findOrFail($id);
-        $article->update($request->all());
+
+        //编辑文章的时候,可能没有插入图片,字段可能空,就会删除图片地址....
+        $article->update($request->except('image_url'));
+        if ($request->get('image_url')) {
+            $article->image_url = $request->except('image_url');
+        }
+
         $article->has_pic = !empty($article->image_url);
         $article->save();
 
