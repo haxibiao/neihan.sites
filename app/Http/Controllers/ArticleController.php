@@ -197,7 +197,7 @@ class ArticleController extends Controller
         //编辑文章的时候,可能没有插入图片,字段可能空,就会删除图片地址....
         $article->update($request->except('image_url'));
         if ($request->get('image_url')) {
-            $article->image_url = $request->except('image_url');
+            $article->image_url = $request->get('image_url');
         }
 
         $article->has_pic = !empty($article->image_url);
