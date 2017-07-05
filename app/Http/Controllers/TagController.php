@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Tag;
+use App\Article;
+use App\ArticleTag;
 
 class TagController extends Controller
 {
@@ -14,6 +17,14 @@ class TagController extends Controller
     public function index()
     {
         //
+    }
+
+    public function tagname($name) {
+        $tag = Tag::firstOrNew([
+                'name' => $name
+            ]);
+        $articles = ArticleTag::with('article')->where('tag_id', $tag->id)->paginate(10);
+        return view('tag.name')->withTag($tag)->withArticles($articles);
     }
 
     /**

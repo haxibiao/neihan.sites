@@ -141,6 +141,19 @@ class ArticleController extends Controller
                 $article_tag->save();
             }
         }
+
+        //删除文章不用的关键词关系
+        $article_with_tags = Article::with('tags')->find($article->id);
+        $tags = $article_with_tags->tags;
+        foreach($tags as $tag) {
+            if(!in_array($tag->name, $keywords)) {
+                $article_tag = ArticleTag::firstOrNew([
+                    'article_id' => $article->id,
+                    'tag_id'     => $tag->id,
+                ]);
+                $article_tag->delete();
+            }
+        }
     }
 
     /**

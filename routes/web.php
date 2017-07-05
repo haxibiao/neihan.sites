@@ -17,6 +17,9 @@ Route::resource('/article', 'ArticleController');
 Route::resource('/user', 'UserController');
 Route::resource('/category', 'CategoryController');
 
+Route::get('/tag/{name}', 'TagController@tagname');
+Route::resource('/tag', 'TagController');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

@@ -31,7 +31,10 @@
           分类: {{ $article->category->name }}
         </p>
         <p>
-          关键词: @foreach($article->tags as $tag) <span class="label label-info">{{  $tag->name  }}</span> @endforeach
+          关键词:  
+          @foreach($article->tags as $tag)           
+          <a href="/tag/{{ $tag->name }}">{{  $tag->name  }}</a>
+          @endforeach
         </p>
         <p class="lead">
           {{ $article->description }}

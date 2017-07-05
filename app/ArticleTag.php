@@ -12,4 +12,12 @@ class ArticleTag extends Model
     	'article_id',
     	'tag_id',
     ];
+
+    public function article() {
+    	return $this->belongsTo('\App\Article');
+    }
+
+    public function tag() {
+    	return $this->belongsTo('\App\Tag');
+    }
 }
