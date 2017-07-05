@@ -23,7 +23,7 @@ class IndexController extends Controller
             $data[$cate->name] = $articles;
         }
 
-        get_carousel_items();
+        $carousel_items = get_carousel_items();
         return view('index.index')
             ->withCarouselItems($carousel_items)
             ->withData($data);
