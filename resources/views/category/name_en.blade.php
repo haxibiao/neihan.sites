@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('title')
-  {{ $category->name }}
+  {{ $category->name }} 
 @endsection
 @section('keywords')
-  {{ $category->name }}
+  {{ $category->name }} 
 @endsection
 @section('description')
-  {{ $category->name }}
+  {{ $category->name }} 
 @endsection
 
 @section('content')

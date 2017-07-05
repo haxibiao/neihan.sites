@@ -1,5 +1,13 @@
 @extends('layouts.app')
 
+@section('keywords')
+     @foreach($data as $cate_name => $articles) {{ $cate_name }} @endforeach
+@stop
+
+@section('description')
+     {{ config('app.name', 'Laravel') }} 专注 @foreach($data as $cate_name => $articles) {{ $cate_name }}  @endforeach 方面的原创内容,专注分享,方便中国移动互联网网民学习交流.
+@stop
+
 @section('content')
 <div class="container">
     <ol class="breadcrumb">
