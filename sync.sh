@@ -15,6 +15,8 @@ sudo /bin/cp -rf package.json ../dongdianyao.com/
 sudo /bin/cp -rf webpack.mix.js ../dongdianyao.com/
 
 cd ../dongdianyao.com/
+sudo chmod -R 777 .
+git pull
 git checkout config/envoydomain.php
 git checkout database/seeds/*
 
@@ -34,5 +36,7 @@ sudo /bin/cp -rf package.json ../dongmeiwei.com/
 sudo /bin/cp -rf webpack.mix.js ../dongmeiwei.com/
 
 cd ../dongmeiwei.com/
+sudo chmod -R 777 .
+git pull
 git checkout config/envoydomain.php
 git checkout database/seeds/*
