@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Article;
 use App\Category;
 use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class CategoryController extends Controller
     public function name_en($name_en)
     {
         $category       = Category::where('name_en', $name_en)->first();
-        $carousel_items = $this->get_carousel_items($category->id);
+        $carousel_items = get_carousel_items($category->id);
         $articles       = Article::orderBy('id', 'desc')
             ->where('status', '>=', 0)
             ->where('category_id', $category->id)

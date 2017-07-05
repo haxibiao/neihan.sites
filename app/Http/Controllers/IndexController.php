@@ -29,29 +29,6 @@ class IndexController extends Controller
             ->withData($data);
     }
 
-    public function get_carousel_items($category_id = 0)
-    {
-        $carousel_items = [];
-        $query          = Article::orderBy('id', 'desc')
-            ->where('status', '>=', 0)
-            ->where('has_pic', 1);
-        if ($category_id) {
-            $query = $query->where('category_id', $category_id);
-        }
-        $top_pic_articles = $query->take(5)->get();
-        $carousel_index   = 0;
-        foreach ($top_pic_articles as $article) {
-            $item = [
-                'index'     => $carousel_index,
-                'title'     => $article->title,
-                'image_url' => $article->image_url,
-            ];
-            $carousel_items[] = $item;
-            $carousel_index++;
-        }
-        return $carousel_items;
-    }
-
     public function handle_app_load()
     {
         if (Request::get('in_app')) {
