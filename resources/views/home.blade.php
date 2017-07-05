@@ -11,7 +11,7 @@
                     <h2>{{ Auth::user()->name }}, 您已成功登录!</h2>
 
                     <div class="col-md-12">
-                        {!! Form::open(['method' => 'POST', 'route' => ['user.update', Auth::user()->id], 'class' => 'form-horizontal']) !!}
+                        {!! Form::open(['method' => 'POST', 'route' => ['user.update', Auth::user()->id], 'class' => 'form-horizontal', 'enctype' => "multipart/form-data"]) !!}
                             {!! Form::hidden('_method', 'put') !!}
                             <div class="form-group{{ $errors->has('qq') ? ' has-error' : '' }}">
                                 {!! Form::label('qq', 'QQ') !!}

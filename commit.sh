@@ -2,8 +2,8 @@
 
 cd ../dongdianyao.com
 git add --all
-git commit -am 'bash commit: $1'
+git commit -am "bash: "$1
 
 cd ../dongmeiwei.com
 git add --all
-git commit -am 'bash commit: $1'
+git -am "bash: "$1

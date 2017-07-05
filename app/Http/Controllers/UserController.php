@@ -81,7 +81,24 @@ class UserController extends Controller
         $user->update($request->except('__token'));
 
         //TODO::save avatar url ...
-        // $user->save();
+        $file       = $request->file('avatar');
+        $local_path = public_path('storage/avatar/');
+        if (!is_dir($local_path)) {
+            mkdir($local_path, 0777, 1);
+        }
+        $filename = $user->id . '.jpg';
+        $file->move($local_path, $filename);
+
+        //resize
+        $full_path = $local_path . $filename;
+        $img       = \ImageMaker::make($full_path);
+        $img->resize(100, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+        $img->save($full_path);
+
+        $user->avatar = '/storage/avatar/' . $filename;
+        $user->save();
 
         return redirect()->to('/user/' . $user->id);
     }

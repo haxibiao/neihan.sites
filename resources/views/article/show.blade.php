@@ -44,17 +44,17 @@
   </div>
 
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-2">
       <div class="panel panel-default">
         <div class="panel-heading">
-          作者
+          <h3 class="panel-title">作者</h3>
         </div>
         <div class="panel-body">
-           @include('parts.user_item', ['user' => $article->user])
+           @include('user.parts.user_item', ['user' => $article->user])
         </div>
       </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-10">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">相关图片</h3>
