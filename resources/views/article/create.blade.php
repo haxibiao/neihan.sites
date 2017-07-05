@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    发布文章
+    创建文章
 @endsection
 @section('keywords')
   
@@ -15,14 +15,22 @@
 <div class="container-fluid">
 <ol class="breadcrumb">
     <li><a href="/">{{ config('app.name') }}</a></li>
-    <li class="active">发布文章</li>
+    <li class="active">创建文章</li>
   </ol>
 
 <div class="panel panel-default">
   <div class="panel-body">
     <div class="col-md-7">
-    {!! Form::open(['method' => 'POST', 'route' => 'article.store', 'class' => 'form-horizontal', 'enctype' => "multipart/form-data"]) !!}
-      <legend>发布文章</legend>
+    {!! Form::open(['method' => 'POST', 'route' => 'article.store', 'class' => 'form-horizontal', 'enctype' => "multipart/form-data"]) !!}      
+      <div class="row">
+          <legend>创建文章</legend>
+    
+            <div class="btn-group-lg pull-right">
+                <input type="hidden" name="image_url">
+                {!! Form::reset("重置", ['class' => 'btn btn-warning']) !!}
+                {!! Form::submit("保存", ['class' => 'btn btn-success']) !!}
+            </div>
+      </div>
     
         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
             {!! Form::label('title', '标题') !!}
@@ -72,7 +80,7 @@
         <div class="btn-group pull-right">
             <input type="hidden" name="image_url">
             {!! Form::reset("重置", ['class' => 'btn btn-warning']) !!}
-            {!! Form::submit("发布", ['class' => 'btn btn-success']) !!}
+            {!! Form::submit("保存", ['class' => 'btn btn-success']) !!}
         </div>
     
       {!! Form::close() !!}

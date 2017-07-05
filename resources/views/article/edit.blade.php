@@ -15,9 +15,17 @@
 <div class="panel panel-default">
   <div class="panel-body">
     
-  <div class="col-md-7">
+  <div class="col-md-6">
     {!! Form::open(['method' => 'PUT', 'route' => ['article.update', $article->id], 'class' => 'form-horizontal', 'enctype' => "multipart/form-data"]) !!}
-      <legend>编辑文章</legend>
+      <div class="row">
+          <legend>编辑文章</legend>
+    
+            <div class="btn-group-lg pull-right">
+                <input type="hidden" name="image_url">
+                {!! Form::reset("重置", ['class' => 'btn btn-warning']) !!}
+                {!! Form::submit("保存", ['class' => 'btn btn-success']) !!}
+            </div>
+      </div>
     
         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
             {!! Form::label('title', '标题') !!}
@@ -64,7 +72,7 @@
             <small class="text-danger">{{ $errors->first('body') }}</small>
         </div>
     
-        <div class="btn-group pull-right">
+        <div class="btn-group-lg pull-right">
             <input type="hidden" name="image_url">
             {!! Form::reset("重置", ['class' => 'btn btn-warning']) !!}
             {!! Form::submit("保存", ['class' => 'btn btn-success']) !!}
@@ -72,7 +80,7 @@
     
     {!! Form::close() !!}
   </div>
-  <div class="col-md-5">
+  <div class="col-md-6">
       @include('article.parts.image_upload_ui')
   </div>
   </div>

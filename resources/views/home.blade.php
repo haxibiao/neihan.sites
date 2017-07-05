@@ -50,7 +50,7 @@
                 </div>
                 <div class="panel-body">
                     @if(Auth::user()->is_editor)
-                    <a class="btn btn-primary top5" href="/article/create" role="button">发布文章</a>
+                    <a class="btn btn-primary top5" href="/article/create" role="button">创建文章</a>
                     <a class="btn btn-warning top5" href="/article" role="button">管理文章</a>
                     <a class="btn btn-danger top5" href="/category" role="button">管理分类</a>
                     @endif
