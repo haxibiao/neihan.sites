@@ -34,4 +34,4 @@ Route::get('/debug','LogController@debug');
 Route::get('/wechat', 'WechatController@serve');
 
 //last, use category name_en
-Route::get('/{name_en}', 'IndexController@category');
+Route::get('/{name_en}', 'CategoryController@name_en');

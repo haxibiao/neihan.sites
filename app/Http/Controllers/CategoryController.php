@@ -25,6 +25,20 @@ class CategoryController extends Controller
         return view('category.index')->withCategories($categories);
     }
 
+    public function name_en($name_en)
+    {
+        $category       = Category::where('name_en', $name_en)->first();
+        $carousel_items = $this->get_carousel_items($category->id);
+        $articles       = Article::orderBy('id', 'desc')
+            ->where('status', '>=', 0)
+            ->where('category_id', $category->id)
+            ->paginate(10);
+        return view('category.name_en')
+            ->withCategory($category)
+            ->withCarouselItems($carousel_items)
+            ->withArticles($articles);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

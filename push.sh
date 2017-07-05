@@ -1,9 +1,9 @@
 #!bin/bash
 
-git push
+php artisan push
 
 cd ../dongdianyao.com
-git push
+php artisan push
 
 cd ../dongmeiwei.com
-git push
+php artisan push

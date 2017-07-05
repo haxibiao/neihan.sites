@@ -13,19 +13,20 @@ class IndexController extends Controller
     {
         $this->handle_app_load();
 
-        $zhongyi_articles = Article::orderBy('id', 'desc')
-            ->where('status', '>=', 0)
-            ->take(6)->get();
-        $xiyi_articles = Article::orderBy('id', 'desc')
-            ->where('status', '>=', 0)
-            ->take(6)->get();
+        $categories = get_categories();
+        $data = [];
+        foreach($categories as $cate_id => $cate_name) {
+            $articles = Article::orderBy('id', 'desc')
+                ->where('category_id', $cate_id)
+                ->where('status', '>=', 0)
+                ->take(6)->get();
+            $data[$cate_name] = $articles;
+        }
 
         $carousel_items = $this->get_carousel_items();
-
         return view('index.index')
             ->withCarouselItems($carousel_items)
-            ->withZhongyiArticles($zhongyi_articles)
-            ->withXiyiArticles($xiyi_articles);
+            ->withData($data);
     }
 
     public function get_carousel_items($category_id = 0)
@@ -59,31 +60,4 @@ class IndexController extends Controller
             Cookie::queue(Cookie::forget('is_in_app'));
         }
     }
-
-    public function category($name_en)
-    {
-        $category       = Category::where('name_en', $name_en)->first();
-        $carousel_items = $this->get_carousel_items($category->id);
-        $articles       = Article::orderBy('id', 'desc')
-            ->where('status', '>=', 0)
-            ->where('category_id', $category->id)
-            ->paginate(10);
-        return view('index.category')
-            ->withCategory($category)
-            ->withCarouselItems($carousel_items)
-            ->withArticles($articles);
-    }
-
-    // public function xiyi()
-    // {
-    //     $category       = Category::where('name', '西医')->first();
-    //     $carousel_items = $this->get_carousel_items($category->id);
-    //     $articles       = Article::orderBy('id', 'desc')
-    //         ->where('status', '>=', 0)
-    //         ->where('category_id', $category->id)
-    //         ->paginate(10);
-    //     return view('index.xiyi')
-    //         ->withCarouselItems($carousel_items)
-    //         ->withArticles($articles);
-    // }
 }
