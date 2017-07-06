@@ -25,7 +25,7 @@ class TrafficMan
             $traffic->is_mobile     = $agent->isMobile();
             $traffic->is_phone      = $agent->isPhone();
             $traffic->is_tablet     = $agent->isTablet();
-            $traffic->is_wechat     = $agent->isWechat();
+            $traffic->is_wechat     = $agent->match('micromessenger');
             $traffic->is_android_os = $agent->isAndroidOS();
             $traffic->is_robot      = $agent->isRobot();
 
