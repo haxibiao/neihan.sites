@@ -78,9 +78,16 @@
         </div>
 
         <div class="form-group{{ $errors->has('is_top') ? ' has-error' : '' }}">
-            {!! Form::label('is_top', '是否上首页滚动(上需要900*500的主要配图)') !!}
+            {!! Form::label('is_top', '是否上首页滚动(上需要1140*666的主要配图)') !!}
             {!! Form::select('is_top', [0 => '不上', 1 => '上'], null, ['id' => 'is_top', 'class' => 'form-control', 'required' => 'required']) !!}
             <small class="text-danger">{{ $errors->first('is_top') }}</small>
+        </div>
+
+        <div class="form-group{{ $errors->has('image_top') ? ' has-error' : '' }}">
+            {!! Form::label('image_top', '首页滚动配图') !!}
+            {!! Form::file('image_top', []) !!}
+            <p class="help-block">不上首页滚动的无需配这个图</p>
+            <small class="text-danger">{{ $errors->first('image_top') }}</small>
         </div>
 
         @include('article.parts.article_images_selected', ['article_images' => []])

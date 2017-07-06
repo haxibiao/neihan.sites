@@ -52,7 +52,7 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
-        $article              = new Article($request->all());
+        $article = new Article($request->all());
 
         if ($request->get('primary_image')) {
             $article->image_url = $request->get('primary_image');
@@ -60,6 +60,19 @@ class ArticleController extends Controller
             $article->image_url = $request->get('image_url');
         }
         $article->has_pic = !empty($article->image_url);
+
+        //image_top
+        $file = $request->file('image_top');
+        if ($article->is_top) {
+            $local_path = public_path('storage/top/');
+            if (!is_dir($local_path)) {
+                mkdir($local_path, 0777, 1);
+            }
+            $filename = $article->id . '.jpg';
+            $file->move($local_path, $filename);
+            $article->image_top = '/storage/top/' . $filename;
+        }
+
         $article->save();
 
         //tags
@@ -206,6 +219,19 @@ class ArticleController extends Controller
         }
 
         $article->has_pic = !empty($article->image_url);
+        
+        //image_top
+        $file = $request->file('image_top');
+        if ($article->is_top) {
+            $local_path = public_path('storage/top/');
+            if (!is_dir($local_path)) {
+                mkdir($local_path, 0777, 1);
+            }
+            $filename = $article->id . '.jpg';
+            $file->move($local_path, $filename);
+            $article->image_top = '/storage/top/' . $filename;
+        }
+
         $article->save();
 
         //tags
