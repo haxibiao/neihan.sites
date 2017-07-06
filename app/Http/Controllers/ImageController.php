@@ -36,7 +36,7 @@ class ImageController extends Controller
                 $filename = pathinfo($image->path)['basename'];
                 $file     = [
                     'url'          => $baseUri . $image->path,
-                    'thumbnailUrl' => $baseUri . $image->path_small,
+                    'thumbnailUrl' => $baseUri . $image->path,
                     'name'         => $filename,
                     "type"         => "image/jpeg",
                     "size"         => 0,
