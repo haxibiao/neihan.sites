@@ -21,23 +21,25 @@
   <div class="content">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h1 class="panel-title">{{ $article->title }}</h1>
-      </div>
-      <div class="panel-body">
+        
+        <h1>{{ $article->title }}</h1>
+        <p class="pull-right">阅读次数: {{ $article->hits }}</p>
         <p>
-          作者: {{ $article->author }} , 发布时间：{{ $article->created_at }}
+          作者: <a href="/user/{{ $article->user_id }}">{{ $article->author }}</a>  发布时间：{{ $article->created_at }}
         </p>
         <p>
-          分类: {{ $article->category->name }}
-        </p>
-        <p>
+          分类: <a href="/{{ $article->category->name_en }}">{{ $article->category->name }}</a> 
+       
           关键词:  
           @foreach($article->tags as $tag)           
           <a href="/tag/{{ $tag->name }}">{{  $tag->name  }}</a>
           @endforeach
         </p>
+
+      </div>
+      <div class="panel-body">
         <p class="lead">
-          {{ $article->description }}
+          简介: {{ $article->description }}
         </p>
         <p>
           {!! $article->body !!}

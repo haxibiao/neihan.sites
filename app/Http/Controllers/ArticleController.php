@@ -164,6 +164,8 @@ class ArticleController extends Controller
     public function show($id)
     {
         $article       = Article::with('user')->with('category')->with('tags')->with('images')->findOrFail($id);
+        $article->hits = $article->hits + 1;
+        $article->save();
         $article->body = str_replace("\n", '<br/>', $article->body);
 
         return view('article.show')->withArticle($article);
