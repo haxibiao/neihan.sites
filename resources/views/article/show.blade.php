@@ -49,7 +49,7 @@
   </div>
 
   <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-3">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">作者</h3>
@@ -59,7 +59,17 @@
         </div>
       </div>
     </div>
-    <div class="col-md-10">
+    <div class="col-md-3">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">感兴趣吗？扫一下关注吧</h3>
+        </div>
+        <div class="panel-body">
+           <img src="/qrcode/{{ env('APP_DOMAIN') }}.jpg" alt="" class="img img-responsive">
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">相关图片</h3>

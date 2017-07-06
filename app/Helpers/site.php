@@ -42,6 +42,7 @@ function get_carousel_items($category_id = 0)
     foreach ($top_pic_articles as $article) {
         $item = [
             'index'     => $carousel_index,
+            'id'     => $article->id,
             'title'     => $article->title,
             'image_url' => empty($article->image_url) ? $article->image_top : $article->image_url,
         ];

@@ -24,7 +24,7 @@
     <div class="media">
       @if(!empty($article->image_url))
       <a class="pull-left" href="/article/{{ $article->id }}">
-        <img class="media-object" src="{{ $article->image_url }}" alt="{{ $article->title }}" style="max-width: 200px">
+        <img class="media-object" src="{{ get_small_article_image($article->image_url) }}" alt="{{ $article->title }}" style="max-width: 200px">
       </a>
       @endif
       <div class="media-body">
