@@ -19,6 +19,7 @@ Route::get('/about-us', 'IndexController@aboutUs');
 Route::resource('/article', 'ArticleController');
 Route::resource('/user', 'UserController');
 Route::resource('/category', 'CategoryController');
+Route::resource('/traffic', 'TrafficController');
 
 Route::get('/tag/{name}', 'TagController@tagname');
 Route::resource('/tag', 'TagController');
