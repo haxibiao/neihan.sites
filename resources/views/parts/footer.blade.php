@@ -1,10 +1,9 @@
 @if(!is_in_app())
 <div class="container border-top top30">
-    <a class="navbar-brand" href="/">{{ config('app.name') }}</a>
     <ul class="nav navbar-nav">
-        <li class="active">
+        {{-- <li class="active">
             <a href="{{ env('APK_URL') }}" target="_blank">安卓版本下载</a>
-        </li>
+        </li> --}}
         <li>
             <a href="/about-us">关于{{ config('app.name') }}</a>
         </li>

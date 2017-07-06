@@ -13,6 +13,9 @@
 
 Route::get('/', 'IndexController@index');
 
+Route::get('/app', 'IndexController@app');
+Route::get('/about-us', 'IndexController@aboutUs');
+
 Route::resource('/article', 'ArticleController');
 Route::resource('/user', 'UserController');
 Route::resource('/category', 'CategoryController');
