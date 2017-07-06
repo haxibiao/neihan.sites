@@ -10,9 +10,14 @@ class ImageController extends Controller
     public function index(Request $request)
     {
         $data            = [];
-        $delete_filename = $request->get('delete_filename');
-        if (!empty($delete_filename)) {
-            $path = '/img/' . $delete_filename;
+        $delete_id = $request->get('d');
+        if (!empty($delete_id)) {
+            $image = Image::find($delete_id);
+            if ($image) {
+                $image->status = -1;
+                $image->save();
+            }
+            $path = $image->path;
             if (file_exists(public_path($path))) {
                 unlink(public_path($path));
             }
@@ -21,24 +26,17 @@ class ImageController extends Controller
             if (file_exists(public_path($path_small))) {
                 unlink(public_path($path_small));
             }
-            $image = Image::find(str_replace('.jpg', '', $delete_filename));
-            return $image;
-            if ($image) {
-                $image->status = -1;
-                $image->save();
-            }
             $data[$path_small] = true;
         } else {
             //load exist ...
             $images  = Image::where('status', '>=', 0)->where('count', 0)->get();
-            return $images;
             $http    = $request->secure() ? 'https://' : 'http://';
             $baseUri = $http . $request->server('HTTP_HOST');
             foreach ($images as $image) {
-                $filename = pathinfo($image->path)['path'];
+                $filename = pathinfo($image->path)['basename'];
                 $file     = [
                     'url'          => $baseUri . $image->path,
-                    'thumbnailUrl' => $baseUri . $image->path,
+                    'thumbnailUrl' => $baseUri . $image->path_small,
                     'name'         => $filename,
                     "type"         => "image/jpeg",
                     "size"         => 0,
@@ -71,7 +69,7 @@ class ImageController extends Controller
             $image->path = $path;
             $full_path   = $local_path . $filename;
             $img         = \ImageMaker::make($full_path);
-            $img->resize(120, null, function ($constraint) {
+            $img->resize(320, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
             $img->save($full_path . '.small.jpg');

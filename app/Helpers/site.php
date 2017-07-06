@@ -33,6 +33,7 @@ function get_carousel_items($category_id = 0)
     $carousel_items = [];
     $query          = App\Article::orderBy('id', 'desc')
         ->where('status', '>=', 0)
+        ->where('is_top', 1)
         ->where('has_pic', 1);
     if ($category_id) {
         $query = $query->where('category_id', $category_id);

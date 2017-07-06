@@ -6,14 +6,6 @@
 
 <div class="form-group top30">
     <label>配图</label>
-    {{-- <div>
-      <input type="file" name="image[]">
-      <button type="button" class="btn btn-default" id="add_image">+</button>
-      <button type="button" class="btn btn-danger" id="upload_image">上传</button>
-    </div>
-    <div class="row" id="preview_images">
-        
-    </div> --}}
     
     <!-- The file upload form used as target for the file upload widget -->
     <form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data">
@@ -181,6 +173,7 @@
                 $(this).addClass('img-responsive');
             });
             $('.preview img').click(function(e) {
+                $(this).parent().parent().parent().parent().hide();
                 var img_url = $(this).attr('src');            
                 $('.editable').summernote('insertImage', img_url,function ($image) {
                   $image.attr('data-url-big', img_url.replace('small.jpg',''));
@@ -190,6 +183,13 @@
                 var image_url_el = $('input[name="image_url"]');
                 image_url_el.val(img_url);
                 $('<input type="hidden" name="images[]" value="' + img_url + '">').insertBefore(image_url_el);
+
+                $article_image_el = $('#article_image_template').clone();
+                $article_image_el = $article_image_el.insertBefore($('#article_image_template'));
+                $article_image_el.find('img').attr('src', img_url);
+                $article_image_el.find('input').val(img_url);
+                $article_image_el.removeClass('hide');
+
                 e.preventDefault();
                 return false;
             });

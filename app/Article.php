@@ -15,6 +15,7 @@ class Article extends Model
         'category_id',
         'body',
         'image_url',
+        'is_top',
     ];
 
     public function user()

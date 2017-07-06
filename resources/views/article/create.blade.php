@@ -66,7 +66,7 @@
 
         <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
             {!! Form::label('description', '简介') !!}
-            {!! Form::text('description',null, ['class' => 'form-control', 'required' => 'required']) !!}
+            {!! Form::textarea('description',null, ['class' => 'form-control', 'required' => 'required']) !!}
             <small class="text-danger">{{ $errors->first('description') }}</small>
         </div>
 
@@ -76,7 +76,15 @@
             <div class="editable"></div>
             <small class="text-danger">{{ $errors->first('body') }}</small>
         </div>
-    
+
+        <div class="form-group{{ $errors->has('is_top') ? ' has-error' : '' }}">
+            {!! Form::label('is_top', '是否上首页滚动(上需要900*500的主要配图)') !!}
+            {!! Form::select('is_top', [0 => '不上', 1 => '上'], null, ['id' => 'is_top', 'class' => 'form-control', 'required' => 'required']) !!}
+            <small class="text-danger">{{ $errors->first('is_top') }}</small>
+        </div>
+
+        @include('article.parts.article_images_selected', ['article_images' => []])
+        
         <div class="btn-group pull-right">
             <input type="hidden" name="image_url">
             {!! Form::reset("重置", ['class' => 'btn btn-warning']) !!}

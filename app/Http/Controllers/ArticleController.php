@@ -52,16 +52,14 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
-        $article              = new Article();
-        $article->title       = $request->get('title');
-        $article->keywords    = $request->get('keywords');
-        $article->description = $request->get('description');
-        $article->author      = $request->get('author');
-        $article->user_id     = $request->get('user_id');
-        $article->category_id = $request->get('category_id');
-        $article->body        = $request->get('body');
-        $article->image_url   = $request->get('image_url');
-        $article->has_pic     = !empty($article->image_url);
+        $article              = new Article($request->all());
+
+        if ($request->get('primary_image')) {
+            $article->image_url = $request->get('primary_image');
+        } else {
+            $article->image_url = $request->get('image_url');
+        }
+        $article->has_pic = !empty($article->image_url);
         $article->save();
 
         //tags
@@ -107,6 +105,7 @@ class ArticleController extends Controller
         if (is_array($imgs)) {
             foreach ($imgs as $img) {
                 $path  = parse_url($img)['path'];
+                $path  = str_replace('.small.jpg', '', $path);
                 $image = Image::firstOrNew([
                     'path' => $path,
                 ]);
@@ -144,9 +143,9 @@ class ArticleController extends Controller
 
         //删除文章不用的关键词关系
         $article_with_tags = Article::with('tags')->find($article->id);
-        $tags = $article_with_tags->tags;
-        foreach($tags as $tag) {
-            if(!in_array($tag->name, $keywords)) {
+        $tags              = $article_with_tags->tags;
+        foreach ($tags as $tag) {
+            if (!in_array($tag->name, $keywords)) {
                 $article_tag = ArticleTag::firstOrNew([
                     'article_id' => $article->id,
                     'tag_id'     => $tag->id,
@@ -178,7 +177,7 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        $article    = Article::findOrFail($id);
+        $article    = Article::with('images')->findOrFail($id);
         $categories = get_categories();
         return view('article.edit')->withArticle($article)->withCategories($categories);
     }
@@ -196,8 +195,12 @@ class ArticleController extends Controller
 
         //编辑文章的时候,可能没有插入图片,字段可能空,就会删除图片地址....
         $article->update($request->except('image_url'));
-        if ($request->get('image_url')) {
-            $article->image_url = $request->get('image_url');
+        if ($request->get('primary_image')) {
+            $article->image_url = $request->get('primary_image');
+        } else {
+            if ($request->get('image_url')) {
+                $article->image_url = $request->get('image_url');
+            }
         }
 
         $article->has_pic = !empty($article->image_url);
