@@ -188,6 +188,19 @@ class ArticleController extends Controller
     {
         $article       = Article::with('user')->with('category')->with('tags')->with('images')->findOrFail($id);
         $article->hits = $article->hits + 1;
+        $agent = new \Jenssegers\Agent\Agent();
+        if($agent->isMobile()) {
+            $article->hits_mobile = $article->hits_mobile + 1;
+        }
+        if($agent->isPhone()) {
+            $article->hits_phone = $article->hits_phone + 1;
+        }
+        if($agent->match('micromessenger')) {
+            $article->hits_wechat = $article->hits_wechat + 1;
+        }
+        if($agent->isRobot()) {
+            $article->hits_robot = $article->hits_robot + 1;
+        }
         $article->save();
         $article->body = str_replace("\n", '<br/>', $article->body);
 

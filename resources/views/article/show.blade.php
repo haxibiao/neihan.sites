@@ -4,7 +4,7 @@
   {{ $article->title }}
 @endsection
 @section('keywords')
-  {{ $article->keywords }}
+  {{ str_replace(' ', ',', $article->keywords) }}
 @endsection
 @section('description')
   {{ $article->description }}
@@ -23,7 +23,7 @@
       <div class="panel-heading">
         
         <h1>{{ $article->title }}</h1>
-        <p class="pull-right">阅读次数: {{ $article->hits }}</p>
+        <p class="pull-right" title="移动端：{{ $article->hits_mobile }}, 手机端：{{ $article->hits_phone }}, 微信: {{ $article->hits_wechat }}, 爬虫：{{ $article->hits_robot }}">阅读次数: {{ $article->hits }}</p>
         <p>
           作者: <a href="/user/{{ $article->user_id }}">{{ $article->author }}</a>  发布时间：{{ $article->created_at }}
         </p>
