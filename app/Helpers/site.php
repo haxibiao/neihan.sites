@@ -1,4 +1,5 @@
 <?php
+use Jenssegers\Agent\Agent;
 
 function get_categories($full = 0, $for_parent = 0)
 {
@@ -31,6 +32,11 @@ function get_categories($full = 0, $for_parent = 0)
 function get_carousel_items($category_id = 0)
 {
     $carousel_items = [];
+    $agent = new Agent();
+    if($agent->isMobile()) 
+    {
+        return $carousel_items;
+    }
     $query          = App\Article::orderBy('id', 'desc')
         ->where('image_top', '<>', '')
         ->where('is_top', 1);
@@ -44,6 +50,7 @@ function get_carousel_items($category_id = 0)
             'index'     => $carousel_index,
             'id'     => $article->id,
             'title'     => $article->title,
+            'description'     => $article->description,
             'image_url' => empty($article->image_url) ? $article->image_top : $article->image_url,
         ];
         $carousel_items[] = $item;

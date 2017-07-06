@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\Category;
+use App\User;
 
 class IndexController extends Controller
 {
@@ -20,8 +21,10 @@ class IndexController extends Controller
         }
 
         $carousel_items = get_carousel_items();
+        $users = User::orderBy('id','desc')->take(4)->get();
         return view('index.index')
             ->withCarouselItems($carousel_items)
+            ->withUsers($users)
             ->withData($data);
     }
 }

@@ -19,10 +19,32 @@
         </li>
     </ol>
 
-    @include('parts.carousel')
+    <div class="row">
+        <div class="col-md-8">
+            @include('parts.carousel')
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">                    
+                    <h3 class="panel-title">本站新用户:</h3>
+                </div>
+                <div class="panel-body">                    
+                    @foreach($users as $user)
+                        <div class="col-xs-6 text-center">
+                            <a href="/user/{{ $user->id }}" class="thumbnail">
+                                <img src="{{ get_avatar($user) }}" alt="" class="img img-responsive">
+                                <p>{{ $user->name }}</p>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row top20">
         @foreach($data as $cate_name => $articles)
+        @if(!empty($articles))
         <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -41,6 +63,7 @@
                 </div>
             </div>
         </div>
+        @endif
         @endforeach
 
     </div>

@@ -12,7 +12,7 @@
             </button>
 
             <!-- Branding Image -->
-            <img src="/{{ env('APP_DOMAIN') }}.small.jpg" alt="{{ config('app.name', 'Laravel') }}" class="right10" />
+            <img src="/{{ env('APP_DOMAIN') }}.small.jpg" alt="{{ config('app.name', 'Laravel') }}" class="right10" style="max-height: 50px" />
             {{-- <a class="navbar-brand" href="{{ url('/') }}" title="{{ config('app.name', 'Laravel') }}">
                               
             </a> --}}

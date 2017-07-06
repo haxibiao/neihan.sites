@@ -73,7 +73,7 @@
         </div>
 
         <div class="form-group{{ $errors->has('is_top') ? ' has-error' : '' }}">
-            {!! Form::label('is_top', '是否上首页滚动(上需要 1140*666 的主要配图)') !!}
+            {!! Form::label('is_top', '是否上首页滚动(上需要比900*500大的主要配图，程序自动裁剪)') !!}
             {!! Form::select('is_top', [0 => '不上', 1 => '上'], $article->is_top, ['id' => 'is_top', 'class' => 'form-control', 'required' => 'required']) !!}
             <small class="text-danger">{{ $errors->first('is_top') }}</small>
         </div>

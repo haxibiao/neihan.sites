@@ -84,6 +84,12 @@ class ArticleController extends Controller
             }
             $filename = $article->id . '.jpg';
             $file->move($local_path, $filename);
+            //resize
+            $full_path = $local_path . $filename;
+            $img       = \ImageMaker::make($full_path);
+            $img->resize(900, 500);
+            $img->save($full_path);
+
             $article->image_top = '/storage/top/' . $filename;
             $article->save();
         }
@@ -94,7 +100,7 @@ class ArticleController extends Controller
         $article_with_images = Article::with('images')->find($article->id);
         $images              = $article_with_images->images;
 
-        //TODO:: remove not using images relationship ...
+        // remove not using images relationship ...
         $pattern_img = '/<img(.*?)>/';
         preg_match_all($pattern_img, $article->body, $matches);
         if (!empty($matches)) {
