@@ -49,7 +49,7 @@
           {!! $article->body !!}
         </p>
         <p>
-          @if($article->edited_at || $article->user_name != $article->author)
+          @if($article->edited_at)
           本文最后由 <a href="/user/{{ $article->user_id }}">{{ $article->user_name }}</a> 编辑 ({{ diffForHumansCN($article->edited_at) }})
           @endif
         </p>
