@@ -41,6 +41,10 @@
       </div>
     </div>
     @endforeach
+
+    <p>
+      {{ $articles->render() }}
+    </p>
   </div>
 </div>
 

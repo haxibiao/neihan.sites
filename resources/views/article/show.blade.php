@@ -21,11 +21,15 @@
   <div class="content">
     <div class="panel panel-default">
       <div class="panel-heading">
-        
+        @if(Auth::check() && (Auth::user()->id == $article->user_id))
+        <p class="pull-right">
+            <a href="/article/{{ $article->id }}/edit" class="btn btn-danger">编辑文章</a>
+        </p>
+        @endif
         <h1>{{ $article->title }}</h1>
         <p class="pull-right" title="移动端：{{ $article->hits_mobile }}, 手机端：{{ $article->hits_phone }}, 微信: {{ $article->hits_wechat }}, 爬虫：{{ $article->hits_robot }}">阅读次数: {{ $article->hits }}</p>
         <p>
-          作者: <a href="/user/{{ $article->user_id }}">{{ $article->author }}</a>  发布时间：{{ $article->created_at }}
+          作者: <a href="/user/{{ $article->user_id }}">{{ $article->author }}</a>  发布时间：{{ diffForHumansCN($article->created_at) }}
         </p>
         <p>
           分类: <a href="/{{ $article->category->name_en }}">{{ $article->category->name }}</a> 
@@ -43,6 +47,11 @@
         </p>
         <p>
           {!! $article->body !!}
+        </p>
+        <p>
+          @if($article->edited_at || $article->user_name != $article->author)
+          本文最后由 <a href="/user/{{ $article->user_id }}">{{ $article->user_name }}</a> 编辑 ({{ diffForHumansCN($article->edited_at) }})
+          @endif
         </p>
       </div>
     </div>

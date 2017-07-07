@@ -76,3 +76,23 @@ function get_small_article_image($image_url)
     }
     return $image_url;
 }
+
+function diffForHumansCN($time) {
+    $humanStr = $time->diffForHumans();
+    $humanStr = str_replace('ago','前', $humanStr);
+    $humanStr = str_replace('seconds','秒', $humanStr);
+    $humanStr = str_replace('second','秒', $humanStr); 
+    $humanStr = str_replace('minutes','分钟', $humanStr);
+    $humanStr = str_replace('minute','分钟', $humanStr);
+    $humanStr = str_replace('hours','小时', $humanStr);
+    $humanStr = str_replace('hour','小时', $humanStr);
+    $humanStr = str_replace('days','天', $humanStr);
+    $humanStr = str_replace('day','天', $humanStr);
+    $humanStr = str_replace('weeks','周', $humanStr);
+    $humanStr = str_replace('week','周', $humanStr);
+    $humanStr = str_replace('months','月', $humanStr);
+    $humanStr = str_replace('month','月', $humanStr);
+    $humanStr = str_replace('years','年', $humanStr);
+    $humanStr = str_replace('year','年', $humanStr);
+    return $humanStr;
+}

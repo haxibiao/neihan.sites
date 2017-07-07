@@ -9,14 +9,18 @@ class Article extends Model
     protected $fillable = [
         'title',
         'keywords',
-        'description',
+        'description',        
         'author',
+        'author_id',
+        'user_name',
         'user_id',
         'category_id',
         'body',
         'image_url',
         'is_top',
     ];
+
+    protected $dates = ['edited_at'];
 
     public function user()
     {

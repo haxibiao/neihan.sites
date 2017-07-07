@@ -43,10 +43,10 @@
         </div>
 
         <div class="col-md-6">
-        <div class="form-group{{ $errors->has('author') ? ' has-error' : '' }}">
-            {!! Form::label('author', '作者') !!}
-            {!! Form::text('author', $article->author, ['class' => 'form-control', 'required' => 'required']) !!}
-            <small class="text-danger">{{ $errors->first('author') }}</small>
+        <div class="form-group{{ $errors->has('user_name') ? ' has-error' : '' }}">
+            {!! Form::label('user_name', '最后编辑者') !!}
+            {!! Form::text('user_name', Auth::user()->name, ['class' => 'form-control', 'required' => 'required']) !!}
+            <small class="text-danger">{{ $errors->first('user_name') }}</small>
 
             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
         </div>

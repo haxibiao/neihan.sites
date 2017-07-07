@@ -53,6 +53,8 @@
             {!! Form::text('author', Auth::user()->name, ['class' => 'form-control', 'readonly' => 'true']) !!}
             <small class="text-danger">{{ $errors->first('author') }}</small>
 
+            <input type="hidden" name="author_id" value="{{ Auth::user()->id }}">
+            <input type="hidden" name="user_name" value="{{ Auth::user()->name }}">
             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
         </div>
         </div>

@@ -242,6 +242,7 @@ class ArticleController extends Controller
         }
 
         $article->has_pic = !empty($article->image_url);
+        $article->edited_at = \Carbon\Carbon::now();
         $article->save();
 
         //image_top
