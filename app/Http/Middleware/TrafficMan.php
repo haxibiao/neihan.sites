@@ -34,6 +34,12 @@ class TrafficMan
             $traffic->browser  = $agent->browser();
             $traffic->robot    = $agent->robot();
 
+            $traffic->path = $request->path();
+            $traffic->referer = $request->server('HTTP_REFERER');
+            if($traffic->referer) {
+                $traffic->referer_domain = parse_url($traffic->referer)['host'];
+            }
+
             $traffic->save();
         }
 

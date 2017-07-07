@@ -19,6 +19,13 @@ Route::get('/about-us', 'IndexController@aboutUs');
 Route::resource('/article', 'ArticleController');
 Route::resource('/user', 'UserController');
 Route::resource('/category', 'CategoryController');
+
+Route::get('/traffic/log', 'TrafficController@log');
+Route::get('/traffic/robot', 'TrafficController@robot');
+Route::get('/traffic/device', 'TrafficController@device');
+Route::get('/traffic/platform', 'TrafficController@platform');
+Route::get('/traffic/browser', 'TrafficController@browser');
+Route::get('/traffic/referer', 'TrafficController@referer');
 Route::resource('/traffic', 'TrafficController');
 
 Route::get('/tag/{name}', 'TagController@tagname');

@@ -51,17 +51,22 @@ class EnvRefresh extends Command
     public function refresh_prod()
     {
         //db
-        $webconfig = json_decode(file_get_contents('/etc/webconfig.json'));
-        $this->updateEnv([
-            'APP_ENV'       => 'prod',
-            'APP_DEBUG'     => 'false',
-            'DB_HOST'       => 'localhost',
-            'DB_USERNAME'   => $webconfig->db_user,
-            'DB_PASSWORD'   => $webconfig->db_passwd,
-            'MAIL_HOST'     => $webconfig->mail_host,
-            'MAIL_USERNAME' => $webconfig->mail_user,
-            'MAIL_PASSWORD' => $webconfig->mail_passcode,
-        ]);
+        $data = @file_get_contents('/etc/webconfig.json');
+        if ($data) {
+            $webconfig = json_decode($data);
+            $this->updateEnv([
+                'APP_ENV'       => 'prod',
+                'APP_DEBUG'     => 'false',
+                'DB_HOST'       => 'localhost',
+                'DB_USERNAME'   => $webconfig->db_user,
+                'DB_PASSWORD'   => $webconfig->db_passwd,
+                'MAIL_HOST'     => $webconfig->mail_host,
+                'MAIL_USERNAME' => $webconfig->mail_user,
+                'MAIL_PASSWORD' => $webconfig->mail_passcode,
+            ]);
+        } else {
+            $this->error('webconfig not found!');
+        }
     }
 
     public function updateEnv($data = array())

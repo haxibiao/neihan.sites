@@ -33,7 +33,7 @@ class CategoryController extends Controller
 
     public function name_en($name_en)
     {
-        $category       = Category::where('name_en', $name_en)->first();
+        $category       = Category::where('name_en', $name_en)->firstOrFail();
         $carousel_items = get_carousel_items($category->id);
         $articles       = Article::orderBy('id', 'desc')
             ->where('status', '>=', 0)
