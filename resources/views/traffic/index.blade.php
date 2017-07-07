@@ -12,7 +12,12 @@
 						@foreach($counts as $name => $count)
 						<li class="list-group-item">
 							<span class="badge">{{ $count }}</span>
-							{{ $name }} {{ ceil(100*$count)/$all }}%
+							{{ $name }} {{ ceil( 100 * $count / $all ) }}%
+							<div class="progress">
+							  <div class="progress-bar" role="progressbar" aria-valuenow="{{ ceil( 100 * $count / $all ) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ ceil( 100 * $count / $all ) }}%;">
+							    {{ ceil( 100 * $count / $all ) }}%
+							  </div>
+							</div>
 						</li>
 						@endforeach
 					</ul>	
