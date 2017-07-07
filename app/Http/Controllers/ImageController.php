@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Image;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ImageController extends Controller
 {
     public function index(Request $request)
     {
-        $data            = [];
+        $data      = [];
         $delete_id = $request->get('d');
         if (!empty($delete_id)) {
             $image = Image::find($delete_id);
@@ -29,7 +30,12 @@ class ImageController extends Controller
             $data[$path_small] = true;
         } else {
             //load exist ...
-            $images  = Image::where('status', '>=', 0)->where('count', 0)->get();
+            $query = Image::where('status', '>=', 0)->where('count', 0);
+            if (Auth::check()) {
+                $user_id = Auth::check() ? Auth::user()->id : 0;
+                $query   = $query->where('user_id', $user_id);
+            }
+            $images  = $query->get();
             $http    = $request->secure() ? 'https://' : 'http://';
             $baseUri = $http . $request->server('HTTP_HOST');
             foreach ($images as $image) {
@@ -58,17 +64,18 @@ class ImageController extends Controller
     {
         $images      = $request->file('image');
         $image_index = get_image_index(Image::max('id'));
-        $files = [];
+        $files       = [];
         foreach ($images as $file) {
             $filename   = $image_index . '.jpg';
             $path       = '/img/' . $filename;
             $local_path = public_path('img/');
             $file->move($local_path, $filename);
 
-            $image       = new Image();
-            $image->path = $path;
-            $full_path   = $local_path . $filename;
-            $img         = \ImageMaker::make($full_path);
+            $image          = new Image();
+            $image->user_id = Auth::check() ? Auth::user()->id : 0;
+            $image->path    = $path;
+            $full_path      = $local_path . $filename;
+            $img            = \ImageMaker::make($full_path);
             $img->resize(320, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
