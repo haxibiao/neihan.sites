@@ -34,7 +34,7 @@
 						@foreach($counts as $key => $count)
 						<li class="list-group-item">
 							<span class="badge">{{ $count }}</span>
-							{{ $key }} 
+							{{ empty($key) ? '未知': $key }} 
 						</li>
 						@endforeach
 					</ul>

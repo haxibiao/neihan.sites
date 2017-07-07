@@ -55,6 +55,10 @@
                     <a class="btn btn-danger top5" href="/category" role="button">管理分类</a>
                     @endif
 
+                    @if(Auth::user()->is_seoer)
+                    <a class="btn btn-danger top5" href="/user/{{ Auth::user()->id }}/edit" role="button">SEO配置</a>
+                    @endif
+
                     @if(Auth::user()->is_admin)
                     <a class="btn btn-warning top5" href="/admin/users" role="button">管理用户</a>
                     @endif

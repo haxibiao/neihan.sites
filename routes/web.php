@@ -18,6 +18,7 @@ Route::get('/about-us', 'IndexController@aboutUs');
 
 Route::resource('/article', 'ArticleController');
 Route::resource('/user', 'UserController');
+Route::get('/user/seo', 'UserController@seo');
 Route::resource('/category', 'CategoryController');
 
 Route::get('/traffic/log', 'TrafficController@log');

@@ -19,7 +19,8 @@
 					<tr>
 						<th>ID</th>
 						<th>name</th>
-						<th>is_editor</th>
+						<th>编辑</th>
+						<th>Seoer</th>
 						<th>status</th>
 						<th>introduction</th>
 						<th style="width:200px"></th>
@@ -31,6 +32,7 @@
 						<td>{{ $user->id }}</td>
 						<td>{{ $user->name }}</td>
 						<td>{{ $user->is_editor ? '是' : '' }}</td>
+						<td>{{ $user->is_seoer ? '是' : '' }}</td>
 						<td>{{ $user->status == -1 ? '已删除' : '正常' }}</td>
 						<td>{{ $user->introduction }}</td>
 						<td>

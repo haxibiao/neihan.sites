@@ -1,5 +1,26 @@
 <?php
+
 use Jenssegers\Agent\Agent;
+use App\User;
+
+function get_seoer_meta()
+{
+    $data = User::where('is_seoer', 1)->pluck('seo_meta')->toArray();
+    $data = array_filter($data);
+    return join(" ", $data);
+}
+
+function get_seoer_footer()
+{
+    $data = User::where('is_seoer', 1)->pluck('seo_push')->toArray();
+    $data = array_filter($data);
+    $push = join(" ", $data);
+    $data = User::where('is_seoer', 1)->pluck('seo_tj')->toArray();
+    $data = array_filter($data);
+    $tj   = join(" ", $data);
+
+    return $push . $tj;
+}
 
 function get_categories($full = 0, $for_parent = 0)
 {
@@ -32,12 +53,11 @@ function get_categories($full = 0, $for_parent = 0)
 function get_carousel_items($category_id = 0)
 {
     $carousel_items = [];
-    $agent = new Agent();
-    if($agent->isMobile()) 
-    {
+    $agent          = new Agent();
+    if ($agent->isMobile()) {
         return $carousel_items;
     }
-    $query          = App\Article::orderBy('id', 'desc')
+    $query = App\Article::orderBy('id', 'desc')
         ->where('image_top', '<>', '')
         ->where('is_top', 1);
     if ($category_id) {
@@ -47,11 +67,11 @@ function get_carousel_items($category_id = 0)
     $carousel_index   = 0;
     foreach ($top_pic_articles as $article) {
         $item = [
-            'index'     => $carousel_index,
-            'id'     => $article->id,
-            'title'     => $article->title,
-            'description'     => $article->description,
-            'image_url' => empty($article->image_url) ? $article->image_top : $article->image_url,
+            'index'       => $carousel_index,
+            'id'          => $article->id,
+            'title'       => $article->title,
+            'description' => $article->description,
+            'image_url'   => empty($article->image_url) ? $article->image_top : $article->image_url,
         ];
         $carousel_items[] = $item;
         $carousel_index++;

@@ -34,6 +34,7 @@ class TrafficController extends Controller
         $data['系统']    = DB::table('traffic')->select('platform', DB::raw('count(*) as count'))->groupby('platform')->pluck('count', 'platform');
         $data['浏览器'] = DB::table('traffic')->select('browser', DB::raw('count(*) as count'))->groupby('browser')->pluck('count', 'browser');
         $data['爬虫']    = DB::table('traffic')->select('robot', DB::raw('count(*) as count'))->groupby('robot')->pluck('count', 'robot');
+        $data['来源']    = DB::table('traffic')->select('referer_domain', DB::raw('count(*) as count'))->groupby('referer_domain')->pluck('count', 'referer_domain');
         
         return view('traffic.index')
             ->withCounts($counts)

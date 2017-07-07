@@ -21,6 +21,10 @@ class User extends Authenticatable
         'qq',
         'introduction',
         'is_editor',
+        'is_seoer',
+        'seo_meta',
+        'seo_push',
+        'seo_tj',
     ];
 
     /**
