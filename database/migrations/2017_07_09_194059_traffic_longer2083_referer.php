@@ -14,7 +14,7 @@ class TrafficLongerReferer extends Migration
     public function up()
     {
         Schema::table('traffic', function (Blueprint $table) {
-           $table->string('referer', 255)->nullable()->change();
+           $table->string('referer', 2083)->nullable()->change();
         });
     }
 
