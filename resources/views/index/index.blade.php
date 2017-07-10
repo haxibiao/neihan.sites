@@ -44,7 +44,7 @@
 
     <div class="row top20">
         @foreach($data as $cate_name => $articles)
-        @if(!empty($articles))
+        @if(!$articles->isEmpty())
         <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
