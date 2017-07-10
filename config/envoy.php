@@ -35,7 +35,6 @@ EOT;
 
 $run_migrate = <<<EOT
 php artisan migrate --seed --force
-php artisan fix:data --articles
 EOT;
 
 $cache_clear = <<<EOT
