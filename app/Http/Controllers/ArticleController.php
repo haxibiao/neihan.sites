@@ -76,23 +76,23 @@ class ArticleController extends Controller
     }
 
     function get_top_pic($request, $article) {
-        $file = $request->file('image_top');
-        if ($article->is_top && $file) {
-            $local_path = public_path('storage/top/');
-            if (!is_dir($local_path)) {
-                mkdir($local_path, 0777, 1);
-            }
-            $filename = $article->id . '.jpg';
-            $file->move($local_path, $filename);
-            //resize
-            $full_path = $local_path . $filename;
-            $img       = \ImageMaker::make($full_path);
-            $img->resize(900, 500);
-            $img->save($full_path);
+        // $file = $request->file('image_top');
+        // if ($article->is_top && $file) {
+        //     $local_path = public_path('storage/top/');
+        //     if (!is_dir($local_path)) {
+        //         mkdir($local_path, 0777, 1);
+        //     }
+        //     $filename = $article->id . '.jpg';
+        //     $file->move($local_path, $filename);
+        //     //resize
+        //     $full_path = $local_path . $filename;
+        //     $img       = \ImageMaker::make($full_path);
+        //     $img->resize(900, 500);
+        //     $img->save($full_path);
 
-            $article->image_top = '/storage/top/' . $filename;
-            $article->save();
-        }
+        //     $article->image_top = '/storage/top/' . $filename;
+        //     $article->save();
+        // }
     }
 
     public function save_article_images($imgs, $article)
@@ -139,6 +139,13 @@ class ArticleController extends Controller
                     'article_id' => $article->id,
                     'image_id'   => $image->id,
                 ]);
+
+                //auto get is_top an image_top
+                if($image->path_top) {
+                    $article->is_top = 1;
+                    $article->image_top = $image->path_top;
+                    $article->save();
+                }
                 $article_image->save();
             }
         }

@@ -76,6 +76,13 @@ class ImageController extends Controller
             $image->path    = $path;
             $full_path      = $local_path . $filename;
             $img            = \ImageMaker::make($full_path);
+            $image->width   = $img->width();
+            $image->height  = $img->height();
+            if ($img->width() >= 750) {
+                $img->crop(750, 400);
+                $img->save($full_path . '.top.jpg');
+                $image->path_top = $path . '.top.jpg';
+            }
             $img->resize(320, null, function ($constraint) {
                 $constraint->aspectRatio();
             });

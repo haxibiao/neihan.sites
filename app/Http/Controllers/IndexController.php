@@ -15,13 +15,13 @@ class IndexController extends Controller
             $articles = Article::orderBy('id', 'desc')
                 ->where('category_id', $cate_id)
                 ->where('status', '>=', 0)
-                ->take(6)
+                ->take(5)
                 ->get();
             $data[$cate->name] = $articles;
         }
 
         $carousel_items = get_carousel_items();
-        $users          = User::orderBy('id', 'desc')->take(4)->get();
+        $users          = User::orderBy('id', 'desc')->take(5)->get();
         return view('index.index')
             ->withCarouselItems($carousel_items)
             ->withUsers($users)
