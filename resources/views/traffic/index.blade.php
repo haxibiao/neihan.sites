@@ -47,15 +47,17 @@
 		<div class="col-md-6">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title">{{ $name }}</h3>
+					<h3 class="panel-title">{{ $counts['cn_name'] }}</h3>
 				</div>
 				<div class="panel-body">
 					<ul class="list-group">
-						@foreach($counts as $key => $count)
-						<li class="list-group-item">
-							<span class="badge">{{ $count }}</span>
-							{{ empty($key) ? '未知': $key }} 
-						</li>
+						@foreach($counts['data'] as $key => $count)
+							@if(!empty($key))
+								<li class="list-group-item">
+									<span class="badge">{{ $count }}</span>
+									<a href="/traffic/{{ $name }}/{{ urlencode($key)}}">{{ $key }}</a>
+								</li>
+							@endif
 						@endforeach
 					</ul>
 				</div>

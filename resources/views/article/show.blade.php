@@ -4,7 +4,7 @@
   {{ $article->title }}
 @endsection
 @section('keywords')
-  {{ str_replace(' ', ',', $article->keywords) }}
+  {{ str_replace(' ', ',', trim($article->keywords)) }}, {{ $article->category->name }} 
 @endsection
 @section('description')
   {{ $article->description }}

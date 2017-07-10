@@ -53,6 +53,17 @@ class TrafficMan
             $traffic->weekOfMonth = Carbon::now()->weekOfMonth;
             $traffic->weekOfYear = Carbon::now()->weekOfYear;
 
+            if(starts_with($traffic->path, 'article/')){
+                $article_id = str_replace('article/', '', $traffic->path);
+                $traffic->article_id = $article_id;
+                $article = \App\Article::with('category')->find($article_id);
+                if($article) {
+                    if($article->category) {
+                        $traffic->category = $article->category->name;
+                    }
+                }
+            }
+
             $traffic->save();
         }
 

@@ -18,6 +18,7 @@
 						<th>微信</th>
 						<th>手机</th>
 						<th>移动端</th>
+						<th>分类</th>
 					</tr>
 					@foreach($traffics as $traffic)
 					<tr>
@@ -47,6 +48,9 @@
 						</td>
 						<td>
 							{{ $traffic->is_mobile }}
+						</td>
+						<td>
+							{{ $traffic->category }}
 						</td>
 					</tr>
 					@endforeach
