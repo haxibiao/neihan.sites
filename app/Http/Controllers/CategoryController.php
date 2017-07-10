@@ -38,11 +38,23 @@ class CategoryController extends Controller
         $articles       = Article::orderBy('id', 'desc')
             ->where('status', '>=', 0)
             ->where('category_id', $category->id)
-            ->paginate(10);
+            ->paginate(7);
+
+        $categories = Category::where('parent_id',$category->id)->get();
+        $data       = [];
+        foreach ($categories as $cate) {
+            $articles = Article::orderBy('id', 'desc')
+                ->where('category_id', $cate->id)
+                ->where('status', '>=', 0)
+                ->take(5)
+                ->get();
+            $data[$cate->name] = $articles;
+        }
         return view('category.name_en')
             ->withCategory($category)
             ->withCarouselItems($carousel_items)
-            ->withArticles($articles);
+            ->withArticles($articles)
+            ->withData($data);
     }
 
     /**

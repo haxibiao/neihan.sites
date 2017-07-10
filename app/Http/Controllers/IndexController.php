@@ -22,9 +22,11 @@ class IndexController extends Controller
 
         $carousel_items = get_carousel_items();
         $users          = User::orderBy('id', 'desc')->take(5)->get();
+        $hot_articles = Article::orderBy('hits', 'desc')->take(4)->get();
         return view('index.index')
             ->withCarouselItems($carousel_items)
             ->withUsers($users)
+            ->withHotArticles($hot_articles)
             ->withData($data);
     }
 

@@ -26,14 +26,14 @@
         <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading">                    
-                    <h3 class="panel-title">本站新用户:</h3>
+                    <h3 class="panel-title">热门文章</h3>
                 </div>
                 <div class="panel-body">                    
-                    @foreach($users as $user)
+                    @foreach($hot_articles as $article)
                         <div class="col-xs-6 text-center">
-                            <a href="/user/{{ $user->id }}" class="thumbnail">
-                                <img src="{{ get_avatar($user) }}" alt="" class="img img-responsive">
-                                <p>{{ $user->name }}</p>
+                            <a href="/article/{{ $article->id }}" class="thumbnail">
+                                <img src="{{ $article->image_url }}" alt="" class="img img-responsive">
+                                <p class="strip_title">{{ $article->title }}</p>
                             </a>
                         </div>
                     @endforeach

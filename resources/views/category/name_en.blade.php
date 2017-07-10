@@ -17,22 +17,54 @@
             {{ $category->name }}
         </li>
     </ol>
-    @include('parts.carousel')
-    <div class="panel panel-default top20">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                {{ $category->name }}文章
-            </h3>
+    
+    <div class="row">
+        <div class="col-md-8">
+            @include('parts.carousel')
         </div>
-        <div class="panel-body">
-            <div class="list-group">
-                @foreach($articles as $article)
-                <a class="list-group-item" href="/article/{{ $article->id }}">
-                    {{ $article->title }}
-                </a>
-                @endforeach
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        最新{{ $category->name }}文章
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        @foreach($articles as $article)
+                        <a class="list-group-item" href="/article/{{ $article->id }}">
+                            {{ $article->title }}
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
+
+    <div class="row">
+        @foreach($data as $cate_name => $articles)
+        @if(!$articles->isEmpty())
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        {{ $cate_name }}文章
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        @foreach($articles as $article)
+                        <a class="list-group-item" href="/article/{{ $article->id }}">
+                            {{ $article->title }}
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+        @endforeach
     </div>
 </div>
 @endsection
