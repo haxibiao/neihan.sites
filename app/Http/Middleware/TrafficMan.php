@@ -35,31 +35,33 @@ class TrafficMan
             $traffic->browser  = $agent->browser();
             $traffic->robot    = $agent->robot();
 
-            $traffic->path = $request->path();
+            $traffic->path    = $request->path();
             $traffic->referer = $request->server('HTTP_REFERER');
-            if($traffic->referer) {
+            if ($traffic->referer) {
                 $traffic->referer_domain = parse_url($traffic->referer)['host'];
             }
 
             $traffic->date = Carbon::now()->format('Y-m-d');
 
-            $traffic->year = Carbon::now()->year;
+            $traffic->year  = Carbon::now()->year;
             $traffic->month = Carbon::now()->month;
-            $traffic->day = Carbon::now()->day;
+            $traffic->day   = Carbon::now()->day;
 
-            $traffic->dayOfWeek = Carbon::now()->dayOfWeek;
-            $traffic->dayOfYear = Carbon::now()->dayOfYear;
+            $traffic->dayOfWeek   = Carbon::now()->dayOfWeek;
+            $traffic->dayOfYear   = Carbon::now()->dayOfYear;
             $traffic->daysInMonth = Carbon::now()->daysInMonth;
             $traffic->weekOfMonth = Carbon::now()->weekOfMonth;
-            $traffic->weekOfYear = Carbon::now()->weekOfYear;
+            $traffic->weekOfYear  = Carbon::now()->weekOfYear;
 
-            if(starts_with($traffic->path, 'article/')){
+            if (starts_with($traffic->path, 'article/')) {
                 $article_id = str_replace('article/', '', $traffic->path);
-                $traffic->article_id = $article_id;
-                $article = \App\Article::with('category')->find($article_id);
-                if($article) {
-                    if($article->category) {
-                        $traffic->category = $article->category->name;
+                if (is_numeric($article_id)) {
+                    $traffic->article_id = $article_id;
+                    $article             = \App\Article::with('category')->find($article_id);
+                    if ($article) {
+                        if ($article->category) {
+                            $traffic->category = $article->category->name;
+                        }
                     }
                 }
             }
