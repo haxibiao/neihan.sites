@@ -4,21 +4,21 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class RefreshTraffic extends Command
+class FixData extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'refresh:traffic';
+    protected $signature = 'fix:data {--traffic} {--articles}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'fix existing traffic date string, day of year etc ....';
+    protected $description = '--traffic: fix existing traffic date string, day of year etc ....';
 
     /**
      * Create a new command instance.
@@ -37,6 +37,25 @@ class RefreshTraffic extends Command
      */
     public function handle()
     {
+        if($this->option('traffic'))
+            $this->fix_traffic();
+        if($this->option('articles'))
+            $this->fix_articles();
+    }
+
+    function fix_articles() {
+        $articles = \App\Article::all();
+        foreach($articles as $article) {
+            $category = \App\Category::find($article->category_id);
+            if(!$category) {
+                $article->category_id = 1;
+                $article->save();
+                $this->info('fix category: '. $article->title);
+            }
+        }
+    }
+
+    function fix_traffic() {
         $traffics = \App\Traffic::all();
         foreach($traffics as $traffic) {
             $created_at = $traffic->created_at;

@@ -141,7 +141,12 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         if ($category) {
-            $category->delete();
+            $count = \App\Article::where('category_id', $category->id)->count();
+            if ($count == 0) {
+                $category->delete();
+            } else {
+                return '该分类下还有文章，不能删除';
+            }
         }
         return redirect()->back();
     }
