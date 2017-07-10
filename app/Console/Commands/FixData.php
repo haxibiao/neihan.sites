@@ -48,7 +48,7 @@ class FixData extends Command
         foreach($articles as $article) {
             $category = \App\Category::find($article->category_id);
             if(!$category) {
-                $article->category_id = 1;
+                $article->category_id = \App\Category::first()->id;
                 $article->save();
                 $this->info('fix category: '. $article->title);
             }
