@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \App\Console\Commands\EnvRefresh::class,
         \App\Console\Commands\GetSql::class,
+        \App\Console\Commands\RefreshTraffic::class,
     ];
 
     /**

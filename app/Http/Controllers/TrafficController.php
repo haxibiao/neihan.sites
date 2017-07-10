@@ -13,28 +13,34 @@ class TrafficController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($days_ago = 0)
     {
+        $date = \Carbon\Carbon::now()->toDateString();
+        if($days_ago) {
+            $date = \Carbon\Carbon::now()->subDay($days_ago)->toDateString();
+        }
+        $query = Traffic::where('date', $date);
         $counts = [];
-        $all    = Traffic::count();
+        $all    = $query->count();
         if ($all == 0) {
             $all = 1;
         }
 
         $counts['总计']    = $all;
-        $counts['桌面']    = Traffic::where('is_desktop', 1)->count();
-        $counts['移动端'] = Traffic::where('is_mobile', 1)->count();
-        $counts['手机']    = Traffic::where('is_phone', 1)->count();
-        $counts['平板']    = Traffic::where('is_tablet', 1)->count();
-        $counts['微信']    = Traffic::where('is_wechat', 1)->count();
-        $counts['安卓']    = Traffic::where('is_android_os', 1)->count();
-        $counts['爬虫']    = Traffic::where('is_robot', 1)->count();
+        $counts['桌面']    = $query->where('is_desktop', 1)->count();
+        $counts['移动端'] = $query->where('is_mobile', 1)->count();
+        $counts['手机']    = $query->where('is_phone', 1)->count();
+        $counts['平板']    = $query->where('is_tablet', 1)->count();
+        $counts['微信']    = $query->where('is_wechat', 1)->count();
+        $counts['安卓']    = $query->where('is_android_os', 1)->count();
+        $counts['爬虫']    = $query->where('is_robot', 1)->count();
 
-        $data['设备']    = DB::table('traffic')->select('device', DB::raw('count(*) as count'))->groupby('device')->pluck('count', 'device');
-        $data['系统']    = DB::table('traffic')->select('platform', DB::raw('count(*) as count'))->groupby('platform')->pluck('count', 'platform');
-        $data['浏览器'] = DB::table('traffic')->select('browser', DB::raw('count(*) as count'))->groupby('browser')->pluck('count', 'browser');
-        $data['爬虫']    = DB::table('traffic')->select('robot', DB::raw('count(*) as count'))->groupby('robot')->pluck('count', 'robot');
-        $data['来源']    = DB::table('traffic')->select('referer_domain', DB::raw('count(*) as count'))->groupby('referer_domain')->pluck('count', 'referer_domain');
+        $query = DB::table('traffic')->where('date', $date);
+        $data['设备']    = $query->select('device', DB::raw('count(*) as count'))->groupby('device')->pluck('count', 'device');
+        $data['系统']    = $query->select('platform', DB::raw('count(*) as count'))->groupby('platform')->pluck('count', 'platform');
+        $data['浏览器'] = $query->select('browser', DB::raw('count(*) as count'))->groupby('browser')->pluck('count', 'browser');
+        $data['爬虫']    = $query->select('robot', DB::raw('count(*) as count'))->groupby('robot')->pluck('count', 'robot');
+        $data['来源']    = $query->select('referer_domain', DB::raw('count(*) as count'))->groupby('referer_domain')->pluck('count', 'referer_domain');
         
         return view('traffic.index')
             ->withCounts($counts)

@@ -27,7 +27,9 @@ Route::get('/traffic/device', 'TrafficController@device');
 Route::get('/traffic/platform', 'TrafficController@platform');
 Route::get('/traffic/browser', 'TrafficController@browser');
 Route::get('/traffic/referer', 'TrafficController@referer');
-Route::resource('/traffic', 'TrafficController');
+
+Route::get('/traffic/days-{days_ago}', 'TrafficController@index');
+Route::resource('/traffic/', 'TrafficController');
 
 Route::get('/tag/{name}', 'TagController@tagname');
 Route::resource('/tag', 'TagController');

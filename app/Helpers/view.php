@@ -9,13 +9,16 @@ function is_in_app()
     return Cookie::get('is_in_app', false) || Request::get('in_app');
 }
 
-function get_active_css($path)
+function get_active_css($path, $full_match = 0)
 {
     $active = '';
     if (Request::path() == '/' && $path == '/') {
         $active = 'active';
     } else if (starts_with(Request::path(), $path)) {
         $active = 'active';
+    }
+    if ($full_match) {
+        $active = Request::path() == $path ? 'active' : '';
     }
     return $active;
 }

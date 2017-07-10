@@ -2,6 +2,21 @@
 
 @section('content')
 	<div class="container">
+
+		<div class="col-md-12 bottom10">
+			<ul class="nav nav-tabs">
+			  <li role="presentation" class="{{ get_active_css('traffic', 1) }}"><a href="/traffic">今日</a></li>
+			  <li role="presentation" class="{{ get_active_css('traffic/days-1') }}"><a href="/traffic/days-1">昨日</a></li>
+			  <li role="presentation" class="{{ get_active_css('traffic/days-2') }}"><a href="/traffic/days-2">2天前</a></li>
+			  <li role="presentation" class="{{ get_active_css('traffic/days-3') }}"><a href="/traffic/days-3">3天前</a></li>
+			  <li role="presentation" class="{{ get_active_css('traffic/days-4') }}"><a href="/traffic/days-4">4天前</a></li>
+			  <li role="presentation" class="{{ get_active_css('traffic/days-5') }}"><a href="/traffic/days-5">5天前</a></li>
+			  <li role="presentation" class="{{ get_active_css('traffic/days-6') }}"><a href="/traffic/days-6">6天前</a></li>
+			  <li role="presentation" class="{{ get_active_css('traffic/days-7') }}"><a href="/traffic/days-7">7天前</a></li>
+			</ul>
+		</div>
+
+	
 		<div class="col-md-6">
 			<div class="panel panel-default">
 				<div class="panel-heading">

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use \Carbon\Carbon;
 
 class TrafficMan
 {
@@ -39,6 +40,18 @@ class TrafficMan
             if($traffic->referer) {
                 $traffic->referer_domain = parse_url($traffic->referer)['host'];
             }
+
+            $traffic->date = Carbon::now()->format('Y-m-d');
+
+            $traffic->year = Carbon::now()->year;
+            $traffic->month = Carbon::now()->month;
+            $traffic->day = Carbon::now()->day;
+
+            $traffic->dayOfWeek = Carbon::now()->dayOfWeek;
+            $traffic->dayOfYear = Carbon::now()->dayOfYear;
+            $traffic->daysInMonth = Carbon::now()->daysInMonth;
+            $traffic->weekOfMonth = Carbon::now()->weekOfMonth;
+            $traffic->weekOfYear = Carbon::now()->weekOfYear;
 
             $traffic->save();
         }
