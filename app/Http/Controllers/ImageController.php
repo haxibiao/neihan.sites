@@ -92,8 +92,17 @@ class ImageController extends Controller
                 $img->save($full_path . '.top.jpg');
                 $image->path_top = $path . '.top.jpg';
             }
-            
+
             //save small
+            if ($img->height() > $img->width()) {
+                $img->resize(320, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+            } else {
+                $img->resize(null, 240, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+            }
             $img->crop(320, 240);
             $image->path_small = $path . '.small.jpg';
             $img->save($full_path . '.small.jpg');

@@ -38,19 +38,36 @@ class ImageResize extends Command
     public function handle()
     {
         $images = \App\Image::all();
-        foreach($images as $image) {
+        foreach ($images as $image) {
             $full_path = public_path($image->path);
-            if(!file_exists($full_path)){
+            if (!file_exists($full_path)) {
                 continue;
             }
             $img = \ImageMaker::make($full_path);
-            if($img->filesize() > 200*1024) {
+
+            //fix big
+            if ($img->filesize() > 200 * 1024) {
                 $width = $img->width() > 900 ? 900 : $img->width();
                 $img->crop($width, 500);
                 $img->save($full_path);
 
                 $this->info($image->path);
             }
+
+            //resize small
+            $small_path = $full_path . '.small.jpg';
+            if ($img->height() > $img->width()) {
+                $img->resize(320, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+            } else {
+                $img->resize(null, 240, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+            }
+            $img->crop(320, 240);
+            $img->save($small_path);
+            $this->info($small_path);
         }
     }
 }

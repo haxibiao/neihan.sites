@@ -32,7 +32,7 @@
                     @foreach($hot_articles as $article)
                         <div class="col-xs-6 text-center">
                             <a href="/article/{{ $article->id }}" class="thumbnail">
-                                <img src="{{ $article->image_url }}" alt="" class="img img-responsive">
+                                <img src="{{ get_small_article_image($article->image_url) }}" alt="" class="img img-responsive">
                                 <p class="strip_title">{{ $article->title }}</p>
                             </a>
                         </div>
