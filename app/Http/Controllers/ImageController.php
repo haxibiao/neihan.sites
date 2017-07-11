@@ -69,25 +69,34 @@ class ImageController extends Controller
             $filename   = $image_index . '.jpg';
             $path       = '/img/' . $filename;
             $local_path = public_path('img/');
-            $file->move($local_path, $filename);
+
+            $full_path      = $local_path . $filename;
+            $img            = \ImageMaker::make($file->path());
+
+            $big_width = $img->width() > 900 ? 900 : $img->width();
+            $img->resize($big_width, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            //save big
+            $img->save($full_path);
 
             $image          = new Image();
             $image->user_id = Auth::check() ? Auth::user()->id : 0;
             $image->path    = $path;
-            $full_path      = $local_path . $filename;
-            $img            = \ImageMaker::make($full_path);
             $image->width   = $img->width();
             $image->height  = $img->height();
+
+            //save top
             if ($img->width() >= 750) {
                 $img->crop(750, 400);
                 $img->save($full_path . '.top.jpg');
                 $image->path_top = $path . '.top.jpg';
             }
-            $img->resize(320, null, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-            $img->save($full_path . '.small.jpg');
+            
+            //save small
+            $img->crop(320, 240);
             $image->path_small = $path . '.small.jpg';
+            $img->save($full_path . '.small.jpg');
             $image->save();
             $http    = $request->secure() ? 'https://' : 'http://';
             $baseUri = $http . $request->server('HTTP_HOST');

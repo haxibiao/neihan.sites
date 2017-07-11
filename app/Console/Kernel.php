@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\EnvRefresh::class,
         \App\Console\Commands\GetSql::class,
         \App\Console\Commands\FixData::class,
+        \App\Console\Commands\ImageResize::class,
     ];
 
     /**
