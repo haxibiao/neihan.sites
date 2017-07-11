@@ -63,7 +63,7 @@
                                     <h3 class="panel-title">流量:</h3>
                                 </div>
                                 <div class="panel-body"> 
-                                    <bar title='流量' chart-data="{!! json_encode($data['traffic']) !!}"/>
+                                    <bar title='流量' chart-data='{{ json_encode($data['traffic']) }}' chart-labels='{!! json_encode($labels['traffic']) !!}'/>
                                 </div>
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                                     <h3 class="panel-title">文章:</h3>
                                 </div>
                                 <div class="panel-body"> 
-                                    <bar title='文章' chart-data="{!! json_encode($data['article']) !!}"/>
+                                    <line-chart title='文章' chart-data='{{ json_encode($data['article']) }}' chart-labels='{{ json_encode($labels['article']) }}'/>
                                 </div>
                             </div>
                         </div>

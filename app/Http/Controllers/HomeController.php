@@ -31,16 +31,24 @@ class HomeController extends Controller
             ->where('created_at', '>', \Carbon\Carbon::now()->subDay(7))
             ->where('user_id', Auth::user()->id)
             ->groupBy('date')
-            ->pluck('count');
+            ->pluck('count', 'date')
+            ->toArray();
+        foreach ($traffic_count as $key => $value) {
+            $labels['traffic'][] = str_replace(\Carbon\Carbon::now()->year . '-', '', $key);
+            $data['traffic'][]   = $value;
+        }
         $articles_count = DB::table('articles')->select(DB::raw('count(*) as count'), 'date')
-            ->where('created_at', '>', \Carbon\Carbon::now()->subDay(7))
+            ->where('created_at', '>', \Carbon\Carbon::now()->subDay(9))
             ->where('user_id', Auth::user()->id)
             ->groupBy('date')
-            ->pluck('count');
-        
-        $data['traffic'] = $traffic_count;
-        $data['article'] = $articles_count;
-        return view('home')->withUsers($users)->withUser($user)->withData($data);
+            ->pluck('count', 'date')
+            ->toArray();
+        foreach ($articles_count as $key => $value) {
+            $labels['article'][] = str_replace(\Carbon\Carbon::now()->year . '-', '', $key);
+            $data['article'][]   = $value;
+        }
+
+        return view('home')->withUsers($users)->withUser($user)->withData($data)->withLabels($labels);
     }
 
     public function profile()

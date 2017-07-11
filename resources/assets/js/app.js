@@ -17,6 +17,7 @@ window.Vue = require('vue');
 
 Vue.component('example', require('./components/Example.vue'));
 Vue.component('bar', require('./components/Bar.vue'));
+Vue.component('line-chart', require('./components/Line.vue'));
 
 const app = new Vue({
     el: '#app'
