@@ -83,9 +83,14 @@
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
-                          <li>
+                            <li>
                                 <a href="/home">
                                     个人面板
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/profile">
+                                    修改资料
                                 </a>
                             </li>
                             <li>

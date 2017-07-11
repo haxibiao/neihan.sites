@@ -42,6 +42,7 @@ Route::resource('/tag', 'TagController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/profile', 'HomeController@profile')->name('profile');
 Route::resource('/image', 'ImageController');
 
 Route::get('/admin', 'AdminController@index');

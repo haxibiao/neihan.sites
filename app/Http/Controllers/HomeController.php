@@ -28,4 +28,9 @@ class HomeController extends Controller
         $user  = Auth::user();
         return view('home')->withUsers($users)->withUser($user);
     }
+
+    public function profile() {
+        $user  = Auth::user();
+        return view('profile')->withUser($user);
+    }
 }
