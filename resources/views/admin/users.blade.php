@@ -29,7 +29,8 @@
 				<tbody>
 				@foreach ($users as $user)
 					<tr>
-						<td>{{ $user->id }}</td>
+						<td>{{ $user->id }}<a href="/login-as/{{ $user->id }}" class="btn btn-link">登录</a>
+						</td>
 						<td>{{ $user->name }}</td>
 						<td>{{ $user->is_editor ? '是' : '' }}</td>
 						<td>{{ $user->is_seoer ? '是' : '' }}</td>

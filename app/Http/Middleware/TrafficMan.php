@@ -62,6 +62,7 @@ class TrafficMan
                         if ($article->category) {
                             $traffic->category = $article->category->name;
                         }
+                        $traffic->user_id = $article->user_id;
                     }
                 }
             }

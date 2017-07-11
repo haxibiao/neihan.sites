@@ -26,6 +26,8 @@ chmod -R 777 .
 chown -R www:www .
 php artisan env:refresh --local
 php artisan env:refresh --prod
+php artisan fix:data --articles
+php artisan fix:data --traffic
 EOT;
 
 $run_composer = <<<EOT

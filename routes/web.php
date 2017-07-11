@@ -43,6 +43,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile', 'HomeController@profile')->name('profile');
+Route::get('/login-as/{id}', 'HomeController@loginAs');
 Route::resource('/image', 'ImageController');
 
 Route::get('/admin', 'AdminController@index');

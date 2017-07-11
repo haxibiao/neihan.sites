@@ -37,39 +37,66 @@ class FixData extends Command
      */
     public function handle()
     {
-        if($this->option('traffic'))
+        if ($this->option('traffic')) {
             $this->fix_traffic();
-        if($this->option('articles'))
+        }
+
+        if ($this->option('articles')) {
             $this->fix_articles();
+        }
+
     }
 
-    function fix_articles() {
+    public function fix_articles()
+    {
         $articles = \App\Article::all();
-        foreach($articles as $article) {
+        foreach ($articles as $article) {
             $category = \App\Category::find($article->category_id);
-            if(!$category) {
+            if (!$category) {
                 $article->category_id = \App\Category::first()->id;
                 $article->save();
-                $this->info('fix category: '. $article->title);
+                $this->info('fix category: ' . $article->title);
             }
+
+            //fix date
+            $article->date = $article->created_at->toDateString();
+            $article->save();
         }
     }
 
-    function fix_traffic() {
+    public function fix_traffic()
+    {
         $traffics = \App\Traffic::all();
-        foreach($traffics as $traffic) {
+        foreach ($traffics as $traffic) {
             $created_at = $traffic->created_at;
 
-            $traffic->date = $created_at->format('Y-m-d');
-            $traffic->year = $created_at->year;
-            $traffic->month = $created_at->month;
-            $traffic->day = $created_at->day;
+            if (empty($traffic->date)) {
+                $traffic->date  = $created_at->format('Y-m-d');
+                $traffic->year  = $created_at->year;
+                $traffic->month = $created_at->month;
+                $traffic->day   = $created_at->day;
 
-            $traffic->dayOfWeek = $created_at->dayOfWeek;
-            $traffic->dayOfYear = $created_at->dayOfYear;
-            $traffic->daysInMonth = $created_at->daysInMonth;
-            $traffic->weekOfMonth = $created_at->weekOfMonth;
-            $traffic->weekOfYear = $created_at->weekOfYear;
+                $traffic->dayOfWeek   = $created_at->dayOfWeek;
+                $traffic->dayOfYear   = $created_at->dayOfYear;
+                $traffic->daysInMonth = $created_at->daysInMonth;
+                $traffic->weekOfMonth = $created_at->weekOfMonth;
+                $traffic->weekOfYear  = $created_at->weekOfYear;
+            }
+
+            //fix article_id, category, user_id
+            if (starts_with($traffic->path, 'article/')) {
+                $article_id = str_replace('article/', '', $traffic->path);
+                if (is_numeric($article_id)) {
+                    $traffic->article_id = $article_id;
+                    $article             = \App\Article::with('category')->find($article_id);
+                    if ($article) {
+                        if ($article->category) {
+                            $traffic->category = $article->category->name;
+                        }
+                        $traffic->user_id = $article->user_id;
+                    }
+                }
+            }
 
             $traffic->save();
 

@@ -60,6 +60,7 @@ class ArticleController extends Controller
             $article->image_url = $request->get('image_url');
         }
         $article->has_pic = !empty($article->image_url);
+        $article->date = \Carbon\Carbon::now()->toDateString();
         $article->save();
 
         //image_top
