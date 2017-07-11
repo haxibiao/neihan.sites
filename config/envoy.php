@@ -26,8 +26,6 @@ chmod -R 777 .
 chown -R www:www .
 php artisan env:refresh --local
 php artisan env:refresh --prod
-php artisan fix:data --articles
-php artisan fix:data --traffic
 EOT;
 
 $run_composer = <<<EOT
@@ -37,6 +35,10 @@ EOT;
 
 $run_migrate = <<<EOT
 php artisan migrate --seed --force
+
+
+php artisan fix:data --articles
+php artisan fix:data --traffic
 EOT;
 
 $cache_clear = <<<EOT
