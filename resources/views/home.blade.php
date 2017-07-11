@@ -54,6 +54,28 @@
                     </div>
                     @endif
 
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">流量:(过几天更新)</h3>
+                            </div>
+                            <div class="panel-body"> 
+                                <bar title='流量' chart-data="[2,3,4,5,6,7,8]"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">文章:(过几天更新)</h3>
+                            </div>
+                            <div class="panel-body"> 
+                                <bar title='文章' chart-data="[2,3,4,5,6,7,8]"/>
+                            </div>
+                        </div>
+                    </div>
+
                     
                 </div>
             </div>

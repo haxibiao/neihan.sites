@@ -41,7 +41,7 @@ function get_qq_pic($user)
             $qq = $matches[1];
         }
     }
-    $pic_path = 'http://q.qlogo.cn/headimg_dl?bs=qq&dst_uin=' . $qq . '&src_uin=www.feifeiboke.com&fid=blog&spec=100';
+    $pic_path = 'https://q.qlogo.cn/headimg_dl?bs=qq&dst_uin=' . $qq . '&src_uin=www.feifeiboke.com&fid=blog&spec=100';
 
     return $pic_path;
 }
@@ -54,7 +54,7 @@ function get_qzone_pic($user)
         $pattern = '/(\d+)\@qq\.com/';
         if (preg_match($pattern, strtolower($user->email), $matches)) {
             $qq       = $matches[1];
-            $pic_path = 'http://qlogo2.store.qq.com/qzonelogo/' . $qq . '/1/1249809118';
+            $pic_path = 'https://qlogo2.store.qq.com/qzonelogo/' . $qq . '/1/1249809118';
         }
     }
     return $pic_path;

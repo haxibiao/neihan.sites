@@ -16,13 +16,15 @@
     "jquery": "^3.1.1",
     "laravel-mix": "^1.0",
     "lodash": "^4.17.4",
-    "vue": "^2.1.10",
-    "medium-editor-insert-plugin": "^2.3.2"
+    "medium-editor-insert-plugin": "^2.3.2",
+    "vue": "^2.1.10"
   },
   "dependencies": {
+    "chart.js": "^2.6.0",
     "codemirror": "^5.27.2",
     "font-awesome": "^4.7.0",
     "jquery-ui": "^1.12.1",
-    "summernote": "^0.8.4"
+    "summernote": "^0.8.4",
+    "vue-chartjs": "^2.7.1"
   }
 }
