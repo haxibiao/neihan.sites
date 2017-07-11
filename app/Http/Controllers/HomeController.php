@@ -27,6 +27,8 @@ class HomeController extends Controller
     {
         $users         = User::orderBy('id', 'desc')->take(10)->get();
         $user          = Auth::user();
+        $data['traffic'] = [];
+        $labels['traffic'] = [];
         $traffic_count = DB::table('traffic')->select(DB::raw('count(*) as count'), 'date')
             ->where('created_at', '>', \Carbon\Carbon::now()->subDay(7))
             ->where('user_id', Auth::user()->id)
@@ -37,6 +39,8 @@ class HomeController extends Controller
             $labels['traffic'][] = str_replace(\Carbon\Carbon::now()->year . '-', '', $key);
             $data['traffic'][]   = $value;
         }
+        $data['article'] = [];
+        $labels['article'] = [];
         $articles_count = DB::table('articles')->select(DB::raw('count(*) as count'), 'date')
             ->where('created_at', '>', \Carbon\Carbon::now()->subDay(9))
             ->where('user_id', Auth::user()->id)
