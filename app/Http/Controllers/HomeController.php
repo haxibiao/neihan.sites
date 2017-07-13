@@ -25,7 +25,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $users         = User::orderBy('id', 'desc')->take(10)->get();
         $user          = Auth::user();
         $data['traffic'] = [];
         $labels['traffic'] = [];
@@ -52,7 +51,34 @@ class HomeController extends Controller
             $data['article'][]   = $value;
         }
 
-        return view('home')->withUsers($users)->withUser($user)->withData($data)->withLabels($labels);
+        //compare all editors in one site ..
+        $data['traffic_editors'] = [];
+        $lables['traffic_editors'] = [];
+        $editors = User::where('is_editor',1)->pluck('name','id')->toArray();
+        foreach($editors as $id => $editor) {
+            $editors_ids[] = $id;
+        }
+        $traffic_editors = DB::table('traffic')->select(DB::raw('count(*) as count, user_id'))
+            ->where('date', \Carbon\Carbon::now()->subDay(1)->toDateString())
+            ->whereIn('user_id', $editors_ids)
+            ->groupBy('user_id')
+            ->pluck('count','user_id');
+        foreach($traffic_editors as $user_id => $count) {
+            $labels['traffic_editors'][] = $editors[$user_id];            
+            $data['traffic_editors'][] = $count;
+        }
+        $traffic_editors = DB::table('articles')->select(DB::raw('count(*) as count, user_id'))
+            ->where('date', \Carbon\Carbon::now()->subDay(1)->toDateString())
+            ->whereIn('user_id', $editors_ids)
+            ->groupBy('user_id')
+            ->pluck('count','user_id');
+        foreach($traffic_editors as $user_id => $count) {
+            $labels['article_editors'][] = $editors[$user_id];            
+            $data['article_editors'][] = $count;
+        }
+        // dd($data);
+
+        return view('home')->withUser($user)->withData($data)->withLabels($labels);
     }
 
     public function profile()
