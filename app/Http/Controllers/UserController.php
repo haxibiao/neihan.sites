@@ -53,7 +53,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user     = User::findOrFail($id);
-        $query = Article::where('user_id', $user->id);
+        $query = Article::where('user_id', $user->id)->orderBy('id','desc');
         $articles = $query->paginate(10);
         $data['total'] = $query->count();
         return view('user.show')->withUser($user)
