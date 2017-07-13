@@ -53,8 +53,12 @@ class UserController extends Controller
     public function show($id)
     {
         $user     = User::findOrFail($id);
-        $articles = Article::where('user_id', $user->id)->paginate(10);
-        return view('user.show')->withUser($user)->withArticles($articles);
+        $query = Article::where('user_id', $user->id);
+        $articles = $query->paginate(10);
+        $data['total'] = $query->count();
+        return view('user.show')->withUser($user)
+            ->withData($data)
+            ->withArticles($articles);
     }
 
     /**

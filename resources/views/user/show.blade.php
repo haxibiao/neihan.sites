@@ -25,7 +25,7 @@
 
     <div class="panel panel-default">
     	<div class="panel-heading">
-    		<h3 class="panel-title">文章</h3>
+    		<h3 class="panel-title">文章({{ $data['total'] }})</h3>
     	</div>
     	<div class="panel-body">
     		@foreach($articles as $article)
@@ -41,6 +41,9 @@
 					</div>
 				</div>
     		@endforeach
+            <p>
+                {!! $articles->render() !!}
+            </p>
     	</div>
     </div>
 </div>
