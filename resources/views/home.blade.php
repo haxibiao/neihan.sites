@@ -11,7 +11,7 @@
 
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-lg-4">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">流量:</h3>
@@ -23,7 +23,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-lg-4">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">文章:</h3>
@@ -34,7 +34,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-lg-4">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">昨日各编辑发布的文章数:</h3>
@@ -45,7 +45,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-lg-4">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">昨日各编辑在本站的流量:</h3>
@@ -62,7 +62,26 @@
             </div>
         </div>
         <div class="col-md-4">
-
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        {{ $user->name }}
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <img alt="{{ $user->name }}" class="img img-circle" src="{{ get_avatar($user) }}">
+                        <h4>
+                            <a href="/user/{{ $user->id }}">{{ $user->name }}</a>
+                        </h4>
+                        <p>
+                            {{ $user->email }}
+                        </p>
+                        <p>
+                            {{ $user->introduction }}
+                        </p>
+                    </img>
+                </div>
+            </div>
             <div class="row">
                 @if(Auth::user()->is_editor)
                 <div class="col-md-12">
