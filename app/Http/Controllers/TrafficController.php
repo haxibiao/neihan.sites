@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Traffic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class TrafficController extends Controller
 {
@@ -15,9 +16,15 @@ class TrafficController extends Controller
      */
     public function index($days_ago = 0)
     {
-        $date = \Carbon\Carbon::now()->toDateString();
+        $traffic_by_date = DB::table('traffic')->select(DB::raw('count(*) as count, date'))
+            ->where('created_at','>=', Carbon::now()->subDay(7))            
+            ->groupBy('date')
+            ->pluck('count','date')
+            ->toArray();
+
+        $date = Carbon::now()->toDateString();
         if ($days_ago) {
-            $date = \Carbon\Carbon::now()->subDay($days_ago)->toDateString();
+            $date = Carbon::now()->subDay($days_ago)->toDateString();
         }
         $query  = Traffic::where('date', $date);
         $counts = [];
@@ -69,6 +76,7 @@ class TrafficController extends Controller
         return view('traffic.index')
             ->withCounts($counts)
             ->withData($data)
+            ->withTrafficByDate($traffic_by_date)
             ->withAll($all);
     }
 
