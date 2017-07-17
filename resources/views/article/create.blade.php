@@ -39,30 +39,34 @@
         </div>
         
         <div class="row">
-        <div class="col-md-6">
-        <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
-            {!! Form::label('category_id', '分类') !!}
-            {!! Form::select('category_id',$categories,null, ['id' => 'category_id', 'class' => 'form-control', 'required' => 'required']) !!}
-            <small class="text-danger">{{ $errors->first('category_id') }}</small>
-        </div>
+            <div class="col-md-6">
+            <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
+                {!! Form::label('category_id', '分类') !!}
+                {!! Form::select('category_id',$categories,null, ['id' => 'category_id', 'class' => 'form-control', 'required' => 'required']) !!}
+                <small class="text-danger">{{ $errors->first('category_id') }}</small>
+            </div>
         </div>
 
         <div class="col-md-6">
-        <div class="form-group{{ $errors->has('author') ? ' has-error' : '' }}">
-            {!! Form::label('author', '作者') !!}
-            {!! Form::text('author', Auth::user()->name, ['class' => 'form-control', 'readonly' => 'true']) !!}
-            <small class="text-danger">{{ $errors->first('author') }}</small>
+            <div class="form-group{{ $errors->has('author') ? ' has-error' : '' }}">
+                {!! Form::label('author', '作者') !!}
+                {!! Form::text('author', Auth::user()->name, ['class' => 'form-control', 'readonly' => 'true']) !!}
+                <small class="text-danger">{{ $errors->first('author') }}</small>
 
-            <input type="hidden" name="author_id" value="{{ Auth::user()->id }}">
-            <input type="hidden" name="user_name" value="{{ Auth::user()->name }}">
-            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-        </div>
-        </div>
+                <input type="hidden" name="author_id" value="{{ Auth::user()->id }}">
+                <input type="hidden" name="user_name" value="{{ Auth::user()->name }}">
+                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+            </div>
+            </div>
         </div>
 
         <div class="form-group{{ $errors->has('keywords') ? ' has-error' : '' }}">
-            {!! Form::label('keywords', '关键词') !!}
-            {!! Form::text('keywords',null, ['class' => 'form-control', 'required' => 'required']) !!}
+            {!! Form::label('keywords', '关键词(用英文,隔开 或者按Tab键自动隔开关键词)') !!}
+            <div class="row">
+            <div class="col-md-12">
+            {!! Form::text('keywords',null, ['class' => 'form-control', 'required' => 'required', 'data-role' => 'tagsinput']) !!}
+            </div>
+            </div>
             <small class="text-danger">{{ $errors->first('keywords') }}</small>
         </div>
 
@@ -114,8 +118,19 @@
 @endsection
 
 @push('scripts')
+
+<link rel="stylesheet" href="/css/jquery.tagsinput.css">
+<script src="/js/jquery.tagsinput.js"></script>
+
+
 <script type="text/javascript">
+
   $(function() {
+
+    $('#keywords').tagsInput({
+        width:'auto',
+    });
+
     var editor = $('.editable').summernote({
         lang: 'zh-CN', // default: 'en-US',
         height: 500,
@@ -139,4 +154,13 @@
   });
 
 </script>
+
+<style>
+    .bootstrap-tagsinput {
+        width: 100%;
+    }
+    #keywords {
+        width: 100%;
+    }
+</style>
 @endpush

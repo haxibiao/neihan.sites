@@ -20,6 +20,7 @@
     "vue": "^2.1.10"
   },
   "dependencies": {
+    "bootstrap-tagsinput": "^0.7.1",
     "chart.js": "^2.6.0",
     "codemirror": "^5.27.2",
     "font-awesome": "^4.7.0",

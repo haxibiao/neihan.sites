@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Article;
 use App\Traffic;
+use App\Category;
 use Carbon\Carbon;
 
 /*
@@ -19,6 +20,11 @@ use Carbon\Carbon;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('/keywords', function(){
+	$categories = Category::orderBy('id','desc')->pluck('name');
+	return $categories;
 });
 
 //获取用户详细资料

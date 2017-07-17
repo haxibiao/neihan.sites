@@ -54,8 +54,8 @@
         </div>
 
         <div class="form-group{{ $errors->has('keywords') ? ' has-error' : '' }}">
-            {!! Form::label('keywords', '关键词') !!}
-            {!! Form::text('keywords',$article->keywords, ['class' => 'form-control', 'required' => 'required']) !!}
+            {!! Form::label('keywords', '关键词(用英文,隔开 或者按Tab键自动隔开关键词)') !!}
+            {!! Form::text('keywords', str_replace(' ',',',$article->keywords), ['class' => 'form-control', 'required' => 'required', 'data-role' => 'tagsinput']) !!}
             <small class="text-danger">{{ $errors->first('keywords') }}</small>
         </div>
 
@@ -106,8 +106,17 @@
 @endsection
 
 @push('scripts')
+
+<link rel="stylesheet" href="/css/jquery.tagsinput.css">
+<script src="/js/jquery.tagsinput.js"></script>
+
 <script type="text/javascript">
   $(function() {
+
+    $('#keywords').tagsInput({
+        width:'auto',
+    });
+
     var editor = $('.editable').summernote({
         lang: 'zh-CN', // default: 'en-US',
         height: 500,
