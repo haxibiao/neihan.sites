@@ -18,7 +18,11 @@
     <meta name="description" content=" @yield('description'), {{ config('app.name') }} ">
 
     <!-- Styles -->
-    <link href="{{ mix('css/all.css') }}" rel="stylesheet">
+    @if(Auth::check())
+        <link href="{{ mix('css/all.css') }}" rel="stylesheet">
+    @else
+        <link href="{{ mix('css/site.css') }}" rel="stylesheet">
+    @endif
 
 </head>
 <body>
@@ -32,7 +36,12 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ mix('js/all.js') }}"></script>
+    @if(Auth::check())
+        <script src="{{ mix('js/all.js') }}"></script>
+    @else
+        <script src="{{ mix('js/app.js') }}"></script>
+    @endif
+
 
     <script type="text/javascript">
         $.ajaxSetup({

@@ -1,13 +1,15 @@
 {
-    "/js/app.js": "/js/app.js?id=9784806c6b2d5878daae",
+    "/js/editor.js": "/js/editor.js?id=938db7e1dbcd1dc96b22",
+    "/js/app.js": "/js/app.js?id=6b322ae0c433250bca04",
     "/css/app.css": "/css/app.css?id=8b77a32655e2af70abdc",
     "/css/summernote.css": "/css/summernote.css?id=3219f672bf752240f2e3",
     "/css/font/summernote.eot": "/css/font/summernote.eot?id=f0b1b9d5146b4d5f73e8",
     "/css/font/summernote.ttf": "/css/font/summernote.ttf?id=2688600f09e5d3ef3b69",
     "/css/font/summernote.woff": "/css/font/summernote.woff?id=95cadf095aeba90fafce",
-    "/css/all.css": "/css/all.css?id=85cdaf28d99d277d6fa2",
+    "/css/site.css": "/css/site.css?id=8462031eb4eeea4cc6a1",
+    "/css/all.css": "/css/all.css?id=a94e161661f8fae47ac0",
     "/js/summernote.js": "/js/summernote.js?id=2370e699825eda04da1a",
-    "/js/all.js": "/js/all.js?id=5347366c621187b4cfb9",
+    "/js/all.js": "/js/all.js?id=cbcab06d3bedfc0db5a6",
     "/css/bootstrap-tagsinput.css": "/css/bootstrap-tagsinput.css?id=01a1887ade863ef0e094",
     "/css/bootstrap-tagsinput-typeahead.css": "/css/bootstrap-tagsinput-typeahead.css?id=b147cb4d343cccc30f1d",
     "/js/bootstrap-tagsinput.js": "/js/bootstrap-tagsinput.js?id=9d43ec6292d9d22ae134"
