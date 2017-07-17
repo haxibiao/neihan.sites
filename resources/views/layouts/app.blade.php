@@ -31,6 +31,8 @@
         
     </div>
 
+    @include('parts.to_up')
+
     <!-- Scripts -->
     <script src="{{ mix('js/all.js') }}"></script>
 
