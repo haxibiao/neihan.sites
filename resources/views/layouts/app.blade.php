@@ -44,5 +44,7 @@
 
     @stack('scripts')
     {!! get_seoer_footer() !!}
+
+    @include('parts.to_up')
 </body>
 </html>
