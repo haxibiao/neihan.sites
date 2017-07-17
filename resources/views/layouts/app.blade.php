@@ -31,8 +31,6 @@
         
     </div>
 
-    @include('parts.to_up')
-
     <!-- Scripts -->
     <script src="{{ mix('js/all.js') }}"></script>
 
@@ -46,5 +44,7 @@
 
     @stack('scripts')
     {!! get_seoer_footer() !!}
+
+    @include('parts.to_up')
 </body>
 </html>
