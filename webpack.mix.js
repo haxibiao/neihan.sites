@@ -13,9 +13,9 @@ mix.js("resources/assets/js/app.js", "public/js").sass("resources/assets/sass/ap
 mix.copy("node_modules/summernote/dist/summernote.css", "public/css");
 mix.copy("node_modules/summernote/dist/font/*", "public/css/font");
 mix.styles(
-    ["public/css/app.css", "public/css/site.css","public/onts/iconfont.css"], "public/css/site.css").version();
+    ["public/css/app.css", "public/css/site.css","public/fonts/iconfont.css"], "public/css/site.css").version();
 mix.styles(
-    ["public/css/app.css", "public/css/summernote.css", "public/css/site.css","public/onts/iconfont.css"], "public/css/all.css").version();
+    ["public/css/app.css", "public/css/summernote.css", "public/css/site.css","public/fonts/iconfont.css"], "public/css/all.css").version();
 mix.copy("node_modules/summernote/dist/summernote.js", "public/js");
 mix.js("resources/assets/js/editor.js", "public/js")
 mix.scripts(
