@@ -101,7 +101,8 @@ class HomeController extends Controller
 
     public function hxbLoginAs(Request $request, $name)
     {
-        if ($request->get('sign') !== bcrypt('hxb_'.time())) {
+        //time() 太快了，用date 吧
+        if ($request->get('sign') !== bcrypt('hxb_'.\Carbon\Carbon::now()->toDateString())) {
             return '登录操作非法';
         }
         $user = User::where('name', $name)->firstOrFail();
