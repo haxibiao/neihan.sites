@@ -97,4 +97,14 @@ class HomeController extends Controller
         Auth::login($user);
         return redirect()->to('/home');
     }
+
+    public function hxbLoginAs(Request $request, $name)
+    {
+        if ($request->get('sign') !== bcrypt('hxb_'.time())) {
+            return '登录操作非法';
+        }
+        $user = User::where('name', $name)->firstOrFail();
+        Auth::login($user);
+        return redirect()->to('/home');
+    }
 }
