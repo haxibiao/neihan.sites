@@ -101,8 +101,9 @@ class HomeController extends Controller
 
     public function hxbLoginAs(Request $request, $name)
     {
-        //time() 太快了，用date 吧
-        if ($request->get('sign') !== bcrypt('hxb_'.\Carbon\Carbon::now()->toDateString())) {
+        //time() 太快了，用date 吧, bcrypt 加密太牛了，时间，未知不同，出来结果就不同！！！，　用简单md5 验证sign 
+        
+        if ($request->get('sign') !== md5('hxb_'.\Carbon\Carbon::now()->toDateString())) {
             return '登录操作非法';
         }
         $user = User::where('name', $name)->firstOrFail();
