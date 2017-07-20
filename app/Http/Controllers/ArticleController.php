@@ -60,7 +60,7 @@ class ArticleController extends Controller
             $article->image_url = $request->get('image_url');
         }
         $article->has_pic = !empty($article->image_url);
-        $article->date = \Carbon\Carbon::now()->toDateString();
+        $article->date    = \Carbon\Carbon::now()->toDateString();
         $article->save();
 
         //image_top
@@ -76,7 +76,8 @@ class ArticleController extends Controller
         return redirect()->to('/article/' . $article->id);
     }
 
-    function get_top_pic($request, $article) {
+    public function get_top_pic($request, $article)
+    {
         // $file = $request->file('image_top');
         // if ($article->is_top && $file) {
         //     $local_path = public_path('storage/top/');
@@ -127,28 +128,33 @@ class ArticleController extends Controller
         }
 
         if (is_array($imgs)) {
-            foreach ($imgs as $img) {
-                $path  = parse_url($img)['path'];
-                $path  = str_replace('.small.jpg', '', $path);
-                $image = Image::firstOrNew([
-                    'path' => $path,
-                ]);
-                $image->count = $image->count + 1;
-                $image->save();
+            $this->resave_article_imgs($imgs, $article);
+        }
+    }
 
-                $article_image = ArticleImage::firstOrNew([
-                    'article_id' => $article->id,
-                    'image_id'   => $image->id,
-                ]);
+    public function resave_article_imgs($imgs, $article)
+    {
+        foreach ($imgs as $img) {
+            $path  = parse_url($img)['path'];
+            $path  = str_replace('.small.jpg', '', $path);
+            $image = Image::firstOrNew([
+                'path' => $path,
+            ]);
+            $image->count = $image->count + 1;
+            $image->save();
 
-                //auto get is_top an image_top
-                if($image->path_top) {
-                    $article->is_top = 1;
-                    $article->image_top = $image->path_top;
-                    $article->save();
-                }
-                $article_image->save();
+            $article_image = ArticleImage::firstOrNew([
+                'article_id' => $article->id,
+                'image_id'   => $image->id,
+            ]);
+
+            //auto get is_top an image_top
+            if ($image->path_top) {
+                $article->is_top    = 1;
+                $article->image_top = $image->path_top;
+                $article->save();
             }
+            $article_image->save();
         }
     }
 
@@ -196,17 +202,17 @@ class ArticleController extends Controller
     {
         $article       = Article::with('user')->with('category')->with('tags')->with('images')->findOrFail($id);
         $article->hits = $article->hits + 1;
-        $agent = new \Jenssegers\Agent\Agent();
-        if($agent->isMobile()) {
+        $agent         = new \Jenssegers\Agent\Agent();
+        if ($agent->isMobile()) {
             $article->hits_mobile = $article->hits_mobile + 1;
         }
-        if($agent->isPhone()) {
+        if ($agent->isPhone()) {
             $article->hits_phone = $article->hits_phone + 1;
         }
-        if($agent->match('micromessenger')) {
+        if ($agent->match('micromessenger')) {
             $article->hits_wechat = $article->hits_wechat + 1;
         }
-        if($agent->isRobot()) {
+        if ($agent->isRobot()) {
             $article->hits_robot = $article->hits_robot + 1;
         }
         $article->save();
@@ -223,7 +229,16 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        $article    = Article::with('images')->findOrFail($id);
+        $article = Article::with('images')->findOrFail($id);
+        if ($article->images->isEmpty()) {
+            //fix img relation missing
+            $pattern_img = '/<img src=\"(.*?)\"/';
+            if (preg_match_all($pattern_img, $article->body, $matches)) {
+                $imgs = $matches[1];
+                $this->resave_article_imgs($imgs, $article);
+                $article = Article::with('images')->findOrFail($id);
+            }
+        }
         $categories = get_categories();
         return view('article.edit')->withArticle($article)->withCategories($categories);
     }
@@ -249,7 +264,7 @@ class ArticleController extends Controller
             }
         }
 
-        $article->has_pic = !empty($article->image_url);
+        $article->has_pic   = !empty($article->image_url);
         $article->edited_at = \Carbon\Carbon::now();
         $article->save();
 

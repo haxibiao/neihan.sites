@@ -23,6 +23,16 @@ function get_active_css($path, $full_match = 0)
     return $active;
 }
 
+function get_img($path)
+{
+    if (starts_with($path, 'http')) {
+        return $path;
+    }
+    if (\App::environment() == 'local') {
+        return env('APP_URL') . $path;
+    }
+}
+
 function get_avatar($user)
 {
     if (!empty($user->avatar)) {

@@ -85,7 +85,7 @@
             <small class="text-danger">{{ $errors->first('image_top') }}</small>
         </div> --}}
 
-        @include('article.parts.article_images_selected', ['article_images' => $article->images])
+        @include('article.parts.article_images_selected', ['article_images' => $article->images, 'article' => $article])
     
         <div class="btn-group-lg pull-right">
             <input type="hidden" name="image_url">
