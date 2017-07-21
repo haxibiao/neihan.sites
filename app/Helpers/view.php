@@ -107,7 +107,7 @@ function get_small_article_image($image_url)
     if (!ends_with($image_url, '.small.jpg')) {
         $image_url = $image_url . '.small.jpg';
     }
-    return $image_url;
+    return get_img($image_url);
 }
 
 function diffForHumansCN($time)

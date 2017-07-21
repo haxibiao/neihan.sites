@@ -38,7 +38,7 @@ class CategoryController extends Controller
         $articles       = Article::orderBy('id', 'desc')
             ->where('status', '>=', 0)
             ->where('category_id', $category->id)
-            ->paginate(7);
+            ->paginate(2);
 
         $categories = Category::where('parent_id',$category->id)->get();
         $data       = [];
