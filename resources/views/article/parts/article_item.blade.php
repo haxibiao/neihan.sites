@@ -1,6 +1,6 @@
 <div class="media">
 	@if(!empty($article->image_url))
-	<a class="pull-left" href="/article/{{ $article->id }}">
+	<a class="pull-left hidden-sm hidden-xs" href="/article/{{ $article->id }}">
 		<img class="media-object" src="{{ get_small_article_image($article->image_url) }}" alt="{{ $article->title }}" style="max-width: 160px">
 	</a>
 	<a class="visible-sm visible-xs" href="/article/{{ $article->id }}">
