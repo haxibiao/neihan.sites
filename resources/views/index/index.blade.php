@@ -26,7 +26,7 @@
         <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading">                    
-                    <h3 class="panel-title">热门文章</h3>
+                    <h3 class="panel-title">热门</h3>
                 </div>
                 <div class="panel-body">                    
                     @foreach($hot_articles as $article)
@@ -49,7 +49,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        {{ $cate_name }}文章
+                        {{ $cate_name }}
                     </h3>
                 </div>
                 <div class="panel-body">

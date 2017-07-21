@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="/css/upload/jquery.fileupload-ui.css">
 
 <div class="form-group top30">
-    <label>配图</label>
+    <label>配图 (注意光标需要先保证在编辑器中，再来这里加入图片)</label>
     
     <!-- The file upload form used as target for the file upload widget -->
     <form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data">
@@ -174,9 +174,11 @@
             });
             $('.preview img').click(function(e) {
                 $(this).parent().parent().parent().parent().hide();
-                var img_url = $(this).attr('src');            
+                var img_url = $(this).attr('src');
+                img_url = img_url.replace('.small.jpg','');
+
                 $('.editable').summernote('insertImage', img_url,function ($image) {
-                  $image.attr('data-url-big', img_url.replace('small.jpg',''));
+                  $image.attr('data-url-big', img_url);
                   $image.addClass('img-responsive');
                 });
 
