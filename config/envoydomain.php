@@ -1,2 +1,2 @@
 <?php
-$domain = 'dongdianyi.com';
+$domain = 'ainicheng.com';
