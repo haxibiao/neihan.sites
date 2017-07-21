@@ -51,6 +51,7 @@ function get_img($path)
     if (\App::environment() == 'local') {
         return env('APP_URL') . $path;
     }
+    return $path;
 }
 
 function get_avatar($user)
