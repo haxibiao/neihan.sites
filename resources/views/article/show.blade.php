@@ -67,8 +67,6 @@
            @include('user.parts.user_item', ['user' => $article->user])
         </div>
       </div>
-    </div>
-    <div class="col-md-3">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">感兴趣吗？扫一下关注吧</h3>
@@ -78,15 +76,16 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-9">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">相关图片</h3>
+          <h3 class="panel-title">相关推荐</h3>
         </div>
         <div class="panel-body">
-          @foreach($article->images as $image) 
-            <img src="{{ $image->path_small }}" alt="" class="img img-responsive col-xs-6 col-sm-4 col-md-3">
+          @foreach($related_articles as $article) 
+            @include('article.parts.article_item')
           @endforeach
+          
         </div>
       </div>
     </div>

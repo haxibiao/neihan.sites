@@ -76,6 +76,117 @@ class ArticleController extends Controller
         return redirect()->to('/article/' . $article->id);
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $article       = Article::with('user')->with('category')->with('tags')->with('images')->findOrFail($id);
+        $article->hits = $article->hits + 1;
+        $agent         = new \Jenssegers\Agent\Agent();
+        if ($agent->isMobile()) {
+            $article->hits_mobile = $article->hits_mobile + 1;
+        }
+        if ($agent->isPhone()) {
+            $article->hits_phone = $article->hits_phone + 1;
+        }
+        if ($agent->match('micromessenger')) {
+            $article->hits_wechat = $article->hits_wechat + 1;
+        }
+        if ($agent->isRobot()) {
+            $article->hits_robot = $article->hits_robot + 1;
+        }
+        $article->save();
+        $article->body = str_replace("\n", '<br/>', $article->body);
+
+        $related_articles = Article::where('category_id', $article->category_id)
+            ->where('id', '<>', $article->id)
+            ->orderBy('id','desc')
+            ->take(4)
+            ->get();
+
+        return view('article.show')->withArticle($article)->withRelatedArticles($related_articles);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $article = Article::with('images')->findOrFail($id);
+        if ($article->images->isEmpty()) {
+            //fix img relation missing
+            $pattern_img = '/<img src=\"(.*?)\"/';
+            if (preg_match_all($pattern_img, $article->body, $matches)) {
+                $imgs = $matches[1];
+                $this->resave_article_imgs($imgs, $article);
+                $article = Article::with('images')->findOrFail($id);
+            }
+        }
+        $categories = get_categories();
+        return view('article.edit')->withArticle($article)->withCategories($categories);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $article = Article::findOrFail($id);
+
+        //编辑文章的时候,可能没有插入图片,字段可能空,就会删除图片地址....
+        $article->update($request->except('image_url'));
+        if ($request->get('primary_image')) {
+            $article->image_url = $request->get('primary_image');
+        } else {
+            if ($request->get('image_url')) {
+                $article->image_url = $request->get('image_url');
+            }
+        }
+
+        $article->has_pic   = !empty($article->image_url);
+        $article->edited_at = \Carbon\Carbon::now();
+        $article->save();
+
+        //image_top
+        $this->get_top_pic($request, $article);
+
+        //tags
+        $this->save_article_tags($article);
+
+        //images
+        $imgs = $request->get('images');
+        $this->save_article_images($imgs, $article);
+
+        return redirect()->to('/article/' . $article->id);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $article = Article::find($id);
+        if ($article) {
+            $article->delete();
+        }
+
+        return redirect()->back();
+    }
+
     public function get_top_pic($request, $article)
     {
         // $file = $request->file('image_top');
@@ -190,110 +301,5 @@ class ArticleController extends Controller
                 $article_tag->delete();
             }
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $article       = Article::with('user')->with('category')->with('tags')->with('images')->findOrFail($id);
-        $article->hits = $article->hits + 1;
-        $agent         = new \Jenssegers\Agent\Agent();
-        if ($agent->isMobile()) {
-            $article->hits_mobile = $article->hits_mobile + 1;
-        }
-        if ($agent->isPhone()) {
-            $article->hits_phone = $article->hits_phone + 1;
-        }
-        if ($agent->match('micromessenger')) {
-            $article->hits_wechat = $article->hits_wechat + 1;
-        }
-        if ($agent->isRobot()) {
-            $article->hits_robot = $article->hits_robot + 1;
-        }
-        $article->save();
-        $article->body = str_replace("\n", '<br/>', $article->body);
-
-        return view('article.show')->withArticle($article);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $article = Article::with('images')->findOrFail($id);
-        if ($article->images->isEmpty()) {
-            //fix img relation missing
-            $pattern_img = '/<img src=\"(.*?)\"/';
-            if (preg_match_all($pattern_img, $article->body, $matches)) {
-                $imgs = $matches[1];
-                $this->resave_article_imgs($imgs, $article);
-                $article = Article::with('images')->findOrFail($id);
-            }
-        }
-        $categories = get_categories();
-        return view('article.edit')->withArticle($article)->withCategories($categories);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $article = Article::findOrFail($id);
-
-        //编辑文章的时候,可能没有插入图片,字段可能空,就会删除图片地址....
-        $article->update($request->except('image_url'));
-        if ($request->get('primary_image')) {
-            $article->image_url = $request->get('primary_image');
-        } else {
-            if ($request->get('image_url')) {
-                $article->image_url = $request->get('image_url');
-            }
-        }
-
-        $article->has_pic   = !empty($article->image_url);
-        $article->edited_at = \Carbon\Carbon::now();
-        $article->save();
-
-        //image_top
-        $this->get_top_pic($request, $article);
-
-        //tags
-        $this->save_article_tags($article);
-
-        //images
-        $imgs = $request->get('images');
-        $this->save_article_images($imgs, $article);
-
-        return redirect()->to('/article/' . $article->id);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $article = Article::find($id);
-        if ($article) {
-            $article->delete();
-        }
-
-        return redirect()->back();
     }
 }
