@@ -29,17 +29,7 @@
     	</div>
     	<div class="panel-body">
     		@foreach($articles as $article)
-				<div class="media">
-					<a class="pull-left" href="/article/{{ $article->id }}">
-						<img class="media-object" src="{{ get_small_article_image($article->image_url) }}" alt="{{ $article->title }}" style="max-width: 200px">
-					</a>
-					<div class="media-body">
-						<a href="/article/{{ $article->id }}">
-							<h4 class="media-heading">{{ $article->title }}</h4>
-						</a>
-						<p>{{ $article->description }}</p>
-					</div>
-				</div>
+				@include('article.parts.article_item')
     		@endforeach
             <p>
                 {!! $articles->render() !!}

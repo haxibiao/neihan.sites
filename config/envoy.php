@@ -2,7 +2,7 @@
 
 require 'envoydomain.php';
 
-$git = 'root@hk001:/data/www/' . $domain;
+$git = 'root@hk002:/data/www/' . $domain;
 $www = '/data/www/' . $domain;
 
 $hk001 = 'root@hk001';

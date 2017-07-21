@@ -26,7 +26,7 @@
 
 </head>
 <body>
-    <div id="app">
+    <div id="app" style="padding-top: 60px">
         @include('parts.header')
         
         @yield('content')

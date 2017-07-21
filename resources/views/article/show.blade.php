@@ -21,7 +21,7 @@
   <div class="content">
     <div class="panel panel-default">
       <div class="panel-heading">
-        @if(Auth::check() && (Auth::user()->id == $article->user_id))
+        @if(Auth::check() && ((Auth::user()->id == $article->user_id) || Auth::user()->is_admin ))
         <p class="pull-right">
             <a href="/article/{{ $article->id }}/edit" class="btn btn-danger">编辑文章</a>
         </p>

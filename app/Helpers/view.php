@@ -9,6 +9,26 @@ function is_in_app()
     return Cookie::get('is_in_app', false) || Request::get('in_app');
 }
 
+function get_top_nav_bg()
+{
+    if (get_domain() == 'dongdianyao.com') {
+        return 'background-color: #75c4ef';
+    }
+    if (get_domain() == 'dongmeiwei.com') {
+        return 'background-color: #f6e128';
+    }
+
+    return '';
+}
+
+function get_top_nav_color()
+{
+    if (get_domain() == 'dongdianyao.com') {
+        return 'color: white';
+    }
+    return '';
+}
+
 function get_active_css($path, $full_match = 0)
 {
     $active = '';

@@ -19,6 +19,7 @@
     </ol>
     
     <div class="row">
+        @if($category->level == 0)
         <div class="col-md-8">
             @include('parts.carousel')
         </div>
@@ -32,17 +33,33 @@
                 <div class="panel-body">
                     <div class="list-group">
                         @foreach($articles as $article)
-                        <a class="list-group-item" href="/article/{{ $article->id }}">
-                            {{ $article->title }}
-                        </a>
+                            @include('article.parts.article_item')
                         @endforeach
                     </div>
                 </div>
             </div>
         </div>
+        @else 
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        最新{{ $category->name }}文章
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        @foreach($articles as $article)
+                            @include('article.parts.article_item')
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 
-    <div class="row">
+    <div class="row top20">
         @foreach($data as $cate_name => $articles)
         @if(!$articles->isEmpty())
         <div class="col-md-6">
@@ -55,9 +72,7 @@
                 <div class="panel-body">
                     <div class="list-group">
                         @foreach($articles as $article)
-                        <a class="list-group-item" href="/article/{{ $article->id }}">
-                            {{ $article->title }}
-                        </a>
+                            @include('article.parts.article_item')
                         @endforeach
                     </div>
                 </div>

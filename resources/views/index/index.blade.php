@@ -19,7 +19,7 @@
         </li>
     </ol>
 
-    <div class="row">
+    <div class="row hidden-xs hidden-sm">
         <div class="col-md-8">
             @include('parts.carousel')
         </div>
@@ -30,12 +30,7 @@
                 </div>
                 <div class="panel-body">                    
                     @foreach($hot_articles as $article)
-                        <div class="col-xs-6 text-center">
-                            <a href="/article/{{ $article->id }}" class="thumbnail">
-                                <img src="{{ get_small_article_image($article->image_url) }}" alt="" class="img img-responsive">
-                                <p class="strip_title">{{ $article->title }}</p>
-                            </a>
-                        </div>
+                        @include('article.parts.article_item')
                     @endforeach
                 </div>
             </div>
@@ -55,9 +50,7 @@
                 <div class="panel-body">
                     <div class="list-group">
                         @foreach($articles as $article)
-                        <a class="list-group-item" href="/article/{{ $article->id }}">
-                            {{ $article->title }}
-                        </a>
+                            @include('article.parts.article_item')
                         @endforeach
                     </div>
                 </div>

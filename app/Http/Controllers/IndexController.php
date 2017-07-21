@@ -15,7 +15,7 @@ class IndexController extends Controller
             $articles = Article::orderBy('id', 'desc')
                 ->where('category_id', $cate_id)
                 ->where('status', '>=', 0)
-                ->take(5)
+                ->take(2)
                 ->get();
             $data[$cate->name] = $articles;
         }

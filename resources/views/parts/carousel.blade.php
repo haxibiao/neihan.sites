@@ -16,7 +16,7 @@
         @foreach($carousel_items as $item)
         <div class="item {{ $item['index'] == 0 ? 'next left' : '' }}  {{ $item['index'] == count($carousel_items)-1 ? 'active left' : '' }}">
           <a href="/article/{{ $item['id'] }}">
-            <img data-src="holder.js/750x400/auto/#666:#444/text:{{ $item['title'] }}" alt="{{ $item['title'] }} [750x400]" src="{{ $item['image_top'] }}" data-holder-rendered="true" style="width: 750px; height: 400px">
+            <img data-src="holder.js/750x400/auto/#666:#444/text:{{ $item['title'] }}" alt="{{ $item['title'] }} [750x400]" src="{{ get_img($item['image_top']) }}" data-holder-rendered="true" style="width: 750px; height: 400px">
           </a>
           <div class="carousel-caption">
             <h3>{{ $item['title'] }}</h3>

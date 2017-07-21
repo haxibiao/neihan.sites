@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Request;
 
 function get_ip()
 {
@@ -14,4 +15,12 @@ function get_ip()
         }
     }
     return $ip;
+}
+
+function get_domain()
+{
+    $domain = str_replace('*.', '', Request::server('SERVER_NAME'));
+    $domain = str_replace('l.', '', $domain);
+    $domain = str_replace('www.', '', $domain);
+    return $domain;
 }
