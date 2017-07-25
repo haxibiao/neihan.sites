@@ -180,6 +180,7 @@ return [
 		Collective\Html\HtmlServiceProvider::class,
 		Overtrue\LaravelWechat\ServiceProvider::class,
 		Collective\Remote\RemoteServiceProvider::class,
+		Jenssegers\Agent\AgentServiceProvider::class,
 
 	],
 
@@ -233,6 +234,7 @@ return [
 		'Form' => Collective\Html\FormFacade::class,
       	'Html' => Collective\Html\HtmlFacade::class,
       	'EasyWeChat' => Overtrue\LaravelWechat\Facade::class,
+      	'Agent' => Jenssegers\Agent\Facades\Agent::class,
 	],
 
 ];
