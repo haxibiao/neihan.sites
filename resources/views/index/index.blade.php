@@ -38,18 +38,21 @@
     </div>
 
     <div class="row top20">
-        @foreach($data as $cate_name => $articles)
-        @if(!$articles->isEmpty())
+        @foreach($data as $cate_name_en => $data)
+        @if(!$data['articles']->isEmpty())
         <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
+                <div class="pull-right">
+                    <a href="/{{ $cate_name_en }}">更多</a>
+                </div>
                     <h3 class="panel-title">
-                        {{ $cate_name }}
+                        {{ $data['name'] }}
                     </h3>
                 </div>
                 <div class="panel-body">
                     <div class="list-group">
-                        @foreach($articles as $article)
+                        @foreach($data['articles'] as $article)
                             @include('article.parts.article_item')
                         @endforeach
                     </div>

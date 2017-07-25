@@ -31,24 +31,43 @@ class CategoryController extends Controller
         return view('category.index')->withCategories($categories)->withCatesMiss($cates_miss);
     }
 
-    public function name_en($name_en)
+    public function name_en(Request $request, $name_en)
     {
         $category       = Category::where('name_en', $name_en)->firstOrFail();
         $carousel_items = get_carousel_items($category->id);
-        $articles       = Article::orderBy('id', 'desc')
+
+        $categories = Category::where('parent_id', $category->id)->pluck('name', 'id');
+
+        if ($category->level == 0 && !$request->get('more')) {
+            $page_size = 2;
+        } else {
+            //非顶级频道，直接10个分页显示
+            $page_size = 10;
+        }
+        $articles = Article::orderBy('id', 'desc')
             ->where('status', '>=', 0)
             ->where('category_id', $category->id)
-            ->paginate(2);
+            ->paginate($page_size);
+        if ($articles->isEmpty()) {
+            $articles = Article::orderBy('id', 'desc')
+                ->where('status', '>=', 0)
+                ->whereIn('category_id', array_keys($categories->toArray()))
+                ->paginate($page_size);
+        }
 
-        $categories = Category::where('parent_id',$category->id)->get();
+        //下级分类
+        $categories = Category::where('parent_id', $category->id)->get();
         $data       = [];
         foreach ($categories as $cate) {
-            $articles = Article::orderBy('id', 'desc')
+            $cate_articles = Article::orderBy('id', 'desc')
                 ->where('category_id', $cate->id)
                 ->where('status', '>=', 0)
                 ->take(2)
                 ->get();
-            $data[$cate->name] = $articles;
+            $data[$cate->name_en] = [
+                'name'     => $cate->name,
+                'articles' => $cate_articles,
+            ];
         }
         return view('category.name_en')
             ->withCategory($category)

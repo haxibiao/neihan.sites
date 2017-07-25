@@ -17,12 +17,15 @@ class IndexController extends Controller
                 ->where('status', '>=', 0)
                 ->take(2)
                 ->get();
-            $data[$cate->name] = $articles;
+            $data[$cate->name_en] = [
+                'name'     => $cate->name,
+                'articles' => $articles,
+            ];
         }
 
         $carousel_items = get_carousel_items();
         $users          = User::orderBy('id', 'desc')->take(5)->get();
-        $hot_articles = Article::orderBy('hits', 'desc')->take(2)->get();
+        $hot_articles   = Article::orderBy('hits', 'desc')->take(2)->get();
         return view('index.index')
             ->withCarouselItems($carousel_items)
             ->withUsers($users)
@@ -35,7 +38,8 @@ class IndexController extends Controller
         return view('index.app');
     }
 
-    public function aboutUs() {
+    public function aboutUs()
+    {
         return view('index.about_us');
     }
 }
