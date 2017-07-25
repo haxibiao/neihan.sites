@@ -63,6 +63,8 @@ class ImageController extends Controller
 
     public function store(Request $request)
     {
+        ini_set('memory_limit', '256M');
+
         $images      = $request->file('image');
         $image_index = get_image_index(Image::max('id'));
         $http        = $request->secure() ? 'https://' : 'http://';
