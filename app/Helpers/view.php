@@ -17,6 +17,9 @@ function get_top_nav_bg()
     if (get_domain() == 'dongmeiwei.com') {
         return 'background-color: #f6e128';
     }
+    if (get_domain() == 'ainicheng.com') {
+        return 'background-color: #3b5795';
+    }
 
     return '';
 }
@@ -24,6 +27,9 @@ function get_top_nav_bg()
 function get_top_nav_color()
 {
     if (get_domain() == 'dongdianyao.com') {
+        return 'color: white';
+    }
+    if (get_domain() == 'ainicheng.com') {
         return 'color: white';
     }
     return '';

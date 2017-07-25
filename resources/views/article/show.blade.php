@@ -23,7 +23,7 @@
       <div class="panel-heading">
         
         <p class="pull-right">
-            @if(Auth::check() || Auth::user()->is_editor )
+            @if(Auth::check() && Auth::user()->is_editor )
             <a href="/article/{{ $article->id }}?weixin=1" class="btn btn-success">微信模式</a>
             @endif
             @if(Auth::check() && ((Auth::user()->id == $article->user_id) || Auth::user()->is_admin ))
