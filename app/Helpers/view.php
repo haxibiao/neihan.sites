@@ -105,9 +105,12 @@ function get_image_index($max_id)
 
 function get_small_article_image($image_url)
 {
-    if (!ends_with($image_url, '.small.jpg')) {
-        $image_url = $image_url . '.small.jpg';
+    if (!str_contains($image_url, '.small.')) {
+        $extension = pathinfo(parse_url($image_url)['path'], PATHINFO_EXTENSION);
+        $image_url = $image_url . '.small.' . $extension;
     }
+    //fix  .png.small.jpg
+    $image_url = str_replace('.png.small.jpg', '.png.small.png', $image_url);
     return get_img($image_url);
 }
 
