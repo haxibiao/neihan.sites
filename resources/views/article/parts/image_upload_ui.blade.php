@@ -176,6 +176,8 @@
                 $(this).parent().parent().parent().parent().hide();
                 var img_url = $(this).attr('src');
                 img_url = img_url.replace('.small.jpg','');
+                img_url = img_url.replace('.small.png','');
+                img_url = img_url.replace('.small.gif','');
 
                 $('.editable').summernote('insertImage', img_url,function ($image) {
                   $image.attr('data-url-big', img_url);
