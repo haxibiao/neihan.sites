@@ -17,6 +17,9 @@ function get_top_nav_bg()
     if (get_domain() == 'dongmeiwei.com') {
         return 'background-color: #f6e128';
     }
+    if (get_domain() == 'ainicheng.com') {
+        return 'background-color: #3b5795';
+    }
 
     return '';
 }
@@ -24,6 +27,9 @@ function get_top_nav_bg()
 function get_top_nav_color()
 {
     if (get_domain() == 'dongdianyao.com') {
+        return 'color: white';
+    }
+    if (get_domain() == 'ainicheng.com') {
         return 'color: white';
     }
     return '';
@@ -105,9 +111,12 @@ function get_image_index($max_id)
 
 function get_small_article_image($image_url)
 {
-    if (!ends_with($image_url, '.small.jpg')) {
-        $image_url = $image_url . '.small.jpg';
+    if (!str_contains($image_url, '.small.')) {
+        $extension = pathinfo(parse_url($image_url)['path'], PATHINFO_EXTENSION);
+        $image_url = $image_url . '.small.' . $extension;
     }
+    //fix  .png.small.jpg
+    $image_url = str_replace('.png.small.jpg', '.png.small.png', $image_url);
     return get_img($image_url);
 }
 

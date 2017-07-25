@@ -12,20 +12,26 @@
 @section('content')
 <div class="container">
     <ol class="breadcrumb">
-    	<li><a href="/">{{ config('app.name') }}</a></li>
+        <li>
+            <a href="/">
+                {{ config('app.name') }}
+            </a>
+        </li>
         <li class="active">
             {{ $category->name }}
         </li>
     </ol>
-    
     <div class="row">
-        @if($category->level == 0)
+        @if($category->level == 0 && !Request::get('more'))
         <div class="col-md-8">
             @include('parts.carousel')
         </div>
         <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    <div class="pull-right">
+                        <a href="/{{ $category->name_en }}?more=1">更多</a>
+                    </div>
                     <h3 class="panel-title">
                         最新{{ $category->name }}文章
                     </h3>
@@ -39,7 +45,7 @@
                 </div>
             </div>
         </div>
-        @else 
+        @else
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -54,24 +60,29 @@
                         @endforeach
                     </div>
                 </div>
+                <div class="panel-footer">
+                    {!! $articles->render() !!}
+                </div>
             </div>
         </div>
         @endif
     </div>
-
     <div class="row top20">
-        @foreach($data as $cate_name => $articles)
-        @if(!$articles->isEmpty())
+        @foreach($data as $cate_name_en => $data)
+        @if(!$data['articles']->isEmpty())
         <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    <div class="pull-right">
+                        <a href="/{{ $cate_name_en }}">更多</a>
+                    </div>
                     <h3 class="panel-title">
-                        {{ $cate_name }}文章
+                        {{ $data['name'] }}文章
                     </h3>
                 </div>
                 <div class="panel-body">
                     <div class="list-group">
-                        @foreach($articles as $article)
+                        @foreach($data['articles'] as $article)
                             @include('article.parts.article_item')
                         @endforeach
                     </div>

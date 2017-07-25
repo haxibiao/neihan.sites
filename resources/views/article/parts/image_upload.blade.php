@@ -45,7 +45,10 @@
 			window.select_image = function(img) {
 				var img_url = $(img).attr('src');
 				$('.editable').summernote('insertImage', img_url,function ($image) {
-				  $image.attr('data-url-big', img_url.replace('small.jpg',''));
+					img_url = img_url.replace('small.jpg','');
+					img_url = img_url.replace('small.png','');
+					img_url = img_url.replace('small.gif','');
+				  $image.attr('data-url-big', img_url);
 				});
 			}
 		});

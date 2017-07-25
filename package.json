@@ -17,6 +17,8 @@
     "laravel-mix": "^1.0",
     "lodash": "^4.17.4",
     "medium-editor-insert-plugin": "^2.3.2",
+    "babel-plugin-component": "^0.10.0",
+    "babel-preset-es2015": "^6.24.1",
     "vue": "^2.1.10"
   },
   "dependencies": {
@@ -25,6 +27,7 @@
     "codemirror": "^5.27.2",
     "font-awesome": "^4.7.0",
     "jquery-ui": "^1.12.1",
+    "mint-ui": "^2.2.7",
     "summernote": "^0.8.4",
     "vue-chartjs": "^2.7.1"
   }

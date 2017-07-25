@@ -21,11 +21,15 @@
   <div class="content">
     <div class="panel panel-default">
       <div class="panel-heading">
-        @if(Auth::check() && ((Auth::user()->id == $article->user_id) || Auth::user()->is_admin ))
+        
         <p class="pull-right">
-            <a href="/article/{{ $article->id }}/edit" class="btn btn-danger">编辑文章</a>
+            @if(Auth::check() && Auth::user()->is_editor )
+            <a href="/article/{{ $article->id }}?weixin=1" class="btn btn-success">微信模式</a>
+            @endif
+            @if(Auth::check() && ((Auth::user()->id == $article->user_id) || Auth::user()->is_admin ))
+              <a href="/article/{{ $article->id }}/edit" class="btn btn-danger">编辑文章</a>
+            @endif
         </p>
-        @endif
         <h1>{{ $article->title }}</h1>
         <p class="pull-right" title="移动端：{{ $article->hits_mobile }}, 手机端：{{ $article->hits_phone }}, 微信: {{ $article->hits_wechat }}, 爬虫：{{ $article->hits_robot }}">阅读次数: {{ $article->hits }}</p>
         <p>
@@ -53,6 +57,16 @@
           本文最后由 <a href="/user/{{ $article->user_id }}">{{ $article->user_name }}</a> 编辑 ({{ diffForHumansCN($article->edited_at) }})
           @endif
         </p>
+        
+        @if(Agent::match('micromessenger') || Request::get('weixin'))     
+        <div class="alert alert-success">
+          <strong>亲爱的微信用户，您好!</strong> 
+            <p>
+              我们的内容您感兴趣吗？微信里长按识别一下,关注我们吧
+            </p>
+            <img src="/qrcode/{{ env('APP_DOMAIN') }}.jpg" alt="" class="img img-responsive">
+        </div>
+        @endif
       </div>
     </div>
   </div>
