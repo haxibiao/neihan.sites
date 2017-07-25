@@ -1,5 +1,5 @@
 <template>
-  <div class="row bottom10" id="my_images">
+	<div class="row bottom10" id="my_images">
     <div v-for="item in list" class="col-xs-4 col-md-3 top5">
       <img :src="item.path_small" alt="" class="img img-responsive">
     </div>
@@ -14,21 +14,21 @@ export default {
   props: ['user_id'],
 
   mounted: function() {
-    this.loadMore();
+  	this.loadMore();
 
     window.setTimeout(this.bindImgClick, 2000);
   },
 
   methods: {
-    loadMore: function() {
-      var vm = this;
-      this.$http.get('/api/user/' + this.user_id + '/images?page='+this.currentPage)
-      .then(function(response) {
-        vm.list = vm.list.concat(response.data.data);
-        vm.currentPage ++;
+  	loadMore: function() {
+  		var vm = this;
+  		this.$http.get('/api/user/' + this.user_id + '/images?page='+this.currentPage)
+  		.then(function(response) {
+  			vm.list = vm.list.concat(response.data.data);
+  			vm.currentPage ++;
         vm.bindImgClick();
-      });      
-    },
+  		});      
+  	},
     bindImgClick: function() { 
       $('#my_images img').click(function(e) {
           $(this).parent().hide();
@@ -60,9 +60,9 @@ export default {
 
   data () {
     return {
-      currentPage: 1,
-      allLoaded: false,
-      list: []
+    	currentPage: 1,
+    	allLoaded: false,
+    	list: []
     };
   }
 };

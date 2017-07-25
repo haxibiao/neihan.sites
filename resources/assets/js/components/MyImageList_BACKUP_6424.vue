@@ -1,9 +1,17 @@
 <template>
-  <div class="row bottom10" id="my_images">
+<<<<<<< HEAD
+	<div class="row bottom10" id="my_images">
     <div v-for="item in list" class="col-xs-4 col-md-3 top5">
       <img :src="item.path_small" alt="" class="img img-responsive">
     </div>
   </div>
+=======
+	<mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
+	  <ul>
+	    <li v-for="item in list">{{ item.path }}</li>
+	  </ul>
+	</mt-loadmore>
+>>>>>>> 2d3ac55f3b9c064ab04a0a001553c6da0577d51c
 </template>
 
 <script>
@@ -14,21 +22,25 @@ export default {
   props: ['user_id'],
 
   mounted: function() {
-    this.loadMore();
+  	this.loadMore();
+<<<<<<< HEAD
 
     window.setTimeout(this.bindImgClick, 2000);
+=======
+>>>>>>> 2d3ac55f3b9c064ab04a0a001553c6da0577d51c
   },
 
   methods: {
-    loadMore: function() {
-      var vm = this;
-      this.$http.get('/api/user/' + this.user_id + '/images?page='+this.currentPage)
-      .then(function(response) {
-        vm.list = vm.list.concat(response.data.data);
-        vm.currentPage ++;
+  	loadMore: function() {
+  		var vm = this;
+  		this.$http.get('/api/user/' + this.user_id + '/images?page='+this.currentPage)
+  		.then(function(response) {
+  			vm.list = vm.list.concat(response.data.data);
+  			vm.currentPage ++;
+<<<<<<< HEAD
         vm.bindImgClick();
-      });      
-    },
+  		});      
+  	},
     bindImgClick: function() { 
       $('#my_images img').click(function(e) {
           $(this).parent().hide();
@@ -56,13 +68,26 @@ export default {
           return false;
       });
     }
+=======
+  		});
+  	},
+  	loadTop() {
+	  //...// 加载更多数据
+	  this.$refs.loadmore.onTopLoaded();
+	},
+	loadBottom() {
+	  //...// 加载更多数据
+	  this.allLoaded = true;// 若数据已全部获取完毕
+	  this.$refs.loadmore.onBottomLoaded();
+	}
+>>>>>>> 2d3ac55f3b9c064ab04a0a001553c6da0577d51c
   },
 
   data () {
     return {
-      currentPage: 1,
-      allLoaded: false,
-      list: []
+    	currentPage: 1,
+    	allLoaded: false,
+    	list: []
     };
   }
 };
