@@ -123,7 +123,7 @@
                                 <h4 class="modal-title" id="myModalLabel">加入图片</h4>
                               </div>                     
                             <div class="col-md-12">
-                                @include('article.parts.image_upload_ui')
+                                @include('article.parts.image_add')
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>

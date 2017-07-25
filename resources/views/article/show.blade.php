@@ -21,12 +21,15 @@
   <div class="content">
     <div class="panel panel-default">
       <div class="panel-heading">
-        @if(Auth::check() && ((Auth::user()->id == $article->user_id) || Auth::user()->is_admin ))
+        
         <p class="pull-right">
+            @if(Auth::check() || Auth::user()->is_editor )
             <a href="/article/{{ $article->id }}?weixin=1" class="btn btn-success">微信模式</a>
-            <a href="/article/{{ $article->id }}/edit" class="btn btn-danger">编辑文章</a>
+            @endif
+            @if(Auth::check() && ((Auth::user()->id == $article->user_id) || Auth::user()->is_admin ))
+              <a href="/article/{{ $article->id }}/edit" class="btn btn-danger">编辑文章</a>
+            @endif
         </p>
-        @endif
         <h1>{{ $article->title }}</h1>
         <p class="pull-right" title="移动端：{{ $article->hits_mobile }}, 手机端：{{ $article->hits_phone }}, 微信: {{ $article->hits_wechat }}, 爬虫：{{ $article->hits_robot }}">阅读次数: {{ $article->hits }}</p>
         <p>
