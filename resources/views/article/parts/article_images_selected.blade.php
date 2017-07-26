@@ -13,7 +13,7 @@
             </p>
         </div>   
         @foreach($article_images as $image)
-            <div class="col-xs-4" id="article_image_template">
+            <div class="col-xs-4">
                 <p class="text-center">
                     <img src="{{ get_img($image->path_small) }}" alt="" class="img img-responsive">
                     

@@ -51,8 +51,16 @@ Route::get('/user/by-name/{name}', function (Request $request, $name) {
     return $user;
 });
 
-//获取用户上传的图片
-Route::get('/user/{id}/images', function ($id) {
-    $images = Image::where('user_id', $id)->orderBy('id','desc')->paginate(12);
+//获取用户上传的图片，可以按标题搜索
+Route::get('/user/{id}/images', function (Request $request, $id) {
+    $query = Image::where('user_id', $id)->where('count', '>', 0)->orderBy('id', 'desc');
+    if ($request->get('title')) {
+        $query = $query->where('title', 'like', '%' . $request->get('title') . '%');
+    }
+    $images = $query->paginate(12);
+    foreach ($images as $image) {
+        $image->path       = get_img($image->path);
+        $image->path_small = get_img($image->path_small);
+    }
     return $images;
 });

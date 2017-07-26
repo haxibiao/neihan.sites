@@ -40,7 +40,7 @@
                                     <h3 class="panel-title">昨日各编辑发布的文章数:</h3>
                                 </div>
                                 <div class="panel-body"> 
-                                    <bar title-one='文章' chart-data-one='{{ json_encode($data['article_editors']) }}' chart-labels='{!! json_encode($labels['article_editors']) !!}'/>
+                                    <bar title-one='文章' chart-data='{{ json_encode($data['article_editors']) }}' chart-labels='{!! json_encode($labels['article_editors']) !!}'/>
                                 </div>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                                     <h3 class="panel-title">昨日各编辑在本站的流量:</h3>
                                 </div>
                                 <div class="panel-body"> 
-                                    <bar title-one='流量' chart-data-one='{{ json_encode($data['traffic_editors']) }}' chart-labels='{!! json_encode($labels['traffic_editors']) !!}' color="green"/>
+                                    <bar title-one='流量' chart-data='{{ json_encode($data['traffic_editors']) }}' chart-labels='{!! json_encode($labels['traffic_editors']) !!}' color="green"/>
                                 </div>
                             </div>
                         </div>

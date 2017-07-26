@@ -5,12 +5,12 @@
 
   export default Bar.extend({
     mixins: [reactiveProp],
-    props: ['options', 'chartLabels','chartDataOne', 'titleOne','chartDataTwo', 'titleTwo','color'],
+    props: ['options', 'chartLabels','chartData', 'titleOne','chartDataTwo', 'titleTwo','color'],
     data () {
       var dataset1 = {
               label: this.titleOne,
               backgroundColor: this.color ? this.color : '#f87979',
-              data: eval(this.chartDataOne)
+              data: eval(this.chartData)
             };
       var datasets = [dataset1];
       if(this.title2) {

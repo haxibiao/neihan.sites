@@ -35,14 +35,12 @@ EOT;
 
 $run_migrate = <<<EOT
 php artisan migrate --seed --force
+EOT;
 
-
-php artisan fix:data --articles
-php artisan fix:data --traffic
+$run_commands = <<<EOT
+php artisan image:title
 EOT;
 
 $cache_clear = <<<EOT
 php artisan cache:clear
 EOT;
-
-?>

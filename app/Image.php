@@ -11,7 +11,7 @@ class Image extends Model
 		'path_small',
 	];
 
-    public function article() {
-    	return $this->belongsTo('App\Article');
+    public function articles() {
+    	return $this->belongsToMany('App\Article');
     }
 }

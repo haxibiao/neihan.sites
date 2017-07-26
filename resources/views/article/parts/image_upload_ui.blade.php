@@ -188,11 +188,11 @@
                 image_url_el.val(img_url);
                 $('<input type="hidden" name="images[]" value="' + img_url + '">').insertBefore(image_url_el);
 
-                $article_image_el = $('#article_image_template').clone();
-                $article_image_el = $article_image_el.insertBefore($('#article_image_template'));
-                $article_image_el.find('img').attr('src', img_url);
-                $article_image_el.find('input').val(img_url);
-                $article_image_el.removeClass('hide');
+                var article_image_el = $('#article_image_template').clone();
+                article_image_el = article_image_el.insertBefore($('#article_image_template'));
+                article_image_el.find('img').attr('src', img_url);
+                article_image_el.find('input').val(img_url);
+                article_image_el.removeClass('hide');
 
                 e.preventDefault();
                 return false;

@@ -35,6 +35,7 @@ cd {{ $www }}
 echo {{ $www }}
 {{ $refresh_env_config }}
 {{ $run_migrate }}
+{{ $run_commands }}
 {{ $cache_clear }}
 @endtask
 
@@ -42,8 +43,9 @@ echo {{ $www }}
 cd {{ $www }}
 echo {{ $www }}
 {{ $clear_bootstrap_cache }}
-{{ $run_composer }}
 {{ $refresh_env_config }}
+{{ $run_composer }}
 {{ $run_migrate }}
+{{ $run_commands }}
 {{ $cache_clear }}
 @endtask

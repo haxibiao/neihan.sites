@@ -26,6 +26,12 @@ class CreateUsersTable extends Migration
             $table->boolean('is_editor')->default(0)->index();
             $table->boolean('is_admin')->default(0)->index();
             $table->integer('status')->default(0)->index();
+
+            $table->boolean('is_seoer')->default(0)->index();
+            $table->string('seo_meta')->nullable();
+            $table->text('seo_push')->nullable();
+            $table->text('seo_tj')->nullable();
+            $table->text('seo_json')->nullable();
             
             $table->rememberToken();
             $table->timestamps();

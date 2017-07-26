@@ -32,6 +32,28 @@ class CreateTrafficTable extends Migration
             $table->string('country')->nullable()->index();
             $table->string('province')->nullable()->index();
             $table->string('city')->nullable()->index();
+
+            $table->integer('user_id')->nullable()->index();
+
+            $table->integer('article_id')->nullable();
+            $table->string('category')->nullable();
+
+            $table->string('date')->nullable()->index();
+            $table->string('year')->nullable()->index();
+            $table->string('month')->nullable()->index();
+            $table->string('day')->nullable()->index();
+            $table->string('dayOfWeek')->nullable()->index();
+            $table->string('dayOfYear')->nullable()->index();
+            $table->string('daysInMonth')->nullable()->index();
+            $table->string('weekOfMonth')->nullable()->index();
+            $table->string('weekOfYear')->nullable()->index();
+
+            $table->string('referer', 2083)->nullable()->change();
+
+            $table->string('path')->nullable();
+            $table->string('referer')->nullable();
+            $table->string('referer_domain')->nullable();
+            
             $table->timestamps();
         });
     }
