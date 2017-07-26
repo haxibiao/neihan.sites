@@ -195,6 +195,7 @@ class ArticleController extends Controller
                 $video = Video::find($video_id);
                 if ($video) {
                     $video->count = $video->count + 1;
+                    $video->title = $article->title;
                     $video->save();
                 }
                 $article_video = ArticleVideo::firstOrNew([
@@ -250,6 +251,7 @@ class ArticleController extends Controller
                 'path' => $path,
             ]);
             $image->count = $image->count + 1;
+            $image->title = $article->title;
             $image->save();
 
             $article_image = ArticleImage::firstOrNew([
