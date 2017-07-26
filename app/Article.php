@@ -39,11 +39,11 @@ class Article extends Model
 
     public function images()
     {
-        return $this->hasMany('App\Image');
+        return $this->belongsToMany('App\Image');
     }
 
     public function videos()
     {
-        return $this->hasMany('App\Video');
+        return $this->belongsToMany('App\Video');
     }
 }
