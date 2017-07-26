@@ -13,6 +13,7 @@ class ImageController extends Controller
         $data      = [];
         $delete_id = $request->get('d');
         if (!empty($delete_id)) {
+            //删除
             $image = Image::find($delete_id);
             if ($image) {
                 $image->status = -1;
@@ -29,21 +30,19 @@ class ImageController extends Controller
             }
             $data[$path_small] = true;
         } else {
-            //load exist ...
+            //记载当前用户已上传，未使用的图片
             $query = Image::where('status', '>=', 0)->where('count', 0);
             if (Auth::check()) {
                 $user_id = Auth::check() ? Auth::user()->id : 0;
                 $query   = $query->where('user_id', $user_id);
             }
-            $images  = $query->get();
-            $http    = $request->secure() ? 'https://' : 'http://';
-            $baseUri = $http . $request->server('HTTP_HOST');
+            $images  = $query->get();            
             foreach ($images as $image) {
                 $extension = pathinfo(public_path($image->path), PATHINFO_EXTENSION);
                 $filename  = pathinfo($image->path)['basename'];
                 $file      = [
-                    'url'          => $baseUri . $image->path,
-                    'thumbnailUrl' => $baseUri . $image->path_small,
+                    'url'          => base_uri() . $image->path,
+                    'thumbnailUrl' => base_uri() . $image->path_small,
                     'name'         => $filename,
                     "type"         => str_replace("jpg", "jpeg", "image/" . $extension),
                     "size"         => 0,
@@ -65,23 +64,20 @@ class ImageController extends Controller
     {
         ini_set('memory_limit', '256M');
 
-        $images      = $request->file('image');
-        $image_index = get_image_index(Image::max('id'));
-        $http        = $request->secure() ? 'https://' : 'http://';
-        $baseUri     = $http . $request->server('HTTP_HOST');
+        $images      = $request->file('files');
+        $image_index = get_cached_index(Image::max('id'));        
         $files       = [];
         foreach ($images as $file) {
             $extension = $file->getClientOriginalExtension();
-
             $filename = $image_index . '.' . $extension;
             $path     = '/img/' . $filename;
 
             $image          = new Image();
-            $image->user_id = Auth::check() ? Auth::user()->id : 0;
+            $image->user_id = Auth::user()->id;
             $image->path    = $path;
 
-            $local_path = public_path('img/');
-            $full_path  = $local_path . $filename;
+            $local_dir = public_path('img/');
+            $full_path  = $local_dir . $filename;
 
             $img = \ImageMaker::make($file->path());
             if ($extension != 'gif') {
@@ -95,7 +91,7 @@ class ImageController extends Controller
                 $image->width  = $img->width();
                 $image->height = $img->height();
             } else {
-                $file->move($local_path, $filename);
+                $file->move($local_dir, $filename);
             }
 
             //save top
@@ -126,8 +122,8 @@ class ImageController extends Controller
             $img->save($full_path . '.small.' . $extension);
             $image->save();
             $files[] = [
-                'url'          => $baseUri . $image->path,
-                'thumbnailUrl' => $baseUri . $image->path,
+                'url'          => base_uri() . $image->path,
+                'thumbnailUrl' => base_uri() . $image->path,
                 'name'         => $path,
                 "type"         => str_replace("jpg", "jpeg", "image/" . $extension),
                 "size"         => filesize($full_path),
@@ -161,15 +157,3 @@ class ImageController extends Controller
         return 'deleting ... ' . $deleteUrl;
     }
 }
-
-// {
-//     "files": [{
-//         "url": "https://jquery-file-upload.appspot.com/image/jpeg/1549240106/下载.jpg",
-//         "thumbnailUrl": "https://jquery-file-upload.appspot.com/image/jpeg/1549240106/下载.jpg.80x80.jpg",
-//         "name": "下载.jpg",
-//         "type": "image/jpeg",
-//         "size": 8657,
-//         "deleteUrl": "https://jquery-file-upload.appspot.com/image/jpeg/1549240106/下载.jpg",
-//         "deleteType": "DELETE"
-//     }]
-// }

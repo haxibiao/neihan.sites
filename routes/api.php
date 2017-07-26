@@ -3,6 +3,7 @@
 use App\Article;
 use App\Category;
 use App\Image;
+use App\Video;
 use App\Traffic;
 use App\User;
 use Carbon\Carbon;
@@ -63,4 +64,18 @@ Route::get('/user/{id}/images', function (Request $request, $id) {
         $image->path_small = get_img($image->path_small);
     }
     return $images;
+});
+
+//获取用户上传的视频，可以按标题搜索
+Route::get('/user/{id}/videos', function (Request $request, $id) {
+    $query = Video::where('user_id', $id)->where('count', '>=', 0)->orderBy('id', 'desc');
+    if ($request->get('title')) {
+        $query = $query->where('title', 'like', '%' . $request->get('title') . '%');
+    }
+    $videos = $query->paginate(12);
+    foreach ($videos as $video) {
+        $video->path       = get_img($video->path);
+        $video->cover = get_img($video->cover);
+    }
+    return $videos;
 });

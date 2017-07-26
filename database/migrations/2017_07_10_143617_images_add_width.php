@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateImagesTable extends Migration
+class ImagesAddWidth extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,10 @@ class CreateImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('images', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('path');
-            $table->string('path_small');
-            $table->string('source_url')->nullable();
-            $table->integer('count')->default(0)->index();
-            $table->integer('status')->default(0)->index();
-            $table->integer('user_id')->nullable();
+        Schema::table('images', function (Blueprint $table) {
             $table->integer('width')->nullable();
             $table->integer('height')->nullable();
             $table->string('path_top')->nullable();
-            $table->timestamps();
         });
     }
 
@@ -35,6 +27,8 @@ class CreateImagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('images');
+        Schema::table('images', function (Blueprint $table) {
+            //
+        });
     }
 }

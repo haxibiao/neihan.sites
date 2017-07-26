@@ -24,6 +24,8 @@
         <link href="{{ mix('css/site.css') }}" rel="stylesheet">
     @endif
 
+    @stack('css')
+
 </head>
 <body>
     <div id="app" style="padding-top: 60px">
@@ -52,6 +54,8 @@
     </script>    
 
     @stack('scripts')
+    @stack('js')
+
     {!! get_seoer_footer() !!}
 
     @include('parts.to_up')

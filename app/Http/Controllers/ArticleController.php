@@ -63,8 +63,8 @@ class ArticleController extends Controller
         $article->date    = \Carbon\Carbon::now()->toDateString();
         $article->save();
 
-        //image_top
-        $this->get_top_pic($request, $article);
+        //videos
+        $this->save_article_videos($request, $article);
 
         //tags
         $this->save_article_tags($article);
@@ -104,7 +104,7 @@ class ArticleController extends Controller
 
         $related_articles = Article::where('category_id', $article->category_id)
             ->where('id', '<>', $article->id)
-            ->orderBy('id','desc')
+            ->orderBy('id', 'desc')
             ->take(4)
             ->get();
 
@@ -158,8 +158,8 @@ class ArticleController extends Controller
         $article->edited_at = \Carbon\Carbon::now();
         $article->save();
 
-        //image_top
-        $this->get_top_pic($request, $article);
+        //videos
+        $this->save_article_videos($request, $article);
 
         //tags
         $this->save_article_tags($article);
@@ -187,25 +187,23 @@ class ArticleController extends Controller
         return redirect()->back();
     }
 
-    public function get_top_pic($request, $article)
+    public function save_article_videos($request, $article)
     {
-        // $file = $request->file('image_top');
-        // if ($article->is_top && $file) {
-        //     $local_path = public_path('storage/top/');
-        //     if (!is_dir($local_path)) {
-        //         mkdir($local_path, 0777, 1);
-        //     }
-        //     $filename = $article->id . '.jpg';
-        //     $file->move($local_path, $filename);
-        //     //resize
-        //     $full_path = $local_path . $filename;
-        //     $img       = \ImageMaker::make($full_path);
-        //     $img->resize(900, 500);
-        //     $img->save($full_path);
-
-        //     $article->image_top = '/storage/top/' . $filename;
-        //     $article->save();
-        // }
+        $videos = $request->get('videos');
+        if (is_array($videos)) {
+            foreach ($videos as $video_id) {
+                $video = Video::find($video_id);
+                if ($video) {
+                    $video->count = $video->count + 1;
+                    $video->save();
+                }
+                $article_video = ArticleVideo::firstOrNew([
+                    'article_id' => $article->id,
+                    'video_id'   => $video_id,
+                ]);
+                $article_video->save();
+            }
+        }
     }
 
     public function save_article_images($imgs, $article)
@@ -213,7 +211,7 @@ class ArticleController extends Controller
         $article_with_images = Article::with('images')->find($article->id);
         $images              = $article_with_images->images;
 
-        // remove not using images relationship ...
+        // remove unused images relationship ...
         $pattern_img = '/<img(.*?)>/';
         preg_match_all($pattern_img, $article->body, $matches);
         if (!empty($matches)) {

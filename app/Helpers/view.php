@@ -4,6 +4,18 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 
+function get_cached_index($max_id, $type = 'image')
+{
+    if (empty(Cache::get($type . '_index'))) {
+        $id_new = $max_id + 1;
+        Cache::put($type . '_index', $id_new, 1);
+    } else {
+        $id_new = Cache::get($type . '_index') + 1;
+        Cache::put($type . '_index', $id_new, 1);
+    }
+    return Cache::get($type . '_index');
+}
+
 function is_in_app()
 {
     return Cookie::get('is_in_app', false) || Request::get('in_app');
@@ -55,7 +67,9 @@ function get_img($path)
         return $path;
     }
     if (\App::environment() == 'local') {
-        return env('APP_URL') . $path;
+        if (!file_exists(public_path($path))) {
+            return env('APP_URL') . $path;
+        }
     }
     return $path;
 }
@@ -95,18 +109,6 @@ function get_qzone_pic($user)
         }
     }
     return $pic_path;
-}
-
-function get_image_index($max_id)
-{
-    if (empty(Cache::get('image_index'))) {
-        $id_new = $max_id + 1;
-        Cache::put('image_index', $id_new, 1);
-    } else {
-        $id_new = Cache::get('image_index') + 1;
-        Cache::put('image_index', $id_new, 1);
-    }
-    return Cache::get('image_index');
 }
 
 function get_small_article_image($image_url)

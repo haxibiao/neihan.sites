@@ -9,14 +9,20 @@ let mix = require("laravel-mix");
  | file for the application as well as bundling up all the JS files.
  |
  */
-mix.js("resources/assets/js/app.js", "public/js").sass("resources/assets/sass/app.scss", "public/css");
+mix.js("resources/assets/js/app.js", "public/js")
+	.sass("resources/assets/sass/app.scss", "public/css");
+
 mix.copy("node_modules/summernote/dist/summernote.css", "public/css");
 mix.copy("node_modules/summernote/dist/font/*", "public/css/font");
+
 mix.styles(
-    ["public/css/app.css", "public/css/top.css","public/fonts/iconfont.css"], "public/css/site.css").version();
+    ["public/css/app.css", "public/css/top.css"], "public/css/site.css").version();
+
 mix.styles(
     ["public/css/app.css", "public/css/summernote.css", "public/css/top.css","public/fonts/iconfont.css"], "public/css/all.css").version();
+
 mix.copy("node_modules/summernote/dist/summernote.js", "public/js");
+
 mix.js("resources/assets/js/editor.js", "public/js")
 mix.scripts(
     ["public/js/editor.js", "public/js/summernote.js", "public/js/summernote-zh-CN.js"], "public/js/all.js").version();

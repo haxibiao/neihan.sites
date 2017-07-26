@@ -14,5 +14,10 @@ class Video extends Model
         'path_mp4',
         'cover',
         'introduction',
+        'duration',
     ];
+
+    public function articles() {
+    	return $this->belongsToMany('App\Article');
+    }
 }

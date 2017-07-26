@@ -1,7 +1,10 @@
 <?php
 
-use Jenssegers\Agent\Agent;
 use App\User;
+use Jenssegers\Agent\Agent;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Request;
 
 function get_seoer_meta()
 {
@@ -78,4 +81,11 @@ function get_carousel_items($category_id = 0)
         $carousel_index++;
     }
     return $carousel_items;
+}
+
+function base_uri()
+{
+    $http    = Request::secure() ? 'https://' : 'http://';
+    $baseUri = $http . Request::server('HTTP_HOST');
+    return $baseUri;
 }

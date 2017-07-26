@@ -11,23 +11,25 @@
 |
 */
 
-Route::get('/', 'IndexController@index');
+Auth::routes();
 
+Route::get('/', 'IndexController@index');
 Route::get('/app', 'IndexController@app');
 Route::get('/about-us', 'IndexController@aboutUs');
 
+//文章
 Route::resource('/article', 'ArticleController');
-Route::resource('/user', 'UserController');
-Route::get('/user/seo', 'UserController@seo');
 Route::resource('/category', 'CategoryController');
+Route::get('/tag/{name}', 'TagController@tagname');
+Route::resource('/tag', 'TagController');
 
+//流量
 Route::get('/traffic/log', 'TrafficController@log');
 Route::get('/traffic/robot', 'TrafficController@robot');
 Route::get('/traffic/device', 'TrafficController@device');
 Route::get('/traffic/platform', 'TrafficController@platform');
 Route::get('/traffic/browser', 'TrafficController@browser');
 Route::get('/traffic/referer', 'TrafficController@referer');
-
 Route::get('/traffic/referer_domain/{name}', 'TrafficController@referer_domain');
 Route::get('/traffic/device/{name}', 'TrafficController@device');
 Route::get('/traffic/browser/{name}', 'TrafficController@browser');
@@ -36,17 +38,19 @@ Route::get('/traffic/robot/{name}', 'TrafficController@robot');
 Route::get('/traffic/days-{days_ago}', 'TrafficController@index');
 Route::resource('/traffic/', 'TrafficController');
 
-Route::get('/tag/{name}', 'TagController@tagname');
-Route::resource('/tag', 'TagController');
-
-Auth::routes();
-
+//用户
+Route::resource('/user', 'UserController');
+Route::get('/user/seo', 'UserController@seo');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile', 'HomeController@profile')->name('profile');
 Route::get('/login-as/{id}', 'HomeController@loginAs');
 Route::get('/hxb-login-as/{name}', 'HomeController@hxbLoginAs');
-Route::resource('/image', 'ImageController');
 
+//多媒体
+Route::resource('/image', 'ImageController');
+Route::resource('/video', 'VideoController');
+
+//后台
 Route::get('/admin', 'AdminController@index');
 Route::get('/admin/users', 'AdminController@users');
 
