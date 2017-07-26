@@ -22,6 +22,7 @@
     "vue": "^2.1.10"
   },
   "dependencies": {
+    "bootstrap-submenu": "^2.0.4",
     "bootstrap-tagsinput": "^0.7.1",
     "chart.js": "^2.6.0",
     "codemirror": "^5.27.2",

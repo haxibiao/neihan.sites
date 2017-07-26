@@ -1,0 +1,209 @@
+body {
+    font-family: "微软雅黑", Helvetica, Arial, sans-serif;
+}
+
+.strip_title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.top5 {
+    margin-top: 5px;
+}
+
+.top7 {
+    margin-top: 7px;
+}
+
+.top10 {
+    margin-top: 10px;
+}
+
+.top15 {
+    margin-top: 15px;
+}
+
+.top17 {
+    margin-top: 17px;
+}
+
+.top20 {
+    margin-top: 20px;
+}
+
+.top30 {
+    margin-top: 30px;
+}
+
+.top50 {
+    margin-top: 50px;
+}
+
+.right5 {
+    margin-right: 5px;
+}
+
+.right7 {
+    margin-right: 7px;
+}
+
+.right10 {
+    margin-right: 10px;
+}
+
+.right15 {
+    margin-right: 15px;
+}
+
+.right17 {
+    margin-right: 17px;
+}
+
+.right20 {
+    margin-right: 20px;
+}
+
+.right30 {
+    margin-right: 30px;
+}
+
+.right_p5 {
+    margin-right_p: 5px;
+}
+
+.right_p7 {
+    margin-right_p: 7px;
+}
+
+.right_p10 {
+    margin-right_p: 10px;
+}
+
+.right_p15 {
+    margin-right_p: 15px;
+}
+
+.right_p17 {
+    margin-right_p: 17px;
+}
+
+.right_p20 {
+    margin-right_p: 20px;
+}
+
+.right_p30 {
+    margin-right_p: 30px;
+}
+
+.left5 {
+    margin-left: 5px;
+}
+
+.left7 {
+    margin-left: 7px;
+}
+
+.left10 {
+    margin-left: 10px;
+}
+
+.left15 {
+    margin-left: 15px;
+}
+
+.left17 {
+    margin-left: 17px;
+}
+
+.left20 {
+    margin-left: 20px;
+}
+
+.left30 {
+    margin-left: 30px;
+}
+
+.bottom5 {
+    margin-bottom: 5px;
+}
+
+.bottom7 {
+    margin-bottom: 7px;
+}
+
+.bottom10 {
+    margin-bottom: 10px;
+}
+
+.bottom15 {
+    margin-bottom: 15px;
+}
+
+.bottom17 {
+    margin-bottom: 17px;
+}
+
+.bottom20 {
+    margin-bottom: 20px;
+}
+
+.bottom30 {
+    margin-bottom: 30px;
+}
+
+.border-top {
+    border-top: dashed 1px #CCCCCC;
+}
+
+.border-bottom {
+    border-bottom: dashed 1px #CCCCCC;
+}
+
+.marginBottom-0 {
+    margin-bottom: 0;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #cccccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #555;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
