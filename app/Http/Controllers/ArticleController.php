@@ -110,6 +110,9 @@ class ArticleController extends Controller
             foreach ($matches[2] as $i => $match) {
                 $img_html = $matches[0][$i];
                 $video_id = $match;
+                //dirty fix
+                $video_id = str_replace('storage/video/', '', $video_id);
+                $video_id = str_replace('/', '', $video_id);
                 $video    = Video::find($video_id);
                 if ($video) {
                     $video_html    = '<div class="row"><div class="col-md-6"><div class="embed-responsive embed-responsive-4by3"><video class="embed-responsive-item" controls poster="' . $video->cover . '"><source src="' . $video->path . '" type="video/mp4"></video></div></div></div>';
