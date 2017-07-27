@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-class ArticlesRenameHasPic extends Migration
+class ArticlesAddJson extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,7 @@ class ArticlesRenameHasPic extends Migration
     public function up()
     {
         Schema::table('articles', function (Blueprint $table) {
-            if (Schema::hasColumn('articles', 'is_has_pic')) {
-                $table->renameColumn('is_has_pic', 'has_pic');
-            }
+            $table->text('json')->nullable();
         });
     }
 
