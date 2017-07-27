@@ -91,12 +91,14 @@
                     $('<input type="hidden" name="videos[]" value="' + video_id + '">').insertBefore(image_url_el);
                 }
 
-                //更新已选配图区
-                var article_image_el = $('#article_image_template').clone();
-                article_image_el = article_image_el.insertBefore($('#article_image_template'));
-                article_image_el.find('img').attr('src', img_url);
-                article_image_el.find('input').val(img_url);
-                article_image_el.removeClass('hide');
+                //更新已选配图区,视频不算配图
+                if(!is_video){
+                    var article_image_el = $('#article_image_template').clone();
+                    article_image_el = article_image_el.insertBefore($('#article_image_template'));
+                    article_image_el.find('img').attr('src', img_url);
+                    article_image_el.find('input').val(img_url);
+                    article_image_el.removeClass('hide');
+                }
 
                 e.preventDefault();
                 return false;

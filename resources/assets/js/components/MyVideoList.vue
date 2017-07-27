@@ -9,7 +9,7 @@
       </div>
     </div>
     <div v-for="item in list" class="col-xs-4 col-md-3 top5">
-      <img :src="item.cover" alt="" class="img img-responsive" @click="select_video">
+      <img :src="item.cover" :alt="item.title" :data-video-id="item.id" class="img img-responsive" @click="select_video">
       <p class="strip_title">{{ item.title }}</p>
     </div>
   </div>
@@ -57,11 +57,13 @@ export default {
           //隐藏已选中
           $(event.target).parent().hide();
 
+          var video_id = $(event.target).attr('data-video-id');
+
           var img_url = $(event.target).attr('src');
 
           //插入编辑器
           $('.editable').summernote('insertImage', img_url,function ($video) {
-            $video.attr('data-video-cover', img_url);
+            $video.attr('data-video', video_id);
             $video.addClass('img-responsive video');
           });
 
@@ -70,15 +72,7 @@ export default {
           video_url_el.val(img_url);
           $('<input type="hidden" name="videos[]" value="' + img_url + '">').insertBefore(video_url_el);
 
-          //添加底部已选配图
-          var selected_template = $('#article_video_template');
-          if(selected_template.length){
-            var article_video_el = selected_template.clone();
-            article_video_el = article_video_el.insertBefore(selected_template);
-            article_video_el.find('img').attr('src', img_url);
-            article_video_el.find('input').val(img_url);
-            article_video_el.removeClass('hide');
-          }
+          //视频无需添加已选配图了
 
           event.preventDefault();
           return false;

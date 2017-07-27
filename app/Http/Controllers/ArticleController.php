@@ -8,6 +8,8 @@ use App\ArticleTag;
 use App\Http\Requests\ArticleRequest;
 use App\Image;
 use App\Tag;
+use App\Video;
+use App\ArticleVideo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -71,7 +73,7 @@ class ArticleController extends Controller
 
         //images
         $imgs = $request->get('images');
-        $this->save_article_images($imgs, $article);
+        $this->save_article_imgs($imgs, $article);
 
         return redirect()->to('/article/' . $article->id);
     }
@@ -102,6 +104,20 @@ class ArticleController extends Controller
         $article->save();
         $article->body = str_replace("\n", '<br/>', $article->body);
 
+        //TODO:: 现在要吧文章里的插入的视频图片,变成视频来播放 [视频的尺寸还是不完美，后面要获取到视频的尺寸才好处理, 先默认用半个页面来站住]
+        $pattern_img_video = '/<img src=\"(.*?)\" data-video\=\"(\d+)\"(.*?)>/';
+        if (preg_match_all($pattern_img_video, $article->body, $matches)) {
+            foreach ($matches[2] as $i => $match) {
+                $img_html = $matches[0][$i];
+                $video_id = $match;
+                $video    = Video::find($video_id);
+                if ($video) {
+                    $video_html    = '<div class="row"><div class="col-md-6"><div class="embed-responsive embed-responsive-4by3"><video class="embed-responsive-item" controls poster="' . $video->cover . '"><source src="' . $video->path . '" type="video/mp4"></video></div></div></div>';
+                    $article->body = str_replace($img_html, $video_html, $article->body);
+                }
+            }
+        }
+
         $related_articles = Article::where('category_id', $article->category_id)
             ->where('id', '<>', $article->id)
             ->orderBy('id', 'desc')
@@ -125,7 +141,11 @@ class ArticleController extends Controller
             $pattern_img = '/<img src=\"(.*?)\"/';
             if (preg_match_all($pattern_img, $article->body, $matches)) {
                 $imgs = $matches[1];
-                $this->resave_article_imgs($imgs, $article);
+                $this->save_article_imgs($imgs, $article);
+                $article = Article::with('images')->findOrFail($id);
+            }
+        } else {
+            if ($this->clear_article_imgs($article)) {
                 $article = Article::with('images')->findOrFail($id);
             }
         }
@@ -166,7 +186,7 @@ class ArticleController extends Controller
 
         //images
         $imgs = $request->get('images');
-        $this->save_article_images($imgs, $article);
+        $this->save_article_imgs($imgs, $article);
 
         return redirect()->to('/article/' . $article->id);
     }
@@ -207,13 +227,14 @@ class ArticleController extends Controller
         }
     }
 
-    public function save_article_images($imgs, $article)
+    public function clear_article_imgs($article)
     {
         $article_with_images = Article::with('images')->find($article->id);
         $images              = $article_with_images->images;
 
         // remove unused images relationship ...
-        $pattern_img = '/<img(.*?)>/';
+        $cleared_somthing = false;
+        $pattern_img      = '/<img(.*?)>/';
         preg_match_all($pattern_img, $article->body, $matches);
         if (!empty($matches)) {
             foreach ($images as $image) {
@@ -232,26 +253,30 @@ class ArticleController extends Controller
                         $image->count = $image->count - 1;
                         $image->save();
                         $article_image->delete();
+
+                        $cleared_somthing = true;
                     }
                 }
             }
         }
-
-        if (is_array($imgs)) {
-            $this->resave_article_imgs($imgs, $article);
-        }
+        return $cleared_somthing;
     }
 
-    public function resave_article_imgs($imgs, $article)
+    public function save_article_imgs($imgs, $article)
     {
+        if (!is_array($imgs)) {
+            return;
+        }
         foreach ($imgs as $img) {
-            $path  = parse_url($img)['path'];
-            $path  = str_replace('.small.jpg', '', $path);
-            $image = Image::firstOrNew([
+            $path      = parse_url($img)['path'];
+            $extension = pathinfo($path, PATHINFO_EXTENSION);
+            $path      = str_replace('.small.' . $extension, '', $path);
+            $image     = Image::firstOrNew([
                 'path' => $path,
             ]);
-            $image->count = $image->count + 1;
-            $image->title = $article->title;
+            $image->path_small = $path . '.small.' . $extension;
+            $image->count      = $image->count + 1;
+            $image->title      = $article->title;
             $image->save();
 
             $article_image = ArticleImage::firstOrNew([
