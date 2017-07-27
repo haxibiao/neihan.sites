@@ -24,7 +24,11 @@
         
         <p class="pull-right">
             @if(Auth::check() && Auth::user()->is_editor )
-            <a href="/article/{{ $article->id }}?weixin=1" class="btn btn-success">微信模式</a>
+              @if(Request::get('weixin'))
+                <a href="/article/{{ $article->id }}" class="btn btn-danger">返回正常模式</a>
+              @else
+                <a href="/article/{{ $article->id }}?weixin=1" class="btn btn-success">微信发布模式</a>
+              @endif
             @endif
             @if(Auth::check() && ((Auth::user()->id == $article->user_id) || Auth::user()->is_admin ))
               <a href="/article/{{ $article->id }}/edit" class="btn btn-danger">编辑文章</a>
@@ -58,19 +62,29 @@
           @endif
         </p>
         
-        @if(Agent::match('micromessenger') || Request::get('weixin'))     
+        @if(Request::get('weixin'))
         <div class="alert alert-success">
           <strong>亲爱的微信用户，您好!</strong> 
             <p>
               我们的内容您感兴趣吗？微信里长按识别一下,关注我们吧
             </p>
-            <img src="/qrcode/{{ env('APP_DOMAIN') }}.jpg" alt="" class="img img-responsive">
+            <img src="/qrcode/{{ get_site_domain() }}.jpg" alt="" class="img img-responsive">
+        </div>
+        <div class="alert alert-info">
+          <strong>想看小编的更多文章吗?</strong> 
+            <p>
+              点左下角的 <strong style="color:red">"阅读全文"</strong>, 可以和本站更多小编,网友互动...
+            </p>
+            <p>
+               ￬ ￬ ￬
+            </p>            
         </div>
         @endif
       </div>
     </div>
   </div>
 
+  @if(empty(Request::get('weixin')))
   <div class="row">
     <div class="col-md-3">
       <div class="panel panel-default">
@@ -83,10 +97,13 @@
       </div>
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">感兴趣吗？扫一下关注吧</h3>
+          <h3 class="panel-title">感兴趣吗？微信扫一下关注吧</h3>
         </div>
         <div class="panel-body">
            <img src="/qrcode/{{ env('APP_DOMAIN') }}.jpg" alt="" class="img img-responsive">
+           <p>
+             @if(Agent::match('micromessenger')) 微信里阅读的朋友,您可以长按二维码,然后识别就可以关注了 @endif
+           </p>
         </div>
       </div>
     </div>
@@ -104,5 +121,6 @@
       </div>
     </div>
   </div>
+  @endif
 </div>
 @endsection

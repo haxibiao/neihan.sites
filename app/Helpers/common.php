@@ -24,3 +24,8 @@ function get_domain()
     $domain = str_replace('www.', '', $domain);
     return $domain;
 }
+
+function get_site_domain()
+{
+    return env('APP_DOMAIN', get_domain());
+}
