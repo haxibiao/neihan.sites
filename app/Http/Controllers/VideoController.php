@@ -215,7 +215,7 @@ class VideoController extends Controller
             $files[] = [
                 'url'          => base_uri() . $video->path,
                 'thumbnailUrl' => base_uri() . $video->cover,
-                'name'         => $path,
+                'name'         => $filename,
                 "type"         => 'video/mp4',
                 "size"         => filesize($full_path),
                 'deleteUrl'    => url('/video?d=' . $video->id),

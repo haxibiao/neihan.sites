@@ -67,6 +67,7 @@
                     img_url = img_url.replace('.small.gif','');
                 }　else {
                     video_id = $(this).parent().attr('title').replace('.mp4','');
+                    video_id = video_id.replace('storage/video', '' ,video_id);
                 }
 
                 //插入图片到编辑器
