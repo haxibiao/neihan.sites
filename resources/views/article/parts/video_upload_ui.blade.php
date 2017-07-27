@@ -1,5 +1,5 @@
 <div class="form-group top30">
-    <label>视频 (注意光标需要先保证在编辑器中，再来这里加入视频)</label>
+    <label>视频 (注意光标需要先保证在编辑器中，再来这里点要加入视频，新上传，最好回去正文点下插入点光标!)</label>
     
     <!-- The file upload form used as target for the file upload widget -->
     <form id="fileupload_video" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data">

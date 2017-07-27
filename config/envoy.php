@@ -38,7 +38,7 @@ php artisan migrate --seed --force
 EOT;
 
 $run_commands = <<<EOT
-php artisan image:title
+
 EOT;
 
 $cache_clear = <<<EOT

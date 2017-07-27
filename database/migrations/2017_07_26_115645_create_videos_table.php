@@ -13,8 +13,6 @@ class CreateVideosTable extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('videos');
-
         Schema::create('videos', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');

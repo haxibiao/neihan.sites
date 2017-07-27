@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\ArticleImage;
 use App\ArticleTag;
+use App\ArticleVideo;
 use App\Http\Requests\ArticleRequest;
 use App\Image;
 use App\Tag;
 use App\Video;
-use App\ArticleVideo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -212,7 +212,12 @@ class ArticleController extends Controller
         $videos = $request->get('videos');
         if (is_array($videos)) {
             foreach ($videos as $video_id) {
-                $video = Video::find($video_id);
+
+                //dirty fix
+                $video_id = str_replace('storage/video/', '', $video_id);
+                $video_id = str_replace('/', '', $video_id);
+
+                $video    = Video::find($video_id);
                 if ($video) {
                     $video->count = $video->count + 1;
                     $video->title = $article->title;
