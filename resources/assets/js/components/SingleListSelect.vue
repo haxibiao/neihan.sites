@@ -49,10 +49,7 @@ export default {
   	},
   	addToBody: function(key) {
 		//插入编辑器
-      $('.editable').summernote('pasteHTML', '<h1 class="box-related">关联已插入这里!!!</h1>');
-      $('.editable').summernote('pasteHTML', '<single-list article-id="'+this.articleId+'" data-key="'+ key +'"/>');
-      // $('single-list').hide().show(0);
-      // $(window).trigger('resize');
+      $('.editable').summernote('pasteHTML', '<single-list article-id="'+this.articleId+'" data-key="'+ key +'"/><h1 class="box-related">关联已插入这里!!!</h1>');
   	}
   },
 

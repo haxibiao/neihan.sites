@@ -139,7 +139,7 @@ class ArticleController extends Controller
     public function edit($id)
     {
         $article = Article::with('images')->findOrFail($id);
-        $article->body = str_replace('<single-list', '<h1 class="box-related">关联已插入这里!!!</h1><single-list', $article->body);
+        $article->body = str_replace('</single-list>', '</single-list><h1 class="box-related">关联已插入这里!!!</h1>', $article->body);
         if ($article->images->isEmpty()) {
             //fix img relation missing
             $pattern_img = '/<img src=\"(.*?)\"/';
