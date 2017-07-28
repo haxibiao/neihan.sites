@@ -23,7 +23,7 @@ class VideoController extends Controller
             return $this->jsonIndex($request);
         }
 
-        $videos = Video::orderBy('id', 'desc')->paginate(10);
+        $videos = Video::with('user')->orderBy('id', 'desc')->paginate(10);
         return view('video.index')->withVideos($videos);
     }
 
@@ -78,7 +78,7 @@ class VideoController extends Controller
      */
     public function show($id)
     {
-        $video = Video::findOrFail($id);
+        $video = Video::with('user')->findOrFail($id);
         return view('video.show')->withVideo($video);
     }
 

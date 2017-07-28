@@ -17,7 +17,13 @@ class Video extends Model
         'duration',
     ];
 
-    public function articles() {
-    	return $this->belongsToMany('App\Article');
+    public function articles()
+    {
+        return $this->belongsToMany('App\Article');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(\App\User::class);
     }
 }

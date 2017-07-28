@@ -38,6 +38,12 @@
                     <h4 class="media-heading">
                         {{ $video->title }}
                     </h4>
+                    <p>
+                        用户:{{ $video->user->name }}
+                    </p>
+                    <p>
+                        最后修改时间: {{ diffForHumansCN($video->updated_at) }}
+                    </p>
                 </div>
             </div>
             @endforeach
