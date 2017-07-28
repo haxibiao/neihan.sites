@@ -7,7 +7,7 @@ $(function() {
         dataType: 'json',
         autoUpload: true,
         acceptFileTypes: /(\.|\/)(mp4)$/i,
-        maxFileSize: 60000000, // 60 MB
+        maxFileSize: 100000000, // 100 MB
         disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
         previewMaxWidth: 300,
         previewMaxHeight: 200,
