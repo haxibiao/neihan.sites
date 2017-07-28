@@ -56,6 +56,8 @@ class ArticleController extends Controller
     {
         $article = new Article($request->all());
 
+        $article->body = str_replace('<h1 class="box-related">关联已插入这里!!!</h1>', '', $article->body);
+
         if ($request->get('primary_image')) {
             $article->image_url = $request->get('primary_image');
         } else {
@@ -137,6 +139,7 @@ class ArticleController extends Controller
     public function edit($id)
     {
         $article = Article::with('images')->findOrFail($id);
+        $article->body = str_replace('<single-list', '<h1 class="box-related">关联已插入这里!!!</h1><single-list', $article->body);
         if ($article->images->isEmpty()) {
             //fix img relation missing
             $pattern_img = '/<img src=\"(.*?)\"/';
@@ -167,6 +170,8 @@ class ArticleController extends Controller
 
         //编辑文章的时候,可能没有插入图片,字段可能空,就会删除图片地址....
         $article->update($request->except('image_url'));
+        $article->body = str_replace('<h1 class="box-related">关联已插入这里!!!</h1>', '', $article->body);
+
         if ($request->get('primary_image')) {
             $article->image_url = $request->get('primary_image');
         } else {

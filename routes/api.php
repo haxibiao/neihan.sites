@@ -3,9 +3,9 @@
 use App\Article;
 use App\Category;
 use App\Image;
-use App\Video;
 use App\Traffic;
 use App\User;
+use App\Video;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -22,6 +22,14 @@ use Illuminate\Http\Request;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('/articles', function (Request $request) {
+    $query = Article::orderBy('id', 'desc');
+    if ($request->get('query')) {
+        $query = $query->where('title', 'like', '%' . $request->get("query") . '%');
+    }
+    return $query->paginate(12);
 });
 
 Route::get('/keywords', function () {
@@ -74,8 +82,81 @@ Route::get('/user/{id}/videos', function (Request $request, $id) {
     }
     $videos = $query->paginate(12);
     foreach ($videos as $video) {
-        $video->path       = get_img($video->path);
+        $video->path  = get_img($video->path);
         $video->cover = get_img($video->cover);
     }
     return $videos;
+});
+
+//保存文章相关片段数据
+Route::post('/article/{id}/json', function (Request $request, $id) {
+    $article = Article::findOrFail($id);
+    $data    = json_decode($article->json);
+    if (empty($data)) {
+        $data = [];
+    }
+    $data[]        = $request->all();
+    $article->json = json_encode($data);
+    $article->save();
+
+    return $article;
+});
+
+//获取文章所有相关片段数据
+Route::get('/article/{id}/lists', function (Request $request, $id) {
+    $article   = Article::findOrFail($id);
+    $lists     = json_decode($article->json, true);
+    // return $lists;
+    $lists_new = [];
+    foreach ($lists as $key => $data) {
+        if (!is_array($data)) {
+            $data = [];
+        }
+        $items = [];
+        if (!empty($data['aids']) && is_array($data['aids'])) {
+            foreach ($data['aids'] as $aid) {
+                $article = Article::find($aid);
+                if ($article) {
+                    $items[] = [
+                        'id'        => $article->id,
+                        'title'     => $article->title,
+                        'image_url' => get_img($article->image_url),
+                    ];
+                }
+            }
+        }
+        if (!empty($items)) {
+            $data['items']   = $items;
+            $lists_new[$key] = $data;
+        }
+    }
+    return $lists_new;
+});
+
+//获取文章相关片段数据
+Route::get('/article/{id}/{key}', function ($id, $key) {
+    $article = Article::findOrFail($id);
+    $json    = json_decode($article->json, true);
+    if (array_key_exists($key, $json)) {
+        $data = $json[$key];
+        if (empty($data['type']) || $data['type'] == 'single_list') {
+            $items = [];
+            if (is_array($data['aids'])) {
+                foreach ($data['aids'] as $aid) {
+                    $article = Article::find($aid);
+                    if ($article) {
+                        $items[] = [
+                            'id'        => $article->id,
+                            'title'     => $article->title,
+                            'image_url' => get_img($article->image_url),
+                        ];
+                    }
+                }
+            }
+            $data['items'] = $items;
+        }
+
+        return $data;
+    }
+    return null;
 });

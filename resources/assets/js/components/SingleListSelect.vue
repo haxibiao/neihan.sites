@@ -1,0 +1,68 @@
+<template>
+<div class="row top10">
+	<div v-if="!lists">
+		您还有没有创建, 先去左边创建...
+	</div>
+	<div v-else v-for="(data, key) in lists" :class="data.col">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="pull-right">
+					<button type="button" class="btn btn-success"　@click="addToBody(key)">添加到正文</button>
+				</div>
+				<h3 class="panel-title" style="line-height: 30px">{{ data.title }}</h3>
+			</div>
+			<div class="panel-body">
+				<div class="col-xs-6 col-sm-4 col-md-3" v-for="item in data.items">
+					<a :href="getUrl(item.id)"><img :src="item.image_url" class="img img-responsive"></a>
+					<p class="strip_title">
+						{{ item.title }}
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</template>
+
+<script>
+export default {
+
+  name: 'SingleListSelect',
+
+  props: ['articleId'],
+
+  mounted: function() {
+  	this.loadData();
+  },
+
+  methods: {
+  	getUrl: function(id) {
+  		return '/article/' + id;
+  	},
+  	loadData: function() {
+  		console.log('load data ..');
+  		var vm = this;
+  		this.$http.get('/api/article/' + this.articleId + '/lists').then(function(response){
+  			vm.lists = response.data;
+  			console.log(response.data);
+  		});
+  	},
+  	addToBody: function(key) {
+		//插入编辑器
+      $('.editable').summernote('pasteHTML', '<h1 class="box-related">关联已插入这里!!!</h1>');
+      $('.editable').summernote('pasteHTML', '<single-list article-id="'+this.articleId+'" data-key="'+ key +'"/>');
+      // $('single-list').hide().show(0);
+      // $(window).trigger('resize');
+  	}
+  },
+
+  data () {
+    return {
+    	lists: null
+    };
+  }
+};
+</script>
+
+<style lang="css" scoped>
+</style>

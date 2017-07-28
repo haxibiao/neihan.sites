@@ -120,7 +120,8 @@
             ['fontsize', ['fontsize']],
             ['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
-            ['height', ['height']]
+            ['height', ['height']],
+            ['misc',['codeview', 'undo','redo','fullscreen']]
           ]
       });
 
