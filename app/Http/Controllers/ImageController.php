@@ -10,6 +10,47 @@ class ImageController extends Controller
 {
     public function index(Request $request)
     {
+        if ($request->ajax()) {
+            return $this->jsonIndex($request);
+        }
+    }
+
+    public function create()
+    {
+        return 'not imple...';
+    }
+
+    public function store(Request $request)
+    {
+        ini_set('memory_limit', '256M');
+
+        if ($request->ajax()) {
+            return $this->jsonStore($request);
+        }
+    }
+
+    public function show($id)
+    {
+        return 'not imple...';
+    }
+
+    public function edit($id)
+    {
+        //
+    }
+
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    public function destroy($deleteUrl)
+    {
+        return 'deleting ... ' . $deleteUrl;
+    }
+
+    public function jsonIndex($request)
+    {
         $data      = [];
         $delete_id = $request->get('d');
         if (!empty($delete_id)) {
@@ -36,7 +77,7 @@ class ImageController extends Controller
                 $user_id = Auth::check() ? Auth::user()->id : 0;
                 $query   = $query->where('user_id', $user_id);
             }
-            $images  = $query->get();            
+            $images = $query->get();
             foreach ($images as $image) {
                 $extension = pathinfo(public_path($image->path), PATHINFO_EXTENSION);
                 $filename  = pathinfo($image->path)['basename'];
@@ -55,29 +96,23 @@ class ImageController extends Controller
         return $data;
     }
 
-    public function create()
+    public function jsonStore($request)
     {
-        return 'not imple...';
-    }
-
-    public function store(Request $request)
-    {
-        ini_set('memory_limit', '256M');
-
         $images      = $request->file('files');
-        $image_index = get_cached_index(Image::max('id'));        
+        $image_index = get_cached_index(Image::max('id'));
         $files       = [];
         foreach ($images as $file) {
             $extension = $file->getClientOriginalExtension();
-            $filename = $image_index . '.' . $extension;
-            $path     = '/img/' . $filename;
+            $filename  = $file->getClientOriginalName() . '-' . $image_index . '.' . $extension;
+            $path      = '/img/' . $filename;
 
-            $image          = new Image();
+            $image = new Image();
+            // $image->title   = $file->getClientOriginalName();
             $image->user_id = Auth::user()->id;
             $image->path    = $path;
 
             $local_dir = public_path('img/');
-            $full_path  = $local_dir . $filename;
+            $full_path = $local_dir . $filename;
 
             $img = \ImageMaker::make($file->path());
             if ($extension != 'gif') {
@@ -135,25 +170,5 @@ class ImageController extends Controller
         $data['files'] = $files;
 
         return $data;
-    }
-
-    public function show($id)
-    {
-        return 'not imple...';
-    }
-
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($deleteUrl)
-    {
-        return 'deleting ... ' . $deleteUrl;
     }
 }

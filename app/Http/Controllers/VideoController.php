@@ -23,7 +23,7 @@ class VideoController extends Controller
             return $this->jsonIndex($request);
         }
 
-        $videos = Video::paginate(10);
+        $videos = Video::orderBy('id', 'desc')->paginate(10);
         return view('video.index')->withVideos($videos);
     }
 
@@ -34,7 +34,7 @@ class VideoController extends Controller
      */
     public function create()
     {
-        //
+        return view('video.create');
     }
 
     /**
@@ -51,6 +51,23 @@ class VideoController extends Controller
             return $this->jsonStore($request);
         }
 
+        $video = new Video($request->all());
+        if (empty($video->title)) {
+            //自动获取视频文件做标题
+            $filename     = pathinfo(parse_url($video->path)['path'])['filename'];
+            $filename     = str_replace('.flv', '', $filename);
+            $video->title = $filename;
+        }
+        $video->save();
+
+        //截取图片
+        $video_path   = $video->path;
+        $video->cover = '/storage/video/thumbnail_' . $video->id . '.jpg';
+        $cover        = public_path($video->cover);
+        $this->make_cover($video_path, $cover);
+
+        $video->save();
+        return redirect()->to('/video');
     }
 
     /**
@@ -87,24 +104,33 @@ class VideoController extends Controller
     public function update(Request $request, $id)
     {
         $video = Video::findOrFail($id);
+        $video->update($request->all());
 
-        //保存mp4
-        $file      = $request->file('video');
-        $extension = $file->getClientOriginalExtension();
-        $filename  = $video->id . '.' . $extension;
-        $path      = '/storage/video/' . $filename;
-        $local_dir = public_path('/storage/video/');
-        $video_path = $local_dir . $filename;
-        $file->move($local_dir, $filename);
+        $video_path = $video->path;
+        if (!starts_with($video_path, 'http')) {
+            //保存mp4
+            $file = $request->file('video');
+            if ($file) {
+                $extension  = $file->getClientOriginalExtension();
+                $filename   = $video->id . '.' . $extension;
+                $path       = '/storage/video/' . $filename;
+                $local_dir  = public_path('/storage/video/');
+                $video_path = $local_dir . $filename;
+                $file->move($local_dir, $filename);
+            }
+        } else {
+            if (empty($video->title)) {
+                //自动获取视频文件做标题
+                $filename     = pathinfo(parse_url($video->path)['path'])['filename'];
+                $filename     = str_replace('.flv', '', $filename);
+                $video->title = $filename;
+            }
+        }
 
         //截取图片
         $video->cover = '/storage/video/thumbnail_' . $video->id . '.jpg';
         $cover        = public_path($video->cover);
-        $second       = rand(1, 10); //随机截取１－１０秒的屏幕
-        $cmd          = "ffmpeg -i $video_path -deinterlace -an -s 300x200 -ss $second -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover 2>&1";
-        $do           = `$cmd`;
-
-        $video->update($request->all());
+        $this->make_cover($video_path, $cover);
 
         $video->save();
 
@@ -144,7 +170,7 @@ class VideoController extends Controller
             }
             $data[$cover] = true;
         } else {
-            //记载当前用户已上传，未使用的
+            //加载当前用户已上传，未使用的
             $query = Video::where('status', '>=', 0)->where('count', 0);
             if (Auth::check()) {
                 $user_id = Auth::check() ? Auth::user()->id : 0;
@@ -181,7 +207,7 @@ class VideoController extends Controller
         $files = [];
         foreach ($videos as $file) {
             $extension = $file->getClientOriginalExtension();
-            $filename  = $video_index . '.' . $extension;
+            $filename  = $file->getClientOriginalName() . '-' . $video_index . '.' . $extension;
             $path      = '/storage/video/' . $filename;
             $local_dir = public_path('/storage/video/');
             $full_path = $local_dir . $filename;
@@ -191,6 +217,7 @@ class VideoController extends Controller
 
             //save video item
             $video          = new Video();
+            $video->title   = $file->getClientOriginalName();
             $video->user_id = Auth::user()->id;
             $video->path    = $path;
             $video->save();
@@ -198,7 +225,7 @@ class VideoController extends Controller
             //get duration
             $video_path = $full_path;
             $cmd        = "ffmpeg -i $video_path 2>&1";
-            $second     = 1;
+            $second     = rand(15, 30);
             // if (preg_match('/Duration: ((\d+):(\d+):(\d+))/s', `$cmd`, $time)) {
             //     $total = ($time[2] * 3600) + ($time[3] * 60) + $time[4];
             //     $video->duration = $total;
@@ -226,5 +253,16 @@ class VideoController extends Controller
         $data['files'] = $files;
 
         return $data;
+    }
+
+    public function make_cover($video_path, $cover)
+    {
+        $video_dir = public_path('/storage/video');
+        if (!is_dir($video_dir)) {
+            mkdir($video_dir, 0777, 1);
+        }
+        $second = rand(14, 18);
+        $cmd    = "ffmpeg -i $video_path -deinterlace -an -s 300x200 -ss $second -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover 2>&1";
+        $do     = `$cmd`;
     }
 }

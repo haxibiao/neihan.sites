@@ -110,8 +110,8 @@ class ArticleController extends Controller
             foreach ($matches[2] as $i => $match) {
                 $img_html = $matches[0][$i];
                 $video_id = $match;
-                
-                $video    = Video::find($video_id);
+
+                $video = Video::find($video_id);
                 if ($video) {
                     $video_html    = '<div class="row"><div class="col-md-6"><div class="embed-responsive embed-responsive-4by3"><video class="embed-responsive-item" controls poster="' . $video->cover . '"><source src="' . $video->path . '" type="video/mp4"></video></div></div></div>';
                     $article->body = str_replace($img_html, $video_html, $article->body);
@@ -213,7 +213,7 @@ class ArticleController extends Controller
         $videos = $request->get('videos');
         if (is_array($videos)) {
             foreach ($videos as $video_id) {
-                $video    = Video::find($video_id);
+                $video = Video::find($video_id);
                 if ($video) {
                     $video->count = $video->count + 1;
                     $video->title = $article->title;
