@@ -13,6 +13,9 @@ class ImageController extends Controller
         if ($request->ajax()) {
             return $this->jsonIndex($request);
         }
+
+        $images = image::with('user')->orderBy('updated_at', 'desc')->paginate(10);
+        return view('image.index')->withImages($images);
     }
 
     public function create()

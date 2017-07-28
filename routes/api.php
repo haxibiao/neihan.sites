@@ -54,7 +54,7 @@ Route::get('/user/by-name/{name}', function (Request $request, $name) {
 
 //获取用户上传的图片，可以按标题搜索
 Route::get('/user/{id}/images', function (Request $request, $id) {
-    $query = Image::where('user_id', $id)->where('count', '>', 0)->orderBy('id', 'desc');
+    $query = Image::where('user_id', $id)->where('count', '>', 0)->orderBy('updated_at', 'desc');
     if ($request->get('title')) {
         $query = $query->where('title', 'like', '%' . $request->get('title') . '%');
     }
@@ -68,7 +68,7 @@ Route::get('/user/{id}/images', function (Request $request, $id) {
 
 //获取用户上传的视频，可以按标题搜索
 Route::get('/user/{id}/videos', function (Request $request, $id) {
-    $query = Video::where('user_id', $id)->where('count', '>=', 0)->orderBy('id', 'desc');
+    $query = Video::where('user_id', $id)->where('count', '>=', 0)->orderBy('updated_at', 'desc');
     if ($request->get('title')) {
         $query = $query->where('title', 'like', '%' . $request->get('title') . '%');
     }

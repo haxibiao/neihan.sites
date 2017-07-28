@@ -1,7 +1,7 @@
 
 @include('article.parts.upload_ui_templates')
 
-<div class="panel panel-default">
+<div class="panel panel-default　media-panel">
     <div class="panel-heading">
         <h3 class="panel-title">多媒体</h3>
     </div>
@@ -50,3 +50,14 @@
         </ul>
     </div>
 </div>
+
+@push('js')
+    <script type="text/javascript">
+        $(function() {
+            $('button').click(function() {
+                console.log('save editor range ...');
+                $('.editable').summernote('saveRange');
+            });
+        });
+    </script>
+@endpush

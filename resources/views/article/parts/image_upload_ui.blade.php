@@ -52,11 +52,16 @@
     <script type="text/javascript">
 
         window.article_image_uploaded = function(){
+
             $('.preview img').off('click');
             $('.preview img').each(function() {
                 $(this).addClass('img-responsive');
             });
             $('.preview img').click(function(e) {
+            
+                console.log('restoreRange editor range ...');
+                $('.editable').summernote('restoreRange');
+            
                 $(this).parent().parent().parent().parent().hide();
                 var is_video = $(this).parent().attr('title').indexOf('.mp4') !== -1;
                 var img_url = $(this).attr('src');

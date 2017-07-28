@@ -54,6 +54,10 @@ export default {
   		});
   	},
     select_video: function(event) {
+            
+          console.log('restoreRange editor range ...');
+          $('.editable').summernote('restoreRange');
+          
           //隐藏已选中
           $(event.target).parent().hide();
 
