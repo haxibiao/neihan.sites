@@ -4,6 +4,19 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 
+function get_items_col($items)
+{
+    if (is_array($items)) {
+        if (count($items) >= 4) {
+            return 'col-sm-4 col-md-3';
+        }
+        if (count($items) == 3) {
+            return 'col-sm-4';
+        }
+    }
+    return '';
+}
+
 function get_cached_index($max_id, $type = 'image')
 {
     if (empty(Cache::get($type . '_index'))) {

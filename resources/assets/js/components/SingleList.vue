@@ -9,7 +9,7 @@
 			<h3 class="panel-title">{{ data.title }}</h3>
 		</div>
 		<div class="panel-body">
-			<div class="col-xs-6 col-sm-4 col-md-3" v-for="item in data.items">
+			<div :class="'col-xs-6 ' + get_items_col" v-for="item in data.items">
 				<a :href="getUrl(item.id)"><img :src="item.image_url" class="img img-responsive"></a>
 				<p class="strip_title">
 					{{ item.title }}
@@ -42,7 +42,16 @@ export default {
   			return true;
   		}
   		return false;
-  	}
+  	},
+    get_items_col: function() {
+      if(this.data.items.length >= 4) {
+        return 'col-sm-4 col-md-3';
+      }
+      if(this.data.items.length == 3) {
+        return 'col-sm-4';
+      }
+      return '';
+    }
   },
 
   methods: {

@@ -12,8 +12,8 @@
 				<h3 class="panel-title" style="line-height: 30px">{{ data.title }}</h3>
 			</div>
 			<div class="panel-body">
-				<div class="col-xs-6 col-sm-4 col-md-3" v-for="item in data.items">
-					<a :href="getUrl(item.id)"><img :src="item.image_url" class="img img-responsive"></a>
+				<div :class="'col-xs-6 ' + get_items_col(data)" v-for="item in data.items">
+					<a :href="getUrl(item.id)" :title="item.title"><img :src="item.image_url" class="img img-responsive"></a>
 					<p class="strip_title">
 						{{ item.title }}
 					</p>
@@ -38,7 +38,19 @@ export default {
   	this.loadData();
   },
 
+  computed: {
+  },
+
   methods: {
+    get_items_col: function(data) {
+      if(data.items.length >= 4) {
+        return 'col-sm-4 col-md-3';
+      }
+      if(data.items.length == 3) {
+        return 'col-sm-4';
+      }
+      return '';
+    },
   	getUrl: function(id) {
   		return '/article/' + id;
   	},

@@ -10,8 +10,8 @@
 					<div v-if="!data.items">
 						下方搜索文章，　点 ＋ 加入文章...
 					</div>
-					<div v-else class="col-xs-6 col-sm-4 col-md-3" v-for="item in data.items">
-						<a :href="getUrl(item.id)"><img :src="item.image_url" class="img img-responsive"></a>
+					<div v-else :class="'col-xs-6 ' + get_items_col" v-for="item in data.items">
+						<img :src="item.image_url" class="img img-responsive" @click="deleteItem(item)">
 						<p class="strip_title">
 							{{ item.title }}
 						</p>
@@ -65,6 +65,18 @@ export default {
   	this.loadData();
   },
 
+  computed: {
+    get_items_col: function() {
+      if(this.data.items.length >= 4) {
+        return 'col-sm-4 col-md-3';
+      }
+      if(this.data.items.length == 3) {
+        return 'col-sm-4';
+      }
+      return '';
+    }
+  },
+
   methods: {
   	loadData: function() {
   		var api_url  = '/api/articles';
@@ -100,6 +112,12 @@ export default {
   			image_url: item.image_url,
   		});
   	},
+    deleteItem: function(item) {
+      var index = this.data.aids.indexOf(item.id);
+      this.data.aids.splice(index,1);
+      index = this.data.items.indexOf(item);
+      this.data.items.splice(index,1);
+    },
   	saveCollection: function() {
   		if(!(this.data.title && this.data.aids.length)) {
   			return ;
