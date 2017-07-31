@@ -19,6 +19,9 @@
 					</p>
 				</div>
 			</div>
+      <div class="panel-footer">
+        <button type="button" class="btn btn-danger"　@click="deleteCollection(key)">删除</button>
+      </div>
 		</div>
 	</div>
 </div>
@@ -40,7 +43,6 @@ export default {
   		return '/article/' + id;
   	},
   	loadData: function() {
-  		console.log('load data ..');
   		var vm = this;
   		this.$http.get('/api/article/' + this.articleId + '/lists').then(function(response){
   			vm.lists = response.data;
@@ -50,7 +52,13 @@ export default {
   	addToBody: function(key) {
 		//插入编辑器
       $('.editable').summernote('pasteHTML', '<single-list article-id="'+this.articleId+'" data-key="'+ key +'"/><h1 class="box-related">关联已插入这里!!!</h1>');
-  	}
+  	},
+    deleteCollection: function(key) {
+      var vm = this;
+      this.$http.get('/api/article/' + this.articleId + '/del-' + key).then(function(response){
+        vm.lists.splice(key,1);
+      });
+    }
   },
 
   data () {

@@ -106,6 +106,8 @@ class ArticleController extends Controller
         $article->save();
         $article->body = str_replace("\n", '<br/>', $article->body);
 
+        $article->body = str_replace(' style=""', '', $article->body);
+
         //TODO:: 现在要吧文章里的插入的视频图片,变成视频来播放 [视频的尺寸还是不完美，后面要获取到视频的尺寸才好处理, 先默认用半个页面来站住]
         $pattern_img_video = '/<img src=\"([^"]*?)\" data-video\=\"(\d+)\" ([^>]*?)>/iu';
         if (preg_match_all($pattern_img_video, $article->body, $matches)) {

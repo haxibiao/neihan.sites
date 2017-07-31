@@ -103,6 +103,27 @@ Route::post('/article/{id}/json', function (Request $request, $id) {
     return $article;
 });
 
+//删除文章相关片段数据
+Route::get('/article/{id}/del-{key}', function (Request $request, $id, $key) {
+    $article = Article::findOrFail($id);
+    $data    = json_decode($article->json);
+    if (empty($data)) {
+        $data = [];
+    }
+    $data_new = [];
+    foreach($data as $k => $list) {
+        if($k == $key) {
+            continue;
+        }
+        $data_new[] = $list; 
+    }
+    
+    $article->json = json_encode($data_new);
+    $article->save();
+
+    return $data_new;
+});
+
 //获取文章所有相关片段数据
 Route::get('/article/{id}/lists', function (Request $request, $id) {
     $article   = Article::findOrFail($id);

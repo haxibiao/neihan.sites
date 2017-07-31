@@ -110,7 +110,6 @@ export default {
   			title: this.data.title,
   			aids: this.data.aids
   		};
-  		console.log(postBody);
   		this.$http.post('/api/article/' + this.articleId + '/json', postBody).then(function(response) {
   			console.log(response.data);
   			$('#list_select_link')[0].click();

@@ -41,18 +41,6 @@ export default {
         vm.list = response.data.data;
       });
     },
-  	loadMore: function() {
-  		var vm = this;
-      var $api_url = '/api/user/' + this.user_id + '/videos?page='+this.currentPage;
-      if(this.title) {
-        $api_url = $api_url + '&title='+this.title;
-      }
-  		this.$http.get($api_url)
-  		.then(function(response) {
-  			vm.list = vm.list.concat(response.data.data);
-  			vm.currentPage ++;
-  		});
-  	},
     select_video: function(event) {
             
           console.log('restoreRange editor range ...');
@@ -60,9 +48,7 @@ export default {
           
           //隐藏已选中
           $(event.target).parent().hide();
-
           var video_id = $(event.target).attr('data-video-id');
-
           var img_url = $(event.target).attr('src');
 
           //插入编辑器
@@ -77,7 +63,6 @@ export default {
           $('<input type="hidden" name="videos[]" value="' + img_url + '">').insertBefore(video_url_el);
 
           //视频无需添加已选配图了
-
           event.preventDefault();
           return false;
     }
