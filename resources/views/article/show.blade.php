@@ -84,6 +84,30 @@
     </div>
   </div>
 
+  @if(!empty($data['json_lists']))
+  <div class="row">
+      @foreach($data['json_lists'] as $list)
+      <div class="{{ $list['col'] }}">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            {{ $list['title'] }}
+          </div>
+          <div class="panel-body">
+          @foreach($list['items'] as $item)
+            <div class="col-xs-6 col-sm-4 col-md-3">
+              <a href="/article/{{ $item['id'] }}"><img src="{{ get_img($item['image_url']) }}" class="img img-responsive"></a>
+              <p class="strip_title">
+                {{ $item['title'] }}
+              </p>
+            </div>
+          @endforeach
+          </div>
+        </div>
+      </div>
+      @endforeach
+  </div>
+  @endif
+
   @if(empty(Request::get('weixin')))
   <div class="row">
     <div class="col-md-3">
@@ -110,13 +134,12 @@
     <div class="col-md-9">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">相关推荐</h3>
+          <h3 class="panel-title">同类文章</h3>
         </div>
         <div class="panel-body">
-          @foreach($related_articles as $article) 
+          @foreach($data['related'] as $article) 
             @include('article.parts.article_item')
-          @endforeach
-          
+          @endforeach          
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@ use App\User;
 use App\Video;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ArticleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -105,32 +106,8 @@ Route::post('/article/{id}/json', function (Request $request, $id) {
 //获取文章所有相关片段数据
 Route::get('/article/{id}/lists', function (Request $request, $id) {
     $article   = Article::findOrFail($id);
-    $lists     = json_decode($article->json, true);
-    // return $lists;
-    $lists_new = [];
-    foreach ($lists as $key => $data) {
-        if (!is_array($data)) {
-            $data = [];
-        }
-        $items = [];
-        if (!empty($data['aids']) && is_array($data['aids'])) {
-            foreach ($data['aids'] as $aid) {
-                $article = Article::find($aid);
-                if ($article) {
-                    $items[] = [
-                        'id'        => $article->id,
-                        'title'     => $article->title,
-                        'image_url' => get_img($article->image_url),
-                    ];
-                }
-            }
-        }
-        if (!empty($items)) {
-            $data['items']   = $items;
-            $lists_new[$key] = $data;
-        }
-    }
-    return $lists_new;
+    $contoller = new ArticleController();
+    return $contoller->get_json_lists($article);
 });
 
 //获取文章相关片段数据

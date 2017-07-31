@@ -121,13 +121,14 @@ class ArticleController extends Controller
             }
         }
 
-        $related_articles = Article::where('category_id', $article->category_id)
+        $data['json_lists'] = $this->get_json_lists($article);
+        $data['related'] = Article::where('category_id', $article->category_id)
             ->where('id', '<>', $article->id)
             ->orderBy('id', 'desc')
             ->take(4)
             ->get();
 
-        return view('article.show')->withArticle($article)->withRelatedArticles($related_articles);
+        return view('article.show')->withArticle($article)->withData($data);
     }
 
     /**
@@ -138,7 +139,7 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        $article = Article::with('images')->findOrFail($id);
+        $article       = Article::with('images')->findOrFail($id);
         $article->body = str_replace('</single-list>', '</single-list><h1 class="box-related">关联已插入这里!!!</h1>', $article->body);
         if ($article->images->isEmpty()) {
             //fix img relation missing
@@ -149,6 +150,7 @@ class ArticleController extends Controller
                 $article = Article::with('images')->findOrFail($id);
             }
         } else {
+            //编辑文章的时候,可能没有插入图片,字段可能空,就会删除图片地址....
             if ($this->clear_article_imgs($article)) {
                 $article = Article::with('images')->findOrFail($id);
             }
@@ -168,7 +170,6 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
 
-        //编辑文章的时候,可能没有插入图片,字段可能空,就会删除图片地址....
         $article->update($request->except('image_url'));
         $article->body = str_replace('<h1 class="box-related">关联已插入这里!!!</h1>', '', $article->body);
 
@@ -332,5 +333,35 @@ class ArticleController extends Controller
                 $article_tag->delete();
             }
         }
+    }
+
+    public function get_json_lists($article)
+    {
+        $lists = json_decode($article->json, true);
+        // return $lists;
+        $lists_new = [];
+        foreach ($lists as $key => $data) {
+            if (!is_array($data)) {
+                $data = [];
+            }
+            $items = [];
+            if (!empty($data['aids']) && is_array($data['aids'])) {
+                foreach ($data['aids'] as $aid) {
+                    $article = Article::find($aid);
+                    if ($article) {
+                        $items[] = [
+                            'id'        => $article->id,
+                            'title'     => $article->title,
+                            'image_url' => get_img($article->image_url),
+                        ];
+                    }
+                }
+            }
+            if (!empty($items)) {
+                $data['items']   = $items;
+                $lists_new[$key] = $data;
+            }
+        }
+        return $lists_new;
     }
 }

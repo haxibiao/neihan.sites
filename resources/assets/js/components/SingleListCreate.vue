@@ -41,12 +41,12 @@
 				未找到文章, 换个关键词搜索看...
 			</div>
 			<div v-else>
-				<div class="col-xs-6 col-sm-4 col-md-3" v-for="item in articles">
-					<a :href="getUrl(item.id)"><img :src="item.image_url" class="img img-responsive"></a>
+				<div class="col-xs-6 col-sm-4 col-md-3 top10" v-for="item in articles">
+					<a :href="getUrl(item.id)"><img :src="item.image_url" class="img img-responsive"　style='max-height:120px'></a>
 					<p class="strip_title">
 						{{ item.title }}
 					</p>
-					<button type="button" class="btn btn-success" @click="(event) => {addItem(event,item)}">＋加入文章</button>
+					<button type="button" class="btn btn-sm btn-success" @click="(event) => {addItem(event,item)}">＋加入文章</button>
 				</div>
 			</div>
 		</div>
