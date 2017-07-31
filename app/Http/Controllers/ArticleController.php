@@ -122,7 +122,7 @@ class ArticleController extends Controller
         }
 
         $data['json_lists'] = $this->get_json_lists($article);
-        $data['related'] = Article::where('category_id', $article->category_id)
+        $data['related']    = Article::where('category_id', $article->category_id)
             ->where('id', '<>', $article->id)
             ->orderBy('id', 'desc')
             ->take(4)
@@ -340,26 +340,28 @@ class ArticleController extends Controller
         $lists = json_decode($article->json, true);
         // return $lists;
         $lists_new = [];
-        foreach ($lists as $key => $data) {
-            if (!is_array($data)) {
-                $data = [];
-            }
-            $items = [];
-            if (!empty($data['aids']) && is_array($data['aids'])) {
-                foreach ($data['aids'] as $aid) {
-                    $article = Article::find($aid);
-                    if ($article) {
-                        $items[] = [
-                            'id'        => $article->id,
-                            'title'     => $article->title,
-                            'image_url' => get_img($article->image_url),
-                        ];
+        if (is_array($lists)) {
+            foreach ($lists as $key => $data) {
+                if (!is_array($data)) {
+                    $data = [];
+                }
+                $items = [];
+                if (!empty($data['aids']) && is_array($data['aids'])) {
+                    foreach ($data['aids'] as $aid) {
+                        $article = Article::find($aid);
+                        if ($article) {
+                            $items[] = [
+                                'id'        => $article->id,
+                                'title'     => $article->title,
+                                'image_url' => get_img($article->image_url),
+                            ];
+                        }
                     }
                 }
-            }
-            if (!empty($items)) {
-                $data['items']   = $items;
-                $lists_new[$key] = $data;
+                if (!empty($items)) {
+                    $data['items']   = $items;
+                    $lists_new[$key] = $data;
+                }
             }
         }
         return $lists_new;
