@@ -47,6 +47,8 @@
                   </div>
                 </div>
             </li>
+
+            @if(!empty($article))
             <li class="list-group-item">
                 <button type="button" class="btn btn-success media-button" data-toggle="modal" data-target=".bs-article-modal-lg">加入关联</button>
                 <div class="modal fade bs-article-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -67,6 +69,7 @@
                   </div>
                 </div>
             </li>
+            @endif
         </ul>
     </div>
 </div>
