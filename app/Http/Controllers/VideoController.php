@@ -58,9 +58,10 @@ class VideoController extends Controller
         if ($file) {
             $extension    = $file->getClientOriginalExtension();
             $origin_name  = $file->getClientOriginalName();
-            $video->title = str_replace('.mp4', '', $origin_name);
+            $filename     = str_replace('.mp4', '', $origin_name);
+            $video->title = $filename;
             $video_index  = get_cached_index(Video::max('id'), 'video');
-            $filename     = $origin_name . '-' . $video_index . '.' . $extension;
+            $filename     = $filename . '-' . $video_index . '.' . $extension;
             $path         = '/storage/video/' . $filename;
             $video->path  = $path;
             $file->move(public_path('/storage/video/'), $filename);
@@ -128,8 +129,9 @@ class VideoController extends Controller
             if ($file) {
                 $extension    = $file->getClientOriginalExtension();
                 $origin_name  = $file->getClientOriginalName();
-                $video->title = str_replace('.mp4', '', $origin_name);
-                $filename     = $origin_name . '-' . $video->id . '.' . $extension;
+                $filename     = str_replace('.mp4', '', $origin_name);
+                $video->title = $filename;
+                $filename     = $filename . '-' . $video->id . '.' . $extension;
                 $path         = '/storage/video/' . $filename;
                 $video->path  = $path;
                 $file->move(public_path('/storage/video/'), $filename);
@@ -281,14 +283,13 @@ class VideoController extends Controller
 
     public function make_cover($video_path, $cover)
     {
+        $cmd = "ffmpeg -i $video_path -frames:v 1 -s 300x200 $cover 2>&1";
+        //dota2　英雄技能视频都15秒开始有标题...
         if (starts_with($video_path, 'http')) {
             $second = rand(14, 18);
             $cmd    = "ffmpeg -i $video_path -deinterlace -an -s 300x200 -ss $second -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover 2>&1";
-            $do     = `$cmd`;
-        } else {
-            $cmd = "ffmpeg -i $video_path -frames:v 1 -s 300x200 $cover 2>&1";
-            $do  = `$cmd`;
         }
+        $do = `$cmd`;
     }
 
     public function get_json_lists($video)
