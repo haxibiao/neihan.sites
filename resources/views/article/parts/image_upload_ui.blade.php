@@ -71,7 +71,7 @@
                     img_url = img_url.replace('.small.png','');
                     img_url = img_url.replace('.small.gif','');
                 }　else {
-                    video_id = $(this).parent().attr('title').replace('.mp4','');
+                    video_id = $(this).parent().attr('download');
                     video_id = video_id.replace('storage/video', '' ,video_id);
                 }
 

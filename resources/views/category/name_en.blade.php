@@ -17,6 +17,13 @@
                 {{ config('app.name') }}
             </a>
         </li>
+        @if(!empty($parent))
+        <li>
+            <a href="/{{ $parent->name_en }}">
+                {{ $parent->name }}
+            </a>
+        </li>
+        @endif
         <li class="active">
             {{ $category->name }}
         </li>
@@ -30,7 +37,9 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="pull-right">
-                        <a href="/{{ $category->name_en }}?more=1">更多</a>
+                        <a href="/{{ $category->name_en }}?more=1">
+                            更多
+                        </a>
                     </div>
                     <h3 class="panel-title">
                         最新{{ $category->name }}文章
@@ -74,7 +83,9 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="pull-right">
-                        <a href="/{{ $cate_name_en }}">更多</a>
+                        <a href="/{{ $cate_name_en }}">
+                            更多
+                        </a>
                     </div>
                     <h3 class="panel-title">
                         {{ $data['name'] }}文章

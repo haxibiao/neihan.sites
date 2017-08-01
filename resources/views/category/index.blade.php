@@ -44,6 +44,7 @@
                     </div>        
                 {!! Form::close() !!}
                 <h4 class="list-group-item-heading">{{ $category->name }} ({{ $category->name_en }})</h4>
+                <p>创建人: {{ $category->user->name }} </p>
               </a>              
             </div>
             @endif
@@ -74,6 +75,7 @@
                     </div>        
                 {!! Form::close() !!}
                 <h4 class="list-group-item-heading">{{ $category->name }} ({{ $category->name_en }})</h4>
+                <p>创建人: {{ $category->user->name }} </p>
               </a>              
             </div>
             @endif

@@ -14,6 +14,9 @@
 <div class="container">
   <ol class="breadcrumb">
     <li><a href="/">{{ config('app.name') }}</a></li>
+    @if(!empty($data['parent_category']))
+      <li><a href="/{{ $data['parent_category']->name_en }}">{{ $data['parent_category']->name }}</a></li>
+    @endif
     <li><a href="/{{ $article->category->name_en }}">{{ $article->category->name }}</a></li>
     <li class="active">{{ $article->title }}</li>
   </ol>

@@ -27,13 +27,17 @@ class CategoryController extends Controller
         foreach ($categories as $category) {
             $cate_ids[] = $category->id;
         }
-        $cates_miss = Category::whereNotIn('id', $cate_ids)->get();
+        $cates_miss = Category::with('user')->whereNotIn('id', $cate_ids)->get();
         return view('category.index')->withCategories($categories)->withCatesMiss($cates_miss);
     }
 
     public function name_en(Request $request, $name_en)
     {
         $category       = Category::where('name_en', $name_en)->firstOrFail();
+        $parent = null;
+        if($category->parent_id) {
+            $parent = $category->parent()->first();
+        }
         $carousel_items = get_carousel_items($category->id);
 
         $categories = Category::where('parent_id', $category->id)->pluck('name', 'id');
@@ -56,8 +60,8 @@ class CategoryController extends Controller
         }
 
         //下级分类
-        $categories = Category::where('parent_id', $category->id)->get();
         $data       = [];
+        $categories = Category::where('parent_id', $category->id)->get();
         foreach ($categories as $cate) {
             $cate_articles = Article::orderBy('id', 'desc')
                 ->where('category_id', $cate->id)
@@ -71,6 +75,7 @@ class CategoryController extends Controller
         }
         return view('category.name_en')
             ->withCategory($category)
+            ->withParent($parent)
             ->withCarouselItems($carousel_items)
             ->withArticles($articles)
             ->withData($data);

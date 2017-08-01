@@ -47,7 +47,7 @@
         <td>
             <span class="preview">
                 {% if (file.thumbnailUrl) { %}
-                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery>
+                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.id%}" data-gallery>
                         <img src="{%=file.thumbnailUrl%}" style="max-width: 200px; max-height: 150px">
                     </a>
                 {% } %}
