@@ -39,6 +39,21 @@ class HomeController extends Controller
             $labels['traffic'][] = str_replace(\Carbon\Carbon::now()->year . '-', '', $key);
             $data['traffic'][]   = $value;
         }
+
+        $data['traffic_wx']   = [];
+        $labels['traffic_wx'] = [];
+        $traffic_count     = DB::table('traffic')->select(DB::raw('count(*) as count'), 'date')
+            ->where('created_at', '>', \Carbon\Carbon::now()->subDay(7))
+            ->where('user_id', Auth::user()->id)
+            ->where('is_wechat', 1)
+            ->groupBy('date')
+            ->pluck('count', 'date')
+            ->toArray();
+        foreach ($traffic_count as $key => $value) {
+            $labels['traffic_wx'][] = str_replace(\Carbon\Carbon::now()->year . '-', '', $key);
+            $data['traffic_wx'][]   = $value;
+        }
+
         $data['article']   = [];
         $labels['article'] = [];
         $articles_count    = DB::table('articles')->select(DB::raw('count(*) as count'), 'date')
@@ -83,7 +98,6 @@ class HomeController extends Controller
             $labels['article_editors'][] = $editors[$user_id];
             $data['article_editors'][]   = $count;
         }
-        // dd($data);
 
         return view('home')->withUser($user)->withData($data)->withLabels($labels);
     }

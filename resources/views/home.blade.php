@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h2 class="panel-title">{{ Auth::user()->name }}, 您已成功登录!</h2>
+                    <h2 class="panel-title">{{ Auth::user()->name }}, 欢迎回来，下面是您的个人面板</h2>
                 </div>
 
                 <div class="panel-body">
@@ -37,7 +37,28 @@
                         <div class="col-md-6 col-lg-4">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">昨日各编辑发布的文章数:</h3>
+                                    <h3 class="panel-title">微信流量:</h3>
+                                </div>
+                                <div class="panel-body"> 
+                                    <bar title-one='微信流量' chart-data-one='{{ json_encode($data['traffic_wx']) }}' chart-labels='{!! json_encode($labels['traffic_wx']) !!}' 
+                                    color="green"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">昨日其他编辑</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">发布的文章数:</h3>
                                 </div>
                                 <div class="panel-body"> 
                                     <bar title-one='文章' chart-data='{{ json_encode($data['article_editors']) }}' chart-labels='{!! json_encode($labels['article_editors']) !!}'/>
@@ -48,16 +69,26 @@
                         <div class="col-md-6 col-lg-4">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">昨日各编辑在本站的流量:</h3>
+                                    <h3 class="panel-title">在本站的流量:</h3>
                                 </div>
                                 <div class="panel-body"> 
                                     <bar title-one='流量' chart-data='{{ json_encode($data['traffic_editors']) }}' chart-labels='{!! json_encode($labels['traffic_editors']) !!}' color="green"/>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    
+                        <div class="col-md-6 col-lg-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">在本站的流量:</h3>
+                                </div>
+                                <div class="panel-body"> 
+                                    <bar title-one='流量' chart-data='{{ json_encode($data['traffic_editors']) }}' chart-labels='{!! json_encode($labels['traffic_editors']) !!}' color="green"/>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
                 </div>
             </div>
         </div>

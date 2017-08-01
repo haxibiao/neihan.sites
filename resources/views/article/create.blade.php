@@ -123,7 +123,10 @@
     // $('.editable').trigger('focus');
 
     $('input[type="submit"]').click(function() {
-        $('input[type="submit"]').attr('disabled',true);
+        // $('input[type="submit"]').attr('disabled',true);
+        window.setTimeout(function(){
+                $('input[type="submit"]').attr('disabled',true);
+            },100);
         window.setTimeout(function(){
                 $('input[type="submit"]').attr('disabled',false);
             },2000);
