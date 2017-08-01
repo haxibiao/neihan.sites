@@ -127,16 +127,16 @@ function get_qzone_pic($user)
 function get_small_article_image($image_url)
 {
     if (!str_contains($image_url, '.small.')) {
-        $extension       = pathinfo(parse_url($image_url)['path'], PATHINFO_EXTENSION);
-        $image_url_small = $image_url . '.small.' . $extension;
-        //fix  .png.small.jpg
-        $image_url = str_replace('.png.small.jpg', '.png.small.png', $image_url);
-
+        $extension = pathinfo(parse_url($image_url)['path'], PATHINFO_EXTENSION);
         //fix video only article may not have small version image ...
-        if (file_exists(public_path($image_url_small))) {
-            $image_url = $image_url_small;
-        }
+        if (!str_contains($image_url, 'storage/video')) {
+            $image_url = $image_url . '.small.' . $extension;
+        }        
     }
+
+    //fix dirty .png.small.jpg
+    $image_url = str_replace('.png.small.jpg', '.png.small.png', $image_url);
+
     return get_img($image_url);
 }
 

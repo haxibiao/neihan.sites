@@ -209,7 +209,8 @@ class VideoController extends Controller
         $files = [];
         foreach ($videos as $file) {
             $extension = $file->getClientOriginalExtension();
-            $filename  = $file->getClientOriginalName() . '-' . $video_index . '.' . $extension;
+            $origin_name = $file->getClientOriginalName();
+            $filename  =  $origin_name . '-' . $video_index . '.' . $extension;
             $path      = '/storage/video/' . $filename;
             $local_dir = public_path('/storage/video/');
             $size      = filesize($file->path());
@@ -219,8 +220,9 @@ class VideoController extends Controller
             $video = Video::firstOrNew([
                 'hash' => $hash,
             ]);
-            if (!$video->id) {
-                $video->title   = $file->getClientOriginalName();
+            if (!$video->id) 
+            {
+                $video->title   = $origin_name;
                 $video->user_id = Auth::user()->id;
                 $video->path    = $path;
                 $video->hash    = $hash;
