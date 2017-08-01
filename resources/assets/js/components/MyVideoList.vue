@@ -58,7 +58,7 @@ export default {
           });
 
           //添加配图隐藏表单
-          var video_url_el = $('input[name="video_img"]');
+          var video_url_el = $('input[name="image_url"]');
           video_url_el.val(img_url);
           $('<input type="hidden" name="videos[]" value="' + img_url + '">').insertBefore(video_url_el);
 

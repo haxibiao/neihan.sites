@@ -14,7 +14,7 @@ class VideosAddHash extends Migration
     public function up()
     {
         Schema::table('videos', function (Blueprint $table) {
-            $table->string('hash')->nuallable()->index();
+            $table->string('hash')->nullable()->index();
         });
     }
 
