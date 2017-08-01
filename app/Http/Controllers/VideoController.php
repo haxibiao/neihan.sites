@@ -61,7 +61,7 @@ class VideoController extends Controller
         $video->save();
 
         //截取图片
-        $video_path   = $video->path;
+        $video_path   = starts_with($video->path, 'http') ? $video->path : public_path($video->path);
         $video->cover = '/storage/video/thumbnail_' . $video->id . '.jpg';
         $cover        = public_path($video->cover);
         $this->make_cover($video_path, $cover);
@@ -118,6 +118,7 @@ class VideoController extends Controller
                 $video_path = $local_dir . $filename;
                 $file->move($local_dir, $filename);
             }
+            $video_path = public_path($video_path);
         } else {
             if (empty($video->title)) {
                 //自动获取视频文件做标题
@@ -225,10 +226,12 @@ class VideoController extends Controller
                 $video->hash    = $hash;
                 $video->save();
 
+                //save video file
+                $file->move($local_dir, $filename);
+
                 //get duration
-                $video_path = $file->path();
-                $cmd        = "ffmpeg -i $video_path 2>&1";
-                $second     = rand(15, 30);
+                $video_path = public_path($path);
+                // $cmd        = "ffmpeg -i $video_path 2>&1";
                 // if (preg_match('/Duration: ((\d+):(\d+):(\d+))/s', `$cmd`, $time)) {
                 //     $total = ($time[2] * 3600) + ($time[3] * 60) + $time[4];
                 //     $video->duration = $total;
@@ -238,12 +241,8 @@ class VideoController extends Controller
                 //make thumbnail
                 $video->cover = '/storage/video/thumbnail_' . $video->id . '.jpg';
                 $cover        = public_path($video->cover);
-                $cmd          = "ffmpeg -i $video_path -deinterlace -an -s 300x200 -ss $second -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover 2>&1";
-                $do           = `$cmd`;
+                $this->make_cover($video_path, $cover);
                 $video->save();
-
-                //save video file
-                $file->move($local_dir, $filename);
             }
 
             $files[] = [
@@ -265,12 +264,13 @@ class VideoController extends Controller
 
     public function make_cover($video_path, $cover)
     {
-        $video_dir = public_path('/storage/video');
-        if (!is_dir($video_dir)) {
-            mkdir($video_dir, 0777, 1);
+        if (starts_with($video_path, 'http')) {
+            $second = rand(14, 18);
+            $cmd    = "ffmpeg -i $video_path -deinterlace -an -s 300x200 -ss $second -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover 2>&1";
+            $do     = `$cmd`;
+        } else {
+            $cmd = "ffmpeg -i $video_path -frames:v 1 -s 300x200 $cover 2>&1";
+            $do = `$cmd`;
         }
-        $second = rand(14, 18);
-        $cmd    = "ffmpeg -i $video_path -deinterlace -an -s 300x200 -ss $second -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover 2>&1";
-        $do     = `$cmd`;
     }
 }

@@ -29,6 +29,11 @@
                         {{ $errors->first('introduction') }}
                     </small>
                 </div>
+                <div class="form-group{{ $errors->has('hash') ? ' has-error' : '' }}">
+                    {!! Form::label('hash', '文件md5 hash') !!}
+                    {!! Form::text('hash',$video->hash, ['class' => 'form-control']) !!}
+                    <small class="text-danger">{{ $errors->first('hash') }}</small>
+                </div>
                 <div class="form-group{{ $errors->has('path') ? ' has-error' : '' }}">
                     {!! Form::label('path', '视频cdn地址') !!}
                     {!! Form::text('path', $video->path, ['class' => 'form-control']) !!}
