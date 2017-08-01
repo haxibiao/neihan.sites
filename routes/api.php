@@ -9,6 +9,7 @@ use App\Video;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\VideoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,27 +104,6 @@ Route::post('/article/{id}/json', function (Request $request, $id) {
     return $article;
 });
 
-//删除文章相关片段数据
-Route::get('/article/{id}/del-{key}', function (Request $request, $id, $key) {
-    $article = Article::findOrFail($id);
-    $data    = json_decode($article->json);
-    if (empty($data)) {
-        $data = [];
-    }
-    $data_new = [];
-    foreach($data as $k => $list) {
-        if($k == $key) {
-            continue;
-        }
-        $data_new[] = $list; 
-    }
-    
-    $article->json = json_encode($data_new);
-    $article->save();
-
-    return $data_new;
-});
-
 //获取文章所有相关片段数据
 Route::get('/article/{id}/lists', function (Request $request, $id) {
     $article   = Article::findOrFail($id);
@@ -157,4 +137,98 @@ Route::get('/article/{id}/{key}', function ($id, $key) {
         return $data;
     }
     return null;
+});
+
+//删除文章相关片段数据
+Route::get('/article/{id}/del-{key}', function (Request $request, $id, $key) {
+    $article = Article::findOrFail($id);
+    $data    = json_decode($article->json);
+    if (empty($data)) {
+        $data = [];
+    }
+    $data_new = [];
+    foreach($data as $k => $list) {
+        if($k == $key) {
+            continue;
+        }
+        $data_new[] = $list; 
+    }
+    
+    $article->json = json_encode($data_new);
+    $article->save();
+
+    return $data_new;
+});
+
+
+// ----------------------------------------------
+
+//保存视频相关片段数据
+Route::post('/video/{id}/json', function (Request $request, $id) {
+    $video = Video::findOrFail($id);
+    $data    = json_decode($video->json);
+    if (empty($data)) {
+        $data = [];
+    }
+    $data[]        = $request->all();
+    $video->json = json_encode($data);
+    $video->save();
+
+    return $video;
+});
+
+//获取视频所有相关片段数据
+Route::get('/video/{id}/lists', function (Request $request, $id) {
+    $video   = Video::findOrFail($id);
+    $contoller = new VideoController();
+    return $contoller->get_json_lists($video);
+});
+
+//获取视频相关片段数据
+Route::get('/video/{id}/{key}', function ($id, $key) {
+    $video = Video::findOrFail($id);
+    $json    = json_decode($video->json, true);
+    if (array_key_exists($key, $json)) {
+        $data = $json[$key];
+        if (empty($data['type']) || $data['type'] == 'single_list') {
+            $items = [];
+            if (is_array($data['aids'])) {
+                foreach ($data['aids'] as $aid) {
+                    $video = Video::find($aid);
+                    if ($video) {
+                        $items[] = [
+                            'id'        => $video->id,
+                            'title'     => $video->title,
+                            'image_url' => get_img($video->cover),
+                        ];
+                    }
+                }
+            }
+            $data['items'] = $items;
+        }
+
+        return $data;
+    }
+    return null;
+});
+
+//删除视频相关片段数据
+Route::get('/video/{id}/del-{key}', function (Request $request, $id, $key) {
+    $video = Video::findOrFail($id);
+    $data    = json_decode($video->json);
+    if (empty($data)) {
+        $data = [];
+    }
+    $data_new = [];
+    foreach($data as $k => $list) {
+        if($k == $key) {
+            continue;
+        }
+        $data_new[] = $list; 
+    }
+    
+    $video->json = json_encode($data_new);
+    $video->save();
+
+    return $data_new;
 });

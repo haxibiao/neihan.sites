@@ -6,7 +6,7 @@
 	<div v-else v-for="(data, key) in lists" :class="data.col">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<div class="pull-right">
+				<div v-if="type == 'article'" class="pull-right">
 					<button type="button" class="btn btn-success"　@click="addToBody(key)">添加到正文</button>
 				</div>
 				<h3 class="panel-title" style="line-height: 30px">{{ data.title }}</h3>
@@ -32,7 +32,7 @@ export default {
 
   name: 'SingleListSelect',
 
-  props: ['articleId'],
+  props: ['id', 'type'],
 
   mounted: function() {
   	this.loadData();
@@ -56,18 +56,17 @@ export default {
   	},
   	loadData: function() {
   		var vm = this;
-  		this.$http.get('/api/article/' + this.articleId + '/lists').then(function(response){
+  		this.$http.get('/api/'+ this.type +'/' + this.id + '/lists').then(function(response){
   			vm.lists = response.data;
-  			console.log(response.data);
   		});
   	},
   	addToBody: function(key) {
 		//插入编辑器
-      $('.editable').summernote('pasteHTML', '<single-list article-id="'+this.articleId+'" data-key="'+ key +'"/><h1 class="box-related">关联已插入这里!!!</h1>');
+      $('.editable').summernote('pasteHTML', '<single-list id="'+this.id+'" type="'+this.type+'" key="'+ key +'"/>');
   	},
     deleteCollection: function(key) {
       var vm = this;
-      this.$http.get('/api/article/' + this.articleId + '/del-' + key).then(function(response){
+      this.$http.get('/api/'+ this.type +'/' + this.id + '/del-' + key).then(function(response){
         vm.lists.splice(key,1);
       });
     }

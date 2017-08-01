@@ -11,6 +11,7 @@
 		<a href="/article/{{ $article->id }}">
 			<h5 class="media-heading">{{ $article->title }}</h5>
 		</a>
+		<p class="small">更新时间:　{{ diffForHumansCN($article->updated_at) }}</p>
 		<p title="{{ $article->description }}">{{ str_limit($article->description, 80) }}</p>
 	</div>
 </div>

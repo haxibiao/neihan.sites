@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Article;
 use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +11,7 @@ class VideoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => ['index', 'show']]);
     }
     /**
      * Display a listing of the resource.
@@ -52,11 +53,24 @@ class VideoController extends Controller
         }
 
         $video = new Video($request->all());
-        if (empty($video->title)) {
-            //自动获取视频文件做标题
-            $filename     = pathinfo(parse_url($video->path)['path'])['filename'];
-            $filename     = str_replace('.flv', '', $filename);
-            $video->title = $filename;
+
+        $file = $request->file('video');
+        if ($file) {
+            $extension    = $file->getClientOriginalExtension();
+            $origin_name  = $file->getClientOriginalName();
+            $video->title = str_replace('.mp4', '', $origin_name);
+            $video_index  = get_cached_index(Video::max('id'), 'video');
+            $filename     = $origin_name . '-' . $video_index . '.' . $extension;
+            $path         = '/storage/video/' . $filename;
+            $video->path  = $path;
+            $file->move(public_path('/storage/video/'), $filename);
+        } else {
+            if (empty($video->title)) {
+                //自动获取视频文件做标题
+                $filename     = pathinfo(parse_url($video->path)['path'])['filename'];
+                $filename     = str_replace('.flv', '', $filename);
+                $video->title = $filename;
+            }
         }
         $video->save();
 
@@ -78,8 +92,9 @@ class VideoController extends Controller
      */
     public function show($id)
     {
-        $video = Video::with('user')->findOrFail($id);
-        return view('video.show')->withVideo($video);
+        $video              = Video::with('user')->findOrFail($id);
+        $data['json_lists'] = $this->get_json_lists($video);
+        return view('video.show')->withVideo($video)->withData($data);
     }
 
     /**
@@ -111,19 +126,20 @@ class VideoController extends Controller
             //保存mp4
             $file = $request->file('video');
             if ($file) {
-                $extension  = $file->getClientOriginalExtension();
-                $filename   = $video->id . '.' . $extension;
-                $path       = '/storage/video/' . $filename;
-                $local_dir  = public_path('/storage/video/');
-                $video_path = $local_dir . $filename;
-                $file->move($local_dir, $filename);
+                $extension    = $file->getClientOriginalExtension();
+                $origin_name  = $file->getClientOriginalName();
+                $video->title = str_replace('.mp4', '', $origin_name);
+                $filename     = $origin_name . '-' . $video->id . '.' . $extension;
+                $path         = '/storage/video/' . $filename;
+                $video->path  = $path;
+                $file->move(public_path('/storage/video/'), $filename);
             }
-            $video_path = public_path($video_path);
+            $video_path = public_path($video->path);
         } else {
             if (empty($video->title)) {
                 //自动获取视频文件做标题
                 $filename     = pathinfo(parse_url($video->path)['path'])['filename'];
-                $filename     = str_replace('.flv', '', $filename);
+                $filename     = str_replace('.mp4', '', $filename);
                 $video->title = $filename;
             }
         }
@@ -208,20 +224,19 @@ class VideoController extends Controller
 
         $files = [];
         foreach ($videos as $file) {
-            $extension = $file->getClientOriginalExtension();
+            $extension   = $file->getClientOriginalExtension();
             $origin_name = $file->getClientOriginalName();
-            $filename  =  $origin_name . '-' . $video_index . '.' . $extension;
-            $path      = '/storage/video/' . $filename;
-            $local_dir = public_path('/storage/video/');
-            $size      = filesize($file->path());
+            $filename    = $origin_name . '-' . $video_index . '.' . $extension;
+            $path        = '/storage/video/' . $filename;
+            $local_dir   = public_path('/storage/video/');
+            $size        = filesize($file->path());
 
             //save video item
             $hash  = md5_file($file->path());
             $video = Video::firstOrNew([
                 'hash' => $hash,
             ]);
-            if (!$video->id) 
-            {
+            if (!$video->id) {
                 $video->title   = $origin_name;
                 $video->user_id = Auth::user()->id;
                 $video->path    = $path;
@@ -272,7 +287,38 @@ class VideoController extends Controller
             $do     = `$cmd`;
         } else {
             $cmd = "ffmpeg -i $video_path -frames:v 1 -s 300x200 $cover 2>&1";
-            $do = `$cmd`;
+            $do  = `$cmd`;
         }
+    }
+
+    public function get_json_lists($video)
+    {
+        $lists     = json_decode($video->json, true);
+        $lists_new = [];
+        if (is_array($lists)) {
+            foreach ($lists as $key => $data) {
+                if (!is_array($data)) {
+                    $data = [];
+                }
+                $items = [];
+                if (!empty($data['aids']) && is_array($data['aids'])) {
+                    foreach ($data['aids'] as $aid) {
+                        $article = Article::find($aid);
+                        if ($article) {
+                            $items[] = [
+                                'id'        => $article->id,
+                                'title'     => $article->title,
+                                'image_url' => get_img($article->image_url),
+                            ];
+                        }
+                    }
+                }
+                if (!empty($items)) {
+                    $data['items']   = $items;
+                    $lists_new[$key] = $data;
+                }
+            }
+        }
+        return $lists_new;
     }
 }

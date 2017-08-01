@@ -6,7 +6,11 @@
 
 @section('content')
 <div class="container">
-    <div class="panel panel-defau">
+      <ol class="breadcrumb">
+        <li><a href="/">{{ config('app.name') }}</a></li>
+        <li><a href="/video">视频</a></li>
+      </ol>
+    <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
                 添加视频
@@ -16,7 +20,7 @@
             <div class="col-md-12">
                 {!! Form::open(['method' => 'POST', 'route' => 'video.store', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
                 <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-                    {!! Form::label('title', '视频标题(非必填)') !!}
+                    {!! Form::label('title', '视频标题(非必填,默认取上传的mp4文件名)') !!}
                             {!! Form::text('title', null, ['class' => 'form-control']) !!}
                     <small class="text-danger">
                         {{ $errors->first('title') }}
@@ -30,11 +34,11 @@
                     </small>
                 </div>
                 <div class="form-group{{ $errors->has('path') ? ' has-error' : '' }}">
-                    {!! Form::label('path', '视频cdn地址') !!}
+                    {!! Form::label('path', '视频地址(提供了cdn地址，下面视频文件可以无需上传)') !!}
                     {!! Form::text('path', null, ['class' => 'form-control']) !!}
                     <small class="text-danger">{{ $errors->first('path') }}</small>
                 </div>
-               {{--  <div class="form-group{{ $errors->has('video') ? ' has-error' : '' }}">
+                <div class="form-group{{ $errors->has('video') ? ' has-error' : '' }}">
                     {!! Form::label('video', '视频文件') !!}
                             {!! Form::file('video') !!}
                     <p class="help-block">
@@ -43,7 +47,7 @@
                     <small class="text-danger">
                         {{ $errors->first('video') }}
                     </small>
-                </div> --}}
+                </div>
                 <div class="btn-group pull-right">
                     {!! Form::hidden('user_id', Auth::user()->id) !!}
                     {!! Form::reset("重置", ['class' => 'btn btn-warning']) !!}

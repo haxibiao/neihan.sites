@@ -13,6 +13,7 @@
 <div class="container">
 <ol class="breadcrumb">
     <li><a href="/">{{ config('app.name') }}</a></li>
+    <li><a href="/article/{{ $article->id }}">{{ $article->title }}</a></li>
     <li class="active">编辑文章</li>
   </ol>
 

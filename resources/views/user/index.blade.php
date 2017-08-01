@@ -5,6 +5,10 @@
 @stop
 
 @section('content')
+      <ol class="breadcrumb">
+        <li><a href="/">{{ config('app.name') }}</a></li>
+        <li class="active">全部用户</li>
+      </ol>
 	
 	<div class="container">
 		 <div class="panel panel-default">

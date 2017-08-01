@@ -1,6 +1,6 @@
 <ul class="nav navbar-nav">
               
-  <li class="{{ get_active_css('/') }}"><a style="{{ get_top_nav_color() }}" href="/">首页 <span class="sr-only">(current)</span></a></li>
+  <li class="{{ get_active_css('/') }}"><a style="{{ get_top_nav_color() }}" href="/">首页</a></li>
   @foreach($category_items as $item)
     @if($item->level == 0)
       @if(!$item->has_child)
@@ -37,6 +37,6 @@
       @endif
     @endif
   @endforeach
-  
+  <li class="{{ get_active_css('/video') }}"><a style="{{ get_top_nav_color() }}" href="/video">视频</a></li>
 
 </ul>

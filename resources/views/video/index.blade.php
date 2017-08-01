@@ -6,16 +6,20 @@
 
 @section('content')
 <div class="container">
+      <ol class="breadcrumb">
+        <li><a href="/">{{ config('app.name') }}</a></li>
+        <li class="active">视频</li>
+      </ol>
     <div class="panel panel-default">
-        <div class="panel-heading" style="min-height: 50px">
+        <div class="panel-heading">
             @if(Auth::check() && Auth::user()->is_editor)
             <div class="pull-right">
-                <a class="btn btn-default" href="/video/create" role="button">
+                <a class="btn btn-primary" href="/video/create" role="button">
                     添加视频
                 </a>
             </div>
             @endif
-            <h3 class="panel-title">
+            <h3 class="panel-title" style="line-height: 30px">
                 视频列表
             </h3>
         </div>
@@ -23,14 +27,14 @@
             @foreach($videos as $video)
             <div class="media">
                 <a class="pull-left" href="/video/{{ $video->id }}">
-                    <img alt="{{ $video->title }}" class="media-object img-responsive" 
-                    	src="{{ get_img($video->cover) }}" style="max-width: 200px">
+                    <img alt="{{ $video->title }}" class="media-object" 
+                    	src="{{ get_img($video->cover) }}">
                     </img>
                 </a>
                 <div class="media-body">
-                    @if(Auth::user()->is_editor)
+                    @if(Auth::check() && Auth::user()->is_editor)
                     <div class="pull-right">
-                        <a class="btn btn-default" href="/video/{{ $video->id }}/edit" role="button">
+                        <a class="btn btn-success" href="/video/{{ $video->id }}/edit" role="button">
                             编辑
                         </a>
                     </div>
@@ -39,10 +43,10 @@
                         {{ $video->title }}
                     </h4>
                     <p>
-                        用户:{{ $video->user->name }}
+                        上传用户:　<a href="/user/{{ $video->user->id }}">{{ $video->user->name }}</a>
                     </p>
                     <p>
-                        最后修改时间: {{ diffForHumansCN($video->updated_at) }}
+                        最后更新: {{ diffForHumansCN($video->updated_at) }}
                     </p>
                 </div>
             </div>

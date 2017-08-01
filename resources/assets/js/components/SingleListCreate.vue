@@ -59,7 +59,7 @@ export default {
 
   name: 'SingleListCreate',
 
-  props: ['articleId'],
+  props: ['id', 'type'],
 
   mounted: function() {
   	this.loadData();
@@ -128,7 +128,7 @@ export default {
   			title: this.data.title,
   			aids: this.data.aids
   		};
-  		this.$http.post('/api/article/' + this.articleId + '/json', postBody).then(function(response) {
+  		this.$http.post('/api/'+ this.type +'/' + this.id + '/json', postBody).then(function(response) {
   			console.log(response.data);
   			$('#list_select_link')[0].click();
   			window.app.$refs.list_select.loadData();

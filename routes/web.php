@@ -9,9 +9,11 @@
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
 Auth::routes();
+
+Route::pattern('id', '\d+');
 
 Route::get('/', 'IndexController@index');
 Route::get('/app', 'IndexController@app');
@@ -39,8 +41,10 @@ Route::get('/traffic/days-{days_ago}', 'TrafficController@index');
 Route::resource('/traffic/', 'TrafficController');
 
 //用户
-Route::resource('/user', 'UserController');
 Route::get('/user/seo', 'UserController@seo');
+Route::get('/user/{id}/videos', 'UserController@videos');
+Route::get('/user/{id}/articles', 'UserController@articles');
+Route::resource('/user', 'UserController');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile', 'HomeController@profile')->name('profile');
 Route::get('/login-as/{id}', 'HomeController@loginAs');
@@ -57,7 +61,7 @@ Route::get('/admin/users', 'AdminController@users');
 //logs
 Route::get('/logshow', 'LogController@logShow');
 Route::get('/logclear', 'LogController@logClear');
-Route::get('/debug','LogController@debug');
+Route::get('/debug', 'LogController@debug');
 
 //weixin
 Route::get('/wechat', 'WechatController@serve');

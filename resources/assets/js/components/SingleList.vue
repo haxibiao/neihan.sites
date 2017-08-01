@@ -26,11 +26,11 @@ export default {
 
   name: 'SingleList',
 
-  props: ['articleId','dataKey'],
+  props: ['id','key', 'type'],
 
   mounted: function() {
   	var vm = this;
-  	this.$http.get('/api/article/' + this.articleId + '/' + this.dataKey)
+  	this.$http.get('/api/article/' + this.articleId + '/' + this.key)
   		.then(function(response) {
   			vm.data = response.data;
   		});

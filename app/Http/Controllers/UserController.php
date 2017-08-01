@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Video;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index', 'show']]);
+        $this->middleware('auth', ['except' => ['index', 'show', 'videos', 'articles']]);
     }
     /**
      * Display a listing of the resource.
@@ -53,12 +54,11 @@ class UserController extends Controller
     public function show($id)
     {
         $user     = User::findOrFail($id);
-        $query = Article::where('user_id', $user->id)->orderBy('id','desc');
-        $articles = $query->paginate(10);
-        $data['total'] = $query->count();
-        return view('user.show')->withUser($user)
-            ->withData($data)
-            ->withArticles($articles);
+        $data['articles'] = Article::where('user_id', $user->id)->orderBy('id','desc')->paginate(5);
+        $data['videos'] =  Video::where('user_id', $user->id)->orderBy('id','desc')->paginate(5);
+        return view('user.show')
+            ->withUser($user)
+            ->withData($data);
     }
 
     /**
@@ -124,5 +124,21 @@ class UserController extends Controller
             $user->save();
         }
         return redirect()->back();
+    }
+
+    public function articles($id) {
+        $user     = User::findOrFail($id);
+        $data['articles'] = Article::where('user_id', $user->id)->orderBy('id','desc')->paginate(10);
+        return view('user.articles')
+            ->withUser($user)
+            ->withData($data);
+    }
+
+    public function videos($id) {
+        $user     = User::findOrFail($id);
+        $data['videos'] =  Video::where('user_id', $user->id)->orderBy('id','desc')->paginate(10);
+        return view('user.videos')
+            ->withUser($user)
+            ->withData($data);
     }
 }
