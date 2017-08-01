@@ -211,34 +211,40 @@ class VideoController extends Controller
             $filename  = $file->getClientOriginalName() . '-' . $video_index . '.' . $extension;
             $path      = '/storage/video/' . $filename;
             $local_dir = public_path('/storage/video/');
-            $full_path = $local_dir . $filename;
-
-            //save video file
-            $file->move($local_dir, $filename);
+            $size      = filesize($file->path());
 
             //save video item
-            $video          = new Video();
-            $video->title   = $file->getClientOriginalName();
-            $video->user_id = Auth::user()->id;
-            $video->path    = $path;
-            $video->save();
+            $hash  = md5_file($file->path());
+            $video = Video::firstOrNew([
+                'hash' => $hash,
+            ]);
+            if (!$video->id) {
+                $video->title   = $file->getClientOriginalName();
+                $video->user_id = Auth::user()->id;
+                $video->path    = $path;
+                $video->hash    = $hash;
+                $video->save();
 
-            //get duration
-            $video_path = $full_path;
-            $cmd        = "ffmpeg -i $video_path 2>&1";
-            $second     = rand(15, 30);
-            // if (preg_match('/Duration: ((\d+):(\d+):(\d+))/s', `$cmd`, $time)) {
-            //     $total = ($time[2] * 3600) + ($time[3] * 60) + $time[4];
-            //     $video->duration = $total;
-            //     $second = rand(1, ($total - 1));
-            // }
+                //get duration
+                $video_path = $file->path();
+                $cmd        = "ffmpeg -i $video_path 2>&1";
+                $second     = rand(15, 30);
+                // if (preg_match('/Duration: ((\d+):(\d+):(\d+))/s', `$cmd`, $time)) {
+                //     $total = ($time[2] * 3600) + ($time[3] * 60) + $time[4];
+                //     $video->duration = $total;
+                //     $second = rand(1, ($total - 1));
+                // }
 
-            //make thumbnail
-            $video->cover = '/storage/video/thumbnail_' . $video->id . '.jpg';
-            $cover        = public_path($video->cover);
-            $cmd          = "ffmpeg -i $video_path -deinterlace -an -s 300x200 -ss $second -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover 2>&1";
-            $do           = `$cmd`;
-            $video->save();
+                //make thumbnail
+                $video->cover = '/storage/video/thumbnail_' . $video->id . '.jpg';
+                $cover        = public_path($video->cover);
+                $cmd          = "ffmpeg -i $video_path -deinterlace -an -s 300x200 -ss $second -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover 2>&1";
+                $do           = `$cmd`;
+                $video->save();
+
+                //save video file
+                $file->move($local_dir, $filename);
+            }
 
             $files[] = [
                 'url'          => base_uri() . $video->path,
@@ -246,7 +252,7 @@ class VideoController extends Controller
                 'name'         => $filename,
                 'id'           => $video->id,
                 "type"         => 'video/mp4',
-                "size"         => filesize($full_path),
+                "size"         => $size,
                 'deleteUrl'    => url('/video?d=' . $video->id),
                 "deleteType"   => "GET",
             ];
