@@ -91,8 +91,8 @@
         
         <div class="btn-group pull-right">
             <input type="hidden" name="image_url">
-            {!! Form::reset("重置", ['class' => 'btn btn-warning']) !!}
-            {!! Form::submit("保存", ['class' => 'btn btn-success']) !!}
+            {!! Form::reset("重置", ['class' => 'btn btn-lg btn-warning']) !!}
+            {!! Form::submit("保存", ['class' => 'btn btn-lg btn-success']) !!}
         </div>
     
       {!! Form::close() !!}
@@ -121,6 +121,13 @@
   $(function() {
 
     // $('.editable').trigger('focus');
+
+    $('input[type="submit"]').click(function() {
+        $('input[type="submit"]').attr('disabled',true);
+        window.setTimeout(function(){
+                $('input[type="submit"]').attr('disabled',false);
+            },2000);
+    });
 
     $('#keywords').tagsInput({
         width:'auto',
