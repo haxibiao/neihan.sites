@@ -224,6 +224,9 @@ class ArticleController extends Controller
         $videos = $request->get('videos');
         if (is_array($videos)) {
             foreach ($videos as $video_id) {
+                if (!is_numeric($video_id)) {
+                    continue;
+                }
                 $video = Video::find($video_id);
                 if ($video) {
                     $video->count = $video->count + 1;

@@ -58,9 +58,9 @@ export default {
           });
 
           //添加配图隐藏表单
-          var video_url_el = $('input[name="image_url"]');
-          video_url_el.val(img_url);
-          $('<input type="hidden" name="videos[]" value="' + img_url + '">').insertBefore(video_url_el);
+          var hidden_image_url = $('input[name="image_url"]');
+          hidden_image_url.val(img_url);
+          $('<input type="hidden" name="videos[]" value="' + video_id + '">').insertBefore(hidden_image_url);
 
           //视频无需添加已选配图了
           event.preventDefault();
