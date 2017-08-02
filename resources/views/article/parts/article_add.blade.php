@@ -8,7 +8,7 @@
         </li>
         <li role="presentation">
             <a id="list_select_link" aria-controls="list_select" data-toggle="tab" href="#list_select" role="tab">
-                关联已建文章集合
+                管理关联文章集合
             </a>
         </li>
     </ul>

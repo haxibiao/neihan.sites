@@ -2,14 +2,14 @@
 
 use App\Article;
 use App\Category;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\VideoController;
 use App\Image;
 use App\Traffic;
 use App\User;
 use App\Video;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\VideoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,13 +93,50 @@ Route::get('/user/{id}/videos', function (Request $request, $id) {
 //保存文章相关片段数据
 Route::post('/article/{id}/json', function (Request $request, $id) {
     $article = Article::findOrFail($id);
-    $data    = json_decode($article->json);
+    $data    = json_decode($article->json, true);
     if (empty($data)) {
         $data = [];
     }
     $data[]        = $request->all();
     $article->json = json_encode($data);
     $article->save();
+
+    //同时更新被关联文章的默认关联集合
+    foreach ($request->get('aids') as $aid) {
+        $article_connected = Article::find($aid);
+        $json_data         = json_decode($article_connected->json, true);
+        if (empty($json_data)) {
+            $json_data = [];
+        }
+        $exist_item = null;
+        $exist_key  = 0;
+        foreach ($json_data as $key => $item) {
+            if (!empty($item['title']) && $item['title'] == "本文正被其他文章引用") {
+                $exist_item = $item;
+                $exist_key  = $key;
+            }
+        }
+        if (!$exist_item) {
+            $connect_item = [
+                'col'   => 'col-md-6',
+                'title' => "本文正被其他文章引用",
+                'aids'  => [$id],
+            ];
+            $json_data[] = $connect_item;
+        } else {
+            if (!in_array($id, $exist_item['aids'])) {
+                $exist_item['aids'][] = $id;
+                if (count($exist_item['aids']) >= 3) {
+                    $exist_item['col'] = 'col-md-12';
+                } else {
+                    $exist_item['col'] = 'col-md-6';
+                }
+                $json_data[$exist_key] = $exist_item;
+            }
+        }
+        $article_connected->json = json_encode($json_data);
+        $article_connected->save();
+    }
 
     return $article;
 });
@@ -147,30 +184,31 @@ Route::get('/article/{id}/del-{key}', function (Request $request, $id, $key) {
         $data = [];
     }
     $data_new = [];
-    foreach($data as $k => $list) {
-        if($k == $key) {
+    foreach ($data as $k => $list) {
+        if ($k == $key) {
             continue;
         }
-        $data_new[] = $list; 
+        $data_new[] = $list;
     }
-    
+
     $article->json = json_encode($data_new);
     $article->save();
 
+    //TODO:: 删除被引用文章的关系
+
     return $data_new;
 });
-
 
 // ----------------------------------------------
 
 //保存视频相关片段数据
 Route::post('/video/{id}/json', function (Request $request, $id) {
     $video = Video::findOrFail($id);
-    $data    = json_decode($video->json);
+    $data  = json_decode($video->json);
     if (empty($data)) {
         $data = [];
     }
-    $data[]        = $request->all();
+    $data[]      = $request->all();
     $video->json = json_encode($data);
     $video->save();
 
@@ -179,7 +217,7 @@ Route::post('/video/{id}/json', function (Request $request, $id) {
 
 //获取视频所有相关片段数据
 Route::get('/video/{id}/lists', function (Request $request, $id) {
-    $video   = Video::findOrFail($id);
+    $video     = Video::findOrFail($id);
     $contoller = new VideoController();
     return $contoller->get_json_lists($video);
 });
@@ -187,7 +225,7 @@ Route::get('/video/{id}/lists', function (Request $request, $id) {
 //获取视频相关片段数据
 Route::get('/video/{id}/{key}', function ($id, $key) {
     $video = Video::findOrFail($id);
-    $json    = json_decode($video->json, true);
+    $json  = json_decode($video->json, true);
     if (array_key_exists($key, $json)) {
         $data = $json[$key];
         if (empty($data['type']) || $data['type'] == 'single_list') {
@@ -215,18 +253,18 @@ Route::get('/video/{id}/{key}', function ($id, $key) {
 //删除视频相关片段数据
 Route::get('/video/{id}/del-{key}', function (Request $request, $id, $key) {
     $video = Video::findOrFail($id);
-    $data    = json_decode($video->json);
+    $data  = json_decode($video->json);
     if (empty($data)) {
         $data = [];
     }
     $data_new = [];
-    foreach($data as $k => $list) {
-        if($k == $key) {
+    foreach ($data as $k => $list) {
+        if ($k == $key) {
             continue;
         }
-        $data_new[] = $list; 
+        $data_new[] = $list;
     }
-    
+
     $video->json = json_encode($data_new);
     $video->save();
 
