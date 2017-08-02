@@ -56,14 +56,17 @@ class VideoController extends Controller
 
         $file = $request->file('video');
         if ($file) {
-            $extension    = $file->getClientOriginalExtension();
-            $origin_name  = $file->getClientOriginalName();
-            $filename     = str_replace('.mp4', '', $origin_name);
-            $video->title = $filename;
-            $video_index  = get_cached_index(Video::max('id'), 'video');
-            $filename     = $filename . '-' . $video_index . '.' . $extension;
-            $path         = '/storage/video/' . $filename;
-            $video->path  = $path;
+            $extension   = $file->getClientOriginalExtension();
+            $origin_name = $file->getClientOriginalName();
+            $filename    = str_replace('.mp4', '', $origin_name);
+            if (empty($video->title)) {
+                $video->title = $filename;
+            }
+
+            $video_index = get_cached_index(Video::max('id'), 'video');
+            $filename    = $filename . '-' . $video_index . '.' . $extension;
+            $path        = '/storage/video/' . $filename;
+            $video->path = $path;
             $file->move(public_path('/storage/video/'), $filename);
         } else {
             if (empty($video->title)) {
@@ -127,13 +130,16 @@ class VideoController extends Controller
             //保存mp4
             $file = $request->file('video');
             if ($file) {
-                $extension    = $file->getClientOriginalExtension();
-                $origin_name  = $file->getClientOriginalName();
-                $filename     = str_replace('.mp4', '', $origin_name);
-                $video->title = $filename;
-                $filename     = $filename . '-' . $video->id . '.' . $extension;
-                $path         = '/storage/video/' . $filename;
-                $video->path  = $path;
+                $extension   = $file->getClientOriginalExtension();
+                $origin_name = $file->getClientOriginalName();
+                $filename    = str_replace('.mp4', '', $origin_name);
+                if (empty($video->title)) {
+                    $video->title = $filename;
+                }
+
+                $filename    = $filename . '-' . $video->id . '.' . $extension;
+                $path        = '/storage/video/' . $filename;
+                $video->path = $path;
                 $file->move(public_path('/storage/video/'), $filename);
             }
             $video_path = public_path($video->path);
@@ -164,7 +170,20 @@ class VideoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $video = Video::with('articles')->findOrFail($id);
+        if ($video->articles->isEmpty()) {
+            if (!starts_with($video->path, 'http')) {
+                $video_path = public_path($video->path);
+                if (file_exists($video_path)) {
+                    unlink($video_path);
+                }
+            }
+        } else {
+            return '视频还在被文章引用...　无法删除...';
+        }
+
+        $video->delete();
+        return redirect()->to('/video');
     }
 
     public function jsonIndex($request)
@@ -284,7 +303,7 @@ class VideoController extends Controller
     public function make_cover($video_path, $cover)
     {
         $clear_cover = `rm -rf $cover`;
-        $cmd = "ffmpeg -i $video_path -frames:v 1 -s 300x200 $cover 2>&1";
+        $cmd         = "ffmpeg -i $video_path -frames:v 1 -s 300x200 $cover 2>&1";
         //dota2　英雄技能视频都15秒开始有标题...
         if (starts_with($video_path, 'http')) {
             $second = rand(14, 18);

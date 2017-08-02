@@ -34,6 +34,9 @@
                 <div class="media-body">
                     @if(Auth::check() && Auth::user()->is_editor)
                     <div class="pull-right">
+                      {!! Form::open(['method' => 'delete', 'route' => ['video.destroy', $video->id], 'class' => 'form-horizontal pull-left right10']) !!}
+                        {!! Form::submit('删除', ['class' => 'btn btn-danger']) !!}                
+                      {!! Form::close() !!}
                         <a class="btn btn-success" href="/video/{{ $video->id }}/edit" role="button">
                             编辑
                         </a>
