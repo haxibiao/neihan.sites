@@ -12,37 +12,10 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::firstOrNew([
-            'email' => 'author_test@haxibiao.com',
-        ]);
-        $user->name      = '江湖小郎中';
-        $user->qq        = '258212404';
-        $user->password  = bcrypt('mm1122');
-        $user->introduction = '我就是那个懂点医就浪迹江湖的小郎中...';
-        $user->is_admin  = 1;
-        $user->is_editor = 1;
-        $user->save();
-
-        $user = User::firstOrNew([
-            'email' => 'laozhang@haxibiao.com',
-        ]);
-        $user->name      = '老张';
-        $user->qq        = '258212404';
-        $user->password  = bcrypt('mm1122');
-        $user->introduction = '老张就是我...';
-        $user->is_admin  = 0;
-        $user->is_editor = 1;
-        $user->save();
-
-        $user = User::firstOrNew([
-            'email' => 'ivan@haxibiao.com',
-        ]);
-        $user->name      = 'ivan';
-        $user->qq        = '258212404';
-        $user->password  = bcrypt('mm1122');
-        $user->introduction = 'im ivan from haxibiao ...';
-        $user->is_admin  = 0;
-        $user->is_editor = 0;
-        $user->save();
+        $users = User::all();
+        foreach($users as $user) {
+            $user->api_token = str_random(60);
+            $user->save();
+        }
     }
 }
