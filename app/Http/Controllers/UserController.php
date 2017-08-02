@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Article;
-use App\Video;
+use App\Favorite;
 use App\User;
+use App\Video;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -20,7 +21,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy('id','desc')->paginate(24);
+        $users = User::orderBy('id', 'desc')->paginate(24);
         return view('user.index')->withUsers($users);
     }
 
@@ -53,9 +54,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user     = User::findOrFail($id);
-        $data['articles'] = Article::where('user_id', $user->id)->orderBy('id','desc')->paginate(5);
-        $data['videos'] =  Video::where('user_id', $user->id)->orderBy('id','desc')->paginate(5);
+        $user             = User::findOrFail($id);
+        $data['articles'] = Article::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(5);
+        $data['videos']   = Video::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(5);
         return view('user.show')
             ->withUser($user)
             ->withData($data);
@@ -126,18 +127,32 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function articles($id) {
-        $user     = User::findOrFail($id);
-        $data['articles'] = Article::where('user_id', $user->id)->orderBy('id','desc')->paginate(10);
+    public function articles($id)
+    {
+        $user             = User::findOrFail($id);
+        $data['articles'] = Article::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(10);
         return view('user.articles')
             ->withUser($user)
             ->withData($data);
     }
 
-    public function videos($id) {
-        $user     = User::findOrFail($id);
-        $data['videos'] =  Video::where('user_id', $user->id)->orderBy('id','desc')->paginate(10);
+    public function videos($id)
+    {
+        $user           = User::findOrFail($id);
+        $data['videos'] = Video::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(10);
         return view('user.videos')
+            ->withUser($user)
+            ->withData($data);
+    }
+
+    public function favorites(Request $request)
+    {
+        $user                = $request->user();
+        $article_ids         = Favorite::where('user_id', $user->id)->paginate(10);
+        $data['article_ids'] = $article_ids;
+        $data['articles']    = Article::whereIn('id', $article_ids->pluck('object_id'))->get();
+
+        return view('user.favorites')
             ->withUser($user)
             ->withData($data);
     }

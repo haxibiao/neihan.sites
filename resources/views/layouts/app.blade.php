@@ -38,6 +38,11 @@
     </div>
 
     <!-- Scripts -->
+    <script type="text/javascript">
+        @if(Auth::check())
+            window.api_token = '{{ Auth::user()->api_token }}';
+        @endif
+    </script>  
     @if(Auth::check())
         <script src="{{ mix('js/all.js') }}"></script>
     @else

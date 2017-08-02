@@ -27,6 +27,7 @@ Vue.component('my-video-list', require('./components/MyVideoList.vue'));
 Vue.component('single-list', require('./components/SingleList.vue'));
 Vue.component('single-list-create', require('./components/SingleListCreate.vue'));
 Vue.component('single-list-select', require('./components/SingleListSelect.vue'));
+Vue.component('favorite', require('./components/Favorite.vue'));
 
 window.app = new Vue({
     el: '#app'

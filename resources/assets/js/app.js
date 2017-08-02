@@ -18,6 +18,7 @@ Vue.prototype.$http = window.axios;
  */
 
 Vue.component('single-list', require('./components/SingleList.vue'));
+Vue.component('favorite', require('./components/Favorite.vue'));
 
 window.app = new Vue({
     el: '#app'

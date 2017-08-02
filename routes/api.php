@@ -2,6 +2,7 @@
 
 use App\Article;
 use App\Category;
+use App\Favorite;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\VideoController;
 use App\Image;
@@ -24,6 +25,26 @@ use Illuminate\Http\Request;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+//提交收藏
+Route::middleware('auth:api')->post('/favorite/{id}/{type}', function (Request $request, $id, $type) {
+    $favorite = Favorite::firstOrNew([
+        'user_id'   => $request->user()->id,
+        'object_id' => $id,
+        'type'      => $type,
+    ]);
+    $favorite->save();
+    return $favorite->id;
+});
+//查询是否已收藏
+Route::middleware('auth:api')->get('/favorite/{id}/{type}', function (Request $request, $id, $type) {
+    $favorite = Favorite::firstOrNew([
+        'user_id'   => $request->user()->id,
+        'object_id' => $id,
+        'type'      => $type,
+    ]);
+    return $favorite->id;
 });
 
 Route::get('/articles', function (Request $request) {

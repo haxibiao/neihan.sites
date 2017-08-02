@@ -44,6 +44,7 @@ Route::resource('/traffic/', 'TrafficController');
 Route::get('/user/seo', 'UserController@seo');
 Route::get('/user/{id}/videos', 'UserController@videos');
 Route::get('/user/{id}/articles', 'UserController@articles');
+Route::get('/user/{id}/favorites', 'UserController@favorites');
 Route::resource('/user', 'UserController');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile', 'HomeController@profile')->name('profile');

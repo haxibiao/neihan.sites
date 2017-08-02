@@ -83,6 +83,14 @@
             </p>            
         </div>
         @endif
+
+        <div>
+          <favorite id="{{ $article->id }}" type="article"></favorite>
+          
+          {{-- <span class="iconfont icon-zhongyao" style="font-size: 2.5em;"></span>
+          <span class="iconfont icon-zhongyaoxing" style="font-size: 2.5em;"></span> --}}
+          
+        </div>
       </div>
     </div>
   </div>

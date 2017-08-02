@@ -49,6 +49,11 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="/user/{{ Auth::user()->id }}/favorites">
+                                    我的收藏
+                                </a>
+                            </li>
+                            <li>
                                 <a href="/profile">
                                     修改资料
                                 </a>
