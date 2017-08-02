@@ -93,7 +93,7 @@ class VideoController extends Controller
      */
     public function show($id)
     {
-        $video              = Video::with('user')->findOrFail($id);
+        $video              = Video::with('user')->with('articles')->findOrFail($id);
         $data['json_lists'] = $this->get_json_lists($video);
         return view('video.show')->withVideo($video)->withData($data);
     }
@@ -283,6 +283,7 @@ class VideoController extends Controller
 
     public function make_cover($video_path, $cover)
     {
+        $clear_cover = `rm -rf $cover`;
         $cmd = "ffmpeg -i $video_path -frames:v 1 -s 300x200 $cover 2>&1";
         //dota2　英雄技能视频都15秒开始有标题...
         if (starts_with($video_path, 'http')) {
@@ -290,6 +291,7 @@ class VideoController extends Controller
             $cmd    = "ffmpeg -i $video_path -deinterlace -an -s 300x200 -ss $second -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover 2>&1";
         }
         $do = `$cmd`;
+        return $do;
     }
 
     public function get_json_lists($video)

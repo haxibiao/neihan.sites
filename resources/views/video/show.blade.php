@@ -32,9 +32,11 @@
             <p>
                 最后修改: {{ diffForHumansCN($video->updated_at) }}
             </p>
+            @if(!empty($video->introduction))
             <p class="lead">
                 视频简介: {{ $video->introduction }}
             </p>
+            @endif
             <div class="embed-responsive embed-responsive-16by9">
                 <video autoplay="true" controls="" poster="{{ get_img($video->cover) }}" preload="auto">
                     <source src="{{ get_img($video->path) }}" type="video/mp4">
@@ -44,6 +46,19 @@
 
             <div class="top10">
                 @include('article.parts.connections')
+            </div>
+
+            <div class="top10">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">相关文章</h3>
+                    </div>
+                    <div class="panel-body">
+                        @foreach($video->articles as $article) 
+                            @include('article.parts.article_item')
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     </div>
