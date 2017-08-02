@@ -142,7 +142,7 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        $article       = Article::with('images')->findOrFail($id);
+        $article = Article::with('images')->findOrFail($id);
         if ($article->images->isEmpty()) {
             //fix img relation missing
             $pattern_img = '/<img src=\"(.*?)\"/';
@@ -279,6 +279,9 @@ class ArticleController extends Controller
             return;
         }
         foreach ($imgs as $img) {
+            if (str_contains($img, 'base64')) {
+                continue;
+            }
             $path      = parse_url($img)['path'];
             $extension = pathinfo($path, PATHINFO_EXTENSION);
             $path      = str_replace('.small.' . $extension, '', $path);
