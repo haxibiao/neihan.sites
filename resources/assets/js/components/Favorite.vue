@@ -1,5 +1,5 @@
 <template>
-<span　v-if="favorited" class="iconfont icon-aixin" style="font-size: 2.5em;"></span>
+<span　v-if="favorited" class="iconfont icon-aixin" style="font-size: 2.5em;"　@click="delfav"></span>
 <span v-else class="iconfont icon-aixin1" style="font-size: 2.5em;" @click="favorite"></span>
 </template>
 
@@ -28,6 +28,12 @@ export default {
   		this.$http.post(this.get_api_url()).then(function(response) {
   			vm.favorited  = true;
   		});
+  	},
+  	delfav: function() {
+  		var vm = this;
+  		this.$http.delete(this.get_api_url()).then(function(response) {
+  			vm.favorited  = false;
+  		});  		
   	}
   },
 

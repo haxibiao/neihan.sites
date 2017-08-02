@@ -13,7 +13,6 @@ class CreateFavoritesTable extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('favorites');
         Schema::create('favorites', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->index();

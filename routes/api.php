@@ -37,6 +37,18 @@ Route::middleware('auth:api')->post('/favorite/{id}/{type}', function (Request $
     $favorite->save();
     return $favorite->id;
 });
+
+//删除收藏
+Route::middleware('auth:api')->delete('/favorite/{id}/{type}', function (Request $request, $id, $type) {
+    $favorite = Favorite::firstOrNew([
+        'user_id'   => $request->user()->id,
+        'object_id' => $id,
+        'type'      => $type,
+    ]);
+    $favorite->delete();
+    return 1;
+});
+
 //查询是否已收藏
 Route::middleware('auth:api')->get('/favorite/{id}/{type}', function (Request $request, $id, $type) {
     $favorite = Favorite::firstOrNew([
