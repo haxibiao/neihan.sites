@@ -148,6 +148,29 @@ Route::get('/article/{id}/lists', function (Request $request, $id) {
     return $contoller->get_json_lists($article);
 });
 
+//删除文章相关片段数据
+Route::get('/article/{id}/del-{key}', function (Request $request, $id, $key) {
+    $article = Article::findOrFail($id);
+    $data    = json_decode($article->json, true);
+    if (empty($data)) {
+        $data = [];
+    }
+    $data_new = [];
+    foreach ($data as $k => $list) {
+        if ($k == $key) {
+            continue;
+        }
+        $data_new[] = $list;
+    }
+
+    $article->json = json_encode($data_new);
+    $article->save();
+
+    //TODO:: 删除被引用文章的关系
+
+    return $data_new;
+});
+
 //获取文章相关片段数据
 Route::get('/article/{id}/{key}', function ($id, $key) {
     $article = Article::findOrFail($id);
@@ -176,29 +199,6 @@ Route::get('/article/{id}/{key}', function ($id, $key) {
     return null;
 });
 
-//删除文章相关片段数据
-Route::get('/article/{id}/del-{key}', function (Request $request, $id, $key) {
-    $article = Article::findOrFail($id);
-    $data    = json_decode($article->json);
-    if (empty($data)) {
-        $data = [];
-    }
-    $data_new = [];
-    foreach ($data as $k => $list) {
-        if ($k == $key) {
-            continue;
-        }
-        $data_new[] = $list;
-    }
-
-    $article->json = json_encode($data_new);
-    $article->save();
-
-    //TODO:: 删除被引用文章的关系
-
-    return $data_new;
-});
-
 // ----------------------------------------------
 
 //保存视频相关片段数据
@@ -220,6 +220,27 @@ Route::get('/video/{id}/lists', function (Request $request, $id) {
     $video     = Video::findOrFail($id);
     $contoller = new VideoController();
     return $contoller->get_json_lists($video);
+});
+
+//删除视频相关片段数据
+Route::get('/video/{id}/del-{key}', function (Request $request, $id, $key) {
+    $video = Video::findOrFail($id);
+    $data  = json_decode($video->json);
+    if (empty($data)) {
+        $data = [];
+    }
+    $data_new = [];
+    foreach ($data as $k => $list) {
+        if ($k == $key) {
+            continue;
+        }
+        $data_new[] = $list;
+    }
+
+    $video->json = json_encode($data_new);
+    $video->save();
+
+    return $data_new;
 });
 
 //获取视频相关片段数据
@@ -248,25 +269,4 @@ Route::get('/video/{id}/{key}', function ($id, $key) {
         return $data;
     }
     return null;
-});
-
-//删除视频相关片段数据
-Route::get('/video/{id}/del-{key}', function (Request $request, $id, $key) {
-    $video = Video::findOrFail($id);
-    $data  = json_decode($video->json);
-    if (empty($data)) {
-        $data = [];
-    }
-    $data_new = [];
-    foreach ($data as $k => $list) {
-        if ($k == $key) {
-            continue;
-        }
-        $data_new[] = $list;
-    }
-
-    $video->json = json_encode($data_new);
-    $video->save();
-
-    return $data_new;
 });
