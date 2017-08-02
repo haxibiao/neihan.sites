@@ -16,6 +16,7 @@ class Video extends Model
         'introduction',
         'duration',
         'hash',
+        'adstime',
     ];
 
     public function articles()

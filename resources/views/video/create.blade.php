@@ -48,6 +48,11 @@
                         {{ $errors->first('video') }}
                     </small>
                 </div>
+                <div class="form-group{{ $errors->has('adstime') ? ' has-error' : '' }}">
+                    {!! Form::label('adstime', '广告时间(非必填，如果有就填写，方便后续脚本清理广告)') !!}
+                    {!! Form::text('adstime', null, ['class' => 'form-control', 'placeholder'=>'(比如: ５秒之前,输入 <5s 4分33秒之后，输入: >4:33 中间时段： 2:20-2:25，多个时段，空格隔开)']) !!}
+                    <small class="text-danger">{{ $errors->first('adstime') }}</small>
+                </div>
                 <div class="btn-group pull-right">
                     {!! Form::hidden('user_id', Auth::user()->id) !!}
                     {!! Form::reset("重置", ['class' => 'btn btn-warning']) !!}
