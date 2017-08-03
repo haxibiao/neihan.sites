@@ -107,7 +107,7 @@ class ImageController extends Controller
         $files       = [];
         foreach ($images as $file) {
             $extension = $file->getClientOriginalExtension();
-            $filename  = $file->getClientOriginalName() . '-' . $image_index . '.' . $extension;
+            $filename  = $image_index . '.' . $extension;
             $path      = '/img/' . $filename;
 
             $image = new Image();

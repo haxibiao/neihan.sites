@@ -64,7 +64,7 @@ class VideoController extends Controller
             }
 
             $video_index = get_cached_index(Video::max('id'), 'video');
-            $filename    = $filename . '-' . $video_index . '.' . $extension;
+            $filename    = $video_index . '.' . $extension;
             $path        = '/storage/video/' . $filename;
             $video->path = $path;
             $file->move(public_path('/storage/video/'), $filename);
@@ -137,7 +137,7 @@ class VideoController extends Controller
                     $video->title = $filename;
                 }
 
-                $filename    = $filename . '-' . $video->id . '.' . $extension;
+                $filename    = $video->id . '.' . $extension;
                 $path        = '/storage/video/' . $filename;
                 $video->path = $path;
                 $file->move(public_path('/storage/video/'), $filename);
@@ -247,7 +247,7 @@ class VideoController extends Controller
         foreach ($videos as $file) {
             $extension   = $file->getClientOriginalExtension();
             $origin_name = $file->getClientOriginalName();
-            $filename    = $origin_name . '-' . $video_index . '.' . $extension;
+            $filename    = $video_index . '.' . $extension;
             $path        = '/storage/video/' . $filename;
             $local_dir   = public_path('/storage/video/');
             $size        = filesize($file->path());
