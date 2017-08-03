@@ -38,11 +38,19 @@
     </div>
 
     <!-- Scripts -->
+    @if(Auth::check())
     <script type="text/javascript">
-        @if(Auth::check())
-            window.api_token = '{{ Auth::user()->api_token }}';
-        @endif
-    </script>  
+            window.tokenize =　 function(api_url){ 
+                var api_token = '{{ Auth::user()->api_token }}'　
+                if(api_url.indexOf('?') === -1) {
+                    api_url += '?api_token=' + api_token;
+                } else {
+                    api_url += '&api_token' + api_token;
+                }
+                return api_url;
+            };
+    </script> 
+    @endif 
     @if(Auth::check())
         <script src="{{ mix('js/all.js') }}"></script>
     @else

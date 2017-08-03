@@ -1,7 +1,7 @@
 <div class="media">
 	@if(!empty($video->cover))
-	<a class="pull-left" href="/video/{{ $video->id }}">
-		<img class="media-object" src="{{ get_img($video->cover) }}" alt="{{ $video->title }}">
+	<a class="{{ empty($is_side) ? 'pull-left' : ''}}" href="/video/{{ $video->id }}">
+		<img class="bottom10 media-object" src="{{ get_img($video->cover) }}" alt="{{ $video->title }}" style="{{ empty($is_side) ? '' : 'max-width: 200px'}}">
 	</a>
 	@endif
 	<div class="media-body　strip_title">

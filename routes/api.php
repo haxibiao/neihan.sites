@@ -27,37 +27,25 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//评论
+Route::middleware('auth:api')->post('/comment', 'Api\CommentController@save');
+Route::middleware('auth:api')->get('/comment/{id}/{type}', 'Api\CommentController@get');
+
 //提交收藏
-Route::middleware('auth:api')->post('/favorite/{id}/{type}', function (Request $request, $id, $type) {
-    $favorite = Favorite::firstOrNew([
-        'user_id'   => $request->user()->id,
-        'object_id' => $id,
-        'type'      => $type,
-    ]);
-    $favorite->save();
-    return $favorite->id;
-});
-
+Route::middleware('auth:api')->post('/favorite/{id}/{type}', 'Api\FavoriteController@save');
 //删除收藏
-Route::middleware('auth:api')->delete('/favorite/{id}/{type}', function (Request $request, $id, $type) {
-    $favorite = Favorite::firstOrNew([
-        'user_id'   => $request->user()->id,
-        'object_id' => $id,
-        'type'      => $type,
-    ]);
-    $favorite->delete();
-    return 1;
-});
-
+Route::middleware('auth:api')->delete('/favorite/{id}/{type}', 'Api\FavoriteController@delete');
 //查询是否已收藏
-Route::middleware('auth:api')->get('/favorite/{id}/{type}', function (Request $request, $id, $type) {
-    $favorite = Favorite::firstOrNew([
-        'user_id'   => $request->user()->id,
-        'object_id' => $id,
-        'type'      => $type,
-    ]);
-    return $favorite->id;
-});
+Route::middleware('auth:api')->get('/favorite/{id}/{type}', 'Api\FavoriteController@get');
+
+
+//提交赞
+Route::middleware('auth:api')->post('/like/{id}/{type}', 'Api\LikeController@save');
+//删除赞
+Route::middleware('auth:api')->delete('/like/{id}/{type}', 'Api\LikeController@delete');
+//查询是否已赞
+Route::middleware('auth:api')->get('/like/{id}/{type}', 'Api\LikeController@get');
+
 
 Route::get('/articles', function (Request $request) {
     $query = Article::orderBy('id', 'desc');

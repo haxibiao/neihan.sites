@@ -31,3 +31,5 @@ mix.scripts(
 
 mix.copy("node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css", "public/css");
 mix.copy("node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.js", "public/js");
+
+// mix.browserSync('l.dongdianyi.com');

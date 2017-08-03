@@ -38,10 +38,19 @@
             </p>
             @endif
             <div class="embed-responsive embed-responsive-16by9">
-                <video autoplay="true" controls="" poster="{{ get_img($video->cover) }}" preload="auto">
+                <video controls="" poster="{{ get_img($video->cover) }}" preload="auto">
                     <source src="{{ get_img($video->path) }}" type="video/mp4">
                     </source>
                 </video>
+            </div>
+
+            <div class="top10">
+                <favorite id="{{ $video->id }}" type="video"></favorite>
+                <like id="{{ $video->id }}" type="video"></like>
+            </div>
+
+            <div class="col-md-6 top10"> 
+                <comment id="{{ $video->id }}" type="video"></comment>
             </div>
 
             <div class="top10">

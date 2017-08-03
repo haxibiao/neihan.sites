@@ -1,6 +1,6 @@
 <template>
-<span　v-if="favorited" class="iconfont icon-aixin" style="font-size: 2.5em;"　@click="delfav"></span>
-<span v-else class="iconfont icon-aixin1" style="font-size: 2.5em;" @click="favorite"></span>
+<span　v-if="favorited" class="iconfont icon-aixin" style="font-size: 1.5em;"　@click="delfav"></span>
+<span v-else class="iconfont icon-aixin1" style="font-size: 1.5em;" @click="favorite"></span>
 </template>
 
 <script>
@@ -20,7 +20,7 @@ export default {
   methods: {
   	get_api_url: function() {
   		var api_url = '/api/favorite/' + this.id + '/' + this.type;
-  		api_url += '?api_token=' + window.api_token;
+  		api_url = window.tokenize(api_url);
   		return api_url;
   	},
   	favorite: function() {

@@ -28,6 +28,8 @@ Vue.component('single-list', require('./components/SingleList.vue'));
 Vue.component('single-list-create', require('./components/SingleListCreate.vue'));
 Vue.component('single-list-select', require('./components/SingleListSelect.vue'));
 Vue.component('favorite', require('./components/Favorite.vue'));
+Vue.component('like', require('./components/Like.vue'));
+Vue.component('comment', require('./components/Comment.vue'));
 
 window.app = new Vue({
     el: '#app'
