@@ -44,6 +44,7 @@
                 </video>
             </div>
 
+            @if(Auth::check())
             <div class="top10">
                 <favorite id="{{ $video->id }}" type="video"></favorite>
                 <like id="{{ $video->id }}" type="video"></like>
@@ -52,6 +53,7 @@
             <div class="col-md-6 top10"> 
                 <comment id="{{ $video->id }}" type="video"></comment>
             </div>
+            @endif
 
             <div class="top10">
                 @include('article.parts.connections')

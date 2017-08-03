@@ -84,10 +84,17 @@
         </div>
         @endif
 
+        @if(Auth::check())
         <div>
           <favorite id="{{ $article->id }}" type="article"></favorite>
           <like id="{{ $article->id }}" type="article"></like>          
         </div>
+
+        <div class="col-md-6 top10"> 
+            <comment id="{{ $article->id }}" type="article"></comment>
+        </div>
+        @endif
+
       </div>
     </div>
   </div>
