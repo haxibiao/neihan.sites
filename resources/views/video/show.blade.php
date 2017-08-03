@@ -45,13 +45,15 @@
             </div>
 
             @if(Auth::check())
-            <div class="top10">
-                <favorite id="{{ $video->id }}" type="video"></favorite>
-                <like id="{{ $video->id }}" type="video"></like>
-            </div>
+            <div class="row top10">
+                <div class="col-md-12">
+                    <favorite id="{{ $video->id }}" type="video"></favorite>
+                    <like id="{{ $video->id }}" type="video"></like>
+                </div>
 
-            <div class="col-md-6 top10"> 
-                <comment id="{{ $video->id }}" type="video"></comment>
+                <div class="col-md-6 top10"> 
+                    <comment id="{{ $video->id }}" type="video"></comment>
+                </div>
             </div>
             @endif
 

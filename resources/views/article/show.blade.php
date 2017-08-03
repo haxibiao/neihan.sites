@@ -85,13 +85,15 @@
         @endif
 
         @if(Auth::check())
-        <div>
+        <div class="row top10">
+        <div class="col-md-12">
           <favorite id="{{ $article->id }}" type="article"></favorite>
           <like id="{{ $article->id }}" type="article"></like>          
         </div>
 
         <div class="col-md-6 top10"> 
             <comment id="{{ $article->id }}" type="article"></comment>
+        </div>
         </div>
         @endif
 

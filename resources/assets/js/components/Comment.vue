@@ -25,15 +25,19 @@
   </p>
 	
 	<!-- 发布评论 -->
-	<div class="form-group">
-		<label for="textarea" class="col-sm-2 control-label">评论:</label>
-		<div class="col-sm-10">
-			<textarea name="" id="textarea" class="form-control" rows="3" required="required" v-model="newComment.body"></textarea>
-		</div>
-	</div>
-	<div class="pull-right top10">
-		<button type="button" class="btn btn-danger" @click="postComment">提交评论</button>
-	</div>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="form-group">
+        <label for="textarea" class="col-sm-2 control-label">评论:</label>
+        <div class="col-sm-10">
+          <textarea name="" id="textarea" class="form-control" rows="3" required="required" v-model="newComment.body"></textarea>
+        </div>
+      </div>
+      <div class="pull-right top10">
+        <button type="button" class="btn btn-danger" @click="postComment">提交评论</button>
+      </div>
+    </div>
+  </div>
 </div>
 </template>
 
