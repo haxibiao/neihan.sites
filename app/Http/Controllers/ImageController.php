@@ -63,15 +63,15 @@ class ImageController extends Controller
                 $image->status = -1;
                 $image->save();
             }
-            $path = $image->path;
-            if (file_exists(public_path($path))) {
-                unlink(public_path($path));
-            }
+            // $path = $image->path;
+            // if (file_exists(public_path($path))) {
+            //     unlink(public_path($path));
+            // }
             $data[$path] = true;
-            $path_small  = $image->path_small;
-            if (file_exists(public_path($path_small))) {
-                unlink(public_path($path_small));
-            }
+            // $path_small  = $image->path_small;
+            // if (file_exists(public_path($path_small))) {
+            //     unlink(public_path($path_small));
+            // }
             $data[$path_small] = true;
         } else {
             //记载当前用户已上传，未使用的图片
