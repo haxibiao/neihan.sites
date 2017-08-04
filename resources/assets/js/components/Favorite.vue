@@ -1,6 +1,6 @@
 <template>
-<span　v-if="favorited" class="iconfont icon-aixin" style="font-size: 1.5em;"　@click="delfav"></span>
-<span v-else class="iconfont icon-aixin1" style="font-size: 1.5em;" @click="favorite"></span>
+<span　v-if="favorited" class="iconfont icon-xin" style="font-size: 1.5em;"　@click="delfav"></span>
+<span v-else class="iconfont icon-03xihuan" style="font-size: 1.5em;" @click="favorite"></span>
 </template>
 
 <script>

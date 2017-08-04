@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="col-md-6 top10"> 
-                    <comment id="{{ $video->id }}" type="video"></comment>
+                    <comment id="{{ $video->id }}" type="video" username="{{ Auth::user()->name }}"></comment>
                 </div>
             </div>
             @endif

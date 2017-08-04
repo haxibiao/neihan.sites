@@ -92,7 +92,7 @@
         </div>
 
         <div class="col-md-6 top10"> 
-            <comment id="{{ $article->id }}" type="article"></comment>
+            <comment id="{{ $article->id }}" type="article" username="{{ Auth::user()->name }}"></comment>
         </div>
         </div>
         @endif

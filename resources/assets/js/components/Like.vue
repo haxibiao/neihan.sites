@@ -1,6 +1,6 @@
 <template>
-<span v-if="!liked" class="iconfont icon-zhongyao" style="font-size: 1.5em;" @click="like"><span style="font-size: 0.5em;">点赞人数: {{ likes }}</span></span>
-<span v-else class="iconfont icon-zhongyaoxing" style="font-size: 1.5em;" @click="unlike"><span style="font-size: 0.5em;">点赞人数: {{ likes }}</span></span>
+<span v-if="!liked" class="icon iconfont icon-dianzan3" style="font-size: 1.5em;" @click="like"><span style="font-size: 0.5em;">点赞人数: {{ likes }}</span></span>
+<span v-else class="icon iconfont icon-dianzan" style="font-size: 1.5em;" @click="unlike"><span style="font-size: 0.5em;">点赞人数: {{ likes }}</span></span>
 </template>
 
 <script>

@@ -4,12 +4,14 @@
 	<!-- 评论列表 -->
 	<div class="panel panel-default" v-for="comment in comments">
     <div class="panel-heading">
-    <div class="pull-right">
+    <div class="pull-right" v-if="!comment.is_new">
       <button type="button" class="btn　btn-sm btn-default" @click="replyComment(comment)">回复</button>
-      <button type="button" class="btn　btn-sm btn-success" @click="likeComment(comment)">点赞</button>
-      <span>点赞数：{{ comment.likes }}</span>
-      <button type="button" class="btn　btn-sm btn-danger" @click="reportComment(comment)">举报</button>
-      <span>举报数：{{ comment.reports }}</span>
+
+      <span v-if="!comment.liked" class="icon iconfont icon-dianzan3" @click="likeComment(comment)"><span>{{ comment.likes }}</span></span>
+      <span v-else class="icon iconfont icon-dianzan" @click="unlikeComment(comment)"><span>{{ comment.likes }}</span></span>　
+      
+      <span v-if="!comment.reported" class="icon iconfont icon-dianzan1" @click="reportComment(comment)"><span>{{ comment.reports }}</span></span>
+      <span v-else class="icon iconfont icon-zan2" @click="unreportComment(comment)"><span>{{ comment.reports }}</span></span>
     </div>
       <h3 class="panel-title" style="line-height: 30px">{{　comment.lou }}楼：{{ comment.user.name }}</h3>
     </div>
@@ -46,7 +48,7 @@ export default {
 
   name: 'Comment',
 
-  props: ['id', 'type'],
+  props: ['id', 'type', 'username'],
 
   mounted() {
     this.loadComments();
@@ -67,11 +69,25 @@ export default {
   		return window.tokenize('/api/comment/'+ id + '/' + action);
   	},
     likeComment: function(comment) {
+      comment.liked = 1;
+      this.$http.get(this.get_action_url(comment.id, 'like')).then(function(response) {
+        comment.likes = response.data.likes;
+      });
+    },
+    unlikeComment: function(comment) {
+      comment.liked = 0;
       this.$http.get(this.get_action_url(comment.id, 'like')).then(function(response) {
         comment.likes = response.data.likes;
       });
     },
     reportComment: function(comment) {
+      comment.reported = 1;
+      this.$http.get(this.get_action_url(comment.id, 'report')).then(function(response) {
+        comment.reports = response.data.reports;
+      });
+    },
+    unreportComment: function(comment) {
+      comment.reported = 0;
       this.$http.get(this.get_action_url(comment.id, 'report')).then(function(response) {
         comment.reports = response.data.reports;
       });
@@ -79,22 +95,25 @@ export default {
     loadComments: function() {
       var vm = this;
       this.$http.get(this.get_get_url()).then(function(response) {
-        // vm.comments = vm.comments.concat(response.data.data).unique();
-        //用下最朴素的排除重复，更新算法最好用.
-        for(var i in response.data.data) {
-          var item  =response.data.data[i];
-          var exist = false;
-          for(var c in vm.comments) {
-            var cm = vm.comments[c];
-            if(cm.id == item.id) {
-              exist = true;
-            }
-          }
-          if(!exist) {
-            vm.comments.push(item);
-          }
-        }
+        vm.comments = vm.comments.concat(response.data.data);
+        
+        // //用下最朴素的排除重复，更新算法最好用.
+        // for(var i in response.data.data) {
+        //   var item  =response.data.data[i];
+        //   var exist = false;
+        //   for(var c in vm.comments) {
+        //     var cm = vm.comments[c];
+        //     if(cm.id == item.id) {
+        //       exist = true;
+        //     }
+        //   }
+        //   if(!exist) {
+        //     vm.comments.push(item);
+        //   }
+        // }
+
         vm.lastPage = response.data.last_page;
+        vm.total = response.data.total;
       });
     },
     loadMoreComments: function() {      
@@ -104,17 +123,27 @@ export default {
       }
     },
   	postComment: function() {
-      var vm = this;
+      //乐观更新
+      this.newComment.lou = this.total++;
+      this.newComment.user = {
+          name: this.username
+      };
+      var item = Object.assign({}, this.newComment);
+      this.comments = this.comments.concat(item);
+
+      var vm = this;      
   		this.$http.post(this.get_post_url(), this.newComment).then(function() {
-        vm.loadComments();
+        // vm.loadComments();        
         //发布一次，清空...
         vm.newComment.body = '';
         vm.newComment.comment_id = null;
+        vm.newComment.comment = null;
   		});
   	},
     replyComment: function(comment) {
       this.newComment.body = '回复' + comment.user.name + ': ' ;
       this.newComment.comment_id = comment.id;
+      this.newComment.comment = comment;
     }
   },
 
@@ -122,12 +151,17 @@ export default {
     return {
       currentPage: 1,
       lastPage: null,
+      total:0,
       comments: [],
     	newComment : {
+        is_new: true,
     		body: null,
     		object_id: this.id,
     		type: this.type,
     		comment_id: null,
+        comment: null,
+        likes: 0,
+        reports: 0
     	}
     };
   }
