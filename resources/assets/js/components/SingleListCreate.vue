@@ -32,7 +32,7 @@
 			<div class="input-group">
 		        <input type="text" class="form-control" placeholder="搜索 相关草药 / 相关英雄 标题..." v-model="query">
 		        <span class="input-group-btn">
-		          <button class="btn btn-default" type="button" @click="loadData">搜索</button>
+		          <button class="btn btn-default" type="button" @click="(event) => {loadData(event)}">搜索</button>
 		        </span>
 		      </div>
 		</div>
@@ -41,7 +41,7 @@
 				未找到文章, 换个关键词搜索看...
 			</div>
 			<div v-else>
-				<div class="col-xs-6 col-sm-4 col-md-3 top10" v-for="item in articles">
+				<div class="col-xs-6 col-sm-4 col-md-3 top10 item" v-for="item in articles">
 					<a :href="getUrl(item.id)"><img :src="item.image_url" class="img img-responsive"　style='max-height:120px'></a>
 					<p class="strip_title">
 						{{ item.title }}
@@ -78,7 +78,11 @@ export default {
   },
 
   methods: {
-  	loadData: function() {
+  	loadData: function(event = null) {
+      if(event){
+        $(event.target).text('搜索...');
+        $(event.target).prop('disabled',true);
+      }
   		var api_url  = '/api/articles';
   		if(this.query) {
   			api_url = api_url + '?query=' + this.query;
@@ -86,6 +90,11 @@ export default {
   		var vm = this;
   		this.$http.get(api_url).then(function(response){
   			vm.articles = response.data.data;
+        $('.item').show();
+        if(event){
+          $(event.target).text('搜索');
+          $(event.target).prop('disabled',false);
+        }
   		});
   	},
   	setHalfScreen: function() {
