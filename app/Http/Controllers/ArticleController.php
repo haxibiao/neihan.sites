@@ -86,7 +86,7 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $article = Article::with('user')->with('category')->with('tags')->with('images')->findOrFail($id);
+        $article       = Article::with('user')->with('category')->with('tags')->with('images')->findOrFail($id);
         if ($article->category->parent_id) {
             $data['parent_category'] = $article->category->parent()->first();
         }
@@ -105,9 +105,12 @@ class ArticleController extends Controller
             $article->hits_robot = $article->hits_robot + 1;
         }
         $article->save();
-        $article->body = str_replace("\n", '<br/>', $article->body);
 
+        //fix for show
+        $article->body = str_replace("\n", '<br/>', $article->body);
         $article->body = str_replace(' style=""', '', $article->body);
+        $article->body = str_replace('class="box-related-full"', "", $article->body);
+        $article->body = str_replace('class="box-related-half"', "", $article->body);
 
         //TODO:: 现在要吧文章里的插入的视频图片,变成视频来播放 [视频的尺寸还是不完美，后面要获取到视频的尺寸才好处理, 先默认用半个页面来站住]
         $pattern_img_video = '/<img src=\"([^"]*?)\" data-video\=\"(\d+)\" ([^>]*?)>/iu';
@@ -158,6 +161,7 @@ class ArticleController extends Controller
             }
         }
         $categories = get_categories();
+        $article->body = str_replace('<single-list id', '<single-list class="box-related-half" id', $article->body);
         return view('article.edit')->withArticle($article)->withCategories($categories);
     }
 

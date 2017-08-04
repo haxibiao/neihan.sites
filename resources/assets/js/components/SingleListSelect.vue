@@ -3,11 +3,11 @@
 	<div v-if="!lists">
 		您还有没有创建, 先去左边创建...
 	</div>
-	<div v-else v-for="(data, key) in lists" :class="data.col">
+	<div v-else v-for="(data, index) in lists" :class="data.col">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<div v-if="type == 'article'" class="pull-right">
-					<button type="button" class="btn btn-success"　@click="addToBody(key)">添加到正文</button>
+					<button type="button" class="btn btn-success"　@click="addToBody(data,index)">添加到正文</button>
 				</div>
 				<h3 class="panel-title" style="line-height: 30px">{{ data.title }}</h3>
 			</div>
@@ -20,7 +20,7 @@
 				</div>
 			</div>
       <div class="panel-footer">
-        <button type="button" class="btn btn-danger"　@click="deleteCollection(key)">删除</button>
+        <button type="button" class="btn btn-danger"　@click="deleteCollection(index)">删除</button>
       </div>
 		</div>
 	</div>
@@ -60,14 +60,15 @@ export default {
   			vm.lists = response.data;
   		});
   	},
-  	addToBody: function(key) {
+  	addToBody: function(data,index) {
 		//插入编辑器
-      $('.editable').summernote('pasteHTML', '<single-list id="'+this.id+'" type="'+this.type+'" key="'+ key +'"/>');
+    var className = data.col == 'col-md-6' ? 'box-related-half' : 'box-related-full';
+      $('.editable').summernote('pasteHTML', '<single-list class="'+className+'" id="'+this.id+'" type="'+this.type+'" index="'+ index +'"/>');
   	},
-    deleteCollection: function(key) {
+    deleteCollection: function(index) {
       var vm = this;
-      this.$http.get('/api/'+ this.type +'/' + this.id + '/del-' + key).then(function(response){
-        vm.lists.splice(key,1);
+      this.$http.get('/api/'+ this.type +'/' + this.id + '/del-' + index).then(function(response){
+        vm.lists.splice(index,1);
       });
     }
   },
