@@ -30,6 +30,15 @@
 <body>
     <div id="app" style="padding-top: 60px">
         @include('parts.header')
+
+        <div class="container">
+            <form class="navbar-form navbar-left pull-right" action="/search" method="get">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="搜索..." name="q">
+              </div>
+              <button type="submit" class="btn btn-default">搜索</button>
+            </form>
+        </div>
         
         @yield('content')
         

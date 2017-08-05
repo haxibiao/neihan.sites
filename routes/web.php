@@ -19,6 +19,9 @@ Route::get('/', 'IndexController@index');
 Route::get('/app', 'IndexController@app');
 Route::get('/about-us', 'IndexController@aboutUs');
 
+//搜索
+Route::get('/search', 'SearchController@search');
+
 //文章
 Route::resource('/article', 'ArticleController');
 Route::resource('/category', 'CategoryController');
