@@ -10,7 +10,9 @@ class SearchController extends Controller
     public function search(Request $request)
     {
         $query            = $request->get('q');
-        $data['articles'] = Article::where('title', 'like', '%' . $query . '%')->paginate(10);
+        $data['articles'] = Article::where('title', 'like', '%' . $query . '%')
+        	->orWhere('keywords', 'like', '%' . $query . '%')
+        	->paginate(10);
         $data['query']    = $query;
 
         return view('search')->withData($data);
