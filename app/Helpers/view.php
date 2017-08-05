@@ -90,7 +90,7 @@ function get_img($path)
 function get_avatar($user)
 {
     if (!empty($user->avatar)) {
-        return $user->avatar;
+        return get_img($user->avatar);
     }
     return get_qq_pic($user);
 }

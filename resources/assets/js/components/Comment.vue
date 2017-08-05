@@ -4,21 +4,27 @@
 	<!-- 评论列表 -->
 	<div class="panel panel-default" v-for="comment in comments">
     <div class="panel-heading">
-    <div class="pull-right" v-if="!comment.is_new">
-      <button type="button" class="btn　btn-sm btn-default" @click="replyComment(comment)">回复</button>
+      <div class="pull-right" v-if="!comment.is_new">
+        <button type="button" class="btn　btn-sm btn-default" @click="replyComment(comment)">回复</button>
 
-      <span v-if="!comment.liked" class="icon iconfont icon-dianzan3" @click="likeComment(comment)"><span>{{ comment.likes }}</span></span>
-      <span v-else class="icon iconfont icon-dianzan" @click="unlikeComment(comment)"><span>{{ comment.likes }}</span></span>　
-      
-      <span v-if="!comment.reported" class="icon iconfont icon-dianzan1" @click="reportComment(comment)"><span>{{ comment.reports }}</span></span>
-      <span v-else class="icon iconfont icon-zan2" @click="unreportComment(comment)"><span>{{ comment.reports }}</span></span>
-    </div>
-      <h3 class="panel-title" style="line-height: 30px">{{　comment.lou }}楼：{{ comment.user.name }}</h3>
+        <span v-if="!comment.liked" class="icon iconfont icon-dianzan3" @click="likeComment(comment)"><span>{{ comment.likes }}</span></span>
+        <span v-else class="icon iconfont icon-dianzan" @click="unlikeComment(comment)"><span>{{ comment.likes }}</span></span>　
+        
+        <span v-if="!comment.reported" class="icon iconfont icon-dianzan1" @click="reportComment(comment)"><span>{{ comment.reports }}</span></span>
+        <span v-else class="icon iconfont icon-zan2" @click="unreportComment(comment)"><span>{{ comment.reports }}</span></span>
+      </div>
+      {{　get_lou(comment.lou) }} 
+      <a :href="'/user/' + comment.user.id">
+      <img :src="comment.user.picture" class="img img-circle" style="max-width:30px" />
+      </a>
+      <a :href="'/user/' + comment.user.id">
+      {{ comment.user.name }}</a>  
+      <span class="small"> / {{ comment.created_at_cn }}</span>
     </div>
     <div class="panel-body">
       {{ comment.body }}
       <p v-if="comment.comment" class="well">
-        {{ comment.comment.body }}
+        <a :href="'/user/' + comment.comment.user.id">{{ comment.comment.user.name }}</a>: {{ comment.comment.body }}
       </p>
     </div>
   </div>
@@ -55,6 +61,13 @@ export default {
   },
 
   methods: {
+    get_lou: function(lou) {
+      if(lou == 1)
+        return '沙发';
+      if(lou == 2)
+        return '板凳';
+      return lou + '楼';
+    },
   	get_post_url: function() {
   		return window.tokenize('/api/comment');
   	},
@@ -96,22 +109,6 @@ export default {
       var vm = this;
       this.$http.get(this.get_get_url()).then(function(response) {
         vm.comments = vm.comments.concat(response.data.data);
-        
-        // //用下最朴素的排除重复，更新算法最好用.
-        // for(var i in response.data.data) {
-        //   var item  =response.data.data[i];
-        //   var exist = false;
-        //   for(var c in vm.comments) {
-        //     var cm = vm.comments[c];
-        //     if(cm.id == item.id) {
-        //       exist = true;
-        //     }
-        //   }
-        //   if(!exist) {
-        //     vm.comments.push(item);
-        //   }
-        // }
-
         vm.lastPage = response.data.last_page;
         vm.total = response.data.total;
       });
@@ -124,7 +121,7 @@ export default {
     },
   	postComment: function() {
       //乐观更新
-      this.newComment.lou = this.total++;
+      this.newComment.lou = this.total + 1;
       this.newComment.user = {
           name: this.username
       };
@@ -155,6 +152,7 @@ export default {
       comments: [],
     	newComment : {
         is_new: true,
+        created_at: '刚刚',
     		body: null,
     		object_id: this.id,
     		type: this.type,
