@@ -46,35 +46,53 @@ class GetSql extends Command
         set_time_limit(-1);
 
         $db_server = env('DB_SERVER');
-        $db_name = env('DB_DATABASE');
+        $db_name   = env('DB_DATABASE');
+
+        $sql_data_folder = '/data/sqlfiles';
+        if (!is_dir($sql_data_folder)) {
+            mkdir($sql_data_folder, 0777, 1);
+        }
+
+        $cmds = array(
+            'echo "数据库正在服务器上备份 ..."',
+            'whoami',
+            'hostname',
+            '[ -f ~/.bash_aliases ] && source ~/.bash_aliases',
+            'cd ' . $sql_data_folder,
+            'sqld ' . $db_name . '>' . $db_name . '.sql',
+            'zip ' . $db_name . '.sql.zip ' . $db_name . '.sql',
+        );
 
         if (empty($this->option('local'))) {
-            RemoteFacade::into($db_server)->run(array(
-                'pwd', 'hostname',
-                '[ -f ~/.bash_aliases ] && source ~/.bash_aliases',
-                'cd /data/sqlfiles',
-                'sqld ' . $db_name . '>' . $db_name . '.sql',
-                'zip ' . $db_name . '.sql.zip ' . $db_name . '.sql',
-            ), function ($line) {
+            RemoteFacade::into($db_server)->run($cmds, function ($line) {
                 $this->comment($line);
             });
         }
 
-        $scp_command = 'rsync -P --rsh=ssh root@' . $db_server . ':/data/sqlfiles/' . $db_name . '.sql.zip .';
-        $this->comment($scp_command);
+        $scp_command = 'rsync -P --rsh=ssh root@' . $db_server .
+            ':' . $sql_data_folder . '/' . $db_name . '.sql.zip ' . $sql_data_folder;
+        $this->info($scp_command);
+        $this->info('复制粘贴上面的命令来拉取服务器上最新的数据库备份文件, then run art get:sql --local');
 
-        RemoteFacade::into('homestead')->run(array(
-            'pwd', 'hostname',
-            '[ -f ~/.bash_aliases ] && source ~/.bash_aliases',
-            'cd /data/sqlfiles',
-            'echo "scp sql.zip maybe slow, you can art get:sql --local again"',
-            $scp_command,
-            'echo "scp finished ..."',
+        $sqlim = 'mysql -uroot -plocaldb001';
+
+        $cmds_local = array(
+            'whoami 2>&1',
+            'hostname 2>&1',
+            'cd ' . $sql_data_folder,
             '[ -f ' . $db_name . '.sql.zip ] && unzip -o ' . $db_name . '.sql.zip',
-            '[ -f ' . $db_name . '.sql ] && sqlim ' . $db_name . '<' . $db_name . '.sql',
-        ), function ($line) {
-            $this->info($line);
-        });
+            '[ -f ' . $db_name . '.sql ] && ' . $sqlim . ' ' . $db_name . '<' . $db_name . '.sql',
+            'echo "数据库已恢复完成 ..."',
+        );
+        if ($this->option('local')) {
+            $this->local_run($cmds_local);
+        }
 
+    }
+
+    public function local_run($cmds)
+    {
+        $cmds_str = implode(' && ', $cmds);
+        $do       = system($cmds_str);
     }
 }

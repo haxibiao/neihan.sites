@@ -152,7 +152,7 @@ export default {
       comments: [],
     	newComment : {
         is_new: true,
-        created_at: '刚刚',
+        created_at_cn: '刚刚',
     		body: null,
     		object_id: this.id,
     		type: this.type,
