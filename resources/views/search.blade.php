@@ -39,7 +39,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
-                "{{ $data['query'] }}" 搜索结果
+                "{{ $data['query'] }}" 搜索结果(共{{ $data['articles']->total() }}条)
             </h3>
         </div>
         <div class="panel-body">
