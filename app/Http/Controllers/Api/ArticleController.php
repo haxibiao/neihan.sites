@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Article;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
@@ -70,7 +72,7 @@ class ArticleController extends Controller
     public function getAllRelations(Request $request, $id)
     {
         $article   = Article::findOrFail($id);
-        $contoller = new ArticleController();
+        $contoller = new \App\Http\Controllers\ArticleController();
         return $contoller->get_json_lists($article);
     }
 

@@ -3,8 +3,6 @@
 use App\Article;
 use App\Category;
 use App\Favorite;
-use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\VideoController;
 use App\Image;
 use App\Traffic;
 use App\User;

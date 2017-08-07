@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Video;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class VideoController extends Controller
 {
@@ -24,7 +26,7 @@ class VideoController extends Controller
     public function getAllRelations(Request $request, $id)
     {
         $video     = Video::findOrFail($id);
-        $contoller = new VideoController();
+        $contoller = new \App\Http\Controllers\VideoController();
         return $contoller->get_json_lists($video);
     }
 
