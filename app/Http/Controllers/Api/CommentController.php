@@ -28,6 +28,8 @@ class CommentController extends Controller
         foreach ($comments as $comment) {
             $comment->created_at_cn = diffForHumansCN($comment->created_at);
             $comment->user->picture = get_avatar($comment->user);
+            $comment->liked         = $this->check_cache($request, $comment->id, 'like_comment');
+            $comment->reported      = $this->check_cache($request, $comment->id, 'report_comment');
         }
 
         return $comments;
@@ -35,15 +37,7 @@ class CommentController extends Controller
 
     public function like(Request $request, $id)
     {
-        //use cache check if like or unlike
-        $cache = Cache::get('like_comment_' . $id);
-        if (empty($cache)) {
-            Cache::put('like_comment_' . $id, 1, 60 * 24);
-        }
-        $liked = !empty($cache) && $cache;
-        if($liked) {
-            Cache::put('like_comment_' . $id, 0, 60 * 24);
-        }
+        $liked          = $this->sync_cache($request, $id, 'like_comment');
         $comment        = Comment::find($id);
         $comment->likes = $comment->likes + ($liked ? -1 : 1);
         $comment->save();
@@ -52,18 +46,34 @@ class CommentController extends Controller
 
     public function report(Request $request, $id)
     {
-        //use cache check if report or unreported
-        $cache = Cache::get('report_comment_' . $id);
-        if (empty($cache)) {
-            Cache::put('report_comment_' . $id, 1, 60 * 24);
-        }
-        $reported = !empty($cache) && $cache;
-        if($reported) {
-            Cache::put('report_comment_' . $id, 0, 60 * 24);
-        }
+        $reported         = $this->sync_cache($request, $id, 'report_comment');
         $comment          = Comment::find($id);
         $comment->reports = $comment->reports + ($reported ? -1 : 1);
         $comment->save();
         return $comment;
+    }
+
+    public function check_cache($request, $id, $type)
+    {
+        //use cache check if report or unreported
+        $cache_key = $type . '_' . $id . '_' . $request->user()->id;
+        $cache = Cache::get($cache_key);
+        $done  = !empty($cache) && $cache;
+        return $done;
+    }
+
+    public function sync_cache($request, $id, $type)
+    {
+        //use cache check if report or unreported
+        $cache_key = $type . '_' . $id . '_' . $request->user()->id;
+        $cache     = Cache::get($cache_key);
+        if (empty($cache)) {
+            Cache::put($cache_key, 1, 60*24);
+        }
+        $done = !empty($cache) && $cache;
+        if ($done) {
+            Cache::put($cache_key, 0, 60*24);
+        }
+        return $done;
     }
 }

@@ -1,17 +1,17 @@
 <template>
-<div>
-	
+<div id='vue_comments'>
+
 	<!-- 评论列表 -->
 	<div class="panel panel-default" v-for="comment in comments">
     <div class="panel-heading">
       <div class="pull-right" v-if="!comment.is_new">
-        <button type="button" class="btn　btn-sm btn-default" @click="replyComment(comment)">回复</button>
+        <span v-if="!comment.liked" class="icon iconfont icon-dianzan3" @click="likeComment(comment)"><i>{{ comment.likes }}</i></span>
+        <span v-else class="icon iconfont icon-dianzan" @click="unlikeComment(comment)"><i>{{ comment.likes }}</i></span>　
 
-        <span v-if="!comment.liked" class="icon iconfont icon-dianzan3" @click="likeComment(comment)"><span>{{ comment.likes }}</span></span>
-        <span v-else class="icon iconfont icon-dianzan" @click="unlikeComment(comment)"><span>{{ comment.likes }}</span></span>　
-        
-        <span v-if="!comment.reported" class="icon iconfont icon-dianzan1" @click="reportComment(comment)"><span>{{ comment.reports }}</span></span>
-        <span v-else class="icon iconfont icon-zan2" @click="unreportComment(comment)"><span>{{ comment.reports }}</span></span>
+        <span v-if="!comment.reported" class="icon iconfont icon-dianzan1" @click="reportComment(comment)"><i>{{ comment.reports }}</i></span>
+        <span v-else class="icon iconfont icon-zan2" @click="unreportComment(comment)"><i>{{ comment.reports }}</i></span>
+
+        <button type="button" class="btn　btn-sm btn-default" @click="replyComment(comment)">回复</button>
       </div>
       {{　get_lou(comment.lou) }} 
       <a :href="'/user/' + comment.user.id">
@@ -167,4 +167,8 @@ export default {
 </script>
 
 <style lang="css" scoped>
+  #vue_comments i {
+    min-width: 25px;
+    display: inline-block;
+  }
 </style>
