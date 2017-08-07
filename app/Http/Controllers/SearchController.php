@@ -15,7 +15,7 @@ class SearchController extends Controller
             ->orWhere('keywords', 'like', '%' . $query . '%')
             ->paginate(10);
         $data['articles'] = $articles;
-        if (!$articles->isEmpty()) {
+        if (!empty($query) && !$articles->isEmpty()) {
             $query_item = Query::firstOrNew([
                 'query' => $query,
             ]);

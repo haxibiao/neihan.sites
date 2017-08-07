@@ -10,7 +10,7 @@
     <div class="col-xs-12 col-sm-6">
         <form action="/search" class="center-block" method="get">
         <div class="form-group pull-left right10" style="width: 70%">
-            <input class="form-control" name="q" placeholder="搜索..." type="text">
+            <input class="form-control" name="q" placeholder="搜索..." type="text" required="required">
             </input>
         </div>
         <button class="btn btn-default" type="submit">
