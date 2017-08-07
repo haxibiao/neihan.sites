@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\User;
+use App\Query;
 
 class IndexController extends Controller
 {
@@ -26,7 +27,9 @@ class IndexController extends Controller
         $carousel_items = get_carousel_items();
         $users          = User::orderBy('id', 'desc')->take(5)->get();
         $hot_articles   = Article::orderBy('hits', 'desc')->take(2)->get();
+        $queries = Query::where('status','>=', 0)->orderBy('hits','desc')->take(10)->get();
         return view('index.index')
+            ->withQueries($queries)
             ->withCarouselItems($carousel_items)
             ->withUsers($users)
             ->withHotArticles($hot_articles)

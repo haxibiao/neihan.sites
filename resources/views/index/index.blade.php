@@ -28,6 +28,20 @@
               <button type="submit" class="btn btn-default">搜索</button>
             </form>
         </div>
+
+        <div class="col-xs-12">
+            @if(!$queries->isEmpty())
+            
+        <div class="panel panel-default">
+            <div class="panel-body">
+                热门搜索: 
+                @foreach($queries as $query)
+                <a href="/search?q={{ $query->query }}">{{ $query->query }} <span class="badge">{{ $query->results }}</span> </a>　
+                @endforeach
+            </div>
+        </div>
+            @endif
+        </div>
     </div>
 
     <div class="row hidden-xs hidden-sm">
