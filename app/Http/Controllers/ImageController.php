@@ -63,12 +63,12 @@ class ImageController extends Controller
                 $image->status = -1;
                 $image->save();
             }
-            // $path = $image->path;
+            $path = $image->path;
             // if (file_exists(public_path($path))) {
             //     unlink(public_path($path));
             // }
             $data[$path] = true;
-            // $path_small  = $image->path_small;
+            $path_small  = $image->path_small;
             // if (file_exists(public_path($path_small))) {
             //     unlink(public_path($path_small));
             // }
