@@ -21,8 +21,8 @@
             </ol>
         </div>
         <div class="col-xs-8">
-            <form class="navbar-form navbar-left pull-right" action="/search" method="get">
-              <div class="form-group pull-left right5">
+            <form class="pull-right" action="/search" method="get">
+              <div class="form-group pull-left right5" style="width: 160px">
                 <input type="text" class="form-control" placeholder="搜索..." name="q">
               </div>
               <button type="submit" class="btn btn-default">搜索</button>
