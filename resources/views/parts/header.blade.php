@@ -22,13 +22,6 @@
             <!-- Left Side Of Navbar -->
              
              @include('parts.left_navs')
-            
-            {{-- <form class="navbar-form navbar-left">
-              <div class="form-group">
-                <input type="text" class="form-control" placeholder="搜索...">
-              </div>
-              <button type="submit" class="btn btn-default">搜索</button>
-            </form> --}}
 
             <!-- Right Side Of Navbar -->
             <ul class="nav navbar-nav navbar-right">

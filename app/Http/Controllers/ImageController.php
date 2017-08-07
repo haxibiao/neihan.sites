@@ -116,6 +116,10 @@ class ImageController extends Controller
             $image->path    = $path;
 
             $local_dir = public_path('img/');
+            if (!is_dir($local_dir)) {
+                mkdir($local_dir, 0777, 1);
+            }
+
             $full_path = $local_dir . $filename;
 
             $img = \ImageMaker::make($file->path());
@@ -151,15 +155,15 @@ class ImageController extends Controller
                 $img->resize(320, null, function ($constraint) {
                     $constraint->aspectRatio();
                 });
-                if($img->width() > 240) {
-                    $img->crop(320,240);
+                if ($img->width() > 240) {
+                    $img->crop(320, 240);
                 }
             } else {
                 $img->resize(null, 240, function ($constraint) {
                     $constraint->aspectRatio();
                 });
-                if($img->height() > 320) {
-                    $img->crop(320,240);
+                if ($img->height() > 320) {
+                    $img->crop(320, 240);
                 }
             }
             $img->crop(320, 240);

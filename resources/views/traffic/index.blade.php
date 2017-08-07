@@ -4,7 +4,7 @@
 	<div class="container">
 
 		<div class="col-md-6">
-			<bar title-one="最近7天流量" chart-labels='{{ json_encode(array_keys($traffic_by_date)) }}' chart-data-one='{{ json_encode(array_values($traffic_by_date)) }}' />
+			<bar title-one="最近7天流量" chart-labels='{{ json_encode(array_keys($traffic_by_date)) }}' chart-data='{{ json_encode(array_values($traffic_by_date)) }}' />
 		</div>
 		<div class="col-md-6">
 			<ul class="nav nav-tabs">

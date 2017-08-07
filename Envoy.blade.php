@@ -17,6 +17,16 @@ push
 web_update
 @endmacro
 
+@task('pull', ['on' => 'local'])
+hostname
+cd {{ $www }}
+git pull
+sudo chmod -R 777 .
+git config core.filemode false
+php artisan env:refresh --local
+php artisan get:sql
+@endtask
+
 @task('push', ['on' => 'local'])
 hostname
 cd {{ $www }}

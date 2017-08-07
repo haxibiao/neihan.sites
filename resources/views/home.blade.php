@@ -11,17 +11,6 @@
 
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-6 col-lg-4">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">流量:</h3>
-                                </div>
-                                <div class="panel-body"> 
-                                    <bar title-one='流量' chart-data-one='{{ json_encode($data['traffic']) }}' chart-labels='{!! json_encode($labels['traffic']) !!}' 
-                                    color="green"/>
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="col-md-6 col-lg-4">
                             <div class="panel panel-default">
@@ -37,10 +26,22 @@
                         <div class="col-md-6 col-lg-4">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
+                                    <h3 class="panel-title">流量:</h3>
+                                </div>
+                                <div class="panel-body"> 
+                                    <bar title-one='流量' chart-data='{{ json_encode($data['traffic']) }}' chart-labels='{!! json_encode($labels['traffic']) !!}' 
+                                    color="orange"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
                                     <h3 class="panel-title">微信流量:</h3>
                                 </div>
                                 <div class="panel-body"> 
-                                    <bar title-one='微信流量' chart-data-one='{{ json_encode($data['traffic_wx']) }}' chart-labels='{!! json_encode($labels['traffic_wx']) !!}' 
+                                    <bar title-one='微信流量' chart-data='{{ json_encode($data['traffic_wx']) }}' chart-labels='{!! json_encode($labels['traffic_wx']) !!}' 
                                     color="green"/>
                                 </div>
                             </div>
@@ -72,7 +73,7 @@
                                     <h3 class="panel-title">在本站的流量:</h3>
                                 </div>
                                 <div class="panel-body"> 
-                                    <bar title-one='流量' chart-data='{{ json_encode($data['traffic_editors']) }}' chart-labels='{!! json_encode($labels['traffic_editors']) !!}' color="green"/>
+                                    <bar title-one='流量' chart-data='{{ json_encode($data['traffic_editors']) }}' chart-labels='{!! json_encode($labels['traffic_editors']) !!}' color="orange"/>
                                 </div>
                             </div>
                         </div>
@@ -80,10 +81,10 @@
                         <div class="col-md-6 col-lg-4">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">在本站的流量:</h3>
+                                    <h3 class="panel-title">在本站微信流量:</h3>
                                 </div>
                                 <div class="panel-body"> 
-                                    <bar title-one='流量' chart-data='{{ json_encode($data['traffic_editors']) }}' chart-labels='{!! json_encode($labels['traffic_editors']) !!}' color="green"/>
+                                    <bar title-one='流量' chart-data='{{ json_encode($data['wxtraffic_editors']) }}' chart-labels='{!! json_encode($labels['traffic_editors']) !!}' color="green"/>
                                 </div>
                             </div>
                         </div>

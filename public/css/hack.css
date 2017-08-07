@@ -208,9 +208,36 @@ body {
     border-radius: 6px 0 6px 6px;
 }
 
-.box-related {
-    padding: 10px;
+.box-related-half {
+    float: left;
+    display: block;
+    padding: 30px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    width: 48%;
+    background-color: pink;
     -moz-box-shadow: 2px 2px 5px #333333;
     -webkit-box-shadow: 2px 2px 5px #333333;
     box-shadow: 2px 2px 5px #333333;
+    text-align: center;
+}
+.box-related-half:after {
+    background-color: orange;
+    padding: 10px;
+    content: '一个半屏宽关联已插入在正文这里!!!';
+}
+
+.box-related-full {
+    display: block;
+    padding: 30px;
+    background-color: pink;
+    -moz-box-shadow: 2px 2px 5px #333333;
+    -webkit-box-shadow: 2px 2px 5px #333333;
+    box-shadow: 2px 2px 5px #333333;
+    text-align: center;
+}
+.box-related-full:after {
+    background-color: orange;
+    padding: 10px;
+    content: '一个全屏宽关联已插入在正文这里!!!';
 }

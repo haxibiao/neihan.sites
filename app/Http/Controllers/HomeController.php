@@ -78,12 +78,22 @@ class HomeController extends Controller
             ->whereIn('user_id', $editors_ids)
             ->groupBy('user_id')
             ->pluck('count', 'user_id');
+        $wxtraffic_editors = DB::table('traffic')->select(DB::raw('count(*) as count, user_id'))
+            ->where('date', \Carbon\Carbon::now()->subDay(1)->toDateString())
+            ->where('is_wechat',1)
+            ->whereIn('user_id', $editors_ids)
+            ->groupBy('user_id')
+            ->pluck('count', 'user_id');
 
         $data['traffic_editors']   = [];
+        $data['wxtraffic_editors']   = [];
         $labels['traffic_editors'] = [];
         foreach ($traffic_editors as $user_id => $count) {
             $labels['traffic_editors'][] = $editors[$user_id];
             $data['traffic_editors'][]   = $count;
+        }
+        foreach ($wxtraffic_editors as $user_id => $count) {
+            $data['wxtraffic_editors'][]   = $count;
         }
 
         $article_editors = DB::table('articles')->select(DB::raw('count(*) as count, user_id'))

@@ -65,7 +65,7 @@
           @endif
         </p>
         
-        @if(Request::get('weixin'))
+        @if(!empty(Request::get('weixin')))
         <div class="alert alert-success">
           <strong>亲爱的微信用户，您好!</strong> 
             <p>
@@ -74,7 +74,7 @@
             <img src="/qrcode/{{ get_site_domain() }}.jpg" alt="" class="img img-responsive">
         </div>
         <div class="alert alert-info">
-          <strong>想看小编的更多文章吗?</strong> 
+          <strong>想看小编"{{ $article->author }}"的更多文章吗?</strong> 
             <p>
               点左下角的 <strong style="color:red">"阅读全文"</strong>, 可以和本站更多小编,网友互动...
             </p>

@@ -101,8 +101,7 @@
 
 @include('article.parts.upload_js')
 
-<link rel="stylesheet" href="/css/jquery.tagsinput.css">
-<script src="/js/jquery.tagsinput.js"></script>
+@include('article.parts.summernote_init')
 
 <script type="text/javascript">
   $(function() {
@@ -122,6 +121,7 @@
             ['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
             ['height', ['height']],
+            ["insert", ["link","hr"]],
             ['misc',['codeview', 'undo','redo','fullscreen']]
           ]
       });

@@ -10,14 +10,25 @@
 
 @section('content')
 
-<meta name="baidu-site-verification" content="1eDc5dWuPr"/>
-
 <div class="container">
-    <ol class="breadcrumb">
-        <li class="active">
-            首页
-        </li>
-    </ol>
+
+    <div class="row">
+        <div class="col-xs-4">
+            <ol class="breadcrumb">
+                <li class="">
+                    首页
+                </li>
+            </ol>
+        </div>
+        <div class="col-xs-8">
+            <form class="pull-right" action="/search" method="get">
+              <div class="form-group pull-left right5" style="width: 160px">
+                <input type="text" class="form-control" placeholder="搜索..." name="q">
+              </div>
+              <button type="submit" class="btn btn-default">搜索</button>
+            </form>
+        </div>
+    </div>
 
     <div class="row hidden-xs hidden-sm">
         <div class="col-md-8">
