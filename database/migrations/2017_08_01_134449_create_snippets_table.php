@@ -17,6 +17,7 @@ class CreateSnippetsTable extends Migration
         Schema::create('snippets', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->index();
+            $table->integer('category_id')->index();
             $table->string('title')->nullable()->index();
             $table->string('content')->nullable();
             $table->string('image')->nullable();

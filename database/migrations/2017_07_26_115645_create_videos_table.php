@@ -18,13 +18,17 @@ class CreateVideosTable extends Migration
             $table->integer('user_id');
             $table->integer('category_id')->nullable();
             $table->string('title')->nullable();
-            $table->string('path');
+            $table->string('path')->nullable();
             $table->string('path_mp4')->nullable();
             $table->string('cover')->nullable();
             $table->text('introduction')->nullable();
             $table->integer('duration')->nullable(); //in seconds
             $table->integer('count')->default(0)->index();
             $table->integer('status')->default(0)->index();
+            $table->string('hash')->nullable()->index();
+            $table->text('json')->nullable();
+            $table->string('adstime')->nullable();
+            $table->integer('likes')->default(0)->index();
             $table->timestamps();
         });
     }

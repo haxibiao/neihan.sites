@@ -18,6 +18,7 @@ class CreateFavoritesTable extends Migration
             $table->integer('user_id')->index();
             $table->integer('object_id');
             $table->string('type')->default('article');
+            $table->integer('object_id')->index()->change();
             $table->timestamps();
         });
     }

@@ -33,6 +33,8 @@ class CreateUsersTable extends Migration
             $table->text('seo_tj')->nullable();
             $table->text('seo_json')->nullable();
             
+            $table->string('api_token', 60)->nullable()->default(str_random(60));
+            
             $table->rememberToken();
             $table->timestamps();
         });
