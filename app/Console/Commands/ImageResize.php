@@ -45,27 +45,34 @@ class ImageResize extends Command
             }
             $img = \ImageMaker::make($full_path);
 
-            //fix big
-            if ($img->filesize() > 200 * 1024) {
-                $width = $img->width() > 900 ? 900 : $img->width();
-                $img->crop($width, 500);
-                $img->save($full_path);
+            // //fix big
+            // if ($img->filesize() > 200 * 1024) {
+            //     $width = $img->width() > 750 ? 750 : $img->width();
+            //     $img->crop($width, 400);
+            //     $img->save($full_path);
 
-                $this->info($image->path);
-            }
+            //     $this->info($image->path);
+            // }
 
             //resize small
-            $small_path = $full_path . '.small.jpg';
+            $small_path = public_path($image->path_small); //$full_path . '.small.jpg';
             if ($img->height() > $img->width()) {
-                $img->resize(320, null, function ($constraint) {
+                $img->resize(300, null, function ($constraint) {
                     $constraint->aspectRatio();
                 });
+                // if ($img->width > 200) {
+                //     $img->crop(300, 200);
+                // }
+
             } else {
-                $img->resize(null, 240, function ($constraint) {
+                $img->resize(null, 200, function ($constraint) {
                     $constraint->aspectRatio();
                 });
+                // if ($img->height() > 300) {
+                //     $img->crop(300, 200);
+                // }
             }
-            $img->crop(320, 240);
+            $img->crop(300, 200);
             $img->save($small_path);
             $this->info($small_path);
         }
