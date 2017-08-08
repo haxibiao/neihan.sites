@@ -8,7 +8,7 @@ class Snippet extends Model
 {
     protected $fillable = [
     	'title',
-    	'content',
+    	'body',
     	'image',
     ];
 }

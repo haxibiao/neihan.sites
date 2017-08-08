@@ -27,6 +27,8 @@ Route::resource('/article', 'ArticleController');
 Route::resource('/category', 'CategoryController');
 Route::get('/tag/{name}', 'TagController@tagname');
 Route::resource('/tag', 'TagController');
+//片段
+Route::resource('/snippet', 'SnippetController');
 
 //流量
 Route::get('/traffic/log', 'TrafficController@log');

@@ -112,20 +112,7 @@ class ArticleController extends Controller
         $article->body = str_replace('class="box-related-full"', "", $article->body);
         $article->body = str_replace('class="box-related-half"', "", $article->body);
 
-        //TODO:: 现在要吧文章里的插入的视频图片,变成视频来播放 [视频的尺寸还是不完美，后面要获取到视频的尺寸才好处理, 先默认用半个页面来站住]
-        $pattern_img_video = '/<img src=\"([^"]*?)\" data-video\=\"(\d+)\" ([^>]*?)>/iu';
-        if (preg_match_all($pattern_img_video, $article->body, $matches)) {
-            foreach ($matches[2] as $i => $match) {
-                $img_html = $matches[0][$i];
-                $video_id = $match;
-
-                $video = Video::find($video_id);
-                if ($video) {
-                    $video_html    = '<div class="row"><div class="col-md-6"><div class="embed-responsive embed-responsive-4by3"><video class="embed-responsive-item" controls poster="' . $video->cover . '"><source src="' . $video->path . '" type="video/mp4"></video></div></div></div>';
-                    $article->body = str_replace($img_html, $video_html, $article->body);
-                }
-            }
-        }
+        $article->body = parse_video($article->body);
 
         $data['json_lists'] = $this->get_json_lists($article);
         $data['related']    = Article::where('category_id', $article->category_id)

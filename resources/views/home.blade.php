@@ -115,26 +115,50 @@
                 </div>
             </div>
             <div class="row">
-                @if(Auth::user()->is_editor)
+                @if(Auth::user()->is_editor || Auth::user()->is_admin)
                 <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">编辑功能:</h3>
-                    </div>
-                    <div class="panel-body">
-                        <a class="btn btn-primary top5" href="/article/create" role="button">创建文章</a>
-                        <a class="btn btn-warning top5" href="/article" role="button">管理文章</a>
-                        <a class="btn btn-danger top5" href="/category" role="button">管理分类</a>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">文章:</h3>
+                        </div>
+                        <div class="panel-body">
+                            <a class="btn btn-primary top5" href="/article/create" role="button">创建文章</a>
+                            <a class="btn btn-warning top5" href="/article" role="button">管理文章</a>
+                            <a class="btn btn-danger top5" href="/category?type=article" role="button">文章分类</a>
+                        </div>
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">视频:</h3>
+                        </div>
+                        <div class="panel-body">
+                            <a class="btn btn-primary top5" href="/video/create" role="button">创建视频</a>
+                            <a class="btn btn-warning top5" href="/video" role="button">管理视频</a>
+                            <a class="btn btn-danger top5" href="/category?type=video" role="button">视频分类</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">片段:</h3>
+                        </div>
+                        <div class="panel-body">
+                            <a class="btn btn-primary top5" href="/snippet/create" role="button">创建片段</a>
+                            <a class="btn btn-warning top5" href="/snippet" role="button">管理片段</a>
+                            <a class="btn btn-danger top5" href="/category?type=snippet" role="button">片段分类</a>
+                        </div>
+                    </div>
                 </div>
                 @endif
 
-                @if(Auth::user()->is_seoer)
+                @if(Auth::user()->is_seoer || Auth::user()->is_admin)
                 <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">SEO功能:</h3>
+                        <h3 class="panel-title">SEO:</h3>
                     </div>
                     <div class="panel-body">
                         <a class="btn btn-danger top5" href="/user/{{ Auth::user()->id }}/edit" role="button">SEO配置</a>
@@ -148,7 +172,7 @@
                 <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">管理功能:</h3>
+                        <h3 class="panel-title">管理:</h3>
                     </div>
                     <div class="panel-body"> 
                         <a class="btn btn-warning top5" href="/admin/users" role="button">管理用户</a>

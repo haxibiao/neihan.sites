@@ -32,6 +32,8 @@
     "jquery-ui": "^1.12.1",
     "mint-ui": "^2.2.7",
     "summernote": "^0.8.4",
-    "vue-chartjs": "^2.7.1"
+    "vue-chartjs": "^2.7.1",
+    "vue-gesture": "^1.0.8",
+    "vue-touch": "^2.0.0-beta.4"
   }
 }
