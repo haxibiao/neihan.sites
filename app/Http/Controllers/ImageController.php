@@ -14,7 +14,7 @@ class ImageController extends Controller
             return $this->jsonIndex($request);
         }
 
-        $images = image::with('user')->orderBy('updated_at', 'desc')->paginate(10);
+        $images = image::with('user')->orderBy('id', 'desc')->paginate(10);
         return view('image.index')->withImages($images);
     }
 
@@ -34,7 +34,8 @@ class ImageController extends Controller
 
     public function show($id)
     {
-        return 'not imple...';
+        $image = Image::find($id);
+        return $image;
     }
 
     public function edit($id)
@@ -49,7 +50,7 @@ class ImageController extends Controller
 
     public function destroy($deleteUrl)
     {
-        return 'deleting ... ' . $deleteUrl;
+        return 'not implemented deleting ... ' . $deleteUrl;
     }
 
     public function jsonIndex($request)

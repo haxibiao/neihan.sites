@@ -8,10 +8,16 @@ class Image extends Model
 {
 	protected $fillable = [
 		'path',
+		'path_origin',
 		'path_small',
 	];
 
     public function articles() {
     	return $this->belongsToMany('App\Article');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(\App\User::class);
     }
 }
