@@ -33,16 +33,16 @@ class CategoryController extends Controller
 
     public function name_en(Request $request, $name_en)
     {
-        $category       = Category::where('name_en', $name_en)->firstOrFail();
-        $parent = null;
-        if($category->parent_id) {
+        $category = Category::where('name_en', $name_en)->firstOrFail();
+        $parent   = null;
+        if ($category->parent_id) {
             $parent = $category->parent()->first();
         }
         $carousel_items = get_carousel_items($category->id);
 
         $categories = Category::where('parent_id', $category->id)->pluck('name', 'id');
 
-        if ($category->level == 0 && !$request->get('more')) {
+        if ($category->level == 0 && !$request->get('page')) {
             $page_size = 2;
         } else {
             //非顶级频道，直接10个分页显示
@@ -60,18 +60,20 @@ class CategoryController extends Controller
         }
 
         //下级分类
-        $data       = [];
-        $categories = Category::where('parent_id', $category->id)->get();
-        foreach ($categories as $cate) {
-            $cate_articles = Article::orderBy('id', 'desc')
-                ->where('category_id', $cate->id)
-                ->where('status', '>=', 0)
-                ->take(2)
-                ->get();
-            $data[$cate->name_en] = [
-                'name'     => $cate->name,
-                'articles' => $cate_articles,
-            ];
+        $data = [];
+        if (!$request->get('page')) {
+            $categories = Category::where('parent_id', $category->id)->get();
+            foreach ($categories as $cate) {
+                $cate_articles = Article::orderBy('id', 'desc')
+                    ->where('category_id', $cate->id)
+                    ->where('status', '>=', 0)
+                    ->take(2)
+                    ->get();
+                $data[$cate->name_en] = [
+                    'name'     => $cate->name,
+                    'articles' => $cate_articles,
+                ];
+            }
         }
         return view('category.name_en')
             ->withCategory($category)

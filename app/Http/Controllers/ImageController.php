@@ -151,20 +151,14 @@ class ImageController extends Controller
             }
 
             //save small
-            if ($img->height() > $img->width()) {
+            if ($img->width() / $img->height() < 1.5) {
                 $img->resize(300, null, function ($constraint) {
                     $constraint->aspectRatio();
                 });
-                if ($img->width() > 200) {
-                    $img->crop(300, 200);
-                }
             } else {
                 $img->resize(null, 200, function ($constraint) {
                     $constraint->aspectRatio();
                 });
-                if ($img->height() > 300) {
-                    $img->crop(300, 200);
-                }
             }
             $img->crop(300, 200);
             $image->path_small = $path . '.small.' . $extension;

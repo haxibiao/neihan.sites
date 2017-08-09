@@ -86,7 +86,7 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $article       = Article::with('user')->with('category')->with('tags')->with('images')->findOrFail($id);
+        $article = Article::with('user')->with('category')->with('tags')->with('images')->findOrFail($id);
         if ($article->category->parent_id) {
             $data['parent_category'] = $article->category->parent()->first();
         }
@@ -147,7 +147,7 @@ class ArticleController extends Controller
                 $article = Article::with('images')->findOrFail($id);
             }
         }
-        $categories = get_categories();
+        $categories    = get_categories();
         $article->body = str_replace('<single-list id', '<single-list class="box-related-half" id', $article->body);
         return view('article.edit')->withArticle($article)->withCategories($categories);
     }
@@ -270,13 +270,13 @@ class ArticleController extends Controller
             return;
         }
         foreach ($imgs as $img) {
-            if (str_contains($img, 'base64')) {
-                continue;
-            }
             $path      = parse_url($img)['path'];
             $extension = pathinfo($path, PATHINFO_EXTENSION);
             $path      = str_replace('.small.' . $extension, '', $path);
-            $image     = Image::firstOrNew([
+            if (str_contains($img, 'base64') || str_contains($path, 'storage/video')) {
+                continue;
+            }
+            $image = Image::firstOrNew([
                 'path' => $path,
             ]);
             $image->path_small = $path . '.small.' . $extension;

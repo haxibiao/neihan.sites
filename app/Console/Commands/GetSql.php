@@ -73,6 +73,9 @@ class GetSql extends Command
             ':' . $sql_data_folder . '/' . $db_name . '.sql.zip ' . $sql_data_folder;
         $this->info($scp_command);
         $this->info('复制粘贴上面的命令来拉取服务器上最新的数据库备份文件, then run art get:sql --local');
+        RemoteFacade::into('localhost')->run([$scp_command], function ($line) {
+            $this->comment($line);
+        });
 
         $sqlim = 'mysql -uroot -plocaldb001';
 
@@ -84,10 +87,8 @@ class GetSql extends Command
             '[ -f ' . $db_name . '.sql ] && ' . $sqlim . ' ' . $db_name . '<' . $db_name . '.sql',
             'echo "数据库已恢复完成 ..."',
         );
-        if ($this->option('local')) {
-            $this->local_run($cmds_local);
-        }
-
+        
+        $this->local_run($cmds_local);
     }
 
     public function local_run($cmds)

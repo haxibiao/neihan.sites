@@ -9,7 +9,7 @@
         <div class="panel-body">
         @foreach($list['items'] as $item)
           <div class="col-xs-6 {{ get_items_col($list['items']) }}">
-            <a href="/article/{{ $item['id'] }}"><img src="{{ get_small_article_image($item['image_url']) }}" class="img img-responsive"></a>
+            <a href="/article/{{ $item['id'] }}"><img src="{{ get_small_image($item['image_url']) }}" class="img img-responsive"></a>
             <p class="strip_title">
               {{ $item['title'] }}
             </p>

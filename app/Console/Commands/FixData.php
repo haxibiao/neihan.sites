@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Article;
+use App\Image;
 use Illuminate\Console\Command;
 
 class FixData extends Command
@@ -11,7 +13,7 @@ class FixData extends Command
      *
      * @var string
      */
-    protected $signature = 'fix:data {--traffic} {--articles}';
+    protected $signature = 'fix:data {--traffic} {--articles} {--images} {--videos}';
 
     /**
      * The console command description.
@@ -45,23 +47,89 @@ class FixData extends Command
             $this->fix_articles();
         }
 
+        if ($this->option('images')) {
+            $this->fix_images();
+        }
+
+    }
+
+    public function fix_images()
+    {
+        $this->error('use image:resize ...');
     }
 
     public function fix_articles()
     {
-        $articles = \App\Article::all();
-        foreach ($articles as $article) {
-            $category = \App\Category::find($article->category_id);
-            if (!$category) {
-                $article->category_id = \App\Category::first()->id;
-                $article->save();
-                $this->info('fix category: ' . $article->title);
-            }
+        // $article = Article::find(361);
+        // $this->fix_article($article);
+        // return;
 
-            //fix date
-            $article->date = $article->created_at->toDateString();
-            $article->save();
+        $articles = Article::with('images')->get();
+        foreach ($articles as $article) {
+            $this->fix_article($article);
         }
+    }
+
+    public function fix_article($article)
+    {
+        $this->info($article->image_url);
+        //fix image_url
+        if (str_contains($article->image_url, 'storage/video/')) {
+            $article->image_url = str_replace('.small.jpg', '', $article->image_url);
+        }
+        if (starts_with($article->image_url, 'http')) {
+            $this->comment($article->image_url);
+            $article->image_url = parse_url($article->image_url, PHP_URL_PATH);
+            $this->info($article->image_url);
+        }
+        $image_url = $article->image_url;
+        if (str_contains($article->image_url, '.small.')) {
+            $image_url = str_replace('.small.jpg', '', $image_url);
+            $image_url = str_replace('.small.gif', '', $image_url);
+            $image_url = str_replace('.small.png', '', $image_url);
+        }
+        if (!file_exists(public_path($image_url))) {
+            $this->error('miss file for ' . $image_url);
+            $article->image_url = '';
+        }
+        if (empty($article->image_url) && !$article->images->isEmpty()) {
+            $article->image_url = $article->images()->first()->path_small;
+        }
+        if (!empty($article->image_url)) {
+            $image = Image::where('path_origin', $image_url)->orWhere('path', $image_url)->first();
+            if ($image) {
+                $article->image_url = $image->path_small;
+                $this->comment($image->path_small);
+            }
+        }
+        //fix image new path in body
+        $pattern_img = '/<img src=\"(.*?)\"/';
+        if (preg_match_all($pattern_img, $article->body, $matches)) {
+            $imgs = $matches[1];
+            foreach ($imgs as $img) {
+                $this->comment($img);
+                if (starts_with($img, 'http')) {
+                    $img = parse_url($img, PHP_URL_PATH);
+                    $this->info($img);
+                }
+                $image = Image::where('path_origin', $img)->first();
+                if ($image) {
+                    $article->body = str_replace($img, $image->path, $article->body);
+                }
+            }
+        }
+
+        // $category = \App\Category::find($article->category_id);
+        // if (!$category) {
+        //     $article->category_id = \App\Category::first()->id;
+        //     $article->save();
+        //     $this->info('fix category: ' . $article->title);
+        // }
+
+        // //fix date
+        // $article->date = $article->created_at->toDateString();
+
+        $article->save();
     }
 
     public function fix_traffic()

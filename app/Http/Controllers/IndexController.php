@@ -16,6 +16,7 @@ class IndexController extends Controller
             $articles = Article::orderBy('id', 'desc')
                 ->where('category_id', $cate_id)
                 ->where('status', '>=', 0)
+                ->where('image_url', '<>', '')
                 ->take(2)
                 ->get();
             $data[$cate->name_en] = [

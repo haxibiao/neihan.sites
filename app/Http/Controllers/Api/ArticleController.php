@@ -114,7 +114,7 @@ class ArticleController extends Controller
                             $items[] = [
                                 'id'        => $article->id,
                                 'title'     => $article->title,
-                                'image_url' => get_small_article_image($article->image_url),
+                                'image_url' => get_small_image($article->image_url),
                             ];
                         }
                     }

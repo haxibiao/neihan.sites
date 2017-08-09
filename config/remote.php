@@ -27,7 +27,7 @@ return [
 	*/
 
 	'connections' => [
-		'homestead' => [
+		'localhost' => [
 			'host' => 'localhost',
 			'username' => 'root',
 			'password' => '',

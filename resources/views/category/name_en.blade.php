@@ -29,7 +29,7 @@
         </li>
     </ol>
     <div class="row">
-        @if($category->level == 0 && !Request::get('more'))
+        @if($category->level == 0 && !Request::get('page'))
         <div class="col-md-8">
             @include('parts.carousel')
         </div>
@@ -37,7 +37,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="pull-right">
-                        <a href="/{{ $category->name_en }}?more=1">
+                        <a href="/{{ $category->name_en }}?page=1">
                             更多
                         </a>
                     </div>

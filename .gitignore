@@ -1,7 +1,7 @@
 /node_modules
 /public/hot
 /public/storage
-/public/img
+/public/img*
 /public/*.apk
 /storage/*.key
 /vendor
@@ -11,3 +11,4 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 .env
+*.zip

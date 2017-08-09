@@ -77,12 +77,11 @@
 
                 //插入图片到编辑器
                 $('.editable').summernote('insertImage', img_url,function ($image) {
+                    $image.addClass('img-responsive');
                     if(!is_video){
                         $image.attr('data-url-big', img_url);
-                        $image.addClass('img-responsive');
                     } else {
                         $image.attr('data-video', video_id);
-                        $image.addClass('img-thumbnail');
                         $image.addClass('video');
                     }
                 });
