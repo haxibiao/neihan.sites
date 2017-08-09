@@ -80,7 +80,7 @@ class ImageResize extends Command
         if ($extension != 'gif') {
             if ($img->width() >= 750) {
                 $img->crop(750, 400);
-                $image->path_top = '/storage/img/' . $image->id . '.top.' . $extension;
+                $image->path_top = '/storage/image/' . $image->id . '.top.' . $extension;
                 $img->save(public_path($image->path_top));
             }
         } else {
