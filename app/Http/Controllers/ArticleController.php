@@ -114,6 +114,30 @@ class ArticleController extends Controller
 
         $article->body = parse_video($article->body);
 
+        //TODO::remove this after test 
+        $article->body = str_replace('ainicheng.com', 'l.ainicheng.com', $article->body);
+        //fix image new path in body
+        $pattern_img = '/<img src=\"(.*?)\"/';
+        if (preg_match_all($pattern_img, $article->body, $matches)) {
+            $imgs = $matches[1];
+            foreach ($imgs as $img) {
+                // $this->comment($img);
+                if (starts_with($img, 'http')) {
+                    $img = parse_url($img, PHP_URL_PATH);
+                    // $this->info($img);
+                }
+                $image = Image::where('path_origin', $img)->first();
+                if ($image) {
+                    // dd($image->path);
+                    // dd($img);
+                    // dd($image);
+                    $article->body = str_replace($img, $image->path, $article->body);
+                    // dd($article->body);
+                }
+            }
+        }
+        // dd($article->body);
+
         $data['json_lists'] = $this->get_json_lists($article);
         $data['related']    = Article::where('category_id', $article->category_id)
             ->where('id', '<>', $article->id)

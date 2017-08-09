@@ -38,8 +38,6 @@ php artisan migrate --seed --force
 EOT;
 
 $run_commands = <<<EOT
-php artisan image:resize
-php artisan fix:data --articles
 EOT;
 
 $cache_clear = <<<EOT

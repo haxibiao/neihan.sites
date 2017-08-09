@@ -62,9 +62,7 @@ export default {
           $(event.target).parent().hide();
 
           var img_url = $(event.target).attr('src');
-          img_url = img_url.replace('.small.jpg','');
-          img_url = img_url.replace('.small.png','');
-          img_url = img_url.replace('.small.gif','');
+          img_url = img_url.replace('.small','');
 
           //插入编辑器
           $('.editable').summernote('insertImage', img_url,function ($image) {

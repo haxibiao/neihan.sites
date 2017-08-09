@@ -104,24 +104,20 @@ class ImageController extends Controller
     public function jsonStore($request)
     {
         $images      = $request->file('files');
-        $image_index = get_cached_index(Image::max('id'));
         $files       = [];
         foreach ($images as $file) {
-            $extension = $file->getClientOriginalExtension();
-            $filename  = $image_index . '.' . $extension;
-            $path      = '/img/' . $filename;
-
             $image = new Image();
-            // $image->title   = $file->getClientOriginalName();
+            $image->save();
+            $extension = $file->getClientOriginalExtension();
+            $filename  = $image->id . '.' . $extension;
+            $image->path    = '/img/' . $filename;
             $image->user_id = Auth::user()->id;
-            $image->path    = $path;
+            
 
             $local_dir = public_path('img/');
             if (!is_dir($local_dir)) {
                 mkdir($local_dir, 0777, 1);
             }
-
-            $full_path = $local_dir . $filename;
 
             $img = \ImageMaker::make($file->path());
             if ($extension != 'gif') {
@@ -130,7 +126,7 @@ class ImageController extends Controller
                     $constraint->aspectRatio();
                 });
                 //save big
-                $img->save($full_path);
+                $img->save(public_path($image->path));
 
                 $image->width  = $img->width();
                 $image->height = $img->height();
@@ -142,12 +138,12 @@ class ImageController extends Controller
             if ($extension != 'gif') {
                 if ($img->width() >= 750) {
                     $img->crop(750, 400);
-                    $img->save($full_path . '.top.' . $extension);
-                    $image->path_top = $path . '.top.' . $extension;
+                    $image->path_top = '/img/' .$image->id . '.top.' . $extension;
+                    $img->save(public_path($image->path_top));
                 }
             } else {
                 if ($img->width() >= 750) {
-                    $image->path_top = $path;
+                    $image->path_top = $image->path;
                 }
             }
 
@@ -162,16 +158,16 @@ class ImageController extends Controller
                 });
             }
             $img->crop(300, 200);
-            $image->path_small = $path . '.small.' . $extension;
-            $img->save($full_path . '.small.' . $extension);
+            $image->path_small = '/img/' . $image->id . '.small.' . $extension;
+            $img->save(public_path($image->path_small));
             $image->save();
             $files[] = [
                 'url'          => base_uri() . $image->path,
-                'thumbnailUrl' => base_uri() . $image->path,
-                'name'         => $path,
+                'thumbnailUrl' => base_uri() . $image->path_small,
+                'name'         => $image->path,
                 'id'           => $image->id,
                 "type"         => str_replace("jpg", "jpeg", "image/" . $extension),
-                "size"         => filesize($full_path),
+                "size"         => filesize(public_path($image->path)),
                 'deleteUrl'    => url('/image?d=' . $image->id),
                 "deleteType"   => "GET",
             ];

@@ -151,12 +151,12 @@ function get_small_image($image_url)
 
         //fix article only! video not have small version image ...
         if (!str_contains($image_url, 'storage/video')) {
-            $image_url = $image_url . '.small.' . $extension;
+            $image_url = str_replace('.' . $extension, '.small.' . $extension, $image_url);
         }
     }
 
     //fix dirty .png.small.jpg
-    $image_url = str_replace('.png.small.jpg', '.png.small.png', $image_url);
+    // $image_url = str_replace('.png.small.jpg', '.png.small.png', $image_url);
 
     return get_img($image_url);
 }

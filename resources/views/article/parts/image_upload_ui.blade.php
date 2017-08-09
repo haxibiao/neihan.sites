@@ -67,9 +67,7 @@
                 var img_url = $(this).attr('src');
                 var video_id = 0;
                 if(!is_video){
-                    img_url = img_url.replace('.small.jpg','');
-                    img_url = img_url.replace('.small.png','');
-                    img_url = img_url.replace('.small.gif','');
+                    img_url = img_url.replace('.small','');
                 }　else {
                     video_id = $(this).parent().attr('download');
                     video_id = video_id.replace('storage/video', '' ,video_id);

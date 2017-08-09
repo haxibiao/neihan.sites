@@ -83,7 +83,7 @@ class FixData extends Command
             $this->info($article->image_url);
         }
         $image_url = $article->image_url;
-        if (str_contains($article->image_url, '.small.')) {
+        if (str_contains($image_url, '.small.')) {
             $image_url = str_replace('.small.jpg', '', $image_url);
             $image_url = str_replace('.small.gif', '', $image_url);
             $image_url = str_replace('.small.png', '', $image_url);
@@ -93,13 +93,13 @@ class FixData extends Command
             $article->image_url = '';
         }
         if (empty($article->image_url) && !$article->images->isEmpty()) {
-            $article->image_url = $article->images()->first()->path_small;
+            $article->image_url = $article->images()->first()->path;
         }
         if (!empty($article->image_url)) {
             $image = Image::where('path_origin', $image_url)->orWhere('path', $image_url)->first();
             if ($image) {
-                $article->image_url = $image->path_small;
-                $this->comment($image->path_small);
+                $article->image_url = $image->path;
+                $this->comment($image->path);
             }
         }
         //fix image new path in body
