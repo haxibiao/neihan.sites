@@ -91,6 +91,9 @@ class FixData extends Command
         if (!starts_with($video_path, 'http') && file_exists($video_path) && filesize($video_path) < 1000 * 1000) {
             $second = rand(13, 18);
         }
+        if (str_contains($video_path, '_basic')) {
+            $second = rand(14, 18);
+        }
 
         $cmd = "ffmpeg -i $video_path -deinterlace -an -s 300x200 -ss $second -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover 2>&1";
         $do  = `$cmd`;
