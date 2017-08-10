@@ -87,9 +87,14 @@ class FixData extends Command
 
     public function make_cover($video_path, $cover)
     {
-        $second = rand(3, 8);
-        if (!starts_with($video_path, 'http') && file_exists($video_path) && filesize($video_path) < 1000 * 1000) {
-            $second = rand(13, 18);
+        $second = rand(2, 4);
+        if (!starts_with($video_path, 'http')) {
+            if (file_exists($video_path) && filesize($video_path) > 600 * 1000) {
+                $second = rand(5, 8);
+            }
+            if (file_exists($video_path) && filesize($video_path) > 1000 * 1000) {
+                $second = rand(8, 14);
+            }
         }
         if (str_contains($video_path, '_basic')) {
             $second = rand(14, 18);
