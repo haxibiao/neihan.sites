@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Article;
 use App\Image;
+use App\Video;
 use Illuminate\Console\Command;
 
 class FixData extends Command
@@ -13,7 +14,7 @@ class FixData extends Command
      *
      * @var string
      */
-    protected $signature = 'fix:data {--traffic} {--articles} {--images} {--videos}';
+    protected $signature = 'fix:data {--traffic} {--articles} {--images} {--videos} {--force}';
 
     /**
      * The console command description.
@@ -51,6 +52,49 @@ class FixData extends Command
             $this->fix_images();
         }
 
+        if ($this->option('videos')) {
+            $this->fix_videos();
+        }
+
+    }
+
+    public function fix_videos()
+    {
+        // $video = Video::find(2);
+        // $this->fix_video_cover($video);
+        // dd($video);
+
+        $videos = Video::all();
+        foreach ($videos as $video) {
+            $this->fix_video_cover($video);
+        }
+    }
+
+    public function fix_video_cover($video)
+    {
+        $cover = public_path($video->cover);
+        if (!file_exists($cover) || $this->option('force')) {
+            $video_path = $video->path;
+            if (!starts_with($video_path, 'http')) {
+                $video_path = env('APP_ENV') == 'local' ? env('APP_URL') . $video->path : public_path($video->path);
+            }
+
+            $this->info($video_path);
+            $this->info($cover);
+            $this->make_cover($video_path, $cover);
+        }
+    }
+
+    public function make_cover($video_path, $cover)
+    {
+        $second = rand(3, 8);
+        if (!starts_with($video_path, 'http') && file_exists($video_path) && filesize($video_path) < 1000 * 1000) {
+            $second = rand(13, 18);
+        }
+
+        $cmd = "ffmpeg -i $video_path -deinterlace -an -s 300x200 -ss $second -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover 2>&1";
+        $do  = `$cmd`;
+        return $do;
     }
 
     public function fix_images()

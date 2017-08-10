@@ -110,11 +110,11 @@ class ImageController extends Controller
             $image->save();
             $extension = $file->getClientOriginalExtension();
             $filename  = $image->id . '.' . $extension;
-            $image->path    = '/img/' . $filename;
+            $image->path    = '/storage/img/' . $filename;
             $image->user_id = Auth::user()->id;
             
 
-            $local_dir = public_path('img/');
+            $local_dir = public_path('/storage/img/');
             if (!is_dir($local_dir)) {
                 mkdir($local_dir, 0777, 1);
             }
@@ -138,7 +138,7 @@ class ImageController extends Controller
             if ($extension != 'gif') {
                 if ($img->width() >= 750) {
                     $img->crop(750, 400);
-                    $image->path_top = '/img/' .$image->id . '.top.' . $extension;
+                    $image->path_top = '/storage/img/' .$image->id . '.top.' . $extension;
                     $img->save(public_path($image->path_top));
                 }
             } else {
@@ -158,7 +158,7 @@ class ImageController extends Controller
                 });
             }
             $img->crop(300, 200);
-            $image->path_small = '/img/' . $image->id . '.small.' . $extension;
+            $image->path_small = '/storage/img/' . $image->id . '.small.' . $extension;
             $img->save(public_path($image->path_small));
             $image->save();
             $files[] = [

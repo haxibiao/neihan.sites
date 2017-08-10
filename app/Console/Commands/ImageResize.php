@@ -58,10 +58,15 @@ class ImageResize extends Command
         if (empty($image->path_origin)) {
             $image->path_origin = $image->path;
         }
-
+        
+        $full_path = public_path($image->path_origin);
         $this->info($image->path_origin);
-        $path_bak      = str_replace('img/', 'img_bak/', $image->path_origin);
-        $full_path     = public_path($path_bak);
+
+        if (!file_exists($full_path)) {
+            $path_bak  = str_replace('img/', 'img_bak/', $image->path_origin);
+            $full_path = public_path($path_bak);
+        }
+
         $extension     = pathinfo($image->path, PATHINFO_EXTENSION);
         $image->path   = '/storage/image/' . $image->id . '.' . $extension;
         $full_path_new = public_path($image->path);
@@ -90,7 +95,7 @@ class ImageResize extends Command
         }
 
         //resize small
-        $small_path = public_path($image->path_small); 
+        $small_path = public_path($image->path_small);
         if (file_exists($small_path)) {
             unlink($small_path);
         }
