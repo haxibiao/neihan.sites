@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Traffic;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class TrafficController extends Controller
 {
@@ -17,30 +17,30 @@ class TrafficController extends Controller
     public function index($days_ago = 0)
     {
         $traffic_by_date = DB::table('traffic')->select(DB::raw('count(*) as count, date'))
-            ->where('created_at','>=', Carbon::now()->subDay(7))            
+            ->where('created_at', '>=', Carbon::now()->subDay(7))
             ->groupBy('date')
-            ->pluck('count','date')
+            ->pluck('count', 'date')
             ->toArray();
 
         $date = Carbon::now()->toDateString();
         if ($days_ago) {
             $date = Carbon::now()->subDay($days_ago)->toDateString();
         }
-        $query  = Traffic::where('date', $date);
+        $query_date  = DB::table('traffic')->where('date', $date);
         $counts = [];
-        $all    = $query->count();
+        $all    = $query_date->count();
         if ($all == 0) {
-            $all = 1;
+            $all = 1; //避免除0出错
         }
 
-        $counts['总计']    = $all;
-        $counts['桌面']    = $query->where('is_desktop', 1)->count();
-        $counts['移动端'] = $query->where('is_mobile', 1)->count();
-        $counts['手机']    = $query->where('is_phone', 1)->count();
-        $counts['平板']    = $query->where('is_tablet', 1)->count();
-        $counts['微信']    = $query->where('is_wechat', 1)->count();
-        $counts['安卓']    = $query->where('is_android_os', 1)->count();
-        $counts['爬虫']    = $query->where('is_robot', 1)->count();
+        // $data['总计']    = $all;
+        $counts['桌面']    = DB::table('traffic')->where('date', $date)->where('is_desktop', 1)->count();
+        $counts['移动端'] = DB::table('traffic')->where('date', $date)->where('is_mobile', 1)->count();
+        $counts['手机']    = DB::table('traffic')->where('date', $date)->where('is_phone', 1)->count();
+        $counts['平板']    = DB::table('traffic')->where('date', $date)->where('is_tablet', 1)->count();
+        $counts['微信']    = DB::table('traffic')->where('date', $date)->where('is_wechat', 1)->count();
+        $counts['安卓']    = DB::table('traffic')->where('date', $date)->where('is_android_os', 1)->count();
+        $counts['爬虫']    = DB::table('traffic')->where('date', $date)->where('is_robot', 1)->count();
 
         $query          = DB::table('traffic')->where('date', $date);
         $data['device'] = [
