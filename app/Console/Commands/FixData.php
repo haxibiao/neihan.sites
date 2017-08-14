@@ -96,6 +96,9 @@ class FixData extends Command
                 $second = rand(8, 14);
             }
         }
+        if (str_contains($video_path, '_basic')) {
+            $second = rand(14, 18);
+        }
 
         $cmd = "ffmpeg -i $video_path -deinterlace -an -s 300x200 -ss $second -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover 2>&1";
         $do  = `$cmd`;
@@ -104,7 +107,24 @@ class FixData extends Command
 
     public function fix_images()
     {
-        $this->error('use image:resize ...');
+        $images = Image::all();
+        foreach($images as $image) {
+            if(str_contains($image->path_small, 'jpg.small.jpg')){                
+                $this->info('fixed '. $image->path_small);
+                $image->path_small = str_replace('jpg.small.jpg', 'small.jpg', $image->path_small);
+                $image->save();
+            }
+            if(str_contains($image->path_small, 'png.small.png')){                
+                $this->info('fixed '. $image->path_small);
+                $image->path_small = str_replace('png.small.png', 'small.png', $image->path_small);
+                $image->save();
+            }
+            if(str_contains($image->path_small, 'gif.small.gif')){                
+                $this->info('fixed '. $image->path_small);
+                $image->path_small = str_replace('gif.small.gif', 'small.gif', $image->path_small);
+                $image->save();
+            }
+        }
     }
 
     public function fix_articles()

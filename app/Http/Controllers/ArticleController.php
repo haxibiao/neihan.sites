@@ -73,7 +73,7 @@ class ArticleController extends Controller
 
         //images
         $imgs = $request->get('images');
-        $this->save_article_imgs($imgs, $article);
+        $this->auto_upadte_image_relations($imgs, $article);
 
         return redirect()->to('/article/' . $article->id);
     }
@@ -138,7 +138,7 @@ class ArticleController extends Controller
             $pattern_img = '/<img src=\"(.*?)\"/';
             if (preg_match_all($pattern_img, $article->body, $matches)) {
                 $imgs = $matches[1];
-                $this->save_article_imgs($imgs, $article);
+                $this->auto_upadte_image_relations($imgs, $article);
                 $article = Article::with('images')->findOrFail($id);
             }
         } else {
@@ -185,7 +185,7 @@ class ArticleController extends Controller
 
         //images
         $imgs = $request->get('images');
-        $this->save_article_imgs($imgs, $article);
+        $this->auto_upadte_image_relations($imgs, $article);
 
         return redirect()->to('/article/' . $article->id);
     }
@@ -264,7 +264,7 @@ class ArticleController extends Controller
         return $cleared_somthing;
     }
 
-    public function save_article_imgs($imgs, $article)
+    public function auto_upadte_image_relations($imgs, $article)
     {
         if (!is_array($imgs)) {
             return;
@@ -279,23 +279,24 @@ class ArticleController extends Controller
             $image = Image::firstOrNew([
                 'path' => $path,
             ]);
-            $image->path_small = $path . '.small.' . $extension;
-            $image->count      = $image->count + 1;
-            $image->title      = $article->title;
-            $image->save();
+            if ($image->id) {
+                $image->count = $image->count + 1;
+                $image->title = $article->title;
+                $image->save();
 
-            $article_image = ArticleImage::firstOrNew([
-                'article_id' => $article->id,
-                'image_id'   => $image->id,
-            ]);
+                //auto get is_top an image_top
+                if ($image->path_top) {
+                    $article->is_top    = 1;
+                    $article->image_top = $image->path_top;
+                    $article->save();
+                }
 
-            //auto get is_top an image_top
-            if ($image->path_top) {
-                $article->is_top    = 1;
-                $article->image_top = $image->path_top;
-                $article->save();
+                $article_image = ArticleImage::firstOrNew([
+                    'article_id' => $article->id,
+                    'image_id'   => $image->id,
+                ]);
+                $article_image->save();
             }
-            $article_image->save();
         }
     }
 

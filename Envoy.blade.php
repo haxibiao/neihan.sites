@@ -38,6 +38,7 @@ cd {{ $www }}
 echo {{ $www }}
 {{ $refresh_env_config }}
 {{ $cache_clear }}
+php artisan fix:data --images
 @endtask
 
 @task('web_seed', ['on' => ['hk001'], 'parallel' => true])
