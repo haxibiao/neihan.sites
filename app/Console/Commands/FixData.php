@@ -96,9 +96,6 @@ class FixData extends Command
                 $second = rand(8, 14);
             }
         }
-        if (str_contains($video_path, '_basic')) {
-            $second = rand(14, 18);
-        }
 
         $cmd = "ffmpeg -i $video_path -deinterlace -an -s 300x200 -ss $second -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover 2>&1";
         $do  = `$cmd`;

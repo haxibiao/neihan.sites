@@ -17,7 +17,11 @@ Vue.prototype.$http = window.axios;
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.component('example', require('./components/Example.vue'));
+Vue.component('bar', require('./components/Bar.vue'));
+Vue.component('line-chart', require('./components/Line.vue'));
 Vue.component('single-list', require('./components/SingleList.vue'));
+
 Vue.component('favorite', require('./components/Favorite.vue'));
 Vue.component('like', require('./components/Like.vue'));
 Vue.component('comment', require('./components/Comment.vue'));
