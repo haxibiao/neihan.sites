@@ -19,9 +19,14 @@ class Video extends Model
         'adstime',
     ];
 
+    public function category()
+    {
+        return $this->belongsTo(\App\Category::class);
+    }
+
     public function articles()
     {
-        return $this->belongsToMany('App\Article');
+        return $this->belongsToMany(\App\Article::class);
     }
 
     public function user()

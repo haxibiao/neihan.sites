@@ -4,11 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Video;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class VideoController extends Controller
 {
+    public function getIndex()
+    {
+        $videos = Video::orderBy('id','desc')->paginate(12);
+        return $videos;
+    }
+
     public function saveRelation(Request $request, $id)
     {
         $video = Video::findOrFail($id);

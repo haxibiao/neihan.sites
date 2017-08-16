@@ -27,6 +27,11 @@
                         {{ $errors->first('title') }}
                     </small>
                 </div>
+                <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
+                    {!! Form::label('category_id', '视频分类') !!}
+                    {!! Form::select('category_id', $data['video_categories'], $video->category_id, ['id' => 'category_id', 'class' => 'form-control', 'required' => 'required']) !!}
+                    <small class="text-danger">{{ $errors->first('category_id') }}</small>
+                </div>
                 <div class="form-group{{ $errors->has('introduction') ? ' has-error' : '' }}">
                     {!! Form::label('introduction', '视频介绍(非必填)') !!}
 					        {!! Form::textarea('introduction', $video->introduction, ['class' => 'form-control']) !!}

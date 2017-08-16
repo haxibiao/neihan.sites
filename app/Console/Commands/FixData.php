@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Article;
+use App\Category;
 use App\Image;
 use App\Video;
 use Illuminate\Console\Command;
@@ -14,7 +15,7 @@ class FixData extends Command
      *
      * @var string
      */
-    protected $signature = 'fix:data {--traffic} {--articles} {--images} {--videos} {--force}';
+    protected $signature = 'fix:data {--traffic} {--articles} {--images} {--videos} {--categories} {--force}';
 
     /**
      * The console command description.
@@ -40,6 +41,11 @@ class FixData extends Command
      */
     public function handle()
     {
+
+        if ($this->option('categories')) {
+            $this->fix_categories();
+        }
+
         if ($this->option('traffic')) {
             $this->fix_traffic();
         }
@@ -56,6 +62,38 @@ class FixData extends Command
             $this->fix_videos();
         }
 
+    }
+
+    public function fix_categories()
+    {
+        $categories = Category::where('type', null)->get();
+        foreach ($categories as $category) {
+            $article = Article::where('category_id', $category->id)->first();
+            if ($article) {
+                if (!empty($article->image_url)) {
+                    $category->logo = $article->image_url;
+                    $category->type = 'article';
+                    $category->save();
+                    $this->info($category->name . ':' . $category->logo);
+                }
+            }
+        }
+
+        //视频
+        $category = Category::firstOrNew([
+            'name' => '有意思',
+            'type' => 'video',
+        ]);
+        $category->name_en = 'youyisi';
+        $category->logo    = Video::first()->cover;
+        $category->save();
+
+        $videos = Video::all();
+        foreach ($videos as $video) {
+            $video->category_id = $category->id;
+            $video->save();
+            $this->info($category->name . ' - ' . $video->title);
+        }
     }
 
     public function fix_videos()
@@ -108,19 +146,19 @@ class FixData extends Command
     public function fix_images()
     {
         $images = Image::all();
-        foreach($images as $image) {
-            if(str_contains($image->path_small, 'jpg.small.jpg')){                
-                $this->info('fixed '. $image->path_small);
+        foreach ($images as $image) {
+            if (str_contains($image->path_small, 'jpg.small.jpg')) {
+                $this->info('fixed ' . $image->path_small);
                 $image->path_small = str_replace('jpg.small.jpg', 'small.jpg', $image->path_small);
                 $image->save();
             }
-            if(str_contains($image->path_small, 'png.small.png')){                
-                $this->info('fixed '. $image->path_small);
+            if (str_contains($image->path_small, 'png.small.png')) {
+                $this->info('fixed ' . $image->path_small);
                 $image->path_small = str_replace('png.small.png', 'small.png', $image->path_small);
                 $image->save();
             }
-            if(str_contains($image->path_small, 'gif.small.gif')){                
-                $this->info('fixed '. $image->path_small);
+            if (str_contains($image->path_small, 'gif.small.gif')) {
+                $this->info('fixed ' . $image->path_small);
                 $image->path_small = str_replace('gif.small.gif', 'small.gif', $image->path_small);
                 $image->save();
             }

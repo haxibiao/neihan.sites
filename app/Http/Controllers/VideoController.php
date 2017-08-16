@@ -24,7 +24,7 @@ class VideoController extends Controller
             return $this->jsonIndex($request);
         }
 
-        $videos = Video::with('user')->orderBy('id', 'desc')->paginate(10);
+        $videos = Video::with('user')->with('category')->orderBy('id', 'desc')->paginate(10);
         return view('video.index')->withVideos($videos);
     }
 
@@ -35,7 +35,8 @@ class VideoController extends Controller
      */
     public function create()
     {
-        return view('video.create');
+        $data['video_categories'] = Category::where('type', 'video')->pluck('name', 'id');
+        return view('video.create')->withData($data);
     }
 
     /**
@@ -110,7 +111,8 @@ class VideoController extends Controller
     public function edit($id)
     {
         $video = Video::findOrFail($id);
-        return view('video.edit')->withVideo($video);
+        $data['video_categories'] = Category::where('type', 'video')->pluck('name', 'id');
+        return view('video.edit')->withVideo($video)->withData($data);
     }
 
     /**
@@ -258,10 +260,11 @@ class VideoController extends Controller
                 'hash' => $hash,
             ]);
             if (!$video->id) {
-                $video->title   = $origin_name;
-                $video->user_id = Auth::user()->id;
-                $video->path    = $path;
-                $video->hash    = $hash;
+                $video->title       = $origin_name;
+                $video->user_id     = Auth::user()->id;
+                $video->path        = $path;
+                $video->hash        = $hash;
+                $video->category_id = Category::where('name', '有意思')->where('type', 'video')->first()->id;
                 $video->save();
 
                 //save video file

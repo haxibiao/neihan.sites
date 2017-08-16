@@ -16,8 +16,8 @@ class CreateImagesTable extends Migration
         Schema::create('images', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title')->nullable()->index();
-            $table->string('path');
-            $table->string('path_small');
+            $table->string('path')->nullable();
+            $table->string('path_small')->nullable();
             $table->string('source_url')->nullable();
             $table->integer('count')->default(0)->index();
             $table->integer('status')->default(0)->index();
@@ -25,6 +25,7 @@ class CreateImagesTable extends Migration
             $table->integer('width')->nullable();
             $table->integer('height')->nullable();
             $table->string('path_top')->nullable();
+            $table->string('path_origin')->nullable()->index();
             $table->timestamps();
         });
     }

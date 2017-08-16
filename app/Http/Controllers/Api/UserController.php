@@ -3,15 +3,49 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Video;
 use App\Image;
-use App\User;
 use App\Traffic;
+use App\User;
+use App\Video;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+
+    public function login(Request $request)
+    {
+        if (Auth::attempt([
+            'email'    => $request->get('email'),
+            'password' => $request->get('password'),
+        ])) {
+            return Auth::user();
+        }
+        return null;
+    }
+
+    public function register(Request $request)
+    {
+        $data = $request->only([
+            'name',
+            'email',
+            'password',
+        ]);
+        if (!str_contains($data['email'], '@')) {
+            return 'email format incorrect';
+        }
+        if (strlen($data['password']) < 6) {
+            return 'password too short';
+        }
+        $user = User::firstOrNew([
+            'email' => $data['email'],
+        ]);
+        $user->name     = $data['name'];
+        $user->password = bcrypt($data['password']);
+        $user->save();
+        return $user;
+    }
     public function getVideos(Request $request, $id)
     {
         $query = Video::where('user_id', $id)->where('count', '>=', 0)->orderBy('updated_at', 'desc');

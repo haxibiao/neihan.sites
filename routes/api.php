@@ -1,14 +1,8 @@
 <?php
 
-use App\Article;
-use App\Category;
-use App\Favorite;
-use App\Image;
-use App\Traffic;
 use App\User;
-use App\Video;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +19,19 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//APP登录
+Route::get('login', 'Api\UserController@login');
+
+//APP注册
+Route::get('register', 'Api\UserController@register');
+Route::post('register', 'Api\UserController@register');
+
+//所有分类
+Route::get('categories', 'Api\CategoryController@getIndex');
+
+//視頻列表
+Route::get('videos', 'Api\VideoController@getIndex');
+
 //评论
 Route::middleware('auth:api')->post('/comment', 'Api\CommentController@save');
 Route::middleware('auth:api')->get('/comment/{id}/like', 'Api\CommentController@like');
@@ -38,14 +45,12 @@ Route::middleware('auth:api')->delete('/favorite/{id}/{type}', 'Api\FavoriteCont
 //查询是否已收藏
 Route::middleware('auth:api')->get('/favorite/{id}/{type}', 'Api\FavoriteController@get');
 
-
 //提交赞
 Route::middleware('auth:api')->post('/like/{id}/{type}', 'Api\LikeController@save');
 //删除赞
 Route::middleware('auth:api')->delete('/like/{id}/{type}', 'Api\LikeController@delete');
 //查询是否已赞
 Route::middleware('auth:api')->get('/like/{id}/{type}', 'Api\LikeController@get');
-
 
 //获取用户详细资料
 Route::get('/user/{id}', 'Api\UserController@getInfo');
@@ -56,7 +61,6 @@ Route::get('/user/{id}/images', 'Api\UserController@getImages');
 //获取用户上传的视频，可以按标题搜索
 Route::get('/user/{id}/videos', 'Api\UserController@getVideos');
 
-
 Route::get('/articles', 'Api\ArticleController@getIndex');
 //保存文章相关片段数据
 Route::post('/article/{id}/json', 'Api\ArticleController@saveRelation');
@@ -66,7 +70,6 @@ Route::get('/article/{id}/lists', 'Api\ArticleController@getAllRelations');
 Route::get('/article/{id}/del-{key}', 'Api\ArticleController@deleteRelation');
 //获取文章相关片段数据
 Route::get('/article/{id}/{key}', 'Api\ArticleController@getRelation');
-
 
 //保存视频相关片段数据
 Route::post('/video/{id}/json', 'Api\VideoController@saveRelation');
