@@ -38,7 +38,6 @@ cd {{ $www }}
 echo {{ $www }}
 {{ $refresh_env_config }}
 {{ $cache_clear }}
-php artisan fix:data --categories
 @endtask
 
 @task('web_seed', ['on' => ['hk001'], 'parallel' => true])
