@@ -1,11 +1,9 @@
 <?php
 
-use App\User;
 use App\Category;
-use Jenssegers\Agent\Agent;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Cookie;
+use App\User;
 use Illuminate\Support\Facades\Request;
+use Jenssegers\Agent\Agent;
 
 function get_seoer_meta()
 {
@@ -27,13 +25,13 @@ function get_seoer_footer()
 }
 
 //TODO:: hardcode 获取3级分类,今后需要支持无限分类
-function get_categories($full = 0, $for_parent = 0)
+function get_categories($full = 0, $type = 'article', $for_parent = 0)
 {
     $categories = [];
     if ($for_parent) {
         $categories[0] = null;
     }
-    $category_items = Category::where('status', '>=', 0)->where('type','article')->get();
+    $category_items = Category::where('type', $type)->get();
     foreach ($category_items as $item) {
         if ($item->level == 0) {
             $categories[$item->id] = $full ? $item : $item->name;

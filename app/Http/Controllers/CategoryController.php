@@ -20,14 +20,18 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = get_categories(1);
+        $type = 'article';
+        if ($request->get('type')) {
+            $type = $request->get('type');
+        }
+        $categories = get_categories(1, $type);
         $cate_ids   = [];
         foreach ($categories as $category) {
             $cate_ids[] = $category->id;
         }
-        $cates_miss = Category::with('user')->whereNotIn('id', $cate_ids)->get();
+        $cates_miss = Category::with('user')->whereNotIn('id', $cate_ids)->where('type', $type)->get();
         return view('category.index')->withCategories($categories)->withCatesMiss($cates_miss);
     }
 
@@ -88,10 +92,14 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        $type = 'article';
+        if ($request->get('type')) {
+            $type = $request->get('type');
+        }
         $user       = Auth::user();
-        $categories = get_categories(0, 1);
+        $categories = get_categories(0, $type, 1);
         return view('category.create')->withUser($user)->withCategories($categories);
     }
 
@@ -135,11 +143,15 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
+        $type = 'article';
+        if ($request->get('type')) {
+            $type = $request->get('type');
+        }
         $user       = Auth::user();
         $category   = Category::with('user')->find($id);
-        $categories = get_categories(0, 1);
+        $categories = get_categories(0, $type, 1);
         return view('category.edit')->withUser($user)->withCategory($category)->withCategories($categories);
     }
 
@@ -163,8 +175,8 @@ class CategoryController extends Controller
             $parent->has_child = 1;
             $parent->save();
             $category->level = $parent->level + 1;
-            $category->save();
         }
+        $category->save();
 
         return redirect()->to('/category');
     }

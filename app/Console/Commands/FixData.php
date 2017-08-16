@@ -82,8 +82,9 @@ class FixData extends Command
         //视频
         $category = Category::firstOrNew([
             'name' => '有意思',
-            'type' => 'video',
         ]);
+        $category->type    = 'video';
+        $category->user_id = 1;
         $category->name_en = 'youyisi';
         $category->logo    = Video::first()->cover;
         $category->save();
@@ -94,6 +95,15 @@ class FixData extends Command
             $video->save();
             $this->info($category->name . ' - ' . $video->title);
         }
+
+        $category = Category::firstOrNew([
+            'name' => '搞笑',
+        ]);
+        $category->type    = 'video';
+        $category->user_id = 1;
+        $category->name_en = 'gaoxiao';
+        $category->logo    = Video::first()->cover;
+        $category->save();
     }
 
     public function fix_videos()

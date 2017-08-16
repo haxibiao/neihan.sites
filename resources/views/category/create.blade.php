@@ -32,6 +32,12 @@
 			        <small class="text-danger">{{ $errors->first('name_en') }}</small>
 			    </div>
 
+			    <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
+			        {!! Form::label('type', '系统分类') !!}
+			        {!! Form::select('type',['article'=>'文章','video'=>'视频'], Request::get('type'), ['id' => 'type', 'class' => 'form-control', 'required' => 'required']) !!}
+			        <small class="text-danger">{{ $errors->first('type') }}</small>
+			    </div>
+
 			    <div class="form-group{{ $errors->has('parent_id') ? ' has-error' : '' }}">
 		            {!! Form::label('parent_id', '上级分类') !!}
 		            {!! Form::select('parent_id',$categories, null, ['id' => 'parent_id', 'class' => 'form-control', 'required' => 'required']) !!}

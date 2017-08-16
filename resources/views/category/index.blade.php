@@ -23,7 +23,7 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <div class="pull-right">
-            <a class="btn btn-primary" href="/category/create" role="button">添加分类</a>
+            <a class="btn btn-primary" href="/category/create?type={{ Request::get('type') }}" role="button">添加分类</a>
           </div>
           <h3 class="panel-title" style="min-height: 50px">分类列表</h3>
         </div>

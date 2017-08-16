@@ -43,7 +43,9 @@
                     </div>
                     @endif
                     <h4 class="media-heading">
+                        <a href="/video/{{ $video->id }}">
                         {{ $video->title }}
+                        </a>
                     </h4>
                     <p>
                         分类: {{ $video->category->name }}
