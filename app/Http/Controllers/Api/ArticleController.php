@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Article;
-use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -11,11 +10,29 @@ class ArticleController extends Controller
 {
     public function getIndex(Request $request)
     {
-        $query = Article::orderBy('id', 'desc');
+        $query = Article::with('category')->orderBy('id', 'desc');
+        if ($request->get('category_id')) {
+            $query = $query->where('category_id', $request->get('category_id'));
+        }
         if ($request->get('query')) {
             $query = $query->where('title', 'like', '%' . $request->get("query") . '%');
         }
-        return $query->paginate(12);
+        $articles = $query->paginate(12);
+        foreach ($articles as $article) {
+            $article->image_url           = get_full_url($article->image_url);
+            $article->user->avatar   = get_avatar($article->user);
+            $article->category->logo = get_full_url($article->category->logo);
+        }
+        return $articles;
+    }
+
+    public function getShow($id)
+    {
+        $article                 = Article::with('user')->with('category')->findOrFail($id);
+        $article->image_url      = get_full_url($article->image_url);
+        $article->user->avatar   = get_avatar($article->user);
+        $article->category->logo = get_full_url($article->category->logo);
+        return $article;
     }
 
     public function saveRelation(Request $request, $id)

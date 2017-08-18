@@ -94,12 +94,20 @@ function get_active_css($path, $full_match = 0)
     return $active;
 }
 
+function get_full_url($path)
+{
+    if (starts_with($path, 'http')) {
+        return $path;
+    }
+    return env('APP_URL') . $path;
+}
+
 function get_img($path)
 {
     if (starts_with($path, 'http')) {
         return $path;
     }
-    if (\App::environment() == 'local') {
+    if (\App::environment('local')) {
         if (!file_exists(public_path($path))) {
             return env('APP_URL') . $path;
         }

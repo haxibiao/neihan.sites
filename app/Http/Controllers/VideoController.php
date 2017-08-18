@@ -212,12 +212,11 @@ class VideoController extends Controller
             $data[$cover] = true;
         } else {
             //加载当前用户已上传，未使用的
-            $query = Video::where('status', '>=', 0)->where('count', 0);
+            $query = Video::where('status', '>=', 0)->where('count', 0)->orderBy('id','desc');
             if (Auth::check()) {
-                $user_id = Auth::check() ? Auth::user()->id : 0;
-                $query   = $query->where('user_id', $user_id);
+                $query   = $query->where('user_id', Auth::user()->id);
             }
-            $videos = $query->get();
+            $videos = $query->take(2)->get();
             foreach ($videos as $video) {
                 $extension = pathinfo(public_path($video->path), PATHINFO_EXTENSION);
                 $filename  = pathinfo($video->path)['basename'];

@@ -26,12 +26,6 @@ Route::get('login', 'Api\UserController@login');
 Route::get('register', 'Api\UserController@register');
 Route::post('register', 'Api\UserController@register');
 
-//所有分类
-Route::get('categories', 'Api\CategoryController@getIndex');
-
-//視頻列表
-Route::get('videos', 'Api\VideoController@getIndex');
-
 //评论
 Route::middleware('auth:api')->post('/comment', 'Api\CommentController@save');
 Route::middleware('auth:api')->get('/comment/{id}/like', 'Api\CommentController@like');
@@ -61,7 +55,18 @@ Route::get('/user/{id}/images', 'Api\UserController@getImages');
 //获取用户上传的视频，可以按标题搜索
 Route::get('/user/{id}/videos', 'Api\UserController@getVideos');
 
+
+//所有分类
+Route::get('categories', 'Api\CategoryController@getIndex');
+
+//視頻列表
+Route::get('videos', 'Api\VideoController@getIndex');
+Route::get('/video/{id}', 'Api\VideoController@getShow');
+
+//文章列表
 Route::get('/articles', 'Api\ArticleController@getIndex');
+Route::get('/article/{id}', 'Api\ArticleController@getShow');
+
 //保存文章相关片段数据
 Route::post('/article/{id}/json', 'Api\ArticleController@saveRelation');
 //获取文章所有相关片段数据

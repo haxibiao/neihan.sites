@@ -12,6 +12,7 @@
 
 @section('content')
 <div class="container">
+  @if(!is_in_app())
   <ol class="breadcrumb">
     <li><a href="/">{{ config('app.name') }}</a></li>
     @if(!empty($data['parent_category']))
@@ -20,6 +21,7 @@
     <li><a href="/{{ $article->category->name_en }}">{{ $article->category->name }}</a></li>
     <li class="active">{{ $article->title }}</li>
   </ol>
+  @endif
 
   <div class="content">
     <div class="panel panel-default">
@@ -142,3 +144,7 @@
   @endif
 </div>
 @endsection
+
+@push('scripts')
+    @include('parts.js_for_app')
+@endpush

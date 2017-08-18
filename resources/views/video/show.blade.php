@@ -6,11 +6,13 @@
 
 @section('content')
 <div class="container">
+    @if(!is_in_app())
       <ol class="breadcrumb">
         <li><a href="/">{{ config('app.name') }}</a></li>
         <li><a href="/video">视频</a></li>
         <li class="active">{{ $video->title }}</li>
       </ol>
+    @endif
 
     <div class="panel panel-default">
         <div class="panel-heading">            
@@ -61,6 +63,7 @@
                 @include('article.parts.connections')
             </div>
 
+            @if(!$video->articles->isEmpty())
             <div class="top10">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -73,7 +76,12 @@
                     </div>
                 </div>
             </div>
+            @endif
         </div>
     </div>
 </div>
 @stop
+
+@push('scripts')
+    @include('parts.js_for_app')
+@endpush

@@ -68,15 +68,15 @@ class FixData extends Command
     {
         $categories = Category::where('type', null)->get();
         foreach ($categories as $category) {
-            $article = Article::where('category_id', $category->id)->first();
+            $category->type = 'article';
+            $article        = Article::where('category_id', $category->id)->first();
             if ($article) {
                 if (!empty($article->image_url)) {
                     $category->logo = $article->image_url;
-                    $category->type = 'article';
-                    $category->save();
                     $this->info($category->name . ':' . $category->logo);
                 }
             }
+            $category->save();
         }
 
         //视频

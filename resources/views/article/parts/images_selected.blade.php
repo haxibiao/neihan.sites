@@ -3,10 +3,10 @@
     <div class="row" id="article_images">
         <div class="col-xs-3 hide" id="article_image_template">
             <p class="text-center">
-                <img src="/img/1.jpg" alt="" class="img img-responsive">
+                <img src="/{{ get_domain() }}.jpg" alt="" class="img img-responsive">
                 
                 <label class="radio text-center">
-                  <input type="radio" name="primary_image" value="/img/1.jpg">
+                  <input type="radio" name="primary_image" value="/{{ get_domain() }}.jpg">
                   设为主要图
                 </label>
                 
