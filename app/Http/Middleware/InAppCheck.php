@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Auth;
+use App\User;
 
 class InAppCheck
 {
@@ -17,8 +19,15 @@ class InAppCheck
      */
     public function handle($request, Closure $next)
     {
-        if ($request->get('inapp')) {
+        if ($request->get('in_app')) {
             Cookie::queue('is_in_app', true, 60 * 24 * 365);
+            //autologin with app user_id
+            if($request->get('user_id')) {
+                $user = User::find($request->get('user_id'));
+                if($user){
+                    Auth::login($user,1);
+                }
+            }
         }
         if ($request->get('outapp')) {
             Cookie::queue(Cookie::forget('is_in_app'));
