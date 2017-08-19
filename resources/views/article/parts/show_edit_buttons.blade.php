@@ -1,4 +1,4 @@
-@if(!is_in_app())
+@if(!is_in_app() && !Agent::match('micromessenger'))
 <p class="pull-right">
     @if(Auth::check() && Auth::user()->is_editor )
       @if(Request::get('weixin'))
