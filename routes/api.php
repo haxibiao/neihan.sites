@@ -54,6 +54,8 @@ Route::get('/user/by-name/{name}', 'Api\UserController@getInfoByName');
 Route::get('/user/{id}/images', 'Api\UserController@getImages');
 //获取用户上传的视频，可以按标题搜索
 Route::get('/user/{id}/videos', 'Api\UserController@getVideos');
+//获取用户发布的文章，可以按标题搜索
+Route::get('/user/{id}/articles', 'Api\UserController@getArticles');
 
 
 //所有分类
