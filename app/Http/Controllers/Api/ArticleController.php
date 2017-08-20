@@ -32,6 +32,16 @@ class ArticleController extends Controller
         $article->image_url      = get_full_url($article->image_url);
         $article->user->avatar   = get_avatar($article->user);
         $article->category->logo = get_full_url($article->category->logo);
+
+        $controller = new \App\Http\Controllers\ArticleController();
+        $article->connected = $controller->get_json_lists($article);
+        $article->similar    = Article::where('category_id', $article->category_id)
+            ->where('id', '<>', $article->id)
+            ->orderBy('id', 'desc')
+            ->take(4)
+            ->get()
+            ->toArray();
+
         return $article;
     }
 
