@@ -19,11 +19,21 @@ class ArticleController extends Controller
         }
         $articles = $query->paginate(12);
         foreach ($articles as $article) {
-            $article->image_url           = get_full_url($article->image_url);
+            $article->image_url      = get_full_url($article->image_url);
             $article->user->avatar   = get_avatar($article->user);
             $article->category->logo = get_full_url($article->category->logo);
+
+            $article->body = $this->fix_font_size($article->body);
         }
         return $articles;
+    }
+
+    public function fix_font_size($body)
+    {
+        //fix font-size <span style="font-size: 18px;">
+        $pattern = "/font-size: (\d+)px;/";
+        $body    = preg_replace($pattern, "", $body);
+        return $body;
     }
 
     public function getShow($id)
@@ -32,6 +42,20 @@ class ArticleController extends Controller
         $article->image_url      = get_full_url($article->image_url);
         $article->user->avatar   = get_avatar($article->user);
         $article->category->logo = get_full_url($article->category->logo);
+
+        $controller         = new \App\Http\Controllers\ArticleController();
+        $article->connected = $controller->get_json_lists($article);
+        $article->similar   = Article::where('category_id', $article->category_id)
+            ->where('id', '<>', $article->id)
+            ->orderBy('id', 'desc')
+            ->take(4)
+            ->get();
+        foreach ($article->similar as $similar_article) {
+            $similar_article->body = $this->fix_font_size($similar_article->body);
+        }
+
+        $article->body = $this->fix_font_size($article->body);
+
         return $article;
     }
 

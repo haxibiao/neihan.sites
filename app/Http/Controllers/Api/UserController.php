@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Article;
 use App\Image;
 use App\Traffic;
 use App\User;
@@ -46,9 +47,26 @@ class UserController extends Controller
         $user->save();
         return $user;
     }
+
+    public function getArticles(Request $request, $id)
+    {
+        $query = Article::with('category')->where('user_id', $id)->orderBy('id', 'desc');
+        if ($request->get('title')) {
+            $query = $query->where('title', 'like', '%' . $request->get('title') . '%');
+        }
+        $articles = $query->paginate(12);
+        foreach ($articles as $article) {
+            $article->image_url = get_img($article->image_url);
+        }
+        return $articles;
+    }
+
     public function getVideos(Request $request, $id)
     {
-        $query = Video::where('user_id', $id)->where('count', '>=', 0)->orderBy('updated_at', 'desc');
+        $query = Video::with('category')
+            ->where('user_id', $id)
+            ->where('count', '>=', 0)
+            ->orderBy('id', 'desc');
         if ($request->get('title')) {
             $query = $query->where('title', 'like', '%' . $request->get('title') . '%');
         }
