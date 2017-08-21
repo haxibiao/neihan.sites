@@ -18,7 +18,7 @@
             我们目前还在紧张的开发和测试APP, 请过几天来关注这里，随时会发布正式版 ...
         </p>
         <p>
-            <a class="btn btn-success" href="http://haxibiao.oss-cn-shenzhen.aliyuncs.com/{{ get_domain() }}.apk" target="_blank">
+            <a class="btn btn-success" href="https://haxibiao.com/{{ get_domain() }}.apk" target="_blank">
                 下载安卓版(内测App)
             </a>
         <hr>
