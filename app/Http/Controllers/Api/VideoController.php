@@ -20,6 +20,7 @@ class VideoController extends Controller
             $video->path           = get_full_url($video->path);
             $video->user->avatar   = get_avatar($video->user);
             $video->category->logo = get_full_url($video->category->logo);
+            $video->pubtime        = diffForHumansCN($video->created_at);
         }
         return $videos;
     }
@@ -31,9 +32,9 @@ class VideoController extends Controller
         $video->cover          = get_full_url($video->cover);
         $video->user->avatar   = get_avatar($video->user);
         $video->category->logo = get_full_url($video->category->logo);
-
-        $controller       = new \App\Http\Controllers\VideoController();
-        $video->connected = $controller->get_json_lists($video);
+        $video->pubtime        = diffForHumansCN($video->created_at);
+        $controller            = new \App\Http\Controllers\VideoController();
+        $video->connected      = $controller->get_json_lists($video);
         return $video;
     }
 

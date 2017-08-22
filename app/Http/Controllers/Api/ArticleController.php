@@ -15,15 +15,34 @@ class ArticleController extends Controller
             $query = $query->where('category_id', $request->get('category_id'));
         }
         if ($request->get('query')) {
-            $query = $query->where('title', 'like', '%' . $request->get("query") . '%');
+            $query = $query->where('title', 'like', '%' . $request->get("query") . '%')
+                ->orWhere('keywords', 'like', '%' . $request->get("query") . '%');
         }
         $articles = $query->paginate(12);
         foreach ($articles as $article) {
             $article->image_url      = get_full_url($article->image_url);
             $article->user->avatar   = get_avatar($article->user);
             $article->category->logo = get_full_url($article->category->logo);
+            $article->body           = $this->fix_font_size($article->body);
+            $article->pubtime        = diffForHumansCN($article->created_at);
+        }
 
-            $article->body = $this->fix_font_size($article->body);
+        if ($request->get('query')) {
+            if ($articles->isEmpty()) {
+                $api_url = 'http://haxibiao.com/api/articles';
+                $api_url .= '?query=' . $request->get('query');
+                $page = 1;
+                if ($request->get('page')) {
+                    $page = $request->get('query');
+                    $api_url .= "&page=" . $page;
+                }
+                $json         = file_get_contents($api_url);
+                $json_data    = json_decode($json);
+                $articles_hxb = collect($json_data->data);
+                foreach($articles_hxb as $article) {
+                    $articles->push($article);
+                }
+            }
         }
         return $articles;
     }
@@ -54,7 +73,8 @@ class ArticleController extends Controller
             $similar_article->body = $this->fix_font_size($similar_article->body);
         }
 
-        $article->body = $this->fix_font_size($article->body);
+        $article->body    = $this->fix_font_size($article->body);
+        $article->pubtime = diffForHumansCN($article->created_at);
 
         return $article;
     }

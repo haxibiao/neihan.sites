@@ -96,6 +96,9 @@ function get_active_css($path, $full_match = 0)
 
 function get_full_url($path)
 {
+    if (empty($path)) {
+        return '';
+    }
     if (starts_with($path, 'http')) {
         return $path;
     }
