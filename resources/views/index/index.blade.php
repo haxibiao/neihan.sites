@@ -13,38 +13,45 @@
 <div class="container">
 
     <div class="row">
-        <div class="col-xs-4">
-            <ol class="breadcrumb">
-                <li class="">
-                    首页
-                </li>
-            </ol>
-        </div>
-        <div class="col-xs-8">
-            <form class="pull-right" action="/search" method="get">
-              <div class="form-group pull-left right5" style="width: 160px">
-                <input type="text" class="form-control" placeholder="搜索..." name="q" required="required">
-              </div>
-              <button type="submit" class="btn btn-default">搜索</button>
-            </form>
-        </div>
 
         <div class="col-xs-12">
-            @if(!$queries->isEmpty())
-            
-        <div class="panel panel-default">
-            <div class="panel-body">
-                热门搜索: 
-                @foreach($queries as $query)
-                <a href="/search?q={{ $query->query }}">{{ $query->query }} <span class="badge">{{ $query->results }}</span> </a>　
-                @endforeach
+        @if(!$queries->isEmpty())            
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    热门搜索: 
+                    @foreach($queries as $query)
+                    <a href="/search?q={{ $query->query }}">{{ $query->query }} </a>　
+                    @endforeach
+                </div>
             </div>
+        @endif
         </div>
-            @endif
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            最近搜索: 
+            @foreach($queries_new as $query)
+            <a href="/search?q={{ $query->query }}">{{ $query->query }} </a>　
+            @endforeach
+        </div>
+        <div class="col-md-4">
+            
+            <form class="pull-right" action="/search" method="get">
+             {{--  <div class="form-group pull-left right5" style="width: 160px">
+                <input type="text" class="form-control" placeholder="搜索..." name="q" required="required">
+              </div>
+              <button type="submit" class="btn btn-default">搜索</button> --}}
+              <div class="input-group">
+                  <input type="text" class="form-control" placeholder="搜索..." name="q" required="required">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">搜索</button>
+                  </span>
+              </div>
+            </form>
         </div>
     </div>
 
-    <div class="row hidden-xs hidden-sm">
+    <div class="row hidden-xs hidden-sm top10">
         <div class="col-md-8">
             @include('parts.carousel')
         </div>

@@ -10,15 +10,15 @@ class ArticleController extends Controller
 {
     public function getIndex(Request $request)
     {
-        $query = Article::with('category')->orderBy('id', 'desc');
+        $query_builder = Article::with('category')->orderBy('id', 'desc');
         if ($request->get('category_id')) {
-            $query = $query->where('category_id', $request->get('category_id'));
+            $query_builder = $query_builder->where('category_id', $request->get('category_id'));
         }
-        if ($request->get('query')) {
-            $query = $query->where('title', 'like', '%' . $request->get("query") . '%')
-                ->orWhere('keywords', 'like', '%' . $request->get("query") . '%');
+        if ($query = $request->get('query')) {
+            $query_builder = $query_builder->where('title', 'like', '%' . $query . '%')
+                ->orWhere('keywords', 'like', '%' . $query . '%');
         }
-        $articles = $query->paginate(12);
+        $articles = $query_builder->paginate(12);
         foreach ($articles as $article) {
             $article->image_url      = get_full_url($article->image_url);
             $article->user->avatar   = get_avatar($article->user);
@@ -27,18 +27,10 @@ class ArticleController extends Controller
             $article->pubtime        = diffForHumansCN($article->created_at);
         }
 
-        if ($request->get('query')) {
-            if ($articles->isEmpty()) {
-                $api_url = 'http://haxibiao.com/api/articles';
-                $api_url .= '?query=' . $request->get('query');
-                $page = 1;
-                if ($request->get('page')) {
-                    $page = $request->get('query');
-                    $api_url .= "&page=" . $page;
-                }
-                $json         = file_get_contents($api_url);
-                $json_data    = json_decode($json);
-                $articles_hxb = collect($json_data->data);
+        if ($query = $request->get('query')) {
+            $controller = new \App\Http\Controllers\SearchController();
+            if ($articles->isEmpty()) {                
+                $articles_hxb = $controller->search_hxb($query);
                 foreach($articles_hxb as $article) {
                     $articles->push($article);
                 }
