@@ -48,8 +48,8 @@ class SearchController extends Controller
             $query_item->hits++;
             $query_item->save();
         }
-        $queries         = Query::where('status', '>=', 0)->orderBy('hits', 'desc')->take(20)->get();
-        $data['queries'] = $queries;
+        $data['queries'] = Query::where('status', '>=', 0)->orderBy('hits', 'desc')->take(20)->get();
+        $data['queries_new'] = Query::where('status', '>=', 0)->orderBy('id', 'desc')->take(5)->get();
         $data['query']   = $query;
         $data['total']   = $total;
 
