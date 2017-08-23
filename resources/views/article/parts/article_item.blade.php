@@ -12,7 +12,7 @@
 			<h5 class="media-heading">{{ $article->title }}</h5>
 		</a>
 		<p class="small">发布时间:　{{ diffForHumansCN($article->created_at) }}</p>
-		@if(!empty($search))<p class="small">关键词:　{{ $article->keywords }}</p>@endif
+		@if(!empty($search) && !empty($article->keywords))<p class="small">关键词:　{{ $article->keywords }}</p>@endif
 		<p title="{{ $article->description }}">{{ str_limit($article->description, 80) }}</p>
 	</div>
 </div>
