@@ -5,6 +5,15 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 
+function get_article_url($article)
+{
+    $url = "/article/" . $article->id;
+    if ($article->target_url) {
+        $url = $article->target_url;
+    }
+    return $url;
+}
+
 function parse_video($body)
 {
     //TODO:: [视频的尺寸还是不完美，后面要获取到视频的尺寸才好处理, 先默认用半个页面来站住]

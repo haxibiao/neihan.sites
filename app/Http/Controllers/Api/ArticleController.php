@@ -10,11 +10,12 @@ class ArticleController extends Controller
 {
     public function getIndex(Request $request)
     {
+        $query         = $request->get('query');
         $query_builder = Article::with('category')->orderBy('id', 'desc');
         if ($request->get('category_id')) {
             $query_builder = $query_builder->where('category_id', $request->get('category_id'));
         }
-        if ($query = $request->get('query')) {
+        if ($query) {
             $query_builder = $query_builder->where('title', 'like', '%' . $query . '%')
                 ->orWhere('keywords', 'like', '%' . $query . '%');
         }
@@ -26,14 +27,21 @@ class ArticleController extends Controller
             $article->body           = $this->fix_font_size($article->body);
             $article->pubtime        = diffForHumansCN($article->created_at);
         }
+        $total = $articles->total();
 
-        if ($query = $request->get('query')) {
-            $controller = new \App\Http\Controllers\SearchController();
-            if ($articles->isEmpty()) {                
-                $articles_hxb = $controller->search_hxb($query);
-                foreach($articles_hxb as $article) {
-                    $articles->push($article);
-                }
+        if ($query && !$total) {
+            $controller     = new \App\Http\Controllers\SearchController();
+            $articles_taged = $controller->search_tags($query);
+            foreach ($articles_taged as $article) {
+                $articles->push($article);
+            }
+        }
+
+        if ($query && !$total) {
+            $controller   = new \App\Http\Controllers\SearchController();
+            $articles_hxb = $controller->search_hxb($query);
+            foreach ($articles_hxb as $article) {
+                $articles->push($article);
             }
         }
         return $articles;

@@ -37,14 +37,10 @@
         <div class="col-md-4">
             
             <form class="pull-right" action="/search" method="get">
-             {{--  <div class="form-group pull-left right5" style="width: 160px">
-                <input type="text" class="form-control" placeholder="搜索..." name="q" required="required">
-              </div>
-              <button type="submit" class="btn btn-default">搜索</button> --}}
               <div class="input-group">
                   <input type="text" class="form-control" placeholder="搜索..." name="q" required="required">
                   <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">搜索</button>
+                    <button class="btn btn-default" type="submit">搜索</button>
                   </span>
               </div>
             </form>

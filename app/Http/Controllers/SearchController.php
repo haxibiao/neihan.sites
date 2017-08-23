@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\ArticleTag;
 use App\Query;
+use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -17,18 +19,28 @@ class SearchController extends Controller
             ->paginate(10);
         $data['articles'] = $articles;
         $total            = $articles->total();
-        if ($articles->isEmpty()) {
+        if (!$total) {
             $articles_hxb = $this->search_hxb($query);
             foreach ($articles_hxb as $article) {
                 $article->created_at  = \Carbon\Carbon::parse($article->created_at);
                 $article->updated_at  = \Carbon\Carbon::parse($article->updated_at);
                 $article->description = str_limit(strip_tags($article->body), 250);
                 $article->image_url   = get_full_url($article->image_url);
+                $article->target_url  = "http://haxibiao.com/article/" . $article->id;
                 $articles->push($article);
             }
             $total = count($articles_hxb);
         }
-        if (!empty($query) && !$articles->isEmpty()) {
+
+        if (!$total) {
+            $articles_taged = $this->search_tags($query);
+            foreach ($articles_taged as $article) {
+                $articles->push($article);
+            }
+            $total = count($articles_taged);
+        }
+
+        if (!empty($query) && $total) {
             $query_item = Query::firstOrNew([
                 'query' => $query,
             ]);
@@ -42,6 +54,22 @@ class SearchController extends Controller
         $data['total']   = $total;
 
         return view('search')->withData($data);
+    }
+
+    public function search_tags($query)
+    {
+        $articles_taged = [];
+        $tags           = Tag::all();
+        foreach ($tags as $tag) {
+            if (str_contains($query, $tag->name)) {
+                $ats = ArticleTag::with('article')->where('tag_id', $tag->id)->get();
+                foreach ($ats as $at) {
+                    $articles_taged[] = $at->article;
+                }
+            }
+        }
+
+        return $articles_taged;
     }
 
     public function search_hxb($query)
