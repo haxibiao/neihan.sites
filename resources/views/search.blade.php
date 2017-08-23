@@ -18,7 +18,8 @@
                 </button>
             </form>
         </div>
-        <div class="col-xs-12 col-sm-6">
+
+        <div class="col-xs-12">
              最近搜索: 
             @foreach($data['queries_new'] as $query)
             <a href="/search?q={{ $query->query }}">{{ $query->query }} </a>　

@@ -28,8 +28,8 @@ class IndexController extends Controller
         $carousel_items = get_carousel_items();
         $users          = User::orderBy('id', 'desc')->take(5)->get();
         $hot_articles   = Article::orderBy('hits', 'desc')->take(2)->get();
-        $queries = Query::where('status','>=', 0)->orderBy('hits','desc')->take(20)->get();
-        $queries_new = Query::where('status','>=', 0)->orderBy('id','desc')->take(10)->get();
+        $queries = Query::where('status','>=', 0)->orderBy('hits','desc')->take(10)->get();
+        $queries_new = Query::where('status','>=', 0)->orderBy('id','desc')->take(5)->get();
         return view('index.index')
             ->withQueries($queries)
             ->withQueriesNew($queries_new)
