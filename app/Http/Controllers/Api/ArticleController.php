@@ -36,6 +36,7 @@ class ArticleController extends Controller
             foreach ($articles_taged as $article) {
                 $articles->push($article);
             }
+            $total = count($articles_taged);
         }
 
         if ($query && !$total) {
@@ -44,8 +45,9 @@ class ArticleController extends Controller
             foreach ($articles_hxb as $article) {
                 $articles->push($article);
             }
+            $total = count($articles_hxb);
         }
-
+        
         if (!empty($query) && $total) {
             $query_item = Query::firstOrNew([
                 'query' => $query,
