@@ -19,6 +19,15 @@ class SearchController extends Controller
             ->paginate(10);
         $data['articles'] = $articles;
         $total            = $articles->total();
+
+        if (!$total) {
+            $articles_taged = $this->search_tags($query);
+            foreach ($articles_taged as $article) {
+                $articles->push($article);
+            }
+            $total = count($articles_taged);
+        }
+        
         if (!$total) {
             $articles_hxb = $this->search_hxb($query);
             foreach ($articles_hxb as $article) {
@@ -30,14 +39,6 @@ class SearchController extends Controller
                 $articles->push($article);
             }
             $total = count($articles_hxb);
-        }
-
-        if (!$total) {
-            $articles_taged = $this->search_tags($query);
-            foreach ($articles_taged as $article) {
-                $articles->push($article);
-            }
-            $total = count($articles_taged);
         }
 
         if (!empty($query) && $total) {
@@ -81,14 +82,15 @@ class SearchController extends Controller
         if ($results) {
             return $results;
         }
-
-        $api_url = 'http://haxibiao.com/api/articles';
+        $articles_hxb = [];
+        $api_url      = 'http://haxibiao.com/api/articles';
         $api_url .= '?query=' . $query;
         $api_url .= "&page=" . $this->get_page();
-        $json         = file_get_contents($api_url);
-        $json_data    = json_decode($json);
-        $articles_hxb = collect($json_data->data);
-        Cache::put('query_' . $query, $articles_hxb, 60 * 24);
+        if ($json = @file_get_contents($api_url)) {
+            $json_data    = json_decode($json);
+            $articles_hxb = collect($json_data->data);
+            Cache::put('query_' . $query, $articles_hxb, 60 * 24);
+        }
         return $articles_hxb;
     }
 
