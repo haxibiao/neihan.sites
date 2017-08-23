@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Article;
+use App\Query;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -43,6 +44,15 @@ class ArticleController extends Controller
             foreach ($articles_hxb as $article) {
                 $articles->push($article);
             }
+        }
+
+        if (!empty($query) && $total) {
+            $query_item = Query::firstOrNew([
+                'query' => $query,
+            ]);
+            $query_item->results = $total;
+            $query_item->hits++;
+            $query_item->save();
         }
         return $articles;
     }
