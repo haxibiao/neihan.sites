@@ -48,10 +48,10 @@ class SearchController extends Controller
             $query_item->hits++;
             $query_item->save();
         }
-        $data['queries'] = Query::where('status', '>=', 0)->orderBy('hits', 'desc')->take(20)->get();
+        $data['queries']     = Query::where('status', '>=', 0)->orderBy('hits', 'desc')->take(20)->get();
         $data['queries_new'] = Query::where('status', '>=', 0)->orderBy('id', 'desc')->take(5)->get();
-        $data['query']   = $query;
-        $data['total']   = $total;
+        $data['query']       = $query;
+        $data['total']       = $total;
 
         return view('search')->withData($data);
     }
@@ -64,7 +64,10 @@ class SearchController extends Controller
             if (str_contains($query, $tag->name)) {
                 $ats = ArticleTag::with('article')->where('tag_id', $tag->id)->get();
                 foreach ($ats as $at) {
-                    $articles_taged[] = $at->article;
+                    if (!empty($at->article)) {
+                        $articles_taged[] = $at->article;
+                    }
+
                 }
             }
         }
