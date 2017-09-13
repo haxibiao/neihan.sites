@@ -98,6 +98,9 @@ class EnvRefresh extends Command
         }
 
         $newContent = implode('', $newLines);
-        file_put_contents($envFile, $newContent);
+        $put_size   = @file_put_contents($envFile, $newContent);
+        if ($put_size) {
+            $this->info('success');
+        }
     }
 }

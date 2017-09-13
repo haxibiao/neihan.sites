@@ -25,7 +25,7 @@ class ArticleController extends Controller
             $article->image_url      = get_full_url($article->image_url);
             $article->user->avatar   = get_avatar($article->user);
             $article->category->logo = get_full_url($article->category->logo);
-            $article->body           = $this->fix_font_size($article->body);
+            $article->body           = $this->fix_inline_styles($article->body);
             $article->pubtime        = diffForHumansCN($article->created_at);
         }
         $total = $articles->total();
@@ -59,11 +59,17 @@ class ArticleController extends Controller
         return $articles;
     }
 
-    public function fix_font_size($body)
+    public function fix_inline_styles($body)
     {
         //fix font-size <span style="font-size: 18px;">
         $pattern = "/font-size: (\d+)px;/";
         $body    = preg_replace($pattern, "", $body);
+
+        //fix line-height <span style="line-height: 1.6;">
+        $pattern = "/line-height: (.*);/iU";
+        $body    = preg_replace($pattern, "", $body);
+
+        $body    = str_replace("style=\"\"", "", $body);
         return $body;
     }
 
@@ -82,10 +88,10 @@ class ArticleController extends Controller
             ->take(4)
             ->get();
         foreach ($article->similar as $similar_article) {
-            $similar_article->body = $this->fix_font_size($similar_article->body);
+            $similar_article->body = $this->fix_inline_styles($similar_article->body);
         }
 
-        $article->body    = $this->fix_font_size($article->body);
+        $article->body    = $this->fix_inline_styles($article->body);
         $article->pubtime = diffForHumansCN($article->created_at);
 
         return $article;

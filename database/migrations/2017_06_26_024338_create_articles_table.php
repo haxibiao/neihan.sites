@@ -23,7 +23,7 @@ class CreateArticlesTable extends Migration
             
             $table->string('author');
             $table->integer('user_id');
-            $table->integer('category_id');
+            $table->integer('category_id')->unsigned();
             
             $table->string('image_url')->nullable()->index();
             $table->integer('status')->default(0)->index();
@@ -32,9 +32,6 @@ class CreateArticlesTable extends Migration
             $table->boolean('has_pic')->default(0)->index();
 
             $table->string('date')->nullable()->index();
-
-            $table->integer('category_id')->unsigned()->change();
-            $table->foreign('category_id')->references('id')->on('categories');
 
             $table->integer('author_id')->nullable();
             $table->string('user_name')->nullable();

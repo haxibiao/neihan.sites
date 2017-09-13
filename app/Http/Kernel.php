@@ -34,8 +34,9 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\InAppCheck::class,
+            \App\Http\Middleware\CookieChecker::class,
             \App\Http\Middleware\TrafficMan::class,
+            // \App\Http\Middleware\BeianRedirect::class,
         ],
 
         'api' => [

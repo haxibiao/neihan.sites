@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 
+function is_weixin_editing() {
+    return Cookie::get('is_weixin_editing', false) || Request::get('is_weixin');
+}
+
 function get_article_url($article)
 {
     $url = "/article/" . $article->id;

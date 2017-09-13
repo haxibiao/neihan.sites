@@ -18,7 +18,6 @@ class CreateCategoriesTable extends Migration
             $table->string('name');
             $table->string('name_en');
             $table->string('description')->nullable();
-            $table->string('logo')->nullable();
             $table->string('logo')->nullable()->index();
             $table->integer('count')->default(0);
             $table->integer('user_id')->default(0)->index();
@@ -26,6 +25,7 @@ class CreateCategoriesTable extends Migration
             $table->boolean('has_child')->default(0)->index();
             $table->integer('level')->default(0)->index();
             $table->integer('status')->default(0)->index();
+            $table->string('type')->nullable()->index();
             $table->timestamps();
         });
     }
