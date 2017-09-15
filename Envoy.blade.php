@@ -30,7 +30,7 @@ php artisan get:sql
 @task('push', ['on' => 'local'])
 hostname
 cd {{ $www }}
-git push
+{{ $git_push_to_web }}
 @endtask
 
 @task('web_pull', ['on' => ['web'], 'parallel' => true])
