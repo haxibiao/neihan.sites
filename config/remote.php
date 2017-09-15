@@ -158,19 +158,8 @@ return [
 			'timeout' => 36000,
 		],
 
-		'hk003' => [
-			'host' => 'hk003',
-			'username' => 'root',
-			'password' => '',
-			'key' => '/data/build/ssh/id_rsa',
-			'keytext' => '',
-			'keyphrase' => '',
-			'agent' => '',
-			'timeout' => 36000,
-		],
-
-		'hk002' => [
-			'host' => 'hk002',
+		'gz002' => [
+			'host' => 'gz002',
 			'username' => 'root',
 			'password' => '',
 			'key' => '/data/build/ssh/id_rsa',

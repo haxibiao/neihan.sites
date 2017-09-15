@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -42,7 +42,7 @@ class HomeController extends Controller
 
         $data['traffic_wx']   = [];
         $labels['traffic_wx'] = [];
-        $traffic_count     = DB::table('traffic')->select(DB::raw('count(*) as count'), 'date')
+        $traffic_count        = DB::table('traffic')->select(DB::raw('count(*) as count'), 'date')
             ->where('created_at', '>', \Carbon\Carbon::now()->subDay(7))
             ->where('user_id', Auth::user()->id)
             ->where('is_wechat', 1)
@@ -68,7 +68,8 @@ class HomeController extends Controller
         }
 
         //compare all editors work of yesterday in one site ..
-        $editors                   = User::where('is_editor', 1)->pluck('name', 'id')->toArray();
+        $editors_ids = [];
+        $editors     = User::where('is_editor', 1)->pluck('name', 'id')->toArray();
         foreach ($editors as $id => $editor) {
             $editors_ids[] = $id;
         }
@@ -80,20 +81,20 @@ class HomeController extends Controller
             ->pluck('count', 'user_id');
         $wxtraffic_editors = DB::table('traffic')->select(DB::raw('count(*) as count, user_id'))
             ->where('date', \Carbon\Carbon::now()->subDay(1)->toDateString())
-            ->where('is_wechat',1)
+            ->where('is_wechat', 1)
             ->whereIn('user_id', $editors_ids)
             ->groupBy('user_id')
             ->pluck('count', 'user_id');
 
         $data['traffic_editors']   = [];
-        $data['wxtraffic_editors']   = [];
+        $data['wxtraffic_editors'] = [];
         $labels['traffic_editors'] = [];
         foreach ($traffic_editors as $user_id => $count) {
             $labels['traffic_editors'][] = $editors[$user_id];
             $data['traffic_editors'][]   = $count;
         }
         foreach ($wxtraffic_editors as $user_id => $count) {
-            $data['wxtraffic_editors'][]   = $count;
+            $data['wxtraffic_editors'][] = $count;
         }
 
         $article_editors = DB::table('articles')->select(DB::raw('count(*) as count, user_id'))
@@ -130,9 +131,9 @@ class HomeController extends Controller
 
     public function hxbLoginAs(Request $request, $name)
     {
-        //time() 太快了，用date 吧, bcrypt 加密太牛了，时间，未知不同，出来结果就不同！！！，　用简单md5 验证sign 
-        
-        if ($request->get('sign') !== md5('hxb_'.\Carbon\Carbon::now()->toDateString())) {
+        //time() 太快了，用date 吧, bcrypt 加密太牛了，时间，未知不同，出来结果就不同！！！，　用简单md5 验证sign
+
+        if ($request->get('sign') !== md5('hxb_' . \Carbon\Carbon::now()->toDateString())) {
             return '登录操作非法';
         }
         $user = User::where('name', $name)->firstOrFail();

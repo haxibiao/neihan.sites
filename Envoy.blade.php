@@ -1,6 +1,6 @@
 @include('config/envoy.php')
 
-@servers(['local' => 'localhost','hk001' => $hk001, 'hk002' => $hk002, 'hk002' => $hk002])
+@servers(['local' => 'localhost','hk001' => $hk001, 'gz002' => $gz002, 'web' => $web])
 
 @macro('push')
 push
@@ -33,14 +33,14 @@ cd {{ $www }}
 git push
 @endtask
 
-@task('web_pull', ['on' => ['hk001'], 'parallel' => true])
+@task('web_pull', ['on' => ['web'], 'parallel' => true])
 cd {{ $www }}
 echo {{ $www }}
 {{ $refresh_env_config }}
 {{ $cache_clear }}
 @endtask
 
-@task('web_seed', ['on' => ['hk001'], 'parallel' => true])
+@task('web_seed', ['on' => ['web'], 'parallel' => true])
 cd {{ $www }}
 echo {{ $www }}
 {{ $refresh_env_config }}
@@ -49,7 +49,7 @@ echo {{ $www }}
 {{ $cache_clear }}
 @endtask
 
-@task('web_update', ['on' => ['hk001'], 'parallel' => true])
+@task('web_update', ['on' => ['web'], 'parallel' => true])
 cd {{ $www }}
 echo {{ $www }}
 {{ $clear_bootstrap_cache }}

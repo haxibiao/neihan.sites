@@ -50,6 +50,8 @@ class EnvRefresh extends Command
 
     public function refresh_prod()
     {
+        //fix env:refresh --prod not update other lines ...
+        $this->refresh_local();
         //db
         $data = @file_get_contents('/etc/webconfig.json');
         if ($data) {

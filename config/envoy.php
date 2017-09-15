@@ -2,16 +2,16 @@
 
 require 'envoydomain.php';
 
-$git = 'root@hk002:/data/www/' . $domain;
+$git = 'root@' . $web_server . ':/data/www/' . $domain;
 $www = '/data/www/' . $domain;
 
 $hk001 = 'root@hk001';
-$hk002 = 'root@hk002';
-$hk003 = 'root@hk003';
+$gz002 = 'root@gz002';
+$web   = 'root@' . $web_server;
 
 $git_pull_force = <<<EOT
-chmod -R 777 .
-chown -R www:www .
+chmod -R 777 storage/
+chown -R www:www storage/
 git config core.filemode false
 git checkout .
 git pull
@@ -22,8 +22,8 @@ rm -rf bootstrap/cache/*.php
 EOT;
 
 $refresh_env_config = <<<EOT
-chmod -R 777 .
-chown -R www:www .
+chmod -R 777 storage/
+chown -R www:www storage/
 php artisan env:refresh --local
 php artisan env:refresh --prod
 EOT;
