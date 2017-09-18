@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 
-function is_weixin_editing() {
+function is_weixin_editing()
+{
     return Cookie::get('is_weixin_editing', false) || Request::get('is_weixin');
 }
 
@@ -78,6 +79,9 @@ function get_top_nav_bg()
     if (get_domain() == 'ainicheng.com') {
         return 'background-color: #3b5795';
     }
+    if (get_domain() == 'qunyige.com') {
+        return 'background-color: #f796c9';
+    }
 
     return '';
 }
@@ -102,7 +106,9 @@ function get_active_css($path, $full_match = 0)
         $active = 'active';
     }
     if ($full_match) {
-        $active = Request::path() == $path ? 'active' : '';
+        if (Request::path() == $path) {
+            $active = 'active';
+        }
     }
     return $active;
 }

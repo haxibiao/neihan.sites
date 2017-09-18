@@ -37,6 +37,6 @@
       @endif
     @endif
   @endforeach
-  <li class="{{ get_active_css('/video') }}"><a style="{{ get_top_nav_color() }}" href="/video">视频</a></li>
+  <li class="{{ get_active_css('video') }}"><a style="{{ get_top_nav_color() }}" href="/video">视频</a></li>
 
 </ul>
