@@ -70,7 +70,7 @@
             <small class="text-danger">{{ $errors->first('description') }}</small>
         </div>
 
-        <div class="form-group{{ $errors->has('body') ? ' has-error' : '' }}">
+        <div class="form-group{{ $errors->has('body') ? ' has-error-for-editor' : '' }}">
             {!! Form::label('body', '正文') !!}
             {!! Form::hidden('body',$article->body, ['class' => 'form-control', 'required' => 'required']) !!}
             <div class="editable"></div>

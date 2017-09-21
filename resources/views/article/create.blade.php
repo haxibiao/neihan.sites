@@ -64,7 +64,7 @@
             </div>
         </div>
 
-        <div class="form-group{{ $errors->has('keywords') ? ' has-error' : '' }}">
+        <div class="form-group{{ $errors->has('keywords') ? ' has-error-for-editor' : '' }}">
             {!! Form::label('keywords', '关键词(用英文,隔开 或者按Tab键自动隔开关键词)') !!}
             <div class="row">
             <div class="col-md-12">
@@ -80,7 +80,7 @@
             <small class="text-danger">{{ $errors->first('description') }}</small>
         </div>
 
-        <div class="form-group{{ $errors->has('body') ? ' has-error' : '' }}">
+        <div class="form-group{{ $errors->has('body') ? ' has-error-for-editor' : '' }}">
             {!! Form::label('body', '正文') !!}
             {!! Form::hidden('body',null, ['class' => 'form-control', 'required' => 'required']) !!}
             <div class="editable"></div>

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ArticleRequest extends FormRequest
 {
@@ -24,9 +25,16 @@ class ArticleRequest extends FormRequest
      */
     public function rules()
     {
+        Validator::extend('not_copyed_image', function ($attribute, $value, $parameters) {
+            return !str_contains($value, ";base64,");
+        });
+
         return [
-            'title' => 'unique:articles,title',
+            'title'       => 'unique:articles,title',
             'category_id' => 'required',
+            'keywords'    => 'required|min:2',
+            'description' => 'required|min:20',
+            'body'        => 'required|min:30|not_copyed_image',
         ];
     }
 }

@@ -11,7 +11,7 @@ return [
     | the validator class. Some of these rules have multiple versions such
     | as the size rules. Feel free to tweak each of these messages here.
     |
-    */
+     */
 
     'accepted'             => 'The :attribute must be accepted.',
     'active_url'           => 'The :attribute is not a valid URL.',
@@ -97,11 +97,18 @@ return [
     | convention "attribute.rule" to name the lines. This makes it quick to
     | specify a specific custom language line for a given attribute rule.
     |
-    */
+     */
 
-    'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+    'custom'               => [
+        'keywords'    => [
+            'min' => '关键词至少需要2个字',
+        ],
+        'description' => [
+            'min' => '简介至少需要20个字',
+        ],
+        'body'        => [
+            'min'              => '正文至少需要300个字',
+            'not_copyed_image' => '编辑器正文不能直接粘贴或者拖入图片，请用媒体面板加入图片',
         ],
     ],
 
@@ -114,8 +121,8 @@ return [
     | with something more reader friendly such as E-Mail Address instead
     | of "email". This simply helps us make messages a little cleaner.
     |
-    */
+     */
 
-    'attributes' => [],
+    'attributes'           => [],
 
 ];
