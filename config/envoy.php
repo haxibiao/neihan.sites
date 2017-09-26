@@ -3,7 +3,6 @@
 require 'envoydomain.php';
 
 $git = 'root@' . $web_server . ':/data/www/' . $domain;
-$www = '/data/www/' . $domain;
 
 $hk001 = 'root@hk001';
 $gz002 = 'root@gz002';

@@ -286,7 +286,7 @@ class ArticleController extends Controller
 
                 //auto get is_top an image_top
                 if ($image->path_top) {
-                    $article->is_top    = 1;
+                    // $article->is_top    = 1;
                     $article->image_top = $image->path_top;
                     $article->save();
                 }

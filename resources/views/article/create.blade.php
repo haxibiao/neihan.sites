@@ -49,9 +49,9 @@
                 {!! Form::select('category_id',$categories,null, ['id' => 'category_id', 'class' => 'form-control', 'required' => 'required']) !!}
                 <small class="text-danger">{{ $errors->first('category_id') }}</small>
             </div>
-        </div>
+            </div>
 
-        <div class="col-md-6">
+            <div class="col-md-3">
             <div class="form-group{{ $errors->has('author') ? ' has-error' : '' }}">
                 {!! Form::label('author', '作者') !!}
                 {!! Form::text('author', Auth::user()->name, ['class' => 'form-control', 'readonly' => 'true']) !!}
@@ -62,6 +62,15 @@
                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
             </div>
             </div>
+
+            <div class="col-md-3">
+            <div class="form-group{{ $errors->has('is_top') ? ' has-error' : '' }}">
+                {!! Form::label('is_top', '是否上首页') !!}
+                {!! Form::select('is_top',[ 0 => '否', 1 => '是'], null, ['id' => 'is_top', 'class' => 'form-control', 'required' => 'required']) !!}
+                <small class="text-danger">{{ $errors->first('is_top') }}</small>
+            </div>
+            </div>
+
         </div>
 
         <div class="form-group{{ $errors->has('keywords') ? ' has-error-for-editor' : '' }}">
