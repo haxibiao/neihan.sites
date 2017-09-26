@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\FixData::class,
         \App\Console\Commands\ImageResize::class,
         \App\Console\Commands\ImageTitle::class,
+        \App\Console\Commands\ImageLogo::class,
     ];
 
     /**

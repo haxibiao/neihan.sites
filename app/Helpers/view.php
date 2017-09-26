@@ -70,11 +70,11 @@ function is_in_app()
 
 function get_top_nav_bg()
 {
-    if (get_domain() == 'dongdianyao.com') {
-        return 'background-color: #75c4ef';
+    if (get_domain() == 'dianmoge.com') {
+        return 'background-color: #000000';
     }
     if (get_domain() == 'dongmeiwei.com') {
-        return 'background-color: #f6e128';
+        return 'background-color: #9d2932';
     }
     if (get_domain() == 'ainicheng.com') {
         return 'background-color: #3b5795';
@@ -88,10 +88,13 @@ function get_top_nav_bg()
 
 function get_top_nav_color()
 {
-    if (get_domain() == 'dongdianyao.com') {
+    if (get_domain() == 'ainicheng.com') {
         return 'color: white';
     }
-    if (get_domain() == 'ainicheng.com') {
+    if (get_domain() == 'dianmoge.com') {
+        return 'color: white';
+    }
+    if (get_domain() == 'dongmeiwei.com') {
         return 'color: white';
     }
     return '';
