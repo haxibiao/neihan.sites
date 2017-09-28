@@ -53,7 +53,7 @@ class CategoryController extends Controller
             $page_size = 10;
         }
         $articles = Article::orderBy('id', 'desc')
-            ->where('status', '>=', 0)
+            ->where('status', '>', 0)
             ->where('category_id', $category->id)
             ->paginate($page_size);
         if ($articles->isEmpty()) {

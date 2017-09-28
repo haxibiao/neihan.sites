@@ -25,14 +25,14 @@
 <div class="panel panel-default">
   <div class="panel-body">
     <div class="col-md-10">
-    {!! Form::open(['method' => 'POST', 'route' => 'article.store', 'class' => 'form-horizontal', 'enctype' => "multipart/form-data"]) !!}      
+    {!! Form::open(['method' => 'POST', 'route' => 'article.store', 'class' => 'form-horizontal', 'id'=>'article_form', 'enctype' => "multipart/form-data"]) !!}      
       <div class="row">
           <legend>创建文章</legend>
     
             <div class="btn-group-lg pull-right">
                 <input type="hidden" name="image_url">
-                {!! Form::reset("重置", ['class' => 'btn btn-warning']) !!}
-                {!! Form::submit("保存", ['class' => 'btn btn-success']) !!}
+                {!! Form::button(" 存 稿 ", ['class' => 'btn btn-warning btn-draft']) !!}
+                {!! Form::submit(" 发 布 ", ['class' => 'btn btn-success']) !!}
             </div>
       </div>
     
@@ -98,10 +98,11 @@
 
         @include('article.parts.images_selected', ['article_images' => []])
         
-        <div class="btn-group pull-right">
+        <div class="btn-group-lg pull-right">
             <input type="hidden" name="image_url">
-            {!! Form::reset("重置", ['class' => 'btn btn-lg btn-warning']) !!}
-            {!! Form::submit("保存", ['class' => 'btn btn-lg btn-success']) !!}
+            <input type="hidden" name="status" id="hidden_status" value="1">
+            {!! Form::button("　存　稿　", ['class' => 'btn btn-warning btn-draft']) !!}
+            {!! Form::submit("　发　布　", ['class' => 'btn btn-success']) !!}
         </div>
     
       {!! Form::close() !!}
@@ -127,7 +128,10 @@
 
   $(function() {
 
-    // $('.editable').trigger('focus');
+    $('.btn-draft').click(function() {
+        $('#hidden_status').val(0);
+        $('#article_form').submit();
+    });
 
     //prevent double click try to create twice ...
     $('input[type="submit"]').click(function() {

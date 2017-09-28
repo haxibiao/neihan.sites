@@ -55,7 +55,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user             = User::findOrFail($id);
-        $data['articles'] = Article::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(5);
+        $data['articles'] = Article::where('user_id', $user->id)->orderBy('id', 'desc')->where('status', 1)->paginate(5);
         $data['videos']   = Video::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(5);
         return view('user.show')
             ->withUser($user)
@@ -127,10 +127,19 @@ class UserController extends Controller
         return redirect()->back();
     }
 
+    public function drafts($id)
+    {
+        $user             = User::findOrFail($id);
+        $data['articles'] = Article::where('user_id', $user->id)->orderBy('id', 'desc')->where('status', 0)->paginate(10);
+        return view('user.drafts')
+            ->withUser($user)
+            ->withData($data);
+    }
+
     public function articles($id)
     {
         $user             = User::findOrFail($id);
-        $data['articles'] = Article::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(10);
+        $data['articles'] = Article::where('user_id', $user->id)->orderBy('id', 'desc')->where('status', 1)->paginate(10);
         return view('user.articles')
             ->withUser($user)
             ->withData($data);
@@ -147,12 +156,12 @@ class UserController extends Controller
 
     public function favorites(Request $request)
     {
-        $user                = $request->user();
-        $fav_articles         = Favorite::with('article')->where('user_id', $user->id)->where('type','article')->orderBy('id','desc')->paginate(10);
-        $data['fav_articles']    = $fav_articles;
+        $user                 = $request->user();
+        $fav_articles         = Favorite::with('article')->where('user_id', $user->id)->where('type', 'article')->orderBy('id', 'desc')->paginate(10);
+        $data['fav_articles'] = $fav_articles;
 
-        $fav_videos         = Favorite::with('video')->where('user_id', $user->id)->where('type','video')->orderBy('id','desc')->paginate(10);
-        $data['fav_videos']    = $fav_videos;
+        $fav_videos         = Favorite::with('video')->where('user_id', $user->id)->where('type', 'video')->orderBy('id', 'desc')->paginate(10);
+        $data['fav_videos'] = $fav_videos;
 
         return view('user.favorites')
             ->withUser($user)

@@ -183,11 +183,13 @@ class FixData extends Command
 
         $articles = Article::with('images')->get();
         foreach ($articles as $article) {
-            $this->fix_article($article);
+            $article->status = 1;
+            $article->save();
+            // $this->fix_article_image($article);
         }
     }
 
-    public function fix_article($article)
+    public function fix_article_image($article)
     {
         $this->info($article->image_url);
         //fix image_url

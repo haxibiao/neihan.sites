@@ -43,12 +43,13 @@ Route::get('/traffic/browser/{name}', 'TrafficController@browser');
 Route::get('/traffic/platform/{name}', 'TrafficController@platform');
 Route::get('/traffic/robot/{name}', 'TrafficController@robot');
 Route::get('/traffic/days-{days_ago}', 'TrafficController@index');
-Route::resource('/traffic/', 'TrafficController');
+Route::resource('/traffic', 'TrafficController');
 
 //用户
 Route::get('/user/seo', 'UserController@seo');
 Route::get('/user/{id}/videos', 'UserController@videos');
 Route::get('/user/{id}/articles', 'UserController@articles');
+Route::get('/user/{id}/drafts', 'UserController@drafts');
 Route::get('/user/{id}/favorites', 'UserController@favorites');
 Route::resource('/user', 'UserController');
 Route::get('/home', 'HomeController@index')->name('home');

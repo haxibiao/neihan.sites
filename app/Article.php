@@ -18,6 +18,7 @@ class Article extends Model
         'body',
         'image_url',
         'is_top',
+        'status',
     ];
 
     protected $dates = ['edited_at'];

@@ -15,7 +15,7 @@ class IndexController extends Controller
         foreach ($categories as $cate_id => $cate) {
             $articles = Article::orderBy('id', 'desc')
                 ->where('category_id', $cate_id)
-                ->where('status', '>=', 0)
+                ->where('status', '>', 0)
                 ->where('image_url', '<>', '')
                 ->take(2)
                 ->get();

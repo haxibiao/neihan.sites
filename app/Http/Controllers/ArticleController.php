@@ -27,7 +27,7 @@ class ArticleController extends Controller
     public function index(Request $request)
     {
         $query = Article::orderBy('id', 'desc')
-            ->where('status', '>=', 0);
+            ->where('status', '>', 0);
         if (!Auth::user()->is_admin) {
             $query = $query->where('user_id', Auth::user()->id);
         }

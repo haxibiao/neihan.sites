@@ -21,14 +21,14 @@
   <div class="panel-body">
     
   <div class="col-md-10">
-    {!! Form::open(['method' => 'PUT', 'route' => ['article.update', $article->id], 'class' => 'form-horizontal', 'enctype' => "multipart/form-data"]) !!}
+    {!! Form::open(['method' => 'PUT', 'route' => ['article.update', $article->id], 'class' => 'form-horizontal', 'id'=>'article_form', 'enctype' => "multipart/form-data"]) !!}
       <div class="row">
           <legend>编辑文章</legend>
     
             <div class="btn-group-lg pull-right">
                 <input type="hidden" name="image_url">
-                {!! Form::reset("重置", ['class' => 'btn btn-warning']) !!}
-                {!! Form::submit("保存", ['class' => 'btn btn-success']) !!}
+                {!! Form::button("　存　稿　", ['class' => 'btn btn-warning btn-draft']) !!}
+                {!! Form::submit("　发　布　", ['class' => 'btn btn-success']) !!}
             </div>
       </div>
     
@@ -89,8 +89,9 @@
     
         <div class="btn-group-lg pull-right">
             <input type="hidden" name="image_url">
-            {!! Form::reset("重置", ['class' => 'btn btn-warning']) !!}
-            {!! Form::submit("保存", ['class' => 'btn btn-success']) !!}
+            <input type="hidden" name="status" id="hidden_status" value="1">
+            {!! Form::button("　存　稿　", ['class' => 'btn btn-warning btn-draft']) !!}
+            {!! Form::submit("　发　布　", ['class' => 'btn btn-success']) !!}
         </div>
     
     {!! Form::close() !!}
@@ -113,6 +114,11 @@
 
 <script type="text/javascript">
   $(function() {
+
+    $('.btn-draft').click(function() {
+        $('#hidden_status').val(0);
+        $('#article_form').submit();
+    });
 
     $('#keywords').tagsInput({
         width:'auto',

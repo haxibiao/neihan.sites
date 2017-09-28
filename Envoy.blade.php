@@ -38,6 +38,7 @@ cd {{ $www }}
 echo {{ $www }}
 {{ $refresh_env_config }}
 {{ $cache_clear }}
+php artisan fix:data --articles
 @endtask
 
 @task('web_seed', ['on' => ['web'], 'parallel' => true])

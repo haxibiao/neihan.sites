@@ -42,6 +42,11 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="/user/{{ Auth::user()->id }}/drafts">
+                                    我的存稿
+                                </a>
+                            </li>
+                            <li>
                                 <a href="/user/{{ Auth::user()->id }}/favorites">
                                     我的收藏
                                 </a>
