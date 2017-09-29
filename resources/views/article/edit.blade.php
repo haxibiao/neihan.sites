@@ -120,10 +120,6 @@
         $('#article_form').submit();
     });
 
-    $('#keywords').tagsInput({
-        width:'auto',
-    });
-
     var editor = $('.editable').summernote({
         lang: 'zh-CN', // default: 'en-US',
         height: 500,
