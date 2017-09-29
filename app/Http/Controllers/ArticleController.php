@@ -133,20 +133,20 @@ class ArticleController extends Controller
     public function edit($id)
     {
         $article = Article::with('images')->findOrFail($id);
-        if ($article->images->isEmpty()) {
-            //fix img relation missing
-            $pattern_img = '/<img src=\"(.*?)\"/';
-            if (preg_match_all($pattern_img, $article->body, $matches)) {
-                $imgs = $matches[1];
-                $this->auto_upadte_image_relations($imgs, $article);
-                $article = Article::with('images')->findOrFail($id);
-            }
-        } else {
-            //编辑文章的时候,可能没有插入图片,字段可能空,就会删除图片地址....
-            if ($this->clear_article_imgs($article)) {
-                $article = Article::with('images')->findOrFail($id);
-            }
+
+        //fix img relation missing, 同是修复image_url对应的image_top 为主要image_top
+        $pattern_img = '/<img src=\"(.*?)\"/';
+        if (preg_match_all($pattern_img, $article->body, $matches)) {
+            $imgs = $matches[1];
+            $this->auto_upadte_image_relations($imgs, $article);
+            $article = Article::with('images')->findOrFail($id);
         }
+
+        //编辑文章的时候,可能没有插入图片,字段可能空,就会删除图片地址....
+        if ($this->clear_article_imgs($article)) {
+            $article = Article::with('images')->findOrFail($id);
+        }
+
         $categories    = get_categories();
         $article->body = str_replace('<single-list id', '<single-list class="box-related-half" id', $article->body);
         return view('article.edit')->withArticle($article)->withCategories($categories);
@@ -269,6 +269,8 @@ class ArticleController extends Controller
         if (!is_array($imgs)) {
             return;
         }
+
+        $has_primary_top = false;
         foreach ($imgs as $img) {
             $path      = parse_url($img)['path'];
             $extension = pathinfo($path, PATHINFO_EXTENSION);
@@ -287,8 +289,15 @@ class ArticleController extends Controller
                 //auto get is_top an image_top
                 if ($image->path_top) {
                     // $article->is_top    = 1;
-                    $article->image_top = $image->path_top;
-                    $article->save();
+                    if (!$has_primary_top) {
+                        var_dump($image->path_small);
+                        var_dump($article->image_url);
+                        if ($image->path_small == $article->image_url) {
+                            $has_primary_top = true;
+                        }
+                        $article->image_top = $image->path_top;
+                        $article->save();
+                    }
                 }
 
                 $article_image = ArticleImage::firstOrNew([
@@ -298,6 +307,7 @@ class ArticleController extends Controller
                 $article_image->save();
             }
         }
+        dd('x');
     }
 
     public function save_article_tags($article)
