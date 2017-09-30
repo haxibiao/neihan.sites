@@ -307,7 +307,6 @@ class ArticleController extends Controller
                 $article_image->save();
             }
         }
-        dd('x');
     }
 
     public function save_article_tags($article)
