@@ -33,8 +33,8 @@ class ArticleRequest extends FormRequest
             'title'       => 'unique:articles,title',
             'category_id' => 'required',
             'keywords'    => 'required|min:2',
-            'description' => 'required|min:20',
-            'body'        => 'required|min:30|not_copyed_image',
+            'description' => 'required|min:10',
+            'body'        => 'required|min:20|not_copyed_image',
         ];
     }
 }
