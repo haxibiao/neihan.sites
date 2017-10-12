@@ -44,6 +44,12 @@
                <small class="text-danger">{{ $errors->first('category_id') }}</small>
            </div>
 
+          <div class="form-group{{ $errors->has('order') ? ' has-error' : '' }}">
+              {!! Form::label('order', '权重(越大越靠前)') !!}
+              {!! Form::text('order', $category->order, ['class' => 'form-control', 'required' => 'required']) !!}
+              <small class="text-danger">{{ $errors->first('order') }}</small>
+          </div>
+
           <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
               {!! Form::label('description', '分类描述') !!}
               {!! Form::textarea('description', $category->description, ['class' => 'form-control']) !!}

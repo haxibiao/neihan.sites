@@ -31,7 +31,7 @@ function get_categories($full = 0, $type = 'article', $for_parent = 0)
     if ($for_parent) {
         $categories[0] = null;
     }
-    $category_items = Category::where('type', $type)->get();
+    $category_items = Category::where('type', $type)->orderBy('order','desc')->get();
     foreach ($category_items as $item) {
         if ($item->level == 0) {
             $categories[$item->id] = $full ? $item : $item->name;

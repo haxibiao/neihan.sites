@@ -13,6 +13,7 @@ class Category extends Model
         'user_id',
         'parent_id',
         'type',
+        'order'
     ];
 
     public function user()
