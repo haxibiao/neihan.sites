@@ -69,26 +69,26 @@ class GetSql extends Command
             });
         }
 
-        $scp_command = 'rsync -P --rsh=ssh root@' . $db_server .
-            ':' . $sql_data_folder . '/' . $db_name . '.sql.zip ' . $sql_data_folder;
-        $this->info($scp_command);
-        $this->info('复制粘贴上面的命令来拉取服务器上最新的数据库备份文件, then run art get:sql --local');
-        RemoteFacade::into('localhost')->run([$scp_command], function ($line) {
-            $this->comment($line);
-        });
+        // $scp_command = 'rsync -P --rsh=ssh root@' . $db_server .
+        //     ':' . $sql_data_folder . '/' . $db_name . '.sql.zip ' . $sql_data_folder;
+        // $this->info($scp_command);
+        // $this->info('复制粘贴上面的命令来拉取服务器上最新的数据库备份文件, then run art get:sql --local');
+        // RemoteFacade::into('localhost')->run([$scp_command], function ($line) {
+        //     $this->comment($line);
+        // });
 
-        $sqlim = 'mysql -uroot -plocaldb001';
+        // $sqlim = 'mysql -uroot -plocaldb001';
 
-        $cmds_local = array(
-            'whoami 2>&1',
-            'hostname 2>&1',
-            'cd ' . $sql_data_folder,
-            '[ -f ' . $db_name . '.sql.zip ] && unzip -o ' . $db_name . '.sql.zip',
-            '[ -f ' . $db_name . '.sql ] && ' . $sqlim . ' ' . $db_name . '<' . $db_name . '.sql',
-            'echo "数据库已恢复完成 ..."',
-        );
+        // $cmds_local = array(
+        //     'whoami 2>&1',
+        //     'hostname 2>&1',
+        //     'cd ' . $sql_data_folder,
+        //     '[ -f ' . $db_name . '.sql.zip ] && unzip -o ' . $db_name . '.sql.zip',
+        //     '[ -f ' . $db_name . '.sql ] && ' . $sqlim . ' ' . $db_name . '<' . $db_name . '.sql',
+        //     'echo "数据库已恢复完成 ..."',
+        // );
         
-        $this->local_run($cmds_local);
+        // $this->local_run($cmds_local);
     }
 
     public function local_run($cmds)
