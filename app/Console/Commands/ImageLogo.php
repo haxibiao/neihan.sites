@@ -41,6 +41,8 @@ class ImageLogo extends Command
         $this->makeLogo('dongmeiwei.com');
         $this->makeLogo('dongdianyi.com');
         $this->makeLogo('dongdianyao.com');
+        $this->makeLogo('ainicheng.com');
+        $this->makeLogo('qunyige.com');
     }
 
     public function makeLogo($domain)
