@@ -193,6 +193,9 @@ class CategoryController extends Controller
         if ($category) {
             $count = \App\Article::where('category_id', $category->id)->count();
             if ($count == 0) {
+                if (Category::where('parent_id', $id)->count()) {
+                    return '该分类下还有分类，不能删除';
+                }
                 $category->delete();
             } else {
                 return '该分类下还有文章，不能删除';

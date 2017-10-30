@@ -40,7 +40,12 @@ class EnvRefresh extends Command
         if ($this->option('local')) {
             return $this->refresh_local();
         }
-        $this->refresh_prod();
+
+        if (!in_array(gethostname(), ['hk001', 'gz002'])) {
+            $this->refresh_local();
+        } else {
+            $this->refresh_prod();
+        }
     }
 
     public function refresh_local()
