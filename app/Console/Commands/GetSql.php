@@ -12,7 +12,7 @@ class GetSql extends Command
      *
      * @var string
      */
-    protected $signature = 'get:sql {--server=}';
+    protected $signature = 'get:sql {--server=} {--db=}';
 
     /**
      * The console command description.
@@ -50,6 +50,10 @@ class GetSql extends Command
 
         if ($this->option('server')) {
             $db_server = $this->option('server');
+        }
+
+        if ($this->option('db')) {
+            $db_name = $this->option('db');
         }
 
         $sql_data_folder = '/data/sqlfiles';
