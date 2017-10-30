@@ -12,7 +12,7 @@ class GetSql extends Command
      *
      * @var string
      */
-    protected $signature = 'get:sql {--local}';
+    protected $signature = 'get:sql {--server=}';
 
     /**
      * The console command description.
@@ -48,6 +48,10 @@ class GetSql extends Command
         $db_server = env('DB_SERVER');
         $db_name   = env('DB_DATABASE');
 
+        if ($this->option('server')) {
+            $db_server = $this->option('server');
+        }
+
         $sql_data_folder = '/data/sqlfiles';
         if (!is_dir($sql_data_folder)) {
             mkdir($sql_data_folder, 0777, 1);
@@ -63,37 +67,8 @@ class GetSql extends Command
             'zip ' . $db_name . '.sql.zip ' . $db_name . '.sql',
         );
 
-        if (empty($this->option('local'))) {
-            RemoteFacade::into($db_server)->run($cmds, function ($line) {
-                $this->comment($line);
-            });
-        }
-
-        // $scp_command = 'rsync -P --rsh=ssh root@' . $db_server .
-        //     ':' . $sql_data_folder . '/' . $db_name . '.sql.zip ' . $sql_data_folder;
-        // $this->info($scp_command);
-        // $this->info('复制粘贴上面的命令来拉取服务器上最新的数据库备份文件, then run art get:sql --local');
-        // RemoteFacade::into('localhost')->run([$scp_command], function ($line) {
-        //     $this->comment($line);
-        // });
-
-        // $sqlim = 'mysql -uroot -plocaldb001';
-
-        // $cmds_local = array(
-        //     'whoami 2>&1',
-        //     'hostname 2>&1',
-        //     'cd ' . $sql_data_folder,
-        //     '[ -f ' . $db_name . '.sql.zip ] && unzip -o ' . $db_name . '.sql.zip',
-        //     '[ -f ' . $db_name . '.sql ] && ' . $sqlim . ' ' . $db_name . '<' . $db_name . '.sql',
-        //     'echo "数据库已恢复完成 ..."',
-        // );
-        
-        // $this->local_run($cmds_local);
-    }
-
-    public function local_run($cmds)
-    {
-        $cmds_str = implode(' && ', $cmds);
-        $do       = system($cmds_str);
+        RemoteFacade::into($db_server)->run($cmds, function ($line) {
+            $this->comment($line);
+        });
     }
 }
