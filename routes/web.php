@@ -27,6 +27,7 @@ Route::resource('/article', 'ArticleController');
 Route::resource('/category', 'CategoryController');
 Route::get('/tag/{name}', 'TagController@tagname');
 Route::resource('/tag', 'TagController');
+Route::get('/new', 'ArticleController@article_new');
 //片段
 Route::resource('/snippet', 'SnippetController');
 
