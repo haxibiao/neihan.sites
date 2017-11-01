@@ -70,7 +70,7 @@ function get_top_nav_bg() {
 		return 'background-color: #9d2932';
 	}
 	if (get_domain() == 'ainicheng.com') {
-		return 'background-color: #FFC0CB';
+		return 'background-color: #F2B5C5';
 	}
 	if (get_domain() == 'qunyige.com') {
 		return 'background-color: #f796c9';
