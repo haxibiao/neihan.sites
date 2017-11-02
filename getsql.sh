@@ -35,6 +35,6 @@ unzip -o $2.sql.zip
 echo '恢复...'
 
 #注意，请在 ~/.bash_aliases 里增加一个　　alias sql='mysql -uroot -plocaldb001'
-sql $2<$2.sql
+mysql -uroot -plocaldb001 $2<$2.sql
 
 echo '数据库恢复本地完成...'
