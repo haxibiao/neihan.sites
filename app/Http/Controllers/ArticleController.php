@@ -39,7 +39,8 @@ class ArticleController extends Controller {
 	 */
 	public function create() {
 		$categories = get_categories();
-		return view('article.create')->withCategories($categories);
+		$data['latest_tags'] = get_latest_tags();
+		return view('article.create')->withCategories($categories)->withData($data);
 	}
 
 	/**
@@ -142,7 +143,9 @@ class ArticleController extends Controller {
 
 		$categories = get_categories();
 		$article->body = str_replace('<single-list id', '<single-list class="box-related-half" id', $article->body);
-		return view('article.edit')->withArticle($article)->withCategories($categories);
+
+		$data['latest_tags'] = get_latest_tags();
+		return view('article.edit')->withArticle($article)->withCategories($categories)->withData($data);
 	}
 
 	/**

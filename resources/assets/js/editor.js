@@ -23,6 +23,7 @@ Vue.component('line-chart', require('./components/Line.vue'));
 Vue.component('single-list', require('./components/SingleList.vue'));
 
 Vue.component('my-image-list', require('./components/MyImageList.vue'));
+Vue.component('image-list', require('./components/ImageList.vue'));
 Vue.component('my-video-list', require('./components/MyVideoList.vue'));
 Vue.component('single-list-create', require('./components/SingleListCreate.vue'));
 Vue.component('single-list-select', require('./components/SingleListSelect.vue'));
