@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Collective\Remote\RemoteFacade;
 use Illuminate\Console\Command;
 
 class GetSql extends Command
@@ -12,14 +11,14 @@ class GetSql extends Command
      *
      * @var string
      */
-    protected $signature = 'get:sql {--server=} {--db=}';
+    protected $signature = 'get:sql {--server=} {--db=} {--restore}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'use ssh get mysql db latest backup and restore on local';
+    protected $description = 'get sql from sql and unzip and restore ...';
 
     /**
      * Create a new command instance.
@@ -38,41 +37,31 @@ class GetSql extends Command
      */
     public function handle()
     {
-        $this->getsql();
+        if ($this->option('restore')) {
+            return $this->restore();
+        }
+        $this->back_sql_on_server();
     }
 
-    private function getsql()
+    public function restore()
     {
-        set_time_limit(-1);
+        $db_name = $this->option('db') ? $this->option('db') : env('DB_DATABASE');
+        $sql     = 'mysql -uroot -p' . env('DB_PASSWORD');
+        $cmd     = $sql . ' ' . $db_name . '</data/sqlfiles/' . $db_name . '.sql';
+        $do      = `$cmd`;
+    }
 
-        $db_server = env('DB_SERVER');
-        $db_name   = env('DB_DATABASE');
-
-        if ($this->option('server')) {
-            $db_server = $this->option('server');
-        }
-
-        if ($this->option('db')) {
-            $db_name = $this->option('db');
-        }
-
-        $sql_data_folder = '/data/sqlfiles';
-        if (!is_dir($sql_data_folder)) {
-            mkdir($sql_data_folder, 0777, 1);
-        }
-
-        $cmds = array(
-            'echo "数据库正在服务器上备份 ..."',
+    public function back_sql_on_server()
+    {
+        $db_name = $this->option('db') ? $this->option('db') : env('DB_DATABASE');
+        $server  = $this->option('server') ? $this->option('server') : env('DB_SERVER');
+        \SSH::into($server)->run([
             'whoami',
             'hostname',
-            '[ -f ~/.bash_aliases ] && source ~/.bash_aliases',
-            'cd ' . $sql_data_folder,
+            'cd /data/sqlfiles',
+            'echo ' . $db_name . ' is dumping ..',
             'sqld ' . $db_name . '>' . $db_name . '.sql',
-            'zip ' . $db_name . '.sql.zip ' . $db_name . '.sql',
-        );
-
-        RemoteFacade::into($db_server)->run($cmds, function ($line) {
-            $this->comment($line);
-        });
+            'zip -r ' . $db_name . '.sql.zip ' . $db_name . '.sql',
+        ]);
     }
 }
