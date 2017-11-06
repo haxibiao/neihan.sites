@@ -64,9 +64,9 @@ class CrawlArticle extends Command {
 				]);
 				$article->body = $js->body;
 				$article->status = 1;
-				$article->author = "汤圆";
-				$article->user_name = "汤圆";
-				$article->user_id = 15;
+				$article->author = "system";
+				$article->user_name = "system";
+				$article->user_id = 16;
 				$article->description = "";
 				$article->keywords = "王者荣耀";
 				$article->image_url = "https://haxibiao.com$js->image_url";
