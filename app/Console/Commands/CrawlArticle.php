@@ -50,12 +50,12 @@ class CrawlArticle extends Command {
 	public function get_category($category_id) {
 
 		$i = 1;
-		$url = "https://haxibiao.com/api/articles?cate_id=$category_id?page=$i";
+		$url = "https://haxibiao.com/api/articles?cate_id=$category_id&page=$i";
 		$json = file_get_contents($url);
 		$json = json_decode($json);
-		$total = ($json->total);
+		$total = ($json->last_page);
 		for ($i = 1; $i <= $total; $i++) {
-			$url = "https://haxibiao.com/api/articles?cate_id=$category_id?page=$i";
+			$url = "https://haxibiao.com/api/articles?cate_id=$category_id&page=$i";
 			$json = file_get_contents($url);
 			$json = json_decode($json);
 			foreach ($json->data as $js) {
