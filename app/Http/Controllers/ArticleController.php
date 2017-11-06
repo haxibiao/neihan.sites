@@ -116,7 +116,7 @@ class ArticleController extends Controller {
 			->take(4)
 			->get();
 		fix_wz_data($article);
-
+		// dd($article->data_wz);
 		return view('article.show')->withArticle($article)->withData($data);
 	}
 
