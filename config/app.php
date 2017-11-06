@@ -235,6 +235,7 @@ return [
       	'Html' => Collective\Html\HtmlFacade::class,
       	'EasyWeChat' => Overtrue\LaravelWechat\Facade::class,
       	'Agent' => Jenssegers\Agent\Facades\Agent::class,
+      	'SSH' => Collective\Remote\RemoteFacade::class,
 	],
 
 ];

@@ -1,0 +1,25 @@
+@mixin vue_padding {
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+@mixin vue_images {
+	.images {
+		padding-top: 5px;
+		overflow-y: auto;
+		clear: both;
+		height: 500px;
+	}
+	.more {
+		text-align: center;
+		padding: 5px;
+	}
+}
+
+#tag_images {
+	@include vue_padding;
+	@include vue_images;
+}
+#my_images {
+	@include vue_padding;
+	@include vue_images;
+}

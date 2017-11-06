@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Tag;
 use App\Article;
 use App\ArticleTag;
+use App\ImageTag;
 
 class TagController extends Controller
 {
@@ -23,8 +24,12 @@ class TagController extends Controller
         $tag = Tag::firstOrNew([
                 'name' => $name
             ]);
-        $articles = ArticleTag::with('article')->where('tag_id', $tag->id)->paginate(10);
-        return view('tag.name')->withTag($tag)->withArticles($articles);
+        $article_tags = ArticleTag::with('article')->where('tag_id', $tag->id)->paginate(10);
+        $image_tags = ImageTag::with('image')->where('tag_id', $tag->id)->paginate(10);
+        return view('tag.name')
+        ->withArticleTags($article_tags)
+        ->withTag($tag)
+        ->withImageTags($image_tags);
     }
 
     /**

@@ -12,6 +12,10 @@ class Image extends Model
 		'path_small',
 	];
 
+    public function tags() {
+        return $this->belongsToMany('App\Tag');
+    }
+
     public function articles() {
     	return $this->belongsToMany('App\Article');
     }

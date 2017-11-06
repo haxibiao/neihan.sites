@@ -1,9 +1,28 @@
 <?php
 
 use App\Category;
+use App\Tag;
 use App\User;
+use App\Badword;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Cache;
 use Jenssegers\Agent\Agent;
+
+function get_badwords() {
+    $badwords = Cache::get('badwords');
+    if(!$badwords) {
+        $badwords = Badword::pluck('word')->toArray();
+        Cache::put('badwords', $badwords, 60*24);
+    }
+    return $badwords;
+}
+
+function get_latest_tags()
+{
+    $tags = Tag::orderBy('updated_at', 'desc')->take(12)->pluck('name')->toArray();
+    $tags = join(',', $tags);
+    return $tags;
+}
 
 function get_seoer_meta()
 {
@@ -31,7 +50,7 @@ function get_categories($full = 0, $type = 'article', $for_parent = 0)
     if ($for_parent) {
         $categories[0] = null;
     }
-    $category_items = Category::where('type', $type)->orderBy('order','desc')->get();
+    $category_items = Category::where('type', $type)->orderBy('order', 'desc')->get();
     foreach ($category_items as $item) {
         if ($item->level == 0) {
             $categories[$item->id] = $full ? $item : $item->name;

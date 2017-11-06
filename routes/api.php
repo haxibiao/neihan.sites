@@ -86,3 +86,7 @@ Route::get('/video/{id}/lists', 'Api\VideoController@getAllRelations');
 Route::get('/video/{id}/del-{key}', 'Api\VideoController@deleteRelation');
 //获取视频相关片段数据
 Route::get('/video/{id}/{key}', 'Api\VideoController@getRelation');
+
+
+Route::get('tags', 'Api\TagController@index');
+Route::get('tag/{tag_name}/images', 'Api\TagController@images');

@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Article;
 use App\Category;
 use App\Image;
+use App\ImageTag;
 use App\Video;
 use Illuminate\Console\Command;
 
@@ -15,7 +16,7 @@ class FixData extends Command
      *
      * @var string
      */
-    protected $signature = 'fix:data {--traffic} {--articles} {--images} {--videos} {--categories} {--force}';
+    protected $signature = 'fix:data {--traffic} {--articles} {--images} {--videos} {--categories} {--force} {--tags}';
 
     /**
      * The console command description.
@@ -41,6 +42,9 @@ class FixData extends Command
      */
     public function handle()
     {
+        if ($this->option('tags')) {
+            $this->fix_tags();
+        }
 
         if ($this->option('categories')) {
             $this->fix_categories();
@@ -62,6 +66,31 @@ class FixData extends Command
             $this->fix_videos();
         }
 
+    }
+
+    public function fix_tags()
+    {
+        Article::orderBy('id', 'desc')->with('tags')->with('images')->chunk(10, function ($articles) {
+            foreach ($articles as $article) {
+                $this->fix_tag($article);
+            }
+        });
+    }
+
+    public function fix_tag($article)
+    {
+        $tags   = $article->tags;
+        $images = $article->images;
+        foreach ($tags as $tag) {
+            foreach ($images as $image) {
+                $image_tag = ImageTag::firstOrNew([
+                    'image_id' => $image->id,
+                    'tag_id'   => $tag->id,
+                ]);
+                $image_tag->save();
+            }
+        }
+        $this->info($article->id . $article->title);
     }
 
     public function fix_categories()

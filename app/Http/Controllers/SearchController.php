@@ -27,7 +27,7 @@ class SearchController extends Controller
             }
             $total = count($articles_taged);
         }
-        
+
         if (!$total) {
             $articles_hxb = $this->search_hxb($query);
             foreach ($articles_hxb as $article) {
@@ -42,12 +42,14 @@ class SearchController extends Controller
         }
 
         if (!empty($query) && $total) {
-            $query_item = Query::firstOrNew([
-                'query' => $query,
-            ]);
-            $query_item->results = $total;
-            $query_item->hits++;
-            $query_item->save();
+            if (!in_array($query, get_badwords())) {
+                $query_item = Query::firstOrNew([
+                    'query' => $query,
+                ]);
+                $query_item->results = $total;
+                $query_item->hits++;
+                $query_item->save();
+            }
         }
         $data['queries']     = Query::where('status', '>=', 0)->orderBy('hits', 'desc')->take(20)->get();
         $data['queries_new'] = Query::where('status', '>=', 0)->orderBy('id', 'desc')->take(20)->get();
