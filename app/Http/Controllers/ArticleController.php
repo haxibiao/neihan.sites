@@ -115,6 +115,7 @@ class ArticleController extends Controller {
 			->orderBy('id', 'desc')
 			->take(4)
 			->get();
+		fix_wz_data($article);
 
 		return view('article.show')->withArticle($article)->withData($data);
 	}
