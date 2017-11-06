@@ -168,10 +168,14 @@ function get_small_image($image_url) {
 		$extension = pathinfo(parse_url($image_url)['path'], PATHINFO_EXTENSION);
 
 		//fix article only!
-		//如果是本地文章的图片,就尝试获取它的小图片.
-		if (str_contains($image_url, 'storage/image')) {
+		//如果是本地文章的图片,就尝试获取它的小图片. TODO::有点问题 先完成badword模块后再来修复
+		if (str_contains($image_url, 'haxibiao')) {
 			$image_url = str_replace('.' . $extension, '.small.' . $extension, $image_url);
 		}
+		if (!str_contains($image_url, 'storage/video')) {
+			$image_url = str_replace('.' . $extension, '.small.' . $extension, $image_url);
+		}
+
 	}
 
 	//fix dirty .png.small.jpg
