@@ -206,8 +206,12 @@ function diffForHumansCN($time) {
 	}
 }
 
-// function get_user_name($id) {
-// 	$user = User::findOrFail($id);
-// 	$name = $user->name;
-// 	return $name;
-// }
+function get_user_name($id) {
+	if ($id) {
+		$user = User::findOrFail($id);
+		$name = $user->name;
+		return $name;
+	} else {
+		return "system";
+	}
+}
