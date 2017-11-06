@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use App\Video;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
@@ -204,4 +205,10 @@ function diffForHumansCN($time) {
 		$humanStr = str_replace('year', '年', $humanStr);
 		return $humanStr;
 	}
+}
+
+function get_user_name($id) {
+	$user = User::find($id);
+	$name = $user->name;
+	return $name;
 }

@@ -73,6 +73,8 @@ Route::get('/debug', 'LogController@debug');
 
 //weixin
 Route::get('/wechat', 'WechatController@serve');
+//badwords system
+Route::resource('/badword', 'BadwordController');
 
 //last, use category name_en
 Route::get('/{name_en}', 'CategoryController@name_en');
