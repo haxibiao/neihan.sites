@@ -19,10 +19,7 @@
                     <thead>
                         <tr>
                             <th>
-                                <a href="/badword/{{ $badword->id }}">
-                                    {{ $badword->word }}
-                                </a>
-
+                               	{{ $badword->word }}
                                  <div class="pull-right">
                                       创建人:{{ get_user_name($badword->user_id) }}
                                  </div>
