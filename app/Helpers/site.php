@@ -3,8 +3,19 @@
 use App\Category;
 use App\Tag;
 use App\User;
+use App\Badword;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Cache;
 use Jenssegers\Agent\Agent;
+
+function get_badwords() {
+    $badwords = Cache::get('badwords');
+    if(!$badwords) {
+        $badwords = Badword::pluck('word')->toArray();
+        Cache::put('badwords', $badwords, 60*24);
+    }
+    return $badwords;
+}
 
 function get_latest_tags()
 {
