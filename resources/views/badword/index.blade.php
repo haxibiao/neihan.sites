@@ -21,7 +21,7 @@
                             <th>
                                	{{ $badword->word }}
                                  <div class="pull-right">
-                                      创建人:{{ get_user_name($badword->user_id) }}
+                                      创建人用户id:{{ $badword->user_id}}
                                  </div>
                             </th>
                         </tr>

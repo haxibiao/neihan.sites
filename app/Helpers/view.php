@@ -1,6 +1,5 @@
 <?php
 
-use App\User;
 use App\Video;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
@@ -207,8 +206,8 @@ function diffForHumansCN($time) {
 	}
 }
 
-function get_user_name($id) {
-	$user = User::findOrFail($id);
-	$name = $user->name;
-	return $name;
-}
+// function get_user_name($id) {
+// 	$user = User::findOrFail($id);
+// 	$name = $user->name;
+// 	return $name;
+// }
