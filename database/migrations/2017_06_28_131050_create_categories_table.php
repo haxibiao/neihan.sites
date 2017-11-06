@@ -26,7 +26,6 @@ class CreateCategoriesTable extends Migration
             $table->integer('level')->default(0)->index();
             $table->integer('status')->default(0)->index();
             $table->string('type')->nullable()->index();
-            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }

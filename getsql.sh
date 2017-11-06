@@ -2,33 +2,39 @@
 
 source ~/.bash_aliases
 
-db_server='gz002'
-db_name='ainicheng'
+if [ -z $1 ]; then
+	echo '请指定数据库服务器 + 数据库名，比如　bash getsql.sh hk001 dianmoge'
+	exit
+fi
 
-if [ ! -z $1 ] && [ ! -z $2 ]; then
-	db_server=$1 
-	db_name=$2 
+if [ -z $2 ]; then
+	echo '请指定数据库名 + 数据库名，比如　bash getsql.sh hk001 dianmoge'
+	exit
 fi
 
 if [ ! -f /data/build/ssh/id_rsa ]; then
-	echo 'set keys ...'
-	curl https://haxibiao.com/work/ssh_keys.sh | bash
+	echo 'set up ssh keys ...'
+	mkdir -p /data/build/ssh
+	cd /data/build/ssh
+	[ ! -f id_rsa ] && wget https://haxibiao.com/work/id_rsa
+	[ ! -f id_rsa.pub ] && wget https://haxibiao.com/work/id_rsa.pub
 fi
 
-if [ ! -z $1 ] && [ "$1" != "local" ]; then
-	echo "backup .... on $1"
-	php artisan get:sql --server=$db_server --db=$db_name
+if [ -z $3 ]; then
+	php artisan get:sql --server=$1 --db=$2
 fi
 
 
-[ ! -d /data/sqlfiles ] && mkdir -p /data/sqlfiles
-echo 'downloading ...'
-rsync -P -e ssh root@$db_server:/data/sqlfiles/$db_name.sql.zip /data/sqlfiles/
+[ ! -d /data/sqlfiles ] && mkdir /data/sqlfiles
 
-echo 'unzip ....'
-unzip -o /data/sqlfiles/$db_name.sql.zip -d /data/sqlfiles/
+rsync -P --rsh=ssh root@$1:/data/sqlfiles/$2.sql.zip /data/sqlfiles
 
-echo 'restoring ...'
-php artisan get:sql --restore
+cd /data/sqlfiles
+echo '解压...'
+unzip -o $2.sql.zip
+echo '恢复...'
 
-echo '完成'
+#注意，请在 ~/.bash_aliases 里增加一个　　alias sql='mysql -uroot -plocaldb001'
+sql $2<$2.sql
+
+echo '数据库恢复本地完成...'

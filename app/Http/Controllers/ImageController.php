@@ -14,7 +14,7 @@ class ImageController extends Controller
             return $this->jsonIndex($request);
         }
 
-        $images = image::with('user')->with('tags')->orderBy('id', 'desc')->paginate(10);        
+        $images = image::with('user')->orderBy('id', 'desc')->paginate(10);
         return view('image.index')->withImages($images);
     }
 

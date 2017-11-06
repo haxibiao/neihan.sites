@@ -21,25 +21,17 @@
     <div class="panel panel-default top20">
         <div class="panel-heading">
             <h3 class="panel-title">
-                标签 "{{ $tag->name }}" 的文章
+                标签 "{{ $tag->name }}" 的 文章
             </h3>
         </div>
         <div class="panel-body">
-                @foreach($article_tags as $article_tag)
-                    @include('article.parts.article_item', ['article' => $article_tag->article])
+            <div class="list-group">
+                @foreach($articles as $item)
+                <a class="list-group-item" href="/article/{{ $item->article->id }}">
+                    {{ $item->article->title }}
+                </a>
                 @endforeach
-        </div>
-    </div>
-    <div class="panel panel-default top20">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                标签 "{{ $tag->name }}" 的图片
-            </h3>
-        </div>
-        <div class="panel-body">
-                @foreach($image_tags as $image_tag)
-                    @include('image.parts.image_item', ['image' => $image_tag->image])
-                @endforeach
+            </div>
         </div>
     </div>
 </div>

@@ -1,21 +1,16 @@
 <template>
-	<div class="row" id="my_images">
-    <div class="col-md-12">
+	<div class="row bottom10" id="my_images">
+    <div class="col-md-12 top10">
       <div class="input-group">
-        <input type="text" class="form-control" @keyup.13="loadData" placeholder="图片所在文章标题..." v-model="title">
+        <input type="text" class="form-control" placeholder="图片所在文章标题..." v-model="title">
         <span class="input-group-btn">
           <button class="btn btn-default" type="button" @click="loadData">搜索</button>
         </span>
       </div>
     </div>
-    <div class="images clearfix">
-      <div v-for="item in list" class="col-xs-4 col-md-3">
-        <img :src="item.path_small" alt="" class="img img-responsive" @click="select_image">
-        <p class="strip_title">{{ item.title }}</p>
-      </div>
-    </div>
-    <div class="more">
-      <button class="btn btn-danger" @click="loadMore">加载更多</button>
+    <div v-for="item in list" class="col-xs-4 col-md-3 top5">
+      <img :src="item.path_small" alt="" class="img img-responsive" @click="select_image">
+      <p class="strip_title">{{ item.title }}</p>
     </div>
   </div>
 </template>
@@ -56,8 +51,6 @@ export default {
   		.then(function(response) {
   			vm.list = vm.list.concat(response.data.data);
   			vm.currentPage ++;
-
-        $('#my_images .images')[0].scrollTo(0, $('.images').scrollTop() + 500);
   		});
   	},
     select_image: function(event) {

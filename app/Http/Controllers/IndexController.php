@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Article;
-use App\Query;
 use App\User;
+use App\Query;
 
 class IndexController extends Controller
 {
@@ -28,31 +28,8 @@ class IndexController extends Controller
         $carousel_items = get_carousel_items();
         $users          = User::orderBy('id', 'desc')->take(5)->get();
         $hot_articles   = Article::orderBy('hits', 'desc')->take(2)->get();
-
-        $queries = Query::where('status', '>=', 0)->orderBy('hits', 'desc')->take(10)->get();
-
-        $queries = $queries->filter(function ($item) {
-            $has_badword = false;
-            foreach (get_badwords() as $badword) {
-                if (str_contains($item->query, $badword)) {
-                    $has_badword = true;
-                }
-            }
-            return !$has_badword;
-        });
-
-        $queries_new = Query::where('status', '>=', 0)->orderBy('id', 'desc')->take(5)->get();
-        //过滤最近查询里的badword
-        $queries_new = $queries_new->filter(function ($item) {
-            $has_badword = false;
-            foreach (get_badwords() as $badword) {
-                if (str_contains($item->query, $badword)) {
-                    $has_badword = true;
-                }
-            }
-            return !$has_badword;
-        });
-
+        $queries = Query::where('status','>=', 0)->orderBy('hits','desc')->take(10)->get();
+        $queries_new = Query::where('status','>=', 0)->orderBy('id','desc')->take(5)->get();
         return view('index.index')
             ->withQueries($queries)
             ->withQueriesNew($queries_new)

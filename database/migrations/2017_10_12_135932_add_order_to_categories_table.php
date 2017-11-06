@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateImageTagsTable extends Migration
+class AddOrderToCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateImageTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('image_tag', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('image_id')->index();
-            $table->integer('tag_id')->index();
-            $table->timestamps();
+        Schema::table('categories', function (Blueprint $table) {
+            $table->integer('order')->default(0);
         });
     }
 
@@ -28,6 +25,8 @@ class CreateImageTagsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('image_tag');
+        Schema::table('categories', function (Blueprint $table) {
+            //
+        });
     }
 }
