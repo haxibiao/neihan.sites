@@ -1,4 +1,4 @@
-@extends('layouts.blank')
+@extends('v1.layouts.blank')
 
 @section('title')
     爱你城 - 最暖心的游戏社交网站
@@ -9,7 +9,7 @@
         @include('v1.parts.head')
     </header>
     <div class="bodies">
-        @include('v1.parts.middle')
+        @include('v1.parts.index_middle')
     </div>
     <footer class="tail">
         @include('v1.parts.foot')

@@ -1,4 +1,4 @@
-@extends('layouts.blank')
+@extends('v1.layouts.blank')
 
 @section('title')
     谈谈情，说说爱 - 专题 - 爱你城
@@ -9,7 +9,7 @@
         @include('v1.parts.head')
     </header>
     <div class="centre">
-        @include('v1.parts.among')
+        @include('v1.parts.category_middle')
     </div>
     <footer class="tail">
         @include('v1.parts.foot')

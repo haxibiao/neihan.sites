@@ -3,101 +3,54 @@
 <div class="container">
     <div class="row">
         <div class="essays col-xs-12 col-sm-8">
-            <div class="carousel_inner">
-                <div class="carousel slide" data-ride="carousel" id="carousel-example-generic">
-                    <!-- Indicators -->
-                    <ol class="carousel-indicators">
-                        <li class="active" data-slide-to="0" data-target="#carousel-example-generic">
-                        </li>
-                        <li data-slide-to="1" data-target="#carousel-example-generic">
-                        </li>
-                        <li data-slide-to="2" data-target="#carousel-example-generic">
-                        </li>
-                    </ol>
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner" role="listbox">
-                        <div class="item active">
-                            <img src="/logo/22.jpeg"/>
-                            <div class="carousel-caption">
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="/logo/23.jpeg"/>
-                            <div class="carousel-caption">
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="/logo/24.jpeg"/>
-                            <div class="carousel-caption">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Controls -->
-                    <a class="left carousel-control" data-slide="prev" href="#carousel-example-generic" role="button">
-                        <span aria-hidden="true" class="glyphicon glyphicon-chevron-left">
-                        </span>
-                        <span class="sr-only">
-                            Previous
-                        </span>
-                    </a>
-                    <a class="right carousel-control" data-slide="next" href="#carousel-example-generic" role="button">
-                        <span aria-hidden="true" class="glyphicon glyphicon-chevron-right">
-                        </span>
-                        <span class="sr-only">
-                            Next
-                        </span>
-                    </a>
-                </div>
-            </div>
-            <div class="classification">
-                <a class="collection" href="/v1/fenlei">
-                    <img src="/logo/col-01.jpg"/>
-                    <span>
-                        王者荣耀
-                    </span>
-                </a>
-                <a class="collection" href="/v1/fenlei">
-                    <img src="/logo/col-01.jpg"/>
-                    <span>
-                        绝地求生
-                    </span>
-                </a>
-                <a class="collection" href="/v1/fenlei">
-                    <img src="/logo/col-01.jpg"/>
-                    <span>
-                        剑侠情缘3
-                    </span>
-                </a>
-                <a class="collection" href="/v1/fenlei">
-                    <img src="/logo/1.jpeg"/>
-                    <span>
-                        暗恋
-                    </span>
-                </a>
-                <a class="collection" href="/v1/fenlei">
-                    <img src="/logo/1.jpeg"/>
-                    <span>
-                        恋爱
-                    </span>
-                </a>
-                <a class="collection" href="/v1/fenlei">
-                    <img src="/logo/1.jpeg"/>
-                    <span>
-                        热恋
-                    </span>
-                </a>
-                <a class="collection" href="/v1/fenlei">
+            <div class="main_top clearfix">
+                <a class="avatar" href="#">
                     <img src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
+                </a>
+                <a class="botm follow" href="#">
+                    <i class="glyphicon glyphicon-plus">
+                    </i>
+                    <span>
+                        关注
+                    </span>
+                </a>
+                <a class="botm contribute" href="#">
+                    <span>
+                        投稿
+                    </span>
+                </a>
+                <a class="name" href="#">
                     <span>
                         谈谈情，说说爱
                     </span>
                 </a>
-                <a class="more_hot_collection" href="#">
-                    更多热门专题
-                    <i class="iconfont icon-gengduo">
-                    </i>
-                </a>
+                <p>
+                    收录了68923篇文章 · 1081552人关注
+                </p>
             </div>
+            <ul class="trigger_menu">
+                <li>
+                    <a href="#">
+                        <i class="iconfont icon-jinlingyingcaiwangtubiao35">
+                        </i>
+                        最新评论
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="#">
+                        <i class="iconfont icon-jishiben">
+                        </i>
+                        最新收录
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="iconfont icon-huo">
+                        </i>
+                        热门
+                    </a>
+                </li>
+            </ul>
             <ul class="list_container">
                 <li>
                     <div class="personal">
@@ -115,7 +68,7 @@
                         </div>
                     </div>
                     <div class="substance clearfix">
-                        <div class="conten col-xs-12 col-sm-8">
+                        <div class="conten col-xs-12 col-sm-8 col-md-9">
                             <a href="/v1/detail">
                                 为什么说被马化腾点赞的《王者荣耀》已成为全球最赚钱的游戏？
                             </a>
@@ -123,7 +76,7 @@
                                 5月17日下午，腾讯控股公布了2017年第一季度财报。财报显示，腾讯一季度营收495.52亿元，同比增长55%；网络游戏收入增长34%至228.11亿元。其中，就智能手机游戏而言，腾讯实现129亿元收入，同比增长57%，此乃受现有及新的游戏如（《王者荣耀》、《穿越火线：枪战王者》及《龙之谷》）所推动。
                             </p>
                         </div>
-                        <a class="wrap_img col-xs-12 col-sm-4" href="#">
+                        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="#">
                             <img src="//upload-images.jianshu.io/upload_images/4896574-e0f2b6c752dab9c1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
                         </a>
                         <div class="statistics col-xs-12">
@@ -167,15 +120,15 @@
                         </div>
                     </div>
                     <div class="substance clearfix">
-                        <div class="conten col-xs-12 col-sm-8">
-                            <a href="/v1/detail">
+                        <div class="conten col-xs-12 col-sm-8 col-md-9">
+                            <a href="#">
                                 起风了，谁是下一个王者荣耀？
                             </a>
                             <p class="article">
                                 下一个王者荣耀露出苗头很久了，今年夏天开始爆发。过去一年创投界有两个关注的焦点，一个是共享单车、共享充电宝带起来的线下流量入口，另一个是狼人杀和王者荣耀们的游戏社交化浪潮。这两个方向的创业者和巨头们，因缘际会地捕捉到了线上买量不再拥有性价比的历史脉搏，一方选择了开源，将物理投放的线下智能终端作为切入交易的新入口，另一方选择了节流，通过游戏本身的社交属性达成裂变式传播的效果，以较低的成本延长产品的生命周期以及活跃度。
                             </p>
                         </div>
-                        <a class="wrap_img col-xs-12 col-sm-4" href="#">
+                        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="#">
                             <img src="//upload-images.jianshu.io/upload_images/1978017-b9ea1315e388a415.jpg!1200?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
                         </a>
                         <div class="statistics col-xs-12">
@@ -226,7 +179,7 @@
                     </div>
                     <div class="substance clearfix">
                         <div class="conten col-xs-12">
-                            <a href="/v1/detail">
+                            <a href="#">
                                 相亲与自由恋爱的比较
                             </a>
                             <p class="article">
@@ -234,7 +187,7 @@
                             </p>
                         </div>
                         {{--
-                        <a class="wrap_img col-xs-12 col-sm-4" href="#">
+                        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="#">
                             <img src=""/>
                         </a>
                         --}}
@@ -285,15 +238,15 @@
                         </div>
                     </div>
                     <div class="substance clearfix">
-                        <div class="conten col-xs-12 col-sm-8">
-                            <a href="/v1/detail">
+                        <div class="conten col-xs-12 col-sm-8 col-md-9">
+                            <a href="#">
                                 如何变得会与异性聊天？
                             </a>
                             <p class="article">
                                 与人社交时如何很会聊天是个大家都非常感兴趣的话题，尤其是非常关注与异性聊天的问题。我综合了此前写过的若干篇文字，有了下面的关于聊天的方法论总结。从3个方面入手，让大家看完就能去实践。1，心态篇    2，原因篇    3，策略篇【心态篇】我发现如果没有一个良好的心态作为支撑和前提，做任何事情都会事倍功半。反之，心态好，自信心足，就会有强大的抗挫折承受力，甚至是遇强则强，越挫越勇。
                             </p>
                         </div>
-                        <a class="wrap_img col-xs-12 col-sm-4" href="#">
+                        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="#">
                             <img src="//upload-images.jianshu.io/upload_images/253140-5c2d51aa0d7c673d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
                         </a>
                         <div class="statistics col-xs-12">
@@ -343,15 +296,15 @@
                         </div>
                     </div>
                     <div class="substance clearfix">
-                        <div class="conten col-xs-12 col-sm-8">
-                            <a href="/v1/detail">
+                        <div class="conten col-xs-12 col-sm-8 col-md-9">
+                            <a href="#">
                                 吃鸡和生活一样，九分天注定，一分靠打拼
                             </a>
                             <p class="article">
                                 这几天，我发现大家的人生追求变了，从“明天不上班”变成了“今晚一定要吃到鸡”。“吃鸡”梗来源于最近火爆全球的一款射击类生存游戏《绝地求生：大逃杀》。主要是讲几十上百个猛男被投放到一个荒岛，为了最终目标——吃鸡而互相厮杀，干掉所有对手活到最后的故事。当然，它还有其他一些流传更广的名字，比如《伏地求生之老阴X大乱斗》《一千零一种死法》《幻影坦克大战千年老苟》等。
                             </p>
                         </div>
-                        <a class="wrap_img col-xs-12 col-sm-4" href="#">
+                        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="#">
                             <img src="//upload-images.jianshu.io/upload_images/6205434-62e64dc2d81e3625.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
                         </a>
                         <div class="statistics col-xs-12">
@@ -395,15 +348,15 @@
                         </div>
                     </div>
                     <div class="substance clearfix">
-                        <div class="conten col-xs-12 col-sm-8">
-                            <a href="/v1/detail">
+                        <div class="conten col-xs-12 col-sm-8 col-md-9">
+                            <a href="#">
                                 我们该感谢王者荣耀耗尽了80%的人上升的空间
                             </a>
                             <p class="article">
                                 在当下，以《王者荣耀》、《阴阳师》为首的一批手游正逐渐霸占人们的手机屏幕，以此而衍生的电竞、直播以及代练行业风光无限，潜力巨大。最近，为保障未成年人健康成长，腾讯经过将近一个月的调试和内测后，将于7月4日以《王者荣耀》为试点，率先推出健康游戏防沉迷系统的“三板斧”，对未成年人的游戏时间作出限制：12岁以下每天限玩一小时。（小学生听了绝不会流泪，并笑着拿出奶奶的身份证。）当前国内还没有移动游戏防沉迷的明确规定，《王者荣耀》在顶着“亡者毒药”的社会舆论中做出了实际行动，这是一种自保行为，也可以说是社会责任感的体现。但事实上，《王者荣耀》的最大玩家群体当属大学生和中年人群体，第三方数据分析机构talkingData统计的数据显示，王者荣耀的用户群中，大学生占21.8%，中小学生占2.7%；上班族占68.7%。
                             </p>
                         </div>
-                        <a class="wrap_img col-xs-12 col-sm-4" href="#">
+                        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="#">
                             <img src="//upload-images.jianshu.io/upload_images/6486956-1ce7c76170f7b916.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
                         </a>
                         <div class="statistics col-xs-12">
@@ -453,15 +406,15 @@
                         </div>
                     </div>
                     <div class="substance clearfix">
-                        <div class="conten col-xs-12 col-sm-8">
-                            <a href="/v1/detail">
+                        <div class="conten col-xs-12 col-sm-8 col-md-9">
+                            <a href="#">
                                 和男朋友一起玩游戏是一种怎样的感觉
                             </a>
                             <p class="article">
                                 搬新家了，别人都是在考虑装修，买家具，整理房间，而作为一个殿堂级游戏迷，我和男朋友却一致把最大重心放在了买电脑上。区别是我以前喜欢玩单机，男朋友喜欢玩网游。﻿结果当然是买了一模一样的两台高配。﻿某天我们躺在沙发上，他突然说，哎宝宝，不如我带你玩个游戏吧。﻿我弯眉:“好啊好啊是你拖地我加油的游戏吗。”﻿他无视:“一起玩游戏很棒的呀，可以建个小号慢慢升级啊，一起打副本啊，一起钓鱼啊，看风景啦…是不是感觉超棒？我朋友也在玩我们可以组个固定队！”﻿
                             </p>
                         </div>
-                        <a class="wrap_img col-xs-12 col-sm-4" href="#">
+                        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="#">
                             <img src="http://upload-images.jianshu.io/upload_images/1408329-d38d06f1f04211fd.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1080/q/100"/>
                         </a>
                         <div class="statistics col-xs-12">
@@ -501,216 +454,249 @@
             </a>
         </div>
         <div class="aside col-sm-4 col-lg-3 col-lg-offset-1">
-            <form class="search">
-                <div class="input-group">
-                    <input class="form-control" placeholder="搜索" type="text"/>
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit">
-                            <i class="glyphicon glyphicon-search">
-                            </i>
-                        </button>
-                    </span>
-                </div>
-            </form>
-            <div class="board clearfix">
-                <a class="sign col-xs-12" href="#">
-                    <span>
-                        每日一签
-                        <i class="iconfont icon-gengduo">
-                        </i>
-                    </span>
-                </a>
-                <a class="newlist col-xs-12" href="#">
-                    <span>
-                        新上榜
-                        <i class="iconfont icon-gengduo">
-                        </i>
-                    </span>
-                </a>
-                <a class="game col-xs-12" href="#">
-                    <span>
-                        游戏热门
-                        <i class="iconfont icon-gengduo">
-                        </i>
-                    </span>
-                </a>
-                <a class="love col-xs-12" href="#">
-                    <span>
-                        恋爱热门
-                        <i class="iconfont icon-gengduo">
-                        </i>
-                    </span>
-                </a>
-            </div>
-            <div class="codes clearfix">
-                <a class="col-xs-12" href="#">
-                    <span>
-                        <img src="/logo/erweima1.jpeg"/>
-                        <p>
-                            下载爱你城手机App
-                            <i class="iconfont icon-gengduo">
-                            </i>
-                            <br/>
-                            <small>
-                                随时随地发现和创作内容
-                            </small>
-                        </p>
-                    </span>
-                </a>
-            </div>
-            <div class="daily">
-                <div class="title">
-                    <span>
-                        爱你城精章
-                    </span>
-                    <a href="#">
-                        查看更多
-                    </a>
-                </div>
-                <a class="note" href="#">
-                    <img src="http://upload-images.jianshu.io/upload_images/1714520-119e82e1662d86ac.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
-                    <div class="note_title">
-                        恋爱要谈到什么程度，才适合结婚呢？
-                    </div>
-                </a>
-                <a class="note" href="#">
-                    <div class="note_title">
-                        三个心理学语言技巧，让你迅速提高情商
-                    </div>
-                </a>
-            </div>
-            <div class="recommended_authors">
-                <div class="title">
-                    <span>
-                        推荐作者
-                    </span>
-                    <a href="#">
-                        <i class="glyphicon glyphicon-refresh">
-                        </i>
-                        换一批
-                    </a>
-                </div>
-                <ul class="list">
-                    <li>
-                        <a class="avatar" href="#">
-                            <img src="//upload.jianshu.io/users/upload_avatars/19107/08f8146dae87.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
-                        </a>
-                        <a class="follow" href="#">
-                            <i class="glyphicon glyphicon-plus">
-                            </i>
-                            关注
-                        </a>
-                        <a class="name" href="#">
-                            王佩
-                        </a>
-                        <p>
-                            写了400.9k字 · 13.8k喜欢
-                        </p>
-                    </li>
-                    <li>
-                        <a class="avatar" href="#">
-                            <img src="//upload.jianshu.io/users/upload_avatars/6287/06c537002583.png?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
-                        </a>
-                        <a class="follow" href="#">
-                            <i class="glyphicon glyphicon-plus">
-                            </i>
-                            关注
-                        </a>
-                        <a class="name" href="#">
-                            刘淼
-                        </a>
-                        <p>
-                            写了375.5k字 · 20.5k喜欢
-                        </p>
-                    </li>
-                    <li>
-                        <a class="avatar" href="#">
-                            <img src="//upload.jianshu.io/users/upload_avatars/1996705/738ba2908445?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
-                        </a>
-                        <a class="follow" href="#">
-                            <i class="glyphicon glyphicon-plus">
-                            </i>
-                            关注
-                        </a>
-                        <a class="name" href="#">
-                            白发老籣
-                        </a>
-                        <p>
-                            写了50.5k字 · 5.7k喜欢
-                        </p>
-                    </li>
-                    <li>
-                        <a class="avatar" href="#">
-                            <img src="//upload.jianshu.io/users/upload_avatars/6198903/a70dc654-6674-4b71-925f-0389f31fb095.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
-                        </a>
-                        <a class="follow" href="#">
-                            <i class="glyphicon glyphicon-plus">
-                            </i>
-                            关注
-                        </a>
-                        <a class="name" href="#">
-                            魏童
-                        </a>
-                        <p>
-                            写了39.4k字 · 1.4k喜欢
-                        </p>
-                    </li>
-                    <li>
-                        <a class="avatar" href="#">
-                            <img src="//upload.jianshu.io/users/upload_avatars/7663825/7c28763e-002b-4e89-8dea-5b8da210ef2c.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
-                        </a>
-                        <a class="follow" href="#">
-                            <i class="glyphicon glyphicon-plus">
-                            </i>
-                            关注
-                        </a>
-                        <a class="name" href="#">
-                            名贵的考拉熊
-                        </a>
-                        <p>
-                            写了104.3k字 · 8.3k喜欢
-                        </p>
-                    </li>
-                </ul>
-                <a class="find_more" href="#">
-                    查看全部
-                    <i class="iconfont icon-gengduo">
+            <p class="title">
+                专题公告
+            </p>
+            <div class="description">
+                <p>
+                    柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度认真就好
+                    <br/>
+                    如果你想分享自己或者身边人的爱情故事，欢迎前来投稿
+                </p>
+                <p>
+                    投稿须知：
+                    <br/>
+                    1.本专题仅收录关于爱情的文章。注意：爱情类小说除非足够精彩然后不是连载，不然不在收录范围。另外关于名人伟人的爱情故事也请改投相关专题
+                    <br/>
+                    2.第一条中爱情类小说的“精彩”，是指文章有小说的基本结构，运用了基本写法，语言流畅，情节动人。诸如Ａ说Ｂ又说这样毫无人物描写、场景描写的文章就请改投其他相关专题。
+                    <br/>
+                    3.请保证文章质量和基本排版，勿出...
+                </p>
+                <a href="javascript:">
+                    展开描述
+                    <i class="iconfont icon-xia">
                     </i>
                 </a>
             </div>
-            <div class="videos">
-                <div class="titles">
-                    <span>
-                        热门视频
-                    </span>
-                    <a href="#">
-                        查看更多
-                    </a>
+            <div class="share">
+                <span>
+                    分享到
+                </span>
+                <a href="#">
+                    <i class="iconfont icon-xinlangweibo">
+                    </i>
+                </a>
+                <a href="#">
+                    <i class="iconfont icon-weixin-copy">
+                    </i>
+                </a>
+                <a href="#">
+                    <i class="iconfont icon-sandian-copy">
+                    </i>
+                </a>
+            </div>
+            <div class="intendant">
+                <div>
+                    <p class="title">
+                        管理员
+                    </p>
+                    <ul class="collection_editor">
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="/logo/ainicheng.com.jpg"/>
+                            </a>
+                            <a class="name" href="#">
+                                爱你城
+                            </a>
+                            <span>
+                                创建者
+                            </span>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="//upload.jianshu.io/users/upload_avatars/4495513/b0433c10-21db-4e8e-938c-6dd4618297fd.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                            </a>
+                            <a class="name" href="#">
+                                甜腻酥饼
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="//upload.jianshu.io/users/upload_avatars/1694433/6e122981-342e-4815-9a07-aba78ca30645.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                            </a>
+                            <a class="name" href="#">
+                                周寒舟
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="//upload.jianshu.io/users/upload_avatars/1122063/fb48cf06757d?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                            </a>
+                            <a class="name" href="#">
+                                枫小梦
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="//upload.jianshu.io/users/upload_avatars/1610007/d29da9456083.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                            </a>
+                            <a class="name" href="#">
+                                木小溪V
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="//upload.jianshu.io/users/upload_avatars/2239737/e2d25096-c6c8-499d-97dd-143fe74794bb.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                            </a>
+                            <a class="name" href="#">
+                                木禾的随笔
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="//upload.jianshu.io/users/upload_avatars/3067977/1bbdf808-332d-434d-aa2b-ebfac5c8882b.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                            </a>
+                            <a class="name" href="#">
+                                青烟幂处
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="//upload.jianshu.io/users/upload_avatars/3203762/ad383e98-8cfe-4a32-9022-9c0037b527f4.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                            </a>
+                            <a class="name" href="#">
+                                二野童
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="//upload.jianshu.io/users/upload_avatars/1531089/3c04b9d0-cd6d-4ad8-8467-137f08fbfbac.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                            </a>
+                            <a class="name" href="#">
+                                沈家姑娘
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="//upload.jianshu.io/users/upload_avatars/3241851/4f378a2f4352.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                            </a>
+                            <a class="name" href="#">
+                                桃宜
+                            </a>
+                        </li>
+                        <li>
+                            <a class="check_more" href="#">
+                                展开更多
+                                <i class="iconfont icon-xia">
+                                </i>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                <a class="videos_list" href="#">
-                    <div class="screenshot">
-                        <img src="https://ainicheng.com/storage/img/1806.jpeg"/>
+                <div>
+                    <div class="title">
+                        推荐作者(100)
+                        <i class="iconfont icon-yiwen">
+                        </i>
                     </div>
-                    <div class="list_title">
-                        王者荣耀打野必备攻略 5v5野区地图分布详解
+                    <ul class="collection_follower">
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="http://upload.jianshu.io/users/upload_avatars/5479122/9201a33e-d57d-4347-bfd4-7d3758bcab47.jpg"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="http://upload.jianshu.io/users/upload_avatars/2719544/78e263be1f3d.jpeg"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="http://upload.jianshu.io/users/upload_avatars/2674946/efbe3aa1-016e-4f39-9163-36368d41f54a.jpg"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="http://upload.jianshu.io/users/upload_avatars/2251594/caab597c-f17c-4fda-82d5-57fdacbce93d.jpg"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="http://upload.jianshu.io/users/upload_avatars/3525563/0622b29b-5823-494a-8698-dd2577ada955.jpg"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="http://upload.jianshu.io/users/upload_avatars/3364033/a9dd54fe-26f5-4857-9dc1-86cf0b01d93e.jpg"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="http://upload.jianshu.io/users/upload_avatars/4960058/3dd42a01-71c0-49a4-b22c-b00d5804b271.jpg"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="http://upload.jianshu.io/users/upload_avatars/1946430/0ad43fe1-4aac-44be-b2d3-fd699e81a541.jpg"/>
+                            </a>
+                        </li>
+                        <a class="function_btn" href="#">
+                            <i class="iconfont icon-sandian">
+                            </i>
+                        </a>
+                    </ul>
+                </div>
+                <div>
+                    <div class="title">
+                        关注的人(1092324)
                     </div>
-                </a>
-                <a class="videos_list" href="#">
-                    <div class="screenshot">
-                        <img src="https://ainicheng.com/storage/img/1890.png"/>
-                    </div>
-                    <div class="list_title">
-                        王者荣耀最强奶妈蔡文姬怎么玩2.0加强版
-                    </div>
-                </a>
-                <a class="videos_list" href="#">
-                    <div class="screenshot">
-                        <img src="https://ainicheng.com/storage/img/1840.jpg"/>
-                    </div>
-                    <div class="list_title">
-                        手把手教你玩王者荣耀安琪拉
-                    </div>
-                </a>
+                    <ul class="collection_follower">
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="http://upload.jianshu.io/users/upload_avatars/5479122/9201a33e-d57d-4347-bfd4-7d3758bcab47.jpg"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="http://upload.jianshu.io/users/upload_avatars/2719544/78e263be1f3d.jpeg"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="http://upload.jianshu.io/users/upload_avatars/2674946/efbe3aa1-016e-4f39-9163-36368d41f54a.jpg"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="http://upload.jianshu.io/users/upload_avatars/2251594/caab597c-f17c-4fda-82d5-57fdacbce93d.jpg"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="http://upload.jianshu.io/users/upload_avatars/3525563/0622b29b-5823-494a-8698-dd2577ada955.jpg"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="http://upload.jianshu.io/users/upload_avatars/3364033/a9dd54fe-26f5-4857-9dc1-86cf0b01d93e.jpg"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="http://upload.jianshu.io/users/upload_avatars/4960058/3dd42a01-71c0-49a4-b22c-b00d5804b271.jpg"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="avatar" href="#">
+                                <img src="http://upload.jianshu.io/users/upload_avatars/1946430/0ad43fe1-4aac-44be-b2d3-fd699e81a541.jpg"/>
+                            </a>
+                        </li>
+                        <a class="function_btn" href="#">
+                            <i class="iconfont icon-sandian">
+                            </i>
+                        </a>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
