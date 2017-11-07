@@ -164,6 +164,16 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">搜索关键词:</h3>
+                        </div>
+                        <div class="panel-body">
+                            <a class="btn btn-warning top5" href="/searchQuery" role="button">搜索关键词情况</a>
+                        </div>
+                    </div>
+                </div>
                 @endif
 
                 @if(Auth::user()->is_seoer || Auth::user()->is_admin)
