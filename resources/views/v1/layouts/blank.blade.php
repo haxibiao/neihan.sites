@@ -15,7 +15,9 @@
         <link href="{{ mix('css/v1.css') }}" rel="stylesheet" type="text/css"/>
     </head>
     <body>
+        @include('v1.parts.head')
         @yield('content')
+        @include('v1.parts.foot')
         <script src="{{ mix('js/v1.js') }}">
         </script>
         @stack('scripts')
