@@ -19,20 +19,8 @@ Route::get('/', 'IndexController@index');
 Route::get('/app', 'IndexController@app');
 Route::get('/about-us', 'IndexController@aboutUs');
 
-//v.1.0 首页
-Route::get('/v1', function () {
-	return view('v1.index');
-});
-
-//v.1.0 分类页
-Route::get('/v1/fenlei', function () {
-	return view('v1.fenlei');
-});
-
-//v.1.0 详细页
-Route::get('/v1/detail', function () {
-	return view('v1.detail');
-});
+//v1
+require_once 'v1/web.php';
 
 //搜索
 Route::get('/search', 'SearchController@search');
