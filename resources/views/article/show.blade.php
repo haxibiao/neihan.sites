@@ -51,7 +51,12 @@
         <p>
           {!! $article->body !!}
         </p>
-            @include('article.parts.article_json')
+         @if($article->data_wz)
+            @include('article.parts.article_json_wz')
+         @endif
+         @if($article->data_lol)
+            @include('article.parts.article_json_lol')
+         @endif
         <p>
           @if($article->edited_at)
           本文最后由 <a href="/user/{{ $article->user_id }}">{{ $article->user_name }}</a> 编辑 ({{ diffForHumansCN($article->edited_at) }})

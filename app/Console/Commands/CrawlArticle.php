@@ -68,9 +68,9 @@ class CrawlArticle extends Command {
 				$article->user_name = "system";
 				$article->user_id = 16;
 				$article->description = "";
-				$article->keywords = "王者荣耀";
+				$article->keywords = "英雄联盟英雄资料";
 				$article->image_url = "https://haxibiao.com$js->image_url";
-				$article->category_id = 22;
+				$article->category_id = 14;
 				$article->json = $js->json;
 				if ($article->id) {
 					$article->update();

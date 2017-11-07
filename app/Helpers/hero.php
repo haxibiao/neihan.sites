@@ -49,3 +49,14 @@ function fix_wz_data($article) {
 	}
 	$article->data_wz = $json;
 }
+
+function fix_lol_data($article) {
+	if (empty($article->json)) {
+		return;
+	}
+	// if ($article->category_id != \App\Category::where('name', 'LOL英雄资料')->first()->id) {
+	// 	return;
+	// }
+	$data = json_decode($article->json, 1);
+	$article->data_lol = $data;
+}
