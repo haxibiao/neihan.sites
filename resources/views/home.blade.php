@@ -17,7 +17,7 @@
                                 <div class="panel-heading">
                                     <h3 class="panel-title">文章:</h3>
                                 </div>
-                                <div class="panel-body"> 
+                                <div class="panel-body">
                                     <line-chart title='文章' chart-data='{{ json_encode($data['article']) }}' chart-labels='{{ json_encode($labels['article']) }}'/>
                                 </div>
                             </div>
@@ -28,8 +28,8 @@
                                 <div class="panel-heading">
                                     <h3 class="panel-title">流量:</h3>
                                 </div>
-                                <div class="panel-body"> 
-                                    <bar title-one='流量' chart-data='{{ json_encode($data['traffic']) }}' chart-labels='{!! json_encode($labels['traffic']) !!}' 
+                                <div class="panel-body">
+                                    <bar title-one='流量' chart-data='{{ json_encode($data['traffic']) }}' chart-labels='{!! json_encode($labels['traffic']) !!}'
                                     color="orange"/>
                                 </div>
                             </div>
@@ -40,8 +40,8 @@
                                 <div class="panel-heading">
                                     <h3 class="panel-title">微信流量:</h3>
                                 </div>
-                                <div class="panel-body"> 
-                                    <bar title-one='微信流量' chart-data='{{ json_encode($data['traffic_wx']) }}' chart-labels='{!! json_encode($labels['traffic_wx']) !!}' 
+                                <div class="panel-body">
+                                    <bar title-one='微信流量' chart-data='{{ json_encode($data['traffic_wx']) }}' chart-labels='{!! json_encode($labels['traffic_wx']) !!}'
                                     color="green"/>
                                 </div>
                             </div>
@@ -61,7 +61,7 @@
                                 <div class="panel-heading">
                                     <h3 class="panel-title">发布的文章数:</h3>
                                 </div>
-                                <div class="panel-body"> 
+                                <div class="panel-body">
                                     <bar title-one='文章' chart-data='{{ json_encode($data['article_editors']) }}' chart-labels='{!! json_encode($labels['article_editors']) !!}'/>
                                 </div>
                             </div>
@@ -72,7 +72,7 @@
                                 <div class="panel-heading">
                                     <h3 class="panel-title">在本站的流量:</h3>
                                 </div>
-                                <div class="panel-body"> 
+                                <div class="panel-body">
                                     <bar title-one='流量' chart-data='{{ json_encode($data['traffic_editors']) }}' chart-labels='{!! json_encode($labels['traffic_editors']) !!}' color="orange"/>
                                 </div>
                             </div>
@@ -83,12 +83,12 @@
                                 <div class="panel-heading">
                                     <h3 class="panel-title">在本站微信流量:</h3>
                                 </div>
-                                <div class="panel-body"> 
+                                <div class="panel-body">
                                     <bar title-one='流量' chart-data='{{ json_encode($data['wxtraffic_editors']) }}' chart-labels='{!! json_encode($labels['traffic_editors']) !!}' color="green"/>
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -152,6 +152,28 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">屏蔽词:</h3>
+                        </div>
+                        <div class="panel-body">
+                            <a class="btn btn-primary top5" href="/badword/create" role="button">创建屏蔽词</a>
+                            <a class="btn btn-warning top5" href="/badword" role="button">所有屏蔽词</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">搜索关键词:</h3>
+                        </div>
+                        <div class="panel-body">
+                            <a class="btn btn-warning top5" href="/searchQuery" role="button">搜索关键词情况</a>
+                        </div>
+                    </div>
+                </div>
                 @endif
 
                 @if(Auth::user()->is_seoer || Auth::user()->is_admin)
@@ -174,7 +196,7 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">管理:</h3>
                     </div>
-                    <div class="panel-body"> 
+                    <div class="panel-body">
                         <a class="btn btn-warning top5" href="/admin/users" role="button">管理用户</a>
                     </div>
                 </div>

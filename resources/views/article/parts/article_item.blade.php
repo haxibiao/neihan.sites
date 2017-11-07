@@ -13,6 +13,7 @@
 		</a>
 		<p class="small">发布时间:　{{ diffForHumansCN($article->created_at) }}</p>
 		@if(!empty($search) && !empty($article->keywords))<p class="small">关键词:　{{ $article->keywords }}</p>@endif
-		<p title="{{ $article->description }}">{{ str_limit($article->description, 80) }}</p>
+		@if(!empty($article->description))<p title="{{ $article->description }}">{{ str_limit($article->description, 80) }}</p>
+		@else<p title="{{ $article->body }}">{{ strip_tags(str_limit($article->body, 80)) }}</p>@endif
 	</div>
 </div>

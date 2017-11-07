@@ -69,6 +69,7 @@ Route::get('/user/{id}/drafts', 'UserController@drafts');
 Route::get('/user/{id}/favorites', 'UserController@favorites');
 Route::resource('/user', 'UserController');
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/searchQuery', 'SearchController@search_all')->name('search_all');
 Route::get('/profile', 'HomeController@profile')->name('profile');
 Route::get('/login-as/{id}', 'HomeController@loginAs');
 Route::get('/hxb-login-as/{name}', 'HomeController@hxbLoginAs');
@@ -88,6 +89,8 @@ Route::get('/debug', 'LogController@debug');
 
 //weixin
 Route::get('/wechat', 'WechatController@serve');
+//badwords system
+Route::resource('/badword', 'BadwordController');
 
 //last, use category name_en
 Route::get('/{name_en}', 'CategoryController@name_en');

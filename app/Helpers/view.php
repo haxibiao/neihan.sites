@@ -167,10 +167,12 @@ function get_small_image($image_url) {
 	if (!str_contains($image_url, '.small.')) {
 		$extension = pathinfo(parse_url($image_url)['path'], PATHINFO_EXTENSION);
 
-		//fix article only! video not have small version image ...
-		if (!str_contains($image_url, 'storage/video')) {
+		//fix article only!
+		//如果是本地文章的图片,就尝试获取它的小图片.
+		if (!str_contains($image_url, 'haxibiao') && !str_contains($image_url, 'storage/video')) {
 			$image_url = str_replace('.' . $extension, '.small.' . $extension, $image_url);
 		}
+
 	}
 
 	//fix dirty .png.small.jpg
@@ -198,5 +200,15 @@ function diffForHumansCN($time) {
 		$humanStr = str_replace('years', '年', $humanStr);
 		$humanStr = str_replace('year', '年', $humanStr);
 		return $humanStr;
+	}
+}
+
+function get_user_name($id) {
+	if ($id) {
+		$user = User::findOrFail($id);
+		$name = $user->name;
+		return $name;
+	} else {
+		return "system";
 	}
 }

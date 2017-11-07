@@ -114,6 +114,12 @@ class ArticleController extends Controller {
 			->orderBy('id', 'desc')
 			->take(4)
 			->get();
+		if (str_contains($article->keywords, '王者荣耀')) {
+			fix_wz_data($article);
+		}
+		if (str_contains($article->keywords, '英雄联盟英雄资料')) {
+			fix_lol_data($article);
+		}
 
 		return view('article.show')->withArticle($article)->withData($data);
 	}
