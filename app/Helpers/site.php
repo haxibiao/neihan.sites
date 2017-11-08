@@ -2,7 +2,9 @@
 
 use App\Badword;
 use App\Category;
+use App\Tag;
 use App\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Request;
 use Jenssegers\Agent\Agent;
 
@@ -93,4 +95,9 @@ function get_badwords() {
 		Cache::put('badwords', $badwords, 60 * 24);
 	}
 	return $badwords;
+}
+function get_latest_tags() {
+	$tags = Tag::orderBy('updated_at', 'desc')->take(12)->pluck('name')->toArray();
+	$tags = join(',', $tags);
+	return $tags;
 }
