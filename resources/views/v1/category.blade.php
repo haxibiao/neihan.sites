@@ -10,11 +10,11 @@
             <div class="row">
                 <div class="essays col-xs-12 col-sm-8">
                     <div class="main_top clearfix">
-                        <a class="avatar" href="#">
+                        <a class="avatar" href="/v1/category">
                             <img src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
                         </a>
                         <a class="botm follow" href="#">
-                            <i class="glyphicon glyphicon-plus">
+                            <i class="iconfont icon-jia">
                             </i>
                             <span>
                                 关注
@@ -25,7 +25,7 @@
                                 投稿
                             </span>
                         </a>
-                        <a class="name" href="#">
+                        <a class="name" href="/v1/category">
                             <span>
                                 谈谈情，说说爱
                             </span>
@@ -37,14 +37,14 @@
                     <ul class="trigger_menu">
                         <li>
                             <a href="#">
-                                <i class="iconfont icon-jinlingyingcaiwangtubiao35">
+                                <i class="iconfont icon-pinglun">
                                 </i>
                                 最新评论
                             </a>
                         </li>
                         <li class="active">
                             <a href="#">
-                                <i class="iconfont icon-jishiben">
+                                <i class="iconfont icon-dongtai1">
                                 </i>
                                 最新收录
                             </a>
@@ -60,11 +60,11 @@
                     <ul class="list_container">
                         <li>
                             <div class="personal">
-                                <a class="portrait" href="#">
+                                <a class="portrait" href="/v1/user">
                                     <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/4896574/81748b90-d20d-40fd-a659-127ece846249?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                 </a>
                                 <div class="information">
-                                    <a href="#">
+                                    <a href="/v1/user">
                                         空评
                                     </a>
                                     <br/>
@@ -73,7 +73,7 @@
                                     </small>
                                 </div>
                             </div>
-                            <div class="substance clearfix">
+                            <div class="substance have_img clearfix">
                                 <div class="conten col-xs-12 col-sm-8 col-md-9">
                                     <a href="/v1/detail">
                                         为什么说被马化腾点赞的《王者荣耀》已成为全球最赚钱的游戏？
@@ -82,23 +82,17 @@
                                         5月17日下午，腾讯控股公布了2017年第一季度财报。财报显示，腾讯一季度营收495.52亿元，同比增长55%；网络游戏收入增长34%至228.11亿元。其中，就智能手机游戏而言，腾讯实现129亿元收入，同比增长57%，此乃受现有及新的游戏如（《王者荣耀》、《穿越火线：枪战王者》及《龙之谷》）所推动。
                                     </p>
                                 </div>
-                                <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="#">
+                                <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
                                     <img src="//upload-images.jianshu.io/upload_images/4896574-e0f2b6c752dab9c1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
                                 </a>
                                 <div class="statistics col-xs-12">
-                                    <a class="special" href="#">
-                                        王者荣耀
-                                    </a>
-                                    <em>
-                                        ·
-                                    </em>
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         717阅读
                                     </a>
                                     <em>
                                         ·
                                     </em>
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         6评论
                                     </a>
                                     <em>
@@ -112,11 +106,11 @@
                         </li>
                         <li>
                             <div class="personal">
-                                <a class="portrait" href="#">
+                                <a class="portrait" href="/v1/user">
                                     <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/1978017/8072afae5460?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                 </a>
                                 <div class="information">
-                                    <a href="#">
+                                    <a href="/v1/user">
                                         闫浩
                                     </a>
                                     <br/>
@@ -125,32 +119,26 @@
                                     </small>
                                 </div>
                             </div>
-                            <div class="substance clearfix">
+                            <div class="substance have_img clearfix">
                                 <div class="conten col-xs-12 col-sm-8 col-md-9">
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         起风了，谁是下一个王者荣耀？
                                     </a>
                                     <p class="article">
                                         下一个王者荣耀露出苗头很久了，今年夏天开始爆发。过去一年创投界有两个关注的焦点，一个是共享单车、共享充电宝带起来的线下流量入口，另一个是狼人杀和王者荣耀们的游戏社交化浪潮。这两个方向的创业者和巨头们，因缘际会地捕捉到了线上买量不再拥有性价比的历史脉搏，一方选择了开源，将物理投放的线下智能终端作为切入交易的新入口，另一方选择了节流，通过游戏本身的社交属性达成裂变式传播的效果，以较低的成本延长产品的生命周期以及活跃度。
                                     </p>
                                 </div>
-                                <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="#">
+                                <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
                                     <img src="//upload-images.jianshu.io/upload_images/1978017-b9ea1315e388a415.jpg!1200?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
                                 </a>
                                 <div class="statistics col-xs-12">
-                                    <a class="special" href="#">
-                                        王者荣耀
-                                    </a>
-                                    <em>
-                                        ·
-                                    </em>
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         2325阅读
                                     </a>
                                     <em>
                                         ·
                                     </em>
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         5评论
                                     </a>
                                     <em>
@@ -170,11 +158,11 @@
                         </li>
                         <li>
                             <div class="personal">
-                                <a class="portrait" href="#">
+                                <a class="portrait" href="/v1/user">
                                     <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/1858256/e78657d29b8d.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                 </a>
                                 <div class="information">
-                                    <a href="#">
+                                    <a href="/v1/user">
                                         浮云笑此生
                                     </a>
                                     <br/>
@@ -185,7 +173,7 @@
                             </div>
                             <div class="substance clearfix">
                                 <div class="conten col-xs-12">
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         相亲与自由恋爱的比较
                                     </a>
                                     <p class="article">
@@ -193,24 +181,18 @@
                                     </p>
                                 </div>
                                 {{--
-                                <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="#">
+                                <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
                                     <img src=""/>
                                 </a>
                                 --}}
                                 <div class="statistics col-xs-12">
-                                    <a class="special" href="#">
-                                        谈谈情，说说爱
-                                    </a>
-                                    <em>
-                                        ·
-                                    </em>
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         1795阅读
                                     </a>
                                     <em>
                                         ·
                                     </em>
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         5评论
                                     </a>
                                     <em>
@@ -230,11 +212,11 @@
                         </li>
                         <li>
                             <div class="personal">
-                                <a class="portrait" href="#">
+                                <a class="portrait" href="/v1/user">
                                     <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/253140/b9adfdadef8a?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                 </a>
                                 <div class="information">
-                                    <a href="#">
+                                    <a href="/v1/user">
                                         迎刃
                                     </a>
                                     <br/>
@@ -243,32 +225,26 @@
                                     </small>
                                 </div>
                             </div>
-                            <div class="substance clearfix">
+                            <div class="substance have_img clearfix">
                                 <div class="conten col-xs-12 col-sm-8 col-md-9">
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         如何变得会与异性聊天？
                                     </a>
                                     <p class="article">
                                         与人社交时如何很会聊天是个大家都非常感兴趣的话题，尤其是非常关注与异性聊天的问题。我综合了此前写过的若干篇文字，有了下面的关于聊天的方法论总结。从3个方面入手，让大家看完就能去实践。1，心态篇    2，原因篇    3，策略篇【心态篇】我发现如果没有一个良好的心态作为支撑和前提，做任何事情都会事倍功半。反之，心态好，自信心足，就会有强大的抗挫折承受力，甚至是遇强则强，越挫越勇。
                                     </p>
                                 </div>
-                                <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="#">
+                                <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
                                     <img src="//upload-images.jianshu.io/upload_images/253140-5c2d51aa0d7c673d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
                                 </a>
                                 <div class="statistics col-xs-12">
-                                    <a class="special" href="#">
-                                        谈谈情，说说爱
-                                    </a>
-                                    <em>
-                                        ·
-                                    </em>
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         317324阅读
                                     </a>
                                     <em>
                                         ·
                                     </em>
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         781评论
                                     </a>
                                     <em>
@@ -288,11 +264,11 @@
                         </li>
                         <li>
                             <div class="personal">
-                                <a class="portrait" href="#">
+                                <a class="portrait" href="/v1/user">
                                     <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/6205434/831957b5-a672-4aa2-884b-cf971a8c34d5?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                 </a>
                                 <div class="information">
-                                    <a href="#">
+                                    <a href="/v1/user">
                                         网易王三三
                                     </a>
                                     <br/>
@@ -301,32 +277,26 @@
                                     </small>
                                 </div>
                             </div>
-                            <div class="substance clearfix">
+                            <div class="substance have_img clearfix">
                                 <div class="conten col-xs-12 col-sm-8 col-md-9">
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         吃鸡和生活一样，九分天注定，一分靠打拼
                                     </a>
                                     <p class="article">
                                         这几天，我发现大家的人生追求变了，从“明天不上班”变成了“今晚一定要吃到鸡”。“吃鸡”梗来源于最近火爆全球的一款射击类生存游戏《绝地求生：大逃杀》。主要是讲几十上百个猛男被投放到一个荒岛，为了最终目标——吃鸡而互相厮杀，干掉所有对手活到最后的故事。当然，它还有其他一些流传更广的名字，比如《伏地求生之老阴X大乱斗》《一千零一种死法》《幻影坦克大战千年老苟》等。
                                     </p>
                                 </div>
-                                <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="#">
+                                <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
                                     <img src="//upload-images.jianshu.io/upload_images/6205434-62e64dc2d81e3625.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
                                 </a>
                                 <div class="statistics col-xs-12">
-                                    <a class="special" href="#">
-                                        绝地求生
-                                    </a>
-                                    <em>
-                                        ·
-                                    </em>
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         834阅读
                                     </a>
                                     <em>
                                         ·
                                     </em>
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         6评论
                                     </a>
                                     <em>
@@ -340,11 +310,11 @@
                         </li>
                         <li>
                             <div class="personal">
-                                <a class="portrait" href="#">
+                                <a class="portrait" href="/v1/user">
                                     <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/6486956/8b5f880e-f7ba-446b-8b59-1532e087fe3e.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                 </a>
                                 <div class="information">
-                                    <a href="#">
+                                    <a href="/v1/user">
                                         智_先生
                                     </a>
                                     <br/>
@@ -353,32 +323,26 @@
                                     </small>
                                 </div>
                             </div>
-                            <div class="substance clearfix">
+                            <div class="substance have_img clearfix">
                                 <div class="conten col-xs-12 col-sm-8 col-md-9">
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         我们该感谢王者荣耀耗尽了80%的人上升的空间
                                     </a>
                                     <p class="article">
                                         在当下，以《王者荣耀》、《阴阳师》为首的一批手游正逐渐霸占人们的手机屏幕，以此而衍生的电竞、直播以及代练行业风光无限，潜力巨大。最近，为保障未成年人健康成长，腾讯经过将近一个月的调试和内测后，将于7月4日以《王者荣耀》为试点，率先推出健康游戏防沉迷系统的“三板斧”，对未成年人的游戏时间作出限制：12岁以下每天限玩一小时。（小学生听了绝不会流泪，并笑着拿出奶奶的身份证。）当前国内还没有移动游戏防沉迷的明确规定，《王者荣耀》在顶着“亡者毒药”的社会舆论中做出了实际行动，这是一种自保行为，也可以说是社会责任感的体现。但事实上，《王者荣耀》的最大玩家群体当属大学生和中年人群体，第三方数据分析机构talkingData统计的数据显示，王者荣耀的用户群中，大学生占21.8%，中小学生占2.7%；上班族占68.7%。
                                     </p>
                                 </div>
-                                <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="#">
+                                <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
                                     <img src="//upload-images.jianshu.io/upload_images/6486956-1ce7c76170f7b916.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
                                 </a>
                                 <div class="statistics col-xs-12">
-                                    <a class="special" href="#">
-                                        王者荣耀
-                                    </a>
-                                    <em>
-                                        ·
-                                    </em>
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         113787阅读
                                     </a>
                                     <em>
                                         ·
                                     </em>
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         1096评论
                                     </a>
                                     <em>
@@ -398,11 +362,11 @@
                         </li>
                         <li>
                             <div class="personal">
-                                <a class="portrait" href="#">
+                                <a class="portrait" href="/v1/user">
                                     <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/1408329/1ed19a008804?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                 </a>
                                 <div class="information">
-                                    <a href="#">
+                                    <a href="/v1/user">
                                         冷清持
                                     </a>
                                     <br/>
@@ -411,32 +375,26 @@
                                     </small>
                                 </div>
                             </div>
-                            <div class="substance clearfix">
+                            <div class="substance have_img clearfix">
                                 <div class="conten col-xs-12 col-sm-8 col-md-9">
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         和男朋友一起玩游戏是一种怎样的感觉
                                     </a>
                                     <p class="article">
                                         搬新家了，别人都是在考虑装修，买家具，整理房间，而作为一个殿堂级游戏迷，我和男朋友却一致把最大重心放在了买电脑上。区别是我以前喜欢玩单机，男朋友喜欢玩网游。﻿结果当然是买了一模一样的两台高配。﻿某天我们躺在沙发上，他突然说，哎宝宝，不如我带你玩个游戏吧。﻿我弯眉:“好啊好啊是你拖地我加油的游戏吗。”﻿他无视:“一起玩游戏很棒的呀，可以建个小号慢慢升级啊，一起打副本啊，一起钓鱼啊，看风景啦…是不是感觉超棒？我朋友也在玩我们可以组个固定队！”﻿
                                     </p>
                                 </div>
-                                <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="#">
+                                <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
                                     <img src="http://upload-images.jianshu.io/upload_images/1408329-d38d06f1f04211fd.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1080/q/100"/>
                                 </a>
                                 <div class="statistics col-xs-12">
-                                    <a class="special" href="#">
-                                        谈谈情，说说爱
-                                    </a>
-                                    <em>
-                                        ·
-                                    </em>
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         11898阅读
                                     </a>
                                     <em>
                                         ·
                                     </em>
-                                    <a href="#">
+                                    <a href="/v1/detail">
                                         299评论
                                     </a>
                                     <em>
@@ -508,10 +466,10 @@
                             </p>
                             <ul class="collection_editor">
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="/logo/ainicheng.com.jpg"/>
                                     </a>
-                                    <a class="name" href="#">
+                                    <a class="name" href="/v1/user">
                                         爱你城
                                     </a>
                                     <span>
@@ -519,74 +477,74 @@
                                     </span>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="//upload.jianshu.io/users/upload_avatars/4495513/b0433c10-21db-4e8e-938c-6dd4618297fd.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                     </a>
-                                    <a class="name" href="#">
+                                    <a class="name" href="/v1/user">
                                         甜腻酥饼
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="//upload.jianshu.io/users/upload_avatars/1694433/6e122981-342e-4815-9a07-aba78ca30645.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                     </a>
-                                    <a class="name" href="#">
+                                    <a class="name" href="/v1/user">
                                         周寒舟
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="//upload.jianshu.io/users/upload_avatars/1122063/fb48cf06757d?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                     </a>
-                                    <a class="name" href="#">
+                                    <a class="name" href="/v1/user">
                                         枫小梦
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="//upload.jianshu.io/users/upload_avatars/1610007/d29da9456083.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                     </a>
-                                    <a class="name" href="#">
+                                    <a class="name" href="/v1/user">
                                         木小溪V
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="//upload.jianshu.io/users/upload_avatars/2239737/e2d25096-c6c8-499d-97dd-143fe74794bb.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                     </a>
-                                    <a class="name" href="#">
+                                    <a class="name" href="/v1/user">
                                         木禾的随笔
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="//upload.jianshu.io/users/upload_avatars/3067977/1bbdf808-332d-434d-aa2b-ebfac5c8882b.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                     </a>
-                                    <a class="name" href="#">
+                                    <a class="name" href="/v1/user">
                                         青烟幂处
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="//upload.jianshu.io/users/upload_avatars/3203762/ad383e98-8cfe-4a32-9022-9c0037b527f4.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                     </a>
-                                    <a class="name" href="#">
+                                    <a class="name" href="/v1/user">
                                         二野童
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="//upload.jianshu.io/users/upload_avatars/1531089/3c04b9d0-cd6d-4ad8-8467-137f08fbfbac.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                     </a>
-                                    <a class="name" href="#">
+                                    <a class="name" href="/v1/user">
                                         沈家姑娘
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="//upload.jianshu.io/users/upload_avatars/3241851/4f378a2f4352.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                     </a>
-                                    <a class="name" href="#">
+                                    <a class="name" href="/v1/user">
                                         桃宜
                                     </a>
                                 </li>
@@ -607,42 +565,42 @@
                             </div>
                             <ul class="collection_follower">
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="http://upload.jianshu.io/users/upload_avatars/5479122/9201a33e-d57d-4347-bfd4-7d3758bcab47.jpg"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="http://upload.jianshu.io/users/upload_avatars/2719544/78e263be1f3d.jpeg"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="http://upload.jianshu.io/users/upload_avatars/2674946/efbe3aa1-016e-4f39-9163-36368d41f54a.jpg"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="http://upload.jianshu.io/users/upload_avatars/2251594/caab597c-f17c-4fda-82d5-57fdacbce93d.jpg"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="http://upload.jianshu.io/users/upload_avatars/3525563/0622b29b-5823-494a-8698-dd2577ada955.jpg"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="http://upload.jianshu.io/users/upload_avatars/3364033/a9dd54fe-26f5-4857-9dc1-86cf0b01d93e.jpg"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="http://upload.jianshu.io/users/upload_avatars/4960058/3dd42a01-71c0-49a4-b22c-b00d5804b271.jpg"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="http://upload.jianshu.io/users/upload_avatars/1946430/0ad43fe1-4aac-44be-b2d3-fd699e81a541.jpg"/>
                                     </a>
                                 </li>
@@ -658,42 +616,42 @@
                             </div>
                             <ul class="collection_follower">
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="http://upload.jianshu.io/users/upload_avatars/5479122/9201a33e-d57d-4347-bfd4-7d3758bcab47.jpg"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="http://upload.jianshu.io/users/upload_avatars/2719544/78e263be1f3d.jpeg"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="http://upload.jianshu.io/users/upload_avatars/2674946/efbe3aa1-016e-4f39-9163-36368d41f54a.jpg"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="http://upload.jianshu.io/users/upload_avatars/2251594/caab597c-f17c-4fda-82d5-57fdacbce93d.jpg"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="http://upload.jianshu.io/users/upload_avatars/3525563/0622b29b-5823-494a-8698-dd2577ada955.jpg"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="http://upload.jianshu.io/users/upload_avatars/3364033/a9dd54fe-26f5-4857-9dc1-86cf0b01d93e.jpg"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="http://upload.jianshu.io/users/upload_avatars/4960058/3dd42a01-71c0-49a4-b22c-b00d5804b271.jpg"/>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="avatar" href="#">
+                                    <a class="avatar" href="/v1/user">
                                         <img src="http://upload.jianshu.io/users/upload_avatars/1946430/0ad43fe1-4aac-44be-b2d3-fd699e81a541.jpg"/>
                                     </a>
                                 </li>

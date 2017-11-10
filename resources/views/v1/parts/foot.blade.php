@@ -1,5 +1,3 @@
-<div class="clearfix">
-</div>
 <footer id="tail">
     <div class="container">
         <div class="row">

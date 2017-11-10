@@ -1,109 +1,71 @@
 @extends('v1.layouts.blank')
 
 @section('title')
-    爱你城 - 最暖心的游戏社交网站
+	空评 - 爱你城
 @stop
 @section('content')
 <div id="v1">
-    <div class="index">
+    <div class="user">
         <div class="container">
             <div class="row">
                 <div class="essays col-xs-12 col-sm-8">
-                    <div class="carousel_inner">
-                        <div class="carousel slide" data-ride="carousel" id="carousel-example-generic">
-                            <!-- Indicators -->
-                            <ol class="carousel-indicators">
-                                <li class="active" data-slide-to="0" data-target="#carousel-example-generic">
-                                </li>
-                                <li data-slide-to="1" data-target="#carousel-example-generic">
-                                </li>
-                                <li data-slide-to="2" data-target="#carousel-example-generic">
-                                </li>
-                            </ol>
-                            <!-- Wrapper for slides -->
-                            <div class="carousel-inner" role="listbox">
-                                <div class="item active">
-                                    <img src="/logo/22.jpeg"/>
-                                    <div class="carousel-caption">
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <img src="/logo/23.jpeg"/>
-                                    <div class="carousel-caption">
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <img src="/logo/24.jpeg"/>
-                                    <div class="carousel-caption">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Controls -->
-                            <a class="left carousel-control" data-slide="prev" href="#carousel-example-generic" role="button">
-                                <span aria-hidden="true" class="glyphicon glyphicon-chevron-left">
-                                </span>
-                                <span class="sr-only">
-                                    Previous
-                                </span>
-                            </a>
-                            <a class="right carousel-control" data-slide="next" href="#carousel-example-generic" role="button">
-                                <span aria-hidden="true" class="glyphicon glyphicon-chevron-right">
-                                </span>
-                                <span class="sr-only">
-                                    Next
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="classification">
-                        <a class="collection" href="/v1/category">
-                            <img src="/logo/col-01.jpg"/>
+                    <div class="main_top clearfix">
+                        <a class="avatar" href="/v1/category">
+                            <img src="//upload.jianshu.io/users/upload_avatars/4896574/81748b90-d20d-40fd-a659-127ece846249?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                        </a>
+                        <a class="botm follow" href="#">
+                            <i class="iconfont icon-jia">
+                            </i>
                             <span>
-                                王者荣耀
+                                关注
                             </span>
                         </a>
-                        <a class="collection" href="/v1/category">
-                            <img src="/logo/col-01.jpg"/>
+                        <a class="botm contribute" href="#">
                             <span>
-                                绝地求生
+                                发消息
                             </span>
                         </a>
-                        <a class="collection" href="/v1/category">
-                            <img src="/logo/col-01.jpg"/>
+                        <a class="name" href="/v1/category">
                             <span>
-                                剑侠情缘3
+                                空评
                             </span>
-                        </a>
-                        <a class="collection" href="/v1/category">
-                            <img src="/logo/1.jpeg"/>
-                            <span>
-                                暗恋
-                            </span>
-                        </a>
-                        <a class="collection" href="/v1/category">
-                            <img src="/logo/1.jpeg"/>
-                            <span>
-                                恋爱
-                            </span>
-                        </a>
-                        <a class="collection" href="/v1/category">
-                            <img src="/logo/1.jpeg"/>
-                            <span>
-                                热恋
-                            </span>
-                        </a>
-                        <a class="collection" href="/v1/category">
-                            <img src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
-                            <span>
-                                谈谈情，说说爱
-                            </span>
-                        </a>
-                        <a class="more_hot_collection" href="/v1/categories">
-                            更多热门专题
-                            <i class="iconfont icon-gengduo">
+                            <i class="iconfont icon-nanhai">
                             </i>
                         </a>
+                        <p>
+                            收录了68923篇文章 · 1081552人关注
+                        </p>
                     </div>
+                    <ul class="trigger_menu">
+                        <li class="active">
+                            <a href="#">
+                                <i class="iconfont icon-dongtai1">
+                                </i>
+                                文章
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="iconfont icon-dongtai">
+                                </i>
+                                动态
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="iconfont icon-pinglun">
+                                </i>
+                                最新评论
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="iconfont icon-huo">
+                                </i>
+                                热门
+                            </a>
+                        </li>
+                    </ul>
                     <ul class="list_container">
                         <li>
                             <div class="personal">
@@ -133,12 +95,6 @@
                                     <img src="//upload-images.jianshu.io/upload_images/4896574-e0f2b6c752dab9c1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
                                 </a>
                                 <div class="statistics col-xs-12">
-                                    <a class="special" href="/v1/category">
-                                        王者荣耀
-                                    </a>
-                                    <em>
-                                        ·
-                                    </em>
                                     <a href="/v1/detail">
                                         717阅读
                                     </a>
@@ -185,12 +141,6 @@
                                     <img src="//upload-images.jianshu.io/upload_images/1978017-b9ea1315e388a415.jpg!1200?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
                                 </a>
                                 <div class="statistics col-xs-12">
-                                    <a class="special" href="/v1/category">
-                                        王者荣耀
-                                    </a>
-                                    <em>
-                                        ·
-                                    </em>
                                     <a href="/v1/detail">
                                         2325阅读
                                     </a>
@@ -245,12 +195,6 @@
                                 </a>
                                 --}}
                                 <div class="statistics col-xs-12">
-                                    <a class="special" href="/v1/category">
-                                        谈谈情，说说爱
-                                    </a>
-                                    <em>
-                                        ·
-                                    </em>
                                     <a href="/v1/detail">
                                         1795阅读
                                     </a>
@@ -303,12 +247,6 @@
                                     <img src="//upload-images.jianshu.io/upload_images/253140-5c2d51aa0d7c673d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
                                 </a>
                                 <div class="statistics col-xs-12">
-                                    <a class="special" href="/v1/category">
-                                        谈谈情，说说爱
-                                    </a>
-                                    <em>
-                                        ·
-                                    </em>
                                     <a href="/v1/detail">
                                         317324阅读
                                     </a>
@@ -361,12 +299,6 @@
                                     <img src="//upload-images.jianshu.io/upload_images/6205434-62e64dc2d81e3625.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
                                 </a>
                                 <div class="statistics col-xs-12">
-                                    <a class="special" href="/v1/category">
-                                        绝地求生
-                                    </a>
-                                    <em>
-                                        ·
-                                    </em>
                                     <a href="/v1/detail">
                                         834阅读
                                     </a>
@@ -413,12 +345,6 @@
                                     <img src="//upload-images.jianshu.io/upload_images/6486956-1ce7c76170f7b916.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
                                 </a>
                                 <div class="statistics col-xs-12">
-                                    <a class="special" href="/v1/category">
-                                        王者荣耀
-                                    </a>
-                                    <em>
-                                        ·
-                                    </em>
                                     <a href="/v1/detail">
                                         113787阅读
                                     </a>
@@ -471,12 +397,6 @@
                                     <img src="http://upload-images.jianshu.io/upload_images/1408329-d38d06f1f04211fd.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1080/q/100"/>
                                 </a>
                                 <div class="statistics col-xs-12">
-                                    <a class="special" href="/v1/category">
-                                        谈谈情，说说爱
-                                    </a>
-                                    <em>
-                                        ·
-                                    </em>
                                     <a href="/v1/detail">
                                         11898阅读
                                     </a>
@@ -507,215 +427,65 @@
                     </a>
                 </div>
                 <div class="aside col-sm-4 col-lg-3 col-lg-offset-1">
-                    <form class="search">
-                        <div class="input-group">
-                            <input class="form-control" placeholder="搜索" type="text"/>
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="submit">
-                                    <i class="glyphicon glyphicon-search">
-                                    </i>
-                                </button>
-                            </span>
-                        </div>
-                    </form>
-                    <div class="board clearfix">
-                        <a class="sign col-xs-12" href="#">
-                            <span>
-                                每日一签
-                                <i class="iconfont icon-gengduo">
-                                </i>
-                            </span>
-                        </a>
-                        <a class="newlist col-xs-12" href="#">
-                            <span>
-                                新上榜
-                                <i class="iconfont icon-gengduo">
-                                </i>
-                            </span>
-                        </a>
-                        <a class="game col-xs-12" href="#">
-                            <span>
-                                游戏热门
-                                <i class="iconfont icon-gengduo">
-                                </i>
-                            </span>
-                        </a>
-                        <a class="love col-xs-12" href="#">
-                            <span>
-                                恋爱热门
-                                <i class="iconfont icon-gengduo">
-                                </i>
-                            </span>
-                        </a>
-                    </div>
-                    <div class="codes clearfix">
-                        <a class="col-xs-12" href="#">
-                            <span>
-                                <img src="/logo/erweima1.jpeg"/>
-                                <p>
-                                    下载爱你城手机App
-                                    <i class="iconfont icon-gengduo">
-                                    </i>
-                                    <br/>
-                                    <small>
-                                        随时随地发现和创作内容
-                                    </small>
-                                </p>
-                            </span>
-                        </a>
-                    </div>
-                    <div class="daily">
-                        <div class="title">
-                            <span>
-                                爱你城精章
-                            </span>
-                            <a href="/v1/category">
-                                查看更多
-                            </a>
-                        </div>
-                        <a class="note" href="/v1/detail">
-                            <img src="http://upload-images.jianshu.io/upload_images/1714520-119e82e1662d86ac.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
-                            <div class="note_title">
-                                恋爱要谈到什么程度，才适合结婚呢？
-                            </div>
-                        </a>
-                        <a class="note" href="/v1/detail">
-                            <div class="note_title">
-                                三个心理学语言技巧，让你迅速提高情商
-                            </div>
-                        </a>
-                    </div>
-                    <div class="recommended_authors">
-                        <div class="title">
-                            <span>
-                                推荐作者
-                            </span>
-                            <a href="#">
-                                <i class="glyphicon glyphicon-refresh">
-                                </i>
-                                换一批
-                            </a>
-                        </div>
-                        <ul class="list">
-                            <li>
-                                <a class="avatar" href="/v1/user">
-                                    <img src="//upload.jianshu.io/users/upload_avatars/19107/08f8146dae87.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
-                                </a>
-                                <a class="follow" href="#">
-                                    <i class="iconfont icon-jia">
-                                    </i>
-                                    关注
-                                </a>
-                                <a class="name" href="/v1/user">
-                                    王佩
-                                </a>
-                                <p>
-                                    写了400.9k字 · 13.8k喜欢
-                                </p>
-                            </li>
-                            <li>
-                                <a class="avatar" href="/v1/user">
-                                    <img src="//upload.jianshu.io/users/upload_avatars/6287/06c537002583.png?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
-                                </a>
-                                <a class="follow" href="#">
-                                    <i class="iconfont icon-jia">
-                                    </i>
-                                    关注
-                                </a>
-                                <a class="name" href="/v1/user">
-                                    刘淼
-                                </a>
-                                <p>
-                                    写了375.5k字 · 20.5k喜欢
-                                </p>
-                            </li>
-                            <li>
-                                <a class="avatar" href="/v1/user">
-                                    <img src="//upload.jianshu.io/users/upload_avatars/1996705/738ba2908445?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
-                                </a>
-                                <a class="follow" href="#">
-                                    <i class="iconfont icon-jia">
-                                    </i>
-                                    关注
-                                </a>
-                                <a class="name" href="/v1/user">
-                                    白发老籣
-                                </a>
-                                <p>
-                                    写了50.5k字 · 5.7k喜欢
-                                </p>
-                            </li>
-                            <li>
-                                <a class="avatar" href="/v1/user">
-                                    <img src="//upload.jianshu.io/users/upload_avatars/6198903/a70dc654-6674-4b71-925f-0389f31fb095.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
-                                </a>
-                                <a class="follow" href="#">
-                                    <i class="iconfont icon-jia">
-                                    </i>
-                                    关注
-                                </a>
-                                <a class="name" href="/v1/user">
-                                    魏童
-                                </a>
-                                <p>
-                                    写了39.4k字 · 1.4k喜欢
-                                </p>
-                            </li>
-                            <li>
-                                <a class="avatar" href="/v1/user">
-                                    <img src="//upload.jianshu.io/users/upload_avatars/7663825/7c28763e-002b-4e89-8dea-5b8da210ef2c.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
-                                </a>
-                                <a class="follow" href="#">
-                                    <i class="iconfont icon-jia">
-                                    </i>
-                                    关注
-                                </a>
-                                <a class="name" href="/v1/user">
-                                    名贵的考拉熊
-                                </a>
-                                <p>
-                                    写了104.3k字 · 8.3k喜欢
-                                </p>
-                            </li>
-                        </ul>
-                        <a class="find_more" href="#">
-                            查看全部
-                            <i class="iconfont icon-gengduo">
+                    <p class="title">
+                        个人介绍
+                    </p>
+                    <div class="description">
+                        <p>
+                            暂无个人介绍
+                        </p>
+                        {{--
+                        <a href="javascript:">
+                            <i class="iconfont icon-xinlangweibo1">
                             </i>
                         </a>
+                        --}}
                     </div>
-                    <div class="videos">
-                        <div class="titles">
-                            <span>
-                                热门视频
-                            </span>
+                    <ul class="user_dynamic">
+                        <li>
                             <a href="#">
-                                查看更多
+                                <i class="iconfont icon-zhuanti">
+                                </i>
+                                <span>
+                                    他关注的专题/文集
+                                </span>
                             </a>
-                        </div>
-                        <a class="videos_list" href="#">
-                            <div class="screenshot">
-                                <img src="https://ainicheng.com/storage/img/1806.jpeg"/>
-                            </div>
-                            <div class="list_title">
-                                王者荣耀打野必备攻略 5v5野区地图分布详解
-                            </div>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="iconfont icon-xihuan">
+                                </i>
+                                <span>
+                                    他喜欢的文章
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div>
+                        <p class="title">
+                            他的文集
+                        </p>
+                        <ul class="list">
+                            <li>
+                                <a href="#">
+                                    <i class="iconfont icon-wenji">
+                                    </i>
+                                    <span>
+                                        日记本
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="user_action">
+                        <a href="#">
+                            加入黑名单
                         </a>
-                        <a class="videos_list" href="#">
-                            <div class="screenshot">
-                                <img src="https://ainicheng.com/storage/img/1890.png"/>
-                            </div>
-                            <div class="list_title">
-                                王者荣耀最强奶妈蔡文姬怎么玩2.0加强版
-                            </div>
-                        </a>
-                        <a class="videos_list" href="#">
-                            <div class="screenshot">
-                                <img src="https://ainicheng.com/storage/img/1840.jpg"/>
-                            </div>
-                            <div class="list_title">
-                                手把手教你玩王者荣耀安琪拉
-                            </div>
+                        <em>
+                            ·
+                        </em>
+                        <a href="#">
+                            举报用户
                         </a>
                     </div>
                 </div>

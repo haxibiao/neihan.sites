@@ -1,5 +1,3 @@
-<div class="clearfix">
-</div>
 <header id="heads">
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
