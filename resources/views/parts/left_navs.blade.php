@@ -1,13 +1,13 @@
 <ul class="nav navbar-nav">
 
-  <li class="{{ get_active_css('/') }}"><a style="{{ get_top_nav_color() }}" href="/">首页</a></li>
+  <li class="{{ get_active_css('/') }}"><a href="/">首页</a></li>
   @foreach($category_items as $item)
     @if($item->level == 0)
       @if(!$item->has_child)
-        <li class="{{ get_active_css($item->name_en) }}"><a style="{{ get_top_nav_color() }}" href="/{{ $item->name_en }}">{{ $item->name }}</a></li>
+        <li class="{{ get_active_css($item->name_en) }}"><a href="/{{ $item->name_en }}">{{ $item->name }}</a></li>
       @else
         <li class="dropdown {{ get_active_css($item->name_en) }}">
-          <a style="{{ get_top_nav_color() }}" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">{{ $item->name }} <span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">{{ $item->name }} <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="/{{ $item->name_en }}">{{ $item->name }}</a></li>
             <li role="separator" class="divider"></li>
@@ -37,6 +37,6 @@
       @endif
     @endif
   @endforeach
-  <li class="{{ get_active_css('video') }}"><a style="{{ get_top_nav_color() }}" href="/video">视频</a></li>
-  <li class="{{ get_active_css('video') }}"><a style="{{ get_top_nav_color() }}" href="/new">最新内容</a></li>
+  <li class="{{ get_active_css('video') }}"><a href="/video">视频</a></li>
+  <li class="{{ get_active_css('video') }}"><a href="/new">最新内容</a></li>
 </ul>

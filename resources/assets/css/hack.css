@@ -249,3 +249,12 @@ body {
     border-radius: 2px;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
+
+#app-navbar-collapse .nav a {
+    color: #666;
+    font-size: 15px;
+}
+
+#app-navbar-collapse .nav .dropdown-menu {
+    background-color: #f2b5c5;
+}

@@ -14,24 +14,24 @@
             <!-- Branding Image -->
             <img src="/logo/{{ env('APP_DOMAIN') }}.small.jpg" alt="{{ config('app.name', 'Laravel') }}" class="right10" style="max-height: 50px" />
             {{-- <a class="navbar-brand" href="{{ url('/') }}" title="{{ config('app.name', 'Laravel') }}">
-                              
+
             </a> --}}
         </div>
 
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
-             
+
              @include('parts.left_navs')
 
             <!-- Right Side Of Navbar -->
             <ul class="nav navbar-nav navbar-right">
                 <!-- Authentication Links -->
                 @if (Auth::guest())
-                    <li><a href="{{ route('login') }}"　style="{{ get_top_nav_color() }}">登录</a></li>
-                    <li><a href="{{ route('register') }}"　style="{{ get_top_nav_color() }}">注册</a></li>
+                    <li><a href="{{ route('login') }}">登录</a></li>
+                    <li><a href="{{ route('register') }}">注册</a></li>
                 @else
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"　style="{{ get_top_nav_color() }}">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             {{ Auth::user()->name }} <span class="caret"></span>
                         </a>
 

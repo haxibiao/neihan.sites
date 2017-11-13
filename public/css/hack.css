@@ -241,3 +241,12 @@ body {
     padding: 10px;
     content: '一个全屏宽关联已插入在正文这里!!!';
 }
+
+#app-navbar-collapse .nav a {
+    color: #666;
+    font-size: 15px;
+}
+
+#app-navbar-collapse .nav .dropdown-menu {
+    background-color: #f2b5c5;
+}
