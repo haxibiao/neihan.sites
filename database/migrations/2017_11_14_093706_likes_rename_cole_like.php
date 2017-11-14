@@ -4,18 +4,16 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCollectionArticlesTable extends Migration {
+class LikesRenameColeLike extends Migration {
 	/**
 	 * Run the migrations.
 	 *
 	 * @return void
 	 */
 	public function up() {
-		Schema::create('article_collection', function (Blueprint $table) {
-			$table->increments('id');
-			$table->integer('collection_id');
-			$table->integer('article_id');
-			$table->timestamps();
+		Schema::table('likes', function (Blueprint $table) {
+			$table->renameColumn('object_id', 'liked_id');
+			$table->renameColumn('type', 'liked_type');
 		});
 	}
 
@@ -25,6 +23,8 @@ class CreateCollectionArticlesTable extends Migration {
 	 * @return void
 	 */
 	public function down() {
-		Schema::dropIfExists('collection_article');
+		Schema::table('likes', function (Blueprint $table) {
+			//
+		});
 	}
 }

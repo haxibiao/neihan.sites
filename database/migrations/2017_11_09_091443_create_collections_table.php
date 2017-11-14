@@ -13,11 +13,11 @@ class CreateCollectionsTable extends Migration {
 	public function up() {
 		Schema::create('collections', function (Blueprint $table) {
 			$table->increments('id');
-			$table->integer('user_id');
-			$table->integer('top')->default(0);
-			$table->string('description')->nullable();
-			$table->string('title');
-			$table->string('image_url');
+			$table->integer('user_id')->index();
+			$table->integer('status')->index(); //status  is  0 private or 1 public
+			$table->string('type')->default('article')->index();
+			$table->string('name');
+			$table->string('logo')->nullable();
 			$table->timestamps();
 		});
 	}

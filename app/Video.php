@@ -21,6 +21,9 @@ class Video extends Model {
 	public function category() {
 		return $this->belongsTo(\App\Category::class);
 	}
+	public function categories() {
+		return $this->belongsToMany(\App\Category::class);
+	}
 
 	public function articles() {
 		return $this->belongsToMany(\App\Article::class);
@@ -28,5 +31,11 @@ class Video extends Model {
 
 	public function user() {
 		return $this->belongsTo(\App\User::class);
+	}
+	public function comments() {
+		return $this->morphMany(\App\Comment::class, 'commentable');
+	}
+	public function tips() {
+		return $this->morphMany(\App\Tip::class, 'tipable');
 	}
 }

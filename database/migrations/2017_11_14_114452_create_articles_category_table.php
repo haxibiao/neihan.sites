@@ -4,18 +4,17 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTipsTable extends Migration {
+class CreateArticlesCategoryTable extends Migration {
 	/**
 	 * Run the migrations.
 	 *
 	 * @return void
 	 */
 	public function up() {
-		Schema::create('tips', function (Blueprint $table) {
+		Schema::create('article_category', function (Blueprint $table) {
 			$table->increments('id');
-			$table->decimal('amount');
-			$table->integer('tipable_id')->index();
-			$table->string('tipable_type')->index();
+			$table->integer('category_id');
+			$table->integer('article_id');
 			$table->timestamps();
 		});
 	}
@@ -26,6 +25,6 @@ class CreateTipsTable extends Migration {
 	 * @return void
 	 */
 	public function down() {
-		Schema::dropIfExists('tips');
+		Schema::dropIfExists('article_category');
 	}
 }

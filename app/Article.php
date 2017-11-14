@@ -32,9 +32,12 @@ class Article extends Model {
 	public function categories() {
 		return $this->belongsTo(\App\Category::class);
 	}
+	public function tags1() {
+		return $this->belongsToMany(\App\Tag::class);
+	}
 
 	public function tags() {
-		return $this->belongsToMany('App\Tag');
+		return $this->morphToMany('App\Tag', 'taggable');
 	}
 
 	public function images() {
@@ -46,5 +49,11 @@ class Article extends Model {
 	}
 	public function collections() {
 		return $this->belongsToMany(\App\Collection::class);
+	}
+	public function commments() {
+		return $this->morphMany(\App\Comment::class, 'commentable');
+	}
+	public function tips() {
+		return $this->morphMany(\App\Tip::class, 'tipable');
 	}
 }

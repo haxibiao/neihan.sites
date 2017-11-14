@@ -4,18 +4,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTipsTable extends Migration {
+class CreateTaggablesTable extends Migration {
 	/**
 	 * Run the migrations.
 	 *
 	 * @return void
 	 */
 	public function up() {
-		Schema::create('tips', function (Blueprint $table) {
+		Schema::create('taggables', function (Blueprint $table) {
 			$table->increments('id');
-			$table->decimal('amount');
-			$table->integer('tipable_id')->index();
-			$table->string('tipable_type')->index();
+			$table->integer('tag_id')->index();
+			$table->integer('taggable_id')->index();
+			$table->string('taggable_type')->index();
 			$table->timestamps();
 		});
 	}
@@ -26,6 +26,6 @@ class CreateTipsTable extends Migration {
 	 * @return void
 	 */
 	public function down() {
-		Schema::dropIfExists('tips');
+		Schema::dropIfExists('taggables');
 	}
 }

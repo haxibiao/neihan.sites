@@ -212,3 +212,6 @@ function get_user_name($id) {
 		return "system";
 	}
 }
+function get_polymorph_types($type) {
+	return ends_with($type, 's') ? $type : $type . 's';
+}

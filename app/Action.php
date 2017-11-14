@@ -4,14 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Like extends Model {
+class Action extends Model {
 	protected $fillable = [
 		'user_id',
-		'liked_id',
-		'liked_type',
+		'actionable_type',
+		'actionable_id',
 	];
 
-	public function liked() {
+	public function actionable() {
 		return $this->morphTo();
 	}
 }

@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('title')
-  {{ $tag->name }} 
+  {{ $tag->name }}
 @endsection
 @section('keywords')
-  {{ $tag->name }} 
+  {{ $tag->name }}
 @endsection
 @section('description')
-  {{ $tag->name }} 
+  {{ $tag->name }}
 @endsection
 
 @section('content')
@@ -26,10 +26,8 @@
         </div>
         <div class="panel-body">
             <div class="list-group">
-                @foreach($articles as $item)
-                <a class="list-group-item" href="/article/{{ $item->article->id }}">
-                    {{ $item->article->title }}
-                </a>
+                @foreach($articles as $article)
+                   @include('article.parts.article_item')
                 @endforeach
             </div>
         </div>

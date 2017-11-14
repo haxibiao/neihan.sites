@@ -15,6 +15,12 @@ class Category extends Model {
 		'order',
 	];
 
+	public function creator() {
+		return $this->belongsTo(\App\User::class);
+	}
+	public function member() {
+		return $this->belongsToMany(\App\User::class)->withPivot('approved', 'is_admin');
+	}
 	public function user() {
 		return $this->belongsTo('App\User');
 	}
@@ -28,5 +34,8 @@ class Category extends Model {
 	}
 	public function comments() {
 		return $this->hasMany(\App\Comment::class, 'object_id');
+	}
+	public function follows() {
+		return $this->morphMany(\App\Follow::class, 'followed');
 	}
 }

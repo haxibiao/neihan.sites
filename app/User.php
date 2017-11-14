@@ -39,7 +39,7 @@ class User extends Authenticatable {
 		return $this->hasMany(\App\Follow::class);
 	}
 	public function follows() {
-		return $this->hasMany(\App\Follow::class, 'follwing_user_id');
+		return $this->morphMany(\App\Follow::class, 'followed');
 	}
 	public function comments() {
 		return $this->hasMany(\App\Comment::class);
@@ -48,12 +48,21 @@ class User extends Authenticatable {
 		return $this->hasMany(\App\Message::class);
 	}
 	public function actions() {
-		return $this->hasMany(\App\Actions::class);
-	}
-	public function likes() {
-		return $this->hasMany(\App\Like::class);
+		return $this->hasMany(\App\Action::class);
 	}
 	public function collections() {
 		return $this->hasMany(\App\Collection::class);
+	}
+	public function likes() {
+		return $this->morphMany(\App\Like::class, 'liked');
+	}
+	public function favorites() {
+		return $this->morphMany(\App\Favorite::class, 'faved');
+	}
+	public function collection() {
+		return $this->hasMany(\App\Collection::class);
+	}
+	public function chats() {
+		return $this->belongsToMany(\App\Chat::class)->withPivot('with_users');
 	}
 }
