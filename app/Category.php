@@ -26,7 +26,7 @@ class Category extends Model {
 	}
 
 	public function articles() {
-		return $this->hasMany('App\Article');
+		return $this->belongsToMany('App\Article');
 	}
 
 	public function parent() {
@@ -37,5 +37,8 @@ class Category extends Model {
 	}
 	public function follows() {
 		return $this->morphMany(\App\Follow::class, 'followed');
+	}
+	public function videos() {
+		return $this->belongsToMany(\App\Video::class);
 	}
 }

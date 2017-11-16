@@ -9,6 +9,7 @@ class Image extends Model {
 		'path',
 		'path_origin',
 		'path_small',
+		'extension',
 	];
 
 	public function articles() {

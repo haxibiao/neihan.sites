@@ -19,30 +19,30 @@
 
 <div class="panel panel-default">
   <div class="panel-body">
-    
+
   <div class="col-md-10">
     {!! Form::open(['method' => 'PUT', 'route' => ['article.update', $article->id], 'class' => 'form-horizontal', 'id'=>'article_form', 'enctype' => "multipart/form-data"]) !!}
       <div class="row">
           <legend>编辑文章</legend>
-    
+
             <div class="btn-group-lg pull-right">
                 <input type="hidden" name="image_url">
                 {!! Form::button("　存　稿　", ['class' => 'btn btn-warning btn-draft']) !!}
                 {!! Form::submit("　发　布　", ['class' => 'btn btn-success']) !!}
             </div>
       </div>
-    
+
         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
             {!! Form::label('title', '标题') !!}
             {!! Form::text('title',$article->title, ['class' => 'form-control', 'required' => 'required']) !!}
             <small class="text-danger">{{ $errors->first('title') }}</small>
         </div>
-        
+
         <div class="row">
         <div class="col-md-6">
         <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
             {!! Form::label('category_id', '分类') !!}
-            {!! Form::select('category_id',$categories,$article->category_id, ['id' => 'category_id', 'class' => 'form-control', 'required' => 'required']) !!}
+            {!! Form::select('category_id[]',$categories,$article->categories()->count() ? $article->categories : $article->category_id, ['id' => 'category_id', 'class' => 'form-control', 'required' => 'required','multiple'=>'multiple']) !!}
             <small class="text-danger">{{ $errors->first('category_id') }}</small>
         </div>
         </div>
@@ -56,7 +56,7 @@
             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
         </div>
         </div>
-        
+
         <div class="col-md-3">
         <div class="form-group{{ $errors->has('is_top') ? ' has-error' : '' }}">
             {!! Form::label('is_top', '是否上首页') !!}
@@ -86,14 +86,14 @@
         </div>
 
         @include('article.parts.images_selected', ['article_images' => $article->images, 'article' => $article])
-    
+
         <div class="btn-group-lg pull-right">
             <input type="hidden" name="image_url">
             <input type="hidden" name="status" id="hidden_status" value="1">
             {!! Form::button("　存　稿　", ['class' => 'btn btn-warning btn-draft']) !!}
             {!! Form::submit("　发　布　", ['class' => 'btn btn-success']) !!}
         </div>
-    
+
     {!! Form::close() !!}
   </div>
   <div class="col-md-2">

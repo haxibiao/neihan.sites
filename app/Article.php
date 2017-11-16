@@ -30,7 +30,7 @@ class Article extends Model {
 		return $this->belongsTo('App\Category');
 	}
 	public function categories() {
-		return $this->belongsTo(\App\Category::class);
+		return $this->belongsToMany(\App\Category::class);
 	}
 	public function tags1() {
 		return $this->belongsToMany(\App\Tag::class);

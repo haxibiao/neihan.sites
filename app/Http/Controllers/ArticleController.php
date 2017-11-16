@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Article;
-use App\ArticleImage;
-use App\ArticleTag;
-use App\ArticleVideo;
 use App\Http\Requests\ArticleRequest;
 use App\Image;
 use App\Tag;
@@ -56,9 +53,16 @@ class ArticleController extends Controller {
 		} else {
 			$article->image_url = $request->get('image_url');
 		}
+		$category_id = $request->category_id;
+		$category_id = reset($category_id);
 		$article->has_pic = !empty($article->image_url);
 		$article->date = \Carbon\Carbon::now()->toDateString();
+		$article->category_id = $category_id;
+		$article->body = $this->fix_body($article->body);
 		$article->save();
+
+		//categoies
+		$article->categories()->sync($request->get('category_id'));
 
 		//videos
 		$this->save_article_videos($request, $article);
@@ -101,10 +105,7 @@ class ArticleController extends Controller {
 		$article->save();
 
 		//fix for show
-		$article->body = str_replace("\n", '<br/>', $article->body);
-		$article->body = str_replace(' style=""', '', $article->body);
-		$article->body = str_replace('class="box-related-full"', "", $article->body);
-		$article->body = str_replace('class="box-related-half"', "", $article->body);
+		$article->body = $this->fix_body($article->body);
 
 		$article->body = parse_video($article->body);
 
@@ -142,9 +143,7 @@ class ArticleController extends Controller {
 		}
 
 		//编辑文章的时候,可能没有插入图片,字段可能空,就会删除图片地址....
-		if ($this->clear_article_imgs($article)) {
-			$article = Article::with('images')->findOrFail($id);
-		}
+		$this->clear_article_imgs($article);
 
 		$categories = get_categories();
 		$article->body = str_replace('<single-list id', '<single-list class="box-related-half" id', $article->body);
@@ -161,7 +160,7 @@ class ArticleController extends Controller {
 	public function update(Request $request, $id) {
 		$article = Article::findOrFail($id);
 
-		$article->update($request->except('image_url'));
+		$article->update($request->except('image_url', 'category_id'));
 
 		if ($request->get('primary_image')) {
 			$article->image_url = $request->get('primary_image');
@@ -171,9 +170,16 @@ class ArticleController extends Controller {
 			}
 		}
 
+		$category_id = $request->category_id;
+		$category_id = reset($category_id);
+		$article->category_id = $category_id;
+
 		$article->has_pic = !empty($article->image_url);
 		$article->edited_at = \Carbon\Carbon::now();
+		$article->body = $this->fix_body($article->body);
 		$article->save();
+
+		$article->categories()->sync($request->get('category_id'));
 
 		//videos
 		$this->save_article_videos($request, $article);
@@ -195,7 +201,7 @@ class ArticleController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function destroy($id) {
-		$article = Article::find($id);
+		$article = Article::findOrFail($id);
 		if ($article) {
 			$article->delete();
 		}
@@ -215,26 +221,27 @@ class ArticleController extends Controller {
 					$video->count = $video->count + 1;
 					$video->title = $article->title;
 					$video->save();
+
 				}
-				$article_video = ArticleVideo::firstOrNew([
-					'article_id' => $article->id,
-					'video_id' => $video_id,
-				]);
-				$article_video->save();
+				// $article->videos()->attach($video);
 			}
 		}
+		$article->videos()->sync($videos);
+	}
+
+	public function fix_body($body) {
+		$body = str_replace("\n", '<br/>', $body);
+		$body = str_replace(' style=""', '', $body);
+		$body = str_replace('class="box-related-full"', "", $body);
+		$body = str_replace('class="box-related-half"', "", $body);
+		return $body;
 	}
 
 	public function clear_article_imgs($article) {
-		$article_with_images = Article::with('images')->find($article->id);
-		$images = $article_with_images->images;
-
-		// remove unused images relationship ...
-		$cleared_somthing = false;
 		$pattern_img = '/<img(.*?)>/';
 		preg_match_all($pattern_img, $article->body, $matches);
 		if (!empty($matches)) {
-			foreach ($images as $image) {
+			foreach ($article->images as $image) {
 				$item_exist_in_body = false;
 				foreach ($matches[0] as $img_tag) {
 					if (str_contains($img_tag, $image->path)) {
@@ -242,21 +249,12 @@ class ArticleController extends Controller {
 					}
 				}
 				if (!$item_exist_in_body) {
-					$article_image = ArticleImage::firstOrNew([
-						'article_id' => $article->id,
-						'image_id' => $image->id,
-					]);
-					if ($article_image->id) {
-						$image->count = $image->count - 1;
-						$image->save();
-						$article_image->delete();
-
-						$cleared_somthing = true;
-					}
+					$article->images()->detach($image);
+					$image->count = $image->count - 1;
+					$image->save();
 				}
 			}
 		}
-		return $cleared_somthing;
 	}
 
 	public function auto_upadte_image_relations($imgs, $article) {
@@ -265,6 +263,7 @@ class ArticleController extends Controller {
 		}
 
 		$has_primary_top = false;
+		$img_ids = [];
 		foreach ($imgs as $img) {
 			$path = parse_url($img)['path'];
 			$extension = pathinfo($path, PATHINFO_EXTENSION);
@@ -280,6 +279,7 @@ class ArticleController extends Controller {
 				$image->title = $article->title;
 				$image->save();
 
+				$img_ids = $iamge->id;
 				//auto get is_top an image_top
 				if ($image->path_top) {
 					// $article->is_top    = 1;
@@ -293,14 +293,10 @@ class ArticleController extends Controller {
 						$article->save();
 					}
 				}
-
-				$article_image = ArticleImage::firstOrNew([
-					'article_id' => $article->id,
-					'image_id' => $image->id,
-				]);
-				$article_image->save();
+				// $article->images()->attach($image);
 			}
 		}
+		$article->images()->sync($img_ids);
 	}
 
 	public function save_article_tags($article) {
@@ -313,27 +309,12 @@ class ArticleController extends Controller {
 				]);
 				$tag->user_id = Auth::user()->id;
 				$tag->save();
+				$tag_ids[] = $tag->id;
 
-				$article_tag = ArticleTag::firstOrNew([
-					'article_id' => $article->id,
-					'tag_id' => $tag->id,
-				]);
-				$article_tag->save();
 			}
 		}
+		$article->tags()->sync($tag_ids);
 
-		//删除文章不用的关键词关系
-		$article_with_tags = Article::with('tags')->find($article->id);
-		$tags = $article_with_tags->tags;
-		foreach ($tags as $tag) {
-			if (!in_array($tag->name, $keywords)) {
-				$article_tag = ArticleTag::firstOrNew([
-					'article_id' => $article->id,
-					'tag_id' => $tag->id,
-				]);
-				$article_tag->delete();
-			}
-		}
 	}
 
 	public function get_json_lists($article) {

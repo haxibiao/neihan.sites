@@ -15,7 +15,7 @@ class FixData extends Command {
 	 *
 	 * @var string
 	 */
-	protected $signature = 'fix:data {--tags}{--comments} {--traffic} {--articles} {--images} {--videos} {--categories} {--force}';
+	protected $signature = 'fix:data {--small_image}{--tags}{--comments} {--traffic} {--articles} {--images} {--videos} {--categories} {--force}';
 
 	/**
 	 * The console command description.
@@ -59,6 +59,9 @@ class FixData extends Command {
 
 		if ($this->option('images')) {
 			$this->fix_images();
+		}
+		if ($this->option('small_image')) {
+			$this->fix_images_small();
 		}
 
 		if ($this->option('videos')) {
@@ -191,18 +194,57 @@ class FixData extends Command {
 			}
 		}
 	}
+	public function fix_images_small() {
+		Image::orderBy('id')->chunk(100, function ($images) {
+			foreach ($images as $image) {
+				if ($image->path == null) {
+					continue;
+				}
+				if (str_contains($image->path, 'video')) {
+					continue;
+				}
+				if (!is_file(public_path($image->path))) {
+					continue;
+				}
+
+				$extension = pathinfo($image->path, PATHINFO_EXTENSION);
+				if ($extension == 'gif') {
+					$image->path_small = '';
+					$image->save();
+					continue;
+				}
+
+				$image->extension = $extension;
+				//re crop small image
+				$img = \ImageMaker::make(public_path($image->path));
+				if ($img->width() / $img->height() < 1.5) {
+					$img->resize(300, null, function ($constraint) {
+						$constraint->aspectRatio();
+					});
+				} else {
+					$img->resize(null, 200, function ($constraint) {
+						$constraint->aspectRatio();
+					});
+				}
+				$img->crop(300, 200, 0, 0);
+				$image->path_small = '/storage/img/' . $image->id . '.small.' . $extension;
+				$img->save(public_path($image->path_small));
+
+				$image->save();
+
+				$this->info($extension . $image->id);
+			}
+		});
+	}
 
 	public function fix_articles() {
-		// $article = Article::find(361);
-		// $this->fix_article($article);
-		// return;
-
-		$articles = Article::with('images')->get();
-		foreach ($articles as $article) {
-			$article->status = 1;
-			$article->save();
-			// $this->fix_article_image($article);
-		}
+		Article::chunk(200, function ($articles) {
+			foreach ($articles as $article) {
+				$category_id = $article->category_id;
+				$article->categories()->syncWithoutDetaching($category_id);
+				$this->info("已经修复$article->title");
+			}
+		});
 	}
 
 	public function fix_article_image($article) {

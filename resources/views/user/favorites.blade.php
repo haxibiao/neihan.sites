@@ -29,8 +29,8 @@
     <div class="row">
         <div class="col-md-8">
             <div class="panel panel-default">
-                <div class="panel-heading">            
-                    <h3 class="panel-title" style="line-height: 30px">收藏的文章({{ $data['fav_articles']->total() }})</h3>
+                <div class="panel-heading">
+                    <h3 class="panel-title" style="line-height: 30px">收藏的文章({{ $data['fav_articles']->count() }})</h3>
                 </div>
                 <div class="panel-body">
                     @foreach($data['fav_articles'] as $fav)
@@ -38,17 +38,17 @@
                             收藏于: {{ diffForHumansCN($fav->created_at) }}
                         </p>
                         @include('article.parts.article_item', ['article' => $fav->article])
-                    @endforeach   
+                    @endforeach
                     <p>
                         {!! $data['fav_articles']->render() !!}
-                    </p>         
+                    </p>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="panel panel-default">
-                <div class="panel-heading">            
-                    <h3 class="panel-title" style="line-height: 30px">收藏的视频({{ $data['fav_videos']->total() }})</h3>
+                <div class="panel-heading">
+                    <h3 class="panel-title" style="line-height: 30px">收藏的视频({{ $data['fav_videos'] }})</h3>
                 </div>
                 <div class="panel-body">
                     @foreach($data['fav_videos'] as $fav)
@@ -56,10 +56,10 @@
                             收藏于: {{ diffForHumansCN($fav->created_at) }}
                         </p>
                         @include('video.parts.video_item', ['video' => $fav->video, 'is_side' => 1])
-                    @endforeach   
+                    @endforeach
                     <p>
                         {!! $data['fav_videos']->render() !!}
-                    </p>         
+                    </p>
                 </div>
             </div>
         </div>
