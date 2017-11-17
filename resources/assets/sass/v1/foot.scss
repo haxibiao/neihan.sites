@@ -1,0 +1,12 @@
+//尾部
+#tail {
+    margin: 3% 0px 2% 0px;
+    color: #969696;
+    a {
+        @include a;
+        color: #969696;
+        &:hover {
+            color: #333;
+        }
+    }
+}

@@ -28,15 +28,27 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#">
-                            发现
+                        <a href="/v1/subscriptions">
+                            关注
                         </a>
                     </li>
                     <li>
                         <a href="#">
-                            社区
+                            消息
                         </a>
                     </li>
+                    {{-- <li>
+                        <a href="#">
+                            发现
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            社区
+                        </a>
+                    </li> --}}
+
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
@@ -47,7 +59,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="#">
+                                <a href="/v1/home">
                                     <i class="glyphicon glyphicon-user">
                                     </i>
                                     我的主页
@@ -77,7 +89,7 @@
                             <li class="divider" role="separator">
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="/v1/wallet">
                                     <i class="glyphicon glyphicon-credit-card">
                                     </i>
                                     我的钱包

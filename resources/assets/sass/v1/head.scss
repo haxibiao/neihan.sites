@@ -1,0 +1,24 @@
+//头部
+#heads {
+    padding-top: 80px;
+    .navbar {
+        background-color: #f2b5c5;
+        .navbar-header {
+            a {
+                padding-top: 0;
+                img {
+                    max-height: 50px;
+                }
+            }
+        }
+        .navbar-collapse {
+            a {
+                color: #666;
+                font-size: 15px;
+            }
+            .dropdown-menu {
+                background-color: #f2b5c5;
+            }
+        }
+    }
+}

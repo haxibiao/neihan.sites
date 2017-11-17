@@ -12,12 +12,14 @@
         <title>
             @yield('title')
         </title>
-        <link href="{{ mix('css/v1.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-        @include('v1.parts.head')
-        @yield('content')
-        @include('v1.parts.foot')
+        <div id="app">
+            @include('v1.parts.head')
+            @yield('content')
+            @include('v1.parts.foot')
+        </div>
         <script src="{{ mix('js/v1.js') }}">
         </script>
         @stack('scripts')

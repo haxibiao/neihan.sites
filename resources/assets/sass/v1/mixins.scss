@@ -1,0 +1,332 @@
+//页面初始化
+@mixin id {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+//a标签的默认样式
+@mixin a {
+    color: #333;
+    text-decoration: none;
+}
+
+//关注之类的按钮样式
+@mixin follow {
+    width: 100px;
+    font-size: 15px;
+    border-radius: 40px;
+    text-align: center;
+    padding: 8px 0;
+    margin: 23px 0 23px 16px;
+    line-height: normal;
+    font-weight: 400;
+    color: #fff;
+    background-color: #42c02e;
+    i {
+        font-size: inherit;
+    }
+    &:hover {
+        background-color: #00bc12;
+    }
+}
+
+//头像样式
+@mixin avatar {
+    margin-right: 5px;
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+    display: inline-block;
+    img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 1px solid #ddd;
+    }
+}
+
+//图片大小样式
+@mixin wrap_img {
+    padding: 0;
+    img {
+        width: 100%;
+        height: 120px;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+    }
+}
+
+//收集专题按钮样式
+@mixin collection {
+    @include a;
+    display: inline-block;
+    min-height: 35px;
+    margin: 0 12px 12px 0;
+    font-size: 13px;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    overflow: hidden;
+    line-height: 35px;
+    img {
+        width: 35px;
+        height: 35px;
+        border-radius: 4px 0px 0px 4px;
+        vertical-align: middle;
+        border: 0;
+    }
+    .name {
+        display: inline-block;
+        vertical-align: middle;
+        padding: 0px 10px;
+        i {
+            font-size: inherit;
+        }
+    }
+}
+
+//小文章模块
+@mixin list_container {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    li {
+        border-bottom: 1px solid #f0f0f0;
+        margin-bottom: 17px;
+        padding: 0 2px 17px 0;
+        .personal {
+            .avatar {
+                @include avatar;
+            }
+            .information {
+                display: inline-block;
+                vertical-align: middle;
+                color: #888888;
+                a {
+                    @include a;
+                    font-size: 13px;
+                    img {
+                        width: 14px;
+                        height: 14px;
+                        vertical-align: middle;
+                    }
+                }
+            }
+        }
+        .substance {
+            margin-top: 2%;
+            line-height: 25px;
+            .conten {
+                padding: 0;
+                padding-right: 5px;
+                a {
+                    font-weight: 700;
+                    font-size: 18px;
+                    color: #333;
+                }
+                .article {
+                    display: -webkit-box;
+                    -webkit-line-clamp: 4;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-indent: 2em;
+                }
+                @media screen and (max-width: 768px) {
+                    .article {
+                        -webkit-line-clamp: 3;
+                    }
+                }
+            }
+            .wrap_img {
+                @include wrap_img;
+            }
+            .statistics {
+                color: #888888;
+                padding: 0;
+                margin-top: 5px;
+                a {
+                    @include a;
+                    color: #888888;
+                    font-size: 12px;
+                    font-weight: normal;
+                    margin-right: 10px;
+                    i {
+                        font-size: 14px;
+                    }
+                    .icon-yanjing {
+                        font-size: 16px;
+                    }
+                    &:hover {
+                        color: #5b5757;
+                    }
+                }
+                span {
+                    margin-right: 10px;
+                    i {
+                        font-size: 13px;
+                    }
+                }
+                .special {
+                    border: 1px solid rgba(236, 97, 73, .7);
+                    border-radius: 3px;
+                    color: #ea6f5a!important;
+                    padding: 3px 6px;
+                    vertical-align: middle;
+                }
+                .origin_author {
+                    display: inline;
+                    color: #3194d0!important;
+                }
+            }
+        }
+        @media screen and (min-width: 450px) and (max-width: 768px) {
+            .have_img {
+                .conten {
+                    width: 65%;
+                }
+                .wrap_img {
+                    width: 30%;
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
+
+//小文章阅读更多的模块
+@mixin load_more {
+    @include a;
+    display: inline-block;
+    width: 100%;
+    height: 40px;
+    background-color: #a5a5a5;
+    color: #fff;
+    text-align: center;
+    font-size: 15px;
+    border-radius: 20px;
+    padding: 10px 15px;
+    margin: 30px auto 60px;
+}
+
+@mixin trigger_menu {
+    list-style: none;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 20px;
+    padding: 0;
+    li {
+        display: inline-block;
+        padding: 8px 0 0 0;
+        margin-bottom: -1px;
+        line-height: 20px;
+        a {
+            @include a;
+            color: #969696;
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 25px;
+            padding: 13px 20px 4px 20px;
+            i {
+                margin-right: 5px;
+                font-size: inherit;
+            }
+            &:hover {
+                border-bottom: 2px solid #646464;
+                color: #646464;
+            }
+        }
+    }
+    .active {
+        border-bottom: 2px solid #646464;
+        a {
+            color: #646464;
+            &:hover {
+                border: 0;
+            }
+        }
+    }
+    @media screen and (max-width: 768px) {
+        li {
+            a {
+                padding: 13px 10px;
+            }
+        }
+    }
+    @media screen and (min-width: 450px) and (max-width: 768px) {
+        margin-top: 20px;
+        li {
+            a {
+                padding: 13px 5px;
+            }
+        }
+    }
+}
+
+@mixin main_top {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 32px;
+    a {
+        @include a;
+    }
+    p {
+        padding-left: 97px;
+        color: #969696;
+        font-size: 14px;
+    }
+    .avatar {
+        @include avatar;
+        width: 80px;
+        height: 80px;
+        float: left;
+    }
+    .avatar_collection {
+        img {
+            border-radius: 10%;
+        }
+    }
+    .follow {
+        @include follow;
+        float: right;
+        background-color: inherit;
+        border: 1px solid #42c02e;
+        color: #42c02e;
+        font-size: 14px;
+        &:hover {
+            background-color: #F5F5F5;
+        }
+    }
+    .contribute {
+        width: 75px;
+    }
+    .name {
+        font-size: 20px;
+        font-weight: 700;
+        padding: 10px 0 0 97px;
+        display: block;
+    }
+    @media screen and (max-width: 768px) {
+        padding-bottom: 34px;
+        .follow {
+            right: 20px;
+            width: 35%;
+            clear: both;
+            position: absolute;
+            top: 70px;
+        }
+        .contribute {
+            float: left;
+            left: 10px;
+            width: 35%;
+        }
+        .follow_one {
+            right: 80px;
+            top: 80px;
+        }
+    }
+    @media screen and (min-width: 450px) and (max-width: 768px) {
+        .follow_one {
+            top: 100px;
+        }
+    }
+}

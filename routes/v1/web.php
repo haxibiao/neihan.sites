@@ -24,3 +24,18 @@ Route::get('/v1/user', function () {
 Route::get('/v1/categories', function () {
 	return view('v1.categories');
 });
+
+//v.1.0 个人主页
+Route::get('/v1/home', function () {
+	return view('v1.home');
+});
+
+//v.1.0 关注页
+Route::get('/v1/subscriptions', function () {
+	return view('v1.subscriptions');
+});
+
+//v.1.0 我的钱包
+Route::get('/v1/wallet', function () {
+	return view('v1.wallet');
+});

@@ -1,0 +1,261 @@
+//我的钱包页
+#wallet {
+    @include id;
+    .row {
+        .top {
+            margin: 10px 0 40px 0;
+            .user {
+                padding-top: 20px;
+                padding-bottom: 20px;
+                .avatar {
+                    @include avatar;
+                    width: 80px;
+                    height: 80px;
+                    margin-right: 15px;
+                    position: absolute;
+                }
+                .info {
+                    display: inline-block;
+                    vertical-align: middle;
+                    padding: 15px 0 10px 95px;
+                    .name {
+                        @include a;
+                        font-size: 21px;
+                        font-weight: 700;
+                    }
+                    .mobile_bind {
+                        padding-top: 5px;
+                        a {
+                            @include a;
+                            color: #3194d0;
+                        }
+                    }
+                }
+            }
+            .middle {
+                padding: 10px 7%;
+                border-left: 1px solid #e4e4e4;
+                border-right: 1px solid #e4e4e4;
+                .account_money {
+                    margin-right: 20px;
+                    font-size: 16px;
+                    color: #969696;
+                    display: inline-block;
+                }
+                .money_main {
+                    font-size: 28px;
+                }
+                .money_sub {
+                    font-size: 18px;
+                }
+                .action {
+                    margin-top: 20px;
+                    .recharge {
+                        @include follow;
+                        width: 80px;
+                        margin: 0 9% 2px 0;
+                        display: inline-block;
+                        padding: 6px 0;
+                        &:hover {
+                            cursor: pointer;
+                        }
+                    }
+                    .withdrawals {
+                        @include follow;
+                        width: 80px;
+                        margin: 0 8% 2px 0;
+                        display: inline-block;
+                        background-color: inherit;
+                        color: #42c02e!important;
+                        border: 1px solid rgba(59, 194, 29, .7);
+                        opacity: 5;
+                        pointer-events: none;
+                        padding: 6px 0;
+                        &:hover {
+                            background-color: inherit;
+                        }
+                    }
+                    .warn {
+                        font-size: 13px;
+                        color: #969696;
+                    }
+                }
+            }
+            .meta {
+                padding: 20px 3%;
+                font-size: 13px;
+                div {
+                    color: #969696;
+                }
+                a {
+                    @include a;
+                    color: #3194d0;
+                    display: block;
+                }
+            }
+        }
+        .body {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            border: 1px solid #dcdcdc;
+            border-radius: 6px 6px 0 0;
+            li {
+                border-bottom: 1px solid #dcdcdc;
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+            .title {
+                padding: 25px 20px;
+                font-size: 14px;
+                div {
+                    border-right: 1px dashed #c8c8c8;
+                }
+                .time {
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 18%;
+                }
+                .type {
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 12%;
+                    padding-left: 15px;
+                }
+                .details {
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 46%;
+                    padding-left: 15px;
+                }
+                .amount {
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 13%;
+                    padding-left: 15px;
+                }
+                .remark {
+                    display: inline-block;
+                    vertical-align: middle;
+                    border-right: none;
+                    padding-left: 15px;
+                }
+            }
+            .note {
+                padding: 10px 20px;
+                font-size: 12px;
+                .time {
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 18%;
+                }
+                .type {
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 12%;
+                    padding-left: 15px;
+                }
+                .details {
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 46%;
+                    padding-left: 15px;
+                    a {
+                        @include a;
+                        color: #3194d0;
+                    }
+                }
+                .amount {
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 13%;
+                    padding-left: 15px;
+                    color: #fb8e46;
+                }
+                .remark {
+                    display: inline-block;
+                    vertical-align: middle;
+                    border-right: none;
+                    padding-left: 15px;
+                    color: #969696;
+                }
+            }
+        }
+    }
+    @media screen and (min-width: 992px) and (max-width: 1200px) {
+        .row {
+            .top {
+                .middle {
+                    .action {
+                        .warn {
+                            display: inline-block;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @media screen and (max-width: 768px) {
+        .row {
+            margin: 0;
+            .top {
+                .middle {
+                    border-bottom: 1px solid #e4e4e4;
+                    border-top: 1px solid #e4e4e4;
+                    border-left: none;
+                    border-right: none;
+                    .action {
+                        .warn {
+                            display: inline-block;
+                        }
+                    }
+                }
+            }
+            .body {
+                .title {
+                    padding: 25px 10px;
+                    .time {
+                        width: 15%;
+                    }
+                    .type {
+                        width: 15%;
+                        padding-left: 5px;
+                    }
+                    .details {
+                        width: 30%;
+                        padding-left: 5px;
+                    }
+                    .amount {
+                        width: 17%;
+                        padding-left: 5px;
+                    }
+                    .remark {
+                        padding-left: 5px;
+                    }
+                }
+                .note {
+                    padding: 10px 10px;
+                    .time {
+                        width: 15%;
+                    }
+                    .type {
+                        width: 15%;
+                        padding-left: 5px;
+                    }
+                    .details {
+                        width: 30%;
+                        padding-left: 5px;
+                    }
+                    .amount {
+                        width: 17%;
+                        padding-left: 5px;
+                    }
+                    .remark {
+                        padding-left: 5px;
+                    }
+                }
+            }
+        }
+    }
+}

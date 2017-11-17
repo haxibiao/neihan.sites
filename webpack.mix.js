@@ -63,19 +63,14 @@ mix.copy(
 );
 
 //v.1.0
-mix.sass("resources/assets/sass/v1.scss", "public/css").version();
+mix.js("resources/assets/js/v1.js", "public/js");
 mix
-    .styles(
+    .scripts(
         [
-            "public/css/app.css",
-            "public/css/v1.css",
-            "public/fonts/font_2/iconfont.css"
+            "public/js/app.js"
         ],
-        "public/css/v1.css"
+        "public/js/v1.js"
     )
     .version();
-
-mix.js("resources/assets/js/v1.js", "public/js");
-
 
 mix.browserSync('l.ainicheng.com');
