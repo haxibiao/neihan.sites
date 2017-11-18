@@ -40,10 +40,10 @@
 
         <div class="row">
         <div class="col-md-6">
-        <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
-            {!! Form::label('category_id', '分类') !!}
-            {!! Form::select('category_id[]',$categories,$article->categories()->count() ? $article->categories : $article->category_id, ['id' => 'category_id', 'class' => 'form-control', 'required' => 'required','multiple'=>'multiple']) !!}
-            <small class="text-danger">{{ $errors->first('category_id') }}</small>
+        <div class="form-group{{ $errors->has('category_ids') ? ' has-error' : '' }}">
+            {!! Form::label('category_ids', '分类') !!}
+            {!! Form::select('category_ids[]',$categories,$article->categories->pluck('id')->toArray(), ['id' => 'category_ids', 'class' => 'form-control', 'required' => 'required','multiple'=>'multiple']) !!}
+            <small class="text-danger">{{ $errors->first('category_ids') }}</small>
         </div>
         </div>
 
@@ -88,7 +88,7 @@
         @include('article.parts.images_selected', ['article_images' => $article->images, 'article' => $article])
 
         <div class="btn-group-lg pull-right">
-            <input type="hidden" name="image_url">
+            <input type="hidden" name="image_url" value="{{ $article->image_url }}">
             <input type="hidden" name="status" id="hidden_status" value="1">
             {!! Form::button("　存　稿　", ['class' => 'btn btn-warning btn-draft']) !!}
             {!! Form::submit("　发　布　", ['class' => 'btn btn-success']) !!}

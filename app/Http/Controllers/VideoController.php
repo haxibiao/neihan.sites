@@ -283,7 +283,7 @@ class VideoController extends Controller {
 				$video->user_id = Auth::user()->id;
 				$video->path = $path;
 				$video->hash = $hash;
-				$video->category_id = Category::where('name', '有意思')->where('type', 'video')->first()->id;
+
 				$video->save();
 
 				//save video file

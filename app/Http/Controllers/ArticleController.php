@@ -51,13 +51,14 @@ class ArticleController extends Controller {
 		if ($request->get('primary_image')) {
 			$article->image_url = $request->get('primary_image');
 		} else {
-			$article->image_url = $request->get('image_url');
+
 		}
-		$category_id = $request->category_id;
-		$category_id = reset($category_id);
+		$category_ids = request('category_ids');
 		$article->has_pic = !empty($article->image_url);
 		$article->date = \Carbon\Carbon::now()->toDateString();
-		$article->category_id = $category_id;
+		if (is_array($category_ids) && !empty($category_ids)) {
+			$article->category_id = max($category_ids);
+		}
 		$article->body = $this->fix_body($article->body);
 		$article->save();
 
@@ -164,22 +165,14 @@ class ArticleController extends Controller {
 
 		if ($request->get('primary_image')) {
 			$article->image_url = $request->get('primary_image');
-		} else {
-			if ($request->get('image_url')) {
-				$article->image_url = $request->get('image_url');
-			}
 		}
-
-		$category_id = $request->category_id;
-		$category_id = reset($category_id);
-		$article->category_id = $category_id;
 
 		$article->has_pic = !empty($article->image_url);
 		$article->edited_at = \Carbon\Carbon::now();
 		$article->body = $this->fix_body($article->body);
 		$article->save();
 
-		$article->categories()->sync($request->get('category_id'));
+		$article->categories()->sync(request('category_ids'));
 
 		//videos
 		$this->save_article_videos($request, $article);
@@ -279,7 +272,7 @@ class ArticleController extends Controller {
 				$image->title = $article->title;
 				$image->save();
 
-				$img_ids = $iamge->id;
+				$img_ids = $image->id;
 				//auto get is_top an image_top
 				if ($image->path_top) {
 					// $article->is_top    = 1;

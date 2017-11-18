@@ -44,10 +44,10 @@
 
         <div class="row">
             <div class="col-md-6">
-            <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
-                {!! Form::label('category_id', '分类(多选会默认第一个为主分类)') !!}
-                {!! Form::select('category_id[]',$categories,null, ['id' => 'category_id', 'class' => 'form-control', 'required' => 'required','multiple'=>'multiple']) !!}
-                <small class="text-danger">{{ $errors->first('category_id') }}</small>
+            <div class="form-group{{ $errors->has('category_ids') ? ' has-error' : '' }}">
+                {!! Form::label('category_ids', '分类(多选会默认第一个为主分类)') !!}
+                {!! Form::select('category_ids[]',$categories,null, ['id' => 'category_ids', 'class' => 'form-control', 'required' => 'required','multiple'=>'multiple']) !!}
+                <small class="text-danger">{{ $errors->first('category_ids') }}</small>
             </div>
             </div>
             <div class="col-md-3">
