@@ -37,7 +37,7 @@
                         <p class="pull-right small">
                             收藏于: {{ diffForHumansCN($fav->created_at) }}
                         </p>
-                        @include('article.parts.article_item', ['article' => $fav->article])
+                        @include('article.parts.article_item', ['article' => $fav->faved])
                     @endforeach
                     <p>
                         {!! $data['fav_articles']->render() !!}
@@ -55,7 +55,7 @@
                         <p class="pull-right small">
                             收藏于: {{ diffForHumansCN($fav->created_at) }}
                         </p>
-                        @include('video.parts.video_item', ['video' => $fav->video, 'is_side' => 1])
+                        @include('video.parts.video_item', ['video' => $fav->faved, 'is_side' => 1])
                     @endforeach
                     <p>
                         {!! $data['fav_videos']->render() !!}

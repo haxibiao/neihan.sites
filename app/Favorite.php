@@ -12,7 +12,7 @@ class Favorite extends Model {
 	];
 
 	public function comment() {
-		return $this->belongsTo(\App\Comment::class);
+		return $this->belongsTo(\App\Comment::class, 'faved_id');
 	}
 	public function faved() {
 		return $this->morphTo();

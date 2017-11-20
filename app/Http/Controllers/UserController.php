@@ -144,10 +144,10 @@ class UserController extends Controller {
 
 	public function favorites(Request $request) {
 		$user = $request->user();
-		$fav_articles = Favorite::with('article')->where('user_id', $user->id)->where('faved_type', 'article')->orderBy('id', 'desc')->paginate(10);
+		$fav_articles = Favorite::with('faved')->where('user_id', $user->id)->where('faved_type', 'articles')->orderBy('id', 'desc')->paginate(10);
 		$data['fav_articles'] = $fav_articles;
 
-		$fav_videos = Favorite::with('video')->where('user_id', $user->id)->where('faved_type', 'video')->orderBy('id', 'desc')->paginate(10);
+		$fav_videos = Favorite::with('video')->where('user_id', $user->id)->where('faved_type', 'videos')->orderBy('id', 'desc')->paginate(10);
 		$data['fav_videos'] = $fav_videos;
 
 		return view('user.favorites')
