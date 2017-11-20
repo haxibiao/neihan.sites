@@ -24,7 +24,7 @@
              @include('parts.left_navs')
 
             <!-- Right Side Of Navbar -->
-            <ul class="nav navbar-nav navbar-right">
+{{--             <ul class="nav navbar-nav navbar-right">
                 <!-- Authentication Links -->
                 @if (Auth::guest())
                     <li><a href="{{ route('login') }}">登录</a></li>
@@ -72,6 +72,6 @@
                 @endif
             </ul>
         </div>
-    </div>
+    </div> --}}
 </nav>
 @endif
