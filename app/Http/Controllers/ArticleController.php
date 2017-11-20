@@ -89,6 +89,9 @@ class ArticleController extends Controller {
 		if ($article->category->parent_id) {
 			$data['parent_category'] = $article->category->parent()->first();
 		}
+		if ($article->status < 0) {
+			return "该文章不存在或者已经删除。。。。";
+		}
 		$article->hits = $article->hits + 1;
 		$agent = new \Jenssegers\Agent\Agent();
 		if ($agent->isMobile()) {
@@ -196,7 +199,8 @@ class ArticleController extends Controller {
 	public function destroy($id) {
 		$article = Article::findOrFail($id);
 		if ($article) {
-			$article->delete();
+			$article->status = -1;
+			$article->save();
 		}
 
 		return redirect()->back();
