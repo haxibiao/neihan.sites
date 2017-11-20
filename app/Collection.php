@@ -24,4 +24,7 @@ class Collection extends Model {
 	public function follows() {
 		return $this->morphMany(\App\Follow::class, 'followed');
 	}
+	public function favorites() {
+		return $this->morphMany(\App\Favorite::class, 'faved');
+	}
 }

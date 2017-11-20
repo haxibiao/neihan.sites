@@ -56,4 +56,7 @@ class Article extends Model {
 	public function tips() {
 		return $this->morphMany(\App\Tip::class, 'tipable');
 	}
+	public function favorites() {
+		return $this->morphMany(\App\Favorite::class, 'faved');
+	}
 }

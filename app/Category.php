@@ -41,4 +41,7 @@ class Category extends Model {
 	public function videos() {
 		return $this->belongsToMany(\App\Video::class);
 	}
+	public function favorites() {
+		return $this->morphMany(\App\Favorite::class, 'faved');
+	}
 }
