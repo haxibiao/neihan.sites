@@ -1,3 +1,4 @@
+@if($article->status >=0)
 <div class="media">
 	@if(!empty($article->image_url))
 	<a class="pull-left hidden-sm hidden-xs" href="{{ get_article_url($article) }}" {!! $article->target_url ? 'target="_blank"' : '' !!}>
@@ -17,3 +18,6 @@
 		@else<p title="{{ $article->body }}">{{ strip_tags(str_limit($article->body, 80)) }}</p>@endif
 	</div>
 </div>
+@else
+  <p>该文章不存在或者已经删除。。。。</p>
+@endif

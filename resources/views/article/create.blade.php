@@ -4,10 +4,10 @@
     创建文章
 @endsection
 @section('keywords')
-  
+
 @endsection
 @section('description')
-  
+
 @endsection
 
 @push('css')
@@ -25,32 +25,31 @@
 <div class="panel panel-default">
   <div class="panel-body">
     <div class="col-md-10">
-    {!! Form::open(['method' => 'POST', 'route' => 'article.store', 'class' => 'form-horizontal', 'id'=>'article_form', 'enctype' => "multipart/form-data"]) !!}      
+    {!! Form::open(['method' => 'POST', 'route' => 'article.store', 'class' => 'form-horizontal', 'id'=>'article_form', 'enctype' => "multipart/form-data"]) !!}
       <div class="row">
           <legend>创建文章</legend>
-    
+
             <div class="btn-group-lg pull-right">
                 <input type="hidden" name="image_url">
                 {!! Form::button(" 存 稿 ", ['class' => 'btn btn-warning btn-draft']) !!}
                 {!! Form::submit(" 发 布 ", ['class' => 'btn btn-success']) !!}
             </div>
       </div>
-    
+
         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
             {!! Form::label('title', '标题') !!}
             {!! Form::text('title',null, ['class' => 'form-control', 'required' => 'required']) !!}
             <small class="text-danger">{{ $errors->first('title') }}</small>
         </div>
-        
+
         <div class="row">
             <div class="col-md-6">
-            <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
-                {!! Form::label('category_id', '分类') !!}
-                {!! Form::select('category_id',$categories,null, ['id' => 'category_id', 'class' => 'form-control', 'required' => 'required']) !!}
-                <small class="text-danger">{{ $errors->first('category_id') }}</small>
+            <div class="form-group{{ $errors->has('category_ids') ? ' has-error' : '' }}">
+                {!! Form::label('category_ids', '分类(多选会默认第一个为主分类)') !!}
+                {!! Form::select('category_ids[]',$categories,null, ['id' => 'category_ids', 'class' => 'form-control', 'required' => 'required','multiple'=>'multiple']) !!}
+                <small class="text-danger">{{ $errors->first('category_ids') }}</small>
             </div>
             </div>
-
             <div class="col-md-3">
             <div class="form-group{{ $errors->has('author') ? ' has-error' : '' }}">
                 {!! Form::label('author', '作者') !!}
@@ -97,14 +96,14 @@
         </div>
 
         @include('article.parts.images_selected', ['article_images' => []])
-        
+
         <div class="btn-group-lg pull-right">
             <input type="hidden" name="image_url">
             <input type="hidden" name="status" id="hidden_status" value="1">
             {!! Form::button("　存　稿　", ['class' => 'btn btn-warning btn-draft']) !!}
             {!! Form::submit("　发　布　", ['class' => 'btn btn-success']) !!}
         </div>
-    
+
       {!! Form::close() !!}
   </div>
   <div class="col-md-2">
@@ -143,7 +142,7 @@
                 $('input[type="submit"]').attr('disabled',false);
             },2000);
     });
-    
+
   });
 
 </script>

@@ -46,6 +46,10 @@ echo {{ $www }}
 {{ $refresh_env_config }}
 {{ $run_migrate }}
 {{ $run_commands }}
+php artisan fix:data --comments
+php artisan fix:data --tags
+php artisan fix:data --favorite
+php artisan fix:data --articles
 {{ $cache_clear }}
 @endtask
 

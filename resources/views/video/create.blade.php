@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-	添加视频 - 
+	添加视频 -
 @stop
 
 @section('content')
@@ -28,7 +28,7 @@
                 </div>
                 <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
                     {!! Form::label('category_id', '视频分类') !!}
-                    {!! Form::select('category_id', $data['video_categories'], null, ['id' => 'category_id', 'class' => 'form-control', 'required' => 'required']) !!}
+                    {!! Form::select('category_id[]', $data['video_categories'], null, ['id' => 'category_id', 'class' => 'form-control', 'required' => 'required','multiple'=>'multiple']) !!}
                     <small class="text-danger">{{ $errors->first('category_id') }}</small>
                 </div>
                 <div class="form-group{{ $errors->has('introduction') ? ' has-error' : '' }}">

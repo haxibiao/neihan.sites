@@ -4,19 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Like extends Model
-{
-    protected $fillable = [
-        'user_id',
-        'object_id',
-        'type',
-    ];
+class Like extends Model {
+	protected $fillable = [
+		'user_id',
+		'liked_id',
+		'liked_type',
+	];
 
-    public function article() {
-    	return $this->belongsTo(\App\Article::class, 'object_id');
-    }
-
-    public function video() {
-    	return $this->belongsTo(\App\Video::class, 'object_id');
-    }
+	public function liked() {
+		return $this->morphTo();
+	}
 }

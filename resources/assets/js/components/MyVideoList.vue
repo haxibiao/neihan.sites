@@ -53,8 +53,7 @@ export default {
 
           //插入编辑器
           $('.editable').summernote('insertImage', img_url,function ($video) {
-            $video.attr('data-video', video_id);
-            $video.addClass('img-responsive video');
+   
           });
 
           //添加配图隐藏表单

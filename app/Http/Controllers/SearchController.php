@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Article;
-use App\ArticleTag;
 use App\Query;
 use App\Tag;
 use Illuminate\Http\Request;
@@ -62,12 +61,8 @@ class SearchController extends Controller {
 		$tags = Tag::all();
 		foreach ($tags as $tag) {
 			if (str_contains($query, $tag->name)) {
-				$ats = ArticleTag::with('article')->where('tag_id', $tag->id)->get();
-				foreach ($ats as $at) {
-					if (!empty($at->article)) {
-						$articles_taged[] = $at->article;
-					}
-
+				foreach ($tag->articles as $article) {
+					$articles_taged[] = $article;
 				}
 			}
 		}

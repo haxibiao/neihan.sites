@@ -19,9 +19,9 @@ function get_article_url($article) {
 
 function parse_video($body) {
 	//TODO:: [视频的尺寸还是不完美，后面要获取到视频的尺寸才好处理, 先默认用半个页面来站住]
-	$pattern_img_video = '/<img src=\"([^"]*?)\" data-video\=\"(\d+)\" ([^>]*?)>/iu';
+	$pattern_img_video = '/<img src=\"\/storage\/video\/thumbnail_(\d+)\.jpg\"([^>]*?)>/iu';
 	if (preg_match_all($pattern_img_video, $body, $matches)) {
-		foreach ($matches[2] as $i => $match) {
+		foreach ($matches[1] as $i => $match) {
 			$img_html = $matches[0][$i];
 			$video_id = $match;
 
@@ -211,4 +211,7 @@ function get_user_name($id) {
 	} else {
 		return "system";
 	}
+}
+function get_polymorph_types($type) {
+	return ends_with($type, 's') ? $type : $type . 's';
 }
