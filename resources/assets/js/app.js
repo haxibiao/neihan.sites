@@ -7,10 +7,7 @@
 require('./bootstrap');
 
 import Vue from 'vue';
-
-// window.Vue = require('vue');
-
-// Vue.prototype.$http = window.axios;
+Vue.prototype.$http = window.axios;
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

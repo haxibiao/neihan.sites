@@ -30,9 +30,11 @@ mix
 
 mix
     .scripts([
-        "public/js/app.js", 
-        "node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.js",
-        "public/js/hack.js"
+            "public/js/app.js", 
+            "public/js/hack.js",        
+            "node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.js",
+            "node_modules/summernote/dist/summernote.js",
+            "node_modules/summernote/dist/summernote-zh-CN.js"
         ], 
         "public/js/app.js")
     .version();
@@ -46,7 +48,7 @@ mix
             "public/js/hack.js",
             "node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.js",
             "node_modules/summernote/dist/summernote.js",
-            "public/js/summernote-zh-CN.js"
+            "node_modules/summernote/dist/summernote-zh-CN.js"
         ],
         "public/js/spa.js"
     )

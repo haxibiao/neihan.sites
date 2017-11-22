@@ -7,6 +7,8 @@
 require('./bootstrap');
 
 import Vue from 'vue';
+Vue.prototype.$http = window.axios;
+
 import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);

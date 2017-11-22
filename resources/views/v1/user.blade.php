@@ -13,10 +13,10 @@
                         <img src="//upload.jianshu.io/users/upload_avatars/4896574/81748b90-d20d-40fd-a659-127ece846249?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                     </a>
                     <a class="botm follow" href="#">
-                        <i class="iconfont icon-jia">
-                        </i>
+                        {{-- <i class="iconfont icon-jia">
+                        </i> --}}
                         <span>
-                            关注
+                            ＋ 关注
                         </span>
                     </a>
                     <a class="botm contribute" href="#">
@@ -29,7 +29,7 @@
                             <span>
                                 空评
                             </span>
-                            <i class="iconfont icon-nanhai">
+                            <i class="iconfont icon-nansheng1">
                             </i>
                         </a>
                     </div>
@@ -42,7 +42,7 @@
                                             5
                                         </p>
                                         关注
-                                        <i class="iconfont icon-gengduo">
+                                        <i class="iconfont icon-youbian">
                                         </i>
                                     </a>
                                 </div>
@@ -54,7 +54,7 @@
                                             6
                                         </p>
                                         粉丝
-                                        <i class="iconfont icon-gengduo">
+                                        <i class="iconfont icon-youbian">
                                         </i>
                                     </a>
                                 </div>
@@ -66,7 +66,7 @@
                                             8
                                         </p>
                                         文章
-                                        <i class="iconfont icon-gengduo">
+                                        <i class="iconfont icon-youbian">
                                         </i>
                                     </a>
                                 </div>
@@ -99,21 +99,21 @@
                     <ul class="trigger_menu" role="tablist">
                         <li class="active" role="presentation">
                             <a aria-controls="wenzhang" data-toggle="tab" href="#wenzhang" role="tab">
-                                <i class="iconfont icon-dongtai1">
+                                <i class="iconfont icon-wenji">
                                 </i>
                                 文章
                             </a>
                         </li>
                         <li role="presentation">
                             <a aria-controls="dongtai" data-toggle="tab" href="#dongtai" role="tab">
-                                <i class="iconfont icon-dongtai">
+                                <i class="iconfont icon-zhongyaogaojing">
                                 </i>
                                 动态
                             </a>
                         </li>
                         <li role="presentation">
                             <a aria-controls="pinglun" data-toggle="tab" href="#pinglun" role="tab">
-                                <i class="iconfont icon-pinglun">
+                                <i class="iconfont icon-svg37">
                                 </i>
                                 最新评论
                             </a>
