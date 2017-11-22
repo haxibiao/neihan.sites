@@ -60,7 +60,7 @@
                             font-size: 12px;
                             margin: 0 7px 6px 0;
                             padding: 0 7px 0 0;
-                            border-right: 1px solid #f0f0f0;
+                            border-right: 1px solid $border-color-hr;
                             a {
                                 color: #969696;
                                 display: inherit;
@@ -97,7 +97,7 @@
         div {
             .trigger_menu {
                 list-style: none;
-                border-bottom: 1px solid #f0f0f0;
+                border-bottom: 1px solid $border-color-hr;
                 margin-bottom: 20px;
                 padding: 0;
                 li {
@@ -117,13 +117,13 @@
                             font-size: inherit;
                         }
                         &:hover {
-                            border-bottom: 2px solid #646464;
+                            border-bottom: 2px solid $border-color-trigger_menu;
                             color: #646464;
                         }
                     }
                 }
                 .active {
-                    border-bottom: 2px solid #646464;
+                    border-bottom: 2px solid $border-color-trigger_menu;
                     a {
                         color: #646464;
                         &:hover {
@@ -159,7 +159,7 @@
                 .follow_detail {
                     padding: 20px;
                     background-color: hsla(0, 0%, 71%, .1);
-                    border: 1px solid #e1e1e1;
+                    border: 1px solid $border-color;
                     border-radius: 4px;
                     font-size: 12px;
                     margin-top: 2%;

@@ -12,16 +12,28 @@
         <title>
             @yield('title')
         </title>
+
+        //css
         <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css"/>
+
     </head>
     <body>
         <div id="app">
             @include('v1.parts.head')
             @yield('content')
-            @include('v1.parts.foot')
+            {{-- @include('v1.parts.foot') --}}
         </div>
-        <script src="{{ mix('js/v1.js') }}">
-        </script>
+
+
+        @if(in_array(request()->path(), [
+            'v1/follow',
+            'v1/notification'
+        ]))
+            <script src="{{ mix('js/spa.js') }}"></script>
+        @else
+            <script src="{{ mix('js/app.js') }}"></script>
+        @endif
+
         @stack('scripts')
     </body>
 </html>

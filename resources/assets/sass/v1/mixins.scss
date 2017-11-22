@@ -43,7 +43,7 @@
         width: 100%;
         height: 100%;
         border-radius: 50%;
-        border: 1px solid #ddd;
+        border: 1px solid $border-color;
     }
 }
 
@@ -54,7 +54,7 @@
         width: 100%;
         height: 120px;
         border-radius: 6px;
-        border: 1px solid #ddd;
+        border: 1px solid $border-color;
     }
 }
 
@@ -65,7 +65,7 @@
     min-height: 35px;
     margin: 0 12px 12px 0;
     font-size: 13px;
-    border: 1px solid #dcdcdc;
+    border: 1px solid $border-color;
     border-radius: 4px;
     overflow: hidden;
     line-height: 35px;
@@ -92,7 +92,7 @@
     padding: 0;
     list-style: none;
     li {
-        border-bottom: 1px solid #f0f0f0;
+        border-bottom: 1px solid $border-color-hr;
         margin-bottom: 17px;
         padding: 0 2px 17px 0;
         .personal {
@@ -168,7 +168,7 @@
                     }
                 }
                 .special {
-                    border: 1px solid rgba(236, 97, 73, .7);
+                    border: 1px solid $border-color-special;
                     border-radius: 3px;
                     color: #ea6f5a!important;
                     padding: 3px 6px;
@@ -209,9 +209,10 @@
     margin: 30px auto 60px;
 }
 
+//标签页样式
 @mixin trigger_menu {
     list-style: none;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid $border-color-hr;
     margin-bottom: 20px;
     padding: 0;
     li {
@@ -231,13 +232,13 @@
                 font-size: inherit;
             }
             &:hover {
-                border-bottom: 2px solid #646464;
+                border-bottom: 2px solid $border-color-trigger_menu;
                 color: #646464;
             }
         }
     }
     .active {
-        border-bottom: 2px solid #646464;
+        border-bottom: 2px solid $border-color-trigger_menu;
         a {
             color: #646464;
             &:hover {
@@ -248,20 +249,19 @@
     @media screen and (max-width: 768px) {
         li {
             a {
-                padding: 13px 10px;
+                padding: 13px 5px;
+                i {
+                    margin: 0;
+                }
             }
         }
     }
     @media screen and (min-width: 450px) and (max-width: 768px) {
         margin-top: 20px;
-        li {
-            a {
-                padding: 13px 5px;
-            }
-        }
     }
 }
 
+//关注右边模块
 @mixin main_top {
     width: 100%;
     height: 100%;
@@ -289,7 +289,7 @@
         @include follow;
         float: right;
         background-color: inherit;
-        border: 1px solid #42c02e;
+        border: 1px solid $border-color-follow;
         color: #42c02e;
         font-size: 14px;
         &:hover {
@@ -308,25 +308,16 @@
     @media screen and (max-width: 768px) {
         padding-bottom: 34px;
         .follow {
-            right: 20px;
-            width: 35%;
-            clear: both;
+            right: 30px;
             position: absolute;
-            top: 70px;
+            top: 160px;
         }
         .contribute {
-            float: left;
-            left: 10px;
-            width: 35%;
+            right: 170px;
         }
         .follow_one {
             right: 80px;
-            top: 80px;
-        }
-    }
-    @media screen and (min-width: 450px) and (max-width: 768px) {
-        .follow_one {
-            top: 100px;
+            top: 180px;
         }
     }
 }

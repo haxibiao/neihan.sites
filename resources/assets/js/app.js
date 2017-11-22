@@ -7,9 +7,6 @@
 require('./bootstrap');
 
 import Vue from 'vue';
-import VueRouter from 'vue-router';
-
-Vue.use(VueRouter);
 
 // window.Vue = require('vue');
 
@@ -26,29 +23,15 @@ Vue.component('bar', require('./components/Bar.vue'));
 Vue.component('line-chart', require('./components/Line.vue'));
 Vue.component('single-list', require('./components/SingleList.vue'));
 
+
+Vue.component('my-image-list', require('./components/MyImageList.vue'));
+Vue.component('my-video-list', require('./components/MyVideoList.vue'));
+Vue.component('single-list-create', require('./components/SingleListCreate.vue'));
+Vue.component('single-list-select', require('./components/SingleListSelect.vue'));
+
 Vue.component('favorite', require('./components/Favorite.vue'));
 Vue.component('like', require('./components/Like.vue'));
 Vue.component('comment', require('./components/Comment.vue'));
 
-
-Vue.component('subscriptions-left', require('./components/subscriptions/SubscriptionsLeft.vue'));
-
-const routes = [
-    { path: '/subscriptions_add', component: require('./components/subscriptions/SubscriptionsAdd.vue') },
-    { path: '/friend', component: require('./components/subscriptions/SubscriptionsFriend.vue') },
-    { path: '/category', component: require('./components/subscriptions/SubscriptionsCategory.vue') },
-    { path: '/collection', component: require('./components/subscriptions/SubscriptionsCollection.vue') },
-    { path: '/user', component: require('./components/subscriptions/SubscriptionsUser.vue') }
-];
-
-const router = new VueRouter({
-    routes
-})
-
 const app = new Vue({
-    router
 }).$mount('#app');
-
-// window.app = new Vue({
-//     el: '#app'
-// });

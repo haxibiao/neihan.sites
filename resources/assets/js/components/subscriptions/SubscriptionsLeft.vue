@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="dropdown">
+        <div class="dropdown change_type">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 全部关注
                 <i class="iconfont icon-xialaxuan">

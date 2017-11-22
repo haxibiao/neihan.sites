@@ -1,4 +1,4 @@
-@extends('v1.layouts.blank')
+@extends('v1.layouts.app')
 
 @section('title')
     我的钱包 - 爱你城

@@ -1,4 +1,4 @@
-<header id="heads">
+<div id="heads">
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -28,30 +28,88 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/v1/subscriptions">
+                        <a href="/v1/follow">
                             关注
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="/v1/notification" role="button">
                             消息
+                            <span class="caret">
+                            </span>
                         </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/v1/notification">
+                                    消息
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="iconfont icon-pinglun1">
+                                    </i>
+                                    评论
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="iconfont icon-sixin">
+                                    </i>
+                                    私信
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="iconfont icon-tougaoqingqiu">
+                                    </i>
+                                    投稿请求
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="iconfont icon-xihuan">
+                                    </i>
+                                    喜欢和赞
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="iconfont icon-yiguanzhu">
+                                    </i>
+                                    关注
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="iconfont icon-zanshang">
+                                    </i>
+                                    赞赏
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="iconfont icon-sandian">
+                                    </i>
+                                    其他消息
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    {{-- <li>
+                    {{--
+                    <li>
                         <a href="#">
                             发现
                         </a>
                     </li>
-
                     <li>
                         <a href="#">
                             社区
                         </a>
-                    </li> --}}
-
+                    </li>
+                    --}}
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
+                    <li>
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button">
                             个人中心
                             <span class="caret">
@@ -122,4 +180,4 @@
             </div>
         </div>
     </nav>
-</header>
+</div>

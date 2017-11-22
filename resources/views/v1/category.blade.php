@@ -1,4 +1,4 @@
-@extends('v1.layouts.blank')
+@extends('v1.layouts.app')
 
 @section('title')
     谈谈情，说说爱 - 专题 - 爱你城

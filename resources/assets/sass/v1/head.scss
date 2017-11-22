@@ -18,6 +18,30 @@
             }
             .dropdown-menu {
                 background-color: #f2b5c5;
+                a {
+                    i {
+                        font-size: 18px;
+                        margin: 0 5px 0 3px;
+                    }
+                    .icon-pinglun1 {
+                        font-size: 20px;
+                        font-weight: 800;
+                        margin-left: 0;
+                    }
+                    .icon-sixin {
+                        font-size: 16px;
+                        font-weight: 600;
+                    }
+                    .icon-tougaoqingqiu,
+                    .icon-zanshang,
+                    .icon-sandian {
+                        font-size: 17px;
+                    }
+                    .icon-xihuan,
+                    .icon-yiguanzhu {
+                        font-weight: 800;
+                    }
+                }
             }
         }
     }

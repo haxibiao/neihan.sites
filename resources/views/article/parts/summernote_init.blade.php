@@ -1,6 +1,3 @@
-<link rel="stylesheet" href="/css/jquery.tagsinput.css">
-<script src="/js/jquery.tagsinput.js"></script>
-
 <script type="text/javascript">
     $(function() {
         $('#keywords').tagsInput({

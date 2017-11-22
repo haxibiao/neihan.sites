@@ -1,4 +1,4 @@
-@extends('v1.layouts.blank')
+@extends('v1.layouts.app')
 
 @section('title')
     关注 - 爱你城
@@ -6,11 +6,11 @@
 @section('content')
 <div id="subscriptions">
     <div class="container">
-        <div class="row">
-            <div class="aside col-xs-12 col-sm-3">
+        <div class="subscriptions_wrp clearfix">
+            <div class="aside">
                 <subscriptions-left></subscriptions-left>
             </div>
-            <div class="main col-xs-12 col-sm-9">
+            <div class="main">
                 <router-view></router-view>
             </div>
         </div>

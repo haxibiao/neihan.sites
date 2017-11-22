@@ -1,4 +1,4 @@
-@extends('v1.layouts.blank')
+@extends('v1.layouts.app')
 
 @section('title')
     为什么说被马化腾点赞的《王者荣耀》已成为全球最赚钱的游戏？ - 爱你城

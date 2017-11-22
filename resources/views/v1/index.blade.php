@@ -1,4 +1,4 @@
-@extends('v1.layouts.blank')
+@extends('v1.layouts.app')
 
 @section('title')
     爱你城 - 最暖心的游戏社交网站
@@ -120,28 +120,28 @@
                     </div>
                 </form>
                 <div class="board clearfix">
-                    <a class="sign col-xs-12" href="#">
+                    <a class="sign col-xs-12" href="/v1/category">
                         <span>
                             每日一签
                             <i class="iconfont icon-gengduo">
                             </i>
                         </span>
                     </a>
-                    <a class="newlist col-xs-12" href="#">
+                    <a class="newlist col-xs-12" href="/v1/category">
                         <span>
                             新上榜
                             <i class="iconfont icon-gengduo">
                             </i>
                         </span>
                     </a>
-                    <a class="game col-xs-12" href="#">
+                    <a class="game col-xs-12" href="/v1/category">
                         <span>
                             游戏热门
                             <i class="iconfont icon-gengduo">
                             </i>
                         </span>
                     </a>
-                    <a class="love col-xs-12" href="#">
+                    <a class="love col-xs-12" href="/v1/category">
                         <span>
                             恋爱热门
                             <i class="iconfont icon-gengduo">
@@ -150,7 +150,7 @@
                     </a>
                 </div>
                 <div class="codes clearfix">
-                    <a class="col-xs-12" href="#">
+                    <a class="col-xs-12" href="javascript:;">
                         <span>
                             <img src="/logo/erweima1.jpeg"/>
                             <p>
@@ -191,7 +191,7 @@
                         <span>
                             推荐作者
                         </span>
-                        <a href="#">
+                        <a href="javascript:;">
                             <i class="glyphicon glyphicon-refresh">
                             </i>
                             换一批
@@ -202,7 +202,7 @@
                             <a class="avatar" href="/v1/user">
                                 <img src="//upload.jianshu.io/users/upload_avatars/19107/08f8146dae87.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                             </a>
-                            <a class="follow" href="#">
+                            <a class="follow" href="javascript:;">
                                 <i class="iconfont icon-jia">
                                 </i>
                                 关注
@@ -218,7 +218,7 @@
                             <a class="avatar" href="/v1/user">
                                 <img src="//upload.jianshu.io/users/upload_avatars/6287/06c537002583.png?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                             </a>
-                            <a class="follow" href="#">
+                            <a class="follow" href="javascript:;">
                                 <i class="iconfont icon-jia">
                                 </i>
                                 关注
@@ -234,7 +234,7 @@
                             <a class="avatar" href="/v1/user">
                                 <img src="//upload.jianshu.io/users/upload_avatars/1996705/738ba2908445?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                             </a>
-                            <a class="follow" href="#">
+                            <a class="follow" href="javascript:;">
                                 <i class="iconfont icon-jia">
                                 </i>
                                 关注
@@ -250,7 +250,7 @@
                             <a class="avatar" href="/v1/user">
                                 <img src="//upload.jianshu.io/users/upload_avatars/6198903/a70dc654-6674-4b71-925f-0389f31fb095.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                             </a>
-                            <a class="follow" href="#">
+                            <a class="follow" href="javascript:;">
                                 <i class="iconfont icon-jia">
                                 </i>
                                 关注
@@ -266,7 +266,7 @@
                             <a class="avatar" href="/v1/user">
                                 <img src="//upload.jianshu.io/users/upload_avatars/7663825/7c28763e-002b-4e89-8dea-5b8da210ef2c.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                             </a>
-                            <a class="follow" href="#">
+                            <a class="follow" href="javascript:;">
                                 <i class="iconfont icon-jia">
                                 </i>
                                 关注
@@ -279,7 +279,7 @@
                             </p>
                         </li>
                     </ul>
-                    <a class="find_more" href="#">
+                    <a class="find_more" href="/v1/categories">
                         查看全部
                         <i class="iconfont icon-gengduo">
                         </i>
@@ -290,11 +290,11 @@
                         <span>
                             热门视频
                         </span>
-                        <a href="#">
+                        <a href="javascript:;">
                             查看更多
                         </a>
                     </div>
-                    <a class="videos_list" href="#">
+                    <a class="videos_list" href="/v1/detail">
                         <div class="screenshot">
                             <img src="https://ainicheng.com/storage/img/1806.jpeg"/>
                         </div>
@@ -302,7 +302,7 @@
                             王者荣耀打野必备攻略 5v5野区地图分布详解
                         </div>
                     </a>
-                    <a class="videos_list" href="#">
+                    <a class="videos_list" href="/v1/detail">
                         <div class="screenshot">
                             <img src="https://ainicheng.com/storage/img/1890.png"/>
                         </div>
@@ -310,7 +310,7 @@
                             王者荣耀最强奶妈蔡文姬怎么玩2.0加强版
                         </div>
                     </a>
-                    <a class="videos_list" href="#">
+                    <a class="videos_list" href="/v1/detail">
                         <div class="screenshot">
                             <img src="https://ainicheng.com/storage/img/1840.jpg"/>
                         </div>
@@ -323,4 +323,5 @@
         </div>
     </div>
 </div>
+@include('v1.parts.foot')
 @stop

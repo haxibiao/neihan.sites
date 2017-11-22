@@ -18,11 +18,7 @@
     <meta name="description" content=" @yield('description'), {{ config('app.name') }} ">
 
     <!-- Styles -->
-    @if(Auth::check())
-        <link href="{{ mix('css/all.css') }}" rel="stylesheet">
-    @else
-        <link href="{{ mix('css/site.css') }}" rel="stylesheet">
-    @endif
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 
     @stack('css')
 
@@ -30,18 +26,18 @@
 <body>
     <div id="app" {!! is_in_app() ? '' : 'style="padding-top: 60px"' !!}>
         @include('parts.header')
-        
+
         @yield('content')
-        
+
         @include('parts.footer')
-        
+
     </div>
 
     <!-- Scripts -->
     @if(Auth::check())
     <script type="text/javascript">
-            window.tokenize =　 function(api_url){ 
-                var api_token = '{{ Auth::user()->api_token }}'　
+            window.tokenize =　 function(api_url){
+                var api_token = '{{ Auth::user()->api_token }}'
                 if(api_url.indexOf('?') === -1) {
                     api_url += '?api_token=' + api_token;
                 } else {
@@ -49,10 +45,14 @@
                 }
                 return api_url;
             };
-    </script> 
-    @endif 
-    @if(Auth::check())
-        <script src="{{ mix('js/all.js') }}"></script>
+    </script>
+    @endif
+
+    @if(in_array(request()->path(), [
+            'follow',
+            'notification'
+        ]))
+        <script src="{{ mix('js/spa.js') }}"></script>
     @else
         <script src="{{ mix('js/app.js') }}"></script>
     @endif
@@ -64,7 +64,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-    </script>    
+    </script>
 
     @stack('scripts')
     @stack('js')
