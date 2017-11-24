@@ -1,80 +1,114 @@
-//页面初始化
-@mixin id {
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    margin: 0;
+// 隐藏右边模块
+@mixin aside {
+    @media screen and (max-width: 768px) {
+        .aside {
+            display: none;
+        }
+    }
 }
 
-//a标签的默认样式
-@mixin a {
-    color: #333;
-    text-decoration: none;
+// 清除左边模块的右边距
+@mixin essays {
+    @media screen and (min-width: 768px) and (max-width: 992px) {
+        .essays {
+            padding-right: 0;
+        }
+    }
 }
 
-//关注之类的按钮样式
+// 图架
+@mixin chartholder ($width:100%,$height:100%,$vertical-align: middle) {
+    width: $width;
+    height: $height;
+    vertical-align: $vertical-align;
+}
+
+// 边框
+@mixin border ($border-radius:0,$border:0) {
+    border-radius: $border-radius;
+    border: $border;
+}
+
+// 间距
+@mixin spacing ($margin: 0,$padding: 0) {
+    margin: $margin;
+    padding: $padding;
+}
+
+// 字体
+@mixin font ($font-size: 12px,$color: $color-black,$font-weight: normal) {
+    font-size: $font-size;
+    color: $color;
+    font-weight: $font-weight;
+}
+
+// 文章行数
+@mixin article_num ($-webkit-line-clamp:4) {
+    display: -webkit-box;
+    -webkit-line-clamp: $-webkit-line-clamp;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+// 页面初始化
+@mixin initialization {
+    body {
+        font-family: "微软雅黑", Helvetica, Arial, sans-serif;
+        @include spacing;
+        @include font;
+        background-color: $background-color-white;
+    }
+    a,a:active,a:hover,a:focus {
+        text-decoration: none !important;
+        color: $color-black;
+    }
+    ul,ol,li,p {
+        list-style: none;
+        @include spacing;
+    }
+    li {
+        line-height: 20px;
+    }
+}
+
+// 用户、个人页的关注按钮样式
 @mixin follow {
     width: 100px;
-    font-size: 15px;
-    border-radius: 40px;
+    @include border (40px);
+    @include spacing (23px 0 23px 16px,8px 0);
+    @include font (15px,$color-white,400);
+    background-color: $background-color-green;
     text-align: center;
-    padding: 8px 0;
-    margin: 23px 0 23px 16px;
     line-height: normal;
-    font-weight: 400;
-    color: #fff;
-    background-color: #42c02e;
-    i {
-        font-size: inherit;
-    }
     &:hover {
         background-color: #00bc12;
     }
 }
 
-//头像样式
-@mixin avatar {
-    margin-right: 5px;
-    width: 40px;
-    height: 40px;
-    vertical-align: middle;
-    display: inline-block;
-    img {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        border: 1px solid $border-color;
+// 用户、个人、关注页的消息按钮样式
+@mixin follows {
+    @include follow;
+    float: right;
+    background-color: inherit;
+    border: 1px solid $border-color-follow;
+    @include font (14px,$color-green);
+    &:hover {
+        background-color: $background-color-milky;
     }
 }
 
-//图片大小样式
-@mixin wrap_img {
-    padding: 0;
-    img {
-        width: 100%;
-        height: 120px;
-        border-radius: 6px;
-        border: 1px solid $border-color;
-    }
-}
-
-//收集专题按钮样式
+// 收集专题按钮样式
 @mixin collection {
-    @include a;
     display: inline-block;
     min-height: 35px;
     margin: 0 12px 12px 0;
     font-size: 13px;
-    border: 1px solid $border-color;
-    border-radius: 4px;
+    @include border (4px,1px solid $border-color);
     overflow: hidden;
     line-height: 35px;
     img {
-        width: 35px;
-        height: 35px;
-        border-radius: 4px 0px 0px 4px;
-        vertical-align: middle;
-        border: 0;
+        @include chartholder (35px,35px);
+        @include border (4px 0px 0px 4px);
     }
     .name {
         display: inline-block;
@@ -86,161 +120,51 @@
     }
 }
 
-//小文章模块
-@mixin list_container {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    li {
-        border-bottom: 1px solid $border-color-hr;
-        margin-bottom: 17px;
-        padding: 0 2px 17px 0;
-        .personal {
-            .avatar {
-                @include avatar;
-            }
-            .information {
-                display: inline-block;
-                vertical-align: middle;
-                color: #888888;
-                a {
-                    @include a;
-                    font-size: 13px;
-                    img {
-                        width: 14px;
-                        height: 14px;
-                        vertical-align: middle;
-                    }
-                }
-            }
-        }
-        .substance {
-            margin-top: 2%;
-            line-height: 25px;
-            .conten {
-                padding: 0;
-                padding-right: 5px;
-                a {
-                    font-weight: 700;
-                    font-size: 18px;
-                    color: #333;
-                }
-                .article {
-                    display: -webkit-box;
-                    -webkit-line-clamp: 4;
-                    -webkit-box-orient: vertical;
-                    overflow: hidden;
-                    text-indent: 2em;
-                }
-                @media screen and (max-width: 768px) {
-                    .article {
-                        -webkit-line-clamp: 3;
-                    }
-                }
-            }
-            .wrap_img {
-                @include wrap_img;
-            }
-            .statistics {
-                color: #888888;
-                padding: 0;
-                margin-top: 5px;
-                a {
-                    @include a;
-                    color: #888888;
-                    font-size: 12px;
-                    font-weight: normal;
-                    margin-right: 10px;
-                    i {
-                        font-size: 14px;
-                    }
-                    .icon-yanjing {
-                        font-size: 16px;
-                    }
-                    &:hover {
-                        color: #5b5757;
-                    }
-                }
-                span {
-                    margin-right: 10px;
-                    i {
-                        font-size: 13px;
-                    }
-                }
-                .special {
-                    border: 1px solid $border-color-special;
-                    border-radius: 3px;
-                    color: #ea6f5a!important;
-                    padding: 3px 6px;
-                    vertical-align: middle;
-                }
-                .origin_author {
-                    display: inline;
-                    color: #3194d0!important;
-                }
-            }
-        }
-        @media screen and (min-width: 450px) and (max-width: 768px) {
-            .have_img {
-                .conten {
-                    width: 65%;
-                }
-                .wrap_img {
-                    width: 30%;
-                    margin: 0;
-                }
-            }
-        }
+// 头像样式
+@mixin avatar {
+    @include chartholder (40px,40px);
+    margin-right: 5px;
+    display: inline-block;
+    img {
+        @include chartholder;
+        @include border (50%,1px solid $border-color);
     }
 }
 
-//小文章阅读更多的模块
-@mixin load_more {
-    @include a;
-    display: inline-block;
-    width: 100%;
-    height: 40px;
-    background-color: #a5a5a5;
-    color: #fff;
-    text-align: center;
-    font-size: 15px;
-    border-radius: 20px;
-    padding: 10px 15px;
-    margin: 30px auto 60px;
+// 图片样式
+@mixin wrap_img {
+    padding: 0;
+    img {
+        @include chartholder (100%,120px);
+        @include border (6px,1px solid $border-color);
+    }
 }
 
-//标签页样式
+// 标签页样式
 @mixin trigger_menu {
-    list-style: none;
+    @include spacing (0 0 20px 0);
     border-bottom: 1px solid $border-color-hr;
-    margin-bottom: 20px;
-    padding: 0;
     li {
+        @include spacing (0 0 -1px 0,8px 0 0 0);
         display: inline-block;
-        padding: 8px 0 0 0;
-        margin-bottom: -1px;
-        line-height: 20px;
         a {
-            @include a;
-            color: #969696;
-            font-size: 15px;
-            font-weight: 700;
+            @include font (15px,$color-gray,700);
             line-height: 25px;
             padding: 13px 20px 4px 20px;
             i {
                 margin-right: 5px;
-                font-size: inherit;
+                font-size: 17px;
             }
             &:hover {
                 border-bottom: 2px solid $border-color-trigger_menu;
-                color: #646464;
+                color: $color-deep;
             }
         }
     }
     .active {
         border-bottom: 2px solid $border-color-trigger_menu;
         a {
-            color: #646464;
+            color: $color-deep;
             &:hover {
                 border: 0;
             }
@@ -261,49 +185,249 @@
     }
 }
 
-//关注右边模块
-@mixin main_top {
-    width: 100%;
-    height: 100%;
-    margin-bottom: 32px;
+// 右边aside的头部样式
+@mixin title {
     a {
-        @include a;
+        color: $color-gray;
+        float: right;
+        &:hover {
+            color: $color-deep;
+        }
     }
-    p {
-        padding-left: 97px;
-        color: #969696;
-        font-size: 14px;
+}
+
+// 摘要内容模块的内容样式
+@mixin note {
+    display: inline-block;
+    width: 100%;
+    margin-top: 15px;
+    color: $color-black;
+    img {
+        @include chartholder (48px,48px);
+        float: left;
+        margin-right: 6px;
     }
+    .note_title {
+        padding-top: 5px;
+        @include article_num (2);
+    }
+    .video_title {
+        @include article_num (3);
+    }
+}
+
+// 右边aside的摘要内容模块
+@mixin daily {
+    width: 100%;
+    color: $color-gray;
+    font-size: 14px;
+    margin-bottom: 15%;
+    .title {
+        @include title;
+    }
+    .note {
+        @include note;
+    }
+}
+
+// 文章模块统计数量样式
+@mixin meta {
+    @include font (12px,$color-light,400);
+    @include spacing;
+    line-height: 20px;
+    a {
+        color: $color-light;
+        margin-right: 10px;
+        &:hover {
+            color: $color-deep;
+        }
+    }
+    span {
+        margin-right: 10px;
+    }
+    .special {
+        @include border (3px,1px solid $border-color-special);
+        color: $color-blusher;
+        padding: 3px 6px;
+        vertical-align: middle;
+        &:hover {
+            color: $color-blusher;
+            background-color: $background-color-milky;
+        }
+    }
+    .origin_author {
+        display: inline;
+        a {
+            color: $color-blue;
+        }
+    }
+}
+
+// 文章模块标题样式
+@mixin list_container_title {
+    @include font (18px,$color-black,700);
+}
+
+// 文章模块
+@mixin list_container {
+    li {
+        @include spacing (0 0 17px 0,0 2px 17px 0);
+        border-bottom: 1px solid $border-color-hr;
+        .author {
+            .avatar {
+                @include avatar;
+            }
+            .info {
+                display: inline-block;
+                vertical-align: middle;
+                color: $color-gray;
+                font-size: 13px;
+                a {
+                    img {
+                        @include chartholder (14px,14px);
+                    }
+                }
+            }
+        }
+        .substance {
+            margin-top: 2%;
+            line-height: 25px;
+            .conten {
+                @include spacing (0 0 8px 0,0 5px 0 0);
+                a {
+                    @include list_container_title;
+                }
+                .article {
+                    @include article_num;
+                    text-indent: 2em;
+                }
+                @media screen and (max-width: 768px) {
+                    .article {
+                        -webkit-line-clamp: 3;
+                    }
+                }
+            }
+            .wrap_img {
+                @include wrap_img;
+            }
+            .meta {
+                @include meta;
+            }
+        }
+        @media screen and (min-width: 450px) and (max-width: 768px) {
+            .have_img {
+                .conten {
+                    width: 65%;
+                }
+                .wrap_img {
+                    width: 30%;
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
+
+// 阅读更多模块
+@mixin load_more {
+    display: inline-block;
+    width: 100%;
+    line-height: 20px;
+    background-color: #a5a5a5;
+    @include font (15px,$color-white);
+    text-align: center;
+    border-radius: 20px;
+    @include spacing (30px auto 60px,10px 15px);
+    i {
+        font-size: inherit;
+    }
+}
+
+// 用户、关注页的信息模块的头像、按钮样式
+@mixin main_top_list {
+    margin-bottom: 32px;
     .avatar {
         @include avatar;
-        width: 80px;
-        height: 80px;
+        @include chartholder (80px,80px);
         float: left;
+    }
+    .follow {
+        @include follow;
+    }
+}
+
+// 用户、关注页的信息模块的名字样式
+@mixin main_top_name {
+    @include font (20px,$color-black,700);
+    padding: 10px 0 0 97px;
+    display: block;
+    vertical-align: middle;
+    i {
+        @include font (16px,$color-blue,normal);
+        vertical-align: middle;
+    }
+}
+
+// 用户、关注页的信息模块的统计数量样式
+@mixin main_top_info_meta {
+    @include font (12px,$color-gray);
+    @include spacing (0 7px 6px 0,0 7px 0 0);
+    border-right: 1px solid $border-color-hr;
+    a {
+        color: $color-gray;
+        display: block;
+        i {
+            font-size: 8px;
+            margin-left: -3px;
+        }
+    }
+    p {
+        @include font (15px);
+        margin-bottom: -3px;
+    }
+}
+
+// 用户、关注页的信息模块
+@mixin main_top {
+    @include main_top_list;
+    p {
+        padding-left: 97px;
+        @include font (14px,$color-gray);
+        a {
+            color: $color-blue;
+        }
+    }
+    .info {
+        @include spacing (5px 0 0 0,0 0 0 97px);
+        font-size: 14px;
+        ul {
+            li {
+                display: inline-block;
+                .meta_block {
+                    @include main_top_info_meta;
+                    p {
+                        padding: 0;
+                    }
+                }
+            }
+            li:last-child {
+                .meta_block {
+                    @include spacing;
+                    border: none;
+                }
+            }
+        }
     }
     .avatar_collection {
         img {
             border-radius: 10%;
         }
     }
-    .follow {
-        @include follow;
-        float: right;
-        background-color: inherit;
-        border: 1px solid $border-color-follow;
-        color: #42c02e;
-        font-size: 14px;
-        &:hover {
-            background-color: #F5F5F5;
-        }
-    }
     .contribute {
         width: 75px;
     }
     .name {
-        font-size: 20px;
-        font-weight: 700;
-        padding: 10px 0 0 97px;
-        display: block;
+        @include main_top_name;
     }
     @media screen and (max-width: 768px) {
         padding-bottom: 34px;

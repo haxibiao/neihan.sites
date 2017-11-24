@@ -51,20 +51,20 @@
                 <div class="tab-pane active" id="wenzhang" role="tabpanel">
                     <ul class="list_container">
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/8370162/1728c3a2-91d4-4554-be23-124fe4233dc8.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                爱你城精选
 						            </a>
 						            <a href="#">
 						                <img src="//cdn2.jianshu.io/assets/badges/signed-9702260821906f0d953eab67a29f8e7a2d2e3d20960576347591283a3fbfd867.png"/>
 						            </a>
-						            <small>
+						            <span>
 						                2天前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance have_img clearfix">
@@ -79,7 +79,7 @@
 						        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src="//upload-images.jianshu.io/upload_images/4896574-e0f2b6c752dab9c1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
 						        </a>
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -99,17 +99,17 @@
 						    </div>
 						</li>
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/1978017/8072afae5460?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                闫浩
 						            </a>
-						            <small>
+						            <span>
 						                5天前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance have_img clearfix">
@@ -124,7 +124,7 @@
 						        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src="//upload-images.jianshu.io/upload_images/1978017-b9ea1315e388a415.jpg!1200?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
 						        </a>
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -149,17 +149,17 @@
 						    </div>
 						</li>
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/1858256/e78657d29b8d.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                浮云笑此生
 						            </a>
-						            <small>
+						            <span>
 						                3周前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance clearfix">
@@ -174,7 +174,7 @@
 						        <!-- <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src=""/>
 						        </a> -->
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -199,17 +199,17 @@
 						    </div>
 						</li>
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/253140/b9adfdadef8a?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                迎刃
 						            </a>
-						            <small>
+						            <span>
 						                1个月前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance have_img clearfix">
@@ -224,7 +224,7 @@
 						        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src="//upload-images.jianshu.io/upload_images/253140-5c2d51aa0d7c673d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
 						        </a>
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -249,17 +249,17 @@
 						    </div>
 						</li>
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/6205434/831957b5-a672-4aa2-884b-cf971a8c34d5?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                网易王三三
 						            </a>
-						            <small>
+						            <span>
 						                1个月 前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance have_img clearfix">
@@ -274,7 +274,7 @@
 						        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src="//upload-images.jianshu.io/upload_images/6205434-62e64dc2d81e3625.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
 						        </a>
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -294,17 +294,17 @@
 						    </div>
 						</li>
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/6486956/8b5f880e-f7ba-446b-8b59-1532e087fe3e.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                智_先生
 						            </a>
-						            <small>
+						            <span>
 						                2个月 前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance have_img clearfix">
@@ -319,7 +319,7 @@
 						        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src="//upload-images.jianshu.io/upload_images/6486956-1ce7c76170f7b916.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
 						        </a>
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -344,17 +344,17 @@
 						    </div>
 						</li>
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/1408329/1ed19a008804?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                冷清持
 						            </a>
-						            <small>
+						            <span>
 						                2个月 前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance have_img clearfix">
@@ -369,7 +369,7 @@
 						        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src="http://upload-images.jianshu.io/upload_images/1408329-d38d06f1f04211fd.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1080/q/100"/>
 						        </a>
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -401,20 +401,20 @@
                 <div class="tab-pane" id="pinglun" role="tabpanel">
                     <ul class="list_container">
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/8370162/1728c3a2-91d4-4554-be23-124fe4233dc8.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                爱你城精选
 						            </a>
 						            <a href="#">
 						                <img src="//cdn2.jianshu.io/assets/badges/signed-9702260821906f0d953eab67a29f8e7a2d2e3d20960576347591283a3fbfd867.png"/>
 						            </a>
-						            <small>
+						            <span>
 						                2天前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance have_img clearfix">
@@ -429,7 +429,7 @@
 						        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src="//upload-images.jianshu.io/upload_images/4896574-e0f2b6c752dab9c1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
 						        </a>
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -449,17 +449,17 @@
 						    </div>
 						</li>
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/1978017/8072afae5460?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                闫浩
 						            </a>
-						            <small>
+						            <span>
 						                5天前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance have_img clearfix">
@@ -474,7 +474,7 @@
 						        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src="//upload-images.jianshu.io/upload_images/1978017-b9ea1315e388a415.jpg!1200?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
 						        </a>
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -499,17 +499,17 @@
 						    </div>
 						</li>
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/1858256/e78657d29b8d.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                浮云笑此生
 						            </a>
-						            <small>
+						            <span>
 						                3周前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance clearfix">
@@ -524,7 +524,7 @@
 						        <!-- <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src=""/>
 						        </a> -->
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -549,17 +549,17 @@
 						    </div>
 						</li>
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/253140/b9adfdadef8a?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                迎刃
 						            </a>
-						            <small>
+						            <span>
 						                1个月前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance have_img clearfix">
@@ -574,7 +574,7 @@
 						        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src="//upload-images.jianshu.io/upload_images/253140-5c2d51aa0d7c673d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
 						        </a>
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -599,17 +599,17 @@
 						    </div>
 						</li>
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/6205434/831957b5-a672-4aa2-884b-cf971a8c34d5?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                网易王三三
 						            </a>
-						            <small>
+						            <span>
 						                1个月 前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance have_img clearfix">
@@ -624,7 +624,7 @@
 						        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src="//upload-images.jianshu.io/upload_images/6205434-62e64dc2d81e3625.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
 						        </a>
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -644,17 +644,17 @@
 						    </div>
 						</li>
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/6486956/8b5f880e-f7ba-446b-8b59-1532e087fe3e.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                智_先生
 						            </a>
-						            <small>
+						            <span>
 						                2个月 前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance have_img clearfix">
@@ -669,7 +669,7 @@
 						        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src="//upload-images.jianshu.io/upload_images/6486956-1ce7c76170f7b916.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
 						        </a>
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -694,17 +694,17 @@
 						    </div>
 						</li>
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/1408329/1ed19a008804?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                冷清持
 						            </a>
-						            <small>
+						            <span>
 						                2个月 前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance have_img clearfix">
@@ -719,7 +719,7 @@
 						        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src="http://upload-images.jianshu.io/upload_images/1408329-d38d06f1f04211fd.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1080/q/100"/>
 						        </a>
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -751,20 +751,20 @@
                 <div class="tab-pane" id="huo" role="tabpanel">
                     <ul class="list_container">
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/8370162/1728c3a2-91d4-4554-be23-124fe4233dc8.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                爱你城精选
 						            </a>
 						            <a href="#">
 						                <img src="//cdn2.jianshu.io/assets/badges/signed-9702260821906f0d953eab67a29f8e7a2d2e3d20960576347591283a3fbfd867.png"/>
 						            </a>
-						            <small>
+						            <span>
 						                2天前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance have_img clearfix">
@@ -779,7 +779,7 @@
 						        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src="//upload-images.jianshu.io/upload_images/4896574-e0f2b6c752dab9c1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
 						        </a>
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -799,17 +799,17 @@
 						    </div>
 						</li>
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/1978017/8072afae5460?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                闫浩
 						            </a>
-						            <small>
+						            <span>
 						                5天前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance have_img clearfix">
@@ -824,7 +824,7 @@
 						        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src="//upload-images.jianshu.io/upload_images/1978017-b9ea1315e388a415.jpg!1200?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
 						        </a>
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -849,17 +849,17 @@
 						    </div>
 						</li>
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/1858256/e78657d29b8d.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                浮云笑此生
 						            </a>
-						            <small>
+						            <span>
 						                3周前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance clearfix">
@@ -874,7 +874,7 @@
 						        <!-- <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src=""/>
 						        </a> -->
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -899,17 +899,17 @@
 						    </div>
 						</li>
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/253140/b9adfdadef8a?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                迎刃
 						            </a>
-						            <small>
+						            <span>
 						                1个月前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance have_img clearfix">
@@ -924,7 +924,7 @@
 						        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src="//upload-images.jianshu.io/upload_images/253140-5c2d51aa0d7c673d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
 						        </a>
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -949,17 +949,17 @@
 						    </div>
 						</li>
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/6205434/831957b5-a672-4aa2-884b-cf971a8c34d5?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                网易王三三
 						            </a>
-						            <small>
+						            <span>
 						                1个月 前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance have_img clearfix">
@@ -974,7 +974,7 @@
 						        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src="//upload-images.jianshu.io/upload_images/6205434-62e64dc2d81e3625.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
 						        </a>
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -994,17 +994,17 @@
 						    </div>
 						</li>
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/6486956/8b5f880e-f7ba-446b-8b59-1532e087fe3e.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                智_先生
 						            </a>
-						            <small>
+						            <span>
 						                2个月 前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance have_img clearfix">
@@ -1019,7 +1019,7 @@
 						        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src="//upload-images.jianshu.io/upload_images/6486956-1ce7c76170f7b916.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
 						        </a>
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>
@@ -1044,17 +1044,17 @@
 						    </div>
 						</li>
 						<li>
-						    <div class="personal">
+						    <div class="author">
 						        <a class="avatar" href="/v1/user">
 						            <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/1408329/1ed19a008804?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
 						        </a>
-						        <div class="information">
+						        <div class="info">
 						            <a href="/v1/user">
 						                冷清持
 						            </a>
-						            <small>
+						            <span>
 						                2个月 前
-						            </small>
+						            </span>
 						        </div>
 						    </div>
 						    <div class="substance have_img clearfix">
@@ -1069,7 +1069,7 @@
 						        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
 						            <img src="http://upload-images.jianshu.io/upload_images/1408329-d38d06f1f04211fd.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1080/q/100"/>
 						        </a>
-						        <div class="statistics col-xs-12">
+						        <div class="meta col-xs-12">
 						            <a href="/v1/detail">
 						                <i class="iconfont icon-yanjing">
 						                </i>

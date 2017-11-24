@@ -18,7 +18,7 @@
     </head>
     <body>
         <div id="app">
-            @include('v1.parts.head')
+            @include('v1.parts.head_user')
             @yield('content')
             {{-- @include('v1.parts.foot') --}}
         </div>

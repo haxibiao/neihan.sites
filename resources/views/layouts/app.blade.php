@@ -18,7 +18,7 @@
     <meta name="description" content=" @yield('description'), {{ config('app.name') }} ">
 
     <!-- Styles -->
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/a.css') }}" rel="stylesheet">
 
     @stack('css')
 
@@ -52,9 +52,9 @@
             'follow',
             'notification'
         ]))
-        <script src="{{ mix('js/spa.js') }}"></script>
+        <script src="{{ mix('js/b.js') }}"></script>
     @else
-        <script src="{{ mix('js/app.js') }}"></script>
+        <script src="{{ mix('js/a.js') }}"></script>
     @endif
 
 

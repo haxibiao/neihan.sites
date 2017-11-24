@@ -4,6 +4,7 @@
     爱你城
 @stop
 @section('content')
+@include('v1.parts.head_user')
 <div id="home">
     <div class="container">
         <div class="row">
@@ -122,20 +123,20 @@
                         <div class="tab-pane active" id="dongtai" role="tabpanel">
                             <ul class="list_container">
                                 <li>
-                                    <div class="personal">
+                                    <div class="author">
                                         <a class="avatar" href="/v1/user">
                                             <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/8016539/6c0b408f-6cf6-4fd1-a283-c2446ab63f58.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
                                         </a>
-                                        <div class="information">
+                                        <div class="info">
                                             <a href="/v1/user">
                                                 喵星菇凉
                                             </a>
                                             <a href="#">
                                                 <img src="//cdn2.jianshu.io/assets/badges/signed-9702260821906f0d953eab67a29f8e7a2d2e3d20960576347591283a3fbfd867.png"/>
                                             </a>
-                                            <small>
+                                            <span>
                                                 关注了专题 · 11.14.16:55
-                                            </small>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="follow_detail">
@@ -175,20 +176,20 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="personal">
+                                    <div class="author">
                                         <a class="avatar" href="/v1/user">
                                             <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/8016539/6c0b408f-6cf6-4fd1-a283-c2446ab63f58.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
                                         </a>
-                                        <div class="information">
+                                        <div class="info">
                                             <a href="/v1/user">
                                                 喵星菇凉
                                             </a>
                                             <a href="#">
                                                 <img src="//cdn2.jianshu.io/assets/badges/signed-9702260821906f0d953eab67a29f8e7a2d2e3d20960576347591283a3fbfd867.png"/>
                                             </a>
-                                            <small>
+                                            <span>
                                                 喜欢了文章 · 11.15.16:12
-                                            </small>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="substance have_img clearfix">
@@ -203,7 +204,7 @@
                                         <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
                                             <img src="//upload-images.jianshu.io/upload_images/5713067-789d091267d0b48b.png?imageMogr2/auto-orient/strip|imageView2/1/w/150/h/120"/>
                                         </a>
-                                        <div class="statistics col-xs-12">
+                                        <div class="meta col-xs-12">
                                             <a class="origin_author" href="#">
                                                 蝙蝠侠IT
                                             </a>
@@ -226,20 +227,20 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="personal">
+                                    <div class="author">
                                         <a class="avatar" href="/v1/user">
                                             <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/8016539/6c0b408f-6cf6-4fd1-a283-c2446ab63f58.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
                                         </a>
-                                        <div class="information">
+                                        <div class="info">
                                             <a href="/v1/user">
                                                 喵星菇凉
                                             </a>
                                             <a href="#">
                                                 <img src="//cdn2.jianshu.io/assets/badges/signed-9702260821906f0d953eab67a29f8e7a2d2e3d20960576347591283a3fbfd867.png"/>
                                             </a>
-                                            <small>
+                                            <span>
                                                 发表了文章 · 06.15.12:12
-                                            </small>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="substance have_img clearfix">
@@ -254,7 +255,7 @@
                                         <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
                                             <img src="//upload-images.jianshu.io/upload_images/4896574-5091b316532c0d99?imageMogr2/auto-orient/strip|imageView2/1/w/150/h/120"/>
                                         </a>
-                                        <div class="statistics col-xs-12">
+                                        <div class="meta col-xs-12">
                                             <a href="/v1/detail">
                                                 <i class="iconfont icon-yanjing">
                                                 </i>
@@ -274,20 +275,20 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="personal">
+                                    <div class="author">
                                         <a class="avatar" href="/v1/user">
                                             <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/8016539/6c0b408f-6cf6-4fd1-a283-c2446ab63f58.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
                                         </a>
-                                        <div class="information">
+                                        <div class="info">
                                             <a href="/v1/user">
                                                 喵星菇凉
                                             </a>
                                             <a href="#">
                                                 <img src="//cdn2.jianshu.io/assets/badges/signed-9702260821906f0d953eab67a29f8e7a2d2e3d20960576347591283a3fbfd867.png"/>
                                             </a>
-                                            <small>
+                                            <span>
                                                 关注了作者 · 06.14.23:55
-                                            </small>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="follow_detail">
@@ -315,20 +316,20 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="personal">
+                                    <div class="author">
                                         <a class="avatar" href="/v1/user">
                                             <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/8016539/6c0b408f-6cf6-4fd1-a283-c2446ab63f58.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
                                         </a>
-                                        <div class="information">
+                                        <div class="info">
                                             <a href="/v1/user">
                                                 喵星菇凉
                                             </a>
                                             <a href="#">
                                                 <img src="//cdn2.jianshu.io/assets/badges/signed-9702260821906f0d953eab67a29f8e7a2d2e3d20960576347591283a3fbfd867.png"/>
                                             </a>
-                                            <small>
+                                            <span>
                                                 发表了评论 · 10.30.13:26
-                                            </small>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="comment">
@@ -371,20 +372,20 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="personal">
+                                    <div class="author">
                                         <a class="avatar" href="/v1/user">
                                             <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/8016539/6c0b408f-6cf6-4fd1-a283-c2446ab63f58.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
                                         </a>
-                                        <div class="information">
+                                        <div class="info">
                                             <a href="/v1/user">
                                                 喵星菇凉
                                             </a>
                                             <em>
                                                 ·
                                             </em>
-                                            <small>
+                                            <span>
                                                 赞了评论 · 10.30.13:26
-                                            </small>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="comment">
@@ -409,17 +410,17 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="personal">
+                                    <div class="author">
                                         <a class="avatar" href="/v1/user">
                                             <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/8016539/6c0b408f-6cf6-4fd1-a283-c2446ab63f58.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
                                         </a>
-                                        <div class="information">
+                                        <div class="info">
                                             <a href="/v1/user">
                                                 喵星菇凉
                                             </a>
-                                            <small>
+                                            <span>
                                                 加入了爱你城 · 09.20.13:06
-                                            </small>
+                                            </span>
                                         </div>
                                     </div>
                                 </li>

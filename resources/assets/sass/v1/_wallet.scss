@@ -1,6 +1,6 @@
 //我的钱包页
 #wallet {
-    @include id;
+    // @include id;
     .row {
         .top {
             margin: 10px 0 40px 0;
@@ -19,14 +19,14 @@
                     vertical-align: middle;
                     padding: 15px 0 10px 95px;
                     .name {
-                        @include a;
+                        // @include a;
                         font-size: 21px;
                         font-weight: 700;
                     }
                     .mobile_bind {
                         padding-top: 5px;
                         a {
-                            @include a;
+                            // @include a;
                             color: #3194d0;
                         }
                     }
@@ -88,7 +88,7 @@
                     color: #969696;
                 }
                 a {
-                    @include a;
+                    // @include a;
                     color: #3194d0;
                     display: block;
                 }
@@ -162,7 +162,7 @@
                     width: 46%;
                     padding-left: 15px;
                     a {
-                        @include a;
+                        // @include a;
                         color: #3194d0;
                     }
                 }

@@ -1,110 +1,23 @@
-@media screen and (max-width: 768px) {
-    #user {
-        .aside {
-            display: none;
-        }
-    }
-}
-
-@media screen and (min-width: 768px) and (max-width: 992px) {
-    #user {
-        .essays {
-            padding-right: 0;
-        }
-    }
-}
-
 //用户页
 #user {
-    @include id;
+    @include aside;
+    @include essays;
     .essays {
         .main_top {
-            width: 100%;
-            height: 100%;
-            margin-bottom: 20px;
-            a {
-                @include a;
-            }
-            .avatar {
-                @include avatar;
-                width: 80px;
-                height: 80px;
-                float: left;
-            }
+            @include main_top;
             .follow {
-                @include follow;
                 float: right;
             }
             .contribute {
-                @include follow;
+                @include follows;
                 width: 90px;
-                float: right;
-                border: 1px solid $border-color-follow;
-                color: #42c02e;
-                background-color: inherit;
-                &:hover {
-                    background-color: #F5F5F5;
-                }
             }
             .title {
                 padding: 10px 0 0 97px;
                 .name {
-                    font-size: 20px;
-                    font-weight: 700;
+                    @include main_top_name;
                     display: inline;
-                    vertical-align: middle;
-                    i {
-                        color: #3194d0;
-                        vertical-align: middle;
-                        font-weight: normal;
-                    }
-                }
-            }
-            .info {
-                padding-left: 97px;
-                margin-top: 5px;
-                font-size: 14px;
-                ul {
-                    list-style: none;
                     padding: 0;
-                    li {
-                        display: inline-block;
-                        line-height: 20px;
-                        .meta_block {
-                            font-size: 12px;
-                            margin: 0 7px 6px 0;
-                            padding: 0 7px 0 0;
-                            border-right: 1px solid $border-color-hr;
-                            a {
-                                color: #969696;
-                                display: inherit;
-                                p {
-                                    font-size: 15px;
-                                    color: #333;
-                                    margin-bottom: -3px;
-                                }
-                                i {
-                                    font-size: 8px;
-                                    margin-left: -3px;
-                                }
-                            }
-                            p {
-                                font-size: 15px;
-                                color: #333;
-                                margin-bottom: -3px;
-                            }
-                            div {
-                                color: #969696;
-                            }
-                        }
-                    }
-                    li:last-child {
-                        .meta_block {
-                            margin: 0;
-                            padding: 0;
-                            border: none;
-                        }
-                    }
                 }
             }
         }
@@ -129,169 +42,74 @@
         }
         div {
             .trigger_menu {
-                list-style: none;
-                border-bottom: 1px solid $border-color-hr;
-                margin-bottom: 20px;
-                padding: 0;
-                li {
-                    display: inline-block;
-                    padding: 8px 0;
-                    margin-bottom: -1px;
-                    line-height: 20px;
-                    a {
-                        @include a;
-                        color: #969696;
-                        font-size: 15px;
-                        font-weight: 700;
-                        line-height: 25px;
-                        padding: 13px 20px;
-                        i {
-                            margin-right: 5px;
-                            font-size: inherit;
-                        }
-                        &:hover {
-                            border-bottom: 2px solid $border-color-trigger_menu;
-                            color: #646464;
-                        }
-                    }
-                }
-                .active {
-                    border-bottom: 2px solid $border-color-trigger_menu;
-                    a {
-                        color: #646464;
-                        &:hover {
-                            border: 0;
-                        }
-                    }
-                }
-            }
-            @media screen and (max-width: 768px) {
-                .trigger_menu {
-                    li {
-                        a {
-                            padding: 13px 5px;
-                            i {
-                                margin: 0;
-                            }
-                        }
-                    }
-                }
-            }
-            @media screen and (min-width: 450px) and (max-width: 768px) {
-                .trigger_menu {
-                    margin-top: 20px;
-                    li {
-                        margin-right: 35px;
-                    }
-                }
+                @include trigger_menu;
             }
             .tab-content {
                 .list_container {
                     @include list_container;
-                }
-                .follow_detail {
-                    padding: 20px;
-                    background-color: hsla(0, 0%, 71%, .1);
-                    border: 1px solid $border-color;
-                    border-radius: 4px;
-                    font-size: 12px;
-                    margin-top: 2%;
-                    .info {
-                        min-height: 47px;
-                        .avatar {
-                            @include avatar;
-                            float: left;
-                            margin-right: 10px;
-                        }
-                        .follow {
-                            @include a;
-                            @include follow;
-                            float: right;
-                            margin: 6px 0 0 0;
-                        }
-                        .title {
-                            margin-right: 3px;
-                            font-size: 17px;
-                            line-height: 1.8;
-                            vertical-align: middle;
-                            color: #333;
-                        }
-                        .icon-nanhai {
-                            font-size: 15px;
-                            vertical-align: middle;
-                            color: #3194d0;
-                        }
-                        p {
-                            margin-bottom: 0;
-                            color: #969696;
-                        }
-                    }
-                    .signature {
-                        margin-top: 20px;
-                        padding-top: 20px;
-                        border-top: 1px solid $border-color;
-                        color: #969696;
-                    }
-                }
-                .comment {
-                    p {
-                        font-size: 15px;
-                        line-height: 1.7;
-                        a {
-                            @include a;
-                            color: #3194d0;
-                        }
-                    }
-                    blockquote {
-                        color: #969696;
-                        margin-bottom: 0;
-                        border-left: 3px solid $border-color;
-                        font-size: 12px;
-                        .title {
-                            font-size: 15px;
-                            color: #333;
-                            font-weight: 700;
-                            line-height: 1.5;
-                            margin: 0 0 4px;
-                        }
-                        .abstract {
-                            font-size: 13px;
-                            line-height: 24px;
-                            margin: 0 0 4px;
-                        }
-                        .meta {
+                    li {
+                        .follow_detail {
+                            @include spacing (2% 0 0 0,20px);
+                            @include border (4px,1px solid $border-color);
+                            background-color: hsla(0, 0%, 71%, .1);
                             font-size: 12px;
-                            font-weight: 400;
-                            line-height: 20px;
-                            .origin_author {
-                                display: inline;
-                                font-size: 12px;
-                                color: #969696;
-                                a {
-                                    @include a;
+                            .info {
+                                min-height: 47px;
+                                .avatar {
+                                    @include avatar;
+                                    float: left;
                                     margin-right: 10px;
-                                    color: #3194d0!important;
+                                }
+                                .follow {
+                                    @include follow;
+                                    float: right;
+                                    margin: 6px 0 0 0;
+                                }
+                                .title {
+                                    margin-right: 3px;
+                                    @include font (17px,$color-black);
+                                    line-height: 1.8;
+                                    vertical-align: middle;
+                                }
+                                .icon-nanhai {
+                                    @include font (15px,$color-blue);
+                                    vertical-align: middle;
+                                }
+                                p {
+                                    margin-bottom: 0;
+                                    color: $color-gray;
                                 }
                             }
-                            a {
-                                @include a;
-                                color: #b4b4b4;
-                                margin-right: 10px;
-                                i {
-                                    font-size: 14px;
-                                }
-                                .icon-yanjing {
-                                    font-size: 16px;
-                                }
-                                &:hover {
-                                    color: #5b5757;
+                            .signature {
+                                @include spacing (20px 0 0 0,20px 0 0 0);
+                                border-top: 1px solid $border-color;
+                                color: $color-gray;
+                            }
+                        }
+                        .comment {
+                            p {
+                                font-size: 15px;
+                                line-height: 1.7;
+                                a {
+                                    color: $color-blue;
                                 }
                             }
-                            span {
-                                color: #b4b4b4;
-                                margin-right: 10px;
-                                i {
+                            blockquote {
+                                @include font (12px,$color-gray);
+                                margin-bottom: 0;
+                                border-left: 3px solid $border-color;
+                                .title {
+                                    @include font (15px,$color-black,700);
+                                    line-height: 1.5;
+                                    margin: 0 0 4px;
+                                }
+                                .abstract {
                                     font-size: 13px;
+                                    line-height: 24px;
+                                    margin: 0 0 4px;
+                                }
+                                .meta {
+                                    @include meta;
                                 }
                             }
                         }
@@ -309,7 +127,7 @@
             li {
                 margin-bottom: 10px;
                 a {
-                    @include a;
+                    // @include a;
                     font-size: 14px;
                     line-height: 30px;
                     img {
@@ -318,12 +136,9 @@
                         margin-right: 3px;
                     }
                     i {
-                        font-size: 22px;
+                        font-size: 20px;
                         vertical-align: middle;
-                        margin-right: 4px;
-                    }
-                    .icon-xihuan {
-                        font-size: 25px;
+                        margin-right: 5px;
                     }
                     span {
                         vertical-align: middle;
@@ -343,16 +158,12 @@
             padding: 0 0 16px;
             text-align: left;
             a {
-                @include a;
-                i {
-                    font-size: 18px;
-                }
-                .icon-xinlangweibo1 {
-                    color: #f56f16;
-                }
-                .icon-weixin {
-                    font-size: 19px;
-                    color: #36c636;
+                // @include a;
+                img {
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 5px;
+                    vertical-align: middle;
                 }
             }
         }
@@ -367,7 +178,7 @@
                     margin-bottom: 10px;
                     line-height: 20px;
                     a {
-                        @include a;
+                        // @include a;
                         font-size: 14px;
                         img {
                             width: 32px;
@@ -378,7 +189,7 @@
                             color: #969696;
                             vertical-align: middle;
                             margin-right: 5px;
-                            font-size: 18px;
+                            font-size: 20px;
                         }
                         span {
                             position: relative;
@@ -392,7 +203,7 @@
             padding-bottom: 20px;
             color: #969696;
             a {
-                @include a;
+                // @include a;
                 color: #969696;
                 font-size: 13px;
                 &:hover {
@@ -402,3 +213,4 @@
         }
     }
 }
+// 335

@@ -1,8 +1,8 @@
-//头部
-#heads {
-    padding-top: 80px;
+// 未登录头部
+#head {
+    padding-top: 70px;
     .navbar {
-        background-color: #f2b5c5;
+        // background-color: #f2b5c5;
         .navbar-header {
             a {
                 padding-top: 0;
@@ -13,33 +13,151 @@
         }
         .navbar-collapse {
             a {
-                color: #666;
+                color: #333;
                 font-size: 15px;
             }
-            .dropdown-menu {
+            .author {
+                padding: 10px 15px 0;
+                .avatar {
+                    @include avatar;
+                    margin: 0;
+                }
+            }
+            .follow {
+                @include follow;
+                margin: 8px 10px 0;
                 background-color: #f2b5c5;
+                padding-bottom: 5px;
+                &:hover {
+                    background-color: #f3a0b6;
+                }
+                i {
+                    font-size: 25px;
+                }
+            }
+            .follows {
+                @include follows;
+                width: 60px;
+                margin: 8px 10px 0;
+                border-color: #f2b5c5; 
+                color: #f2b5c5;
+                &:hover {
+                    border-color: #f3a0b6;
+                }
+            }
+            .navbar-form {
+                padding: 0;
+                border-color: transparent;
+                .form-group {
+                    position: relative;
+                    input {
+                        width: 150px;
+                        height: 36px;
+                        padding: 0 40px 0 20px;
+                        border-radius: 18px;
+                        background-color: #eee;
+                        border: none;;
+                    }
+                    i {
+                        position: absolute;
+                        top: 4px;
+                        right: 4px;
+                        width: 28px;
+                        height: 28px;
+                        font-size: 20px;
+                        text-align: center;
+                        line-height: 28px;
+                        color: #666;
+                        border-radius: 50%;
+                    }
+                }
+            }
+            .dropdown-menu {
+                // background-color: #f2b5c5;
                 a {
                     i {
-                        font-size: 18px;
-                        margin: 0 5px 0 3px;
+                        font-size: 22px;
+                        margin-right: 15px;
+                        vertical-align: middle;
+                        color: #fd5b78;
                     }
-                    .icon-pinglun1 {
+                }
+            }
+        }
+    }
+}
+
+// 已登录头部
+#head_user {
+    .navbar {
+        // background-color: #f2b5c5;
+        .navbar-header {
+            a {
+                padding-top: 0;
+                img {
+                    max-height: 50px;
+                }
+            }
+        }
+        .navbar-collapse {
+            a {
+                color: #333;
+                font-size: 15px;
+            }
+            .author {
+                padding: 10px 15px 0;
+                .avatar {
+                    @include avatar;
+                    margin: 0;
+                }
+            }
+            .follow {
+                @include follow;
+                margin: 8px 15px 0;
+                background-color: #f2b5c5;
+                padding-bottom: 5px;
+                &:hover {
+                    background-color: #f3a0b6;
+                }
+                i {
+                    font-size: 25px;
+                }
+            }
+            .navbar-form {
+                padding: 0;
+                border-color: transparent;
+                .form-group {
+                    position: relative;
+                    input {
+                        width: 150px;
+                        height: 36px;
+                        padding: 0 40px 0 20px;
+                        border-radius: 18px;
+                        background-color: #eee;
+                        border: none;;
+                    }
+                    i {
+                        position: absolute;
+                        top: 4px;
+                        right: 4px;
+                        width: 28px;
+                        height: 28px;
                         font-size: 20px;
-                        font-weight: 800;
-                        margin-left: 0;
+                        text-align: center;
+                        line-height: 28px;
+                        color: #666;
+                        border-radius: 50%;
                     }
-                    .icon-sixin {
-                        font-size: 16px;
-                        font-weight: 600;
-                    }
-                    .icon-tougaoqingqiu,
-                    .icon-zanshang,
-                    .icon-sandian {
-                        font-size: 17px;
-                    }
-                    .icon-xihuan,
-                    .icon-yiguanzhu {
-                        font-weight: 800;
+                }
+            }
+            .dropdown-menu {
+                // background-color: #f2b5c5;
+                a {
+                    i {
+                        font-size: 22px;
+                        margin-right: 15px;
+                        vertical-align: middle;
+                        color: #fd5b78;
                     }
                 }
             }

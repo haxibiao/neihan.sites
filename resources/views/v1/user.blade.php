@@ -8,13 +8,11 @@
     <div class="container">
         <div class="row">
             <div class="essays col-xs-12 col-sm-8">
-                <div class="main_top clearfix">
+                <div class="main_top">
                     <a class="avatar" href="/v1/user">
                         <img src="//upload.jianshu.io/users/upload_avatars/4896574/81748b90-d20d-40fd-a659-127ece846249?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                     </a>
                     <a class="botm follow" href="#">
-                        {{-- <i class="iconfont icon-jia">
-                        </i> --}}
                         <span>
                             ＋ 关注
                         </span>
@@ -134,17 +132,17 @@
                         <div class="tab-pane" id="dongtai" role="tabpanel">
                             <ul class="list_container">
                                 <li>
-                                    <div class="personal">
+                                    <div class="author">
                                         <a class="avatar" href="/v1/user">
                                             <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/4896574/81748b90-d20d-40fd-a659-127ece846249?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                         </a>
-                                        <div class="information">
+                                        <div class="info">
                                             <a href="/v1/user">
                                                 空评
                                             </a>
-                                            <small>
+                                            <span>
                                                 发表了文章 · 06.15.12:12
-                                            </small>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="substance have_img clearfix">
@@ -159,19 +157,19 @@
                                         <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
                                             <img src="//upload-images.jianshu.io/upload_images/4896574-5091b316532c0d99?imageMogr2/auto-orient/strip|imageView2/1/w/150/h/120"/>
                                         </a>
-                                        <div class="statistics col-xs-12">
+                                        <div class="meta col-xs-12">
                                             <a href="/v1/detail">
-                                                <i class="iconfont icon-yanjing">
+                                                <i class="iconfont icon-liulan">
                                                 </i>
                                                 717
                                             </a>
                                             <a href="/v1/detail">
-                                                <i class="iconfont icon-weibiaoti5">
+                                                <i class="iconfont icon-svg37">
                                                 </i>
                                                 6
                                             </a>
                                             <span>
-                                                <i class="iconfont icon-xihuan1">
+                                                <i class="iconfont icon-03xihuan">
                                                 </i>
                                                 13
                                             </span>
@@ -179,17 +177,17 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="personal">
+                                    <div class="author">
                                         <a class="avatar" href="/v1/user">
                                             <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/4896574/81748b90-d20d-40fd-a659-127ece846249?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                         </a>
-                                        <div class="information">
+                                        <div class="info">
                                             <a href="/v1/user">
                                                 空评
                                             </a>
-                                            <small>
+                                            <span>
                                                 关注了作者 · 06.14.23:55
-                                            </small>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="follow_detail">
@@ -198,10 +196,8 @@
                                                 <img src="//upload.jianshu.io/users/upload_avatars/1159369/799d8fa18062?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
                                             </a>
                                             <a class="follow" href="#">
-                                                <i class="iconfont icon-jia">
-                                                </i>
                                                 <span>
-                                                    关注
+                                                    ＋ 关注
                                                 </span>
                                             </a>
                                             <a class="title" href="#">
@@ -217,17 +213,17 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="personal">
+                                    <div class="author">
                                         <a class="avatar" href="/v1/user">
                                             <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/4896574/81748b90-d20d-40fd-a659-127ece846249?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                         </a>
-                                        <div class="information">
+                                        <div class="info">
                                             <a href="/v1/user">
                                                 空评
                                             </a>
-                                            <small>
+                                            <span>
                                                 发表了评论 · 10.30.13:26
-                                            </small>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="comment">
@@ -251,17 +247,17 @@
                                                     </a>
                                                 </div>
                                                 <a href="/v1/detail">
-                                                    <i class="iconfont icon-yanjing">
+                                                    <i class="iconfont icon-liulan">
                                                     </i>
                                                     1649
                                                 </a>
                                                 <a href="/v1/detail">
-                                                    <i class="iconfont icon-weibiaoti5">
+                                                    <i class="iconfont icon-svg37">
                                                     </i>
                                                     22
                                                 </a>
                                                 <span>
-                                                    <i class="iconfont icon-xihuan1">
+                                                    <i class="iconfont icon-03xihuan">
                                                     </i>
                                                     72
                                                 </span>
@@ -270,20 +266,20 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="personal">
+                                    <div class="author">
                                         <a class="avatar" href="/v1/user">
                                             <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/4896574/81748b90-d20d-40fd-a659-127ece846249?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
                                         </a>
-                                        <div class="information">
+                                        <div class="info">
                                             <a href="/v1/user">
                                                 空评
                                             </a>
                                             <em>
                                                 ·
                                             </em>
-                                            <small>
+                                            <span>
                                                 赞了评论 · 10.30.13:26
-                                            </small>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="comment">
@@ -341,18 +337,16 @@
                         十分精力：四分读书，三分写书，三分教书。《正版语文》作者，21世纪最牛写作书 《风格感觉》（The Sense of Style）中文译者之一，“好中文的样子”创办人和主讲人。
                     </p>
                     <a href="javascript:">
-                        <i class="iconfont icon-xinlangweibo1">
-                        </i>
+                        <img src="/logo/weibo.svg"/>
                     </a>
                     <a href="javascript:">
-                        <i class="iconfont icon-weixin">
-                        </i>
+                        <img src="/logo/weixin.svg"/>
                     </a>
                 </div>
                 <ul class="user_dynamic">
                     <li>
                         <a href="#">
-                            <i class="iconfont icon-combinedshape">
+                            <i class="iconfont icon-duoxuan">
                             </i>
                             <span>
                                 他关注的专题/文集
@@ -361,7 +355,7 @@
                     </li>
                     <li>
                         <a href="#">
-                            <i class="iconfont icon-xihuan">
+                            <i class="iconfont icon-xin">
                             </i>
                             <span>
                                 他喜欢的文章

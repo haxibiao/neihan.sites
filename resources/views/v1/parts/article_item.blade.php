@@ -1,15 +1,15 @@
 <li>
-    <div class="personal">
+    <div class="author">
         <a class="avatar" href="/v1/user">
             <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/1978017/8072afae5460?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
         </a>
-        <div class="information">
+        <div class="info">
             <a href="/v1/user">
                 闫浩
             </a>
-            <small>
+            <span>
             5天前
-            </small>
+            </span>
         </div>
     </div>
     <div class="substance have_img clearfix">
@@ -24,27 +24,27 @@
         <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
             <img src="//upload-images.jianshu.io/upload_images/1978017-b9ea1315e388a415.jpg!1200?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
         </a>
-        <div class="statistics col-xs-12">
+        <div class="meta col-xs-12">
             <a class="special" href="/v1/category">
                 王者荣耀
             </a>
             <a href="/v1/detail">
-                <i class="iconfont icon-yanjing">
+                <i class="iconfont icon-liulan">
                 </i>
                 2325
             </a>
             <a href="/v1/detail">
-                <i class="iconfont icon-weibiaoti5">
+                <i class="iconfont icon-svg37">
                 </i>
                 5
             </a>
             <span>
-                <i class="iconfont icon-xihuan1">
+                <i class="iconfont icon-03xihuan">
                 </i>
                 61
             </span>
             <span>
-                <i class="iconfont icon-qian">
+                <i class="iconfont icon-qianqianqian">
                 </i>
                 2
             </span>

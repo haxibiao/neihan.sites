@@ -1,6 +1,6 @@
 //更多专题列表页
 #categories {
-    @include id;
+    // @include id;
     .recommend {
         padding: 30px 0 50px;
         position: relative;
@@ -43,7 +43,7 @@
                     margin-bottom: -1px;
                     line-height: 20px;
                     a {
-                        @include a;
+                        // @include a;
                         color: #969696;
                         font-size: 15px;
                         font-weight: 700;
@@ -96,7 +96,7 @@
                             margin-top: 80px;
                             padding: 0 20px;
                             a {
-                                @include a;
+                                // @include a;
                                 display: inline-block;
                                 .avatar_collection {
                                     width: 80px;

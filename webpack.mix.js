@@ -24,7 +24,7 @@ mix
             "resources/assets/css/hack.css",
             "public/fonts/iconfont.css"
         ],
-        "public/css/app.css"
+        "public/css/a.css"
     )
     .version();
 
@@ -34,9 +34,9 @@ mix
             "public/js/hack.js",        
             "node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.js",
             "node_modules/summernote/dist/summernote.js",
-            "node_modules/summernote/dist/summernote-zh-CN.js"
+            "node_modules/summernote/dist/lang/summernote-zh-CN.js"
         ], 
-        "public/js/app.js")
+        "public/js/a.js")
     .version();
 
 
@@ -48,9 +48,9 @@ mix
             "public/js/hack.js",
             "node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.js",
             "node_modules/summernote/dist/summernote.js",
-            "node_modules/summernote/dist/summernote-zh-CN.js"
+            "node_modules/summernote/dist/lang/summernote-zh-CN.js"
         ],
-        "public/js/spa.js"
+        "public/js/b.js"
     )
     .version();
 

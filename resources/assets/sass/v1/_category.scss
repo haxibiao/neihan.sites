@@ -16,14 +16,14 @@
 
 //专题页
 #category {
-    @include id;
+    // @include id;
     .essays {
         .main_top {
             width: 100%;
             height: 100%;
             margin-bottom: 32px;
             a {
-                @include a;
+                // @include a;
             }
             p {
                 padding-left: 97px;
@@ -92,7 +92,7 @@
                     margin-bottom: -1px;
                     line-height: 20px;
                     a {
-                        @include a;
+                        // @include a;
                         color: #969696;
                         font-size: 15px;
                         font-weight: 700;
@@ -155,7 +155,7 @@
             padding: 0 0 16px;
             text-align: left;
             a {
-                @include a;
+                // @include a;
                 color: #969696;
                 &:hover {
                     color: #333;
@@ -171,7 +171,7 @@
                 font-size: 14px;
             }
             a {
-                @include a;
+                // @include a;
                 display: inline-block;
                 margin-left: 10px;
                 i {
@@ -200,7 +200,7 @@
                         margin-bottom: 10px;
                         line-height: 20px;
                         a {
-                            @include a;
+                            // @include a;
                             display: inline-block;
                             font-size: 14px;
                             img {
@@ -249,7 +249,7 @@
                         margin-left: -3px;
                     }
                     .function_btn {
-                        @include a;
+                        // @include a;
                         position: absolute;
                         margin-left: 3px;
                         width: 32px;

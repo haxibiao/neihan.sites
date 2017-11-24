@@ -1,9 +1,9 @@
 //关注页
 #notifications {
-    @include id;
+    // @include id;
     .notifications_wrp {
         .aside {
-            background-color: #f2b5c5;
+            // background-color: #f2b5c5;
             padding: 0;
             position: fixed;
             width: 280px;
@@ -17,7 +17,7 @@
                 li {
                     line-height: 20px;
                     a {
-                        @include a;
+                        // @include a;
                         padding: 10px 25px;
                         display: block;
                         line-height: 30px;
@@ -78,7 +78,7 @@
                             .title {
                                 padding: 2px 0 0 48px;
                                 a {
-                                    @include a;
+                                    // @include a;
                                 }
                                 span {
                                     margin: 0 5px;
@@ -100,7 +100,7 @@
                         .tool_group {
                             margin-top: 10px;
                             a {
-                                @include a;
+                                // @include a;
                                 color: #969696;
                                 margin-right: 30px;
                                 font-size: 13px;
@@ -148,7 +148,7 @@
                             font-size: 13px;
                             float: right;
                             .dropdown-toggle {
-                                @include a;
+                                // @include a;
                                 color: #969696;
                                 i {
                                     font-size: inherit;
@@ -166,7 +166,7 @@
                                     border: none;
                                     font-size: 14px;
                                     a {
-                                        @include a;
+                                        // @include a;
                                     }
                                 }
                             }
@@ -177,7 +177,7 @@
                             }
                         }
                         a {
-                            @include a;
+                            // @include a;
                             display: block;
                             .chats_item {
                                 line-height: 20px;
@@ -231,7 +231,7 @@
                         background-color: #fff;
                     }
                     .back_list {
-                        @include a;
+                        // @include a;
                         font-size: 14px;
                         color: #969696;
                         float: left;
@@ -242,14 +242,14 @@
                     b {
                         font-size: 14px;
                         a {
-                            @include a;
+                            // @include a;
                         }
                     }
                     .dropdown {
                         display: inline-block;
                         float: right;
                         .open_dropdown {
-                            @include a;
+                            // @include a;
                             color: #969696;
                         }
                         .dropdown-menu {
@@ -425,7 +425,7 @@
                         padding: 20px;
                         border-top: 1px solid $border-color-hr;
                         .all_request {
-                            @include a;
+                            // @include a;
                             display: block;
                             .avatar {
                                 @include avatar;
@@ -458,7 +458,7 @@
                                 }
                             }
                             .name {
-                                @include a;
+                                // @include a;
                                 display: inline-block;
                                 vertical-align: middle;
                             }
@@ -491,7 +491,7 @@
                                 padding: 2px 0 0 48px;
                                 display: block;
                                 a {
-                                    @include a;
+                                    // @include a;
                                 }
                                 span {
                                     margin: 0 5px;
@@ -531,7 +531,7 @@
                                 float: left;
                             }
                             .follow {
-                                @include a;
+                                // @include a;
                                 @include follow;
                                 float: right;
                                 margin: 0;
@@ -544,7 +544,7 @@
                                 }
                             }
                             .title {
-                                @include a;
+                                // @include a;
                                 padding: 2px 0 0 48px;
                                 display: block;
                             }
@@ -581,7 +581,7 @@
                                 padding: 2px 0 0 48px;
                                 display: block;
                                 a {
-                                    @include a;
+                                    // @include a;
                                 }
                                 span {
                                     margin: 0 5px;
@@ -598,7 +598,7 @@
                         }
                         div {
                             .follow {
-                                @include a;
+                                // @include a;
                                 @include follow;
                                 width: 70px;
                                 float: right;
