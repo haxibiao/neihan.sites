@@ -28,7 +28,7 @@
                     }
                     .follow {
                         // @include a;
-                        @include follow;
+                        @include button;
                         font-size: 12px;
                         padding: 4px 8px;
                         margin: 0;
@@ -101,7 +101,7 @@
                 }
                 .follow {
                     // @include a;
-                    @include follow;
+                    @include button;
                     float: right;
                     margin: 6px 0 0 0;
                 }
@@ -495,6 +495,7 @@
                             div {
                                 .top {
                                     display: flow-root;
+                                    padding-bottom: 6px;
                                 }
                             }
                         }
@@ -537,7 +538,7 @@
                 .include_collection {
                     padding-top: 20px;
                     .item {
-                        @include collection;
+                        @include collection_button;
                         background-color: white;
                         vertical-align: top;
                     }

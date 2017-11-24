@@ -24,7 +24,7 @@
         </ul>
         <!-- Tab panes -->
         <div class="tab-content">
-            <ul class="tab-pane active" id="tuijian" role="tabpanel">
+            <ul class="tab-pane fade in active" id="tuijian" role="tabpanel">
                 <li>
                     <div>
                         <a class="follow" href="#">
@@ -137,7 +137,7 @@
                     </div>
                 </li>
             </ul>
-            <ul class="tab-pane" id="users" role="tabpanel">
+            <ul class="tab-pane fade" id="users" role="tabpanel">
                 <li>
                     <div>
                         <a class="follow" href="#">
@@ -247,7 +247,7 @@
                     </div>
                 </li>
             </ul>
-            <ul class="tab-pane" id="zhuanti1" role="tabpanel">
+            <ul class="tab-pane fade" id="zhuanti1" role="tabpanel">
                 <li>
                     <div>
                         <a class="follow" href="#">

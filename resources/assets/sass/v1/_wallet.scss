@@ -51,7 +51,7 @@
                 .action {
                     margin-top: 20px;
                     .recharge {
-                        @include follow;
+                        @include button;
                         width: 80px;
                         margin: 0 9% 2px 0;
                         display: inline-block;
@@ -61,7 +61,7 @@
                         }
                     }
                     .withdrawals {
-                        @include follow;
+                        @include button;
                         width: 80px;
                         margin: 0 8% 2px 0;
                         display: inline-block;

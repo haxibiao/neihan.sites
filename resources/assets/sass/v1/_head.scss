@@ -24,23 +24,24 @@
                 }
             }
             .follow {
-                @include follow;
-                margin: 8px 10px 0;
+                @include button;
+                margin: 9px 10px 0;
                 background-color: #f2b5c5;
-                padding-bottom: 5px;
+                padding: 6px 0;
                 &:hover {
                     background-color: #f3a0b6;
                 }
                 i {
-                    font-size: 25px;
+                    // font-size: 25px;
                 }
             }
             .follows {
-                @include follows;
+                @include news_button;
                 width: 60px;
-                margin: 8px 10px 0;
+                margin: 9px 10px 0;
                 border-color: #f2b5c5; 
                 color: #f2b5c5;
+                padding: 6px 0;
                 &:hover {
                     border-color: #f3a0b6;
                 }
@@ -89,6 +90,7 @@
 
 // 已登录头部
 #head_user {
+    padding-top: 70px;
     .navbar {
         // background-color: #f2b5c5;
         .navbar-header {
@@ -105,22 +107,22 @@
                 font-size: 15px;
             }
             .author {
-                padding: 10px 15px 0;
+                @include spacing (5px 10px 0);
                 .avatar {
                     @include avatar;
                     margin: 0;
                 }
             }
             .follow {
-                @include follow;
-                margin: 8px 15px 0;
+                @include button;
+                margin: 9px 10px 0;
                 background-color: #f2b5c5;
-                padding-bottom: 5px;
+                padding: 6px 0;
                 &:hover {
                     background-color: #f3a0b6;
                 }
                 i {
-                    font-size: 25px;
+                    // font-size: 25px;
                 }
             }
             .navbar-form {

@@ -60,13 +60,13 @@
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
-                        <div class="tab-pane active" id="pinglun" role="tabpanel">
+                        <div class="tab-pane fade in active" id="pinglun" role="tabpanel">
                             @include('v1.parts.writing')
                         </div>
-                        <div class="tab-pane" id="shoulu" role="tabpanel">
+                        <div class="tab-pane fade" id="shoulu" role="tabpanel">
                             @include('v1.parts.writing')
                         </div>
-                        <div class="tab-pane" id="huo" role="tabpanel">
+                        <div class="tab-pane fade" id="huo" role="tabpanel">
                             @include('v1.parts.writing')
                         </div>
                     </div>

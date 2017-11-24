@@ -40,7 +40,7 @@
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <div class="tab-pane active" id="tuijian" role="tabpanel">
+                    <div class="tab-pane fade in active" id="tuijian" role="tabpanel">
                         <div class="row">
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
@@ -371,7 +371,7 @@
                             加载更多
                         </a>
                     </div>
-                    <div class="tab-pane" id="huo" role="tabpanel">
+                    <div class="tab-pane fade" id="huo" role="tabpanel">
                         <div class="row">
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
@@ -702,7 +702,7 @@
                             加载更多
                         </a>
                     </div>
-                    <div class="tab-pane" id="chengshi" role="tabpanel">
+                    <div class="tab-pane fade" id="chengshi" role="tabpanel">
                         <div class="row">
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">

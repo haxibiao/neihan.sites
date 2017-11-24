@@ -20,8 +20,8 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="/v1" class="iconfont icon-meishi">
-                            首页
+                        <a href="/v1" class="iconfont icon-03xihuan">
+                            发现
                             <span class="sr-only">
                                 (current)
                             </span>

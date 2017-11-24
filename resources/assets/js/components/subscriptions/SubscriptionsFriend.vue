@@ -1,7 +1,7 @@
 <template>
 	<div id="friend">
-        <ul class="list_container">
-            <li>
+        <ul class="article">
+            <li class="article_item">
                 <div class="author">
                     <a class="avatar" href="/v1/user">
                         <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/4896574/81748b90-d20d-40fd-a659-127ece846249?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
@@ -46,7 +46,7 @@
                     </div>
                 </div>
             </li>
-            <li>
+            <li class="article_item">
                 <div class="author">
                     <a class="avatar" href="/v1/user">
                         <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/8016539/6c0b408f-6cf6-4fd1-a283-c2446ab63f58.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>

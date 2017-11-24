@@ -104,8 +104,10 @@
                 margin-left: 180px;
             }
             #friend {
-                .list_container {
-                    @include list_container;
+                .article {
+                    .article_item {
+                        @include article_item;
+                    }
                 }
                 .load_more {
                     @include load_more;
@@ -150,7 +152,7 @@
                                     // @include a;
                                 }
                                 .follow {
-                                    @include follow;
+                                    @include button;
                                     float: right;
                                     margin: 8px 0 0 0;
                                 }
@@ -213,7 +215,7 @@
                 .main_top {
                     @include main_top;
                     .follow {
-                        @include follows;
+                        @include news_button;
                     }
                 }
                 div {
@@ -221,8 +223,10 @@
                         @include trigger_menu;
                     }
                     .tab-content {
-                        .list_container {
-                            @include list_container;
+                        .article {
+                            .article_item {
+                                @include article_item;
+                            }
                         }
                         .load_more {
                             @include load_more;
@@ -234,7 +238,7 @@
                 .main_top {
                     @include main_top;
                     .follow {
-                        @include follows;
+                        @include news_button;
                     }
                 }
                 div {
@@ -242,8 +246,10 @@
                         @include trigger_menu;
                     }
                     .tab-content {
-                        .list_container {
-                            @include list_container;
+                        .article {
+                            .article_item {
+                                @include article_item;
+                            }
                         }
                         .load_more {
                             @include load_more;
@@ -255,7 +261,7 @@
                 .main_top {
                     @include main_top;
                     .follow {
-                        @include follows;
+                        @include news_button;
                     }
                 }
                 div {
@@ -263,8 +269,10 @@
                         @include trigger_menu;
                     }
                     .tab-content {
-                        .list_container {
-                            @include list_container;
+                        .article {
+                            .article_item {
+                                @include article_item;
+                            }
                         }
                         .load_more {
                             @include load_more;

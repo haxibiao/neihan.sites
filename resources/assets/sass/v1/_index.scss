@@ -62,14 +62,13 @@
         .classification {
             margin-bottom: 17px;
             .collection {
-                @include collection;
+                @include collection_button;
                 background-color: $background-color-milky;
             }
             .more_hot_collection {
                 color: #787878;
                 border: none;
                 background-color: inherit;
-                margin-bottom: 0;
                 .name {
                     padding: 0;
                 }
@@ -79,8 +78,10 @@
             border-bottom: 1px solid $border-color-hr;
             margin: -5px 0 15px;
         } // 内容
-        .list_container {
-            @include list_container;
+        .article {
+            .article_item {
+                @include article_item;
+            }
         }
         .load_more {
             @include load_more;

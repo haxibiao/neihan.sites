@@ -1,10 +1,9 @@
-@extends('v1.layouts.app')
+@extends('v1.layouts.app2')
 
 @section('title')
     爱你城
 @stop
 @section('content')
-@include('v1.parts.head_user')
 <div id="home">
     <div class="container">
         <div class="row">
@@ -117,12 +116,12 @@
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
-                        <div class="tab-pane" id="wenzhang" role="tabpanel">
+                        <div class="tab-pane fade" id="wenzhang" role="tabpanel">
                             @include('v1.parts.writing')
                         </div>
-                        <div class="tab-pane active" id="dongtai" role="tabpanel">
-                            <ul class="list_container">
-                                <li>
+                        <div class="tab-pane fade in active" id="dongtai" role="tabpanel">
+                            <ul class="article">
+                                <li class="article_item">
                                     <div class="author">
                                         <a class="avatar" href="/v1/user">
                                             <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/8016539/6c0b408f-6cf6-4fd1-a283-c2446ab63f58.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
@@ -175,7 +174,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li>
+                                <li class="article_item">
                                     <div class="author">
                                         <a class="avatar" href="/v1/user">
                                             <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/8016539/6c0b408f-6cf6-4fd1-a283-c2446ab63f58.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
@@ -226,7 +225,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li>
+                                <li class="article_item">
                                     <div class="author">
                                         <a class="avatar" href="/v1/user">
                                             <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/8016539/6c0b408f-6cf6-4fd1-a283-c2446ab63f58.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
@@ -274,7 +273,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li>
+                                <li class="article_item">
                                     <div class="author">
                                         <a class="avatar" href="/v1/user">
                                             <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/8016539/6c0b408f-6cf6-4fd1-a283-c2446ab63f58.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
@@ -315,7 +314,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li>
+                                <li class="article_item">
                                     <div class="author">
                                         <a class="avatar" href="/v1/user">
                                             <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/8016539/6c0b408f-6cf6-4fd1-a283-c2446ab63f58.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
@@ -371,7 +370,7 @@
                                         </blockquote>
                                     </div>
                                 </li>
-                                <li>
+                                <li class="article_item">
                                     <div class="author">
                                         <a class="avatar" href="/v1/user">
                                             <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/8016539/6c0b408f-6cf6-4fd1-a283-c2446ab63f58.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
@@ -409,7 +408,7 @@
                                         </blockquote>
                                     </div>
                                 </li>
-                                <li>
+                                <li class="article_item">
                                     <div class="author">
                                         <a class="avatar" href="/v1/user">
                                             <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/8016539/6c0b408f-6cf6-4fd1-a283-c2446ab63f58.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
@@ -426,10 +425,10 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="tab-pane" id="pinglun" role="tabpanel">
+                        <div class="tab-pane fade" id="pinglun" role="tabpanel">
                             @include('v1.parts.writing')
                         </div>
-                        <div class="tab-pane" id="huo" role="tabpanel">
+                        <div class="tab-pane fade" id="huo" role="tabpanel">
                             @include('v1.parts.writing')
                         </div>
                     </div>

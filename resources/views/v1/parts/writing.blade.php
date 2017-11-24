@@ -1,5 +1,5 @@
-<ul class="list_container">
-    <li>
+<ul class="article">
+    <li class="article_item">
         <div class="author">
             <a class="avatar" href="/v1/user">
                 <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/4896574/81748b90-d20d-40fd-a659-127ece846249?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
@@ -47,7 +47,7 @@
             </div>
         </div>
     </li>
-    <li>
+    <li class="article_item">
         <div class="author">
             <a class="avatar" href="/v1/user">
                 <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/1978017/8072afae5460?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
@@ -97,7 +97,7 @@
             </div>
         </div>
     </li>
-    <li>
+    <li class="article_item">
         <div class="author">
             <a class="avatar" href="/v1/user">
                 <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/1858256/e78657d29b8d.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
@@ -149,7 +149,7 @@
             </div>
         </div>
     </li>
-    <li>
+    <li class="article_item">
         <div class="author">
             <a class="avatar" href="/v1/user">
                 <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/253140/b9adfdadef8a?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
@@ -199,7 +199,7 @@
             </div>
         </div>
     </li>
-    <li>
+    <li class="article_item">
         <div class="author">
             <a class="avatar" href="/v1/user">
                 <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/6205434/831957b5-a672-4aa2-884b-cf971a8c34d5?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
@@ -244,7 +244,7 @@
             </div>
         </div>
     </li>
-    <li>
+    <li class="article_item">
         <div class="author">
             <a class="avatar" href="/v1/user">
                 <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/6486956/8b5f880e-f7ba-446b-8b59-1532e087fe3e.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
@@ -294,7 +294,7 @@
             </div>
         </div>
     </li>
-    <li>
+    <li class="article_item">
         <div class="author">
             <a class="avatar" href="/v1/user">
                 <img alt="头像" class="img-circle" src="//upload.jianshu.io/users/upload_avatars/1408329/1ed19a008804?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>

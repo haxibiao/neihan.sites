@@ -72,7 +72,7 @@
 }
 
 // 用户、个人页的关注按钮样式
-@mixin follow {
+@mixin button {
     width: 100px;
     @include border (40px);
     @include spacing (23px 0 23px 16px,8px 0);
@@ -86,8 +86,8 @@
 }
 
 // 用户、个人、关注页的消息按钮样式
-@mixin follows {
-    @include follow;
+@mixin news_button {
+    @include button;
     float: right;
     background-color: inherit;
     border: 1px solid $border-color-follow;
@@ -98,7 +98,7 @@
 }
 
 // 收集专题按钮样式
-@mixin collection {
+@mixin collection_button {
     display: inline-block;
     min-height: 35px;
     margin: 0 12px 12px 0;
@@ -264,65 +264,63 @@
 }
 
 // 文章模块标题样式
-@mixin list_container_title {
+@mixin article_title {
     @include font (18px,$color-black,700);
 }
 
 // 文章模块
-@mixin list_container {
-    li {
-        @include spacing (0 0 17px 0,0 2px 17px 0);
-        border-bottom: 1px solid $border-color-hr;
-        .author {
-            .avatar {
-                @include avatar;
-            }
-            .info {
-                display: inline-block;
-                vertical-align: middle;
-                color: $color-gray;
-                font-size: 13px;
-                a {
-                    img {
-                        @include chartholder (14px,14px);
-                    }
+@mixin article_item {
+    @include spacing (0 0 17px 0,0 2px 17px 0);
+    border-bottom: 1px solid $border-color-hr;
+    .author {
+        .avatar {
+            @include avatar;
+        }
+        .info {
+            display: inline-block;
+            vertical-align: middle;
+            color: $color-gray;
+            font-size: 13px;
+            a {
+                img {
+                    @include chartholder (14px,14px);
                 }
             }
         }
-        .substance {
-            margin-top: 2%;
-            line-height: 25px;
-            .conten {
-                @include spacing (0 0 8px 0,0 5px 0 0);
-                a {
-                    @include list_container_title;
-                }
+    }
+    .substance {
+        margin-top: 2%;
+        line-height: 25px;
+        .conten {
+            @include spacing (0 0 8px 0,0 5px 0 0);
+            a {
+                @include article_title;
+            }
+            .article {
+                @include article_num;
+                text-indent: 2em;
+            }
+            @media screen and (max-width: 768px) {
                 .article {
-                    @include article_num;
-                    text-indent: 2em;
+                    -webkit-line-clamp: 3;
                 }
-                @media screen and (max-width: 768px) {
-                    .article {
-                        -webkit-line-clamp: 3;
-                    }
-                }
+            }
+        }
+        .wrap_img {
+            @include wrap_img;
+        }
+        .meta {
+            @include meta;
+        }
+    }
+    @media screen and (min-width: 450px) and (max-width: 768px) {
+        .have_img {
+            .conten {
+                width: 65%;
             }
             .wrap_img {
-                @include wrap_img;
-            }
-            .meta {
-                @include meta;
-            }
-        }
-        @media screen and (min-width: 450px) and (max-width: 768px) {
-            .have_img {
-                .conten {
-                    width: 65%;
-                }
-                .wrap_img {
-                    width: 30%;
-                    margin: 0;
-                }
+                width: 30%;
+                margin: 0;
             }
         }
     }
@@ -352,7 +350,7 @@
         float: left;
     }
     .follow {
-        @include follow;
+        @include button;
     }
 }
 

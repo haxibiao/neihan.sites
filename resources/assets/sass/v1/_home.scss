@@ -153,8 +153,10 @@
                 }
             }
             .tab-content {
-                .list_container {
-                    @include list_container;
+                .article {
+                    .article_item {
+                        @include article_item;
+                    }
                 }
                 .follow_detail {
                     padding: 20px;
@@ -182,7 +184,7 @@
                         }
                         .follow {
                             // @include a;
-                            @include follow;
+                            @include button;
                             float: right;
                             margin: 6px 0 0 0;
                             border: 1px solid hsla(0, 0%, 59%, .6);

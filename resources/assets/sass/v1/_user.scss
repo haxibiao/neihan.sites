@@ -9,7 +9,7 @@
                 float: right;
             }
             .contribute {
-                @include follows;
+                @include news_button;
                 width: 90px;
             }
             .title {
@@ -45,9 +45,9 @@
                 @include trigger_menu;
             }
             .tab-content {
-                .list_container {
-                    @include list_container;
-                    li {
+                .article {
+                    .article_item {
+                        @include article_item;
                         .follow_detail {
                             @include spacing (2% 0 0 0,20px);
                             @include border (4px,1px solid $border-color);
@@ -61,7 +61,7 @@
                                     margin-right: 10px;
                                 }
                                 .follow {
-                                    @include follow;
+                                    @include button;
                                     float: right;
                                     margin: 6px 0 0 0;
                                 }

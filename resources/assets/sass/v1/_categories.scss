@@ -118,7 +118,7 @@
                                 }
                             }
                             .follow {
-                                @include follow;
+                                @include button;
                                 margin: 0;
                             }
                             hr {

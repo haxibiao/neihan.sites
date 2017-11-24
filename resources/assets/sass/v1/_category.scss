@@ -40,11 +40,11 @@
                 }
             }
             .follow {
-                @include follow;
+                @include button;
                 float: right;
             }
             .contribute {
-                @include follow;
+                @include button;
                 width: 90px;
                 float: right;
                 background-color: inherit;
@@ -136,8 +136,10 @@
                 }
             }
             .tab-content {
-                .list_container {
-                    @include list_container;
+                .article {
+                    .article_item {
+                        @include article_item;
+                    }
                 }
             }
         }

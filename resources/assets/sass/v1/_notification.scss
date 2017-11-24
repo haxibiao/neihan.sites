@@ -532,7 +532,7 @@
                             }
                             .follow {
                                 // @include a;
-                                @include follow;
+                                @include button;
                                 float: right;
                                 margin: 0;
                                 border: 1px solid hsla(0, 0%, 59%, .6);
@@ -599,7 +599,7 @@
                         div {
                             .follow {
                                 // @include a;
-                                @include follow;
+                                @include button;
                                 width: 70px;
                                 float: right;
                                 border: 1px solid $border-color-follow;
