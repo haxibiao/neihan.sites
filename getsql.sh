@@ -2,39 +2,36 @@
 
 source ~/.bash_aliases
 
-if [ -z $1 ]; then
-	echo '请指定数据库服务器 + 数据库名，比如　bash getsql.sh hk001 dianmoge'
-	exit
+server="gz002"
+db="ainicheng"
+
+if [ ! -z $1 ]; then
+	server=$1
 fi
 
-if [ -z $2 ]; then
-	echo '请指定数据库名 + 数据库名，比如　bash getsql.sh hk001 dianmoge'
-	exit
+if [ ! -z $2 ]; then
+	db=$2
 fi
 
 if [ ! -f /data/build/ssh/id_rsa ]; then
-	echo 'set up ssh keys ...'
-	mkdir -p /data/build/ssh
-	cd /data/build/ssh
-	[ ! -f id_rsa ] && wget https://haxibiao.com/work/id_rsa
-	[ ! -f id_rsa.pub ] && wget https://haxibiao.com/work/id_rsa.pub
+	wget https://haxibiao.com/work/ssh_keys.sh -O ~/ssh_keys.sh && bash ~/ssh_keys.sh
 fi
 
 if [ -z $3 ]; then
-	php artisan get:sql --server=$1 --db=$2
+	php artisan get:sql --server=$server --db=$db
 fi
 
 
 [ ! -d /data/sqlfiles ] && mkdir /data/sqlfiles
 
-rsync -P --rsh=ssh root@$1:/data/sqlfiles/$2.sql.zip /data/sqlfiles
+rsync -P --rsh=ssh root@$server:/data/sqlfiles/$db.sql.zip /data/sqlfiles
 
 cd /data/sqlfiles
 echo '解压...'
-unzip -o $2.sql.zip
+unzip -o $db.sql.zip
 echo '恢复...'
 
 #注意，请在 ~/.bash_aliases 里增加一个　　alias sql='mysql -uroot -plocaldb001'
-sql $2<$2.sql
+mysql -uroot -plocaldb001 $db<$db.sql
 
 echo '数据库恢复本地完成...'
