@@ -165,6 +165,11 @@ class ArticleController extends Controller {
 		$article = Article::findOrFail($id);
 
 		$article->update($request->except('image_url', 'category_id'));
+        
+        $category_ids = request('category_ids');
+		if (is_array($category_ids) && !empty($category_ids)) {
+			$article->category_id = max($category_ids);
+		}
 
 		if ($request->get('primary_image')) {
 			$article->image_url = $request->get('primary_image');
