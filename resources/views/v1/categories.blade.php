@@ -7,9 +7,9 @@
 <div id="categories">
     <div class="container">
         <div class="recommend">
-            <img src="//cdn2.jianshu.io/assets/web/recommend-collection-58f8968955ecbeb8f8f3b4cd95ec76be.png"/>
-            <a class="help" href="#">
-                <i class="iconfont icon-yiwen">
+            <img src="/images/recommend_banner.png"/>
+            <a class="help" href="/v1/detail" target="_blank">
+                <i class="iconfont icon-send1179291easyiconnet">
                 </i>
                 如何创建并玩转专题
             </a>
@@ -18,7 +18,7 @@
                 <ul class="trigger_menu" role="tablist">
                     <li class="active" role="presentation">
                         <a aria-controls="tuijian" data-toggle="tab" href="#tuijian" role="tab">
-                            <i class="iconfont icon-tuijian">
+                            <i class="iconfont icon-tuijian1">
                             </i>
                             推荐
                         </a>
@@ -32,7 +32,7 @@
                     </li>
                     <li role="presentation">
                         <a aria-controls="chengshi" data-toggle="tab" href="#chengshi" role="tab">
-                            <i class="iconfont icon-chengshi">
+                            <i class="iconfont icon-icon2">
                             </i>
                             城市
                         </a>
@@ -44,8 +44,8 @@
                         <div class="row">
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                                    <a href="/v1/category" target="_blank">
+                                        <img class="avatar_collection" src="/images/category_02.jpg"/>
                                         <h4 class="name">
                                             谈谈情，说说爱
                                         </h4>
@@ -53,16 +53,14 @@
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
                                         </p>
                                     </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
+                                    <a class="follow" href="javascript:;">
                                         <span>
-                                            关注
+                                            ＋ 关注
                                         </span>
                                     </a>
                                     <hr/>
                                     <div class="count">
-                                        <a href="#">
+                                        <a href="/v1/category" target="_blank">
                                             70077篇文章
                                         </a>
                                         · 1103.3K人关注
@@ -71,8 +69,8 @@
                             </div>
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                                    <a href="/v1/category" target="_blank">
+                                        <img class="avatar_collection" src="/images/category_02.jpg"/>
                                         <h4 class="name">
                                             谈谈情，说说爱
                                         </h4>
@@ -80,16 +78,14 @@
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
                                         </p>
                                     </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
+                                    <a class="follow" href="javascript:;">
                                         <span>
-                                            关注
+                                            ＋ 关注
                                         </span>
                                     </a>
                                     <hr/>
                                     <div class="count">
-                                        <a href="#">
+                                        <a href="/v1/category" target="_blank">
                                             70077篇文章
                                         </a>
                                         · 1103.3K人关注
@@ -98,8 +94,8 @@
                             </div>
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                                    <a href="/v1/category" target="_blank">
+                                        <img class="avatar_collection" src="/images/category_02.jpg"/>
                                         <h4 class="name">
                                             谈谈情，说说爱
                                         </h4>
@@ -107,16 +103,14 @@
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
                                         </p>
                                     </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
+                                    <a class="follow" href="javascript:;">
                                         <span>
-                                            关注
+                                            ＋ 关注
                                         </span>
                                     </a>
                                     <hr/>
                                     <div class="count">
-                                        <a href="#">
+                                        <a href="/v1/category" target="_blank">
                                             70077篇文章
                                         </a>
                                         · 1103.3K人关注
@@ -125,8 +119,8 @@
                             </div>
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                                    <a href="/v1/category" target="_blank">
+                                        <img class="avatar_collection" src="/images/category_02.jpg"/>
                                         <h4 class="name">
                                             谈谈情，说说爱
                                         </h4>
@@ -134,16 +128,14 @@
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
                                         </p>
                                     </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
+                                    <a class="follow" href="javascript:;">
                                         <span>
-                                            关注
+                                            ＋ 关注
                                         </span>
                                     </a>
                                     <hr/>
                                     <div class="count">
-                                        <a href="#">
+                                        <a href="/v1/category" target="_blank">
                                             70077篇文章
                                         </a>
                                         · 1103.3K人关注
@@ -152,8 +144,8 @@
                             </div>
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                                    <a href="/v1/category" target="_blank">
+                                        <img class="avatar_collection" src="/images/category_02.jpg"/>
                                         <h4 class="name">
                                             谈谈情，说说爱
                                         </h4>
@@ -161,16 +153,14 @@
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
                                         </p>
                                     </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
+                                    <a class="follow" href="javascript:;">
                                         <span>
-                                            关注
+                                            ＋ 关注
                                         </span>
                                     </a>
                                     <hr/>
                                     <div class="count">
-                                        <a href="#">
+                                        <a href="/v1/category" target="_blank">
                                             70077篇文章
                                         </a>
                                         · 1103.3K人关注
@@ -179,8 +169,8 @@
                             </div>
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                                    <a href="/v1/category" target="_blank">
+                                        <img class="avatar_collection" src="/images/category_02.jpg"/>
                                         <h4 class="name">
                                             谈谈情，说说爱
                                         </h4>
@@ -188,178 +178,14 @@
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
                                         </p>
                                     </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
+                                    <a class="follow" href="javascript:;">
                                         <span>
-                                            关注
+                                            ＋ 关注
                                         </span>
                                     </a>
                                     <hr/>
                                     <div class="count">
-                                        <a href="#">
-                                            70077篇文章
-                                        </a>
-                                        · 1103.3K人关注
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
-                                <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
-                                        <h4 class="name">
-                                            谈谈情，说说爱
-                                        </h4>
-                                        <p class="collection_description">
-                                            柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
-                                        </p>
-                                    </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
-                                        <span>
-                                            关注
-                                        </span>
-                                    </a>
-                                    <hr/>
-                                    <div class="count">
-                                        <a href="#">
-                                            70077篇文章
-                                        </a>
-                                        · 1103.3K人关注
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
-                                <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
-                                        <h4 class="name">
-                                            谈谈情，说说爱
-                                        </h4>
-                                        <p class="collection_description">
-                                            柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
-                                        </p>
-                                    </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
-                                        <span>
-                                            关注
-                                        </span>
-                                    </a>
-                                    <hr/>
-                                    <div class="count">
-                                        <a href="#">
-                                            70077篇文章
-                                        </a>
-                                        · 1103.3K人关注
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
-                                <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
-                                        <h4 class="name">
-                                            谈谈情，说说爱
-                                        </h4>
-                                        <p class="collection_description">
-                                            柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
-                                        </p>
-                                    </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
-                                        <span>
-                                            关注
-                                        </span>
-                                    </a>
-                                    <hr/>
-                                    <div class="count">
-                                        <a href="#">
-                                            70077篇文章
-                                        </a>
-                                        · 1103.3K人关注
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
-                                <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
-                                        <h4 class="name">
-                                            谈谈情，说说爱
-                                        </h4>
-                                        <p class="collection_description">
-                                            柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
-                                        </p>
-                                    </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
-                                        <span>
-                                            关注
-                                        </span>
-                                    </a>
-                                    <hr/>
-                                    <div class="count">
-                                        <a href="#">
-                                            70077篇文章
-                                        </a>
-                                        · 1103.3K人关注
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
-                                <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
-                                        <h4 class="name">
-                                            谈谈情，说说爱
-                                        </h4>
-                                        <p class="collection_description">
-                                            柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
-                                        </p>
-                                    </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
-                                        <span>
-                                            关注
-                                        </span>
-                                    </a>
-                                    <hr/>
-                                    <div class="count">
-                                        <a href="#">
-                                            70077篇文章
-                                        </a>
-                                        · 1103.3K人关注
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
-                                <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
-                                        <h4 class="name">
-                                            谈谈情，说说爱
-                                        </h4>
-                                        <p class="collection_description">
-                                            柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
-                                        </p>
-                                    </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
-                                        <span>
-                                            关注
-                                        </span>
-                                    </a>
-                                    <hr/>
-                                    <div class="count">
-                                        <a href="#">
+                                        <a href="/v1/category" target="_blank">
                                             70077篇文章
                                         </a>
                                         · 1103.3K人关注
@@ -367,7 +193,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a class="load_more" href="#">
+                        <a class="load_more" href="javascript:;">
                             加载更多
                         </a>
                     </div>
@@ -375,25 +201,23 @@
                         <div class="row">
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                                    <a href="/v1/category" target="_blank">
+                                        <img class="avatar_collection" src="/images/category_08.jpg"/>
                                         <h4 class="name">
-                                            谈谈情，说说爱
+                                            剑侠情缘3
                                         </h4>
                                         <p class="collection_description">
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
                                         </p>
                                     </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
+                                    <a class="follow" href="javascript:;">
                                         <span>
-                                            关注
+                                            ＋ 关注
                                         </span>
                                     </a>
                                     <hr/>
                                     <div class="count">
-                                        <a href="#">
+                                        <a href="/v1/category" target="_blank">
                                             70077篇文章
                                         </a>
                                         · 1103.3K人关注
@@ -402,25 +226,23 @@
                             </div>
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                                    <a href="/v1/category" target="_blank">
+                                        <img class="avatar_collection" src="/images/category_08.jpg"/>
                                         <h4 class="name">
-                                            谈谈情，说说爱
+                                            剑侠情缘3
                                         </h4>
                                         <p class="collection_description">
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
                                         </p>
                                     </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
+                                    <a class="follow" href="javascript:;">
                                         <span>
-                                            关注
+                                            ＋ 关注
                                         </span>
                                     </a>
                                     <hr/>
                                     <div class="count">
-                                        <a href="#">
+                                        <a href="/v1/category" target="_blank">
                                             70077篇文章
                                         </a>
                                         · 1103.3K人关注
@@ -429,25 +251,23 @@
                             </div>
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                                    <a href="/v1/category" target="_blank">
+                                        <img class="avatar_collection" src="/images/category_08.jpg"/>
                                         <h4 class="name">
-                                            谈谈情，说说爱
+                                            剑侠情缘3
                                         </h4>
                                         <p class="collection_description">
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
                                         </p>
                                     </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
+                                    <a class="follow" href="javascript:;">
                                         <span>
-                                            关注
+                                            ＋ 关注
                                         </span>
                                     </a>
                                     <hr/>
                                     <div class="count">
-                                        <a href="#">
+                                        <a href="/v1/category" target="_blank">
                                             70077篇文章
                                         </a>
                                         · 1103.3K人关注
@@ -456,25 +276,23 @@
                             </div>
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                                    <a href="/v1/category" target="_blank">
+                                        <img class="avatar_collection" src="/images/category_08.jpg"/>
                                         <h4 class="name">
-                                            谈谈情，说说爱
+                                            剑侠情缘3
                                         </h4>
                                         <p class="collection_description">
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
                                         </p>
                                     </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
+                                    <a class="follow" href="javascript:;">
                                         <span>
-                                            关注
+                                            ＋ 关注
                                         </span>
                                     </a>
                                     <hr/>
                                     <div class="count">
-                                        <a href="#">
+                                        <a href="/v1/category" target="_blank">
                                             70077篇文章
                                         </a>
                                         · 1103.3K人关注
@@ -483,25 +301,23 @@
                             </div>
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                                    <a href="/v1/category" target="_blank">
+                                        <img class="avatar_collection" src="/images/category_08.jpg"/>
                                         <h4 class="name">
-                                            谈谈情，说说爱
+                                            剑侠情缘3
                                         </h4>
                                         <p class="collection_description">
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
                                         </p>
                                     </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
+                                    <a class="follow" href="javascript:;">
                                         <span>
-                                            关注
+                                            ＋ 关注
                                         </span>
                                     </a>
                                     <hr/>
                                     <div class="count">
-                                        <a href="#">
+                                        <a href="/v1/category" target="_blank">
                                             70077篇文章
                                         </a>
                                         · 1103.3K人关注
@@ -510,187 +326,23 @@
                             </div>
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                                    <a href="/v1/category" target="_blank">
+                                        <img class="avatar_collection" src="/images/category_08.jpg"/>
                                         <h4 class="name">
-                                            谈谈情，说说爱
+                                            剑侠情缘3
                                         </h4>
                                         <p class="collection_description">
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
                                         </p>
                                     </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
+                                    <a class="follow" href="javascript:;">
                                         <span>
-                                            关注
+                                            ＋ 关注
                                         </span>
                                     </a>
                                     <hr/>
                                     <div class="count">
-                                        <a href="#">
-                                            70077篇文章
-                                        </a>
-                                        · 1103.3K人关注
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
-                                <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
-                                        <h4 class="name">
-                                            谈谈情，说说爱
-                                        </h4>
-                                        <p class="collection_description">
-                                            柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
-                                        </p>
-                                    </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
-                                        <span>
-                                            关注
-                                        </span>
-                                    </a>
-                                    <hr/>
-                                    <div class="count">
-                                        <a href="#">
-                                            70077篇文章
-                                        </a>
-                                        · 1103.3K人关注
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
-                                <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
-                                        <h4 class="name">
-                                            谈谈情，说说爱
-                                        </h4>
-                                        <p class="collection_description">
-                                            柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
-                                        </p>
-                                    </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
-                                        <span>
-                                            关注
-                                        </span>
-                                    </a>
-                                    <hr/>
-                                    <div class="count">
-                                        <a href="#">
-                                            70077篇文章
-                                        </a>
-                                        · 1103.3K人关注
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
-                                <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
-                                        <h4 class="name">
-                                            谈谈情，说说爱
-                                        </h4>
-                                        <p class="collection_description">
-                                            柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
-                                        </p>
-                                    </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
-                                        <span>
-                                            关注
-                                        </span>
-                                    </a>
-                                    <hr/>
-                                    <div class="count">
-                                        <a href="#">
-                                            70077篇文章
-                                        </a>
-                                        · 1103.3K人关注
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
-                                <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
-                                        <h4 class="name">
-                                            谈谈情，说说爱
-                                        </h4>
-                                        <p class="collection_description">
-                                            柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
-                                        </p>
-                                    </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
-                                        <span>
-                                            关注
-                                        </span>
-                                    </a>
-                                    <hr/>
-                                    <div class="count">
-                                        <a href="#">
-                                            70077篇文章
-                                        </a>
-                                        · 1103.3K人关注
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
-                                <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
-                                        <h4 class="name">
-                                            谈谈情，说说爱
-                                        </h4>
-                                        <p class="collection_description">
-                                            柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
-                                        </p>
-                                    </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
-                                        <span>
-                                            关注
-                                        </span>
-                                    </a>
-                                    <hr/>
-                                    <div class="count">
-                                        <a href="#">
-                                            70077篇文章
-                                        </a>
-                                        · 1103.3K人关注
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
-                                <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
-                                        <h4 class="name">
-                                            谈谈情，说说爱
-                                        </h4>
-                                        <p class="collection_description">
-                                            柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
-                                        </p>
-                                    </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
-                                        <span>
-                                            关注
-                                        </span>
-                                    </a>
-                                    <hr/>
-                                    <div class="count">
-                                        <a href="#">
+                                        <a href="/v1/category" target="_blank">
                                             70077篇文章
                                         </a>
                                         · 1103.3K人关注
@@ -698,7 +350,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a class="load_more" href="#">
+                        <a class="load_more" href="javascript:;">
                             加载更多
                         </a>
                     </div>
@@ -706,8 +358,8 @@
                         <div class="row">
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                                    <a href="/v1/category" target="_blank">
+                                        <img class="avatar_collection" src="/images/category_05.jpg"/>
                                         <h4 class="name">
                                             谈谈情，说说爱
                                         </h4>
@@ -715,16 +367,14 @@
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
                                         </p>
                                     </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
+                                    <a class="follow" href="javascript:;">
                                         <span>
-                                            关注
+                                            ＋ 关注
                                         </span>
                                     </a>
                                     <hr/>
                                     <div class="count">
-                                        <a href="#">
+                                        <a href="/v1/category" target="_blank">
                                             70077篇文章
                                         </a>
                                         · 1103.3K人关注
@@ -733,8 +383,8 @@
                             </div>
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                                    <a href="/v1/category" target="_blank">
+                                        <img class="avatar_collection" src="/images/category_05.jpg"/>
                                         <h4 class="name">
                                             谈谈情，说说爱
                                         </h4>
@@ -742,16 +392,14 @@
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
                                         </p>
                                     </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
+                                    <a class="follow" href="javascript:;">
                                         <span>
-                                            关注
+                                            ＋ 关注
                                         </span>
                                     </a>
                                     <hr/>
                                     <div class="count">
-                                        <a href="#">
+                                        <a href="/v1/category" target="_blank">
                                             70077篇文章
                                         </a>
                                         · 1103.3K人关注
@@ -760,8 +408,8 @@
                             </div>
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                                    <a href="/v1/category" target="_blank">
+                                        <img class="avatar_collection" src="/images/category_05.jpg"/>
                                         <h4 class="name">
                                             谈谈情，说说爱
                                         </h4>
@@ -769,16 +417,14 @@
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
                                         </p>
                                     </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
+                                    <a class="follow" href="javascript:;">
                                         <span>
-                                            关注
+                                            ＋ 关注
                                         </span>
                                     </a>
                                     <hr/>
                                     <div class="count">
-                                        <a href="#">
+                                        <a href="/v1/category" target="_blank">
                                             70077篇文章
                                         </a>
                                         · 1103.3K人关注
@@ -787,8 +433,8 @@
                             </div>
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                                    <a href="/v1/category" target="_blank">
+                                        <img class="avatar_collection" src="/images/category_05.jpg"/>
                                         <h4 class="name">
                                             谈谈情，说说爱
                                         </h4>
@@ -796,16 +442,14 @@
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
                                         </p>
                                     </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
+                                    <a class="follow" href="javascript:;">
                                         <span>
-                                            关注
+                                            ＋ 关注
                                         </span>
                                     </a>
                                     <hr/>
                                     <div class="count">
-                                        <a href="#">
+                                        <a href="/v1/category" target="_blank">
                                             70077篇文章
                                         </a>
                                         · 1103.3K人关注
@@ -814,8 +458,8 @@
                             </div>
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                                    <a href="/v1/category" target="_blank">
+                                        <img class="avatar_collection" src="/images/category_05.jpg"/>
                                         <h4 class="name">
                                             谈谈情，说说爱
                                         </h4>
@@ -823,16 +467,14 @@
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
                                         </p>
                                     </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
+                                    <a class="follow" href="javascript:;">
                                         <span>
-                                            关注
+                                            ＋ 关注
                                         </span>
                                     </a>
                                     <hr/>
                                     <div class="count">
-                                        <a href="#">
+                                        <a href="/v1/category" target="_blank">
                                             70077篇文章
                                         </a>
                                         · 1103.3K人关注
@@ -841,8 +483,8 @@
                             </div>
                             <div class="col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                                    <a href="/v1/category" target="_blank">
+                                        <img class="avatar_collection" src="/images/category_05.jpg"/>
                                         <h4 class="name">
                                             谈谈情，说说爱
                                         </h4>
@@ -850,178 +492,14 @@
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
                                         </p>
                                     </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
+                                    <a class="follow" href="javascript:;">
                                         <span>
-                                            关注
+                                            ＋ 关注
                                         </span>
                                     </a>
                                     <hr/>
                                     <div class="count">
-                                        <a href="#">
-                                            70077篇文章
-                                        </a>
-                                        · 1103.3K人关注
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
-                                <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
-                                        <h4 class="name">
-                                            谈谈情，说说爱
-                                        </h4>
-                                        <p class="collection_description">
-                                            柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
-                                        </p>
-                                    </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
-                                        <span>
-                                            关注
-                                        </span>
-                                    </a>
-                                    <hr/>
-                                    <div class="count">
-                                        <a href="#">
-                                            70077篇文章
-                                        </a>
-                                        · 1103.3K人关注
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
-                                <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
-                                        <h4 class="name">
-                                            谈谈情，说说爱
-                                        </h4>
-                                        <p class="collection_description">
-                                            柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
-                                        </p>
-                                    </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
-                                        <span>
-                                            关注
-                                        </span>
-                                    </a>
-                                    <hr/>
-                                    <div class="count">
-                                        <a href="#">
-                                            70077篇文章
-                                        </a>
-                                        · 1103.3K人关注
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
-                                <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
-                                        <h4 class="name">
-                                            谈谈情，说说爱
-                                        </h4>
-                                        <p class="collection_description">
-                                            柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
-                                        </p>
-                                    </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
-                                        <span>
-                                            关注
-                                        </span>
-                                    </a>
-                                    <hr/>
-                                    <div class="count">
-                                        <a href="#">
-                                            70077篇文章
-                                        </a>
-                                        · 1103.3K人关注
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
-                                <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
-                                        <h4 class="name">
-                                            谈谈情，说说爱
-                                        </h4>
-                                        <p class="collection_description">
-                                            柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
-                                        </p>
-                                    </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
-                                        <span>
-                                            关注
-                                        </span>
-                                    </a>
-                                    <hr/>
-                                    <div class="count">
-                                        <a href="#">
-                                            70077篇文章
-                                        </a>
-                                        · 1103.3K人关注
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
-                                <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
-                                        <h4 class="name">
-                                            谈谈情，说说爱
-                                        </h4>
-                                        <p class="collection_description">
-                                            柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
-                                        </p>
-                                    </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
-                                        <span>
-                                            关注
-                                        </span>
-                                    </a>
-                                    <hr/>
-                                    <div class="count">
-                                        <a href="#">
-                                            70077篇文章
-                                        </a>
-                                        · 1103.3K人关注
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
-                                <div class="collection_wrap">
-                                    <a href="#">
-                                        <img class="avatar_collection" src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
-                                        <h4 class="name">
-                                            谈谈情，说说爱
-                                        </h4>
-                                        <p class="collection_description">
-                                            柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度...
-                                        </p>
-                                    </a>
-                                    <a class="follow" href="#">
-                                        <i class="iconfont icon-jia">
-                                        </i>
-                                        <span>
-                                            关注
-                                        </span>
-                                    </a>
-                                    <hr/>
-                                    <div class="count">
-                                        <a href="#">
+                                        <a href="/v1/category" target="_blank">
                                             70077篇文章
                                         </a>
                                         · 1103.3K人关注
@@ -1029,7 +507,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a class="load_more" href="#">
+                        <a class="load_more" href="javascript:;">
                             加载更多
                         </a>
                     </div>

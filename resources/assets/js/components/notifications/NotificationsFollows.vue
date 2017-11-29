@@ -1,14 +1,14 @@
 <template>
 	<div id="follows">
-		<div class="menu">收到的喜欢和赞</div>
+		<div class="menu">全部关注</div>
 		<ul class="follows_list">
 			<li>
                 <div class="follow_item">
                     <a class="avatar" href="#">
-                        <img src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                        <img src="/images/photo_03.jpg"/>
                     </a>
                     <a class="follow" href="#">
-                        <i class="iconfont icon-dagou1">
+                        <i class="iconfont icon-weibiaoti12">
                         </i>
                         <span>
                             已关注
@@ -24,10 +24,10 @@
 			</li><li>
                 <div class="follow_item">
                     <a class="avatar" href="#">
-                        <img src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                        <img src="/images/photo_03.jpg"/>
                     </a>
                     <a class="follow" href="#">
-                        <i class="iconfont icon-dagou1">
+                        <i class="iconfont icon-weibiaoti12">
                         </i>
                         <span>
                             已关注
@@ -43,10 +43,10 @@
 			</li><li>
                 <div class="follow_item">
                     <a class="avatar" href="#">
-                        <img src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                        <img src="/images/photo_01.jpg"/>
                     </a>
                     <a class="follow" href="#">
-                        <i class="iconfont icon-dagou1">
+                        <i class="iconfont icon-weibiaoti12">
                         </i>
                         <span>
                             已关注
@@ -63,10 +63,10 @@
 			<li>
                 <div class="follow_item">
                     <a class="avatar" href="#">
-                        <img src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                        <img src="/images/photo_02.jpg"/>
                     </a>
                     <a class="follow" href="#">
-                        <i class="iconfont icon-dagou1">
+                        <i class="iconfont icon-weibiaoti12">
                         </i>
                         <span>
                             已关注

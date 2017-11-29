@@ -11,20 +11,20 @@
 					<ul class="dropdown-menu">
 						<li>
 							<a href="#">
-								<i class="iconfont icon-yanjing"></i>
+								<i class="iconfont icon-lajitong"></i>
 								<span>删除会话</span>
 							</a>
 						</li>
 						<li>
 							<a href="#">
-								<i class="iconfont icon-yanjing"></i>
-								<span>删除会话</span>
+								<i class="iconfont icon-heimingdan1"></i>
+								<span>加入黑名单</span>
 							</a>
 						</li>
 						<li>
 							<a href="#">
-								<i class="iconfont icon-yanjing"></i>
-								<span>删除会话</span>
+								<i class="iconfont icon-iconset03100"></i>
+								<span>删举报用户</span>
 							</a>
 						</li>
 					</ul>
@@ -32,7 +32,7 @@
 				<router-link to="/chat_messages">
 					<div class="chats_item">
 						<a href="" class="avatar">
-							<img src="/logo/col-01.jpg" />
+							<img src="/images/photo_01.jpg" />
 						</a>
 						<div class="title">
 							<a href="#" class="nickname">喵星菇凉</a>
@@ -52,20 +52,20 @@
 					<ul class="dropdown-menu">
 						<li>
 							<a href="#">
-								<i class="iconfont icon-yanjing"></i>
+								<i class="iconfont icon-lajitong"></i>
 								<span>删除会话</span>
 							</a>
 						</li>
 						<li>
 							<a href="#">
-								<i class="iconfont icon-yanjing"></i>
-								<span>删除会话</span>
+								<i class="iconfont icon-heimingdan1"></i>
+								<span>加入黑名单</span>
 							</a>
 						</li>
 						<li>
 							<a href="#">
-								<i class="iconfont icon-yanjing"></i>
-								<span>删除会话</span>
+								<i class="iconfont icon-iconset03100"></i>
+								<span>删举报用户</span>
 							</a>
 						</li>
 					</ul>
@@ -73,7 +73,7 @@
 				<router-link to="/chat_messages">
 					<div class="chats_item">
 						<a href="" class="avatar">
-							<img src="/logo/col-01.jpg" />
+							<img src="/images/photo_02.jpg" />
 						</a>
 						<div class="title">
 							<a href="#" class="nickname">中南工大留级生</a>
@@ -93,20 +93,20 @@
 					<ul class="dropdown-menu">
 						<li>
 							<a href="#">
-								<i class="iconfont icon-yanjing"></i>
+								<i class="iconfont icon-lajitong"></i>
 								<span>删除会话</span>
 							</a>
 						</li>
 						<li>
 							<a href="#">
-								<i class="iconfont icon-yanjing"></i>
-								<span>删除会话</span>
+								<i class="iconfont icon-heimingdan1"></i>
+								<span>加入黑名单</span>
 							</a>
 						</li>
 						<li>
 							<a href="#">
-								<i class="iconfont icon-yanjing"></i>
-								<span>删除会话</span>
+								<i class="iconfont icon-iconset03100"></i>
+								<span>删举报用户</span>
 							</a>
 						</li>
 					</ul>
@@ -114,7 +114,7 @@
 				<router-link to="/chat_messages">
 					<div class="chats_item">
 						<a href="" class="avatar">
-							<img src="/logo/col-01.jpg" />
+							<img src="/images/photo_03.jpg" />
 						</a>
 						<div class="title">
 							<a href="#" class="nickname">小食神</a>

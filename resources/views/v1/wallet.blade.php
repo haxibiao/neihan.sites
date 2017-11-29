@@ -9,16 +9,16 @@
         <div class="row">
             <div class="top clearfix">
                 <div class="user col-xs-12 col-sm-4">
-                    <a class="avatar" href="#">
-                        <img src="//upload.jianshu.io/users/upload_avatars/8016539/6c0b408f-6cf6-4fd1-a283-c2446ab63f58.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
+                    <a class="avatar" href="/v1/home">
+                        <img src="/images/photo_01.jpg"/>
                     </a>
                     <div class="info">
-                        <a class="name" href="#">
+                        <a class="name" href="/v1/home">
                             喵星菇凉
                         </a>
                         <div class="mobile_bind">
                             未绑定手机（
-                            <a href="#">
+                            <a href="javascript:;">
                                 去绑定
                             </a>
                             ）
@@ -57,10 +57,10 @@
                     <div>
                         提现会在 3-5 个工作日内到账
                     </div>
-                    <a href="#">
+                    <a href="javascript:;">
                         提现遇到问题?
                     </a>
-                    <a href="#">
+                    <a href="javascript:;">
                         提现手续费是怎么收取的?
                     </a>
                 </div>
@@ -92,16 +92,16 @@
                     </div>
                     <div class="details">
                         向
-                        <a href="#">
+                        <a href="/v1/user">
                             小万PPT
                         </a>
                         的文章
-                        <a href="#">
+                        <a href="/v1/detail" target="_blank">
                             《99分的简历是什么样的？》
                         </a>
                         送了2颗糖
                     </div>
-                    <div class="amount">
+                    <div class="amount reduce">
                         -￥2.00
                     </div>
                     <div class="remark">
@@ -110,27 +110,51 @@
                 </li>
                 <li class="note">
                     <div class="time">
-                        2017-09-13 21:48
+                        2017-09-12 01:48
                     </div>
                     <div class="type">
                         赞赏
                     </div>
                     <div class="details">
                         向
-                        <a href="#">
+                        <a href="/v1/user">
                             小万PPT
                         </a>
                         的文章
-                        <a href="#">
+                        <a href="/v1/detail" target="_blank">
                             《99分的简历是什么样的？》
                         </a>
-                        送了2颗糖
+                        送了20颗糖
                     </div>
-                    <div class="amount">
-                        -￥2.00
+                    <div class="amount reduce">
+                        -￥20.00
                     </div>
                     <div class="remark">
                         未支付
+                    </div>
+                </li>
+                <li class="note">
+                    <div class="time">
+                        2017-08-11 15:30
+                    </div>
+                    <div class="type">
+                        收到赞赏
+                    </div>
+                    <div class="details">
+                        <a href="/v1/user">
+                            中南工大留级生
+                        </a>
+                        向你的文章
+                        <a href="/v1/detail" target="_blank">
+                            《在Web项目中添加自定义的font图标》
+                        </a>
+                        送了9899999颗糖
+                    </div>
+                    <div class="amount plus">
+                        +￥9899999.00
+                    </div>
+                    <div class="remark">
+                        已到账
                     </div>
                 </li>
             </ul>

@@ -14,7 +14,7 @@
                     </h1>
                     <div class="author">
                         <a class="avatar" href="#">
-                            <img src="//upload.jianshu.io/users/upload_avatars/4896574/81748b90-d20d-40fd-a659-127ece846249?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                            <img src="/images/photo_02.jpg"/>
                         </a>
                         <div class="info">
                             <span class="name">
@@ -23,10 +23,8 @@
                                 </a>
                             </span>
                             <a class="follow" href="#">
-                                <i class="iconfont icon-jia">
-                                </i>
                                 <span>
-                                    关注
+                                    ＋ 关注
                                 </span>
                             </a>
                             <div class="meta">
@@ -56,7 +54,7 @@
                             而在发布财报时，腾讯主席兼CEO马化腾表示：受农历新年假期带动，腾讯多款娱乐服务产品取得明显增长，包括提供广受欢迎原创内容的视频平台，及较新的产品如卡拉OK应用程序全民K歌、照片编辑应用程序天天P图及《王者荣耀》等手机游戏。
                         </p>
                         <div class="image_package">
-                            <img src="//upload-images.jianshu.io/upload_images/4896574-e0f2b6c752dab9c1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
+                            <img src="/images/details_01.jpeg"/>
                         </div>
                         <p>
                             获马化腾点赞的《王者荣耀》，对业界产生了什么影响？
@@ -74,7 +72,7 @@
                             总之，这款被马化腾点名的手游《王者荣耀》，毫无疑问是腾讯旗下最成功的手游，目前也已成为家喻户晓的现象级产品。下面，我们不妨来探讨一下《王者荣耀》究竟有多火？以及它能赚多少钱，能否问鼎全球最赚钱游戏桂冠的问题。
                         </p>
                         <div class="image_package">
-                            <img src="//upload-images.jianshu.io/upload_images/4896574-f7262d83b955b437?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
+                            <img src="/images/details_11.jpeg"/>
                         </div>
                         <p>
                             从堪比轻度休闲手游的DAU来看《王者荣耀》的风靡程度
@@ -83,7 +81,7 @@
                             事实上，我们都已经切身地感受到《王者荣耀》作为国民级手游席卷一切的流行狂潮，下至小学生，上至四五十岁的中年人，在闲时杀一局《王者荣耀》已经成为风靡中国的一道风景线。这款从2015年11月开始公测的MOBA游戏，以星火燎原之势迅速火遍全国，在2016年底腾讯公布的全年报显示，《王者荣耀》注册玩家数量超过2亿，DAU（日活跃用户数）5000万，创造了腾讯平台上的智能手机游戏的新纪录。根据从腾讯内部了解到的信息，5000万的DAU还是游戏的稳定数据，并非峰值。
                         </p>
                         <div class="image_package">
-                            <img src="//upload-images.jianshu.io/upload_images/4896574-f380ebc6d6f388a4?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
+                            <img src="/images/details_12.jpeg"/>
                         </div>
                         <p>
                             但更为可怕的是，《王者荣耀》的增长势头不仅未呈现出任何衰减的迹象，反而随着2017年春节的到来迎来了一波大幅度的增长。此次发布的2017年第一季度财报虽然并未公布《王者荣耀》的DAU数据，但此前有数据显示《王者荣耀》春节期间日活跃用户数一度突破8000万，而这个数据已经超过了昔日《天天酷跑》创下的DAU6000万的中国手游的最高记录。
@@ -92,7 +90,7 @@
                             《王者荣耀》作为一款需要讲究操作配合的MOBA手游，一般被归入重度手游的范畴，而对于手游的普遍情况来说，游戏越重度其DAU往往会越低，因此千万级的DAU往往是轻度休闲手游的专属标签，比如《开心消消乐》的DAU公开数据为3300万（也有说法是到达过5000万），《天天爱消除》则也有2500万。但《王者荣耀》的出现，不仅在手游DAU排行榜上打破了轻度休闲手游称霸的现象，还直接摘取了中国手游DAU第一的桂冠，成为首款在活跃用户数上比肩乃至超越休闲游戏的重度手游。
                         </p>
                         <div class="image_package">
-                            <img src="//upload-images.jianshu.io/upload_images/4896574-e4c23b49647f1dc2?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
+                            <img src="/images/details_13.jpeg"/>
                         </div>
                         <p>
                             为什么作为重度手游，《王者荣耀》能够拥有超越休闲游戏的惊人DAU呢？因为腾讯自身首先是一家社交巨头，然后才成就其游戏霸主的地位，通过依靠腾讯旗下QQ与微信帐号登录手游带来的成熟的社交关系链，腾讯的手游天然就拥有强大的社交属性，而《王者荣耀》作为一款讲究公平竞技的MOBA手游，老玩家在与新手玩家一起同场竞技时并不会出现数值碾压的现象，因此这也极大地鼓励了老玩家拉拢发展新玩家进行自传播，让现实中的社交关系转移到游戏中，成为了拉新的重要力量。而在玩家们春节回乡期间，腾讯再配合病毒营销，便促成《王者荣耀》风靡全国，其DAU一度突破8000万大关。
@@ -101,7 +99,7 @@
                             另据内地数据服务商QuestMobile数据显示，今年《王者荣耀》月活跃玩家已经达到了惊人的1.6亿，成功赶超了PC上的MOBA王者《英雄联盟》的1亿月活跃玩家数量。在庞大的活跃用户基础上，《王者荣耀》据称已经垄断了国内95%的MOBA手游市场。MOBA手游之间的壁垒本身就很强大，一旦建立便很难被破除，后入局的游戏如果缺乏一定量级的玩家，会进入恶性循环，成为MOBA最致命的伤害。在用户量级上，《王者荣耀》已经占据了绝对的优势，并且随着MOBA市场的扩大，以及腾讯打造的王者荣耀职业联赛（KPL）的影响力与日俱增，移动电竞生态逐渐成型，这样的优势能使其玩家数量获得“滚雪球”般的增长，最终使得其国民级手游的王者地位变得彻底无法撼动。
                         </p>
                         <div class="image_package">
-                            <img src="//upload-images.jianshu.io/upload_images/4896574-bb485762846df6ac?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
+                            <img src="/images/details_14.jpeg"/>
                         </div>
                         <p>
                             从App Annie榜单排名与网络人气来看《王者荣耀》的火爆程度
@@ -113,7 +111,7 @@
                             如果只看国内排行榜的变化情况，那么《王者荣耀》自临近春节起在中国区iOS畅销榜登顶后便一骑绝尘，一直到如今为止也仅有两天让出了第一的位置，分别是3月17日惜败于老对手《阴阳师》，以及5月4日被《命运-冠位指定》所超越，而这两者均是由于更新内容开启了运营活动而大幅拉升了当日充值所致，并没有对《王者荣耀》的收入霸主地位构成实质性的威胁。
                         </p>
                         <div class="image_package">
-                            <img src="//upload-images.jianshu.io/upload_images/4896574-eef5a52a4e25a85b?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
+                            <img src="/images/details_15.jpeg"/>
                         </div>
                         <p>
                             从免费榜来看，《王者荣耀》在今年以来几乎从没掉出过前十，并且还能够时常登顶，能有这样成绩的只有与人们生活息息相关的大DAU的手机应用，如微信，手机QQ这样的社交应用，或者是当前备受资本青睐的共享单车摩拜与ofo等为数不多的APP。一个上线超过一年的游戏产品，能够长期与人们日常生活强关联的装机必备手机应用的下载量相媲美，这本身就是一个奇迹，足以说明《王者荣耀》已经对相当一部分国人的生活产生了深刻的影响。由于《王者荣耀》一直处在免费榜前列，说明其用户量也一直持续攀升，这将有助于巩固其在畅销榜上的霸主地位，目前这一局面已成为常态并且难以再被打破。
@@ -128,10 +126,10 @@
                             再来看其他粉丝汇聚的信息传播平台，如百度贴吧、微博和微信。截至目前，百度王者荣耀吧，拥有442.9万的用户关注量，仅历时一年半的发展便接近《魔兽世界》或《英雄联盟》两大人气游戏贴吧一半的用户关注量，可算十分难得。而“王者荣耀”微博粉丝数达到233万，与“王者荣耀”相关的热门话题数量层出不穷，而在4月份因《人民日报》批判了游戏中荆轲身为女性角色的现象后更是引起全民性质的社会舆论关注热度，但也这也反映出《王者荣耀》作为国民级手游其影响力早已不再局限于玩家群体，而是已经深入到人们的日常生活中。在微信平台上，“王者荣耀”公众号每篇文章的阅读数均在10万以上，点赞数少则几百多则一两千，读者留言更是积极踊跃。
                         </p>
                         <div class="image_package">
-                            <img src="//upload-images.jianshu.io/upload_images/4896574-752eb17fdc58b64e?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
+                            <img src="/images/details_16.jpeg"/>
                         </div>
                         <div class="image_package">
-                            <img src="//upload-images.jianshu.io/upload_images/4896574-7e7378c74609249c?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
+                            <img src="/images/details_17.jpeg"/>
                         </div>
                         <p>
                             从下载榜、畅销榜、百度指数、百度贴吧、新浪微博、微信公众号等各大平台都不难看出，《王者荣耀》目前拥有超高的关注度和参与度，正与其数千万的超高DAU相匹配，是当之无愧的国民级手游。
@@ -149,13 +147,13 @@
                             虽然腾讯官方迄今为止并没有正式透露过《王者荣耀》具体的收入数据，但网络上对于《王者荣耀》的超高收入的报道与传闻一直不绝于耳，比如知名财经博主曹山石曾在微博透露，《王者荣耀》出了个赵云皮肤，单凭卖此项一天收入1.5亿。而据不完全统计，《王者荣耀》拥有超170个皮肤。根据某玩家反馈，“武则天”这类需要以抽卡方式获取的某个限定英雄，他花了近4千元才获得。可见《王者荣耀》令人恐怖的赚钱能力并非空穴来风。
                         </p>
                         <div class="image_package">
-                            <img src="//upload-images.jianshu.io/upload_images/4896574-89eba802f0163403?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
+                            <img src="/images/details_18.jpeg"/>
                         </div>
                         <p>
                             曹山石还提及了在去年腾讯年会上，《王者荣耀》入选腾讯年度最高级别的产品奖项——“名品堂”。“名品堂”是腾讯于2015年设立的，针对旗下代表公司级里程碑产品的最高荣誉，对入选产品将予以1亿元的奖励。除了《王者荣耀》，2016年，获得该奖项的还有微信支付，以及在MIG事业群中的应用宝。据爆料，《王者荣耀》项目组人均分得140万元，最低分红60万元，核心员工最多分到了290万元人民币。可见，结合《王者荣耀》的种种传闻与客观性报道，30亿月流水的数据并非没有可信度。
                         </p>
                         <div class="image_package">
-                            <img src="//upload-images.jianshu.io/upload_images/4896574-0a2a09bc3b887de4?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
+                            <img src="/images/details_21.jpeg"/>
                         </div>
                         <p>
                             如果说《王者荣耀》30亿月流水的传闻只是因为春节档人气爆发所致的话，那么未来会不会真正地实现长期30亿+的月流水？首先，《王者荣耀》已在全球第一的内地手游市场上如日中天，其王者地位难以受到挑战，但更可怕的是，腾讯已将自研游戏全球化的重任押注在《王者荣耀》进军海外市场上了，自从今年以来《王者荣耀》在海外便开始一路攻城略地，这恐怕会让《王者荣耀》的相关数据变得更加“残暴”。
@@ -164,7 +162,7 @@
                             具体来看，从今年年初开始，腾讯与持股的小伙伴Garena Online、Netmarble一起陆续在香港、台湾、韩国以及几个东南亚市场成功推出并迅速杀入了畅销榜前10。然后，腾讯又于今年2月20日用旗下的开发者账号Proxima Beta，将《王者荣耀》的西方国家版本《Strike of Kings》在多个欧洲国家上线。至于《王者荣耀》在第二大的美国市场的上线，也只是时间问题。
                         </p>
                         <div class="image_package">
-                            <img src="//upload-images.jianshu.io/upload_images/4896574-4d8a3083ca4f8c41?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
+                            <img src="/images/details_19.jpeg"/>
                         </div>
                         <p>
                             《王者荣耀》是否为全球最赚钱的游戏？
@@ -185,7 +183,7 @@
                             对比之下，其他游戏的收入情况又是如何的呢？去年海外数据分析公司SuperData曾发布了《2016游戏年度报告》，除了全球游戏业总收入破6300亿元、手游收入超2800亿之外，还列出了各个平台的收入榜Top 5。榜单显示，2016年（1-11月）收入最高的是Riot Games的《英雄联盟》（题外话，这款游戏也是属于腾讯的），这款MAU突破了1亿的MOBA游戏今年收入有望突破17亿美元（118亿元人民币），手游收入最高的是Mixi的《怪物弹珠》13亿美元（90亿元）。
                         </p>
                         <div class="image_package">
-                            <img src="//upload-images.jianshu.io/upload_images/4896574-bbe80aa9abe72f88?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
+                            <img src="/images/details_20.jpeg"/>
                         </div>
                         <p>
                             虽然SuperData列举的只是1-11月份的收入总和，但由于去年收入最高的《英雄联盟》上线已有6年，而《怪物弹珠》也已上线4年，它们都属于老游戏了，都已经进入增长乏力甚至陷入收入平稳或者走下坡路的阶段，因此就算它们加上12月的营收数据，并在今年能够继续保持同样的收入水平，也将会被《王者荣耀》惊人的至少以240亿保底，并有望突破300亿人民币的营收数据远远地甩在身后。因此，尽管目前并没有绝对精确可靠的数据来支撑，但我们依然可以得到这样一个难以受到挑战的结论——《王者荣耀》当前已经毋庸置疑地成为全球最为赚钱的游戏！
@@ -212,19 +210,17 @@
                 <div class="follow_detail">
                     <div class="info">
                         <a class="avatar" href="#">
-                            <img src="//upload.jianshu.io/users/upload_avatars/4896574/81748b90-d20d-40fd-a659-127ece846249?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                            <img src="/images/photo_02.jpg"/>
                         </a>
                         <a class="follow" href="#">
-                            <i class="iconfont icon-jia">
-                            </i>
                             <span>
-                                关注
+                                ＋ 关注
                             </span>
                         </a>
                         <a class="title" href="#">
                             空评
                         </a>
-                        <i class="iconfont icon-nanhai">
+                        <i class="iconfont icon-nansheng1">
                         </i>
                         <p>
                             写了 17299 字，被 6 人关注，获得了 16 个喜欢
@@ -244,7 +240,7 @@
                         <div class="btn like_group">
                             <div class="btn_like">
                                 <a href="#">
-                                    <i class="iconfont icon-xihuan">
+                                    <i class="iconfont icon-xin">
                                     </i>
                                     喜欢
                                 </a>
@@ -258,15 +254,15 @@
                     </div>
                     <div class="share_group">
                         <a class="share_circle" href="#">
-                            <i class="iconfont icon-weixin">
+                            <i class="iconfont icon-weixin1">
                             </i>
                         </a>
                         <a class="share_circle" href="#">
-                            <i class="iconfont icon-xinlangweibo1">
+                            <i class="iconfont icon-sina">
                             </i>
                         </a>
                         <a class="share_circle" href="#">
-                            <i class="iconfont icon-long-picture">
+                            <i class="iconfont icon-zhaopian">
                             </i>
                         </a>
                         <a class="share_circle more_share" href="#">
@@ -279,7 +275,7 @@
                         <div>
                             <form class="new_comment">
                                 <a class="avatar" href="#">
-                                    <img src="//upload.jianshu.io/users/upload_avatars/8016539/6c0b408f-6cf6-4fd1-a283-c2446ab63f58.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/114/h/114"/>
+                                    <img src="/images/photo_01.jpg"/>
                                 </a>
                                 <textarea placeholder="写下你的评论...">
                                 </textarea>
@@ -308,39 +304,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{--
-                                <div class="comments_placeholder">
-                                    <div class="author">
-                                        <div class="avatar">
-                                        </div>
-                                        <div class="info">
-                                            <div class="name">
-                                            </div>
-                                            <div class="meta">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="text">
-                                    </div>
-                                    <div class="text animation_delay">
-                                    </div>
-                                    <div class="tool_group">
-                                        <i class="iconfont icon-dianzan3">
-                                        </i>
-                                        <div class="zan">
-                                        </div>
-                                        <i class="iconfont icon-weibiaoti5">
-                                        </i>
-                                        <div class="zan">
-                                        </div>
-                                    </div>
-                                </div>
-                                --}}
                                 <div class="comment">
                                     <div>
                                         <div class="author">
                                             <a class="avatar" href="#">
-                                                <img src="//upload.jianshu.io/users/upload_avatars/6596351/310817ec-ca84-4427-882f-a93253a6ee07?imageMogr2/auto-orient/strip|imageView2/1/w/114/h/114"/>
+                                                <img src="/images/photo_03.jpg"/>
                                             </a>
                                             <div class="info">
                                                 <a class="name" href="#">
@@ -359,14 +327,14 @@
                                             </p>
                                             <div class="tool_group">
                                                 <a href="#">
-                                                    <i class="iconfont icon-dianzan">
+                                                    <i class="iconfont icon-fabulous">
                                                     </i>
                                                     <span>
                                                         赞
                                                     </span>
                                                 </a>
                                                 <a href="#">
-                                                    <i class="iconfont icon-pinglun1">
+                                                    <i class="iconfont icon-xinxi">
                                                     </i>
                                                     <span>
                                                         回复
@@ -385,7 +353,7 @@
                                     <div>
                                         <div class="author">
                                             <a class="avatar" href="#">
-                                                <img src="//upload.jianshu.io/users/upload_avatars/6596351/310817ec-ca84-4427-882f-a93253a6ee07?imageMogr2/auto-orient/strip|imageView2/1/w/114/h/114"/>
+                                                <img src="/images/photo_03.jpg"/>
                                             </a>
                                             <div class="info">
                                                 <a class="name" href="#">
@@ -404,14 +372,14 @@
                                             </p>
                                             <div class="tool_group">
                                                 <a href="#">
-                                                    <i class="iconfont icon-dianzan">
+                                                    <i class="iconfont icon-fabulous">
                                                     </i>
                                                     <span>
                                                         赞
                                                     </span>
                                                 </a>
                                                 <a href="#">
-                                                    <i class="iconfont icon-pinglun1">
+                                                    <i class="iconfont icon-xinxi">
                                                     </i>
                                                     <span>
                                                         回复
@@ -430,7 +398,7 @@
                                     <div>
                                         <div class="author">
                                             <a class="avatar" href="#">
-                                                <img src="//upload.jianshu.io/users/upload_avatars/189984/ff538dab-3c37-4342-8cc9-124f2bba33d7.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/114/h/114"/>
+                                                <img src="/images/photo_03.jpg"/>
                                             </a>
                                             <div class="info">
                                                 <a class="name" href="#">
@@ -449,14 +417,14 @@
                                             </p>
                                             <div class="tool_group">
                                                 <a href="#">
-                                                    <i class="iconfont icon-dianzan">
+                                                    <i class="iconfont icon-fabulous">
                                                     </i>
                                                     <span>
                                                         赞
                                                     </span>
                                                 </a>
                                                 <a href="#">
-                                                    <i class="iconfont icon-pinglun1">
+                                                    <i class="iconfont icon-xinxi">
                                                     </i>
                                                     <span>
                                                         回复
@@ -475,7 +443,7 @@
                                     <div>
                                         <div class="author">
                                             <a class="avatar" href="#">
-                                                <img src="//upload.jianshu.io/users/upload_avatars/7336229/9df94195-85f7-4835-8e23-e7abab947703.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/114/h/114"/>
+                                                <img src="/images/photo_03.jpg"/>
                                             </a>
                                             <div class="info">
                                                 <a class="name" href="#">
@@ -494,14 +462,14 @@
                                             </p>
                                             <div class="tool_group">
                                                 <a href="#">
-                                                    <i class="iconfont icon-dianzan">
+                                                    <i class="iconfont icon-fabulous">
                                                     </i>
                                                     <span>
                                                         赞
                                                     </span>
                                                 </a>
                                                 <a href="#">
-                                                    <i class="iconfont icon-pinglun1">
+                                                    <i class="iconfont icon-xinxi">
                                                     </i>
                                                     <span>
                                                         回复
@@ -520,7 +488,7 @@
                                     <div>
                                         <div class="author">
                                             <a class="avatar" href="#">
-                                                <img src="http://cdn2.jianshu.io/assets/default_avatar/5-33d2da32c552b8be9a0548c7a4576607.jpg"/>
+                                                <img src="/images/photo_03.jpg"/>
                                             </a>
                                             <div class="info">
                                                 <a class="name" href="#">
@@ -539,14 +507,14 @@
                                             </p>
                                             <div class="tool_group">
                                                 <a href="#">
-                                                    <i class="iconfont icon-dianzan">
+                                                    <i class="iconfont icon-fabulous">
                                                     </i>
                                                     <span>
                                                         赞
                                                     </span>
                                                 </a>
                                                 <a href="#">
-                                                    <i class="iconfont icon-pinglun1">
+                                                    <i class="iconfont icon-xinxi">
                                                     </i>
                                                     <span>
                                                         回复
@@ -565,7 +533,7 @@
                                     <div>
                                         <div class="author">
                                             <a class="avatar" href="#">
-                                                <img src="//upload.jianshu.io/users/upload_avatars/3186496/94219e16febf.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/114/h/114"/>
+                                                <img src="/images/photo_03.jpg"/>
                                             </a>
                                             <div class="info">
                                                 <a class="name" href="#">
@@ -584,14 +552,14 @@
                                             </p>
                                             <div class="tool_group">
                                                 <a href="#">
-                                                    <i class="iconfont icon-dianzan">
+                                                    <i class="iconfont icon-fabulous">
                                                     </i>
                                                     <span>
                                                         237人赞
                                                     </span>
                                                 </a>
                                                 <a href="#">
-                                                    <i class="iconfont icon-pinglun1">
+                                                    <i class="iconfont icon-xinxi">
                                                     </i>
                                                     <span>
                                                         回复
@@ -621,7 +589,7 @@
                                                     2017.07.05 08:45
                                                 </span>
                                                 <a href="#">
-                                                    <i class="iconfont icon-pinglun1">
+                                                    <i class="iconfont icon-xinxi">
                                                     </i>
                                                     <span>
                                                         回复
@@ -649,7 +617,7 @@
                                                     2017.07.05 08:45
                                                 </span>
                                                 <a href="#">
-                                                    <i class="iconfont icon-pinglun1">
+                                                    <i class="iconfont icon-xinxi">
                                                     </i>
                                                     <span>
                                                         回复
@@ -677,7 +645,7 @@
                                                     2017.07.05 08:45
                                                 </span>
                                                 <a href="#">
-                                                    <i class="iconfont icon-pinglun1">
+                                                    <i class="iconfont icon-xinxi">
                                                     </i>
                                                     <span>
                                                         回复
@@ -692,7 +660,7 @@
                                         </div>
                                         <div class="sub_comment more_comment">
                                             <a class="add_comment_btn" href="#">
-                                                <i class="iconfont icon-xiezi">
+                                                <i class="iconfont icon-xie">
                                                 </i>
                                                 <span>
                                                     添加新评论
@@ -724,13 +692,13 @@
                         </div>
                         <div class="include_collection">
                             <a class="item" href="#">
-                                <img src="//upload.jianshu.io/collections/images/47/%E9%A6%96%E9%A1%B5%E6%8A%95%E7%A8%BF.png?imageMogr2/auto-orient/strip|imageView2/1/w/64/h/64"/>
+                                <img src="/images/category_08.jpg"/>
                                 <div class="name">
-                                    首页投稿
+                                    剑侠情缘
                                 </div>
                             </a>
                             <a class="item" href="#">
-                                <img src="//upload.jianshu.io/collections/images/332973/android.graphics.Bitmap_1698d0cc.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/64/h/64"/>
+                                <img src="/images/category_01.jpeg"/>
                                 <div class="name">
                                     王者荣耀
                                 </div>
@@ -752,7 +720,7 @@
                                 推荐阅读
                                 <a href="#">
                                     更多精彩内容
-                                    <i class="iconfont icon-gengduo">
+                                    <i class="iconfont icon-youbian">
                                     </i>
                                 </a>
                             </div>
@@ -760,7 +728,7 @@
                         <div class="list">
                             <div class="note have_img">
                                 <a class="cover col-xs-10 col-sm-3 col-xs-offset-1 col-sm-offset-0" href="#">
-                                    <img src="//upload-images.jianshu.io/upload_images/4896574-086905d58a4e5f4b?imageMogr2/auto-orient/strip|imageView2/1/w/300/h/240"/>
+                                    <img src="/images/details_09.jpg"/>
                                 </a>
                                 <a class="title col-xs-12 col-sm-9" href="#">
                                     桃花源记起源之作，携手《一起足球吧》致敬毕业季
@@ -770,7 +738,7 @@
                                 </p>
                                 <a class="author col-xs-12 col-sm-9" href="#">
                                     <div class="avatar">
-                                        <img src="http://upload.jianshu.io/users/upload_avatars/4896574/81748b90-d20d-40fd-a659-127ece846249"/>
+                                        <img src="/images/photo_02.jpg"/>
                                     </div>
                                     <span class="name">
                                         空评
@@ -779,7 +747,7 @@
                             </div>
                             <div class="note have_img">
                                 <a class="cover col-xs-10 col-sm-3 col-xs-offset-1 col-sm-offset-0" href="#">
-                                    <img src="//upload-images.jianshu.io/upload_images/4896574-5091b316532c0d99?imageMogr2/auto-orient/strip|imageView2/1/w/300/h/240"/>
+                                    <img src="/images/details_07.jpg"/>
                                 </a>
                                 <a class="title col-xs-12 col-sm-9" href="#">
                                     魔兽世界7.2.5全新版本资料片：新橙戒+新黑庙+乐队活动
@@ -789,7 +757,7 @@
                                 </p>
                                 <a class="author col-xs-12 col-sm-9" href="#">
                                     <div class="avatar">
-                                        <img src="http://upload.jianshu.io/users/upload_avatars/4896574/81748b90-d20d-40fd-a659-127ece846249"/>
+                                        <img src="/images/photo_02.jpg"/>
                                     </div>
                                     <span class="name">
                                         空评
@@ -798,7 +766,7 @@
                             </div>
                             <div class="note have_img">
                                 <a class="cover col-xs-10 col-sm-3 col-xs-offset-1 col-sm-offset-0" href="#">
-                                    <img src="//upload-images.jianshu.io/upload_images/1653345-f1883f3fa228f441.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/300/h/240"/>
+                                    <img src="/images/details_06.jpeg"/>
                                 </a>
                                 <a class="title col-xs-12 col-sm-9" href="#">
                                     我想嫁这样的你
@@ -808,7 +776,7 @@
                                 </p>
                                 <a class="author col-xs-12 col-sm-9" href="#">
                                     <div class="avatar">
-                                        <img src="http://upload.jianshu.io/users/upload_avatars/1653345/4fd488f09cf6.jpeg"/>
+                                        <img src="/images/photo_03.jpg"/>
                                     </div>
                                     <span class="name">
                                         千松雪
@@ -817,7 +785,7 @@
                             </div>
                             <div class="note have_img">
                                 <a class="cover col-xs-10 col-sm-3 col-xs-offset-1 col-sm-offset-0" href="#">
-                                    <img src="//upload-images.jianshu.io/upload_images/4968905-a7207690a0392d6d.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/300/h/240"/>
+                                    <img src="/images/details_08.jpg"/>
                                 </a>
                                 <a class="title col-xs-12 col-sm-9" href="#">
                                     男朋友消失后的第19天
@@ -827,7 +795,7 @@
                                 </p>
                                 <a class="author col-xs-12 col-sm-9" href="#">
                                     <div class="avatar">
-                                        <img src="http://upload.jianshu.io/users/upload_avatars/4968905/ccf07b27-4d2e-4b5d-840c-4c012555facf.jpg"/>
+                                        <img src="/images/photo_03.jpg"/>
                                     </div>
                                     <span class="name">
                                         寒烟衰草
@@ -836,7 +804,7 @@
                             </div>
                             <div class="note">
                                 <!-- {{-- <a href="#" class="cover col-xs-10 col-sm-3 col-xs-offset-1 col-sm-offset-0">
-                                        <img src="//upload-images.jianshu.io/upload_images/1633961-df3173c20817507e.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/300/h/240" />
+                                        <img src="/images/" />
                                     </a> --}} -->
                                 <a class="title col-xs-12" href="#">
                                     有趣的灵魂千篇一律，美丽的皮囊万里挑一
@@ -846,7 +814,7 @@
                                 </p>
                                 <a class="author col-xs-12" href="#">
                                     <div class="avatar">
-                                        <img src="http://upload.jianshu.io/users/upload_avatars/18451/913538140263.jpg"/>
+                                        <img src="/images/photo_03.jpg"/>
                                     </div>
                                     <span class="name">
                                         饱醉豚

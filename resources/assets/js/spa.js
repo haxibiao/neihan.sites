@@ -39,14 +39,16 @@ Vue.component('comment', require('./components/Comment.vue'));
 
 
 // 关注页
-Vue.component('subscriptions-left', require('./components/subscriptions/SubscriptionsLeft.vue'));
+Vue.component('follow-left', require('./components/follow/FollowLeft.vue'));
 
 const routes = [
-    { path: '/subscriptions_add', component: require('./components/subscriptions/SubscriptionsAdd.vue') },
-    { path: '/friend', component: require('./components/subscriptions/SubscriptionsFriend.vue') },
-    { path: '/category', component: require('./components/subscriptions/SubscriptionsCategory.vue') },
-    { path: '/collection', component: require('./components/subscriptions/SubscriptionsCollection.vue') },
-    { path: '/user', component: require('./components/subscriptions/SubscriptionsUser.vue') },
+    // 关注路由
+    { path: '/follow_add', component: require('./components/follow/FollowAdd.vue') },
+    { path: '/friend', component: require('./components/follow/FollowFriend.vue') },
+    { path: '/category', component: require('./components/follow/FollowCategory.vue') },
+    { path: '/collection', component: require('./components/follow/FollowCollection.vue') },
+    { path: '/user', component: require('./components/follow/FollowUser.vue') },
+    // 消息路由
     { path: '/comments', component: require('./components/notifications/NotificationsComments.vue') },
     { path: '/chats', component: require('./components/notifications/NotificationsChats.vue') },
     { path: '/requests', component: require('./components/notifications/NotificationsRequests.vue') },

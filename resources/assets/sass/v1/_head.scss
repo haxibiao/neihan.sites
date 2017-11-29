@@ -2,85 +2,65 @@
 #head {
     padding-top: 70px;
     .navbar {
-        // background-color: #f2b5c5;
-        .navbar-header {
-            a {
-                padding-top: 0;
-                img {
-                    max-height: 50px;
-                }
-            }
-        }
-        .navbar-collapse {
-            a {
-                color: #333;
-                font-size: 15px;
-            }
-            .author {
-                padding: 10px 15px 0;
-                .avatar {
-                    @include avatar;
-                    margin: 0;
-                }
-            }
-            .follow {
-                @include button;
-                margin: 9px 10px 0;
-                background-color: #f2b5c5;
-                padding: 6px 0;
-                &:hover {
-                    background-color: #f3a0b6;
-                }
-                i {
-                    // font-size: 25px;
-                }
-            }
-            .follows {
-                @include news_button;
-                width: 60px;
-                margin: 9px 10px 0;
-                border-color: #f2b5c5; 
-                color: #f2b5c5;
-                padding: 6px 0;
-                &:hover {
-                    border-color: #f3a0b6;
-                }
-            }
-            .navbar-form {
-                padding: 0;
-                border-color: transparent;
-                .form-group {
-                    position: relative;
-                    input {
-                        width: 150px;
-                        height: 36px;
-                        padding: 0 40px 0 20px;
-                        border-radius: 18px;
-                        background-color: #eee;
-                        border: none;;
-                    }
-                    i {
-                        position: absolute;
-                        top: 4px;
-                        right: 4px;
-                        width: 28px;
-                        height: 28px;
-                        font-size: 20px;
-                        text-align: center;
-                        line-height: 28px;
-                        color: #666;
-                        border-radius: 50%;
-                    }
-                }
-            }
-            .dropdown-menu {
-                // background-color: #f2b5c5;
+        .navbar_wrp {
+            .navbar-header {
                 a {
-                    i {
-                        font-size: 22px;
-                        margin-right: 15px;
-                        vertical-align: middle;
-                        color: #fd5b78;
+                    @include spacing;
+                    img {
+                        max-height: 50px;
+                    }
+                }
+            }
+            .navbar-collapse {
+                .navbar-nav {
+                    li {
+                        a {
+                            @include font (15px, $color-black);
+                        }
+                        .follow {
+                            @include button (100px, 0, $color-watermelon);
+                            @include spacing (8px 18px 0 10px, 7px 0);
+                            &:hover {
+                                background-color: #f04665;
+                            }
+                        }
+                        .follows {
+                            @include news_button (70px);
+                            @include spacing (8px 10px 0, 6px 0);
+                            border-color: $color-watermelon;
+                            color: $color-watermelon;
+                            &:hover {
+                                border-color: #f04665;
+                            }
+                        }
+                    }
+                }
+                .navbar-form {
+                    padding: 0;
+                    border-color: transparent;
+                    .form-group {
+                        position: relative;
+                        input {
+                            width: 160px;
+                            height: 36px;
+                            padding: 0 40px 0 20px;
+                            border-radius: 18px;
+                            background-color: #eee;
+                            border: none;
+                            ;
+                        }
+                        i {
+                            position: absolute;
+                            top: 4px;
+                            right: 4px;
+                            width: 28px;
+                            height: 28px;
+                            font-size: 20px;
+                            text-align: center;
+                            line-height: 28px;
+                            color: #666;
+                            border-radius: 50%;
+                        }
                     }
                 }
             }
@@ -92,74 +72,103 @@
 #head_user {
     padding-top: 70px;
     .navbar {
-        // background-color: #f2b5c5;
-        .navbar-header {
-            a {
-                padding-top: 0;
-                img {
-                    max-height: 50px;
-                }
-            }
-        }
-        .navbar-collapse {
-            a {
-                color: #333;
-                font-size: 15px;
-            }
-            .author {
-                @include spacing (5px 10px 0);
-                .avatar {
-                    @include avatar;
-                    margin: 0;
-                }
-            }
-            .follow {
-                @include button;
-                margin: 9px 10px 0;
-                background-color: #f2b5c5;
-                padding: 6px 0;
-                &:hover {
-                    background-color: #f3a0b6;
-                }
-                i {
-                    // font-size: 25px;
-                }
-            }
-            .navbar-form {
-                padding: 0;
-                border-color: transparent;
-                .form-group {
-                    position: relative;
-                    input {
-                        width: 150px;
-                        height: 36px;
-                        padding: 0 40px 0 20px;
-                        border-radius: 18px;
-                        background-color: #eee;
-                        border: none;;
-                    }
-                    i {
-                        position: absolute;
-                        top: 4px;
-                        right: 4px;
-                        width: 28px;
-                        height: 28px;
-                        font-size: 20px;
-                        text-align: center;
-                        line-height: 28px;
-                        color: #666;
-                        border-radius: 50%;
-                    }
-                }
-            }
-            .dropdown-menu {
-                // background-color: #f2b5c5;
+        .navbar_wrp {
+            .navbar-header {
                 a {
-                    i {
-                        font-size: 22px;
-                        margin-right: 15px;
-                        vertical-align: middle;
-                        color: #fd5b78;
+                    padding-top: 0;
+                    img {
+                        max-height: 50px;
+                    }
+                }
+            }
+            .navbar-collapse {
+                .navbar-nav {
+                    li {
+                        a {
+                            color: $color-black;
+                            font-size: 15px;
+                        }
+                        .style_mode_btn {
+                            color: $color-gray;
+                        }
+                        .author {
+                            @include spacing (5px 10px 4px);
+                            .avatar {
+                                @include avatar;
+                                margin: 0;
+                            }
+                            .caret {
+                                color: $color-gray;
+                            }
+                        }
+                        .follow {
+                            @include button;
+                            margin: 8px 18px 0 10px;
+                            background-color: $color-watermelon;
+                            padding: 7px 0;
+                            &:hover {
+                                background-color: #f04665;
+                            }
+                            i {
+                                font-size: 18px;
+                            }
+                        }
+                        .dropdown-menu {
+                            right: auto;
+                            a {
+                                i {
+                                    font-size: 22px;
+                                    margin-right: 15px;
+                                    vertical-align: middle;
+                                    color: $color-watermelon;
+                                }
+                            }
+                        }
+                        &:hover {
+                            background-color: $background-color-milky;
+                        }
+                    }
+                    .btom {
+                        &:hover {
+                            background-color: inherit;
+                        }
+                    }
+                    .dropdown-submenu-one:hover>.dropdown-menu {
+                        display: block;
+                    }
+                    .active {
+                        a {
+                            color: $color-watermelon;
+                            background-color: initial;
+                        }
+                    }
+                }
+                .navbar-form {
+                    padding: 0;
+                    border-color: transparent;
+                    .form-group {
+                        position: relative;
+                        input {
+                            width: 160px;
+                            height: 36px;
+                            padding: 0 40px 0 20px;
+                            border-radius: 18px;
+                            background-color: #eee;
+                            border: none;
+                            ;
+                        }
+                        i {
+                            position: absolute;
+                            top: 4px;
+                            right: 4px;
+                            width: 28px;
+                            height: 28px;
+                            font-size: 20px;
+                            text-align: center;
+                            line-height: 28px;
+                            color: $color-deep;
+                            border-radius: 50%;
+                        }
                     }
                 }
             }

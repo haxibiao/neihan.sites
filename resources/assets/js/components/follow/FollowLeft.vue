@@ -34,8 +34,8 @@
                 </li>
             </ul>
         </div>
-        <router-link to="/subscriptions_add" class="add_people">
-            <i class="iconfont icon-tianjiaguanzhu">
+        <router-link to="/follow_add" class="add_people">
+            <i class="iconfont icon-guanzhu">
             </i>
             添加关注
         </router-link>
@@ -43,7 +43,7 @@
             <li>
                 <router-link to="/friend">
                     <div class="avatar">
-                        <img src="//cdn2.jianshu.io/assets/web/jianyouquan-2fb0cd72e35147c79d6507c3a3a2591b.png" style="border: none;"/>
+                        <img src="/images/photo_02.jpg"/>
                     </div>
                     <div class="name">
                         爱你城朋友圈
@@ -53,7 +53,7 @@
             <li>
                 <router-link to="/category">
                     <div class="avatar avatar_collection">
-                        <img src="//upload.jianshu.io/collections/images/12/1239240801.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120"/>
+                        <img src="/images/category_03.jpg"/>
                     </div>
                     <div class="name">
                         散文
@@ -65,7 +65,7 @@
             <li>
                 <router-link to="/user">
                     <div class="avatar">
-                        <img src="//upload.jianshu.io/users/upload_avatars/8370162/1728c3a2-91d4-4554-be23-124fe4233dc8.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/120/h/120"/>
+                        <img src="/images/photo_03.jpg"/>
                     </div>
                     <div class="name">
                         爱你城精选
@@ -78,7 +78,7 @@
             <li>
                 <router-link to="/collection">
                     <div class="avatar avatar_collection">
-                        <img src="//cdn2.jianshu.io/assets/default_avatar/avatar-notebook-default-640f7dde88592bdf6417d8ce1902636e.png"/>
+                        <img src="/images/category_09.png"/>
                     </div>
                     <div class="name">
                         王者荣耀
@@ -94,7 +94,7 @@
 <script>
 export default {
 
-  name: 'SubscriptionsLeft',
+  name: 'FollowLeft',
 
   mounted(){
     this.$router.push({path:"/friend"});

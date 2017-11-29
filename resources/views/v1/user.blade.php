@@ -10,14 +10,14 @@
             <div class="essays col-xs-12 col-sm-8">
                 <div class="main_top">
                     <a class="avatar" href="/v1/user">
-                        <img src="//upload.jianshu.io/users/upload_avatars/4896574/81748b90-d20d-40fd-a659-127ece846249?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                        <img src="/images/photo_02.jpg"/>
                     </a>
-                    <a class="botm follow" href="#">
+                    <a class="botm follow" href="javascript:;">
                         <span>
                             ＋ 关注
                         </span>
                     </a>
-                    <a class="botm contribute" href="#">
+                    <a class="botm contribute" href="/v1/notification">
                         <span>
                             发消息
                         </span>
@@ -59,7 +59,7 @@
                             </li>
                             <li>
                                 <div class="meta_block">
-                                    <a href="#">
+                                    <a href="/v1/user">
                                         <p>
                                             8
                                         </p>
@@ -133,11 +133,11 @@
                             <ul class="article">
                                 <li class="article_item">
                                     <div class="author">
-                                        <a class="avatar" href="/v1/user">
-                                            <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/4896574/81748b90-d20d-40fd-a659-127ece846249?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                                        <a class="avatar" href="/v1/user" target="_blank">
+                                            <img src="/images/photo_02.jpg"/>
                                         </a>
                                         <div class="info">
-                                            <a href="/v1/user">
+                                            <a href="/v1/user" target="_blank">
                                                 空评
                                             </a>
                                             <span>
@@ -147,23 +147,23 @@
                                     </div>
                                     <div class="substance have_img clearfix">
                                         <div class="conten col-xs-12 col-sm-8 col-md-9">
-                                            <a href="/v1/detail">
+                                            <a href="/v1/detail" target="_blank">
                                                 魔兽世界7.2.5全新版本资料片：新橙戒+新黑庙+乐队活动
                                             </a>
                                             <p class="article">
                                                 《魔兽世界》7.2.5版本今日在国服上线。虽然是小版本更新，但改动内容还是十分丰富的。比如新的橙装、大秘境调整、黑庙加入时空漫游、克罗米战役等等。以下是17173为各位整理的《魔兽世界》7.2.5版本今日在国服上线。虽然是小版本更新，但改动内容还是十分丰富的。比如新的橙装、大秘境调整、黑庙加入时空漫游、克罗米战役等等。以下是17173为各位整理的
                                             </p>
                                         </div>
-                                        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail">
-                                            <img src="//upload-images.jianshu.io/upload_images/4896574-5091b316532c0d99?imageMogr2/auto-orient/strip|imageView2/1/w/150/h/120"/>
+                                        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail" target="_blank">
+                                            <img src="/images/details_07.jpg"/>
                                         </a>
                                         <div class="meta col-xs-12">
-                                            <a href="/v1/detail">
+                                            <a href="/v1/detail" target="_blank">
                                                 <i class="iconfont icon-liulan">
                                                 </i>
                                                 717
                                             </a>
-                                            <a href="/v1/detail">
+                                            <a href="/v1/detail" target="_blank">
                                                 <i class="iconfont icon-svg37">
                                                 </i>
                                                 6
@@ -178,11 +178,11 @@
                                 </li>
                                 <li class="article_item">
                                     <div class="author">
-                                        <a class="avatar" href="/v1/user">
-                                            <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/4896574/81748b90-d20d-40fd-a659-127ece846249?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                                        <a class="avatar" href="/v1/user" target="_blank">
+                                            <img src="/images/photo_02.jpg"/>
                                         </a>
                                         <div class="info">
-                                            <a href="/v1/user">
+                                            <a href="/v1/user" target="_blank">
                                                 空评
                                             </a>
                                             <span>
@@ -192,15 +192,15 @@
                                     </div>
                                     <div class="follow_detail">
                                         <div class="info">
-                                            <a class="avatar" href="#">
-                                                <img src="//upload.jianshu.io/users/upload_avatars/1159369/799d8fa18062?imageMogr2/auto-orient/strip|imageView2/1/w/180/h/180"/>
+                                            <a class="avatar" href="/v1/user" target="_blank">
+                                                <img src="/images/photo_03.jpg"/>
                                             </a>
-                                            <a class="follow" href="#">
+                                            <a class="follow" href="javascript:;">
                                                 <span>
                                                     ＋ 关注
                                                 </span>
                                             </a>
-                                            <a class="title" href="#">
+                                            <a class="title" href="/v1/user" target="_blank">
                                                 Dreamover1010
                                             </a>
                                             <p>
@@ -214,11 +214,11 @@
                                 </li>
                                 <li class="article_item">
                                     <div class="author">
-                                        <a class="avatar" href="/v1/user">
-                                            <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/4896574/81748b90-d20d-40fd-a659-127ece846249?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                                        <a class="avatar" href="/v1/user" target="_blank">
+                                            <img src="/images/photo_02.jpg"/>
                                         </a>
                                         <div class="info">
-                                            <a href="/v1/user">
+                                            <a href="/v1/user" target="_blank">
                                                 空评
                                             </a>
                                             <span>
@@ -228,13 +228,13 @@
                                     </div>
                                     <div class="comment">
                                         <p>
-                                            <a href="#">
+                                            <a href="/v1/user" target="_blank">
                                                 @夜_2d81
                                             </a>
                                             丧尸从0到1%，这个过程，军队就开始介入了，基本不可能达到99%
                                         </p>
                                         <blockquote>
-                                            <a class="title" href="#">
+                                            <a class="title" href="/v1/detail" target="_blank">
                                                 末日来临，最正确的丧尸自救指南
                                             </a>
                                             <p class="abstract">
@@ -242,16 +242,16 @@
                                             </p>
                                             <div class="meta">
                                                 <div class="origin_author">
-                                                    <a href="#">
+                                                    <a href="/v1/user" target="_blank">
                                                         空评
                                                     </a>
                                                 </div>
-                                                <a href="/v1/detail">
+                                                <a href="/v1/detail" target="_blank">
                                                     <i class="iconfont icon-liulan">
                                                     </i>
                                                     1649
                                                 </a>
-                                                <a href="/v1/detail">
+                                                <a href="/v1/detail" target="_blank">
                                                     <i class="iconfont icon-svg37">
                                                     </i>
                                                     22
@@ -267,11 +267,11 @@
                                 </li>
                                 <li class="article_item">
                                     <div class="author">
-                                        <a class="avatar" href="/v1/user">
-                                            <img alt="头像" src="//upload.jianshu.io/users/upload_avatars/4896574/81748b90-d20d-40fd-a659-127ece846249?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                                        <a class="avatar" href="/v1/user" target="_blank">
+                                            <img src="/images/photo_02.jpg"/>
                                         </a>
                                         <div class="info">
-                                            <a href="/v1/user">
+                                            <a href="/v1/user" target="_blank">
                                                 空评
                                             </a>
                                             <em>
@@ -289,12 +289,12 @@
                                         <blockquote>
                                             <div class="meta">
                                                 <div class="origin_author">
-                                                    <a href="#">
+                                                    <a href="/v1/user" target="_blank">
                                                         郭璐Alu
                                                     </a>
                                                     <span>
                                                         评论自
-                                                        <a href="#">
+                                                        <a href="/v1/detail" target="_blank">
                                                             集体宿舍，将3000万大学生拉入深渊
                                                         </a>
                                                     </span>
@@ -317,15 +317,19 @@
             <div class="aside col-sm-4 col-lg-3 col-lg-offset-1">
                 <ul class="user_dynamic">
                     <li>
-                        <a href="#">
-                            <img src="//cdn2.jianshu.io/assets/badges/signed-9702260821906f0d953eab67a29f8e7a2d2e3d20960576347591283a3fbfd867.png"/>
-                            爱你城签约作者
+                        <a href="/v1/detail" target="_blank">
+                            <img src="/images/vip1.png"/>
+                            <span>
+                                爱你城签约作者
+                            </span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
-                            <img src="//cdn2.jianshu.io/assets/badges/excellent-34cdda4de26ee9910f190239ffecf886c24045136468fa26f041b0156a143cd9.png"/>
-                            空评《好中文的样子》
+                        <a href="/v1/detail" target="_blank">
+                            <img src="/images/vip2.png"/>
+                            <span>
+                                空评《好中文的样子》
+                            </span>
                         </a>
                     </li>
                 </ul>
@@ -336,11 +340,11 @@
                     <p>
                         十分精力：四分读书，三分写书，三分教书。《正版语文》作者，21世纪最牛写作书 《风格感觉》（The Sense of Style）中文译者之一，“好中文的样子”创办人和主讲人。
                     </p>
-                    <a href="javascript:">
-                        <img src="/logo/weibo.svg"/>
+                    <a href="javascript:;">
+                        <img src="/images/weibo.svg"/>
                     </a>
-                    <a href="javascript:">
-                        <img src="/logo/weixin.svg"/>
+                    <a href="javascript:;">
+                        <img src="/images/weixin.svg"/>
                     </a>
                 </div>
                 <ul class="user_dynamic">
@@ -369,16 +373,16 @@
                     </p>
                     <ul class="list">
                         <li>
-                            <a href="#">
-                                <img src="//upload.jianshu.io/collections/images/367981/android.graphics.Bitmap_2bebf481.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                            <a href="/v1/category" target="_blank">
+                                <img src="/images/category_05.jpg"/>
                                 <span>
                                     文章
                                 </span>
                             </a>
                         </li>
                         <li>
-                            <a href="#">
-                                <img src="//upload.jianshu.io/collections/images/319558/1.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                            <a href="/v1/category" target="_blank">
+                                <img src="/images/category_06.jpg"/>
                                 <span>
                                     好中文的样子
                                 </span>
@@ -390,7 +394,7 @@
                     </p>
                     <ul class="list">
                         <li>
-                            <a href="#">
+                            <a href="/v1/category" target="_blank">
                                 <i class="iconfont icon-wenji">
                                 </i>
                                 <span>
@@ -399,7 +403,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="/v1/category" target="_blank">
                                 <i class="iconfont icon-wenji">
                                 </i>
                                 <span>
@@ -408,7 +412,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="/v1/category" target="_blank">
                                 <i class="iconfont icon-wenji">
                                 </i>
                                 <span>
@@ -419,13 +423,13 @@
                     </ul>
                 </div>
                 <div class="user_action">
-                    <a href="#">
+                    <a href="javascript:;">
                         加入黑名单
                     </a>
                     <em>
                         ·
                     </em>
-                    <a href="#">
+                    <a href="javascript:;">
                         举报用户
                     </a>
                 </div>

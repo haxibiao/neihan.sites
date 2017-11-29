@@ -16,15 +16,11 @@
 
 //专题页
 #category {
-    // @include id;
     .essays {
         .main_top {
             width: 100%;
             height: 100%;
             margin-bottom: 32px;
-            a {
-                // @include a;
-            }
             p {
                 padding-left: 97px;
                 color: #969696;
@@ -180,13 +176,13 @@
                     font-size: 18px;
                     vertical-align: middle;
                 }
-                .icon-xinlangweibo:hover {
-                    color: #ff6600;
-                }
-                .icon-weixin-copy:hover {
+                .icon-weixin1:hover {
                     color: #339933;
                 }
-                .icon-sandian-copy:hover {
+                .icon-sina:hover {
+                    color: #ff6600;
+                }
+                .icon-gengduo:hover {
                     color: #666666;
                 }
             }

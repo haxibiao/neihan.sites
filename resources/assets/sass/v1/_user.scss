@@ -5,195 +5,76 @@
     .essays {
         .main_top {
             @include main_top;
-            .follow {
-                float: right;
-            }
-            .contribute {
-                @include news_button;
-                width: 90px;
-            }
-            .title {
-                padding: 10px 0 0 97px;
-                .name {
-                    @include main_top_name;
-                    display: inline;
-                    padding: 0;
-                }
-            }
-        }
-        @media screen and (max-width: 768px) {
-            .main_top {
-                padding-bottom: 34px;
+            @media screen and (max-width: 768px) {
                 .botm {
-                    clear: both;
                     position: absolute;
-                    top: 70px;
+                    top: 120px;
+                    margin-bottom: 0;
                 }
                 .follow {
-                    right: 20px;
-                    width: 35%;
+                    right: 40px;
                 }
                 .contribute {
-                    float: left;
-                    left: 10px;
-                    width: 35%;
+                    left: 40px;
+                }
+            }
+            @media screen and (min-width: 450px) and (max-width: 768px) {
+                padding-bottom: 0;
+                .botm {
+                    position: static;
                 }
             }
         }
         div {
             .trigger_menu {
                 @include trigger_menu;
+                @media screen and (min-width: 450px) and (max-width: 768px) {
+                    li {
+                        a {
+                            padding: 0 20px;
+                        }
+                    }
+                }
             }
             .tab-content {
                 .article {
                     .article_item {
                         @include article_item;
-                        .follow_detail {
-                            @include spacing (2% 0 0 0,20px);
-                            @include border (4px,1px solid $border-color);
-                            background-color: hsla(0, 0%, 71%, .1);
-                            font-size: 12px;
-                            .info {
-                                min-height: 47px;
-                                .avatar {
-                                    @include avatar;
-                                    float: left;
-                                    margin-right: 10px;
-                                }
-                                .follow {
-                                    @include button;
-                                    float: right;
-                                    margin: 6px 0 0 0;
-                                }
-                                .title {
-                                    margin-right: 3px;
-                                    @include font (17px,$color-black);
-                                    line-height: 1.8;
-                                    vertical-align: middle;
-                                }
-                                .icon-nanhai {
-                                    @include font (15px,$color-blue);
-                                    vertical-align: middle;
-                                }
-                                p {
-                                    margin-bottom: 0;
-                                    color: $color-gray;
-                                }
-                            }
-                            .signature {
-                                @include spacing (20px 0 0 0,20px 0 0 0);
-                                border-top: 1px solid $border-color;
-                                color: $color-gray;
-                            }
-                        }
-                        .comment {
-                            p {
-                                font-size: 15px;
-                                line-height: 1.7;
-                                a {
-                                    color: $color-blue;
-                                }
-                            }
-                            blockquote {
-                                @include font (12px,$color-gray);
-                                margin-bottom: 0;
-                                border-left: 3px solid $border-color;
-                                .title {
-                                    @include font (15px,$color-black,700);
-                                    line-height: 1.5;
-                                    margin: 0 0 4px;
-                                }
-                                .abstract {
-                                    font-size: 13px;
-                                    line-height: 24px;
-                                    margin: 0 0 4px;
-                                }
-                                .meta {
-                                    @include meta;
-                                }
-                            }
-                        }
                     }
                 }
             }
         }
     }
     .aside {
+        font-size: 14px;
         .user_dynamic {
+            @include spacing (0 0 16px 0, 0 0 10px 0);
             border-bottom: 1px solid $border-color-hr;
-            margin-bottom: 16px;
-            padding: 0 0 10px;
-            list-style: none;
             li {
-                margin-bottom: 10px;
-                a {
-                    // @include a;
-                    font-size: 14px;
-                    line-height: 30px;
-                    img {
-                        width: 20px;
-                        height: 20px;
-                        margin-right: 3px;
-                    }
-                    i {
-                        font-size: 20px;
-                        vertical-align: middle;
-                        margin-right: 5px;
-                    }
-                    span {
-                        vertical-align: middle;
-                    }
-                }
+                @include user_aside_list;
             }
         }
         .title {
+            color: $color-gray;
             margin-bottom: 10px;
-            font-size: 14px;
-            color: #969696;
         }
         .description {
-            font-size: 14px;
+            @include user_aside_list;
+            @include spacing (0 0 17px 0, 0 0 16px 0);
             border-bottom: 1px solid $border-color-hr;
-            margin-bottom: 17px;
-            padding: 0 0 16px;
-            text-align: left;
-            a {
-                // @include a;
-                img {
-                    width: 20px;
-                    height: 20px;
-                    margin-right: 5px;
-                    vertical-align: middle;
-                }
-            }
         }
         div {
             .list {
-                list-style: none;
-                padding: 0;
+                @include spacing (0 0 17px 0, 0 0 16px 0);
                 border-bottom: 1px solid $border-color-hr;
-                margin-bottom: 17px;
-                padding: 0 0 16px;
                 li {
-                    margin-bottom: 10px;
-                    line-height: 20px;
+                    @include user_aside_list;
                     a {
-                        // @include a;
-                        font-size: 14px;
                         img {
-                            width: 32px;
-                            height: 32px;
-                            margin-right: 5px;
+                            @include chartholder (32px, 32px);
                         }
                         i {
-                            color: #969696;
-                            vertical-align: middle;
-                            margin-right: 5px;
-                            font-size: 20px;
-                        }
-                        span {
-                            position: relative;
-                            top: 3px;
+                            color: $color-gray;
                         }
                     }
                 }
@@ -201,16 +82,13 @@
         }
         .user_action {
             padding-bottom: 20px;
-            color: #969696;
+            color: $color-gray;
             a {
-                // @include a;
-                color: #969696;
-                font-size: 13px;
+                @include font (13px, $color-gray);
                 &:hover {
-                    color: #333;
+                    color: $color-black;
                 }
             }
         }
     }
 }
-// 335

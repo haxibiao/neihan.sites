@@ -1,17 +1,13 @@
 //我的钱包页
 #wallet {
-    // @include id;
     .row {
+        margin: 0;
         .top {
             margin: 10px 0 40px 0;
             .user {
-                padding-top: 20px;
-                padding-bottom: 20px;
+                padding: 20px 0 20px 0;
                 .avatar {
-                    @include avatar;
-                    width: 80px;
-                    height: 80px;
-                    margin-right: 15px;
+                    @include avatar (80px, 80px, none, 15px);
                     position: absolute;
                 }
                 .info {
@@ -19,15 +15,12 @@
                     vertical-align: middle;
                     padding: 15px 0 10px 95px;
                     .name {
-                        // @include a;
-                        font-size: 21px;
-                        font-weight: 700;
+                        @include font (21px, $color-black, 700);
                     }
                     .mobile_bind {
                         padding-top: 5px;
                         a {
-                            // @include a;
-                            color: #3194d0;
+                            color: $color-blue;
                         }
                     }
                 }
@@ -37,9 +30,8 @@
                 border-left: 1px solid $border-color;
                 border-right: 1px solid $border-color;
                 .account_money {
+                    @include font (16px, $color-gray);
                     margin-right: 20px;
-                    font-size: 16px;
-                    color: #969696;
                     display: inline-block;
                 }
                 .money_main {
@@ -51,33 +43,26 @@
                 .action {
                     margin-top: 20px;
                     .recharge {
-                        @include button;
-                        width: 80px;
-                        margin: 0 9% 2px 0;
+                        @include button (80px);
+                        @include spacing (0 9% 2px 0, 6px 0);
                         display: inline-block;
-                        padding: 6px 0;
                         &:hover {
                             cursor: pointer;
                         }
                     }
                     .withdrawals {
-                        @include button;
-                        width: 80px;
-                        margin: 0 8% 2px 0;
+                        @include button (80px, 1px solid $border-color-follow, inherit);
+                        color: $color-green;
+                        @include spacing (0 8% 2px 0, 6px 0);
                         display: inline-block;
-                        background-color: inherit;
-                        color: #42c02e!important;
-                        border: 1px solid $border-color-follow;
-                        opacity: 5;
                         pointer-events: none;
-                        padding: 6px 0;
                         &:hover {
                             background-color: inherit;
                         }
                     }
                     .warn {
-                        font-size: 13px;
-                        color: #969696;
+                        @include font (13px, $color-gray);
+                        display: inline-block;
                     }
                 }
             }
@@ -85,175 +70,111 @@
                 padding: 20px 3%;
                 font-size: 13px;
                 div {
-                    color: #969696;
+                    color: $color-gray;
                 }
                 a {
-                    // @include a;
-                    color: #3194d0;
+                    color: $color-blue;
                     display: block;
                 }
             }
         }
         .body {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            border: 1px solid $border-color;
-            border-radius: 6px 6px 0 0;
+            @include border (6px 6px 0 0, 1px solid $border-color);
+            margin-bottom: 20px;
             li {
                 border-bottom: 1px solid $border-color;
                 &:last-child {
                     border-bottom: none;
                 }
             }
+            div {
+                display: inline-block;
+                vertical-align: middle;
+                padding: 0 15px;
+            }
+            .time {
+                width: 18%;
+            }
+            .type {
+                width: 12%;
+            }
+            .details {
+                width: 45%;
+            }
+            .amount {
+                width: 12%;
+                word-wrap: break-word;
+                word-break: break-all;
+            }
+            .remark {
+                width: 10%;
+            }
             .title {
                 padding: 25px 20px;
                 font-size: 14px;
                 div {
                     border-right: 1px dashed $border-color;
-                }
-                .time {
-                    display: inline-block;
-                    vertical-align: middle;
-                    width: 18%;
-                }
-                .type {
-                    display: inline-block;
-                    vertical-align: middle;
-                    width: 12%;
-                    padding-left: 15px;
-                }
-                .details {
-                    display: inline-block;
-                    vertical-align: middle;
-                    width: 46%;
-                    padding-left: 15px;
-                }
-                .amount {
-                    display: inline-block;
-                    vertical-align: middle;
-                    width: 13%;
-                    padding-left: 15px;
-                }
-                .remark {
-                    display: inline-block;
-                    vertical-align: middle;
-                    border-right: none;
-                    padding-left: 15px;
+                    &:last-child {
+                        border-right: none;
+                    }
                 }
             }
             .note {
                 padding: 10px 20px;
                 font-size: 12px;
-                .time {
-                    display: inline-block;
-                    vertical-align: middle;
-                    width: 18%;
-                }
-                .type {
-                    display: inline-block;
-                    vertical-align: middle;
-                    width: 12%;
-                    padding-left: 15px;
-                }
                 .details {
-                    display: inline-block;
-                    vertical-align: middle;
-                    width: 46%;
-                    padding-left: 15px;
                     a {
-                        // @include a;
-                        color: #3194d0;
+                        color: $color-blue;
                     }
                 }
-                .amount {
-                    display: inline-block;
-                    vertical-align: middle;
-                    width: 13%;
-                    padding-left: 15px;
-                    color: #fb8e46;
+                .reduce {
+                    color: $color-watermelon;
+                }
+                .plus {
+                    color: $color-green;
                 }
                 .remark {
-                    display: inline-block;
-                    vertical-align: middle;
-                    border-right: none;
-                    padding-left: 15px;
-                    color: #969696;
+                    color: $color-gray;
+                }
+                &:nth-of-type(even) {
+                    background-color: $background-color-aston;
                 }
             }
         }
-    }
-    @media screen and (min-width: 992px) and (max-width: 1200px) {
-        .row {
-            .top {
-                .middle {
-                    .action {
-                        .warn {
-                            display: inline-block;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    @media screen and (max-width: 768px) {
-        .row {
-            margin: 0;
+        @media screen and (max-width: 768px) {
             .top {
                 .middle {
                     border-bottom: 1px solid $border-color;
                     border-top: 1px solid $border-color;
                     border-left: none;
                     border-right: none;
-                    .action {
-                        .warn {
-                            display: inline-block;
-                        }
-                    }
                 }
             }
             .body {
-                .title {
-                    padding: 25px 10px;
-                    .time {
-                        width: 15%;
-                    }
-                    .type {
-                        width: 15%;
-                        padding-left: 5px;
-                    }
-                    .details {
-                        width: 30%;
-                        padding-left: 5px;
-                    }
-                    .amount {
-                        width: 17%;
-                        padding-left: 5px;
-                    }
-                    .remark {
-                        padding-left: 5px;
-                    }
+                div {
+                    padding: 0 5px;
                 }
+                .time {
+                    width: 14%;
+                    padding-left: 0;
+                }
+                .type {
+                    width: 15%;
+                }
+                .details {
+                    width: 28%;
+                }
+                .amount {
+                    width: 20%;
+                }
+                .remark {
+                    width: 16%;
+                    padding-right: 0;
+                }
+                .title,
                 .note {
-                    padding: 10px 10px;
-                    .time {
-                        width: 15%;
-                    }
-                    .type {
-                        width: 15%;
-                        padding-left: 5px;
-                    }
-                    .details {
-                        width: 30%;
-                        padding-left: 5px;
-                    }
-                    .amount {
-                        width: 17%;
-                        padding-left: 5px;
-                    }
-                    .remark {
-                        padding-left: 5px;
-                    }
+                    padding-left: 10px;
+                    padding-right: 10px;
                 }
             }
         }

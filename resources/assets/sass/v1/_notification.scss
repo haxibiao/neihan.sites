@@ -1,9 +1,7 @@
 //关注页
 #notifications {
-    // @include id;
     .notifications_wrp {
         .aside {
-            // background-color: #f2b5c5;
             padding: 0;
             position: fixed;
             width: 280px;
@@ -17,7 +15,6 @@
                 li {
                     line-height: 20px;
                     a {
-                        // @include a;
                         padding: 10px 25px;
                         display: block;
                         line-height: 30px;
@@ -435,6 +432,7 @@
                                 border-radius: 10%;
                                 line-height: 48px;
                                 text-align: center;
+                                vertical-align: middle;
                                 i {
                                     font-size: 30px;
                                     color: #fa7c9d;

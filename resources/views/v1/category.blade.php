@@ -10,13 +10,11 @@
             <div class="essays col-xs-12 col-sm-8">
                 <div class="main_top clearfix">
                     <a class="avatar" href="/v1/category">
-                        <img src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
+                        <img src="/images/category_02.jpg"/>
                     </a>
                     <a class="botm follow" href="#">
-                        <i class="iconfont icon-jia">
-                        </i>
                         <span>
-                            关注
+                            ＋ 关注
                         </span>
                     </a>
                     <a class="botm contribute" href="#">
@@ -38,14 +36,14 @@
                     <ul class="trigger_menu" role="tablist">
                         <li role="presentation">
                             <a aria-controls="pinglun" data-toggle="tab" href="#pinglun" role="tab">
-                                <i class="iconfont icon-pinglun">
+                                <i class="iconfont icon-svg37">
                                 </i>
                                 最新评论
                             </a>
                         </li>
                         <li class="active" role="presentation">
                             <a aria-controls="shoulu" data-toggle="tab" href="#shoulu" role="tab">
-                                <i class="iconfont icon-dongtai1">
+                                <i class="iconfont icon-wenji">
                                 </i>
                                 最新收录
                             </a>
@@ -102,15 +100,15 @@
                         分享到
                     </span>
                     <a href="#">
-                        <i class="iconfont icon-xinlangweibo">
+                        <i class="iconfont icon-weixin1">
                         </i>
                     </a>
                     <a href="#">
-                        <i class="iconfont icon-weixin-copy">
+                        <i class="iconfont icon-sina">
                         </i>
                     </a>
                     <a href="#">
-                        <i class="iconfont icon-sandian-copy">
+                        <i class="iconfont icon-gengduo">
                         </i>
                     </a>
                 </div>
@@ -122,7 +120,7 @@
                         <ul class="collection_editor">
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="/logo/ainicheng.com.jpg"/>
+                                    <img src="/images/photo_02.jpg"/>
                                 </a>
                                 <a class="name" href="/v1/user">
                                     爱你城
@@ -133,7 +131,7 @@
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="//upload.jianshu.io/users/upload_avatars/4495513/b0433c10-21db-4e8e-938c-6dd4618297fd.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                                    <img src="/images/photo_03.jpg"/>
                                 </a>
                                 <a class="name" href="/v1/user">
                                     甜腻酥饼
@@ -141,7 +139,7 @@
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="//upload.jianshu.io/users/upload_avatars/1694433/6e122981-342e-4815-9a07-aba78ca30645.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                                    <img src="/images/photo_02.jpg"/>
                                 </a>
                                 <a class="name" href="/v1/user">
                                     周寒舟
@@ -149,7 +147,7 @@
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="//upload.jianshu.io/users/upload_avatars/1122063/fb48cf06757d?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                                    <img src="/images/photo_03.jpg"/>
                                 </a>
                                 <a class="name" href="/v1/user">
                                     枫小梦
@@ -157,7 +155,7 @@
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="//upload.jianshu.io/users/upload_avatars/1610007/d29da9456083.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                                    <img src="/images/photo_02.jpg"/>
                                 </a>
                                 <a class="name" href="/v1/user">
                                     木小溪V
@@ -165,7 +163,7 @@
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="//upload.jianshu.io/users/upload_avatars/2239737/e2d25096-c6c8-499d-97dd-143fe74794bb.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                                    <img src="/images/photo_03.jpg"/>
                                 </a>
                                 <a class="name" href="/v1/user">
                                     木禾的随笔
@@ -173,7 +171,7 @@
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="//upload.jianshu.io/users/upload_avatars/3067977/1bbdf808-332d-434d-aa2b-ebfac5c8882b.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                                    <img src="/images/photo_02.jpg"/>
                                 </a>
                                 <a class="name" href="/v1/user">
                                     青烟幂处
@@ -181,7 +179,7 @@
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="//upload.jianshu.io/users/upload_avatars/3203762/ad383e98-8cfe-4a32-9022-9c0037b527f4.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                                    <img src="/images/photo_03.jpg"/>
                                 </a>
                                 <a class="name" href="/v1/user">
                                     二野童
@@ -189,7 +187,7 @@
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="//upload.jianshu.io/users/upload_avatars/1531089/3c04b9d0-cd6d-4ad8-8467-137f08fbfbac.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                                    <img src="/images/photo_02.jpg"/>
                                 </a>
                                 <a class="name" href="/v1/user">
                                     沈家姑娘
@@ -197,7 +195,7 @@
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="//upload.jianshu.io/users/upload_avatars/3241851/4f378a2f4352.jpeg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                                    <img src="/images/photo_03.jpg"/>
                                 </a>
                                 <a class="name" href="/v1/user">
                                     桃宜
@@ -215,52 +213,52 @@
                     <div>
                         <div class="title">
                             推荐作者(100)
-                            <i class="iconfont icon-yiwen">
+                            <i class="iconfont icon-tuijian1">
                             </i>
                         </div>
                         <ul class="collection_follower">
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="http://upload.jianshu.io/users/upload_avatars/5479122/9201a33e-d57d-4347-bfd4-7d3758bcab47.jpg"/>
+                                    <img src="/images/photo_02.jpg"/>
                                 </a>
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="http://upload.jianshu.io/users/upload_avatars/2719544/78e263be1f3d.jpeg"/>
+                                    <img src="/images/photo_03.jpg"/>
                                 </a>
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="http://upload.jianshu.io/users/upload_avatars/2674946/efbe3aa1-016e-4f39-9163-36368d41f54a.jpg"/>
+                                    <img src="/images/photo_02.jpg"/>
                                 </a>
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="http://upload.jianshu.io/users/upload_avatars/2251594/caab597c-f17c-4fda-82d5-57fdacbce93d.jpg"/>
+                                    <img src="/images/photo_03.jpg"/>
                                 </a>
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="http://upload.jianshu.io/users/upload_avatars/3525563/0622b29b-5823-494a-8698-dd2577ada955.jpg"/>
+                                    <img src="/images/photo_02.jpg"/>
                                 </a>
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="http://upload.jianshu.io/users/upload_avatars/3364033/a9dd54fe-26f5-4857-9dc1-86cf0b01d93e.jpg"/>
+                                    <img src="/images/photo_03.jpg"/>
                                 </a>
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="http://upload.jianshu.io/users/upload_avatars/4960058/3dd42a01-71c0-49a4-b22c-b00d5804b271.jpg"/>
+                                    <img src="/images/photo_02.jpg"/>
                                 </a>
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="http://upload.jianshu.io/users/upload_avatars/1946430/0ad43fe1-4aac-44be-b2d3-fd699e81a541.jpg"/>
+                                    <img src="/images/photo_03.jpg"/>
                                 </a>
                             </li>
                             <a class="function_btn" href="#">
-                                <i class="iconfont icon-sandian">
+                                <i class="iconfont icon-gengduo">
                                 </i>
                             </a>
                         </ul>
@@ -272,46 +270,46 @@
                         <ul class="collection_follower">
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="http://upload.jianshu.io/users/upload_avatars/5479122/9201a33e-d57d-4347-bfd4-7d3758bcab47.jpg"/>
+                                    <img src="/images/photo_02.jpg"/>
                                 </a>
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="http://upload.jianshu.io/users/upload_avatars/2719544/78e263be1f3d.jpeg"/>
+                                    <img src="/images/photo_03.jpg"/>
                                 </a>
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="http://upload.jianshu.io/users/upload_avatars/2674946/efbe3aa1-016e-4f39-9163-36368d41f54a.jpg"/>
+                                    <img src="/images/photo_02.jpg"/>
                                 </a>
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="http://upload.jianshu.io/users/upload_avatars/2251594/caab597c-f17c-4fda-82d5-57fdacbce93d.jpg"/>
+                                    <img src="/images/photo_03.jpg"/>
                                 </a>
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="http://upload.jianshu.io/users/upload_avatars/3525563/0622b29b-5823-494a-8698-dd2577ada955.jpg"/>
+                                    <img src="/images/photo_02.jpg"/>
                                 </a>
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="http://upload.jianshu.io/users/upload_avatars/3364033/a9dd54fe-26f5-4857-9dc1-86cf0b01d93e.jpg"/>
+                                    <img src="/images/photo_03.jpg"/>
                                 </a>
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="http://upload.jianshu.io/users/upload_avatars/4960058/3dd42a01-71c0-49a4-b22c-b00d5804b271.jpg"/>
+                                    <img src="/images/photo_02.jpg"/>
                                 </a>
                             </li>
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="http://upload.jianshu.io/users/upload_avatars/1946430/0ad43fe1-4aac-44be-b2d3-fd699e81a541.jpg"/>
+                                    <img src="/images/photo_03.jpg"/>
                                 </a>
                             </li>
                             <a class="function_btn" href="#">
-                                <i class="iconfont icon-sandian">
+                                <i class="iconfont icon-gengduo">
                                 </i>
                             </a>
                         </ul>

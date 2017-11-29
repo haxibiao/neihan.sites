@@ -1,6 +1,5 @@
 //详情页
 #detail {
-    // @include id;
     .note {
         .article {
             .title {
@@ -22,12 +21,8 @@
                         margin-right: 3px;
                         font-size: 16px;
                         vertical-align: middle;
-                        a {
-                            // @include a;
-                        }
                     }
                     .follow {
-                        // @include a;
                         @include button;
                         font-size: 12px;
                         padding: 4px 8px;
@@ -112,7 +107,7 @@
                     line-height: 1.8;
                     vertical-align: middle;
                 }
-                .icon-nanhai {
+                .icon-nansheng1 {
                     font-size: 15px;
                     vertical-align: middle;
                     color: #3194d0;
@@ -201,13 +196,13 @@
                         font-size: 24px;
                         line-height: 2;
                     }
-                    .icon-weixin {
+                    .icon-weixin1 {
                         color: #00bb29;
                     }
-                    .icon-xinlangweibo1 {
+                    .icon-sina {
                         color: #e05244;
                     }
-                    .icon-long-picture {
+                    .icon-zhaopian {
                         color: #9b9b9b;
                     }
                     &:hover {
@@ -332,7 +327,7 @@
                                                 font-size: 18px;
                                                 vertical-align: middle;
                                             }
-                                            .icon-pinglun1 {
+                                            .icon-xinxi {
                                                 font-size: 20px;
                                             }
                                             span {
@@ -340,10 +335,10 @@
                                                 font-size: 14px;
                                             }
                                             &:hover {
-                                                .icon-dianzan {
+                                                .icon-fabulous {
                                                     color: #ea6f5a;
                                                 }
-                                                .icon-pinglun1 {
+                                                .icon-xinxi {
                                                     color: #333;
                                                 }
                                                 span {
@@ -538,9 +533,7 @@
                 .include_collection {
                     padding-top: 20px;
                     .item {
-                        @include collection_button;
-                        background-color: white;
-                        vertical-align: top;
+                        @include collection_button (white);
                     }
                     .show_more {
                         color: #787878;

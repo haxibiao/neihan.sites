@@ -5,7 +5,7 @@
 			<li>
 				<div class="like_item">
 					<a href="v1/user" class="avatar">
-						<img src="/logo/1.jpeg" />
+						<img src="/images/photo_02.jpg" />
 					</a>
 					<div class="title">
 						<a href="javascript:;">中南工大留级生</a>
@@ -18,7 +18,7 @@
 			<li>
 				<div class="like_item">
 					<a href="v1/user" class="avatar">
-						<img src="/logo/1.jpeg" />
+						<img src="/images/photo_02.jpg" />
 					</a>
 					<div class="title">
 						<a href="javascript:;">中南工大留级生</a>

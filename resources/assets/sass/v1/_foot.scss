@@ -1,12 +1,11 @@
 //尾部
 #tail {
     margin: 3% 0px 2% 0px;
-    color: #969696;
+    color: $color-gray;
     a {
-        // @include a;
-        color: #969696;
+        color: $color-gray;
         &:hover {
-            color: #333;
+            color: $color-black;
         }
     }
 }

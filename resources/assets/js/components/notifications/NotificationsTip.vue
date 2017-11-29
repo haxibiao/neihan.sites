@@ -1,11 +1,11 @@
 <template>
 	<div id="tip">
-		<div class="menu">收到的喜欢和赞</div>
+		<div class="menu">收到的赞赏</div>
 		<ul class="tip_list">
 			<li>
 				<div class="tip_item">
 					<a href="#" class="avatar">
-						<img src="/logo/1.jpeg" />
+						<img src="/images/photo_02.jpg" />
 					</a>
 					<div class="title">
 						<a href="javascript:;">中南工大留级生</a>
@@ -24,7 +24,7 @@
 			<li>
 				<div class="tip_item">
 					<a href="#" class="avatar">
-						<img src="/logo/1.jpeg" />
+						<img src="/images/photo_02.jpg" />
 					</a>
 					<div class="title">
 						<a href="javascript:;">中南工大留级生</a>

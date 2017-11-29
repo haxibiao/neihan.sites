@@ -11,18 +11,18 @@
                 <div class="carousel_inner">
                     <div class="item clearfix">
                         <div class="banner">
-                            <a href="javascript:;" target="_blank">
-                                <img src="/logo/carousel001.jpg"/>
+                            <a href="/v1/detail" target="_blank">
+                                <img src="/images/carousel001.jpg"/>
                             </a>
                         </div>
                         <div class="banner">
-                            <a href="javascript:;" target="_blank">
-                                <img src="/logo/carousel002.jpg"/>
+                            <a href="/v1/detail" target="_blank">
+                                <img src="/images/carousel002.jpg"/>
                             </a>
                         </div>
                         <div class="banner">
-                            <a href="javascript:;" target="_blank">
-                                <img src="/logo/carousel003.jpg"/>
+                            <a href="/v1/detail" target="_blank">
+                                <img src="/images/carousel003.jpg"/>
                             </a>
                         </div>
                     </div>
@@ -38,49 +38,49 @@
             </div>
             <div class="essays col-xs-12 col-sm-8">
                 <div class="classification">
-                    <a class="collection" href="/v1/category">
-                        <img src="/logo/col-01.jpg"/>
+                    <a class="collection" href="/v1/category" target="_blank">
+                        <img src="/images/category_01.jpeg"/>
                         <div class="name">
                             王者荣耀
                         </div>
                     </a>
-                    <a class="collection" href="/v1/category">
-                        <img src="/logo/col-01.jpg"/>
+                    <a class="collection" href="/v1/category" target="_blank">
+                        <img src="/images/details_04.jpeg"/>
                         <div class="name">
                             绝地求生
                         </div>
                     </a>
-                    <a class="collection" href="/v1/category">
-                        <img src="/logo/col-01.jpg"/>
+                    <a class="collection" href="/v1/category" target="_blank">
+                        <img src="/images/category_08.jpg"/>
                         <div class="name">
                             剑侠情缘3
                         </div>
                     </a>
-                    <a class="collection" href="/v1/category">
-                        <img src="/logo/1.jpeg"/>
+                    <a class="collection" href="/v1/category" target="_blank">
+                        <img src="/images/category_03.jpg"/>
                         <div class="name">
                             暗恋
                         </div>
                     </a>
-                    <a class="collection" href="/v1/category">
-                        <img src="/logo/1.jpeg"/>
+                    <a class="collection" href="/v1/category" target="_blank">
+                        <img src="/images/category_04.jpeg"/>
                         <div class="name">
                             恋爱
                         </div>
                     </a>
-                    <a class="collection" href="/v1/category">
-                        <img src="/logo/1.jpeg"/>
+                    <a class="collection" href="/v1/category" target="_blank">
+                        <img src="/images/category_02.jpg"/>
                         <div class="name">
                             热恋
                         </div>
                     </a>
-                    <a class="collection" href="/v1/category">
-                        <img src="//upload.jianshu.io/collections/images/49/66ba9fdegw1e61syw6tk6j20bj0go0wo.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
+                    <a class="collection" href="/v1/category" target="_blank">
+                        <img src="/images/category_02.jpg"/>
                         <div class="name">
                             谈谈情，说说爱
                         </div>
                     </a>
-                    <a class="collection more_hot_collection" href="/v1/categories">
+                    <a class="collection more_hot_collection" href="/v1/categories" target="_blank">
                         <div class="name">
                             更多热门专题
                             <i class="iconfont icon-youbian">
@@ -88,7 +88,8 @@
                         </div>
                     </a>
                 </div>
-                <div class="split_line"></div>
+                <div class="split_line">
+                </div>
                 @include('v1.parts.index_article_block')
             </div>
             <div class="aside col-sm-4 col-lg-3 col-lg-offset-1">
@@ -104,40 +105,40 @@
                     </div>
                 </form>
                 <div class="board">
-                    <a href="/v1/category">
-                        <img src="/logo/board01.png"/>
+                    <a href="/v1/category" target="_blank">
+                        <img src="/images/board01.png"/>
                         <span class="board_tit one">
                             新上榜
                             <i class="iconfont icon-youbian">
                             </i>
                         </span>
                     </a>
-                    <a href="/v1/category">
-                        <img src="/logo/board02.png"/>
+                    <a href="/v1/category" target="_blank">
+                        <img src="/images/board02.png"/>
                         <span class="board_tit two">
                             7日热门
                             <i class="iconfont icon-youbian">
                             </i>
                         </span>
                     </a>
-                    <a href="/v1/category">
-                        <img src="/logo/board03.png"/>
+                    <a href="/v1/category" target="_blank">
+                        <img src="/images/board03.png"/>
                         <span class="board_tit three">
                             30日热门
                             <i class="iconfont icon-youbian">
                             </i>
                         </span>
                     </a>
-                    <a href="/v1/category">
-                        <img src="/logo/board04.png"/>
+                    <a href="/v1/category" target="_blank">
+                        <img src="/images/board04.png"/>
                         <span class="board_tit four">
                             爱你城出版
                             <i class="iconfont icon-youbian">
                             </i>
                         </span>
                     </a>
-                    <a href="/v1/category">
-                        <img src="/logo/board05.png"/>
+                    <a href="/v1/category" target="_blank">
+                        <img src="/images/board05.png"/>
                         <span class="board_tit five">
                             爱你城大学堂
                             <i class="iconfont icon-youbian">
@@ -146,7 +147,7 @@
                     </a>
                 </div>
                 <div class="app">
-                    <img src="/logo/erweima1.jpeg"/>
+                    <img src="/images/scan.jpeg"/>
                     <div class="info">
                         <div class="title">
                             下载爱你城手机App
@@ -158,7 +159,7 @@
                         </div>
                     </div>
                     <div class="hover_code">
-                        <img src="/logo/erweima1.jpeg"/>
+                        <img src="/images/scan.jpeg"/>
                     </div>
                 </div>
                 <div class="daily">
@@ -166,17 +167,17 @@
                         <span>
                             爱你城日报
                         </span>
-                        <a href="/v1/category">
+                        <a href="/v1/category" target="_blank">
                             查看往期
                         </a>
                     </div>
-                    <a class="note" href="/v1/detail">
-                        <img src="http://upload-images.jianshu.io/upload_images/1714520-119e82e1662d86ac.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>
+                    <a class="note" href="/v1/detail" target="_blank">
+                        <img src="/images/details_08.jpg"/>
                         <div class="note_title">
                             恋爱要谈到什么程度，才适合结婚呢？
                         </div>
                     </a>
-                    <a class="note" href="/v1/detail">
+                    <a class="note" href="/v1/detail" target="_blank">
                         <div class="note_title">
                             三个心理学语言技巧，让你迅速提高情商
                         </div>
@@ -195,13 +196,13 @@
                     </div>
                     <ul class="list">
                         <li>
-                            <a class="avatar" href="/v1/user">
-                                <img src="//upload.jianshu.io/users/upload_avatars/19107/08f8146dae87.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                            <a class="avatar" href="/v1/user" target="_blank">
+                                <img src="/images/photo_02.jpg"/>
                             </a>
                             <a class="follow" href="javascript:;">
                                 ＋ 关注
                             </a>
-                            <a class="name" href="/v1/user">
+                            <a class="name" href="/v1/user" target="_blank">
                                 王佩
                             </a>
                             <p>
@@ -209,13 +210,13 @@
                             </p>
                         </li>
                         <li>
-                            <a class="avatar" href="/v1/user">
-                                <img src="//upload.jianshu.io/users/upload_avatars/6287/06c537002583.png?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                            <a class="avatar" href="/v1/user" target="_blank">
+                                <img src="/images/photo_03.jpg"/>
                             </a>
                             <a class="follow" href="javascript:;">
                                 ＋ 关注
                             </a>
-                            <a class="name" href="/v1/user">
+                            <a class="name" href="/v1/user" target="_blank">
                                 刘淼
                             </a>
                             <p>
@@ -223,13 +224,13 @@
                             </p>
                         </li>
                         <li>
-                            <a class="avatar" href="/v1/user">
-                                <img src="//upload.jianshu.io/users/upload_avatars/1996705/738ba2908445?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                            <a class="avatar" href="/v1/user" target="_blank">
+                                <img src="/images/photo_02.jpg"/>
                             </a>
                             <a class="follow" href="javascript:;">
                                 ＋ 关注
                             </a>
-                            <a class="name" href="/v1/user">
+                            <a class="name" href="/v1/user" target="_blank">
                                 白发老籣
                             </a>
                             <p>
@@ -237,13 +238,13 @@
                             </p>
                         </li>
                         <li>
-                            <a class="avatar" href="/v1/user">
-                                <img src="//upload.jianshu.io/users/upload_avatars/6198903/a70dc654-6674-4b71-925f-0389f31fb095.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                            <a class="avatar" href="/v1/user" target="_blank">
+                                <img src="/images/photo_03.jpg"/>
                             </a>
                             <a class="follow" href="javascript:;">
                                 ＋ 关注
                             </a>
-                            <a class="name" href="/v1/user">
+                            <a class="name" href="/v1/user" target="_blank">
                                 魏童
                             </a>
                             <p>
@@ -251,13 +252,13 @@
                             </p>
                         </li>
                         <li>
-                            <a class="avatar" href="/v1/user">
-                                <img src="//upload.jianshu.io/users/upload_avatars/7663825/7c28763e-002b-4e89-8dea-5b8da210ef2c.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96"/>
+                            <a class="avatar" href="/v1/user" target="_blank">
+                                <img src="/images/photo_02.jpg"/>
                             </a>
                             <a class="follow" href="javascript:;">
                                 ＋ 关注
                             </a>
-                            <a class="name" href="/v1/user">
+                            <a class="name" href="/v1/user" target="_blank">
                                 名贵的考拉熊
                             </a>
                             <p>
@@ -265,7 +266,7 @@
                             </p>
                         </li>
                     </ul>
-                    <a class="find_more" href="/v1/categories">
+                    <a class="find_more" href="/v1/categories" target="_blank">
                         查看全部
                         <i class="iconfont icon-youbian">
                         </i>
@@ -276,24 +277,24 @@
                         <span>
                             热门视频
                         </span>
-                        <a href="javascript:;">
+                        <a href="/v1/category" target="_blank">
                             查看更多
                         </a>
                     </div>
-                    <a class="note" href="/v1/detail">
-                        <img src="https://ainicheng.com/storage/img/1806.jpeg"/>
+                    <a class="note" href="/v1/detail" target="_blank">
+                        <img src="/images/details_01.jpeg"/>
                         <div class="note_title video_title">
                             王者荣耀打野必备攻略 5v5野区地图分布详解
                         </div>
                     </a>
-                    <a class="note" href="/v1/detail">
-                        <img src="https://ainicheng.com/storage/img/1890.png"/>
+                    <a class="note" href="/v1/detail" target="_blank">
+                        <img src="/images/details_09.jpg"/>
                         <div class="note_title video_title">
                             王者荣耀最强奶妈蔡文姬怎么玩2.0加强版
                         </div>
                     </a>
-                    <a class="note" href="/v1/detail">
-                        <img src="https://ainicheng.com/storage/img/1840.jpg"/>
+                    <a class="note" href="/v1/detail" target="_blank">
+                        <img src="/images/details_01.jpeg"/>
                         <div class="note_title video_title">
                             手把手教你玩王者荣耀安琪拉
                         </div>

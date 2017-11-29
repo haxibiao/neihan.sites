@@ -17,26 +17,26 @@
 }
 
 // 图架
-@mixin chartholder ($width:100%,$height:100%,$vertical-align: middle) {
+@mixin chartholder ($width:100%, $height:100%, $vertical-align: middle) {
     width: $width;
     height: $height;
     vertical-align: $vertical-align;
 }
 
 // 边框
-@mixin border ($border-radius:0,$border:0) {
+@mixin border ($border-radius:0, $border:0) {
     border-radius: $border-radius;
     border: $border;
 }
 
 // 间距
-@mixin spacing ($margin: 0,$padding: 0) {
+@mixin spacing ($margin: 0, $padding: 0) {
     margin: $margin;
     padding: $padding;
 }
 
 // 字体
-@mixin font ($font-size: 12px,$color: $color-black,$font-weight: normal) {
+@mixin font ($font-size: 12px, $color: $color-black, $font-weight: normal) {
     font-size: $font-size;
     color: $color;
     font-weight: $font-weight;
@@ -53,18 +53,24 @@
 // 页面初始化
 @mixin initialization {
     body {
-        font-family: "微软雅黑", Helvetica, Arial, sans-serif;
         @include spacing;
         @include font;
+        font-family: "微软雅黑", Helvetica, Arial, sans-serif;
         background-color: $background-color-white;
     }
-    a,a:active,a:hover,a:focus {
+    a,
+    a:active,
+    a:hover,
+    a:focus {
         text-decoration: none !important;
         color: $color-black;
     }
-    ul,ol,li,p {
-        list-style: none;
+    ul,
+    ol,
+    li,
+    p {
         @include spacing;
+        list-style: none;
     }
     li {
         line-height: 20px;
@@ -72,42 +78,52 @@
 }
 
 // 用户、个人页的关注按钮样式
-@mixin button {
-    width: 100px;
-    @include border (40px);
-    @include spacing (23px 0 23px 16px,8px 0);
-    @include font (15px,$color-white,400);
-    background-color: $background-color-green;
+@mixin button ($width: 100px, $border: 0, $background-color: $background-color-green, $float: none) {
+    @include spacing (23px 0 23px 16px, 8px);
+    @include font (15px, $color-white, 400);
     text-align: center;
     line-height: normal;
+    width: $width;
+    border: $border;
+    background-color: $background-color;
+    float: $float;
+    border-radius: 40px;
     &:hover {
         background-color: #00bc12;
     }
 }
 
 // 用户、个人、关注页的消息按钮样式
-@mixin news_button {
-    @include button;
-    float: right;
-    background-color: inherit;
-    border: 1px solid $border-color-follow;
-    @include font (14px,$color-green);
+@mixin news_button ($width) {
+    @include button (100px, 1px solid $border-color-follow, inherit, right);
+    width: $width;
+    color: $color-green;
     &:hover {
         background-color: $background-color-milky;
     }
 }
 
+// 个人页的已关注按钮样式
+@mixin following_button {
+    @include button (100px, 1px solid hsla(0, 0%, 59%, .6), inherit, right);
+    &:hover {
+        border: 1px solid hsla(0, 0%, 50%, .6);
+        background-color: hsla(0, 0%, 60%, .1);
+    }
+}
+
 // 收集专题按钮样式
-@mixin collection_button {
+@mixin collection_button ($background-color) {
+    @include border (4px, 1px solid $border-color);
     display: inline-block;
     min-height: 35px;
     margin: 0 12px 12px 0;
     font-size: 13px;
-    @include border (4px,1px solid $border-color);
     overflow: hidden;
     line-height: 35px;
+    background-color: $background-color;
     img {
-        @include chartholder (35px,35px);
+        @include chartholder (35px, 35px);
         @include border (4px 0px 0px 4px);
     }
     .name {
@@ -121,13 +137,15 @@
 }
 
 // 头像样式
-@mixin avatar {
-    @include chartholder (40px,40px);
-    margin-right: 5px;
+@mixin avatar ($width: 40px, $height: 40px, $float:none, $margin-right: 5px) {
     display: inline-block;
+    width: $width;
+    height: $height;
+    float: $float;
+    margin-right: $margin-right;
     img {
         @include chartholder;
-        @include border (50%,1px solid $border-color);
+        @include border (50%, 1px solid $border-color);
     }
 }
 
@@ -135,8 +153,8 @@
 @mixin wrap_img {
     padding: 0;
     img {
-        @include chartholder (100%,120px);
-        @include border (6px,1px solid $border-color);
+        @include chartholder (100%, 120px);
+        @include border (6px, 1px solid $border-color);
     }
 }
 
@@ -145,10 +163,10 @@
     @include spacing (0 0 20px 0);
     border-bottom: 1px solid $border-color-hr;
     li {
-        @include spacing (0 0 -1px 0,8px 0 0 0);
+        @include spacing (0 0 -1px 0, 8px 0 0 0);
         display: inline-block;
         a {
-            @include font (15px,$color-gray,700);
+            @include font (15px, $color-gray, 700);
             line-height: 25px;
             padding: 13px 20px 4px 20px;
             i {
@@ -160,6 +178,22 @@
                 color: $color-deep;
             }
         }
+        @media screen and (max-width: 768px) {
+            a {
+                padding: 0 5px;
+                i {
+                    margin: 0;
+                }
+            }
+        }
+        @media screen and (min-width: 450px) and (max-width: 768px) {
+            a {
+                padding: 0 10px;
+                i {
+                    margin-right: 5px;
+                }
+            }
+        }
     }
     .active {
         border-bottom: 2px solid $border-color-trigger_menu;
@@ -169,19 +203,6 @@
                 border: 0;
             }
         }
-    }
-    @media screen and (max-width: 768px) {
-        li {
-            a {
-                padding: 13px 5px;
-                i {
-                    margin: 0;
-                }
-            }
-        }
-    }
-    @media screen and (min-width: 450px) and (max-width: 768px) {
-        margin-top: 20px;
     }
 }
 
@@ -203,13 +224,13 @@
     margin-top: 15px;
     color: $color-black;
     img {
-        @include chartholder (48px,48px);
+        @include chartholder (48px, 48px);
         float: left;
         margin-right: 6px;
     }
     .note_title {
-        padding-top: 5px;
         @include article_num (2);
+        padding-top: 5px;
     }
     .video_title {
         @include article_num (3);
@@ -232,7 +253,7 @@
 
 // 文章模块统计数量样式
 @mixin meta {
-    @include font (12px,$color-light,400);
+    @include font (12px, $color-light, 400);
     @include spacing;
     line-height: 20px;
     a {
@@ -246,12 +267,12 @@
         margin-right: 10px;
     }
     .special {
-        @include border (3px,1px solid $border-color-special);
-        color: $color-blusher;
+        @include border (3px, 1px solid $border-color-special);
+        color: $color-watermelon;
         padding: 3px 6px;
         vertical-align: middle;
         &:hover {
-            color: $color-blusher;
+            color: $color-watermelon;
             background-color: $background-color-milky;
         }
     }
@@ -265,25 +286,24 @@
 
 // 文章模块标题样式
 @mixin article_title {
-    @include font (18px,$color-black,700);
+    @include font (18px, $color-black, 700);
 }
 
 // 文章模块
 @mixin article_item {
-    @include spacing (0 0 17px 0,0 2px 17px 0);
+    @include spacing (0 0 17px 0, 0 2px 17px 0);
     border-bottom: 1px solid $border-color-hr;
     .author {
         .avatar {
             @include avatar;
         }
         .info {
+            @include font (13px, $color-gray);
             display: inline-block;
             vertical-align: middle;
-            color: $color-gray;
-            font-size: 13px;
             a {
                 img {
-                    @include chartholder (14px,14px);
+                    @include chartholder (14px, 14px);
                 }
             }
         }
@@ -292,7 +312,7 @@
         margin-top: 2%;
         line-height: 25px;
         .conten {
-            @include spacing (0 0 8px 0,0 5px 0 0);
+            @include spacing (0 0 8px 0, 0 5px 0 0);
             a {
                 @include article_title;
             }
@@ -313,6 +333,86 @@
             @include meta;
         }
     }
+    .follow_detail {
+        @include spacing (2% 0 0 0, 20px);
+        @include border (4px, 1px solid $border-color);
+        background-color: hsla(0, 0%, 71%, .1);
+        font-size: 12px;
+        .info {
+            min-height: 47px;
+            .avatar {
+                @include avatar (40px, 40px, left, 10px);
+            }
+            .avatar_collection {
+                @include avatar (48px, 48px, left, 10px);
+                img {
+                    border-radius: 10%;
+                }
+            }
+            .follow {
+                @include button (100px, 0, $background-color-green, right);
+                margin: 6px 0 0 6px;
+            }
+            .following {
+                @include following_button;
+                margin: 6px 0 0 6px;
+                color: $color-gray;
+                i {
+                    font-weight: 700;
+                }
+            }
+            .title {
+                @include font (17px, $color-black);
+                margin-right: 3px;
+                line-height: 1.8;
+                vertical-align: middle;
+            }
+            .icon-nanhai {
+                @include font (15px, $color-blue);
+                vertical-align: middle;
+            }
+            p {
+                margin-bottom: 0;
+                color: $color-gray;
+                a {
+                    color: $color-blue;
+                }
+            }
+        }
+        .signature {
+            @include spacing (20px 0 0 0, 20px 0 0 0);
+            border-top: 1px solid #e1e1e1;
+            color: $color-gray;
+            @include article_num (1);
+        }
+    }
+    .comment {
+        p {
+            font-size: 15px;
+            line-height: 1.7;
+            a {
+                color: $color-blue;
+            }
+        }
+        blockquote {
+            @include font (12px, $color-gray);
+            margin-bottom: 0;
+            border-left: 3px solid $border-color;
+            .title {
+                @include font (15px, $color-black, 700);
+                line-height: 1.5;
+                margin: 0 0 4px;
+            }
+            .abstract {
+                font-size: 13px;
+                line-height: 24px;
+                margin: 0 0 4px;
+            }
+            .meta {
+                @include meta;
+            }
+        }
+    }
     @media screen and (min-width: 450px) and (max-width: 768px) {
         .have_img {
             .conten {
@@ -328,14 +428,14 @@
 
 // 阅读更多模块
 @mixin load_more {
+    @include font (15px, $color-white);
+    @include spacing (30px auto 60px, 10px 15px);
     display: inline-block;
     width: 100%;
     line-height: 20px;
     background-color: #a5a5a5;
-    @include font (15px,$color-white);
     text-align: center;
     border-radius: 20px;
-    @include spacing (30px auto 60px,10px 15px);
     i {
         font-size: inherit;
     }
@@ -343,33 +443,43 @@
 
 // 用户、关注页的信息模块的头像、按钮样式
 @mixin main_top_list {
-    margin-bottom: 32px;
+    margin-bottom: 30px;
     .avatar {
-        @include avatar;
-        @include chartholder (80px,80px);
-        float: left;
+        @include avatar (80px, 80px, left);
+    }
+    .avatar_collection {
+        img {
+            border-radius: 10%;
+        }
     }
     .follow {
-        @include button;
+        @include button (100px, 0, $background-color-green, right);
+    }
+    .contribute {
+        @include news_button (90px);
     }
 }
 
 // 用户、关注页的信息模块的名字样式
 @mixin main_top_name {
-    @include font (20px,$color-black,700);
-    padding: 10px 0 0 97px;
-    display: block;
+    @include font (20px, $color-black, 700);
     vertical-align: middle;
     i {
-        @include font (16px,$color-blue,normal);
+        @include font (16px);
         vertical-align: middle;
+    }
+    .icon-nvsheng1 {
+        color: $color-watermelon;
+    }
+    .icon-nansheng1 {
+        color: $color-blue;
     }
 }
 
 // 用户、关注页的信息模块的统计数量样式
 @mixin main_top_info_meta {
-    @include font (12px,$color-gray);
-    @include spacing (0 7px 6px 0,0 7px 0 0);
+    @include font (12px, $color-gray);
+    @include spacing (0 7px 6px 0, 0 7px 0 0);
     border-right: 1px solid $border-color-hr;
     a {
         color: $color-gray;
@@ -388,15 +498,21 @@
 // 用户、关注页的信息模块
 @mixin main_top {
     @include main_top_list;
+    .title {
+        padding: 5px 0 0 97px;
+        .name {
+            @include main_top_name;
+        }
+    }
     p {
         padding-left: 97px;
-        @include font (14px,$color-gray);
+        @include font (14px, $color-gray);
         a {
             color: $color-blue;
         }
     }
     .info {
-        @include spacing (5px 0 0 0,0 0 0 97px);
+        @include spacing (5px 0 0 0, 0 0 0 97px);
         font-size: 14px;
         ul {
             li {
@@ -407,39 +523,46 @@
                         padding: 0;
                     }
                 }
-            }
-            li:last-child {
-                .meta_block {
-                    @include spacing;
-                    border: none;
+                &:last-child {
+                    .meta_block {
+                        @include spacing;
+                        border: none;
+                    }
                 }
             }
         }
     }
-    .avatar_collection {
-        img {
-            border-radius: 10%;
-        }
-    }
-    .contribute {
-        width: 75px;
-    }
-    .name {
-        @include main_top_name;
-    }
     @media screen and (max-width: 768px) {
         padding-bottom: 34px;
-        .follow {
-            right: 30px;
-            position: absolute;
-            top: 160px;
-        }
         .contribute {
+            position: absolute;
             right: 170px;
+            top: 140px;
+            margin-bottom: 0;
         }
-        .follow_one {
-            right: 80px;
-            top: 180px;
+        .botm {
+            right: 30px;
+        }
+    }
+}
+
+// 用户、个人页右边aside的列表样式
+@mixin user_aside_list {
+    margin: 0 0 10px 0;
+    a {
+        display: inline-block;
+        line-height: 30px;
+        img {
+            @include chartholder (20px, 20px);
+            margin-right: 5px;
+        }
+        i {
+            font-size: 20px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+        span {
+            vertical-align: middle;
         }
     }
 }

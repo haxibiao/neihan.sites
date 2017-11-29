@@ -1,154 +1,22 @@
-@media screen and (max-width: 768px) {
-    #home {
-        .aside {
-            display: none;
-        }
-    }
-}
-
-@media screen and (min-width: 768px) and (max-width: 992px) {
-    #home {
-        .essays {
-            padding-right: 0;
-        }
-    }
-}
-
 //个人主页
 #home {
-    // @include id;
+    @include aside;
+    @include essays;
     .essays {
         .main_top {
-            width: 100%;
-            height: 100%;
-            margin-bottom: 20px;
-            a {
-                // @include a;
-            }
-            .avatar {
-                @include avatar;
-                width: 80px;
-                height: 80px;
-                float: left;
-            }
-            .title {
-                padding: 10px 0 0 97px;
-                .name {
-                    font-size: 20px;
-                    font-weight: 700;
-                    display: inline;
-                    vertical-align: middle;
-                    i {
-                        color: #ea6f5a;
-                        font-size: inherit;
-                        vertical-align: middle;
-                        font-weight: normal;
-                    }
-                }
-            }
-            .info {
-                padding-left: 97px;
-                margin-top: 5px;
-                font-size: 14px;
-                ul {
-                    list-style: none;
-                    padding: 0;
-                    li {
-                        display: inline-block;
-                        line-height: 20px;
-                        .meta_block {
-                            font-size: 12px;
-                            margin: 0 7px 6px 0;
-                            padding: 0 7px 0 0;
-                            border-right: 1px solid $border-color-hr;
-                            a {
-                                color: #969696;
-                                display: inherit;
-                                p {
-                                    font-size: 15px;
-                                    color: #333;
-                                    margin-bottom: -3px;
-                                }
-                                i {
-                                    font-size: inherit;
-                                    margin-left: -3px;
-                                }
-                            }
-                            p {
-                                font-size: 15px;
-                                color: #333;
-                                margin-bottom: -3px;
-                            }
-                            div {
-                                color: #969696;
-                            }
-                        }
-                    }
-                    li:last-child {
-                        .meta_block {
-                            margin: 0;
-                            padding: 0;
-                            border: none;
-                        }
-                    }
-                }
+            @include main_top;
+            @media screen and (max-width: 768px) {
+                padding-bottom: 0;
             }
         }
         div {
             .trigger_menu {
-                list-style: none;
-                border-bottom: 1px solid $border-color-hr;
-                margin-bottom: 20px;
-                padding: 0;
-                li {
-                    display: inline-block;
-                    padding: 8px 0;
-                    margin-bottom: -1px;
-                    line-height: 20px;
-                    a {
-                        // @include a;
-                        color: #969696;
-                        font-size: 15px;
-                        font-weight: 700;
-                        line-height: 25px;
-                        padding: 13px 20px;
-                        i {
-                            margin-right: 5px;
-                            font-size: inherit;
-                        }
-                        &:hover {
-                            border-bottom: 2px solid $border-color-trigger_menu;
-                            color: #646464;
-                        }
-                    }
-                }
-                .active {
-                    border-bottom: 2px solid $border-color-trigger_menu;
-                    a {
-                        color: #646464;
-                        &:hover {
-                            border: 0;
-                        }
-                    }
-                }
-            }
-            @media screen and (max-width: 768px) {
-                .trigger_menu {
+                @include trigger_menu;
+                @media screen and (min-width: 450px) and (max-width: 768px) {
                     li {
                         a {
-                            padding: 13px 5px;
-                            i {
-                                margin: 0;
-                            }
+                            padding: 0 20px;
                         }
-                    }
-                }
-            }
-            @media screen and (min-width: 450px) and (max-width: 768px) {
-                .trigger_menu {
-                    margin-top: 20px;
-                    li {
-                        margin-right: 35px;
                     }
                 }
             }
@@ -158,237 +26,48 @@
                         @include article_item;
                     }
                 }
-                .follow_detail {
-                    padding: 20px;
-                    background-color: hsla(0, 0%, 71%, .1);
-                    border: 1px solid $border-color;
-                    border-radius: 4px;
-                    font-size: 12px;
-                    margin-top: 2%;
-                    .info {
-                        min-height: 47px;
-                        .avatar {
-                            @include avatar;
-                            float: left;
-                            margin-right: 10px;
-                        }
-                        .avatar_collection {
-                            @include avatar;
-                            float: left;
-                            margin-right: 10px;
-                            width: 48px;
-                            height: 48px;
-                            img {
-                                border-radius: 10%;
-                            }
-                        }
-                        .follow {
-                            // @include a;
-                            @include button;
-                            float: right;
-                            margin: 6px 0 0 0;
-                            border: 1px solid hsla(0, 0%, 59%, .6);
-                            color: #8c8c8c;
-                            background-color: inherit;
-                            &:hover {
-                                border: 1px solid hsla(0, 0%, 50%, .6);
-                                background-color: hsla(0, 0%, 60%, .1);
-                            }
-                        }
-                        .title {
-                            margin-right: 3px;
-                            font-size: 17px;
-                            line-height: 1.8;
-                            vertical-align: middle;
-                            color: #333;
-                        }
-                        .icon-nanhai {
-                            font-size: 15px;
-                            vertical-align: middle;
-                            color: #3194d0;
-                        }
-                        p {
-                            margin-bottom: 0;
-                            color: #969696;
-                            a {
-                                // @include a;
-                                color: #3194d0;
-                            }
-                        }
-                    }
-                    .signature {
-                        margin-top: 20px;
-                        padding-top: 20px;
-                        border-top: 1px solid #e1e1e1;
-                        color: #969696;
-                        display: -webkit-box;
-                        -webkit-line-clamp: 1;
-                        -webkit-box-orient: vertical;
-                        overflow: hidden;
-                    }
-                }
-                .comment {
-                    p {
-                        font-size: 15px;
-                        line-height: 1.7;
-                        a {
-                            // @include a;
-                            color: #3194d0;
-                        }
-                    }
-                    blockquote {
-                        color: #969696;
-                        margin-bottom: 0;
-                        border-left: 3px solid #d9d9d9;
-                        font-size: 12px;
-                        .title {
-                            font-size: 15px;
-                            color: #333;
-                            font-weight: 700;
-                            line-height: 1.5;
-                            margin: 0 0 4px;
-                        }
-                        .abstract {
-                            font-size: 13px;
-                            line-height: 24px;
-                            margin: 0 0 4px;
-                        }
-                        .meta {
-                            font-size: 12px;
-                            font-weight: 400;
-                            line-height: 20px;
-                            .origin_author {
-                                display: inline;
-                                font-size: 12px;
-                                color: #969696;
-                                a {
-                                    // @include a;
-                                    margin-right: 10px;
-                                    color: #3194d0!important;
-                                }
-                            }
-                            a {
-                                // @include a;
-                                color: #b4b4b4;
-                                margin-right: 10px;
-                                i {
-                                    font-size: 14px;
-                                }
-                                .icon-yanjing {
-                                    font-size: 16px;
-                                }
-                                &:hover {
-                                    color: #5b5757;
-                                }
-                            }
-                            span {
-                                color: #b4b4b4;
-                                margin-right: 10px;
-                                i {
-                                    font-size: 13px;
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
     }
     .aside {
+        font-size: 14px;
         .user_dynamic {
-            border-bottom: 1px solid #f0f0f0;
-            margin-bottom: 16px;
-            padding: 0 0 10px;
-            list-style: none;
+            @include spacing (0 0 16px 0, 0 0 10px 0);
+            border-bottom: 1px solid $border-color-hr;
             li {
-                margin-bottom: 10px;
-                a {
-                    // @include a;
-                    font-size: 14px;
-                    line-height: 30px;
-                    img {
-                        width: 20px;
-                        height: 20px;
-                        margin-right: 3px;
-                    }
-                    i {
-                        font-size: 22px;
-                        vertical-align: middle;
-                        margin-right: 4px;
-                    }
-                    .icon-xihuan {
-                        font-size: 25px;
-                    }
-                    span {
-                        vertical-align: middle;
-                    }
-                }
+                @include user_aside_list;
             }
         }
         .title {
+            color: $color-gray;
             margin-bottom: 10px;
-            font-size: 14px;
-            color: #969696;
         }
         .description {
-            font-size: 14px;
-            border-bottom: 1px solid #f0f0f0;
-            margin-bottom: 17px;
-            padding: 0 0 10px;
-            text-align: left;
-            a {
-                // @include a;
-                i {
-                    font-size: 18px;
-                }
-                .icon-xinlangweibo1 {
-                    color: #f56f16;
-                }
-                .icon-weixin {
-                    font-size: 19px;
-                    color: #36c636;
-                }
-            }
+            @include user_aside_list;
+            @include spacing (0 0 17px 0, 0 0 16px 0);
+            border-bottom: 1px solid $border-color-hr;
         }
         div {
             .list {
-                list-style: none;
-                border-bottom: 1px solid #f0f0f0;
-                margin-bottom: 17px;
-                padding: 0 0 10px;
+                @include spacing (0 0 17px 0, 0 0 16px 0);
+                border-bottom: 1px solid $border-color-hr;
                 li {
-                    margin-bottom: 10px;
-                    line-height: 20px;
+                    @include user_aside_list;
                     a {
-                        // @include a;
-                        display: inline-block;
-                        font-size: 14px;
                         img {
-                            width: 32px;
-                            height: 32px;
-                            margin-right: 5px;
+                            @include chartholder (32px, 32px);
                         }
                         i {
-                            color: #969696;
-                            vertical-align: middle;
-                            margin-right: 5px;
-                            font-size: 18px;
-                        }
-                        span {
-                            position: relative;
-                            top: 3px;
+                            color: $color-gray;
                         }
                     }
                     .new_collection {
-                        color: #42c02e;
+                        color: $color-green;
                         i {
-                            font-size: inherit;
+                            @include font (12px, $color-green, 700);
+                            position: relative;
+                            top: -1px;
                             margin-right: 0;
-                            color: #42c02e;
-                        }
-                        span {
-                            top: 0;
-                            vertical-align: middle;
                         }
                     }
                 }

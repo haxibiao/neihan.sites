@@ -5,7 +5,7 @@
 			<li>
 				<a href="javascript:;" class="all_request">
 					<div class="avatar">
-						<i class="iconfont icon-tougaoqingqiu"></i>
+						<i class="iconfont icon-tougaoguanli"></i>
 					</div>
 					<div class="name">全部未处理请求</div>
 				</a>
@@ -13,7 +13,7 @@
 			<li>
 				<div class="request_item">
 					<a href="javascript:;" class="avatar">
-						<img src="/logo/col-01.jpg" />
+						<img src="/images/category_01.jpeg" />
 					</a>
 					<a href="javascript:;" class="name">王者荣耀</a>
 				</div>
@@ -21,7 +21,7 @@
 			<li>
 				<div class="request_item">
 					<a href="javascript:;" class="avatar">
-						<img src="/logo/1.jpeg" />
+						<img src="/images/category_04.jpeg" />
 					</a>
 					<a href="javascript:;" class="name">热恋</a>
 				</div>
@@ -29,7 +29,7 @@
 			<li>
 				<div class="request_item">
 					<a href="javascript:;" class="avatar">
-						<img src="/logo/1.jpeg" />
+						<img src="/images/category_02.jpg" />
 					</a>
 					<a href="javascript:;" class="name">暗恋</a>
 				</div>

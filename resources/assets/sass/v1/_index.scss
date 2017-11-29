@@ -1,10 +1,8 @@
 @include initialization;
-
 //首页
 #index {
     @include aside;
-    @include essays;
-    // 轮播图
+    @include essays; // 轮播图
     .carousel {
         position: relative;
         width: 100%;
@@ -17,8 +15,8 @@
             width: 100%;
             .item {
                 .banner {
+                    @include chartholder (33.333%, 100%, top);
                     display: inline-block;
-                    @include chartholder (33.333%,100%,top);
                     &:first-child {
                         float: left;
                         width: 66.666%;
@@ -33,14 +31,14 @@
             }
         }
         .carousel_btn {
+            @include chartholder (40px, 50px);
+            @include font (20px, $color-white);
             position: absolute;
-            @include chartholder (40px,50px);
             top: 50%;
             margin-top: -25px;
             background-color: rgba(0, 0, 0, .4);
             text-align: center;
             line-height: 50px;
-            @include font (20px,$color-white);
             display: none;
             &.left {
                 left: 15px;
@@ -62,8 +60,7 @@
         .classification {
             margin-bottom: 17px;
             .collection {
-                @include collection_button;
-                background-color: $background-color-milky;
+                @include collection_button ($background-color-milky);
             }
             .more_hot_collection {
                 color: #787878;
@@ -104,6 +101,7 @@
                     margin-bottom: 6px;
                 }
                 .board_tit {
+                    @include font (16px, $color-white);
                     position: absolute;
                     display: flex;
                     width: 68%;
@@ -112,7 +110,6 @@
                     bottom: 8px;
                     left: 1%;
                     align-items: center;
-                    @include font (16px,$color-white);
                     i {
                         padding-left: 5px;
                     }
@@ -137,10 +134,10 @@
             }
         } // app二维码
         .app {
+            @include border (6px, 1px solid $border-color-hr);
+            @include spacing (0 0 25px 0, 5px);
             position: relative;
-            @include spacing (0 0 25px 0,5px);
             width: 100%;
-            @include border (6px,1px solid $border-color-hr);
             background-color: $background-color-white;
             cursor: pointer;
             img {
@@ -150,17 +147,18 @@
                 @include chartholder (66%);
                 display: inline-block;
                 .title {
-                    @include font (13px,$color-black);
+                    @include font (13px, $color-black);
                     i {
                         font-size: inherit;
                     }
                 }
                 .description {
+                    @include font (12px, #999);
                     margin-top: 4px;
-                    @include font (12px,#999);
                 }
             }
             .hover_code {
+                @include border (4px, 1px solid $border-color);
                 position: absolute;
                 opacity: 0;
                 display: none;
@@ -168,7 +166,6 @@
                 left: 10%;
                 width: 80%;
                 padding: 5px;
-                @include border (4px,1px solid $border-color);
                 background-color: $background-color-white;
                 box-shadow: 0 2px 2px 1px #ccc;
                 img {
@@ -212,12 +209,10 @@
                         margin-top: 2px;
                     }
                     .avatar {
-                        @include avatar;
-                        float: left;
-                        margin-right: 10px;
+                        @include avatar (40px, 40px, left, 10px);
                     }
                     .follow {
-                        @include font (13px,$color-green);
+                        @include font (13px, $color-green);
                         float: right;
                     }
                     .name {
@@ -227,9 +222,9 @@
             }
             .find_more {
                 @include load_more;
-                @include font (13px,#787878);
-                @include spacing (0,7px 7px 7px 12px);
-                @include border (4px,1px solid $border-color);
+                @include font (13px, #787878);
+                @include spacing (0, 7px 7px 7px 12px);
+                @include border (4px, 1px solid $border-color);
                 background-color: $background-color-milky;
             }
         }

@@ -1,29 +1,7 @@
-// @media screen and (max-width: 768px) {
-//     #subscriptions {
-//         .main {
-//             margin-top: 20px;
-//         }
-//     }
-// }
-
-// @media screen and (min-width: 450px) and (max-width: 768px) {
-//     #subscriptions {
-//         .aside {
-//             width: 37%;
-//         }
-//         .main {
-//             width: 63%;
-//             margin-top: 0;
-//         }
-//     }
-// }
-
 //关注页
-#subscriptions {
-    // @include id;
-    .subscriptions_wrp {
+#follow {
+    .follow_wrp {
         .aside {
-            // background-color: #f2b5c5;
             padding: 0;
             position: fixed;
             width: 280px;
@@ -31,7 +9,6 @@
                 width: 180px;
             }
             a {
-                // @include a;
                 i {
                     font-size: inherit;
                 }
@@ -214,8 +191,8 @@
             #user {
                 .main_top {
                     @include main_top;
-                    .follow {
-                        @include news_button;
+                    .botm {
+                        width: 100px;
                     }
                 }
                 div {
@@ -237,8 +214,8 @@
             #category {
                 .main_top {
                     @include main_top;
-                    .follow {
-                        @include news_button;
+                    .botm {
+                        width: 100px;
                     }
                 }
                 div {
@@ -260,8 +237,12 @@
             #collection {
                 .main_top {
                     @include main_top;
-                    .follow {
-                        @include news_button;
+                    .botm {
+                        @include news_button (100px);
+                        margin: 23px 0 5px 10px;
+                    }
+                    @media screen and (max-width: 768px) {
+                        padding-bottom: 0;
                     }
                 }
                 div {

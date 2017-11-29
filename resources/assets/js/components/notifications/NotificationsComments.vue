@@ -5,7 +5,7 @@
 			<li>
 				<div class="comment_head">
 					<a href="#" class="avatar">
-						<img src="/logo/col-01.jpg" />
+						<img src="/images/photo_02.jpg" />
 					</a>
 					<div class="title">
 						<a href="javascript: ;">中南工大留级生</a>
@@ -17,11 +17,11 @@
 				<p>这位少年，我觉得你非常有想法，跟我来打游戏吧！</p>
 				<div class="tool_group">
 					<a href="javascript: ;">
-						<i class="iconfont icon-pinglun1"></i>
+						<i class="iconfont icon-xinxi2"></i>
 						<span>回复</span>
 					</a>
 					<a href="javascript: ;">
-						<i class="iconfont icon-fanhui"></i>
+						<i class="iconfont icon-zhuanfa2"></i>
 						<span>查看对话</span>
 					</a>
 					<a href="javascript: ;" class="report">
@@ -32,7 +32,7 @@
 			<li>
 				<div class="comment_head">
 					<a href="#" class="avatar">
-						<img src="/logo/col-01.jpg" />
+						<img src="/images/photo_02.jpg" />
 					</a>
 					<div class="title">
 						<a href="javascript: ;">中南工大留级生</a>
@@ -44,11 +44,11 @@
 				<p>很好很实用的文章，谢谢分享</p>
 				<div class="tool_group">
 					<a href="javascript: ;">
-						<i class="iconfont icon-pinglun1"></i>
+						<i class="iconfont icon-xinxi2"></i>
 						<span>回复</span>
 					</a>
 					<a href="javascript: ;">
-						<i class="iconfont icon-fanhui"></i>
+						<i class="iconfont icon-zhuanfa2"></i>
 						<span>查看对话</span>
 					</a>
 					<a href="javascript: ;" class="report">

@@ -8,10 +8,12 @@
     <div class="container">
         <div class="notifications_wrp clearfix">
             <div class="aside">
-                <notifications-left></notifications-left>
+                <notifications-left>
+                </notifications-left>
             </div>
             <div class="main">
-                <router-view></router-view>
+                <router-view>
+                </router-view>
             </div>
         </div>
     </div>
