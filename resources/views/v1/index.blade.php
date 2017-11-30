@@ -1,4 +1,4 @@
-@extends('v1.layouts.app')
+@extends('v1.layouts.app2')
 
 @section('title')
     爱你城 - 最暖心的游戏社交网站
@@ -7,35 +7,10 @@
 <div id="index">
     <div class="container">
         <div class="row">
-            <div class="carousel col-xs-12">
-                <div class="carousel_inner">
-                    <div class="item clearfix">
-                        <div class="banner">
-                            <a href="/v1/detail" target="_blank">
-                                <img src="/images/carousel001.jpg"/>
-                            </a>
-                        </div>
-                        <div class="banner">
-                            <a href="/v1/detail" target="_blank">
-                                <img src="/images/carousel002.jpg"/>
-                            </a>
-                        </div>
-                        <div class="banner">
-                            <a href="/v1/detail" target="_blank">
-                                <img src="/images/carousel003.jpg"/>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <a class="left carousel_btn" data-slide="prev" href="#indexCarousel" role="button">
-                    <i class="iconfont icon-zuobian">
-                    </i>
-                </a>
-                <a class="right carousel_btn" data-slide="next" href="#indexCarousel" role="button">
-                    <i class="iconfont icon-youbian">
-                    </i>
-                </a>
+            {{-- 轮播图 --}}
+            <div class="col-xs-12" id="poster">
             </div>
+            {{-- 左侧 --}}
             <div class="essays col-xs-12 col-sm-8">
                 <div class="classification">
                     <a class="collection" href="/v1/category" target="_blank">
@@ -92,18 +67,8 @@
                 </div>
                 @include('v1.parts.index_article_block')
             </div>
-            <div class="aside col-sm-4 col-lg-3 col-lg-offset-1">
-                <form class="search">
-                    <div class="input-group">
-                        <input class="form-control" placeholder="搜索" type="text"/>
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="submit">
-                                <i class="glyphicon glyphicon-search">
-                                </i>
-                            </button>
-                        </span>
-                    </div>
-                </form>
+            {{-- 右侧 --}}
+            <div class="aside col-sm-4">
                 <div class="board">
                     <a href="/v1/category" target="_blank">
                         <img src="/images/board01.png"/>
@@ -306,3 +271,24 @@
 </div>
 @include('v1.parts.foot')
 @stop
+@push('scripts')
+<script>
+    var options = {
+      'container':'#poster',
+      'data':[
+        ['/v1/detail','/images/carousel001.jpg'],
+        ['/v1/detail','/images/carousel002.jpg'],
+        ['/v1/detail','/images/carousel003.jpg'],
+        ['/v1/detail','/images/carousel004.jpg'],
+        ['/v1/detail','/images/carousel005.jpg'],
+        ['/v1/detail','/images/carousel006.jpg'],
+        ['/v1/detail','/images/carousel007.jpg'],
+        ['/v1/detail','/images/carousel008.jpg']
+      ],
+      'speed':'5000',
+      'auto':true
+    }
+    let poster = new Poster(options);
+    poster.init();
+</script>
+@endpush

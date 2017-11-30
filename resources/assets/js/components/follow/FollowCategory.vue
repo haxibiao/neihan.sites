@@ -35,21 +35,21 @@
                     <a aria-controls="wenzhang" data-toggle="tab" href="#wenzhang" role="tab">
                         <i class="iconfont icon-wenji">
                         </i>
-                        最新收录
+                        <span>最新收录</span>
                     </a>
                 </li>
                 <li role="presentation">
                     <a aria-controls="pinglun" data-toggle="tab" href="#pinglun" role="tab">
                         <i class="iconfont icon-svg37">
                         </i>
-                        最新评论
+                        <span>最新评论</span>
                     </a>
                 </li>
                 <li role="presentation">
                     <a aria-controls="huo" data-toggle="tab" href="#huo" role="tab">
                         <i class="iconfont icon-huo">
                         </i>
-                        热门
+                        <span>热门</span>
                     </a>
                 </li>
             </ul>
@@ -178,11 +178,9 @@
 					                    这里的“相亲”主要指的是一种东亚现象。相亲有传统的因素，但它没有遭遇传统普遍的危机，反而是历久弥新。相亲是通过第三方来寻找配偶，第三方可以是父母辈的亲人，可以是同辈的亲友，也可以是中介机构。不管是经由谁介绍，所有相亲的共同特点是：它是一种挑选。由此，相亲也是一种面试，只不过是平等的、双向的面试。这种挑选分为三步进行，第一步是“初试”，这往往是由第三方完成，相亲者并不参与但可能会给第三方提供一些条件；第二步是“复试”，进入复试的往往有多人，此时相亲者互相见面并初步沟通，这也是相亲之所谓相亲的主要方面；第三步是“终试”，往往只有一人进入这个阶段，此时他们往往已经成为实际上的情侣关系，这也是最后考验，直到步入婚姻殿堂为止。
 					                </p>
 					            </div>
-					            {{--
-					            <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail" target="_blank">
-					                <img src="/images/"/>
-					            </a>
-					            --}}
+					            <!-- <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail" target="_blank">
+					                <img src="/images/details_03.jpg"/>
+					            </a> -->
 					            <div class="meta col-xs-12">
 					                <a href="/v1/detail" target="_blank">
 					                    <i class="iconfont icon-liulan">
@@ -530,11 +528,9 @@
 					                    这里的“相亲”主要指的是一种东亚现象。相亲有传统的因素，但它没有遭遇传统普遍的危机，反而是历久弥新。相亲是通过第三方来寻找配偶，第三方可以是父母辈的亲人，可以是同辈的亲友，也可以是中介机构。不管是经由谁介绍，所有相亲的共同特点是：它是一种挑选。由此，相亲也是一种面试，只不过是平等的、双向的面试。这种挑选分为三步进行，第一步是“初试”，这往往是由第三方完成，相亲者并不参与但可能会给第三方提供一些条件；第二步是“复试”，进入复试的往往有多人，此时相亲者互相见面并初步沟通，这也是相亲之所谓相亲的主要方面；第三步是“终试”，往往只有一人进入这个阶段，此时他们往往已经成为实际上的情侣关系，这也是最后考验，直到步入婚姻殿堂为止。
 					                </p>
 					            </div>
-					            {{--
-					            <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail" target="_blank">
-					                <img src="/images/"/>
-					            </a>
-					            --}}
+					            <!-- <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail" target="_blank">
+					                <img src="/images/details_03.jpg"/>
+					            </a> -->
 					            <div class="meta col-xs-12">
 					                <a href="/v1/detail" target="_blank">
 					                    <i class="iconfont icon-liulan">
@@ -882,11 +878,9 @@
 					                    这里的“相亲”主要指的是一种东亚现象。相亲有传统的因素，但它没有遭遇传统普遍的危机，反而是历久弥新。相亲是通过第三方来寻找配偶，第三方可以是父母辈的亲人，可以是同辈的亲友，也可以是中介机构。不管是经由谁介绍，所有相亲的共同特点是：它是一种挑选。由此，相亲也是一种面试，只不过是平等的、双向的面试。这种挑选分为三步进行，第一步是“初试”，这往往是由第三方完成，相亲者并不参与但可能会给第三方提供一些条件；第二步是“复试”，进入复试的往往有多人，此时相亲者互相见面并初步沟通，这也是相亲之所谓相亲的主要方面；第三步是“终试”，往往只有一人进入这个阶段，此时他们往往已经成为实际上的情侣关系，这也是最后考验，直到步入婚姻殿堂为止。
 					                </p>
 					            </div>
-					            {{--
-					            <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail" target="_blank">
-					                <img src="/images/"/>
-					            </a>
-					            --}}
+					            <!-- <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail" target="_blank">
+					                <img src="/images/details_03.jpg"/>
+					            </a> -->
 					            <div class="meta col-xs-12">
 					                <a href="/v1/detail" target="_blank">
 					                    <i class="iconfont icon-liulan">

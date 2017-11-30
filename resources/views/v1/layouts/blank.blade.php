@@ -18,8 +18,7 @@
         <link href="{{ mix('css/a.css') }}" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-        <div id="app">
-            @include('v1.parts.head')
+        <div id="app" style="padding: 0!important;">
             @yield('content')
         </div>
         @if(in_array(request()->path(), [

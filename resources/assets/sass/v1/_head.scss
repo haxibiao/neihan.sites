@@ -1,7 +1,15 @@
-// 未登录头部
-#head {
-    padding-top: 70px;
+// 登录头部
+#head,
+#head_user {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1030;
+    border-bottom: 1px solid $border-color-hr;
+    text-align: center;
     .navbar {
+        border: none;
+        margin: 0;
         .navbar_wrp {
             .navbar-header {
                 a {
@@ -17,82 +25,11 @@
                         a {
                             @include font (15px, $color-black);
                         }
-                        .follow {
-                            @include button (100px, 0, $color-watermelon);
-                            @include spacing (8px 18px 0 10px, 7px 0);
-                            &:hover {
-                                background-color: #f04665;
-                            }
-                        }
-                        .follows {
-                            @include news_button (70px);
-                            @include spacing (8px 10px 0, 6px 0);
-                            border-color: $color-watermelon;
-                            color: $color-watermelon;
-                            &:hover {
-                                border-color: #f04665;
-                            }
-                        }
-                    }
-                }
-                .navbar-form {
-                    padding: 0;
-                    border-color: transparent;
-                    .form-group {
-                        position: relative;
-                        input {
-                            width: 160px;
-                            height: 36px;
-                            padding: 0 40px 0 20px;
-                            border-radius: 18px;
-                            background-color: #eee;
-                            border: none;
-                            ;
-                        }
-                        i {
-                            position: absolute;
-                            top: 4px;
-                            right: 4px;
-                            width: 28px;
-                            height: 28px;
-                            font-size: 20px;
-                            text-align: center;
-                            line-height: 28px;
-                            color: #666;
-                            border-radius: 50%;
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-// 已登录头部
-#head_user {
-    padding-top: 70px;
-    .navbar {
-        .navbar_wrp {
-            .navbar-header {
-                a {
-                    padding-top: 0;
-                    img {
-                        max-height: 50px;
-                    }
-                }
-            }
-            .navbar-collapse {
-                .navbar-nav {
-                    li {
-                        a {
-                            color: $color-black;
-                            font-size: 15px;
-                        }
                         .style_mode_btn {
                             color: $color-gray;
                         }
                         .author {
-                            @include spacing (5px 10px 4px);
+                            @include spacing (5px 10px);
                             .avatar {
                                 @include avatar;
                                 margin: 0;
@@ -102,15 +39,26 @@
                             }
                         }
                         .follow {
-                            @include button;
-                            margin: 8px 18px 0 10px;
-                            background-color: $color-watermelon;
-                            padding: 7px 0;
+                            @include button (100px, 0, $color-watermelon, none);
+                            @include spacing (8px 0 0 14px, 7px 0);
+                            display: inline-block;
                             &:hover {
                                 background-color: #f04665;
                             }
                             i {
                                 font-size: 18px;
+                                vertical-align: middle;
+                            }
+                        }
+                        .follows {
+                            @include news_button (70px);
+                            @include spacing (8px 0 0, 6px 0);
+                            border-color: $color-watermelon;
+                            color: $color-watermelon;
+                            float: none;
+                            display: inline-block;
+                            &:hover {
+                                border-color: #f04665;
                             }
                         }
                         .dropdown-menu {
@@ -124,13 +72,19 @@
                                 }
                             }
                         }
+                    }
+                    .tab {
+                        i {
+                            vertical-align: middle;
+                        }
+                        span {
+                            vertical-align: middle;
+                            @media screen and (max-width: 1200px) and (min-width: 768px) {
+                                display: none;
+                            }
+                        }
                         &:hover {
                             background-color: $background-color-milky;
-                        }
-                    }
-                    .btom {
-                        &:hover {
-                            background-color: inherit;
                         }
                     }
                     .dropdown-submenu-one:hover>.dropdown-menu {
@@ -144,30 +98,124 @@
                     }
                 }
                 .navbar-form {
-                    padding: 0;
+                    padding: 0 0 0 14px;
                     border-color: transparent;
                     .form-group {
-                        position: relative;
-                        input {
-                            width: 160px;
-                            height: 36px;
-                            padding: 0 40px 0 20px;
-                            border-radius: 18px;
-                            background-color: #eee;
-                            border: none;
-                            ;
-                        }
-                        i {
-                            position: absolute;
-                            top: 4px;
-                            right: 4px;
-                            width: 28px;
-                            height: 28px;
-                            font-size: 20px;
-                            text-align: center;
-                            line-height: 28px;
-                            color: $color-deep;
-                            border-radius: 50%;
+                        .search_wrp {
+                            display: inline-block;
+                            position: relative;
+                            margin: 0 auto;
+                            .form-control {
+                                width: 200px;
+                                height: 36px;
+                                padding: 0 40px 0 20px;
+                                border-radius: 18px;
+                                background-color: #eee;
+                                border: none;
+                                outline: none;
+                                transition: all 0.3s ease-in-out;
+                                &:focus {
+                                    outline: 0 !important;
+                                    box-shadow: none;
+                                    width: 240px;
+                                    &+span {
+                                        color: #f0f0f0;
+                                        background-color: #aaa;
+                                    }
+                                }
+                                @media screen and (max-width:1000px) and (min-width:768px) {
+                                    width: 150px;
+                                    &:focus {
+                                        outline: 0 !important;
+                                        box-shadow: none;
+                                        width: 160px;
+                                    }
+                                }
+                            }
+                            span {
+                                position: absolute;
+                                top: 4px;
+                                right: 4px;
+                                width: 28px;
+                                height: 28px;
+                                font-size: 20px;
+                                text-align: center;
+                                line-height: 28px;
+                                color: #666;
+                                border-radius: 50%;
+                            } //热门搜索
+                            .hot_search_wrp {
+                                margin-top: 9px;
+                                width: 220px;
+                                left: 0;
+                                top: 100%;
+                                visibility: hidden;
+                                opacity: 0;
+                                border-radius: 4px;
+                                z-index: 999;
+                                &,
+                                &::before {
+                                    position: absolute;
+                                    background-color: #fff;
+                                    box-shadow: 0 0 8px rgba(0, 0, 0, .2);
+                                }
+                                &::before {
+                                    content: "";
+                                    left: 27px;
+                                    width: 10px;
+                                    height: 10px;
+                                    transform: rotate(45deg);
+                                    top: -5px;
+                                    z-index: -1;
+                                }
+                                .hot_search {
+                                    padding: 15px 15px 10px;
+                                    border-bottom: 1px solid #f0f0f0;
+                                    background-color: #FFF;
+                                    border-radius: 4px;
+                                    .litter_title {
+                                        font-size: 14px;
+                                        line-height: 2;
+                                        color: $color-gray;
+                                        margin-bottom: 10px;
+                                        text-align: left;
+                                        .more {
+                                            float: right;
+                                            height: 100%;
+                                            color: $color-gray;
+                                            i {
+                                                font-size: 14px;
+                                                vertical-align: middle;
+                                            }
+                                            &:hover {
+                                                color: $color-black;
+                                            }
+                                        }
+                                    }
+                                    ul {
+                                        text-align: left;
+                                        li {
+                                            margin-right: 10px;
+                                            display: inline-block;
+                                            line-height: 28px;
+                                            a {
+                                                padding: 2px 6px;
+                                                font-size: 12px;
+                                                color: $color-gray;
+                                                border: 1px solid #ddd;
+                                                border-radius: 3px;
+                                                &:hover {
+                                                    color: $color-black;
+                                                    border-color: $border-color-trigger_menu;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                @media screen and (max-width:1000px) and (min-width:768px) {
+                                    width: 150px;
+                                }
+                            }
                         }
                     }
                 }

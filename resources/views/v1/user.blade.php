@@ -314,7 +314,7 @@
                     </div>
                 </div>
             </div>
-            <div class="aside col-sm-4 col-lg-3 col-lg-offset-1">
+            <div class="aside col-sm-4">
                 <ul class="user_dynamic">
                     <li>
                         <a href="/v1/detail" target="_blank">

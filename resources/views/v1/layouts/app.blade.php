@@ -12,25 +12,25 @@
         <title>
             @yield('title')
         </title>
-
+        <meta content="width=device-width,initial-scale=1" name="viewport"/>
+        <meta content=" @yield('keywords'), {{ config('app.name') }} " name="keywords"/>
+        <meta content=" @yield('description'), {{ config('app.name') }} " name="description"/>
         <link href="{{ mix('css/a.css') }}" rel="stylesheet" type="text/css"/>
-
     </head>
     <body>
         <div id="app">
             @include('v1.parts.head_user')
             @yield('content')
-            {{-- @include('v1.parts.foot') --}}
         </div>
-
-
         @if(in_array(request()->path(), [
             'v1/follow',
             'v1/notification'
         ]))
-            <script src="{{ mix('js/b.js') }}"></script>
+        <script src="{{ mix('js/b.js') }}">
+        </script>
         @else
-            <script src="{{ mix('js/a.js') }}"></script>
+        <script src="{{ mix('js/a.js') }}">
+        </script>
         @endif
 
         @stack('scripts')

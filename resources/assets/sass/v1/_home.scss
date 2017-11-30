@@ -1,7 +1,6 @@
 //个人主页
 #home {
     @include aside;
-    @include essays;
     .essays {
         .main_top {
             @include main_top;
@@ -31,6 +30,25 @@
     }
     .aside {
         font-size: 14px;
+        padding-left: 35px;
+        .title {
+            color: $color-gray;
+            margin-bottom: 10px;
+            float: left;
+        }
+        .function_btn {
+            float: right;
+            @include font (13px, $color-gray);
+            &:hover {
+                color: $color-black;
+            }
+        }
+        .description {
+            @include user_aside_list;
+            @include spacing (0 0 17px 0, 0 0 16px 0);
+            border-bottom: 1px solid $border-color-hr;
+            clear: both;
+        }
         .user_dynamic {
             @include spacing (0 0 16px 0, 0 0 10px 0);
             border-bottom: 1px solid $border-color-hr;
@@ -38,19 +56,11 @@
                 @include user_aside_list;
             }
         }
-        .title {
-            color: $color-gray;
-            margin-bottom: 10px;
-        }
-        .description {
-            @include user_aside_list;
-            @include spacing (0 0 17px 0, 0 0 16px 0);
-            border-bottom: 1px solid $border-color-hr;
-        }
         div {
             .list {
                 @include spacing (0 0 17px 0, 0 0 16px 0);
                 border-bottom: 1px solid $border-color-hr;
+                clear: both;
                 li {
                     @include user_aside_list;
                     a {

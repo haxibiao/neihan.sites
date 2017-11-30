@@ -1,7 +1,6 @@
 //用户页
 #user {
     @include aside;
-    @include essays;
     .essays {
         .main_top {
             @include main_top;
@@ -47,6 +46,7 @@
     }
     .aside {
         font-size: 14px;
+        padding-left: 35px;
         .user_dynamic {
             @include spacing (0 0 16px 0, 0 0 10px 0);
             border-bottom: 1px solid $border-color-hr;

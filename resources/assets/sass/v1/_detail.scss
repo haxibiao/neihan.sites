@@ -95,13 +95,11 @@
                     margin-right: 10px;
                 }
                 .follow {
-                    // @include a;
                     @include button;
                     float: right;
                     margin: 6px 0 0 0;
                 }
                 .title {
-                    // @include a;
                     margin-right: 3px;
                     font-size: 17px;
                     line-height: 1.8;
@@ -134,10 +132,10 @@
                 padding: 8px 25px;
                 font-size: 16px;
                 color: #fff;
-                background-color: #ea6f5a;
+                background-color: $background-color-watermelon;
                 border-radius: 20px;
                 &:hover {
-                    background-color: #ed5a41;
+                    background-color: #f04665;
                 }
             }
         }
@@ -148,14 +146,13 @@
                 .like_group {
                     padding: 13px 0 15px;
                     font-size: 0;
-                    border: 1px solid #ea6f5a;
+                    border: 1px solid $border-color-watermelon;
                     border-radius: 40px;
                     .btn_like {
                         font-size: 19px;
                         display: inline-block;
                         a {
-                            // @include a;
-                            color: #ea6f5a;
+                            color: $color-watermelon;
                             padding: 18px 15px 18px 30px;
                             i {
                                 margin-right: 5px;
@@ -168,8 +165,7 @@
                         border-left: 1px solid rgba(236, 97, 73, .4);
                         display: inline-block;
                         a {
-                            // @include a;
-                            color: #ea6f5a;
+                            color: $color-watermelon;
                             padding: 18px 30px 18px 17px;
                         }
                     }
@@ -182,7 +178,6 @@
                 float: right;
                 margin-top: 6px;
                 .share_circle {
-                    // @include a;
                     display: inline-block;
                     width: 50px;
                     height: 50px;
@@ -258,7 +253,6 @@
                                     vertical-align: middle;
                                 }
                                 .author_only {
-                                    // @include a;
                                     margin-left: 10px;
                                     padding: 5px 8px 3px 8px;
                                     font-size: 12px;
@@ -268,7 +262,6 @@
                                 }
                                 .pull-right {
                                     a {
-                                        // @include a;
                                         margin-left: 10px;
                                         font-size: 12px;
                                         font-weight: 400;
@@ -297,7 +290,6 @@
                                         display: inline-block;
                                         vertical-align: middle;
                                         .name {
-                                            // @include a;
                                             font-size: 15px;
                                         }
                                         .meta {
@@ -317,7 +309,6 @@
                                     }
                                     .tool_group {
                                         a {
-                                            // @include a;
                                             margin-right: 10px;
                                             font-size: 0;
                                             color: #969696;
@@ -336,7 +327,7 @@
                                             }
                                             &:hover {
                                                 .icon-fabulous {
-                                                    color: #ea6f5a;
+                                                    color: $color-watermelon;
                                                 }
                                                 .icon-xinxi {
                                                     color: #333;
@@ -372,7 +363,6 @@
                                         font-size: 14px;
                                         line-height: 1.5;
                                         a {
-                                            // @include a;
                                             color: #3194d0;
                                         }
                                     }
@@ -380,7 +370,6 @@
                                         font-size: 12px;
                                         color: #969696;
                                         a {
-                                            // @include a;
                                             margin-left: 10px;
                                             color: #969696;
                                             &:hover {
@@ -411,7 +400,6 @@
                                     font-size: 14px;
                                     color: #969696;
                                     a {
-                                        // @include a;
                                         color: #969696;
                                     }
                                     .add_comment_btn {
@@ -527,7 +515,7 @@
                 .title {
                     font-size: 15px;
                     padding-left: 8px;
-                    border-left: 3px solid #EA6F5A;
+                    border-left: 3px solid $border-color-watermelon;
                     line-height: 1;
                 }
                 .include_collection {
@@ -553,7 +541,7 @@
                     .title {
                         font-size: 15px;
                         padding-left: 8px;
-                        border-left: 3px solid #EA6F5A;
+                        border-left: 3px solid $border-color-watermelon;
                         line-height: 1;
                         a {
                             // @include a;
@@ -573,9 +561,6 @@
                         margin-bottom: 25px;
                         padding-bottom: 25px;
                         border-bottom: 1px solid #DDDDDD;
-                        a {
-                            // @include a;
-                        }
                         .cover {
                             @include wrap_img;
                             float: right;

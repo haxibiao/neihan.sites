@@ -5,8 +5,11 @@
             padding: 0;
             position: fixed;
             width: 280px;
-            @media screen and (max-width: 768px) {
+            @media screen and (max-width: 768px) and (min-width:450px) {
                 width: 180px;
+            }
+            @media screen and (max-width: 450px) {
+                width: 90px;
             }
             a {
                 i {
@@ -27,10 +30,9 @@
                 margin: 4px 8px 0 0;
             }
             .js_subscription_list {
-                list-style: none;
                 margin-top: 7px;
                 border-top: 1px solid $border-color-hr;
-                padding: 0;
+                clear: both;
                 li {
                     line-height: 20px;
                     a {
@@ -53,6 +55,10 @@
                             white-space: nowrap;
                             overflow: hidden;
                             text-overflow: ellipsis;
+                            line-height: 25px;
+                            @media screen and (max-width: 450px) {
+                                display: block;
+                            }
                         }
                         .count {
                             float: right;
@@ -63,6 +69,9 @@
                         &:hover {
                             background-color: #f0f0f0;
                             border-radius: 4px 0 0 4px!important;
+                        }
+                        @media screen and (max-width: 768px) {
+                            padding: 10px 5px;
                         }
                     }
                     &:first-child a {
@@ -77,8 +86,11 @@
         }
         .main {
             margin-left: 300px;
-            @media screen and (max-width: 768px) {
+            @media screen and (max-width: 768px) and (min-width:450px) {
                 margin-left: 180px;
+            }
+            @media screen and (max-width: 450px) {
+                margin-left: 90px;
             }
             #friend {
                 .article {
@@ -93,25 +105,15 @@
             #add {
                 .trigger_menu {
                     @include trigger_menu;
-                }
-                @media screen and (max-width: 768px) {
-                    .trigger_menu {
-                        margin-top: 0;
+                    @media screen and (max-width: 768px) and (min-width:450px) {
                         li {
-                            margin-right: 20px;
+                            padding-right: 5px;
                             a {
-                                padding: 13px 0;
+                                padding: 0;
                                 i {
                                     margin: 0;
                                 }
                             }
-                        }
-                    }
-                }
-                @media screen and (min-width: 450px) and (max-width: 768px) {
-                    .trigger_menu {
-                        li {
-                            margin-right: 11px;
                         }
                     }
                 }
@@ -125,9 +127,6 @@
                             border-bottom: 1px solid $border-color-hr;
                             line-height: 20px;
                             div {
-                                a {
-                                    // @include a;
-                                }
                                 .follow {
                                     @include button;
                                     float: right;
@@ -179,6 +178,9 @@
                                             margin-left: 4px;
                                         }
                                     }
+                                    @media screen and (max-width: 768px) {
+                                        padding: 0;
+                                    }
                                 }
                             }
                         }
@@ -217,6 +219,11 @@
                     .botm {
                         width: 100px;
                     }
+                    @media screen and (max-width: 450px) {
+                        .contribute {
+                            top: 170px;
+                        }
+                    }
                 }
                 div {
                     .trigger_menu {
@@ -240,6 +247,9 @@
                     .botm {
                         @include news_button (100px);
                         margin: 23px 0 5px 10px;
+                        @media screen and (max-width: 450px) {
+                            width: 55px;
+                        }
                     }
                     @media screen and (max-width: 768px) {
                         padding-bottom: 0;

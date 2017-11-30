@@ -6,21 +6,21 @@
                 <a aria-controls="tuijian" data-toggle="tab" href="#tuijian" role="tab">
                     <i class="iconfont icon-duoxuan">
                     </i>
-                    全部推荐
+                    <span>全部推荐</span>
                 </a>
             </li>
             <li role="presentation">
                 <a aria-controls="users" data-toggle="tab" href="#users" role="tab">
                     <i class="iconfont icon-yonghu01">
                     </i>
-                    推荐作者
+                    <span>推荐作者</span>
                 </a>
             </li>
             <li role="presentation">
                 <a aria-controls="zhuanti1" data-toggle="tab" href="#zhuanti1" role="tab">
                     <i class="iconfont icon-zhuanti1">
                     </i>
-                    推荐专题
+                    <span>推荐专题</span>
                 </a>
             </li>
         </ul>

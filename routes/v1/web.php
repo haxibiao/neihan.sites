@@ -44,3 +44,13 @@ Route::get('/v1/follow', function () {
 Route::get('/v1/notification', function () {
 	return view('v1.notification');
 });
+
+//v.1.0 登录页
+Route::get('/v1/sign_in', function () {
+	return view('v1.sign_in');
+});
+
+//v.1.0 注册页
+Route::get('/v1/sign_up', function () {
+	return view('v1.sign_up');
+});

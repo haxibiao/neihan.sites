@@ -1,4 +1,4 @@
-@extends('v1.layouts.app2')
+@extends('v1.layouts.app')
 
 @section('title')
     爱你城
@@ -421,34 +421,19 @@
                     </div>
                 </div>
             </div>
-            <div class="aside col-sm-4 col-lg-3 col-lg-offset-1">
-                <ul class="user_dynamic">
-                    <li>
-                        <a href="/v1/detail" target="_blank">
-                            <img src="/images/vip1.png"/>
-                            爱你城签约作者
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/v1/detail" target="_blank">
-                            <img src="/images/vip2.png"/>
-                            喵星菇凉《好中文的样子》
-                        </a>
-                    </li>
-                </ul>
-                <p class="title">
+            <div class="aside col-sm-4">
+                <div class="title">
                     个人介绍
-                </p>
+                </div>
+                <a class="function_btn" href="javascript:;">
+                    <i class="iconfont icon-xie">
+                    </i>
+                    编辑
+                </a>
                 <div class="description">
-                    <p>
+                    <div class="intro">
                         十分精力：四分读书，三分写书，三分教书。《正版语文》作者，21世纪最牛写作书 《风格感觉》（The Sense of Style）中文译者之一，“好中文的样子”创办人和主讲人。
-                    </p>
-                    <a href="javascript:;">
-                        <img src="/images/weibo.svg"/>
-                    </a>
-                    <a href="javascript:;">
-                        <img src="/images/weixin.svg"/>
-                    </a>
+                    </div>
                 </div>
                 <ul class="user_dynamic">
                     <li>
