@@ -46,12 +46,12 @@
         .description {
             @include user_aside_list;
             @include spacing (0 0 17px 0, 0 0 16px 0);
-            border-bottom: 1px solid $border-color-hr;
+            border-bottom: 1px solid $color-white-silver;
             clear: both;
         }
         .user_dynamic {
             @include spacing (0 0 16px 0, 0 0 10px 0);
-            border-bottom: 1px solid $border-color-hr;
+            border-bottom: 1px solid $color-white-silver;
             li {
                 @include user_aside_list;
             }
@@ -59,13 +59,13 @@
         div {
             .list {
                 @include spacing (0 0 17px 0, 0 0 16px 0);
-                border-bottom: 1px solid $border-color-hr;
+                border-bottom: 1px solid $color-white-silver;
                 clear: both;
                 li {
                     @include user_aside_list;
                     a {
                         img {
-                            @include chartholder (32px, 32px);
+                            @include proportion (32px, 32px);
                         }
                         i {
                             color: $color-gray;

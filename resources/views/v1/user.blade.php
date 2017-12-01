@@ -394,7 +394,7 @@
                     </p>
                     <ul class="list">
                         <li>
-                            <a href="/v1/category" target="_blank">
+                            <a href="/v1/collection" target="_blank">
                                 <i class="iconfont icon-wenji">
                                 </i>
                                 <span>
@@ -403,7 +403,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/v1/category" target="_blank">
+                            <a href="/v1/collection" target="_blank">
                                 <i class="iconfont icon-wenji">
                                 </i>
                                 <span>
@@ -412,7 +412,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/v1/category" target="_blank">
+                            <a href="/v1/collection" target="_blank">
                                 <i class="iconfont icon-wenji">
                                 </i>
                                 <span>

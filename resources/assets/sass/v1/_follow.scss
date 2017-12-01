@@ -34,13 +34,14 @@
             }
             .js_subscription_list {
                 margin-top: 7px;
-                border-top: 1px solid $border-color-hr;
+                border-top: 1px solid $color-white-silver;
                 clear: both;
                 li {
                     line-height: 20px;
                     a {
                         padding: 10px 10px;
-                        display: block;
+                        display: inline-block;
+                        width: 100%;
                         border-radius: 0 0 0 4px!important;
                         .avatar {
                             @include avatar;
@@ -59,9 +60,6 @@
                             overflow: hidden;
                             text-overflow: ellipsis;
                             line-height: 25px;
-                            @media screen and (max-width: 450px) {
-                                display: block;
-                            }
                         }
                         .count {
                             float: right;
@@ -73,9 +71,11 @@
                             background-color: #f0f0f0;
                             border-radius: 4px 0 0 4px!important;
                         }
-                        @media screen and (max-width: 768px) {
+                        @media screen and (max-width: 450px) {
                             padding: 10px 5px;
-                            display: inline-block;
+                            .name {
+                                display: block;
+                            }
                         }
                     }
                     &:first-child a {
@@ -131,7 +131,7 @@
                         li {
                             padding: 0 0 20px;
                             margin: 0 0 20px;
-                            border-bottom: 1px solid $border-color-hr;
+                            border-bottom: 1px solid $color-white-silver;
                             line-height: 20px;
                             div {
                                 .follow {

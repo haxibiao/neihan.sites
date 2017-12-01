@@ -103,8 +103,8 @@
                         <div class="form-group">
                             <div class="search_wrp">
                                 <input class="form-control" placeholder="搜索" type="text"/>
-                                <span class="iconfont icon-sousuo">
-                                </span>
+                                <i class="iconfont icon-sousuo">
+                                </i>
                                 <div class="hot_search_wrp hidden-xs">
                                     <div class="hot_search">
                                         <div class="litter_title">
@@ -148,13 +148,9 @@
                                 Aa
                             </a>
                         </li>
-                        <li class="tab dropdown-submenu-one">
-                            <a class="author" href="/v1/home">
-                                <div class="avatar">
-                                    <img src="/images/photo_01.jpg"/>
-                                </div>
-                                <span class="caret">
-                                </span>
+                        <li class="tab dropdown-submenu-one author">
+                            <a href="/v1/home" class="avatar">
+                                <img src="/images/photo_01.jpg"/>
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
@@ -208,8 +204,8 @@
                                 </li>
                             </ul>
                         </li>
-                        <li>
-                            <a class="follow" href="#">
+                        <li class="creation">
+                            <a href="#">
                                 <i class="iconfont icon-maobi">
                                 </i>
                                 <span>

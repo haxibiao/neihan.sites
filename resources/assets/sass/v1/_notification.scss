@@ -22,13 +22,14 @@
                     line-height: 20px;
                     a {
                         padding: 10px 25px;
-                        display: block;
+                        display: inline-block;
                         line-height: 30px;
+                        width: 100%;
                         i {
                             font-size: 24px;
                             margin-right: 15px;
                             vertical-align: middle;
-                            color: $color-watermelon;
+                            color: $color-red-watermelon;
                         }
                         .icon-pinglun1 {
                             font-size: 30px;
@@ -42,6 +43,12 @@
                         span {
                             font-size: 15px;
                             vertical-align: middle;
+                        }
+                        .badge {
+                            @include spacing (6px 0 0 0, 3px 6px);
+                            float: right;
+                            background-color: $color-red-watermelon;
+                            font-size: 12px;
                         }
                         &:hover {
                             background-color: #f0f0f0;
@@ -82,7 +89,7 @@
                     padding: 0;
                     li {
                         padding: 20px;
-                        border-top: 1px solid $border-color-hr;
+                        border-top: 1px solid $color-white-silver;
                         font-size: 15px;
                         .comment_head {
                             line-height: 20px;
@@ -156,7 +163,7 @@
                     padding: 0;
                     li {
                         padding: 20px;
-                        border-top: 1px solid $border-color-hr;
+                        border-top: 1px solid $color-white-silver;
                         font-size: 15px;
                         .time {
                             font-size: 13px;
@@ -186,19 +193,27 @@
                                 color: #333;
                             }
                         }
-                        a {
-                            .chats_item {
-                                font-size: 14px;
-                                .avatar {
-                                    @include avatar;
-                                    float: left;
-                                    width: 50px;
-                                    height: 50px;
-                                    vertical-align: middle;
+                        .chats_item {
+                            font-size: 14px;
+                            .avatar {
+                                @include avatar;
+                                position: relative;
+                                float: left;
+                                width: 50px;
+                                height: 50px;
+                                vertical-align: middle;
+                                .badge {
+                                    position: absolute;
+                                    background-color: $color-red-watermelon;
+                                    padding: 3px 6px;
+                                    top: 2px;
+                                    right: -5px;
                                 }
-                                .title {
-                                    padding: 4px 0 0 60px;
-                                }
+                            }
+                            .title {
+                                padding: 4px 0 0 60px;
+                            }
+                            a {
                                 .info {
                                     padding: 4px 0 4px 60px;
                                     font-size: 12px;
@@ -226,8 +241,8 @@
                     padding-bottom: 10px;
                     text-align: center;
                     background-color: #fff;
-                    border-bottom: 1px solid $border-color-hr;
-                    &:before {
+                    border-bottom: 1px solid $color-white-silver;
+                    &::before {
                         content: "";
                         position: absolute;
                         top: -81px;
@@ -387,7 +402,7 @@
                             padding: 6px 12px;
                             background-color: hsla(0, 0%, 71%, .1);
                             background-image: none;
-                            border: 1px solid $border-color;
+                            border: 1px solid $color-gray-light;
                             border-radius: 4px;
                             box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
                             transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
@@ -415,25 +430,29 @@
                     }
                 }
                 @media screen and (max-width: 1200px) {
-                    .chat_top,.message_show,
+                    .chat_top,
+                    .message_show,
                     .write_message {
                         width: 639px;
                     }
                 }
                 @media screen and (max-width: 992px) {
-                    .chat_top,.message_show,
+                    .chat_top,
+                    .message_show,
                     .write_message {
                         width: 518px;
                     }
                 }
                 @media screen and (max-width:768px) and (min-width:450px) {
-                    .chat_top,.message_show,
+                    .chat_top,
+                    .message_show,
                     .write_message {
                         width: 269px;
                     }
                 }
                 @media screen and (max-width: 450px) {
-                    .chat_top,.message_show,
+                    .chat_top,
+                    .message_show,
                     .write_message {
                         width: 199px;
                     }
@@ -451,21 +470,21 @@
                     margin: 0;
                     li {
                         padding: 20px;
-                        border-top: 1px solid $border-color-hr;
+                        border-top: 1px solid $color-white-silver;
                         .all_request {
                             display: block;
                             .avatar {
                                 @include avatar;
                                 width: 50px;
                                 height: 50px;
-                                border: 1px solid $border-color;
+                                border: 1px solid $color-gray-light;
                                 border-radius: 10%;
                                 line-height: 48px;
                                 text-align: center;
                                 vertical-align: middle;
                                 i {
                                     font-size: 30px;
-                                    color: $color-watermelon;
+                                    color: $color-red-watermelon;
                                 }
                             }
                             .name {
@@ -508,7 +527,7 @@
                     margin: 0;
                     li {
                         padding: 20px;
-                        border-top: 1px solid $border-color-hr;
+                        border-top: 1px solid $color-white-silver;
                         .like_item {
                             line-height: 20px;
                             font-size: 15px;
@@ -552,7 +571,7 @@
                     margin: 0;
                     li {
                         padding: 20px;
-                        border-top: 1px solid $border-color-hr;
+                        border-top: 1px solid $color-white-silver;
                         .follow_item {
                             font-size: 15px;
                             line-height: 20px;
@@ -607,7 +626,7 @@
                     margin: 0;
                     li {
                         padding: 20px;
-                        border-top: 1px solid $border-color-hr;
+                        border-top: 1px solid $color-white-silver;
                         .tip_item {
                             font-size: 15px;
                             line-height: 20px;
@@ -636,7 +655,7 @@
                                 @include button;
                                 width: 70px;
                                 float: right;
-                                border: 1px solid $border-color-follow;
+                                border: 1px solid $color-green;
                                 color: #42c02e;
                                 background-color: inherit;
                                 margin: 0;

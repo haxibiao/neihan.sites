@@ -2,7 +2,7 @@
 #sign_in,
 #sign_up {
     font-size: 14px;
-    background-color: $background-color-milky;
+    background-color: $color-white-milk;
     text-align: center;
     height: 100vh;
     .logo {
@@ -12,7 +12,7 @@
         a {
             font-size: 45px;
             .love {
-                color: $color-watermelon;
+                color: $color-red-watermelon;
             }
             .you {
                 color: $color-blue;
@@ -28,7 +28,7 @@
         width: 45%;
         min-width: 320px;
         max-width: 400px;
-        background-color: $background-color-white;
+        background-color: $color-white;
         border-radius: 4px;
         box-shadow: 0 0 8px rgba(0, 0, 0, .1);
         vertical-align: middle;
@@ -41,8 +41,8 @@
                     padding: 10px;
                 }
                 .active {
-                    @include font (inherit, $color-watermelon, 700);
-                    border-bottom: 2px solid $color-watermelon;
+                    @include font (inherit, $color-red-watermelon, 700);
+                    border-bottom: 2px solid $color-red-watermelon;
                 }
             }
         }
@@ -54,10 +54,11 @@
                     width: 100%;
                     margin-bottom: 20px;
                     input {
-                        @include chartholder (100%, 50px);
+                        @include proportion (100%, 50px);
                         @include spacing (0, 4px 12px 4px 35px);
                         @include border (0 0 4px 4px, 1px solid #c8c8c8);
                         background-color: hsla(0, 0%, 71%, .1);
+                        vertical-align: middle;
                     }
                     i {
                         @include font (18px, $color-gray);
@@ -218,8 +219,8 @@
                     position: relative;
                     margin: 0 0 20px;
                     color: $color-gray;
-                    &:before,
-                    &:after {
+                    &::before,
+                    &::after {
                         content: "";
                         border-top: 1px solid #b5b5b5;
                         display: block;
@@ -227,10 +228,10 @@
                         width: 60px;
                         top: 5px;
                     }
-                    &:before {
+                    &::before {
                         left: 30px;
                     }
-                    &:after {
+                    &::after {
                         right: 30px;
                     }
                 }
@@ -240,7 +241,7 @@
                         margin: 0 3px;
                         display: inline-block;
                         a {
-                            @include chartholder (50px, 50px);
+                            @include proportion (50px, 50px);
                             display: block;
                             border-radius: 50%;
                             line-height: 50px;
@@ -267,14 +268,14 @@
             }
         }
     }
-    &:before {
+    &::before {
         content: "";
         display: inline-block;
         height: 85%;
         vertical-align: middle;
     }
     @media screen and (max-width: 768px) {
-        &:before {
+        &::before {
             display: none;
         }
         .logo {

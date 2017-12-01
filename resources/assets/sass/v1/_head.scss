@@ -5,7 +5,7 @@
     position: fixed;
     top: 0;
     z-index: 1030;
-    border-bottom: 1px solid $border-color-hr;
+    border-bottom: 1px solid $color-white-silver;
     text-align: center;
     .navbar {
         border: none;
@@ -28,49 +28,56 @@
                         .style_mode_btn {
                             color: $color-gray;
                         }
-                        .author {
-                            @include spacing (5px 10px);
-                            .avatar {
-                                @include avatar;
-                                margin: 0;
-                            }
-                            .caret {
-                                color: $color-gray;
+                        .dropdown-menu {
+                            right: auto;
+                            a {
+                                i {
+                                    @include font (22px,$color-red-watermelon);
+                                    margin-right: 15px;
+                                    vertical-align: middle;
+                                }
                             }
                         }
-                        .follow {
-                            @include button (100px, 0, $color-watermelon, none);
-                            @include spacing (8px 0 0 14px, 7px 0);
+                    }
+                    .author {
+                        .avatar {
+                            @include avatar;
+                            @include spacing (5px 25px 5px 20px);
+                            &::before {
+                                content: "";
+                                position: absolute;
+                                top:18px;
+                                right: -14px;
+                                border-left: 5px solid transparent;
+                                border-right: 5px solid transparent;
+                                border-top: 6px solid $color-gray;
+                            }
+                        }
+                    }
+                    .creation {
+                        a {
+                            @include button;
+                            @include spacing (8px 0 5px 14px, 7px);
+                            background-color: $color-red-watermelon;
                             display: inline-block;
                             &:hover {
-                                background-color: #f04665;
+                                background-color: $color-red-watermelon-deep;
                             }
                             i {
                                 font-size: 18px;
                                 vertical-align: middle;
                             }
                         }
-                        .follows {
-                            @include news_button;
-                            @include spacing (8px 0 0, 6px 0);
-                            border-color: $color-watermelon;
-                            color: $color-watermelon;
-                            float: none;
+                    }
+                    .register {
+                        a {
+                            @include button (70px,1px solid $color-red-watermelon,inherit,none);
+                            @include spacing (8px 0 5px, 6px);
+                            color: $color-red-watermelon;
                             display: inline-block;
-                            width: 70px;
                             &:hover {
-                                border-color: #f04665;
-                            }
-                        }
-                        .dropdown-menu {
-                            right: auto;
-                            a {
-                                i {
-                                    font-size: 22px;
-                                    margin-right: 15px;
-                                    vertical-align: middle;
-                                    color: $color-watermelon;
-                                }
+                                border-color: $color-red-watermelon-deep;
+                                background-color: $color-white-milk;
                             }
                         }
                     }
@@ -85,7 +92,7 @@
                             }
                         }
                         &:hover {
-                            background-color: $background-color-milky;
+                            background-color: $color-white-milk;
                         }
                     }
                     .dropdown-submenu-one:hover>.dropdown-menu {
@@ -93,56 +100,43 @@
                     }
                     .active {
                         a {
-                            color: $color-watermelon;
+                            color: $color-red-watermelon;
                             background-color: initial;
                         }
                     }
                 }
                 .navbar-form {
-                    padding: 0 0 0 14px;
                     border-color: transparent;
                     .form-group {
                         .search_wrp {
-                            display: inline-block;
+                            // display: inline-block;
                             position: relative;
-                            margin: 0 auto;
+                            // margin: 0 auto;
                             .form-control {
-                                width: 200px;
-                                height: 36px;
+                                @include proportion (200px,36px);
+                                @include border (18px);
                                 padding: 0 40px 0 20px;
-                                border-radius: 18px;
                                 background-color: #eee;
-                                border: none;
                                 outline: none;
                                 transition: all 0.3s ease-in-out;
                                 &:focus {
                                     outline: 0 !important;
                                     box-shadow: none;
-                                    width: 240px;
-                                    &+span {
-                                        color: #f0f0f0;
-                                        background-color: #aaa;
-                                    }
-                                }
-                                @media screen and (max-width:1000px) and (min-width:768px) {
-                                    width: 150px;
-                                    &:focus {
-                                        outline: 0 !important;
-                                        box-shadow: none;
-                                        width: 160px;
+                                    width: 230px;
+                                    &+.icon-sousuo {
+                                        color: $color-white-silver;
+                                        background-color: $color-gray-deep;
                                     }
                                 }
                             }
-                            span {
+                            .icon-sousuo {
+                                @include proportion (28px,28px);
+                                @include font (20px,$color-gray-deep);
                                 position: absolute;
                                 top: 4px;
                                 right: 4px;
-                                width: 28px;
-                                height: 28px;
-                                font-size: 20px;
                                 text-align: center;
                                 line-height: 28px;
-                                color: #666;
                                 border-radius: 50%;
                             } //热门搜索
                             .hot_search_wrp {
@@ -153,7 +147,7 @@
                                 visibility: hidden;
                                 opacity: 0;
                                 border-radius: 4px;
-                                z-index: 999;
+                                z-index: 1030;
                                 &,
                                 &::before {
                                     position: absolute;
@@ -161,10 +155,9 @@
                                     box-shadow: 0 0 8px rgba(0, 0, 0, .2);
                                 }
                                 &::before {
+                                    @include proportion (10px,10px);
                                     content: "";
                                     left: 27px;
-                                    width: 10px;
-                                    height: 10px;
                                     transform: rotate(45deg);
                                     top: -5px;
                                     z-index: -1;
@@ -207,14 +200,11 @@
                                                 border-radius: 3px;
                                                 &:hover {
                                                     color: $color-black;
-                                                    border-color: $border-color-trigger_menu;
+                                                    border-color: $color-gray-deep;
                                                 }
                                             }
                                         }
                                     }
-                                }
-                                @media screen and (max-width:1000px) and (min-width:768px) {
-                                    width: 150px;
                                 }
                             }
                         }
@@ -224,3 +214,4 @@
         }
     }
 }
+// 236

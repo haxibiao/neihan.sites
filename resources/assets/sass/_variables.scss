@@ -37,46 +37,32 @@ $input-color-placeholder: lighten($text-color, 30%);
 // Panels
 $panel-default-heading-bg: #fff;
 
-// 边框颜色：淡灰色
-$border-color: #dcdcdc;
-// 分割线颜色：银白色
-$border-color-hr: #f0f0f0;
-// 分类边框颜色：西瓜红
-$border-color-watermelon: #fd5b78;
-// 关注边框颜色：绿色
-$border-color-follow: #42c02e;
-// 标签页边框颜色:深灰色
-$border-color-trigger_menu: #646464;
-
-// 通用字体颜色：黑色
+// 黑色
 $color-black: #333;
-// 按钮框字体颜色：白色
+// 白色
 $color-white: #fff;
-// 按钮框字体颜色：绿色
-$color-green: #42c02e;
-// 专题标签字体颜色：西瓜红
-$color-watermelon: #fd5b78;
-// 统计数据字体颜色：浅灰色
-$color-light: #b4b4b4;
-// 标签页字体颜色：灰色
+// 奶白色
+$color-white-milk: #f7f7f7;
+// 雅士白色
+$color-white-aston:rgba(181, 181, 181, 0.1);
+// 银白色
+$color-white-silver: #f0f0f0;
+// 淡灰色
+$color-gray-light: #dcdcdc;
+// 浅灰色
+$color-gray-shallow: #b4b4b4;
+// 灰色
 $color-gray: #969696;
-// 标签页active字体颜色：深灰色
-$color-deep: #646464;
-// 突出名字字体颜色：蓝色
+// 深灰色
+$color-gray-deep: #646464;
+// 西瓜红
+$color-red-watermelon: #fd5b78;
+// 深西瓜红
+$color-red-watermelon-deep: #f04665;
+// 绿色
+$color-green: #42c02e;
+// 蓝色
 $color-blue: #2B89CA;
-
-// 特色背景颜色：西瓜红
-$background-color-watermelon: #fd5b78;
-// 网站背景颜色：白色
-$background-color-white:#fff;
-// 按钮背景颜色：奶白色
-$background-color-milky:#f7f7f7;
-// 按钮背景颜色：绿色
-$background-color-green:#42c02e;
-// 关注、消息左边active背景颜色：银白色
-$background-color-silvery:#f0f0f0;
-// 专题、用户详情背景颜色：雅士白色
-$background-color-aston:rgba(181, 181, 181, 0.1);
 
 // 字体1`
 $font-size-one: 12px;

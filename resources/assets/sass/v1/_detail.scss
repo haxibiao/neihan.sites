@@ -130,7 +130,7 @@
                 padding: 8px 25px;
                 font-size: 16px;
                 color: #fff;
-                background-color: $background-color-watermelon;
+                background-color: $color-red-watermelon;
                 border-radius: 20px;
                 &:hover {
                     background-color: #f04665;
@@ -144,13 +144,13 @@
                 .like_group {
                     padding: 13px 0 15px;
                     font-size: 0;
-                    border: 1px solid $border-color-watermelon;
+                    border: 1px solid $color-red-watermelon;
                     border-radius: 40px;
                     .btn_like {
                         font-size: 19px;
                         display: inline-block;
                         a {
-                            color: $color-watermelon;
+                            color: $color-red-watermelon;
                             padding: 18px 15px 18px 30px;
                             i {
                                 margin-right: 5px;
@@ -163,7 +163,7 @@
                         border-left: 1px solid rgba(236, 97, 73, .4);
                         display: inline-block;
                         a {
-                            color: $color-watermelon;
+                            color: $color-red-watermelon;
                             padding: 18px 30px 18px 17px;
                         }
                     }
@@ -325,7 +325,7 @@
                                             }
                                             &:hover {
                                                 .icon-fabulous {
-                                                    color: $color-watermelon;
+                                                    color: $color-red-watermelon;
                                                 }
                                                 .icon-xinxi {
                                                     color: #333;
@@ -513,7 +513,7 @@
                 .title {
                     font-size: 15px;
                     padding-left: 8px;
-                    border-left: 3px solid $border-color-watermelon;
+                    border-left: 3px solid $color-red-watermelon;
                     line-height: 1;
                 }
                 .include_collection {
@@ -539,7 +539,7 @@
                     .title {
                         font-size: 15px;
                         padding-left: 8px;
-                        border-left: 3px solid $border-color-watermelon;
+                        border-left: 3px solid $color-red-watermelon;
                         line-height: 1;
                         a {
                             // @include a;

@@ -27,8 +27,8 @@
             }
             .middle {
                 padding: 10px 7%;
-                border-left: 1px solid $border-color;
-                border-right: 1px solid $border-color;
+                border-left: 1px solid $color-gray-light;
+                border-right: 1px solid $color-gray-light;
                 .account_money {
                     @include font (16px, $color-gray);
                     margin-right: 20px;
@@ -51,7 +51,7 @@
                         }
                     }
                     .withdrawals {
-                        @include button (80px, 1px solid $border-color-follow, inherit);
+                        @include button (80px, 1px solid $color-green, inherit);
                         color: $color-green;
                         @include spacing (0 8% 2px 0, 6px 0);
                         display: inline-block;
@@ -79,10 +79,10 @@
             }
         }
         .body {
-            @include border (6px 6px 0 0, 1px solid $border-color);
+            @include border (6px 6px 0 0, 1px solid $color-gray-light);
             margin-bottom: 20px;
             li {
-                border-bottom: 1px solid $border-color;
+                border-bottom: 1px solid $color-gray-light;
                 &:last-child {
                     border-bottom: none;
                 }
@@ -113,7 +113,7 @@
                 padding: 25px 20px;
                 font-size: 14px;
                 div {
-                    border-right: 1px dashed $border-color;
+                    border-right: 1px dashed $color-gray-light;
                     &:last-child {
                         border-right: none;
                     }
@@ -128,7 +128,7 @@
                     }
                 }
                 .reduce {
-                    color: $color-watermelon;
+                    color: $color-red-watermelon;
                 }
                 .plus {
                     color: $color-green;
@@ -137,15 +137,15 @@
                     color: $color-gray;
                 }
                 &:nth-of-type(even) {
-                    background-color: $background-color-aston;
+                    background-color: $color-white-aston;
                 }
             }
         }
         @media screen and (max-width: 768px) {
             .top {
                 .middle {
-                    border-bottom: 1px solid $border-color;
-                    border-top: 1px solid $border-color;
+                    border-bottom: 1px solid $color-gray-light;
+                    border-top: 1px solid $color-gray-light;
                     border-left: none;
                     border-right: none;
                 }

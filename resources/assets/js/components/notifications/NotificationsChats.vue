@@ -29,19 +29,20 @@
 						</li>
 					</ul>
 				</div>
-				<router-link to="/chat_messages">
-					<div class="chats_item">
-						<a href="javascript:;" class="avatar">
-							<img src="/images/photo_01.jpg" />
-						</a>
-						<div class="title">
-							<a href="#" class="nickname">喵星菇凉</a>
-						</div>
+				<div class="chats_item">
+					<a href="javascript:;" class="avatar">
+						<img src="/images/photo_01.jpg" />
+						<span class="badge">5</span>
+					</a>
+					<div class="title">
+						<a href="#" class="nickname">喵星菇凉</a>
+					</div>
+					<router-link to="/chat_messages">
 						<div class="info">
 							<p>呵呵哒</p>
 						</div>
-					</div>
-				</router-link>
+					</router-link>
+				</div>
 			</li>
 			<li>
 				<div class="dropdown time">
@@ -70,19 +71,19 @@
 						</li>
 					</ul>
 				</div>
-				<router-link to="/chat_messages">
-					<div class="chats_item">
-						<a href="javascript:;" class="avatar">
-							<img src="/images/photo_02.jpg" />
-						</a>
-						<div class="title">
-							<a href="#" class="nickname">中南工大留级生</a>
-						</div>
+				<div class="chats_item">
+					<a href="javascript:;" class="avatar">
+						<img src="/images/photo_02.jpg" />
+					</a>
+					<div class="title">
+						<a href="#" class="nickname">中南工大留级生</a>
+					</div>
+					<router-link to="/chat_messages">
 						<div class="info">
 							<p>我还想继续赞赏你。</p>
 						</div>
-					</div>
-				</router-link>
+					</router-link>
+				</div>
 			</li>
 			<li>
 				<div class="dropdown time">
@@ -111,19 +112,19 @@
 						</li>
 					</ul>
 				</div>
-				<router-link to="/chat_messages">
-					<div class="chats_item">
-						<a href="javascript:;" class="avatar">
-							<img src="/images/photo_03.jpg" />
-						</a>
-						<div class="title">
-							<a href="#" class="nickname">小食神</a>
-						</div>
+				<div class="chats_item">
+					<a href="javascript:;" class="avatar">
+						<img src="/images/photo_03.jpg" />
+					</a>
+					<div class="title">
+						<a href="#" class="nickname">小食神</a>
+					</div>
+					<router-link to="/chat_messages">
 						<div class="info">
 							<p>欢迎加入丰富多彩的原创内容社区——懂美味。有任何疑问（如何投稿，专题主编，签约作者）可以随时联系我哟。</p>
 						</div>
-					</div>
-				</router-link>
+					</router-link>
+				</div>
 			</li>
 		</ul>
 	</div>

@@ -11,6 +11,7 @@
                 <router-link to="/chats">
                 	<i class="iconfont icon-email"></i>
                 	<span>私信</span>
+                    <span class="badge">5</span>
                 </router-link>
             </li>
             <li>

@@ -10,6 +10,11 @@ Route::get('/v1/category', function () {
 	return view('v1.category');
 });
 
+//v.1.0 文集页
+Route::get('/v1/collection', function () {
+	return view('v1.collection');
+});
+
 //v.1.0 更多专题列表页
 Route::get('/v1/categories', function () {
 	return view('v1.categories');
