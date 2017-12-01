@@ -31,7 +31,7 @@
 				</div>
 				<router-link to="/chat_messages">
 					<div class="chats_item">
-						<a href="" class="avatar">
+						<a href="javascript:;" class="avatar">
 							<img src="/images/photo_01.jpg" />
 						</a>
 						<div class="title">
@@ -72,7 +72,7 @@
 				</div>
 				<router-link to="/chat_messages">
 					<div class="chats_item">
-						<a href="" class="avatar">
+						<a href="javascript:;" class="avatar">
 							<img src="/images/photo_02.jpg" />
 						</a>
 						<div class="title">
@@ -113,7 +113,7 @@
 				</div>
 				<router-link to="/chat_messages">
 					<div class="chats_item">
-						<a href="" class="avatar">
+						<a href="javascript:;" class="avatar">
 							<img src="/images/photo_03.jpg" />
 						</a>
 						<div class="title">

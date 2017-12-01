@@ -34,6 +34,15 @@
                         <img src="/images/photo_02.jpg" />
                     </a>
                     <div>
+                        <span class="content">你现在在吗？</span>
+                    </div>
+                    <span class="time">09:58</span>
+                </li>
+                <li class="message_l">
+                    <a href="javascript:;" class="avatar">
+                        <img src="/images/photo_02.jpg" />
+                    </a>
+                    <div>
                         <span class="content">一分钱太少了,我给你100吧</span>
                     </div>
                     <span class="time">09:58</span>

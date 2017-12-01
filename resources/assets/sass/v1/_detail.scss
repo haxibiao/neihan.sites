@@ -38,7 +38,7 @@
                     }
                 }
             }
-            .show_content {
+            .article_content {
                 color: #2f2f2f;
                 font-size: 16px;
                 line-height: 1.7;
@@ -47,7 +47,7 @@
                     margin: 0 0 25px;
                     text-indent: 2em;
                 }
-                .image_package {
+                div {
                     padding-bottom: 25px;
                     img {
                         width: 100%;
@@ -55,11 +55,10 @@
                     }
                 }
             }
-            .show_foot {
+            .article_foot {
                 margin: 30px 0 40px;
                 color: #9b9b9b;
                 .notebook {
-                    // @include a;
                     color: #9b9b9b;
                     display: inline-block;
                     i {
@@ -75,7 +74,6 @@
                 .modal_wrap {
                     margin-right: 20px;
                     a {
-                        // @include a;
                         color: #9b9b9b;
                     }
                 }

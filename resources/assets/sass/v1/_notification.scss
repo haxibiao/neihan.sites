@@ -5,11 +5,14 @@
             padding: 0;
             position: fixed;
             width: 280px;
-            @media screen and (max-width: 768px) and (min-width:450px) {
+            @media screen and (max-width: 992px) {
+                width: 200px;
+            }
+            @media screen and (max-width: 768px) {
                 width: 180px;
             }
             @media screen and (max-width: 450px) {
-                width: 100px;
+                width: 90px;
             }
             ul {
                 list-style: none;
@@ -59,11 +62,14 @@
         }
         .main {
             margin-left: 300px;
-            @media screen and (max-width: 768px) and (min-width:450px) {
+            @media screen and (max-width: 992px) {
+                margin-left: 200px;
+            }
+            @media screen and (max-width: 768px) {
                 margin-left: 180px;
             }
             @media screen and (max-width: 450px) {
-                margin-left: 100px;
+                margin-left: 90px;
             }
             #comments {
                 .menu {
@@ -181,9 +187,7 @@
                             }
                         }
                         a {
-                            display: block;
                             .chats_item {
-                                line-height: 20px;
                                 font-size: 14px;
                                 .avatar {
                                     @include avatar;
@@ -196,16 +200,12 @@
                                     padding: 4px 0 0 60px;
                                 }
                                 .info {
-                                    padding: 4px 0 0 60px;
+                                    padding: 4px 0 4px 60px;
                                     font-size: 12px;
                                     color: #969696;
                                     p {
-                                        display: -webkit-box;
-                                        -webkit-line-clamp: 1;
-                                        -webkit-box-orient: vertical;
-                                        overflow: hidden;
-                                        margin: 0;
-                                        padding: 0;
+                                        @include spacing;
+                                        @include article_num (2);
                                     }
                                 }
                             }
@@ -415,27 +415,27 @@
                     }
                 }
                 @media screen and (max-width: 1200px) {
-                    .chat_top,
+                    .chat_top,.message_show,
                     .write_message {
                         width: 639px;
                     }
                 }
                 @media screen and (max-width: 992px) {
-                    .chat_top,
+                    .chat_top,.message_show,
                     .write_message {
-                        width: 418px;
+                        width: 518px;
                     }
                 }
                 @media screen and (max-width:768px) and (min-width:450px) {
-                    .chat_top,
+                    .chat_top,.message_show,
                     .write_message {
                         width: 269px;
                     }
                 }
                 @media screen and (max-width: 450px) {
-                    .chat_top,
+                    .chat_top,.message_show,
                     .write_message {
-                        width: 189px;
+                        width: 199px;
                     }
                 }
             }
