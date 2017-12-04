@@ -1,11 +1,22 @@
 //尾部
 #tail {
-    margin: 3% 0px 2% 0px;
-    color: $color-gray;
-    a {
+    margin: 3% 0;
+    div {
         color: $color-gray;
-        &:hover {
-            color: $color-black;
+        a {
+            color: $color-gray;
+            &:hover {
+                color: $color-black;
+            }
+        }
+    }
+    .icp {
+        color: $color-gray-shallow;
+        a {
+            color: $color-gray-shallow;
+            img {
+                height: 30px;
+            }
         }
     }
 }

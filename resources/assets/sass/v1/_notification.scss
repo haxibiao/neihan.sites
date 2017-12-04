@@ -54,9 +54,12 @@
                             background-color: #f0f0f0;
                         }
                         @media screen and (max-width: 450px) {
-                            padding: 10px 5px;
+                            padding: 10px 15px;
                             i {
                                 margin-right: 3px;
+                            }
+                            .name {
+                                display: none;
                             }
                         }
                     }
@@ -582,19 +585,17 @@
                             .follow {
                                 @include button;
                                 float: right;
-                                margin: 0 0 0 10px;
+                                margin: 0 0 0 5px;
                                 border: 1px solid hsla(0, 0%, 59%, .6);
                                 color: #8c8c8c;
                                 background-color: inherit;
+                                width: 90px;
                                 &:hover {
                                     border: 1px solid hsla(0, 0%, 50%, .6);
                                     background-color: hsla(0, 0%, 60%, .1);
                                 }
-                                @media screen and (max-width: 768px) {
-                                    width: 90px;
-                                }
                                 @media screen and (max-width: 450px) {
-                                    width: 80px;
+                                    width: 75px;
                                     padding: 8px 0;
                                 }
                             }

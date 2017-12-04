@@ -72,7 +72,7 @@
                             border-radius: 4px 0 0 4px!important;
                         }
                         @media screen and (max-width: 450px) {
-                            padding: 10px 5px;
+                            padding: 10px 15px;
                             .name {
                                 display: block;
                             }
@@ -103,6 +103,25 @@
                 .article {
                     .article_item {
                         @include article_item;
+                        .author {
+                            .avatar {
+                                float: left;
+                            }
+                            .info {
+                                padding-top: 10px;
+                            }
+                        }
+                        .substance {
+                            clear: both;
+                        }
+                        @media screen and (max-width: 450px) {
+                            .author {
+                                .avatar {
+                                    width: 30px;
+                                    height: 30px;
+                                }
+                            }
+                        }
                     }
                 }
                 .load_more {
@@ -123,6 +142,16 @@
                             }
                         }
                     }
+                    @media screen and (max-width: 450px) {
+                        li {
+                            a {
+                                padding: 13px 23px 4px 23px;
+                                span {
+                                    display: none;
+                                }
+                            }
+                        }
+                    }
                 }
                 .tab-content {
                     .tab-pane {
@@ -137,7 +166,10 @@
                                 .follow {
                                     @include button;
                                     float: right;
-                                    margin: 8px 0 0 0;
+                                    margin: 8px 0 0 5px;
+                                    @media screen and (max-width: 450px) {
+                                        width: 75px;
+                                    }
                                 }
                                 .avatar {
                                     @include avatar;
@@ -207,6 +239,16 @@
                 div {
                     .trigger_menu {
                         @include trigger_menu;
+                        @media screen and (max-width: 490px) {
+                            li {
+                                a {
+                                    padding: 13px 23px 4px 23px;
+                                    span {
+                                        display: none;
+                                    }
+                                }
+                            }
+                        }
                     }
                     .tab-content {
                         .article {
@@ -226,15 +268,25 @@
                     .botm {
                         width: 100px;
                     }
-                    @media screen and (max-width: 450px) {
+                    @media screen and (max-width: 768px) {
                         .contribute {
-                            top: 170px;
+                            top: 160px;
                         }
                     }
                 }
                 div {
                     .trigger_menu {
                         @include trigger_menu;
+                        @media screen and (max-width: 490px) {
+                            li {
+                                a {
+                                    padding: 13px 23px 4px 23px;
+                                    span {
+                                        display: none;
+                                    }
+                                }
+                            }
+                        }
                     }
                     .tab-content {
                         .article {
@@ -265,6 +317,16 @@
                 div {
                     .trigger_menu {
                         @include trigger_menu;
+                         @media screen and (max-width: 490px) {
+                            li {
+                                a {
+                                    padding: 13px 23px 4px 23px;
+                                    span {
+                                        display: none;
+                                    }
+                                }
+                            }
+                        }
                     }
                     .tab-content {
                         .article {

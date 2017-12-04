@@ -153,7 +153,6 @@
             padding: 0 0 16px;
             text-align: left;
             a {
-                // @include a;
                 color: #969696;
                 &:hover {
                     color: #333;
@@ -169,7 +168,6 @@
                 font-size: 14px;
             }
             a {
-                // @include a;
                 display: inline-block;
                 margin-left: 10px;
                 i {
@@ -190,15 +188,12 @@
         .intendant {
             div {
                 ul {
-                    list-style: none;
                     border-bottom: 1px solid #f0f0f0;
                     margin-bottom: 17px;
                     padding: 0 0 8px;
                     li {
                         margin-bottom: 10px;
-                        line-height: 20px;
                         a {
-                            // @include a;
                             display: inline-block;
                             font-size: 14px;
                             img {
@@ -247,7 +242,6 @@
                         margin-left: -3px;
                     }
                     .function_btn {
-                        // @include a;
                         position: absolute;
                         margin-left: 3px;
                         width: 32px;

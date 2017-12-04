@@ -41,6 +41,12 @@ Vue.component('comment', require('./components/Comment.vue'));
 // 关注页
 Vue.component('follow-left', require('./components/follow/FollowLeft.vue'));
 
+// 消息页
+Vue.component('notifications-left', require('./components/notifications/NotificationsLeft.vue'));
+
+// 详情页评论
+Vue.component('new-comment', require('./components/NewComment.vue'));
+
 const routes = [
     // 关注路由
     { path: '/follow_add', component: require('./components/follow/FollowAdd.vue') },
@@ -58,9 +64,6 @@ const routes = [
     { path: '/others', component: require('./components/notifications/NotificationsOthers.vue') },
     { path: '/chat_messages', component: require('./components/notifications/NotificationsChat_messages.vue') }
 ];
-
-// 消息页
-Vue.component('notifications-left', require('./components/notifications/NotificationsLeft.vue'));
 
 const router = new VueRouter({
     routes

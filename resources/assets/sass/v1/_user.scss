@@ -4,10 +4,16 @@
     .essays {
         .main_top {
             @include main_top;
-            @media screen and (max-width: 768px) {
+            @media screen and (min-width: 380px) and (max-width: 768px) {
+                padding-bottom: 0;
+                .botm {
+                    position: static;
+                }
+            }
+            @media screen and (max-width: 380px) {
                 .botm {
                     position: absolute;
-                    top: 120px;
+                    top: 105px;
                     margin-bottom: 0;
                 }
                 .follow {
@@ -17,21 +23,20 @@
                     left: 40px;
                 }
             }
-            @media screen and (min-width: 450px) and (max-width: 768px) {
-                padding-bottom: 0;
-                .botm {
-                    position: static;
-                }
-            }
         }
         div {
             .trigger_menu {
                 @include trigger_menu;
-                @media screen and (min-width: 450px) and (max-width: 768px) {
+                @media screen and (min-width: 470px) and (max-width: 768px) {
                     li {
                         a {
                             padding: 0 20px;
                         }
+                    }
+                }
+                @media screen and (max-width: 470px) {
+                    li {
+                        padding: 0;
                     }
                 }
             }

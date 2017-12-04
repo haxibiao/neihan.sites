@@ -209,35 +209,78 @@
                 </div>
                 <div class="follow_detail">
                     <div class="info">
-                        <a class="avatar" href="#">
+                        <a class="avatar" href="/v1/user" target="_blank">
                             <img src="/images/photo_02.jpg"/>
                         </a>
-                        <a class="follow" href="#">
+                        <a class="follow" href="javascript:;">
                             <span>
                                 ＋ 关注
                             </span>
                         </a>
-                        <a class="title" href="#">
+                        <a class="title" href="/v1/user" target="_blank">
                             空评
                         </a>
-                        <i class="iconfont icon-nansheng1">
-                        </i>
                         <p>
                             写了 17299 字，被 6 人关注，获得了 16 个喜欢
                         </p>
+                    </div>
+                    <div class="signature">
+                        一个专注分享游戏文化的地方，一个专门原创app体验的地方
                     </div>
                 </div>
                 <div class="support_author">
                     <p>
                         如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！
                     </p>
-                    <div class="btn btn_pay">
+                    <div class="btn_pay">
                         赞赏支持
+                    </div>
+                    <div class="supporter">
+                        <ul class="support_list">
+                            <li>
+                                <a class="avatar" href="/v1/user">
+                                    <img src="/images/photo_02.jpg"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="avatar" href="/v1/user">
+                                    <img src="/images/photo_03.jpg"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="avatar" href="/v1/user">
+                                    <img src="/images/photo_02.jpg"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="avatar" href="/v1/user">
+                                    <img src="/images/photo_03.jpg"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="avatar" href="/v1/user">
+                                    <img src="/images/photo_02.jpg"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="avatar" href="/v1/user">
+                                    <img src="/images/photo_03.jpg"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="avatar" href="/v1/user">
+                                    <img src="/images/photo_02.jpg"/>
+                                </a>
+                            </li>
+                        </ul>
+                        <span>
+                            等10人
+                        </span>
                     </div>
                 </div>
                 <div class="meta_bottom">
                     <div class="like">
-                        <div class="btn like_group">
+                        <div class="like_group">
                             <div class="btn_like">
                                 <a href="#">
                                     <i class="iconfont icon-xin">
@@ -272,15 +315,8 @@
                 </div>
                 <div>
                     <div class="comment_list">
-                        <div>
-                            <form class="new_comment">
-                                <a class="avatar" href="#">
-                                    <img src="/images/photo_01.jpg"/>
-                                </a>
-                                <textarea placeholder="写下你的评论...">
-                                </textarea>
-                            </form>
-                        </div>
+                        <new-comment>
+                        </new-comment>
                         <div class="normal_comment_list">
                             <div>
                                 <div>
@@ -312,141 +348,6 @@
                                             </a>
                                             <div class="info">
                                                 <a class="name" href="#">
-                                                    小鑫手游329194094
-                                                </a>
-                                                <div class="meta">
-                                                    <span>
-                                                        2楼 · 2017.06.26 14:46
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="comment_wrap">
-                                            <p>
-                                                厉害了
-                                            </p>
-                                            <div class="tool_group">
-                                                <a href="#">
-                                                    <i class="iconfont icon-fabulous">
-                                                    </i>
-                                                    <span>
-                                                        赞
-                                                    </span>
-                                                </a>
-                                                <a href="#">
-                                                    <i class="iconfont icon-xinxi">
-                                                    </i>
-                                                    <span>
-                                                        回复
-                                                    </span>
-                                                </a>
-                                                <a class="report" href="#">
-                                                    <span>
-                                                        举报
-                                                    </span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="comment">
-                                    <div>
-                                        <div class="author">
-                                            <a class="avatar" href="#">
-                                                <img src="/images/photo_03.jpg"/>
-                                            </a>
-                                            <div class="info">
-                                                <a class="name" href="#">
-                                                    小鑫手游329194094
-                                                </a>
-                                                <div class="meta">
-                                                    <span>
-                                                        3楼 · 2017.06.26 14:46
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="comment_wrap">
-                                            <p>
-                                                牛
-                                            </p>
-                                            <div class="tool_group">
-                                                <a href="#">
-                                                    <i class="iconfont icon-fabulous">
-                                                    </i>
-                                                    <span>
-                                                        赞
-                                                    </span>
-                                                </a>
-                                                <a href="#">
-                                                    <i class="iconfont icon-xinxi">
-                                                    </i>
-                                                    <span>
-                                                        回复
-                                                    </span>
-                                                </a>
-                                                <a class="report" href="#">
-                                                    <span>
-                                                        举报
-                                                    </span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="comment">
-                                    <div>
-                                        <div class="author">
-                                            <a class="avatar" href="#">
-                                                <img src="/images/photo_03.jpg"/>
-                                            </a>
-                                            <div class="info">
-                                                <a class="name" href="#">
-                                                    db79500016b9
-                                                </a>
-                                                <div class="meta">
-                                                    <span>
-                                                        4楼 · 2017.07.27 10:37
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="comment_wrap">
-                                            <p>
-                                                666
-                                            </p>
-                                            <div class="tool_group">
-                                                <a href="#">
-                                                    <i class="iconfont icon-fabulous">
-                                                    </i>
-                                                    <span>
-                                                        赞
-                                                    </span>
-                                                </a>
-                                                <a href="#">
-                                                    <i class="iconfont icon-xinxi">
-                                                    </i>
-                                                    <span>
-                                                        回复
-                                                    </span>
-                                                </a>
-                                                <a class="report" href="#">
-                                                    <span>
-                                                        举报
-                                                    </span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="comment">
-                                    <div>
-                                        <div class="author">
-                                            <a class="avatar" href="#">
-                                                <img src="/images/photo_03.jpg"/>
-                                            </a>
-                                            <div class="info">
-                                                <a class="name" href="#">
                                                     LyonHunter
                                                 </a>
                                                 <div class="meta">
@@ -459,51 +360,6 @@
                                         <div class="comment_wrap">
                                             <p>
                                                 (2015年10月入坑，且已到贵族五，假设下所有人都充到了贵族五的话。。。)
-                                            </p>
-                                            <div class="tool_group">
-                                                <a href="#">
-                                                    <i class="iconfont icon-fabulous">
-                                                    </i>
-                                                    <span>
-                                                        赞
-                                                    </span>
-                                                </a>
-                                                <a href="#">
-                                                    <i class="iconfont icon-xinxi">
-                                                    </i>
-                                                    <span>
-                                                        回复
-                                                    </span>
-                                                </a>
-                                                <a class="report" href="#">
-                                                    <span>
-                                                        举报
-                                                    </span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="comment">
-                                    <div>
-                                        <div class="author">
-                                            <a class="avatar" href="#">
-                                                <img src="/images/photo_03.jpg"/>
-                                            </a>
-                                            <div class="info">
-                                                <a class="name" href="#">
-                                                    lavender0505
-                                                </a>
-                                                <div class="meta">
-                                                    <span>
-                                                        6楼 · 2017.10.11 00:33
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="comment_wrap">
-                                            <p>
-                                                垃圾游戏，毁人青春还扰我清梦。六个舍友五个人玩，我怎么活。什么时候弑舍友马化腾负不负责
                                             </p>
                                             <div class="tool_group">
                                                 <a href="#">
@@ -677,6 +533,42 @@
                                 </div>
                             </div>
                         </div>
+                        <ul class="pagination">
+                            <li>
+                                <a href="#">
+                                    <span>
+                                        上一页
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    1
+                                </a>
+                            </li>
+                            <li>
+                                <a class="active" href="#">
+                                    2
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    3
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    4
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span>
+                                        下一页
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -691,6 +583,11 @@
                             被以下专题收入，发现更多相似内容
                         </div>
                         <div class="include_collection">
+                            <a class="item" href="#">
+                                <div class="name">
+                                    ＋ 收入我的主题
+                                </div>
+                            </a>
                             <a class="item" href="#">
                                 <img src="/images/category_08.jpg"/>
                                 <div class="name">
@@ -783,29 +680,7 @@
                                     </span>
                                 </a>
                             </div>
-                            <div class="note have_img">
-                                <a class="cover col-xs-10 col-sm-3 col-xs-offset-1 col-sm-offset-0" href="#">
-                                    <img src="/images/details_08.jpg"/>
-                                </a>
-                                <a class="title col-xs-12 col-sm-9" href="#">
-                                    男朋友消失后的第19天
-                                </a>
-                                <p class="description col-xs-12 col-sm-9">
-                                    01 喻思思清楚记得她收到路鸣的最后一次消息：思思，我要封闭培训一个月，手机关机。你联系不到我，不用担心，相信我，等我。 看到这条消息的时候，喻思思有点懵，以为路鸣在跟她开玩笑，回过去一句：封闭培训？你不是被传销了吧？ 半天没接到回复，喻思思追过去三个抓狂的表情：路鸣，现在什么培训封闭式管理，手机都不能碰？你别逗了，我又不傻…… 路鸣并未过多解释，只回复了一句话：听话，我关机了。 任凭喻思思接下来连串儿的消息，一条接一条地追问，路鸣再也没有回话，打电话过去，手机已然是关机的状态。 喻思思心里有一团火在燃烧，这算什么事啊，玩失踪也不至于用如此蹩脚的理由吧，是路鸣智商不在线还是他确实要培训，...
-                                </p>
-                                <a class="author col-xs-12 col-sm-9" href="#">
-                                    <div class="avatar">
-                                        <img src="/images/photo_03.jpg"/>
-                                    </div>
-                                    <span class="name">
-                                        寒烟衰草
-                                    </span>
-                                </a>
-                            </div>
                             <div class="note">
-                                <!-- {{-- <a href="#" class="cover col-xs-10 col-sm-3 col-xs-offset-1 col-sm-offset-0">
-                                        <img src="/images/" />
-                                    </a> --}} -->
                                 <a class="title col-xs-12" href="#">
                                     有趣的灵魂千篇一律，美丽的皮囊万里挑一
                                 </a>

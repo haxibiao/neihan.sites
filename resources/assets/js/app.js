@@ -29,6 +29,8 @@ Vue.component('single-list-select', require('./components/SingleListSelect.vue')
 Vue.component('favorite', require('./components/Favorite.vue'));
 Vue.component('like', require('./components/Like.vue'));
 Vue.component('comment', require('./components/Comment.vue'));
+// 详情页评论
+Vue.component('new-comment', require('./components/NewComment.vue'));
 
 const app = new Vue({
 }).$mount('#app');

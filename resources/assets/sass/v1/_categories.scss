@@ -95,7 +95,6 @@
                             margin-top: 80px;
                             padding: 0 20px;
                             a {
-                                // @include a;
                                 display: inline-block;
                                 .avatar_collection {
                                     width: 80px;
@@ -113,7 +112,8 @@
                                 }
                                 .collection_description {
                                     font-size: 13px;
-                                    list-style: 25px;
+                                    line-height: 25px;
+                                    margin-bottom: 10px;
                                 }
                             }
                             .follow {
