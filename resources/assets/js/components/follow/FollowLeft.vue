@@ -87,6 +87,100 @@
                     </span>
                 </router-link>
             </li>
+            <li>
+                <router-link to="/friend">
+                    <div class="avatar">
+                        <img src="/images/photo_02.jpg"/>
+                    </div>
+                    <div class="name">
+                        爱你城朋友圈
+                    </div>
+                </router-link>
+            </li>
+            <li>
+                <router-link to="/category">
+                    <div class="avatar avatar_collection">
+                        <img src="/images/category_03.jpg"/>
+                    </div>
+                    <div class="name">
+                        散文
+                    </div>
+                    <span class="count">
+                    </span>
+                </router-link>
+            </li>
+            <li>
+                <router-link to="/user">
+                    <div class="avatar">
+                        <img src="/images/photo_03.jpg"/>
+                    </div>
+                    <div class="name">
+                        爱你城精选
+                    </div>
+                    <span class="count">
+                        254
+                    </span>
+                </router-link>
+            </li>
+            <li>
+                <router-link to="/collection">
+                    <div class="avatar avatar_collection">
+                        <img src="/images/category_09.png"/>
+                    </div>
+                    <div class="name">
+                        王者荣耀
+                    </div>
+                    <span class="count">
+                    </span>
+                </router-link>
+            </li>
+            <li>
+                <router-link to="/friend">
+                    <div class="avatar">
+                        <img src="/images/photo_02.jpg"/>
+                    </div>
+                    <div class="name">
+                        爱你城朋友圈
+                    </div>
+                </router-link>
+            </li>
+            <li>
+                <router-link to="/category">
+                    <div class="avatar avatar_collection">
+                        <img src="/images/category_03.jpg"/>
+                    </div>
+                    <div class="name">
+                        散文
+                    </div>
+                    <span class="count">
+                    </span>
+                </router-link>
+            </li>
+            <li>
+                <router-link to="/user">
+                    <div class="avatar">
+                        <img src="/images/photo_03.jpg"/>
+                    </div>
+                    <div class="name">
+                        爱你城精选
+                    </div>
+                    <span class="count">
+                        254
+                    </span>
+                </router-link>
+            </li>
+            <li>
+                <router-link to="/collection">
+                    <div class="avatar avatar_collection">
+                        <img src="/images/category_09.png"/>
+                    </div>
+                    <div class="name">
+                        王者荣耀
+                    </div>
+                    <span class="count">
+                    </span>
+                </router-link>
+            </li>
         </ul>
     </div>
 </template>

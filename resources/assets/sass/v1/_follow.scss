@@ -2,9 +2,12 @@
 #follow {
     .follow_wrp {
         .aside {
-            padding: 0;
+            @include spacing (81px 0 0,0 0 30px);
             position: fixed;
             width: 280px;
+            top: 0;
+            bottom: 0;
+            overflow: auto;
             @media screen and (max-width: 992px) {
                 width: 200px;
             }
