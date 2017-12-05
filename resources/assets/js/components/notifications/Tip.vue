@@ -47,7 +47,7 @@
 <script>
 export default {
 
-  name: 'NotificationsTip',
+  name: 'Tip',
 
   data () {
     return {

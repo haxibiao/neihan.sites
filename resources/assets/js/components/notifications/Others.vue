@@ -11,7 +11,7 @@
 <script>
 export default {
 
-  name: 'NotificationsOthers',
+  name: 'Others',
 
   data () {
     return {

@@ -1,4 +1,4 @@
-<div id="tail">
+<footer>
     <div class="navbar-static-bottom">
         <div class="container">
             <div class="row">
@@ -62,4 +62,4 @@
             </div>
         </div>
     </div>
-</div>
+</footer>

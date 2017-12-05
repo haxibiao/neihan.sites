@@ -1,17 +1,16 @@
 @import "v1/mixins";
 
-@import "v1/head";
-@import "v1/foot";
+@import "v1/layouts";
+@import "v1/animation";
 
 @import "v1/index";
 @import "v1/category";
+@import "v1/categories";
 @import "v1/collection";
 @import "v1/detail";
 @import "v1/user";
-@import "v1/categories";
 @import "v1/home";
 @import "v1/wallet";
 @import "v1/follow";
 @import "v1/notification";
 @import "v1/sign";
-@import "v1/animation";

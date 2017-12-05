@@ -2,7 +2,7 @@
 #follow {
     .follow_wrp {
         .aside {
-            @include spacing (81px 0 0,0 0 30px);
+            @include spacing (81px 0 0, 0 0 30px);
             position: fixed;
             width: 280px;
             top: 0;
@@ -103,28 +103,9 @@
                 margin-left: 90px;
             }
             #friend {
-                .article {
+                .article_list {
                     .article_item {
                         @include article_item;
-                        .author {
-                            .avatar {
-                                float: left;
-                            }
-                            .info {
-                                padding-top: 10px;
-                            }
-                        }
-                        .substance {
-                            clear: both;
-                        }
-                        @media screen and (max-width: 450px) {
-                            .author {
-                                .avatar {
-                                    width: 30px;
-                                    height: 30px;
-                                }
-                            }
-                        }
                     }
                 }
                 .load_more {
@@ -254,7 +235,7 @@
                         }
                     }
                     .tab-content {
-                        .article {
+                        .article_list {
                             .article_item {
                                 @include article_item;
                             }
@@ -292,7 +273,7 @@
                         }
                     }
                     .tab-content {
-                        .article {
+                        .article_list {
                             .article_item {
                                 @include article_item;
                             }
@@ -320,7 +301,7 @@
                 div {
                     .trigger_menu {
                         @include trigger_menu;
-                         @media screen and (max-width: 490px) {
+                        @media screen and (max-width: 490px) {
                             li {
                                 a {
                                     padding: 13px 23px 4px 23px;
@@ -332,7 +313,7 @@
                         }
                     }
                     .tab-content {
-                        .article {
+                        .article_list {
                             .article_item {
                                 @include article_item;
                             }

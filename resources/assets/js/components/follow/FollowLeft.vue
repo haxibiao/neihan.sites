@@ -34,14 +34,14 @@
                 </li>
             </ul>
         </div>
-        <router-link to="/follow_add" class="add_people">
+        <router-link to="/add" class="add_people">
             <i class="iconfont icon-guanzhu">
             </i>
             添加关注
         </router-link>
         <ul class="js_subscription_list">
             <li>
-                <router-link to="/friend">
+                <router-link to="/timeline">
                     <div class="avatar">
                         <img src="/images/photo_02.jpg"/>
                     </div>
@@ -51,7 +51,7 @@
                 </router-link>
             </li>
             <li>
-                <router-link to="/category">
+                <router-link to="/category/1">
                     <div class="avatar avatar_collection">
                         <img src="/images/category_03.jpg"/>
                     </div>
@@ -63,7 +63,7 @@
                 </router-link>
             </li>
             <li>
-                <router-link to="/user">
+                <router-link to="/user/1">
                     <div class="avatar">
                         <img src="/images/photo_03.jpg"/>
                     </div>
@@ -76,7 +76,7 @@
                 </router-link>
             </li>
             <li>
-                <router-link to="/collection">
+                <router-link to="/collection/1">
                     <div class="avatar avatar_collection">
                         <img src="/images/category_09.png"/>
                     </div>
@@ -88,17 +88,7 @@
                 </router-link>
             </li>
             <li>
-                <router-link to="/friend">
-                    <div class="avatar">
-                        <img src="/images/photo_02.jpg"/>
-                    </div>
-                    <div class="name">
-                        爱你城朋友圈
-                    </div>
-                </router-link>
-            </li>
-            <li>
-                <router-link to="/category">
+                <router-link to="/category/2">
                     <div class="avatar avatar_collection">
                         <img src="/images/category_03.jpg"/>
                     </div>
@@ -110,7 +100,7 @@
                 </router-link>
             </li>
             <li>
-                <router-link to="/user">
+                <router-link to="/user/2">
                     <div class="avatar">
                         <img src="/images/photo_03.jpg"/>
                     </div>
@@ -123,7 +113,7 @@
                 </router-link>
             </li>
             <li>
-                <router-link to="/collection">
+                <router-link to="/collection/2">
                     <div class="avatar avatar_collection">
                         <img src="/images/category_09.png"/>
                     </div>
@@ -135,17 +125,7 @@
                 </router-link>
             </li>
             <li>
-                <router-link to="/friend">
-                    <div class="avatar">
-                        <img src="/images/photo_02.jpg"/>
-                    </div>
-                    <div class="name">
-                        爱你城朋友圈
-                    </div>
-                </router-link>
-            </li>
-            <li>
-                <router-link to="/category">
+                <router-link to="/category/3">
                     <div class="avatar avatar_collection">
                         <img src="/images/category_03.jpg"/>
                     </div>
@@ -157,7 +137,7 @@
                 </router-link>
             </li>
             <li>
-                <router-link to="/user">
+                <router-link to="/user/3">
                     <div class="avatar">
                         <img src="/images/photo_03.jpg"/>
                     </div>
@@ -170,7 +150,7 @@
                 </router-link>
             </li>
             <li>
-                <router-link to="/collection">
+                <router-link to="/collection/3">
                     <div class="avatar avatar_collection">
                         <img src="/images/category_09.png"/>
                     </div>
@@ -191,7 +171,7 @@ export default {
   name: 'FollowLeft',
 
   mounted(){
-    this.$router.push({path:"/friend"});
+    this.$router.push({path:"/timeline"});
     var route_path = window.location.hash.replace("#/","");
     this.route_path = route_path;
   },

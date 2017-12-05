@@ -330,7 +330,7 @@
 <script>
 export default {
 
-  name: 'FollowAdd',
+  name: 'Add',
 
   data () {
     return {

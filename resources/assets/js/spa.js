@@ -45,24 +45,24 @@ Vue.component('follow-left', require('./components/follow/FollowLeft.vue'));
 Vue.component('notifications-left', require('./components/notifications/NotificationsLeft.vue'));
 
 // 详情页评论
-Vue.component('new-comment', require('./components/NewComment.vue'));
+Vue.component('new-comment', require('./components/detail/NewComment.vue'));
 
 const routes = [
     // 关注路由
-    { path: '/follow_add', component: require('./components/follow/FollowAdd.vue') },
-    { path: '/friend', component: require('./components/follow/FollowFriend.vue') },
-    { path: '/category', component: require('./components/follow/FollowCategory.vue') },
-    { path: '/collection', component: require('./components/follow/FollowCollection.vue') },
-    { path: '/user', component: require('./components/follow/FollowUser.vue') },
+    { path: '/add', component: require('./components/follow/Add.vue') },
+    { path: '/timeline', component: require('./components/follow/Timeline.vue') },
+    { path: '/category/:id', component: require('./components/follow/Category.vue') },
+    { path: '/collection/:id', component: require('./components/follow/Collection.vue') },
+    { path: '/user/:id', component: require('./components/follow/User.vue') },
     // 消息路由
-    { path: '/comments', component: require('./components/notifications/NotificationsComments.vue') },
-    { path: '/chats', component: require('./components/notifications/NotificationsChats.vue') },
-    { path: '/requests', component: require('./components/notifications/NotificationsRequests.vue') },
-    { path: '/likes', component: require('./components/notifications/NotificationsLikes.vue') },
-    { path: '/follows', component: require('./components/notifications/NotificationsFollows.vue') },
-    { path: '/tip', component: require('./components/notifications/NotificationsTip.vue') },
-    { path: '/others', component: require('./components/notifications/NotificationsOthers.vue') },
-    { path: '/chat_messages', component: require('./components/notifications/NotificationsChat_messages.vue') }
+    { path: '/comments', component: require('./components/notifications/Comments.vue') },
+    { path: '/chats', component: require('./components/notifications/Chats.vue') },
+    { path: '/requests', component: require('./components/notifications/Requests.vue') },
+    { path: '/likes', component: require('./components/notifications/Likes.vue') },
+    { path: '/follows', component: require('./components/notifications/Follows.vue') },
+    { path: '/tip', component: require('./components/notifications/Tip.vue') },
+    { path: '/others', component: require('./components/notifications/Others.vue') },
+    { path: '/chat', component: require('./components/notifications/Chat.vue') }
 ];
 
 const router = new VueRouter({

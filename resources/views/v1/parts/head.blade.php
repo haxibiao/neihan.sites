@@ -1,4 +1,4 @@
-<div id="head">
+<header>
     <nav class="navbar navbar-default">
         <div class="container">
             <div class="navbar_wrp">
@@ -112,7 +112,7 @@
             </div>
         </div>
     </nav>
-</div>
+</header>
 @push('scripts')
 <script>
     $(function(){

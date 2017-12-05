@@ -1,6 +1,45 @@
+body {
+    @include spacing;
+    @include font;
+    font-family: "微软雅黑", Helvetica, Arial, sans-serif;
+    background-color: $color-white;
+    overflow-y: scroll;
+    #app {
+        padding-top: 81px;
+        .dropdown-menu a {
+            padding: 10px 20px;
+            color: $color-black;
+        }
+    }
+}
+
+a,
+a:active,
+a:hover,
+a:focus {
+    text-decoration: none;
+    color: $color-black;
+}
+
+ul,
+ol,
+li,
+p {
+    @include spacing;
+    list-style: none;
+}
+
+li {
+    line-height: 20px;
+}
+
+input,
+textarea {
+    outline-style: none!important;
+}
+
 // 头部
-#head,
-#head_user {
+header {
     position: fixed;
     width: 100%;
     border-bottom: 1px solid $color-white-silver;
@@ -210,6 +249,29 @@
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+//尾部
+footer {
+    margin: 3% 0;
+    div {
+        color: $color-gray;
+        a {
+            color: $color-gray;
+            &:hover {
+                color: $color-black;
+            }
+        }
+    }
+    .icp {
+        color: $color-gray-shallow;
+        a {
+            color: $color-gray-shallow;
+            img {
+                height: 30px;
             }
         }
     }

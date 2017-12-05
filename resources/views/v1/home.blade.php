@@ -117,10 +117,10 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div class="tab-pane fade" id="wenzhang" role="tabpanel">
-                            @include('v1.parts.writing')
+                            @include('v1.parts.article_list_nocategory')
                         </div>
                         <div class="tab-pane fade in active" id="dongtai" role="tabpanel">
-                            <ul class="article">
+                            <ul class="article_list">
                                 <li class="article_item">
                                     <div class="author">
                                         <a class="avatar" href="/v1/user" target="_blank">
@@ -171,33 +171,34 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li class="article_item">
-                                    <div class="author">
-                                        <a class="avatar" href="/v1/user" target="_blank">
-                                            <img src="/images/photo_01.jpg"/>
-                                        </a>
-                                        <div class="info">
-                                            <a href="/v1/user" target="_blank">
-                                                喵星菇凉
+                                <li class="article_item have_img">
+                                    <a class="wrap_img" href="/v1/detail" target="_blank">
+                                        <img src="/images/details_10.png"/>
+                                    </a>
+                                    <div class="content">
+                                        <div class="author">
+                                            <a class="avatar" href="/v1/user" target="_blank">
+                                                <img src="/images/photo_01.jpg"/>
                                             </a>
-                                            <span>
-                                                喜欢了文章 · 11.15.16:12
-                                            </span>
+                                            <div class="info">
+                                                <a href="/v1/user" target="_blank">
+                                                    喵星菇凉
+                                                </a>
+                                                <a href="/v1/detail" target="_blank">
+                                                    <img src="/images/vip1.png"/>
+                                                </a>
+                                                <span class="time">
+                                                    喜欢了文章 · 11.15.16:12
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="substance have_img clearfix">
-                                        <div class="conten col-xs-12 col-sm-8 col-md-9">
-                                            <a href="/v1/detail" target="_blank">
-                                                2018年, SEO行业发展前景, 有几大趋势?
-                                            </a>
-                                            <p class="article">
-                                                我们已经进入2017年第四季度，现在是时候开始考虑未来的一年以及2018年SEO的预期了，我们看到了今年以来最新的搜索行业趋势，到2018年将会更加突出。为了保持领先的地位，我们已经进入2017年第四季度，现在是时候开始考虑未来的一年以及2018年SEO的预期了，我们看到了今年以来最新的搜索行业趋势，到2018年将会更加突出。为了保持领先的地位，我们已经进入2017年第四季度，现在是时候开始考虑未来的一年以及2018年SEO的预期了，我们看到了今年以来最新的搜索行业趋势，到2018年将会更加突出。为了保持领先的地位
-                                            </p>
-                                        </div>
-                                        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail" target="_blank">
-                                            <img src="/images/details_10.png"/>
+                                        <a class="title" href="/v1/detail" target="_blank">
+                                            2018年, SEO行业发展前景, 有几大趋势?
                                         </a>
-                                        <div class="meta col-xs-12">
+                                        <p class="abstract">
+                                            我们已经进入2017年第四季度，现在是时候开始考虑未来的一年以及2018年SEO的预期了，我们看到了今年以来最新的搜索行业趋势，到2018年将会更加突出。为了保持领先的地位，我们已经进入2017年第四季度，现在是时候开始考虑未来的一年以及2018年SEO的预期了，我们看到了今年以来最新的搜索行业趋势，到2018年将会更加突出。为了保持领先的地位，我们已经进入2017年第四季度，现在是时候开始考虑未来的一年以及2018年SEO的预期了，我们看到了今年以来最新的搜索行业趋势，到2018年将会更加突出。为了保持领先的地位
+                                        </p>
+                                        <div class="meta">
                                             <div class="origin_author">
                                                 <a href="/v1/user" target="_blank">
                                                     蝙蝠侠IT
@@ -221,33 +222,34 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li class="article_item">
-                                    <div class="author">
-                                        <a class="avatar" href="/v1/user" target="_blank">
-                                            <img src="/images/photo_01.jpg"/>
-                                        </a>
-                                        <div class="info">
-                                            <a href="/v1/user" target="_blank">
-                                                喵星菇凉
+                                <li class="article_item have_img">
+                                    <a class="wrap_img" href="/v1/detail" target="_blank">
+                                        <img src="/images/details_07.jpg"/>
+                                    </a>
+                                    <div class="content">
+                                        <div class="author">
+                                            <a class="avatar" href="/v1/user" target="_blank">
+                                                <img src="/images/photo_01.jpg"/>
                                             </a>
-                                            <span>
-                                                发表了文章 · 06.15.12:12
-                                            </span>
+                                            <div class="info">
+                                                <a href="/v1/user" target="_blank">
+                                                    喵星菇凉
+                                                </a>
+                                                <a href="/v1/detail" target="_blank">
+                                                    <img src="/images/vip1.png"/>
+                                                </a>
+                                                <span class="time">
+                                                    发表了文章 · 06.15.12:12
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="substance have_img clearfix">
-                                        <div class="conten col-xs-12 col-sm-8 col-md-9">
-                                            <a href="/v1/detail" target="_blank">
-                                                魔兽世界7.2.5全新版本资料片：新橙戒+新黑庙+乐队活动
-                                            </a>
-                                            <p class="article">
-                                                《魔兽世界》7.2.5版本今日在国服上线。虽然是小版本更新，但改动内容还是十分丰富的。比如新的橙装、大秘境调整、黑庙加入时空漫游、克罗米战役等等。以下是17173为各位整理的《魔兽世界》7.2.5版本今日在国服上线。虽然是小版本更新，但改动内容还是十分丰富的。比如新的橙装、大秘境调整、黑庙加入时空漫游、克罗米战役等等。以下是17173为各位整理的
-                                            </p>
-                                        </div>
-                                        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail" target="_blank">
-                                            <img src="/images/details_07.jpg"/>
+                                        <a class="title" href="/v1/detail" target="_blank">
+                                            魔兽世界7.2.5全新版本资料片：新橙戒+新黑庙+乐队活动
                                         </a>
-                                        <div class="meta col-xs-12">
+                                        <p class="abstract">
+                                            《魔兽世界》7.2.5版本今日在国服上线。虽然是小版本更新，但改动内容还是十分丰富的。比如新的橙装、大秘境调整、黑庙加入时空漫游、克罗米战役等等。以下是17173为各位整理的《魔兽世界》7.2.5版本今日在国服上线。虽然是小版本更新，但改动内容还是十分丰富的。比如新的橙装、大秘境调整、黑庙加入时空漫游、克罗米战役等等。以下是17173为各位整理的
+                                        </p>
+                                        <div class="meta">
                                             <a href="/v1/detail" target="_blank">
                                                 <i class="iconfont icon-liulan">
                                                 </i>
@@ -413,10 +415,10 @@
                             </ul>
                         </div>
                         <div class="tab-pane fade" id="pinglun" role="tabpanel">
-                            @include('v1.parts.writing')
+                            @include('v1.parts.article_list_nocategory')
                         </div>
                         <div class="tab-pane fade" id="huo" role="tabpanel">
-                            @include('v1.parts.writing')
+                            @include('v1.parts.article_list_nocategory')
                         </div>
                     </div>
                 </div>

@@ -223,7 +223,7 @@
                                     color: #969696;
                                     p {
                                         @include spacing;
-                                        @include article_num (2);
+                                        @include line_number (2);
                                     }
                                 }
                             }

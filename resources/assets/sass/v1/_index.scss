@@ -1,4 +1,3 @@
-@include initialization;
 //首页
 #index {
     @include aside;
@@ -159,7 +158,7 @@
             border-bottom: 1px solid $color-white-silver;
             margin: -5px 0 15px;
         } // 内容
-        .article {
+        .article_list {
             .article_item {
                 @include article_item;
             }

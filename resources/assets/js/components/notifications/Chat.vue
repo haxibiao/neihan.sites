@@ -107,7 +107,7 @@
 <script>
 export default {
 
-  name: 'NotificationsChat_messages',
+  name: 'Chat',
 
   data () {
     return {

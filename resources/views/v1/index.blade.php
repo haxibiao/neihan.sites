@@ -8,64 +8,15 @@
     <div class="container">
         <div class="row">
             {{-- 轮播图 --}}
-            <div class="col-xs-12" id="poster">
-            </div>
+            @include('v1.parts.poster')
             {{-- 左侧 --}}
             <div class="essays col-xs-12 col-sm-8">
-                <div class="classification">
-                    <a class="collection" href="/v1/category" target="_blank">
-                        <img src="/images/category_01.jpeg"/>
-                        <div class="name">
-                            王者荣耀
-                        </div>
-                    </a>
-                    <a class="collection" href="/v1/category" target="_blank">
-                        <img src="/images/details_04.jpeg"/>
-                        <div class="name">
-                            绝地求生
-                        </div>
-                    </a>
-                    <a class="collection" href="/v1/category" target="_blank">
-                        <img src="/images/category_08.jpg"/>
-                        <div class="name">
-                            剑侠情缘3
-                        </div>
-                    </a>
-                    <a class="collection" href="/v1/category" target="_blank">
-                        <img src="/images/category_03.jpg"/>
-                        <div class="name">
-                            暗恋
-                        </div>
-                    </a>
-                    <a class="collection" href="/v1/category" target="_blank">
-                        <img src="/images/category_04.jpeg"/>
-                        <div class="name">
-                            恋爱
-                        </div>
-                    </a>
-                    <a class="collection" href="/v1/category" target="_blank">
-                        <img src="/images/category_02.jpg"/>
-                        <div class="name">
-                            热恋
-                        </div>
-                    </a>
-                    <a class="collection" href="/v1/category" target="_blank">
-                        <img src="/images/category_02.jpg"/>
-                        <div class="name">
-                            谈谈情，说说爱
-                        </div>
-                    </a>
-                    <a class="collection more_hot_collection" href="/v1/categories" target="_blank">
-                        <div class="name">
-                            更多热门专题
-                            <i class="iconfont icon-youbian">
-                            </i>
-                        </div>
-                    </a>
-                </div>
+                {{-- 专题分类 --}}
+                @include('v1.parts.category_list')
                 <div class="split_line">
                 </div>
-                @include('v1.parts.index_article_block')
+                {{-- 文章摘要 --}}
+                @include('v1.parts.article_list_category')
             </div>
             {{-- 右侧 --}}
             <div class="aside col-sm-4">
@@ -271,24 +222,3 @@
 </div>
 @include('v1.parts.foot')
 @stop
-@push('scripts')
-<script>
-    var options = {
-      'container':'#poster',
-      'data':[
-        ['/v1/detail','/images/carousel001.jpg'],
-        ['/v1/detail','/images/carousel002.jpg'],
-        ['/v1/detail','/images/carousel003.jpg'],
-        ['/v1/detail','/images/carousel004.jpg'],
-        ['/v1/detail','/images/carousel005.jpg'],
-        ['/v1/detail','/images/carousel006.jpg'],
-        ['/v1/detail','/images/carousel007.jpg'],
-        ['/v1/detail','/images/carousel008.jpg']
-      ],
-      'speed':'5000',
-      'auto':true
-    }
-    let poster = new Poster(options);
-    poster.init();
-</script>
-@endpush

@@ -87,7 +87,7 @@
 <script>
 export default {
 
-  name: 'NotificationsFollows',
+  name: 'Follows',
 
   data () {
     return {

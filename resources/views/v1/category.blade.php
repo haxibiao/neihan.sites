@@ -61,13 +61,13 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div class="tab-pane fade in active" id="pinglun" role="tabpanel">
-                            @include('v1.parts.writing')
+                            @include('v1.parts.article_list_nocategory')
                         </div>
                         <div class="tab-pane fade" id="shoulu" role="tabpanel">
-                            @include('v1.parts.writing')
+                            @include('v1.parts.article_list_nocategory')
                         </div>
                         <div class="tab-pane fade" id="huo" role="tabpanel">
-                            @include('v1.parts.writing')
+                            @include('v1.parts.article_list_nocategory')
                         </div>
                     </div>
                 </div>

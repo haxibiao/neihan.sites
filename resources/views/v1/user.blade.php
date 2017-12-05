@@ -127,37 +127,38 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div class="tab-pane fade in active" id="wenzhang" role="tabpanel">
-                            @include('v1.parts.writing')
+                            @include('v1.parts.article_list_nocategory')
                         </div>
                         <div class="tab-pane fade" id="dongtai" role="tabpanel">
-                            <ul class="article">
-                                <li class="article_item">
-                                    <div class="author">
-                                        <a class="avatar" href="/v1/user" target="_blank">
-                                            <img src="/images/photo_02.jpg"/>
-                                        </a>
-                                        <div class="info">
-                                            <a href="/v1/user" target="_blank">
-                                                空评
+                            <ul class="article_list">
+                                <li class="article_item have_img">
+                                    <a class="wrap_img" href="/v1/detail" target="_blank">
+                                        <img src="/images/details_07.jpg"/>
+                                    </a>
+                                    <div class="content">
+                                        <div class="author">
+                                            <a class="avatar" href="/v1/user" target="_blank">
+                                                <img src="/images/photo_02.jpg"/>
                                             </a>
-                                            <span>
-                                                发表了文章 · 06.15.12:12
-                                            </span>
+                                            <div class="info">
+                                                <a href="/v1/user" target="_blank">
+                                                    空评
+                                                </a>
+                                                <a href="/v1/detail" target="_blank">
+                                                    <img src="/images/vip1.png"/>
+                                                </a>
+                                                <span class="time">
+                                                    2天前
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="substance have_img clearfix">
-                                        <div class="conten col-xs-12 col-sm-8 col-md-9">
-                                            <a href="/v1/detail" target="_blank">
-                                                魔兽世界7.2.5全新版本资料片：新橙戒+新黑庙+乐队活动
-                                            </a>
-                                            <p class="article">
-                                                《魔兽世界》7.2.5版本今日在国服上线。虽然是小版本更新，但改动内容还是十分丰富的。比如新的橙装、大秘境调整、黑庙加入时空漫游、克罗米战役等等。以下是17173为各位整理的《魔兽世界》7.2.5版本今日在国服上线。虽然是小版本更新，但改动内容还是十分丰富的。比如新的橙装、大秘境调整、黑庙加入时空漫游、克罗米战役等等。以下是17173为各位整理的
-                                            </p>
-                                        </div>
-                                        <a class="wrap_img col-xs-10 col-sm-4 col-md-3 col-xs-offset-1 col-sm-offset-0" href="/v1/detail" target="_blank">
-                                            <img src="/images/details_07.jpg"/>
+                                        <a class="title" href="/v1/detail" target="_blank">
+                                            魔兽世界7.2.5全新版本资料片：新橙戒+新黑庙+乐队活动
                                         </a>
-                                        <div class="meta col-xs-12">
+                                        <p class="abstract">
+                                            《魔兽世界》7.2.5版本今日在国服上线。虽然是小版本更新，但改动内容还是十分丰富的。比如新的橙装、大秘境调整、黑庙加入时空漫游、克罗米战役等等。以下是17173为各位整理的《魔兽世界》7.2.5版本今日在国服上线。虽然是小版本更新，但改动内容还是十分丰富的。比如新的橙装、大秘境调整、黑庙加入时空漫游、克罗米战役等等。以下是17173为各位整理的
+                                        </p>
+                                        <div class="meta">
                                             <a href="/v1/detail" target="_blank">
                                                 <i class="iconfont icon-liulan">
                                                 </i>
@@ -306,10 +307,10 @@
                             </ul>
                         </div>
                         <div class="tab-pane fade" id="pinglun" role="tabpanel">
-                            @include('v1.parts.writing')
+                            @include('v1.parts.article_list_nocategory')
                         </div>
                         <div class="tab-pane fade" id="huo" role="tabpanel">
-                            @include('v1.parts.writing')
+                            @include('v1.parts.article_list_nocategory')
                         </div>
                     </div>
                 </div>

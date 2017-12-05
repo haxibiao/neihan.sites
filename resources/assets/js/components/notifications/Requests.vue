@@ -41,7 +41,7 @@
 <script>
 export default {
 
-  name: 'NotificationsRequests',
+  name: 'Requests',
 
   data () {
     return {

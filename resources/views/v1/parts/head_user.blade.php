@@ -1,4 +1,4 @@
-<div id="head_user">
+<header>
     <nav class="navbar navbar-default">
         <div class="container">
             <div class="navbar_wrp">
@@ -149,7 +149,7 @@
                             </a>
                         </li>
                         <li class="tab dropdown-submenu-one author">
-                            <a href="/v1/home" class="avatar">
+                            <a class="avatar" href="/v1/home">
                                 <img src="/images/photo_01.jpg"/>
                             </a>
                             <ul class="dropdown-menu">
@@ -218,7 +218,7 @@
             </div>
         </div>
     </nav>
-</div>
+</header>
 @push('scripts')
 <script>
     $(function(){

@@ -35,7 +35,7 @@
 <script>
 export default {
 
-  name: 'NotificationsLikes',
+  name: 'Likes',
 
   data () {
     return {
