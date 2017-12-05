@@ -13,75 +13,33 @@
             position: absolute;
             top: 58px;
             right: 30px;
-            color: #fff;
+            color: $color-white;
             font-size: 16px;
             i {
-                font-size: inherit;
+                margin-right: 5px;
             }
-        }
-        @media screen and (min-width: 992px) {
-            .help {
+            @media screen and (min-width: 992px) {
                 top: 68px;
             }
-        }
-        @media screen and (min-width: 1200px) {
-            .help {
+            @media screen and (min-width: 1200px) {
                 top: 78px;
             }
         }
         div {
             .trigger_menu {
-                list-style: none;
-                border-bottom: 1px solid #f0f0f0;
+                @include trigger_menu;
                 margin: 30px 0 0;
-                padding: 0;
                 text-align: left;
-                li {
-                    display: inline-block;
-                    padding: 8px 0;
-                    margin-bottom: -1px;
-                    line-height: 20px;
-                    a {
-                        // @include a;
-                        color: #969696;
-                        font-size: 15px;
-                        font-weight: 700;
-                        line-height: 25px;
-                        padding: 13px 20px;
-                        i {
-                            margin-right: 5px;
-                            font-size: inherit;
-                        }
-                        &:hover {
-                            border-bottom: 2px solid #646464;
-                            color: #646464;
-                        }
-                    }
-                }
-                .active {
-                    border-bottom: 2px solid #646464;
-                    a {
-                        color: #646464;
-                        &:hover {
-                            border: 0;
-                        }
-                    }
-                }
-            }
-            @media screen and (max-width: 768px) {
-                .trigger_menu {
+                @media screen and (min-width: 470px) and (max-width: 768px) {
                     li {
-                        margin-right: 15px;
                         a {
-                            padding: 13px 10px;
+                            padding: 0 20px;
                         }
                     }
                 }
-            }
-            @media screen and (min-width: 450px) and (max-width: 768px) {
-                .trigger_menu {
+                @media screen and (max-width: 470px) {
                     li {
-                        margin-right: 45px;
+                        padding: 0;
                     }
                 }
             }
@@ -89,25 +47,20 @@
                 .row {
                     div {
                         .collection_wrap {
-                            border: 1px solid #e6e6e6;
+                            @include border (4px, 1px solid #e6e6e6);
+                            @include spacing (80px 0 0 0, 0 20px);
                             background-color: hsla(0, 0%, 71%, .1);
-                            border-radius: 4px;
-                            margin-top: 80px;
-                            padding: 0 20px;
                             a {
                                 display: inline-block;
                                 .avatar_collection {
-                                    width: 80px;
-                                    height: 80px;
+                                    @include proportion (80px, 80px);
+                                    @include border (8px, 1px solid #ddd);
                                     margin: -40px 0 10px;
                                     display: inline-block;
-                                    border: 1px solid #ddd;
-                                    background-color: #fff;
-                                    border-radius: 8px;
+                                    background-color: $color-white;
                                 }
                                 .name {
-                                    font-size: 24px;
-                                    font-weight: 700;
+                                    @include font (24px, $color-black, 700);
                                     overflow: hidden;
                                 }
                                 .collection_description {

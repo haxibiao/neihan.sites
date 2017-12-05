@@ -273,7 +273,7 @@
                                 </a>
                             </li>
                         </ul>
-                        <span>
+                        <span class="rewad_user">
                             等10人
                         </span>
                     </div>
@@ -554,11 +554,6 @@
                             <li>
                                 <a href="#">
                                     3
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    4
                                 </a>
                             </li>
                             <li>

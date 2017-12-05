@@ -129,6 +129,16 @@
     }
 }
 
+// 收集专题更多按钮样式
+@mixin more {
+    color: #787878;
+    border: none;
+    background-color: inherit;
+    .name {
+        padding: 0;
+    }
+}
+
 // 头像样式
 @mixin avatar ($width: 40px, $height: 40px, $float:none, $margin-right: 5px) {
     display: inline-block;
@@ -582,6 +592,92 @@
         }
         span {
             vertical-align: middle;
+        }
+    }
+}
+
+// 推荐作者
+@mixin supporter{
+    .title {
+        @include font (14px,$color-gray);
+        margin-bottom: 10px;
+    }
+    ul {
+        @include spacing (0 0 17px 0,0 0 8px);
+        border-bottom: 1px solid $color-white-silver;
+        li {
+            margin-bottom: 10px;
+            a {
+                display: inline-block;
+                font-size: 14px;
+            }
+            .tag {
+                @include font (12px,$color-gray);
+                @include border (3px,1px solid $color-gray);
+                @include spacing (0 0 0 2px,1px 3px);
+            }
+            .avatar {
+                @include avatar (32px,32px);
+            }
+            .name {
+                vertical-align: middle;
+            }
+            .check_more {
+                color: $color-gray;
+                &:hover {
+                    color: $color-black;
+                }
+            }
+        }
+    }
+    .support_list {
+        display: inline-block;
+        vertical-align: middle;
+        li {
+            display: inline-block;
+            margin: 0 -6px;
+            .avatar {
+                @include avatar;
+                margin-right: 0;
+                img {
+                    border: 3px solid $color-white;
+                    background-color: $color-white;
+                }
+            }
+        }
+    }
+    .rewad_user {
+        @include spacing (0 -10px 0 0, 0 0 0 5px);
+        display: inline-block;
+        cursor: pointer;
+        font-size: 13px;
+        vertical-align: text-top;
+    }
+}
+
+// 分享
+@mixin share {
+    @include spacing (0 0 17px 0,0 0 16px);
+    border-bottom: 1px solid $color-white-silver;
+    line-height: 30px;
+    span {
+        font-size: 14px;
+    }
+    a {
+        display: inline-block;
+        margin-left: 10px;
+        i {
+            font-size: 18px;
+            vertical-align: middle;
+        }
+        .icon-weixin1:hover {
+            color: #339933;
+        }
+        .icon-sina:hover {
+            color: #ff6600;
+        }
+        .icon-gengduo:hover {
+            color: #666666;
         }
     }
 }

@@ -4,13 +4,13 @@
     .essays {
         .main_top {
             @include main_top;
-            @media screen and (min-width: 380px) and (max-width: 768px) {
+            @media screen and (min-width: 370px) and (max-width: 768px) {
                 padding-bottom: 0;
                 .botm {
                     position: static;
                 }
             }
-            @media screen and (max-width: 380px) {
+            @media screen and (max-width: 370px) {
                 .botm {
                     position: absolute;
                     top: 105px;

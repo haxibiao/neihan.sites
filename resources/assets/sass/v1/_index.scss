@@ -152,12 +152,7 @@
                 @include collection_button ($color-white-milk);
             }
             .more_hot_collection {
-                color: #787878;
-                border: none;
-                background-color: inherit;
-                .name {
-                    padding: 0;
-                }
+                @include more;
             }
         }
         .split_line {

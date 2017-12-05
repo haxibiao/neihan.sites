@@ -8,8 +8,8 @@
     <div class="container">
         <div class="row">
             <div class="essays col-xs-12 col-sm-8">
-                <div class="main_top clearfix">
-                    <a class="avatar" href="/v1/category">
+                <div class="main_top">
+                    <a class="avatar avatar_collection" href="/v1/category">
                         <img src="/images/category_02.jpg"/>
                     </a>
                     <a class="botm follow" href="#">
@@ -22,11 +22,13 @@
                             投稿
                         </span>
                     </a>
-                    <a class="name" href="/v1/category">
-                        <span>
-                            谈谈情，说说爱
-                        </span>
-                    </a>
+                    <div class="title">
+                        <a class="name" href="/v1/category">
+                            <span>
+                                谈谈情，说说爱
+                            </span>
+                        </a>
+                    </div>
                     <p>
                         收录了68923篇文章 · 1081552人关注
                     </p>
@@ -70,7 +72,7 @@
                     </div>
                 </div>
             </div>
-            <div class="aside col-sm-4 col-lg-3 col-lg-offset-1">
+            <div class="aside col-sm-4">
                 <p class="title">
                     专题公告
                 </p>
@@ -125,7 +127,7 @@
                                 <a class="name" href="/v1/user">
                                     爱你城
                                 </a>
-                                <span>
+                                <span class="tag">
                                     创建者
                                 </span>
                             </li>
