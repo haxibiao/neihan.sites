@@ -1,4 +1,5 @@
 <template>
+	<!-- 收到的聊天消息列表 -->
 	<div id="chats">
 		<div class="menu">全部消息</div>
 		<ul class="chats_list">

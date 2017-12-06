@@ -1,4 +1,5 @@
 <template>
+	<!-- 关注的用户 -->
 	<div id="user">
 		<div class="main_top clearfix">
             <a class="avatar" href="/v1/user" target="_blank">

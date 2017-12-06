@@ -1,4 +1,5 @@
 <template>
+    <!-- 朋友圈 -->
 	<div id="friend">
         <ul class="article_list">
             <li class="article_item have_img">

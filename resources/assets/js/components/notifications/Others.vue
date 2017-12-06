@@ -1,4 +1,5 @@
 <template>
+	<!-- 收到的其他消息 -->
 	<div id="others">
 		<div class="menu">其他消息</div>
 		<div class="unMessage">

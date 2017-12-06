@@ -141,10 +141,11 @@
                                                 <img src="/images/category_02.jpg"/>
                                             </a>
                                             <a class="following" href="javascript:;">
-                                                <i class="iconfont icon-weibiaoti12">
-                                                </i>
                                                 <span>
-                                                    已关注
+                                                    <i class="iconfont icon-weibiaoti12">
+                                                    </i>
+                                                    <i class="iconfont icon-cha">
+                                                    </i>
                                                 </span>
                                             </a>
                                             <a class="title" href="/v1/category" target="_blank">
@@ -288,10 +289,11 @@
                                                 <img src="/images/photo_03.jpg"/>
                                             </a>
                                             <a class="following" href="javascript:;">
-                                                <i class="iconfont icon-weibiaoti12">
-                                                </i>
                                                 <span>
-                                                    已关注
+                                                    <i class="iconfont icon-weibiaoti12">
+                                                    </i>
+                                                    <i class="iconfont icon-cha">
+                                                    </i>
                                                 </span>
                                             </a>
                                             <a class="title" href="/v1/user" target="_blank">

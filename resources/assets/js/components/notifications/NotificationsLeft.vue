@@ -1,5 +1,6 @@
 <template>
 	<div>
+        <!-- 消息页的左侧 -->
         <ul>
             <li>
                 <router-link to="/comments">

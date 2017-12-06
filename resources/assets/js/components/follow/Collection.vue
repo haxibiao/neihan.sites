@@ -1,4 +1,5 @@
 <template>
+	<!-- 关注的文集 -->
 	<div id="collection">
 		<div class="main_top clearfix">
             <a class="avatar avatar_collection" href="/v1/category" target="_blank">

@@ -1,5 +1,6 @@
 <template>
 	<div>
+        <!-- 详情页的评论 -->
         <form class="new_comment">
             <div v-if="isSignIn">
                 <a class="avatar" href="#">

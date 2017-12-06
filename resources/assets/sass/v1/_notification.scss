@@ -45,10 +45,7 @@
                             vertical-align: middle;
                         }
                         .badge {
-                            @include spacing (6px 0 0 0, 3px 6px);
-                            float: right;
-                            background-color: $color-red-watermelon;
-                            font-size: 12px;
+                            @include badge;
                         }
                         &:hover {
                             background-color: #f0f0f0;
@@ -582,21 +579,13 @@
                                 @include avatar;
                                 float: left;
                             }
-                            .follow {
-                                @include button;
+                            .following {
+                                @include following_button;
+                                margin: 6px 0 0 6px;
+                                color: $color-gray;
                                 float: right;
-                                margin: 0 0 0 5px;
-                                border: 1px solid hsla(0, 0%, 59%, .6);
-                                color: #8c8c8c;
-                                background-color: inherit;
-                                width: 90px;
-                                &:hover {
-                                    border: 1px solid hsla(0, 0%, 50%, .6);
-                                    background-color: hsla(0, 0%, 60%, .1);
-                                }
-                                @media screen and (max-width: 450px) {
-                                    width: 75px;
-                                    padding: 8px 0;
+                                i {
+                                    font-weight: 700;
                                 }
                             }
                             .title {

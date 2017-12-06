@@ -1,4 +1,5 @@
 <template>
+	<!-- 收到的赞赏 -->
 	<div id="tip">
 		<div class="menu">收到的赞赏</div>
 		<ul class="tip_list">

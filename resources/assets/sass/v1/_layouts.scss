@@ -77,10 +77,20 @@ header {
                                     margin-right: 15px;
                                     vertical-align: middle;
                                 }
+                                .badge {
+                                    margin: 6px 0 0 0;
+                                }
+                                &:hover {
+                                    background-color: $color-white-milk;
+                                }
                             }
                             @media screen and (max-width: 768px) {
                                 left: 40%;
                             }
+                        }
+                        .badge {
+                            @include badge;
+                            margin: -5px 0 0 0;
                         }
                     } // 个人用户
                     .author {
@@ -127,7 +137,7 @@ header {
                         i {
                             vertical-align: middle;
                         }
-                        span {
+                        .menu_text {
                             vertical-align: middle;
                             @media screen and (max-width: 1200px) and (min-width: 768px) {
                                 display: none;
@@ -137,7 +147,10 @@ header {
                             background-color: $color-white-milk;
                         }
                     }
-                    .dropdown-submenu-one:hover>.dropdown-menu {
+                    .notification:hover>.dropdown-menu {
+                        display: block;
+                    }
+                    .author:hover>.dropdown-menu {
                         display: block;
                     }
                     .active {

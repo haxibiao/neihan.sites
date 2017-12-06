@@ -61,9 +61,29 @@
 // 已关注按钮样式
 @mixin following_button {
     @include button (100px, 1px solid hsla(0, 0%, 59%, .6), inherit, right);
-    &:hover {
-        border: 1px solid hsla(0, 0%, 50%, .6);
-        background-color: hsla(0, 0%, 60%, .1);
+    &.following {
+        &::after {
+            content: '已关注';
+        }
+        .icon-cha {
+            display: none;
+        }
+        .icon-weibiaoti12 {
+            display: inline-block;
+        }
+        &:hover {
+            border: 1px solid hsla(0, 0%, 50%, .6);
+            background-color: hsla(0, 0%, 60%, .1);
+            &::after {
+                content: '取消关注';
+            }
+            .icon-cha {
+                display: inline-block;
+            }
+            .icon-weibiaoti12 {
+                display: none;
+            }
+        }
     }
 }
 
@@ -676,4 +696,12 @@
             color: #666666;
         }
     }
+}
+
+// 消息提醒数量
+@mixin badge {
+    @include spacing (6px 0 0 0, 3px 6px);
+    float: right;
+    background-color: $color-red-watermelon;
+    font-size: 12px;
 }

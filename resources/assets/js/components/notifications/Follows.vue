@@ -1,4 +1,5 @@
 <template>
+    <!-- 收到的关注 -->
 	<div id="follows">
 		<div class="menu">全部关注</div>
 		<ul class="follows_list">
@@ -7,11 +8,12 @@
                     <a class="avatar" href="#">
                         <img src="/images/photo_03.jpg"/>
                     </a>
-                    <a class="follow" href="#">
-                        <i class="iconfont icon-weibiaoti12">
-                        </i>
+                    <a class="following" href="javascript:;">
                         <span>
-                            已关注
+                            <i class="iconfont icon-weibiaoti12">
+                            </i>
+                            <i class="iconfont icon-cha">
+                            </i>
                         </span>
                     </a>
                     <a class="title" href="#">
@@ -26,11 +28,12 @@
                     <a class="avatar" href="#">
                         <img src="/images/photo_03.jpg"/>
                     </a>
-                    <a class="follow" href="#">
-                        <i class="iconfont icon-weibiaoti12">
-                        </i>
+                    <a class="following" href="javascript:;">
                         <span>
-                            已关注
+                            <i class="iconfont icon-weibiaoti12">
+                            </i>
+                            <i class="iconfont icon-cha">
+                            </i>
                         </span>
                     </a>
                     <a class="title" href="#">
@@ -45,11 +48,12 @@
                     <a class="avatar" href="#">
                         <img src="/images/photo_01.jpg"/>
                     </a>
-                    <a class="follow" href="#">
-                        <i class="iconfont icon-weibiaoti12">
-                        </i>
+                    <a class="following" href="javascript:;">
                         <span>
-                            已关注
+                            <i class="iconfont icon-weibiaoti12">
+                            </i>
+                            <i class="iconfont icon-cha">
+                            </i>
                         </span>
                     </a>
                     <a class="title" href="#">
@@ -65,11 +69,12 @@
                     <a class="avatar" href="#">
                         <img src="/images/photo_02.jpg"/>
                     </a>
-                    <a class="follow" href="#">
-                        <i class="iconfont icon-weibiaoti12">
-                        </i>
+                    <a class="following" href="javascript:;">
                         <span>
-                            已关注
+                            <i class="iconfont icon-weibiaoti12">
+                            </i>
+                            <i class="iconfont icon-cha">
+                            </i>
                         </span>
                     </a>
                     <a class="title" href="#">

@@ -1,4 +1,5 @@
 <template>
+	<!-- 收到的投稿请求 -->
 	<div id="requests">
 		<div class="menu">全部投稿请求</div>
 		<ul class="requests_list">

@@ -1,4 +1,5 @@
 <template>
+	<!-- 收到的评论 -->
 	<div id="comments">
 		<div class="menu">收到的评论</div>
 		<ul class="comment_list">

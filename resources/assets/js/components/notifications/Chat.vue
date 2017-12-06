@@ -1,4 +1,5 @@
 <template>
+    <!-- 收到的聊天消息 -->
     <div id="chat_messages">
         <div class="chat_top">
             <router-link to="/chats" class="back_list">

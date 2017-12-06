@@ -1,4 +1,5 @@
 <template>
+	<!-- 收到的喜欢和赞 -->
 	<div id="likes">
 		<div class="menu">收到的喜欢和赞</div>
 		<ul class="likes_list">

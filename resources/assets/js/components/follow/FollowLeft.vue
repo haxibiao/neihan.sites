@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!-- 关注页的左侧 -->
         <div class="dropdown change_type">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 全部关注

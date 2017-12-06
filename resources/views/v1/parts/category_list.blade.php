@@ -1,3 +1,4 @@
+{{-- 首页显示的专题分类 --}}
 <div class="classification">
     <a class="collection" href="/v1/category" target="_blank">
         <img src="/images/category_01.jpeg"/>

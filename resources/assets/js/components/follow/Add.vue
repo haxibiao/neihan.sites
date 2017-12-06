@@ -1,4 +1,5 @@
 <template>
+    <!-- 添加关注 -->
 	<div id="add">
         <!-- Nav tabs -->
         <ul class="trigger_menu" role="tablist">
