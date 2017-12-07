@@ -34,57 +34,15 @@ class CategoryController extends Controller {
 	}
 
 	public function name_en(Request $request, $name_en) {
-		$category = Category::where('name_en', $name_en)->firstOrFail();
-		$parent = null;
-		if ($category->parent_id) {
-			$parent = $category->parent()->first();
-		}
-		$carousel_items = get_carousel_items($category->id);
+	    $category=Category::where('name_en',$name_en)->firstOrFail();
+	    $data['commented']=$category->articles()->where('status','>=',0)->orderBy('commented','desc')->paginate(10);
+	    $data['collected']=$category->articles()->where('status','>=',0)->paginate(10);
+	    $data['hot']=$category->articles()->where('status','>=',0)->orderBy('hits','desc')->paginate(10);
 
-		$categories = Category::where('parent_id', $category->id)->pluck('name', 'id');
-
-		if ($category->level == 0 && !$request->get('page')) {
-			$page_size = 2;
-		} else {
-			//非顶级频道，直接10个分页显示
-			$page_size = 10;
-		}
-
-		$articles = $category->articles()
-			->orderBy('id', 'desc')
-			->where('status', '>', 0)
-		// ->where('category_id', $category->id)
-			->paginate($page_size);
-
-		if ($articles->isEmpty()) {
-			$articles = Article::orderBy('id', 'desc')
-				->where('status', '>=', 0)
-				->whereIn('category_id', array_keys($categories->toArray()))
-				->paginate($page_size);
-		}
-
-		//下级分类
-		$data = [];
-		if (!$request->get('page')) {
-			$categories = Category::where('parent_id', $category->id)->get();
-			foreach ($categories as $cate) {
-				$cate_articles = Article::orderBy('id', 'desc')
-					->where('category_id', $cate->id)
-					->where('status', '>=', 0)
-					->take(2)
-					->get();
-				$data[$cate->name_en] = [
-					'name' => $cate->name,
-					'articles' => $cate_articles,
-				];
-			}
-		}
 		return view('category.name_en')
-			->withCategory($category)
-			->withParent($parent)
-			->withCarouselItems($carousel_items)
-			->withArticles($articles)
-			->withData($data);
+           ->withCategory($category)
+           ->withData($data)
+		;
 	}
 
 	/**

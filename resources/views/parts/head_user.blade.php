@@ -15,14 +15,14 @@
                         <span class="icon-bar">
                         </span>
                     </button>
-                    <a class="navbar-brand" href="/v1">
+                    <a class="navbar-brand" href="/">
                         <img alt="Logo" src="/logo/ainicheng.com.jpg"/>
                     </a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li class="tab v1">
-                            <a href="/v1">
+                            <a href="/">
                                 <i class="iconfont icon-xin">
                                 </i>
                                 <span class="menu_text">
@@ -171,7 +171,7 @@
                         </li>
                         <li class="tab author">
                             <a class="avatar" href="/v1/home">
-                                <img src="/images/photo_01.jpg"/>
+                                <img src="{{ Auth::user()->avatar() }}"/>
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
@@ -244,7 +244,7 @@
                             </ul>
                         </li>
                         <li class="creation">
-                            <a href="#">
+                            <a href="/article/create">
                                 <i class="iconfont icon-maobi">
                                 </i>
                                 <span>

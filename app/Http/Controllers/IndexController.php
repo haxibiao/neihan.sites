@@ -3,39 +3,58 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Category;
 use App\User;
-use App\Query;
+use Auth;
+use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = get_categories(1);
-        $data       = [];
-        foreach ($categories as $cate_id => $cate) {
-            $articles = Article::orderBy('id', 'desc')
-                ->where('category_id', $cate_id)
-                ->where('status', '>', 0)
-                ->where('image_url', '<>', '')
-                ->take(2)
-                ->get();
-            $data[$cate->name_en] = [
-                'name'     => $cate->name,
-                'articles' => $articles,
-            ];
+        $has_follow_articles = false;
+        //TODO:以后优化取数组算法
+        if (Auth::check()) {
+            $user = Auth::user();
+            //获取用户follow过的category
+            $follows       = $user->follows()->where('followed_type', 'categories')->take(7)->get();
+            $categories    = [];
+            $categorie_ids = [];
+            foreach ($follows as $follow) {
+                $category        = $follow->followed;
+                $categories[]    = $category;
+                $categorie_ids[] = $category->id;
+            }
+            //依靠获取到的categories来获取article
+            $articles = Article::with('user')->with('category')->whereIn('category_id', $categorie_ids)
+                ->orderBy('updated_at', 'desc')
+                ->paginate(10);
+            if (!$articles->isEmpty()) {
+                $has_follow_articles = true;
+            }
         }
 
-        $carousel_items = get_carousel_items();
-        $users          = User::orderBy('id', 'desc')->take(5)->get();
-        $hot_articles   = Article::orderBy('hits', 'desc')->take(2)->get();
-        $queries = Query::where('status','>=', 0)->orderBy('hits','desc')->take(10)->get();
-        $queries_new = Query::where('status','>=', 0)->orderBy('id','desc')->take(5)->get();
+        if (!$has_follow_articles) {
+            $categories = Category::orderBy('updated_at')->where('type', 'article')->take(7)->get();
+            $articles   = Article::with('user')->with('category')->orderBy('updated_at')->paginate(10);
+        }
+
+        //为VUEajax加载准备数据
+        if ($request->ajax() || request('debug')) {
+
+            foreach ($articles as $article) {
+                $article->time_ago  = $article->timeAgo();
+                $article->has_image = !empty($article->image_url);
+                $article->small_img = get_small_image($article->image_url);
+            }
+            return $articles;
+        }
+
+        $data             = (object) [];
+        $data->categories = $categories;
+        $data->articles   = $articles;
+
         return view('index.index')
-            ->withQueries($queries)
-            ->withQueriesNew($queries_new)
-            ->withCarouselItems($carousel_items)
-            ->withUsers($users)
-            ->withHotArticles($hot_articles)
             ->withData($data);
     }
 
