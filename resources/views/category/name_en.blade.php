@@ -1,4 +1,4 @@
-@extends('v1.layouts.app')
+@extends('layouts.app')
 
 @section('title')
     谈谈情，说说爱 - 专题 - 爱你城
@@ -12,16 +12,21 @@
                     <a class="avatar avatar_collection" href="/v1/category">
                         <img src="/images/category_02.jpg"/>
                     </a>
-                    <a class="botm follow" href="#">
-                        <span>
-                            ＋ 关注
-                        </span>
-                    </a>
+
+                {{-- <a class="botm follow" href="#"> --}}
+                    <follow 
+                        type="categories" 
+                        id="{{ $category->id }}" 
+                        user-id="{{ Auth::check() ? Auth::user()->id : false }}" 
+                        followed="{{ Auth::check() ? Auth::user()->isFollow('user', $category->id) : false }}">
+                      </follow>
+                    {{-- </a> --}}
                     <a class="botm contribute" href="#">
                         <span>
                             投稿
                         </span>
                     </a>
+
                     <div class="title">
                         <a class="name" href="/{{ $category->name_en }}">
                             <span>

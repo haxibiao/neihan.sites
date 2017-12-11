@@ -86,8 +86,14 @@ class User extends Authenticatable
         return $this->belongsToMany(\App\Chat::class)->withPivot('with_users');
     }
 
-    public function avatar(){
-    	return get_avatar($this);
+    public function avatar()
+    {
+        return get_avatar($this);
+    }
+
+    public function isFollow($type, $id)
+    {
+        return $this->followings()->where('followed_type', get_polymorph_types($type))->where('followed_id', $id)->count() ? true : false;
     }
 
 }

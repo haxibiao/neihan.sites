@@ -36,6 +36,7 @@ Vue.component('single-list-select', require('./components/SingleListSelect.vue')
 Vue.component('favorite', require('./components/Favorite.vue'));
 Vue.component('like', require('./components/Like.vue'));
 Vue.component('comment', require('./components/Comment.vue'));
+Vue.component('follow', require('./components/Follow.vue'));
 
 
 // 关注页
