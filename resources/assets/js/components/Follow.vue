@@ -1,6 +1,6 @@
 <template>
-  <a v-if="isLogin" :class="isFollowed ? 'botm follow' : 'botm follow'" @click="toggleFollow">
-	   <span v-if="!isSelf && !isFollowed">＋ 关注</span>
+  <a v-if="isLogin" :class="isFollowed ? 'following' : 'botm follow'" @click="toggleFollow">
+    	   <span v-if="!isSelf && !isFollowed">＋ 关注</span>
         <span v-if="!isSelf && isFollowed"><i class="gougou iconfont icon-weibiaoti12"></i><i class="chacha iconfont icon-cha"></i></span>
   </a>
 
@@ -12,15 +12,14 @@ export default {
 
   name: 'Follow',
 
-  propos:['type','userId','id','followed'],
+  props:['type','userId','id','followed'],
   
-
   computed:{
        isSelf() {
           return this.type=='user' && this.id==this.userId;
        },
        isLogin(){
-          return this.userId > 0;
+          return this.userId >0;
        },
        isFollowed(){
           return this.followedResult==null? this.followed:$this.followedResult;

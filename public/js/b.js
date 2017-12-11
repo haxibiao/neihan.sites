@@ -1928,7 +1928,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
    name: 'Follow',
 
-   propos: ['type', 'userId', 'id', 'followed'],
+   props: ['type', 'userId', 'id', 'followed'],
 
    computed: {
       isSelf: function isSelf() {
@@ -25163,7 +25163,7 @@ exports = module.exports = __webpack_require__("./node_modules/_css-loader@0.28.
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -74585,7 +74585,7 @@ var render = function() {
     ? _c(
         "a",
         {
-          class: _vm.isFollowed ? "botm follow" : "botm follow",
+          class: _vm.isFollowed ? "following" : "botm follow",
           on: { click: _vm.toggleFollow }
         },
         [
