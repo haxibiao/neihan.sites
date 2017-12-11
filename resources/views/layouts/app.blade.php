@@ -67,6 +67,12 @@
         });
     </script>
 
+    <script>(function(){
+            var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?2feeb9fa6561b6718ba3f78aac011cc6":"https://jspassport.ssl.qhimg.com/11.0.1.js?2feeb9fa6561b6718ba3f78aac011cc6";
+            document.write('<script src="' + src + '" id="sozz"><\/script>');
+            })();
+    </script>
+
     @stack('scripts')
     @stack('js')
 
