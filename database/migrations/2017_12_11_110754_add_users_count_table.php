@@ -20,6 +20,7 @@ class AddUsersCountTable extends Migration
             $table->integer('count_tips')->default(0);
             $table->integer('count_articles')->default(0);
             $table->integer('count_words')->default(0);
+            $table->integer('count_follows')->default(0);
  
         });
     }
@@ -37,6 +38,8 @@ class AddUsersCountTable extends Migration
             $table->dropColumn('count_shares');
             $table->dropColumn('count_tips');
             $table->dropColumn('count_articles');
+            $table->dropColumn('count_words');
+            $table->dropColumn('count_follows');
         });
     }
 }

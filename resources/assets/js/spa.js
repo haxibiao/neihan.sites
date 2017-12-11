@@ -48,6 +48,8 @@ Vue.component('notifications-left', require('./components/notifications/Notifica
 // 详情页评论
 Vue.component('new-comment', require('./components/detail/NewComment.vue'));
 
+Vue.component('article-list', require('./components/ArticleList.vue'));
+
 const routes = [
     // 关注路由
     { path: '/add', component: require('./components/follow/Add.vue') },

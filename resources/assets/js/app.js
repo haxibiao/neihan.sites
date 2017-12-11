@@ -34,5 +34,7 @@ Vue.component('follow', require('./components/Follow.vue'));
 // 详情页评论
 Vue.component('new-comment', require('./components/detail/NewComment.vue'));
 
+Vue.component('article-list', require('./components/ArticleList.vue'));
+
 const app = new Vue({
 }).$mount('#app');

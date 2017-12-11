@@ -32,6 +32,12 @@ Route::middleware('auth:api')->get('/comment/{id}/like', 'Api\CommentController@
 Route::middleware('auth:api')->get('/comment/{id}/report', 'Api\CommentController@report');
 Route::middleware('auth:api')->get('/comment/{id}/{type}', 'Api\CommentController@get');
 
+
+//follow
+Route::middleware('auth:api')->post('/follow/{id}/{type}','Api\FollowController@toggle');
+Route::middleware('auth:api')->get('/follows', 'Api\FollowController@follows');
+Route::middleware('auth:api')->get('/follow/recommends', 'Api\FollowController@recommends');
+
 //提交收藏
 Route::middleware('auth:api')->post('/favorite/{id}/{type}', 'Api\FavoriteController@save');
 //删除收藏

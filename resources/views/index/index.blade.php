@@ -18,6 +18,8 @@
                 </div>
                 {{-- 文章摘要 --}}
                 @include('parts.list.article_list_category',['articles'=>$data->articles])
+
+
             </div>
             {{-- 右侧 --}}
             <div class="aside col-sm-4">

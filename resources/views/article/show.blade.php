@@ -22,11 +22,12 @@
                                     {{ $article->user->name }}
                                 </a>
                             </span>
-                            <a class="follow" href="#">
-                                <span>
-                                    ＋ 关注
-                                </span>
-                            </a>
+                                  <follow 
+                                    type="users" 
+                                    id="{{ $article->user->id }}" 
+                                    user-id="{{ Auth::check() ? Auth::user()->id : false }}" 
+                                    followed="{{ Auth::check() ? Auth::user()->isFollow('user', $article->user->id) : false }}">
+                                  </follow>
                             <div class="meta">
                                 <span>
                                     {{ diffForHumansCN($article->created_at) }}
@@ -70,11 +71,12 @@
                         <a class="avatar" href="/v1/user" target="_blank">
                             <img src="/images/photo_02.jpg"/>
                         </a>
-                        <a class="follow" href="javascript:;">
-                            <span>
-                                ＋ 关注
-                            </span>
-                        </a>
+                                  <follow 
+                                    type="users" 
+                                    id="{{ $article->user->id }}" 
+                                    user-id="{{ Auth::check() ? Auth::user()->id : false }}" 
+                                    followed="{{ Auth::check() ? Auth::user()->isFollow('user', $article->user->id) : false }}">
+                                  </follow>
                         <a class="title" href="/v1/user" target="_blank">
                             {{ $article->user->name }}
                         </a>

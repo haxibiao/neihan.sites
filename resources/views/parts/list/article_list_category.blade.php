@@ -51,7 +51,6 @@
         </div>
     </li>
     @endforeach
+
+    <article-list api="/" start-page="1" />
 </ul>
-<a class="load_more" href="javascript:;">
-    阅读更多
-</a>

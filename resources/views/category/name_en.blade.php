@@ -14,11 +14,11 @@
                     </a>
 
                 {{-- <a class="botm follow" href="#"> --}}
-                    <follow 
+                       <follow 
                         type="categories" 
                         id="{{ $category->id }}" 
                         user-id="{{ Auth::check() ? Auth::user()->id : false }}" 
-                        followed="{{ Auth::check() ? Auth::user()->isFollow('user', $category->id) : false }}">
+                        followed="{{ Auth::check() ? Auth::user()->isFollow('categories', $category->id) : false }}">
                       </follow>
                     {{-- </a> --}}
                     <a class="botm contribute" href="#">
