@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="360-site-verification" content="ed079b070f66ac9d685d361152e1859a" />
+    <meta name="sogou_site_verification" content="JnOr7F5ji9"/>
     <link rel="icon" type="image/png" href="/logo/{{ env('APP_DOMAIN')}}.small.jpg" sizes="60*60">
     <link rel="icon" type="image/png" href="/logo/{{ env('APP_DOMAIN')}}.web.jpg" sizes="120*120">
     <link rel="apple-touch-icon" href="/logo/{{ env('APP_DOMAIN')}}.touch.jpg">
