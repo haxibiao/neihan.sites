@@ -48,8 +48,8 @@
         @endif
 
         @if(in_array(request()->path(), [
-            'follow',
-            'notification'
+            'v1/follow',
+            'v1/notification'
         ]))
 
         <script src="{{ mix('js/b.js') }}">

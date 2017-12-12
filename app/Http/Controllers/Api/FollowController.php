@@ -41,13 +41,13 @@ class FollowController extends Controller
 
     public function follows(Request $request)
     {
-        $user    = $request->user;
+        $user    = $request->user();
         $follows = [];
         foreach ($user->followings as $follow) {
-            $follow['id']   = $item->followed->id;
-            $follow['name'] = $item->followed->name;
-            $follow['type'] = $item->followed_type;
-            $follow['img']  = $item->followed_type == 'categories' ? $item->followed->logo : $item->followed->avatar();
+            $follow['id']   = $follow->followed->id;
+            $follow['name'] = $follow->followed->name;
+            $follow['type'] = $follow->followed_type;
+            $follow['img']  = $follow->followed_type == 'categories' ? $follow->followed->logo : $follow->followed->avatar();
             $follows[]      = $follow;
         }
 

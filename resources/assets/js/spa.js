@@ -56,7 +56,7 @@ const routes = [
     { path: '/timeline', component: require('./components/follow/Timeline.vue') },
     { path: '/category/:id', component: require('./components/follow/Category.vue') },
     { path: '/collection/:id', component: require('./components/follow/Collection.vue') },
-    { path: '/user/:id', component: require('./components/follow/User.vue') },
+    { path: '/users/:id', component: require('./components/follow/User.vue') },
     // 消息路由
     { path: '/comments', component: require('./components/notifications/Comments.vue') },
     { path: '/chats', component: require('./components/notifications/Chats.vue') },
