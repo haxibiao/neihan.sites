@@ -66,6 +66,8 @@ Route::get('/user/{id}/articles', 'Api\UserController@getArticles');
 
 //所有分类
 Route::get('categories', 'Api\CategoryController@getIndex');
+//GET分类下的文章
+Route::middleware('auth:api')->get('/category/{id}','Api\CategoryController@show');
 
 //視頻列表
 Route::get('videos', 'Api\VideoController@getIndex');

@@ -54,7 +54,7 @@ const routes = [
     // 关注路由
     { path: '/add', component: require('./components/follow/Add.vue') },
     { path: '/timeline', component: require('./components/follow/Timeline.vue') },
-    { path: '/category/:id', component: require('./components/follow/Category.vue') },
+    { path: '/categories/:id', component: require('./components/follow/Category.vue') },
     { path: '/collection/:id', component: require('./components/follow/Collection.vue') },
     { path: '/users/:id', component: require('./components/follow/User.vue') },
     // 消息路由
