@@ -101,6 +101,7 @@ class UserController extends Controller
     public function getInfo(Request $request, $id)
     {
         $user         = User::findOrFail($id);
+        $user->avatar_url=$user->avatar();
         $data['user'] = $user;
 
         $data['articles_count'] = Article::where('user_id', $user->id)->count();
