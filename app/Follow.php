@@ -6,12 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Follow extends Model {
 	protected $fillable = [
-		'id',
-		'type',
 		'user_id',
-		'follwing_user_id',
-		'follwing_collection_id',
-		'follwing_category_id',
+		'followed_type',
+		'followed_id',
 	];
 	// public function user() {
 	// 	return $this->belongsTo(\App\User::class);

@@ -215,3 +215,7 @@ function get_user_name($id) {
 function get_polymorph_types($type) {
 	return ends_with($type, 's') ? $type : $type . 's';
 }
+
+function get_category_logo($logo){
+   return  is_file($logo) ? $logo : "/images/category_01.jpeg";
+}

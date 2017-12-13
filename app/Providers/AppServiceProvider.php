@@ -32,6 +32,8 @@ class AppServiceProvider extends ServiceProvider {
 			'videos' => 'App\Video',
 			'likes' => 'App\Like',
 			'favorites' => 'App\Favorite',
+			'categories' => 'App\Category',
+			'users'=>'App\User',
 		]);
 		foreach (glob(app_path() . '/Helpers/*.php') as $filename) {
 			require_once $filename;

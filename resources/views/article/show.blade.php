@@ -1,154 +1,487 @@
 @extends('layouts.app')
 
 @section('title')
-  {{ $article->title }}
-@endsection
-@section('keywords')
-  {{ str_replace(' ', ',', trim($article->keywords)) }}, {{ $article->category->name }}
-@endsection
-@section('description')
-  {{ $article->description }}
-@endsection
-
+    {{ $article->title }} - 爱你城
+@stop
 @section('content')
-<div class="container">
-  @if(!is_in_app())
-  <ol class="breadcrumb">
-    <li><a href="/">{{ config('app.name') }}</a></li>
-    @if(!empty($data['parent_category']))
-      <li><a href="/{{ $data['parent_category']->name_en }}">{{ $data['parent_category']->name }}</a></li>
-    @endif
-    <li><a href="/{{ $article->category->name_en }}">{{ $article->category->name }}</a></li>
-    <li class="active">{{ $article->title }}</li>
-  </ol>
-  @endif
-
-  <div class="content">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-
-        @include('article.parts.show_edit_buttons')
-
-        <h1>{{ $article->title }}</h1>
-        <p class="pull-right" title="移动端：{{ $article->hits_mobile }}, 手机端：{{ $article->hits_phone }}, 微信: {{ $article->hits_wechat }}, 爬虫：{{ $article->hits_robot }}">阅读次数: {{ $article->hits }}</p>
-        <p class="small">
-          作者: <a href="/user/{{ $article->user_id }}">{{ $article->author }}</a>  发布时间：{{ diffForHumansCN($article->created_at) }}
-        </p>
-        <p>
-          @if($article->categories()->count())
-             分类:
-            @foreach($article->categories as $category_name)
-               <a href="/{{ $category_name->name_en }}">{{ $category_name->name }}</a>
-
-            @endforeach
-          @else
-             分类: <a href="/{{ $article->category->name_en }}">{{ $article->category->name }}</a>
-          @endif
-        </br>
-          关键词:
-          @foreach($article->tags as $tag)
-          <a href="/tag/{{ $tag->name }}">{{  $tag->name  }}</a>
-          @endforeach
-        </p>
-
-      </div>
-      <div class="panel-body">
-        <p class="lead">
-          简介: {{ $article->description }}
-        </p>
-        <p>
-          {!! $article->body !!}
-        </p>
-         @if($article->data_wz)
-            @include('article.parts.article_json_wz')
-         @endif
-         @if($article->data_lol)
-            @include('article.parts.article_json_lol')
-         @endif
-        <p>
-          @if($article->edited_at)
-          本文最后由 <a href="/user/{{ $article->user_id }}">{{ $article->user_name }}</a> 编辑 ({{ diffForHumansCN($article->edited_at) }})
-          @endif
-        </p>
-
-        @if(!empty(Request::get('weixin')))
-        <div class="alert alert-success">
-          <strong>亲爱的微信用户，您好!</strong>
-            <p>
-              我们的内容您感兴趣吗？微信里长按识别一下,关注我们吧
-            </p>
-            <img src="/qrcode/{{ get_site_domain() }}.jpg" alt="" class="img img-responsive">
+<div id="detail">
+    <div class="note">
+        <div class="container">
+            <div class="col-xs-12 col-md-10 col-md-offset-1">
+                <div class="article">
+                    <h1 class="title">
+                        {{ $article->title }}
+                    </h1>
+                    <div class="author">
+                        <a class="avatar" href="#">
+                            <img src="/images/photo_02.jpg"/>
+                        </a>
+                        <div class="info">
+                            <span class="name">
+                                <a href="#">
+                                    {{ $article->user->name }}
+                                </a>
+                            </span>
+                                  <follow 
+                                    type="users" 
+                                    id="{{ $article->user->id }}" 
+                                    user-id="{{ Auth::check() ? Auth::user()->id : false }}" 
+                                    followed="{{ Auth::check() ? Auth::user()->isFollow('user', $article->user->id) : false }}">
+                                  </follow>
+                            <div class="meta">
+                                <span>
+                                    {{ diffForHumansCN($article->created_at) }}
+                                </span>
+                                <span>
+                                    字数 {{ $article->words }}
+                                </span>
+                                <span>
+                                    阅读 {{ $article->hits }}
+                                </span>
+                                <span>
+                                    评论 {{ $article->count_replies }}
+                                </span>
+                                <span>
+                                    喜欢 {{ $article->count_favoites }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    @include('article.parts.article_body')
+                    <div class="article_foot">
+                        <a class="notebook" href="#">
+                            <i class="iconfont icon-wenji">
+                            </i>
+                            <span>
+                                日记本
+                            </span>
+                        </a>
+                        <div class="copyright">
+                            © 著作权归作者所有
+                        </div>
+                   {{--      <div class="modal_wrap">
+                            <a href="#">
+                                举报文章
+                            </a>
+                        </div> --}}
+                    </div>
+                </div>
+                <div class="follow_detail">
+                    <div class="info">
+                        <a class="avatar" href="/v1/user" target="_blank">
+                            <img src="/images/photo_02.jpg"/>
+                        </a>
+                                  <follow 
+                                    type="users" 
+                                    id="{{ $article->user->id }}" 
+                                    user-id="{{ Auth::check() ? Auth::user()->id : false }}" 
+                                    followed="{{ Auth::check() ? Auth::user()->isFollow('user', $article->user->id) : false }}">
+                                  </follow>
+                        <a class="title" href="/v1/user" target="_blank">
+                            {{ $article->user->name }}
+                        </a>
+                        <p>
+                            写了 {{ $article->user->words }} 字，被 {{ $article->user->count_favorites }} 人关注，获得了 16 个喜欢
+                        </p>
+                    </div>
+                    <div class="signature">
+                        {{ $article->user->introduction }}
+                    </div>
+                </div>
+                <div class="support_author">
+                    <p>
+                        如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！
+                    </p>
+                    <div class="btn_pay">
+                        赞赏支持
+                    </div>
+                    <div class="supporter">
+                        <ul class="support_list">
+                            <li>
+                                <a class="avatar" href="/v1/user">
+                                    <img src="/images/photo_02.jpg"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="avatar" href="/v1/user">
+                                    <img src="/images/photo_03.jpg"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="avatar" href="/v1/user">
+                                    <img src="/images/photo_02.jpg"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="avatar" href="/v1/user">
+                                    <img src="/images/photo_03.jpg"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="avatar" href="/v1/user">
+                                    <img src="/images/photo_02.jpg"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="avatar" href="/v1/user">
+                                    <img src="/images/photo_03.jpg"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="avatar" href="/v1/user">
+                                    <img src="/images/photo_02.jpg"/>
+                                </a>
+                            </li>
+                        </ul>
+                        <span class="rewad_user">
+                            等10人
+                        </span>
+                    </div>
+                </div>
+                <div class="meta_bottom">
+                    <div class="like">
+                        <div class="like_group">
+                            <div class="btn_like">
+                                <a href="#">
+                                    <i class="iconfont icon-xin">
+                                    </i>
+                                    喜欢
+                                </a>
+                            </div>
+                            <div class="modal_wrap">
+                                <a href="#">
+                                    13
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="share_group">
+                        <a class="share_circle" href="#">
+                            <i class="iconfont icon-weixin1">
+                            </i>
+                        </a>
+                        <a class="share_circle" href="#">
+                            <i class="iconfont icon-sina">
+                            </i>
+                        </a>
+                        <a class="share_circle" href="#">
+                            <i class="iconfont icon-zhaopian">
+                            </i>
+                        </a>
+                        <a class="share_circle more_share" href="#">
+                            更多分享
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <div class="comment_list">
+                        <new-comment>
+                        </new-comment>
+                        <div class="normal_comment_list">
+                            <div>
+                                <div>
+                                    <div class="top">
+                                        <span>
+                                            6条评论
+                                        </span>
+                                        <a class="author_only" href="#">
+                                            只看作者
+                                        </a>
+                                        <div class="pull-right">
+                                            <a class="active" href="#">
+                                                按喜欢排序
+                                            </a>
+                                            <a href="#">
+                                                按时间正序
+                                            </a>
+                                            <a href="#">
+                                                按时间倒序
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="comment">
+                                    <div>
+                                        <div class="author">
+                                            <a class="avatar" href="#">
+                                                <img src="/images/photo_03.jpg"/>
+                                            </a>
+                                            <div class="info">
+                                                <a class="name" href="#">
+                                                    LyonHunter
+                                                </a>
+                                                <div class="meta">
+                                                    <span>
+                                                        5楼 · 2017.08.12 23:06
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="comment_wrap">
+                                            <p>
+                                                (2015年10月入坑，且已到贵族五，假设下所有人都充到了贵族五的话。。。)
+                                            </p>
+                                            <div class="tool_group">
+                                                <a href="#">
+                                                    <i class="iconfont icon-fabulous">
+                                                    </i>
+                                                    <span>
+                                                        赞
+                                                    </span>
+                                                </a>
+                                                <a href="#">
+                                                    <i class="iconfont icon-xinxi">
+                                                    </i>
+                                                    <span>
+                                                        回复
+                                                    </span>
+                                                </a>
+                                                <a class="report" href="#">
+                                                    <span>
+                                                        举报
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="comment">
+                                    <div>
+                                        <div class="author">
+                                            <a class="avatar" href="#">
+                                                <img src="/images/photo_03.jpg"/>
+                                            </a>
+                                            <div class="info">
+                                                <a class="name" href="#">
+                                                    呦小君
+                                                </a>
+                                                <div class="meta">
+                                                    <span>
+                                                        7楼 · 2017.07.05 07:47
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="comment_wrap">
+                                            <p>
+                                                可是我觉得周围的精英很少有玩这个的，至少我的研究生同学没有…平庸的始终平庸，没有农药还有假药
+                                            </p>
+                                            <div class="tool_group">
+                                                <a href="#">
+                                                    <i class="iconfont icon-fabulous">
+                                                    </i>
+                                                    <span>
+                                                        237人赞
+                                                    </span>
+                                                </a>
+                                                <a href="#">
+                                                    <i class="iconfont icon-xinxi">
+                                                    </i>
+                                                    <span>
+                                                        回复
+                                                    </span>
+                                                </a>
+                                                <a class="report" href="#">
+                                                    <span>
+                                                        举报
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="sub_comment_list">
+                                        <div class="sub_comment">
+                                            <p>
+                                                <a href="#">
+                                                    智_先生
+                                                </a>
+                                                ：
+                                                <span>
+                                                    物以类聚，人以群分，不同的圈子文化对一个人的影响是比较大
+                                                </span>
+                                            </p>
+                                            <div class="sub_tool_group">
+                                                <span>
+                                                    2017.07.05 08:45
+                                                </span>
+                                                <a href="#">
+                                                    <i class="iconfont icon-xinxi">
+                                                    </i>
+                                                    <span>
+                                                        回复
+                                                    </span>
+                                                </a>
+                                                <a class="report" href="#">
+                                                    <span>
+                                                        举报
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="sub_comment">
+                                            <p>
+                                                <a href="#">
+                                                    心若冰清_
+                                                </a>
+                                                ：
+                                                <span>
+                                                    这个写的确实很真实
+                                                </span>
+                                            </p>
+                                            <div class="sub_tool_group">
+                                                <span>
+                                                    2017.07.05 08:45
+                                                </span>
+                                                <a href="#">
+                                                    <i class="iconfont icon-xinxi">
+                                                    </i>
+                                                    <span>
+                                                        回复
+                                                    </span>
+                                                </a>
+                                                <a class="report" href="#">
+                                                    <span>
+                                                        举报
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="sub_comment">
+                                            <p>
+                                                <a href="#">
+                                                    吕岳阳
+                                                </a>
+                                                ：
+                                                <span>
+                                                    我很费解啊，竟然有东西比撸代码还有意思。
+                                                </span>
+                                            </p>
+                                            <div class="sub_tool_group">
+                                                <span>
+                                                    2017.07.05 08:45
+                                                </span>
+                                                <a href="#">
+                                                    <i class="iconfont icon-xinxi">
+                                                    </i>
+                                                    <span>
+                                                        回复
+                                                    </span>
+                                                </a>
+                                                <a class="report" href="#">
+                                                    <span>
+                                                        举报
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="sub_comment more_comment">
+                                            <a class="add_comment_btn" href="#">
+                                                <i class="iconfont icon-xie">
+                                                </i>
+                                                <span>
+                                                    添加新评论
+                                                </span>
+                                            </a>
+                                            <span class="line_warp">
+                                                还有67条评论，
+                                                <a href="#">
+                                                    展开查看
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="pagination">
+                            <li>
+                                <a href="#">
+                                    <span>
+                                        上一页
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    1
+                                </a>
+                            </li>
+                            <li>
+                                <a class="active" href="#">
+                                    2
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    3
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span>
+                                        下一页
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="alert alert-info">
-          <strong>想看小编"{{ $article->author }}"的更多文章吗?</strong>
-            <p>
-              点左下角的 <strong style="color:red">"阅读全文"</strong>, 可以和本站更多小编,网友互动...
-            </p>
-            <p>
-               ￬ ￬ ￬
-            </p>
-        </div>
-        @endif
-
-        @if(Auth::check())
-        <div class="row top10">
-        <div class="col-md-12">
-          <favorite id="{{ $article->id }}" type="article"></favorite>
-          <like id="{{ $article->id }}" type="article"></like>
-        </div>
-
-        <div class="col-md-6 top10">
-            <comment id="{{ $article->id }}" type="article" username="{{ Auth::user()->name }}"></comment>
-        </div>
-        </div>
-        @endif
-
-      </div>
     </div>
-  </div>
-
-  @include('article.parts.connections')
-
-  @if(empty(Request::get('weixin')))
-  <div class="row">
-    <div class="col-md-3">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">作者</h3>
+    <div class="note_bottom">
+        <div class="container">
+            <div class="col-xs-12 col-md-10 col-md-offset-1">
+                <div>
+                    <div class="main">
+                        <div class="title">
+                            被以下专题收入，发现更多相似内容
+                        </div>
+                        <div class="include_collection">
+                            <a class="item" href="#">
+                                <div class="name">
+                                    ＋ 收入我的主题
+                                </div>
+                            </a>
+                            <a class="item" href="#">
+                                <img src="/images/category_08.jpg"/>
+                                <div class="name">
+                                    剑侠情缘
+                                </div>
+                            </a>
+                            <a class="item" href="#">
+                                <img src="/images/category_01.jpeg"/>
+                                <div class="name">
+                                    王者荣耀
+                                </div>
+                            </a>
+                            <a class="item show_more" href="#">
+                                <div class="name">
+                                    展开更多
+                                    <i class="iconfont icon-xia">
+                                    </i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="recommend_note">
+                        <div class="meta">
+                            <div class="title">
+                                推荐阅读
+                                <a href="#">
+                                    更多精彩内容
+                                    <i class="iconfont icon-youbian">
+                                    </i>
+                                </a>
+                            </div>
+                        </div>
+                        @include('v1.parts.article_list_recommend')
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="panel-body">
-           @include('user.parts.user_item', ['user' => $article->user])
-        </div>
-      </div>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">感兴趣吗？微信扫一下关注吧</h3>
-        </div>
-        <div class="panel-body">
-           <img src="/qrcode/{{ env('APP_DOMAIN') }}.jpg" alt="" class="img img-responsive">
-           <p>
-             @if(Agent::match('micromessenger')) 微信里阅读的朋友,您可以长按二维码,然后识别就可以关注了 @endif
-           </p>
-        </div>
-      </div>
     </div>
-    <div class="col-md-9">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">同类文章</h3>
-        </div>
-        <div class="panel-body">
-          @foreach($data['related'] as $article)
-            @include('article.parts.article_item')
-          @endforeach
-        </div>
-      </div>
-    </div>
-  </div>
-  @endif
 </div>
-@endsection
-
-@push('scripts')
-    @include('parts.js_for_app')
-@endpush
+@stop

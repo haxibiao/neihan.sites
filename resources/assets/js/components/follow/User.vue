@@ -1091,9 +1091,28 @@ export default {
 
   name: 'User',
 
+  created(){
+  	this.fetchData();
+  },
+
+  watch:{
+  	//路由如果变化会再次执行该方法
+  	'$route':'fetchData'
+  }
+
+  methords:{
+      fetchData(){
+           var api_url=window.tokenize('/api/user/'+this.$route.params.id);
+           var vm=this;
+           window.axios.get(api_url).then(function(response){
+           	  vm.user=response.data.user;
+           });
+      }
+  },
+
   data () {
     return {
-
+         user:null
     }
   }
 }

@@ -36,6 +36,7 @@ Vue.component('single-list-select', require('./components/SingleListSelect.vue')
 Vue.component('favorite', require('./components/Favorite.vue'));
 Vue.component('like', require('./components/Like.vue'));
 Vue.component('comment', require('./components/Comment.vue'));
+Vue.component('follow', require('./components/Follow.vue'));
 
 
 // 关注页
@@ -47,13 +48,15 @@ Vue.component('notifications-left', require('./components/notifications/Notifica
 // 详情页评论
 Vue.component('new-comment', require('./components/detail/NewComment.vue'));
 
+Vue.component('article-list', require('./components/ArticleList.vue'));
+
 const routes = [
     // 关注路由
     { path: '/add', component: require('./components/follow/Add.vue') },
     { path: '/timeline', component: require('./components/follow/Timeline.vue') },
     { path: '/category/:id', component: require('./components/follow/Category.vue') },
     { path: '/collection/:id', component: require('./components/follow/Collection.vue') },
-    { path: '/user/:id', component: require('./components/follow/User.vue') },
+    { path: '/users/:id', component: require('./components/follow/User.vue') },
     // 消息路由
     { path: '/comments', component: require('./components/notifications/Comments.vue') },
     { path: '/chats', component: require('./components/notifications/Chats.vue') },

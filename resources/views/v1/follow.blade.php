@@ -1,4 +1,4 @@
-@extends('v1.layouts.app')
+@extends('layouts.app')
 
 @section('title')
     关注 - 爱你城
