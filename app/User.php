@@ -25,6 +25,7 @@ class User extends Authenticatable
         'seo_meta',
         'seo_push',
         'seo_tj',
+        'api_token',
     ];
 
     /**
@@ -56,14 +57,24 @@ class User extends Authenticatable
         return $this->hasMany(\App\Message::class);
     }
 
+    public function collections()
+    {
+        //默认给个文集...
+        if (!Collection::where('user_id', $this->id)->count()) {
+            $collection = Collection::firstOrNew([
+                'user_id' => $this->id,
+                'name'    => '日记本',
+            ]);
+            $collection->save();
+            $this->count_collections = 1;
+        }
+
+        return $this->hasMany(\App\Collection::class);
+    }
+
     public function actions()
     {
         return $this->hasMany(\App\Action::class);
-    }
-
-    public function collections()
-    {
-        return $this->hasMany(\App\Collection::class);
     }
 
     public function likes()
@@ -81,19 +92,136 @@ class User extends Authenticatable
         return $this->hasMany(\App\Collection::class);
     }
 
+    public function isFollow($type, $id)
+    {
+        return $this->followings()->where('followed_type', get_polymorph_types($type))->where('followed_id', $id)->count() ? true : false;
+    }
+
     public function chats()
     {
-        return $this->belongsToMany(\App\Chat::class)->withPivot('with_users');
+        return $this->belongsToMany(\App\Chat::class)->withPivot('with_users', 'unreads');
+    }
+
+    public function adminCategories()
+    {
+        return $this->belongsToMany(\App\Category::class)->wherePivot('is_admin', 1);
+    }
+
+    public function requestCategories()
+    {
+        return $this->belongsToMany(\App\Category::class)->wherePivot('approved', 0);
+    }
+
+    public function joinCategories()
+    {
+        return $this->belongsToMany(\App\Category::class)->wherePivot('approved', 1);
+    }
+
+    public function introduction()
+    {
+        return !empty($this->introduction) ? $this->introduction : '这个人比较神秘,什么都没有留下...';
     }
 
     public function avatar()
     {
-        return get_avatar($this);
+        //读取qq头像
+        if (empty($this->avatar)) {
+            $qq = $this->qq;
+            if (empty($qq)) {
+                $pattern = '/(\d+)\@qq\.com/';
+                if (preg_match($pattern, strtolower($this->email), $matches)) {
+                    $qq = $matches[1];
+                }
+            }
+            if (!empty($qq)) {
+
+                if (!is_dir(public_path('/storage/avatar/'))) {
+                    mkdir(public_path('/storage/avatar/'), 0777, 1);
+                }
+
+                $avatar_path = '/storage/avatar/' . $this->id . '.jpg';
+                $qq_pic      = get_qq_pic($qq);
+                $qq_img_data = @file_get_contents($qq_pic);
+                if ($qq_img_data) {
+                    file_put_contents(public_path($avatar_path), $qq_img_data);
+                    $hash = md5_file(public_path($avatar_path));
+                    if ($hash != md5_file(public_path('/images/qq_default.png')) && $hash != md5_file(public_path('/images/qq_tim_default.png'))) {
+                        $this->avatar = $avatar_path;
+                        $this->save();
+                    }
+                }
+            }
+        }
+
+        //最后使用默认头像地址
+        if (empty($this->avatar)) {
+            $this->avatar = '/images/avatar.jpg';
+            $this->save();
+        }
+
+        return $this->avatar;
     }
 
-    public function isFollow($type, $id)
+    public function unreads($type = '', $num = null)
     {
-        return $this->followings()->where('followed_type', get_polymorph_types($type))->where('followed_id', $id)->count() ? true : false;
+        //TODO:: read cache
+        $unreads = Cache::get('unreads_' . $this->id);
+        if (!$unreads) {
+            $unreadNotifications = $this->unreadNotifications;
+            $unreads['comments'] = $unreadNotifications->sum(function ($item) {
+                return $item->type == 'App\Notifications\ArticleCommented';
+            });
+
+            $unreads['chats'] = $this->chats->sum(function ($item) {
+                return $item->pivot->unreads;
+            });
+
+            $unreads['requests'] = $unreadNotifications->sum(function ($item) {
+                return $item->type == 'App\Notifications\CategoryRequested';
+            });
+            $unreads['likes'] = $unreadNotifications->sum(function ($item) {
+                return $item->type == 'App\Notifications\ArticleLiked';
+            });
+            $unreads['follows'] = $unreadNotifications->sum(function ($item) {
+                return $item->type == 'App\Notifications\UserFollowed';
+            });
+            $unreads['tips'] = $unreadNotifications->sum(function ($item) {
+                return $item->type == 'App\Notifications\ArticleTiped';
+            });
+            $unreads['others'] = $unreadNotifications->sum(function ($item) {
+                return !in_array($item->type, [
+                    'App\Notifications\ArticleCommented',
+                    'App\Notifications\CategoryRequested',
+                    'App\Notifications\ArticleLiked',
+                    'App\Notifications\UserFollowed',
+                    'App\Notifications\ArticleTiped',
+                ]);
+            });
+            //write cache
+            Cache::put('unreads_' . $this->id, $unreads, 60);
+        }
+
+        if ($num) {
+            $unreads[$type] = $num;
+            //write cache
+            Cache::put('unreads_' . $this->id, $unreads, 60);
+        }
+
+        if ($type) {
+            return $unreads[$type] ? $unreads[$type] : null;
+        }
+
+        return $unreads;
+    }
+
+    public function forgetUnreads()
+    {
+        Cache::forget('unreads_' . $this->id);
+    }
+
+    public function newReuqestCategories()
+    {
+        return $this->categories()->where('new_requests', '>', 0);
     }
 
 }

@@ -136,31 +136,12 @@ function get_avatar($user) {
 	return get_qq_pic($user);
 }
 
-function get_qq_pic($user) {
-	$pic_path = '/img/qq_default_pic.gif';
-	$qq = $user->qq;
-	if (empty($qq)) {
-		$pattern = '/(\d+)\@qq\.com/';
-		if (preg_match($pattern, strtolower($user->email), $matches)) {
-			$qq = $matches[1];
-		}
-	}
-	$pic_path = 'https://q.qlogo.cn/headimg_dl?bs=qq&dst_uin=' . $qq . '&src_uin=www.feifeiboke.com&fid=blog&spec=100';
-
-	return $pic_path;
+function get_qq_pic($qq) {
+	return 'https://q.qlogo.cn/headimg_dl?bs=qq&dst_uin=' . $qq . '&src_uin=qq.com&fid=blog&spec=100';
 }
 
-function get_qzone_pic($user) {
-	$pic_path = '/img/qq_default_pic.gif';
-	$qq = $user->qq;
-	if (empty($qq)) {
-		$pattern = '/(\d+)\@qq\.com/';
-		if (preg_match($pattern, strtolower($user->email), $matches)) {
-			$qq = $matches[1];
-			$pic_path = 'https://qlogo2.store.qq.com/qzonelogo/' . $qq . '/1/1249809118';
-		}
-	}
-	return $pic_path;
+function get_qzone_pic($qq) {
+    return 'https://qlogo2.store.qq.com/qzonelogo/' . $qq . '/1/'.time();
 }
 
 function get_small_image($image_url) {

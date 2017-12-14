@@ -32,10 +32,12 @@ class Article extends Model
     {
         return $this->belongsTo('App\Category');
     }
+
     public function categories()
     {
         return $this->belongsToMany(\App\Category::class);
     }
+
     public function tags1()
     {
         return $this->belongsToMany(\App\Tag::class);
@@ -55,18 +57,22 @@ class Article extends Model
     {
         return $this->belongsToMany('App\Video');
     }
+
     public function collections()
     {
         return $this->belongsToMany(\App\Collection::class);
     }
+
     public function commments()
     {
         return $this->morphMany(\App\Comment::class, 'commentable');
     }
+
     public function tips()
     {
         return $this->morphMany(\App\Tip::class, 'tipable');
     }
+
     public function favorites()
     {
         return $this->morphMany(\App\Favorite::class, 'faved');
@@ -75,5 +81,33 @@ class Article extends Model
     public function timeAgo()
     {
         return diffForHumansCN($this->created_at);
+    }
+
+    public function description()
+    {
+        return !empty($this->description) ? $this->description : str_limit(strip_tags($this->body), 200);
+    }
+
+    public function primaryImage()
+    {
+        $image_url_path = parse_url($this->image_url, PHP_URL_PATH);
+        $image          = Image::firstOrNew([
+            'path' => $image_url_path,
+        ]);
+        return $image->path_small();
+    }
+
+    public function hasImage()
+    {
+        $image_url_path = parse_url($this->image_url, PHP_URL_PATH);
+        $image          = Image::firstOrNew([
+            'path' => $image_url_path,
+        ]);
+        return $image->id;
+    }
+
+    public function isSelf()
+    {
+        return Auth::check() && Auth::id() ==$this->user_id;
     }
 }

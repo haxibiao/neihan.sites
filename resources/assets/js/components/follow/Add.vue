@@ -1,6 +1,7 @@
 <template>
+    <div v-if="!loaded" class="loading"></div>
     <!-- 添加关注 -->
-	<div id="add">
+	<div v-else="loaded" id="add">
         <!-- Nav tabs -->
         <ul class="trigger_menu" role="tablist">
             <li class="active" role="presentation">
@@ -333,9 +334,28 @@ export default {
 
   name: 'Add',
 
+  created(){
+     this.fetchData();
+  },
+  
+  methods:{
+     fetchData(){
+        var api_url=window.tokenize('/api/follow/adds');
+        var vm =this;
+        window.axios.get(api_url).then(function(response){
+            vm.user=response.data.user;
+            vm.loaded =response.data.loaded;
+        });
+     }
+  },
+
   data () {
     return {
-
+        loaded: false,
+        user:null,
+        adds:[],
+        add_users:[],
+        add_categories:[],
     }
   }
 }
