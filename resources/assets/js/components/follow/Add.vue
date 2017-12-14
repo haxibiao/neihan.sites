@@ -32,11 +32,7 @@
               <div v-for="recommend in recommends">
                     <li v-if="recommend.type=='users'">
                         <div>
-                            <a class="follow" href="#">
-                                <span>
-                                    ＋ 关注
-                                </span>
-                            </a>
+                          <follow type="users" :id="recommend.id" :user-id="user.id" :followed="recommend.is_followed"></follow>
                             <a class="avatar" href="#">
                                 <img :src="recommend.avatar"/>
                             </a>
@@ -86,195 +82,66 @@
               </div>
             </ul>
             <ul class="tab-pane fade" id="users" role="tabpanel">
-                <li>
-                    <div>
-                        <a class="follow" href="#">
-                            <span>
-                                ＋ 关注
-                            </span>
-                        </a>
-                        <a class="avatar" href="#">
-                            <img src="/images/photo_03.jpg"/>
-                        </a>
-                        <div class="info">
-                            <a class="name" href="#">
-                                爱你城播客
+                <div v-for="recommended_user in recommended_users">
+                    <li>
+                        <div>
+
+                     <follow type="users" :id="recommended_user.id" :user-id="user.id" :followed="recommended_user.followed"></follow>
+
+                            <a class="avatar" :href="'/user/'+recommended_user.id">
+                                <img :src="recommended_user.avatar"/>
                             </a>
-                            <p>
-                                爱你城播客官号。爱你城播客将邀请各主播大咖朗读简书的文章，愿美妙的声音一直陪伴你。
-                            </p>
-                            <a href="#">
-                                <i class="iconfont icon-wenji">
-                                </i>
-                                <span>
-                                    【爱你城鸡汤馆】妈，我不...
-                                </span>
-                            </a>
-                            <a href="#">
-                                <i class="iconfont icon-wenji">
-                                </i>
-                                <span>
-                                    【爱你城鸡汤馆】你有最美...
-                                </span>
-                            </a>
+                            <div class="info">
+                                <a class="name" :href="'/user/'+recommended_user.id">
+                                    {{ recommended_user.name }}
+                                </a>
+                                <p>
+                                    {{ recommended_user.introduction }}
+                                </p>
+
+                                <a v-for="collection in recommended_user.collections" href="#">
+                                    <i class="iconfont icon-wenji">
+                                    </i>
+                                    <span>
+                                        {{ collection.name }}
+                                    </span>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                </li>
-                <li>
-                    <div>
-                        <a class="follow" href="#">
-                            <span>
-                                ＋ 关注
-                            </span>
-                        </a>
-                        <a class="avatar" href="#">
-                            <img src="/images/photo_02.jpg"/>
-                        </a>
-                        <div class="info">
-                            <a class="name" href="#">
-                                爱你城大学堂
-                            </a>
-                            <p>
-                                爱你城自有的学习成长平台。爱你城大学堂讲师签约申请指南。
-                            </p>
-                            <a href="#">
-                                <i class="iconfont icon-wenji">
-                                </i>
-                                <span>
-                                    人类问题研究中心015...
-                                </span>
-                            </a>
-                            <a href="#">
-                                <i class="iconfont icon-wenji">
-                                </i>
-                                <span>
-                                    【获奖公告】你有一份奖...
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div>
-                        <a class="follow" href="#">
-                            <span>
-                                ＋ 关注
-                            </span>
-                        </a>
-                        <a class="avatar" href="#">
-                            <img src="/images/photo_03.jpg"/>
-                        </a>
-                        <div class="info">
-                            <a class="name" href="#">
-                                王佩
-                            </a>
-                            <p>
-                                十分精力：四分读书，三分写书，三分教书。《正版语文》作者，21世十分精力：四分读书，三分写书，三分教书。《正版语文》作者，21世十分精力：四分读书，三分写书，三分教书。《正版语文》作者，21世
-                            </p>
-                            <a href="#">
-                                <i class="iconfont icon-wenji">
-                                </i>
-                                <span>
-                                    电影《教父》何以成为杰作？
-                                </span>
-                            </a>
-                            <a href="#">
-                                <i class="iconfont icon-wenji">
-                                </i>
-                                <span>
-                                    生命的轻重缓急
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                </li>
+                    </li>
+               </div>
             </ul>
             <ul class="tab-pane fade" id="zhuanti1" role="tabpanel">
-                <li>
-                    <div>
-                        <a class="follow" href="#">
-                            <span>
-                                ＋ 关注
-                            </span>
-                        </a>
-                        <a class="avatar avatar_collection" href="#">
-                            <img src="/images/category_02.jpg"/>
-                        </a>
-                        <div class="info">
-                            <a class="name" href="#">
-                                爱你城交友
+                <div v-for="category in recommended_categories">
+                    <li>
+                        <div>
+                        <follow type="categories" :id="category.id" :user-id="user.id" :followed="category.followed"></follow>
+
+                            <a class="avatar avatar_collection" :href="'/'+category.name_en">
+                                <img :src="category.logo"/>
                             </a>
-                            <p>
-                                据说在爱你城认真写作的人都可以在这里找到TA的灵魂伴侣。玩转爱你城第一步，从【爱你城交友】开始。专题接受爱你城交友、爱你城同城、交友故事和情书，详见投稿须知。
-                            </p>
-                            <a href="#">
-                                <i class="iconfont icon-quanbu">
-                                </i>
-                                <span>
-                                    2.0K篇文章 · 244.1K人关注
-                                </span>
-                            </a>
+                            <div class="info">
+                                <a class="name" href="#">
+                                    {{ category.name }}
+                                </a>
+                                <p>
+                                    {{ category.description }}
+                                </p>
+                                <a :href="'/'+category.name_en">
+                                    <i class="iconfont icon-quanbu">
+                                    </i>
+                                    <span>
+                                       {{ category.count }}篇文章 · {{ category.count_follows }}人关注
+                                    </span>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                </li>
-                <li>
-                    <div>
-                        <a class="follow" href="#">
-                            <span>
-                                ＋ 关注
-                            </span>
-                        </a>
-                        <a class="avatar avatar_collection" href="#">
-                            <img src="/images/category_03.jpg"/>
-                        </a>
-                        <div class="info">
-                            <a class="name" href="#">
-                                谈谈情，说说爱
-                            </a>
-                            <p>
-                                柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度认真就好如果你想分享自己或者身边人的爱情故事，欢迎前来投稿。
-                            </p>
-                            <a href="#">
-                                <i class="iconfont icon-quanbu">
-                                </i>
-                                <span>
-                                    70.9K篇文章 · 1122.4K人关注
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div>
-                        <a class="follow" href="#">
-                            <span>
-                                ＋ 关注
-                            </span>
-                        </a>
-                        <a class="avatar avatar_collection" href="#">
-                            <img src="/images/category_05.jpg"/>
-                        </a>
-                        <div class="info">
-                            <a class="name" href="#">
-                                城市故事
-                            </a>
-                            <p>
-                                世界上有那么多的城镇，城镇中有那么多的酒馆，她却偏偏走进了我的酒馆。若不相欠，怎会相见。这座城市有多么的狂欢就有多么的孤单，习惯了彻夜狂欢，是不是也会怀念形单影只。每座温情的城市，都会有无数孤寂的灵魂。
-                            </p>
-                            <a href="#">
-                                <i class="iconfont icon-quanbu">
-                                </i>
-                                <span>
-                                    5.4K篇文章 · 231.3K人关注
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                </li>
+                    </li>
+                </div>
             </ul>
-            <a class="load_more" href="#">
+<!--             <a class="load_more" href="#">
                 阅读更多
-            </a>
+            </a> -->
         </div>
     </div>
 </template>

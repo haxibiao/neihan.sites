@@ -45,12 +45,10 @@ Route::middleware('auth:api')->delete('/favorite/{id}/{type}', 'Api\FavoriteCont
 //查询是否已收藏
 Route::middleware('auth:api')->get('/favorite/{id}/{type}', 'Api\FavoriteController@get');
 
-//提交赞
-Route::middleware('auth:api')->post('/like/{id}/{type}', 'Api\LikeController@save');
-//删除赞
-Route::middleware('auth:api')->delete('/like/{id}/{type}', 'Api\LikeController@delete');
-//查询是否已赞
-Route::middleware('auth:api')->get('/like/{id}/{type}', 'Api\LikeController@get');
+//like
+Route::middleware('auth:api')->post('/like/{id}/{type}', 'Api\LikeController@toggle');
+Route::get('/like/{id}/{type}', 'Api\LikeController@get');
+
 
 //获取用户详细资料
 Route::get('/user/{id}', 'Api\UserController@getInfo');

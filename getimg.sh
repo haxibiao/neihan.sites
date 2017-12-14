@@ -6,6 +6,8 @@ mkdir -p  public/storage/img
 
 rsync -P -e ssh -r root@ainicheng.com:/data/www/ainicheng.com/public/storage/img/* public/storage/img/
 
+rsync -P -e ssh -r root@ainicheng.com:/data/www/ainicheng.com/public/storage/avatar/* public/storage/avatar/
+
 
 mkdir -p  public/storage/image
 

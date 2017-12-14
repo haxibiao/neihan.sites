@@ -6,7 +6,7 @@
 	<div v-else="user"id="user">
 		<div class="main_top clearfix">
             <a class="avatar" href="/v1/user" target="_blank">
-                <img src="/images/photo_03.jpg"/>
+                <img :src="user.avatar"/>
             </a>
             <a class="botm contribute" href="/v1/user" target="_blank">
                 <span>

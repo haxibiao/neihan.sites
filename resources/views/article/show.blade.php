@@ -14,7 +14,7 @@
                     </h1>
                     <div class="author">
                         <a class="avatar" href="#">
-                            <img src="/images/photo_02.jpg"/>
+                            <img src="{{ $article->user->avatar }}"/>
                         </a>
                         <div class="info">
                             <span class="name">
@@ -68,8 +68,8 @@
                 </div>
                 <div class="follow_detail">
                     <div class="info">
-                        <a class="avatar" href="/v1/user" target="_blank">
-                            <img src="/images/photo_02.jpg"/>
+                        <a class="avatar" href="/user/{{ $article->user->id  }}" target="_blank">
+                            <img src="{{ $article->user->avatar }}"/>
                         </a>
                                   <follow 
                                     type="users" 
@@ -139,7 +139,7 @@
                     </div>
                 </div>
                 <div class="meta_bottom">
-                    <div class="like">
+{{--                     <div class="like">
                         <div class="like_group">
                             <div class="btn_like">
                                 <a href="#">
@@ -154,7 +154,8 @@
                                 </a>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
+                    <like id="{{ $article->id }}" type="article" is-login="{{ Auth::check() }}" article-likes="{{ $article->count_likes }}" />
                     <div class="share_group">
                         <a class="share_circle" href="#">
                             <i class="iconfont icon-weixin1">

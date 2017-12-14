@@ -83,6 +83,8 @@ class Article extends Model
         return diffForHumansCN($this->created_at);
     }
 
+    //计算用方法
+
     public function description()
     {
         return !empty($this->description) ? $this->description : str_limit(strip_tags($this->body), 200);

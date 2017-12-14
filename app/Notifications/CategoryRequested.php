@@ -7,18 +7,24 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
+
+//该通知用于处理投稿请求
 class CategoryRequested extends Notification
 {
     use Queueable;
+    
+    protected $category;
+    protected $article;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($category_id, $article_id)
     {
-        //
+        $this->category = Category::find($category_id);
+        $this->article = Article::with('user')->find($article_id);
     }
 
     /**
@@ -29,7 +35,7 @@ class CategoryRequested extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -55,7 +61,19 @@ class CategoryRequested extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'type' => 'category_request',
+            'category_id' => $this->category->id,
+            'article_user_id' => $this->article->user->id,
+            'article_user_name' => $this->article->user->name,
+            'article_user_avatar' => $this->article->user->avatar,
+            'article_id' => $this->article->id,
+            'article_title' => $this->article->title,
+            'article_description' => $this->article->description,
+            'article_image_url' => $this->article->image_url,
+            'article_hits' => $this->article->hits,
+            'article_count_replies' => $this->article->count_replies,
+            'article_count_likes' => $this->article->count_likes,
+            'article_count_tips' => $this->article->count_tips,
         ];
     }
 }
