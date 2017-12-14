@@ -2,7 +2,7 @@
 <div class="classification">
 @foreach($categories as $category)
     <a class="collection" href="/{{ $category->name_en }}" target="_blank">
-        <img src="{{ get_category_logo($category->logo) }}"/>
+        <img src="{{ $category->smallLogo() }}"/>
         <div class="name">
             {{ $category->name }}
         </div>

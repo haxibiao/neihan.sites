@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Action;
 use App\Follow;
+use App\Category;
+use App\User;
 use App\Http\Controllers\Controller;
+use App\Notifications\UserFollowed;
 use Illuminate\Http\Request;
 
 class FollowController extends Controller
@@ -32,6 +35,14 @@ class FollowController extends Controller
                 'actionable_id'   => $follow->id,
             ]));
 
+            //notify follow
+            if (get_polymorph_types($type) == 'users') {
+                $followed_user = $follow->followed;
+                $followed_user->notify(new UserFollowed($user));
+                $followed_user->forgetUnreads();
+            }
+
+
         }
         $follow->followed->count_follows = $follow->followed->follows()->count();
         $follow->followed->save();
@@ -54,43 +65,45 @@ class FollowController extends Controller
         return $follows;
     }
 
-    public function recommands(Request $request)
+    public function recommends(Request $request)
     {
-        $user=$request->user();
-        $data['user']=$user;
-        $data['command']=[];
+        $user               = $request->user();
+        $data['user']       = $user;
+        $data['recommends'] = [];
 
-        $followed_users = $user->followings()->where('followed_type','users')->orderBy('id','desc')->take(10)->get();
-        foreach($followed_users as $follow) {
-            $followed_user = $follow->followed;
-            foreach($followed_user->followings as $follow) {
+        $followed_users = $user->followings()->where('followed_type', 'users')->orderBy('id', 'desc')->take(10)->get();
+        foreach ($followed_users as $follow) {
+            $followed_user = $follow->user;
+            foreach ($followed_user->followings as $follow) {
                 $followed = $follow->followed;
-                if($follow->followed_type == 'users') {
+
+                if ($follow->followed_type == 'users') {
                     $followed->collections = $followed->collections()->take(2)->get();
                 }
 
                 $followed->is_followed = $user->isFollow($follow->followed_type, $follow->followed_id);
 
                 $followed->type = $follow->followed_type;
-
-                $followed->followed_user = $followed_user->name;
+                
+                $followed->followed_user    = $followed_user->name;
                 $followed->followed_user_id = $followed_user->id;
 
+                return $followed;
                 $data['recommends'][] = $followed;
+
             }
         }
+        // return $data['recommends'];
 
-        $recommended_users = User::orderBy('id','desc')->paginate(10);
-        foreach($recommended_users as $recommended_user) {
-            $recommended_user->followed = $user->isFollow('users', $recommended_user->id);
-            $recommended_user->avatar = $recommended_user->avatar();
+        $recommended_users = User::orderBy('id', 'desc')->paginate(10);
+        foreach ($recommended_users as $recommended_user) {
+            $recommended_user->followed    = $user->isFollow('users', $recommended_user->id);
             $recommended_user->collections = $recommended_user->collections()->take(2)->get();
         }
         $data['recommended_users'] = $recommended_users;
 
-
         $categories = Category::orderBy('id', 'desc')->paginate(10);
-        foreach($categories as $category) {
+        foreach ($categories as $category) {
             $category->followed = $user->isFollow('categories', $category->id);
         }
         $data['recommended_categories'] = $categories;

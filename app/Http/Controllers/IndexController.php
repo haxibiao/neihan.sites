@@ -35,19 +35,23 @@ class IndexController extends Controller
         }
 
         if (!$has_follow_articles) {
-            $categories = Category::orderBy('updated_at')->where('type', 'article')->take(7)->get();
-            $articles   = Article::with('user')->with('category')->orderBy('updated_at')->paginate(10);
+            $categories = Category::orderBy('updated_at')
+                ->where('type', 'article')
+                ->where('count', '>', 0)
+                ->take(7)
+                ->get();
+            $articles = Article::with('user')->with('category')->orderBy('updated_at')->paginate(10);
         }
 
         //为VUEajax加载准备数据
         if ($request->ajax() || request('debug')) {
 
             foreach ($articles as $article) {
-                $article->time_ago  = $article->timeAgo();
-                $article->has_image = !empty($article->image_url);
-                $article->small_img = get_small_image($article->image_url);
-                $article->user->avatar=$article->user->avatar();
-                $article->description =$article->description ?$article->description:str_limit(strip_tags($article->body));
+                $article->time_ago     = $article->timeAgo();
+                $article->has_image    = !empty($article->image_url);
+                $article->small_img    = get_small_image($article->image_url);
+                $article->user->avatar = $article->user->avatar();
+                $article->description  = $article->description ? $article->description : str_limit(strip_tags($article->body));
             }
             return $articles;
         }

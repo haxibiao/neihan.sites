@@ -78,7 +78,8 @@ class Category extends Model
 
     public function topAdmins()
     {
-        $topAdmins = $this->admins()->orderBy('id', 'desc')->take(10)->get();
+        $topAdmins = $this->admins()->get();
+        // ->orderBy('id', 'desc')->take(10)->get();
         foreach ($topAdmins as $admin) {
             $admin->isCreator = $admin->id == $this->user_id;
         }

@@ -81,7 +81,7 @@
                             {{ $article->user->name }}
                         </a>
                         <p>
-                            写了 {{ $article->user->words }} 字，被 {{ $article->user->count_favorites }} 人关注，获得了 16 个喜欢
+                            写了 {{ $article->user->words }} 字，被 {{ $article->user->count_favorites }} 人关注，获得了 {{ $article->user->count_likes }} 个喜欢
                         </p>
                     </div>
                     <div class="signature">

@@ -16,7 +16,7 @@ class AddUsersCountTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->integer('count_comments')->default(0);
             $table->integer('count_favorites')->default(0);
-            $table->integer('count_shares')->default(0);
+            $table->integer('count_likes')->default(0);
             $table->integer('count_tips')->default(0);
             $table->integer('count_articles')->default(0);
             $table->integer('count_words')->default(0);
@@ -35,7 +35,7 @@ class AddUsersCountTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('count_comments');
             $table->dropColumn('count_favorites');
-            $table->dropColumn('count_shares');
+            $table->dropColumn('count_likes');
             $table->dropColumn('count_tips');
             $table->dropColumn('count_articles');
             $table->dropColumn('count_words');

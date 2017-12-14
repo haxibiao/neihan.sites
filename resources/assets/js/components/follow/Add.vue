@@ -29,111 +29,61 @@
         <!-- Tab panes -->
         <div class="tab-content">
             <ul class="tab-pane fade in active" id="tuijian" role="tabpanel">
-                <li>
-                    <div>
-                        <a class="follow" href="#">
-                            <span>
-                                ＋ 关注
-                            </span>
-                        </a>
-                        <a class="avatar" href="#">
-                            <img src="/images/photo_02.jpg"/>
-                        </a>
-                        <div class="info">
-                            <a class="name" href="#">
-                                汤圆er
-                            </a>
-                            <div class="meta">
-                                <a href="#">
-                                    懂点医 、
-                                </a>
-                                <a href="#">
-                                    小云淮
-                                </a>
+              <div v-for="recommend in recommends">
+                    <li v-if="recommend.type=='users'">
+                        <div>
+                            <a class="follow" href="#">
                                 <span>
-                                    关注了作者
+                                    ＋ 关注
                                 </span>
+                            </a>
+                            <a class="avatar" href="#">
+                                <img :src="recommend.avatar"/>
+                            </a>
+                            <div class="info">
+                                <a class="name" href="#">
+                                    {{ recommend.name }}
+                                </a>
+                                <div class="meta">
+                                    <a :href="/user/+recommend.followed_user_id">
+                                        {{ recommend.followed_user }}
+                                    </a>
+                                    <span>
+                                        关注了作者
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </li>
-                <li>
-                    <div>
-                        <a class="follow" href="#">
-                            <span>
-                                ＋ 关注
-                            </span>
-                        </a>
-                        <a class="avatar avatar_collection" href="#">
-                            <img src="/images/category_02.jpg"/>
-                        </a>
-                        <div class="info">
-                            <a class="name" href="#">
-                                爱你城交友
-                            </a>
-                            <p>
-                                据说在爱你城认真写作的人都可以在这里找到TA的灵魂伴侣。玩转爱你城第一步，从【爱你城交友】开始。专题接受爱你城交友、爱你城同城、交友故事和情书，详见投稿须知。
-                            </p>
-                            <a href="#">
-                                <i class="iconfont icon-quanbu">
-                                </i>
-                                <span>
-                                    2.0K篇文章 · 244.1K人关注
-                                </span>
-                            </a>
-                            <div class="meta">
-                                <a href="#">
-                                    中南工大留级生 、
+                    </li>
+                    
+                      <li v-if="recommend.type=='categories'">
+                            <div>
+                                <a class="follow" href="#">
+                                    <span>
+                                        ＋ 关注
+                                    </span>
                                 </a>
-                                <a href="#">
-                                    懂点医
+                                <a class="avatar avatar_collection" href="#">
+                                    <img :src="recommend.logo"/>
                                 </a>
-                                <span>
-                                    等四位好友也关注了专题
-                                </span>
+                                <div class="info">
+                                    <a class="name" href="#">
+                                        {{ recommend.name }}
+                                    </a>
+                                    <p>
+                                        {{ recommend.description }}
+                                    </p>
+                                    <a href="#">
+                                        <i class="iconfont icon-quanbu">
+                                        </i>
+                                        <span>
+                                            5.4K篇文章 · 231.3K人关注
+                                        </span>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div>
-                        <a class="follow" href="#">
-                            <span>
-                                ＋ 关注
-                            </span>
-                        </a>
-                        <a class="avatar" href="#">
-                            <img src="/images/photo_03.jpg"/>
-                        </a>
-                        <div class="info">
-                            <a class="name" href="#">
-                                博林木木
-                            </a>
-                            <a href="#">
-                                <i class="iconfont icon-wenji">
-                                </i>
-                                <span>
-                                    golang 实现红黑...
-                                </span>
-                            </a>
-                            <a href="#">
-                                <i class="iconfont icon-wenji">
-                                </i>
-                                <span>
-                                    golang实现二叉搜索树
-                                </span>
-                            </a>
-                            <div class="meta">
-                                <a href="#">
-                                    中南工大留级生
-                                </a>
-                                <span>
-                                    关注了作者
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </li>
+                     </li>
+              </div>
             </ul>
             <ul class="tab-pane fade" id="users" role="tabpanel">
                 <li>
@@ -340,11 +290,15 @@ export default {
   
   methods:{
      fetchData(){
-        var api_url=window.tokenize('/api/follow/adds');
+        var api_url=window.tokenize('/api/follow/recommends');
         var vm =this;
         window.axios.get(api_url).then(function(response){
             vm.user=response.data.user;
-            vm.loaded =response.data.loaded;
+            vm.recommends=response.data.recommends;
+            vm.recommended_users=response.data.recommended_users.data;
+            vm.recommended_categories=response.data.recommended_categories.data;
+            vm.loaded =true;
+
         });
      }
   },
@@ -353,9 +307,9 @@ export default {
     return {
         loaded: false,
         user:null,
-        adds:[],
-        add_users:[],
-        add_categories:[],
+        recommends:[],
+        recommended_users:[],
+        recommended_categories:[],
     }
   }
 }
