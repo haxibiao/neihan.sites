@@ -13,8 +13,9 @@ class UserSeeder extends Seeder
     public function run()
     {
         $users = User::all();
-        foreach($users as $user) {
+        foreach ($users as $user) {
             $user->api_token = str_random(60);
+            $user->avatar = $user->avatar();
             $user->save();
         }
     }

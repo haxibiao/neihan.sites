@@ -130,7 +130,7 @@ class FixData extends Command
     {
         $categories = Category::all();
         foreach ($categories as $category) {
-            $article = $category->articles()->orderBy('id')->first();
+            $article = $category->articles()->orderBy('id')->where('image_url', '<>', '')->first();
             if ($article) {
                 $image_url = parse_url($article->image_url, PHP_URL_PATH);
                 $this->info($image_url);
@@ -147,15 +147,16 @@ class FixData extends Command
                     $small_logo = $image_url . '.logo.small.jpg';
                     $img->save(public_path($small_logo));
 
-                    $category->save();
-
                     $this->info($category->id . ' articles:' . $category->articles()->count() . '-' . $category->name . ' logo:' . $category->logo);
                 } else {
-                    $this->error($category->id . ' articles:' . $category->articles()->count() . '-' . $category->name . ' 第一文章暂无图片.. ');
+                    $this->error($category->id . ' articles:' . $category->articles()->count() . '-' . $category->name . ' 第一文章暂无图片.. ' . $image_url);
                 }
             } else {
                 $this->comment($category->id . ' articles:' . $category->articles()->count() . '-' . $category->name . ' 暂无文章.. ');
             }
+
+            $category->count = $category->articles()->count();
+            $category->save();
         }
     }
 
@@ -208,24 +209,28 @@ class FixData extends Command
 
     public function fix_images()
     {
-        $images = Image::all();
-        foreach ($images as $image) {
-            if (str_contains($image->path_small, 'jpg.small.jpg')) {
-                $this->info('fixed ' . $image->path_small);
-                $image->path_small = str_replace('jpg.small.jpg', 'small.jpg', $image->path_small);
+        Image::chunk(1000, function ($images) {
+            foreach ($images as $image) {
+                $extension = pathinfo($image->path, PATHINFO_EXTENSION);
+                if (strlen($extension) < 3) {
+                    $extension = 'jpg';
+                }
+                $image->extension = $extension;
+                $image->path      = ends_with($image->path, $image->extension) ? $image->path : str_replace('.', '', $image->path) . '.' . $image->extension;
+                if (!file_exists(public_path($image->path))) {
+                    $this->comment('miss ' . $image->path);
+                    $try_path = str_replace($image->extension, '', $image->path);
+                    if (!file_exists(public_path($try_path))) {
+                        $this->error('try path also miss: ' . $try_path);
+                    } else {
+                        @rename(public_path($try_path), public_path($image->path));
+                    }
+                }
+
                 $image->save();
+                $this->info($image->id . '  ' . $image->extension);
             }
-            if (str_contains($image->path_small, 'png.small.png')) {
-                $this->info('fixed ' . $image->path_small);
-                $image->path_small = str_replace('png.small.png', 'small.png', $image->path_small);
-                $image->save();
-            }
-            if (str_contains($image->path_small, 'gif.small.gif')) {
-                $this->info('fixed ' . $image->path_small);
-                $image->path_small = str_replace('gif.small.gif', 'small.gif', $image->path_small);
-                $image->save();
-            }
-        }
+        });
     }
     public function fix_images_small()
     {
@@ -273,11 +278,49 @@ class FixData extends Command
 
     public function fix_articles()
     {
-        Article::chunk(200, function ($articles) {
+               //resize image_url 300*240
+        //破除内存限制,这里有可能处理大量数据
+        ini_set('memory_limit', '-1');
+        
+        Article::orderBy('id')->chunk(100, function ($articles) {
             foreach ($articles as $article) {
-                $category_id = $article->category_id;
-                $article->categories()->syncWithoutDetaching($category_id);
-                $this->info("已经修复$article->title");
+                if (empty($article->image_url)) {
+                    $this->comment($article->id . ' 无图 ...');
+                    continue;
+                }
+                $image_url_path = parse_url($article->image_url, PHP_URL_PATH);
+                $image_url_path = str_replace('.small', '', $image_url_path);
+                if (ends_with($image_url_path, '.')) {
+                    $image_url_path = $image_url_path . 'jpg';
+                }
+                if ($article->image_url != $image_url_path) {
+                    $article->image_url = $image_url_path;
+                    $article->save();
+                }
+
+                if (file_exists(public_path($image_url_path))) {
+                    $img = \ImageMaker::make(public_path($image_url_path));
+                    //save small
+                    if ($img->width() / $img->height() < 10 / 8) {
+                        $img->resize(300, null, function ($constraint) {
+                            $constraint->aspectRatio();
+                        });
+                    } else {
+                        $img->resize(null, 240, function ($constraint) {
+                            $constraint->aspectRatio();
+                        });
+                    }
+                    $img->crop(300, 240);
+                    $image = Image::where('path', $article->image_url)->first();
+                    if ($image) {
+                        $img->save(public_path($image->path_small()));
+                        $this->info($article->id . '-' . $article->title . ' -> img:' . $image->path_small());
+                    } else {
+                        $this->error('missed image for path:' . $article->image_url);
+                    }
+                } else {
+                    $this->error('miss image : ' . $article->id . '-' . $article->title . ' -> img:' . $article->image_url);
+                }
             }
         });
     }
