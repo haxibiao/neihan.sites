@@ -175,7 +175,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="/v1/home">
+                                    <a href="/home">
                                         <i class="iconfont icon-yonghu01">
                                         </i>
                                         <span>

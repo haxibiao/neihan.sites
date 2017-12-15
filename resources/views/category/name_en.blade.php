@@ -35,7 +35,7 @@
                         </a>
                     </div>
                     <p>
-                        收录了{{ $category->articles->count() }}篇文章 · 1081552人关注
+                        收录了{{ $category->articles->count() }}篇文章 · {{ $category->count_follows }}人关注
                     </p>
                 </div>
                 <div>
@@ -125,7 +125,7 @@
                     </div>
                     <div>
                         <div class="title">
-                            推荐作者(100)
+                            推荐作者({{ $category->topAuthors()->count() }})
                             <i class="iconfont icon-tuijian1">
                             </i>
                         </div>
@@ -141,7 +141,7 @@
                     </div>
                     <div>
                         <div class="title">
-                            关注的人(1092324)
+                            关注的人
                         </div>
                         <ul class="collection_follower">
                           @foreach($category->topFollowers() as $user)

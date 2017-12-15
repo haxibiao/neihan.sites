@@ -37,6 +37,7 @@ Vue.component('favorite', require('./components/Favorite.vue'));
 Vue.component('like', require('./components/Like.vue'));
 Vue.component('comment', require('./components/Comment.vue'));
 Vue.component('follow', require('./components/Follow.vue'));
+Vue.component('comments', require('./components/Comments.vue'));
 
 
 // 关注页
