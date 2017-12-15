@@ -2,10 +2,40 @@
 	<!-- 收到的其他消息 -->
 	<div id="others">
 		<div class="menu">其他消息</div>
-		<div class="unMessage">
+		<!-- 没有消息 -->
+		<!-- <div class="unMessage">
 			<p>这里还木有内容哦~</p>
 			<span class="iconfont icon-meiyouxiaoxi1"></span>
-		</div>
+		</div> -->
+		
+		<!-- 有消息 -->
+		<ul class="others_list">
+			<li>
+				<div class="like_item">
+					<div class="info">
+						<i class="iconfont icon-paihang"></i>
+						<span>你投稿的文章</span>
+						<a href="javascript:;">《起风了，谁是下一个王者荣耀？》</a>
+						<span>已被加入专题</span>
+						<a href="javascript:;">《王者荣耀》</a>
+					</div>
+					<div class="time">2017.11.15  08:09</div>
+				</div>
+			</li>
+			<li>
+				<div class="like_item">
+					<div class="info">
+						<i class="iconfont icon-ku"></i>
+						<span>你投稿的文章</span>
+						<a href="javascript:;">《为什么说被马化腾点赞的《王者荣耀》已成为全球最赚钱的游戏？》</a>
+						<span>未能选入专题</span>
+						<a href="javascript:;">《王者荣耀》</a>
+						<span>，请继续加油～</span>
+					</div>
+					<div class="time">2017.11.15  08:30</div>
+				</div>
+			</li>
+		</ul>
 	</div>
 </template>
 

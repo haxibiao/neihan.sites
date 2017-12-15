@@ -1,7 +1,6 @@
 //更多专题列表页
 #categories {
     .recommend {
-        padding: 30px 0 50px;
         position: relative;
         text-align: center;
         img {
@@ -10,19 +9,18 @@
             border-radius: 4px;
         }
         .help {
+            @include font (16px,$color-white);
             position: absolute;
-            top: 58px;
+            top: 28px;
             right: 30px;
-            color: $color-white;
-            font-size: 16px;
             i {
                 margin-right: 5px;
             }
             @media screen and (min-width: 992px) {
-                top: 68px;
+                top: 38px;
             }
             @media screen and (min-width: 1200px) {
-                top: 78px;
+                top: 48px;
             }
         }
         div {
@@ -53,10 +51,9 @@
                             a {
                                 display: inline-block;
                                 .avatar_collection {
-                                    @include proportion (80px, 80px);
+                                    @include avatar (80px, 80px);
                                     @include border (8px, 1px solid #ddd);
                                     margin: -40px 0 10px;
-                                    display: inline-block;
                                     background-color: $color-white;
                                 }
                                 .name {
@@ -64,6 +61,7 @@
                                     overflow: hidden;
                                 }
                                 .collection_description {
+                                    @include line_number (3);
                                     font-size: 13px;
                                     line-height: 25px;
                                     margin-bottom: 10px;
@@ -83,6 +81,9 @@
                                 font-size: 14px;
                                 padding-bottom: 10px;
                                 width: 100%;
+                            }
+                            &:hover {
+                                box-shadow: 0 5px 20px rgba(0,0,0,.1);
                             }
                         }
                     }

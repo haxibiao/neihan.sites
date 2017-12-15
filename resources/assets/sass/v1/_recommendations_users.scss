@@ -1,0 +1,94 @@
+// 推荐作者页
+#hot_users {
+    .recommend {
+        position: relative;
+        text-align: center;
+        img {
+            width: 100%;
+            min-height: 78px;
+            border-radius: 4px;
+        }
+        .help {
+            @include font (16px,$color-white);
+            position: absolute;
+            top: 28px;
+            right: 30px;
+            i {
+                margin-right: 5px;
+            }
+            @media screen and (min-width: 992px) {
+                top: 38px;
+            }
+            @media screen and (min-width: 1200px) {
+                top: 48px;
+            }
+        }
+        .row {
+            div {
+                .collection_wrap {
+                    @include border (4px, 1px solid #e6e6e6);
+                    @include spacing (80px 0 0 0, 0 20px);
+                    background-color: hsla(0, 0%, 71%, .1);
+                    a {
+                        display: inline-block;
+                        .avatar {
+                            @include avatar (80px, 80px);
+                            @include border (40px, 1px solid #ddd);
+                            margin: -40px 0 10px;
+                            background-color: $color-white;
+                        }
+                        .name {
+                            @include font (24px, $color-black, 700);
+                            overflow: hidden;
+                        }
+                        .collection_description {
+                            @include line_number (2);
+                            font-size: 13px;
+                            line-height: 25px;
+                            margin-bottom: 10px;
+                        }
+                    }
+                    .follow {
+                        @include button;
+                        margin: 0;
+                    }
+                    hr {
+                        background-color: #eaeaea;
+                        margin: 20px 0;
+                        border: 0;
+                        border-top: 1px solid #e2e2e2;
+                    }
+                    .meta {
+                        @include spacing (-29px 0 0 0,0 10px 0 0);
+                        @include font (12px,$color-gray);
+                        float: left;
+                        background-color: #f8f8f8;
+                    }
+                    .recent_update {
+                        min-height: 75px;
+                        .new {
+                            @include line_number (1);
+                            font-size: 13px;
+                            line-height: 25px;
+                        }
+                    }
+                    &:hover {
+                        box-shadow: 0 5px 20px rgba(0,0,0,.1);
+                    }
+                }
+            }
+            @media screen and (min-width: 450px) and (max-width: 768px) {
+                div {
+                    width: 50%;
+                    .collection_wrap {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+        .load_more {
+            @include load_more;
+            width: 35%;
+        }
+    }
+}

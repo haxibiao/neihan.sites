@@ -2,10 +2,10 @@
 	<!-- 关注的专题 -->
 	<div id="category">
 		<div class="main_top clearfix">
-            <a class="avatar avatar_collection" href="/v1/category" target="_blank">
+            <a class="avatar avatar_collection" href="/v1/category/2" target="_blank">
                 <img src="/images/category_03.jpg"/>
             </a>
-            <a class="botm contribute" href="/v1/category" target="_blank">
+            <a class="botm contribute" href="/v1/category/2" target="_blank">
                 <span>
                 	专题主页
                 </span>
@@ -18,7 +18,7 @@
                 </span>
             </a>
             <div class="title">
-		        <a class="name" href="/v1/category" target="_blank">
+		        <a class="name" href="/v1/category/2" target="_blank">
 		            <span>
 		                散文
 		            </span>

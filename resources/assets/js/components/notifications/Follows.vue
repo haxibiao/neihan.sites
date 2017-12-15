@@ -23,7 +23,8 @@
                     	2017.11.15  08:09
                     </div>
                 </div>
-			</li><li>
+			</li>
+            <li>
                 <div class="follow_item">
                     <a class="avatar" href="#">
                         <img src="/images/photo_03.jpg"/>
@@ -43,7 +44,8 @@
                     	2017.11.15  08:30
                     </div>
                 </div>
-			</li><li>
+			</li>
+            <li>
                 <div class="follow_item">
                     <a class="avatar" href="#">
                         <img src="/images/photo_01.jpg"/>

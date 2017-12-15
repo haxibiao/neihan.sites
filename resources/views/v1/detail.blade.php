@@ -482,4 +482,7 @@
         </div>
     </div>
 </div>
+{{-- 底部小火箭、分享、收藏、投稿 --}}
+{{-- <side-tool></side-tool> --}}
+@include('v1.parts.side_tool')
 @stop

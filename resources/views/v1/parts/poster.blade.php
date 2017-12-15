@@ -4,8 +4,8 @@
 @push('scripts')
 <script>
     var options = {
-      'container':'#poster',
-      'data':[
+    'container':'#poster',
+    'data':[
         ['/v1/detail','/images/carousel001.jpg'],
         ['/v1/detail','/images/carousel002.jpg'],
         ['/v1/detail','/images/carousel003.jpg'],
@@ -14,9 +14,9 @@
         ['/v1/detail','/images/carousel006.jpg'],
         ['/v1/detail','/images/carousel007.jpg'],
         ['/v1/detail','/images/carousel008.jpg']
-      ],
-      'speed':'5000',
-      'auto':true
+    ],
+    'speed':'5000',
+    'auto':true
     }
     let poster = new Poster(options);
     poster.init();

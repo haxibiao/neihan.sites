@@ -78,7 +78,8 @@ header {
                                     vertical-align: middle;
                                 }
                                 .badge {
-                                    margin: 6px 0 0 0;
+                                    margin-top: 6px;
+                                    float: right;
                                 }
                                 &:hover {
                                     background-color: $color-white-milk;
@@ -90,7 +91,7 @@ header {
                         }
                         .badge {
                             @include badge;
-                            margin: -5px 0 0 0;
+                            margin-top: -11px;
                         }
                     } // 个人用户
                     .author {
@@ -183,6 +184,14 @@ header {
                                         background-color: $color-gray-deep;
                                     }
                                 }
+                                @media screen and (max-width:1000px) and (min-width:768px) {
+                                    width: 160px;
+                                    &:focus{
+                                        outline:0 !important;
+                                        box-shadow: none;
+                                        width: 170px;
+                                    }
+                                }
                             }
                             .icon-sousuo {
                                 @include proportion (28px, 28px);
@@ -258,6 +267,9 @@ header {
                                         }
                                     }
                                 }
+                                @media screen and (max-width:1000px) and (min-width:768px) {
+                                    width: 160px;
+                                }
                             }
                         }
                     }
@@ -268,8 +280,7 @@ header {
 }
 
 //尾部
-footer {
-    margin: 3% 0;
+    footer {    margin: 3% 0;
     div {
         color: $color-gray;
         a {
@@ -289,3 +300,44 @@ footer {
         }
     }
 }
+
+// 底部小火箭、分享、收藏、投稿
+// .side_tool {
+//     position: fixed;
+//     z-index: 101;
+//     bottom: 40px;
+//     right: 40px;
+//     ul {
+//         padding-bottom: 10px;
+//         li {
+//             border: 1px solid $color-gray-light;
+//             border-bottom: none;
+//             background-color: #fff;
+//             a {
+//                 @include proportion (50px,50px);
+//                 text-align: center;
+//                 display: block;
+//                 i {
+//                     padding-top: 16px;
+//                     font-size: 20px;
+//                     display: block;
+//                 }
+//                 .icon-xiangxiajiantou-copy {
+//                     @include font (25px,$color-black,700);
+//                 }
+//                 .icon-jia1,.icon-tougaoguanli {
+//                     font-weight: 700;
+//                 }
+//                 .icon-shoucang1 {
+//                     color: $color-red-watermelon;
+//                 }
+//             }
+//             &:hover {
+//                 background-color: hsla(0,0%,71%,.1);
+//             }
+//             &:last-child {
+//                 border-bottom: 1px solid $color-gray-light;
+//             }
+//         }
+//     }
+// }

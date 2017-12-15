@@ -2,10 +2,10 @@
 	<!-- 关注的文集 -->
 	<div id="collection">
 		<div class="main_top clearfix">
-            <a class="avatar avatar_collection" href="/v1/category" target="_blank">
+            <a class="avatar avatar_collection" href="/v1/collection" target="_blank">
                 <img src="/images/category_09.png"/>
             </a>
-            <a class="botm" href="/v1/category" target="_blank">
+            <a class="botm" href="/v1/collection" target="_blank">
                 <span>
                 	文集主页
                 </span>
@@ -13,7 +13,7 @@
                 </i>
             </a>
             <div class="title">
-	            <a class="name" href="/v1/category" target="_blank">
+	            <a class="name" href="/v1/collection" target="_blank">
 	                <span>
 	                    王者荣耀
 	                </span>

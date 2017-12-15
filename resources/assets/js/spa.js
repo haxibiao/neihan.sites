@@ -47,6 +47,24 @@ Vue.component('notifications-left', require('./components/notifications/Notifica
 // 详情页评论
 Vue.component('new-comment', require('./components/detail/NewComment.vue'));
 
+// 详情页底部小火箭、分享、收藏、投稿
+// Vue.component('side-tool', require('./components/detail/Side_Tool.vue'));
+
+// 用户模态框
+Vue.component('categorymodal-user', require('./components/contributeModal/CategoryModal_User.vue'));
+
+// 个人模态框
+Vue.component('categorymodal-home', require('./components/contributeModal/CategoryModal_Home.vue'));
+
+// 用户模态框
+Vue.component('detailmodal-user', require('./components/contributeModal/DetailModal_User.vue'));
+
+// 个人模态框
+Vue.component('detailmodal-home', require('./components/contributeModal/DetailModal_Home.vue'));
+
+// 设置页
+Vue.component('setting-left', require('./components/setting/SettingLeft.vue'));
+
 const routes = [
     // 关注路由
     { path: '/add', component: require('./components/follow/Add.vue') },
@@ -57,12 +75,18 @@ const routes = [
     // 消息路由
     { path: '/comments', component: require('./components/notifications/Comments.vue') },
     { path: '/chats', component: require('./components/notifications/Chats.vue') },
+    { path: '/chat', component: require('./components/notifications/Chat.vue') },
     { path: '/requests', component: require('./components/notifications/Requests.vue') },
     { path: '/likes', component: require('./components/notifications/Likes.vue') },
     { path: '/follows', component: require('./components/notifications/Follows.vue') },
     { path: '/tip', component: require('./components/notifications/Tip.vue') },
     { path: '/others', component: require('./components/notifications/Others.vue') },
-    { path: '/chat', component: require('./components/notifications/Chat.vue') }
+    { path: '/pending_submissions', component: require('./components/notifications/Pending_Submissions.vue') },
+    { path: '/collections/:id/submissions', component: require('./components/notifications/Submissions.vue') },
+    // 设置路由
+    { path: '/basic', component: require('./components/setting/Basic.vue') },
+    { path: '/profile', component: require('./components/setting/Profile.vue') },
+    { path: '/reward-setting', component: require('./components/setting/Reward-Setting.vue') }
 ];
 
 const router = new VueRouter({

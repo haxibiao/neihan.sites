@@ -1,0 +1,326 @@
+// 设置页
+#setting {
+    .setting_wrp {
+        .aside {
+            @include spacing (81px 0 0, 0 0 30px);
+            position: fixed;
+            width: 330px;
+            top: 0;
+            bottom: 0;
+            overflow: auto;
+            @media screen and (max-width: 992px) {
+                width: 200px;
+            }
+            @media screen and (max-width: 768px) {
+                width: 180px;
+            }
+            @media screen and (max-width: 450px) {
+                width: 90px;
+            }
+            ul {
+                li {
+                    a {
+                        padding: 10px 25px;
+                        display: block;
+                        width: 100%;
+                        font-size: 15px;
+                        .setting_icon {
+                            @include proportion (32px,32px);
+                            display: inline-block;
+                            margin-right: 15px;
+                            vertical-align: middle;
+                            background-color: #a0a0a0;
+                            border-radius: 4px;
+                            text-align: center;
+                            color: $color-white;
+                            i {
+                                font-size: 18px;
+                                margin: 6px 0 0 1px;
+                                display: block;
+                            }
+                        }
+                        span {
+                            vertical-align: middle;
+                        }
+                        &:hover {
+                            background-color: $color-white-silver;
+                        }
+                        @media screen and (max-width: 450px) {
+                            padding: 10px 15px;
+                            i {
+                                margin-right: 3px;
+                            }
+                            .name {
+                                display: none;
+                            }
+                        }
+                    }
+                    .router-link-active {
+                        background-color: #f0f0f0;
+                        border-radius: 4px;
+                    }
+                }
+            }
+        }
+        .main {
+            margin-left: 360px;
+            @media screen and (max-width: 992px) {
+                margin-left: 230px;
+            }
+            @media screen and (max-width: 768px) {
+                margin-left: 210px;
+            }
+            @media screen and (max-width: 450px) {
+                margin-left: 120px;
+            }
+            table {
+                width: 100%;
+                tr {
+                    border-bottom: 1px solid #f0f0f0;
+                    td {
+                        padding: 20px 0;
+                        .form-control {
+                            padding: 9px 15px;
+                            font-size: 15px;
+                            background-color: hsla(0, 0%, 71%, .1);
+                            box-shadow: none;
+                            &:focus {
+                                box-shadow: none;
+                                border-color: #ccd0d2;
+                            }
+                        }
+                    }
+                    &:last-child {
+                        border: none;
+                    }
+                }
+            }
+            // 基础设置
+            #basic {
+                table {
+                    thead {
+                        tr {
+                            .setting_head {
+                                width: 200px;
+                                @media screen and (max-width: 992px) {
+                                    width: 140px;
+                                }
+                            }
+                        }
+                    }
+                    .base {
+                        tr {
+                            td {
+                                .btn_hollow {
+                                    @include news_button;
+                                }
+                                input[type="text"] {
+                                    width: 216px;
+                                }
+                                form {
+                                    .btn_hollow {
+                                        @include spacing (0 0 0 19px,4px);
+                                        width: 55px;
+                                        float: none;
+                                    }
+                                    input[type="email"] {
+                                        width: 270px;
+                                        display: inline-block;
+                                    }
+                                }
+                                div {
+                                    display: inline-block;
+                                    span {
+                                        margin: 0 20px 0 6px;
+                                        font-size: 15px;
+                                        vertical-align: middle;
+                                    }
+                                }
+                            }
+                            .top_line {
+                                padding-top: 0;
+                                .avatar {
+                                    @include avatar (100px,100px);
+                                }
+                                .btn_hollow {
+                                    @include spacing (0,4px 12px);
+                                    position: relative;
+                                    font-size: 14px;
+                                    float: none;
+                                    width: 85px;
+                                    input {
+                                        @include proportion (79px,30px);
+                                        position: absolute;
+                                        display: block!important;
+                                        top: -1px;
+                                        left: 1px;
+                                        opacity: 0;
+                                    }
+                                }
+                            }
+                            .setting_title {
+                                @include font (15px,$color-gray);
+                            }
+                            .setted {
+                                div {
+                                    font-size: 15px;
+                                    display: inline-block;
+                                }
+                                i {
+                                    @include font (12px,$color-gray,700);
+                                    margin: 0 0 0 10px;
+                                    vertical-align: middle;
+                                }
+                                span,.cancel_bind {
+                                    @include font (14px,$color-gray);
+                                    margin: 0 0 0 3px;
+                                    vertical-align: middle;
+                                }
+                                .cancel_bind {
+                                    margin: 0 0 0 8px;
+                                    display: none;
+                                    &:hover {
+                                        color: $color-black;
+                                    }
+                                }
+                                &:hover {
+                                    .cancel_bind {
+                                        display: inline;
+                                    }
+                                }
+                            }
+                            &:first-child {
+                                border: none;
+                            }
+                        }
+                    }
+                }
+                .btn_success {
+                    @include button;
+                    margin: 30px 0 60px 0;
+                }
+            }
+            // 个人资料
+            #profile {
+                table {
+                    thead {
+                        tr {
+                            .setting_head {
+                                width: 200px;
+                                @media screen and (max-width: 992px) {
+                                    width: 140px;
+                                }
+                            }
+                        }
+                    }
+                    .information {
+                        tr {
+                            p {
+                                padding: 8px 0 0;
+                                color: $color-gray;
+                                clear: both;
+                            }
+                            td {
+                                form {
+                                    textarea {
+                                        height: 100px;
+                                        padding: 8px 10px;
+                                        resize: none;
+                                    }
+                                    input[type="text"] {
+                                        width: 100%;
+                                    }
+                                }
+                            }
+                            .top_line {
+                                padding-top: 0;
+                                div {
+                                    display: inline-block;
+                                    span {
+                                        margin: 0 20px 0 6px;
+                                        font-size: 15px;
+                                        vertical-align: middle;
+                                    }
+                                }
+                            }
+                            .setting_title {
+                                @include font (15px,$color-gray);
+                            }
+                            .weixin_qrcode {
+                                .btn_hollow {
+                                    @include news_button;
+                                    @include spacing (0,4px 12px);
+                                    position: relative;
+                                    font-size: 14px;
+                                    float: none;
+                                    width: 85px;
+                                    input {
+                                        @include proportion (79px,30px);
+                                        position: absolute;
+                                        display: block!important;
+                                        top: -1px;
+                                        left: 1px;
+                                        opacity: 0;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                .btn_success {
+                    @include button;
+                    margin: 30px 0 60px 0;
+                }
+            }
+            // 赞赏设置
+            #reward_setting {
+                 table {
+                    thead {
+                        tr {
+                            .setting_head {
+                                width: 200px;
+                                @media screen and (max-width: 992px) {
+                                    width: 140px;
+                                }
+                            }
+                        }
+                    }
+                    .setting_pay {
+                        tr {
+                            td {
+                                textarea {
+                                    height: 100px;
+                                    padding: 8px 10px;
+                                    resize: none;
+                                }
+                            }
+                            .top_line {
+                                padding-top: 0;
+                                div {
+                                    display: inline-block;
+                                    span {
+                                        margin: 0 20px 0 6px;
+                                        font-size: 15px;
+                                        vertical-align: middle;
+                                    }
+                                }
+                                p {
+                                    padding: 8px 0 0;
+                                    color: $color-gray;
+                                    clear: both;
+                                }
+                            }
+                            .setting_title {
+                                @include font (15px,$color-gray);
+                            }
+                        }
+                    }
+                }
+                .btn_success {
+                    @include button;
+                    margin: 30px 0 60px 0;
+                }
+            }
+        }
+    }
+}

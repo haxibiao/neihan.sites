@@ -29,8 +29,24 @@ Vue.component('single-list-select', require('./components/SingleListSelect.vue')
 Vue.component('favorite', require('./components/Favorite.vue'));
 Vue.component('like', require('./components/Like.vue'));
 Vue.component('comment', require('./components/Comment.vue'));
+
 // 详情页评论
 Vue.component('new-comment', require('./components/detail/NewComment.vue'));
+
+// 详情页底部小火箭、分享、收藏、投稿
+// Vue.component('side-tool', require('./components/detail/Side_Tool.vue'));
+
+// 用户模态框
+Vue.component('categorymodal-user', require('./components/contributeModal/CategoryModal_User.vue'));
+
+// 个人模态框
+Vue.component('categorymodal-home', require('./components/contributeModal/CategoryModal_Home.vue'));
+
+// 用户模态框
+Vue.component('detailmodal-user', require('./components/contributeModal/DetailModal_User.vue'));
+
+// 个人模态框
+Vue.component('detailmodal-home', require('./components/contributeModal/DetailModal_Home.vue'));
 
 const app = new Vue({
 }).$mount('#app');
