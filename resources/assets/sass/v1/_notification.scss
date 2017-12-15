@@ -4,17 +4,17 @@
         .aside {
             @include spacing (81px 0 0, 0 0 30px);
             position: fixed;
-            width: 280px;
             top: 0;
             bottom: 0;
             overflow: auto;
+            width: 330px;
             @media screen and (max-width: 992px) {
                 width: 200px;
             }
             @media screen and (max-width: 768px) {
                 width: 180px;
             }
-            @media screen and (max-width: 450px) {
+            @media screen and (max-width: 464px) {
                 width: 90px;
             }
             ul {
@@ -59,15 +59,16 @@
             }
         }
         .main {
-            margin-left: 300px;
+            overflow: auto;
+            margin-left: 360px;
             @media screen and (max-width: 992px) {
-                margin-left: 200px;
+                margin-left: 230px;
             }
             @media screen and (max-width: 768px) {
-                margin-left: 180px;
+                margin-left: 210px;
             }
-            @media screen and (max-width: 450px) {
-                margin-left: 90px;
+            @media screen and (max-width: 464px) {
+                margin-left: 105px;
             } // 评论列表
             #comments {
                 .menu {
@@ -475,6 +476,9 @@
                                 span {
                                     @include line_number (1);
                                     @include font (12px, $color-gray);
+                                }
+                                @media screen and (max-width: 506px) {
+                                    width: 50%;
                                 }
                             }
                         }

@@ -6,10 +6,6 @@ body {
     overflow-y: scroll;
     #app {
         padding-top: 81px;
-        .dropdown-menu a {
-            padding: 10px 20px;
-            color: $color-black;
-        }
     }
 }
 
@@ -36,6 +32,19 @@ li {
 input,
 textarea {
     outline-style: none!important;
+}
+
+.dropdown-menu a {
+    padding: 10px 20px;
+    color: $color-black;
+}
+
+.tooltip {
+    .tooltip-inner {
+        font-size: 14px;
+        max-width: none;
+        padding: 5px 10px;
+    }
 }
 
 // 头部
@@ -186,8 +195,8 @@ header {
                                 }
                                 @media screen and (max-width:1000px) and (min-width:768px) {
                                     width: 160px;
-                                    &:focus{
-                                        outline:0 !important;
+                                    &:focus {
+                                        outline: 0 !important;
                                         box-shadow: none;
                                         width: 170px;
                                     }
@@ -280,7 +289,8 @@ header {
 }
 
 //尾部
-    footer {    margin: 3% 0;
+footer {
+    margin: 3% 0;
     div {
         color: $color-gray;
         a {
@@ -301,43 +311,205 @@ header {
     }
 }
 
+// 用户专题投稿模态框
+#categoryModal_user {
+    @include modal;
+}
+
+// 个人专题收录模态框
+#categoryModal_home {
+    @include modal;
+}
+
+// 个人专题删除模态框
+#categoryModal_Delete {
+    background-color: hsla(0, 0%, 100%, .7);
+    .modal-dialog {
+        position: absolute;
+        left: 25%;
+        top: 25%;
+        max-height: 80%;
+        max-width: 50%;
+        @media screen and (min-width: 1080px) {
+            left: 35%;
+        }
+        .modal-header {
+            padding: 20px;
+        }
+        .modal-body {
+            padding: 20px;
+            font-size: 15px;
+            p {
+                margin-bottom: 10px;
+            }
+            .form-control {
+                padding: 8px 10px;
+                box-shadow: none;
+                &:focus {
+                    box-shadow: none;
+                    border-color: #ccd0d2;
+                }
+            }
+        }
+        .modal-footer {
+            padding: 20px;
+            border: 0;
+            button {
+                @include spacing;
+                background-color: transparent;
+                border: 0;
+                font-size: 13px;
+                outline-style: none;
+            }
+            .cancel {
+                margin-top: 5px;
+                color: #999;
+                &:hover {
+                    color: $color-black;
+                }
+            }
+            .submit {
+                @include news_button;
+                @include spacing (0 0 0 30px, 2px 4px);
+                color: $color-red-watermelon;
+                border-color: $color-red-watermelon;
+                width: 52px;
+                font-size: 13px;
+            }
+        }
+    }
+}
+
 // 底部小火箭、分享、收藏、投稿
-// .side_tool {
-//     position: fixed;
-//     z-index: 101;
-//     bottom: 40px;
-//     right: 40px;
-//     ul {
-//         padding-bottom: 10px;
-//         li {
-//             border: 1px solid $color-gray-light;
-//             border-bottom: none;
-//             background-color: #fff;
-//             a {
-//                 @include proportion (50px,50px);
-//                 text-align: center;
-//                 display: block;
-//                 i {
-//                     padding-top: 16px;
-//                     font-size: 20px;
-//                     display: block;
-//                 }
-//                 .icon-xiangxiajiantou-copy {
-//                     @include font (25px,$color-black,700);
-//                 }
-//                 .icon-jia1,.icon-tougaoguanli {
-//                     font-weight: 700;
-//                 }
-//                 .icon-shoucang1 {
-//                     color: $color-red-watermelon;
-//                 }
-//             }
-//             &:hover {
-//                 background-color: hsla(0,0%,71%,.1);
-//             }
-//             &:last-child {
-//                 border-bottom: 1px solid $color-gray-light;
-//             }
-//         }
-//     }
-// }
+.side_tool {
+    position: fixed;
+    z-index: 101;
+    bottom: 40px;
+    right: 40px;
+    ul {
+        padding-bottom: 10px;
+        li {
+            border: 1px solid $color-gray-light;
+            border-bottom: none;
+            background-color: #fff;
+            a {
+                @include proportion (50px, 50px);
+                text-align: center;
+                display: block;
+                outline-style: none;
+                i {
+                    padding-top: 16px;
+                    font-size: 20px;
+                    display: block;
+                }
+                .icon-xiangxiajiantou-copy {
+                    @include font (25px, $color-black, 700);
+                }
+                .icon-jia1,
+                .icon-tougaoguanli {
+                    font-weight: 700;
+                }
+                .icon-shoucang1 {
+                    color: $color-red-watermelon;
+                }
+            }
+            &:hover {
+                background-color: hsla(0, 0%, 71%, .1);
+            }
+            &:last-child {
+                border-bottom: 1px solid $color-gray-light;
+            }
+        }
+        .toup_rocket {
+            display: none;
+        }
+        .share {
+            position: relative;
+            .dropdown-menu {
+                top: -80%;
+                left: auto;
+                right: 60px;
+                padding: 5px 0;
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    left: 100%;
+                    padding: 5%;
+                    border: 1px solid $color-gray-light;
+                    border-color: $color-gray-light $color-gray-light transparent transparent;
+                    background-color: $color-white;
+                    transform: translate(-50%, -50%) rotateZ(45deg);
+                }
+                li {
+                    border: 0;
+                    a {
+                        @include proportion;
+                        padding: 10px 15px;
+                        text-align: left;
+                        line-height: 20px;
+                        i {
+                            display: inline-block;
+                            vertical-align: middle;
+                            padding: 0 10px 0 0;
+                            font-size: 18px;
+                        }
+                        .icon-weixin1 {
+                            color: $color-green;
+                        }
+                        .icon-sina {
+                            color: #e05244;
+                        }
+                        .icon-zhaopian {
+                            color: $color-gray;
+                        }
+                        span {
+                            font-size: 13px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// 用户文章收入到个人管理的专题
+#detailModal_user {
+    @include modal;
+}
+
+// 个人文章收入个人专题或投稿用户专题
+#detailModal_home {
+    @include modal;
+    .modal-dialog {
+        width: 960px;
+        @media screen and (max-width: 1080px) {
+            width: 750px;
+        }
+        @media screen and (max-width: 768px) {
+            width: 350px;
+        }
+        .modal-body {
+            padding-bottom: 30px;
+            height: 500px;
+            overflow: auto;
+            ul {
+                .title {
+                    padding: 20px 0 10px 20px;
+                    font-size: 15px;
+                    background-color: #f4f4f4;
+                    border-bottom: 1px solid $color-white-silver;
+                    a {
+                        @include font (13px, $color-green);
+                        padding-left: 10px;
+                    }
+                }
+                li {
+                    border-right: 1px solid $color-white-silver;
+                    border-bottom: 1px solid $color-white-silver;
+                    padding: 25px 20px;
+                }
+            }
+        }
+    }
+}

@@ -7,13 +7,8 @@
             .contribute {
                 outline-style: none;
             }
-            @media screen and (min-width: 370px) and (max-width: 768px) {
-                padding-bottom: 0;
-                .botm {
-                    position: static;
-                }
-            }
-            @media screen and (max-width: 370px) {
+            
+            @media screen and (max-width: 768px) {
                 .botm {
                     position: absolute;
                     top: 50px;
@@ -122,75 +117,6 @@
                     margin-left: 3px;
                     outline-style: none;
                 }
-            }
-        }
-    }
-}
-
-// 用户专题投稿模态框
-#categoryModal_user {
-    @include modal;
-}
-
-// 个人专题收录模态框
-#categoryModal_home {
-    @include modal;
-}
-
-// 删除专题模态框
-#categoryModal_Delete {
-    background-color: hsla(0,0%,100%,.7);
-    .modal-dialog {
-        position: absolute;
-        left: 25%;
-        top: 25%;
-        max-height: 80%;
-        max-width: 50%;
-        @media screen and (min-width: 1080px) {
-            left: 35%;
-        }
-        .modal-header {
-            padding: 20px;
-        }
-        .modal-body {
-            padding: 20px;
-            font-size: 15px;
-            p {
-                margin-bottom: 10px;
-            }
-            .form-control {
-                padding: 8px 10px;
-                box-shadow: none;
-                &:focus {
-                    box-shadow: none;
-                    border-color: #ccd0d2;
-                }
-            }
-        }
-        .modal-footer {
-            padding: 20px;
-            border: 0;
-            button {
-                @include spacing;
-                background-color: transparent;
-                border: 0;
-                font-size: 13px;
-                outline-style: none;
-            }
-            .cancel {
-                margin-top: 5px;
-                color: #999;
-                &:hover {
-                    color: $color-black;
-                }
-            }
-            .submit {
-                @include news_button;
-                @include spacing (0 0 0 30px,2px 4px);
-                color: $color-red-watermelon;
-                border-color: $color-red-watermelon;
-                width: 52px;
-                font-size: 13px;
             }
         }
     }

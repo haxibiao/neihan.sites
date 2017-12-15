@@ -4,17 +4,17 @@
         .aside {
             @include spacing (81px 0 0, 0 0 30px);
             position: fixed;
-            width: 330px;
             top: 0;
             bottom: 0;
             overflow: auto;
+            width: 330px;
             @media screen and (max-width: 992px) {
                 width: 200px;
             }
             @media screen and (max-width: 768px) {
                 width: 180px;
             }
-            @media screen and (max-width: 450px) {
+            @media screen and (max-width: 464px) {
                 width: 90px;
             }
             ul {
@@ -25,7 +25,7 @@
                         width: 100%;
                         font-size: 15px;
                         .setting_icon {
-                            @include proportion (32px,32px);
+                            @include proportion (32px, 32px);
                             display: inline-block;
                             margin-right: 15px;
                             vertical-align: middle;
@@ -63,6 +63,7 @@
             }
         }
         .main {
+            overflow: auto;
             margin-left: 360px;
             @media screen and (max-width: 992px) {
                 margin-left: 230px;
@@ -70,8 +71,8 @@
             @media screen and (max-width: 768px) {
                 margin-left: 210px;
             }
-            @media screen and (max-width: 450px) {
-                margin-left: 120px;
+            @media screen and (max-width: 464px) {
+                margin-left: 105px;
             }
             table {
                 width: 100%;
@@ -94,8 +95,7 @@
                         border: none;
                     }
                 }
-            }
-            // 基础设置
+            } // 基础设置
             #basic {
                 table {
                     thead {
@@ -104,6 +104,9 @@
                                 width: 200px;
                                 @media screen and (max-width: 992px) {
                                     width: 140px;
+                                }
+                                @media screen and (max-width: 768px) {
+                                    width: 85px;
                                 }
                             }
                         }
@@ -116,16 +119,26 @@
                                 }
                                 input[type="text"] {
                                     width: 216px;
+                                    @media screen and (max-width: 768px) {
+                                        width: 120px;
+                                    }
                                 }
                                 form {
                                     .btn_hollow {
-                                        @include spacing (0 0 0 19px,4px);
+                                        @include spacing (0 0 0 19px, 4px);
                                         width: 55px;
                                         float: none;
+                                        @media screen and (max-width: 768px) {
+                                            display: block;
+                                            margin: 10px 0 0 0;
+                                        }
                                     }
                                     input[type="email"] {
                                         width: 270px;
                                         display: inline-block;
+                                        @media screen and (max-width: 768px) {
+                                            width: 166px;
+                                        }
                                     }
                                 }
                                 div {
@@ -140,16 +153,19 @@
                             .top_line {
                                 padding-top: 0;
                                 .avatar {
-                                    @include avatar (100px,100px);
+                                    @include avatar (100px, 100px);
+                                    @media screen and (max-width: 768px) {
+                                        @include proportion (60px, 60px);
+                                    }
                                 }
                                 .btn_hollow {
-                                    @include spacing (0,4px 12px);
+                                    @include spacing (0, 4px 12px);
                                     position: relative;
                                     font-size: 14px;
                                     float: none;
                                     width: 85px;
                                     input {
-                                        @include proportion (79px,30px);
+                                        @include proportion (79px, 30px);
                                         position: absolute;
                                         display: block!important;
                                         top: -1px;
@@ -159,20 +175,24 @@
                                 }
                             }
                             .setting_title {
-                                @include font (15px,$color-gray);
+                                @include font (15px, $color-gray);
                             }
                             .setted {
                                 div {
                                     font-size: 15px;
                                     display: inline-block;
+                                    @media screen and (max-width: 768px) {
+                                        display: block;
+                                    }
                                 }
                                 i {
-                                    @include font (12px,$color-gray,700);
+                                    @include font (12px, $color-gray, 700);
                                     margin: 0 0 0 10px;
                                     vertical-align: middle;
                                 }
-                                span,.cancel_bind {
-                                    @include font (14px,$color-gray);
+                                span,
+                                .cancel_bind {
+                                    @include font (14px, $color-gray);
                                     margin: 0 0 0 3px;
                                     vertical-align: middle;
                                 }
@@ -195,12 +215,7 @@
                         }
                     }
                 }
-                .btn_success {
-                    @include button;
-                    margin: 30px 0 60px 0;
-                }
-            }
-            // 个人资料
+            } // 个人资料
             #profile {
                 table {
                     thead {
@@ -209,6 +224,9 @@
                                 width: 200px;
                                 @media screen and (max-width: 992px) {
                                     width: 140px;
+                                }
+                                @media screen and (max-width: 768px) {
+                                    width: 85px;
                                 }
                             }
                         }
@@ -244,18 +262,18 @@
                                 }
                             }
                             .setting_title {
-                                @include font (15px,$color-gray);
+                                @include font (15px, $color-gray);
                             }
                             .weixin_qrcode {
                                 .btn_hollow {
                                     @include news_button;
-                                    @include spacing (0,4px 12px);
+                                    @include spacing (0, 4px 12px);
                                     position: relative;
                                     font-size: 14px;
                                     float: none;
                                     width: 85px;
                                     input {
-                                        @include proportion (79px,30px);
+                                        @include proportion (79px, 30px);
                                         position: absolute;
                                         display: block!important;
                                         top: -1px;
@@ -267,20 +285,18 @@
                         }
                     }
                 }
-                .btn_success {
-                    @include button;
-                    margin: 30px 0 60px 0;
-                }
-            }
-            // 赞赏设置
+            } // 赞赏设置
             #reward_setting {
-                 table {
+                table {
                     thead {
                         tr {
                             .setting_head {
                                 width: 200px;
                                 @media screen and (max-width: 992px) {
                                     width: 140px;
+                                }
+                                @media screen and (max-width: 768px) {
+                                    width: 85px;
                                 }
                             }
                         }
@@ -311,15 +327,15 @@
                                 }
                             }
                             .setting_title {
-                                @include font (15px,$color-gray);
+                                @include font (15px, $color-gray);
                             }
                         }
                     }
                 }
-                .btn_success {
-                    @include button;
-                    margin: 30px 0 60px 0;
-                }
+            }
+            .btn_success {
+                @include button;
+                margin: 30px 0 60px 0;
             }
         }
     }

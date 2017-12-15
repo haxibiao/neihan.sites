@@ -264,6 +264,7 @@
         };
 
         $('.dropdown-toggle').dropdown();
+        $('[data-toggle="tooltip"]').tooltip();
 
         $('.form-control').focus(function(){
             $(this).siblings('.hot_search_wrp').css({'visibility':'visible','opacity':1});

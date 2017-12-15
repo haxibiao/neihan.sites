@@ -30,7 +30,7 @@
 		                    		<img src="/images/category_08.jpg" />
 		                    	</a>
 		                        <div>
-		                            <div class="note_name">利用 react native 框架开发app</div>
+		                            <div class="note_name">情缘未了</div>
 		                            <span class="meta">菇凉大大 编</span>
 		                            <a href="javascript:;" class="action_btn push">收入</a>
 		                        </div>
@@ -40,9 +40,9 @@
 		                    		<img src="/images/category_08.jpg" />
 		                    	</a>
 		                        <div>
-		                            <div class="note_name">利用 react native 框架开发app</div>
+		                            <div class="note_name">情缘未了</div>
 		                            <span class="meta">菇凉大大编</span>
-		                            <span class="status has_add">已加入</span>
+		                            <span class="status has_add">已收入</span>
 		                            <a href="javascript:;" class="action_btn remove" style="display: block;">移除</a>
 		                        </div>
 		                    </li>

@@ -14,7 +14,7 @@
                         空评
                     </a>
                     <a href="/v1/detail" target="_blank">
-                        <img src="/images/vip1.png"/>
+                        <img src="/images/vip1.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者"/>
                     </a>
                     <span class="time">
                         2天前
@@ -60,7 +60,7 @@
                         闫浩
                     </a>
                     <a href="/v1/detail" target="_blank">
-                        <img src="/images/vip1.png"/>
+                        <img src="/images/vip1.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者"/>
                     </a>
                     <span class="time">
                         5天前
@@ -159,7 +159,7 @@
                         迎刃
                     </a>
                     <a href="/v1/detail" target="_blank">
-                        <img src="/images/vip1.png"/>
+                        <img src="/images/vip1.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者"/>
                     </a>
                     <span class="time">
                         1个月前

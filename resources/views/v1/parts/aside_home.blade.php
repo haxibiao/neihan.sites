@@ -9,18 +9,14 @@
         编辑
     </a>
     <form action="/user/" class="intro_form" method="post">
-        <textarea class="form-control" id="user_intro" name="user[intro]">
-            十分精力：四分读书，三分写书，三分教书。《正版语文》作者，21世纪最牛写作书 《风格感觉》（The Sense of Style）中文译者之一，“好中文的样子”创办人和主讲人。
-        </textarea>
+        <textarea class="form-control" id="user_intro" name="user[intro]">十分精力：四分读书，三分写书，三分教书。《正版语文》作者，21世纪最牛写作书 《风格感觉》（The Sense of Style）中文译者之一，“好中文的样子”创办人和主讲人。</textarea>
         <input class="btn_hollow" name="commit" type="submit" value="保存"/>
         <a href="javascript:void(null);">
             取消
         </a>
     </form>
     <div class="description">
-        <div class="intro">
-            十分精力：四分读书，三分写书，三分教书。《正版语文》作者，21世纪最牛写作书 《风格感觉》（The Sense of Style）中文译者之一，“好中文的样子”创办人和主讲人。
-        </div>
+        <div class="intro">十分精力：四分读书，三分写书，三分教书。《正版语文》作者，21世纪最牛写作书 《风格感觉》（The Sense of Style）中文译者之一，“好中文的样子”创办人和主讲人。</div>
     </div>
     <ul class="user_dynamic">
         <li>

@@ -6,7 +6,11 @@
         .container {
             padding-bottom: 40px;
             .col-xs-12 {
-                padding: 0; // 文章
+                padding: 0; // 优秀作者图标
+                .badge_icon {
+                    @include proportion (20px,20px);
+                    margin-right: 5px;
+                } // 文章
                 .article {
                     // 标题
                     .title {
@@ -25,10 +29,11 @@
                             .name {
                                 font-size: 16px;
                                 vertical-align: middle;
+                                margin-right: 3px;
                             }
                             .follow {
                                 @include button (60px);
-                                @include spacing (0 0 0 10px, 2px 8px);
+                                @include spacing (0, 2px 8px);
                                 font-size: 12px;
                             }
                             .meta {
@@ -571,58 +576,4 @@
             }
         }
     }
-}
-
-// 底部小火箭、分享、收藏、投稿
-.side_tool {
-    position: fixed;
-    z-index: 101;
-    bottom: 40px;
-    right: 40px;
-    ul {
-        padding-bottom: 10px;
-        li {
-            border: 1px solid $color-gray-light;
-            border-bottom: none;
-            background-color: #fff;
-            a {
-                @include proportion (50px,50px);
-                text-align: center;
-                display: block;
-                i {
-                    padding-top: 16px;
-                    font-size: 20px;
-                    display: block;
-                }
-                .icon-xiangxiajiantou-copy {
-                    @include font (25px,$color-black,700);
-                }
-                .icon-jia1,.icon-tougaoguanli {
-                    font-weight: 700;
-                }
-                .icon-shoucang1 {
-                    color: $color-red-watermelon;
-                }
-            }
-            &:hover {
-                background-color: hsla(0,0%,71%,.1);
-            }
-            &:last-child {
-                border-bottom: 1px solid $color-gray-light;
-            }
-        }
-        .toup_rocket {
-            display: none;
-        }
-    }
-}
-
-// 用户文章收入到个人管理的专题
-#detailModal_user {
-    @include modal;
-}
-
-// 个人文章收入个人专题或投稿用户专题
-#detailModal_home {
-    @include modal
 }

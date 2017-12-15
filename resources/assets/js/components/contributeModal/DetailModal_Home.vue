@@ -12,33 +12,125 @@
 		                    </span>
 		                </button>
 		                <h4 class="modal-title" id="myModalLabel">
-		                    收录文章到该专题
-		                    <a href="#" class="new_note_btn">
-		                        写篇新文章
-		                    </a>
+		                    投稿
 		                </h4>
-		                <span class="notice">
-		                    每篇文章有总共有5次投稿机会
-		                </span>
-		                <div>
-		                    <input placeholder="搜索我的文章" type="text" class="form-control" />
+		                <div class="search">
+		                    <input placeholder="搜索专题投稿" type="text" class="form-control" />
 		                    <i class="iconfont icon-sousuo">
 		                    </i>
 		                </div>
 		            </div>
 		            <div class="modal-body">
-		                <ul>
-		                    <li>
+		                <ul class="clearfix">
+		                	<div class="title">
+		                		我管理的专题
+		                		<a href="/v1/collections/new" target="_blank">
+		                			<span>新建专题</span>
+		                		</a>
+		                	</div>
+		                    <li class="col-xs-12 col-sm-6 col-md-4">
+		                        <a href="" class="avatar_collection">
+		                    		<img src="/images/category_08.jpg" />
+		                    	</a>
 		                        <div>
-		                            <div class="note_name">利用 react native 框架开发app</div>
-		                            <a href="javascript:;" class="action_btn push">收录</a>
+		                            <div class="note_name">情缘未了</div>
+		                            <span class="meta">10篇文章 · 50人关注</span>
+		                            <a href="javascript:;" class="action_btn remove" style="display: block;">移除</a>
 		                        </div>
 		                    </li>
-		                    <li>
+		                    <li class="col-xs-12 col-sm-6 col-md-4">
+		                        <a href="" class="avatar_collection">
+		                    		<img src="/images/category_08.jpg" />
+		                    	</a>
 		                        <div>
-		                            <div class="note_name">利用 react native 框架开发app</div>
-		                            <a href="javascript:;" class="action_btn remove" style="display: block;">移除</a>
-		                            <span class="status add" style="display: block;">已加入</span>
+		                            <div class="note_name">情缘未了</div>
+		                            <span class="meta">10篇文章 · 50人关注</span>
+		                            <a href="javascript:;" class="action_btn push">收入</a>
+		                        </div>
+		                    </li>
+		                </ul>
+		                <ul class="clearfix">
+		                	<div class="title">
+		                		推荐专题
+		                	</div>
+		                    <li class="col-xs-12 col-sm-6 col-md-4">
+		                        <a href="" class="avatar_collection">
+		                    		<img src="/images/category_08.jpg" />
+		                    	</a>
+		                        <div>
+		                            <div class="note_name">情缘未了</div>
+		                            <span class="meta">10篇文章 · 50人关注</span>
+		                            <a href="javascript:;" class="action_btn revoke" style="display: block;">撤回</a>
+		                        </div>
+		                    </li>
+		                    <li class="col-xs-12 col-sm-6 col-md-4">
+		                        <a href="" class="avatar_collection">
+		                    		<img src="/images/category_08.jpg" />
+		                    	</a>
+		                        <div>
+		                            <div class="note_name">情缘未了</div>
+		                            <span class="meta">10篇文章 · 50人关注</span>
+		                            <a href="javascript:;" class="action_btn push">投稿</a>
+		                        </div>
+		                    </li>
+		                    <li class="col-xs-12 col-sm-6 col-md-4">
+		                        <a href="" class="avatar_collection">
+		                    		<img src="/images/category_08.jpg" />
+		                    	</a>
+		                        <div>
+		                            <div class="note_name">情缘未了</div>
+		                            <span class="meta">10篇文章 · 50人关注</span>
+		                            <a href="javascript:;" class="action_btn revoke" style="display: block;">撤回</a>
+		                        </div>
+		                    </li>
+		                    <li class="col-xs-12 col-sm-6 col-md-4">
+		                        <a href="" class="avatar_collection">
+		                    		<img src="/images/category_08.jpg" />
+		                    	</a>
+		                        <div>
+		                            <div class="note_name">情缘未了</div>
+		                            <span class="meta">10篇文章 · 50人关注</span>
+		                            <a href="javascript:;" class="action_btn push">投稿</a>
+		                        </div>
+		                    </li>
+		                    <li class="col-xs-12 col-sm-6 col-md-4">
+		                        <a href="" class="avatar_collection">
+		                    		<img src="/images/category_08.jpg" />
+		                    	</a>
+		                        <div>
+		                            <div class="note_name">情缘未了</div>
+		                            <span class="meta">10篇文章 · 50人关注</span>
+		                            <a href="javascript:;" class="action_btn revoke" style="display: block;">撤回</a>
+		                        </div>
+		                    </li>
+		                    <li class="col-xs-12 col-sm-6 col-md-4">
+		                        <a href="" class="avatar_collection">
+		                    		<img src="/images/category_08.jpg" />
+		                    	</a>
+		                        <div>
+		                            <div class="note_name">情缘未了</div>
+		                            <span class="meta">10篇文章 · 50人关注</span>
+		                            <a href="javascript:;" class="action_btn push">投稿</a>
+		                        </div>
+		                    </li>
+		                    <li class="col-xs-12 col-sm-6 col-md-4">
+		                        <a href="" class="avatar_collection">
+		                    		<img src="/images/category_08.jpg" />
+		                    	</a>
+		                        <div>
+		                            <div class="note_name">情缘未了</div>
+		                            <span class="meta">10篇文章 · 50人关注</span>
+		                            <a href="javascript:;" class="action_btn revoke" style="display: block;">撤回</a>
+		                        </div>
+		                    </li>
+		                    <li class="col-xs-12 col-sm-6 col-md-4">
+		                        <a href="" class="avatar_collection">
+		                    		<img src="/images/category_08.jpg" />
+		                    	</a>
+		                        <div>
+		                            <div class="note_name">情缘未了</div>
+		                            <span class="meta">10篇文章 · 50人关注</span>
+		                            <a href="javascript:;" class="action_btn push">投稿</a>
 		                        </div>
 		                    </li>
 		                </ul>

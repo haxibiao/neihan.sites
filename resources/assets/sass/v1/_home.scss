@@ -119,6 +119,7 @@
         }
         .intro_form {
             margin-bottom: 20px;
+            display: none;
             .form-control {
                 @include spacing (0 0 10px 0, 10px 15px);
                 box-shadow: none;

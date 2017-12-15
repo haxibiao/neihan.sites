@@ -47,9 +47,6 @@ Vue.component('notifications-left', require('./components/notifications/Notifica
 // 详情页评论
 Vue.component('new-comment', require('./components/detail/NewComment.vue'));
 
-// 详情页底部小火箭、分享、收藏、投稿
-// Vue.component('side-tool', require('./components/detail/Side_Tool.vue'));
-
 // 用户模态框
 Vue.component('categorymodal-user', require('./components/contributeModal/CategoryModal_User.vue'));
 

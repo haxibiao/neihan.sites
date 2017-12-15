@@ -587,23 +587,19 @@
             right: 140px;
             top: 150px;
             margin-bottom: 0;
+            width: 70px;
         }
         .botm {
             right: 30px;
         }
-    }
-    @media screen and (max-width: 450px) {
         .avatar {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
         }
         .title,
         .info,
         p {
             padding-left: 60px;
-        }
-        .contribute {
-            width: 70px;
         }
     }
 }
@@ -764,6 +760,19 @@
                     border-radius: 50%;
                 }
             }
+            .search {
+                position: absolute;
+                top: 15px;
+                right: 80px;
+                margin: 0;
+                input {
+                    width: 240px;
+                }
+                .icon-sousuo {
+                    top: 6px;
+                    right: 12px;
+                }
+            }
         }
         .modal-body {
             padding: 0;
@@ -819,7 +828,7 @@
                             display: inline-block;
                         }
                         .has_add {
-                            color: $color-green;
+                            @include font (12px,$color-green);
                             vertical-align: middle;
                             display: inline-block;
                         }
