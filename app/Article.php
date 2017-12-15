@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Model;
 
 class Article extends Model
 {
@@ -78,10 +78,6 @@ class Article extends Model
         return $this->morphMany(\App\Favorite::class, 'faved');
     }
 
-    public function timeAgo()
-    {
-        return diffForHumansCN($this->created_at);
-    }
 
     //计算用方法
 

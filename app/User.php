@@ -2,13 +2,14 @@
 
 namespace App;
 
+use App\Traits\TimeAgo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, TimeAgo;
 
     /**
      * The attributes that are mass assignable.

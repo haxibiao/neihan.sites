@@ -2,7 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\User;
+use Auth;
+use App\Model;
 
 class Chat extends Model
 {
