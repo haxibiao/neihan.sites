@@ -30,6 +30,6 @@ class Comment extends Model
     }
     public function commentable()
     {
-        return $this->morpTo();
+        return $this->morphTo();
     }
 }

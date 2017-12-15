@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Comment;
 use App\Http\Controllers\Controller;
+use App\Notifications\ArticleCommented;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use App\Notifications\ArticleCommented;
 
 class CommentController extends Controller
 {
@@ -47,8 +47,8 @@ class CommentController extends Controller
             ->paginate(5);
         foreach ($comments as $comment) {
             $comment->time     = $comment->createdAt();
-            $comment->liked    = $this->check_cache($request, $comment->id, 'like_comment');
-            $comment->reported = $this->check_cache($request, $comment->id, 'report_comment');
+            $comment->liked    = $request->user() ? $this->check_cache($request, $comment->id, 'like_comment') : 0;
+            $comment->reported = $request->user() ? $this->check_cache($request, $comment->id, 'report_comment') : 0;
         }
 
         return $comments;
