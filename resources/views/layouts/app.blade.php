@@ -51,7 +51,7 @@
         @endif
 
         @if(in_array(request()->path(), [
-            'v1/follow',
+            'follow',
             'v1/notification'
         ]))
 

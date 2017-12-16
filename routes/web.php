@@ -65,6 +65,9 @@ Route::get('/hxb-login-as/{name}', 'HomeController@hxbLoginAs');
 Route::resource('/image', 'ImageController');
 Route::resource('/video', 'VideoController');
 
+//follow
+Route::get('/follow','FollowController@index');
+
 //后台
 Route::get('/admin', 'AdminController@index');
 Route::get('/admin/users', 'AdminController@users');

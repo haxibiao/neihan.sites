@@ -31,7 +31,7 @@
                             </a>
                         </li>
                         <li class="tab follow">
-                            <a href="/v1/follow">
+                            <a href="/follow">
                                 <i class="iconfont icon-huizhang">
                                 </i>
                                 <span class="menu_text">
