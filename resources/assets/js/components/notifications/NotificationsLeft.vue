@@ -54,19 +54,71 @@ export default {
 
   name: 'NotificationsLeft',
 
-  //  mounted(){
-  //   this.$router.push({path:"/comments"});
-  //   var route_path = window.location.hash.replace("#/","");
-  //   this.route_path = route_path;
-  // },
+  created(){
+
+    var route_path= window.location.hash.replace('#/','');
+    this.route_path=route_path;
+    if(route_path==''){
+        this.$route.push( {path:'/comments'} );
+        this.route_path='comments';
+
+    }
+    this.fetchData();
+  },
+
+  methods:{
+      skip(e){
+        $(e.target).parents('li').addClass('active').siblings().removeClass('active');
+      },
+      fetchData(){
+        var api=window.tokenize('/api/unreads');
+        var vm=this;
+        window.axios.get(api).then(function(response){
+            vm.unreads=response.data;
+        });
+      },
+  },
 
   data () {
     return {
-
+        route_path: 'comments',
+        unreads:[]
     }
   }
 }
 </script>
 
 <style lang="css" scoped>
+    ul {
+        li {
+            &.active {
+                background-color: #f0f0f0;
+                border-radius: 4px;
+            }
+            .link {
+                height: auto;
+                padding: 10px 25px;
+                line-height: 30px;
+                display: block;
+                color: #333;
+                i {
+                    margin-right: 15px;
+                    font-size: 22px;
+                    color: #FF9D23;
+                    vertical-align: middle;
+                }
+                span {
+                    font-size: 15px;
+                    vertical-align: middle;
+                }
+                .badge {
+                    float: right;
+                    margin: 6px 15px 0 0;
+                    padding: 3px 6px;
+                    font-size: 12px;
+                    background-color: #FF9D23;
+                }
+            }
+        }
+    }
 </style>
