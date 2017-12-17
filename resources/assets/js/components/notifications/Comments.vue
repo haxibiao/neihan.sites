@@ -3,52 +3,25 @@
 	<div id="comments">
 		<div class="menu">收到的评论</div>
 		<ul class="comment_list">
-			<li>
+			<li v-for="notification in notifications">
 				<div class="comment_head">
-					<a href="#" class="avatar">
-						<img src="/images/photo_02.jpg" />
+					<a :href="notification.user_id" class="avatar">
+						<img :src="notification.user_avatar" />
 					</a>
 					<div class="title">
-						<a href="javascript: ;">中南工大留级生</a>
+						<a href="javascript: ;">{{ notification.user_name }}</a>
 						<span>评论了你的文章</span>
-						<a href="javascript: ;" class="headline">《就是想撸猫》</a>
+						<a href="javascript: ;" class="headline">{{ notification.article_title }}</a>
 					</div>
-					<div class="info">2017.11.15  08:09</div>
+					<div class="info">{{ notification.time }}</div>
 				</div>
-				<p>这位少年，我觉得你非常有想法，跟我来打游戏吧！</p>
+				<p>{{ notification.comment }}</p>
 				<div class="tool_group">
-					<a href="javascript: ;">
+					<a :href="'/article/'+notification.article_id+'#'+notification.lou">
 						<i class="iconfont icon-xinxi2"></i>
 						<span>回复</span>
 					</a>
-					<a href="javascript: ;">
-						<i class="iconfont icon-zhuanfa2"></i>
-						<span>查看对话</span>
-					</a>
-					<a href="javascript: ;" class="report">
-						<span>举报</span>
-					</a>
-				</div>
-			</li>
-			<li>
-				<div class="comment_head">
-					<a href="#" class="avatar">
-						<img src="/images/photo_02.jpg" />
-					</a>
-					<div class="title">
-						<a href="javascript: ;">中南工大留级生</a>
-						<span>评论了你的文章</span>
-						<a href="javascript: ;" class="headline">《在web项目中添加自定义的font图标》</a>
-					</div>
-					<div class="info">2017.11.15  08:09</div>
-				</div>
-				<p>很好很实用的文章，谢谢分享</p>
-				<div class="tool_group">
-					<a href="javascript: ;">
-						<i class="iconfont icon-xinxi2"></i>
-						<span>回复</span>
-					</a>
-					<a href="javascript: ;">
+					<a href="'/article/'+notification.article_id+'#1'">
 						<i class="iconfont icon-zhuanfa2"></i>
 						<span>查看对话</span>
 					</a>
@@ -66,9 +39,23 @@ export default {
 
   name: 'Comments',
 
+  computed:{
+  	  current_user_id(){
+  	  	  return window.current_user_id;
+  	  }
+  },
+
+  created(){
+  	   var api_url=window.tokenize('/api/notifications/comment');
+  	   var vm=this;
+  	   window.axios.get(api_url).then(function(response){
+  	   	  vm.notifications=response.data;
+  	   });
+  },
+
   data () {
     return {
-
+         notifications:[]
     }
   }
 }

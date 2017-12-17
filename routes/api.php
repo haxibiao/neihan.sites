@@ -38,6 +38,16 @@ Route::middleware('auth:api')->post('/follow/{id}/{type}','Api\FollowController@
 Route::middleware('auth:api')->get('/follows', 'Api\FollowController@follows');
 Route::middleware('auth:api')->get('/follow/recommends', 'Api\FollowController@recommends');
 
+//notifications
+Route::middleware('auth:api')->get('notification/chats', 'Api\NotificationController@chats');
+Route::middleware('auth:api')->get('notification/chat/{id}', 'Api\NotificationController@chat');
+Route::middleware('auth:api')->post('notification/chat/{id}/send', 'Api\NotificationController@sendMessage');
+Route::middleware('auth:api')->get('notifications/{type}', 'Api\NotificationController@notifications');
+//新投稿请求列表
+Route::middleware('auth:api')->get('/new-request-categories', 'Api\NotificationController@newReuqestCategories');
+
+
+
 //提交收藏
 Route::middleware('auth:api')->post('/favorite/{id}/{type}', 'Api\FavoriteController@save');
 //删除收藏
@@ -52,6 +62,8 @@ Route::get('/like/{id}/{type}', 'Api\LikeController@get');
 
 //获取用户详细资料
 Route::get('/user/{id}', 'Api\UserController@getInfo');
+//user unreads
+Route::middleware('auth:api')->get('/unreads','Api\UserController@unreads');
 //get user id by user name
 Route::get('/user/by-name/{name}', 'Api\UserController@getInfoByName');
 //获取用户上传的图片，可以按标题搜索

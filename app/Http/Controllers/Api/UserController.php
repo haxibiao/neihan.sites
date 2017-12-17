@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Article;
+use App\Http\Controllers\Controller;
 use App\Image;
 use App\Traffic;
 use App\User;
@@ -100,9 +100,9 @@ class UserController extends Controller
 
     public function getInfo(Request $request, $id)
     {
-        $user         = User::findOrFail($id);
-        $user->avatar_url=$user->avatar();
-        $data['user'] = $user;
+        $user             = User::findOrFail($id);
+        $user->avatar_url = $user->avatar();
+        $data['user']     = $user;
 
         $data['articles_count'] = Article::where('user_id', $user->id)->count();
         $data['traffic_count']  = Traffic::where('user_id', $user->id)->count();
@@ -114,5 +114,10 @@ class UserController extends Controller
         $data['traffic_count_today']  = Traffic::where('user_id', $user->id)->where('date', Carbon::now()->toDateString())->count();
 
         return $data;
+    }
+
+    public function unreads(Request $request)
+    {
+        return $request->user()->unreads();
     }
 }
