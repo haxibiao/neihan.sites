@@ -3,30 +3,17 @@
 	<div id="likes">
 		<div class="menu">收到的喜欢和赞</div>
 		<ul class="likes_list">
-			<li>
+			<li v-for="notification in notifications">
 				<div class="like_item">
-					<a href="v1/user" class="avatar">
-						<img src="/images/photo_02.jpg" />
+					<a href="'/user/+notification.user_id'" class="avatar">
+						<img :src="notification.user_avatar" />
 					</a>
 					<div class="title">
-						<a href="javascript:;">中南工大留级生</a>
+						<a href="javascript:;">{{ notification.user_name }}</a>
 						<span>喜欢了你的文章</span>
-						<a href="javascript:;" class="headline">《就是想撸猫》</a>
+						<a :href="'/article/'+notification.article_id" class="headline">{{  notification.article_title}}</a>
 					</div>
-					<div class="info">2017.11.15  08:09</div>
-				</div>
-			</li>
-			<li>
-				<div class="like_item">
-					<a href="v1/user" class="avatar">
-						<img src="/images/photo_02.jpg" />
-					</a>
-					<div class="title">
-						<a href="javascript:;">中南工大留级生</a>
-						<span>喜欢了你的文章</span>
-						<a href="javascript:;" class="headline">《在web项目中添加自定义的font图标》</a>
-					</div>
-					<div class="info">2017.11.15  08:30</div>
+					<div class="info">{{ notification.time }}</div>
 				</div>
 			</li>
 		</ul>
@@ -37,10 +24,18 @@
 export default {
 
   name: 'Likes',
+  
+  created(){
+  	 var api_url=window.tokenize('/api/notifications/like');
+  	 var vm=this;
+  	 window.axios.get(api_url).then(function(response){
+  	 	 vm.notifications=response.data;
+  	 });
+  },
 
   data () {
     return {
-
+        notifications:[]
     }
   }
 }

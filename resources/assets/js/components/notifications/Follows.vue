@@ -3,85 +3,28 @@
 	<div id="follows">
 		<div class="menu">全部关注</div>
 		<ul class="follows_list">
-			<li>
+            <li v-for="notification in notifications">
                 <div class="follow_item">
-                    <a class="avatar" href="#">
-                        <img src="/images/photo_03.jpg"/>
+
+                    <follow type="users" :id="notification.user_id" :user-id="current_user_id" :followed="notification.is_followed"></follow>
+
+                    <a class="avatar" :href="'/user/'+notification.user_id">
+                        <img :src="notification.user_avatar"/>
                     </a>
-                    <a class="following" href="javascript:;">
+<!--                     <a class="following" href="javascript:;">
                         <span>
                             <i class="iconfont icon-weibiaoti12">
                             </i>
                             <i class="iconfont icon-cha">
                             </i>
                         </span>
-                    </a>
+                    </a> -->
                     <a class="title" href="#">
-                        小云淮 关注了你
+                        <a :href="'/user/'+notification.user_id">{{ notification.user_name }}</a>
+                         关注了你
                     </a>
                     <div class="info">
-                    	2017.11.15  08:09
-                    </div>
-                </div>
-			</li><li>
-                <div class="follow_item">
-                    <a class="avatar" href="#">
-                        <img src="/images/photo_03.jpg"/>
-                    </a>
-                    <a class="following" href="javascript:;">
-                        <span>
-                            <i class="iconfont icon-weibiaoti12">
-                            </i>
-                            <i class="iconfont icon-cha">
-                            </i>
-                        </span>
-                    </a>
-                    <a class="title" href="#">
-                        上善若水 关注了你
-                    </a>
-                    <div class="info">
-                    	2017.11.15  08:30
-                    </div>
-                </div>
-			</li><li>
-                <div class="follow_item">
-                    <a class="avatar" href="#">
-                        <img src="/images/photo_01.jpg"/>
-                    </a>
-                    <a class="following" href="javascript:;">
-                        <span>
-                            <i class="iconfont icon-weibiaoti12">
-                            </i>
-                            <i class="iconfont icon-cha">
-                            </i>
-                        </span>
-                    </a>
-                    <a class="title" href="#">
-                        喵星菇凉 关注了你
-                    </a>
-                    <div class="info">
-                    	2017.11.15  08:45
-                    </div>
-                </div>
-			</li>
-			<li>
-                <div class="follow_item">
-                    <a class="avatar" href="#">
-                        <img src="/images/photo_02.jpg"/>
-                    </a>
-                    <a class="following" href="javascript:;">
-                        <span>
-                            <i class="iconfont icon-weibiaoti12">
-                            </i>
-                            <i class="iconfont icon-cha">
-                            </i>
-                        </span>
-                    </a>
-                    <a class="title" href="#">
-                        中南工大留级生 关注了你
-                    </a>
-                    <div class="info">
-                    	2017.11.15  08:58
+                    	{{ notification.time }}
                     </div>
                 </div>
 			</li>
@@ -94,9 +37,23 @@ export default {
 
   name: 'Follows',
 
+  computed:{
+     current_user_id(){
+        return window.current_user_id;
+     }
+  },
+
+  created(){
+    var api_url=window.tokenize('/api/notifications/follow');
+    var vm=this;
+    window.axios.get(api_url).then(function(response){
+          vm.notifications=response.data;
+    });
+  },
+
   data () {
     return {
-
+        notifications:[]
     }
   }
 }

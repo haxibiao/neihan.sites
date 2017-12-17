@@ -6,49 +6,49 @@
                 <router-link to="/comments">
                 	<i class="iconfont icon-xinxi"></i>
                 	<span class="name">评论</span>
-                    <span v-if="unreads.comments" class="badge">{{ unreads.comments }</span>
+                    <span v-if="unreads.comments" class="badge">{{ unreads.comments }}</span>
                 </router-link>
             </li>
             <li>
                 <router-link to="/chats">
                 	<i class="iconfont icon-email"></i>
                 	<span class="name">私信</span>
-                    <span v-if="unreads.chats" class="badge">{{ unreads.chats }</span>
+                    <span v-if="unreads.chats" class="badge">{{ unreads.chats }}</span>
                 </router-link>
             </li>
             <li>
                 <router-link to="/requests">
                 	<i class="iconfont icon-tougaoguanli"></i>
                 	<span class="name">投稿请求</span>
-                    <span v-if="unreads.requests" class="badge">{{ unreads.requests }</span>
+                    <span v-if="unreads.requests" class="badge">{{ unreads.requests }}</span>
                 </router-link>
             </li>
             <li>
                 <router-link to="/likes">
                 	<i class="iconfont icon-xin"></i>
                 	<span class="name">喜欢和赞</span>
-                    <span v-if="unreads.likes" class="badge">{{ unreads.likes }</span>
+                    <span v-if="unreads.likes" class="badge">{{ unreads.likes }}</span>
                 </router-link>
             </li>
             <li>
                 <router-link to="/follows">
                 	<i class="iconfont icon-jiaguanzhu"></i>
                 	<span class="name">关注</span>
-                    <span v-if="unreads.follows" class="badge">{{ unreads.follows }</span>
+                    <span v-if="unreads.follows" class="badge">{{ unreads.follows }}</span>
                 </router-link>
             </li>
             <li>
                 <router-link to="/tip">
                 	<i class="iconfont icon-zanshangicon"></i>
                 	<span class="name">赞赏</span>
-                    <span v-if="unreads.tips" class="badge">{{ unreads.tips }</span>
+                    <span v-if="unreads.tips" class="badge">{{ unreads.tips }}</span>
                 </router-link>
             </li>
             <li>
                 <router-link to="/others">
                 	<i class="iconfont icon-gengduo"></i>
                 	<span class="name">其他消息</span>
-                    <span v-if="unreads.others" class="badge">{{ unreads.others }</span>
+                    <span v-if="unreads.others" class="badge">{{ unreads.others }}</span>
                 </router-link>
             </li>
         </ul>
