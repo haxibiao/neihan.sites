@@ -281,12 +281,21 @@
             color: $color-blue;
         }
     }
+    .cancal {
+        display: none;
+    }
+     &:hover {
+        .cancal {
+            display: inline;
+        }
+    }
 }
 
 // 文章模块标题样式
 @mixin article_title {
     @include font (18px, $color-black, 700);
     @include line_number (2);
+    line-height: 1.5;
 }
 
 // 文章模块用户页关注作者动态样式
@@ -357,7 +366,7 @@
     }
     &.have_img {
         .content {
-            padding-right: 25%;
+            padding-right: 26%;
         }
         .wrap_img {
             display: inline-block;
@@ -402,27 +411,7 @@
         .abstract {
             @include line_number(2);
         }
-    } // .substance {
-    //     margin-top: 2%;
-    //     line-height: 25px;
-    //     .conten {
-    //         @include spacing (0 0 8px 0, 0 5px 0 0);
-    //         a {
-    //             @include article_title;
-    //         }
-    //         .article {
-    //             @include line_number;
-    //         }
-    //         @media screen and (max-width: 768px) {
-    //             .article {
-    //                 -webkit-line-clamp: 3;
-    //             }
-    //         }
-    //     }
-    //     .meta {
-    //         @include meta;
-    //     }
-    // }
+    }
     .follow_detail {
         @include follow_detail;
     }
@@ -450,6 +439,34 @@
             }
             .meta {
                 @include meta;
+            }
+        }
+    }
+    .push_action {
+        margin-top: 10px;
+        font-size: 12px;
+        color: $color-gray;
+        line-height: 20px;
+        .botm {
+            @include news_button;
+            @include spacing (0 5px 0 0,0 2px);
+            width: 40px;
+            font-size: 12px;
+            float: none;
+            &:hover {
+                background-color: $color-white-milk;
+            }
+        }
+        .revoke {
+            color: $color-gray-deep;
+            border-color: $color-gray-light;
+        }
+        .push_status {
+            margin-right: 5px;
+            font-weight: 700;
+            .push_remove {
+                @include font (12px,$color-red-watermelon,400);
+                margin-left: 5px;
             }
         }
     }
@@ -570,23 +587,19 @@
             right: 140px;
             top: 150px;
             margin-bottom: 0;
+            width: 70px;
         }
         .botm {
             right: 30px;
         }
-    }
-    @media screen and (max-width: 450px) {
         .avatar {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
         }
         .title,
         .info,
         p {
             padding-left: 60px;
-        }
-        .contribute {
-            width: 70px;
         }
     }
 }
@@ -700,8 +713,205 @@
 
 // 消息提醒数量
 @mixin badge {
-    @include spacing (6px 0 0 0, 3px 6px);
-    float: right;
+    padding: 3px 6px;
     background-color: $color-red-watermelon;
     font-size: 12px;
+}
+
+// 模态框
+@mixin modal {
+    background-color: hsla(0,0%,100%,.7);
+    .modal-dialog {
+        position: fixed;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        .modal-header {
+            padding: 20px;
+            .modal-title {
+                @include font (17px,$color-black,700);
+                .new_note_btn {
+                    @include font (13px,$color-green,400);
+                    padding-left: 10px;
+                }
+            }
+            .notice {
+                @include font (13px,$color-gray);
+            }
+            div {
+                position: relative;
+                margin: 20px 0 0;
+                .form-control {
+                    @include border (40px);
+                    padding: 0 40px 0 20px;
+                    background-color: hsla(0,0%,71%,.2);
+                    box-shadow: none;
+                    &:focus {
+                        box-shadow: none;
+                    }
+                }
+                .icon-sousuo {
+                    @include proportion (30px, 30px);
+                    @include font (20px, $color-gray-deep);
+                    position: absolute;
+                    top: 4px;
+                    right: 4px;
+                    text-align: center;
+                    border-radius: 50%;
+                }
+            }
+            .search {
+                position: absolute;
+                top: 15px;
+                right: 80px;
+                margin: 0;
+                input {
+                    width: 240px;
+                }
+                .icon-sousuo {
+                    top: 6px;
+                    right: 12px;
+                }
+            }
+        }
+        .modal-body {
+            padding: 0;
+            height: 460px;
+            ul {
+                li {
+                    padding: 20px;
+                    font-size: 15px;
+                    border-bottom: 1px solid #e6e6e6;
+                    position: relative;
+                    div {
+                        display: inline-block;
+                        vertical-align: middle;
+                        .note_name {
+                            display: block;
+                        }
+                        .action_btn {
+                            @include news_button;
+                            @include spacing (-11px 0 0 0,1px 8px);
+                            font-size: 13px;
+                            width: 45px;
+                            position: absolute;
+                            top: 50%; 
+                            right: 20px;
+                            border-radius: 20px;
+                            line-height: normal;
+                            display: none;
+                            &:hover {
+                                background-color: $color-white-milk;
+                            }
+                        }
+                        .push {
+                            display: block;
+                        }
+                        .revoke {
+                            color: $color-gray;
+                            border-color: hsla(0, 0%, 59%, .6);
+                        }
+                        .remove {
+                            color: $color-red-watermelon;
+                            border-color: $color-red-watermelon;
+                        }
+                        .repush {
+                            width: 70px;
+                        }
+                        .status {
+                            color: $color-gray;
+                            font-size: 13px;
+                            display: none;
+                        }
+                        .meta {
+                            @include font (12px,$color-gray);
+                            display: inline-block;
+                        }
+                        .has_add {
+                            @include font (12px,$color-green);
+                            vertical-align: middle;
+                            display: inline-block;
+                        }
+                    }
+                    .avatar_collection {
+                        @include avatar;
+                        img {
+                            border-radius: 10%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// 推荐作者模块
+@mixin recommended_authors{
+    @include daily;
+    .list {
+        @include spacing (0 0 5% 0);
+        li {
+            @include spacing (15px 0 0 0);
+            a {
+                margin-top: 5px;
+                display: inline-block;
+            }
+            p {
+                font-size: 12px;
+                margin-top: 2px;
+            }
+            .avatar {
+                @include avatar (40px, 40px, left, 10px);
+            }
+            .follow {
+                @include font (13px, $color-green);
+                float: right;
+            }
+            .following {
+                float: right;
+                font-size: 13px;
+                color: $color-gray;
+                vertical-align: middle;
+                i {
+                    font-size: inherit;
+                }
+                &:hover {
+                    border: none;
+                    background-color: inherit;
+                }
+                &.following {
+                    &::after {
+                        content: '已关注';
+                    }
+                    .icon-cha {
+                        display: none;
+                    }
+                    .icon-weibiaoti12 {
+                        display: inline-block;
+                    }
+                    &:hover {
+                        &::after {
+                            content: '取消关注';
+                        }
+                        .icon-cha {
+                            display: inline-block;
+                        }
+                        .icon-weibiaoti12 {
+                            display: none;
+                        }
+                    }
+                }
+            }
+            .name {
+                font-size: 14px;
+            }
+        }
+    }
+    .find_more {
+        @include load_more;
+        @include font (13px, #787878);
+        @include spacing (0, 7px 7px 7px 12px);
+        @include border (4px, 1px solid $color-gray-light);
+        background-color: $color-white-milk;
+    }
 }

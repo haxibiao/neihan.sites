@@ -9,7 +9,7 @@
         <div class="row">
             <div class="essays col-xs-12 col-sm-8">
                 <div class="main_top">
-                    <a class="avatar avatar_collection" href="/v1/category">
+                    <a class="avatar avatar_collection" href="/v1/collection">
                         <img src="/images/category_09.png"/>
                     </a>
                     <a class="follow" href="#">
@@ -18,7 +18,7 @@
                         </span>
                     </a>
                     <div class="title">
-                        <a class="name" href="/v1/category">
+                        <a class="name" href="/v1/collection">
                             <span>
                                 王者荣耀
                             </span>

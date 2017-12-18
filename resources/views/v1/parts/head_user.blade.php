@@ -164,11 +164,11 @@
                         </div>
                     </form>
                     <ul class="nav navbar-nav navbar-right">
-                        <li>
+                        {{-- <li>
                             <a class="style_mode_btn" href="javascript:;">
                                 Aa
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="tab author">
                             <a class="avatar" href="/v1/home">
                                 <img src="/images/photo_01.jpg"/>
@@ -184,7 +184,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="/v1/bookmark">
                                         <i class="iconfont icon-biaoqian">
                                         </i>
                                         <span>
@@ -193,7 +193,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="/v1/home/liked_note">
                                         <i class="iconfont icon-03xihuan">
                                         </i>
                                         <span>
@@ -211,7 +211,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="/v1/setting">
                                         <i class="iconfont icon-shezhi">
                                         </i>
                                         <span>
@@ -219,7 +219,7 @@
                                         </span>
                                     </a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a href="#">
                                         <i class="iconfont icon-svg37">
                                         </i>
@@ -227,7 +227,7 @@
                                             帮助与反馈
                                         </span>
                                     </a>
-                                </li>
+                                </li> --}}
                                 <li>
                                     <a href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
@@ -268,6 +268,7 @@
         };
 
         $('.dropdown-toggle').dropdown();
+        $('[data-toggle="tooltip"]').tooltip();
 
         $('.form-control').focus(function(){
             $(this).siblings('.hot_search_wrp').css({'visibility':'visible','opacity':1});

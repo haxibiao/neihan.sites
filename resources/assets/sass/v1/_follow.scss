@@ -4,17 +4,17 @@
         .aside {
             @include spacing (81px 0 0, 0 0 30px);
             position: fixed;
-            width: 280px;
             top: 0;
             bottom: 0;
             overflow: auto;
+            width: 330px;
             @media screen and (max-width: 992px) {
                 width: 200px;
             }
             @media screen and (max-width: 768px) {
                 width: 180px;
             }
-            @media screen and (max-width: 450px) {
+            @media screen and (max-width: 464px) {
                 width: 90px;
             }
             a {
@@ -40,7 +40,6 @@
                 border-top: 1px solid $color-white-silver;
                 clear: both;
                 li {
-                    line-height: 20px;
                     a {
                         padding: 10px 10px;
                         display: inline-block;
@@ -65,13 +64,12 @@
                             line-height: 25px;
                         }
                         .count {
+                            @include font (14px, $color-gray);
                             float: right;
-                            font-size: 14px;
                             margin-top: 10px;
-                            color: #969696;
                         }
                         &:hover {
-                            background-color: #f0f0f0;
+                            background-color: $color-white-silver;
                             border-radius: 4px 0 0 4px!important;
                         }
                         @media screen and (max-width: 450px) {
@@ -85,22 +83,23 @@
                         border-radius: 0 0 0 4px!important;
                     }
                     .router-link-active {
-                        background-color: #f0f0f0;
+                        background-color: $color-white-silver;
                         border-radius: 4px 0 0 4px!important;
                     }
                 }
             }
         }
         .main {
-            margin-left: 300px;
+            overflow: auto;
+            margin-left: 360px;
             @media screen and (max-width: 992px) {
-                margin-left: 200px;
+                margin-left: 230px;
             }
             @media screen and (max-width: 768px) {
-                margin-left: 180px;
+                margin-left: 210px;
             }
-            @media screen and (max-width: 450px) {
-                margin-left: 90px;
+            @media screen and (max-width: 464px) {
+                margin-left: 105px;
             }
             #friend {
                 .article_list {
@@ -126,10 +125,10 @@
                             }
                         }
                     }
-                    @media screen and (max-width: 450px) {
+                    @media screen and (max-width: 520px) {
                         li {
                             a {
-                                padding: 13px 23px 4px 23px;
+                                padding: 13px 20px 4px 20px;
                                 span {
                                     display: none;
                                 }
@@ -139,13 +138,9 @@
                 }
                 .tab-content {
                     .tab-pane {
-                        padding: 0;
-                        list-style: none;
                         li {
-                            padding: 0 0 20px;
-                            margin: 0 0 20px;
+                            @include spacing (0 0 20px, 0 0 20px);
                             border-bottom: 1px solid $color-white-silver;
-                            line-height: 20px;
                             div {
                                 .follow {
                                     @include button;
@@ -156,10 +151,8 @@
                                     }
                                 }
                                 .avatar {
-                                    @include avatar;
+                                    @include avatar (55px, 55px);
                                     float: left;
-                                    width: 55px;
-                                    height: 55px;
                                 }
                                 .avatar_collection {
                                     img {
@@ -170,22 +163,17 @@
                                     padding: 6px 120px 0 64px;
                                     line-height: normal;
                                     min-height: 20px;
-                                    color: #969696;
+                                    color: $color-gray;
                                     .name {
+                                        @include font (15px, $color-black, 700);
                                         display: block;
-                                        font-size: 15px;
-                                        font-weight: 700;
-                                        margin-bottom: 5px;
-                                        color: #333;
                                     }
                                     p {
-                                        display: -webkit-box;
-                                        -webkit-line-clamp: 2;
-                                        -webkit-box-orient: vertical;
-                                        overflow: hidden;
+                                        @include line_number (2);
+                                        margin: 8px 0 8px 0;
                                     }
                                     a {
-                                        color: #969696;
+                                        color: $color-gray;
                                         margin-right: 10px;
                                         i {
                                             font-size: inherit;
@@ -194,7 +182,7 @@
                                     .meta {
                                         margin-top: 8px;
                                         a {
-                                            color: #3194d0;
+                                            color: $color-blue;
                                             margin: 0;
                                         }
                                         span {
@@ -219,14 +207,19 @@
                     .botm {
                         width: 100px;
                     }
+                    @media screen and (max-width: 620px) {
+                        .contribute {
+                            top: 140px;
+                        }
+                    }
                 }
                 div {
                     .trigger_menu {
                         @include trigger_menu;
-                        @media screen and (max-width: 490px) {
+                        @media screen and (max-width: 520px) {
                             li {
                                 a {
-                                    padding: 13px 23px 4px 23px;
+                                    padding: 13px 20px 4px 20px;
                                     span {
                                         display: none;
                                     }
@@ -254,6 +247,11 @@
                     }
                     @media screen and (max-width: 768px) {
                         .contribute {
+                            top: 140px;
+                        }
+                    }
+                    @media screen and (max-width: 510px) {
+                        .contribute {
                             top: 160px;
                         }
                     }
@@ -261,10 +259,10 @@
                 div {
                     .trigger_menu {
                         @include trigger_menu;
-                        @media screen and (max-width: 490px) {
+                        @media screen and (max-width: 520px) {
                             li {
                                 a {
-                                    padding: 13px 23px 4px 23px;
+                                    padding: 13px 20px 4px 20px;
                                     span {
                                         display: none;
                                     }
@@ -290,7 +288,7 @@
                     .botm {
                         @include news_button;
                         margin: 23px 0 5px 10px;
-                        @media screen and (max-width: 450px) {
+                        @media screen and (max-width: 510px) {
                             width: 55px;
                         }
                     }
@@ -301,10 +299,10 @@
                 div {
                     .trigger_menu {
                         @include trigger_menu;
-                        @media screen and (max-width: 490px) {
+                        @media screen and (max-width: 520px) {
                             li {
                                 a {
-                                    padding: 13px 23px 4px 23px;
+                                    padding: 13px 20px 4px 20px;
                                     span {
                                         display: none;
                                     }

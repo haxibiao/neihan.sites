@@ -22,6 +22,7 @@
                                     空评
                                 </a>
                             </span>
+                            <img src="/images/vip1.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者" class="badge_icon" />
                             <a class="follow" href="#">
                                 <span>
                                     ＋ 关注
@@ -78,6 +79,7 @@
                         <a class="title" href="/v1/user" target="_blank">
                             空评
                         </a>
+                        <img src="/images/vip1.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者" class="badge_icon" />
                         <p>
                             写了 17299 字，被 6 人关注，获得了 16 个喜欢
                         </p>
@@ -154,15 +156,15 @@
                         </div>
                     </div>
                     <div class="share_group">
-                        <a class="share_circle" href="#">
+                        <a class="share_circle" href="#" data-placement="top" data-container="body" data-toggle="tooltip" data-trigger="hover" data-original-title="分享到微信">
                             <i class="iconfont icon-weixin1">
                             </i>
                         </a>
-                        <a class="share_circle" href="#">
+                        <a class="share_circle" href="#" data-placement="top" data-container="body" data-toggle="tooltip" data-trigger="hover" data-original-title="分享到微博">
                             <i class="iconfont icon-sina">
                             </i>
                         </a>
-                        <a class="share_circle" href="#">
+                        <a class="share_circle" href="#" data-placement="top" data-container="body" data-toggle="tooltip" data-trigger="hover" data-original-title="下载长微博图片">
                             <i class="iconfont icon-zhaopian">
                             </i>
                         </a>
@@ -482,4 +484,6 @@
         </div>
     </div>
 </div>
+{{-- 底部小火箭、分享、收藏、投稿 --}}
+@include('v1.parts.side_tool')
 @stop

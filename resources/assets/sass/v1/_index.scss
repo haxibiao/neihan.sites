@@ -1,4 +1,4 @@
-//首页
+// 首页
 #index {
     @include aside;
     margin-top: -30px; // 轮播图
@@ -276,38 +276,7 @@
             @include daily;
         } // 推荐作者
         .recommended_authors {
-            @include daily;
-            .list {
-                @include spacing (0 0 5% 0);
-                li {
-                    @include spacing (15px 0 0 0);
-                    a {
-                        margin-top: 5px;
-                        display: inline-block;
-                    }
-                    p {
-                        font-size: 12px;
-                        margin-top: 2px;
-                    }
-                    .avatar {
-                        @include avatar (40px, 40px, left, 10px);
-                    }
-                    .follow {
-                        @include font (13px, $color-green);
-                        float: right;
-                    }
-                    .name {
-                        font-size: 14px;
-                    }
-                }
-            }
-            .find_more {
-                @include load_more;
-                @include font (13px, #787878);
-                @include spacing (0, 7px 7px 7px 12px);
-                @include border (4px, 1px solid $color-gray-light);
-                background-color: $color-white-milk;
-            }
+            @include recommended_authors;
         } // 热门视频
         .videos {
             @include daily;

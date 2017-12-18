@@ -1,4 +1,4 @@
-//个人主页
+// 个人主页/个人喜欢文章/关注专题文集页
 #home {
     @include aside;
     .essays {
@@ -25,6 +25,75 @@
                 }
             }
             .tab-content {
+                // 关注的专题和文集
+                .user_list {
+                    li {
+                        @include spacing (0 0 20px 0, 0 0 20px 0);
+                        border-bottom: 1px solid $color-white-silver;
+                        div {
+                            .avatar {
+                                @include avatar (55px, 55px);
+                                vertical-align: middle;
+                            }
+                            .avatar_collection {
+                                img {
+                                    border-radius: 10%;
+                                }
+                            }
+                            .info {
+                                display: inline-block;
+                                vertical-align: middle;
+                                line-height: normal;
+                                min-height: 20px;
+                                margin-left: 5px;
+                                @media screen and (max-width: 1080px) {
+                                    max-width: 315px;
+                                }
+                                @media screen and (max-width: 440px) {
+                                    max-width: 112px;
+                                }
+                                .name {
+                                    @include font (15px, $color-black, 700);
+                                    i {
+                                        @include font (inherit);
+                                        vertical-align: middle;
+                                    }
+                                    .icon-nvsheng1 {
+                                        color: $color-red-watermelon;
+                                    }
+                                    .icon-nansheng1 {
+                                        color: $color-blue;
+                                    }
+                                }
+                                .meta {
+                                    @include line_number (1);
+                                    padding-top: 2px;
+                                    color: $color-gray;
+                                    a {
+                                        color: $color-blue;
+                                        margin-right: 3px;
+                                    }
+                                    span {
+                                        @include spacing (0 10px 0 0, 0 10px 0 0);
+                                        border-right: 1px solid $color-gray;
+                                        &:last-child {
+                                            border: none;
+                                        }
+                                    }
+                                }
+                            }
+                            .following {
+                                @include following_button;
+                                margin: 7px 0 0 6px;
+                                color: $color-gray;
+                                vertical-align: middle;
+                                i {
+                                    font-weight: 700;
+                                }
+                            }
+                        }
+                    }
+                } // 喜欢的文章
                 .article_list {
                     .article_item {
                         @include article_item;
@@ -46,6 +115,37 @@
             @include font (13px, $color-gray);
             &:hover {
                 color: $color-black;
+            }
+        }
+        .intro_form {
+            margin-bottom: 20px;
+            display: none;
+            .form-control {
+                @include spacing (0 0 10px 0, 10px 15px);
+                box-shadow: none;
+                height: 150px;
+                resize: none;
+                background-color: hsla(0, 0%, 71%, .1);
+                &:focus {
+                    box-shadow: none;
+                    border-color: #ccd0d2;
+                }
+            }
+            .btn_hollow {
+                @include news_button;
+                @include spacing (0, 5px 10px);
+                float: none;
+                width: 65px;
+                font-size: 14px;
+            }
+            a {
+                color: #999;
+                line-height: 34px;
+                vertical-align: middle;
+                margin-left: 10px;
+                &:hover {
+                    color: $color-black;
+                }
             }
         }
         .description {

@@ -1,4 +1,4 @@
-//用户页
+// 用户页/用户喜欢文章/关注专题文集页
 #user {
     @include aside;
     .essays {
@@ -41,6 +41,71 @@
                 }
             }
             .tab-content {
+                // 关注的专题和文集
+                .user_list {
+                    li {
+                        @include spacing (0 0 20px 0, 0 0 20px 0);
+                        border-bottom: 1px solid $color-white-silver;
+                        div {
+                            .avatar {
+                                @include avatar (55px,55px);
+                                vertical-align: middle;
+                            }
+                            .avatar_collection {
+                                img {
+                                    border-radius: 10%;
+                                }
+                            }
+                            .info {
+                                display: inline-block;
+                                vertical-align: middle;
+                                line-height: normal;
+                                min-height: 20px;
+                                margin-left: 5px;
+                                @media screen and (max-width: 1080px) {
+                                    max-width: 315px;
+                                }
+                                @media screen and (max-width: 440px) {
+                                    max-width: 112px;
+                                }
+                                .name {
+                                    @include font (15px, $color-black, 700);
+                                    i {
+                                        @include font (inherit);
+                                        vertical-align: middle;
+                                    }
+                                    .icon-nvsheng1 {
+                                        color: $color-red-watermelon;
+                                    }
+                                    .icon-nansheng1 {
+                                        color: $color-blue;
+                                    }
+                                }
+                                .meta {
+                                    @include line_number (1);
+                                    padding-top: 2px;
+                                    color: $color-gray;
+                                    a {
+                                        color: $color-blue;
+                                        margin-right: 3px;
+                                    }
+                                    span {
+                                        @include spacing (0 10px 0 0,0 10px 0 0);
+                                        border-right: 1px solid $color-gray;
+                                        &:last-child {
+                                            border: none;
+                                        }
+                                    }
+                                }
+                            }
+                            .follow {
+                                @include button;
+                                margin: 6px 0 0 6px;
+                                float: right;
+                            }
+                        }
+                    }
+                } // 喜欢的文章
                 .article_list {
                     .article_item {
                         @include article_item;

@@ -1,44 +1,33 @@
-//关注页
+// 关注页
 #notifications {
     .notifications_wrp {
         .aside {
-            padding: 0;
+            @include spacing (81px 0 0, 0 0 30px);
             position: fixed;
-            width: 280px;
+            top: 0;
+            bottom: 0;
+            overflow: auto;
+            width: 330px;
             @media screen and (max-width: 992px) {
                 width: 200px;
             }
             @media screen and (max-width: 768px) {
                 width: 180px;
             }
-            @media screen and (max-width: 450px) {
+            @media screen and (max-width: 464px) {
                 width: 90px;
             }
             ul {
-                list-style: none;
-                margin: 0;
-                padding: 0;
                 li {
-                    line-height: 20px;
                     a {
                         padding: 10px 25px;
                         display: inline-block;
                         line-height: 30px;
                         width: 100%;
                         i {
-                            font-size: 24px;
+                            @include font (24px, $color-red-watermelon);
                             margin-right: 15px;
                             vertical-align: middle;
-                            color: $color-red-watermelon;
-                        }
-                        .icon-pinglun1 {
-                            font-size: 30px;
-                            font-weight: 800;
-                            margin-left: 0;
-                        }
-                        .icon-xihuan,
-                        .icon-yiguanzhu {
-                            font-weight: 800;
                         }
                         span {
                             font-size: 15px;
@@ -46,9 +35,11 @@
                         }
                         .badge {
                             @include badge;
+                            float: right;
+                            margin-top: 6px;
                         }
                         &:hover {
-                            background-color: #f0f0f0;
+                            background-color: $color-white-silver;
                         }
                         @media screen and (max-width: 450px) {
                             padding: 10px 15px;
@@ -68,47 +59,44 @@
             }
         }
         .main {
-            margin-left: 300px;
+            overflow: auto;
+            margin-left: 360px;
             @media screen and (max-width: 992px) {
-                margin-left: 200px;
+                margin-left: 230px;
             }
             @media screen and (max-width: 768px) {
-                margin-left: 180px;
+                margin-left: 210px;
             }
-            @media screen and (max-width: 450px) {
-                margin-left: 90px;
-            }
+            @media screen and (max-width: 464px) {
+                margin-left: 105px;
+            } // 评论列表
             #comments {
                 .menu {
+                    @include font (14px, $color-black, 700);
                     margin-bottom: 20px;
-                    font-size: 14px;
-                    font-weight: 700;
                 }
                 .comment_list {
-                    list-style: none;
-                    padding: 0;
                     li {
                         padding: 20px;
                         border-top: 1px solid $color-white-silver;
                         font-size: 15px;
                         .comment_head {
-                            line-height: 20px;
                             .avatar {
                                 @include avatar;
                                 float: left;
                             }
                             .title {
                                 padding: 2px 0 0 48px;
+                                line-height: 1.7;
                                 span {
                                     margin: 0 5px;
                                 }
                                 .headline {
-                                    color: #2b89ca;
+                                    color: $color-blue;
                                 }
                             }
                             .info {
-                                font-size: 12px;
-                                color: #969696;
+                                @include font (12px, $color-gray);
                                 padding-left: 48px;
                             }
                         }
@@ -119,21 +107,17 @@
                         .tool_group {
                             margin-top: 10px;
                             a {
-                                color: #969696;
+                                @include font (13px, $color-gray);
                                 margin-right: 30px;
-                                font-size: 13px;
                                 i {
-                                    font-size: inherit;
                                     vertical-align: middle;
-                                }
-                                .icon-pinglun1 {
-                                    font-size: 15px;
+                                    margin-right: 5px;
                                 }
                                 span {
                                     vertical-align: middle;
                                 }
                                 &:hover {
-                                    color: #333;
+                                    color: $color-black;
                                 }
                             }
                             .report {
@@ -151,16 +135,13 @@
                         }
                     }
                 }
-            }
+            } // 私信列表
             #chats {
                 .menu {
+                    @include font (14px, $color-black, 700);
                     margin-bottom: 20px;
-                    font-size: 14px;
-                    font-weight: 700;
                 }
                 .chats_list {
-                    list-style: none;
-                    padding: 0;
                     li {
                         padding: 20px;
                         border-top: 1px solid $color-white-silver;
@@ -169,12 +150,10 @@
                             font-size: 13px;
                             float: right;
                             .dropdown-toggle {
-                                color: #969696;
+                                color: $color-gray;
                                 i {
-                                    font-size: inherit;
-                                }
-                                &:hover {
-                                    color: #333;
+                                    font-size: 14px;
+                                    margin-left: 3px;
                                 }
                             }
                             .dropdown-menu {
@@ -185,27 +164,35 @@
                                     padding: 0;
                                     border: none;
                                     font-size: 14px;
+                                    a {
+                                        i {
+                                            font-size: 14px;
+                                            margin-right: 8px;
+                                            vertical-align: middle;
+                                        }
+                                        span {
+                                            vertical-align: middle;
+                                        }
+                                    }
                                 }
                             }
                         }
                         .open {
                             .dropdown-toggle {
-                                color: #333;
+                                color: $color-black;
                             }
                         }
                         .chats_item {
                             font-size: 14px;
                             .avatar {
                                 @include avatar;
+                                @include proportion (50px, 50px);
                                 position: relative;
                                 float: left;
-                                width: 50px;
-                                height: 50px;
                                 vertical-align: middle;
                                 .badge {
+                                    @include badge;
                                     position: absolute;
-                                    background-color: $color-red-watermelon;
-                                    padding: 3px 6px;
                                     top: 2px;
                                     right: -5px;
                                 }
@@ -215,9 +202,8 @@
                             }
                             a {
                                 .info {
+                                    @include font (12px, $color-gray);
                                     padding: 4px 0 4px 60px;
-                                    font-size: 12px;
-                                    color: #969696;
                                     p {
                                         @include spacing;
                                         @include line_number (2);
@@ -230,48 +216,56 @@
                         }
                     }
                 }
-            }
+            } // 聊天
             #chat_messages {
                 .chat_top {
+                    @include spacing (0 0 20px 0, 0 0 10px 0);
                     position: fixed;
                     z-index: 1;
                     width: 839px;
                     min-height: 35px;
-                    margin-bottom: 20px;
-                    padding-bottom: 10px;
                     text-align: center;
-                    background-color: #fff;
+                    background-color: $color-white;
                     border-bottom: 1px solid $color-white-silver;
                     &::before {
                         content: "";
+                        @include proportion (100%, 81px);
                         position: absolute;
                         top: -81px;
                         left: 0;
-                        height: 81px;
-                        width: 100%;
-                        background-color: #fff;
+                        background-color: $color-white;
                     }
                     .back_list {
-                        font-size: 14px;
-                        color: #969696;
+                        @include font (14px, $color-gray);
                         float: left;
                         i {
                             font-size: inherit;
+                        }
+                        &:hover {
+                            color: $color-black;
                         }
                     }
                     b {
                         font-size: 14px;
                     }
                     .dropdown {
-                        display: inline-block;
                         float: right;
-                        .open_dropdown {
-                            color: #969696;
-                        }
                         .dropdown-menu {
                             right: 0;
                             top: auto;
                             left: auto;
+                            li {
+                                a {
+                                    i {
+                                        font-size: 14px;
+                                        margin-right: 8px;
+                                        vertical-align: middle;
+                                    }
+                                    span {
+                                        vertical-align: middle;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -279,20 +273,16 @@
                     padding-top: 50px;
                     .load_more {
                         @include load_more;
+                        @include font (14px, $color-blue);
                         margin: 0;
                         background-color: inherit;
-                        color: #2b89ca;
-                        font-size: 14px;
                     }
                     .message_list {
-                        list-style: none;
                         padding: 10px 0 110px;
                         .message_l,
                         .message_r {
-                            margin-bottom: 15px;
-                            line-height: 20px;
+                            @include spacing (0 0 15px 0, 20px);
                             border: none;
-                            padding: 20px;
                             div {
                                 &::before,
                                 &::after {
@@ -325,9 +315,8 @@
                             }
                         }
                         .time {
+                            @include font (12px, #d9d9d9);
                             margin-top: 2px;
-                            font-size: 12px;
-                            color: #d9d9d9;
                         }
                         .message_l {
                             .avatar {
@@ -392,41 +381,37 @@
                     position: fixed;
                     width: 839px;
                     bottom: 0;
-                    background-color: #fff;
+                    background-color: $color-white;
                     form {
                         width: 100%;
                         margin-bottom: 20px;
                         textarea {
-                            width: 100%;
-                            height: 50px;
+                            @include proportion (100%, 50px);
+                            @include border (4px, 1px solid $color-gray-light);
                             padding: 6px 12px;
                             background-color: hsla(0, 0%, 71%, .1);
                             background-image: none;
-                            border: 1px solid $color-gray-light;
-                            border-radius: 4px;
                             box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
                             transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
                             resize: none;
+                            display: inline-block;
+                            vertical-align: top;
                         }
                         input {
+                            @include spacing (10px 0, 8px 18px);
+                            @include font (16px, $color-white);
+                            @include border (20px, none);
                             float: right;
                             width: 78px;
-                            margin: 10px 0;
-                            padding: 8px 18px;
-                            font-size: 16px;
-                            border: none;
-                            border-radius: 20px;
-                            color: #fff;
-                            background-color: #42c02e;
+                            background-color: $color-green;
                             cursor: pointer;
                             outline: none;
                             display: block;
                         }
                     }
                     .hint {
+                        @include font (13px, $color-gray);
                         padding-top: 3px;
-                        font-size: 13px;
-                        color: #969696;
                     }
                 }
                 @media screen and (max-width: 1200px) {
@@ -440,7 +425,7 @@
                     .chat_top,
                     .message_show,
                     .write_message {
-                        width: 518px;
+                        width: 516px;
                     }
                 }
                 @media screen and (max-width:768px) and (min-width:450px) {
@@ -457,56 +442,61 @@
                         width: 199px;
                     }
                 }
-            }
+            } // 投稿请求列表
             #requests {
                 .menu {
+                    @include font (14px, $color-black, 700);
                     margin-bottom: 20px;
-                    font-size: 14px;
-                    font-weight: 700;
                 }
                 .requests_list {
-                    list-style: none;
-                    padding: 0;
-                    margin: 0;
                     li {
                         padding: 20px;
                         border-top: 1px solid $color-white-silver;
-                        .all_request {
+                        a {
                             display: block;
-                            .avatar {
-                                @include avatar;
-                                width: 50px;
-                                height: 50px;
-                                border: 1px solid $color-gray-light;
-                                border-radius: 10%;
+                            .avatar_collection {
+                                @include avatar (50px, 50px);
+                            }
+                            .all_push {
+                                @include border (10%, 1px solid $color-gray-light);
                                 line-height: 48px;
                                 text-align: center;
                                 vertical-align: middle;
                                 i {
-                                    font-size: 30px;
-                                    color: $color-red-watermelon;
+                                    @include font (30px, $color-red-watermelon);
                                 }
                             }
                             .name {
+                                width: 70%;
                                 max-width: 500px;
                                 font-size: 15px;
                                 display: inline-block;
                                 vertical-align: middle;
+                                margin-left: 5px;
+                                span {
+                                    @include line_number (1);
+                                    @include font (12px, $color-gray);
+                                }
+                                @media screen and (max-width: 506px) {
+                                    width: 50%;
+                                }
                             }
                         }
                         .request_item {
-                            font-size: 13px;
-                            .avatar {
-                                @include avatar;
-                                width: 50px;
-                                height: 50px;
+                            .avatar_collection {
+                                position: relative;
                                 img {
                                     border-radius: 10%;
                                 }
+                                .badge {
+                                    @include badge;
+                                    position: absolute;
+                                    top: -5px;
+                                    right: -5px;
+                                }
                             }
                             .name {
-                                display: inline-block;
-                                vertical-align: middle;
+                                font-size: 13px;
                             }
                         }
                         @media screen and (max-width: 450px) {
@@ -514,22 +504,147 @@
                         }
                     }
                 }
-            }
+            } // 全部投稿请求
+            #pending_submissions {
+                .push_top {
+                    @include spacing (0 0 20px 0, 0 0 10px 0);
+                    position: fixed;
+                    z-index: 1;
+                    width: 840px;
+                    min-height: 35px;
+                    text-align: center;
+                    background-color: $color-white;
+                    border-bottom: 1px solid $color-white-silver;
+                    &::before {
+                        content: "";
+                        @include proportion (100%, 81px);
+                        position: absolute;
+                        top: -81px;
+                        left: 0;
+                        background-color: $color-white;
+                    }
+                    .back_list {
+                        @include font (14px, $color-gray);
+                        float: left;
+                        i {
+                            font-size: inherit;
+                        }
+                        &:hover {
+                            color: $color-black;
+                        }
+                    }
+                    @media screen and (max-width: 1200px) {
+                        width: 640px;
+                    }
+                    @media screen and (max-width: 992px) {
+                        width: 517px;
+                    }
+                    @media screen and (max-width:768px) and (min-width:450px) {
+                        width: 270px;
+                    }
+                    @media screen and (max-width: 450px) {
+                        width: 200px;
+                    }
+                }
+                .article_list {
+                    padding-top: 50px;
+                    width: 840px;
+                    .article_item {
+                        @include article_item;
+                    }
+                    @media screen and (max-width: 1200px) {
+                        width: 640px;
+                    }
+                    @media screen and (max-width: 992px) {
+                        width: 517px;
+                    }
+                    @media screen and (max-width:768px) and (min-width:450px) {
+                        width: 270px;
+                    }
+                    @media screen and (max-width: 450px) {
+                        width: 200px;
+                    }
+                }
+            } // 专题投稿请求
+            #submissions {
+                .push_top {
+                    @include spacing (0 0 20px 0, 0 0 10px 0);
+                    @include font (14px, $color-gray);
+                    position: fixed;
+                    z-index: 1;
+                    width: 840px;
+                    min-height: 35px;
+                    text-align: center;
+                    background-color: $color-white;
+                    border-bottom: 1px solid $color-white-silver;
+                    &::before {
+                        content: "";
+                        @include proportion (100%, 81px);
+                        position: absolute;
+                        top: -81px;
+                        left: 0;
+                        background-color: $color-white;
+                    }
+                    .back_list {
+                        color: $color-gray;
+                        float: left;
+                        i {
+                            font-size: inherit;
+                        }
+                        &:hover {
+                            color: $color-black;
+                        }
+                    }
+                    b {
+                        font-size: 14px;
+                    }
+                    .more_option {
+                        float: right;
+                    }
+                    @media screen and (max-width: 1200px) {
+                        width: 640px;
+                    }
+                    @media screen and (max-width: 992px) {
+                        width: 517px;
+                    }
+                    @media screen and (max-width:768px) and (min-width:450px) {
+                        width: 270px;
+                    }
+                    @media screen and (max-width: 450px) {
+                        width: 200px;
+                    }
+                }
+                .article_list {
+                    padding-top: 50px;
+                    width: 840px;
+                    .article_item {
+                        @include article_item;
+                    }
+                    @media screen and (max-width: 1200px) {
+                        width: 640px;
+                    }
+                    @media screen and (max-width: 992px) {
+                        width: 517px;
+                    }
+                    @media screen and (max-width:768px) and (min-width:450px) {
+                        width: 270px;
+                    }
+                    @media screen and (max-width: 450px) {
+                        width: 200px;
+                    }
+                }
+            } // 喜欢和赞列表
             #likes {
                 .menu {
+                    @include font (14px, $color-black, 700);
                     margin-bottom: 20px;
-                    font-size: 14px;
-                    font-weight: 700;
                 }
                 .likes_list {
-                    list-style: none;
-                    padding: 0;
-                    margin: 0;
                     li {
                         padding: 20px;
                         border-top: 1px solid $color-white-silver;
                         .like_item {
-                            line-height: 20px;
+                            line-height: 1.7;
                             font-size: 15px;
                             margin-top: 0;
                             .avatar {
@@ -543,14 +658,12 @@
                                     margin: 0 5px;
                                 }
                                 .headline {
-                                    color: #2B89CA;
+                                    color: $color-blue;
                                 }
                             }
                             .info {
-                                font-size: 11px;
-                                padding-top: 0;
-                                padding-left: 48px;
-                                color: #969696;
+                                @include font (11px, $color-gray);
+                                padding: 0 0 0 48px;
                             }
                         }
                         @media screen and (max-width: 450px) {
@@ -558,17 +671,13 @@
                         }
                     }
                 }
-            }
+            } // 关注列表
             #follows {
                 .menu {
+                    @include font (14px, $color-black, 700);
                     margin-bottom: 20px;
-                    font-size: 14px;
-                    font-weight: 700;
                 }
                 .follows_list {
-                    list-style: none;
-                    padding: 0;
-                    margin: 0;
                     li {
                         padding: 20px;
                         border-top: 1px solid $color-white-silver;
@@ -593,9 +702,8 @@
                                 display: block;
                             }
                             .info {
-                                font-size: 11px;
+                                @include font (11px, $color-gray);
                                 padding: 0 0 0 48px;
-                                color: #969696;
                             }
                         }
                         @media screen and (max-width: 450px) {
@@ -603,23 +711,19 @@
                         }
                     }
                 }
-            }
+            } // 赞赏列表
             #tip {
                 .menu {
+                    @include font (14px, $color-black, 700);
                     margin-bottom: 20px;
-                    font-size: 14px;
-                    font-weight: 700;
                 }
                 .tip_list {
-                    list-style: none;
-                    padding: 0;
-                    margin: 0;
                     li {
                         padding: 20px;
                         border-top: 1px solid $color-white-silver;
                         .tip_item {
                             font-size: 15px;
-                            line-height: 20px;
+                            line-height: 1.7;
                             .avatar {
                                 @include avatar;
                                 float: left;
@@ -631,30 +735,21 @@
                                     margin: 0 5px;
                                 }
                                 .headline {
-                                    color: #2B89CA;
+                                    color: $color-blue;
                                 }
                             }
                             .info {
-                                font-size: 11px;
+                                @include font (11px, $color-gray);
                                 padding: 0 0 0 48px;
-                                color: #969696;
                             }
                         }
                         div {
                             .follow {
-                                @include button;
+                                @include news_button;
+                                @include spacing (0, 5px);
                                 width: 70px;
-                                float: right;
-                                border: 1px solid $color-green;
-                                color: #42c02e;
-                                background-color: inherit;
-                                margin: 0;
                                 font-size: 12px;
                                 cursor: pointer;
-                                padding: 5px;
-                                &:hover {
-                                    background-color: #F5F5F5;
-                                }
                             }
                         }
                         @media screen and (max-width: 450px) {
@@ -662,26 +757,46 @@
                         }
                     }
                 }
-            }
+            } // 其他消息列表
             #others {
                 .menu {
+                    @include font (14px, $color-black, 700);
                     margin-bottom: 20px;
-                    font-size: 14px;
-                    font-weight: 700;
-                }
+                } // 没有消息
                 .unMessage {
+                    @include font (14px, $color-gray);
                     margin-top: 150px;
                     text-align: center;
-                    color: #969696;
-                    font-size: 14px;
-                    p {
-                        list-style: none;
-                        margin: 0;
-                        padding: 0;
-                    }
                     span {
-                        font-size: 100px;
-                        color: #969696;
+                        @include font (100px, $color-gray);
+                    }
+                } // 有消息
+                .others_list {
+                    li {
+                        padding: 20px;
+                        border-top: 1px solid $color-white-silver;
+                        .like_item {
+                            line-height: 1.7;
+                            font-size: 15px;
+                            .info {
+                                display: block;
+                                i {
+                                    margin-right: 5px;
+                                    color: $color-red-watermelon;
+                                    font-size: 20px;
+                                }
+                                a {
+                                    color: $color-blue;
+                                    margin: 0 5px;
+                                }
+                            }
+                            .time {
+                                @include font (11px, $color-gray);
+                            }
+                        }
+                        @media screen and (max-width: 450px) {
+                            padding: 20px 0;
+                        }
                     }
                 }
             }

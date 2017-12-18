@@ -84,13 +84,13 @@
                         </div>
                     </form>
                     <ul class="nav navbar-nav navbar-right">
-                        <li>
+                        {{-- <li>
                             <a class="style_mode_btn" href="javascript:;">
                                 <span>
                                     Aa
                                 </span>
                             </a>
-                        </li>
+                        </li> --}}
                         <li>
                             <a href="/v1/sign_in">
                                 <span>
@@ -130,6 +130,7 @@
         };
 
         $('.dropdown-toggle').dropdown();
+        $('[data-toggle="tooltip"]').tooltip();
 
         $('.form-control').focus(function(){
             $(this).siblings('.hot_search_wrp').css({'visibility':'visible','opacity':1});
