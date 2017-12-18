@@ -46,9 +46,14 @@
                                 <span class="menu_text">
                                     消息
                                 </span>
-                                <span class="badge">
-                                    5
-                                </span>
+                                @php
+                                   $unreads_all=array_sum(Auth::user()->unreads());   
+                                @endphp
+                                @if($unreads_all)
+                                    <span class="badge">
+                                        {{ $unreads_all }}
+                                    </span>
+                                @endif
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
@@ -58,6 +63,7 @@
                                         <span>
                                             评论
                                         </span>
+                                        <span class="badge">{{ Auth::user()->unreads('comments') }}</span>
                                     </a>
                                 </li>
                                 <li>
@@ -67,9 +73,7 @@
                                         <span>
                                             私信
                                         </span>
-                                        <span class="badge">
-                                            5
-                                        </span>
+                                        <span class="badge">{{ Auth::user()->unreads('chats') }}</span>
                                     </a>
                                 </li>
                                 <li>
@@ -79,6 +83,7 @@
                                         <span>
                                             投稿请求
                                         </span>
+                                        <span class="badge">{{ Auth::user()->unreads('requests') }}</span>
                                     </a>
                                 </li>
                                 <li>
@@ -88,6 +93,7 @@
                                         <span>
                                             喜欢和赞
                                         </span>
+                                        <span class="badge">{{ Auth::user()->unreads('likes') }}</span>
                                     </a>
                                 </li>
                                 <li>
@@ -97,6 +103,7 @@
                                         <span>
                                             关注
                                         </span>
+                                        <span class="badge">{{ Auth::user()->unreads('follows') }}</span>
                                     </a>
                                 </li>
                                 <li>
@@ -106,6 +113,7 @@
                                         <span>
                                             赞赏
                                         </span>
+                                        <span class="badge">{{ Auth::user()->unreads('tips') }}</span>
                                     </a>
                                 </li>
                                 <li>
@@ -115,54 +123,13 @@
                                         <span>
                                             其他消息
                                         </span>
+                                        <span class="badge">{{ Auth::user()->unreads('others') }}</span>
                                     </a>
                                 </li>
                             </ul>
                         </li>
                     </ul>
-                    <form class="navbar-form navbar-left" role="search">
-                        <div class="form-group">
-                            <div class="search_wrp">
-                                <input class="form-control" placeholder="搜索" type="text"/>
-                                <i class="iconfont icon-sousuo">
-                                </i>
-                                <div class="hot_search_wrp hidden-xs">
-                                    <div class="hot_search">
-                                        <div class="litter_title">
-                                            热门搜索
-                                            <a class="more" href="javascript:;" target="_blank">
-                                                <i class="iconfont icon-shuaxin">
-                                                </i>
-                                                换一批
-                                            </a>
-                                        </div>
-                                        <ul>
-                                            <li>
-                                                <a href="#" target="_blank">
-                                                    王者荣耀
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" target="_blank">
-                                                    恋爱七招
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" target="_blank">
-                                                    吃鸡
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" target="_blank">
-                                                    故事
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                        <search/>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a class="style_mode_btn" href="javascript:;">

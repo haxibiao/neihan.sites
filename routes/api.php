@@ -22,6 +22,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //APP登录
 Route::get('login', 'Api\UserController@login');
 
+//search
+Route::get('/search/hot-queries', 'Api\SearchController@hotQueries');
+
 //APP注册
 Route::get('register', 'Api\UserController@register');
 Route::post('register', 'Api\UserController@register');
