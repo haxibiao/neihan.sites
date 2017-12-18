@@ -3,36 +3,55 @@
         正在加载...
     </div>
     <div v-else>
-        <div class="chat_wrapper">
-            <div class="chat_top">
-                <router-link to="/chats" class="back_list active"><i class="iconfont icon-zuobian"></i> 返回消息列表</router-link>
-                <b>与 <a href="javascript:;" target="_blank">{{ with_user.name }}</a> 的对话</b>
-                <div class="dropdown">
-                    <a href="javascript:;" class="open_dropdown dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="iconfont icon-xia"></i></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="javascript:;" class="link"><i class="iconfont icon-heimingdan1"></i><span>加入黑名单</span></a></li>
-                        <li><a href="javascript:;" class="report link"><i class="iconfont icon-iconset03100"></i><span>举报用户</span></a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="message_show">
-                <a v-if="last_page > 1" class="load_more" @click="loadMore">加载更多</a>
-                <ul class="message_list">                   
-                    <li v-for="message in messages"  :class="'message_'+(isSelf(message.user_id) ? 'r':'l')">
-                        <a :href="'/user/'+message.user.id" class="avatar"><img :src="message.user.avatar"></a>
-                        <div><span class="content">{{ message.message }}</span></div> <span class="time">{{ message.time }}</span>
-                    </li>               
+     <div id="chat_messages">
+        <div class="chat_top">
+            <router-link to="/chats" class="back_list">
+                <i class="iconfont icon-zuobian"></i>
+                返消息列表
+            </router-link>
+            <b>与 <a href="javascript:;">{{ with_user.name }}</a> 的对话</b>
+            <div class="dropdown">
+                <a href="javascript: ;" class="dropdown-toggle open_dropdown" data-toggle="dropdown" aria-expanded="false" >
+                    <i class="iconfont icon-xia"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="#">
+                            <i class="iconfont icon-heimingdan1"></i>
+                            <span>加入黑名单</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="iconfont icon-iconset03100"></i>
+                            <span>举报用户</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
-            <div class="write_message">
-                <form action="">
-                    <textarea name="" id="" cols="30" rows="10" v-model="new_message.message"></textarea>
-                    <input type="button" class="button" value="发送" @click="send">
-                </form>
-                <p class="hint">Return 直接发送</p>
-            </div>
         </div>
+        <div class="message_show">
+            <a v-if="last_page>1" class="load_more" @click="loadMore">加载更多</a>
+            <ul class="message_list">
+                <li v-for="message in messages" :class="'message_'+(isSelf(message.user_id) ? 'r':'l')">
+                    <a :href="'/user/'+message.user.id" class="avatar">
+                        <img :src="message.user.avatar" />
+                    </a>
+                    <div>
+                        <span class="content">{{ message.message }}</span>
+                    </div>
+                    <span class="time">{{ message.time }}</span>
+                </li>
+            </ul>
         </div>
+        <div class="write_message">
+            <form action="">
+                <textarea name="" id="" cols="30" rows="10" v-model="new_message.message"></textarea>
+                <input type="button" class="button" value="发送" @click="send">
+            </form>
+            <p class="hint">Return 直接发送</p>
+        </div>
+    </div>
     </div>
 </template>
 
