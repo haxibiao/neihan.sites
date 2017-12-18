@@ -66,7 +66,7 @@ const routes = [
     { path: '/follows', component: require('./components/notifications/Follows.vue') },
     { path: '/tip', component: require('./components/notifications/Tip.vue') },
     { path: '/others', component: require('./components/notifications/Others.vue') },
-    { path: '/chat', component: require('./components/notifications/Chat.vue') }
+    { path: '/chat/:id', component: require('./components/notifications/Chat.vue') }
 ];
 
 const router = new VueRouter({

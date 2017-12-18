@@ -40,7 +40,7 @@
                     if(api_url.indexOf('?') === -1) {
                         api_url += '?api_token=' + api_token;
                     } else {
-                        api_url += '&api_token' + api_token;
+                        api_url += '&api_token=' + api_token;
                     }
                     return api_url;
                 };

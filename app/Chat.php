@@ -19,7 +19,7 @@ class Chat extends Model
 
     public function users()
     {
-        return belongsTomay(\App\User::class);
+        return $this->belongsToMany(\App\User::class);
     }
 
     //计算用方法将uid中的json转换,并算出with_id,最后query出wiht_id的信息并全部返回
