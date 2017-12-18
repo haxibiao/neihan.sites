@@ -187,30 +187,19 @@
                             被以下专题收入，发现更多相似内容
                         </div>
                         <div class="include_collection">
-                            <a class="item" href="#">
+                            <a class="item" href="javascript:;">
                                 <div class="name">
                                     ＋ 收入我的主题
                                 </div>
                             </a>
-                            <a class="item" href="#">
-                                <img src="/images/category_08.jpg"/>
+                          @foreach($article->categories as $category)
+                            <a class="item" href="/{{ $category->name_en }}">
+                                <img src="{{ $category->logo }}">
                                 <div class="name">
-                                    剑侠情缘
+                                    {{ $category->name }}
                                 </div>
                             </a>
-                            <a class="item" href="#">
-                                <img src="/images/category_01.jpeg"/>
-                                <div class="name">
-                                    王者荣耀
-                                </div>
-                            </a>
-                            <a class="item show_more" href="#">
-                                <div class="name">
-                                    展开更多
-                                    <i class="iconfont icon-xia">
-                                    </i>
-                                </div>
-                            </a>
+                          @endforeach
                         </div>
                     </div>
                 </div>
@@ -219,14 +208,14 @@
                         <div class="meta">
                             <div class="title">
                                 推荐阅读
-                                <a href="#">
+                                <a href="javascript:;">
                                     更多精彩内容
                                     <i class="iconfont icon-youbian">
                                     </i>
                                 </a>
                             </div>
                         </div>
-                        @include('v1.parts.article_list_recommend')
+                        @include('parts.list.article_list_category',['articles'=>$data['related']])
                     </div>
                 </div>
             </div>

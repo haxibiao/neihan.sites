@@ -129,7 +129,9 @@
                             </ul>
                         </li>
                     </ul>
-                        <search/>
+
+                    <search></search>
+
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a class="style_mode_btn" href="javascript:;">
@@ -237,11 +239,11 @@
 @push('scripts')
 <script>
     $(function(){
-        var current_path = window.location.pathname.replace('/v1/','');
-        current_path = current_path.replace('/','');
-        if($('.navbar_wrp').has('.'+current_path)){
-            $('.navbar_wrp').find('.'+current_path).addClass('active');
-        };
+        // var current_path = window.location.pathname.replace('/v1/','');
+        // current_path = current_path.replace('/','');
+        // if($('.navbar_wrp').has('.'+current_path)){
+        //     $('.navbar_wrp').find('.'+current_path).addClass('active');
+        // };
 
         $('.dropdown-toggle').dropdown();
 
