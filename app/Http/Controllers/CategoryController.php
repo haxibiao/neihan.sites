@@ -155,4 +155,14 @@ class CategoryController extends Controller {
 		}
 		return redirect()->back();
 	}
+    
+    public function categories_hot(){
+    	$data=[];
+    	$data['hot']=Category::orderBy('count','desc')->take(8)->get();
+    	$data['commend']=Category::orderBy('created_at','desc')->take(8)->get();
+    	$data['city']=Category::orderBy('updated_at','desc')->take(8)->get();
+
+    	return view('parts.list.categories_list')
+    	->withData($data);
+    }
 }

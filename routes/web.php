@@ -27,6 +27,7 @@ Route::get('/search', 'SearchController@search');
 //文章
 Route::resource('/article', 'ArticleController');
 Route::resource('/category', 'CategoryController');
+Route::get('/cate','CategoryController@categories_hot');
 Route::get('/tag/{name}', 'TagController@tagname');
 Route::resource('/tag', 'TagController');
 Route::get('/new', 'ArticleController@article_new');
