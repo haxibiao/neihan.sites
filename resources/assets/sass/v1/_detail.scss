@@ -29,12 +29,21 @@
                             .name {
                                 font-size: 16px;
                                 vertical-align: middle;
-                                margin-right: 3px;
+                                margin-right: 5px;
                             }
                             .follow {
                                 @include button (60px);
                                 @include spacing (0, 2px 8px);
                                 font-size: 12px;
+                            }
+                            .following {
+                                @include following_button;
+                                @include spacing (0,0 3px);
+                                @include font (12px,$color-gray);
+                                width: 70px;
+                                i {
+                                    @include font (inherit,$color-gray,700);
+                                }
                             }
                             .meta {
                                 @include font (12px, $color-gray);

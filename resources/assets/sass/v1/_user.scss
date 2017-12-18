@@ -103,6 +103,15 @@
                                 margin: 6px 0 0 6px;
                                 float: right;
                             }
+                            .following {
+                                @include following_button;
+                                margin: 7px 0 0 6px;
+                                color: $color-gray;
+                                vertical-align: middle;
+                                i {
+                                    font-weight: 700;
+                                }
+                            }
                         }
                     }
                 } // 喜欢的文章

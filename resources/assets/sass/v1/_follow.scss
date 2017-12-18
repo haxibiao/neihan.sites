@@ -150,6 +150,14 @@
                                         width: 75px;
                                     }
                                 }
+                                .following {
+                                    @include following_button;
+                                    margin: 6px 0 0 6px;
+                                    color: $color-gray;
+                                    i {
+                                        font-weight: 700;
+                                    }
+                                }
                                 .avatar {
                                     @include avatar (55px, 55px);
                                     float: left;

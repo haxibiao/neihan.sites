@@ -71,6 +71,16 @@
                                 @include button;
                                 margin: 0;
                             }
+                            .following {
+                                @include following_button;
+                                margin: 6px 0 0 6px;
+                                color: $color-gray;
+                                float: none;
+                                margin: 0;
+                                i {
+                                    font-weight: 700;
+                                }
+                            }
                             hr {
                                 background-color: #eaeaea;
                                 margin: 20px 0;

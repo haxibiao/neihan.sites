@@ -501,6 +501,13 @@
     .follow {
         @include button (100px, 0, $color-green, right);
     }
+    .following {
+        @include following_button;
+        color: $color-gray;
+        i {
+            font-weight: 700;
+        }
+    }
     .contribute {
         @include news_button;
         width: 90px;

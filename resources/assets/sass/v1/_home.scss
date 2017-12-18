@@ -91,6 +91,11 @@
                                     font-weight: 700;
                                 }
                             }
+                            .follow {
+                                @include button;
+                                margin: 6px 0 0 6px;
+                                float: right;
+                            }
                         }
                     }
                 } // 喜欢的文章

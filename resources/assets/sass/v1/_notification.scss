@@ -692,10 +692,13 @@
                                 @include following_button;
                                 margin: 6px 0 0 6px;
                                 color: $color-gray;
-                                float: right;
                                 i {
                                     font-weight: 700;
                                 }
+                            }
+                            .follow {
+                                @include button (100px, 0, $color-green, right);
+                                margin: 6px 0 0 6px;
                             }
                             .title {
                                 padding: 2px 0 0 48px;
