@@ -1,0 +1,1 @@
+<li><a href="/collection/{{ $collection->id }}"><i class="iconfont icon-wenji"></i> <span>{{ $collection->name }}</span></a></li>

@@ -49,8 +49,9 @@ class UserController extends Controller {
 	 */
 	public function show($id) {
 		$user = User::findOrFail($id);
-		$data['articles'] = Article::where('user_id', $user->id)->orderBy('id', 'desc')->where('status', 1)->paginate(5);
-		$data['videos'] = Video::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(5);
+        $data['articles']           = Article::where('user_id', $user->id)->orderBy('id', 'desc')->where('status', 1)->paginate(10);
+        $data['articles_commented'] = Article::where('user_id', $user->id)->orderBy('updated_at', 'desc')->where('status', 1)->paginate(10);
+        $data['articles_hot']       = Article::where('user_id', $user->id)->orderBy('hits', 'desc')->where('status', 1)->paginate(10);
 		return view('user.show')
 			->withUser($user)
 			->withData($data);

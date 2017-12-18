@@ -170,16 +170,25 @@
                             </a>
                         </li>
                         <li class="tab author">
-                            <a class="avatar" href="/v1/home">
+                            <a class="avatar" href="/home">
                                 <img src="{{ Auth::user()->avatar() }}"/>
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="/home">
+                                    <a href="/user/{{ Auth::id() }}">
                                         <i class="iconfont icon-yonghu01">
                                         </i>
                                         <span>
                                             我的主页
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/home">
+                                        <i class="iconfont icon-unie646">
+                                        </i>
+                                        <span>
+                                            报表主页
                                         </span>
                                     </a>
                                 </li>
@@ -202,7 +211,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/v1/wallet">
+                                    <a href="#">
                                         <i class="iconfont icon-qianbao">
                                         </i>
                                         <span>

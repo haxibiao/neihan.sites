@@ -59,6 +59,10 @@ class User extends Authenticatable
         return $this->hasMany(\App\Message::class);
     }
 
+    public function categories(){
+        return $this->hasMany(\App\Category::class);
+    }
+
     public function collections()
     {
         //默认给个文集...
