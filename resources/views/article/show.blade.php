@@ -3,6 +3,10 @@
 @section('title')
     {{ $article->title }} - 爱你城
 @stop
+
+@section('description')
+    {{ $article->description() }}
+@stop
 @section('content')
 <div id="detail">
     <div class="note">

@@ -82,11 +82,12 @@
             <small class="text-danger">{{ $errors->first('keywords') }}</small>
         </div>
 
-        <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
+   {{--      <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
             {!! Form::label('description', '简介') !!}
             {!! Form::textarea('description',null, ['class' => 'form-control', 'required' => 'required']) !!}
             <small class="text-danger">{{ $errors->first('description') }}</small>
-        </div>
+        </div> --}}
+        
 
         <div class="form-group{{ $errors->has('body') ? ' has-error-for-editor' : '' }}">
             {!! Form::label('body', '正文') !!}

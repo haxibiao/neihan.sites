@@ -48,6 +48,8 @@ class ArticleController extends Controller {
 	public function store(ArticleRequest $request) {
 		$article = new Article($request->all());
 
+
+
 		if ($request->get('primary_image')) {
 			$article->image_url = $request->get('primary_image');
 		} else {
@@ -59,6 +61,8 @@ class ArticleController extends Controller {
 		if (is_array($category_ids) && !empty($category_ids)) {
 			$article->category_id = max($category_ids);
 		}
+		//简单计算该文章有多少个字
+		$article->words       = ceil(strlen(strip_tags($article->body)) / 2);
 		$article->body = $this->fix_body($article->body);
 		$article->save();
 
