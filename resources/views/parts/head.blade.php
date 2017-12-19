@@ -40,49 +40,9 @@
                             </a>
                         </li>
                     </ul>
-                    <form class="navbar-form navbar-left" role="search">
-                        <div class="form-group">
-                            <div class="search_wrp">
-                                <input class="form-control" placeholder="搜索" type="text"/>
-                                <i class="iconfont icon-sousuo">
-                                </i>
-                                <div class="hot_search_wrp hidden-xs">
-                                    <div class="hot_search">
-                                        <div class="litter_title">
-                                            热门搜索
-                                            <a class="more" href="javascript:;" target="_blank">
-                                                <i class="iconfont icon-shuaxin">
-                                                </i>
-                                                换一批
-                                            </a>
-                                        </div>
-                                        <ul>
-                                            <li>
-                                                <a href="#" target="_blank">
-                                                    王者荣耀
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" target="_blank">
-                                                    恋爱七招
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" target="_blank">
-                                                    吃鸡
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" target="_blank">
-                                                    故事
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                   
+                   <search></search>
+                   
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a class="style_mode_btn" href="javascript:;">
@@ -123,11 +83,11 @@
 @push('scripts')
 <script>
     $(function(){
-        var current_path = window.location.pathname.replace('/','');
-        current_path = current_path.replace('/','');
-        if($('.navbar_wrp').has('.'+current_path)){
-            $('.navbar_wrp').find('.'+current_path).addClass('active');
-        };
+        // var current_path = window.location.pathname.replace('/','');
+        // current_path = current_path.replace('/','');
+        // if($('.navbar_wrp').has('.'+current_path)){
+        //     $('.navbar_wrp').find('.'+current_path).addClass('active');
+        // };
 
         $('.dropdown-toggle').dropdown();
 

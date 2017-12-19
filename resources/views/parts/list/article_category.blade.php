@@ -1,4 +1,4 @@
-{{-- 有专题标签的文章摘要 --}}
+{{-- 专为搜索页面准备的文章列表页 --}}
 @if(!empty($articles))
 <ul class="article_list">
    @foreach($articles as $article)
@@ -53,7 +53,7 @@
     </li>
     @endforeach
 
-    <article-list api="/" start-page="1" />
+    {{-- <article-list api="/" start-page="1" /> --}}
 
 </ul>
 @endif
