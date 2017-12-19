@@ -9,6 +9,9 @@ function topAdmins_json($topAdmins)
 {
     $names="";
     $topAdmins = json_decode($topAdmins);
+    if(!count($topAdmins)){
+        return "";
+    }
     foreach ($topAdmins as $topAdmin) {
         $name= $topAdmin->name;
         $names=$names.$name;

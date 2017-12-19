@@ -40,7 +40,7 @@
                             </a>
                         </li>
                         <li class="tab notification">
-                            <a href="/v1/notification#/comments">
+                            <a href="/notification">
                                 <i class="iconfont icon-zhongyaogaojing">
                                 </i>
                                 <span class="menu_text">
