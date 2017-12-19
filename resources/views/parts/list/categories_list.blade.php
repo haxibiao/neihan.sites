@@ -41,17 +41,17 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div class="tab-pane fade in active" id="tuijian" role="tabpanel">
-                        <div class="row">
+                        <div class="row clearfix">
                            @include('parts.list.categories_list_item',['categories'=>$data['commend']])
                         </div>
                     </div>
                     <div class="tab-pane fade" id="huo" role="tabpanel">
-                        <div class="row">
+                        <div class="row clearfix">
                            @include('parts.list.categories_list_item',['categories'=>$data['hot']])
                         </div>
                     </div>
                     <div class="tab-pane fade" id="chengshi" role="tabpanel">
-                        <div class="row">
+                        <div class="row clearfix">
                            @include('parts.list.categories_list_item',['categories'=>$data['city']])
                         </div>
                     </div>

@@ -43,7 +43,8 @@
             }
             .tab-content {
                 .row {
-                    div {
+                    .recommend_list {
+                        height: 375px;
                         .collection_wrap {
                             @include border (4px, 1px solid #e6e6e6);
                             @include spacing (80px 0 0 0, 0 20px);
@@ -65,6 +66,7 @@
                                     font-size: 13px;
                                     line-height: 25px;
                                     margin-bottom: 10px;
+                                    height: 69px;
                                 }
                             }
                             .follow {
@@ -73,10 +75,9 @@
                             }
                             .following {
                                 @include following_button;
-                                margin: 6px 0 0 6px;
+                                @include spacing (0,7px);
                                 color: $color-gray;
                                 float: none;
-                                margin: 0;
                                 i {
                                     font-weight: 700;
                                 }
@@ -98,7 +99,7 @@
                         }
                     }
                     @media screen and (min-width: 450px) and (max-width: 768px) {
-                        div {
+                        .recommend_list {
                             width: 50%;
                             .collection_wrap {
                                 width: 100%;
