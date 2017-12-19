@@ -16,9 +16,7 @@
             <div class="main">
                 <div>
                     <ul class="article_list">
-                    @foreach($data['articles'] as $article)
                          @include('parts.list.article_category', ['articles'=>$data['articles'] ,'search'=>true])
-                    @endforeach
                     </ul>
                 </div>
             </div>
