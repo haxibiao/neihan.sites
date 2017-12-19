@@ -1,4 +1,3 @@
-bash getimg.sh
 
 php artisan migrate --seed
 
