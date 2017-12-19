@@ -69,6 +69,10 @@ Route::resource('/video', 'VideoController');
 //follow
 Route::get('/follow','FollowController@index');
 
+//message
+Route::get('/chat/with/{user_id}', 'ChatController@chat');
+Route::get('/notification', 'NotificationController@index');
+
 //后台
 Route::get('/admin', 'AdminController@index');
 Route::get('/admin/users', 'AdminController@users');

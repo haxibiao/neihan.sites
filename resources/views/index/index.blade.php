@@ -185,7 +185,7 @@
                             </p>
                         </li>
                     </ul>
-                    <a class="find_more" href="/v1/categories" target="_blank">
+                    <a class="find_more" href="/cate" target="_blank">
                         查看全部
                         <i class="iconfont icon-youbian">
                         </i>

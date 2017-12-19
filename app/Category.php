@@ -83,6 +83,9 @@ class Category extends Model
         foreach ($topAdmins as $admin) {
             $admin->isCreator = $admin->id == $this->user_id;
         }
+        if(!count($topAdmins)){
+            return "";
+        }
         return $topAdmins;
     }
 
