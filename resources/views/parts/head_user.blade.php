@@ -57,7 +57,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="/v1/notification#/comments">
+                                    <a href="/notification#/comments">
                                         <i class="iconfont icon-xinxi">
                                         </i>
                                         <span>
@@ -67,7 +67,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/v1/notification#/chats">
+                                    <a href="/notification#/chats">
                                         <i class="iconfont icon-email">
                                         </i>
                                         <span>
@@ -77,7 +77,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/v1/notification#/requests">
+                                    <a href="/notification#/requests">
                                         <i class="iconfont icon-tougaoguanli">
                                         </i>
                                         <span>
@@ -87,7 +87,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/v1/notification#/likes">
+                                    <a href="/notification#/likes">
                                         <i class="iconfont icon-xin">
                                         </i>
                                         <span>
@@ -97,7 +97,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/v1/notification#/follows">
+                                    <a href="/notification#/follows">
                                         <i class="iconfont icon-jiaguanzhu">
                                         </i>
                                         <span>
@@ -107,7 +107,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/v1/notification#/tip">
+                                    <a href="/notification#/tip">
                                         <i class="iconfont icon-zanshangicon">
                                         </i>
                                         <span>
@@ -117,7 +117,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/v1/notification#/others">
+                                    <a href="/notification#/others">
                                         <i class="iconfont icon-gengduo">
                                         </i>
                                         <span>

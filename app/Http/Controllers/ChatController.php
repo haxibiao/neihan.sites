@@ -27,6 +27,6 @@ class ChatController extends Controller
 
         $chat->save();
 
-        return redirect()->to('/v1/notification/#chat/' . $chat->id);
+        return redirect()->to('/notification/#chat/' . $chat->id);
     }
 }

@@ -7,7 +7,7 @@
         </a>
         <div class="content">
             <div class="author">
-                <a class="avatar" href="/user{{ $article->user->id  }}" target="_blank">
+                <a class="avatar" href="/user/{{ $article->user->id  }}" target="_blank">
                     <img src="{{ $article->user->avatar() }}"/>
                 </a>
                 <div class="info">

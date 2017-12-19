@@ -12,6 +12,18 @@
                     <a class="avatar" href="/user/{{ Auth::id() }}">
                         <img src="{{ $user->avatar }}"/>
                     </a>
+
+                    @if(!$user->isSelf())
+                        @if(Auth::check())
+                        <follow type="users" id="{{ $user->id }}" user-id="{{ Auth::user()->id }}" followed="{{ Auth::user()->isFollow('users', $user->id)}}"></follow>
+                        @endif
+                        
+                            <a class="botm contribute" href="/chat/with/{{ $user->id }}">
+                                <span>
+                                    发消息
+                                </span>
+                            </a>
+
                     <div class="title">
                         <a class="name" href="/user/{{ Auth::id() }}">
                             <span>
@@ -21,6 +33,7 @@
                             </i>
                         </a>
                     </div>
+                    @endif
                     <div class="info">
                         <ul>
                             <li>
@@ -85,14 +98,14 @@
                 <div>
                     <!-- Nav tabs -->
                     <ul class="trigger_menu" role="tablist">
-                        <li role="presentation">
+                        <li role="presentation" class="active" >
                             <a aria-controls="wenzhang" data-toggle="tab" href="#wenzhang" role="tab">
                                 <i class="iconfont icon-wenji">
                                 </i>
                                 文章
                             </a>
                         </li>
-                        <li class="active" role="presentation">
+                        <li role="presentation">
                             <a aria-controls="dongtai" data-toggle="tab" href="#dongtai" role="tab">
                                 <i class="iconfont icon-zhongyaogaojing">
                                 </i>
@@ -116,10 +129,10 @@
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
-                        <div class="tab-pane fade" id="wenzhang" role="tabpanel">
+                        <div class="tab-pane fade in active" id="wenzhang" role="tabpanel">
                              @include('parts.list.article_list_category',['articles'=>$data['articles']])
                         </div>
-                        <div class="tab-pane fade in active" id="dongtai" role="tabpanel">
+                        <div class="tab-pane fade" id="dongtai" role="tabpanel">
                             <ul class="article_list">
                               @include('user.parts.user_acive')
                             </ul>

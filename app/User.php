@@ -6,6 +6,7 @@ use App\Traits\TimeAgo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
+use Auth;
 
 class User extends Authenticatable
 {
@@ -43,6 +44,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Follow::class);
     }
+    
+    public function isSelf()
+    {
+        return Auth::check() && Auth::id() == $this->id;
+    }
+
 
     public function follows()
     {
