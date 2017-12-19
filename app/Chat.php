@@ -9,7 +9,7 @@ use App\Model;
 class Chat extends Model
 {
     protected $fillable = [
-        'uid',
+        'uids',
     ];
 
     public function messages()

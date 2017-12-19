@@ -5,17 +5,17 @@
 	<!-- 关注的用户 -->
 	<div v-else="user"id="user">
 		<div class="main_top clearfix">
-            <a class="avatar" href="/v1/user" target="_blank">
+            <a class="avatar" href="'/user/'+user.id" target="_blank">
                 <img :src="user.avatar"/>
             </a>
-            <a class="botm contribute" href="/v1/user" target="_blank">
+            <a class="botm contribute" :href="'/user/'+user.id" target="_blank">
                 <span>
                 	个人主页
                 </span>
                 <i class="iconfont icon-youbian">
                 </i>
             </a>
-            <a class="contribute" href="/v1/notification" target="_blank">
+            <a class="contribute" :href="'/chat/with/'+user.id" target="_blank">
                 <span>
                     发消息
                 </span>
