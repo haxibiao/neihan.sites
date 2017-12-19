@@ -1,6 +1,5 @@
 {{-- 专为搜索页面准备的文章列表页 --}}
 @if(!empty($articles))
-<ul class="article_list">
    @foreach($articles as $article)
     <li class="article_item {{ $article->hasImage()?'have_img':'' }}">
         <a class="wrap_img" href="/article/{{ $article->id }}" target="_blank">
@@ -55,5 +54,4 @@
 
     {{-- <article-list api="/" start-page="1" /> --}}
 
-</ul>
 @endif

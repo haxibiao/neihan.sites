@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('title')
-    搜索 
+    搜索
 @endsection
 
 @section('content')
-<div id="bookmarks" class="container">
+<div id="search" class="container">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
