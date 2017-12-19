@@ -288,6 +288,10 @@ class FixData extends Command
                     $this->comment($article->id . ' 无图 ...');
                     continue;
                 }
+                if(str_contains($article->image_url, "haxibiao")){
+                   $this->comment($article->id.'哈希表的图必须跳过');
+                   continue;
+                }
                 $image_url_path = parse_url($article->image_url, PHP_URL_PATH);
                 $image_url_path = str_replace('.small', '', $image_url_path);
                 if (ends_with($image_url_path, '.')) {

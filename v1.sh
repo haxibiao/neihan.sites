@@ -1,3 +1,5 @@
+bash getimg.sh
+
 php artisan migrate --seed
 
 php artisan fix:data --categories
