@@ -120,4 +120,16 @@ class UserController extends Controller
     {
         return $request->user()->unreads();
     }
+
+    public function recommend(Request $request)
+    {
+        $page_size = 5;
+        $page      = rand(1, ceil(User::count() / $page_size));
+        $users     = User::orderBy('id', 'desc')->skip(($page - 1) * $page_size)->take($page_size)->get();
+        foreach ($users as $user) {
+            $user->is_followed = Auth::user()->isFollow('users', $user->id);
+        }
+
+        return $users;
+    }
 }
