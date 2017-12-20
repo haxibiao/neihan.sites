@@ -19,8 +19,8 @@
                         ＋ 关注
                     </a>
                     
-                    <a v-else href="javascript:;" class="button btn_followed" @click="toggleFollow(user)">
-			        <i class="gougou iconfont icon-weibiaoti12"></i><i class="chacha iconfont icon-cha"></i>
+                    <a v-else href="javascript:;" class="following" @click="toggleFollow(user)">
+				        <i class="gougou iconfont icon-weibiaoti12"></i><i class="chacha iconfont icon-cha"></i>
 		     	    </a>
 
                     <a class="name" :href="'/user/'+user.id" target="_blank">
