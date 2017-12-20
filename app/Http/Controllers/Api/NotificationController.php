@@ -34,6 +34,7 @@ class NotificationController extends Controller
                 $user->pivot->save();
             }
         }
+        Auth::user()->forgetUnreads();
 
         return $data;
     }
