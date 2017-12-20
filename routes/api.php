@@ -62,7 +62,10 @@ Route::middleware('auth:api')->get('/favorite/{id}/{type}', 'Api\FavoriteControl
 Route::middleware('auth:api')->post('/like/{id}/{type}', 'Api\LikeController@toggle');
 Route::get('/like/{id}/{type}', 'Api\LikeController@get');
 
+//user
 
+//获取推荐的作者
+Route::middleware('auth:api')->get('/user/recommend', 'Api\UserController@recommend');
 //获取用户详细资料
 Route::get('/user/{id}', 'Api\UserController@getInfo');
 //user unreads

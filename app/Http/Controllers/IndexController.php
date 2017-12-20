@@ -73,4 +73,28 @@ class IndexController extends Controller
     {
         return view('index.about_us');
     }
+
+    public function weekly()
+    {
+        $articles = Article::orderBy('hits', 'desc')->with('user')->paginate(10);
+        return view('index.trending_weekly')
+            ->withArticles($articles)
+        ;
+    }
+
+    public function monthly()
+    {
+        $articles = Article::orderBy('hits', 'desc')->with('user')->paginate(10);
+        return view('index.trending_monthly')
+            ->withArticles($articles)
+        ;
+    }
+
+    public function recommendations_notes()
+    {
+        $articles = Article::orderBy('created_at', 'desc')->with('user')->paginate(10);
+        return view('index.new_list')
+            ->withArticles($articles)
+        ;
+    }
 }

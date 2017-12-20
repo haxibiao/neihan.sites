@@ -14,9 +14,13 @@ Auth::routes();
 
 Route::pattern('id', '\d+');
 
+//index
 Route::get('/', 'IndexController@index');
 Route::get('/app', 'IndexController@app');
 Route::get('/about-us', 'IndexController@aboutUs');
+Route::get('/index/weekly','IndexController@weekly');
+Route::get('/index/monthly','IndexController@monthly');
+Route::get('/index/new-list','IndexController@recommendations_notes');
 
 //v1
 require_once 'v1/web.php';

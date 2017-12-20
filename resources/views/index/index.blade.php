@@ -24,7 +24,7 @@
             {{-- 右侧 --}}
             <div class="aside col-sm-4">
                 <div class="board">
-                    <a href="#" target="_blank">
+                    <a href="/index/new-list" target="_blank">
                         <img src="/images/board01.png"/>
                         <span class="board_tit one">
                             新上榜
@@ -32,7 +32,7 @@
                             </i>
                         </span>
                     </a>
-                    <a href="#" target="_blank">
+                    <a href="/index/weekly" target="_blank">
                         <img src="/images/board02.png"/>
                         <span class="board_tit two">
                             7日热门
@@ -40,7 +40,7 @@
                             </i>
                         </span>
                     </a>
-                    <a href="#" target="_blank">
+                    <a href="/index/monthly" target="_blank">
                         <img src="/images/board03.png"/>
                         <span class="board_tit three">
                             30日热门
@@ -48,22 +48,7 @@
                             </i>
                         </span>
                     </a>
-                    <a href="#" target="_blank">
-                        <img src="/images/board04.png"/>
-                        <span class="board_tit four">
-                            爱你城出版
-                            <i class="iconfont icon-youbian">
-                            </i>
-                        </span>
-                    </a>
-                    <a href="#" target="_blank">
-                        <img src="/images/board05.png"/>
-                        <span class="board_tit five">
-                            爱你城大学堂
-                            <i class="iconfont icon-youbian">
-                            </i>
-                        </span>
-                    </a>
+
                 </div>
                 <div class="app">
                     <img src="/images/scan.jpeg"/>
@@ -102,95 +87,9 @@
                         </div>
                     </a>
                 </div>
-                <div class="recommended_authors">
-                    <div class="title">
-                        <span>
-                            推荐作者
-                        </span>
-                        <a href="javascript:;">
-                            <i class="glyphicon glyphicon-refresh">
-                            </i>
-                            换一批
-                        </a>
-                    </div>
-                    <ul class="list">
-                        <li>
-                            <a class="avatar" href="/v1/user" target="_blank">
-                                <img src="/images/photo_02.jpg"/>
-                            </a>
-                            <a class="follow" href="javascript:;">
-                                ＋ 关注
-                            </a>
-                            <a class="name" href="/v1/user" target="_blank">
-                                王佩
-                            </a>
-                            <p>
-                                写了400.9k字 · 13.8k喜欢
-                            </p>
-                        </li>
-                        <li>
-                            <a class="avatar" href="/v1/user" target="_blank">
-                                <img src="/images/photo_03.jpg"/>
-                            </a>
-                            <a class="follow" href="javascript:;">
-                                ＋ 关注
-                            </a>
-                            <a class="name" href="/v1/user" target="_blank">
-                                刘淼
-                            </a>
-                            <p>
-                                写了375.5k字 · 20.5k喜欢
-                            </p>
-                        </li>
-                        <li>
-                            <a class="avatar" href="/v1/user" target="_blank">
-                                <img src="/images/photo_02.jpg"/>
-                            </a>
-                            <a class="follow" href="javascript:;">
-                                ＋ 关注
-                            </a>
-                            <a class="name" href="/v1/user" target="_blank">
-                                白发老籣
-                            </a>
-                            <p>
-                                写了50.5k字 · 5.7k喜欢
-                            </p>
-                        </li>
-                        <li>
-                            <a class="avatar" href="/v1/user" target="_blank">
-                                <img src="/images/photo_03.jpg"/>
-                            </a>
-                            <a class="follow" href="javascript:;">
-                                ＋ 关注
-                            </a>
-                            <a class="name" href="/v1/user" target="_blank">
-                                魏童
-                            </a>
-                            <p>
-                                写了39.4k字 · 1.4k喜欢
-                            </p>
-                        </li>
-                        <li>
-                            <a class="avatar" href="/v1/user" target="_blank">
-                                <img src="/images/photo_02.jpg"/>
-                            </a>
-                            <a class="follow" href="javascript:;">
-                                ＋ 关注
-                            </a>
-                            <a class="name" href="/v1/user" target="_blank">
-                                名贵的考拉熊
-                            </a>
-                            <p>
-                                写了104.3k字 · 8.3k喜欢
-                            </p>
-                        </li>
-                    </ul>
-                    <a class="find_more" href="/cate" target="_blank">
-                        查看全部
-                        <i class="iconfont icon-youbian">
-                        </i>
-                    </a>
-                </div>
+                @if(Auth::check())
+                <recommend-authors></recommend-authors>
+                @endif
                 <div class="videos">
                     <div class="title">
                         <span>

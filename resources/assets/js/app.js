@@ -15,6 +15,9 @@ Vue.prototype.$http = window.axios;
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+//index
+Vue.component('recommend-authors', require('./components/contributeModal/RecommendAuthors.vue'));
+
 Vue.component('example', require('./components/Example.vue'));
 Vue.component('bar', require('./components/Bar.vue'));
 Vue.component('line-chart', require('./components/Line.vue'));
