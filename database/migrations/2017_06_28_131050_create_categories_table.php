@@ -25,6 +25,12 @@ class CreateCategoriesTable extends Migration {
 			$table->integer('status')->default(0)->index();
 			$table->string('type')->nullable()->index();
 			$table->integer('order')->default(0);
+
+			//request
+			$table->integer('new_requests')->default(0);
+
+			//count
+			$table->integer('count_follows')->default(0)->index();
 			$table->timestamps();
 		});
 	}

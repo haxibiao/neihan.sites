@@ -16,6 +16,7 @@ class CreateChatUserTable extends Migration {
 			$table->integer('user_id')->index();
 			$table->integer('chat_id')->index();
 			$table->text('with_users')->nullable(); //这里返回一个用户的json可能会包含头像和用户名字和id
+			$table->integer('unreads')->default(0);
 			$table->timestamps();
 		});
 	}

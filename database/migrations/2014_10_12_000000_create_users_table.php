@@ -32,6 +32,21 @@ class CreateUsersTable extends Migration
             $table->text('seo_push')->nullable();
             $table->text('seo_tj')->nullable();
             $table->text('seo_json')->nullable();
+
+            $table->integer('count_comments')->default(0);
+            $table->integer('count_favorites')->default(0);
+            $table->integer('count_likes')->default(0);
+            $table->integer('count_tips')->default(0);
+            $table->integer('count_articles')->default(0);
+            $table->integer('count_words')->default(0);
+            $table->integer('count_follows')->default(0);
+            $table->integer('count_actions')->default(0);
+
+            $table->boolean('enable_tips')->default(1);
+            $table->string('tip_words')->nullable();
+            $table->string('gender')->nullable()->index();
+            $table->string('website')->nullable();
+            $table->string('qrcode')->nullable();
             
             $table->string('api_token', 60)->nullable()->default(str_random(60));
             

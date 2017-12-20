@@ -15,6 +15,7 @@ class CreateArticlesCategoryTable extends Migration {
 			$table->increments('id');
 			$table->integer('category_id');
 			$table->integer('article_id');
+			$table->string('submit')->nullable()->index();
 			$table->timestamps();
 		});
 	}

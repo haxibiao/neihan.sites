@@ -18,7 +18,7 @@ class CreateArticlesTable extends Migration
             $table->string('title')->unique();
             $table->string('keywords');
 
-            $table->mediumText('description');
+            $table->mediumText('description')->nullable();
             $table->longText('body');
             
             $table->string('author');
@@ -48,9 +48,10 @@ class CreateArticlesTable extends Migration
             $table->integer('count_replies')->default(0);
             $table->integer('count_favorites')->default(0);
             $table->integer('count_shares')->default(0);
+            $table->integer('count_likes')->default(0)->index();
             
             $table->text('json')->nullable();
-            $table->integer('likes')->default(0)->index();
+            
 
             $table->timestamps();
         });

@@ -90,7 +90,7 @@
                 @if(Auth::check())
                 <recommend-authors></recommend-authors>
                 @endif
-                <div class="videos">
+{{--                 <div class="videos">
                     <div class="title">
                         <span>
                             热门视频
@@ -117,7 +117,7 @@
                             手把手教你玩王者荣耀安琪拉
                         </div>
                     </a>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

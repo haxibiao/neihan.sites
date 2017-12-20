@@ -14,10 +14,19 @@ class CreateCollectionsTable extends Migration {
 		Schema::create('collections', function (Blueprint $table) {
 			$table->increments('id');
 			$table->integer('user_id')->index();
-			$table->integer('status')->index(); //status  is  0 private or 1 public
+			$table->integer('status')->default(1); //status  is  0 private or 1 public
 			$table->string('type')->default('article')->index();
 			$table->string('name');
 			$table->string('logo')->nullable();
+
+			//count
+            $table->integer('count')->default(0);
+            $table->integer('count_words')->default(0);
+
+            
+
+            //count
+			$table->integer('count_follows')->default(0);
 			$table->timestamps();
 		});
 	}
