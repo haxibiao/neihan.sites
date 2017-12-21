@@ -17,7 +17,10 @@ class IndexController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
             //获取用户follow过的category
-            $follows       = $user->follows()->where('followed_type', 'categories')->take(7)->get();
+            $follows       = $user->followingCategories()
+            ->orderBy('id','desc')
+            ->take(7)
+            ->get();
             $categories    = [];
             $categorie_ids = [];
             foreach ($follows as $follow) {
@@ -26,7 +29,8 @@ class IndexController extends Controller
                 $categorie_ids[] = $category->id;
             }
             //依靠获取到的categories来获取article
-            $articles = Article::with('user')->with('category')->whereIn('category_id', $categorie_ids)
+            $articles = Article::with('user')->with('category')
+                ->whereIn('category_id', $categorie_ids)
                 ->orderBy('updated_at', 'desc')
                 ->paginate(10);
             if (!$articles->isEmpty()) {
@@ -35,12 +39,16 @@ class IndexController extends Controller
         }
 
         if (!$has_follow_articles) {
-            $categories = Category::orderBy('updated_at')
+            $categories = Category::orderBy('updated_at','desc')
                 ->where('type', 'article')
                 ->where('count', '>', 0)
+                ->orderBy('updated_at','desc')
                 ->take(7)
                 ->get();
-            $articles = Article::with('user')->with('category')->orderBy('updated_at')->paginate(10);
+            $articles = Article::with('user')->with('category')
+              ->whereIn('category_id', $categories->pluck('id'))
+              ->orderBy('id','desc')
+              ->paginate(10);
         }
 
         //为VUEajax加载准备数据

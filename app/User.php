@@ -3,10 +3,10 @@
 namespace App;
 
 use App\Traits\TimeAgo;
+use Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
-use Auth;
 
 class User extends Authenticatable
 {
@@ -44,12 +44,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Follow::class);
     }
-    
+
+    //取出该用户关注的专题
+    public function followingCategories()
+    {
+        return $this->hasMany(\App\Follow::class)->where('followed_type', 'categories');
+    }
+
     public function isSelf()
     {
         return Auth::check() && Auth::id() == $this->id;
     }
-
 
     public function follows()
     {
@@ -66,7 +71,8 @@ class User extends Authenticatable
         return $this->hasMany(\App\Message::class);
     }
 
-    public function categories(){
+    public function categories()
+    {
         return $this->hasMany(\App\Category::class);
     }
 
