@@ -34,10 +34,60 @@ class CategoryController extends Controller
 
     public function name_en(Request $request, $name_en)
     {
-        $category          = Category::where('name_en', $name_en)->firstOrFail();
-        $data['commented'] = $category->articles()->where('status', '>=', 0)->orderBy('commented', 'desc')->paginate(10);
-        $data['collected'] = $category->articles()->where('status', '>=', 0)->paginate(10);
-        $data['hot']       = $category->articles()->where('status', '>=', 0)->orderBy('hits', 'desc')->paginate(10);
+        $category = Category::where('name_en', $name_en)->firstOrFail();
+
+        //最新评论
+
+        $articles = $category->articles()
+            ->with('user')->with('category')
+            ->where('status', '>=', 0)
+            ->orderBy('updated_at', 'desc')
+            ->paginate(10)
+        ;
+
+        if ((request()->ajax() || request('debug')) && $request->get('commented')) {
+            foreach ($articles as $article) {
+                $article->fillForJs();
+
+            }
+            return $articles;
+        }
+
+        $data['commented'] = $articles;
+
+        //最新收录
+
+        $articles = $category->articles()
+            ->with('user')->with('category')
+            ->where('status', '>=', 0)
+            ->orderBy('pivot_created_at', 'desc')
+            ->paginate(10)
+        ;
+        if ((request()->ajax() || request('debug') && $request->get('collected'))) {
+            foreach ($articles as $article) {
+                $article->fillForJs();
+            }
+            return $articles;
+        }
+
+        $data['collected'] = $articles;
+
+        //热门文章
+
+        $articles = $category->articles()
+            ->with('user')->with('category')
+            ->where('status', '>=', 0)
+            ->orderBy('hits', 'desc')
+            ->paginate(10)
+        ;
+        if ((request()->ajax() || request('debug')) && $request->get('hot')) {
+            foreach ($articles as $article) {
+                $article->fillForJs();
+            }
+            return $articles;
+        }
+
+        $data['hot'] = $articles;
 
         return view('category.name_en')
             ->withCategory($category)
@@ -119,9 +169,9 @@ class CategoryController extends Controller
         if ($request->get('type')) {
             $type = $request->get('type');
         }
-        $user       = Auth::user();
-        $category   = Category::with('user')->find($id);
-       
+        $user     = Auth::user();
+        $category = Category::with('user')->find($id);
+
         return view('category.edit')->withUser($user)->withCategory($category);
     }
 
@@ -166,10 +216,10 @@ class CategoryController extends Controller
                 if (Category::where('parent_id', $id)->count()) {
                     return '该分类下还有分类，不能删除';
                 }
-                    @unlink($category->logo);
-                    $small_logo = str_replace(".logo.jpg", ".logo.small.jpg", $category->logo);
-                    @unlink($small_logo);
-                    $category->delete();
+                @unlink($category->logo);
+                $small_logo = str_replace(".logo.jpg", ".logo.small.jpg", $category->logo);
+                @unlink($small_logo);
+                $category->delete();
             } else {
                 return '该分类下还有文章，不能删除';
             }

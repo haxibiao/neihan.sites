@@ -49,6 +49,7 @@ class IndexController extends Controller
             foreach ($articles as $article) {
                 $article->time_ago     = $article->timeAgo();
                 $article->has_image    = !empty($article->image_url);
+                $article->primary_image = $article->primaryImage();
                 $article->small_img    = get_small_image($article->image_url);
                 $article->user->avatar = $article->user->avatar();
                 $article->description  = $article->description ? $article->description : str_limit(strip_tags($article->body));

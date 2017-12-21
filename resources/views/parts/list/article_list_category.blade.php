@@ -53,7 +53,7 @@
     </li>
     @endforeach
 
-    <article-list api="/" start-page="1" />
+    <article-list api="/" start-page="2" />
 
 </ul>
 @endif

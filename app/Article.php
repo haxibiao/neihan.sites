@@ -78,7 +78,6 @@ class Article extends Model
         return $this->morphMany(\App\Favorite::class, 'faved');
     }
 
-
     //计算用方法
 
     public function description()
@@ -92,6 +91,9 @@ class Article extends Model
         $image          = Image::firstOrNew([
             'path' => $image_url_path,
         ]);
+        if(str_contains($this->image_url, "haxibiao")){
+            return $this->image_url;
+        }
         return $image->path_small();
     }
 
@@ -104,8 +106,15 @@ class Article extends Model
         return $image->id;
     }
 
+    public function fillForJs()
+    {
+        $this->time_ago      = $this->timeAgo();
+        $this->has_image     = $this->hasImage();
+        $this->primary_image = $this->primaryImage();
+    }
+
     public function isSelf()
     {
-        return Auth::check() && Auth::id() ==$this->user_id;
+        return Auth::check() && Auth::id() == $this->user_id;
     }
 }

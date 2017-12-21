@@ -3,7 +3,7 @@
     <li v-for="article in articles" :class="article.has_image ? 'article_item have_img' : 'note_item'">
 
         <a v-if="article.has_image" class="wrap_img" href="javascript:;" target="_blank">
-            <img :src="article.small_img" :alt="article.titl">
+            <img :src="article.primary_image" :alt="article.title">
         </a>
         <div class="content">
             <div class="author">
@@ -51,6 +51,8 @@
         </div>
     </li>
 
+      <a class="button btn_load_more" href="javascript:;">{{ page >= lastPage ? '已经到底了':'正在加载更多' }}...</a>
+
 	  </div>
 </template>
 
@@ -71,7 +73,7 @@ export default {
   },
 
   mounted() {
-  	this.loadNext();
+  	this.fetchData();
   	this.listenScrollBottom();
   },
 
@@ -79,35 +81,40 @@ export default {
   	listenScrollBottom() {
   		var m = this;
   		$(window).on("scroll", function() {
-  			var is_scroll_to_bottom = $(this).scrollTop() >= $("body").height() - $(window).height();
+        var aheadMount =5;
+  			var is_scroll_to_bottom=$(this).scrollTop() >= $("body").height() - $(window).height() - aheadMount;
   			if(is_scroll_to_bottom){
-  				m.loadNext();
+  				m.fetchMore();
   			}
   		});
   	},
 
-  	loadNext() {
+  	fetchMore() {
   		++this.page;
 	  	if(this.lastPage > 0 && this.page > this.lastPage) {
 	  		console.log('我是有底线的');
 	  		//TODO: ui 提示  ...
 	  		return;
 	  	}
-	  	var m = this;
-	  	//TODO:: loading ....
-	  	window.axios.get(this.apiUrl).then(function(response){
-	  		m.articles = m.articles.concat(response.data.data);
-	  		m.lastPage = response.data.last_page;
+      this.fetchData();
+  	},
 
-	  		//TODO:: loading done !!!
-	  	});
-  	}
+    fetchData(){
+      var m = this;
+      //TODO:: loading ....
+      window.axios.get(this.apiUrl).then(function(response){
+        m.articles = m.articles.concat(response.data.data);
+        m.lastPage = response.data.last_page;
+
+        //TODO:: loading done !!!
+      });
+    }
   },
 
   data () {
     return {
     	apiDefault: '',
-    	page: this.startPage ? this.startPage : 0,
+    	page: this.startPage ? this.startPage : 1,
     	lastPage: -1,
     	articles: [],
     }
