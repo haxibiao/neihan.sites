@@ -59,6 +59,7 @@ Route::get('/user/{id}/videos', 'UserController@videos');
 Route::get('/user/{id}/articles', 'UserController@articles');
 Route::get('/user/{id}/drafts', 'UserController@drafts');
 Route::get('/user/{id}/favorites', 'UserController@favorites');
+Route::get('/user/{id}/likes', 'UserController@likes');
 Route::resource('/user', 'UserController');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/searchQuery', 'SearchController@search_all')->name('search_all');

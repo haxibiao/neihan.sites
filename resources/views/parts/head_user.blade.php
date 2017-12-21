@@ -144,7 +144,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="/user/{{ Auth::id() }}">
+                                    <a href="/user/{{ Auth::id() }}/likes">
                                         <i class="iconfont icon-yonghu01">
                                         </i>
                                         <span>
@@ -162,7 +162,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="/user/{{ Auth::id() }}/favorites">
                                         <i class="iconfont icon-biaoqian">
                                         </i>
                                         <span>
