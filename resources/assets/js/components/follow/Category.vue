@@ -23,7 +23,7 @@
             <div class="title">
 		        <a class="name" :href="'/'+category.name_en" target="_blank">
 		            <span>
-		                {{ category.name }}
+		                 {{ category.name }}
 		            </span>
 		        </a>
             </div>
@@ -60,17 +60,20 @@
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="wenzhang" role="tabpanel">
                     <ul class="article_list">
-                           <article-list api="/" />
+                           <!-- <article-list :api="'/'+ category.name_en+'?commented=1'" start-page="2" /> -->
+                           <article-list api='/' />
 					</ul>
                 </div>
                 <div class="tab-pane fade" id="pinglun" role="tabpanel">
                     <ul class="article_list">
-                           <article-list api="/" />
+                          <!--  <article-list :api="'/' + category.name_en+'?collected=1'" start-page="2" /> -->
+                          <article-list api='/' />
 					</ul>
                 </div>
                 <div class="tab-pane fade" id="huo" role="tabpanel">
                     <ul class="article_list">
-                           <article-list api="/" />
+                           <!-- <article-list :api="'/' + category.name_en +'?hot=1'" start-page="2" /> -->
+                           <article-list api='/' />
 					</ul>
                 </div>
             </div>
