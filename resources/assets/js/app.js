@@ -40,6 +40,7 @@ Vue.component('search', require('./components/Search.vue'));
 Vue.component('new-comment', require('./components/detail/NewComment.vue'));
 
 Vue.component('article-list', require('./components/ArticleList.vue'));
+Vue.component('category-list', require('./components/CategoryList.vue'));
 
 const app = new Vue({
 }).$mount('#app');

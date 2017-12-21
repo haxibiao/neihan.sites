@@ -227,12 +227,31 @@ class CategoryController extends Controller
         return redirect()->back();
     }
 
-    public function categories_hot()
+    public function categories_hot(Request $request)
     {
-        $data            = [];
-        $data['hot']     = Category::orderBy('count', 'desc')->take(8)->get();
-        $data['commend'] = Category::orderBy('created_at', 'desc')->take(8)->get();
-        $data['city']    = Category::orderBy('updated_at', 'desc')->take(8)->get();
+        $data = [];
+        $type='article';
+
+        $categories = Category::where('type', $type)->orderBy('count_follows', 'desc')->paginate(24);
+
+        if ((request()->ajax() || request('debug')) && request('hot')) {
+            return $categories;
+        }
+
+        $data['commend'] = $categories;
+
+        $categories=Category::where('type',$type)->orderBy('id','desc')->paginate(24);
+
+        if((request()->ajax() || request('debug')) && request('recommend')){
+            return $categories;
+        }
+        $data['hot']     = $categories;
+        
+        $categories =Category::where('type',$type)->paginate(24);
+        if((request()->ajax() || request('debug')) && request('city')){
+            return $categories;
+        }
+        $data['city']    = $categories;
 
         return view('parts.list.categories_list')
             ->withData($data);

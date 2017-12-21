@@ -54,6 +54,7 @@ Vue.component('notifications-left', require('./components/notifications/Notifica
 Vue.component('new-comment', require('./components/detail/NewComment.vue'));
 
 Vue.component('article-list', require('./components/ArticleList.vue'));
+Vue.component('category-list', require('./components/CategoryList.vue'));
 
 const routes = [
     // 关注路由

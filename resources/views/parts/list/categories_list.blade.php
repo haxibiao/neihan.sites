@@ -43,16 +43,19 @@
                     <div class="tab-pane fade in active" id="tuijian" role="tabpanel">
                         <div class="row clearfix">
                            @include('parts.list.categories_list_item',['categories'=>$data['commend']])
+                          {{--  <category-list api="{{ request()->path() }}?recommend=1" start-page="2"></category-list> --}}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="huo" role="tabpanel">
                         <div class="row clearfix">
                            @include('parts.list.categories_list_item',['categories'=>$data['hot']])
+                       {{--     <category-list api="{{ request()->path() }}?hot=1" start-page="2"></category-list> --}}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="chengshi" role="tabpanel">
                         <div class="row clearfix">
                            @include('parts.list.categories_list_item',['categories'=>$data['city']])
+                           {{-- <category-list api="{{ request()->path() }}?city=1" start-page="2"></category-list> --}}
                         </div>
                     </div>
                 </div>
