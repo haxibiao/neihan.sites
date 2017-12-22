@@ -23,7 +23,8 @@
         </div>
         @if(in_array(request()->path(), [
             'v1/follow',
-            'v1/notification'
+            'v1/notification',
+            'v1/setting'
         ]))
         <script src="{{ mix('js/b.js') }}">
         </script>

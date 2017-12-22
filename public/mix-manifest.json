@@ -1,11 +1,17 @@
 {
-    "/js/spa.js": "/js/spa.js?id=a8ffe0f1edc7260993ce",
-    "/js/app.js": "/js/app.js?id=76f29e4ab00af99fabe7",
+    "/js/spa.js": "/js/spa.js?id=89de64be6720048c2c79",
+    "/js/spa2.js": "/js/spa2.js?id=56434b87e09682c1bc60",
+    "/js/app.js": "/js/app.js?id=5eacac9752d4088ecc3a",
     "/css/app.css": "/css/app.css?id=ec7d706bc3a3aa1fe1ac",
+    "/css/app2.css": "/css/app2.css?id=7fc3d2ed210a81473372",
+    "/js/app2.js": "/js/app2.js?id=1b3e89c120c9a4003eb9",
     "/css/font/summernote.eot": "/css/font/summernote.eot?id=14bc8e55432d04305746",
     "/css/font/summernote.ttf": "/css/font/summernote.ttf?id=97c8c653e73cf479856e",
     "/css/font/summernote.woff": "/css/font/summernote.woff?id=f3339ce9912df09f66a8",
     "/css/a.css": "/css/a.css?id=d50a9ee258db3d5af3e4",
-    "/js/a.js": "/js/a.js?id=2c9c465fee608b8c6cd7",
-    "/js/b.js": "/js/b.js?id=298788240b01d4c2e43c"
+    "/js/a.js": "/js/a.js?id=dfdfbae2b310539b501c",
+    "/js/b.js": "/js/b.js?id=0b6134a68ec1fbb7ffcf",
+    "/css/a2.css": "/css/a2.css?id=bd41f648d13e373bf1be",
+    "/js/a2.js": "/js/a2.js?id=3fea0c3b74e39986d756",
+    "/js/b2.js": "/js/b2.js?id=0dc045f64c01ffd9a2c7"
 }

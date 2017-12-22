@@ -25,13 +25,16 @@ Route::get('/index/new-list','IndexController@recommendations_notes');
 //v1
 require_once 'v1/web.php';
 
+//v2
+require_once 'v2/web.php';
+
 //搜索
 Route::get('/search', 'SearchController@search');
 
 //文章
 Route::resource('/article', 'ArticleController');
 Route::resource('/category', 'CategoryController');
-Route::get('/cate','CategoryController@categories_hot');
+Route::get('/cate', 'CategoryController@categories_hot');
 Route::get('/tag/{name}', 'TagController@tagname');
 Route::resource('/tag', 'TagController');
 Route::get('/new', 'ArticleController@article_new');
@@ -72,7 +75,7 @@ Route::resource('/image', 'ImageController');
 Route::resource('/video', 'VideoController');
 
 //follow
-Route::get('/follow','FollowController@index');
+Route::get('/follow', 'FollowController@index');
 
 //message
 Route::get('/chat/with/{user_id}', 'ChatController@chat');

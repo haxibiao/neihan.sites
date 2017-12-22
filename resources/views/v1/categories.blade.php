@@ -42,7 +42,7 @@
                 <div class="tab-content">
                     <div class="tab-pane fade in active" id="tuijian" role="tabpanel">
                         <div class="row">
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
+                            <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
                                     <a href="/v1/category/2" target="_blank">
                                         <img class="avatar_collection" src="/images/category_02.jpg"/>
@@ -67,7 +67,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
+                            <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
                                     <a href="/v1/category/2" target="_blank">
                                         <img class="avatar_collection" src="/images/category_02.jpg"/>
@@ -92,7 +92,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
+                            <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
                                     <a href="/v1/category/2" target="_blank">
                                         <img class="avatar_collection" src="/images/category_02.jpg"/>
@@ -117,7 +117,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
+                            <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
                                     <a href="/v1/category/2" target="_blank">
                                         <img class="avatar_collection" src="/images/category_02.jpg"/>
@@ -142,7 +142,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
+                            <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
                                     <a href="/v1/category/2" target="_blank">
                                         <img class="avatar_collection" src="/images/category_02.jpg"/>
@@ -167,7 +167,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
+                            <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
                                     <a href="/v1/category/2" target="_blank">
                                         <img class="avatar_collection" src="/images/category_02.jpg"/>
@@ -199,7 +199,7 @@
                     </div>
                     <div class="tab-pane fade" id="huo" role="tabpanel">
                         <div class="row">
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
+                            <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
                                     <a href="/v1/category/2" target="_blank">
                                         <img class="avatar_collection" src="/images/category_08.jpg"/>
@@ -224,7 +224,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
+                            <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
                                     <a href="/v1/category/2" target="_blank">
                                         <img class="avatar_collection" src="/images/category_08.jpg"/>
@@ -249,7 +249,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
+                            <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
                                     <a href="/v1/category/2" target="_blank">
                                         <img class="avatar_collection" src="/images/category_08.jpg"/>
@@ -274,7 +274,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
+                            <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
                                     <a href="/v1/category/2" target="_blank">
                                         <img class="avatar_collection" src="/images/category_08.jpg"/>
@@ -299,7 +299,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
+                            <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
                                     <a href="/v1/category/2" target="_blank">
                                         <img class="avatar_collection" src="/images/category_08.jpg"/>
@@ -324,7 +324,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
+                            <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
                                     <a href="/v1/category/2" target="_blank">
                                         <img class="avatar_collection" src="/images/category_08.jpg"/>
@@ -356,7 +356,7 @@
                     </div>
                     <div class="tab-pane fade" id="chengshi" role="tabpanel">
                         <div class="row">
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
+                            <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
                                     <a href="/v1/category/2" target="_blank">
                                         <img class="avatar_collection" src="/images/category_05.jpg"/>
@@ -381,7 +381,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
+                            <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
                                     <a href="/v1/category/2" target="_blank">
                                         <img class="avatar_collection" src="/images/category_05.jpg"/>
@@ -406,7 +406,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
+                            <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
                                     <a href="/v1/category/2" target="_blank">
                                         <img class="avatar_collection" src="/images/category_05.jpg"/>
@@ -431,7 +431,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
+                            <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
                                     <a href="/v1/category/2" target="_blank">
                                         <img class="avatar_collection" src="/images/category_05.jpg"/>
@@ -456,7 +456,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
+                            <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
                                     <a href="/v1/category/2" target="_blank">
                                         <img class="avatar_collection" src="/images/category_05.jpg"/>
@@ -481,7 +481,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-4 col-lg-3">
+                            <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
                                 <div class="collection_wrap">
                                     <a href="/v1/category/2" target="_blank">
                                         <img class="avatar_collection" src="/images/category_05.jpg"/>
