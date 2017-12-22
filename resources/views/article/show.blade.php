@@ -50,7 +50,11 @@
                                 </span>
                             </div>
                         </div>
+                        @if(Auth::check() && Auth::user()->is_editor)
+                        <a class="btn btn-info pull-right" href="/article/{{ $article->id }}/edit">编辑</a>
+                        @endif
                     </div>
+                        
                     @include('article.parts.article_body')
                     <div class="article_foot">
                         <a class="notebook" href="#">
