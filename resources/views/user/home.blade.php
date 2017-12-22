@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    喵星菇凉 - 爱你城
+    {{ $user->name }} - 爱你城
 @stop
 @section('content')
 <div id="home">
