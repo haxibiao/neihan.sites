@@ -1,15 +1,21 @@
 {{-- 个人页左侧头部 --}}
 <div class="main_top clearfix">
-    <a class="avatar" href="/v1/user">
-        <img src="/images/photo_01.jpg"/>
+    <a class="avatar" href="/user/{{ $user->id }}">
+        <img src="{{ $user->avatar }}"/>
     </a>
     <div class="title">
-        <a class="name" href="/v1/user">
+        <a class="name" href="/user/{{ $user->id }}">
             <span>
                 {{ $user->name }}
             </span>
-            <i class="iconfont icon-nvsheng1">
+           @if($user->gender=="男")
+            <i class="iconfont icon-nansheng1">
             </i>
+           @else
+             <i class="iconfont icon-nvsheng1">
+            </i>
+           @endif
+
         </a>
     </div>
     <div class="info">
