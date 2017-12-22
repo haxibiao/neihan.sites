@@ -29,7 +29,7 @@
                 <li>
                     <div>
                         <a class="avatar avatar_collection" href="/{{ $category->name_en }}">
-                            <img src="/{{ $category->logo }}"/>
+                            <img src="{{ $category->logo }}"/>
                         </a>
                         <div class="info">
                             <a class="name" href="/{{ $category->name_en }}">
