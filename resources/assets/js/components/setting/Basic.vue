@@ -1,5 +1,9 @@
 <template>
-	<div id="basic">
+	 <div id="basic">
+ 		 <div v-if="updated" class="alert alert-success">
+ 	     更新成功!
+        </div>
+
 		<table>
 			<thead>
 				<tr>
@@ -9,88 +13,36 @@
 			</thead>
 			<tbody class="base">
 				<tr>
-					<td class="top_line">
+					<td v-if="!avatar" class="top_line">
+						<div class="avatar">
+							<img :src="user.avatar" />
+						</div>
+					</td>
+
+					<td v-else class="top_line">
 						<div class="avatar">
 							<img src="/images/photo_04.png" />
 						</div>
 					</td>
+
 					<td class="top_line">
-						<a href="javascript:;" class="btn_hollow">
+						<a href="javascript:;" class="btn_hollow" >
 							<input type="file" class="hide" unselectable="on" />
 							更换头像
 						</a>
 					</td>
+
 				</tr>
+
 				<tr>
 					<td class="setting_title">昵称</td>
 					<td>
-						<input type="text" placeholder="请输入昵称" class="form-control" />
-					</td>
-				</tr>
-				<tr>
-					<td class="setting_title">电子邮件</td>
-					<td>
-						<form>
-							<input type="email" placeholder="请输入你的常用邮箱" class="form-control" />
-							<input type="button" value="发送" class="btn_hollow" />
-						</form>
-					</td>
-				</tr>
-				<tr>
-					<td class="setting_title">手机</td>
-					<td class="setted">
-						<div>123456789101</div>
-						<i class="iconfont icon-weibiaoti12"></i>
-						<span>已验证</span>
-						<a href="javascript:;" class="cancel_bind">解除绑定</a>
-					</td>
-				</tr>
-				<tr>
-					<td class="setting_title">语言设置</td>
-					<td>
-						<div>
-							<input type="radio" name="language" value="zh_CN" checked />
-							<span>中文简体</span>
-						</div>
-						<div>
-							<input type="radio" name="language" value="zh_TW" />
-							<span>中文繁体</span>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="setting_title">接受谁的私信</td>
-					<td>
-						<div>
-							<input type="radio" name="letter" value="true" checked />
-							<span>所有人</span>
-						</div>
-						<div>
-							<input type="radio" name="letter" value="false" />
-							<span>我关注的人、我发过私信的人</span>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="setting_title">提醒邮件通知</td>
-					<td>
-						<div>
-							<input type="radio" name="mail" value="instantly" checked />
-							<span>所有动态</span>
-						</div>
-						<div>
-							<input type="radio" name="mail" value="later" />
-							<span>每天未读汇总</span>
-						</div>
-						<div>
-							<input type="radio" name="mail" value="none" />
-							<span>不接受</span>
-						</div>
+						<input type="text" placeholder="请输入昵称" class="form-control" :value="user.name" />
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		<input type="submit" value="保存" class="btn_success" />
+		<input type="submit" value="保存" class="btn_success" @click="updateing" />
 	</div>
 </template>
 
@@ -99,9 +51,42 @@ export default {
 
   name: 'Basic',
 
+  created(){
+      this.fetchData();
+  },
+
+  methods:{
+  	  fetchData(){
+           var api='/api/user/'+window.current_user_id;
+           var vm=this;
+           window.axios.get(api).then(function(response){
+           	    vm.user=response.data;
+           });
+  	  },
+
+  	  updateing(){
+  	  	  var api=window.tokenize('/api/user/'+window.current_user_id+'/update');
+  	  	  var vm=this;
+  	  	  window.axios.post(api).then(function(response){
+  	  	  	    vm.updated=true;
+  	  	  });
+  	  },
+
+  	  //update avatar
+  	  update_avatar(){
+  	  	  var api=window.tokenize('/api/user/'+window.current_user_id+'/avatar');
+  	  	  var vm=this;
+  	  	  window.axios.post(api).then(function(response){
+  	  	  	   vm.avatar =response.data;
+  	  	  });
+  	  }
+  },
+
   data () {
     return {
-
+       avatar:false,
+       updated:false,
+       user:[]
     }
   }
 }

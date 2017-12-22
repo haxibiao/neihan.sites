@@ -52,7 +52,8 @@
 
         @if(in_array(request()->path(), [
             'follow',
-            'notification'
+            'notification',
+            'setting'
         ]))
 
         <script src="{{ mix('js/b.js') }}">

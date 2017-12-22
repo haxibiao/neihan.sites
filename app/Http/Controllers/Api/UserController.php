@@ -104,6 +104,10 @@ class UserController extends Controller
         $user->avatar_url = $user->avatar();
         $data['user']     = $user;
 
+        if(request()->ajax() || request()->get('debug')){
+               return $user;
+        }
+
         $data['articles_count'] = Article::where('user_id', $user->id)->count();
         $data['traffic_count']  = Traffic::where('user_id', $user->id)->count();
 
@@ -131,5 +135,19 @@ class UserController extends Controller
         }
 
         return $users;
+    }
+
+    public function update(Request $request,$id)
+    {
+       $user=$request->user();
+       
+       return $request->id;
+    }
+
+    public function update_avatar(Request $request,$id)
+    {
+       $user=$request->user();
+
+       return 1;
     }
 }

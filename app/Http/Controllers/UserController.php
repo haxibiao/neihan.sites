@@ -198,4 +198,9 @@ class UserController extends Controller
             ->withData($data)
             ->withUser($user);
     }
+
+    public function setting()
+    {
+        return view('user.setting');
+    }
 }

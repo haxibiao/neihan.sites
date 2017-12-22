@@ -66,6 +66,7 @@ Route::get('/searchQuery', 'SearchController@search_all')->name('search_all');
 Route::get('/profile', 'HomeController@profile')->name('profile');
 Route::get('/login-as/{id}', 'HomeController@loginAs');
 Route::get('/hxb-login-as/{name}', 'HomeController@hxbLoginAs');
+Route::get('/setting','UserController@setting');
 
 //多媒体
 Route::resource('/image', 'ImageController');

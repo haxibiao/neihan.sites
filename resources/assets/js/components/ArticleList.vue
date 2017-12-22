@@ -18,7 +18,7 @@
                         <img src="/images/vip1.png"/>
                     </a>
                     <span class="time">
-                        {{ article.timeAgo }}
+                        {{ article.time_ago }}
                     </span>
                 </div>
             </div>

@@ -50,7 +50,6 @@ Route::middleware('auth:api')->get('notifications/{type}', 'Api\NotificationCont
 Route::middleware('auth:api')->get('/new-request-categories', 'Api\NotificationController@newReuqestCategories');
 
 
-
 //提交收藏
 Route::middleware('auth:api')->post('/favorite/{id}/{type}', 'Api\FavoriteController@save');
 //删除收藏
@@ -78,6 +77,10 @@ Route::get('/user/{id}/images', 'Api\UserController@getImages');
 Route::get('/user/{id}/videos', 'Api\UserController@getVideos');
 //获取用户发布的文章，可以按标题搜索
 Route::get('/user/{id}/articles', 'Api\UserController@getArticles');
+//api update user
+Route::middleware('auth:api')->post('/user/{id}/update','Api\UserController@update');
+//api update user_avatar
+Route::middleware('auth:api')->post('/user/{id}/avatar','Api\UserController@update_avatar');
 
 
 //所有分类
