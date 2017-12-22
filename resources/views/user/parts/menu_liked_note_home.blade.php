@@ -4,17 +4,17 @@
     <ul class="trigger_menu" role="tablist">
         <li role="presentation">
             <a aria-controls="follow" data-toggle="tab" href="#follow" role="tab">
-                关注的专题 3
+                关注的专题 {{ $data['followed_categories']->count() }}
             </a>
         </li>
         <li role="presentation">
             <a aria-controls="follow" data-toggle="tab" href="#collection" role="tab">
-                关注的文集 3
+                关注的文集 {{ $data['followed_collections']->count() }}
             </a>
         </li>
         <li class="active" role="presentation">
             <a aria-controls="likes" data-toggle="tab" href="#likes" role="tab">
-                喜欢的文章 7
+                喜欢的文章 {{ $data['like_articles']->count() }}
             </a>
         </li>
     </ul>
@@ -22,20 +22,24 @@
     <div class="tab-content">
         <div class="tab-pane fade" id="follow" role="tabpanel">
             <ul class="user_list">
+               @foreach($data['followed_categories'] as $follow )
+                @php
+                    $category=$follow->followed;
+                @endphp
                 <li>
                     <div>
-                        <a class="avatar avatar_collection" href="#">
-                            <img src="/images/photo_02.jpg"/>
+                        <a class="avatar avatar_collection" href="/{{ $category->name_en }}">
+                            <img src="/{{ $category->logo }}"/>
                         </a>
                         <div class="info">
-                            <a class="name" href="#">
-                                懂点医
+                            <a class="name" href="/{{ $category->name_en }}">
+                               {{ $category->name }}
                             </a>
                             <div class="meta">
-                                <a href="#">
-                                    懂点医
+                                <a href="/{{ $category->name_en }}">
+                                    {{ $category->name }}
                                 </a>
-                                收录了28篇文章，6人关注
+                                收录了{{ $category->count }}篇文章，{{ $category->count_follows }}人关注
                             </div>
                         </div>
                         <a class="following" href="javascript:;">
@@ -48,36 +52,21 @@
                         </a>
                     </div>
                 </li>
+                @endforeach
+            </ul>
+        </div>
+
+        <div class="tab-pane fade" id="collection" role="tabpanel">
+            <ul class="user_list">
+
+                @foreach($data['followed_collections'] as $follow)
+                @php
+                    $collection=$follow->followeb;
+                @endphp
                 <li>
                     <div>
                         <a class="avatar avatar_collection" href="#">
-                            <img src="/images/category_02.jpg"/>
-                        </a>
-                        <div class="info">
-                            <a class="name" href="#">
-                                懂美味
-                            </a>
-                            <div class="meta">
-                                <a href="#">
-                                    樂活人生百态
-                                </a>
-                                收录了31篇文章，6人关注
-                            </div>
-                        </div>
-                        <a class="following" href="javascript:;">
-                            <span>
-                                <i class="iconfont icon-weibiaoti12">
-                                </i>
-                                <i class="iconfont icon-cha">
-                                </i>
-                            </span>
-                        </a>
-                    </div>
-                </li>
-                <li>
-                    <div>
-                        <a class="avatar avatar_collection" href="#">
-                            <img src="/images/category_09.png"/>
+                            <img src="{{ $collection->has_logo() }}"/>
                         </a>
                         <div class="info">
                             <a class="name" href="#">
@@ -97,10 +86,17 @@
                         </a>
                     </div>
                 </li>
+                @endforeach
             </ul>
         </div>
+
         <div class="tab-pane fade in active" id="likes" role="tabpanel">
-            @include('user.parts.article_list_like')
+           @foreach($data['like_articles'] as $like)
+               @php
+                   $article=$like->liked;
+               @endphp
+              @include('user.parts.article_list_like')
+           @endforeach
         </div>
     </div>
 </div>

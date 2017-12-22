@@ -28,9 +28,16 @@ class Collection extends Model
     {
         return $this->morphMany(\App\Follow::class, 'followed');
     }
-    
+
     public function favorites()
     {
         return $this->morphMany(\App\Favorite::class, 'faved');
+    }
+
+    //computed methods
+
+    public function has_logo()
+    {
+        return $this->logo ? $this->logo : "/images/category_09.png";
     }
 }

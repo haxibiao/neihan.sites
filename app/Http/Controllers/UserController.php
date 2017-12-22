@@ -172,13 +172,12 @@ class UserController extends Controller
     {
         $user = $request->user();
 
-        $data['like_articles'] = Like::with('liked')
+        $data['like_articles'] = Like::with('liked')->with('user')
             ->where('user_id', $user->id)
             ->where('liked_type', 'articles')
             ->orderBy('id', 'desc')
             ->paginate(10)
         ;
-
         //TODO:: ajax loading
 
         $data['followed_categories'] = Follow::with('followed')
@@ -188,7 +187,7 @@ class UserController extends Controller
             ->paginate(10)
         ;
 
-        $data['followed_collections'] = Follow::with('followed')
+        $data['followed_collections'] = Follow::with('foldatlowed')
             ->where('user_id', $user->id)
             ->where('followed_type', 'collections')
             ->orderBy('id', 'desc')
