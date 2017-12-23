@@ -104,8 +104,8 @@ class UserController extends Controller
         $user->avatar_url = $user->avatar();
         $data['user']     = $user;
 
-        if(request()->ajax() || request()->get('debug')){
-               return $user;
+        if (request()->ajax() || request()->get('debug')) {
+            return $user;
         }
 
         $data['articles_count'] = Article::where('user_id', $user->id)->count();
@@ -137,17 +137,39 @@ class UserController extends Controller
         return $users;
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
-       $user=$request->user();
-       
-       return $request->id;
+        $user = $request->user();
+
+        return $request->id;
     }
 
-    public function update_avatar(Request $request,$id)
+    public function update_avatar(Request $request, $id)
     {
-       $user=$request->user();
+        $user = $request->user();
 
-       return 1;
+        $dir        = '/storage/avatar/';
+        $image_path = public_path($dir);
+
+        if (!is_dir($image_path)) {
+            mkdir($image_path, 0777, 1);
+        }
+        $filename = $user->id . '.jpg';
+        $img      = \ImageMaker::make($request->file);
+        if ($img->width() > 100) {
+            $img->resize(100, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+        }
+
+        $file_path = $image_path . $filename;
+        $img->save($file_path);
+
+        if ($user->avatar != $dir.$filename) {
+            $user->avatar = $dir.$filename;
+            $user->save();
+        }
+
+        return $user->avatar;
     }
 }

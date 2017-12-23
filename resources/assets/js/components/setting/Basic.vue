@@ -21,13 +21,13 @@
 
 					<td v-else class="top_line">
 						<div class="avatar">
-							<img src="/images/photo_04.png" />
+							<img :src="avatar" />
 						</div>
 					</td>
 
 					<td class="top_line">
 						<a href="javascript:;" class="btn_hollow" >
-							<input type="file" class="hide" unselectable="on" />
+							<input type="file" class="hide" unselectable="on" @change="update_avatar($event)"  />
 							更换头像
 						</a>
 					</td>
@@ -73,10 +73,25 @@ export default {
   	  },
 
   	  //update avatar
-  	  update_avatar(){
+  	  update_avatar(event){
   	  	  var api=window.tokenize('/api/user/'+window.current_user_id+'/avatar');
   	  	  var vm=this;
-  	  	  window.axios.post(api).then(function(response){
+  	  	  var file=event.target.files[0];
+  	  	  let formdata=new FormData();
+
+            // formdata.append('name', this.file.name);
+            // formdata.append('age', this.file.age);
+            // formdata.append('file', this.file.file);
+          formdata.append('file',file);
+
+  	  	  let config = {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+           }
+
+  	  	  window.axios.post(api,formdata,config).then(function(response){
+               console.log(response.data);
   	  	  	   vm.avatar =response.data;
   	  	  });
   	  }
@@ -86,7 +101,12 @@ export default {
     return {
        avatar:false,
        updated:false,
-       user:[]
+       user:[],
+       // file:{
+       // 	  name: '1',
+       //    age: '',
+       //    file: ''
+       // }
     }
   }
 }
