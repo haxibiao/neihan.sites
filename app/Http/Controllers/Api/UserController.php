@@ -140,8 +140,14 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = $request->user();
+        if($request->name!="undefined"){
+              $user->name=$request->name;
+              $user->save();
+        }else{
+            return 0;
+        }
 
-        return $request->id;
+        return 1;
     }
 
     public function update_avatar(Request $request, $id)

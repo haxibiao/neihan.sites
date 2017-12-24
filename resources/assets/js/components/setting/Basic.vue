@@ -2,7 +2,11 @@
 	 <div id="basic">
  		 <div v-if="updated" class="alert alert-success">
  	     更新成功!
-        </div>
+      </div>
+
+       <div v-if="fail" class="alert alert-danger">
+        更新失败！请检查您的输入是否有错误
+      </div>
 
 		<table>
 			<thead>
@@ -11,6 +15,7 @@
 					<th></th>
 				</tr>
 			</thead>
+    <form @submit.prevent="updateing">
 			<tbody class="base">
 				<tr>
 					<td v-if="!avatar" class="top_line">
@@ -33,16 +38,23 @@
 					</td>
 
 				</tr>
+        
+      
+  				<tr>
+  					<td class="setting_title">昵称</td>
+  					<td>
+  						<input type="text" :placeholder="user.name" class="form-control" v-model="inputtext.name" />
+  					</td>
+  				</tr>
+    
 
-				<tr>
-					<td class="setting_title">昵称</td>
-					<td>
-						<input type="text" placeholder="请输入昵称" class="form-control" :value="user.name" />
-					</td>
-				</tr>
 			</tbody>
+             <input type="submit" value="保存" class="btn_success" />
+       </form>
+
 		</table>
-		<input type="submit" value="保存" class="btn_success" @click="updateing" />
+		
+
 	</div>
 </template>
 
@@ -67,8 +79,15 @@ export default {
   	  updateing(){
   	  	  var api=window.tokenize('/api/user/'+window.current_user_id+'/update');
   	  	  var vm=this;
-  	  	  window.axios.post(api).then(function(response){
-  	  	  	    vm.updated=true;
+          var formdata =new FormData();
+
+          formdata.append('name',this.inputtext.name);
+  	  	  window.axios.post(api,formdata).then(function(response){
+             if(response.data == 0){
+                     vm.fail=true;
+             }else{
+                     vm.updated=true;
+             }
   	  	  });
   	  },
 
@@ -91,8 +110,10 @@ export default {
            }
 
   	  	  window.axios.post(api,formdata,config).then(function(response){
-               console.log(response.data);
   	  	  	   vm.avatar =response.data;
+               if(response.status==200){
+                  vm.updated=true;
+               }
   	  	  });
   	  }
   },
@@ -102,11 +123,8 @@ export default {
        avatar:false,
        updated:false,
        user:[],
-       // file:{
-       // 	  name: '1',
-       //    age: '',
-       //    file: ''
-       // }
+       fail:false,
+       inputtext:[]
     }
   }
 }
