@@ -83,11 +83,7 @@ export default {
 
           formdata.append('name',this.inputtext.name);
   	  	  window.axios.post(api,formdata).then(function(response){
-             if(response.data == 0){
-                     vm.fail=true;
-             }else{
-                     vm.updated=true;
-             }
+             response.data==0 ? vm.fail=true : vm.updated=true;
   	  	  });
   	  },
 
