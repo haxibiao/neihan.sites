@@ -26,7 +26,7 @@
 					<td class="setting_title pull-left">赞赏描述</td>
 					<td>
 						<form>
-							<textarea cols="30" rows="10" class="form-control"></textarea>
+							<textarea cols="30" rows="10" class="form-control" placeholder="如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！"></textarea>
 						</form>
 					</td>
 				</tr>

@@ -140,10 +140,16 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = $request->user();
-        if($request->name!="undefined"){
-              $user->name=$request->name;
-              $user->save();
-        }else{
+        $forms=$request->all();
+        foreach ($forms as $key => $form) {
+            if ($form == "undefined") {
+                unset($forms[$key]);
+            }
+        }
+
+        if (count($forms) > 1) {
+            $user->update($request->except('api_token'));
+        } else {
             return 0;
         }
 
@@ -171,8 +177,8 @@ class UserController extends Controller
         $file_path = $image_path . $filename;
         $img->save($file_path);
 
-        if ($user->avatar != $dir.$filename) {
-            $user->avatar = $dir.$filename;
+        if ($user->avatar != $dir . $filename) {
+            $user->avatar = $dir . $filename;
             $user->save();
         }
 
