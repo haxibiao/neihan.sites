@@ -235,9 +235,9 @@
 @stop
 
 @push('modals')
-{{--  <detailmodal-user>
+ <detailmodal-user>
 </detailmodal-user>
 <detailmodal-home>
-</detailmodal-home> --}}
+</detailmodal-home>
 @endpush
 

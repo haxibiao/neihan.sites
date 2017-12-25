@@ -25,25 +25,17 @@
 		            </div>
 		            <div class="modal-body">
 		                <ul>
-		                    <li>
+		                    <li v-for="category in categoryList">
 		                    	<a href="" class="avatar_collection">
-		                    		<img src="/images/category_08.jpg" />
+		                    		<img :src="category.imgUrl" />
 		                    	</a>
 		                        <div>
-		                            <div class="note_name">情缘未了</div>
-		                            <span class="meta">菇凉大大 编</span>
-		                            <a href="javascript:;" class="action_btn push">收入</a>
-		                        </div>
-		                    </li>
-		                    <li>
-		                    	<a href="" class="avatar_collection">
-		                    		<img src="/images/category_08.jpg" />
-		                    	</a>
-		                        <div>
-		                            <div class="note_name">情缘未了</div>
-		                            <span class="meta">菇凉大大编</span>
-		                            <span class="status has_add">已收入</span>
-		                            <a href="javascript:;" class="action_btn remove" style="display: block;">移除</a>
+		                            <div class="note_name">{{ category.categoryName }}</div>
+		                            <span class="meta">{{ category.author }} 编</span>
+                                    <span class="status has-add" v-if="category.status">
+                                {{category.status=='push'?'已收入':''}}
+                                     </span>
+		                            <a href="javascript:;" class="['action-btn',category.status=='push',?'btn_primary':'btn_hollow']" v-if="category.status">{{category.status=='push'?'移除':'收录'}}</a>
 		                        </div>
 		                    </li>
 		                </ul>
@@ -60,9 +52,19 @@ export default {
 
   name: 'DetailModal_User',
 
+  methods:{
+  	 actionToggle(){
+  	 	var status=this.categoryList[id-1].status=='push'?'reject':'push';
+  	 	this.categoryList[id-1].status=status;
+  	 }
+  },
+
   data () {
     return {
-
+        categoryList:[
+    		{'id':1,'author':'peng','imgUrl':'/images/category_08.jpg','categoryName':'front','status':''},
+    		{'id':3,'author':'peng','imgUrl':'/images/category_06.jpg','categoryName':'程序员的自我修养','status':''}
+    	]
     }
   }
 }

@@ -38,6 +38,11 @@ Vue.component('search', require('./components/Search.vue'));
 Vue.component('article-tool', require('./components/contributeModal/ArticleTool.vue'));
 
 // 详情页评论
+Vue.component('detailmodal-user', require('./components/contributeModal/DetailModal_User.vue'));
+Vue.component('detailmodal-home', require('./components/contributeModal/DetailModal_Home.vue'));
+
+
+//详情页模态
 Vue.component('new-comment', require('./components/detail/NewComment.vue'));
 
 Vue.component('article-list', require('./components/ArticleList.vue'));
