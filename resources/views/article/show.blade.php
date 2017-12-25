@@ -229,6 +229,15 @@
             </div>
         </div>
     </div>
+
 </div>
 @include('parts.side_tool')
 @stop
+
+@push('modals')
+{{--  <detailmodal-user>
+</detailmodal-user>
+<detailmodal-home>
+</detailmodal-home> --}}
+@endpush
+

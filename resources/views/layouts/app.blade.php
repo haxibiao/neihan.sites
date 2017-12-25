@@ -30,6 +30,8 @@
             @endif
 
             @yield('content')
+
+            @stack('modals')
         </div>
 
             <!-- Scripts -->

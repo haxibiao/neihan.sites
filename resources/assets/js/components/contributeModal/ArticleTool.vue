@@ -3,7 +3,7 @@
   <div>
 		<div class="side_tool">
 		    <ul>
-		        <li class="toup_rocket" data-container="body" data-original-title="回到顶部" data-placement="left" data-toggle="tooltip" data-trigger="hover">
+		        <li class="toup_rocket" data-container="body" data-title="回到顶部" data-placement="left" data-toggle="tooltip" data-trigger="hover">
 		            <a href="javascript:;">
 		                <i class="iconfont icon-xiangxiajiantou-copy">
 		                </i>
@@ -74,13 +74,6 @@
 
 
 </template>
-
-<!-- modal  -->
-<!-- <detailmodal-user>
-</detailmodal-user>
-<detailmodal-home>
-</detailmodal-home> -->
-
 <script>
 export default {
 
