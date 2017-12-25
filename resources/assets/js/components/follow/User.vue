@@ -98,7 +98,7 @@ export default {
            var api_url=window.tokenize('/api/user/'+this.$route.params.id);
            var vm=this;
            window.axios.get(api_url).then(function(response){
-           	  vm.user=response.data.user;
+           	  vm.user=response.data;
            });
       },
 
