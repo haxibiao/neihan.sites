@@ -189,7 +189,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="/setting">
                                         <i class="iconfont icon-shezhi">
                                         </i>
                                         <span>
