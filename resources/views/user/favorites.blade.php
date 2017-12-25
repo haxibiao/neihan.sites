@@ -7,7 +7,10 @@
 <div id="bookmark">
     <div class="container">
         <img class="tag_banner" src="/images/bookmark.png"/>
-      @foreach($data['fav_articles'] as $article)
+      @foreach($data['fav_articles'] as $favorite)
+         @php
+         	$article=$favorite->faved;
+         @endphp
         @include('parts.list.article_bookmark')
       @endforeach
     </div>

@@ -230,4 +230,5 @@
         </div>
     </div>
 </div>
+@include('parts.side_tool')
 @stop

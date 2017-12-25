@@ -50,11 +50,8 @@ Route::middleware('auth:api')->get('notifications/{type}', 'Api\NotificationCont
 Route::middleware('auth:api')->get('/new-request-categories', 'Api\NotificationController@newReuqestCategories');
 
 
-//提交收藏
-Route::middleware('auth:api')->post('/favorite/{id}/{type}', 'Api\FavoriteController@save');
-//删除收藏
-Route::middleware('auth:api')->delete('/favorite/{id}/{type}', 'Api\FavoriteController@delete');
-//查询是否已收藏
+//favorite
+Route::middleware('auth:api')->post('/favorite/{id}/{type}', 'Api\FavoriteController@toggle');
 Route::middleware('auth:api')->get('/favorite/{id}/{type}', 'Api\FavoriteController@get');
 
 //like

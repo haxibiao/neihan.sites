@@ -42,6 +42,7 @@ Vue.component('comment', require('./components/Comment.vue'));
 Vue.component('follow', require('./components/Follow.vue'));
 Vue.component('comments', require('./components/Comments.vue'));
 Vue.component('search', require('./components/Search.vue'));
+Vue.component('Article-tool', require('./components/contributeModal/ArticleTool.vue'));
 
 
 // 关注页

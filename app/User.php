@@ -29,6 +29,7 @@ class User extends Authenticatable
         'seo_push',
         'seo_tj',
         'api_token',
+        'gender'
     ];
 
     /**

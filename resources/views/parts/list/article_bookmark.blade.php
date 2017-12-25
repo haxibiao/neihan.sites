@@ -11,10 +11,10 @@
                     <img src="{{ $article->user->avatar }}"/>
                 </a>
                 <div class="info">
-                    <a href="/v1/user" target="_blank">
+                    <a href="/user/{{ $article->user->id }}" target="_blank">
                         {{ $article->user->name }}
                     </a>
-                    <a href="/v1/detail" target="_blank">
+                    <a href="/user/{{ $article->user->id }}" target="_blank">
                         <img src="/images/vip1.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者"/>
                     </a>
                     <span class="time">
@@ -22,7 +22,7 @@
                     </span>
                 </div>
             </div>
-            <a class="title" href="/v1/detail" target="_blank">
+            <a class="title" href="/article/{{ $article->id }}" target="_blank">
                 {{ $article->title }}
             </a>
             <p class="abstract">
@@ -37,7 +37,7 @@
                 <a href="javascript:;" target="_blank">
                     <i class="iconfont icon-svg37">
                     </i>
-                    {{ $article-> }}
+                    {{ $article->count_replies }}
                 </a>
                 <span>
                     <i class="iconfont icon-03xihuan">

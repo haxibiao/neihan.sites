@@ -9,34 +9,35 @@ use Illuminate\Http\Request;
 
 class FavoriteController extends Controller
 {
-    public function save(Request $request, $id, $type)
+    public function toggle(Request $request, $id, $type)
     {
-        $user     = $request->user();
+        $user   = $request->user();
+        $result = 0;
+
         $favorite = Favorite::firstOrNew([
-            'user_id'    => $request->user()->id,
+            'user_id'    => $user->id,
             'faved_id'   => $id,
             'faved_type' => get_polymorph_types($type),
         ]);
-        $favorite->save();
 
-        //save user action
-        $user->actions()->save(new Action([
-            'user_id'         => $user->id,
-            'actionable_type' => 'favorites',
-            'actionable_id'   => $favorite->id,
-        ]));
-        return $favorite->id;
-    }
+        if ($favorite->id) {
+            $favorite->delete();
+        } else {
+            $favorite->save();
+            $result = 1;
 
-    public function delete(Request $request, $id, $type)
-    {
-        $favorite = Favorite::firstOrNew([
-            'user_id'    => $request->user()->id,
-            'faved_id'   => $id,
-            'faved_type' => $type,
-        ]);
-        $favorite->delete();
-        return 1;
+            //action
+            $action = Action::firstOrNew([
+                'user_id'         => $user->id,
+                'actionable_type' => 'favorites',
+                'actionable_id'   => $favorite->id,
+            ]);
+            $action->save();
+        }
+
+        $user->count_favorites = $user->favorites()->count();
+        $user->save();
+        return $result;
     }
 
     public function get(Request $request, $id, $type)
