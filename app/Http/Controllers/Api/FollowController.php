@@ -43,7 +43,7 @@ class FollowController extends Controller
 
         $follow->followed->count_follows = $follow->followed->follows()->count();
         $follow->followed->save();
-
+          
         return $result;
     }
 

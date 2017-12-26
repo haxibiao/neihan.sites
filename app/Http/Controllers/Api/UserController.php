@@ -139,8 +139,8 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        $user = $request->user();
-        $forms=$request->all();
+        $user  = $request->user();
+        $forms = $request->all();
         foreach ($forms as $key => $form) {
             if ($form == "undefined") {
                 unset($forms[$key]);
@@ -166,22 +166,23 @@ class UserController extends Controller
         if (!is_dir($image_path)) {
             mkdir($image_path, 0777, 1);
         }
-        $filename = $user->id . '.jpg';
-        $img      = \ImageMaker::make($request->file);
-        if ($img->width() > 100) {
-            $img->resize(100, null, function ($constraint) {
-                $constraint->aspectRatio();
-            });
+        if ($request->file) {
+            $filename = $user->id . '.jpg';
+            $img      = \ImageMaker::make($request->file);
+            if ($img->width() > 100) {
+                $img->resize(100, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+            }
+
+            $file_path = $image_path . $filename;
+            $img->save($file_path);
+
+            if ($user->avatar != $dir . $filename) {
+                $user->avatar = $dir . $filename;
+                $user->save();
+            }
         }
-
-        $file_path = $image_path . $filename;
-        $img->save($file_path);
-
-        if ($user->avatar != $dir . $filename) {
-            $user->avatar = $dir . $filename;
-            $user->save();
-        }
-
         return $user->avatar;
     }
 }

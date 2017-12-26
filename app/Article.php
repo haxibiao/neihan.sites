@@ -28,6 +28,11 @@ class Article extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function follows()
+    {
+        return $this->morphMany(\App\Follow::class, 'followed');
+    }
+
     public function category()
     {
         return $this->belongsTo('App\Category');
