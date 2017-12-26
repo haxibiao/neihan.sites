@@ -66,6 +66,7 @@ Route::get('/searchQuery', 'SearchController@search_all')->name('search_all');
 Route::get('/profile', 'HomeController@profile')->name('profile');
 Route::get('/login-as/{id}', 'HomeController@loginAs');
 Route::get('/hxb-login-as/{name}', 'HomeController@hxbLoginAs');
+Route::get('/wallet', 'UserController@wallet');
 Route::get('/setting','UserController@setting');
 
 //多媒体
@@ -92,6 +93,13 @@ Route::get('/debug', 'LogController@debug');
 Route::get('/wechat', 'WechatController@serve');
 //badwords system
 Route::resource('/badword', 'BadwordController');
+
+//支付
+Route::get('/pay', 'PayController@pay');
+//alipay
+Route::get('alipay/wap/pay', 'Alipay\WapController@wapPay');
+Route::get('alipay/wap/return', 'Alipay\WapController@wapReturn');
+Route::get('alipay/wap/notify', 'Alipay\WapController@wapNotify');
 
 //last, use category name_en
 Route::get('/{name_en}', 'CategoryController@name_en');

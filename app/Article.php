@@ -91,7 +91,7 @@ class Article extends Model
         $image          = Image::firstOrNew([
             'path' => $image_url_path,
         ]);
-        if(str_contains($this->image_url, "haxibiao")){
+        if (str_contains($this->image_url, "haxibiao")) {
             return $this->image_url;
         }
         return $image->path_small();
@@ -116,5 +116,10 @@ class Article extends Model
     public function isSelf()
     {
         return Auth::check() && Auth::id() == $this->user_id;
+    }
+
+    public function link()
+    {
+        return '<a href="/article/' . $this->id . '">' . $this->title . '</a>';
     }
 }

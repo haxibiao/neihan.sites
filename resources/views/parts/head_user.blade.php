@@ -180,7 +180,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="/wallet">
                                         <i class="iconfont icon-qianbao">
                                         </i>
                                         <span>

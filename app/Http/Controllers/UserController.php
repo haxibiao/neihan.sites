@@ -203,4 +203,12 @@ class UserController extends Controller
     {
         return view('user.setting');
     }
+
+    public function wallet(Request $request){
+        $user =$request->user();
+        $transactions =$user->transactions()->orderBy('id','desc')->paginate(10);
+        return view('user.wallet')
+             ->withUser($user)
+             ->withTransactions($transactions);
+    }
 }

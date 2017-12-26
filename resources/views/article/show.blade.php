@@ -95,14 +95,13 @@
                     <div class="signature">
                         {{ $article->user->introduction }}
                     </div>
+                    
                 </div>
                 <div class="support_author">
                     <p>
                         如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！
                     </p>
-                    <div class="btn_pay">
-                        赞赏支持
-                    </div>
+                   <a class="button btn_pay" href="/pay?amount={{ rand(1,5)/100 }}&type=tip&article_id={{ $article->id }}">赞赏支持</a>
                     <div class="supporter">
                         <ul class="support_list">
                             <li>

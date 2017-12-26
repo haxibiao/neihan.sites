@@ -29,7 +29,7 @@ class User extends Authenticatable
         'seo_push',
         'seo_tj',
         'api_token',
-        'gender'
+        'gender',
     ];
 
     /**
@@ -55,6 +55,11 @@ class User extends Authenticatable
     public function isSelf()
     {
         return Auth::check() && Auth::id() == $this->id;
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(\App\Transaction::class);
     }
 
     public function follows()
@@ -237,6 +242,21 @@ class User extends Authenticatable
     public function forgetUnreads()
     {
         Cache::forget('unreads_' . $this->id);
+    }
+
+    public function link()
+    {
+        return '<a href="/user/' . $this->id . '">' . $this->name . '</a>';
+    }
+
+    public function balance()
+    {
+        $balance = 0;
+        $last    = $this->transactions()->orderBy('id', 'desc')->first();
+        if ($last) {
+            $balance = $last->balance;
+        }
+        return $balance;
     }
 
     public function newReuqestCategories()
