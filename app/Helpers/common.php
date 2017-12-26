@@ -3,7 +3,7 @@ use Illuminate\Support\Facades\Request;
 
 function get_ip()
 {
-    $ip = $_SERVER['REMOTE_ADDR'];
+    $ip = !empty($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR'] :'';
     if (isset($_SERVER['HTTP_CLIENT_IP']) && preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/', $_SERVER['HTTP_CLIENT_IP'])) {
         $ip = $_SERVER['HTTP_CLIENT_IP'];
     } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR']) and preg_match_all('#\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}#s', $_SERVER['HTTP_X_FORWARDED_FOR'], $matches)) {
