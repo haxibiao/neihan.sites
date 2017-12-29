@@ -1,0 +1,55 @@
+// 圆的头像
+@mixin avatar ($width, $height) {
+    width: $width;
+    height: $height;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+    img {
+        @include size (100%, 100%);
+        @include border (50%, 1px solid $color-gray-light);
+    }
+}
+
+// 32大小的默认头像
+.avatar {
+    @include avatar (32px,32px);
+}
+
+// 40大小的头像
+.avatar_xs {
+    width: 40px;
+    height: 40px;
+}
+
+// 48大小的头像
+.avatar_sm {
+    width: 48px;
+    height: 48px;
+    margin-right: 10px;
+}
+
+// 52大小的头像
+.avatar_in {
+    width: 52px;
+    height: 52px;
+}
+
+// 60大小的头像
+.avatar_md {
+    width: 60px;
+    height: 60px;
+}
+
+// 80大小的头像
+.avatar_lg {
+    width: 80px;
+    height: 80px;
+}
+
+// 方的头像
+.avatar_collection {
+    img {
+        border-radius: 10%;
+    }
+}

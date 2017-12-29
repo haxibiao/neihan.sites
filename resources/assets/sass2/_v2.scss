@@ -1,0 +1,104 @@
+// variables
+@import "variables";
+
+// mixins
+@import "v2/mixins/mixins";
+
+
+// element
+@import "v2/element/element";
+
+
+/* components */
+
+// 头像
+@import "v2/components/avatar";
+
+// 文章模块统计数量
+@import "v2/components/meta";
+
+// 标题
+@import "v2/components/title";
+
+// 轮播图
+@import "v2/components/posters";
+
+// 分类专题
+@import "v2/components/collection";
+
+// 文章
+@import "v2/components/article";
+
+// 按钮
+@import "v2/components/button";
+
+// 热门榜
+@import "v2/components/hot_list";
+
+// 二维码
+@import "v2/components/app";
+
+// 话题
+@import "v2/components/topic";
+
+// 用户、关注页的信息
+@import "v2/components/main_top";
+
+// 标签页
+@import "v2/components/trigger_menu";
+
+// 分享
+@import "v2/components/share";
+
+// 作者
+@import "v2/components/author";
+
+// 模态框
+@import "v2/components/modal";
+
+// 评论
+@import "v2/components/comment";
+
+// 动画
+@import "v2/components/animation";
+
+
+// layout
+@import "v2/layout/layouts_label";
+@import "v2/layout/layouts";
+
+
+// page
+
+// 首页
+@import "v2/index";
+// 专题页
+@import "v2/category";
+// 推荐更多专题页
+@import "v2/categories";
+// 推荐更多作者页
+@import "v2/recommendations_users";
+// 文集页
+@import "v2/collection";
+// 详情页
+@import "v2/detail";
+// 用户页
+@import "v2/user";
+// 个人页
+@import "v2/home";
+// 钱包页
+// @import "v2/wallet";
+// 关注页
+@import "v2/follow";
+// 消息页
+@import "v2/notification";
+// 登录注册页
+// @import "v2/sign";
+// 收藏的文章
+@import "v2/bookmark";
+// 设置页
+// @import "v2/setting";
+// 热门榜
+@import "v2/hot_articles";
+// 搜索页
+// @import "v2/search";

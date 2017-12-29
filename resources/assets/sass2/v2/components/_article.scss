@@ -1,0 +1,238 @@
+// 文章图片
+.wrap_img {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 24%;
+    max-width: 180px;
+    max-height: 180px;
+    transform: translateY(-50%);
+    img {
+        @include border (6px, 1px solid $color-gray-light);
+        width: 100%;
+    }
+}
+
+// 文章摘要
+.abstract {
+    @include line_number (3);
+    font-size: 13px;
+    margin: 0 0 8px;
+    line-height: 24px;
+}
+
+// 文章模块
+.article_item {
+    @include spacing (0 0 17px 0, 0 0 17px 0);
+    border-bottom: 1px solid $color-white-silver;
+    position: relative;
+    width: 100%;
+    min-height: 140px;
+    word-wrap: break-word;
+    &.have_img {
+        .content {
+            padding-right: 26%;
+        }
+        .wrap_img {
+            display: inline-block;
+        }
+    }
+    .author {
+        margin-bottom: 7px;
+        font-size: 13px;
+        .info_meta {
+            padding: 5px 0 0 40px;
+        }
+    }
+    @media screen and (max-width: 500px) {
+        .paper_title {
+            @include line_number(1);
+        }
+        .abstract {
+            @include line_number(2);
+        }
+    }
+    // .push_action {
+    //     margin-top: 10px;
+    //     font-size: 12px;
+    //     color: $color-gray;
+    //     line-height: 20px;
+    //     .botm {
+    //         @include news_button;
+    //         @include spacing (0 5px 0 0,0 2px);
+    //         width: 40px;
+    //         font-size: 12px;
+    //         float: none;
+    //         &:hover {
+    //             background-color: $color-white-milk;
+    //         }
+    //     }
+    //     .revoke {
+    //         color: $color-gray-deep;
+    //         border-color: $color-gray-light;
+    //     }
+    //     .push_status {
+    //         margin-right: 5px;
+    //         font-weight: 700;
+    //         .push_remove {
+    //             @include font (12px,$color-red-watermelon,400);
+    //             margin-left: 5px;
+    //         }
+    //     }
+    // }
+}
+
+// 文章模块用户页关注作者动态样式
+.follow_detail {
+    @include spacing (2% 0 0 0, 20px);
+    @include border (4px, 1px solid $color-gray-light);
+    background-color: hsla(0, 0%, 71%, .1);
+    font-size: 12px;
+    .author {
+        font-size: 17px;
+        .info_meta {
+            padding: 0 105px 0 60px;
+        }
+        .btn_base {
+            float: right;
+            margin: 5px 0 0 0;
+        }
+        .meta {
+            a {
+                color: $color-blue;
+            }
+        }
+        @media screen and (max-width: 505px) {
+            .btn_base {
+                width: 90px;
+            }
+        }
+    }
+    .signature {
+        @include spacing (20px 0 0 0, 20px 0 0 0);
+        border-top: 1px solid #e1e1e1;
+        color: $color-gray;
+        span {
+            @include line_number (1);
+        }
+    }
+}
+
+// 文章模块用户页关注作者动态样式
+.comment_dynamic {
+    .discuss {
+        font-size: 15px;
+        line-height: 1.7;
+        a {
+            color: $color-blue;
+        }
+    }
+    blockquote {
+        @include font (12px, $color-gray, normal);
+        margin-bottom: 0;
+        border-left: 3px solid $color-gray-light;
+        .paper_title {
+            font-size: 15px;
+        }
+    }
+}
+
+// 阅读更多按钮
+.load_more {
+    @include font (15px, $color-white, normal);
+    @include spacing (30px auto 60px, 10px 15px);
+    display: inline-block;
+    width: 100%;
+    line-height: 20px;
+    background-color: #a5a5a5;
+    text-align: center;
+    border-radius: 20px;
+    &:hover,&:focus {
+        color: $color-white;
+    }
+}
+
+// 关注的专题和文集
+.user_list {
+    li {
+        @include spacing (0 0 20px 0, 0 0 20px 0);
+        border-bottom: 1px solid $color-white-silver;
+        .author {
+            .btn_base {
+                float: right;
+                margin: 8px 0 0 0;
+            }
+            .info_meta {
+                padding: 5px 105px 0 60px;
+                .nickname {
+                    font-size: 15px;
+                }
+                .notice {
+                    color: $color-gray;
+                    margin-bottom: 8px;
+                    @include line_number (2);
+                }
+                .anthology {
+                    color: $color-gray;
+                    margin-right: 10px;
+                    i {
+                        font-size: 12px;
+                    }
+                }
+                .meta {
+                    a {
+                        color: $color-blue;
+                        margin-right: 3px;
+                    }
+                    span {
+                        padding-right: 10px;
+                        margin-right: 10px;
+                        border-right: 1px solid $color-gray;
+                        &:last-child {
+                            border: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// 文章内容
+.article_content {
+    @include font (16px, $color-black, 400);
+    line-height: 1.7;
+    p {
+        margin: 0 0 25px;
+    }
+    div {
+        padding-bottom: 25px;
+        img {
+            @include size (100%,100%);
+        }
+    }
+} 
+
+// 文章来源
+.article_foot {
+    margin: 40px 0 30px;
+    color: $color-gray;
+    .notebook {
+        color: $color-gray;
+        display: inline-block;
+        i {
+            font-size: 15px;
+        }
+    }
+    div {
+        float: right;
+        margin-top: 5px;
+        line-height: 1.7;
+    }
+    .modal_wrap {
+        margin-right: 20px;
+        a {
+            color: $color-gray;
+        }
+    }
+}

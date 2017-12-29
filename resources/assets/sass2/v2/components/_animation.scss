@@ -1,0 +1,21 @@
+@keyframes scaleOne {
+    0% {
+        opacity: 0.8;
+        -webkit-transform: scale(.8)
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: scale(1)
+    }
+}
+
+@keyframes scaleTwo {
+    0% {
+        opacity: 1;
+        -webkit-transform: scale(1)
+    }
+    100% {
+        opacity: 0.8;
+        -webkit-transform: scale(.8)
+    }
+}

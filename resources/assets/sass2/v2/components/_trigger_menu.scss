@@ -1,0 +1,45 @@
+// 标签页样式
+.trigger_menu {
+    @include spacing (0 0 20px 0, 0);
+    border-bottom: 1px solid $color-white-silver;
+    li {
+        @include spacing (0 0 -1px 0, 8px 0 0 0);
+        display: inline-block;
+        a {
+            @include font (15px, $color-gray, 700);
+            line-height: 25px;
+            padding: 13px 20px 4px 20px;
+            i {
+                margin-right: 5px;
+                font-size: 17px;
+            }
+            &:hover {
+                border-bottom: 2px solid $color-gray-deep;
+                color: $color-gray-deep;
+            }
+        } // @media screen and (max-width: 768px) {
+        //     a {
+        //         padding: 13px 5px 4px 5px;
+        //         i {
+        //             margin: 0;
+        //         }
+        //     }
+        // }
+        // @media screen and (min-width: 450px) and (max-width: 768px) {
+        //     a {
+        //         i {
+        //             margin-right: 5px;
+        //         }
+        //     }
+        // }
+    }
+    .active {
+        border-bottom: 2px solid $color-gray-deep;
+        a {
+            color: $color-gray-deep;
+            &:hover {
+                border: 0;
+            }
+        }
+    }
+}

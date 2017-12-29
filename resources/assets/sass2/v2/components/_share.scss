@@ -1,0 +1,170 @@
+// 专题页分享
+.share {
+    @include spacing (0 0 17px 0, 0 0 16px);
+    border-bottom: 1px solid $color-white-silver;
+    line-height: 30px;
+    span {
+        font-size: 14px;
+        vertical-align: middle;
+    }
+    a {
+        margin-left: 10px;
+        i {
+            font-size: 18px;
+            vertical-align: middle;
+        }
+        &:hover {
+            .icon-weixin1 {
+                color: #339933;
+            }
+            .icon-sina {
+                color: #ff6600;
+            }
+            .icon-gengduo {
+                color: #666666;
+            }
+        }
+    }
+}
+
+// 详情页分享
+.share_group {
+    margin-top: 8px;
+    .share_circle {
+        @include size (50px, 50px);
+        @include border (50%, 1px solid $color-gray-light);
+        display: inline-block;
+        margin-left: 5px;
+        text-align: center;
+        vertical-align: middle;
+        i {
+            margin-top: 10px;
+            font-size: 24px;
+            line-height: 2;
+        }
+        .icon-weixin1 {
+            color: $color-green;
+        }
+        .icon-sina {
+            color: #e05244;
+        }
+        .icon-zhaopian {
+            color: $color-gray;
+        }
+        &:hover {
+            background-color: $color-white-milk;
+        }
+    }
+    .more_share {
+        @include font (14px, $color-gray,400);
+        width: auto;
+        padding: 4px 18px;
+        line-height: 40px;
+        border-radius: 50px;
+    }
+}
+
+// 搜索框
+.navbar-form {
+    border-color: transparent;
+    border: 0;
+    .form-group {
+        .search_wrp {
+            display: inline-block;
+            position: relative;
+            margin: 0 auto;
+            .form-control {
+                @include size (170px, 36px);
+                @include border (18px, 0);
+                padding: 0 40px 0 20px;
+                background-color: #eee;
+                outline: none;
+                transition: all 0.3s ease-in-out;
+                &:focus {
+                    outline: 0 !important;
+                    box-shadow: none;
+                    width: 190px;
+                    &+.icon-sousuo {
+                        color: $color-white-silver;
+                        background-color: $color-gray-deep;
+                    }
+                }
+            }
+            .icon-sousuo {
+                @include size (28px, 28px);
+                @include font (20px, $color-gray-deep, normal);
+                position: absolute;
+                top: 4px;
+                right: 4px;
+                text-align: center;
+                line-height: 28px;
+                border-radius: 50%;
+            } //热门搜索
+            .hot_search_wrp {
+                margin-top: 9px;
+                width: 180px;
+                left: 0;
+                top: 100%;
+                visibility: hidden;
+                opacity: 0;
+                border-radius: 4px;
+                z-index: 1030;
+                &,
+                &::before {
+                    position: absolute;
+                    background-color: #fff;
+                    box-shadow: 0 0 8px rgba(0, 0, 0, .2);
+                }
+                &::before {
+                    @include size (10px, 10px);
+                    content: "";
+                    left: 27px;
+                    transform: rotate(45deg);
+                    top: -5px;
+                    z-index: -1;
+                }
+                .hot_search {
+                    padding: 15px 15px 10px;
+                    border-bottom: 1px solid #f0f0f0;
+                    background-color: #FFF;
+                    border-radius: 4px;
+                    .litter_title {
+                        @include font (14px, $color-gray, normal);
+                        line-height: 2;
+                        margin-bottom: 10px;
+                        text-align: left;
+                        .more {
+                            float: right;
+                            height: 100%;
+                            color: $color-gray;
+                            i {
+                                font-size: 14px;
+                                vertical-align: middle;
+                            }
+                            &:hover {
+                                color: $color-black;
+                            }
+                        }
+                    }
+                    ul {
+                        text-align: left;
+                        li {
+                            margin-right: 10px;
+                            display: inline-block;
+                            line-height: 28px;
+                            a {
+                                @include font (12px, $color-gray, normal);
+                                @include border (3px, 1px solid #ddd);
+                                padding: 2px 6px;
+                                &:hover {
+                                    color: $color-black;
+                                    border-color: $color-gray-deep;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
