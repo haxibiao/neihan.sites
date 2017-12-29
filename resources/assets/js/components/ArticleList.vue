@@ -1,8 +1,4 @@
 <template>
-  <div v-if="!articles">
-     loading....
-  </div>
-
 	<div v-else class="article_list">
     <li v-for="article in articles" :class="article.has_image ? 'article_item have_img' : 'note_item'">
         <a v-if="article.has_image" class="wrap_img" href="javascript:;" target="_blank">
@@ -66,7 +62,7 @@ export default {
 
   props: ['api','startPage'],
 
-  watach:{
+  watch:{
      api(val){
        this.clear();
        this.fetchData();

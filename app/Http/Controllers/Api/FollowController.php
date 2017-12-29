@@ -76,8 +76,8 @@ class FollowController extends Controller
             $follow['type'] = $item->followed_type;
             $follow['img']  = $item->followed_type == 'categories' ?
             $item->followed->logo : $item->followed->avatar;
-            $updates            = $item->followed->articles()->where('articles.created_at', '>', $item->updated_at)->count();
-            $follows['updates'] = $updates ? $updates : '';
+            $updates =$item->followed->articles()->where('articles.created_at','>',$item->updated_at)->count();
+            $follow['updates'] = $updates ? $updates : '';
             $follows[]          = $follow;
         }
 

@@ -106,7 +106,7 @@ export default {
       }
   },
 
-  data () {1
+  data () {
     return {
          category:null
     }
