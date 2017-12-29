@@ -5,12 +5,28 @@ use App\Action;
 use App\Category;
 use App\Follow;
 use App\Http\Controllers\Controller;
+use App\Notifications\UserFollowed;
 use App\User;
 use Illuminate\Http\Request;
-use App\Notifications\UserFollowed;
 
 class FollowController extends Controller
 {
+    public function touch(Request $request, $id, $type)
+    {
+        $user   = $request->user();
+        $result = 0;
+        $follow = Follow::firstOrNew([
+            'user_id'       => $user->id,
+            'followed_id'   => $id,
+            'followed_type' => get_polymorph_types($type),
+        ]);
+
+        if ($follow->id) {
+            $follow->touch();
+            return 1;
+        }
+        return 0;
+    }
     public function toggle(Request $request, $id, $type)
     {
         $user   = $request->user();
@@ -43,7 +59,10 @@ class FollowController extends Controller
 
         $follow->followed->count_follows = $follow->followed->follows()->count();
         $follow->followed->save();
-          
+
+        $user->count_followings = $user->followings()->count();
+        $user->save();
+
         return $result;
     }
 
@@ -55,9 +74,11 @@ class FollowController extends Controller
             $follow['id']   = $item->followed->id;
             $follow['name'] = $item->followed->name;
             $follow['type'] = $item->followed_type;
-            $follow['img']  = $item->followed_type == 'categories' ? 
-                $item->followed->logo : $item->followed->avatar;
-            $follows[]      = $follow;
+            $follow['img']  = $item->followed_type == 'categories' ?
+            $item->followed->logo : $item->followed->avatar;
+            $updates            = $item->followed->articles()->where('articles.created_at', '>', $item->updated_at)->count();
+            $follows['updates'] = $updates ? $updates : '';
+            $follows[]          = $follow;
         }
 
         return $follows;

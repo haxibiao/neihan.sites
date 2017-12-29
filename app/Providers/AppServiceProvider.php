@@ -30,6 +30,7 @@ class AppServiceProvider extends ServiceProvider {
 		Relation::morphMap([
 			'articles' => 'App\Article',
 			'videos' => 'App\Video',
+			'comments' => 'App\Comment',
 			'likes' => 'App\Like',
 			'favorites' => 'App\Favorite',
 			'categories' => 'App\Category',

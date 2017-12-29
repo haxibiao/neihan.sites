@@ -62,6 +62,11 @@ class User extends Authenticatable
         return $this->hasMany(\App\Transaction::class);
     }
 
+    public function articles()
+    {
+        return $this->hasMany(\App\Article::class);
+    }
+
     public function follows()
     {
         return $this->morphMany(\App\Follow::class, 'followed');

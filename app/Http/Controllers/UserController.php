@@ -56,10 +56,81 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user                       = User::findOrFail($id);
-        $data['articles']           = Article::where('user_id', $user->id)->orderBy('id', 'desc')->where('status', 1)->paginate(10);
-        $data['articles_commented'] = Article::where('user_id', $user->id)->orderBy('updated_at', 'desc')->where('status', 1)->paginate(10);
-        $data['articles_hot']       = Article::where('user_id', $user->id)->orderBy('hits', 'desc')->where('status', 1)->paginate(10);
+        $user = User::findOrFail($id);
+
+        //文章
+        $articles = Article::where('user_id', $user->id)
+            ->with('user')->with('category')
+            ->where('status', 1)
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+        if (ajaxOrDebug() && request('articles')) {
+            foreach ($articles as $article) {
+                $article->fillForJs();
+            }
+            return $articles;
+        }
+        $data['articles'] = $articles;
+
+        //最新评论
+        $articles = Article::where('user_id', $user->id)
+            ->with('user')->with('category')
+            ->where('status', 1)
+            ->orderBy('updated_at', 'desc')
+            ->paginate(10);
+        if (ajaxOrDebug() && request('commented')) {
+            foreach ($articles as $article) {
+                $article->fillForJs();
+            }
+            return $articles;
+        }
+        $data['commented'] = $articles;
+
+        //热门
+        $articles = Article::where('user_id', $user->id)
+            ->with('user')->with('category')
+            ->where('status', 1)
+            ->orderBy('hits', 'desc')
+            ->paginate(10);
+        if (ajaxOrDebug() && request('hot')) {
+            foreach ($articles as $article) {
+                $article->fillForJs();
+            }
+            return $articles;
+        }
+        $data['hot'] = $articles;
+
+        //动态
+        $actions = $user->actions()
+            ->with('user')
+            ->with('actionable')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+        foreach ($actions as $action) {
+            switch (get_class($action->actionable)) {
+                case 'App\Article':
+                    # code...
+                    break;
+                case 'App\Comment':
+                    $action = $action->load('actionable.commentable.user');
+                    break;
+                case 'App\Favorite':
+                    $action = $action->load('actionable.faved.user');
+                    break;
+                case 'App\Like':
+                    $action = $action->load('actionable.liked.user');
+                    break;
+                case 'App\Follow':
+                    if (get_class($action->actionable->followed) == 'App\Category') {
+                        $action = $action->load('actionable.followed.user');
+                    } else {
+                        $action = $action->load('actionable.followed');
+                    }
+                    break;
+            }
+        }
+        $data['actions'] = $actions;
+
         return view('user.show')
             ->withUser($user)
             ->withData($data);
@@ -162,7 +233,7 @@ class UserController extends Controller
         $user                 = $request->user();
         $fav_articles         = Favorite::with('faved')->with('user')->where('user_id', $user->id)->where('faved_type', 'articles')->orderBy('id', 'desc')->paginate(10);
         $data['fav_articles'] = $fav_articles;
-        
+
         return view('user.favorites')
             ->withUser($user)
             ->withData($data);
@@ -204,11 +275,12 @@ class UserController extends Controller
         return view('user.setting');
     }
 
-    public function wallet(Request $request){
-        $user =$request->user();
-        $transactions =$user->transactions()->orderBy('id','desc')->paginate(10);
+    public function wallet(Request $request)
+    {
+        $user         = $request->user();
+        $transactions = $user->transactions()->orderBy('id', 'desc')->paginate(10);
         return view('user.wallet')
-             ->withUser($user)
-             ->withTransactions($transactions);
+            ->withUser($user)
+            ->withTransactions($transactions);
     }
 }
