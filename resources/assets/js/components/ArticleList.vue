@@ -1,7 +1,6 @@
 <template>
-	<div class="article_list">
+	<div v-else class="article_list">
     <li v-for="article in articles" :class="article.has_image ? 'article_item have_img' : 'note_item'">
-
         <a v-if="article.has_image" class="wrap_img" href="javascript:;" target="_blank">
             <img :src="article.primary_image" :alt="article.title">
         </a>
@@ -63,6 +62,13 @@ export default {
 
   props: ['api','startPage'],
 
+  watch:{
+     api(val){
+       this.clear();
+       this.fetchData();
+     }
+  },
+
   computed: {
   	apiUrl() {
   		var page = this.page;
@@ -73,11 +79,15 @@ export default {
   },
 
   mounted() {
+    this.listenScrollBottom();
   	this.fetchData();
-  	this.listenScrollBottom();
   },
 
   methods: {
+    clear(){
+        this.articles=[];
+    },
+
   	listenScrollBottom() {
   		var m = this;
   		$(window).on("scroll", function() {
@@ -100,11 +110,11 @@ export default {
   	},
 
     fetchData(){
-      var m = this;
+      var vm = this;
       //TODO:: loading ....
       window.axios.get(this.apiUrl).then(function(response){
-        m.articles = m.articles.concat(response.data.data);
-        m.lastPage = response.data.last_page;
+        vm.articles = vm.articles.concat(response.data.data);
+        vm.lastPage = response.data.last_page;
 
         //TODO:: loading done !!!
       });

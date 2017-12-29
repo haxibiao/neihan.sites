@@ -58,7 +58,7 @@
                             <img :src="follow.img" alt="">
                         </div>
                         <div class="name">{{ follow.name }}</div>
-                        <span class="count">18</span>
+                        <span class="count">{{ follow.updates }}</span>
                     </a>
                 </router-link>
             </li>
@@ -71,7 +71,7 @@ export default {
 
   name: 'FollowLeft',
 
-  mounted(){
+  created(){
     //default timeline
     this.$router.push({path:"/timeline"});
     var route_path = window.location.hash.replace("#/","");

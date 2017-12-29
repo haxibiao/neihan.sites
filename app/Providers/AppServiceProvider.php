@@ -30,10 +30,12 @@ class AppServiceProvider extends ServiceProvider {
 		Relation::morphMap([
 			'articles' => 'App\Article',
 			'videos' => 'App\Video',
+			'comments' => 'App\Comment',
 			'likes' => 'App\Like',
 			'favorites' => 'App\Favorite',
 			'categories' => 'App\Category',
 			'users'=>'App\User',
+			'follows'=>'App\Follow',
 		]);
 		foreach (glob(app_path() . '/Helpers/*.php') as $filename) {
 			require_once $filename;

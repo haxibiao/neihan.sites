@@ -60,18 +60,18 @@
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="wenzhang" role="tabpanel">
                     <ul class="article_list">
-                         <article-list api="/" />
+                        <article-list :api="'/user/'+user.id+'?articles=1'" />
 					</ul>
                 </div>
                 <div class="tab-pane fade" id="pinglun" role="tabpanel">
                     <ul class="article_list">
-                         <article-list api="/" />
+                         <article-list :api="'/user/'+user.id+'?commented=1'" />
 					</ul>
 
                 </div>
                 <div class="tab-pane fade" id="huo" role="tabpanel">
                     <ul class="article_list">
-                         <article-list api="/" />
+                         <article-list :api="'/user/'+user.id+'?hot=1'" />
 					</ul>
                 </div>
             </div>
@@ -95,11 +95,17 @@ export default {
 
   methods:{
       fetchData() {
-           var api_url=window.tokenize('/api/user/'+this.$route.params.id);
+           this.id=this.$route.params.id;
+           if(this.id){
+           var api_url=window.tokenize('/api/user/'+this.id);
            var vm=this;
            window.axios.get(api_url).then(function(response){
-           	  vm.user=response.data;
+           	       vm.user=response.data;
+                  // update_at watch last
+                  var api_touch=window.tokenize('/api/follow/'+vm.id+'/users');
+                  window.axios.get(api_touch);
            });
+          }
       },
 
   },

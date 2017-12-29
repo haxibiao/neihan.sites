@@ -60,20 +60,17 @@
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="wenzhang" role="tabpanel">
                     <ul class="article_list">
-                           <!-- <article-list :api="'/'+ category.name_en+'?commented=1'" start-page="2" /> -->
-                           <article-list api='/' />
+                           <article-list :api="'/'+category.name_en+'?collected=1'" />
 					</ul>
                 </div>
                 <div class="tab-pane fade" id="pinglun" role="tabpanel">
                     <ul class="article_list">
-                          <!--  <article-list :api="'/' + category.name_en+'?collected=1'" start-page="2" /> -->
-                          <article-list api='/' />
+                           <article-list :api="'/'+category.name_en+'?commented=1'" />
 					</ul>
                 </div>
                 <div class="tab-pane fade" id="huo" role="tabpanel">
                     <ul class="article_list">
-                           <!-- <article-list :api="'/' + category.name_en +'?hot=1'" start-page="2" /> -->
-                           <article-list api='/' />
+                           <article-list :api="'/'+category.name_en+'?hot=1'" />
 					</ul>
                 </div>
             </div>
@@ -98,11 +95,14 @@ export default {
 
   methods:{
       fetchData(){
+         this.id = this.$route.params.id;
+        if(this.id){
           var vm=this;
-          var api_url=window.tokenize('/api/category/' + this.$route.params.id);
+          var api_url=window.tokenize('/api/category/' + this.id);
           window.axios.get(api_url).then(function(response){
           	   vm.category=response.data;
           });
+         }
       }
   },
 

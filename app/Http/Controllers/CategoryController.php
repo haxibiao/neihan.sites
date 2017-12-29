@@ -45,7 +45,7 @@ class CategoryController extends Controller
             ->paginate(10)
         ;
 
-        if ((request()->ajax() || request('debug')) && $request->get('commented')) {
+        if (AjaxOrDebug() && $request->get('commented')) {
             foreach ($articles as $article) {
                 $article->fillForJs();
 
@@ -80,7 +80,7 @@ class CategoryController extends Controller
             ->orderBy('hits', 'desc')
             ->paginate(10)
         ;
-        if ((request()->ajax() || request('debug')) && $request->get('hot')) {
+        if (AjaxOrDebug() && $request->get('hot')) {
             foreach ($articles as $article) {
                 $article->fillForJs();
             }
@@ -234,7 +234,7 @@ class CategoryController extends Controller
 
         $categories = Category::where('type', $type)->orderBy('count_follows', 'desc')->paginate(24);
 
-        if ((request()->ajax() || request('debug')) && request('hot')) {
+        if (AjaxOrDebug() && request('hot')) {
             return $categories;
         }
 
@@ -242,13 +242,13 @@ class CategoryController extends Controller
 
         $categories=Category::where('type',$type)->orderBy('id','desc')->paginate(24);
 
-        if((request()->ajax() || request('debug')) && request('recommend')){
+        if(AjaxOrDebug() && request('recommend')){
             return $categories;
         }
         $data['hot']     = $categories;
         
         $categories =Category::where('type',$type)->paginate(24);
-        if((request()->ajax() || request('debug')) && request('city')){
+        if(AjaxOrDebug() && request('city')){
             return $categories;
         }
         $data['city']    = $categories;

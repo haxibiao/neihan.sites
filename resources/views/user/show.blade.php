@@ -138,10 +138,10 @@
                             </ul>
                         </div>
                         <div class="tab-pane fade" id="pinglun" role="tabpanel">
-                            @include('parts.list.article_list_category',['articles'=>$data['articles_commented']])
+                            @include('parts.list.article_list_category',['articles'=>$data['commented']])
                         </div>
                         <div class="tab-pane fade" id="huo" role="tabpanel">
-                            @include('parts.list.article_list_category',['articles'=>$data['articles_hot']])
+                            @include('parts.list.article_list_category',['articles'=>$data['hot']])
                         </div>
                     </div>
                 </div>
