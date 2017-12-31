@@ -101,5 +101,7 @@ Route::get('alipay/wap/pay', 'Alipay\WapController@wapPay');
 Route::get('alipay/wap/return', 'Alipay\WapController@wapReturn');
 Route::get('alipay/wap/notify', 'Alipay\WapController@wapNotify');
 
+Route::resource('/compare','CompareController');
+
 //last, use category name_en
 Route::get('/{name_en}', 'CategoryController@name_en');

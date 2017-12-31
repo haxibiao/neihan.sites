@@ -15,6 +15,7 @@ class CreateTeamsTable extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('compare_id')->nullable();
             $table->string('type');//胜者组,败者组.
             $table->integer('team_score')->default(0);  //队伍得分.
             $table->boolean('out')->default(0);        //是否出局,默认该队伍被创建的时候是在场的.
