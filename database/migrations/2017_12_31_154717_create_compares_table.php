@@ -17,6 +17,7 @@ class CreateComparesTable extends Migration
             $table->increments('id');
             $table->string('name');  //赛季名称
             $table->string('author');   //赛季创建人.
+            $table->string('count');
             $table->timestamp('start_at');
             $table->timestamp('dead_at');
             $table->timestamps();

@@ -17,4 +17,8 @@ class Compare extends Model
     {
         return $this->hasMany(\App\Team::class);
     }
+
+    public function match(){
+        return $this->hasMany(\App\Match::class);
+    }
 }

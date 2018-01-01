@@ -42,7 +42,8 @@ class CompareController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $request->all();
+        return redirect()->to('/compare');
     }
 
     /**

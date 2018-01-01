@@ -5,7 +5,7 @@
                     <label for="name">
                         赛季名称:
                     </label>
-                    <input class="form-control" name="name" type="text" >
+                    <input class="form-control" name="name" type="text" v-model="compare.name">
                     </input>
                 </div>
                 <div class="form-group">
@@ -18,12 +18,15 @@
                         <option value="8">8</option>
                     </select> 
                 </div>
+
+                <input type="hidden" name="count" id="inputCount" class="form-control" :value="value">
+
             <div v-if="value" v-for="n in count" class="col-md-10">
                 <div class="form-group">
                     <label for="teamname">
                         队伍{{ n }}名称:
                     </label>
-                    <input class="form-control" name="teamname" type="text" v-model="compare.teamname">
+                    <input class="form-control" :name="'teamname'+n" type="text" v-model="compare.teamname">
                     </input>
                 </div>
 
@@ -31,7 +34,7 @@
                     <label for="member">
                         队伍{{ n }}成员(只限两名用,隔开)
                     </label>
-                    <input class="form-control" name="member" type="text" v-model="compare.member">
+                    <input class="form-control" :name="'member'+n" type="text" v-model="compare.member">
                     </input>
                 </div>
             </div>
@@ -50,14 +53,24 @@ export default {
   },
 
   methods:{
-      fetchData(){
-          var url='/compare/create';
-          var vm=this;
-          window.axios.get(url).then(function(response){
-              vm.options = response.data;
-          });
-      },
+      updateing(){
+         var vm=this;
+         var author=window.current_user_name;
+         var api='/compare/create';
+         var formdata=new FormData();
+          fromdata.append('name',vm.compare.name);
+          fromdata.append('count',vm.value);
+          fromdata.append('teamname',vm.compare.teamname);
+          fromdata.append('member',vm.compare.name);
+          fromdata.append('name',vm.compare.member);
+          formdata.append('author',author);
+         window.axios.post(api).then(function(response){
+            // if(response.status ==200){
+              
+            //   }
+         });
 
+      },
       ChangeValue(value){
          if(value){
             var vm=this;
@@ -69,7 +82,7 @@ export default {
 
   data () {
     return {
-        value:false,
+        value:0,
         count:false,
         compare:[]
     }
