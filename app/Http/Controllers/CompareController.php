@@ -30,6 +30,7 @@ class CompareController extends Controller
      */
     public function create()
     {
+
         return view('compare.create');
     }
 
