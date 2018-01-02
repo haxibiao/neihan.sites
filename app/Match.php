@@ -21,4 +21,14 @@ class Match extends Model
     {
         return $this->belongsTo(\App\Compare::class);
     }
+
+    public function TA()
+    {
+        return $this->belongsTo(\App\User::class, 'TA');
+    }
+
+    public function TB()
+    {
+        return $this->belongsTo(\App\User::class, 'TB');
+    }
 }

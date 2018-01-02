@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Team extends Model
 {
-    protected $fillalbe = [
+    protected $fillable = [
         'compare_id',
         'type',
         'team_score',
@@ -14,10 +14,21 @@ class Team extends Model
         'description',
         'history',
         'status',
+        'name',
     ];
 
     public function compare()
     {
         return $this->belongsTo(\App\Compare::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsToMany(\App\User::class);
+    }
+
+    public function match_history()
+    {
+        return $this->history;
     }
 }

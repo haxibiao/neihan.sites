@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateComparesTable extends Migration
+class CreateTeamsUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreateComparesTable extends Migration
      */
     public function up()
     {
-        Schema::create('compares', function (Blueprint $table) {
+        Schema::create('team_user', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');  //赛季名称
-            $table->string('author');   //赛季创建人.
-            $table->string('count');
-            $table->string('description');
-            $table->timestamp('start_at');
-            $table->timestamp('dead_at')->nullable();
+            $table->integer('team_id');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ class CreateComparesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('compares');
+        Schema::dropIfExists('team_user');
     }
 }

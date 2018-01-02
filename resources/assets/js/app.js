@@ -48,8 +48,6 @@ Vue.component('new-comment', require('./components/detail/NewComment.vue'));
 Vue.component('article-list', require('./components/ArticleList.vue'));
 Vue.component('category-list', require('./components/CategoryList.vue'));
 
-//创建比赛
-Vue.component('compare-form', require('./components/CompareForm.vue'));
 
 const app = new Vue({
 }).$mount('#app');

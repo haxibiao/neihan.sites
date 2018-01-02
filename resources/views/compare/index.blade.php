@@ -14,7 +14,18 @@
                 </h3>
             </div>
             <div class="panel-body">
-                这里show出所有的赛季
+                @foreach($compares as $compare)
+                <div class="list-group">
+                    <a class="list-group-item" href="/compare/{{ $compare->id }}">
+                        <h4 class="list-group-item-heading">
+                              {{ $compare->name }}
+                        </h4>
+                        <p class="list-group-item-text">
+                            {{ $compare->description }}
+                        </p>
+                    </a>
+                </div>
+                @endforeach
             </div>
         </div>
     </div>

@@ -9,8 +9,10 @@ class Compare extends Model
     protected $fillable = [
         'name',
         'author',
+        'count',
         'start_at',
         'dead_at',
+        'description',
     ];
 
     public function teams()
@@ -18,7 +20,14 @@ class Compare extends Model
         return $this->hasMany(\App\Team::class);
     }
 
-    public function match(){
+    public function matchs()
+    {
         return $this->hasMany(\App\Match::class);
     }
+
+    public function match_score()
+    {
+          
+    }
+
 }
