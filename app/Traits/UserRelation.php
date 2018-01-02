@@ -2,7 +2,9 @@
 
 namespace App\Traits;
 
-trait UserComputed
+use App\Collection;
+
+trait UserRelation
 {
 
     //该用户参加的赛季

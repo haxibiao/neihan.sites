@@ -37,13 +37,16 @@ class CompareController extends Controller
             "4" => 4,
             "6" => 6,
             "8" => 8,
+            "10"=>10,
+            "12"=>12,
+            "16"=>16,
         ];
+        
         if (AjaxOrDebug()) {
             $users = User::orderBy('id')->pluck('name', 'id');
             return $users;
         }
         return view('compare.create')
-            
             ->withOptions($options);
     }
 

@@ -3,7 +3,7 @@
 namespace App;
 
 use App\Traits\TimeAgo;
-use App\Traits\UserComputed;
+use App\Traits\UserRelation;
 use Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cache;
 
 class User extends Authenticatable
 {
-    use Notifiable, TimeAgo,UserComputed;
+    use Notifiable, TimeAgo,UserRelation;
 
     /**
      * The attributes that are mass assignable.
