@@ -63,8 +63,8 @@
 @else
 <div class="container">
     <div class="text-center">
-        参赛队伍还不足够! <a class="btn btn-info" href="">查看队伍情况</a> 或者
-        <a class="btn btn-success" href="">
+        参赛队伍还不足够! 
+        <a class="btn btn-success" href="/team/create">
             立即添加
         </a>
     </div>

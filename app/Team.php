@@ -15,6 +15,7 @@ class Team extends Model
         'history',
         'status',
         'name',
+        'group',
     ];
 
     public function compare()

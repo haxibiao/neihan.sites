@@ -53,28 +53,11 @@ class MatchController extends Controller
         $compare    = Compare::findOrFail($compare_id);
         $teams      = $compare->teams;
 
-        $take    = $teams->count() / 2;
-        $team_as = $teams->take($take);
-        foreach ($team_as as $team_a) {
-            $team_id[] = $team_a->id;
-        }
-        $team_b = $team_a->whereNotIn('id', $team_id)->get();
-
-        //排列算法
-        $count_macthes = $teams->count() * ($teams->count() - 1);
-
-        //总共需要创建的对局数量
-        for ($i = 1; $i <= $count_macthes; $i++) {
-            $match = new Match();
-            $match->round = 1;
-            $match->type ='小组赛';
-             foreach($teams as $team){
-                     if($team->match_history() < 2){
-                          $match_a= $team->id;
-                     }
-             }
-            $match->TA= $match_a;
-            $match->TB= $match_b;
+        //获取当前赛季的分组情况
+        $teams_count= $teams->count();
+        if($teams_count <= 8){
+            $teams_a=$teams->where('group','A');
+            dd($teams_a);
         }
     }
 }

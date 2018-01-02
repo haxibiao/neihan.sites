@@ -37,15 +37,10 @@ class CompareController extends Controller
             "4" => 4,
             "6" => 6,
             "8" => 8,
-            "10"=>10,
             "12"=>12,
             "16"=>16,
         ];
-        
-        if (AjaxOrDebug()) {
-            $users = User::orderBy('id')->pluck('name', 'id');
-            return $users;
-        }
+
         return view('compare.create')
             ->withOptions($options);
     }
@@ -62,18 +57,6 @@ class CompareController extends Controller
         $compare->start_at = Carbon::now()->toDateTimeString();
         $compare->save();
 
-        //save this compare team
-
-        // if (is_array($request->teams)) {
-        //     foreach ($request->teams as $item) {
-        //         $team             = new Team;
-        //         $team->name       = $item;
-        //         $team->compare_id = $compare->id;
-        //         $team->save();
-        //     }
-        // }
-
-        //save
         return redirect()->to('/compare');
     }
 
