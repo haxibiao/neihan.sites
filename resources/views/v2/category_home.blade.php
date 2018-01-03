@@ -16,6 +16,6 @@
     </div>
 </div>
 {{-- modal --}}
-{{-- <categorymodal-home>
-</categorymodal-home> --}}
+<categorymodal-home>
+</categorymodal-home>
 @stop

@@ -39,6 +39,12 @@ Vue.component('search', require('./components/Search.vue'));
 // 详情页评论
 Vue.component('new-comment', require('./components/detail/NewComment.vue'));
 
+// 模态框
+Vue.component('categorymodal-home', require('./components/contributeModal/CategoryModal_Home.vue'));
+Vue.component('categorymodal-user', require('./components/contributeModal/CategoryModal_User.vue'));
+Vue.component('detailmodal-home', require('./components/contributeModal/DetailModal_Home.vue'));
+Vue.component('detailmodal-user', require('./components/contributeModal/DetailModal_User.vue'));
+
 Vue.component('article-list', require('./components/ArticleList.vue'));
 Vue.component('category-list', require('./components/CategoryList.vue'));
 

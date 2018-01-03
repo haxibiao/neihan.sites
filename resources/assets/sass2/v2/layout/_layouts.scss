@@ -133,75 +133,6 @@ footer {
     }
 }
 
-// 用户专题投稿模态框
-#categoryModal_user {
-    @include modal;
-}
-
-// 个人专题收录模态框
-#categoryModal_home {
-    @include modal;
-}
-
-// 个人专题删除模态框
-#categoryModal_Delete {
-    background-color: hsla(0, 0%, 100%, .7);
-    .modal-dialog {
-        position: absolute;
-        left: 25%;
-        top: 25%;
-        max-height: 80%;
-        max-width: 50%;
-        @media screen and (min-width: 1080px) {
-            left: 35%;
-        }
-        .modal-header {
-            padding: 20px;
-        }
-        .modal-body {
-            padding: 20px;
-            font-size: 15px;
-            p {
-                margin-bottom: 10px;
-            }
-            .form-control {
-                padding: 8px 10px;
-                box-shadow: none;
-                &:focus {
-                    box-shadow: none;
-                    border-color: #ccd0d2;
-                }
-            }
-        }
-        .modal-footer {
-            padding: 20px;
-            border: 0;
-            button {
-                @include spacing (0, 0);
-                background-color: transparent;
-                border: 0;
-                font-size: 13px;
-                outline-style: none;
-            }
-            .cancel {
-                margin-top: 5px;
-                color: #999;
-                &:hover {
-                    color: $color-black;
-                }
-            }
-            .submit {
-                // @include news_button;
-                @include spacing (0 0 0 30px, 2px 4px);
-                color: $color-red-watermelon;
-                border-color: $color-red-watermelon;
-                width: 52px;
-                font-size: 13px;
-            }
-        }
-    }
-}
-
 // 底部小火箭、分享、收藏、投稿
 .side_tool {
     position: fixed;
@@ -219,6 +150,7 @@ footer {
                 text-align: center;
                 display: block;
                 outline-style: none;
+                margin: 0;
                 i {
                     padding-top: 16px;
                     font-size: 20px;
@@ -295,6 +227,66 @@ footer {
     }
 }
 
+// 用户专题投稿模态框
+#categoryModal_user {
+    @include modal;
+}
+
+// 个人专题收录模态框
+#categoryModal_home {
+    @include modal;
+}
+
+// 个人专题删除模态框
+#categoryModal_Delete {
+    background-color: hsla(0, 0%, 100%, .7);
+    .modal-dialog {
+        position: absolute;
+        left: 25%;
+        top: 25%;
+        max-height: 80%;
+        max-width: 50%;
+        @media screen and (min-width: 1080px) {
+            left: 35%;
+        }
+        .modal-header {
+            padding: 20px;
+        }
+        .modal-body {
+            padding: 20px;
+            font-size: 15px;
+            p {
+                margin-bottom: 10px;
+            }
+            .form-control {
+                padding: 8px 10px;
+                box-shadow: none;
+                &:focus {
+                    box-shadow: none;
+                    border-color: #ccd0d2;
+                }
+            }
+        }
+        .modal-footer {
+            padding: 20px;
+            border: 0;
+            .cancel {
+                display: inline-block;
+                vertical-align: middle;
+                margin-top: 5px;
+                color: #999;
+                &:hover {
+                    color: $color-black;
+                }
+            }
+            .btn_remove {
+                padding: 2px 4px;
+                margin-left: 30px;
+            }
+        }
+    }
+}
+
 // 用户文章收入到个人管理的专题
 #detailModal_user {
     @include modal;
@@ -322,7 +314,8 @@ footer {
                     background-color: #f4f4f4;
                     border-bottom: 1px solid $color-white-silver;
                     a {
-                        @include font (13px, $color-green, normal);
+                        font-size: 13px;
+                        color: $color-green;
                         padding-left: 10px;
                     }
                 }

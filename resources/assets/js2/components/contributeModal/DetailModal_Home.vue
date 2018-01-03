@@ -29,23 +29,23 @@
 		                		</a>
 		                	</div>
 		                    <li class="col-xs-12 col-sm-6 col-md-4">
-		                        <a href="" class="avatar_collection">
+		                        <a href="" class="avatar avatar_sm avatar_collection">
 		                    		<img src="/images/category_08.jpg" />
 		                    	</a>
 		                        <div>
 		                            <div class="note_name">情缘未了</div>
 		                            <span class="meta">10篇文章 · 50人关注</span>
-		                            <a href="javascript:;" class="action_btn remove" style="display: block;">移除</a>
+		                            <a href="javascript:;" class="btn_base btn_remove" style="display: block;">移除</a>
 		                        </div>
 		                    </li>
 		                    <li class="col-xs-12 col-sm-6 col-md-4">
-		                        <a href="" class="avatar_collection">
+		                        <a href="" class="avatar avatar_sm avatar_collection">
 		                    		<img src="/images/category_08.jpg" />
 		                    	</a>
 		                        <div>
 		                            <div class="note_name">情缘未了</div>
 		                            <span class="meta">10篇文章 · 50人关注</span>
-		                            <a href="javascript:;" class="action_btn push">收入</a>
+		                            <a href="javascript:;" class="btn_base btn_push">收入</a>
 		                        </div>
 		                    </li>
 		                </ul>
@@ -54,83 +54,83 @@
 		                		推荐专题
 		                	</div>
 		                    <li class="col-xs-12 col-sm-6 col-md-4">
-		                        <a href="" class="avatar_collection">
+		                        <a href="" class="avatar avatar_sm avatar_collection">
 		                    		<img src="/images/category_08.jpg" />
 		                    	</a>
 		                        <div>
 		                            <div class="note_name">情缘未了</div>
 		                            <span class="meta">10篇文章 · 50人关注</span>
-		                            <a href="javascript:;" class="action_btn revoke" style="display: block;">撤回</a>
+		                            <a href="javascript:;" class="btn_base btn_revoke" style="display: block;">撤回</a>
 		                        </div>
 		                    </li>
 		                    <li class="col-xs-12 col-sm-6 col-md-4">
-		                        <a href="" class="avatar_collection">
+		                        <a href="" class="avatar avatar_sm avatar_collection">
 		                    		<img src="/images/category_08.jpg" />
 		                    	</a>
 		                        <div>
 		                            <div class="note_name">情缘未了</div>
 		                            <span class="meta">10篇文章 · 50人关注</span>
-		                            <a href="javascript:;" class="action_btn push">投稿</a>
+		                            <a href="javascript:;" class="btn_base btn_push">投稿</a>
 		                        </div>
 		                    </li>
 		                    <li class="col-xs-12 col-sm-6 col-md-4">
-		                        <a href="" class="avatar_collection">
+		                        <a href="" class="avatar avatar_sm avatar_collection">
 		                    		<img src="/images/category_08.jpg" />
 		                    	</a>
 		                        <div>
 		                            <div class="note_name">情缘未了</div>
 		                            <span class="meta">10篇文章 · 50人关注</span>
-		                            <a href="javascript:;" class="action_btn revoke" style="display: block;">撤回</a>
+		                            <a href="javascript:;" class="btn_base btn_revoke" style="display: block;">撤回</a>
 		                        </div>
 		                    </li>
 		                    <li class="col-xs-12 col-sm-6 col-md-4">
-		                        <a href="" class="avatar_collection">
+		                        <a href="" class="avatar avatar_sm avatar_collection">
 		                    		<img src="/images/category_08.jpg" />
 		                    	</a>
 		                        <div>
 		                            <div class="note_name">情缘未了</div>
 		                            <span class="meta">10篇文章 · 50人关注</span>
-		                            <a href="javascript:;" class="action_btn push">投稿</a>
+		                            <a href="javascript:;" class="btn_base btn_push">投稿</a>
 		                        </div>
 		                    </li>
 		                    <li class="col-xs-12 col-sm-6 col-md-4">
-		                        <a href="" class="avatar_collection">
+		                        <a href="" class="avatar avatar_sm avatar_collection">
 		                    		<img src="/images/category_08.jpg" />
 		                    	</a>
 		                        <div>
 		                            <div class="note_name">情缘未了</div>
 		                            <span class="meta">10篇文章 · 50人关注</span>
-		                            <a href="javascript:;" class="action_btn revoke" style="display: block;">撤回</a>
+		                            <a href="javascript:;" class="btn_base btn_revoke" style="display: block;">撤回</a>
 		                        </div>
 		                    </li>
 		                    <li class="col-xs-12 col-sm-6 col-md-4">
-		                        <a href="" class="avatar_collection">
+		                        <a href="" class="avatar avatar_sm avatar_collection">
 		                    		<img src="/images/category_08.jpg" />
 		                    	</a>
 		                        <div>
 		                            <div class="note_name">情缘未了</div>
 		                            <span class="meta">10篇文章 · 50人关注</span>
-		                            <a href="javascript:;" class="action_btn push">投稿</a>
+		                            <a href="javascript:;" class="btn_base btn_push">投稿</a>
 		                        </div>
 		                    </li>
 		                    <li class="col-xs-12 col-sm-6 col-md-4">
-		                        <a href="" class="avatar_collection">
+		                        <a href="" class="avatar avatar_sm avatar_collection">
 		                    		<img src="/images/category_08.jpg" />
 		                    	</a>
 		                        <div>
 		                            <div class="note_name">情缘未了</div>
 		                            <span class="meta">10篇文章 · 50人关注</span>
-		                            <a href="javascript:;" class="action_btn revoke" style="display: block;">撤回</a>
+		                            <a href="javascript:;" class="btn_base btn_revoke" style="display: block;">撤回</a>
 		                        </div>
 		                    </li>
 		                    <li class="col-xs-12 col-sm-6 col-md-4">
-		                        <a href="" class="avatar_collection">
+		                        <a href="" class="avatar avatar_sm avatar_collection">
 		                    		<img src="/images/category_08.jpg" />
 		                    	</a>
 		                        <div>
 		                            <div class="note_name">情缘未了</div>
 		                            <span class="meta">10篇文章 · 50人关注</span>
-		                            <a href="javascript:;" class="action_btn push">投稿</a>
+		                            <a href="javascript:;" class="btn_base btn_push">投稿</a>
 		                        </div>
 		                    </li>
 		                </ul>
@@ -155,5 +155,6 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+	
 </style>

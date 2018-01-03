@@ -75,28 +75,3 @@
         }
     }
 }
-
-// 热门专题分类页和推荐作者页的标题图
-.recommend_img {
-    position: relative;
-    img {
-        width: 100%;
-        min-height: 78px;
-        border-radius: 4px;
-    }
-    .help {
-        @include font (16px,$color-white,400);
-        position: absolute;
-        top: 28px;
-        right: 30px;
-        i {
-            margin-right: 5px;
-        }
-        @media screen and (min-width: 992px) {
-            top: 38px;
-        }
-        @media screen and (min-width: 1200px) {
-            top: 48px;
-        }
-    }
-}

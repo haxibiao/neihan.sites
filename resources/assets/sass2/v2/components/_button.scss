@@ -165,31 +165,6 @@
     }
 }
 
-// 详情页未关注小按钮
-.btn_follow_xs {
-    width: 60px;
-}
-
-// 详情页已关注小按钮
-.btn_followed_xs {
-    width: 70px;
-}
-
-// 详情页发送评论按钮
-.btn_followed_sm {
-    width: 80px;
-}
-
-// 个人页编辑保存按钮
-.btn_hollow_xs {
-    width: 65px;
-}
-
-// 用户、专题页 发消息、投稿按钮
-.btn_hollow_sm {
-    width: 90px;
-}
-
 // 推荐作者未关注
 .btn_font_follow {
     @include font (13px, $color-green, 400);
@@ -234,4 +209,89 @@
             }
         }
     }
+}
+
+// 消息页接受按钮
+.btn_push {
+    @include btn (40px,1px solid $color-green,inherit,$color-green);
+    padding: 0 2px;
+    font-size: 12px;
+    &:hover,&:focus {
+        background-color: rgba(59,194,29,.05);
+        color: $color-green;
+    }
+}
+
+// 消息页拒绝按钮
+.btn_revoke {
+    @include btn (40px,1px solid $color-gray-light,inherit,$color-gray-deep);
+    padding: 0 2px;
+    font-size: 12px;
+    &:hover,&:focus {
+        background-color: rgba(68,74,66,0.05);
+        color: $color-gray-deep;
+    }
+}
+
+// 消息页移除按钮
+.btn_remove {
+    @include btn (40px,1px solid $color-red-watermelon,inherit,$color-red-watermelon);
+    padding: 0 2px;
+    font-size: 12px;
+    &:hover,&:focus {
+        background-color: #fff6f8;
+        color: $color-red-watermelon;
+    }
+}
+
+// 消息页移除按钮
+.btn_font_remove {
+    @include font (12px,$color-red-watermelon,400);
+    margin-left: 5px;
+    &:hover,&:focus {
+        color: $color-red-watermelon;
+    }
+}
+
+// 登录
+.btn_sign_in {
+    @include btn (100%,0,$color-blue,$color-white);
+    &:hover,&:focus {
+        background-color: #217dbd;
+        color: $color-white;
+    }
+}
+
+// 注册
+.btn_sign_up {
+    @include btn (100%,0,$color-green,$color-white);
+    &:hover,&:focus {
+        background-color: #3db922;
+        color: $color-white;
+    }
+}
+
+// 详情页未关注小按钮
+.btn_follow_xs {
+    width: 60px;
+}
+
+// 详情页已关注小按钮
+.btn_followed_xs {
+    width: 70px;
+}
+
+// 详情页发送评论按钮
+.btn_followed_sm {
+    width: 80px;
+}
+
+// 个人页编辑保存按钮
+.btn_hollow_xs {
+    width: 65px;
+}
+
+// 用户、专题页 发消息、投稿按钮
+.btn_hollow_sm {
+    width: 90px;
 }

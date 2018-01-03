@@ -1,7 +1,7 @@
 <template>
 	<!-- 收到的评论 -->
 	<div id="comments">
-		<div class="menu">收到的评论</div>
+		<div class="notification_menu">收到的评论</div>
 		<ul class="comment_list">
 			<li>
 				<div class="author">
@@ -104,12 +104,6 @@ export default {
 
 <style lang="scss" scoped>
 	#comments {
-        .menu {
-            font-size: 14px;
-            color: #333;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
         .comment_list {
             li {
                 padding: 20px;

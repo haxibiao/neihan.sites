@@ -31,13 +31,13 @@
 		                    <li>
 		                        <div>
 		                            <div class="note_name">利用 react native 框架开发app</div>
-		                            <a href="javascript:;" class="action_btn push">收录</a>
+		                            <a href="javascript:;" class="btn_base btn_push">收录</a>
 		                        </div>
 		                    </li>
 		                    <li>
 		                        <div>
 		                            <div class="note_name">利用 react native 框架开发app</div>
-		                            <a href="javascript:;" class="action_btn remove" style="display: block;">移除</a>
+		                            <a href="javascript:;" class="btn_base btn_remove" style="display: block;">移除</a>
 		                            <span class="status add" style="display: block;">已加入</span>
 		                        </div>
 		                    </li>
@@ -66,8 +66,8 @@
 		                <input placeholder="确认删除请输入专题名称" type="text" class="form-control" />
 		            </div>
 		            <div class="modal-footer">
-		            	<button class="cancel" data-dismiss="modal">取消</button>
-        				<button class="submit">确认</button>
+		            	<div class="cancel" data-dismiss="modal">取消</div>
+        				<div class="btn_base btn_remove btn_follow_xs">确认</div>
 		            </div>
 
 		        </div>
@@ -89,5 +89,6 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+	
 </style>

@@ -32,7 +32,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<input type="submit" value="保存" class="btn_success" />
+		<input type="submit" value="保存" class="btn_base btn_follow" />
 	</div>
 </template>
 
@@ -49,5 +49,53 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+	#reward_setting {
+        table {
+            thead {
+                tr {
+                    .setting_head {
+                        width: 200px;
+                        @media screen and (max-width: 992px) {
+                            width: 140px;
+                        }
+                        @media screen and (max-width: 768px) {
+                            width: 85px;
+                        }
+                    }
+                }
+            }
+            .setting_pay {
+                tr {
+                    td {
+                        textarea {
+                            height: 100px;
+                            padding: 8px 10px;
+                            resize: none;
+                        }
+                    }
+                    .top_line {
+                        padding-top: 0;
+                        div {
+                            display: inline-block;
+                            span {
+                                margin: 0 20px 0 6px;
+                                font-size: 15px;
+                                vertical-align: middle;
+                            }
+                        }
+                        p {
+                            padding: 8px 0 0;
+                            color: #969696;
+                            clear: both;
+                        }
+                    }
+                    .setting_title {
+                        font-size: 15px;
+                        color: #969696;
+                    }
+                }
+            }
+        }
+    }
 </style>

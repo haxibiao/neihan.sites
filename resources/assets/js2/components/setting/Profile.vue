@@ -45,7 +45,7 @@
 				<tr>
 					<td class="setting_title">微信二维码</td>
 					<td class="weixin_qrcode">
-						<a href="javascript:;" class="btn_hollow">
+						<a href="javascript:;" class="btn_base btn_hollow btn_hollow_sm">
 							<input type="file" class="hide" unselectable="on" />
 							更换图片
 						</a>
@@ -54,7 +54,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<input type="submit" value="保存" class="btn_success" />
+		<input type="submit" value="保存" class="btn_base btn_follow" />
 	</div>
 </template>
 
@@ -71,5 +71,74 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+	#profile {
+        table {
+            thead {
+                tr {
+                    .setting_head {
+                        width: 200px;
+                        @media screen and (max-width: 992px) {
+                            width: 140px;
+                        }
+                        @media screen and (max-width: 768px) {
+                            width: 85px;
+                        }
+                    }
+                }
+            }
+            .information {
+                tr {
+                    p {
+                        padding: 8px 0 0;
+                        color: #969696;
+                        clear: both;
+                    }
+                    td {
+                        form {
+                            textarea {
+                                height: 100px;
+                                padding: 8px 10px;
+                                resize: none;
+                            }
+                            input[type="text"] {
+                                width: 100%;
+                            }
+                        }
+                    }
+                    .top_line {
+                        padding-top: 0;
+                        div {
+                            display: inline-block;
+                            span {
+                                margin: 0 20px 0 6px;
+                                font-size: 15px;
+                                vertical-align: middle;
+                            }
+                        }
+                    }
+                    .setting_title {
+                        font-size: 15px;
+                        color: #969696;
+                    }
+                    .weixin_qrcode {
+                        .btn_hollow {
+                            position: relative;
+                            padding: 4px 12px;
+                            font-size: 14px;
+                            input {
+                                position: absolute;
+                                display: block!important;
+                                top: -1px;
+                                left: 1px;
+                                width: 85px;
+                                height: 30px;
+                                opacity: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 </style>

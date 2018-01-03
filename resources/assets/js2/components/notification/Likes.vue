@@ -1,19 +1,21 @@
 <template>
 	<!-- 收到的喜欢和赞 -->
 	<div id="likes">
-		<div class="menu">收到的喜欢和赞</div>
+		<div class="notification_menu">收到的喜欢和赞</div>
 		<ul class="likes_list">
-			<li v-for="notification in notifications">
-				<div class="like_item">
-					<a href="'/user/+notification.user_id'" class="avatar">
-						<img :src="notification.user_avatar" />
+			<li>
+				<div class="author">
+					<a href="" class="avatar avatar_xs">
+						<img src="/images/photo_02.jpg" />
 					</a>
-					<div class="title">
-						<a href="javascript:;">{{ notification.user_name }}</a>
-						<span>喜欢了你的文章</span>
-						<a :href="'/article/'+notification.article_id" class="headline">{{  notification.article_title}}</a>
+					<div class="info_meta">
+						<div class="info">
+							<a href="javascript: ;" class="user">中南工大留级生</a>
+							<span>喜欢了你的文章</span>
+							<a href="javascript: ;" class="title">《就是想撸猫》</a>
+						</div>
+						<div class="time">2017.11.15  08:09</div>
 					</div>
-					<div class="info">{{ notification.time }}</div>
 				</div>
 			</li>
 		</ul>
@@ -41,5 +43,34 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+	#likes {
+        .likes_list {
+            li {
+                padding: 20px;
+                border-top: 1px solid #f0f0f0;
+                .author {
+                	line-height: 1.7;
+                    font-size: 15px;
+                	.avatar {
+                        float: left;
+                    }
+                    .info_meta {
+                        padding: 0 0 0 50px;
+                        .info {
+                            .user {
+                                margin-right: 5px;
+                            }
+                            .title {
+                                color: #2B89CA;
+                            }
+                        }
+                    }
+                }
+                @media screen and (max-width: 540px) {
+                    padding: 20px 5px;
+                }
+            }
+        }
+    }
 </style>

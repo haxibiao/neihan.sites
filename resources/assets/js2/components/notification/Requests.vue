@@ -1,7 +1,7 @@
 <template>
 	<!-- 收到的投稿请求 -->
 	<div id="requests">
-		<div class="menu">全部投稿请求</div>
+		<div class="notification_menu">全部投稿请求</div>
 		<ul class="requests_list">
 			<li>
 				<router-link to="/pending_submissions">
@@ -19,7 +19,7 @@
 					</div>
 					<div class="name">
 						王者荣耀
-						<span>有新投稿《起风了，谁是下一个王者荣耀？》</span>
+						<p class="new_abstract">有新投稿《起风了，谁是下一个王者荣耀？》</p>
 					</div>
 				</router-link>
 			</li>
@@ -39,7 +39,7 @@
 					</div>
 					<div class="name">
 						暗恋
-						<span>有新投稿《为什么说被马化腾点赞的《王者荣耀》已成为全球最赚钱的游戏？》</span>
+						<p class="new_abstract">有新投稿《为什么说被马化腾点赞的《王者荣耀》已成为全球最赚钱的游戏？》</p>
 					</div>
 				</router-link>
 			</li>
@@ -62,12 +62,6 @@ export default {
 
 <style lang="scss" scoped>
 	#requests {
-        .menu {
-            font-size: 14px;
-            color: #333;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
         .requests_list {
             li {
                 padding: 20px;
@@ -83,6 +77,7 @@ export default {
                         display: inline-block;
                         vertical-align: middle;
                         line-height: 48px;
+                        margin-right: 10px;
                         i {
                             font-size: 28px;
                             color: #fd5b78;
@@ -97,14 +92,6 @@ export default {
                         width: 70%;
                         @media screen and (max-width: 540px) {
                             width: 50%;
-                        }
-                        span {
-                            font-size: 12px;
-                            color: #969696;
-                            display: -webkit-box;
-						    -webkit-line-clamp: 1;
-						    -webkit-box-orient: vertical;
-						    overflow: hidden;
                         }
                     }
                     .avatar {

@@ -31,35 +31,35 @@
 		                    <li>
 		                        <div>
 		                            <div class="note_name">利用 react native 框架开发app</div>
-		                            <a href="javascript:;" class="action_btn push">投稿</a>
+		                            <a href="javascript:;" class="btn_base btn_push">投稿</a>
 		                        </div>
 		                    </li>
 		                    <li>
 		                        <div>
 		                            <div class="note_name">利用 react native 框架开发app</div>
-		                            <a href="javascript:;" class="action_btn push" style="display: none;">投稿</a>
-		                            <a href="javascript:;" class="action_btn revoke" style="display: block;">撤回</a>
+		                            <a href="javascript:;" class="btn_base btn_push" style="display: none;">投稿</a>
+		                            <a href="javascript:;" class="btn_base btn_revoke" style="display: block;">撤回</a>
 		                            <span class="status waiting" style="display: block;">待审核</span>
 		                        </div>
 		                    </li>
 		                    <li>
 		                        <div>
 		                            <div class="note_name">利用 react native 框架开发app</div>
-		                            <a href="javascript:;" class="action_btn push">投稿</a>
+		                            <a href="javascript:;" class="btn_base btn_push">投稿</a>
 		                            <span class="status reject" style="display: block;">已撤回</span>
 		                        </div>
 		                    </li>
 		                    <li>
 		                        <div>
 		                            <div class="note_name">利用 react native 框架开发app</div>
-		                            <a href="javascript:;" class="action_btn remove" style="display: block;">移除</a>
+		                            <a href="javascript:;" class="btn_base btn_remove" style="display: block;">移除</a>
 		                            <span class="status add" style="display: block;">已加入</span>
 		                        </div>
 		                    </li>
 		                    <li>
 		                        <div>
 		                            <div class="note_name">利用 react native 框架开发app利用 react native 框架开发app</div>
-		                            <a href="javascript:;" class="action_btn repush" style="display: block;">再次投稿</a>
+		                            <a href="javascript:;" class="btn_base btn_push btn_follow_xs" style="display: block;">再次投稿</a>
 		                            <span class="status reject" style="display: block;">未通过</span>
 		                        </div>
 		                    </li>

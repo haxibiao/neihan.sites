@@ -232,5 +232,5 @@
     </div>
 </div>
 {{-- 底部小火箭、分享、收藏、投稿 --}}
-{{-- @include('v2.parts.side_tool') --}}
+@include('v2.parts.side_tool')
 @stop
