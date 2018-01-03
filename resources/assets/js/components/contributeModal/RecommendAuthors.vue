@@ -10,9 +10,10 @@
                     换一批
                 </a>
             </div>
-            <ul class="list">
+            <ul class="authors_list">
                 <li v-for="user in users">
-                    <a class="avatar" :href="'/user/'+user.id" target="_blank">
+                 <div class="author">
+                    <a class="avatar avatar_sm" :href="'/user/'+user.id" target="_blank">
                         <img :src="user.avatar"/>
                     </a>
                     <a v-if="!user.is_followed"class="btn_font_follow" href="javascript:;" @click="toggleFollow(user)">
@@ -29,6 +30,7 @@
                     <p>
                         写了{{ user.count_words }}字 · {{ user.count_likes }}喜欢
                     </p>
+                   </div>
                 </li>
             </ul>
             <a class="find_more" href="/user" target="_blank">

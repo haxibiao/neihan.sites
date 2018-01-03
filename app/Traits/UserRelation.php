@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Collection;
+use Auth;
 
 trait UserRelation
 {

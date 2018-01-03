@@ -27,12 +27,20 @@
                     $category=$follow->followed;
                 @endphp
                 <li>
-                    <div>
-                        <a class="avatar avatar_collection" href="/{{ $category->name_en }}">
+                    <div class="author">
+                        <a class="avatar avatar_in avatar_collection" href="/{{ $category->name_en }}">
                             <img src="{{ $category->logo }}"/>
                         </a>
-                        <div class="info">
-                            <a class="name" href="/{{ $category->name_en }}">
+                        <a class="btn_base btn_followed" href="javascript:;">
+                            <span>
+                                <i class="iconfont icon-weibiaoti12">
+                                </i>
+                                <i class="iconfont icon-cha">
+                                </i>
+                            </span>
+                        </a>
+                        <div class="info_meta">
+                            <a class="headline nickname" href="/{{ $category->name_en }}">
                                {{ $category->name }}
                             </a>
                             <div class="meta">
@@ -42,14 +50,6 @@
                                 收录了{{ $category->count }}篇文章，{{ $category->count_follows }}人关注
                             </div>
                         </div>
-                        <a class="following" href="javascript:;">
-                            <span>
-                                <i class="iconfont icon-weibiaoti12">
-                                </i>
-                                <i class="iconfont icon-cha">
-                                </i>
-                            </span>
-                        </a>
                     </div>
                 </li>
                 @endforeach

@@ -1,6 +1,6 @@
 {{-- 个人页右侧 --}}
 <div class="aside col-sm-4">
-    <div class="title">
+    <div class="litter_title">
         个人介绍
     </div>
     <a class="function_btn" href="javascript:;">
@@ -18,7 +18,7 @@
     <div class="description">
         <div class="intro">{{ $user->introduction }}</div>
     </div>
-    <ul class="user_dynamic">
+    <ul class="aside_list user_dynamic">
         <li>
             <a href="/follow#/timeline">
                 <i class="iconfont icon-duoxuan">
@@ -39,14 +39,14 @@
         </li>
     </ul>
     <div>
-        <p class="title">
+        <p class="litter_title">
             我创建的专题
         </p>
-        <ul class="list">
+        <ul class="aside_list">
           @foreach($user->categories as $category)
             <li>
                 <a href="/{{ $category->name_en }}" target="_blank">
-                    <img src="{{ $category->logo }}"/>
+                    <img src="{{ $category->logo }}" class="avatar" />
                     <span>
                         {{ $category->name }}
                     </span>
@@ -54,10 +54,10 @@
             </li>
           @endforeach
         </ul>
-        <p class="title">
+        <p class="litter_title">
             我的文集
         </p>
-        <ul class="list">
+        <ul class="aside_list">
           @foreach($user->collections as $collection)
             <li>
                 <a href="/collection/{{ $collection->id }}" target="_blank">

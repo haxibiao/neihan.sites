@@ -6,10 +6,10 @@
 			        <!-- 详情页的评论 -->
 			        <form class="new_comment">
 			            <div v-if="isLogin">
-			                <a class="avatar">
+			                <a class="avatar avatar_xs">
 			                    <img :src="currentUser.avatar"/>
 			                </a>
-			                <textarea placeholder="写下你的评论..." @click="showSend" v-model="newComment.body">
+			                <textarea placeholder="写下你的评论..." @click="showSend" v-model="newComment.body" class="text_container">
 			                </textarea>
 			                <div class="write_block">
 			                    <div class="emoji_wrap">
@@ -18,13 +18,13 @@
 			                        </a>
 			                    </div>
 			                    <div class="hint">⌘+Return 发表</div>
-			                    <a class="btn_send" @click="postComment">发送</a>
-			                    <a class="cancel" @click="hideSend">取消</a>
+			                    <a class="btn_base btn_follow btn_followed_sm pull-right" @click="postComment">发送</a>
+			                    <a class="cancel pull-right" @click="hideSend">取消</a>
 			                </div>
 			            </div>
 			            <div v-else>
-			                <div class="sign_container">
-			                	<a href="/login" class="btn_sign_in">登录</a>
+			                <div class="text_container sign_container">
+			                	<a href="/login" class="btn_base btn_sign">登录</a>
 			                	<span>后发表评论</span>
 			                </div>
 			            </div>
@@ -320,5 +320,69 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+ .new_comment {
+    position: relative;
+    margin-left: 48px;
+    .avatar {
+        position: absolute;
+        left: -48px;
+    }
+    .text_container {
+        width: 100%;
+        height: 80px;
+        border-radius: 4px;
+        border: 1px solid #dcdcdc;
+        font-size: 13px;
+        background-color: hsla(0, 0%, 71%, .1);
+        padding: 10px 15px;
+    }
+    .sign_container {
+        text-align: center;
+    }
+    textarea {
+        resize: none;
+        vertical-align: top;
+    }
+    .write_block {
+        height: 50px;
+        display: none;
+        color: #969696;
+        .emoji_wrap {
+            position: relative;
+            .emoji {
+                float: left;
+                margin-top: 14px;
+                color: #969696;
+                i {
+                    font-size: 20px;
+                }
+                &:hover {
+                    color: #333;
+                }
+            }
+        }
+        .hint {
+            font-size: 13px;
+            float: left;
+            margin: 19px 0 0 20px;
+        }
+        .btn_followed_sm {
+            margin: 10px 0;
+        }
+        .cancel {
+            font-size: 16px;
+            color: #969696;
+            margin: 18px 30px 0 0;
+        }
+        @media screen and (max-width: 400px) {
+            .btn_follow {
+                width: 60px;
+            }
+            .cancel {
+                margin-right: 5px;
+            }
+        }
+    }
+}
 </style>

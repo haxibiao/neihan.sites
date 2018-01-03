@@ -17,7 +17,7 @@
         <meta content="width=device-width,initial-scale=1" name="viewport"/>
         <meta content=" @yield('keywords'), {{ config('app.name') }} " name="keywords"/>
         <meta content=" @yield('description'), {{ config('app.name') }} " name="description"/>
-        <link href="{{ mix('css/a.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ mix('css/a2.css') }}" rel="stylesheet" type="text/css"/>
 
         @stack('css')
     </head>

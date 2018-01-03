@@ -9,7 +9,7 @@
         <div class="row">
             <div class="top clearfix">
                 <div class="user col-xs-12 col-sm-4">
-                    <a class="avatar" href="/user/{{ $user->id }}">
+                    <a class="avatar avatar_lg" href="/user/{{ $user->id }}">
                         <img src="{{ $user->avatar }}"/>
                     </a>
                     <div class="info">
@@ -36,10 +36,10 @@
                         .{{ $weishu <10?'0'.$weishu:$weishu }}元
                     </span>
                     <div class="action">
-                        <a class="recharge" href="/alipay/wap/pay?amount={{ rand(1,5)/100 }}">
+                        <a class="btn_base btn_follow btn_followed_sm recharge" href="/alipay/wap/pay?amount={{ rand(1,5)/100 }}">
                             充值
                         </a>
-                        <div class="withdrawals">
+                        <div class="btn_base btn_hollow btn_followed_sm withdrawals">
                             提现
                         </div>
                         <span class="warn">

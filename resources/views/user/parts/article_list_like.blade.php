@@ -14,7 +14,7 @@
                         {{ $article->user->name }}
                     </a>
                     <a href="/v1/detail" target="_blank">
-                        <img src="/images/vip1.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者"/>
+                       <img src="/images/vip1.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者"  class="badge_icon_xs" />
                     </a>
                     <span class="time">
                         {{ $article->timeAgo() }}
