@@ -1,54 +1,54 @@
 <template>
-	<div>
+	<div id="left">
         <!-- 消息页的左侧 -->
         <ul>
             <li @clikc="skip" :class="route_path=='comments'?'active':''">
                 <router-link to="/comments">
                 	<i class="iconfont icon-xinxi"></i>
-                	<span class="name">评论</span>
-                    <span v-if="unreads.comments" class="badge">{{ unreads.comments }}</span>
+                	<div class="name">评论</div>
+                    <div v-if="unreads.comments" class="badge">{{ unreads.comments }}</div>
                 </router-link>
             </li>
             <li>
                 <router-link to="/chats">
                 	<i class="iconfont icon-email"></i>
-                	<span class="name">私信</span>
-                    <span v-if="unreads.chats" class="badge">{{ unreads.chats }}</span>
+                	<div class="name">私信</div>
+                    <div v-if="unreads.chats" class="badge">{{ unreads.chats }}</div>
                 </router-link>
             </li>
             <li>
                 <router-link to="/requests">
                 	<i class="iconfont icon-tougaoguanli"></i>
-                	<span class="name">投稿请求</span>
-                    <span v-if="unreads.requests" class="badge">{{ unreads.requests }}</span>
+                	<div class="name">投稿请求</div>
+                    <div v-if="unreads.requests" class="badge">{{ unreads.requests }}</div>
                 </router-link>
             </li>
             <li>
                 <router-link to="/likes">
                 	<i class="iconfont icon-xin"></i>
-                	<span class="name">喜欢和赞</span>
-                    <span v-if="unreads.likes" class="badge">{{ unreads.likes }}</span>
+                	<div class="name">喜欢和赞</div>
+                    <div v-if="unreads.likes" class="badge">{{ unreads.likes }}</div>
                 </router-link>
             </li>
             <li>
                 <router-link to="/follows">
                 	<i class="iconfont icon-jiaguanzhu"></i>
-                	<span class="name">关注</span>
-                    <span v-if="unreads.follows" class="badge">{{ unreads.follows }}</span>
+                	<div class="name">关注</div>
+                    <div v-if="unreads.follows" class="badge">{{ unreads.follows }}</div>
                 </router-link>
             </li>
             <li>
                 <router-link to="/tip">
                 	<i class="iconfont icon-zanshangicon"></i>
-                	<span class="name">赞赏</span>
-                    <span v-if="unreads.tips" class="badge">{{ unreads.tips }}</span>
+                	<div class="name">赞赏</div>
+                    <div v-if="unreads.tips" class="badge">{{ unreads.tips }}</div>
                 </router-link>
             </li>
             <li>
                 <router-link to="/others">
                 	<i class="iconfont icon-gengduo"></i>
-                	<span class="name">其他消息</span>
-                    <span v-if="unreads.others" class="badge">{{ unreads.others }}</span>
+                	<div class="name">其他消息</div>
+                    <div v-if="unreads.others" class="badge">{{ unreads.others }}</div>
                 </router-link>
             </li>
         </ul>
@@ -94,35 +94,41 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
-    ul {
-        li {
-            &.active {
-                background-color: #f0f0f0;
-                border-radius: 4px;
-            }
-            .link {
-                height: auto;
-                padding: 10px 25px;
-                line-height: 30px;
-                display: block;
-                color: #333;
-                i {
-                    margin-right: 15px;
-                    font-size: 22px;
-                    color: #FF9D23;
-                    vertical-align: middle;
-                }
-                span {
-                    font-size: 15px;
-                    vertical-align: middle;
-                }
-                .badge {
-                    float: right;
-                    margin: 6px 15px 0 0;
-                    padding: 3px 6px;
-                    font-size: 12px;
-                    background-color: #FF9D23;
+<style lang="scss" scoped>
+    #left {
+        ul {
+            li {
+                a {
+                    display: inline-block;
+                    padding: 10px 25px;
+                    line-height: 30px;
+                    width: 100%;
+                    border-radius: 4px;
+                    i {
+                        font-size: 24px;
+                        color: #fd5b78;
+                        font-weight: 400;
+                        margin-right: 15px;
+                        vertical-align: middle;
+                    }
+                    .name {
+                        font-size: 15px;
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
+                    .badge {
+                        float: right;
+                        margin-top: 6px;
+                    }
+                    &:hover,&.router-link-active {
+                        background-color: #f0f0f0;
+                    }
+                    @media screen and (max-width: 540px) {
+                        padding: 10px;
+                        .name {
+                            display: none;
+                        }
+                    }
                 }
             }
         }
