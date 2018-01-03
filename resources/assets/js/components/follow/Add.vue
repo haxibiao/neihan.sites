@@ -28,16 +28,16 @@
         </ul>
         <!-- Tab panes -->
         <div class="tab-content">
-            <ul class="tab-pane fade in active" id="tuijian" role="tabpanel">
+            <ul class="tab-pane fade in active user_list" id="tuijian" role="tabpanel">
               <div v-for="recommend in recommends">
                     <li v-if="recommend.type=='users'">
-                        <div>
-                          <follow type="users" :id="recommend.id" :user-id="user.id" :followed="recommend.is_followed"></follow>
-                            <a class="avatar" href="#">
+                        <div class="author">
+                            <a class="avatar avatar_in" href="#">
                                 <img :src="recommend.avatar"/>
                             </a>
-                            <div class="info">
-                                <a class="name" href="#">
+                              <follow type="users" :id="recommend.id" :user-id="user.id" :followed="recommend.is_followed" class="pull-right"></follow>
+                            <div class="info_meta">
+                                <a class="headline nickname" href="#">
                                     {{ recommend.name }}
                                 </a>
                                 <div class="meta">
@@ -54,16 +54,16 @@
                     
                       <li v-if="recommend.type=='categories'">
                             <div>
-                                <a class="follow" href="#">
+                                <a class="btn_base btn_follow" href="#">
                                     <span>
                                         ＋ 关注
                                     </span>
                                 </a>
-                                <a class="avatar avatar_collection" href="#">
+                                <a class="avatar avatar_in" href="#">
                                     <img :src="recommend.logo"/>
                                 </a>
-                                <div class="info">
-                                    <a class="name" href="#">
+                                <div class="info_meta">
+                                    <a class="headline nickname" href="#">
                                         {{ recommend.name }}
                                     </a>
                                     <p>
@@ -81,25 +81,24 @@
                      </li>
               </div>
             </ul>
-            <ul class="tab-pane fade" id="users" role="tabpanel">
+            <ul class="tab-pane fade user_list" id="users" role="tabpanel">
                 <div v-for="recommended_user in recommended_users">
                     <li>
-                        <div>
-
-                     <follow type="users" :id="recommended_user.id" :user-id="user.id" :followed="recommended_user.followed"></follow>
-
-                            <a class="avatar" :href="'/user/'+recommended_user.id">
+                        <div class="author">
+                            <a class="avatar avatar_in" :href="'/user/'+recommended_user.id">
                                 <img :src="recommended_user.avatar"/>
                             </a>
-                            <div class="info">
-                                <a class="name" :href="'/user/'+recommended_user.id">
+
+                              <follow type="users" :id="recommended_user.id" :user-id="user.id" :followed="recommended_user.followed" class="pull-right"></follow>
+                            <div class="info_meta">
+                                <a class="headline nickname" :href="'/user/'+recommended_user.id">
                                     {{ recommended_user.name }}
                                 </a>
-                                <p>
+                                <p class="notice">
                                     {{ recommended_user.introduction }}
                                 </p>
 
-                                <a v-for="collection in recommended_user.collections" href="#">
+                                <a v-for="collection in recommended_user.collections" href="#" class="anthology">
                                     <i class="iconfont icon-wenji">
                                     </i>
                                     <span>
@@ -111,23 +110,23 @@
                     </li>
                </div>
             </ul>
-            <ul class="tab-pane fade" id="zhuanti1" role="tabpanel">
+            <ul class="tab-pane fade user_list" id="zhuanti1" role="tabpanel">
                 <div v-for="category in recommended_categories">
                     <li>
-                        <div>
-                        <follow type="categories" :id="category.id" :user-id="user.id" :followed="category.followed"></follow>
+                        <div class="author">
 
                             <a class="avatar avatar_collection" :href="'/'+category.name_en">
                                 <img :src="category.logo"/>
                             </a>
-                            <div class="info">
-                                <a class="name" href="#">
+                                <follow type="categories" :id="category.id" :user-id="user.id" :followed="category.followed" class="pull-right"></follow>
+                            <div class="info_meta">
+                                <a class="headline nickname" href="#">
                                     {{ category.name }}
                                 </a>
-                                <p>
+                                <p class="notice">
                                     {{ category.description }}
                                 </p>
-                                <a :href="'/'+category.name_en">
+                                <a :href="'/'+category.name_en" class="anthology">
                                     <i class="iconfont icon-quanbu">
                                     </i>
                                     <span>

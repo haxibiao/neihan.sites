@@ -21,7 +21,7 @@
                     </span>
                 </div>
             </div>
-            <a class="title" href="/article/{{ $article->id }}" target="_blank">
+            <a class="headline paper_title" href="/article/{{ $article->id }}" target="_blank">
                 {{ $article->title }}
             </a>
             <p class="abstract">
