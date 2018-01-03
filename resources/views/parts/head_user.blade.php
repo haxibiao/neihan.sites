@@ -22,7 +22,7 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li class="tab v1">
-                            <a href="/">
+                            <a href="/" class="identifier">
                                 <i class="iconfont icon-xin">
                                 </i>
                                 <span class="menu_text">
@@ -31,7 +31,7 @@
                             </a>
                         </li>
                         <li class="tab follow">
-                            <a href="/follow">
+                            <a href="/follow" class="identifier">
                                 <i class="iconfont icon-huizhang">
                                 </i>
                                 <span class="menu_text">
@@ -39,8 +39,8 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="tab notification">
-                            <a href="/notification">
+                        <li class="tab notification" class="identifier">
+                            <a href="/notification" class="identifier">
                                 <i class="iconfont icon-zhongyaogaojing">
                                 </i>
                                 <span class="menu_text">
@@ -57,7 +57,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="/notification#/comments">
+                                    <a href="/notification#/comments" >
                                         <i class="iconfont icon-xinxi">
                                         </i>
                                         <span>
@@ -133,12 +133,12 @@
                     <search></search>
 
                     <ul class="nav navbar-nav navbar-right">
-                        <li>
+{{--                         <li>
                             <a class="style_mode_btn" href="javascript:;">
                                 Aa
                             </a>
-                        </li>
-                        <li class="tab author">
+                        </li> --}}
+                        <li class="tab own">
                             <a class="avatar" href="/home">
                                 <img src="{{ Auth::user()->avatar() }}"/>
                             </a>
@@ -223,9 +223,9 @@
                         </li>
                         <li class="creation">
                             <a href="/article/create">
-                                <i class="iconfont icon-maobi">
-                                </i>
-                                <span>
+                                <span class="btn_base btn_creation">
+                                    <i class="iconfont icon-maobi">
+                                    </i>
                                     写文章
                                 </span>
                             </a>

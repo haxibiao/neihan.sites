@@ -21,7 +21,7 @@
                             <img src="{{ $article->user->avatar }}"/>
                         </a>
                         <div class="info">
-                            <span class="name">
+                            <span class="nickname">
                                 <a href="#">
                                     {{ $article->user->name }}
                                 </a>
@@ -46,7 +46,7 @@
                                     评论 {{ $article->count_replies }}
                                 </span>
                                 <span>
-                                    喜欢 {{ $article->count_favoites }}
+                                    喜欢 {{ $article->count_favorites }}
                                 </span>
                             </div>
                         </div>
@@ -67,16 +67,12 @@
                         <div class="copyright">
                             © 著作权归作者所有
                         </div>
-                   {{--      <div class="modal_wrap">
-                            <a href="#">
-                                举报文章
-                            </a>
-                        </div> --}}
+   
                     </div>
                 </div>
                 <div class="follow_detail">
-                    <div class="info">
-                        <a class="avatar" href="/user/{{ $article->user->id  }}" target="_blank">
+                    <div class="author">
+                        <a class="avatar avatar_sm" href="/user/{{ $article->user->id  }}" target="_blank">
                             <img src="{{ $article->user->avatar }}"/>
                         </a>
                                   <follow 
@@ -85,12 +81,15 @@
                                     user-id="{{ Auth::check() ? Auth::user()->id : false }}" 
                                     followed="{{ Auth::check() ? Auth::user()->isFollow('user', $article->user->id) : false }}">
                                   </follow>
-                        <a class="title" href="/v1/user" target="_blank">
-                            {{ str_limit($article->user->name) }}
-                        </a>
-                        <p>
-                            写了 280343 字，被 {{ $article->user->count_favorites }} 人关注，获得了 {{ $article->user->count_likes }} 个喜欢
-                        </p>
+                        <div class="info_meta">
+                            <a class="nickname" href="/user/{{ $article->user->id }}" target="_blank">
+                                {{ str_limit($article->user->name) }}
+                            </a>
+                            <img src="/images/vip1.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者" class="badge_icon_sm" />
+                            <div class="meta">
+                                写了 280343 字，被 {{ $article->user->count_favorites }} 人关注，获得了 {{ $article->user->count_likes }} 个喜欢
+                            </div>
+                        </div>
                     </div>
                     <div class="signature">
                         {{ $article->user->introduction }}
@@ -101,44 +100,16 @@
                     <p>
                         如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！
                     </p>
-                   <a class="button btn_pay" href="/pay?amount={{ rand(1,5)/100 }}&type=tip&article_id={{ $article->id }}">赞赏支持</a>
+                   <a class="btn_base btn_pay" href="/pay?amount={{ rand(1,5)/100 }}&type=tip&article_id={{ $article->id }}">赞赏支持</a>
                     <div class="supporter">
-                        <ul class="support_list">
+                        <ul class="collection_follower">
+                         @foreach([1,2,3,4,5,6,7,8] as $f)
                             <li>
                                 <a class="avatar" href="/v1/user">
-                                    <img src="/images/photo_02.jpg"/>
+                                    <img src="/images/photo_0{{ rand(2,3) }}.jpg"/>
                                 </a>
                             </li>
-                            <li>
-                                <a class="avatar" href="/v1/user">
-                                    <img src="/images/photo_03.jpg"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="avatar" href="/v1/user">
-                                    <img src="/images/photo_02.jpg"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="avatar" href="/v1/user">
-                                    <img src="/images/photo_03.jpg"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="avatar" href="/v1/user">
-                                    <img src="/images/photo_02.jpg"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="avatar" href="/v1/user">
-                                    <img src="/images/photo_03.jpg"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="avatar" href="/v1/user">
-                                    <img src="/images/photo_02.jpg"/>
-                                </a>
-                            </li>
+                         @endforeach
                         </ul>
                         <span class="rewad_user">
                             等10人
@@ -146,22 +117,6 @@
                     </div>
                 </div>
                 <div class="meta_bottom">
-{{--                     <div class="like">
-                        <div class="like_group">
-                            <div class="btn_like">
-                                <a href="#">
-                                    <i class="iconfont icon-xin">
-                                    </i>
-                                    喜欢
-                                </a>
-                            </div>
-                            <div class="modal_wrap">
-                                <a href="#">
-                                    13
-                                </a>
-                            </div>
-                        </div>
-                    </div> --}}
                     <like id="{{ $article->id }}" type="article" is-login="{{ Auth::check() }}" article-likes="{{ $article->count_likes }}" />
                     <div class="share_group">
                         <a class="share_circle" href="#">
@@ -181,53 +136,13 @@
                         </a>
                     </div>
                 </div>
+                <div>
                      <comments type="articles" id="{{ $article->id }}" is-login="{{ Auth::check() }}"></comments>
-            </div>
-        </div>
-    </div>
-    <div class="note_bottom">
-        <div class="container">
-            <div class="col-xs-12 col-md-10 col-md-offset-1">
-                <div>
-                    <div class="main">
-                        <div class="title">
-                            被以下专题收入，发现更多相似内容
-                        </div>
-                        <div class="include_collection">
-                            <a class="item" href="javascript:;">
-                                <div class="name">
-                                    ＋ 收入我的主题
-                                </div>
-                            </a>
-                          @foreach($article->categories as $category)
-                            <a class="item" href="/{{ $category->name_en }}">
-                                <img src="{{ $category->logo }}">
-                                <div class="name">
-                                    {{ $category->name }}
-                                </div>
-                            </a>
-                          @endforeach
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="recommend_note">
-                        <div class="meta">
-                            <div class="title">
-                                推荐阅读
-                                <a href="javascript:;">
-                                    更多精彩内容
-                                    <i class="iconfont icon-youbian">
-                                    </i>
-                                </a>
-                            </div>
-                        </div>
-                        @include('parts.list.article_list_category',['articles'=>$data['related']])
-                    </div>
                 </div>
             </div>
         </div>
     </div>
+    @include('article.parts._show_category')
 
 </div>
 @include('parts.side_tool')

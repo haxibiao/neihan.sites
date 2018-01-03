@@ -1,5 +1,5 @@
 {{-- 轮播图 --}}
-<div class="col-xs-12" id="poster">
+<div class="col-xs-12 posters" id="poster">
 </div>
 @push('scripts')
 <script>

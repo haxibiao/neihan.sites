@@ -10,18 +10,18 @@
                     <img :src="article.user.avatar"/>
                 </a>
                 <div class="info">
-                    <a :href="'/user/' + article.user.id" target="_blank">
+                    <a :href="'/user/' + article.user.id" target="_blank" class="nickname">
                         {{ article.user.name }}
                     </a>
                     <a :href="'/user/' + article.user.id" target="_blank">
-                        <img src="/images/vip1.png"/>
+                        <img src="/images/vip1.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者" class="badge_icon_xs"/>
                     </a>
                     <span class="time">
                         {{ article.time_ago }}
                     </span>
                 </div>
             </div>
-            <a class="title" :href="'/article/' + article.id" target="_blank">
+            <a class="headline paper_title" :href="'/article/' + article.id" target="_blank">
                 {{ article.title }}
             </a>
             <p class="abstract">

@@ -21,8 +21,8 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="tab v1">
-                            <a href="/">
+                        <li class="tab v2">
+                            <a href="/" class="identifier">
                                 <i class="iconfont icon-xin">
                                 </i>
                                 <span class="menu_text">
@@ -31,7 +31,7 @@
                             </a>
                         </li>
                         <li class="tab">
-                            <a href="#">
+                            <a href="#" class="identifier">
                                 <i class="iconfont icon-ordinarymobile">
                                 </i>
                                 <span class="menu_text">
@@ -39,18 +39,10 @@
                                 </span>
                             </a>
                         </li>
+                       
                     </ul>
-                   
-                   <search></search>
-                   
+                    <search></search>
                     <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a class="style_mode_btn" href="javascript:;">
-                                <span>
-                                    Aa
-                                </span>
-                            </a>
-                        </li>
                         <li>
                             <a href="/login">
                                 <span>
@@ -60,16 +52,16 @@
                         </li>
                         <li class="register">
                             <a href="/register">
-                                <span>
+                                <span class="btn_base btn_register">
                                     注册
                                 </span>
                             </a>
                         </li>
                         <li class="creation">
                             <a href="/login">
-                                <i class="iconfont icon-maobi">
-                                </i>
-                                <span>
+                                <span class="btn_base btn_creation">
+                                    <i class="iconfont icon-maobi">
+                                    </i>
                                     写文章
                                 </span>
                             </a>
@@ -90,6 +82,7 @@
         // };
 
         $('.dropdown-toggle').dropdown();
+        $('[data-toggle="tooltip"]').tooltip();
 
         $('.form-control').focus(function(){
             $(this).siblings('.hot_search_wrp').css({'visibility':'visible','opacity':1});

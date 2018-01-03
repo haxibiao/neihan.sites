@@ -26,7 +26,7 @@
                 <div class="board">
                     <a href="/index/new-list" target="_blank">
                         <img src="/images/board01.png"/>
-                        <span class="board_tit one">
+                        <span class="board_tit hot_new">
                             新上榜
                             <i class="iconfont icon-youbian">
                             </i>
@@ -34,7 +34,7 @@
                     </a>
                     <a href="/index/weekly" target="_blank">
                         <img src="/images/board02.png"/>
-                        <span class="board_tit two">
+                        <span class="board_tit hot_seven">
                             7日热门
                             <i class="iconfont icon-youbian">
                             </i>
@@ -42,7 +42,7 @@
                     </a>
                     <a href="/index/monthly" target="_blank">
                         <img src="/images/board03.png"/>
-                        <span class="board_tit three">
+                        <span class="board_tit hot_thirty">
                             30日热门
                             <i class="iconfont icon-youbian">
                             </i>
@@ -50,6 +50,7 @@
                     </a>
 
                 </div>
+                   {{-- 二维码 --}}
                 <div class="app">
                     <img src="/images/scan.jpeg"/>
                     <div class="info">
@@ -58,35 +59,15 @@
                             <i class="iconfont icon-youbian">
                             </i>
                         </div>
-                        <div class="description">
+                        <p>
                             随时随地发现和创作内容
-                        </div>
+                        </p>
                     </div>
                     <div class="hover_code">
                         <img src="/images/scan.jpeg"/>
                     </div>
                 </div>
-                <div class="daily">
-                    <div class="title">
-                        <span>
-                            爱你城日报
-                        </span>
-                        <a href="/v1/category" target="_blank">
-                            查看往期
-                        </a>
-                    </div>
-                    <a class="note" href="/v1/detail" target="_blank">
-                        <img src="/images/details_08.jpg"/>
-                        <div class="note_title">
-                            恋爱要谈到什么程度，才适合结婚呢？
-                        </div>
-                    </a>
-                    <a class="note" href="/v1/detail" target="_blank">
-                        <div class="note_title">
-                            三个心理学语言技巧，让你迅速提高情商
-                        </div>
-                    </a>
-                </div>
+            
                 @if(Auth::check())
                 <recommend-authors></recommend-authors>
                 @endif
