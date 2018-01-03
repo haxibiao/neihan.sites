@@ -59,7 +59,6 @@
                 display: none;
             }
         }
-        
     }
 }
 
@@ -268,6 +267,26 @@
     &:hover,&:focus {
         background-color: #3db922;
         color: $color-white;
+    }
+}
+
+// 新的专题、文章
+.btn_font_new {
+    @include font (13px, $color-green, 400);
+    padding-left: 10px;
+    &:hover,&:focus {
+        color: $color-green;
+    }
+}
+
+// 详情页编辑文章按钮
+.btn_edit {
+    @include btn (85px, 1px solid hsla(0, 0%, 59%, .6), inherit, $color-gray);
+    padding: 6px;
+    &:hover,&:focus {
+        border: 1px solid hsla(0, 0%, 50%, .6);
+        background-color: hsla(0, 0%, 60%, .1);
+        color: $color-gray;
     }
 }
 

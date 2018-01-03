@@ -26,6 +26,7 @@
                                     ＋ 关注
                                 </span>
                             </a>
+                            <a href="javascript:;" target="_blank" class="btn_base btn_edit pull-right">编辑文章</a>
                             <div class="meta">
                                 <span data-toggle="tooltip" data-placement="bottom" title="最后编辑于 2017.06.16.10:14">
                                     2017.06.15 12:09*
