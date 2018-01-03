@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="left">
         <!-- 关注页的左侧 -->
         <div class="dropdown change_type">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -43,7 +43,7 @@
         <ul class="js_subscription_list">
             <li>
                 <router-link to="/timeline">
-                    <div class="avatar">
+                    <div class="avatar avatar_xs">
                         <img src="/images/photo_02.jpg"/>
                     </div>
                     <div class="name">
@@ -54,7 +54,7 @@
             <li v-for="follow in follows_showing" @click="skip">
                 <router-link :to="'/'+follow.type+'/'+follow.id">
                     <a href="javascript:;" class="category">
-                        <div class="avatar">
+                        <div class="avatar avatar_xs avatar_collection">
                             <img :src="follow.img" alt="">
                         </div>
                         <div class="name">{{ follow.name }}</div>
@@ -131,5 +131,65 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+    #left {
+        a {
+            i {
+                font-size: 13px;
+            }
+            .icon-xialaxuan {
+                color: #c8c8c8;
+            }
+        }
+        .change_type {
+            display: inline-block;
+            font-size: 15px;
+            margin: 4px 0 0 10px;
+        }
+        .add_people {
+            font-size: 13px;
+            float: right;
+            margin: 4px 8px 0 0;
+        }
+        .js_subscription_list {
+            margin-top: 7px;
+            border-top: 1px solid #f0f0f0;
+            clear: both;
+            li {
+                a {
+                    display: inline-block;
+                    padding: 10px;
+                    font-size: 14px;
+                    width: 100%;
+                    .name {
+                        display: inline-block;
+                        vertical-align: middle;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        max-width: 210px;
+                        @media screen and (max-width: 992px) {
+                            max-width: 90px;
+                        }
+                        @media screen and (max-width: 540px) {
+                            display: block;
+                            padding: 5px 0 0 0;
+                        }
+                    }
+                    .count {
+                        float: right;
+                        margin-top: 10px;
+                        color: #969696;
+                    }
+                    &:hover,&.router-link-active {
+                        background-color: #f0f0f0;
+                        border-radius: 4px 0 0 4px!important;
+                    }
+                }
+                &:first-child a {
+                    border-radius: 0 0 0 4px!important;
+                }
+            }
+        }
+    }
 </style>

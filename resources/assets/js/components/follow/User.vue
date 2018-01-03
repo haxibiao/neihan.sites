@@ -4,32 +4,33 @@
 	</div>
 	<!-- 关注的用户 -->
 	<div v-else="user"id="user">
-		<div class="main_top clearfix">
-            <a class="avatar" href="'/user/'+user.id" target="_blank">
+		<div class="main_top">
+            <a class="avatar avatar_lg" href="'/user/'+user.id" target="_blank">
                 <img :src="user.avatar"/>
             </a>
-            <a class="botm contribute" :href="'/user/'+user.id" target="_blank">
+            <a class="btn_base btn_hollow" :href="'/user/'+user.id" target="_blank">
                 <span>
                 	个人主页
                 </span>
                 <i class="iconfont icon-youbian">
                 </i>
             </a>
-            <a class="contribute" :href="'/chat/with/'+user.id" target="_blank">
+            <a class="btn_base btn_hollow btn_hollow_xs" :href="'/chat/with/'+user.id" target="_blank">
                 <span>
                     发消息
                 </span>
             </a>
-            <div class="title">
-	            <a class="name" :href="'/user/'+user.id" target="_blank">
+            <div class="info_meta">
+	            <a class="headline name_title" :href="'/user/'+user.id" target="_blank">
 	                <span>
 	                    {{ user.name }}
 	                </span>
 	            </a>
-        	</div>
-            <p>
+        	
+            <p class="info_count">
                 写了{{ user.count_words }}字，获得了{{ user.count_favorites }}个喜欢
             </p>
+             </div>
         </div>
         <div>
             <!-- Nav tabs -->
@@ -118,5 +119,34 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+    #user {
+        .main_top {
+            @media screen and (max-width: 640px) {
+                padding-bottom: 30px;
+                .btn_base {
+                    position: absolute;
+                    top: 150px;
+                }
+                .btn_hollow {
+                    right: 40px;
+                }
+                .btn_hollow_xs {
+                    margin-right: 110px;
+                }
+            }
+        }
+        @media screen and (max-width: 610px) {
+            .trigger_menu {
+                li {
+                    a {
+                        padding: 13px 3px 4px 3px;
+                        i {
+                            margin: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
 </style>

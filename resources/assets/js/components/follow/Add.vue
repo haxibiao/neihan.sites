@@ -181,5 +181,30 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+    #add {
+        @media screen and (max-width: 640px) {
+            .trigger_menu {
+                li {
+                    a {
+                        padding: 13px 20px 4px 20px;
+                        span {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+        .user_list {
+            .info_meta {
+                .nickname {
+                    display: block;
+                    margin-bottom: 8px; 
+                }
+                .meta {
+                    margin-top: 8px;
+                }
+            }
+        }
+    }
 </style>

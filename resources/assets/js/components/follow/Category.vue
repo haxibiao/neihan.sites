@@ -4,33 +4,34 @@
 	</div>
 	<!-- 关注的专题 -->
 	<div v-else="category" id="category">
-		<div class="main_top clearfix">
-            <a class="avatar avatar_collection" :href="'/'+category.name_en" target="_blank">
+		<div class="main_top">
+            <a class="avatar avatar_lg avatar_collection" :href="'/'+category.name_en" target="_blank">
                 <img :src="category.logo"/>
             </a>
-            <a class="botm contribute" :href="'/'+category.name_en" target="_blank">
+            <a class="btn_base btn_hollow" :href="'/'+category.name_en" target="_blank">
                 <span>
                 	专题主页
                 </span>
                 <i class="iconfont icon-youbian">
                 </i>
             </a>
-            <a class="contribute" href="#">
+            <a class="btn_base btn_hollow btn_hollow_xs" href="#">
                 <span>
                     投稿
                 </span>
             </a>
-            <div class="title">
-		        <a class="name" :href="'/'+category.name_en" target="_blank">
+            <div class="info_meta">
+		        <a class="headline name_title" :href="'/'+category.name_en" target="_blank">
 		            <span>
 		                 {{ category.name }}
 		            </span>
 		        </a>
-            </div>
-            <p>
+            
+            <p class="info_count">
                 收录了{{ category.count }}篇文章 · {{ category.count_follows }}人关注
             </p>
-        </div>
+            </div>
+        </div>  
         <div>
             <!-- Nav tabs -->
             <ul class="trigger_menu" role="tablist">
@@ -114,5 +115,34 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+    #category {
+        .main_top {
+            @media screen and (max-width: 640px) {
+                padding-bottom: 30px;
+                .btn_base {
+                    position: absolute;
+                    top: 165px;
+                }
+                .btn_hollow {
+                    right: 40px;
+                }
+                .btn_hollow_xs {
+                    margin-right: 110px;
+                }
+            }
+        }
+        @media screen and (max-width: 610px) {
+            .trigger_menu {
+                li {
+                    a {
+                        padding: 13px 3px 4px 3px;
+                        i {
+                            margin: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
 </style>
