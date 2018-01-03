@@ -4,7 +4,6 @@
 		<div class="notification_menu">全部关注</div>
 		<ul class="follows_list">
             <li>
-                    <!-- <follow type="users" :id="notification.user_id" :user-id="current_user_id" :followed="notification.is_followed"></follow> -->
                 <div class="author">
                     <a class="avatar avatar_xs" href="#">
                         <img src="/images/photo_03.jpg"/>

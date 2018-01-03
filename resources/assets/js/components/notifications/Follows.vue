@@ -1,30 +1,24 @@
 <template>
     <!-- 收到的关注 -->
 	<div id="follows">
-		<div class="menu">全部关注</div>
+		<div class="notification_menu">全部关注</div>
 		<ul class="follows_list">
             <li v-for="notification in notifications">
-                <div class="follow_item">
+                <div class="author">
 
                     <follow type="users" :id="notification.user_id" :user-id="current_user_id" :followed="notification.is_followed"></follow>
 
-                    <a class="avatar" :href="'/user/'+notification.user_id">
+                    <a class="avatar avatar_xs" :href="'/user/'+notification.user_id">
                         <img :src="notification.user_avatar"/>
                     </a>
-<!--                     <a class="following" href="javascript:;">
-                        <span>
-                            <i class="iconfont icon-weibiaoti12">
-                            </i>
-                            <i class="iconfont icon-cha">
-                            </i>
-                        </span>
-                    </a> -->
-                    <a class="title" href="#">
-                        <a :href="'/user/'+notification.user_id">{{ notification.user_name }}</a>
-                         关注了你
-                    </a>
-                    <div class="info">
-                    	{{ notification.time }}
+                    <div class="info_meta">
+                      <div class="info">
+                          <a :href="'/user/'+notification.user_id" class="title">{{ notification.user_name }}</a>
+                           关注了你
+                      </div>
+                      <div class="time">
+                      	{{ notification.time }}
+                      </div>
                     </div>
                 </div>
 			</li>
@@ -59,5 +53,25 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+    #follows {
+        .follows_list {
+            li {
+                padding: 20px;
+                border-top: 1px solid #f0f0f0;
+                font-size: 15px;
+                .author {
+                    .avatar {
+                        float: left;
+                    }
+                    .btn_base {
+                        float: right;
+                    }
+                    .info_meta {
+                        padding: 0 0 0 50px;
+                    }
+                }
+            }
+        }
+    }
 </style>

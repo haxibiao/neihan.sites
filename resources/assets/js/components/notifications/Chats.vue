@@ -15,6 +15,8 @@
 						<li><a href="javascript:;" class="report link"><i class="iconfont icon-iconset03100"></i><span>举报用户</span></a></li>
 					</ul>
 				</span>
+       </div>
+     
 				<div class="chats_item">
 					<a :href="'/user/'+chat.with_id" class="avatar avatar_sm"><img :src="chat.with_avatar" alt="">
 						<span v-if="chat.unreads" class="badge">{{ chat.unreads }}</span>
@@ -22,14 +24,16 @@
 					<div class="title">
 						<a :href="'/user/'+chat.with_id" class="name">{{ chat.with_name }}</a>
 					</div>
-					<router-link :to="'/chat/'+chat.id">
-						<div class="info"><p>{{ chat.last_message }}</p></div>
+					<router-link :to="'/chat/'+chat.id" class="wrap">
+						<div class="new_abstract"><p>{{ chat.last_message }}</p></div>
 					</router-link>
-				</div>
-			   </div>
+				   </div>
+			   
 			</li>
 		</ul>
-	</div>
+
+
+</div>
 
  
 </template>

@@ -4,13 +4,15 @@
     </div>
     <div v-else>
      <div id="chat_messages">
-        <div class="chat_top">
+        <div class="notification_top">
             <router-link to="/chats" class="back_list">
                 <i class="iconfont icon-zuobian"></i>
                 返消息列表
             </router-link>
-            <b>与 <a href="javascript:;">{{ with_user.name }}</a> 的对话</b>
-            <div class="dropdown">
+            <div class="thematic">
+                与 <a href="javascript:;">{{ with_user.name }}</a> 的对话
+            </div>
+            <div class="operation">
                 <a href="javascript: ;" class="dropdown-toggle open_dropdown" data-toggle="dropdown" aria-expanded="false" >
                     <i class="iconfont icon-xia"></i>
                 </a>
@@ -33,11 +35,11 @@
         <div class="message_show">
             <a v-if="last_page>1" class="load_more" @click="loadMore">加载更多</a>
             <ul class="message_list">
-                <li v-for="message in messages" :class="'message_'+(isSelf(message.user_id) ? 'r':'l')">
-                    <a :href="'/user/'+message.user.id" class="avatar">
+                <li v-for="message in messages" :class="'message message_'+(isSelf(message.user_id) ? 'r':'l')">
+                    <a :href="'/user/'+message.user.id" class="avatar avatar_xs">
                         <img :src="message.user.avatar" />
                     </a>
-                    <div>
+                    <div class="message_box">
                         <span class="content">{{ message.message }}</span>
                     </div>
                     <span class="time">{{ message.time }}</span>
@@ -135,5 +137,105 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+     #chat_messages {
+        .notification_top {
+            @media screen and (max-width: 1200px) {
+                width: 580.01px;
+            }
+            @media screen and (max-width: 992px) {
+                width: 489.99px;
+            }
+            @media screen and (max-width: 768px) {
+                width: 389px;
+                text-align: left;
+                .back_list {
+                    float: none;
+                }
+                .operation {
+                    float: none;
+                }
+            }
+        }
+        .message_show {
+            padding-top: 50px;
+            .load_more {
+                margin: 0 auto;
+                background: none;
+                font-size: 14px;
+                color: #2B89CA;
+            }
+            .message_list {
+                padding: 10px 0 110px;
+                .time {
+                    font-size: 12px;
+                    color: #d9d9d9;
+                    margin-top: 2px;
+                }
+                .message_l {
+                    .avatar {
+                        float: left;
+                    }
+                    div {
+                        .content {
+                            background-color: #e7f1fc;
+                            border-color: #bad0e9;
+                            border-radius: 0 4px 4px 4px;
+                        }
+                        &::before,
+                        &::after {
+                            left: -9px;
+                            border-left: 9px solid transparent;
+                            border-top: 16px solid #bad0e9;
+                        }
+                        &::after {
+                            left: -7px;
+                            border-top: 16px solid #e7f1fc;
+                        }
+                    }
+                    .time {
+                        float: left;
+                        margin-left: 56px;
+                    }
+                }
+                .message_r {
+                    .avatar {
+                        float: right;
+                    }
+                    div {
+                        .content {
+                            float: right;
+                            background-color: #eee;
+                            border-color: #d9d9d9;
+                            border-radius: 4px 0 4px 4px;
+                        }
+                        &::before,
+                        &::after {
+                            right: -9px;
+                            border-right: 9px solid transparent;
+                            border-top: 16px solid #d9d9d9;
+                        }
+                        &::after {
+                            right: -7px;
+                            border-top: 16px solid #eee;
+                        }
+                    }
+                    .time {
+                        float: right;
+                        margin-right: 56px;
+                    }
+                }
+            }
+        }
+        .write_message {
+            @media screen and (max-width: 1200px) {
+                width: 580.01px;
+            }
+            @media screen and (max-width: 992px) {
+                width: 489.99px;
+            }
+            @media screen and (max-width: 768px) {
+                width: 250px;
+            }
+        }
+    }
 </style>
