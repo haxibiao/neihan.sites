@@ -1,0 +1,28 @@
+//关注页
+#follow {
+    .follow_wrp {
+        .aside {
+            @include spacing (81px 0 0, 0 0 30px);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            overflow: auto;
+            width: 330px;
+            @media screen and (max-width: 992px) {
+                width: 200px;
+            }
+            @media screen and (max-width: 540px) {
+                width: 93px;
+            }
+        }
+        .main {
+            margin-left: 360px;
+            @media screen and (max-width: 992px) {
+                margin-left: 230px;
+            }
+            @media screen and (max-width: 540px) {
+                margin-left: 105px;
+            }
+        }
+    }
+}

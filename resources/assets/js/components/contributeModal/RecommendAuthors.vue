@@ -1,11 +1,11 @@
 <template>
     <div class="recommended_authors">
-            <div class="title">
+            <div class="litter_title">
                 <span>
                     推荐作者
                 </span>
                 <a href="javascript:;" @click="fetchData">
-                    <i class="glyphicon glyphicon-refresh">
+                    <i class="iconfont icon-shuaxin">
                     </i>
                     换一批
                 </a>
@@ -15,13 +15,13 @@
                     <a class="avatar" :href="'/user/'+user.id" target="_blank">
                         <img :src="user.avatar"/>
                     </a>
-                    <a v-if="!user.is_followed"class="follow" href="javascript:;" @click="toggleFollow(user)">
+                    <a v-if="!user.is_followed"class="btn_font_follow" href="javascript:;" @click="toggleFollow(user)">
                         ＋ 关注
                     </a>
                     
-                    <a v-else href="javascript:;" class="following" @click="toggleFollow(user)">
+                    <a v-else href="javascript:;" class="btn_font_following" @click="toggleFollow(user)">
 				        <i class="gougou iconfont icon-weibiaoti12"></i><i class="chacha iconfont icon-cha"></i>
-		     	    </a>
+		     	          </a>
 
                     <a class="name" :href="'/user/'+user.id" target="_blank">
                         {{ user.name }}

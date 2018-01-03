@@ -1,0 +1,52 @@
+// 用户页/用户喜欢文章/关注专题文集页
+#user {
+    @include aside;
+    // 左侧
+    .main {
+        .main_top {
+            .btn_hollow {
+                margin-left: 5px;
+            }
+            @media screen and (max-width: 500px) {
+                padding-bottom: 50px;
+                .btn_base {
+                    position: absolute;
+                    top: 100px;
+                    margin-bottom: 0;
+                }
+                .btn_follow {
+                    right: 40px;
+                }
+                .btn_hollow {
+                    left: 40px;
+                }
+            }
+        }
+        @media screen and (max-width: 470px) {
+            .trigger_menu {
+                li {
+                    a {
+                        padding: 0 5px;
+                        i {
+                            margin: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // 右侧
+    .aside {
+        font-size: 14px;
+        padding-left: 35px;
+        .list {
+            padding-bottom: 10px;
+        }
+        .litter_title {
+            margin-bottom: 10px;
+        }
+        .user_dynamic {
+            padding-bottom: 6px;
+        }
+    }
+}

@@ -1,0 +1,77 @@
+// 热门榜
+.board {
+    padding-bottom: 4px;
+    min-height: 187px;
+    a {
+        position: relative;
+        display: inline-block;
+        img {
+            @include size (100%, 50px);
+            border-radius: 4px;
+            margin-bottom: 6px;
+        }
+        .board_tit {
+            @include font (16px, $color-white, normal);
+            position: absolute;
+            display: flex;
+            width: 71%;
+            padding-left: 10%;
+            top: 8px;
+            bottom: 8px;
+            left: 1%;
+            align-items: center;
+            i {
+                padding-left: 5px;
+            }
+        }
+    }
+}
+
+// 新上榜
+.hot_new {
+    background-color: #C094FE;
+}
+
+// 七日热门
+.hot_seven {
+    background-color: #FEB247;
+}
+
+// 三十日热门
+.hot_thirty {
+    background-color: #F58A76;
+}
+
+// 出版
+.hot_publish {
+    background-color: #B9E0D9;
+    color: #49837B;
+}
+
+// 学堂
+.hot_school {
+    background-color: #AED0E9;
+    color: #437DA0;
+}
+
+// 热门视频
+.hot_video {
+    display: inline-block;
+    width: 100%;
+    color: $color-black;
+    img {
+        @include size (95px, 70px);
+        @include border (6px, 1px solid $color-gray-light);
+        float: left;
+        margin-right: 6px;
+    }
+    .note_title {
+        max-height: 70px;
+        font-size: 14px;
+        padding-top: 5px;
+        @include line_number (3);
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

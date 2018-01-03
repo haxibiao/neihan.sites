@@ -1,0 +1,65 @@
+// 专题页分享
+.share {
+    @include spacing (0 0 17px 0, 0 0 16px);
+    border-bottom: 1px solid $color-white-silver;
+    line-height: 30px;
+    span {
+        font-size: 14px;
+        vertical-align: middle;
+    }
+    a {
+        margin-left: 10px;
+        i {
+            font-size: 18px;
+            vertical-align: middle;
+        }
+        &:hover {
+            .icon-weixin1 {
+                color: #339933;
+            }
+            .icon-sina {
+                color: #ff6600;
+            }
+            .icon-gengduo {
+                color: #666666;
+            }
+        }
+    }
+}
+
+// 详情页分享
+.share_group {
+    margin-top: 8px;
+    .share_circle {
+        @include size (50px, 50px);
+        @include border (50%, 1px solid $color-gray-light);
+        display: inline-block;
+        margin-left: 5px;
+        text-align: center;
+        vertical-align: middle;
+        i {
+            margin-top: 10px;
+            font-size: 24px;
+            line-height: 2;
+        }
+        .icon-weixin1 {
+            color: $color-green;
+        }
+        .icon-sina {
+            color: #e05244;
+        }
+        .icon-zhaopian {
+            color: $color-gray;
+        }
+        &:hover {
+            background-color: $color-white-milk;
+        }
+    }
+    .more_share {
+        @include font (14px, $color-gray,400);
+        width: auto;
+        padding: 4px 18px;
+        line-height: 40px;
+        border-radius: 50px;
+    }
+}

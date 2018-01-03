@@ -25,6 +25,9 @@ Route::get('/index/new-list','IndexController@recommendations_notes');
 //v1
 require_once 'v1/web.php';
 
+//v2
+require_once 'v2/web.php';
+
 //搜索
 Route::get('/search', 'SearchController@search');
 

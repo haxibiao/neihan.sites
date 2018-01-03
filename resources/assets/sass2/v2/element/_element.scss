@@ -1,0 +1,118 @@
+// 大标题
+.headline {
+    @include font (18px, $color-black, 700);
+    line-height: 1.5;
+}
+
+// 文章标题
+.paper_title {
+    display: inline-block;
+    span {
+        @include line_number (2);
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+// 右边aside的小标题
+.litter_title {
+    @include font (14px, $color-gray, normal);
+    text-align: left;
+    a {
+        color: $color-gray;
+        float: right;
+        i {
+            font-size: 14px;
+        }
+        &:hover {
+            color: $color-gray-deep;
+        }
+    }
+}
+
+// 详情页推荐带杠的标题
+.recommend_title {
+    font-size: 15px;
+    padding-left: 8px;
+    border-left: 3px solid $color-red-watermelon;
+    line-height: 1;
+    a {
+        float: right;
+        color: #A0A0A0;
+        font-size: 14px;
+        i {
+            font-size: 14px;
+        }
+    }
+}
+
+// 专题名、用户名、个人名
+.nickname {
+    vertical-align: middle;
+    span {
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+    i {
+        font-weight: normal;
+        vertical-align: middle;
+    }
+    .icon-nvsheng1 {
+        color: $color-red-watermelon;
+    }
+    .icon-nansheng1 {
+        color: $color-blue;
+    }
+}
+
+// 15大小的优秀作者图标
+.badge_icon_xs {
+    @include size (15px,15px);
+    margin-right: 5px;
+}
+
+// 20大小的优秀作者图标
+.badge_icon_sm {
+    @include size (20px,20px);
+    margin-right: 5px;
+}
+
+// 推荐页的标签图
+.tag_banner {
+    width: 100%;
+    min-height: 78px;
+    border-radius: 4px;
+    margin-bottom: 30px;
+}
+
+// 消息提醒数量
+.badge {
+    padding: 3px 6px;
+    background-color: $color-red-watermelon;
+}
+
+// 热门专题分类页和推荐作者页的标题图
+.recommend_img {
+    position: relative;
+    img {
+        width: 100%;
+        min-height: 78px;
+        border-radius: 4px;
+    }
+    .help {
+        @include font (16px,$color-white,400);
+        position: absolute;
+        top: 28px;
+        right: 30px;
+        i {
+            margin-right: 5px;
+        }
+        @media screen and (min-width: 992px) {
+            top: 38px;
+        }
+        @media screen and (min-width: 1200px) {
+            top: 48px;
+        }
+    }
+}

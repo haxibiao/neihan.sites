@@ -1,0 +1,104 @@
+// 设置页
+#setting {
+    .setting_wrp {
+        .aside {
+            @include spacing (81px 0 0, 0 0 30px);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            overflow: auto;
+            width: 330px;
+            @media screen and (max-width: 992px) {
+                width: 200px;
+            }
+            @media screen and (max-width: 768px) {
+                width: 180px;
+            }
+            @media screen and (max-width: 464px) {
+                width: 90px;
+            }
+            ul {
+                li {
+                    a {
+                        padding: 10px 25px;
+                        display: block;
+                        width: 100%;
+                        font-size: 15px;
+                        .setting_icon {
+                            @include size (32px, 32px);
+                            display: inline-block;
+                            margin-right: 15px;
+                            vertical-align: middle;
+                            background-color: #a0a0a0;
+                            border-radius: 4px;
+                            text-align: center;
+                            color: $color-white;
+                            i {
+                                font-size: 18px;
+                                margin: 6px 0 0 1px;
+                                display: block;
+                            }
+                        }
+                        span {
+                            vertical-align: middle;
+                        }
+                        &:hover {
+                            background-color: $color-white-silver;
+                        }
+                        @media screen and (max-width: 450px) {
+                            padding: 10px 15px;
+                            i {
+                                margin-right: 3px;
+                            }
+                            .name {
+                                display: none;
+                            }
+                        }
+                    }
+                    .router-link-active {
+                        background-color: #f0f0f0;
+                        border-radius: 4px;
+                    }
+                }
+            }
+        }
+        .main {
+            overflow: auto;
+            margin-left: 360px;
+            @media screen and (max-width: 992px) {
+                margin-left: 230px;
+            }
+            @media screen and (max-width: 768px) {
+                margin-left: 210px;
+            }
+            @media screen and (max-width: 464px) {
+                margin-left: 105px;
+            }
+            table {
+                width: 100%;
+                tr {
+                    border-bottom: 1px solid #f0f0f0;
+                    td {
+                        padding: 20px 0;
+                        .form-control {
+                            padding: 9px 15px;
+                            font-size: 15px;
+                            background-color: hsla(0, 0%, 71%, .1);
+                            box-shadow: none;
+                            &:focus {
+                                box-shadow: none;
+                                border-color: #ccd0d2;
+                            }
+                        }
+                    }
+                    &:last-child {
+                        border: none;
+                    }
+                }
+            }
+            .btn_follow {
+                margin: 30px 0 60px 0;
+            }
+        }
+    }
+}

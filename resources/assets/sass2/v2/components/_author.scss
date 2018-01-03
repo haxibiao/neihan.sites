@@ -1,0 +1,155 @@
+// 推荐作者
+.authors_list {
+    margin-bottom: 20px;
+    li {
+        margin-top: 15px;
+        font-size: 14px;
+        .btn_font_follow,.btn_font_following {
+            margin-top: 5px;
+            float: right;
+        }
+        .name {
+            display: block;
+            vertical-align: middle;
+            padding: 5px 68px 0 60px; 
+        }
+        p {
+            font-size: 12px;
+            color: $color-gray;
+            padding: 3px 0 0 60px;
+        }
+    }
+}
+
+// 查看更多推荐作者
+.find_more {
+    @include font (13px, #787878, normal);
+    @include spacing (0 0 15% 0, 7px 7px 7px 12px);
+    @include border (4px, 1px solid $color-gray-light);
+    background-color: $color-white-milk;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    line-height: 20px;
+    i {
+        font-size: inherit;
+    }
+    &:hover {
+        color: #787878;
+    }
+}
+
+// 管理员
+.supporter {
+    ul {
+        @include spacing (0 0 17px 0, 0 0 8px);
+        border-bottom: 1px solid $color-white-silver;
+        li {
+            margin-bottom: 10px;
+        }
+    }
+}
+
+// 管理员和推荐作者、关注的人的容器
+.collection_editor {
+    li {
+        a {
+            display: inline-block;
+            font-size: 14px;
+        }
+        .tag {
+            @include font (12px, $color-gray, normal);
+            @include border (3px, 1px solid $color-gray);
+            @include spacing (0 0 0 2px, 1px 3px);
+        }
+        .avatar {
+            @include avatar (32px, 32px);
+        }
+        .name {
+            vertical-align: middle;
+        }
+    }
+}
+
+// 展开更多
+.check_more {
+    color: $color-gray;
+    &:hover {
+        color: $color-black;
+    }
+}
+
+// 推荐作者、关注的人
+.collection_follower {
+    li {
+        display: inline-block;
+        a {
+            margin-right: -10px;
+            img {
+                border: 3px solid $color-white;
+                background-color: $color-white;
+            }
+        }
+    }
+    li:first-child {
+        margin-left: -3px;
+    }
+    .function_btn {
+        @include size (32px, 32px);
+        @include border (50%, 3px solid $color-white);
+        position: absolute;
+        margin-left: 3px;
+        background-color: $color-white-silver;
+        color: #999;
+        text-align: center;
+        line-height: 2;
+        &:hover {
+            background-color: #E0E0E0;
+            color: $color-gray;
+        }
+    }
+    .rewad_user {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 13px;
+        @include spacing (0 -10px 0 0, 0 0 0 10px);
+        cursor: pointer;
+    }
+}
+// .support_list {
+//     display: inline-block;
+//     vertical-align: middle;
+//     li {
+//         display: inline-block;
+//         margin: 0 -6px;
+//         .avatar {
+//             // @include avatar;
+//             margin-right: 0;
+//             img {
+//                 border: 3px solid $color-white;
+//                 background-color: $color-white;
+//             }
+//         }
+//     }
+// }
+
+
+// 赞赏作者
+.support_author {
+    padding: 30px 0 20px;
+    text-align: center;
+    clear: both;
+    border-bottom: 1px solid $color-white-silver;
+    p {
+        @include spacing (0 0 20px 0, 0 30px);
+        min-height: 24px;
+        font-size: 17px;
+    }
+    .btn_pay {
+        margin-bottom: 20px;
+        cursor: pointer;
+    }
+    .collection_follower {
+        display: inline-block;
+    }
+}

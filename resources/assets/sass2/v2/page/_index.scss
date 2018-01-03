@@ -1,0 +1,21 @@
+// 首页
+#index {
+    @include aside;
+    margin-top: -30px; // 左侧
+    .main {
+        // 专题分类
+        .classification {
+            margin-bottom: 10px;
+        } // 分割线
+        .split_line {
+            border-bottom: 1px solid $color-white-silver;
+            margin: -5px 0 15px;
+        }
+    } // 右侧
+    .aside {
+        padding-left: 35px;
+        .hot_video {
+            margin-top: 15px;
+        }
+    }
+}

@@ -61,47 +61,47 @@ mix
 
 
 
-// // v2
-// mix
-//     .js("resources/assets/js2/app2.js", "public/js")
-//     .sass("resources/assets/sass2/app2.scss", "public/css");
+// v2
+mix
+    .js("resources/assets/js2/app2.js", "public/js")
+    .sass("resources/assets/sass2/app2.scss", "public/css");
 
-// mix
-//     .styles(
-//         [
-//             "public/css/app2.css",
-//             "node_modules/summernote/dist/summernote.css",
-//             "node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css",
-//             "public/fonts/iconfont.css"
-//         ],
-//         "public/css/a2.css"
-//     )
-//     .version();
+mix
+    .styles(
+        [
+            "public/css/app2.css",
+            "node_modules/summernote/dist/summernote.css",
+            "node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css",
+            "public/fonts/iconfont.css"
+        ],
+        "public/css/a2.css"
+    )
+    .version();
 
-// mix
-//     .scripts([
-//             "public/js/app2.js",   
-//             "node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.js",
-//             "node_modules/summernote/dist/summernote.js",
-//             "node_modules/summernote/dist/lang/summernote-zh-CN.js",
-//             "resources/assets/js2/util.js"
-//         ], 
-//         "public/js/a2.js")
-//     .version();
+mix
+    .scripts([
+            "public/js/app2.js",   
+            "node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.js",
+            "node_modules/summernote/dist/summernote.js",
+            "node_modules/summernote/dist/lang/summernote-zh-CN.js",
+            "resources/assets/js2/util.js"
+        ], 
+        "public/js/a2.js")
+    .version();
 
 
-// mix.js("resources/assets/js2/spa2.js", "public/js");
-// mix
-//     .scripts(
-//         [
-//             "public/js/spa2.js",
-//             "node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.js",
-//             "node_modules/summernote/dist/summernote.js",
-//             "node_modules/summernote/dist/lang/summernote-zh-CN.js",
-//             "resources/assets/js2/util.js"
-//         ],
-//         "public/js/b2.js"
-//     )
-//     .version();
+mix.js("resources/assets/js2/spa2.js", "public/js");
+mix
+    .scripts(
+        [
+            "public/js/spa2.js",
+            "node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.js",
+            "node_modules/summernote/dist/summernote.js",
+            "node_modules/summernote/dist/lang/summernote-zh-CN.js",
+            "resources/assets/js2/util.js"
+        ],
+        "public/js/b2.js"
+    )
+    .version();
 
 mix.browserSync('l.ainicheng.com');

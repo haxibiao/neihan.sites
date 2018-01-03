@@ -1,0 +1,330 @@
+// 头部
+header {
+    position: fixed;
+    width: 100%;
+    border-bottom: 1px solid $color-white-silver;
+    top: 0;
+    left: 0;
+    z-index: 1030;
+    text-align: center;
+    background-color: $color-white;
+    .navbar-default {
+        background-color: $color-white;
+    }
+    .navbar {
+        border: none;
+        margin: 0;
+        .navbar_wrp {
+            .navbar-header {
+                a {
+                    @include spacing (0, 0 15px 0 0);
+                    img {
+                        max-height: 50px;
+                    }
+                }
+            }
+            .navbar-collapse {
+                .navbar-nav {
+                    li {
+                        a {
+                            @include font (15px, $color-black, normal);
+                        }
+                        .dropdown-menu {
+                            right: auto;
+                            a {
+                                i {
+                                    @include font (22px, $color-red-watermelon, normal);
+                                    margin-right: 15px;
+                                    vertical-align: middle;
+                                }
+                                &:hover {
+                                    background-color: $color-white-milk;
+                                }
+                            }
+                            @media screen and (max-width: 768px) {
+                                left: 40%;
+                            }
+                        }
+                        .badge {
+                            margin-top: -11px;
+                        }
+                    } // 个人用户
+                    .own {
+                        .avatar {
+                            @include spacing (5px 25px 5px 20px, 0);
+                            &::before {
+                                content: "";
+                                position: absolute;
+                                top: 18px;
+                                right: -14px;
+                                border-left: 5px solid transparent;
+                                border-right: 5px solid transparent;
+                                border-top: 6px solid $color-gray;
+                            }
+                        }
+                    }
+                    // 注册、写文章
+                    .register,.creation {
+                        a {
+                            padding: 6px;
+                        }
+                    }
+                    .tab {
+                        i {
+                            vertical-align: middle;
+                        }
+                        .menu_text {
+                            vertical-align: middle;
+                            @media screen and (max-width: 1200px) and (min-width: 768px) {
+                                display: none;
+                            }
+                        }
+                        &:hover {
+                            background-color: $color-white-milk;
+                        }
+                    }
+                    .notification {
+                        .dropdown-menu {
+                            width: 200px;
+                            .badge {
+                                margin-top: 6px;
+                                float: right;
+                            }
+                        }
+                        &:hover>.dropdown-menu {
+                            display: block;
+                        }
+                    }
+                    .own:hover>.dropdown-menu {
+                        display: block;
+                    }
+                    .active {
+                        .identifier {
+                            color: $color-red-watermelon;
+                            background-color: initial;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+//尾部
+footer {
+    margin: 3% 0;
+    div {
+        color: $color-gray;
+        a {
+            color: $color-gray;
+            &:hover {
+                color: $color-black;
+            }
+        }
+    }
+    .icp {
+        color: $color-gray-shallow;
+        a {
+            color: $color-gray-shallow;
+            img {
+                height: 30px;
+            }
+        }
+    }
+}
+
+// 底部小火箭、分享、收藏、投稿
+.side_tool {
+    position: fixed;
+    z-index: 101;
+    bottom: 40px;
+    right: 40px;
+    ul {
+        padding-bottom: 10px;
+        li {
+            border: 1px solid $color-gray-light;
+            border-bottom: none;
+            background-color: #fff;
+            a {
+                @include size (50px, 50px);
+                text-align: center;
+                display: block;
+                outline-style: none;
+                margin: 0;
+                i {
+                    padding-top: 16px;
+                    font-size: 20px;
+                    display: block;
+                }
+                .icon-xiangxiajiantou-copy {
+                    @include font (25px, $color-black, 700);
+                }
+                .icon-jia1,
+                .icon-tougaoguanli {
+                    font-weight: 700;
+                }
+                .icon-shoucang1 {
+                    color: $color-red-watermelon;
+                }
+            }
+            &:hover {
+                background-color: hsla(0, 0%, 71%, .1);
+            }
+            &:last-child {
+                border-bottom: 1px solid $color-gray-light;
+            }
+        }
+        .toup_rocket {
+            display: none;
+        }
+        .share {
+            position: relative;
+            .dropdown-menu {
+                top: -80%;
+                left: auto;
+                right: 60px;
+                padding: 5px 0;
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    left: 100%;
+                    padding: 5%;
+                    border: 1px solid $color-gray-light;
+                    border-color: $color-gray-light $color-gray-light transparent transparent;
+                    background-color: $color-white;
+                    transform: translate(-50%, -50%) rotateZ(45deg);
+                }
+                li {
+                    border: 0;
+                    a {
+                        @include size(100%, 100%);
+                        padding: 10px 15px;
+                        text-align: left;
+                        line-height: 20px;
+                        i {
+                            display: inline-block;
+                            vertical-align: middle;
+                            padding: 0 10px 0 0;
+                            font-size: 18px;
+                        }
+                        .icon-weixin1 {
+                            color: $color-green;
+                        }
+                        .icon-sina {
+                            color: #e05244;
+                        }
+                        .icon-zhaopian {
+                            color: $color-gray;
+                        }
+                        span {
+                            font-size: 13px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// 用户专题投稿模态框
+#categoryModal_user {
+    @include modal;
+}
+
+// 个人专题收录模态框
+#categoryModal_home {
+    @include modal;
+}
+
+// 个人专题删除模态框
+#categoryModal_Delete {
+    background-color: hsla(0, 0%, 100%, .7);
+    .modal-dialog {
+        position: absolute;
+        left: 25%;
+        top: 25%;
+        max-height: 80%;
+        max-width: 50%;
+        @media screen and (min-width: 1080px) {
+            left: 35%;
+        }
+        .modal-header {
+            padding: 20px;
+        }
+        .modal-body {
+            padding: 20px;
+            font-size: 15px;
+            p {
+                margin-bottom: 10px;
+            }
+            .form-control {
+                padding: 8px 10px;
+                box-shadow: none;
+                &:focus {
+                    box-shadow: none;
+                    border-color: #ccd0d2;
+                }
+            }
+        }
+        .modal-footer {
+            padding: 20px;
+            border: 0;
+            .cancel {
+                display: inline-block;
+                vertical-align: middle;
+                margin-top: 5px;
+                color: #999;
+                &:hover {
+                    color: $color-black;
+                }
+            }
+            .btn_remove {
+                padding: 2px 4px;
+                margin-left: 30px;
+            }
+        }
+    }
+}
+
+// 用户文章收入到个人管理的专题
+#detailModal_user {
+    @include modal;
+}
+
+// 个人文章收入个人专题或投稿用户专题
+#detailModal_home {
+    @include modal;
+    .modal-dialog {
+        width: 960px;
+        @media screen and (max-width: 1080px) {
+            width: 750px;
+        }
+        @media screen and (max-width: 768px) {
+            width: 350px;
+        }
+        .modal-body {
+            padding-bottom: 30px;
+            height: 500px;
+            overflow: auto;
+            ul {
+                .title {
+                    padding: 20px 0 10px 20px;
+                    font-size: 15px;
+                    background-color: #f4f4f4;
+                    border-bottom: 1px solid $color-white-silver;
+                    a {
+                        font-size: 13px;
+                        color: $color-green;
+                        padding-left: 10px;
+                    }
+                }
+                li {
+                    border-right: 1px solid $color-white-silver;
+                    border-bottom: 1px solid $color-white-silver;
+                    padding: 25px 20px;
+                }
+            }
+        }
+    }
+}
