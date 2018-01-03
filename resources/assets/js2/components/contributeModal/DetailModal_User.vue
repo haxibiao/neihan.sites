@@ -17,11 +17,13 @@
 		                        新建专题
 		                    </a>
 		                </h4>
-		                <div>
-		                    <input placeholder="搜索我管理的专题" type="text" class="form-control" />
-		                    <i class="iconfont icon-sousuo">
-		                    </i>
-		                </div>
+		                <div class="search_input">
+			                <div class="search_box">
+			                    <input placeholder="搜索我管理的专题" type="text" class="form-control" />
+			                    <i class="iconfont icon-sousuo">
+			                    </i>
+			                </div>
+			            </div>
 		            </div>
 		            <div class="modal-body">
 		                <ul>
@@ -31,7 +33,7 @@
 		                    	</a>
 		                        <div>
 		                            <div class="note_name">情缘未了</div>
-		                            <span class="meta">菇凉大大 编</span>
+		                            <span class="note_meta">菇凉大大 编</span>
 		                            <a href="javascript:;" class="btn_base btn_push">收入</a>
 		                        </div>
 		                    </li>
@@ -41,9 +43,9 @@
 		                    	</a>
 		                        <div>
 		                            <div class="note_name">情缘未了</div>
-		                            <span class="meta">菇凉大大编</span>
+		                            <span class="note_meta">菇凉大大编</span>
 		                            <span class="status has_add">已收入</span>
-		                            <a href="javascript:;" class="btn_base btn_remove" style="display: block;">移除</a>
+		                            <a href="javascript:;" class="btn_base btn_remove">移除</a>
 		                        </div>
 		                    </li>
 		                </ul>
@@ -68,5 +70,59 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+	#detailModal_user {
+	    .modal-dialog {
+	        transform: translate(-50%, -50%);
+	        .modal-header {
+	            .notice {
+	                font-size: 13px;
+	                color: #969696;
+	            }
+	            .search_input {
+	                margin: 20px 0 0;
+	            }
+	        }
+	        .modal-body {
+	            height: 460px;
+	            ul {
+	                li {
+	                    padding: 20px;
+	                    font-size: 15px;
+	                    border-bottom: 1px solid #e6e6e6;
+	                    position: relative;
+	                    div {
+	                        display: inline-block;
+	                        vertical-align: middle;
+	                        .note_name {
+	                            display: block;
+	                        }
+	                        .note_meta {
+	                            font-size: 12px;
+	                            color: #969696;
+	                            display: inline-block;
+	                        }
+	                        .btn_base {
+	                            position: absolute;
+	                            top: 50%;
+	                            right: 20px;
+	                            margin-top: -11px;
+	                        }
+	                        .status {
+	                            color: #969696;
+	                            font-size: 13px;
+	                            display: none;
+	                        }
+	                        .has_add {
+	                            font-size: 12px;
+	                            color: #42c02e;
+	                            display: inline-block;
+	                            vertical-align: middle;
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	    }
+	}
 </style>

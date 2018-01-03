@@ -42,7 +42,7 @@
                     </ul>
                     <form class="navbar-form navbar-left" role="search">
                         <div class="form-group">
-                            <div class="search_wrp">
+                            <div class="search_wrp search_box">
                                 <input class="form-control" placeholder="搜索" type="text"/>
                                 <i class="iconfont icon-sousuo">
                                 </i>

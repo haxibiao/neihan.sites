@@ -1,3 +1,37 @@
+// 模态框搜索
+.search_box {
+    position: relative;
+    .form-control {
+        @include border (40px, 0);
+        padding: 0 40px 0 20px;
+        background-color: hsla(0,0%,71%,.25);
+        box-shadow: none;
+        &:focus {
+            box-shadow: none;
+        }
+    }
+    .icon-sousuo {
+        @include size (30px, 30px);
+        @include font (20px, $color-gray-deep, normal);
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        text-align: center;
+        border-radius: 50%;
+    }
+}
+
+// 输入框
+.input_box {
+    .form-control {
+        padding: 8px 10px;
+        box-shadow: none;
+        &:focus {
+            border-color: #ccd0d2;
+        }
+    }
+}
+
 // 搜索框
 .navbar-form {
     border-color: transparent;
@@ -5,18 +39,11 @@
     .form-group {
         .search_wrp {
             display: inline-block;
-            position: relative;
             margin: 0 auto;
             .form-control {
                 @include size (170px, 36px);
-                @include border (18px, 0);
-                padding: 0 40px 0 20px;
-                background-color: #eee;
-                outline: none;
                 transition: all 0.3s ease-in-out;
                 &:focus {
-                    outline: 0 !important;
-                    box-shadow: none;
                     width: 190px;
                     &+.icon-sousuo {
                         color: $color-white-silver;
@@ -26,76 +53,72 @@
             }
             .icon-sousuo {
                 @include size (28px, 28px);
-                @include font (20px, $color-gray-deep, normal);
-                position: absolute;
-                top: 4px;
-                right: 4px;
-                text-align: center;
                 line-height: 28px;
-                border-radius: 50%;
-            } //热门搜索
-            .hot_search_wrp {
-                margin-top: 9px;
-                width: 180px;
-                left: 0;
-                top: 100%;
-                visibility: hidden;
-                opacity: 0;
-                border-radius: 4px;
-                z-index: 1030;
-                &,
-                &::before {
-                    position: absolute;
-                    background-color: #fff;
-                    box-shadow: 0 0 8px rgba(0, 0, 0, .2);
+            }
+        }
+    }
+}
+
+// 搜索框下拉热门搜索
+.hot_search_wrp {
+    margin-top: 9px;
+    width: 180px;
+    left: 0;
+    top: 100%;
+    visibility: hidden;
+    opacity: 0;
+    border-radius: 4px;
+    z-index: 1030;
+    &,
+    &::before {
+        position: absolute;
+        background-color: #fff;
+        box-shadow: 0 0 8px rgba(0, 0, 0, .2);
+    }
+    &::before {
+        @include size (10px, 10px);
+        content: "";
+        left: 27px;
+        transform: rotate(45deg);
+        top: -5px;
+        z-index: -1;
+    }
+    .hot_search {
+        padding: 15px 15px 10px;
+        border-bottom: 1px solid #f0f0f0;
+        background-color: #FFF;
+        border-radius: 4px;
+        .litter_title {
+            @include font (14px, $color-gray, normal);
+            line-height: 2;
+            margin-bottom: 10px;
+            text-align: left;
+            .more {
+                float: right;
+                height: 100%;
+                color: $color-gray;
+                i {
+                    font-size: 14px;
+                    vertical-align: middle;
                 }
-                &::before {
-                    @include size (10px, 10px);
-                    content: "";
-                    left: 27px;
-                    transform: rotate(45deg);
-                    top: -5px;
-                    z-index: -1;
+                &:hover {
+                    color: $color-black;
                 }
-                .hot_search {
-                    padding: 15px 15px 10px;
-                    border-bottom: 1px solid #f0f0f0;
-                    background-color: #FFF;
-                    border-radius: 4px;
-                    .litter_title {
-                        @include font (14px, $color-gray, normal);
-                        line-height: 2;
-                        margin-bottom: 10px;
-                        text-align: left;
-                        .more {
-                            float: right;
-                            height: 100%;
-                            color: $color-gray;
-                            i {
-                                font-size: 14px;
-                                vertical-align: middle;
-                            }
-                            &:hover {
-                                color: $color-black;
-                            }
-                        }
-                    }
-                    ul {
-                        text-align: left;
-                        li {
-                            margin-right: 10px;
-                            display: inline-block;
-                            line-height: 28px;
-                            a {
-                                @include font (12px, $color-gray, normal);
-                                @include border (3px, 1px solid #ddd);
-                                padding: 2px 6px;
-                                &:hover {
-                                    color: $color-black;
-                                    border-color: $color-gray-deep;
-                                }
-                            }
-                        }
+            }
+        }
+        ul {
+            text-align: left;
+            li {
+                margin-right: 10px;
+                display: inline-block;
+                line-height: 28px;
+                a {
+                    @include font (12px, $color-gray, normal);
+                    @include border (3px, 1px solid #ddd);
+                    padding: 2px 6px;
+                    &:hover {
+                        color: $color-black;
+                        border-color: $color-gray-deep;
                     }
                 }
             }

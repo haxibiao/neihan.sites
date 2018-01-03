@@ -72,7 +72,8 @@ mix
             "public/css/app2.css",
             "node_modules/summernote/dist/summernote.css",
             "node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css",
-            "public/fonts/iconfont.css"
+            "public/fonts/iconfont.css",
+            "resources/assets/css/hack.css"
         ],
         "public/css/a2.css"
     )
