@@ -43,13 +43,22 @@
                 .action {
                     margin-top: 20px;
                     display: inline-block;
+                    .btn_base {
+                        margin-right: 15px;
+                        cursor: pointer;
+                    }
                     .btn_hollow {
                         padding: 7px;
+                    }
+                    .disable {
+                        opacity: .5;
+                        pointer-events: none;
                     }
                     .warn {
                         font-size: 13px;
                         color: $color-gray;
                         display: inline-block;
+                        margin-top: 5px;
                     }
                 }
             }

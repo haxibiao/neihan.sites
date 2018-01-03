@@ -14,7 +14,7 @@
             </a>
         </li>
         <li data-container="body" data-original-title="文章投稿" data-placement="left" data-toggle="tooltip" data-trigger="hover">
-            <a data-target="#detailModal_home" data-toggle="modal" href="#">
+            <a data-target="#detailModal_home" data-toggle="modal" href="javascript:;">
                 <i class="iconfont icon-tougaoguanli">
                 </i>
             </a>
@@ -93,12 +93,6 @@
         --}}
     </ul>
 </div>
-
-{{-- modal --}}
-<detailmodal-user>
-</detailmodal-user>
-<detailmodal-home>
-</detailmodal-home>
 
 @push('scripts')
 <script>

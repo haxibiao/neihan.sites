@@ -58,9 +58,11 @@ Vue.component('setting-left', require('./components/setting/SettingLeft.vue'));
 
 // 模态框
 Vue.component('categorymodal-home', require('./components/contributeModal/CategoryModal_Home.vue'));
+Vue.component('categorymodal-delete', require('./components/contributeModal/CategoryModal_Delete.vue'));
 Vue.component('categorymodal-user', require('./components/contributeModal/CategoryModal_User.vue'));
-Vue.component('detailmodal-home', require('./components/contributeModal/DetailModal_Home.vue'));
-Vue.component('detailmodal-user', require('./components/contributeModal/DetailModal_User.vue'));
+Vue.component('detailmodal-home', require('./components/detail/DetailModal_Home.vue'));
+Vue.component('detailmodal-user', require('./components/detail/DetailModal_User.vue'));
+Vue.component('recharge-modal', require('./components/wallet/RechargeModal.vue'));
 
 Vue.component('article-list', require('./components/ArticleList.vue'));
 Vue.component('category-list', require('./components/CategoryList.vue'));
