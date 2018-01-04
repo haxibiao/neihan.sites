@@ -1,16 +1,18 @@
 {{-- 个人页右侧 --}}
 <div class="aside col-sm-4">
     <div class="litter_title">
-        个人介绍
-    </div>
+       <span>
+            个人介绍
+       </span>
     <a class="function_btn" href="javascript:;">
         <i class="iconfont icon-xie">
         </i>
         编辑
     </a>
+    </div>
     <form action="/user/" class="intro_form" method="post">
         <textarea class="form-control" id="user_intro" name="user[intro]">{{ $user->introduction  }}</textarea>
-        <input class="btn_hollow" name="commit" type="submit" value="保存"/>
+        <input class="btn_base btn_hollow btn_hollow_xs" name="commit" type="submit" value="保存"/>
         <a href="javascript:void(null);">
             取消
         </a>

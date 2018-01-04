@@ -22,7 +22,7 @@
         @stack('css')
     </head>
     <body>
-        <div id="app" {!! is_in_app() ? '' : 'style="padding-top: 60px"' !!}>
+        <div id="app" {!! is_in_app() ? '' : '' !!}>
             @if(Auth::check())
                 @include('parts.head_user')
             @else

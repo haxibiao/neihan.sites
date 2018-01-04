@@ -30,7 +30,8 @@
                                     type="users" 
                                     id="{{ $article->user->id }}" 
                                     user-id="{{ Auth::check() ? Auth::user()->id : false }}" 
-                                    followed="{{ Auth::check() ? Auth::user()->isFollow('user', $article->user->id) : false }}">
+                                    followed="{{ Auth::check() ? Auth::user()->isFollow('user', $article->user->id) : false }}"
+                                    is_small=1>
                                   </follow>
                             <div class="meta">
                                 <span>
@@ -51,7 +52,7 @@
                             </div>
                         </div>
                         @if(Auth::check() && Auth::user()->is_editor)
-                        <a class="btn btn-info pull-right" href="/article/{{ $article->id }}/edit">编辑</a>
+                           <a href="/article/{{ $article->id }}/edit" target="_blank" class="btn_base btn_edit pull-right">编辑文章</a>
                         @endif
                     </div>
                         

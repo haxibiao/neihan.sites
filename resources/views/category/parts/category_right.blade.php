@@ -1,10 +1,11 @@
-           {{-- 专题右侧 --}}
+   {{-- 专题右侧 --}}
 <div class="aside col-sm-4">
     <p class="litter_title">
         专题公告
     </p>
     <div class="description">
         {{ $category->description }}
+    </div>
         <div class="share">
             <span>
                 分享到
@@ -76,5 +77,4 @@
                 </ul>
             </div>
         </div>
-    </div>
 </div>

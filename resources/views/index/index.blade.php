@@ -10,7 +10,7 @@
             {{-- 轮播图 --}}
             @include('parts.poster')
             {{-- 左侧 --}}
-            <div class="essays col-xs-12 col-sm-8">
+            <div class="main col-xs-12 col-sm-8">
                 {{-- 专题分类 --}}
 
                 @include('parts.list.category_list',['categories'=>$data->categories])

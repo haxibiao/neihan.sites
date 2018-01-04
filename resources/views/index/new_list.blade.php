@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row">
             {{-- 左侧 --}}
-            <div class="essays col-xs-12 col-sm-8">
+            <div class="main col-xs-12 col-sm-8">
             	<img src="/images/board_01.png" class="tag_banner" />
                 {{-- 文章摘要 --}}
                 @include('category.parts.category_item',['articles'=>$articles])

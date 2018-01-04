@@ -7,7 +7,7 @@
 <div id="home">
     <div class="container">
         <div class="row">
-            <div class="essays col-xs-12 col-sm-8">
+            <div class="main col-xs-12 col-sm-8">
                 @include('user.parts._user_show_main_top')
                 @include('user.parts._user_show_nav_tabs')
             </div>

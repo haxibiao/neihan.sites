@@ -9,7 +9,7 @@
                 <a class="avatar" href="/v1/user" target="_blank">
                     <img src="{{ $article->user->avatar }}"/>
                 </a>
-                <div class="info">
+                <div class="info_meta">
                     <a href="/user/{{ $article->user->id }}" target="_blank">
                         {{ $article->user->name }}
                     </a>
@@ -28,12 +28,12 @@
                 {{ $article->description() }}
             </p>
             <div class="meta">
-                <a href="/v1/detail" target="_blank">
+                <a href="/v1/detail" target="_blank" class="count count_link">
                     <i class="iconfont icon-liulan">
                     </i>
                     {{ $article->hits }}
                 </a>
-                <a href="/v1/detail" target="_blank">
+                <a href="/v1/detail" target="_blank" class="count count_link">
                     <i class="iconfont icon-svg37">
                     </i>
                     {{ $article->count_replies }}
