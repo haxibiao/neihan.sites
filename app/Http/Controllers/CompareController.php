@@ -34,7 +34,6 @@ class CompareController extends Controller
     public function create()
     {
         $options = [
-            "4" => 4,
             "6" => 6,
             "8" => 8,
             "12"=>12,

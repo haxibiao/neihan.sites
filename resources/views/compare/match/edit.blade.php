@@ -28,13 +28,13 @@
 
      				    <div class="form-group{{ $errors->has('TA') ? ' has-error' : '' }}">
      				        {!! Form::label('TA', '参赛队伍1') !!}
-     				        {!! Form::text('TA', $match->TA, ['class' => 'form-control', 'required' => 'required' ,'disabled'=>'disabled']) !!}
+     				        {!! Form::text('TA', $match->TA(), ['class' => 'form-control', 'required' => 'required' ,'disabled'=>'disabled']) !!}
      				        <small class="text-danger">{{ $errors->first('TA') }}</small>
      				    </div>
 
      				    <div class="form-group{{ $errors->has('TB') ? ' has-error' : '' }}">
      				        {!! Form::label('TB', '参赛队伍2') !!}
-     				        {!! Form::text('TB', $match->TB, ['class' => 'form-control', 'required' => 'required','disabled'=>'disabled']) !!}
+     				        {!! Form::text('TB', $match->TB(), ['class' => 'form-control', 'required' => 'required','disabled'=>'disabled']) !!}
      				        <small class="text-danger">{{ $errors->first('TB') }}</small>
      				    </div>
 
@@ -45,7 +45,7 @@
                              </div>
 
                              <div class="form-group{{ $errors->has('score') ? ' has-error' : '' }}">
-                                 {!! Form::label('score', '比分统计') !!}
+                                 {!! Form::label('score', '比分统计(请规范填写A队伍比分:B队伍比分,如3:2)') !!}
                                  {!! Form::text('score', null, ['class' => 'form-control', 'required' => 'required']) !!}
                                  <small class="text-danger">{{ $errors->first('score') }}</small>
                              </div>

@@ -32,4 +32,6 @@ class Team extends Model
     {
         return $this->history;
     }
+
+    //computed
 }

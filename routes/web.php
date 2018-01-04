@@ -108,7 +108,7 @@ Route::get('alipay/wap/notify', 'Alipay\WapController@wapNotify');
 Route::resource('/compare','CompareController');
 Route::resource('/match','MatchController');
 Route::resource('/team','TeamController');
-Route::get('/make-team-matches','MatchController@makeTeamMatches');
+Route::get('/make-team-matches','MatchController@makeTeamGroupMatches');
 
 //last, use category name_en
 Route::get('/{name_en}', 'CategoryController@name_en');

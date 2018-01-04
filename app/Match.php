@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Team;
 
 class Match extends Model
 {
@@ -24,11 +25,11 @@ class Match extends Model
 
     public function TA()
     {
-        return $this->belongsTo(\App\User::class, 'TA');
+        return Team::find($this->TA)->name;
     }
 
     public function TB()
     {
-        return $this->belongsTo(\App\User::class, 'TB');
+        return Team::find($this->TB)->name;
     }
 }
