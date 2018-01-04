@@ -7,12 +7,14 @@
 <div id="categories">
     <div class="container">
         <div class="recommend">
+          <div class="recommend_img">
             <img src="/images/recommend_banner.png"/>
             <a class="help" href="javascript:;" target="_blank">
                 <i class="iconfont icon-send1179291easyiconnet">
                 </i>
                 如何创建并玩转专题
             </a>
+          </div>
             <div>
                 <!-- Nav tabs -->
                 <ul class="trigger_menu" role="tablist">
@@ -41,19 +43,19 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div class="tab-pane fade in active" id="tuijian" role="tabpanel">
-                        <div class="row clearfix">
+                        <div class="row">
                            @include('parts.list.categories_list_item',['categories'=>$data['commend']])
                           {{--  <category-list api="{{ request()->path() }}?recommend=1" start-page="2"></category-list> --}}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="huo" role="tabpanel">
-                        <div class="row clearfix">
+                        <div class="row">
                            @include('parts.list.categories_list_item',['categories'=>$data['hot']])
                        {{--     <category-list api="{{ request()->path() }}?hot=1" start-page="2"></category-list> --}}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="chengshi" role="tabpanel">
-                        <div class="row clearfix">
+                        <div class="row">
                            @include('parts.list.categories_list_item',['categories'=>$data['city']])
                            {{-- <category-list api="{{ request()->path() }}?city=1" start-page="2"></category-list> --}}
                         </div>
