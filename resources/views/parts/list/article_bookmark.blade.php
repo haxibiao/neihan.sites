@@ -10,8 +10,8 @@
                 <a class="avatar" href="/user/{{ $article->user->id }}" target="_blank">
                     <img src="{{ $article->user->avatar }}"/>
                 </a>
-                <div class="info">
-                    <a href="/user/{{ $article->user->id }}" target="_blank">
+                <div class="info_meta">
+                    <a href="/user/{{ $article->user->id }}" target="_blank" class="nickname">
                         {{ $article->user->name }}
                     </a>
                     <a href="/user/{{ $article->user->id }}" target="_blank">
@@ -29,17 +29,17 @@
                 {{ $article->description() }}
             </p>
             <div class="meta">
-                <a href="javascript:;" target="_blank">
+                <a href="javascript:;" target="_blank" class="count count_link">
                     <i class="iconfont icon-liulan">
                     </i>
                     {{ $article->hits }}
                 </a>
-                <a href="javascript:;" target="_blank">
+                <a href="javascript:;" target="_blank" class="count count_link">
                     <i class="iconfont icon-svg37">
                     </i>
                     {{ $article->count_replies }}
                 </a>
-                <span>
+                <span class="count">
                     <i class="iconfont icon-03xihuan">
                     </i>
                     {{ $article->likes }}

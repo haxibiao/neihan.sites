@@ -47,7 +47,6 @@ export default {
   data () {
     return {
          followedResult:null,
-         is_small:false
     }
   }
 }

@@ -1,5 +1,6 @@
 <template>
-	<div v-else class="article_list">
+	<div v-else>
+   <ul class="article_list">
     <li v-for="article in articles" :class="article.has_image ? 'article_item have_img' : 'note_item'">
         <a v-if="article.has_image" class="wrap_img" href="javascript:;" target="_blank">
             <img :src="article.primary_image" :alt="article.title">
@@ -49,6 +50,7 @@
             </div>
         </div>
     </li>
+  </ul>
 
       <a class="button btn_load_more" href="javascript:;">{{ page >= lastPage ? '已经到底了':'正在加载更多' }}...</a>
 

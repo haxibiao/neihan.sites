@@ -39,7 +39,7 @@
                                 </a>
                             </div>
                         </div>
-                        @include('parts.list.article_list_category',['articles'=>$data['related']])
+                          @include('parts.list.commend_article')
                     </div>
                 </div>
             </div>

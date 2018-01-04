@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-@if(!empty($team))
+@if($compare->teams()->count() == $compare->count)
 <div class="container">
     <h2 class="text-center">
         {{ $compare->name }}
@@ -23,14 +23,14 @@
     <br/>
     @foreach($matchs['1'] as $match)
     <button class="btn btn-info" style="margin: 4%" type="button">
-        {{ $match->TA }}
+        {{ $match->TA() }}
     </button>
     对战
     <button class="btn btn-info" style="margin: 4%" type="button">
-        {{ $match-> TB }}
+        {{ $match->TB() }}
     </button>
     @if($match->winner)
-        该场已经结束:比分为{{ $match->score }}
+        该场已经结束:比分为 <button type="button" class="btn btn-danger">{{ $match->score }}</button>
     @else
        该场比赛还在进行
     <a class="btn btn-success" href="/match/{{ $match->id }}/edit" style="margin: 4%">
@@ -63,7 +63,7 @@
 @else
 <div class="container">
     <div class="text-center">
-        参赛队伍还不足够! 
+        参赛队伍还不足够!
         <a class="btn btn-success" href="/team/create">
             立即添加
         </a>
