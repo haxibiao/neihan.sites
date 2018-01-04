@@ -1,6 +1,6 @@
 <template>
              <div class="like">
-            <div class="btn_base btn_like_group">
+            <div :class="liked?'btn_base btn_like_group btn_like_group_active':'btn_base btn_like_group'">
               <div class="btn_like">
                   <a v-if="isLogin" href="javascrip:;" @click="toggle_like">
                       <i :class="liked ? 'iconfont icon-03xihuan' : 'iconfont icon-xin' ">
