@@ -99,6 +99,117 @@ class ArticleController extends Controller
         return $article;
     }
 
+   public function checkCategory(Request $request, $id)
+    {
+        $category = Category::findOrFail($id);
+        $user     = $request->user();
+        $articles = $user->articles()->paginate(10);
+        foreach ($articles as $article) {
+            $query = $article->categories()->wherePivot('category_id', $id);
+            if ($query->count()) {
+                $article->submited_status = $query->first()->pivot->submit;
+            } else {
+                $article->submited_status = '';
+            }
+            $article->submit_status = $this->get_submit_status($article->submited_status);
+        }
+
+        return $articles;
+    }
+
+    public function submitCategory(Request $request, $aid, $cid)
+    {
+        $user     = $request->user();
+        $article  = Article::findOrFail($aid);
+        $category = Category::findOrFail($cid);
+
+        $query = $article->categories()->wherePivot('category_id', $cid);
+        if ($query->count()) {
+            $pivot         = $query->first()->pivot;
+            $pivot->submit = $pivot->submit == '待审核' ? '已撤回' : '待审核';
+            $pivot->save();
+            $article->submited_status = $pivot->submit;
+        } else {
+            $article->submited_status = '待审核';
+            $article->categories()->syncWithoutDetaching([
+                $cid => [
+                    'submit' => $article->submited_status,
+                ],
+            ]);
+        }
+        if ($article->submited_status == '待审核') {
+            $category->user->notify(new CategoryRequested($cid, $aid));
+        }
+        $category->new_requests = $category->articles()->wherePivot('submit', '待审核')->count();
+        $category->save();
+        $article->submit_status = $this->get_submit_status($article->submited_status);
+        return $article;
+    }
+
+    public function get_submit_status($submited_status)
+    {
+        $submit_status = '投稿';
+        switch ($submited_status) {
+            case '待审核':
+                $submit_status = '撤回';
+                break;
+            case '已收录':
+                $submit_status = '移除';
+                break;
+            case '已拒绝':
+                $submit_status = '再次投稿';
+                break;
+            case '已撤回':
+                $submit_status = '再次投稿';
+                break;
+
+            default:
+                # code...
+                break;
+        }
+
+        return $submit_status;
+    }
+
+    public function approveCategory(Request $request, $aid, $cid)
+    {
+        $user    = $request->user();
+        $article = Article::findOrFail($aid);
+
+        $query = $article->categories()->wherePivot('category_id', $cid);
+        if ($query->count()) {
+            $pivot         = $query->first()->pivot;
+            $pivot->submit = $request->get('deny') ? '已拒绝' : '已收录';
+            $pivot->save();
+            $article->submited_status = $pivot->submit;
+        }
+        $article->submit_status = $this->get_submit_status($article->submited_status);
+        return $article;
+    }
+
+    public function show($id)
+    {
+        $article                 = Article::with('user')->with('category')->findOrFail($id);
+        $article->image_url      = get_full_url($article->image_url);
+        $article->category->logo = get_full_url($article->category->logo);
+
+        $controller         = new \App\Http\Controllers\ArticleController();
+        $article->connected = $controller->get_json_lists($article);
+        $article->similar   = Article::where('category_id', $article->category_id)
+            ->where('id', '<>', $article->id)
+            ->orderBy('id', 'desc')
+            ->take(4)
+            ->get();
+        foreach ($article->similar as $similar_article) {
+            $similar_article->body = $this->fix_inline_styles($similar_article->body);
+        }
+
+        $article->body    = $this->fix_inline_styles($article->body);
+        $article->pubtime = diffForHumansCN($article->created_at);
+
+        return $article;
+    }
+
     public function saveRelation(Request $request, $id)
     {
         $article = Article::findOrFail($id);
@@ -195,7 +306,7 @@ class ArticleController extends Controller
                             $items[] = [
                                 'id'        => $article->id,
                                 'title'     => $article->title,
-                                'image_url' => get_small_image($article->image_url),
+                                'image_url' => $article->primaryImage(),
                             ];
                         }
                     }
@@ -206,93 +317,5 @@ class ArticleController extends Controller
             return $data;
         }
         return null;
-    }
-
-    public function checkCategory(Request $request, $id)
-    {
-        $category = Category::findOrFail($id);
-        $user     = $request->user();
-        $articles = $user->articles()->paginate(10);
-        foreach ($articles as $article) {
-            $query = $article->categories()->wherePivot('category_id', $id);
-            if ($query->count()) {
-                $article->submited_status = $query->first()->pivot->submit;
-            } else {
-                $article->submited_status = '';
-            }
-            $article->submit_status = $this->get_submit_status($article->submited_status);
-        }
-
-        return $articles;
-    }
-
-    public function submitCategory(Request $request, $aid, $cid)
-    {
-        $user     = $request->user();
-        $article  = Article::findOrFail($aid);
-        $category = Category::findOrFail($cid);
-
-        $query = $article->categories()->wherePivot('category_id', $cid);
-        if ($query->count()) {
-            $pivot         = $query->first()->pivot;
-            $pivot->submit = $pivot->submit == '待审核' ? '已撤回' : '待审核';
-            $pivot->save();
-            $article->submited_status = $pivot->submit;
-        } else {
-            $article->submited_status = '待审核';
-            $article->categories()->syncWithoutDetaching([
-                $cid => [
-                    'submit' => $article->submited_status,
-                ],
-            ]);
-        }
-        if ($article->submited_status == '待审核') {
-            $category->user->notify(new CategoryRequested($cid, $aid));
-        }
-        $category->new_requests = $category->articles()->wherePivot('submit', '待审核')->count();
-        $category->save();
-        $article->submit_status = $this->get_submit_status($article->submited_status);
-        return $article;
-    }
-
-    public function get_submit_status($submited_status)
-    {
-        $submit_status = '投稿';
-        switch ($submited_status) {
-            case '待审核':
-                $submit_status = '撤回';
-                break;
-            case '已收录':
-                $submit_status = '移除';
-                break;
-            case '已拒绝':
-                $submit_status = '再次投稿';
-                break;
-            case '已撤回':
-                $submit_status = '再次投稿';
-                break;
-
-            default:
-                # code...
-                break;
-        }
-
-        return $submit_status;
-    }
-
-    public function approveCategory(Request $request, $aid, $cid)
-    {
-        $user    = $request->user();
-        $article = Article::findOrFail($aid);
-
-        $query = $article->categories()->wherePivot('category_id', $cid);
-        if ($query->count()) {
-            $pivot         = $query->first()->pivot;
-            $pivot->submit = $request->get('deny') ? '已拒绝' : '已收录';
-            $pivot->save();
-            $article->submited_status = $pivot->submit;
-        }
-        $article->submit_status = $this->get_submit_status($article->submited_status);
-        return $article;
     }
 }

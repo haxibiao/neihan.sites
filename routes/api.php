@@ -94,6 +94,13 @@ Route::get('/video/{id}', 'Api\VideoController@getShow');
 Route::get('/articles', 'Api\ArticleController@getIndex');
 Route::get('/article/{id}', 'Api\ArticleController@getShow');
 
+//投稿
+Route::middleware('auth:api')->get('/articles/check-category-{id}', 'Api\ArticleController@checkCategory');
+//投稿、撤销投稿
+Route::middleware('auth:api')->get('/article/{aid}/submit-category-{cid}', 'Api\ArticleController@submitCategory');
+//批准、拒绝投稿请求
+Route::middleware('auth:api')->get('/article/{aid}/approve-category-{cid}', 'Api\ArticleController@approveCategory');
+
 //保存文章相关片段数据
 Route::post('/article/{id}/json', 'Api\ArticleController@saveRelation');
 //获取文章所有相关片段数据
@@ -111,3 +118,6 @@ Route::get('/video/{id}/lists', 'Api\VideoController@getAllRelations');
 Route::get('/video/{id}/del-{key}', 'Api\VideoController@deleteRelation');
 //获取视频相关片段数据
 Route::get('/video/{id}/{key}', 'Api\VideoController@getRelation');
+
+
+

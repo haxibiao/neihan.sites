@@ -1,4 +1,4 @@
-@extends('v1.layouts.blank')
+@extends('layouts.blank')
 
 @section('title')
     登录 - 爱你城

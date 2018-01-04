@@ -40,7 +40,7 @@ class Article extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(\App\Category::class);
+        return $this->belongsToMany(\App\Category::class)->withPivot('submit')->withTimestamps();
     }
 
     public function tags1()

@@ -21,3 +21,6 @@
         收录了{{ $category->articles->count() }}篇文章 · {{ $category->count_follows }}人关注
     </p>
 </div>
+@push('modals')
+   <modal-contribute category-id='{{ $category->id }}'></modal-contribute> 
+@endpush

@@ -41,6 +41,7 @@ class CategoryController extends Controller
         $articles = $category->articles()
             ->with('user')->with('category')
             ->where('status', '>=', 0)
+            ->wherePivot('submit','已收录')
             ->orderBy('updated_at', 'desc')
             ->paginate(10)
         ;
@@ -60,6 +61,7 @@ class CategoryController extends Controller
         $articles = $category->articles()
             ->with('user')->with('category')
             ->where('status', '>=', 0)
+            ->wherePivot('submit','已收录')
             ->orderBy('pivot_created_at', 'desc')
             ->paginate(10)
         ;
@@ -77,6 +79,7 @@ class CategoryController extends Controller
         $articles = $category->articles()
             ->with('user')->with('category')
             ->where('status', '>=', 0)
+            ->wherePivot('submit','已收录')
             ->orderBy('hits', 'desc')
             ->paginate(10)
         ;

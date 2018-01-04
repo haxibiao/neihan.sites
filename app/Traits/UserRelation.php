@@ -56,7 +56,7 @@ trait UserRelation
 
     public function categories()
     {
-        return $this->hasMany(\App\Category::class);
+        return $this->hasMany(\App\Category::class)->where('type','article');
     }
 
     public function collections()

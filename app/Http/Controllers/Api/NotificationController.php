@@ -127,6 +127,7 @@ class NotificationController extends Controller
                 $notifications[] = $data;
             }
         }
+        $user->forgetUnreads();
         return $notifications;
     }
 

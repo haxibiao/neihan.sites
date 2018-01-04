@@ -15,18 +15,18 @@ mix
 
 mix.copy("node_modules/summernote/dist/font/*", "public/css/font");
 
-mix
-    .styles(
-        [
-            "public/css/app.css",
-            "node_modules/summernote/dist/summernote.css",
-            "node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css",
-            "resources/assets/css/hack.css",
-            "public/fonts/iconfont.css"
-        ],
-        "public/css/a.css"
-    )
-    .version();
+// mix
+//     .styles(
+//         [
+//             "public/css/app.css",
+//             "node_modules/summernote/dist/summernote.css",
+//             "node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css",
+//             "resources/assets/css/hack.css",
+//             "public/fonts/iconfont.css"
+//         ],
+//         "public/css/a.css"
+//     )
+//     .version();
 
 mix
     .scripts([

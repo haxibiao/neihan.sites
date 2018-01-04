@@ -8,6 +8,8 @@ require('./bootstrap');
 
 import Vue from 'vue';
 Vue.prototype.$http = window.axios;
+window.bus = new Vue();
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -47,7 +49,8 @@ Vue.component('new-comment', require('./components/detail/NewComment.vue'));
 
 Vue.component('article-list', require('./components/ArticleList.vue'));
 Vue.component('category-list', require('./components/CategoryList.vue'));
-
+//投稿页面模态
+Vue.component('modal-contribute', require('./components/contributeModal/CategoryModal_User'));
 
 const app = new Vue({
 }).$mount('#app');

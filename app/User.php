@@ -158,5 +158,4 @@ class User extends Authenticatable
     {
         return $this->categories()->where('new_requests', '>', 0);
     }
-
 }
