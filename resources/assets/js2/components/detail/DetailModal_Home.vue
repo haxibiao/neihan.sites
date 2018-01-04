@@ -24,7 +24,7 @@
 	                <ul class="clearfix">
 	                	<div class="title">
 	                		我管理的专题
-	                		<a href="/v2/collections/new" target="_blank">
+	                		<a href="/v2/collections/new" target="_blank" class="btn_font_new">
 	                			<span>新建专题</span>
 	                		</a>
 	                	</div>
@@ -194,11 +194,6 @@ export default {
 	                    font-size: 15px;
 	                    background-color: #f4f4f4;
 	                    border-bottom: 1px solid #f0f0f0;
-	                    a {
-	                        font-size: 13px;
-	                        color: #969696;
-	                        padding-left: 10px;
-	                    }
 	                }
 	                li {
 	                    position: relative;

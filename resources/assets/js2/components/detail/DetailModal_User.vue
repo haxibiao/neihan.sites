@@ -11,7 +11,7 @@
 	                </button>
 	                <h4 class="modal-title" id="myModalLabel">
 	                    收入到我管理的专题
-	                    <a href="#" class="new_note_btn">
+	                    <a href="/v2/collections/new" class="btn_font_new" target="_blank">
 	                        新建专题
 	                    </a>
 	                </h4>
@@ -81,7 +81,9 @@ export default {
 	            }
 	        }
 	        .modal-body {
+	            padding-bottom: 30px;
 	            height: 460px;
+	            overflow: auto;
 	            ul {
 	                li {
 	                    padding: 20px;

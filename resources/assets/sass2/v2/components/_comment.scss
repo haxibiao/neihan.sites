@@ -10,6 +10,12 @@
         @include border (12px, 1px solid #e1e1e1);
         @include spacing (0 0 0 10px, 5px 8px 3px 8px);
         color: $color-gray;
+        font-weight: 700;
+        &.active {
+            background-color: $color-red-watermelon;
+            color: $color-white;
+            border: 1px solid $color-red-watermelon;
+        }
     }
     .pull-right {
         padding-top: 6px;

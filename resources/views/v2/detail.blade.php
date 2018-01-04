@@ -58,11 +58,11 @@
                         <div class="copyright" data-original-title="转载请联系作者获得授权，并标注“爱你城作者”。" data-toggle="tooltip">
                             © 著作权归作者所有
                         </div>
-                        <div class="modal_wrap">
+                        {{-- <div class="modal_wrap">
                             <a href="#">
                                 举报文章
                             </a>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="follow_detail">
@@ -147,6 +147,8 @@
                                 <a href="#">
                                     <i class="iconfont icon-xin">
                                     </i>
+                                    {{-- <i class="iconfont icon-03xihuan">
+                                    </i> --}}
                                     喜欢
                                 </a>
                             </div>
@@ -178,6 +180,8 @@
                 @include('v2.parts.author_comment')
             </div>
         </div>
+        {{-- 底部小火箭、分享、收藏、投稿 --}}
+        @include('v2.parts.side_tool')
     </div>
     <div class="note_bottom">
         <div class="container">
@@ -186,9 +190,13 @@
                     <div class="main">
                         <div class="recommend_title">
                             被以下专题收入，发现更多相似内容
+                            <a href="#">
+                                <i class="iconfont icon-shezhi2"></i>
+                                投稿管理
+                            </a>
                         </div>
                         <div class="include_collection">
-                            <a class="collection" href="#">
+                            <a class="collection" href="#" data-target="#detailModal_user" data-toggle="modal">
                                 <div class="name">
                                     ＋ 收入我的主题
                                 </div>
@@ -215,7 +223,6 @@
                         </div>
                     </div>
                     <detailmodal-user></detailmodal-user>
-                    <detailmodal-home></detailmodal-home>
                 </div>
                 <div>
                     <div class="recommend_note">
@@ -234,6 +241,4 @@
         </div>
     </div>
 </div>
-{{-- 底部小火箭、分享、收藏、投稿 --}}
-@include('v2.parts.side_tool')
 @stop

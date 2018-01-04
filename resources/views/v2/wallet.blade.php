@@ -39,7 +39,7 @@
                         <div class="btn_base btn_follow btn_followed_sm" data-target="#rechargeModal" data-toggle="modal">
                             充值
                         </div>
-                        <div class="btn_base btn_hollow btn_followed_sm disable">
+                        <div class="btn_base btn_hollow btn_followed_sm disable" data-target="#withdrawModal" data-toggle="modal">
                             提现
                         </div>
                         <span class="warn">
@@ -48,23 +48,16 @@
                     </div>
                 </div>
                 <div class="meta col-xs-12 col-sm-3">
-                    <div>
-                        每次提现最小额度为￥100.00
-                    </div>
-                    <div>
-                        每次提现收取 5% 手续费
-                    </div>
-                    <div>
-                        提现会在 3-5 个工作日内到账
-                    </div>
-                    <a href="javascript:;">
-                        提现遇到问题?
-                    </a>
-                    <a href="javascript:;">
-                        提现手续费是怎么收取的?
-                    </a>
+                    <div>每次提现最小额度为￥100.00</div>
+                    <div>每次提现收取 5% 手续费</div>
+                    <div>提现会在 3-5 个工作日内到账</div>
+                    <a href="javascript:;" class="help" data-target="#periodModal" data-toggle="modal">提现遇到问题?</a>
+                    <a href="javascript:;" class="help" data-target="#whyModal" data-toggle="modal">提现手续费是怎么收取的?</a>
                 </div>
                 <recharge-modal></recharge-modal>
+                <withdraw-modal></withdraw-modal>
+                <period-modal></period-modal>
+                <why-modal></why-modal>
             </div>
             <ul class="body">
                 <li class="title">

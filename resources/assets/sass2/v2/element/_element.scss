@@ -25,7 +25,7 @@
         i {
             font-size: 14px;
         }
-        &:hover {
+        &:hover,&:focus {
             color: $color-gray-deep;
         }
     }
@@ -43,6 +43,9 @@
         font-size: 14px;
         i {
             font-size: 14px;
+        }
+        &:hover,&:focus {
+            color: #A0A0A0;
         }
     }
 }
