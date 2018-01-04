@@ -21,7 +21,7 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="tab v1">
+                        <li class="tab">
                             <a href="/" class="identifier">
                                 <i class="iconfont icon-xin">
                                 </i>
@@ -39,7 +39,7 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="tab notification" class="identifier">
+                        <li class="tab notification">
                             <a href="/notification" class="identifier">
                                 <i class="iconfont icon-zhongyaogaojing">
                                 </i>
@@ -239,11 +239,11 @@
 @push('scripts')
 <script>
     $(function(){
-        // var current_path = window.location.pathname.replace('/v1/','');
-        // current_path = current_path.replace('/','');
-        // if($('.navbar_wrp').has('.'+current_path)){
-        //     $('.navbar_wrp').find('.'+current_path).addClass('active');
-        // };
+        var current_path = window.location.pathname.replace('/','');
+        current_path = current_path.replace('/','');
+        if($('.navbar_wrp').has('.'+current_path)){
+            $('.navbar_wrp').find('.'+current_path).addClass('active');
+        };
 
         $('.dropdown-toggle').dropdown();
 

@@ -214,6 +214,8 @@
                             </a>
                         </div>
                     </div>
+                    <detailmodal-user></detailmodal-user>
+                    <detailmodal-home></detailmodal-home>
                 </div>
                 <div>
                     <div class="recommend_note">

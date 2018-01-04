@@ -166,5 +166,6 @@
         <a class="litter_title delete_href" href="#" data-target="#categoryModal_Delete" data-toggle="modal">
             删除专题
         </a>
+        <categorymodal-delete></categorymodal-delete>
     </div>
 </div>

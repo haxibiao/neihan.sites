@@ -32,6 +32,28 @@
     }
 }
 
+// 金额输入框
+.money_input_box {
+    position: relative;
+    margin-bottom: 40px;
+    label {
+        position: absolute;
+        top: 11px;
+        left: 20px;
+        font-weight: 400;
+    }
+    .form-control {
+        height: auto;
+        padding-left: 95px;
+        color: #646464;
+        font-size: 32px;
+        line-height: 38px;
+        border-color: #eee;
+        background-color: hsla(0,0%,71%,.1);
+        box-shadow: none;
+    }
+}
+
 // 搜索框
 .navbar-form {
     border-color: transparent;

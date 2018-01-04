@@ -36,10 +36,10 @@
                         .00元
                     </span>
                     <div class="action">
-                        <div class="btn_base btn_follow btn_followed_sm recharge">
+                        <div class="btn_base btn_follow btn_followed_sm" data-target="#rechargeModal" data-toggle="modal">
                             充值
                         </div>
-                        <div class="btn_base btn_hollow btn_followed_sm withdrawals">
+                        <div class="btn_base btn_hollow btn_followed_sm disable">
                             提现
                         </div>
                         <span class="warn">
@@ -64,6 +64,7 @@
                         提现手续费是怎么收取的?
                     </a>
                 </div>
+                <recharge-modal></recharge-modal>
             </div>
             <ul class="body">
                 <li class="title">
