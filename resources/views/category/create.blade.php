@@ -29,7 +29,7 @@
                             </div>
                         </td>
                         <td>
-                            <a class="btn_hollow" href="javascript:;">
+                            <a class="btn_base btn_hollow btn_follow_lg" href="javascript:;">
                                 {{-- <input class="hide" type="file" unselectable="on" name="logo"/> --}}
                             {{-- <div class="form-group{{ $errors->has('photo') ? ' has-error' : '' }}"> --}}
                                 {!! Form::label('logo', ' 上传专题封面') !!}
@@ -117,7 +117,7 @@
 
             </table>
                        <div class="pull-right">
-		            {!! Form::submit("创建专题", ['class' => 'btn_success']) !!}
+		            {!! Form::submit("创建专题", ['class' => 'btn_base btn_follow']) !!}
 				            </div>
 		              {!! Form::close() !!}
 		  

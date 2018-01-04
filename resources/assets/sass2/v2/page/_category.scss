@@ -87,16 +87,12 @@
                             }
                         }
                         .btn_hollow {
-                            // @include news_button;
-                            @include spacing (0, 4px 12px);
                             position: relative;
-                            font-size: 14px;
-                            float: none;
-                            width: 120px;
                             input {
-                                // @include proportion (116px, 30px);
                                 position: absolute;
                                 display: block!important;
+                                width: 166px;
+                                height: 44px;
                                 top: -1px;
                                 left: 1px;
                                 opacity: 0;
