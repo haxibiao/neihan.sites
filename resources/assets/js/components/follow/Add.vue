@@ -53,20 +53,17 @@
                     </li>
                     
                       <li v-if="recommend.type=='categories'">
-                            <div>
-                                <a class="btn_base btn_follow" href="#">
-                                    <span>
-                                        ＋ 关注
-                                    </span>
-                                </a>
+                            <div class="author">
                                 <a class="avatar avatar_in" href="#">
                                     <img :src="recommend.logo"/>
                                 </a>
+                                <follow type="categories" :id="recommend.id" :user-id="user.id" :followed="recommend.is_followed" class="pull-right"></follow>
+
                                 <div class="info_meta">
                                     <a class="headline nickname" href="#">
                                         {{ recommend.name }}
                                     </a>
-                                    <p>
+                                    <p class="notice">
                                         {{ recommend.description }}
                                     </p>
                                     <a href="#">
