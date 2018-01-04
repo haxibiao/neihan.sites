@@ -23,7 +23,6 @@
 	            	<div class="cancel" data-dismiss="modal">取消</div>
     				<div class="btn_base btn_remove btn_follow_xs">确认</div>
 	            </div>
-
 	        </div>
 	    </div>
 	</div>

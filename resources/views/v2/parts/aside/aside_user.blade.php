@@ -107,7 +107,7 @@
             </li>
         </ul>
     </div>
-    <div class="user_action">
+    {{-- <div class="user_action">
         <a href="javascript:;" class="litter_title">
             加入黑名单
         </a>
@@ -117,5 +117,5 @@
         <a href="javascript:;" class="litter_title">
             举报用户
         </a>
-    </div>
+    </div> --}}
 </div>

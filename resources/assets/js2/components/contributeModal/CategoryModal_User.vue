@@ -98,7 +98,9 @@ export default {
 		        }
 		    }
 		    .modal-body {
-		        height: 460px;
+		        padding-bottom: 30px;
+	            height: 460px;
+	            overflow: auto;
 		        ul {
 		            li {
 		                padding: 20px;

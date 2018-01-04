@@ -145,7 +145,7 @@ footer {
             border: 1px solid $color-gray-light;
             border-bottom: none;
             background-color: #fff;
-            a {
+            .function_button,.js_submit_button {
                 @include size (50px, 50px);
                 text-align: center;
                 display: block;

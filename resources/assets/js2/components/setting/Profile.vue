@@ -52,6 +52,41 @@
 						<p class="pull-right">上传后会在个人主页显示图标</p>
 					</td>
 				</tr>
+                <tr>
+                    <td class="setting_title pull-left">社交账号</td>
+                    <td class="social_bind">
+                        <p>你可以通过绑定的社交帐号登录爱你城。出于安全因素, 你最初用来创建账户的社交帐号不能移除。</p>
+                        <ul class="social_bind_list">
+                            <li>
+                                <div class="bind_name">
+                                    <i class="iconfont icon-weixin1"></i>
+                                    <a href="#">
+                                        绑定微信
+                                        <i class="iconfont icon-youbian"></i>
+                                    </a>
+                                </div>
+                            </li>
+                            <!-- <li>
+                                <div class="bind_name">
+                                    <i class="iconfont icon-sina"></i>
+                                    <a href="#">
+                                        绑定微博
+                                        <i class="iconfont icon-youbian"></i>
+                                    </a>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="bind_name">
+                                    <i class="iconfont icon-qq2"></i>
+                                    <a href="#">
+                                        绑定QQ
+                                        <i class="iconfont icon-youbian"></i>
+                                    </a>
+                                </div>
+                            </li> -->
+                        </ul>
+                    </td>
+                </tr>
 			</tbody>
 		</table>
 		<input type="submit" value="保存" class="btn_base btn_follow" />
@@ -134,6 +169,40 @@ export default {
                                 width: 85px;
                                 height: 30px;
                                 opacity: 0;
+                            }
+                        }
+                    }
+                    .social_bind {
+                        .social_bind_list {
+                            li {
+                                line-height: 50px;
+                                border-bottom: 1px solid #f0f0f0;
+                                .bind_name {
+                                    display: inline-block;
+                                    i {
+                                        width: 30px;
+                                        font-size: 20px;
+                                        display: inline-block;
+                                        vertical-align: middle;
+                                    }
+                                    .icon-sina {
+                                        color: #e05244;
+                                    }
+                                    .icon-weixin1 {
+                                        color: #42c02e;
+                                    }
+                                    .icon-qq2 {
+                                        color: #2B89CA;
+                                    }
+                                    a {
+                                        margin: 0 0 0 20px;
+                                        font-size: 14px;
+                                        vertical-align: middle;
+                                        i {
+                                            font-size: 12px;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

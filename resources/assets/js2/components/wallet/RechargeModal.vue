@@ -15,7 +15,7 @@
 	            </div>
 	            <div class="modal-body">
 	                <form>
-	                	<div class="money_input_box">
+	                	<div class="money_input_box money_input_box_restyle">
 	                		<label>充值金额</label>
 	                		<input type="text" placeholder="0.00" class="form-control" />
 	                	</div>
@@ -59,6 +59,13 @@ export default {
 					margin: 0 0 20px;
 					div {
 						line-height: 30px;
+					}
+					.money_input_box_restyle {
+						&:first-child {
+							.form-control {
+								font-size: 32px;
+							}
+						}
 					}
 					.method {
 						span {
