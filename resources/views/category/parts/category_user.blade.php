@@ -12,14 +12,12 @@
     </a>
     <div class="info_meta">
         <a class="headline name_title" href="/{{ $category->name_en }}">
-            <span>
                 {{ $category->name }}
-            </span>
         </a>
+            <p class="info_count">
+                收录了{{ $category->articles->count() }}篇文章 · {{ $category->count_follows }}人关注
+            </p>
     </div>
-    <p class="info_count">
-        收录了{{ $category->articles->count() }}篇文章 · {{ $category->count_follows }}人关注
-    </p>
 </div>
 @push('modals')
    <modal-contribute category-id='{{ $category->id }}'></modal-contribute> 

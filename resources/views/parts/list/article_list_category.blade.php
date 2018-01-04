@@ -14,7 +14,7 @@
                     <img src="{{ $article->user->avatar() }}"/>
                 </a>
                 <div class="info_meta">
-                    <a href="/user/{{ $article->user->id }}" target="_blank">
+                    <a href="/user/{{ $article->user->id }}" target="_blank" class="nickname">
                         {{ $article->user->name }}
                     </a>
                     <a href="/user/{{ $article->user->id }}" target="_blank">
