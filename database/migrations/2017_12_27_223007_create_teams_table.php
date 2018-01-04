@@ -23,7 +23,7 @@ class CreateTeamsTable extends Migration
             $table->string('description')->nullable();
             $table->string('group')->nullable();
             $table->string('history')->nullable();  //统计比赛历史.
-            $table->integer('status')->default(1);   // 1正常  0被ban不能上场.
+            $table->integer('status')->default(1);   // 记录该队伍处于比赛的论数.刚开始是1  淘汰赛后有所改变.
             $table->timestamps();
         });
     }

@@ -46,8 +46,8 @@ class MatchController extends Controller
 
         //更新Team下的积分
         $score   = explode(':', $match->score);
-        $score_a = $score['0'];
-        $score_b = $score['1'];
+        $score_a = $score['0'] - $score['1'] > 0 ? $score['0'] - $score['1'] : 0;
+        $score_b = $score['1'] - $score['0'] > 0 ? $score['1'] - $score['0'] : 0;
 
         $team_a             = Team::findOrFail($match->TA);
         $team_a->team_score = $team_a->team_score + $score_a;
@@ -56,6 +56,13 @@ class MatchController extends Controller
         $team_b->team_score = $team_b->team_score + $score_b;
         $team_b->update();
         $match->update();
+
+        $compare = $match->compare;
+        $teams   = $compare->teams;
+        //当小组赛场次已经足够,,自动进入淘汰赛阶段
+        if ($teams->where('status', '比赛中')->count()) {
+            $this->makeTeamEliminateMatches($compare);
+        }
 
         return redirect()->to("/compare/$match->compare_id");
     }
@@ -84,10 +91,12 @@ class MatchController extends Controller
         return redirect()->to('/compare/' . request('compare_id'));
     }
 
-    //小组赛如果结束才允许开启淘汰赛
-
-    public function makeTeamEliminateMatches(Request $request)
+    //该算法根据淘汰赛结果来分出胜者和败者组
+    public function makeTeamEliminateMatches($compare)
     {
+        //根据传入的赛季实时获取最新team数据,按照积分排序
+        $teams = $compare->teams()->orderBy('team_score', 'desc')->get();
+        dd($teams);
 
     }
 }
