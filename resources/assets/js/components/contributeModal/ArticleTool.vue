@@ -4,35 +4,35 @@
 		<div class="side_tool">
 		    <ul>
 		        <li class="toup_rocket" data-container="body" data-title="回到顶部" data-placement="left" data-toggle="tooltip" data-trigger="hover">
-		            <a href="javascript:;">
+		            <a href="javascript:;" class="function_button">
 		                <i class="iconfont icon-xiangxiajiantou-copy">
 		                </i>
 		            </a>
 		        </li>
 
 		        <li data-container="body" data-original-title="将文章加入专题" data-placement="left" data-toggle="tooltip" data-trigger="hover">
-		            <a data-target="#detailModal_user" data-toggle="modal" href="#">
+		            <a data-target="#detailModal_user" data-toggle="modal" href="#" class="js_submit_button">
 		                <i class="iconfont icon-jia1">
 		                </i>
 		            </a>
 		        </li>
 
 		        <li data-container="body" data-original-title="文章投稿" data-placement="left" data-toggle="tooltip" data-trigger="hover">
-		            <a data-target="#detailModal_home" data-toggle="modal" href="#">
+		            <a data-target="#detailModal_home" data-toggle="modal" href="#" class="js_submit_button">
 		                <i class="iconfont icon-tougaoguanli">
 		                </i>
 		            </a>
 		        </li>
 
 		        <li data-container="body" :data-original-title="favorited?'取消收藏文章':'收藏该文章'" data-placement="left" data-toggle="tooltip" data-trigger="hover" @click="toggle">
-		            <a href="javascript:;">
+		            <a href="javascript:;" class="function_button">
 		                <i :class="['iconfont',favorited?'icon-shoucang1':'icon-shoucang']">
 		                </i>
 		            </a>
 		        </li>
 
 		        <li class="share" data-container="body" data-original-title="分享文章" data-placement="left" data-toggle="tooltip">
-		            <a data-toggle="dropdown" href="javascript:;">
+		            <a data-toggle="dropdown" href="javascript:;" class="function_button">
 		                <i class="iconfont icon-fenxiang1">
 		                </i>
 		            </a>
