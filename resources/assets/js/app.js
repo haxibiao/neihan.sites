@@ -52,5 +52,12 @@ Vue.component('category-list', require('./components/CategoryList.vue'));
 //投稿页面模态
 Vue.component('modal-contribute', require('./components/contributeModal/CategoryModal_User'));
 
+
+// 钱包页
+Vue.component('recharge-modal', require('./components/wallet/RechargeModal.vue'));
+Vue.component('period-modal', require('./components/wallet/PeriodModal.vue'));
+Vue.component('why-modal', require('./components/wallet/WhyModal.vue'));
+Vue.component('withdraw-modal', require('./components/wallet/WithdrawModal.vue'));
+
 const app = new Vue({
 }).$mount('#app');
