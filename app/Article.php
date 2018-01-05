@@ -108,6 +108,10 @@ class Article extends Model
         $image          = Image::firstOrNew([
             'path' => $image_url_path,
         ]);
+
+        if (str_contains($this->image_url, "haxibiao")) {
+            return 1;
+        }
         return $image->id;
     }
 

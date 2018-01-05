@@ -2,7 +2,7 @@
 @if(!empty($articles))
 <ul class="article_list">
    @foreach($articles as $article)
-    <li class="article_item {{ $article->hasImage()?'have_img':'' }}">
+    <li class="article_item {{ $article->primaryImage()?'have_img':'' }}">
         @if($article->hasImage())
         <a class="wrap_img" href="/article/{{ $article->id }}" target="_blank">
             <img src="{{ get_small_image($article->image_url) }}"/>
