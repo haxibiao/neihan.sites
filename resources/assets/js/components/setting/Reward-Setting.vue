@@ -32,7 +32,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<input type="submit" value="保存" class="btn_success" />
+		<input type="submit" value="保存" class="btn_base btn_follow" />
 	</div>
 </template>
 

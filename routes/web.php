@@ -76,6 +76,10 @@ Route::get('/setting','UserController@setting');
 Route::resource('/image', 'ImageController');
 Route::resource('/video', 'VideoController');
 
+
+//collection
+Route::resource('/collection','CollectionController');
+
 //follow
 Route::get('/follow', 'FollowController@index');
 

@@ -40,4 +40,5 @@ class Collection extends Model
     {
         return $this->logo ? $this->logo : "/images/category_09.png";
     }
+
 }

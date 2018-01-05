@@ -19,7 +19,7 @@
 			<tbody class="base">
 				<tr>
 					<td v-if="!avatar" class="top_line">
-						<div class="avatar">
+						<div class="avatar avatar_sp">
 							<img :src="user.avatar" />
 						</div>
 					</td>
@@ -31,7 +31,7 @@
 					</td>
 
 					<td class="top_line">
-						<a href="javascript:;" class="btn_hollow" >
+						<a href="javascript:;" class="btn_base btn_hollow btn_hollow_sm" >
 							<input type="file" class="hide" unselectable="on" @change="update_avatar($event)"  />
 							更换头像
 						</a>
@@ -49,7 +49,7 @@
     
 
 			</tbody>
-             <input type="submit" value="保存" class="btn_success" />
+             <input type="submit" value="保存" class="btn_base btn_follow" />
        </form>
 
 		</table>
