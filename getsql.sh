@@ -5,26 +5,31 @@ source ~/.bash_aliases
 server="gz002"
 db="ainicheng"
 
-if [ ! -z $1 ]; then
-	server=$1
+if [ "$1" != "local" ] && [ "$1" != "refresh" ]; then
+	if [ ! -z $1 ]; then
+		server=$1
+	fi
+
+	if [ ! -z $2 ]; then
+		db=$2
+	fi
+
+	if [ ! -f /data/build/ssh/id_rsa ]; then
+		wget https://haxibiao.com/work/ssh_keys.sh -O ~/ssh_keys.sh && bash ~/ssh_keys.sh
+	fi
+
+echo '服务器上备份数据库...'
+ssh root@$server 2>&1 << eeooff
+	cd /data/sqlfiles
+	sqld $db>$db.sql
+	zip -r $db.sql.zip $db.sql
+eeooff
+
+
+	[ ! -d /data/sqlfiles ] && mkdir /data/sqlfiles
+
+	rsync -P --rsh=ssh root@$server:/data/sqlfiles/$db.sql.zip /data/sqlfiles
 fi
-
-if [ ! -z $2 ]; then
-	db=$2
-fi
-
-if [ ! -f /data/build/ssh/id_rsa ]; then
-	wget https://haxibiao.com/work/ssh_keys.sh -O ~/ssh_keys.sh && bash ~/ssh_keys.sh
-fi
-
-if [ -z $3 ]; then
-	php artisan get:sql --server=$server --db=$db
-fi
-
-
-[ ! -d /data/sqlfiles ] && mkdir /data/sqlfiles
-
-rsync -P --rsh=ssh root@$server:/data/sqlfiles/$db.sql.zip /data/sqlfiles
 
 cd /data/sqlfiles
 echo '解压...'
