@@ -101,7 +101,7 @@
                         </li>
                     </ul>
                 </div> --}}
-                <input class="btn_sign_in" type="submit" value="登录"/>
+                <input class="btn_base btn_sign_in" type="submit" value="登录"/>
             </form>
             <div class="more_sign">
                 <h6>

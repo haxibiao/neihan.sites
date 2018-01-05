@@ -54,7 +54,7 @@
                             </i>
                         </div>
 
-                        <input class="btn_sign_up" type="submit" value="注册"/>
+                        <input class="btn_base btn_sign_up" type="submit" value="注册"/>
                         <p class="sign_up_msg">
                             点击 “注册” 即表示您同意并愿意遵守爱你城
                             <br/>
