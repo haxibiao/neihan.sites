@@ -1,21 +1,26 @@
+@if(get_class($action->actionable)=='App\Category')
+@php
+     $follow = $action->actionable;
+     $item = $follow->followed;
+@endphp
 <li class="article_item">
     <div class="author">
-        <a class="avatar" href="/v2/user" target="_blank">
-            <img src="/images/photo_01.jpg"/>
+        <a class="avatar" href="/user/{{ $action->user->id }}" target="_blank">
+            <img src="{{ $action->user->avatar }}"/>
         </a>
         <div class="info_meta">
             <a class="nickname" href="/v2/user" target="_blank">
-                喵星菇凉
+                {{ $action->user->name }}
             </a>
             <span class="time">
-                关注了专题 · 11.14.16:55
+                关注了专题 · {{ $action->created_at }}
             </span>
         </div>
     </div>
     <div class="follow_detail">
         <div class="author">
-            <a class="avatar avatar_sm avatar_collection" href="/v2/category/2" target="_blank">
-                <img src="/images/category_02.jpg"/>
+            <a class="avatar avatar_sm avatar_collection" href="/category/{{ $action->actionable->name_en }}" target="_blank">
+                <img src="{{ $action->actionable->logo }}"/>
             </a>
             <a class="btn_base btn_followed" href="javascript:;">
                 <span>
@@ -26,152 +31,105 @@
                 </span>
             </a>
             <div class="info_meta">
-                <a class="nickname" href="/v2/category/2" target="_blank">
-                    谈谈情，说说爱
+                <a class="nickname" href="/category/{{ $action->actionable->name_en }}" target="_blank">
+                    {{ $action->actionable->name }}
                 </a>
                 <p class="meta">
-                    <a href="/v2/user" target="_blank">
-                        爱你城
+                    <a href="/user/{{ $action->actionable->id }}" target="_blank">
+                        {{ $action->actionable->user->name }}
                     </a>
-                    编，70730 篇文章，1117737 人关注
+                    编，{{ $action->actionable->count }} 篇文章，{{ $action->actionable->count_follow }} 人关注
                 </p>
             </div>
         </div>
         <div class="signature">
             <span>
-                柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度认真就好如果你想分享自己或者身边人的爱情故事，欢迎前来投稿
-                                投稿须知：
-                                1.本专题仅收录关于爱情的文章。注意：爱情类小说除非足够精彩然后不是连载，不然不在收录范围。另外关于名人伟人的爱情故事也请改投相关专题
-                                2.第一条中爱情类小说的“精彩”，是指文章有小说的基本结构，运用了基本写法，语言流畅，情节动人。诸如Ａ说Ｂ又说这样毫无人物描写、场景描写的文章就请改投其他相关专题。
-                                3.请保证文章质量和基本排版，勿出现大量黑体和不相关图片（图片不宜多）
-                                4.文章字数尽量在1000字以上，当然特别精彩的文章可忽略这个要求
-                                专题主编 枫小梦 http://www.jianshu.com/u/6aa245e48ccc
-                                添加主编微信 conan314 进入谈谈情说说爱官方社群。
-                                关注简书官方微信公众号（jianshuio）,及时阅读简书热门好文
-                                关注公众号 “简宝玉” （jianshubaoyu），进入简书丰富多彩的专题社群！
+                   {{ $action->actionable->description }}
             </span>
         </div>
     </div>
 </li>
+@elseif(get_class($action->actionable)=='App\Like')
+@php
+     $like = $action->actionable;
+    $item = $like->liked;
+@endphp
 <li class="article_item have_img">
-    <a class="wrap_img" href="/v2/detail" target="_blank">
-        <img src="/images/details_10.png"/>
+    <a class="wrap_img" href="/article/{{ $item->id }}" target="_blank">
+        <img src="{{  $item->primaryImage() }}"/>
     </a>
     <div class="content">
         <div class="author">
-            <a class="avatar" href="/v2/user" target="_blank">
-                <img src="/images/photo_01.jpg"/>
+            <a class="avatar" href="/user/{{ $action->user->id }}" target="_blank">
+                <img src="{{ $action->user->avatar }}"/>
             </a>
             <div class="info_meta">
-                <a class="nickname" href="/v2/user" target="_blank">
-                    喵星菇凉
+                <a class="nickname" href="/user/{{ $action->user->id }}" target="_blank">
+                    {{ $action->user->name }}
                 </a>
                 <a href="/v2/detail" target="_blank">
                     <img class="badge_icon_xs" data-placement="top" data-toggle="tooltip" src="/images/vip1.png" title="爱你城签约作者"/>
                 </a>
                 <span class="time">
-                    喜欢了文章 · 11.15.16:12
+                    喜欢了文章 · {{ $action->created_at }}
                 </span>
             </div>
         </div>
-        <a class="headline paper_title" href="/v2/detail" target="_blank">
+        <a class="headline paper_title" href="/article/{{ $item->id }}" target="_blank">
             <span>
-                2018年, SEO行业发展前景, 有几大趋势?
+                {{ $item->title }}
             </span>
         </a>
         <p class="abstract">
-            我们已经进入2017年第四季度，现在是时候开始考虑未来的一年以及2018年SEO的预期了，我们看到了今年以来最新的搜索行业趋势，到2018年将会更加突出。为了保持领先的地位，我们已经进入2017年第四季度，现在是时候开始考虑未来的一年以及2018年SEO的预期了，我们看到了今年以来最新的搜索行业趋势，到2018年将会更加突出。为了保持领先的地位，我们已经进入2017年第四季度，现在是时候开始考虑未来的一年以及2018年SEO的预期了，我们看到了今年以来最新的搜索行业趋势，到2018年将会更加突出。为了保持领先的地位
+           {{ $item->description() }}
         </p>
         <div class="meta">
             <div class="origin_author">
-                <a href="/v2/user" target="_blank">
-                    蝙蝠侠IT
+                <a href="/user/{{ $item->user->id }}" target="_blank">
+                    {{ $item->user->name }}
                 </a>
             </div>
-            <a class="count count_link" href="/v2/detail" target="_blank">
+            <a class="count count_link" href="/article/{{ $item->id }}" target="_blank">
                 <i class="iconfont icon-liulan">
                 </i>
-                58
+                {{ $item->hits }}
             </a>
-            <a class="count count_link" href="/v2/detail" target="_blank">
+            <a class="count count_link" href="/article/{{ $item->id }}" target="_blank">
                 <i class="iconfont icon-svg37">
                 </i>
-                0
+                {{ $item->count_replies }}
             </a>
             <span class="count">
                 <i class="iconfont icon-03xihuan">
                 </i>
-                1
+                {{ $item->count_likes }}
             </span>
         </div>
     </div>
 </li>
-<li class="article_item have_img">
-    <a class="wrap_img" href="/v2/detail" target="_blank">
-        <img src="/images/details_07.jpg"/>
-    </a>
-    <div class="content">
-        <div class="author">
-            <a class="avatar" href="/v2/user" target="_blank">
-                <img src="/images/photo_01.jpg"/>
-            </a>
-            <div class="info_meta">
-                <a class="nickname" href="/v2/user" target="_blank">
-                    喵星菇凉
-                </a>
-                <a href="/v2/detail" target="_blank">
-                    <img class="badge_icon_xs" data-placement="top" data-toggle="tooltip" src="/images/vip1.png" title="爱你城签约作者"/>
-                </a>
-                <span class="time">
-                    发表了文章 · 06.15.12:12
-                </span>
-            </div>
-        </div>
-        <a class="headline paper_title" href="/v2/detail" target="_blank">
-            <span>
-                魔兽世界7.2.5全新版本资料片：新橙戒+新黑庙+乐队活动
-            </span>
-        </a>
-        <p class="abstract">
-            《魔兽世界》7.2.5版本今日在国服上线。虽然是小版本更新，但改动内容还是十分丰富的。比如新的橙装、大秘境调整、黑庙加入时空漫游、克罗米战役等等。以下是17173为各位整理的《魔兽世界》7.2.5版本今日在国服上线。虽然是小版本更新，但改动内容还是十分丰富的。比如新的橙装、大秘境调整、黑庙加入时空漫游、克罗米战役等等。以下是17173为各位整理的
-        </p>
-        <div class="meta">
-            <a class="count count_link" href="/v2/detail" target="_blank">
-                <i class="iconfont icon-liulan">
-                </i>
-                717
-            </a>
-            <a class="count count_link" href="/v2/detail" target="_blank">
-                <i class="iconfont icon-svg37">
-                </i>
-                6
-            </a>
-            <span class="count">
-                <i class="iconfont icon-03xihuan">
-                </i>
-                13
-            </span>
-        </div>
-    </div>
-</li>
+@elseif(get_class($action->actionable)=='App\Follow')
+  @php
+       $follow=$action->actionable;
+       $item=$follow->followed;
+  @endphp
 <li class="article_item">
     <div class="author">
-        <a class="avatar" href="/v2/user" target="_blank">
-            <img src="/images/photo_01.jpg"/>
+        <a class="avatar" href="/user/{{ $action->user->id }}" target="_blank">
+            <img src="{{ $action->user->avatar() }}"/>
         </a>
         <div class="info_meta">
-            <a class="nickname" href="/v2/user" target="_blank">
-                喵星菇凉
+            <a class="nickname" href="/user/{{ $action->user->id }}" target="_blank">
+                  {{ $action->user->name }}
             </a>
             <span class="time">
-                关注了作者 · 06.14.23:55
+                关注了作者 · {{ $action->created_at }}
             </span>
         </div>
     </div>
     <div class="follow_detail">
         <div class="author">
-            <a class="avatar avatar_sm" href="/v2/user" target="_blank">
-                <img src="/images/photo_03.jpg"/>
+            <a class="avatar avatar_sm" href="/user/{{ $item->id }}" target="_blank">
+                <img src="{{ $item->avatar }}"/>
             </a>
             <a class="btn_base btn_followed" href="javascript:;">
                 <span>
@@ -182,77 +140,79 @@
                 </span>
             </a>
             <div class="info_meta">
-                <a class="nickname" href="/v2/user" target="_blank">
-                    Dreamover1010
+                <a class="nickname" href="/user/{{ $item->id }}" target="_blank">
+                    {{ $item->name }}
                 </a>
                 <p class="meta">
-                    写了 16299 字，被 90 人关注，获得了 140 个喜欢
+                    写了 {{ $item->word }} 字，被 {{ $item->count_follows }} 人关注，获得了 {{ $item->count_likes }} 个喜欢
                 </p>
             </div>
         </div>
         <div class="signature">
             <span>
-                在广告行业摸爬滚打几年的设计师逃出升天
+                {{ $item->introduction   }}
             </span>
         </div>
     </div>
 </li>
+@elseif(get_class($action->actionable)=='App\Comment')
+  @php
+      $comment=$action->actionable;
+      $item =$comment->commented;
+  @endphp
 <li class="article_item">
     <div class="author">
-        <a class="avatar" href="/v2/user" target="_blank">
-            <img src="/images/photo_01.jpg"/>
+        <a class="avatar" href="/user/{{ $action->user->id }}" target="_blank">
+            <img src="{{ $action->user->avatar() }}"/>
         </a>
         <div class="info_meta">
-            <a class="nickname" href="/v2/user" target="_blank">
-                喵星菇凉
+            <a class="nickname" href="/user/{{ $action->user->id }}" target="_blank">
+                {{ $action->user->name }}
             </a>
             <span class="time">
-                发表了评论 · 10.30.13:26
+                发表了评论 · {{ $action->user->created_at }}
             </span>
         </div>
     </div>
     <div class="comment_dynamic">
         <p class="discuss">
-            <a href="/v2/user" target="_blank">
-                @夜_2d81
-            </a>
-            丧尸从0到1%，这个过程，军队就开始介入了，基本不可能达到99%
+             {{ $comment->body }}
         </p>
         <blockquote>
-            <a class="headline paper_title" href="/v2/detail" target="_blank">
+            <a class="headline paper_title" href="/article/{{ $item->id }}" target="_blank">
                 <span>
-                    末日来临，最正确的丧尸自救指南
+                    {{ $item->title }}
                 </span>
             </a>
             <p class="abstract">
-                这是智先生的第8篇原创文章 当末日来临 你准备好了吗？ 最近我看完了马克斯·布鲁克斯写的《僵尸生存指南》，书本教会了人们如何在丧尸横行的世界中生存，并提供了从选择武器到制定逃...
+                {{ $item->description() }}
             </p>
             <div class="meta">
                 <div class="origin_author">
-                    <a href="/v2/user" target="_blank">
-                        空评
+                    <a href="/user/{{ $item->user->id }}" target="_blank">
+                        {{ $item->user->name }}
                     </a>
                 </div>
-                <a class="count count_link" href="/v2/detail" target="_blank">
+                <a class="count count_link" href="/article/{{ $item->id }}" target="_blank">
                     <i class="iconfont icon-liulan">
                     </i>
-                    1649
+                   {{ $item->hits }}
                 </a>
-                <a class="count count_link" href="/v2/detail" target="_blank">
+                <a class="count count_link" href="/article/{{ $item->id }}" target="_blank">
                     <i class="iconfont icon-svg37">
                     </i>
-                    22
+                    {{ $item->count_replies }}
                 </a>
                 <span class="count">
                     <i class="iconfont icon-03xihuan">
                     </i>
-                    72
+                    {{ $item->count_likes }}
                 </span>
             </div>
         </blockquote>
     </div>
 </li>
-<li class="article_item">
+{{-- <li class="article_item">
     <div class="author">
         <a class="avatar" href="/v2/user" target="_blank">
             <img src="/images/photo_01.jpg"/>
@@ -286,19 +246,5 @@
             </div>
         </blockquote>
     </div>
-</li>
-<li class="article_item">
-    <div class="author">
-        <a class="avatar" href="/v2/user" target="_blank">
-            <img src="/images/photo_01.jpg"/>
-        </a>
-        <div class="info_meta">
-            <a class="nickname" href="/v2/user" target="_blank">
-                喵星菇凉
-            </a>
-            <span class="time">
-                加入了爱你城 · 09.20.13:06
-            </span>
-        </div>
-    </div>
-</li>
+</li> --}}
+@endif

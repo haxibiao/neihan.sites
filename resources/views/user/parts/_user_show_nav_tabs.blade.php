@@ -37,7 +37,24 @@
         </div>
         <div class="tab-pane fade" id="dongtai" role="tabpanel">
             <ul class="article_list">
-                @include('user.parts.user_acive')
+               @foreach($data['actions'] as $action)
+                @include('user.parts.user_acive',['action'=>$action])
+               @endforeach
+                   <li class="article_item">
+                        <div class="author">
+                            <a class="avatar" href="/user/{{ $user->id }}" target="_blank">
+                                <img src="{{ $user->avatar }}"/>
+                            </a>
+                            <div class="info_meta">
+                                <a class="nickname" href="/user/{{ $user->id }}" target="_blank">
+                                    {{ $user->name }}
+                                </a>
+                                <span class="time">
+                                    加入了爱你城 · {{ $user->created_at }}
+                                </span>
+                            </div>
+                        </div>
+                    </li>
             </ul>
         </div>
         <div class="tab-pane fade" id="pinglun" role="tabpanel">
