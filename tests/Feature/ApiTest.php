@@ -107,9 +107,8 @@ class ApiTest extends TestCase
     {
         $chat=\App\Chat::orderBy('id','desc')->take(1)->first();
         //TODO::正则写的可能不健壮,日后仔细研究.
-        $preg='/\["\d+",(\S*)]/';
+        $preg='/\[\d+,?"(\S*)?"]/';
         preg_match_all($preg,$chat->uids,$match);
-
         $user_id= $match[1][0];
 
         $user=\App\User::find($user_id);
