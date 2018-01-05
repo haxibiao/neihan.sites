@@ -16,6 +16,13 @@
     @include avatar (32px,32px);
 }
 
+// 36大小的头像
+.avatar_ty {
+    width: 36px;
+    height: 36px;
+    margin-right: 10px;
+}
+
 // 40大小的头像
 .avatar_xs {
     width: 40px;

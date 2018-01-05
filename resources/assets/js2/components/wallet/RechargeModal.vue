@@ -23,7 +23,6 @@
 	                		<span>选择支付方式</span>
 	                		<input type="radio" value="alipay" checked />
 	                		<img src="/images/alipay_1.png" class="alipay" />
-	                		<img src="/images/alipay_2.png" class="alipay night" />
 	                	</div>
 	                </form>
 	            </div>
@@ -51,16 +50,13 @@ export default {
 <style lang="scss" scoped>
 	#rechargeModal {
 		.modal-dialog {
-			transform: translate(-50%, -50%);
 		    .modal-body {
 				font-size: 14px;
 				padding: 40px 40px 20px;
 				form {
 					margin: 0 0 20px;
-					div {
-						line-height: 30px;
-					}
 					.money_input_box_restyle {
+						line-height: 30px;
 						&:first-child {
 							.form-control {
 								font-size: 32px;
@@ -76,9 +72,6 @@ export default {
 							min-width: 79.33px;
 							height: 28px;
 							margin: 0 30px 0 10px;
-						}
-						.night {
-							display: none;
 						}
 					}
 				}

@@ -157,7 +157,6 @@ export default {
 <style lang="scss" scoped>
 	#detailModal_home {
 	    .modal-dialog {
-	        transform: translate(-50%, -50%);
 	        width: 960px;
 	        @media screen and (max-width: 1080px) {
 	            width: 750px;
@@ -185,8 +184,7 @@ export default {
 	            }
 	        }
 	        .modal-body {
-	            padding-bottom: 30px;
-	            height: 460px;
+	            height: 480px;
 	            overflow: auto;
 	            ul {
 	                .title {
@@ -196,12 +194,12 @@ export default {
 	                    border-bottom: 1px solid #f0f0f0;
 	                }
 	                li {
-	                    position: relative;
 	                    font-size: 15px;
 	                    padding: 25px 20px;
 	                    border-bottom: 1px solid #e6e6e6;
 	                    border-right: 1px solid #f0f0f0;
 	                    border-bottom: 1px solid #f0f0f0;
+	                    position: relative;
 	                    div {
 	                        display: inline-block;
 	                        vertical-align: middle;

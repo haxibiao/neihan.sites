@@ -33,7 +33,7 @@
         </li>
         <li class="share" data-container="body" data-original-title="分享文章" data-placement="left" data-toggle="tooltip">
             <a data-toggle="dropdown" href="javascript:;" class="function_button">
-                <i class="iconfont icon-fenxiang1">
+                <i class="iconfont icon-fenxiang">
                 </i>
             </a>
             <ul class="dropdown-menu">

@@ -60,17 +60,14 @@ export default {
 <style lang="scss" scoped>
 	#withdrawModal {
 		.modal-dialog {
-			transform: translate(-50%, -50%);
 		    .modal-body {
 				font-size: 14px;
 				padding: 40px 40px 20px;
-				div {
-					line-height: 30px;
-				}
 				form {
 					margin: 0 0 20px;
 					.money_input_box_restyle {
 						margin-bottom: 0;
+						line-height: 30px;
 						.form-control {
 							border-radius: 0;
 							padding-left: 135px;

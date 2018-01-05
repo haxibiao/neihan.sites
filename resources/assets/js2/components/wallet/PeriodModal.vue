@@ -40,11 +40,9 @@ export default {
 <style lang="scss" scoped>
 	#periodModal {
 		.modal-dialog {
-			transform: translate(-50%, -50%);
 		    .modal-body {
 				font-size: 17px;
 				padding: 20px;
-				line-height: 30px;
 		    }
 		}
 	}

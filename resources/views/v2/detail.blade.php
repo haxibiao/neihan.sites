@@ -93,7 +93,7 @@
                     <p>
                         如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！
                     </p>
-                    <div class="btn_base btn_pay">
+                    <div class="btn_base btn_pay" data-target="#support_modal" data-toggle="modal">
                         赞赏支持
                     </div>
                     <div>
@@ -133,12 +133,10 @@
                                     <img src="/images/photo_02.jpg"/>
                                 </a>
                             </li>
-                            <span class="rewad_user">
-                                等10人
-                            </span>
                         </ul>
-
+                        <span class="rewad_user">等10人</span>
                     </div>
+                    <support-modal></support-modal>
                 </div>
                 <div class="meta_bottom">
                     <div class="like">

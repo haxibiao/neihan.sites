@@ -44,34 +44,20 @@ Vue.component('comments', require('./components/Comments.vue'));
 Vue.component('search', require('./components/Search.vue'));
 
 
+
+/*  */
+Vue.component('article-list', require('./components/ArticleList.vue'));
+Vue.component('category-list', require('./components/CategoryList.vue'));
+
+
 // 关注页
 Vue.component('follow-left', require('./components/follow/FollowLeft.vue'));
 
 // 消息页
 Vue.component('notifications-left', require('./components/notification/NotificationLeft.vue'));
 
-// 详情页评论
-Vue.component('new-comment', require('./components/detail/NewComment.vue'));
-
 // 设置页
 Vue.component('setting-left', require('./components/setting/SettingLeft.vue'));
-
-/* 模态框 */
-// 专题页
-Vue.component('categorymodal-home', require('./components/contributeModal/CategoryModal_Home.vue'));
-Vue.component('categorymodal-delete', require('./components/contributeModal/CategoryModal_Delete.vue'));
-Vue.component('categorymodal-user', require('./components/contributeModal/CategoryModal_User.vue'));
-// 详情页
-Vue.component('detailmodal-home', require('./components/detail/DetailModal_Home.vue'));
-Vue.component('detailmodal-user', require('./components/detail/DetailModal_User.vue'));
-// 钱包页
-Vue.component('recharge-modal', require('./components/wallet/RechargeModal.vue'));
-Vue.component('period-modal', require('./components/wallet/PeriodModal.vue'));
-Vue.component('why-modal', require('./components/wallet/WhyModal.vue'));
-Vue.component('withdraw-modal', require('./components/wallet/WithdrawModal.vue'));
-
-Vue.component('article-list', require('./components/ArticleList.vue'));
-Vue.component('category-list', require('./components/CategoryList.vue'));
 
 const routes = [
     // 关注页路由

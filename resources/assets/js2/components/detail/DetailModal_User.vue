@@ -15,15 +15,15 @@
 	                        新建专题
 	                    </a>
 	                </h4>
-	                <div class="search_input">
+	            </div>
+	            <div class="modal-body">
+	            	<div class="search_input">
 		                <div class="search_box">
 		                    <input placeholder="搜索我管理的专题" type="text" class="form-control" />
 		                    <i class="iconfont icon-sousuo">
 		                    </i>
 		                </div>
 		            </div>
-	            </div>
-	            <div class="modal-body">
 	                <ul>
 	                    <li>
 	                    	<a href="" class="avatar avatar_sm avatar_collection">
@@ -70,20 +70,18 @@ export default {
 <style lang="scss" scoped>
 	#detailModal_user {
 	    .modal-dialog {
-	        transform: translate(-50%, -50%);
 	        .modal-header {
 	            .notice {
 	                font-size: 13px;
 	                color: #969696;
 	            }
-	            .search_input {
-	                margin: 20px 0 0;
-	            }
 	        }
 	        .modal-body {
-	            padding-bottom: 30px;
-	            height: 460px;
+	            height: 480px;
 	            overflow: auto;
+	            .search_input {
+	                padding: 20px 22px 0;
+	            }
 	            ul {
 	                li {
 	                    padding: 20px;

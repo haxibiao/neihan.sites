@@ -37,8 +37,6 @@ Vue.component('comments', require('./components/Comments.vue'));
 Vue.component('search', require('./components/Search.vue'));
 // Vue.component('article-tool', require('./components/contributeModal/ArticleTool.vue'));
 
-// 详情页评论
-Vue.component('new-comment', require('./components/detail/NewComment.vue'));
 
 /* 模态框 */
 // 专题页
@@ -48,11 +46,18 @@ Vue.component('categorymodal-user', require('./components/contributeModal/Catego
 // 详情页
 Vue.component('detailmodal-home', require('./components/detail/DetailModal_Home.vue'));
 Vue.component('detailmodal-user', require('./components/detail/DetailModal_User.vue'));
+Vue.component('support-modal', require('./components/detail/SupportModal.vue'));
 // 钱包页
 Vue.component('recharge-modal', require('./components/wallet/RechargeModal.vue'));
 Vue.component('period-modal', require('./components/wallet/PeriodModal.vue'));
 Vue.component('why-modal', require('./components/wallet/WhyModal.vue'));
 Vue.component('withdraw-modal', require('./components/wallet/WithdrawModal.vue'));
+
+// 详情页评论
+Vue.component('new-comment', require('./components/detail/NewComment.vue'));
+
+
+/*  */
 
 Vue.component('article-list', require('./components/ArticleList.vue'));
 Vue.component('category-list', require('./components/CategoryList.vue'));

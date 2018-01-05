@@ -64,6 +64,9 @@ export default {
         position: absolute;
         left: -48px;
     }
+    .sign_container {
+        text-align: center;
+    }
     .text_container {
         width: 100%;
         height: 80px;
@@ -73,12 +76,9 @@ export default {
         background-color: hsla(0, 0%, 71%, .1);
         padding: 10px 15px;
     }
-    .sign_container {
-        text-align: center;
-    }
     textarea {
-        resize: none;
         vertical-align: top;
+        resize: none;
     }
     .write_block {
         height: 50px;
