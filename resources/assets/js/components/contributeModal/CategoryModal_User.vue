@@ -98,7 +98,7 @@ export default {
          },
 
          getBtnClass(article){
-         	return article.submit_status.indexOf("投稿")===-1?'btn_hollow' 	:  'btn_push';
+         	return article.submit_status.indexOf("投稿")===-1?'btn_revoke' 	:  'btn_push';
          }
   },
 
