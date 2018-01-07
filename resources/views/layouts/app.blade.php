@@ -50,6 +50,12 @@
             window.current_user_name = '{{ Auth::user()->name }}';
             window.current_user_avatar = '{{ Auth::user()->avatar }}';
         </script>
+        @else
+            <script type="text/javascript">
+                window.tokenize =function(){
+                    return "";
+                }
+            </script>>
         @endif
 
         @if(in_array(request()->path(), [
