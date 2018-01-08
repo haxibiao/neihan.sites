@@ -80,8 +80,12 @@
 
         <div class="form-group{{ $errors->has('body') ? ' has-error-for-editor' : '' }}">
             {!! Form::label('body', '正文') !!}
-            {!! Form::hidden('body',$article->body, ['class' => 'form-control', 'required' => 'required']) !!}
-            <div class="editable"></div>
+         
+            {{-- {!! Form::hidden('body',$article->body, ['class' => 'form-control', 'required' => 'required']) !!}
+            <div class="editable"></div> --}}
+
+            <editor name="body" value="{{ $article->body }}"></editor>
+
             <small class="text-danger">{{ $errors->first('body') }}</small>
         </div>
 
@@ -97,7 +101,7 @@
     {!! Form::close() !!}
   </div>
   <div class="col-md-2">
-      @include('article.parts.media_panel')
+      {{-- @include('article.parts.media_panel') --}}
   </div>
   </div>
 </div>
@@ -106,42 +110,6 @@
 
 @endsection
 
-@push('scripts')
-
-@include('article.parts.upload_js')
-
-@include('article.parts.summernote_init')
-
-<script type="text/javascript">
-  $(function() {
-
-    $('.btn-draft').click(function() {
-        $('#hidden_status').val(0);
-        $('#article_form').submit();
-    });
-
-    var editor = $('.editable').summernote({
-        lang: 'zh-CN', // default: 'en-US',
-        height: 500,
-        toolbar: [
-            // [groupName, [list of button]]
-            ['style', ['bold', 'italic', 'underline', 'clear']],
-            ['font', ['strikethrough', 'superscript', 'subscript']],
-            ['fontsize', ['fontsize']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['height', ['height']],
-            ["insert", ["link","hr"]],
-            ['misc',['codeview', 'undo','redo','fullscreen']]
-          ]
-      });
-
-    $('.editable').summernote('code',$('input[name="body"]').val());
-
-    $('.editable').on('summernote.change', function(we, contents, $editable) {
-      $('input[name="body"]').val(contents);
-    });
-  });
-
-</script>
+@push('css')
+    <link rel="stylesheet" type="text/css" href="/css/simditor.css">
 @endpush

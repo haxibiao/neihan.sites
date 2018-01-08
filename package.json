@@ -20,6 +20,7 @@
     "lodash": "^4.17.4"
   },
   "dependencies": {
+    "bootstrap-tagsinput": "^0.7.1",
     "chart.js": "^2.6.0",
     "codemirror": "^5.27.2",
     "simditor": "^2.3.6",

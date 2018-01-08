@@ -33,7 +33,8 @@ mix
 // v1 
 mix
     .scripts([
-            "public/js/app.js",             
+            "public/js/app.js",
+            "node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.js",
             "resources/assets/js/plugins/poster.js"
         ], 
         "public/js/a.js")

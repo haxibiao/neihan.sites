@@ -122,15 +122,11 @@
 
 @endsection
 
-@push('scripts')
-
-@include('article.parts.upload_js')
-
-{{-- @include('article.parts.summernote_init') --}}
-
 @push('css')
     <link rel="stylesheet" type="text/css" href="/css/simditor.css">
 @endpush
+
+@push('scripts')
 
 <script type="text/javascript">
 

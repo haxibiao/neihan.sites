@@ -76,7 +76,7 @@ class ArticleController extends Controller {
 		$this->save_article_tags($article);
 
 		//images
-		$imgs = $request->get('images');
+		$imgs = $this->get_image_urls_from_body($article->body);
 		$this->auto_upadte_image_relations($imgs, $article);
 
 		return redirect()->to('/article/' . $article->id);
@@ -193,7 +193,7 @@ class ArticleController extends Controller {
 		$this->save_article_tags($article);
 
 		//images
-		$imgs = $request->get('images');
+		$imgs = $this->get_image_urls_from_body($article->body);
 		$this->auto_upadte_image_relations($imgs, $article);
 
 		return redirect()->to('/article/' . $article->id);
@@ -285,13 +285,11 @@ class ArticleController extends Controller {
 				$image->title = $article->title;
 				$image->save();
 
-				$img_ids = $image->id;
+				$img_ids[] = $image->id;
 				//auto get is_top an image_top
 				if ($image->path_top) {
 					// $article->is_top    = 1;
 					if (!$has_primary_top) {
-						var_dump($image->path_small);
-						var_dump($article->image_url);
 						if ($image->path_small == $article->image_url) {
 							$has_primary_top = true;
 						}
@@ -358,4 +356,14 @@ class ArticleController extends Controller {
 		$articles = Article::orderBy('id', 'desc')->paginate(10);
 		return view('article.parts.article_new')->withArticles($articles);
 	}
+
+    public function get_image_urls_from_body($body)
+    {
+        $images              = [];
+        $pattern_img_path = '/src=\"(\/storage\/img\/\d+\.(jpg|gif|png))\"/';
+        if (preg_match_all($pattern_img_path, $body, $match)) {
+            $images = $match[1];            
+        }
+        return $images;
+    }
 }
