@@ -59,5 +59,9 @@ Vue.component('period-modal', require('./components/wallet/PeriodModal.vue'));
 Vue.component('why-modal', require('./components/wallet/WhyModal.vue'));
 Vue.component('withdraw-modal', require('./components/wallet/WithdrawModal.vue'));
 
+//editor needed modals..
+Vue.component('image-list-modal', require('./modals/ImageListModal.vue'));
+Vue.component('image-list', require('./components/ImageList.vue'));
+
 const app = new Vue({
 }).$mount('#app');

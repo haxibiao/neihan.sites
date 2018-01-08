@@ -120,4 +120,5 @@ Route::get('/video/{id}/del-{key}', 'Api\VideoController@deleteRelation');
 Route::get('/video/{id}/{key}', 'Api\VideoController@getRelation');
 
 //图片
+Route::get('/image', 'Api\ImageController@index');
 Route::post('/image/save', 'Api\ImageController@store');

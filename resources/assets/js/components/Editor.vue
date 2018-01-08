@@ -3,6 +3,7 @@
         <textarea :id="textareaId" :name="name" :placeholder="placeholderText">
             {{ html }}
         </textarea>
+        <image-list-modal></image-list-modal>
     </div>
 </template>
 
@@ -84,7 +85,8 @@ export default {
 	            'link', 
 	            '|',
 	            'image', 
-	            // 'picture', 'video',
+	            'picture',
+                 // 'video',
 	            // '|', 
 	            // 'indent', 'outdent'
 	        ]
@@ -93,5 +95,10 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss">
+.simditor-box {
+    img {
+        max-width: 99%;
+    }
+}
 </style>
