@@ -91,12 +91,16 @@
 
         <div class="form-group{{ $errors->has('body') ? ' has-error-for-editor' : '' }}">
             {!! Form::label('body', '正文') !!}
-            {!! Form::hidden('body',null, ['class' => 'form-control', 'required' => 'required']) !!}
-            <div class="editable"></div>
+
+            {{-- {!! Form::hidden('body',null, ['class' => 'form-control', 'required' => 'required']) !!}             --}}
+            {{-- <div class="editable"></div> --}}
+            
+            <editor name="body"></editor>
+
             <small class="text-danger">{{ $errors->first('body') }}</small>
         </div>
 
-        @include('article.parts.images_selected', ['article_images' => []])
+        {{-- @include('article.parts.images_selected', ['article_images' => []]) --}}
 
         <div class="btn-group-lg pull-right">
             <input type="hidden" name="image_url">
@@ -108,7 +112,7 @@
       {!! Form::close() !!}
   </div>
   <div class="col-md-2">
-    @include('article.parts.media_panel')
+    {{-- @include('article.parts.media_panel') --}}
   </div>
   </div>
 </div>
@@ -122,7 +126,11 @@
 
 @include('article.parts.upload_js')
 
-@include('article.parts.summernote_init')
+{{-- @include('article.parts.summernote_init') --}}
+
+@push('css')
+    <link rel="stylesheet" type="text/css" href="/css/simditor.css">
+@endpush
 
 <script type="text/javascript">
 

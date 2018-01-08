@@ -1,10 +1,5 @@
-// Variables
-@import "variables";
-
 // Bootstrap
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "bootstrap";
 
-//v.1.0
-@import "v1";
-
-@import "hack";
+//v.2.0
+@import "v2";

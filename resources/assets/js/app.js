@@ -20,7 +20,7 @@ window.bus = new Vue();
 //index
 Vue.component('recommend-authors', require('./components/contributeModal/RecommendAuthors.vue'));
 
-Vue.component('example', require('./components/Example.vue'));
+Vue.component('editor', require('./components/Editor.vue'));
 Vue.component('bar', require('./components/Bar.vue'));
 Vue.component('line-chart', require('./components/Line.vue'));
 Vue.component('single-list', require('./components/SingleList.vue'));
