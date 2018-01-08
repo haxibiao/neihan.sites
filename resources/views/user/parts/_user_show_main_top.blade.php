@@ -51,7 +51,7 @@
             </li>
             <li>
                 <div class="meta_block">
-                    <a href="/v1/home">
+                    <a href="/user/{{ $user->id }}">
                         <p>
                             {{ $user->count_articles }}
                         </p>

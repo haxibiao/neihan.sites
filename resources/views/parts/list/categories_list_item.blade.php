@@ -20,7 +20,7 @@
                   </follow>
                 <hr/>
                 <div class="count">
-                    <a href="/v1/category/2" target="_blank">
+                    <a href="/category/{{ $category->name_en }}" target="_blank">
                        {{ $category->count }}篇文章
                     </a>
                    {{ $category->count_follows }}人关注

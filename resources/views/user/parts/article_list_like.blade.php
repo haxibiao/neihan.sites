@@ -28,12 +28,12 @@
                 {{ $article->description() }}
             </p>
             <div class="meta">
-                <a href="/v1/detail" target="_blank" class="count count_link">
+                <a href="/article/{{ $article->id }}" target="_blank" class="count count_link">
                     <i class="iconfont icon-liulan">
                     </i>
                     {{ $article->hits }}
                 </a>
-                <a href="/v1/detail" target="_blank" class="count count_link">
+                <a href="/article/{{ $article->id }}" target="_blank" class="count count_link">
                     <i class="iconfont icon-svg37">
                     </i>
                     {{ $article->count_replies }}

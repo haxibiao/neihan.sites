@@ -106,7 +106,7 @@
                         <ul class="collection_follower">
                          @foreach([1,2,3,4,5,6,7,8] as $f)
                             <li>
-                                <a class="avatar" href="/v1/user">
+                                <a class="avatar" href="javascript:;">
                                     <img src="/images/photo_0{{ rand(2,3) }}.jpg"/>
                                 </a>
                             </li>

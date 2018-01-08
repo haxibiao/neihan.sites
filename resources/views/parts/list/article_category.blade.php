@@ -32,12 +32,12 @@
                 <a class="category_tag" href="/{{ $article->category->name_en }}" target="_blank">
                     {{ $article->category->name }}
                 </a>
-                <a href="/v1/detail" target="_blank" class="count count_link">
+                <a href="/article/{{ $article->id }}" target="_blank" class="count count_link">
                     <i class="iconfont icon-liulan">
                     </i>
                     {{ $article->hits }}
                 </a>
-                <a href="/v1/detail" target="_blank" class="count count_link">
+                <a href="/article/{{ $article->id }}" target="_blank" class="count count_link">
                     <i class="iconfont icon-svg37">
                     </i>
                     {{ $article->count_replies }}
