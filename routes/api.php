@@ -119,5 +119,5 @@ Route::get('/video/{id}/del-{key}', 'Api\VideoController@deleteRelation');
 //获取视频相关片段数据
 Route::get('/video/{id}/{key}', 'Api\VideoController@getRelation');
 
-
-
+//图片
+Route::post('/image/save', 'Api\ImageController@store');
