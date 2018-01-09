@@ -18,6 +18,9 @@
                 <th>
                     创建时间
                 </th>
+                <th>
+                    最近被搜索的时间
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -32,10 +35,26 @@
                 <td>
                     {{ $query->created_at }}
                 </td>
+                <td>
+                    {{ $query->updated_at }}
+                </td>
             </tr>
             @endforeach
         </tbody>
     </table>
     {{ $querys->render() }}
+    <ul class="list-group">
+        <li class="list-group-item">
+            最近被搜索的十个关键词
+        </li>
+        @foreach($data['update'] as $up)
+        <li class="list-group-item">
+            {{ $up->query }}
+            <div class="pull-right">
+                最后一次搜索时间:{{ $up->updated_at }}
+            </div>
+        </li>
+        @endforeach
+    </ul>
 </div>
 @stop
