@@ -1,24 +1,29 @@
 {{-- 个人页右侧 --}}
+@include('user.parts._message')
 <div class="aside col-sm-4">
     <div class="litter_title">
-       <span>
+        <span>
             个人介绍
-       </span>
-    <a class="function_btn" href="javascript:;">
-        <i class="iconfont icon-xie">
-        </i>
-        编辑
-    </a>
+        </span>
+        <a class="function_btn" href="javascript:;">
+            <i class="iconfont icon-xie">
+            </i>
+            编辑
+        </a>
     </div>
     <form action="/user/" class="intro_form" method="post">
-        <textarea class="form-control" id="user_intro" name="user[intro]">{{ $user->introduction  }}</textarea>
+        <textarea class="form-control" id="user_intro" name="user[intro]">
+            {{ $user->introduction  }}
+        </textarea>
         <input class="btn_base btn_hollow btn_hollow_xs" name="commit" type="submit" value="保存"/>
         <a href="javascript:void(null);">
             取消
         </a>
     </form>
     <div class="description">
-        <div class="intro">{{ $user->introduction }}</div>
+        <div class="intro">
+            {{ $user->introduction }}
+        </div>
     </div>
     <ul class="aside_list user_dynamic">
         <li>
@@ -45,22 +50,22 @@
             我创建的专题
         </p>
         <ul class="aside_list">
-          @foreach($user->categories as $category)
+            @foreach($user->categories as $category)
             <li>
                 <a href="/{{ $category->name_en }}" target="_blank">
-                    <img src="{{ $category->logo }}" class="avatar" />
+                    <img class="avatar" src="{{ $category->logo }}"/>
                     <span>
                         {{ $category->name }}
                     </span>
                 </a>
             </li>
-          @endforeach
+            @endforeach
         </ul>
         <p class="litter_title">
             我的文集
         </p>
         <ul class="aside_list">
-          @foreach($user->collections as $collection)
+            @foreach($user->collections as $collection)
             <li>
                 <a href="/collection/{{ $collection->id }}" target="_blank">
                     <i class="iconfont icon-wenji">
@@ -70,7 +75,7 @@
                     </span>
                 </a>
             </li>
-          @endforeach
+            @endforeach
         </ul>
     </div>
 </div>
@@ -83,6 +88,25 @@
     $('form a').on('click',function(){
         $('.intro_form').hide();
         $('.description .intro').show();
+    })
+
+    $('.intro_form').submit(function(event){
+        event.preventDefault();
+        $.ajax({
+        type: "post",
+        dataType: "json",
+        url: '/api/user/{{ $user->id }}/update',
+        data: {
+              api_token: '{{ $user->api_token }}',
+              introduction: $('#user_intro').val(),
+        },
+        success:function(data){
+             location.reload()
+        },
+        error:function(data){
+             location.reload()
+        }
+       }); 
     })
 </script>
 @endpush
