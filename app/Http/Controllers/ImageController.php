@@ -139,13 +139,13 @@ class ImageController extends Controller
 
             //save top
             if ($extension != 'gif') {
-                if ($img->width() >= 750) {
-                    $img->crop(750, 400);
+                if ($img->width() >= 760) {
+                    $img->crop(760, 328);
                     $image->path_top = '/storage/img/' . $image->id . '.top.' . $extension;
                     $img->save(public_path($image->path_top));
                 }
             } else {
-                if ($img->width() >= 750) {
+                if ($img->width() >= 760) {
                     $image->path_top = $image->path;
                 }
             }
@@ -156,11 +156,11 @@ class ImageController extends Controller
                     $constraint->aspectRatio();
                 });
             } else {
-                $img->resize(null, 200, function ($constraint) {
+                $img->resize(null, 240, function ($constraint) {
                     $constraint->aspectRatio();
                 });
             }
-            $img->crop(300, 200);
+            $img->crop(300, 240);
             $image->path_small = '/storage/img/' . $image->id . '.small.' . $extension;
             $img->save(public_path($image->path_small));
             $image->save();
