@@ -353,10 +353,10 @@ class FixData extends Command
                 if ($image && file_exists(public_path($image->path))) {
                     //resize and save new top image file
                     $img = \ImageMaker::make(public_path($image->path));
-                    $img->resize(760, null, function ($constraint) {
+                    $img->resize(1250, null, function ($constraint) {
                         $constraint->aspectRatio();
                     });
-                    $img->crop(760, 328);
+                    $img->crop(1250, 540);
                     $this->comment($image->path_top());
                     $img->save(public_path($image->path_top()));
 

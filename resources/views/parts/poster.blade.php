@@ -8,7 +8,7 @@
         type: "get",
         dataType: "html",
         url: '/api/image/poster',
-        data: {        },
+        data: {},
         success:function(data){
                 dataImage=data;
                 dataImage = JSON.parse(dataImage);

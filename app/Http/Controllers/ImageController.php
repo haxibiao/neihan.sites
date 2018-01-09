@@ -112,10 +112,11 @@ class ImageController extends Controller
         foreach ($images as $file) {
             $image = new Image();
             $image->save();
-            $extension          = $file->getClientOriginalExtension();
-            $filename           = $image->id . '.' . $extension;
-            $image->path        = '/storage/img/' . $filename;
-            $image->user_id     = Auth::check() ? Auth::user()->id : $user_id;
+            $extension        = $file->getClientOriginalExtension();
+            $filename         = $image->id . '.' . $extension;
+            $image->extension = $extension;
+            $image->path      = '/storage/img/' . $filename;
+            $image->user_id   = Auth::check() ? Auth::user()->id : $user_id;
 
             $local_dir = public_path('/storage/img/');
             if (!is_dir($local_dir)) {
@@ -139,13 +140,13 @@ class ImageController extends Controller
 
             //save top
             if ($extension != 'gif') {
-                if ($img->width() >= 760) {
-                    $img->crop(760, 328);
+                if ($img->width() >= 1250) {
+                    $img->crop(1250, 540);
                     $image->path_top = '/storage/img/' . $image->id . '.top.' . $extension;
                     $img->save(public_path($image->path_top));
                 }
             } else {
-                if ($img->width() >= 760) {
+                if ($img->width() >= 1250) {
                     $image->path_top = $image->path;
                 }
             }
