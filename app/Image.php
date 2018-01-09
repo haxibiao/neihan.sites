@@ -32,4 +32,9 @@ class Image extends Model
     {
         return str_replace($this->extension, 'small.' . $this->extension, $this->path);
     }
+
+    public function path_top()
+    {
+        return str_replace($this->extension, 'top.' . $this->extension, $this->path);
+    }
 }

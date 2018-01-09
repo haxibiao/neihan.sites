@@ -19,4 +19,18 @@ class ImageController extends Controller
         $controller = new \App\Http\Controllers\ImageController();
         return $controller->store($request);
     }
+
+    public function poster()
+    {
+        $images  =Image::orderBy('id','desc')->take(8)->get();
+        foreach($images as $image){
+            $image->path_top();
+        }
+        $images=$images->pluck('title','path');
+        foreach ($images as $path=>$title) {
+             $img=[$title,$path];
+             $imgs[]=$img;
+        }
+        return $imgs;
+    }
 }
