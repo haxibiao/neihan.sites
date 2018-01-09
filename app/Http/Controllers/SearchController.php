@@ -105,7 +105,7 @@ class SearchController extends Controller
     {
         $querys = Query::where('status', '>=', 0)->orderBy('hits', 'desc')->paginate();
         $data =[];
-        $data['update']=Query::where('status', '>=', 0)->orderBy('updated_at','desc')->take(10)->get();
+        $data['update']=Query::where('status', '>=', 0)->orderBy('updated_at','desc')->paginate(10);
         return view('parts.search_all')
         ->withData($data)
         ->withQuerys($querys);

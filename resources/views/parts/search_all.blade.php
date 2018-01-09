@@ -55,6 +55,7 @@
             </div>
         </li>
         @endforeach
+        {{ $data['update']->render() }}
     </ul>
 </div>
 @stop
