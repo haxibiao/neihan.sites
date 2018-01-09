@@ -101,7 +101,9 @@
                     <p>
                         如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！
                     </p>
-                   <a class="btn_base btn_pay" href="/pay?amount={{ rand(1,5)/100 }}&type=tip&article_id={{ $article->id }}">赞赏支持</a>
+                     <div class="btn_base btn_pay" data-target="#support_modal" data-toggle="modal">
+                        赞赏支持
+                    </div>
                     <div class="supporter">
                         <ul class="collection_follower">
                          @foreach([1,2,3,4,5,6,7,8] as $f)
@@ -115,6 +117,7 @@
                         <span class="rewad_user">
                             等10人
                         </span>
+                        <support-modal user-id={{ $article->user->id }} article-id={{ $article->id }}></support-modal>
                     </div>
                 </div>
                 <div class="meta_bottom">

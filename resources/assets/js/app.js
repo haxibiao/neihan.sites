@@ -58,6 +58,7 @@ Vue.component('recharge-modal', require('./components/wallet/RechargeModal.vue')
 Vue.component('period-modal', require('./components/wallet/PeriodModal.vue'));
 Vue.component('why-modal', require('./components/wallet/WhyModal.vue'));
 Vue.component('withdraw-modal', require('./components/wallet/WithdrawModal.vue'));
+Vue.component('support-modal', require('./components/detail/SupportModal.vue'));
 
 //editor needed modals..
 Vue.component('image-list-modal', require('./modals/ImageListModal.vue'));
