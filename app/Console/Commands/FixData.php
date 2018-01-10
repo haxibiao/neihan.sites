@@ -278,96 +278,59 @@ class FixData extends Command
 
     public function fix_articles()
     {
-               //resize image_url 300*240
         //破除内存限制,这里有可能处理大量数据
         ini_set('memory_limit', '-1');
-        
+
+        //         //这个脚本只能跑一遍
+        //         //resize image_top  to 750*324 (poster設計是1250 * 540)
         // Article::orderBy('id')->chunk(100, function ($articles) {
         //     foreach ($articles as $article) {
-        //         if (empty($article->image_url)) {
-        //             $this->comment($article->id . ' 无图 ...');
-        //             continue;
-        //         }
+        //         //fix all old image_url use full url or small url instead of path ...
+        //         $image_url          = parse_url($article->image_url, PHP_URL_PATH);
+        //         $article->image_url = $image_url;
+        //         $article->save();
+        //         $image_url = str_replace('.small', '', $image_url);
+
         //         if(str_contains($article->image_url, "haxibiao")){
         //            $this->comment($article->id.'哈希表的图必须跳过');
         //            continue;
         //         }
-        //         $image_url_path = parse_url($article->image_url, PHP_URL_PATH);
-        //         $image_url_path = str_replace('.small', '', $image_url_path);
-        //         if (ends_with($image_url_path, '.')) {
-        //             $image_url_path = $image_url_path . 'jpg';
-        //         }
-        //         if ($article->image_url != $image_url_path) {
-        //             $article->image_url = $image_url_path;
-        //             $article->save();
-        //         }
 
-        //         if (file_exists(public_path($image_url_path))) {
-        //             $img = \ImageMaker::make(public_path($image_url_path));
-        //             //save small
-        //             if ($img->width() / $img->height() < 10 / 8) {
-        //                 $img->resize(300, null, function ($constraint) {
-        //                     $constraint->aspectRatio();
-        //                 });
-        //             } else {
-        //                 $img->resize(null, 240, function ($constraint) {
-        //                     $constraint->aspectRatio();
-        //                 });
-        //             }
-        //             $img->crop(300, 240);
-        //             $image = Image::where('path', $article->image_url)->first();
-        //             if ($image) {
-        //                 $img->save(public_path($image->path_small()));
-        //                 $this->info($article->id . '-' . $article->title . ' -> img:' . $image->path_small());
-        //             } else {
-        //                 $this->error('missed image for path:' . $article->image_url);
-        //             }
+        //         if (!$article->is_top) {
+        //             continue;
+        //         }
+        //         if (empty($article->image_url)) {
+        //             continue;
+        //         }
+        //         $image = Image::where('path', $image_url)->first();
+
+        //         if ($image && file_exists(public_path($image->path))) {
+        //             //resize and save new top image file
+        //             $img = \ImageMaker::make(public_path($image->path));
+        //             $img->resize(750, null, function ($constraint) {
+        //                 $constraint->aspectRatio();
+        //             });
+        //             $img->crop(750, 324);
+        //             $this->comment($image->path_top());
+        //             $img->save(public_path($image->path_top()));
+
+        //             $article->image_top = $image->path_top();
+        //             $article->save();
+        //             $this->info($article->id . ' - ' . $article->title);
         //         } else {
         //             $this->error('miss image : ' . $article->id . '-' . $article->title . ' -> img:' . $article->image_url);
         //         }
         //     }
         // });
 
-                //resize image_top  to 750*324 (poster設計是1250 * 540)
         Article::orderBy('id')->chunk(100, function ($articles) {
             foreach ($articles as $article) {
-                //fix all old image_url use full url or small url instead of path ...
-                $image_url          = parse_url($article->image_url, PHP_URL_PATH);
-                $article->image_url = $image_url;
+                $article->is_top = 0;
                 $article->save();
-                $image_url = str_replace('.small', '', $image_url);
-
-                if(str_contains($article->image_url, "haxibiao")){
-                   $this->comment($article->id.'哈希表的图必须跳过');
-                   continue;
-                }
-
-                if (!$article->is_top) {
-                    continue;
-                }
-                if (empty($article->image_url)) {
-                    continue;
-                }
-                $image = Image::where('path', $image_url)->first();
-
-                if ($image && file_exists(public_path($image->path))) {
-                    //resize and save new top image file
-                    $img = \ImageMaker::make(public_path($image->path));
-                    $img->resize(1250, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                    });
-                    $img->crop(1250, 540);
-                    $this->comment($image->path_top());
-                    $img->save(public_path($image->path_top()));
-
-                    $article->image_top = $image->path_top();
-                    $article->save();
-                    $this->info($article->id . ' - ' . $article->title);
-                } else {
-                    $this->error('miss image : ' . $article->id . '-' . $article->title . ' -> img:' . $article->image_url);
-                }
+                $this->comment("$article->id  修改完成");
             }
         });
+
     }
 
     public function fix_article_image($article)

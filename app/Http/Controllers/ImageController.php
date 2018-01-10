@@ -140,13 +140,13 @@ class ImageController extends Controller
 
             //save top
             if ($extension != 'gif') {
-                if ($img->width() >= 1250) {
-                    $img->crop(1250, 540);
+                if ($img->width() >= 760) {
+                    $img->crop(760, 328);
                     $image->path_top = '/storage/img/' . $image->id . '.top.' . $extension;
                     $img->save(public_path($image->path_top));
                 }
             } else {
-                if ($img->width() >= 1250) {
+                if ($img->width() >= 760) {
                     $image->path_top = $image->path;
                 }
             }

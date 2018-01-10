@@ -26,6 +26,8 @@ class Article extends Model
 
     protected $dates = ['edited_at'];
 
+    protected $touches=['category','categories','collections',];
+
     //计算用方法
 
     public function description()

@@ -68,6 +68,7 @@ class IndexController extends Controller
         $data             = (object) [];
         $data->categories = $categories;
         $data->articles   = $articles;
+        $data->carousel   = Article::where('is_top', 1)->orderBy('id', 'desc')->take(8)->get();
 
         return view('index.index')
             ->withData($data);
