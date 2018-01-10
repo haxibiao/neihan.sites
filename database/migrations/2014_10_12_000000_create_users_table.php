@@ -41,6 +41,8 @@ class CreateUsersTable extends Migration
             $table->integer('count_words')->default(0);
             $table->integer('count_follows')->default(0);
             $table->integer('count_actions')->default(0);
+            $table->integer('count_followings')->default(0);
+            $table->integer('count_collections')->default(0);
 
             $table->boolean('enable_tips')->default(1);
             $table->string('tip_words')->nullable();

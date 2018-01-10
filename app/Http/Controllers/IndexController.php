@@ -31,11 +31,12 @@ class IndexController extends Controller
             //依靠获取到的categories来获取article
             $articles = Article::with('user')->with('category')
                 ->whereIn('category_id', $categorie_ids)
-                ->orderBy('updated_at', 'desc')
+                ->orderBy('created_at', 'desc')
                 ->paginate(10);
             if (!$articles->isEmpty()) {
                 $has_follow_articles = true;
             }
+            
         }
 
         if (!$has_follow_articles) {
@@ -46,8 +47,7 @@ class IndexController extends Controller
                 ->take(7)
                 ->get();
             $articles = Article::with('user')->with('category')
-              ->whereIn('category_id', $categories->pluck('id'))
-              ->orderBy('id','desc')
+              ->orderBy('created_at','desc')
               ->paginate(10);
         }
 
@@ -69,7 +69,7 @@ class IndexController extends Controller
         $data->categories = $categories;
         $data->articles   = $articles;
         $data->carousel   = Article::where('is_top', 1)->orderBy('id', 'desc')->take(8)->get();
-
+        
         return view('index.index')
             ->withData($data);
     }

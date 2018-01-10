@@ -23,6 +23,7 @@ class CreateMatchesTable extends Migration
             $table->string('winner')->nullable();   //记录获胜队伍的名字.
             $table->integer('TA');     //参赛队伍1.
             $table->integer('TB');    //参赛队伍2
+            $table->string('status')->nullable();  
             $table->timestamp('start_at')->nullable();   //开赛时间.
             $table->timestamps();
         });
