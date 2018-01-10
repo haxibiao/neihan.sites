@@ -325,12 +325,33 @@ class FixData extends Command
 
         Article::orderBy('id')->chunk(100, function ($articles) {
             foreach ($articles as $article) {
-                $article->is_top = 0;
-                $article->update();
-                $this->comment("$article->id  修改完成");
+                $image =Image::where('path',$article->image_url)->first();
+                if($image && $image->path_top){
+                       $top_path=public_path($image->path_top);
+                       $img=\ImageMaker::make($top_path);
+                         if ($img->width() >= 750){
+                              $img->crop(750, 328);
+                              $img->save($top_path);
+                              $this->info("$image->path 已经处理成功");
+                         }else{
+                              $this->info("$image->path 太小了没法处理");
+                         }
+                }
             }
         });
-
+        
+        $articles=Article::where('is_top', 1)->orderBy('id', 'desc')->take(8)->get();
+        foreach($articles as $article){
+               $top_path=public_path($article->image_top);
+               $img=\ImageMaker::make($top_path);
+                 if ($img->width() >= 750){
+                      $img->crop(750, 328);
+                      $img->save($top_path);
+                      $this->info("$article->title 已经处理成功");
+                 }else{
+                      $this->info("$article->title 太小了没法处理");
+                 }
+        }
     }
 
     public function fix_article_image($article)
