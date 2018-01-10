@@ -326,7 +326,7 @@ class FixData extends Command
         Article::orderBy('id')->chunk(100, function ($articles) {
             foreach ($articles as $article) {
                 $article->is_top = 0;
-                $article->save();
+                $article->update();
                 $this->comment("$article->id  修改完成");
             }
         });
