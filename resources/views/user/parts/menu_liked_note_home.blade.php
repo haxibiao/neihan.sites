@@ -31,14 +31,16 @@
                         <a class="avatar avatar_in avatar_collection" href="/{{ $category->name_en }}">
                             <img src="{{ $category->logo }}"/>
                         </a>
-                        <a class="btn_base btn_followed" href="javascript:;">
+{{--                         <a class="btn_base btn_followed" href="javascript:;">
                             <span>
                                 <i class="iconfont icon-weibiaoti12">
                                 </i>
                                 <i class="iconfont icon-cha">
                                 </i>
                             </span>
-                        </a>
+                        </a> --}}
+                          <follow followed="{{ Auth::check() ? Auth::user()->isFollow('categories', $category->id) : false }}" id="{{ $category->id }}" type="categories" user-id="{{ Auth::check() ? Auth::user()->id : false }}">
+                         </follow>
                         <div class="info_meta">
                             <a class="headline nickname" href="/{{ $category->name_en }}">
                                {{ $category->name }}

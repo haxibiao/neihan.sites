@@ -144,7 +144,7 @@
                     {{ $item->name }}
                 </a>
                 <p class="meta">
-                    写了 {{ $item->word }} 字，被 {{ $item->count_follows }} 人关注，获得了 {{ $item->count_likes }} 个喜欢
+                    写了 {{ $item->count_words }} 字，被 {{ $item->count_follows }} 人关注，获得了 {{ $item->count_likes }} 个喜欢
                 </p>
             </div>
         </div>
