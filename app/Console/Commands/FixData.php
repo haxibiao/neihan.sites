@@ -323,34 +323,46 @@ class FixData extends Command
         //     }
         // });
 
-        Article::orderBy('id')->chunk(100, function ($articles) {
-            foreach ($articles as $article) {
-                $image =Image::where('path',$article->image_url)->first();
-                if($image && $image->path_top){
-                       $top_path=public_path($image->path_top);
-                       $img=\ImageMaker::make($top_path);
-                         if ($img->width() >= 750){
-                              $img->crop(750, 328);
-                              $img->save($top_path);
-                              $this->info("$image->path 已经处理成功");
-                         }else{
-                              $this->info("$image->path 太小了没法处理");
-                         }
+        // Article::orderBy('id')->chunk(100, function ($articles) {
+        //     foreach ($articles as $article) {
+        //         if ($article->image_url) {
+        //             $image = Image::where('path', $article->image_url)->first();
+        //             if ($image && !empty($image->path)) {
+        //                 $top_path = public_path($image->path);
+        //                 if (file_exists($top_path)) {
+        //                     $img = \ImageMaker::make($top_path);
+        //                     if ($img->width() >= 750) {
+        //                         $img->crop(760, 328);
+        //                         $img->save($top_path);
+        //                         $this->info("$image->path 已经处理成功");
+        //                     } else {
+        //                         $this->info("$image->path 太小了没法处理");
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // });
+        $articles = Article::where('is_top', 1)->orderBy('id', 'desc')->take(8)->get();
+        foreach ($articles as $article) {
+          if($article->image_top){
+                $image = Image::where('path_top', $article->image_top)->first();
+            if ($image) {
+                $image_path =public_path($image->path_top());
+
+                $img = \ImageMaker::make(public_path($image->path));
+                if ($img->width() >= 750) {
+                    $img->crop(760, 328);
+                    $img->save($image_path);
+                    $this->info("$article->title 已经处理成功");
+                } else {
+                    $img->crop(760, 328);
+                    $img->save($image_path);
+                    $this->info("$image-> 已经处理成功");
                 }
             }
-        });
-        
-        $articles=Article::where('is_top', 1)->orderBy('id', 'desc')->take(8)->get();
-        foreach($articles as $article){
-               $top_path=public_path($article->image_top);
-               $img=\ImageMaker::make($top_path);
-                 if ($img->width() >= 750){
-                      $img->crop(750, 328);
-                      $img->save($top_path);
-                      $this->info("$article->title 已经处理成功");
-                 }else{
-                      $this->info("$article->title 太小了没法处理");
-                 }
+
+         }
         }
     }
 
