@@ -74,6 +74,7 @@ Route::get('/setting','UserController@setting');
 
 //多媒体
 Route::resource('/image', 'ImageController');
+Route::get('/index/poster','ImageController@poster');
 Route::resource('/video', 'VideoController');
 
 

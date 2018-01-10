@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Article;
 
 class ImageController extends Controller
 {
@@ -190,5 +191,12 @@ class ImageController extends Controller
         }
 
         return $data;
+    }
+
+    public function poster()
+    {
+          $data['articles']=Article::where('is_top',1)->take(8)->get();
+          return view('user.poster')
+          ->withData($data);
     }
 }
