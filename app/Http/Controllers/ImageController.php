@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Article;
 use App\Image;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
-use App\Article;
 
 class ImageController extends Controller
 {
@@ -195,8 +197,44 @@ class ImageController extends Controller
 
     public function poster()
     {
-          $data['articles']=Article::where('is_top',1)->take(8)->get();
-          return view('user.poster')
-          ->withData($data);
+        $data             = [];
+        $data['articles'] = Article::where('is_top', 1)->take(8)->get();
+        return view('user.poster')
+            ->withData($data);
+    }
+
+
+   //TODO ::经典手动创建分页代码.
+    public function poster_all()
+    {
+        $articles = Article::orderBy('id')->get();
+        foreach ($articles as $article) {
+            if ($article->image_url) {
+                $image = Image::where('path', $article->image_url)->first();
+                if ($image && !empty($image->path)) {
+                    $top_path = public_path($image->path);
+                    if (file_exists($top_path) && $image->width >= 760) {
+                        $data['articles'][] = $article;
+                    }
+                }
+            }
+        }
+
+        $total   = count($data['articles']);
+        $perPage = 10;
+        if (request()->has('page')) {
+            $current_page = request()->get('page');
+            $current_page = $current_page <= 0 ? 1 : $current_page;
+        } else {
+            $current_page = 1;
+        }
+        $item             = array_slice($data['articles'], ($current_page - 1) * $perPage, $perPage);
+        $data['articles'] = new LengthAwarePaginator($item, $total, $perPage, null, [
+            'path'     => Paginator::resolveCurrentPath(),
+            'pageName' => 'page',
+        ]);
+        $data['page'] = 1;
+        return view('user.poster')
+            ->withData($data);
     }
 }

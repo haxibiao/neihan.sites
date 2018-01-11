@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    搜索
+      轮播图
 @endsection
 
 @section('content')
@@ -17,6 +17,9 @@
                 <div>
                     <ul class="article_list">
                          @include('parts.list.article_category', ['articles'=>$data['articles']])
+                         @if(!empty($data['page']))
+                             {{ $data['articles']->render() }}
+                        @endif
                     </ul>
                 </div>
             </div>

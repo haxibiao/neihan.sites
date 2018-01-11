@@ -127,6 +127,7 @@
                             <a class="btn btn-danger top5" href="/category?type=article" role="button">所有专题</a>
                             <a class="btn btn-info top5" href="/category/create" role="button">创建专题</a>
                             <a class="btn btn-info top5" href="/index/poster" role="button">首页轮播图中的文章</a>
+                            <a class="btn btn-info top5" href="/index/image-all" role="button">可上首页的文章</a>
                         </div>
                     </div>
                 </div>
