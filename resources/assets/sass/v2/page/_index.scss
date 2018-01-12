@@ -14,8 +14,11 @@
     } // 右侧
     .aside {
         padding-left: 35px;
-        .hot_video {
+        .hot_note {
             margin-top: 15px;
+            .headline {
+                font-size: 13px;
+            }
         }
     }
 }

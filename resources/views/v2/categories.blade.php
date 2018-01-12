@@ -48,9 +48,9 @@
                                 <div class="collection_wrap">
                                     <a href="/v2/category/2" target="_blank">
                                         <img class="avatar_lg" src="/images/category_02.jpg"/>
-                                        <div class="headline">
+                                        <h4 class="headline">
                                             谈谈情，说说爱
-                                        </div>
+                                        </h4>
                                         <p class="abstract">
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度
                                         </p>
@@ -73,9 +73,9 @@
                                 <div class="collection_wrap">
                                     <a href="/v2/category/2" target="_blank">
                                         <img class="avatar_lg" src="/images/category_02.jpg"/>
-                                        <div class="headline">
+                                        <h4 class="headline">
                                             谈谈情，说说爱
-                                        </div>
+                                        </h4>
                                         <p class="abstract">
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度
                                         </p>
@@ -97,9 +97,9 @@
                                 <div class="collection_wrap">
                                     <a href="/v2/category/2" target="_blank">
                                         <img class="avatar_lg" src="/images/category_02.jpg"/>
-                                        <div class="headline">
+                                        <h4 class="headline">
                                             谈谈情，说说爱
-                                        </div>
+                                        </h4>
                                         <p class="abstract">
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度
                                         </p>
@@ -121,9 +121,9 @@
                                 <div class="collection_wrap">
                                     <a href="/v2/category/2" target="_blank">
                                         <img class="avatar_lg" src="/images/category_02.jpg"/>
-                                        <div class="headline">
+                                        <h4 class="headline">
                                             谈谈情，说说爱
-                                        </div>
+                                        </h4>
                                         <p class="abstract">
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度
                                         </p>
@@ -153,9 +153,9 @@
                                 <div class="collection_wrap">
                                     <a href="/v2/category/2" target="_blank">
                                         <img class="avatar_lg" src="/images/category_08.jpg"/>
-                                        <div class="headline">
+                                        <h4 class="headline">
                                             剑侠情缘
-                                        </div>
+                                        </h4>
                                         <p class="abstract">
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度
                                         </p>
@@ -185,9 +185,9 @@
                                 <div class="collection_wrap">
                                     <a href="/v2/category/2" target="_blank">
                                         <img class="avatar_lg" src="/images/category_05.jpg"/>
-                                        <div class="headline">
+                                        <h4 class="headline">
                                             好中文
-                                        </div>
+                                        </h4>
                                         <p class="abstract">
                                             柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度柏拉图说每个恋爱中的人都是诗人，这里并不要求你一定要写得诗情画意，态度
                                         </p>

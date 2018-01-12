@@ -99,24 +99,16 @@
                             查看更多
                         </a>
                     </div>
-                    <a class="hot_video" href="/v2/detail" target="_blank">
-                        <img src="/images/details_01.jpeg"/>
-                        <div class="note_title">
-                            王者荣耀打野必备攻略 5v5野区地图分布详解
+                    @foreach ([1,2,3] as $item)
+                    <a class="hot_note" href="/interlocution/question" target="_blank">
+                        <div class="wrap_img">
+                            <img src="/images/details_0{{ rand(1,6) }}.jpeg"/>
+                        </div>
+                        <div class="headline paper_title">
+                            <span>王者荣耀打野必备攻略 5v5野区地图分布详解</span>
                         </div>
                     </a>
-                    <a class="hot_video" href="/v2/detail" target="_blank">
-                        <img src="/images/details_09.jpg"/>
-                        <div class="note_title">
-                            王者荣耀最强奶妈蔡文姬怎么玩2.0加强版
-                        </div>
-                    </a>
-                    <a class="hot_video" href="/v2/detail" target="_blank">
-                        <img src="/images/details_01.jpeg"/>
-                        <div class="note_title">
-                            手把手教你玩王者荣耀安琪拉
-                        </div>
-                    </a>
+                    @endforeach
                 </div>
             </div>
         </div>

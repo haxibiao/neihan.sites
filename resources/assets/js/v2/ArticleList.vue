@@ -1,6 +1,6 @@
 <template>
 	<div class="article_list">
-    <li v-for="article in articles" :class="article.has_image ? 'article_item have_img' : 'note_item'">
+    <li v-for="article in articles" :class="article.has_image ? 'article_item have_img' : 'article_item'">
 
         <a v-if="article.has_image" class="wrap_img" href="javascript:;" target="_blank">
             <img :src="article.primary_image" :alt="article.title">
