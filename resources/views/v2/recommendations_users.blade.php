@@ -10,7 +10,7 @@
             <div class="recommend_img">
                 <img src="/images/recommend_users.png"/>
                 <a class="help" href="/v2/detail" target="_blank">
-                    <i class="iconfont icon-send1179291easyiconnet">
+                    <i class="iconfont icon-bangzhu">
                     </i>
                     如何成为签约作者
                 </a>
