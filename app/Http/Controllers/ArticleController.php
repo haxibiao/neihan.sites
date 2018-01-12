@@ -156,7 +156,7 @@ class ArticleController extends Controller
 
         //编辑文章的时候,可能没有插入图片,字段可能空,就会删除图片地址....
         $this->clear_article_imgs($article);
-
+        
         $categories    = get_categories();
         $article->body = str_replace('<single-list id', '<single-list class="box-related-half" id', $article->body);
         return view('article.edit')->withArticle($article)->withCategories($categories);
@@ -373,7 +373,7 @@ class ArticleController extends Controller
     public function get_image_urls_from_body($body)
     {
         $images           = [];
-        $pattern_img_path = '/src=\"(\/storage\/img\/\d+\.(jpg|gif|png))\"/';
+        $pattern_img_path = '/src=\"(\/storage\/img\/\d+\.(jpg|gif|png|jpeg))\"/';
         if (preg_match_all($pattern_img_path, $body, $match)) {
             $images = $match[1];
         }
