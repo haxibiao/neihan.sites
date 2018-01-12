@@ -37,15 +37,17 @@
                     </a>
                 </div>
             </div>
-            @if ($has_img)
-            <a class="wrap_img" href="/detail" target="_blank">
-                <img src="/images/details_0{{ rand(1,6) }}.jpeg"/>
-            </a>
-            @endif
-            <div class="content">
-                <p class="abstract">
-                    5月17日下午，腾讯控股公布了2017年第一季度财报。财报显示，腾讯一季度营收495.52亿元，同比增长55%；网络游戏收入增长34%至228.11亿元。其中，就智能手机游戏而言，腾讯实现129亿元收入，同比增长57%，此乃受现有及新的游戏如（《王者荣耀》、《穿越火线：枪战王者》及《龙之谷》）所推动。
-                </p>
+            <div class="question_warp">
+                @if ($has_img)
+                <a class="wrap_img" href="/detail" target="_blank">
+                    <img src="/images/details_0{{ rand(1,6) }}.jpeg"/>
+                </a>
+                @endif
+                <div class="content">
+                    <p class="abstract">
+                        5月17日下午，腾讯控股公布了2017年第一季度财报。财报显示，腾讯一季度营收495.52亿元，同比增长55%；网络游戏收入增长34%至228.11亿元。其中，就智能手机游戏而言，腾讯实现129亿元收入，同比增长57%，此乃受现有及新的游戏如（《王者荣耀》、《穿越火线：枪战王者》及《龙之谷》）所推动。
+                    </p>
+                </div>
             </div>
         </li>
         @endforeach

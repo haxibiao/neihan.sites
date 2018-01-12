@@ -99,16 +99,25 @@
                             查看更多
                         </a>
                     </div>
-                    @foreach ([1,2,3] as $item)
-                    <a class="hot_note" href="/interlocution/question" target="_blank">
-                        <div class="wrap_img">
-                            <img src="/images/details_0{{ rand(1,6) }}.jpeg"/>
-                        </div>
-                        <div class="headline paper_title">
-                            <span>王者荣耀打野必备攻略 5v5野区地图分布详解</span>
-                        </div>
-                    </a>
-                    @endforeach
+                    <ul class="video_list">
+                        @foreach ([1,2,3] as $item)
+                        @php
+                            $has_img  = rand (0,3) > 0 ? 'have_img' : '';
+                        @endphp
+                        <li class="article_item {{ $has_img }}">
+                            @if ($has_img)
+                            <a class="wrap_img" href="javascript:;">
+                                <img src="/images/details_0{{ rand(1,6) }}.jpeg"/>
+                            </a>
+                            @endif
+                            <div class="content">
+                                <a class="headline paper_title">
+                                    <span>王者荣耀打野必备攻略 5v5野区地图分布详解</span>
+                                </a>
+                            </div>
+                        </li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
         </div>

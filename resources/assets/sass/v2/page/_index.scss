@@ -14,10 +14,17 @@
     } // 右侧
     .aside {
         padding-left: 35px;
-        .hot_note {
-            margin-top: 15px;
-            .headline {
-                font-size: 13px;
+        .video_list {
+            padding-top: 15px;
+            .article_item {
+                border: none;
+                padding: 0;
+                .headline {
+                    font-size: 13px;
+                    span {
+                        -webkit-line-clamp: 3;
+                    }
+                }
             }
         }
     }

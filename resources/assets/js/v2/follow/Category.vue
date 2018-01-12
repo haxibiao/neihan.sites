@@ -206,7 +206,7 @@
                         </li>
                         <li class="article_item have_img">
                             <a class="wrap_img" href="/v2/detail" target="_blank">
-                                <img src="/images/details_03.jpg"/>
+                                <img src="/images/details_03.jpeg"/>
                             </a>
                             <div class="content">
                                 <div class="author">
@@ -300,7 +300,7 @@
                         </li>
                         <li class="article_item have_img">
                             <a class="wrap_img" href="/v2/detail" target="_blank">
-                                <img src="/images/details_05.png"/>
+                                <img src="/images/details_05.jpeg"/>
                             </a>
                             <div class="content">
                                 <div class="author">
@@ -545,7 +545,7 @@
                         </li>
                         <li class="article_item have_img">
                             <a class="wrap_img" href="/v2/detail" target="_blank">
-                                <img src="/images/details_03.jpg"/>
+                                <img src="/images/details_03.jpeg"/>
                             </a>
                             <div class="content">
                                 <div class="author">
@@ -639,7 +639,7 @@
                         </li>
                         <li class="article_item have_img">
                             <a class="wrap_img" href="/v2/detail" target="_blank">
-                                <img src="/images/details_05.png"/>
+                                <img src="/images/details_05.jpeg"/>
                             </a>
                             <div class="content">
                                 <div class="author">
@@ -884,7 +884,7 @@
                         </li>
                         <li class="article_item have_img">
                             <a class="wrap_img" href="/v2/detail" target="_blank">
-                                <img src="/images/details_03.jpg"/>
+                                <img src="/images/details_03.jpeg"/>
                             </a>
                             <div class="content">
                                 <div class="author">
@@ -978,7 +978,7 @@
                         </li>
                         <li class="article_item have_img">
                             <a class="wrap_img" href="/v2/detail" target="_blank">
-                                <img src="/images/details_05.png"/>
+                                <img src="/images/details_05.jpeg"/>
                             </a>
                             <div class="content">
                                 <div class="author">

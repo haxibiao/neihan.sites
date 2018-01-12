@@ -25,7 +25,7 @@
     </li>
     <li class="article_item have_img">
         <a class="wrap_img" href="/v2/detail" target="_blank">
-            <img src="/images/details_07.jpg"/>
+            <img src="/images/details_07.jpeg"/>
         </a>
         <div class="content">
             <a class="headline paper_title" href="/v2/detail" target="_blank">

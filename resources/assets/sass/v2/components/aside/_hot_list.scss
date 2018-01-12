@@ -53,28 +53,3 @@
     background-color: #AED0E9;
     color: #437DA0;
 }
-
-// 热门内容
-.hot_note {
-    display: inline-block;
-    width: 100%;
-    color: $color-black;
-    .wrap_img {
-        max-width: 35%;
-        max-height: 100px;
-        margin-left: 5px;
-    }
-    .headline {
-        display: block;
-        font-size: 14px;
-        span {
-            -webkit-line-clamp: 3;
-        }
-    }
-    .answer_read {
-        display: block;
-        font-size: 12px;
-        color: $color-gray;
-        margin-top: 5px;
-    }
-}

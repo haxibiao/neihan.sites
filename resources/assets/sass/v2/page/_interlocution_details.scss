@@ -122,10 +122,14 @@
                 .title_line {
                     margin-bottom: 20px;
                 }
-                .hot_note {
-                    margin-top: 30px;
-                    &:first-child {
-                        margin-top: 0;
+                .article_item {
+                    border: none;
+                    padding: 0;
+                    .headline {
+                        font-size: 14px;
+                        span {
+                            -webkit-line-clamp: 3;
+                        }
                     }
                 }
             }

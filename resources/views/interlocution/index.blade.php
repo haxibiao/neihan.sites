@@ -36,5 +36,6 @@
         </div>
         @include('parts.foot')
     </div>
+    <question-modal></question-modal>
 </div>
 @stop

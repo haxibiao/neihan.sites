@@ -5,17 +5,28 @@
             猜你喜欢
         </span>
     </div>
-    <div class="topic">
+    <ul class="guess_list">
         @foreach ([1,2,3] as $item)
-        <a class="hot_note" href="/interlocution/question" target="_blank">
-            <div class="wrap_img">
+        @php
+            $has_img  = rand (0,3) > 0 ? 'have_img' : '';
+        @endphp
+        <li class="article_item {{ $has_img }}">
+            @if ($has_img)
+            <a class="wrap_img" href="/interlocution/question">
                 <img src="/images/details_0{{ rand(1,6) }}.jpeg"/>
+            </a>
+            @endif
+            <div class="content">
+                <a class="headline paper_title" href="/interlocution/question">
+                    <span>
+                        斗鱼已经变成“死妈TV”了，会不会整个平台被55开害凉了？
+                    </span>
+                </a>
+                <span class="meta">
+                    243 回答
+                </span>
             </div>
-            <div class="headline paper_title">
-                <span>斗鱼已经变成“死妈TV”了，会不会整个平台被55开害凉了？</span>
-            </div>
-            <span class="answer_read">243 回答</span>
-        </a>
+        </li>
         @endforeach
-    </div>
+    </ul>
 </div>

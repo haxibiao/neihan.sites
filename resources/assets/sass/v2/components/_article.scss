@@ -1,14 +1,12 @@
 // 文章图片
 .wrap_img {
-    // position: absolute;
-    // top: 45%;
-    // right: 0;
-    // width: 24%;
-    // transform: translateY(-50%);
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 24%;
+    transform: translateY(-50%);
     max-width: 125px;
     max-height: 120px;
-    float: right;
-    padding-top: 5px;
     img {
         @include border (6px, 1px solid $color-gray-light);
         width: 100%;
@@ -27,13 +25,12 @@
 .article_item {
     @include spacing (0 0 17px 0, 0 0 17px 0);
     border-bottom: 1px solid $color-white-silver;
-    // position: relative;
+    position: relative;
     width: 100%;
-    min-height: 140px;
     word-wrap: break-word;
     &.have_img {
         .content {
-            padding-right: 130px;
+            padding-right: 26%;
         }
         .wrap_img {
             display: inline-block;
@@ -47,14 +44,6 @@
         }
     }
     @media screen and (max-width: 500px) {
-        &.have_img {
-            .content {
-                padding-right: 95px;
-            }
-            .wrap_img {
-                max-width: 90px;
-            }
-        }
         .paper_title {
             @include line_number(1);
         }
@@ -103,10 +92,10 @@
     }
     &.have_img {
         .content {
-            padding-right: 90px;
+            padding-right: 35%;
         }
         .wrap_img {
-            max-width: 85px;
+            width: 30%;
         }
     }
 }

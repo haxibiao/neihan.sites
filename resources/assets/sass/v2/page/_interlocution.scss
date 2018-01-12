@@ -29,6 +29,9 @@
     .interlocution_note {
         background-color: $color-white-silver;
         padding-top: 65px;
+        .question_answers,.question_warp {
+            position: relative;
+        }
         // 右侧
         .aside {
             padding-left: 35px;
