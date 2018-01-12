@@ -5,7 +5,7 @@
 		<ul class="likes_list">
 			<li v-for="notification in notifications">
 				<div class="author">
-					<a href="'/user/+notification.user_id'" class="avatar avatar_xs">
+					<a :href="'/user/'+notification.user_id" class="avatar avatar_xs">
 						<img :src="notification.user_avatar" />
 					</a>
 					 <div class="info_meta">
