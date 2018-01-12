@@ -57,6 +57,9 @@ Vue.component('withdraw-modal', require('./v2/wallet/WithdrawModal.vue'));
 Vue.component('new-comment', require('./v2/detail/NewComment.vue'));
 
 
+// 分享
+Vue.component('share-modal', require('./v2/contributeModal/ShareModal.vue'));
+
 /*  */
 
 Vue.component('article-list', require('./v2/ArticleList.vue'));

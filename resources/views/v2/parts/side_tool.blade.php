@@ -3,7 +3,7 @@
     <ul>
         <li class="toup_rocket" data-container="body" data-original-title="回到顶部" data-placement="left" data-toggle="tooltip" data-trigger="hover">
             <a href="javascript:;" class="function_button">
-                <i class="iconfont icon-xiangxiajiantou-copy">
+                <i class="iconfont icon-xiangshangjiantou">
                 </i>
             </a>
         </li>
@@ -31,66 +31,9 @@
                 </i>
             </a>
         </li>
-        <li class="share" data-container="body" data-original-title="分享文章" data-placement="left" data-toggle="tooltip">
-            <a data-toggle="dropdown" href="javascript:;" class="function_button">
-                <i class="iconfont icon-fenxiang">
-                </i>
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                    <a href="#">
-                        <i class="iconfont icon-weixin1">
-                        </i>
-                        <span>
-                            分享到微信
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="iconfont icon-sina">
-                        </i>
-                        <span>
-                            分享到微博
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="iconfont icon-zhaopian">
-                        </i>
-                        <span>
-                            下载长微博图片
-                        </span>
-                    </a>
-                </li>
-            </ul>
+        <li data-container="body" data-original-title="文章分享" data-placement="left" data-toggle="tooltip" data-trigger="hover">
+            <share-modal class="function_button" placement="left"></share-modal>
         </li>
-        {{--
-        <li data-container="body" data-original-title="分享文章" data-placement="left" data-toggle="tooltip" data-trigger="hover">
-            <a data-content="<ul class='share'>
-                <li>
-                    <a href='#'>
-                        <i class='iconfont icon-weixin1'></i>
-                        <span>分享到微信</span>
-                    </a>
-                </li>
-                <li>
-                    <a href='#'>
-                        <i class='iconfont icon-sina'></i>
-                        <span>分享到微博</span>
-                    </a>
-                </li>
-                <li>
-                    <a href='#'>
-                        <i class='iconfont icon-zhaopian'></i>
-                        <span>下载长微博图片</span>
-                    </a>
-                </li>
-            </ul>" data-html="true" data-placement="left" data-toggle="popover" data-trigger="focus" role="button" tabindex="0">
-            </a>
-        </li>
-        --}}
     </ul>
 </div>
 
@@ -99,8 +42,6 @@
 @push('scripts')
 <script>
     $(function() {
-        // $('[data-toggle="popover"]').popover();
-
         // 小火箭
         $(window).on("scroll",function() {
             if($(window).scrollTop()>1000) {

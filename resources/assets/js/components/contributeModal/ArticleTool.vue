@@ -30,43 +30,9 @@
 		                </i>
 		            </a>
 		        </li>
-
-		        <li class="share" data-container="body" data-original-title="分享文章" data-placement="left" data-toggle="tooltip">
-		            <a data-toggle="dropdown" href="javascript:;" class="function_button">
-		                <i class="iconfont icon-fenxiang1">
-		                </i>
-		            </a>
-		            <ul class="dropdown-menu">
-		                <li>
-		                    <a href="#">
-		                        <i class="iconfont icon-weixin1">
-		                        </i>
-		                        <span>
-		                            分享到微信
-		                        </span>
-		                    </a>
-		                </li>
-		                <li>
-		                    <a href="#">
-		                        <i class="iconfont icon-sina">
-		                        </i>
-		                        <span>
-		                            分享到微博
-		                        </span>
-		                    </a>
-		                </li>
-		                <li>
-		                    <a href="#">
-		                        <i class="iconfont icon-zhaopian">
-		                        </i>
-		                        <span>
-		                            下载长微博图片
-		                        </span>
-		                    </a>
-		                </li>
-		            </ul>
+		        <li>
+		            <share-modal class="function_button" placement="left"></share-modal>
 		        </li>
-		  
 		    </ul>
 		</div>
 

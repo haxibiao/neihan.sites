@@ -124,6 +124,7 @@
 
         $('.dropdown-toggle').dropdown();
         $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="popover"]').popover();
 
         $('.form-control').focus(function(){
             $(this).siblings('.hot_search_wrp').css({'visibility':'visible','opacity':1});

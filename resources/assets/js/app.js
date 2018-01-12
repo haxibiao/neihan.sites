@@ -39,26 +39,35 @@ Vue.component('comments', require('./components/Comments.vue'));
 Vue.component('search', require('./components/Search.vue'));
 Vue.component('article-tool', require('./components/contributeModal/ArticleTool.vue'));
 
+
 // 详情页评论
-Vue.component('detailmodal-user', require('./components/contributeModal/DetailModal_User.vue'));
-Vue.component('detailmodal-home', require('./components/contributeModal/DetailModal_Home.vue'));
-
-
-//详情页模态
 Vue.component('new-comment', require('./components/detail/NewComment.vue'));
 
-Vue.component('article-list', require('./components/ArticleList.vue'));
-Vue.component('category-list', require('./components/CategoryList.vue'));
+
+
+/* 模态框 */
+
+//详情页模态
+Vue.component('detailmodal-user', require('./components/contributeModal/DetailModal_User.vue'));
+Vue.component('detailmodal-home', require('./components/contributeModal/DetailModal_Home.vue'));
 //投稿页面模态
 Vue.component('modal-contribute', require('./components/contributeModal/CategoryModal_User'));
-
-
 // 钱包页
 Vue.component('recharge-modal', require('./components/wallet/RechargeModal.vue'));
 Vue.component('period-modal', require('./components/wallet/PeriodModal.vue'));
 Vue.component('why-modal', require('./components/wallet/WhyModal.vue'));
 Vue.component('withdraw-modal', require('./components/wallet/WithdrawModal.vue'));
 Vue.component('support-modal', require('./components/detail/SupportModal.vue'));
+
+
+
+// 分享
+Vue.component('share-modal', require('./components/contributeModal/ShareModal.vue'));
+
+
+Vue.component('article-list', require('./components/ArticleList.vue'));
+Vue.component('category-list', require('./components/CategoryList.vue'));
+
 
 //editor needed modals..
 Vue.component('image-list-modal', require('./modals/ImageListModal.vue'));

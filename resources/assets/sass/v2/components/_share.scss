@@ -63,3 +63,43 @@
         border-radius: 50px;
     }
 }
+
+// 更多分享
+.popover_share_menu {
+    padding: 0 !important;
+    margin: 0 !important;
+    min-width: 135px;
+    li {
+        font-size: 14px;
+        line-height: 25px;
+        border: none !important;
+        a {
+            display: block;
+            padding: 6px 15px;
+            color: #252525;
+            i {
+                font-size: 18px;
+                display: inline-block;
+                vertical-align: middle;
+                margin: -2px 10px 0 0;
+            }
+            .icon-weixin1 {
+                color: #42c02e;
+            }
+            .icon-sina {
+                color: #e05244;
+            }
+            .icon-qq1 {
+                color: #ff9d23;
+            }
+        }
+        &:hover {
+            background-color: #f0f0f0;
+        }
+    }
+}
+.popover {
+    .popover-content {
+        padding: 0;
+    }
+}
