@@ -44,14 +44,7 @@ export default {
 <style lang="scss" scoped>
 	#categoryModal_Delete {
 	    .modal-dialog {
-	        position: absolute;
-	        left: 25%;
-	        top: 25%;
-	        max-height: 80%;
 	        max-width: 50%;
-	        @media screen and (min-width: 1080px) {
-	            left: 35%;
-	        }
 	        .modal-body {
 	            padding: 20px;
 	            font-size: 15px;

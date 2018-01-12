@@ -32,6 +32,23 @@
     }
 }
 
+// 文本框
+.textarea_box {
+    padding: 15px 20px;
+    border-radius: 4px;
+    border: 1px solid #dcdcdc;
+    background-color: hsla(0, 0%, 71%, .1);
+    font-size: 14px;
+    textarea {
+        width: 100%;
+        height: 44px;
+        padding: 0;
+        resize: none;
+        border: none;
+        background: none;
+    }
+}
+
 // 金额输入框
 .money_input_box {
     position: relative;

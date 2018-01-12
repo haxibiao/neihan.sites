@@ -230,7 +230,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="creation">
+                        {{-- <li class="creation">
                             <a href="/article/create">
                                 <span class="btn_base btn_creation">
                                     <i class="iconfont icon-maobi">
@@ -238,8 +238,8 @@
                                     写文章
                                 </span>
                             </a>
-                        </li>
-                        {{-- <li class="creation">
+                        </li> --}}
+                        <li class="creation">
                             <a href="javascript:;" data-target="#question_modal" data-toggle="modal">
                                 <span class="btn_base btn_creation">
                                     <i class="iconfont icon-maobi">
@@ -247,14 +247,13 @@
                                     提问
                                 </span>
                             </a>
-                        </li> --}}
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
     </nav>
 </header>
-<question-modal></question-modal>
 @push('scripts')
 <script>
     $(function(){

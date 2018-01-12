@@ -58,7 +58,9 @@
 	                			</label>
 	                		</div>
 	                		<div class="leaving_message">
-	                			<textarea placeholder="给Ta留言..."></textarea>
+	                			<div class="textarea_box">
+	                				<textarea placeholder="给Ta留言..."></textarea>
+	                			</div>
 	                		</div>
 	                	</div>
 	                	<div class="reward_info">
@@ -264,19 +266,6 @@ export default {
 						}
 						.leaving_message {
 							margin: 0 15px;
-					        padding: 15px 20px;
-							border-radius: 4px;
-					        border: 1px solid #dcdcdc;
-					        background-color: hsla(0, 0%, 71%, .1);
-					        font-size: 14px;
-					        textarea {
-						    	width: 100%;
-						        height: 44px;
-						        padding: 0;
-						        resize: none;
-						        border: none;
-						        background: none;
-						    }
 						}
 					}
 					.reward_info {

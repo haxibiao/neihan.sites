@@ -59,6 +59,7 @@ Vue.component('why-modal', require('./components/wallet/WhyModal.vue'));
 Vue.component('withdraw-modal', require('./components/wallet/WithdrawModal.vue'));
 Vue.component('support-modal', require('./components/detail/SupportModal.vue'));
 // 问答页模态
+Vue.component('input-matching', require('./components/interlocution/InputMatching.vue'));
 Vue.component('question-modal', require('./components/interlocution/QuestionModal.vue'));
 
 
