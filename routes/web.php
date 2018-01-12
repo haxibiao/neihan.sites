@@ -29,14 +29,7 @@ require_once 'v1/web.php';
 require_once 'v2/web.php';
 
 // 问答
-Route::get('/interlocution', function () {
-	return view('interlocution.index');
-});
-
-// 问答详情
-Route::get('/interlocution/question', function () {
-	return view('interlocution.show');
-});
+Route::resource('/interlocution','QuestionController');
 
 // 问答更多分类
 Route::get('/interlocution/more', function () {
