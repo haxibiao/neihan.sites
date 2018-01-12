@@ -16,17 +16,26 @@
                         </span>
                     </button>
                     <a class="navbar-brand" href="/">
-                        <img alt="Logo" src="/logo/ainicheng.com.jpg"/>
+                        <img alt="Logo" src="/logo/ainicheng.jpg"/>
                     </a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li class="tab">
                             <a href="/" class="identifier">
-                                <i class="iconfont icon-xin">
+                                <i class="iconfont icon-faxian">
                                 </i>
                                 <span class="menu_text">
                                     发现
+                                </span>
+                            </a>
+                        </li>
+                        <li class="tab interlocution">
+                            <a href="/interlocution" class="identifier">
+                                <i class="iconfont icon-help">
+                                </i>
+                                <span class="menu_text">
+                                    问答
                                 </span>
                             </a>
                         </li>
@@ -47,7 +56,7 @@
                                     消息
                                 </span>
                                 @php
-                                   $unreads_all=array_sum(Auth::user()->unreads());   
+                                   $unreads_all=array_sum(Auth::user()->unreads());
                                 @endphp
                                 @if($unreads_all)
                                     <span class="badge">
@@ -246,6 +255,8 @@
         // };
 
         $('.dropdown-toggle').dropdown();
+        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="popover"]').popover();
 
         $('.form-control').focus(function(){
             $(this).siblings('.hot_search_wrp').css({'visibility':'visible','opacity':1});

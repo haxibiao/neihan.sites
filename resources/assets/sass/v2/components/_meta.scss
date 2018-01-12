@@ -45,6 +45,9 @@
             display: inline;
         }
     }
+    &:hover,&:focus {
+        color: $color-gray;
+    }
 }
 
 // 作者
@@ -53,6 +56,11 @@
     width: 100%;
     .avatar {
         float: left;
+    }
+    .answer_like {
+        display: inline-block;
+        float: right;
+        font-weight: bold;
     }
 }
 

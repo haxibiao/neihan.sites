@@ -16,17 +16,26 @@
                         </span>
                     </button>
                     <a class="navbar-brand" href="/">
-                        <img alt="Logo" src="/logo/ainicheng.com.jpg"/>
+                        <img alt="Logo" src="/logo/ainicheng.jpg"/>
                     </a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li class="tab v2">
                             <a href="/" class="identifier">
-                                <i class="iconfont icon-xin">
+                                <i class="iconfont icon-faxian">
                                 </i>
                                 <span class="menu_text">
                                     发现
+                                </span>
+                            </a>
+                        </li>
+                        <li class="tab interlocution">
+                            <a href="/interlocution" class="identifier">
+                                <i class="iconfont icon-help">
+                                </i>
+                                <span class="menu_text">
+                                    问答
                                 </span>
                             </a>
                         </li>
@@ -39,7 +48,6 @@
                                 </span>
                             </a>
                         </li>
-                       
                     </ul>
                     <search></search>
                     <ul class="nav navbar-nav navbar-right">
@@ -83,6 +91,7 @@
 
         $('.dropdown-toggle').dropdown();
         $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="popover"]').popover();
 
         $('.form-control').focus(function(){
             $(this).siblings('.hot_search_wrp').css({'visibility':'visible','opacity':1});

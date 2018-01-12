@@ -31,6 +31,39 @@
     }
 }
 
+// 问答页右侧带线的小标题
+.title_line {
+    border-bottom: 3px solid #e8e8e8;
+    height: 30px;
+    .title_active {
+        position: relative;
+        font-weight: bold;
+        color: $color-black;
+        &::before,&::after {
+            position: absolute;
+            content: '';
+            bottom: -13px;
+            box-sizing: content-box;
+            width: 100%;
+            height: 0;
+            border-width: 3px;
+            border-style: none dashed solid none;
+        }
+        &::before {
+            left: 1px;
+            padding-right: 6px;
+            border-bottom-color: #f8f8f8;
+            border-right-color: #e8e8e8;
+        }
+        &::after {
+            left: 0;
+            padding-right: 2px;
+            border-bottom-color: $color-red-watermelon;
+            border-right-color: #f8f8f8;
+        }
+    }
+}
+
 // 详情页推荐带杠的标题
 .recommend_title {
     font-size: 15px;

@@ -54,24 +54,27 @@
     color: #437DA0;
 }
 
-// 热门视频
-.hot_video {
+// 热门内容
+.hot_note {
     display: inline-block;
     width: 100%;
     color: $color-black;
-    img {
-        @include size (95px, 70px);
-        @include border (6px, 1px solid $color-gray-light);
-        float: left;
-        margin-right: 6px;
+    .wrap_img {
+        max-width: 35%;
+        max-height: 100px;
+        margin-left: 5px;
     }
-    .note_title {
-        max-height: 70px;
+    .headline {
+        display: block;
         font-size: 14px;
-        padding-top: 5px;
-        @include line_number (3);
-        &:hover {
-            text-decoration: underline;
+        span {
+            -webkit-line-clamp: 3;
         }
+    }
+    .answer_read {
+        display: block;
+        font-size: 12px;
+        color: $color-gray;
+        margin-top: 5px;
     }
 }

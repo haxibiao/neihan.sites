@@ -2,7 +2,7 @@
 .collection {
     @include border (4px, 1px solid $color-gray-light);
     display: inline-block;
-    min-height: 35px;
+    height: 35px;
     margin: 0 12px 12px 0;
     font-size: 13px;
     overflow: hidden;
@@ -19,6 +19,9 @@
         i {
             font-size: inherit;
         }
+    }
+    &.active {
+        color: $color-red-watermelon;
     }
 }
 
@@ -42,7 +45,6 @@
     background-color: hsla(0, 0%, 71%, .1);
     text-align: center;
     a {
-        display: inline-block;
         .avatar_lg {
             @include border (10px,1px solid #ddd);
             margin: -40px 0 10px;
@@ -50,10 +52,10 @@
         }
         .headline {
             font-size: 24px;
+            width: 100%;
             overflow: hidden;
-        }
-        .abstract {
-            height: 69px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
     hr {
@@ -84,5 +86,6 @@
     }
     &:hover {
         box-shadow: 0 5px 20px rgba(0,0,0,.1);
+        transition: all .3s ease-in-out;
     }
 }

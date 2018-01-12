@@ -22,9 +22,15 @@
 @import "v2/page/notification";
 // 登录注册页
 @import "v2/page/sign";
-// 收藏的文章
+// 收藏的文章页
 @import "v2/page/bookmark";
 // 设置页
 @import "v2/page/setting";
-// 热门榜
+// 热门榜页
 @import "v2/page/hot_articles";
+// 问答页
+@import "v2/page/interlocution";
+// 问答详情页
+@import "v2/page/_interlocution_details";
+// 问答更多分类页
+@import "v2/page/_interlocution_more";
