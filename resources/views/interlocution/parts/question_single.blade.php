@@ -62,7 +62,14 @@
     		<span>举报</span>
     	</div>
     </div>
-    <editor name="body"></editor>
+    <div class="answer_write">
+        <editor name="body"></editor>
+        <div class="submitbar">
+            <div class="pull-right">
+                <a href="javascript:;" class="btn_base btn_creation">发表答案</a>
+            </div>
+        </div>
+    </div>
     <div class="answers">
     	<div class="note_title">
     		<div class="litter_title title_line">

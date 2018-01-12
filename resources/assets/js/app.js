@@ -58,7 +58,8 @@ Vue.component('period-modal', require('./components/wallet/PeriodModal.vue'));
 Vue.component('why-modal', require('./components/wallet/WhyModal.vue'));
 Vue.component('withdraw-modal', require('./components/wallet/WithdrawModal.vue'));
 Vue.component('support-modal', require('./components/detail/SupportModal.vue'));
-
+// 问答页模态
+Vue.component('question-modal', require('./components/interlocution/QuestionModal.vue'));
 
 
 // 分享

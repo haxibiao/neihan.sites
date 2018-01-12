@@ -65,6 +65,16 @@
                             cursor: pointer;
                         }
                     }
+                    .answer_write {
+                        position: relative;
+                        .submitbar {
+                            position: absolute;
+                            height: 45px;
+                            bottom: 0;
+                            right: 7px;
+                            z-index: 1;
+                        }
+                    }
                     .answers {
                         margin-top: 30px;
                         .note_answers {

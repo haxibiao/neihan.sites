@@ -150,7 +150,7 @@
     }
 }
 
-// 写文章
+// 头部写文章,提问按钮
 .btn_creation {
     @include btn (100px,0,$color-red-watermelon,$color-white);
     padding: 7px;

@@ -153,20 +153,20 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
+                                    <a href="/home">
+                                        <i class="iconfont icon-ziliao">
+                                        </i>
+                                        <span>
+                                            我的面板
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
                                     <a href="/user/{{ Auth::id() }}/likes">
                                         <i class="iconfont icon-yonghu01">
                                         </i>
                                         <span>
                                             我的主页
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/home">
-                                        <i class="iconfont icon-unie646">
-                                        </i>
-                                        <span>
-                                            报表主页
                                         </span>
                                     </a>
                                 </li>
@@ -206,7 +206,7 @@
                                         </span>
                                     </a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a href="#">
                                         <i class="iconfont icon-svg37">
                                         </i>
@@ -214,7 +214,7 @@
                                             帮助与反馈
                                         </span>
                                     </a>
-                                </li>
+                                </li> --}}
                                 <li>
                                     <a href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
@@ -230,12 +230,21 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="creation">
+                        {{-- <li class="creation">
                             <a href="/article/create">
                                 <span class="btn_base btn_creation">
                                     <i class="iconfont icon-maobi">
                                     </i>
                                     写文章
+                                </span>
+                            </a>
+                        </li> --}}
+                        <li class="creation">
+                            <a href="javascript:;" data-target="#question_modal" data-toggle="modal">
+                                <span class="btn_base btn_creation">
+                                    <i class="iconfont icon-maobi">
+                                    </i>
+                                    提问
                                 </span>
                             </a>
                         </li>
@@ -245,6 +254,7 @@
         </div>
     </nav>
 </header>
+<question-modal></question-modal>
 @push('scripts')
 <script>
     $(function(){
