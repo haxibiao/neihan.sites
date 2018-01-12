@@ -16,7 +16,7 @@
                         </span>
                     </button>
                     <a class="navbar-brand" href="/">
-                        <img alt="Logo" src="/logo/ainicheng.jpg"/>
+                        <img alt="Logo" src="/logo/ainicheng.com.jpg"/>
                     </a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -230,7 +230,7 @@
                                 </li>
                             </ul>
                         </li>
-                        {{-- <li class="creation">
+                        <li class="creation">
                             <a href="/article/create">
                                 <span class="btn_base btn_creation">
                                     <i class="iconfont icon-maobi">
@@ -238,8 +238,8 @@
                                     写文章
                                 </span>
                             </a>
-                        </li> --}}
-                        <li class="creation">
+                        </li>
+                        {{-- <li class="creation">
                             <a href="javascript:;" data-target="#question_modal" data-toggle="modal">
                                 <span class="btn_base btn_creation">
                                     <i class="iconfont icon-maobi">
@@ -247,7 +247,7 @@
                                     提问
                                 </span>
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </div>
             </div>

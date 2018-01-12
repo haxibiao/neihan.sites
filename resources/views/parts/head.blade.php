@@ -16,7 +16,7 @@
                         </span>
                     </button>
                     <a class="navbar-brand" href="/">
-                        <img alt="Logo" src="/logo/ainicheng.jpg"/>
+                        <img alt="Logo" src="/logo/ainicheng.com.jpg"/>
                     </a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
