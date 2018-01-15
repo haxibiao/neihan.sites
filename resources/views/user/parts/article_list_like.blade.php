@@ -38,12 +38,12 @@
                     </i>
                     {{ $article->count_replies }}
                 </a>
-                <span>
+                <span class="count">
                     <i class="iconfont icon-03xihuan">
                     </i>
                     {{ $article->count_likes }}
                 </span>
-                <a class="cancal" href="javascript:;">
+                <a class="count count_link cancal" href="javascript:;">
                     取消喜欢
                 </a>
             </div>

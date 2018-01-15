@@ -19,7 +19,7 @@
                 </i>
             </a>
             <a href="#">
-                <i class="iconfont icon-gengduo">
+                <i class="iconfont icon-qq1">
                 </i>
             </a>
         </div>

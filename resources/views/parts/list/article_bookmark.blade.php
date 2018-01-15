@@ -44,7 +44,7 @@
                     </i>
                     {{ $article->likes }}
                 </span>
-                <a class="cancal" href="javascript:;">
+                <a class="count count_link cancal" href="javascript:;">
                     取消收藏
                 </a>
             </div>
