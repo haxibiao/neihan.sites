@@ -5339,6 +5339,15 @@
                 $mask.remove();
               }
               $img.removeData("mask");
+
+
+              //记录新添加的图片地址，可用于已选配图vue
+              if(window.new_imgs == undefined) {
+                window.new_imgs = [];
+              }
+              window.new_imgs.push(img_path);
+
+
               _this.editor.trigger("valuechanged");
               if (_this.editor.body.find("img.uploading").length < 1) {
                 return _this.editor.uploader.trigger("uploadready", [

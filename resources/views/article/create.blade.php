@@ -87,18 +87,20 @@
             {!! Form::textarea('description',null, ['class' => 'form-control', 'required' => 'required']) !!}
             <small class="text-danger">{{ $errors->first('description') }}</small>
         </div> --}}
-        
+
 
         <div class="form-group{{ $errors->has('body') ? ' has-error-for-editor' : '' }}">
             {!! Form::label('body', '正文') !!}
 
             {{-- {!! Form::hidden('body',null, ['class' => 'form-control', 'required' => 'required']) !!}             --}}
             {{-- <div class="editable"></div> --}}
-            
+
             <editor name="body"></editor>
 
             <small class="text-danger">{{ $errors->first('body') }}</small>
         </div>
+
+        <image-select></image-select>
 
         {{-- @include('article.parts.images_selected', ['article_images' => []]) --}}
 

@@ -74,6 +74,8 @@ Vue.component('category-list', require('./components/CategoryList.vue'));
 //editor needed modals..
 Vue.component('image-list-modal', require('./modals/ImageListModal.vue'));
 Vue.component('image-list', require('./components/ImageList.vue'));
+// 主配图
+Vue.component('image-select', require('./components/contributeModal/ImageSelect.vue'));
 
 const app = new Vue({
 }).$mount('#app');
