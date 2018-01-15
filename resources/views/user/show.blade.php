@@ -4,7 +4,7 @@
     爱你城
 @stop
 @section('content')
-<div id="home">
+<div id="user">
     <div class="container">
         <div class="row">
             <div class="main col-xs-12 col-sm-8">

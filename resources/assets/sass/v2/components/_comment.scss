@@ -8,7 +8,7 @@
     }
     .author_only {
         @include border (12px, 1px solid #e1e1e1);
-        @include spacing (0 0 0 10px, 5px 8px 3px 8px);
+        @include spacing (0 0 0 10px, 4px 6px 2px 6px);
         color: $color-gray;
         font-weight: 700;
         &.active {
@@ -25,6 +25,9 @@
             display: inline-block;
             &:hover {
                 color: $color-black;
+            }
+            @media screen and (max-width: 405px)  {
+                margin-left: 2px;
             }
         }
         .active {

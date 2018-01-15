@@ -1,7 +1,7 @@
 
 <template>
 
-      <a v-if="isLogin && !is_small" :class="isFollowed ? 'btn_base btn_followed' : 'btn_base btn_follow'" @click="toggleFollow">
+<!--       <a v-if="isLogin && !is_small" :class="isFollowed ? 'btn_base btn_followed' : 'btn_base btn_follow'" @click="toggleFollow">
         	   <span v-if="!isSelf && !isFollowed">＋ 关注</span>
             <span v-if="!isSelf && isFollowed"><i class="iconfont icon-weibiaoti12"></i><i class="iconfont icon-cha"></i></span>
       </a>
@@ -11,7 +11,13 @@
         <span v-if="!isSelf && isFollowed"><i class="iconfont icon-weibiaoti12"></i><i class="iconfont icon-cha"></i></span>
      </a>
 
-      <a v-else="!isLogin" class="btn_base btn_follow" href="/login"><span>＋ 关注</span></a>
+      <a v-else="!isLogin" class="btn_base btn_follow" href="/login"><span>＋ 关注</span></a> -->
+
+      <a v-if="isLogin" :class="isFollowed ? ['btn_base','btn_followed',is_small_followed] : ['btn_base','btn_follow', is_small]" @click="toggleFollow">
+        <span v-if="!isSelf && !isFollowed">＋关注</span>
+        <span v-if="!isSelf && isFollowed"><i class="gougou iconfont icon-weibiaoti12"></i><i class="iconfont icon-cha"></i></span>
+    </a>
+    <a v-else="!isLogin" :class="['btn_base','btn_follow',is_small]" href="/login"><span>＋关注</span></a>
 
 </template>
 
@@ -20,7 +26,7 @@ export default {
 
   name: 'Follow',
 
-  props:['type','userId','id','followed','is_small'],
+  props:['type','userId','id','followed','is_small','is_small_followed'],
   
   computed:{
        isSelf() {

@@ -21,9 +21,6 @@
             <i class="iconfont icon-nvsheng1">
             </i>
         </a>
-    </div>
-    
-    <div class="info_meta">
         <ul>
             <li>
                 <div class="meta_block">

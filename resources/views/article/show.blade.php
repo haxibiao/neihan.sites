@@ -26,12 +26,13 @@
                                     {{ $article->user->name }}
                                 </a>
                             </span>
-                                  <follow 
-                                    type="users" 
-                                    id="{{ $article->user->id }}" 
-                                    user-id="{{ Auth::check() ? Auth::user()->id : false }}" 
+                                  <follow
+                                    type="users"
+                                    id="{{ $article->user->id }}"
+                                    user-id="{{ Auth::check() ? Auth::user()->id : false }}"
                                     followed="{{ Auth::check() ? Auth::user()->isFollow('user', $article->user->id) : false }}"
-                                    is_small=1>
+                                    is_small="btn_follow_xs"
+                                    is_small_followed="btn_followed_xs">
                                   </follow>
                             <div class="meta">
                                 <span>
@@ -55,7 +56,7 @@
                            <a href="/article/{{ $article->id }}/edit" target="_blank" class="btn_base btn_edit pull-right">编辑文章</a>
                         @endif
                     </div>
-                        
+
                     @include('article.parts.article_body')
                     <div class="article_foot">
                         <a class="notebook" href="#">
@@ -68,7 +69,7 @@
                         <div class="copyright">
                             © 著作权归作者所有
                         </div>
-   
+
                     </div>
                 </div>
                 <div class="follow_detail">
@@ -76,10 +77,10 @@
                         <a class="avatar avatar_sm" href="/user/{{ $article->user->id  }}" target="_blank">
                             <img src="{{ $article->user->avatar }}"/>
                         </a>
-                                  <follow 
-                                    type="users" 
-                                    id="{{ $article->user->id }}" 
-                                    user-id="{{ Auth::check() ? Auth::user()->id : false }}" 
+                                  <follow
+                                    type="users"
+                                    id="{{ $article->user->id }}"
+                                    user-id="{{ Auth::check() ? Auth::user()->id : false }}"
                                     followed="{{ Auth::check() ? Auth::user()->isFollow('user', $article->user->id) : false }}">
                                   </follow>
                         <div class="info_meta">
@@ -95,7 +96,7 @@
                     <div class="signature">
                         {{ $article->user->introduction }}
                     </div>
-                    
+
                 </div>
                 <div class="support_author">
                     <p>
@@ -104,7 +105,7 @@
                      <div class="btn_base btn_pay" data-target="#support_modal" data-toggle="modal">
                         赞赏支持
                     </div>
-                    <div class="supporter">
+                    <div>
                         <ul class="collection_follower">
                          @foreach([1,2,3,4,5,6,7,8] as $f)
                             <li>
@@ -121,22 +122,19 @@
                     </div>
                 </div>
                 <div class="meta_bottom">
-                    <like id="{{ $article->id }}" type="article" is-login="{{ Auth::check() }}" article-likes="{{ $article->count_likes }}" />
+                    <like id="{{ $article->id }}" type="article" is-login="{{ Auth::check() }}" article-likes="{{ $article->count_likes }}"></like>
                     <div class="share_group">
-                        <a class="share_circle" href="#">
+                        <a class="share_circle" href="#" data-placement="top" data-container="body" data-toggle="tooltip" data-trigger="hover" data-original-title="分享到微信">
                             <i class="iconfont icon-weixin1">
                             </i>
                         </a>
-                        <a class="share_circle" href="#">
+                        <a class="share_circle" href="#" data-placement="top" data-container="body" data-toggle="tooltip" data-trigger="hover" data-original-title="分享到微博">
                             <i class="iconfont icon-sina">
                             </i>
                         </a>
-                        <a class="share_circle" href="#">
+                        <a class="share_circle" href="#" data-placement="top" data-container="body" data-toggle="tooltip" data-trigger="hover" data-original-title="下载长微博图片">
                             <i class="iconfont icon-zhaopian">
                             </i>
-                        </a>
-                        <a class="share_circle more_share" href="#">
-                            更多分享
                         </a>
                     </div>
                 </div>

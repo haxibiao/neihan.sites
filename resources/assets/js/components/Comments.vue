@@ -30,6 +30,9 @@
                         </div>
                     </div>
                     <div v-else="">
+                      <a class="avatar avatar_xs" href="#">
+                          <img src="/images/photo_user.png"/>
+                      </a>
                         <div class="text_container sign_container">
                             <a class="btn_base btn_sign" href="/login">
                                 登录
