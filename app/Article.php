@@ -7,7 +7,7 @@ use App\Traits\ArticleRelation;
 
 class Article extends Model
 {
-   use ArticleRelation;
+    use ArticleRelation;
 
     protected $fillable = [
         'title',
@@ -26,7 +26,7 @@ class Article extends Model
 
     protected $dates = ['edited_at'];
 
-    protected $touches=['category','categories','collections',];
+    protected $touches = ['category', 'categories', 'collections'];
 
     //计算用方法
 
@@ -75,5 +75,15 @@ class Article extends Model
     public function link()
     {
         return '<a href="/article/' . $this->id . '">' . $this->title . '</a>';
+    }
+
+    public function image_top()
+    {
+        $image_url_path = parse_url($this->image_url, PHP_URL_PATH);
+        $image          = Image::firstOrNew([
+            'path' => $image_url_path,
+        ]);
+
+        return $image->path_top();
     }
 }

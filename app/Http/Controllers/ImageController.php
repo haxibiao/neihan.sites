@@ -144,7 +144,7 @@ class ImageController extends Controller
             //save top
             if ($extension != 'gif') {
                 if ($img->width() >= 760) {
-                    $img->crop(760, 328);
+                    $img->crop(760, 327);
                     $image->path_top = '/storage/img/' . $image->id . '.top.' . $extension;
                     $img->save(public_path($image->path_top));
                 }
@@ -203,22 +203,25 @@ class ImageController extends Controller
             ->withData($data);
     }
 
-
-   //TODO ::经典手动创建分页代码.
+    //TODO ::经典手动创建分页代码.
     public function poster_all()
     {
+        ini_set('memory_limit', '-1');
+
         $articles = Article::orderBy('id')->get();
         foreach ($articles as $article) {
             if ($article->image_url) {
                 $image = Image::where('path', $article->image_url)->first();
-                if ($image && !empty($image->path)) {
-                    $top_path = public_path($image->path);
-                    if (file_exists($top_path) && $image->width >= 760) {
-                        $data['articles'][] = $article;
+                if ($image && !empty($image->path_top)) {
+                    $top_path = public_path($image->path_top);
+                    if (file_exists($top_path) && $image->width >=760) {
+                            $data['articles'][] = $article;
                     }
                 }
             }
         }
+
+        $data['articles'] = array_reverse($data['articles']);
 
         $total   = count($data['articles']);
         $perPage = 10;

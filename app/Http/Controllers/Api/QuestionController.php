@@ -16,14 +16,10 @@ class QuestionController extends Controller
         $questions = Question::where('title', 'like', '%' . $query . '%')
             ->orderBy('id', 'desc')
             ->take(10)
-            ->get();
+            ->pluck('title','id');
 
-        if ($questions->isEmpty()) {
-            foreach ($questions as $question) {
-                $data['title'][] = $question->title;
-            }
-        }
-        return $data['title'];
+
+        return $questions;
     }
 
     public function search_question_image(Request $request)
@@ -32,14 +28,8 @@ class QuestionController extends Controller
         $images = Image::where('title', 'like', '%' . $query . '%')
             ->orderBy('id', 'desc')
             ->take(10)
-            ->get();
+            ->pluck('path_small','id');
 
-        if ($questions->isEmpty()) {
-            foreach ($questions as $question) {
-                $data['image_url'][] = $image->path_small;
-            }
-        }
-
-        return $data['image_url'];
+        return $images;
     }
 }

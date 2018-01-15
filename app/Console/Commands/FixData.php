@@ -281,58 +281,27 @@ class FixData extends Command
         //破除内存限制,这里有可能处理大量数据
         ini_set('memory_limit', '-1');
 
-        //         //这个脚本只能跑一遍
-        //         //resize image_top  to 750*324 (poster設計是1250 * 540)
-        // Article::orderBy('id')->chunk(100, function ($articles) {
-        //     foreach ($articles as $article) {
-        //         //fix all old image_url use full url or small url instead of path ...
-        //         $image_url          = parse_url($article->image_url, PHP_URL_PATH);
-        //         $article->image_url = $image_url;
-        //         $article->save();
-        //         $image_url = str_replace('.small', '', $image_url);
-
-        //         if(str_contains($article->image_url, "haxibiao")){
-        //            $this->comment($article->id.'哈希表的图必须跳过');
-        //            continue;
-        //         }
-
-        //         if (!$article->is_top) {
-        //             continue;
-        //         }
-        //         if (empty($article->image_url)) {
-        //             continue;
-        //         }
-        //         $image = Image::where('path', $image_url)->first();
-
-        //         if ($image && file_exists(public_path($image->path))) {
-        //             //resize and save new top image file
-        //             $img = \ImageMaker::make(public_path($image->path));
-        //             $img->resize(750, null, function ($constraint) {
-        //                 $constraint->aspectRatio();
-        //             });
-        //             $img->crop(750, 324);
-        //             $this->comment($image->path_top());
-        //             $img->save(public_path($image->path_top()));
-
-        //             $article->image_top = $image->path_top();
-        //             $article->save();
-        //             $this->info($article->id . ' - ' . $article->title);
-        //         } else {
-        //             $this->error('miss image : ' . $article->id . '-' . $article->title . ' -> img:' . $article->image_url);
-        //         }
-        //     }
-        // });
+        $articles = Article::chunk(100, function ($articles) {
+            foreach ($articles as $article) {
+                $article->is_top  = 0;
+                $this->comment("$article->id done");
+                $article->update();
+            }
+        });
 
         Article::orderBy('id')->chunk(100, function ($articles) {
             foreach ($articles as $article) {
                 if ($article->image_url) {
                     $image = Image::where('path', $article->image_url)->first();
                     if ($image && !empty($image->path)) {
-                        $top_path = public_path($image->path);
-                        if (file_exists($top_path)) {
-                            $img = \ImageMaker::make($top_path);
-                            if ($image->width >= 760) {
-                                $img->crop(760, 328);
+                        $path = public_path($image->path);
+                        if (file_exists($path)) {
+                            $img = \ImageMaker::make($path);
+                            $image->width =$img->width();
+                            $image->height=$img->height();
+                            $image->update();
+                            if ($img->width() >= 760) {
+                                $img->crop(760, 327);
                                 $img->save(public_path($image->path_top));
                                 $this->info("$image->path 已经处理成功");
                             } else {
