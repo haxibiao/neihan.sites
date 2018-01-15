@@ -2,6 +2,11 @@
 
 @servers(['local' => 'localhost','hk001' => $hk001, 'gz002' => $gz002, 'web' => $web])
 
+@macro('ui')
+local_push_ui
+web_pull
+@endmacro
+
 @macro('push')
 push
 web_pull
@@ -25,6 +30,16 @@ sudo chmod -R 777 .
 git config core.filemode false
 php artisan env:refresh --local
 php artisan get:sql
+@endtask
+
+@task('local_push_ui', ['on' => 'local'])
+hostname
+cd {{ $www }}
+{{ $git_push_to_web }}
+
+rsync -e ssh -P -rf public/css/* root@ainicheng.com:/data/www/ainicheng.com/public/css/
+rsync -e ssh -P -rf public/js/* root@ainicheng.com:/data/www/ainicheng.com/public/js/
+rsync -e ssh -P -rf public/mix-manifest.json root@ainicheng.com:/data/www/ainicheng.com/public/
 @endtask
 
 @task('push', ['on' => 'local'])

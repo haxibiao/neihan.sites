@@ -2,6 +2,9 @@
 /public/hot
 /public/storage
 /public/img*
+/public/css/*
+/public/js/*
+/public/mix-manifest.json
 /public/*.apk
 /storage/*.key
 /vendor
