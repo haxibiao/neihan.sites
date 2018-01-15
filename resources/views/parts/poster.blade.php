@@ -9,16 +9,18 @@
         dataImage.push(['/article/{{ $article->id }}','{{ $article->image_top }}']);
     @endforeach
 
+    console.log(dataImage);
+  
     if(dataImage.length<8){
          dataImage=      [
-             ['/v1/detail','/images/carousel001.jpg'],
-             ['/v1/detail','/images/carousel002.jpg'],
-             ['/v1/detail','/images/carousel003.jpg'],
-             ['/v1/detail','/images/carousel004.jpg'],
-             ['/v1/detail','/images/carousel005.jpg'],
-             ['/v1/detail','/images/carousel006.jpg'],
-             ['/v1/detail','/images/carousel007.jpg'],
-             ['/v1/detail','/images/carousel008.jpg']
+             ['javascript:;','/images/carousel001.jpg'],
+             ['javascript:;','/images/carousel002.jpg'],
+             ['javascript:;','/images/carousel003.jpg'],
+             ['javascript:;','/images/carousel004.jpg'],
+             ['javascript:;','/images/carousel005.jpg'],
+             ['javascript:;','/images/carousel006.jpg'],
+             ['javascript:;','/images/carousel007.jpg'],
+             ['javascript:;','/images/carousel008.jpg']
             ];
       }
       var options = {
