@@ -7,8 +7,10 @@ use App\Http\Requests\ArticleRequest;
 use App\Image;
 use App\Tag;
 use App\Video;
+use App\Jobs\ArticleDelay;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class ArticleController extends Controller
 {
@@ -81,6 +83,13 @@ class ArticleController extends Controller
         //images
         $imgs = $this->get_image_urls_from_body($article->body);
         $this->auto_upadte_image_relations($imgs, $article);
+
+        if($request->is_Delay > 0){
+            $article->status = -1;
+            $article->save();
+            ArticleDelay::dispatch($article->id)
+            ->delay(now()->addMinutes(60*24*$request->is_Delay));
+        }
 
         return redirect()->to('/article/' . $article->id);
     }
