@@ -37,9 +37,9 @@ hostname
 cd {{ $www }}
 {{ $git_push_to_web }}
 
-rsync -e ssh -P -rf public/css/* root@ainicheng.com:/data/www/ainicheng.com/public/css/
-rsync -e ssh -P -rf public/js/* root@ainicheng.com:/data/www/ainicheng.com/public/js/
-rsync -e ssh -P -rf public/mix-manifest.json root@ainicheng.com:/data/www/ainicheng.com/public/
+rsync -e ssh -P public/css/* root@ainicheng.com:/data/www/ainicheng.com/public/css/
+rsync -e ssh -P public/js/* root@ainicheng.com:/data/www/ainicheng.com/public/js/
+rsync -e ssh -P public/mix-manifest.json root@ainicheng.com:/data/www/ainicheng.com/public/
 @endtask
 
 @task('push', ['on' => 'local'])
