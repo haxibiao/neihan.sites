@@ -42,3 +42,12 @@ EOT;
 $cache_clear = <<<EOT
 php artisan cache:clear
 EOT;
+
+
+$copy_worker_confi = <<<EOT
+cp -rf ./config/worker/* /etc/supervisor/conf.d/
+supervisorctl reread
+supervisorctl update
+supervisorctl start laravel-worker:*
+EOT;
+
