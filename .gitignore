@@ -4,6 +4,7 @@
 /public/img*
 /public/css/*
 /public/js/*
+/public/sitemap*
 /public/mix-manifest.json
 /public/*.apk
 /storage/*.key

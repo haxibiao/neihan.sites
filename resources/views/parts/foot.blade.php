@@ -22,8 +22,8 @@
                     <em>
                         ·
                     </em>
-                    <a href="#">
-                        爱你城出版
+                    <a href="/sitemap">
+                        站点地图
                     </a>
                     <em>
                         ·

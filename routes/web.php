@@ -28,6 +28,9 @@ require_once 'v1/web.php';
 //v2
 require_once 'v2/web.php';
 
+//sitemap
+require_once 'sitemap.php';
+
 // 问答
 Route::resource('/interlocution','QuestionController');
 
