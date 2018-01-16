@@ -8,8 +8,6 @@
     @foreach($data->carousel as $article)
         dataImage.push(['/article/{{ $article->id }}','{{ $article->image_top }}']);
     @endforeach
-
-    console.log(dataImage);
   
     if(dataImage.length<8){
          dataImage=      [
