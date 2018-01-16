@@ -104,5 +104,108 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+	#profile {
+        table {
+            thead {
+                tr {
+                    .setting_head {
+                        width: 200px;
+                        @media screen and (max-width: 992px) {
+                            width: 140px;
+                        }
+                        @media screen and (max-width: 768px) {
+                            width: 85px;
+                        }
+                    }
+                }
+            }
+            .information {
+                tr {
+                    p {
+                        padding: 8px 0 0;
+                        color: #969696;
+                        clear: both;
+                    }
+                    td {
+                        form {
+                            textarea {
+                                height: 100px;
+                                padding: 8px 10px;
+                                resize: none;
+                            }
+                            input[type="text"] {
+                                width: 100%;
+                            }
+                        }
+                    }
+                    .top_line {
+                        padding-top: 0;
+                        div {
+                            display: inline-block;
+                            span {
+                                margin: 0 20px 0 6px;
+                                font-size: 15px;
+                                vertical-align: middle;
+                            }
+                        }
+                    }
+                    .setting_title {
+                        font-size: 15px;
+                        color: #969696;
+                    }
+                    .weixin_qrcode {
+                        .btn_hollow {
+                            position: relative;
+                            padding: 4px 12px;
+                            font-size: 14px;
+                            input {
+                                position: absolute;
+                                display: block!important;
+                                top: -1px;
+                                left: 1px;
+                                width: 85px;
+                                height: 30px;
+                                opacity: 0;
+                            }
+                        }
+                    }
+                    .social_bind {
+                        .social_bind_list {
+                            li {
+                                line-height: 50px;
+                                border-bottom: 1px solid #f0f0f0;
+                                .bind_name {
+                                    display: inline-block;
+                                    i {
+                                        width: 30px;
+                                        font-size: 20px;
+                                        display: inline-block;
+                                        vertical-align: middle;
+                                    }
+                                    .icon-sina {
+                                        color: #e05244;
+                                    }
+                                    .icon-weixin1 {
+                                        color: #42c02e;
+                                    }
+                                    .icon-qq2 {
+                                        color: #2B89CA;
+                                    }
+                                    a {
+                                        margin: 0 0 0 20px;
+                                        font-size: 14px;
+                                        vertical-align: middle;
+                                        i {
+                                            font-size: 12px;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 </style>
