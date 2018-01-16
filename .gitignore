@@ -9,6 +9,7 @@
 /storage/*.key
 /vendor
 /.idea
+/storage/worker.log
 /.vagrant
 Homestead.json
 Homestead.yaml
