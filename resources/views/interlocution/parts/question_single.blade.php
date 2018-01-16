@@ -51,6 +51,7 @@
     <div class="answer_write">
       <form  method="post"  action="{{ route('answer.store') }}">
         <input type="hidden" value="{{ csrf_token() }}" name="_token">
+        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
         <input type="hidden" value="{{ $question->id }}" name="question_id">
         <editor name="answer"></editor>
         <div class="submitbar">
@@ -69,7 +70,7 @@
 		    </div>
     	</div>
     	<div class="note_answers">
-            <div class="comment">
+{{--             <div class="comment">
                 <div>
                     <div class="author">
                         <a class="avatar avatar_xs" href="#">
@@ -225,55 +226,51 @@
                         </span>
                     </div>
                 </div>
-            </div>
+            </div> --}}
+         @foreach($answers as $answer)
             <div class="comment">
                 <div>
                     <div class="author">
                         <a class="avatar avatar_xs" href="#">
-                            <img src="/images/photo_02.jpg"/>
+                            <img src="{{ $answer->user->avatar }}"/>
                         </a>
-                        <a class="btn_base btn_follow" href="javascript:;">
-                            <span>
-                                ＋ 关注
-                            </span>
-                        </a>
+                       @if(Auth::check())
+                        <follow followed="{{ Auth::user()->isFollow('users', $answer->user->id)}}" id="{{ $answer->user->id }}" type="users" user-id="{{ Auth::user()->id }}">
+                        </follow>
+                       @endif
                         <div class="info_meta">
                             <a class="nickname" href="#">
-                                东尘roam
+                                {{ $answer->user->name }}
                             </a>
                             <div class="meta">
                                 <span>
-                                    2017.07.05 07:47
+                                    {{ $answer->created_at }}
                                 </span>
                             </div>
                         </div>
                     </div>
                     <div class="comment_wrap">
                         <div class="article_content">
-                            <p>在王者荣耀里面或多或少都有自己喜欢的英雄，如果给你一个愿望可以成为自己喜欢的英雄会是谁呢？是我们的短腿小鲁班么？ 毕竟他的亲戚那么多~ 谁敢欺负他呢</p>
-                            <div>
-                                <img src="/images/details_22.jpeg" />
-                            </div>
-                            <p>还是孙尚香啦，大小姐驾到，通通跪下。</p>
+                            {{ $answer->answer }}
                         </div>
                         <div class="tool_group">
                             <a href="#">
                                 <i class="iconfont icon-fabulous">
                                 </i>
                                 <span>
-                                    237 赞
+                                    {{ $answer->count_likes }} 赞
                                 </span>
                             </a>
                             <a href="/detail" target="_blank" class="count count_link">
                                 <i class="iconfont icon-dianzan1">
                                 </i>
-                                2 踩
+                                {{ $answer->count_unlikes }} 踩
                             </a>
                             <a href="#">
                                 <i class="iconfont icon-xinxi">
                                 </i>
                                 <span>
-                                    88 评论
+                                    {{ $answer->count_comments }} 评论
                                 </span>
                             </a>
                             <a class="report" href="#">举报</a>
@@ -281,6 +278,7 @@
                     </div>
                 </div>
             </div>
+            @endforeach
     	</div>
     </div>
 </div>

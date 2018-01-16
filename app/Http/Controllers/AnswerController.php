@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Answer;
 
 class AnswerController extends Controller
 {
@@ -34,7 +35,12 @@ class AnswerController extends Controller
      */
     public function store(Request $request)
     {
-       
+        $request->answer=str_replace("</p>", " ", str_replace("<p style=\"\">", " ", $request->answer));
+        $answer =new Answer($request->all());
+        $answer->answer =$request->answer;
+        $answer->save();
+
+        return redirect()->to('/question/'.$request->question_id);
     }
 
     /**

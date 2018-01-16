@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Category;
 use App\Question;
+use App\Answer;
 
 class QuestionController extends Controller
 {
@@ -76,7 +77,11 @@ class QuestionController extends Controller
         $question =Question::with('answers')->with('user')->with('categories')->findOrFail($id);
         $question->hits++;
         $question->save();
+
+        $answers =Answer::with('user')->where('question_id',$question->id)->orderBy('id','desc')->paginate(10);
+
         return view('interlocution.show')
+        ->withAnswers($answers)
         ->withQuestion($question);
     }
 
