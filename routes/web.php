@@ -32,7 +32,8 @@ require_once 'v2/web.php';
 require_once 'sitemap.php';
 
 // 问答
-Route::resource('/interlocution','QuestionController');
+Route::resource('/question','QuestionController');
+Route::resource('/answer','AnswerController');
 
 // 问答更多分类
 Route::get('/interlocution/more', function () {

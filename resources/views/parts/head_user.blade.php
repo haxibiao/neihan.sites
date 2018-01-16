@@ -31,7 +31,7 @@
                             </a>
                         </li>
                         <li class="tab interlocution">
-                            <a href="/interlocution" class="identifier">
+                            <a href="/question" class="identifier">
                                 <i class="iconfont icon-help">
                                 </i>
                                 <span class="menu_text">

@@ -16,6 +16,11 @@ class Category extends Model
         'order',
     ];
 
+    public function questions()
+    {
+        return $this->belongsToMany(\App\Question::class);
+    }
+
     public function creator()
     {
         return $this->belongsTo(\App\User::class);
@@ -83,7 +88,7 @@ class Category extends Model
         foreach ($topAdmins as $admin) {
             $admin->isCreator = $admin->id == $this->user_id;
         }
-        if(!count($topAdmins)){
+        if (!count($topAdmins)) {
             return "";
         }
         return $topAdmins;

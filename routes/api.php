@@ -119,8 +119,12 @@ Route::get('/video/{id}/del-{key}', 'Api\VideoController@deleteRelation');
 //获取视频相关片段数据
 Route::get('/video/{id}/{key}', 'Api\VideoController@getRelation');
 
+//question
+Route::middleware('auth:api')->get('/question/search','Api\QuestionController@search_question');
+Route::middleware('auth:api')->get('/question/image','Api\QuestionController@search_question_image');
+
 //图片
 Route::get('/image', 'Api\ImageController@index');
-Route::post('/image/save', 'Api\ImageController@store');
+Route::middleware('auth:api')->post('/image/save', 'Api\ImageController@store');
 //首页轮播图
 Route::get('/image/poster','Api\ImageController@poster');

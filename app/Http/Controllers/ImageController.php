@@ -192,6 +192,11 @@ class ImageController extends Controller
             return json_encode($json);
         }
 
+        //response dopm
+        if($request->get('from') =='question'){
+            return $image->path;
+        }
+
         return $data;
     }
 

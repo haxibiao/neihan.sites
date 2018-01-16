@@ -8,7 +8,7 @@
     <div class="interlocution_top">
         <div class="container clearfix">
             {{-- 专题分类 --}}
-            @include('interlocution.parts.category_list')
+            @include('interlocution.parts.category_list',['categories'=>$categories])
         </div>
     </div>
     <div class="interlocution_note">

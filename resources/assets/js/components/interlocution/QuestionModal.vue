@@ -1,6 +1,8 @@
 <template>
     <!-- 问答页提问搜索 -->
     <div class="modal fade" id="question_modal">
+     <form method="post" action="/question">
+        <input type="hidden" name="_token" v-model="token">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -12,10 +14,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="input-question">
-                        <input-matching></input-matching>
+                        <input-matching name="title"></input-matching>
                     </div>
                     <div class="textarea-box textarea_box">
-                        <textarea placeholder='添加问题背景描述（选填)' v-model="description" maxlength='500'></textarea>
+                        <textarea placeholder='添加问题背景描述（选填)' v-model="description" maxlength='500' name="background"></textarea>
                         <span class="word-count">{{ description.length }}/500</span>
                     </div>
                     <div class="img-selector">
@@ -79,16 +81,34 @@
                     </div>
                 </div>
                 <footer class="clearfix">
-                    <button class="btn_base btn_follow btn_followed_xs pull-right" @click="submitQuestion">提交</button>
+                    <button class="btn_base btn_follow btn_followed_xs pull-right">提交</button>
                 </footer>
+                <input type="hidden" name="user_id" :value="userId">
+                <input v-if="top3Imgs.length>0" name="image1" type="hidden" :value="top3Imgs[0].img">
+                <input v-if="top3Imgs.length>1" name="image2" type="hidden" :value="top3Imgs[1].img">
+                <input v-if="top3Imgs.length>2" name="image3" type="hidden" :value="top3Imgs[2].img">
+    
             </div>
         </div>
+        </form>
     </div>
 </template>
 <script>
+
+import Dropzone from '../../plugins/Dropzone';
+
     export default {
 
   name: 'QuestionModal',
+
+  computed:{
+     token(){
+        return window.csrf_token;
+     },
+     userId(){
+        return window.current_user_id;
+     }
+  },
 
   mounted() {
     Dropzone($('.img-upload-field')[0], this.dragDropUpload);
@@ -125,7 +145,9 @@
                'Content-Type': 'multipart/form-data'
             }
         }
+        console.log(api);
         window.axios.post(api, formdata, config).then(function(response){
+            console.log(response.data);
            _this.imgItems.push({
                 img: response.data,
                 selected: 1

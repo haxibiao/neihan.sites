@@ -1,6 +1,6 @@
 <template>
 	<div class='input_box input-matching' ref="input-matching">
-		<input :class="question&&matchedData?'matching':''" type="text" placeholder="请输入问题" v-model="question" @input="inputQuestion" class="form-control">
+		<input :name="name" :class="question&&matchedData?'matching':''" type="text" placeholder="请输入问题" v-model="question" @input="inputQuestion" class="form-control">
 		<div class="matched-wrap" v-show="question&&matchedData">
 			<h5>相似问题</h5>
 			<ul class="matched">
@@ -17,12 +17,16 @@ export default {
 
   name: 'InputMatching',
 
+  props:['name'],
+
     methods: {
   	inputQuestion() {
   		var vm = this;
-  		this.$http.get('/api/matchingQuestion',this.question).then(function(data){
+  		var api=window.tokenize('/api/question/search');
+  		window.axios.get(api,this.question).then(function(data){
   				// 因为没有api所以就凉了
   				vm.matchedData = data.matched;
+  				console.log(vm.matchedData);
   			},function(error){
   				vm.matchedData = vm.simulationData;
   			}

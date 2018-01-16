@@ -11,7 +11,6 @@ class QuestionController extends Controller
     public function search_question(Request $request)
     {
         // search question %
-        $data      = [];
         $query     = $request->get('que');
         $questions = Question::where('title', 'like', '%' . $query . '%')
             ->orderBy('id', 'desc')

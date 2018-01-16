@@ -1,37 +1,19 @@
 {{-- 回答问题 --}}
 <div class="question_single">
     <div class="question_tags">
-        <a class="collection" href="/category/2" target="_blank">
+      @foreach($question->categories as $category)
+        <a class="collection" href="/{{ $category->name_en }}" target="_blank">
             <div class="name">
-                王者荣耀
+                {{ $category->name }}
             </div>
         </a>
-        <a class="collection" href="/category/2" target="_blank">
-            <div class="name">
-                英雄
-            </div>
-        </a>
-        <a class="collection" href="/category/2" target="_blank">
-            <div class="name">
-                游戏
-            </div>
-        </a>
-        <a class="collection" href="/category/2" target="_blank">
-            <div class="name">
-                腾讯游戏
-            </div>
-        </a>
-        <a class="collection" href="/category/2" target="_blank">
-            <div class="name">
-                手游
-            </div>
-        </a>
+       @endforeach
     </div>
     <h1 class="headline">
-        如果让你成为王者荣耀里面的一个英雄，你想成为谁？
+        {{ $question->title }}
     </h1>
     <div class="question_text">
-        假设你可以选择成为王者荣耀里面的一个英雄，你想成为谁？为什么？
+        {{ $question->background }}
     </div>
     <div class="question_img">
         <div class="wrap_img">
@@ -47,7 +29,7 @@
     		<i class="iconfont icon-shoucang1"></i>
     		<span>收藏问题</span>
     		(
-    			<span class="count">400</span>
+    			<span class="count">{{ $question->count_favorites }}</span>
     		)
     	</a>
     	<a href="javascript:;" class="action_btn">
@@ -63,18 +45,22 @@
     	</div>
     </div>
     <div class="answer_write">
-        <editor name="body"></editor>
+      <form  method="post"  action="{{ route('answer.store') }}">
+        <input type="hidden" value="{{ csrf_token() }}" name="_token">
+        <input type="hidden" value="{{ $question->id }}" name="question_id">
+        <editor name="answer"></editor>
         <div class="submitbar">
             <div class="pull-right">
-                <a href="javascript:;" class="btn_base btn_creation">发表答案</a>
+                <button class="btn_base btn_creation">发表答案</button>
             </div>
         </div>
+      </form>
     </div>
     <div class="answers">
     	<div class="note_title">
     		<div class="litter_title title_line">
 		        <span class="title_active">
-		            1219个回答
+		            {{ $question->answers->count() }}个回答
 		        </span>
 		    </div>
     	</div>

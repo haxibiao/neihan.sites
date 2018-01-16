@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Category;
-use App\Question;
 
-class QuestionController extends Controller
+class AnswerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,27 +13,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        $qb = Question::with('latestAnswer.article')->orderBy('id', 'desc');
-
-        if (request('cid')) {
-            $category = Category::findOrFail(request('cid'));
-            $qb       = $category->questions()->with('latestAnswer.article')->orderBy('id', 'desc');
-        }
-
-        $categories = Category::where('count_questions', '>', 0)->orderBy('updated_at', 'desc')->take(7)->get();
-
-        $questions =$qb->paginate(10);
-
-        if(count($categories) <7){
-          $categories=Category::with('questions')
-            ->orderBy('id','desc')
-            ->take(7)
-            ->get();
-        }
-
-        return view('interlocution.index')
-        ->withCategories($categories)
-        ->withQuestions($questions);
+        //
     }
 
     /**
@@ -56,9 +34,7 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        $question =new Question($request->all());
-        $question->save();
-        return redirect()->to('/question/'.$question->id);
+       
     }
 
     /**
@@ -69,11 +45,7 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        $question =Question::with('answers')->with('user')->with('categories')->findOrFail($id);
-        $question->hits++;
-        $question->save();
-        return view('interlocution.show')
-        ->withQuestion($question);
+        //
     }
 
     /**
