@@ -17,12 +17,9 @@
             <div class="main col-xs-12 col-sm-8">
                 {{-- 文章摘要 --}}
                 <div class="article_list">
-                    @include('interlocution.parts.article_list')
+                    @include('interlocution.parts.article_list',['questions'=>$questions])
                 </div>
                 {{-- 阅读更多文章摘要 --}}
-                <a class="load_more" href="javascript:;">
-                    阅读更多
-                </a>
             </div>
             {{-- 右侧 --}}
             <div class="aside col-sm-4">

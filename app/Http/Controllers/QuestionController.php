@@ -15,7 +15,8 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        $qb = Question::with('latestAnswer.article')->orderBy('id', 'desc');
+        $data=[];
+        $qb = Question::with('latestAnswer.article')->with('user')->orderBy('id', 'desc');
 
         if (request('cid')) {
             $category = Category::findOrFail(request('cid'));
@@ -33,7 +34,10 @@ class QuestionController extends Controller
             ->get();
         }
 
+        $data['hot']=$qb->orderBy('hits','desc')->take(3)->get();
+
         return view('interlocution.index')
+        ->withData($data)
         ->withCategories($categories)
         ->withQuestions($questions);
     }

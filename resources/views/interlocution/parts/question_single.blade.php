@@ -17,12 +17,16 @@
     </div>
     <div class="question_img">
         <div class="wrap_img">
-            <img src="/images/details_12.jpeg"/>
+            <img src="{{ $question->image1 }}"/>
         </div>
         <div class="wrap_img">
-            <img src="/images/details_19.jpeg"/>
+            <img src="{{ $question->image2 }}"/>
+        </div>
+        <div class="wrap_img">
+            <img src="{{ $question->image3 }}"/>
         </div>
     </div>
+
     <div class="question_bottom">
     	<a href="javascript:;" class="action_btn">
     		{{-- <i class="iconfont icon-shoucang"></i> --}}

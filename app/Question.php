@@ -10,6 +10,9 @@ class Question extends Model
         'user_id',
         'title',
         'background',
+        'image1',
+        'image2',
+        'image3',
     ];
 
     public function articles()
@@ -43,6 +46,7 @@ class Question extends Model
 
     public function relateImage()
     {
+
         //有最新回答，先用回答里的图片
         if ($this->latestAnswer && !empty($this->latestAnswer->image_url)) {
             return $this->latestAnswer->image_url;
@@ -51,6 +55,9 @@ class Question extends Model
         if (!empty($this->image1)) {
             return $this->image1;
         }
-        return null;
+
+        //default image
+        $defalut=rand(1,8);
+        return "/images/details_0$defalut.jpeg" ;
     }
 }
