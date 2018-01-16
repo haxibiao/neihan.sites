@@ -49,7 +49,7 @@ export default {
                 // picture: {},
                 // video: {},
                 upload: {
-                    url: '/api/image/save', //api for post to upload image 
+                    url: window.tokenize('/api/image/save'), //api for post to upload image 
                     params: {
                         from: 'simditor'
                     },
