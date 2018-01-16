@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Http\Requests\ArticleRequest;
 use App\Image;
+use App\Jobs\ArticleDelay;
 use App\Tag;
 use App\Video;
-use App\Jobs\ArticleDelay;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -84,11 +84,12 @@ class ArticleController extends Controller
         $imgs = $this->get_image_urls_from_body($article->body);
         $this->auto_upadte_image_relations($imgs, $article);
 
-        if($request->is_Delay > 0){
+        if ($request->is_Delay > 0) {
             $article->status = -1;
             $article->save();
+
             ArticleDelay::dispatch($article->id)
-            ->delay(now()->addMinutes(60*24*$request->is_Delay));
+                ->delay(now()->addMinutes(60 * 24 * $request->is_Delay));
         }
 
         return redirect()->to('/article/' . $article->id);
@@ -165,7 +166,7 @@ class ArticleController extends Controller
 
         //编辑文章的时候,可能没有插入图片,字段可能空,就会删除图片地址....
         $this->clear_article_imgs($article);
-        
+
         $categories    = get_categories();
         $article->body = str_replace('<single-list id', '<single-list class="box-related-half" id', $article->body);
         return view('article.edit')->withArticle($article)->withCategories($categories);

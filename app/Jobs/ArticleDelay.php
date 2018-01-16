@@ -26,7 +26,6 @@ class ArticleDelay implements ShouldQueue
     public function __construct($article_id)
     {
         $this->article_id = $article_id;
-        $this->handle();
     }
 
     /**
