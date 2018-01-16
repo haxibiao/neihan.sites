@@ -89,7 +89,7 @@ class ArticleController extends Controller
             $article->save();
 
             ArticleDelay::dispatch($article->id)
-                ->delay(now()->addMinutes(60 * 24 * $request->is_Delay));
+                ->delay(now()->addMinutes(60 * $request->is_Delay));
         }
 
         return redirect()->to('/article/' . $article->id);
