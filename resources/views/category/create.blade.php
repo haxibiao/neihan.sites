@@ -25,7 +25,7 @@
                     <tr>
                         <td>
                             <div class="avatar_collection">
-                                <img src="/images/category_10.png" id=category_logo/>
+                                <img src="/images/category_10.png" id=previewImage />
                             </div>
                         </td>
                         <td>
@@ -33,7 +33,7 @@
                                 {{-- <input class="hide" type="file" unselectable="on" name="logo"/> --}}
                             {{-- <div class="form-group{{ $errors->has('photo') ? ' has-error' : '' }}"> --}}
                                 {!! Form::label('logo', ' 上传专题封面') !!}
-                                {!! Form::file('logo', ['required' => 'required']) !!}
+                                {!! Form::file('logo', ['id'=>'logo','unselectable'=>"on"]) !!}
                             {{-- </div> --}}
                             </a>
 
@@ -130,32 +130,23 @@
 </div>
 @stop
 
-{{-- @push('scripts')
-   <script type="text/javascript">
-   	  function uploadlogo(){
-   	  	  $('#upload_logo').on('submit',function(e){
-   	  	  	e.preventDefault();
-   	  	  	$(this).ajaxSubmit({
-   	  	  		type:"POST",
-   	  	  		url: "{{ route('image.store') }}",
-
-   	  	  		contentType:false,
-   	  	  		cache: false,
-                processData: false,
-                success:function(data){
-                    var logo_url=data;
-                    console.log(logo_url);
-                    var category_log=document.getElementById("upload_logo");
-                       category_log.val(image_url);
-                },
-                error:function(data){
-        	       $("#error")
-                    .text("上传失败!")
-                    .css("color", "#FFA500");
+@push('scripts')
+<script type="text/javascript">
+        function preview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#previewImage').attr('src', e.target.result);
                 }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
 
-   	  	  	});
-   	  	  });
-   	  }
-   </script>
-@endpush --}}
+
+    $(function() {
+        $("#logo").change(function(){
+            preview(this);
+        });
+    });
+</script>>
+@endpush
