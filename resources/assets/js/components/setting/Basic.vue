@@ -1,13 +1,5 @@
 <template>
 	 <div id="basic">
- 		 <div v-if="updated" class="alert alert-success">
- 	     更新成功!
-      </div>
-
-       <div v-if="fail" class="alert alert-danger">
-        更新失败！请检查您的输入是否有错误
-      </div>
-
 		<table>
 			<thead>
 				<tr>
@@ -20,13 +12,13 @@
 				<tr>
 					<td v-if="!avatar" class="top_line">
 						<div class="avatar avatar_sp">
-							<img :src="user.avatar" />
+							<img :src="user.avatar" id="avatar" />
 						</div>
 					</td>
 
 					<td v-else class="top_line">
 						<div class="avatar">
-							<img :src="avatar" />
+							<img :src="avatar" id="avatar" />
 						</div>
 					</td>
 
@@ -83,20 +75,27 @@ export default {
 
           formdata.append('name',this.inputtext.name);
   	  	  window.axios.post(api,formdata).then(function(response){
-             response.data==0 ? vm.fail=true : vm.updated=true;
+               if(response.status==200){
+                  window.alert('success');
+               }
   	  	  });
   	  },
 
   	  //update avatar
   	  update_avatar(event){
+          if(event.target && event.target.files[0]){
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#avatar').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(event.target.files[0]);
+          }
+
   	  	  var api=window.tokenize('/api/user/'+window.current_user_id+'/avatar');
   	  	  var vm=this;
   	  	  var file=event.target.files[0];
   	  	  let formdata=new FormData();
 
-            // formdata.append('name', this.file.name);
-            // formdata.append('age', this.file.age);
-            // formdata.append('file', this.file.file);
           formdata.append('file',file);
 
   	  	  let config = {
@@ -107,9 +106,6 @@ export default {
 
   	  	  window.axios.post(api,formdata,config).then(function(response){
   	  	  	   vm.avatar =response.data;
-               if(response.status==200){
-                  vm.updated=true;
-               }
   	  	  });
   	  }
   },
@@ -117,7 +113,6 @@ export default {
   data () {
     return {
        avatar:false,
-       updated:false,
        user:[],
        fail:false,
        inputtext:[]
