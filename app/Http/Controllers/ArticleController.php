@@ -92,15 +92,10 @@ class ArticleController extends Controller
         $this->auto_upadte_image_relations($imgs, $article);
 
         //is_top
-        $this->article_is_top($request,$article);
+        $this->article_is_top($request, $article);
 
-        if ($request->is_Delay > 0) {
-            $article->status = -1;
-            $article->save();
-
-            ArticleDelay::dispatch($article->id)
-                ->delay(now()->addMinutes(60 * $request->is_Delay));
-        }
+        //delay
+        $this->article_delay($request, $article);
 
         return redirect()->to('/article/' . $article->id);
     }
@@ -217,8 +212,11 @@ class ArticleController extends Controller
         //tags
         $this->save_article_tags($article);
 
-         //is_top
-        $this->article_is_top($request,$article);
+        //is_top
+        $this->article_is_top($request, $article);
+
+         //delay
+        $this->article_delay($request, $article);
 
         //images
         $imgs = $this->get_image_urls_from_body($article->body);
@@ -393,19 +391,19 @@ class ArticleController extends Controller
         return view('article.parts.article_new')->withArticles($articles);
     }
 
-    public function article_is_top($request,$article)
-    { 
-       if ($request->is_top) {
+    public function article_is_top($request, $article)
+    {
+        if ($request->is_top) {
             $images = Image::where('path', $article->image_url)->orWhere('path_small', $article->image_url)->get();
-            $is_top=0;
-            foreach($images as $image){
-                    if ($image->width < 760) {
-                        continue;
-                    }else{
-                        $is_top =1;
-                    }
+            $is_top = 0;
+            foreach ($images as $image) {
+                if ($image->width < 760) {
+                    continue;
+                } else {
+                    $is_top = 1;
+                }
             }
-            if($is_top==0){
+            if ($is_top == 0) {
                 dd("上传图片太小不能上首页!");
             }
             $article->save();
@@ -420,5 +418,16 @@ class ArticleController extends Controller
             $images = $match[1];
         }
         return $images;
+    }
+
+    public function article_delay($request,$article)
+    {
+        if ($request->delay > 0) {
+            $article->status = 0;
+            $article->save();
+
+            ArticleDelay::dispatch($article->id)
+                ->delay(now()->addHours($request->delay));
+        }
     }
 }

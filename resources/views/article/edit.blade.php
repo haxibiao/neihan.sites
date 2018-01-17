@@ -48,22 +48,30 @@
         </div>
 
         <div class="col-md-3">
-        <div class="form-group{{ $errors->has('user_name') ? ' has-error' : '' }}">
-            {!! Form::label('user_name', '最后编辑者') !!}
-            {!! Form::text('user_name', Auth::user()->name, ['class' => 'form-control', 'required' => 'required']) !!}
-            <small class="text-danger">{{ $errors->first('user_name') }}</small>
-
-            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-        </div>
-        </div>
-
-        <div class="col-md-3">
         <div class="form-group{{ $errors->has('is_top') ? ' has-error' : '' }}">
             {!! Form::label('is_top', '是否上首页') !!}
             {!! Form::select('is_top', [ 0 => '否', 1 => '是'], $article->is_top, ['id' => 'is_top', 'class' => 'form-control', 'required' => 'required']) !!}
             <small class="text-danger">{{ $errors->first('is_top') }}</small>
         </div>
         </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group{{ $errors->has('delay') ? ' has-error' : '' }}">
+                {!! Form::label('delay', '是否延迟发布(如果延迟发布请选择时间)') !!}
+                {!! Form::select('delay',[ 
+                    0 => '否', 
+                    12 => '延迟12小时发布',
+                    36 => '延迟一天半(36小时)',
+                    48 => '延迟2天发布',
+                    72 => '延迟3天发布',
+                    96 => '延迟4天发布',
+                    120 => '延迟5天发布',
+                    144 => '延迟6天发布',
+                    168 => '延迟7天发布',
+                ], null, ['class' => 'form-control']) !!}
+                <small class="text-danger">{{ $errors->first('delay') }}</small>
+            </div>
         </div>
 
         <div class="form-group{{ $errors->has('keywords') ? ' has-error' : '' }}">
@@ -92,6 +100,8 @@
         @include('article.parts.images_selected', ['article_images' => $article->images, 'article' => $article])
 
         <div class="btn-group-lg pull-right">
+            <input type="hidden" name="user_name" value="{{ Auth::user()->name }}">
+            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
             <input type="hidden" name="image_url" value="{{ $article->image_url }}">
             <input type="hidden" name="status" id="hidden_status" value="1">
             {!! Form::button("　存　稿　", ['class' => 'btn btn-warning btn-draft']) !!}

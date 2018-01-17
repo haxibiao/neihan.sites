@@ -71,9 +71,9 @@
             </div>
 
             <div class="col-md-3">
-            <div class="form-group{{ $errors->has('is_Delay') ? ' has-error' : '' }}">
-                {!! Form::label('is_Delay', '是否延迟发布(如果延迟发布请选择时间)') !!}
-                {!! Form::select('is_Delay',[ 
+            <div class="form-group{{ $errors->has('delay') ? ' has-error' : '' }}">
+                {!! Form::label('delay', '是否延迟发布(如果延迟发布请选择时间)') !!}
+                {!! Form::select('delay',[ 
                     0 => '否', 
                     12 => '延迟12小时发布',
                     36 => '延迟一天半(36小时)',
@@ -84,7 +84,7 @@
                     144 => '延迟6天发布',
                     168 => '延迟7天发布',
                 ], null, ['class' => 'form-control']) !!}
-                <small class="text-danger">{{ $errors->first('is_Delay') }}</small>
+                <small class="text-danger">{{ $errors->first('delay') }}</small>
             </div>
             </div>
 
