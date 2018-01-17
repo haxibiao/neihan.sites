@@ -76,7 +76,7 @@ export default {
           formdata.append('name',this.inputtext.name);
   	  	  window.axios.post(api,formdata).then(function(response){
                if(response.status==200){
-                  window.alert('success');
+                 // window.location.href = location.href + (location.href.indexOf("?")>-1?"&":"?") + "time="+(new Date()).getTime();
                }
   	  	  });
   	  },
