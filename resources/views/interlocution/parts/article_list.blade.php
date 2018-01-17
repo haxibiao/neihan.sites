@@ -52,5 +52,12 @@
             </div>
         </div>
     </div>
+      @if(Auth::user()->is_editor)
+         <form action="{{ route('question.destroy', $question->id) }}" method="post">
+            {{ csrf_field() }}
+            {{ method_field('DELETE') }}
+             <button type="submit" class="btn btn-danger">删除</button>
+        </form>
+      @endif
 </li>
 @endforeach

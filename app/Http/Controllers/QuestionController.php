@@ -9,6 +9,10 @@ use App\Answer;
 
 class QuestionController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('auth.editor')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -74,9 +78,10 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
+        $data=[];
         $question =Question::with('answers')->with('user')->with('categories')->findOrFail($id);
         $question->hits++;
-        $question->save();
+        $question->save();         
 
         $answers =Answer::with('user')->where('question_id',$question->id)->orderBy('id','desc')->paginate(10);
 
@@ -116,6 +121,17 @@ class QuestionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $question =Question::findOrFail($id);
+        $answers =$question->answers;
+
+        if($answers->count()>0){
+            foreach ($answers as $answer) {
+                  $answer->delete();
+            }
+        }
+
+        $question->delete();
+
+        return redirect()->to('/question');
     }
 }

@@ -15,10 +15,19 @@
     <div class="question_text">
         {{ $question->background }}
     </div>
+    @if(!empty($question->image1))
     <div class="question_img">
         {{-- <img src="{{ $question->image }}"/> --}}
-        <img src="/images/details_17.jpeg" />
+        <img src="{{ $question->image1 }}" />
+     @if(!empty($question->image2))
+        <img src="{{ $question->image2 }}" />
+     @endif
+     @if(!empty($question->image3))
+        <img src="{{ $question->image3 }}" />
+     @endif
     </div>
+    @endif
+
     <div class="question_bottom">
     	<a href="javascript:;" class="action_btn">
     		{{-- <i class="iconfont icon-shoucang"></i> --}}
