@@ -239,6 +239,7 @@
                                 </span>
                             </a>
                         </li> --}}
+                        @if(str_contains(url()->full(),'question'))
                         <li class="creation">
                             <a href="javascript:;" data-target="#question_modal" data-toggle="modal">
                                 <span class="btn_base btn_creation">
@@ -248,6 +249,17 @@
                                 </span>
                             </a>
                         </li>
+                        @else
+                        <li class="creation">
+                            <a href="/article/create">
+                                <span class="btn_base btn_creation">
+                                    <i class="iconfont icon-maobi">
+                                    </i>
+                                    写文章
+                                </span>
+                            </a>
+                        </li>
+                        @endif
                     </ul>
                 </div>
             </div>
