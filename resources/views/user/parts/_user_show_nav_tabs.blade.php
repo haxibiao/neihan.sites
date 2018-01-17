@@ -38,6 +38,7 @@
         </div>
         <div class="tab-pane fade" id="dongtai" role="tabpanel">
             <ul class="article_list">
+                @include('user.parts.user_acive_article',['articles'=>$data['actions_article']])
                @foreach($data['actions'] as $action)
                 @include('user.parts.user_acive',['action'=>$action])
                @endforeach

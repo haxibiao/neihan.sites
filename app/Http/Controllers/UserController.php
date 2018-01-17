@@ -131,6 +131,8 @@ class UserController extends Controller
         }
         $data['actions'] = $actions;
 
+         $data['actions_article']=Article::where('user_id', $user->id)->orderBy('id', 'desc')->where('status', 1)->paginate(40);
+
         return view('user.show')
             ->withUser($user)
             ->withData($data);
@@ -264,6 +266,39 @@ class UserController extends Controller
             ->orderBy('id', 'desc')
             ->paginate(10)
         ;
+
+        //动态
+        $actions = $user->actions()
+            ->with('user')
+            ->with('actionable')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+        foreach ($actions as $action) {
+            switch (get_class($action->actionable)) {
+                case 'App\Article':
+                    # code...
+                    break;
+                case 'App\Comment':
+                    $action = $action->load('actionable.commentable.user');
+                    break;
+                case 'App\Favorite':
+                    $action = $action->load('actionable.faved.user');
+                    break;
+                case 'App\Like':
+                    $action = $action->load('actionable.liked.user');
+                    break;
+                case 'App\Follow':
+                    if (get_class($action->actionable->followed) == 'App\Category') {
+                        $action = $action->load('actionable.followed.user');
+                    } else {
+                        $action = $action->load('actionable.followed');
+                    }
+                    break;
+            }
+        }
+        $data['actions'] = $actions;
+        
+        $data['actions_article']=Article::where('user_id', $user->id)->orderBy('id', 'desc')->where('status', 1)->paginate(40);
 
         return view('user.home')
             ->withData($data)

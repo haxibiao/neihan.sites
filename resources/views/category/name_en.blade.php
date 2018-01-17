@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    谈谈情，说说爱 - 专题 - 爱你城
+   爱你城-{{ $category->name }}
 @stop
 @section('content')
 <div id="category">

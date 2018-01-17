@@ -49,6 +49,7 @@
         </div>
     </div>
 </li>
+
 @elseif(get_class($action->actionable)=='App\Like')
 @php
      $like = $action->actionable;
@@ -212,39 +213,4 @@
         </blockquote>
     </div>
 </li>
-{{-- <li class="article_item">
-    <div class="author">
-        <a class="avatar" href="/v2/user" target="_blank">
-            <img src="/images/photo_01.jpg"/>
-        </a>
-        <div class="info_meta">
-            <a class="nickname" href="/v2/user" target="_blank">
-                喵星菇凉
-            </a>
-            <span class="time">
-                赞了评论 · 10.30.13:26
-            </span>
-        </div>
-    </div>
-    <div class="comment_dynamic">
-        <p class="discuss">
-            为这篇文章注册简书，我也挺难受大学寝室的环境的，本身自己挺孤僻，习惯一个人待着，最不能忍的是大二的洗澡是十几个开放式没有门的洗澡间···庆幸室友的性格都挺好，现在毕业两年还在联系，今天还和其中一个说想给她设计婚礼请帖的图案的，我玩的很好的高中同学大学5年的室友则是比较针对她，好像是因为拿奖学金之类的事吧，然后处处挤兑，她研究生的室友则是家教啥的都很好，她现在可开心了 我也很替她开心，她读研和我工作在一个城市
-        </p>
-        <blockquote>
-            <div class="meta">
-                <div class="origin_author">
-                    <a href="/v2/user" target="_blank">
-                        郭璐Alu
-                    </a>
-                    <span>
-                        评论自
-                        <a href="/v2/detail" target="_blank">
-                            集体宿舍，将3000万大学生拉入深渊
-                        </a>
-                    </span>
-                </div>
-            </div>
-        </blockquote>
-    </div>
-</li> --}}
 @endif

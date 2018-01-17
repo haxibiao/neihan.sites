@@ -25,9 +25,18 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
-       $articles=Article::orderBy('id','desc')->where('status','>',0)->paginate(10);
+        if ($request->get('draft')) {
+            $articles = Article::orderBy('id', 'desc')->where('status', 0)->paginate(10);
+            if (!Auth::user()->is_admin) {
+                $articles = Auth::user()->articles()->where('status', 0)->orderBy('id', 'desc')->paginate(10);
+            }
+
+            return view('article.index')->withArticles($articles);
+        }
+
+        $articles = Article::orderBy('id', 'desc')->where('status', '>', 0)->paginate(10);
         if (!Auth::user()->is_admin) {
-            $articles = Auth::user()->articles()->where('status','>',0)->orderBy('id','desc')->paginate(10);
+            $articles = Auth::user()->articles()->where('status', '>', 0)->orderBy('id', 'desc')->paginate(10);
         }
         return view('article.index')->withArticles($articles);
     }

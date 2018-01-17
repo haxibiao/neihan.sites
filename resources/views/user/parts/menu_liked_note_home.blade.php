@@ -17,6 +17,13 @@
                 喜欢的文章 {{ $data['like_articles']->count() }}
             </a>
         </li>
+        <li role="presentation">
+            <a aria-controls="dongtai" data-toggle="tab" href="#dongtai" role="tab">
+                <i class="iconfont icon-zhongyaogaojing">
+                </i>
+                动态
+            </a>
+        </li>
     </ul>
     <!-- Tab panes -->
     <div class="tab-content">
@@ -99,6 +106,31 @@
                @endphp
               @include('user.parts.article_list_like')
            @endforeach
+        </div>
+
+        <div class="tab-pane fade" id="dongtai" role="tabpanel">
+            <ul class="article_list">
+
+               @include('user.parts.user_acive_article',['articles'=>$data['actions_article']])
+               @foreach($data['actions'] as $action)
+                @include('user.parts.user_acive',['action'=>$action])
+               @endforeach
+                   <li class="article_item">
+                        <div class="author">
+                            <a class="avatar" href="/user/{{ $user->id }}" target="_blank">
+                                <img src="{{ $user->avatar }}"/>
+                            </a>
+                            <div class="info_meta">
+                                <a class="nickname" href="/user/{{ $user->id }}" target="_blank">
+                                    {{ $user->name }}
+                                </a>
+                                <span class="time">
+                                    加入了爱你城 · {{ $user->created_at }}
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+            </ul>
         </div>
     </div>
 </div>
