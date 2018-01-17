@@ -178,12 +178,14 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $category = Category::find($id);
-        $category->update($request->except('_token'));
+        $category->update($request->except('_token', 'is_admin', 'submission', 'uids'));
 
         if (!empty($request->logo)) {
             $category->logo = $this->category_logo($request->logo);
         }
 
+        $this->saveAdmins($request, $category);
+        
         $category->save();
 
         return redirect()->to('/category');

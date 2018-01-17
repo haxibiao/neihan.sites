@@ -26,7 +26,7 @@
                     <tr>
                         <td>
                             <div class="avatar_collection">
-                                <img src="{{ $category->logo }}" id=category_logo/>
+                                <img src="{{ $category->logo }}" id="previewImage" />
                             </div>
                         </td>
                         <td>
@@ -34,7 +34,7 @@
                                 {{-- <input class="hide" type="file" unselectable="on" name="logo"/> --}}
                             {{-- <div class="form-group{{ $errors->has('photo') ? ' has-error' : '' }}"> --}}
                                 {!! Form::label('logo', ' 上传专题封面') !!}
-                                {!! Form::file('logo', []) !!}
+                                {!! Form::file('logo', ['id'=>'logo','unselectable'=>"on"]) !!}
                             {{-- </div> --}}
                             </a>
 
@@ -80,7 +80,7 @@
                             {!! Form::label('is_admin', '其他管理员') !!} 
                         </td>
                         <td>
-                            <user-select></user-select>
+                            <user-select users="{{ json_encode($category->admins->pluck('name','id')) }}"></user-select>
                         </td>
                     </tr>
                     <tr>
@@ -136,32 +136,24 @@
 </div>
 @stop
 
-{{-- @push('scripts')
-   <script type="text/javascript">
-      function uploadlogo(){
-          $('#upload_logo').on('submit',function(e){
-            e.preventDefault();
-            $(this).ajaxSubmit({
-              type:"POST",
-              url: "{{ route('image.store') }}",
-
-              contentType:false,
-              cache: false,
-                processData: false,
-                success:function(data){
-                    var logo_url=data;
-                    console.log(logo_url);
-                    var category_log=document.getElementById("upload_logo");
-                       category_log.val(image_url);
-                },
-                error:function(data){
-                 $("#error")
-                    .text("上传失败!")
-                    .css("color", "#FFA500");
+@push('scripts')
+<script type="text/javascript">
+        function preview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#previewImage').attr('src', e.target.result);
                 }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
 
-            });
-          });
-      }
-   </script>
-@endpush --}}
+
+    $(function() {
+        $("#logo").change(function(){
+            preview(this);
+        });
+    });
+</script>>
+@endpush
+
