@@ -189,16 +189,11 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         $category->update($request->except('_token'));
-        if ($category->parent_id == 0) {
-            $category->level = 0;
+        
+        if (!empty($request->logo)) {
+            $category->logo = $this->category_logo($request->logo);
         }
-
-        $parent = Category::find($category->parent_id);
-        if ($parent) {
-            $parent->has_child = 1;
-            $parent->save();
-            $category->level = $parent->level + 1;
-        }
+        
         $category->save();
 
         return redirect()->to('/category');
