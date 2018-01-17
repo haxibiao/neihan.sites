@@ -35,7 +35,7 @@ class AnswerController extends Controller
      */
     public function store(Request $request)
     {
-        $request->answer=str_replace("</p>", " ", str_replace("<p style=\"\">", " ", $request->answer));
+        // $request->answer=str_replace("</p>", " ", str_replace("<p style=\"\">", " ", $request->answer));
         $answer =new Answer($request->all());
         $answer->answer =$request->answer;
         $answer->save();

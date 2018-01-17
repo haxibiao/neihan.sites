@@ -243,7 +243,7 @@
                     </div>
                     <div class="comment_wrap">
                         <div class="article_content">
-                            {{ $answer->answer }}
+                            {!! $answer->answer !!}
                         </div>
                         <div class="tool_group">
                             <a href="#">
