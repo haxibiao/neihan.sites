@@ -1,6 +1,6 @@
     <div class="note_bottom">
         <div class="container">
-            <div class="col-xs-12 col-md-10 col-md-offset-1">
+            <div class="col-xs-12 col-md-8 col-md-offset-2">
                 <div>
                     <div class="main">
                         <div class="recommend_title">
@@ -20,7 +20,7 @@
                                 </div>
                             </a>
                           @endforeach
-                        </div> 
+                        </div>
                     </div>
                          <detailmodal-user>
                         </detailmodal-user>

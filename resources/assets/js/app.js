@@ -64,7 +64,10 @@ Vue.component('question-modal', require('./components/interlocution/QuestionModa
 
 
 // 分享
-Vue.component('share-modal', require('./components/contributeModal/ShareModal.vue'));
+Vue.component('share', require('./components/contributeModal/ShareModal.vue'));
+
+// 小火箭
+Vue.component('go-top', require('./components/contributeModal/GoTop.vue'));
 
 
 Vue.component('article-list', require('./components/ArticleList.vue'));

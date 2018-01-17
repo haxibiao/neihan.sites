@@ -41,9 +41,9 @@
     		<i class="iconfont icon-guanzhu"></i>
     		<span>邀请回答</span>
     	</a>
-        <share-modal class="action_btn" placement="top">
+        <share class="action_btn" placement="top">
             <span>分享</span>
-        </share-modal>
+        </share>
     	<div class="inform">
     		<i class="iconfont icon-jinggao"></i>
     		<span>举报</span>

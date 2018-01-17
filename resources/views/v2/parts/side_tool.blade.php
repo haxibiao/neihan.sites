@@ -32,7 +32,7 @@
             </a>
         </li>
         <li data-container="body" data-original-title="文章分享" data-placement="left" data-toggle="tooltip" data-trigger="hover">
-            <share-modal class="function_button" placement="left"></share-modal>
+            <share class="function_button" placement="left"></share>
         </li>
     </ul>
 </div>

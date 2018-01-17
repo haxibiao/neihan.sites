@@ -58,7 +58,7 @@ Vue.component('new-comment', require('./v2/detail/NewComment.vue'));
 
 
 // 分享
-Vue.component('share-modal', require('./v2/contributeModal/ShareModal.vue'));
+Vue.component('share', require('./v2/contributeModal/ShareModal.vue'));
 
 /*  */
 

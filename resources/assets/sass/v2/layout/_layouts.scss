@@ -137,11 +137,9 @@ footer {
 // 底部小火箭、分享、收藏、投稿
 .side_tool {
     position: fixed;
-    z-index: 101;
-    bottom: 40px;
-    right: 40px;
+    bottom: 50px;
+    right: 20px;
     ul {
-        padding-bottom: 10px;
         li {
             border: 1px solid $color-gray-light;
             border-bottom: none;

@@ -11,7 +11,7 @@
 <div id="detail">
     <div class="note">
         <div class="container">
-            <div class="col-xs-12 col-md-10 col-md-offset-1">
+            <div class="col-xs-12 col-md-8 col-md-offset-2">
                 <div class="article">
                     <h1 class="title">
                         {{ $article->title }}
@@ -147,6 +147,8 @@
     @include('article.parts._show_category')
 
 </div>
-@include('parts.side_tool')
 @stop
 
+@push('side_tools')
+<article-tool id="{{ $article->id }}"></article-tool>
+@endpush

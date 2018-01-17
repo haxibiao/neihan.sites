@@ -31,6 +31,11 @@
 
             @yield('content')
 
+            <div class="side_tool">
+                <go-top></go-top>
+                @stack('side_tools')
+            </div>
+
             @stack('modals')
         </div>
 
@@ -60,7 +65,7 @@
 
         <script type="text/javascript">
             window.csrf_token = '{{ csrf_token() }}';
-        </script> 
+        </script>
 
         @if(in_array(request()->path(), [
             'follow',

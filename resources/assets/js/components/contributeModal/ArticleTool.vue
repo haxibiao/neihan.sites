@@ -1,44 +1,29 @@
 <template>
 	 <!-- 底部小火箭、分享、收藏、投稿  -->
-  <div>
-		<div class="side_tool">
-		    <ul>
-		        <li class="toup_rocket" data-container="body" data-title="回到顶部" data-placement="left" data-toggle="tooltip" data-trigger="hover">
-		            <a href="javascript:;" class="function_button">
-		                <i class="iconfont icon-xiangshangjiantou">
-		                </i>
-		            </a>
-		        </li>
+    <ul>
+        <li data-container="body" data-original-title="将文章加入专题" data-placement="left" data-toggle="tooltip" data-trigger="hover">
+            <a data-target="#detailModal_user" data-toggle="modal" href="#" class="js_submit_button">
+                <i class="iconfont icon-jia1">
+                </i>
+            </a>
+        </li>
+        <li data-container="body" data-original-title="文章投稿" data-placement="left" data-toggle="tooltip" data-trigger="hover">
+            <a data-target="#detailModal_home" data-toggle="modal" href="#" class="js_submit_button">
+                <i class="iconfont icon-tougaoguanli">
+                </i>
+            </a>
+        </li>
 
-		        <li data-container="body" data-original-title="将文章加入专题" data-placement="left" data-toggle="tooltip" data-trigger="hover">
-		            <a data-target="#detailModal_user" data-toggle="modal" href="#" class="js_submit_button">
-		                <i class="iconfont icon-jia1">
-		                </i>
-		            </a>
-		        </li>
-
-		        <li data-container="body" data-original-title="文章投稿" data-placement="left" data-toggle="tooltip" data-trigger="hover">
-		            <a data-target="#detailModal_home" data-toggle="modal" href="#" class="js_submit_button">
-		                <i class="iconfont icon-tougaoguanli">
-		                </i>
-		            </a>
-		        </li>
-
-		        <li data-container="body" :data-original-title="favorited?'取消收藏文章':'收藏该文章'" data-placement="left" data-toggle="tooltip" data-trigger="hover" @click="toggle">
-		            <a href="javascript:;" class="function_button">
-		                <i :class="['iconfont',favorited?'icon-shoucang1':'icon-shoucang']">
-		                </i>
-		            </a>
-		        </li>
-		        <li>
-		            <share-modal class="function_button" placement="left"></share-modal>
-		        </li>
-		    </ul>
-		</div>
-
-</div>
-
-
+        <li data-container="body" :data-original-title="favorited?'取消收藏文章':'收藏该文章'" data-placement="left" data-toggle="tooltip" data-trigger="hover" @click="toggle">
+            <a href="javascript:;" class="function_button">
+                <i :class="['iconfont',favorited?'icon-shoucang1':'icon-shoucang']">
+                </i>
+            </a>
+        </li>
+        <li>
+            <share class="function_button" placement="left"></share>
+        </li>
+    </ul>
 </template>
 <script>
 export default {
