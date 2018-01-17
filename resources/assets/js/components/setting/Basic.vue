@@ -17,7 +17,7 @@
 					</td>
 
 					<td v-else class="top_line">
-						<div class="avatar">
+						<div class="avatar avatar_sp">
 							<img :src="avatar" id="avatar" />
 						</div>
 					</td>
