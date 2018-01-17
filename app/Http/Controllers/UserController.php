@@ -15,6 +15,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['except' => ['index', 'show', 'videos', 'articles']]);
+        $this->middleware('auth.editor',['only'=>['index']]);
     }
     /**
      * Display a listing of the resource.

@@ -4,14 +4,13 @@ namespace App;
 
 use App\Traits\TimeAgo;
 use App\Traits\UserRelation;
-use Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 
 class User extends Authenticatable
 {
-    use Notifiable, TimeAgo,UserRelation;
+    use Notifiable, TimeAgo, UserRelation;
 
     /**
      * The attributes that are mass assignable.
@@ -157,5 +156,10 @@ class User extends Authenticatable
     public function newReuqestCategories()
     {
         return $this->categories()->where('new_requests', '>', 0);
+    }
+
+    public function newArticle()
+    {
+        return $this->articles()->orderBy('id','desc')->take(3)->get();
     }
 }

@@ -1,35 +1,52 @@
 @extends('layouts.app')
 
 @section('title')
-	全部用户
+    推荐作者 - 爱你城
 @stop
-
 @section('content')
-      <ol class="breadcrumb">
-        <li><a href="/">{{ config('app.name') }}</a></li>
-        <li class="active">全部用户</li>
-      </ol>
-	
-	<div class="container">
-		 <div class="panel panel-default">
-                <div class="panel-heading">                    
-                    <h3 class="panel-title">全部用户</h3 class="panel-title">
-                </div>
-                <div class="panel-body">
-                    
-                        @foreach($users as $user)
-                        <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                            <a href="/user/{{ $user->id }}" class="thumbnail">
-                                <img src="{{ get_avatar($user) }}" alt="" class="img img-circle">
-                                <p class="strip_title">{{ $user->name }}</p>
-                            </a>
-                        </div>
-                        @endforeach
-                </div>
-                <div class="panel-footer">
-                    {!! $users->render() !!}
-                </div>
+<div id="hot_users">
+    <div class="container">
+        <div class="recommend">
+            <div class="recommend_img">
+                <img src="/images/recommend_users.png"/>
+                <a class="help" href="javascript:;" target="_blank">
+                    <i class="iconfont icon-bangzhu">
+                    </i>
+                    如何成为签约作者
+                </a>
             </div>
-	</div>
+            <div class="row">
+              @foreach($users as $user)
+                <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
+                    <div class="collection_wrap">
+                        <a href="/user/{{ $user->id }}" target="_blank">
+                            <img class="avatar_lg" src="{{ $user->avatar }}"/>
+                            <h4 class="headline">
+                                {{ $user->name }}
+                            </h4>
+                            <p class="abstract">
+                                {{ $user->introduction }}
+                            </p>
+                        </a>
 
+                        <follow followed="{{ Auth::user()->isFollow('users', $user->id)}}" id="{{ $user->id }}" type="users" user-id="{{ Auth::user()->id }}">
+                        </follow>
+
+                        <hr/>
+                        <div class="recent">最新更新</div>
+                        <div class="recent_update">
+                            @foreach($user->newArticle() as $article)
+                            <a href="/article/{{ $article->id }}" class="new" target="_blank">{{ $article->title }}</a>
+                            @endforeach
+                            @if($user->newArticle()->count()==0)
+                              <a href="javascript:;" class="new" target="_blank">这位用户还暂时没有新的文章哦</a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+              @endforeach
+            </div>
+        </div>
+    </div>
+</div>
 @stop
