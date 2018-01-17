@@ -105,6 +105,8 @@ class NotificationController extends Controller
                 }
 
                 if ($type == 'category_request') {
+                    $notification->markAsRead();
+                    $user->forgetUnreads();
                     $notification->submited_status = '待审核';
                     if ($request->get('category_id')) {
                         if ($data['category_id'] != $request->get('category_id')) {
