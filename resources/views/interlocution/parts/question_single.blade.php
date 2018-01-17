@@ -16,17 +16,9 @@
         {{ $question->background }}
     </div>
     <div class="question_img">
-        <div class="wrap_img">
-            <img src="{{ $question->image1 }}"/>
-        </div>
-        <div class="wrap_img">
-            <img src="{{ $question->image2 }}"/>
-        </div>
-        <div class="wrap_img">
-            <img src="{{ $question->image3 }}"/>
-        </div>
+        {{-- <img src="{{ $question->image }}"/> --}}
+        <img src="/images/details_17.jpeg" />
     </div>
-
     <div class="question_bottom">
     	<a href="javascript:;" class="action_btn">
     		{{-- <i class="iconfont icon-shoucang"></i> --}}
@@ -95,17 +87,17 @@
                     <div class="comment_wrap">
                     	<div class="article_content">
                     		<p>在王者荣耀里面或多或少都有自己喜欢的英雄，如果给你一个愿望可以成为自己喜欢的英雄会是谁呢？是我们的短腿小鲁班么？ 毕竟他的亲戚那么多~ 谁敢欺负他呢</p>
-                    		<div>
+                    		<p>
 	                        	<img src="/images/details_22.jpeg" />
-                    		</div>
+                    		</p>
                     		<p>还是孙尚香啦，大小姐驾到，通通跪下。</p>
-                    		<div>
+                    		<p>
 	                        	<img src="/images/details_23.jpeg" />
-                    		</div>
+                    		</p>
                     		<p>还是我们的孙大圣</p>
-                    		<div>
+                    		<p>
 	                        	<img src="/images/details_24.jpeg" />
-                    		</div>
+                    		</p>
                     	</div>
                         <div class="tool_group">
                             <a href="#">

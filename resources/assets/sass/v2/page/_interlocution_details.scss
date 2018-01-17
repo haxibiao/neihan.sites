@@ -37,10 +37,11 @@
                     }
                     .question_img {
                         margin: 20px 0;
-                        .wrap_img {
-                            float: none;
-                            max-width: 168px;
-                            display: inline-block;
+                        height: 120px;
+                        overflow: hidden;
+                        img {
+                            width: auto;
+                            height: 100%;
                             margin-right: 10px;
                         }
                     }

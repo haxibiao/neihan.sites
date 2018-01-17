@@ -5,8 +5,8 @@
     right: 0;
     width: 24%;
     transform: translateY(-50%);
-    max-width: 125px;
-    max-height: 120px;
+    max-width: 180px;
+    max-height: 180px;
     img {
         @include border (6px, 1px solid $color-gray-light);
         width: 100%;
