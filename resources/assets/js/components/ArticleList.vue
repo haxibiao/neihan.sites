@@ -1,8 +1,8 @@
 <template>
 	<div v-else>
    <ul class="article_list">
-    <li v-for="article in articles" :class="article.has_image ? 'article_item have_img' : 'article_item'">
-        <a v-if="article.has_image" class="wrap_img" href="javascript:;" target="_blank">
+    <li v-for="article in articles" :class="article.primary_image ? 'article_item have_img' : 'article_item'">
+        <a v-if="article.primary_image" class="wrap_img" href="javascript:;" target="_blank">
             <img :src="article.primary_image" :alt="article.title">
         </a>
         <div class="content">

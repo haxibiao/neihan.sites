@@ -33,7 +33,8 @@
     <!-- Tab panes -->
     <div class="tab-content">
         <div class="tab-pane fade in active" id="wenzhang" role="tabpanel">
-            @include('parts.list.article_list_category',['articles'=>$data['articles']])
+            @include('parts.list._article_list_category_user',['articles'=>$data['articles']])
+            <article-list api="/user/{{ $user->id }}?articles=1" start-page="2" />
         </div>
         <div class="tab-pane fade" id="dongtai" role="tabpanel">
             <ul class="article_list">
@@ -58,10 +59,12 @@
             </ul>
         </div>
         <div class="tab-pane fade" id="pinglun" role="tabpanel">
-            @include('parts.list.article_list_category',['articles'=>$data['commented']])
+            @include('parts.list._article_list_category_user',['articles'=>$data['commented']])
+            <article-list api="/user/{{ $user->id }}?commented=1" start-page="2" />
         </div>
         <div class="tab-pane fade" id="huo" role="tabpanel">
-            @include('parts.list.article_list_category',['articles'=>$data['hot']])
+            @include('parts.list._article_list_category_user',['articles'=>$data['hot']])
+            <article-list api="/user/{{ $user->id }}?hot=1" start-page="2" />
         </div>
     </div>
 </div>

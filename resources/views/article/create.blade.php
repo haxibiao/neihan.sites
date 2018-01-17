@@ -126,7 +126,7 @@
         <div class="btn-group-lg pull-right">
             <input type="hidden" name="image_url">
             <input type="hidden" name="status" id="hidden_status" value="1">
-            {!! Form::button("　存　稿　", ['class' => 'btn btn-warning btn-draft']) !!}
+            {!! Form::button("　存　稿　", ['class' => 'btn btn-warning btn-draft','id'=>'draftBtn']) !!}
             {!! Form::submit("　发　布　", ['class' => 'btn btn-success']) !!}
         </div>
 

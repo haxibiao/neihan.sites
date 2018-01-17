@@ -25,9 +25,9 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
-       $articles=Article::orderBy('id','desc')->paginate(10);
+       $articles=Article::orderBy('id','desc')->where('status','>',0)->paginate(10);
         if (!Auth::user()->is_admin) {
-            $articles = Auth::user()->articles()->paginate(10);
+            $articles = Auth::user()->articles()->where('status','>',0)->orderBy('id','desc')->paginate(10);
         }
         return view('article.index')->withArticles($articles);
     }
