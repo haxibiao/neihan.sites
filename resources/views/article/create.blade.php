@@ -153,7 +153,7 @@
 
   $(function() {
 
-    $('.btn-draft').click(function() {
+    $('#draftBtn').click(function() {
         $('#hidden_status').val(0);
         $('#article_form').submit();
     });
@@ -170,7 +170,6 @@
     });
 
   });
-
 </script>
 
 <style>
