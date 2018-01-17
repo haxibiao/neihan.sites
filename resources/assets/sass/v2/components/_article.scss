@@ -5,8 +5,8 @@
     right: 0;
     width: 24%;
     transform: translateY(-50%);
-    max-width: 180px;
-    max-height: 180px;
+    max-width: 160px;
+    max-height: 160px;
     img {
         @include border (6px, 1px solid $color-gray-light);
         width: 100%;
@@ -28,6 +28,7 @@
     position: relative;
     width: 100%;
     word-wrap: break-word;
+    min-height: 160px;
     &.have_img {
         .content {
             padding-right: 26%;
