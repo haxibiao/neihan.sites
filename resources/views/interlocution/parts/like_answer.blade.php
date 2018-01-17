@@ -10,7 +10,7 @@
         @php
             $has_img  = rand (0,3) > 0 ? 'have_img' : '';
         @endphp
-        <li class="article_item {{ $has_img }}">
+        <li class="article_item selected {{ $has_img }}">
             @if ($has_img)
             <a class="wrap_img" href="/interlocution/question">
                 <img src="/images/details_0{{ rand(1,6) }}.jpeg"/>

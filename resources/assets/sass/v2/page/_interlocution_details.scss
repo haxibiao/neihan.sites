@@ -126,11 +126,8 @@
                 .article_item {
                     border: none;
                     padding: 0;
-                    .headline {
-                        font-size: 14px;
-                        span {
-                            -webkit-line-clamp: 3;
-                        }
+                    .wrap_img {
+                        max-height: 100px;
                     }
                 }
             }
