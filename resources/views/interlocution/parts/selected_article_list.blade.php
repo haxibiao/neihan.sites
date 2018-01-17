@@ -10,7 +10,7 @@
     </div>
     <div class="article_list">
         @foreach ($data['hot'] as $item)
-        <li class="article_item selected">
+        <li class="article_item selected have_img">
             <a class="headline paper_title" href="/question/{{ $item->id }}" target="_blank">
                 <span>{{ $item->title }}</span>
             </a>
