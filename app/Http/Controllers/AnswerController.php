@@ -39,6 +39,9 @@ class AnswerController extends Controller
         $answer =new Answer($request->all());
         $answer->answer =$request->answer;
         $answer->save();
+        
+        //save question relations;
+        $this->save_question_relation($answer);
 
         return redirect()->to('/question/'.$request->question_id);
     }
@@ -86,5 +89,12 @@ class AnswerController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function save_question_relation($answer)
+    {
+        $question=$answer->question;
+        $question->count_answers++;
+        $question->save();
     }
 }
