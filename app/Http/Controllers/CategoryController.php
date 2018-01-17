@@ -41,7 +41,7 @@ class CategoryController extends Controller
         $articles = $category->articles()
             ->with('user')->with('category')
             ->where('status', '>=', 0)
-            ->wherePivot('submit','已收录')
+            ->wherePivot('submit', '已收录')
             ->orderBy('updated_at', 'desc')
             ->paginate(10)
         ;
@@ -61,7 +61,7 @@ class CategoryController extends Controller
         $articles = $category->articles()
             ->with('user')->with('category')
             ->where('status', '>=', 0)
-            ->wherePivot('submit','已收录')
+            ->wherePivot('submit', '已收录')
             ->orderBy('pivot_created_at', 'desc')
             ->paginate(10)
         ;
@@ -79,7 +79,7 @@ class CategoryController extends Controller
         $articles = $category->articles()
             ->with('user')->with('category')
             ->where('status', '>=', 0)
-            ->wherePivot('submit','已收录')
+            ->wherePivot('submit', '已收录')
             ->orderBy('hits', 'desc')
             ->paginate(10)
         ;
@@ -123,7 +123,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $type     = 'article';
-        $category = Category::firstOrNew($request->except(['_token', 'is_admin', 'submission']));
+        $category = Category::firstOrNew($request->except(['_token', 'is_admin', 'submission', 'uids']));
 
         if (!empty($request->logo)) {
             $category->logo = $this->category_logo($request->logo);
@@ -132,17 +132,7 @@ class CategoryController extends Controller
         $category->type = $type;
         $category->save();
 
-        //如果输入了管理员信息会往中间表中加入新的管理员信息.
-        if ($request->is_admin) {
-            foreach ($request->is_admin as $admin) {
-                $user = User::where('name', $admin);
-                $category->admins()->syncWithoutDetaching([
-                    $user->id => [
-                        'is_admin' => 1,
-                    ],
-                ]);
-            }
-        }
+        $this->saveAdmins($request, $category);
 
         return redirect()->to('/category');
 
@@ -189,11 +179,11 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         $category->update($request->except('_token'));
-        
+
         if (!empty($request->logo)) {
             $category->logo = $this->category_logo($request->logo);
         }
-        
+
         $category->save();
 
         return redirect()->to('/category');
@@ -228,7 +218,7 @@ class CategoryController extends Controller
     public function categories_hot(Request $request)
     {
         $data = [];
-        $type='article';
+        $type = 'article';
 
         $categories = Category::where('type', $type)->orderBy('count_follows', 'desc')->paginate(24);
 
@@ -238,18 +228,18 @@ class CategoryController extends Controller
 
         $data['commend'] = $categories;
 
-        $categories=Category::where('type',$type)->orderBy('id','desc')->paginate(24);
+        $categories = Category::where('type', $type)->orderBy('id', 'desc')->paginate(24);
 
-        if(AjaxOrDebug() && request('recommend')){
+        if (AjaxOrDebug() && request('recommend')) {
             return $categories;
         }
-        $data['hot']     = $categories;
-        
-        $categories =Category::where('type',$type)->paginate(24);
-        if(AjaxOrDebug() && request('city')){
+        $data['hot'] = $categories;
+
+        $categories = Category::where('type', $type)->paginate(24);
+        if (AjaxOrDebug() && request('city')) {
             return $categories;
         }
-        $data['city']    = $categories;
+        $data['city'] = $categories;
 
         return view('parts.list.categories_list')
             ->withData($data);
@@ -271,5 +261,25 @@ class CategoryController extends Controller
         $img->save(public_path($small_logo));
 
         return $logo;
+    }
+
+    public function saveAdmins($request, $category)
+    {
+        $admins = json_decode($request->uids);
+        if (is_array($admins)) {
+            foreach ($admins as $admin) {
+                $category->admins()->syncWithoutDetaching([
+                    $admin->id => [
+                        'is_admin' => 1,
+                    ],
+                ]);
+
+                $category->admins()->syncWithoutDetaching([
+                    $category->user->id => [
+                        'is_admin' => 1,
+                    ],
+                ]);
+            }
+        }
     }
 }

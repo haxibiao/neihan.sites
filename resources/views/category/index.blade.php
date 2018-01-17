@@ -37,7 +37,7 @@
                 {!! Form::close() !!}
 
               </div>   
-                <h5>{{ $category->name }} ({{ $category->name_en }})</h5>
+                <a href="/{{ $category->name_en }}"><h5>{{ $category->name }} ({{ $category->name_en }})</h5></a>
                 <img src="{{ $category->logo }}" alt="">
                 <div class="pull-right">
                   

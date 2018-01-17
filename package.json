@@ -28,6 +28,7 @@
     "vue": "^2.5.13",
     "vue-chartjs": "^2.7.1",
     "vue-gesture": "^1.0.8",
+    "vue-multiselect": "^2.0.8",
     "vue-router": "^3.0.1",
     "vue-template-compiler": "^2.5.13",
     "vue-touch": "^2.0.0-beta.4"

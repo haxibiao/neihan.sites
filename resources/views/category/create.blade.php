@@ -70,11 +70,7 @@
                             {!! Form::label('is_admin', '其他管理员') !!} 
                         </td>
                         <td>
-                            <div class="user_add">
-                                {!! Form::text('is_admin', null, ['class' => 'form-control','placeholder'=>"输入用户名"]) !!}
-                                <ul class="dropdown-menu">
-                                </ul>
-                            </div>
+                             <user-select></user-select>
                         </td>
                     </tr>
                     <tr>

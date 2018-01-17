@@ -61,6 +61,8 @@ Route::get('/like/{id}/{type}', 'Api\LikeController@get');
 
 //user
 
+Route::get('/user/editors', 'Api\UserController@editors');
+
 //获取推荐的作者
 Route::middleware('auth:api')->get('/user/recommend', 'Api\UserController@recommend');
 //获取用户详细资料

@@ -152,7 +152,7 @@ class UserController extends Controller
         } else {
             return 0;
         }
-        
+
         return 1;
     }
 
@@ -184,5 +184,11 @@ class UserController extends Controller
             }
         }
         return $user->avatar;
+    }
+
+    public function editors(Request $request)
+    {
+        $editors = User::where('is_editor', 1)->select('name', 'id')->paginate(100);
+        return $editors;
     }
 }
