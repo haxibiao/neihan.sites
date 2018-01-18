@@ -122,8 +122,9 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $type     = 'article';
-        $category = Category::firstOrNew($request->except(['_token', 'is_admin', 'submission', 'uids']));
+        $type           = 'article';
+        $category       = Category::firstOrNew($request->except(['_token', 'is_admin', 'submission', 'uids']));
+        $category->logo = '/logo/ainicheng.com.touch.jpg';
 
         if (!empty($request->logo)) {
             $category->logo = $this->category_logo($request->logo);
@@ -202,7 +203,7 @@ class CategoryController extends Controller
         $category = Category::find($id);
         if ($category) {
             $count = \App\Article::where('category_id', $category->id)->count();
-            if ($count == 0) {
+            if ($count == 0 && $category->logo != '/logo/ainicheng.com.touch.jpg') {
                 if (Category::where('parent_id', $id)->count()) {
                     return '该分类下还有分类，不能删除';
                 }
@@ -210,11 +211,14 @@ class CategoryController extends Controller
                 $small_logo = str_replace(".logo.jpg", ".logo.small.jpg", $category->logo);
                 @unlink($small_logo);
                 $category->delete();
+            } elseif ($category->logo == '/logo/ainicheng.com.touch.jpg') {
+                $category->delete();
             } else {
                 return '该分类下还有文章，不能删除';
             }
+            return redirect()->back();
         }
-        return redirect()->back();
+
     }
 
     public function categories_hot(Request $request)
