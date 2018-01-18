@@ -10,6 +10,7 @@ import Vue from 'vue';
 Vue.prototype.$http = window.axios;
 
 import VueRouter from 'vue-router';
+window.bus = new Vue();
 
 Vue.use(VueRouter);
 
@@ -42,7 +43,11 @@ Vue.component('comment', require('./components/Comment.vue'));
 Vue.component('follow', require('./components/Follow.vue'));
 Vue.component('comments', require('./components/Comments.vue'));
 Vue.component('search', require('./components/Search.vue'));
+Vue.component('go-top', require('./components/contributeModal/GoTop.vue'));
 Vue.component('Article-tool', require('./components/contributeModal/ArticleTool.vue'));
+
+//投稿页面模态
+Vue.component('modal-contribute', require('./components/contributeModal/CategoryModal_User'));
 
 
 // 关注页

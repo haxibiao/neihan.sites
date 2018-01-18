@@ -15,7 +15,7 @@
                 <i class="iconfont icon-youbian">
                 </i>
             </a>
-            <a class="btn_base btn_hollow btn_hollow_xs" href="#">
+            <a class="btn_base btn_hollow btn_hollow_xs" data-target=".modal-contribute" data-toggle="modal" href="javascript:;" @click="showModal()">
                 <span>
                     投稿
                 </span>
@@ -95,6 +95,12 @@ export default {
   },
 
   methods:{
+
+       showModal() {
+            //use vue 2.0 event bus ...
+            window.bus.$emit('showContribute',this.id);
+       },
+
       fetchData(){
          this.id = this.$route.params.id;
         if(this.id){

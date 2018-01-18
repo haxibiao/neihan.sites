@@ -5,11 +5,13 @@
     </a>
     <follow followed="{{ Auth::check() ? Auth::user()->isFollow('categories', $category->id) : false }}" id="{{ $category->id }}" type="categories" user-id="{{ Auth::check() ? Auth::user()->id : false }}">
     </follow>
+    @if(Auth::check())
     <a class="btn_base btn_hollow btn_hollow_sm" data-target="#categoryModal_user" data-toggle="modal" href="#">
         <span>
             投稿
         </span>
     </a>
+    @endif
     <div class="info_meta">
         <a class="headline name_title" href="/{{ $category->name_en }}">
                 {{ $category->name }}
