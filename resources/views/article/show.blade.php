@@ -150,5 +150,9 @@
 @stop
 
 @push('side_tools')
-<article-tool id="{{ $article->id }}"></article-tool>
+    <article-tool id="{{ $article->id }}"></article-tool>
+@endpush
+
+@push('modals')
+   {{-- <detailmodal-user article-id="{{ $article->id }}"></detailmodal-user> --}}
 @endpush

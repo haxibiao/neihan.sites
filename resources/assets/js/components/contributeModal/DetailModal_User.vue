@@ -11,13 +11,14 @@
 	                </button>
 	                <h4 class="modal-title" id="myModalLabel">
 	                    收入到我管理的专题
-	                    <a href="#" class="new_note_btn">
+	                    <a href="/category/create" class="new_note_btn">
 	                        新建专题
 	                    </a>
 	                </h4>
 	                <div class="search_input">
 		                <div class="search_box">
-		                    <input placeholder="搜索我管理的专题" type="text" class="form-control" />
+		                    <input placeholder="搜索我管理的专题" type="text" class="form-control" v-model="q" 
+		                    @keyup.enter="search" />
 		                    <i class="iconfont icon-sousuo">
 		                    </i>
 		                </div>
@@ -25,25 +26,16 @@
 	            </div>
 	            <div class="modal-body">
 	                <ul>
-	                    <li>
-	                    	<a href="" class="avatar avatar_sm avatar_collection">
-	                    		<img src="/images/category_08.jpg" />
+	                    <li v-for="category in categoryList">
+	                    	<a :href="'/'+category.name_en" class="avatar avatar_sm avatar_collection">
+	                    		<img :src="category.logo" />
 	                    	</a>
 	                        <div>
-	                            <div class="note_name">情缘未了</div>
-	                            <span class="note_meta">菇凉大大 编</span>
-	                            <a href="javascript:;" class="btn_base btn_push">收入</a>
-	                        </div>
-	                    </li>
-	                    <li>
-	                    	<a href="" class="avatar avatar_sm avatar_collection">
-	                    		<img src="/images/category_08.jpg" />
-	                    	</a>
-	                        <div>
-	                            <div class="note_name">情缘未了</div>
-	                            <span class="note_meta">菇凉大大编</span>
-	                            <span class="status has_add">已收入</span>
-	                            <a href="javascript:;" class="btn_base btn_remove">移除</a>
+	                            <div class="note_name">{{ category.name }}</div>
+	                            <span class="note_meta">{{ category.user.name }} 编</span>
+
+	                            <span class="btn_base btn_push" v-if="category.status">{{ $category.submited_status }}</span>
+	                            <a :class="getBtnClass(category.submit_status)" @click="add(category)">{{ category.submit_status }}</a>
 	                        </div>
 	                    </li>
 	                </ul>
@@ -59,9 +51,64 @@ export default {
 
   name: 'DetailModal_User',
 
+  props:['articleId'],
+
+  mounted(){
+      this.fetchData();
+  },
+
+  created(){
+  	console.log(this.articleId + 'xx');
+  },
+
+  methods:{
+  	  apiUrl(){
+          var api='/api/admin-categories-check-article-' + this.articleId;
+          if(this.q){
+          	  api=api+'?q='+this.q;
+          }
+        return window.tokenize(api);
+  	  },
+
+  	  getBtnClass(status){
+           switch(status){
+           	 case '收录':
+           	 return "btn_base btn_push";
+           }
+           return "btn_base btn-hollow";
+  	  },
+
+  	  search(){
+  	  	 this.page=1;
+  	  	 this.fetchData();
+  	  },
+
+  	  add(category){
+  	  	  // console.log(this.articleId);
+  	  	  var api=window.tokenize('/api/article/'+this.articleId+'/add-category-'+category.id);
+  	  	  window.axios.get(api).then(function(response){
+  	  	  	    category.submit_status=response.data.submit.status;
+  	  	  	    category.submited_status =response.data.submited_status;
+  	  	  });
+  	  },
+
+  	  fetchData(){
+  	  	 var vm=this;
+  	  	 window.axios.get(this.apiUrl()).then(function(response){
+  	  	 	   if(vm.page==1){
+  	  	 	   	  vm.categoryList =response.data.data;
+  	  	 	   }else{
+  	  	 	   	  vm.categoryList =vm.categoryList.concat(response.data.data);
+  	  	 	   }
+  	  	 });
+  	  }
+  },
+
   data () {
     return {
-
+          q:null,
+          page:1,
+          categoryList:[]
     }
   }
 }

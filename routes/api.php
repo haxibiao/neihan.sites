@@ -102,6 +102,12 @@ Route::middleware('auth:api')->get('/articles/check-category-{id}', 'Api\Article
 Route::middleware('auth:api')->get('/article/{aid}/submit-category-{cid}', 'Api\ArticleController@submitCategory');
 //批准、拒绝投稿请求
 Route::middleware('auth:api')->get('/article/{aid}/approve-category-{cid}', 'Api\ArticleController@approveCategory');
+//收录，移除
+Route::middleware('auth:api')->get('/article/{aid}/add-category-{cid}', 'Api\ArticleController@addCategory');
+
+//文章加入管理的专题 
+Route::middleware('auth:api')->get('/admin-categories-check-article-{aid}', 'Api\ArticleController@adminCategoriesCheckArticle');
+
 
 //保存文章相关片段数据
 Route::post('/article/{id}/json', 'Api\ArticleController@saveRelation');
