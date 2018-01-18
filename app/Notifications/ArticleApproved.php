@@ -6,19 +6,29 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use App\article;
+use App\Category;
 
 class ArticleApproved extends Notification
 {
     use Queueable;
+
+
+    protected $article;
+    protected $category;
+    protected $approve_status;
+
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Article $article, Category $category, $approve_status)
     {
-        //
+        $this->article        = $article;
+        $this->category           = $category;
+        $this->approve_status = $approve_status;
     }
 
     /**
@@ -29,7 +39,7 @@ class ArticleApproved extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -55,7 +65,9 @@ class ArticleApproved extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'type'    => 'other',
+            'subtype' => 'article_approve',
+            'message' => $this->category->link() . $this->approve_status . $this->article->link(),
         ];
     }
 }

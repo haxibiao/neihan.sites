@@ -97,39 +97,52 @@ class NotificationController extends Controller
                 if ($type == 'follow') {
                     $data['is_followed'] = Auth::user()->isFollow('users', $data['user_id']);
                 }
-                $data['unread'] = $notification->read_at ? 1 : 0;
+                $data['unread'] = $notification->read_at ? 0 : 1;
 
+                //只要不是待审和投稿请求，都点开就标记已读...
                 if ($type != 'category_request') {
                     $notification->markAsRead();
                     $user->forgetUnreads();
                 }
 
                 if ($type == 'category_request') {
-                    $notification->markAsRead();
-                    $user->forgetUnreads();
-                    $notification->submited_status = '待审核';
-                    if ($request->get('category_id')) {
-                        if ($data['category_id'] != $request->get('category_id')) {
+                     $notification->markAsRead();
+                     $user->forgetUnreads();
+                    if (request('category_id')) {
+                        if ($data['category_id'] != request('category_id')) {
                             continue;
                         } else {
-                            if (!$notification->read_at) {
-                                $pviot = DB::table('article_category')->where('category_id', $data['category_id'])->where('article_id', $data['article_id'])->first();
-                                if ($pviot) {
-                                    $data['submited_status'] = $pviot->submit;
-                                }
+                            $pviot = DB::table('article_category')
+                                ->where('category_id', $data['category_id'])
+                                ->where('article_id', $data['article_id'])
+                                ->first();
+                            if ($pviot) {
+                                $data['submited_status'] = $pviot->submit;
                             }
                         }
                     } else {
                         if ($notification->read_at) {
                             continue;
                         }
+                        $pviot = DB::table('article_category')
+                            ->where('category_id', $data['category_id'])
+                            ->where('article_id', $data['article_id'])
+                            ->first();
+                        if ($pviot) {
+                            $data['submited_status'] = $pviot->submit;
+                        }
                     }
                 }
 
                 $notifications[] = $data;
             }
+           
+           //clear cache
+            if($type =='others'){
+                 $notification->markAsRead();
+                 $user->forgetUnreads();
+            }
         }
-        $user->forgetUnreads();
         return $notifications;
     }
 

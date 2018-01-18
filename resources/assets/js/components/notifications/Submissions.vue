@@ -6,7 +6,7 @@
 				返回投稿请求列表
 			</router-link>
 			<div class="thematic">
-				<a href="/v2/category/2" target="_blank">王者荣耀</a>
+				<a href="javascript:;" target="_blank">{{ categoryName }}</a>
 			</div>
 			<div class="more_option">
 				<input type="checkbox" checked />
@@ -59,12 +59,27 @@
 		                </span>
 		            </div>
 		        </div>
-		        <div class="push_action">
-		        	<span class="push_status">
-		        		 {{ notification.submited_status }}
-		        		<a href="javascript:;" class="btn_font_remove" @click="remove(notification)">移除</a>
-		        	
-		        	</span>
+              
+
+                <div class="push-action">
+			  	{{ notification.submited_status }}
+			  </div>
+
+   			  <div class="push-action" v-if="notification.submited_status=='已收录'">
+			      <span class="push-status">已收入<a class="btn_font_remove" @click="remove(notification)">移除</a></span>
+			      <span class="push-time">{{ notification.time }} 投稿</span>
+			  </div>
+
+  			  <div class="push-action" v-if="notification.submited_status=='已拒绝'">
+			      <span class="push-status">已拒绝</span>
+			      <span class="push-time">{{ notification.time }} 投稿</span>
+			  </div>
+
+  			  <div class="push-action" v-if="notification.submited_status=='已撤回'">
+			      <span class="push-time">{{ notification.time }} 投稿</span>
+			  </div>
+
+		        <div class="push_action" v-if="notification.submited_status=='待审核'">
 		        	 	<a href="javascript:;" class="btn_base btn_push" @click="approve(notification)">接受</a>
 			        	<a href="javascript:;" class="btn_base btn_revoke" @click="deny(notification)">拒绝</a>
 		        	<span class="push_time">{{ notification.time }} 投稿</span>
@@ -81,39 +96,45 @@ export default {
 
   computed:{
   	 categoryName(){
-  	 	return window.category.name;
+  	 	return window.category_name;
   	 }
   },
 
   created(){
-  	  var api_url=window.tokenize('/api/notifications/category_request?category_id='+this.$route.params.id);
-  	  var vm =this;
-  	  window.axios.get(api_url).then(function(response){
-  	  	 vm.notifications =response.data;
-  	  });
+  	   	var api_url = window.tokenize('/api/notifications/category_request?category_id='+this.$route.params.id);
+  	var _this = this;
+  	window.axios.get(api_url).then(function(response) {
+  		_this.notifications = response.data;
+  		_this.all = _this.notifications;
+  	});
   },
 
   methods:{
-  	  requestApi(notification,api){
-  	  	 var vm=this;
-  	  	 window.axios.get(api).then(function(response){
-  	  	 	 notification.submited_status =response.data.submited_status;
-  	  	 });
-  	  },
-
-  	  approve(notification){
-  	  	 var api=window.tokenize('/api/article/'+notification.article_id+'/approve-category-'+notification.category_id);
-  	  	 this.requestApi(notification,api);
-  	  },
-
-      deny(notification){
-      	 var api =window.tokenize('/api/article/'+notification.article_id+'/approve-category-'+notification.category_id+'?deny=1');
-      	 this.requestApi(notification,api);
-      },
-
-      remove(notification){
-
-      }
+  	  	requestApi(notification, api) {
+  		var _this = this;
+  		window.axios.get(api).then(function(response) {
+  			notification.submited_status = response.data.submited_status;
+  		});
+  	},
+  	onlyUnread(e) {
+  		if(e.target.checked) {
+  			this.notifications = _.filter(this.notifications, ['unread', 1]);
+  		} else {
+  			this.notifications = this.all;
+  		}
+  	},
+  	approve(notification) {
+  		var api = window.tokenize('/api/article/'+notification.article_id+'/approve-category-'+notification.category_id);
+  		this.requestApi(notification, api);
+  	},
+  	deny(notification) {
+  		var api = window.tokenize('/api/article/'+notification.article_id+'/approve-category-'+notification.category_id+'?deny=1');
+  		this.requestApi(notification, api);
+  	},
+  	remove(notification) {
+  		var api = window.tokenize('/api/article/'+notification.article_id+'/approve-category-'+notification.category_id+'?remove=1');
+  		this.requestApi(notification, api);
+  	}
   },
 
   data () {

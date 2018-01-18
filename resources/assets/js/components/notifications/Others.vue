@@ -44,9 +44,20 @@ export default {
 
   name: 'Others',
 
+  created(){
+  	 this.CacheClear();
+  },
+
+  methods:{
+  	  CacheClear(){
+  	  	 var api =window.tokenize('/api/notifications/others');
+  	  	 window.axios.get(api);
+  	  }
+  },
+
   data () {
     return {
-
+  
     }
   }
 }

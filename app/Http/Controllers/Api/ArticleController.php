@@ -7,6 +7,7 @@ use App\Category;
 use App\Http\Controllers\Controller;
 use App\Notifications\CategoryRequested;
 use App\Query;
+use App\Notifications\ArticleApproved;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -173,17 +174,47 @@ class ArticleController extends Controller
 
     public function approveCategory(Request $request, $aid, $cid)
     {
-        $user    = $request->user();
-        $article = Article::findOrFail($aid);
+        $user= $request->user();
+        $article=Article::findOrFail($aid);
+        $category=Category::findOrFail($cid);
 
-        $query = $article->categories()->wherePivot('category_id', $cid);
-        if ($query->count()) {
-            $pivot         = $query->first()->pivot;
-            $pivot->submit = $request->get('deny') ? '已拒绝' : '已收录';
-            $pivot->save();
-            $article->submited_status = $pivot->submit;
+        //update pivot submit 
+        $query =$article->categories()->wherePivot('category_id',$cid);
+        if($query->count()){
+              $pivot =$query->first()->pivot;
+              if($request->get('remove')){
+                 $pivot->delete();
+                 $article->submited_status='';
+              }else{
+                 $pivot->submit =$request->get('deny')?'已拒绝' : '已收录';
+                 $pivot->save();
+                 $article->submited_status =$pivot->submit;
+              }
         }
-        $article->submit_status = $this->get_submit_status($article->submited_status);
+
+        $article->submit_status=$this->get_submit_status($article->submited_status);
+
+        //mark 
+        foreach ($user->notifications as $notification) {
+            $data = $notification->data;
+            if ($data['type'] == 'category_request') {
+                if ($data['article_id'] == $aid && $data['category_id'] == $cid) {
+                    $notification->markAsRead();
+                }
+
+                //recount current category new_requests...
+                $category->new_requests = $category->articles()->wherePivot('submit', '待审核')->count();
+                $category->save();
+
+                //cache ...
+                $user->forgetUnreads();
+            }
+        }
+
+        //send notification to the user who submit
+        $article->user->notify(new ArticleApproved($article, $category, $article->submited_status));
+        $article->user->forgetUnreads();
+
         return $article;
     }
 

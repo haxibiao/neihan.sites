@@ -109,4 +109,9 @@ class Category extends Model
         }
         return $topFollowers;
     }
+
+    public function link()
+    {
+        return '<a href="/' . $this->name_en . '">' . $this->name . '</a>';
+    }
 }
