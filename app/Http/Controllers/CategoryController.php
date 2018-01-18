@@ -184,8 +184,8 @@ class CategoryController extends Controller
             $category->logo = $this->category_logo($request->logo);
         }
 
-        $this->saveAdmins($request, $category);
-        
+        $this->saveAdmins($request, $category, 1);
+
         $category->save();
 
         return redirect()->to('/category');
@@ -265,19 +265,26 @@ class CategoryController extends Controller
         return $logo;
     }
 
-    public function saveAdmins($request, $category)
+    public function saveAdmins($request, $category, $is_editor = null)
     {
         $admins = json_decode($request->uids);
         if (is_array($admins)) {
+
+            if ($is_editor) {
+                $admineds = $category->admins;
+                foreach ($admineds as $admin) {
+                    $category->admins()->detach();
+                }
+            }
             foreach ($admins as $admin) {
                 $category->admins()->syncWithoutDetaching([
-                    $admin->id => [
+                    $category->user->id => [
                         'is_admin' => 1,
                     ],
                 ]);
 
                 $category->admins()->syncWithoutDetaching([
-                    $category->user->id => [
+                    $admin->id => [
                         'is_admin' => 1,
                     ],
                 ]);
