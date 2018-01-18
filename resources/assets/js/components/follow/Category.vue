@@ -102,6 +102,10 @@ export default {
           var api_url=window.tokenize('/api/category/' + this.id);
           window.axios.get(api_url).then(function(response){
           	   vm.category=response.data;
+
+                //标记关注的最后查看时间
+                var api_touch = window.tokenize('/api/follow/' + vm.id + '/categories');
+                window.axios.get(api_touch);
           });
          }
       }
