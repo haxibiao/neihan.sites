@@ -14,7 +14,7 @@
 	                </h4>
 	                <div class="search_input">
 	                	<div class="search_box">
-		                    <input placeholder="搜索专题投稿" type="text" class="form-control" />
+		                    <input placeholder="搜索专题投稿" type="text" class="form-control" v-model="q" @keyup.enter="search" />
 	                    <i class="iconfont icon-sousuo">
 	                    </i>
 		                </div>
@@ -24,28 +24,21 @@
 	                <ul class="clearfix">
 	                	<div class="title">
 	                		我管理的专题
-	                		<a href="/v2/collections/new" target="_blank">
+	                		<a href="/category/create" target="_blank">
 	                			<span>新建专题</span>
 	                		</a>
 	                	</div>
-	                    <li class="col-xs-12 col-sm-6 col-md-4">
-	                        <a href="" class="avatar avatar_sm avatar_collection">
-	                    		<img src="/images/category_08.jpg" />
+	                    <li v-for="category in categoryList" class="col-xs-12 col-sm-6 col-md-4">
+	                        <a :href="'/'+category.name_en" class="avatar avatar_sm avatar_collection">
+	                    		<img :src="category.logo" />
 	                    	</a>
 	                        <div>
-	                            <div class="note_name">情缘未了</div>
-	                            <span class="note_meta">10篇文章 · 50人关注</span>
-	                            <a href="javascript:;" class="btn_base btn_remove">移除</a>
-	                        </div>
-	                    </li>
-	                    <li class="col-xs-12 col-sm-6 col-md-4">
-	                        <a href="" class="avatar avatar_sm avatar_collection">
-	                    		<img src="/images/category_08.jpg" />
-	                    	</a>
-	                        <div>
-	                            <div class="note_name">情缘未了</div>
-	                            <span class="note_meta">10篇文章 · 50人关注</span>
-	                            <a href="javascript:;" class="btn_base btn_push">收入</a>
+	                            <div class="note_name">{{ category.name }}</div>
+	                            <span class="note_meta">{{ category.count }}篇文章 · {{ category.follow }}人关注</span>
+	                         <a :class="getBtnClass(category.submit_status)" 
+                           @click="add(category)">
+                            {{ category.submit_status }}
+                          </a>
 	                        </div>
 	                    </li>
 	                </ul>
@@ -53,84 +46,17 @@
 	                	<div class="title">
 	                		推荐专题
 	                	</div>
-	                    <li class="col-xs-12 col-sm-6 col-md-4">
-	                        <a href="" class="avatar avatar_sm avatar_collection">
-	                    		<img src="/images/category_08.jpg" />
+	                    <li v-for="category in recommendCategoryList" class="col-xs-12 col-sm-6 col-md-4">
+	                        <a :href="'/'+category.name_en" class="avatar avatar_sm avatar_collection">
+	                    		<img :src="category.logo" />
 	                    	</a>
 	                        <div>
-	                            <div class="note_name">情缘未了</div>
-	                            <span class="note_meta">10篇文章 · 50人关注</span>
-	                            <a href="javascript:;" class="btn_base btn_revoke">撤回</a>
-	                        </div>
-	                    </li>
-	                    <li class="col-xs-12 col-sm-6 col-md-4">
-	                        <a href="" class="avatar avatar_sm avatar_collection">
-	                    		<img src="/images/category_08.jpg" />
-	                    	</a>
-	                        <div>
-	                            <div class="note_name">情缘未了</div>
-	                            <span class="note_meta">10篇文章 · 50人关注</span>
-	                            <a href="javascript:;" class="btn_base btn_push">投稿</a>
-	                        </div>
-	                    </li>
-	                    <li class="col-xs-12 col-sm-6 col-md-4">
-	                        <a href="" class="avatar avatar_sm avatar_collection">
-	                    		<img src="/images/category_08.jpg" />
-	                    	</a>
-	                        <div>
-	                            <div class="note_name">情缘未了</div>
-	                            <span class="note_meta">10篇文章 · 50人关注</span>
-	                            <a href="javascript:;" class="btn_base btn_revoke">撤回</a>
-	                        </div>
-	                    </li>
-	                    <li class="col-xs-12 col-sm-6 col-md-4">
-	                        <a href="" class="avatar avatar_sm avatar_collection">
-	                    		<img src="/images/category_08.jpg" />
-	                    	</a>
-	                        <div>
-	                            <div class="note_name">情缘未了</div>
-	                            <span class="note_meta">10篇文章 · 50人关注</span>
-	                            <a href="javascript:;" class="btn_base btn_push">投稿</a>
-	                        </div>
-	                    </li>
-	                    <li class="col-xs-12 col-sm-6 col-md-4">
-	                        <a href="" class="avatar avatar_sm avatar_collection">
-	                    		<img src="/images/category_08.jpg" />
-	                    	</a>
-	                        <div>
-	                            <div class="note_name">情缘未了</div>
-	                            <span class="note_meta">10篇文章 · 50人关注</span>
-	                            <a href="javascript:;" class="btn_base btn_revoke">撤回</a>
-	                        </div>
-	                    </li>
-	                    <li class="col-xs-12 col-sm-6 col-md-4">
-	                        <a href="" class="avatar avatar_sm avatar_collection">
-	                    		<img src="/images/category_08.jpg" />
-	                    	</a>
-	                        <div>
-	                            <div class="note_name">情缘未了</div>
-	                            <span class="note_meta">10篇文章 · 50人关注</span>
-	                            <a href="javascript:;" class="btn_base btn_push">投稿</a>
-	                        </div>
-	                    </li>
-	                    <li class="col-xs-12 col-sm-6 col-md-4">
-	                        <a href="" class="avatar avatar_sm avatar_collection">
-	                    		<img src="/images/category_08.jpg" />
-	                    	</a>
-	                        <div>
-	                            <div class="note_name">情缘未了</div>
-	                            <span class="note_meta">10篇文章 · 50人关注</span>
-	                            <a href="javascript:;" class="btn_base btn_revoke">撤回</a>
-	                        </div>
-	                    </li>
-	                    <li class="col-xs-12 col-sm-6 col-md-4">
-	                        <a href="" class="avatar avatar_sm avatar_collection">
-	                    		<img src="/images/category_08.jpg" />
-	                    	</a>
-	                        <div>
-	                            <div class="note_name">情缘未了</div>
-	                            <span class="note_meta">10篇文章 · 50人关注</span>
-	                            <a href="javascript:;" class="btn_base btn_push">投稿</a>
+	                            <div class="note_name">{{ category.name }}</div>
+	                            <span class="note_meta">{{ category.count }}篇文章 · {{ category.follow }}人关注</span>
+                                  <a :class="getBtn2Class(category.submit_status)" 
+                           @click="submit(category)">
+                            {{ category.submit_status }}
+                          </a>
 	                        </div>
 	                    </li>
 	                </ul>
@@ -146,8 +72,89 @@ export default {
 
   name: 'DetailModal_Home',
 
+  props:['articleId'],
+
+  mounted(){
+  	 this.fetchData();
+  },
+
+  methods:{
+  	  apiUrl(){
+  	  	  var api='/api/admin-categories-check-article-'+this.articleId;
+  	  	  if(this.q){
+  	  	  	api = api+'?q='+this.q;
+  	  	  }
+  	  	  return window.tokenize(api);
+  	  },
+
+  	  apiUrl2(){
+  	  	 var api='/api/recommend-categories-check-article-'+this.articleId;
+  	  	 return window.tokenize(api);
+  	  },
+
+  	  getBtnClass(status){
+           switch(status){
+           	  case '收录':
+           	    return "btn_base btn_revoke";
+           }
+           return "btn_base btn_push";
+  	  },
+
+      getBtn2Class(status) {
+        switch(status) {
+          case '投稿':
+            return "btn-base btn-hollow btn-sm";
+          case '再次投稿':
+            return "btn-base btn-hollow btn-sm";
+        }
+        return "btn-base btn-hollow theme-tag btn-sm";
+    },
+    search() {
+      this.page = 1;
+      this.fetchData();
+    },
+    add(category) {
+      var api = window.tokenize('/api/article/'+this.articleId+'/add-category-'+category.id);
+      window.axios.get(api).then(function(response){
+          category.submit_status = response.data.submit_status;
+          category.submited_status = response.data.submited_status;
+      });
+    },
+    submit(category) {
+      var api = window.tokenize('/api/article/'+this.articleId+'/submit-category-'+category.id);
+      window.axios.get(api).then(function(response){
+          category.submit_status = response.data.submit_status;
+          category.submited_status = response.data.submited_status;
+      });
+    },
+    fetchData() {
+      var _this = this;
+      window.axios.get(this.apiUrl()).then(function(response){
+        if(_this.page == 1) {
+          _this.categoryList  = response.data.data;
+        } else {
+          _this.categoryList = _this.categoryList.concat(response.data.data);
+          _this.page = response.data.currentPage;
+          _this.page_total = response.data.lastPage;
+        }
+      });
+      window.axios.get(this.apiUrl2()).then(function(response){
+        _this.recommendCategoryList = _this.recommendCategoryList.concat(response.data.data);
+        _this.page2 = response.data.currentPage;
+        _this.page2_total = response.data.lastPage;
+      });
+    }
+  },
+
   data () {
     return {
+      q: null,
+      page: 1,
+      page_total:1,
+      page2: 1,
+      page2_total: 1,
+      categoryList:[],
+      recommendCategoryList:[]
 
     }
   }

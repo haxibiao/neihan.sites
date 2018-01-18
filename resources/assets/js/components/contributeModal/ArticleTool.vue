@@ -1,18 +1,18 @@
 <template>
 	 <!-- 底部小火箭、分享、收藏、投稿  -->
     <ul>
-        <li data-container="body" data-original-title="将文章加入专题" data-placement="left" data-toggle="tooltip" data-trigger="hover">
+<!--         <li data-container="body" data-original-title="将文章加入专题" data-placement="left" data-toggle="tooltip" data-trigger="hover">
             <a data-target="#detailModal_user" data-toggle="modal" href="#" class="js_submit_button">
                 <i class="iconfont icon-jia1">
                 </i>
             </a>
-        </li>
-<!--         <li data-container="body" data-original-title="文章投稿" data-placement="left" data-toggle="tooltip" data-trigger="hover">
+        </li> -->
+        <li data-container="body" data-original-title="文章投稿" data-placement="left" data-toggle="tooltip" data-trigger="hover">
             <a data-target="#detailModal_home" data-toggle="modal" href="#" class="js_submit_button">
                 <i class="iconfont icon-tougaoguanli">
                 </i>
             </a>
-        </li> -->
+        </li>
 
         <li data-container="body" :data-original-title="favorited?'取消收藏文章':'收藏该文章'" data-placement="left" data-toggle="tooltip" data-trigger="hover" @click="toggle">
             <a href="javascript:;" class="function_button">

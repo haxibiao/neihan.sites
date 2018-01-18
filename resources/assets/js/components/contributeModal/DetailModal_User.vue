@@ -57,10 +57,6 @@ export default {
       this.fetchData();
   },
 
-  created(){
-  	console.log(this.articleId + 'xx');
-  },
-
   methods:{
   	  apiUrl(){
           var api='/api/admin-categories-check-article-' + this.articleId;

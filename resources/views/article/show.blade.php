@@ -154,5 +154,6 @@
 @endpush
 
 @push('modals')
-   {{-- <detailmodal-user article-id="{{ $article->id }}"></detailmodal-user> --}}
+   <detailmodal-user article-id="{{ $article->id }}"></detailmodal-user>
+   <detailmodal-home article-id="{{ $article->id }}"></detailmodal-home>
 @endpush

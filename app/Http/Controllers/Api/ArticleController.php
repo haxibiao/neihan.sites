@@ -321,11 +321,11 @@ class ArticleController extends Controller
 
     public function addCategory(Request $request, $aid, $cid)
     {
-        $user=$request->user();
-        $article =Article::findOrFail($aid);
-        $category=Category::findOrFail($cid);
+        $user     = $request->user();
+        $article  = Article::findOrFail($aid);
+        $category = Category::findOrFail($cid);
 
-        $query =$category->articles()->wherePivot('article_id',$aid);
+        $query = $category->articles()->wherePivot('article_id', $aid);
         if ($query->count()) {
             $pivot         = $query->first()->pivot;
             $pivot->submit = $pivot->submit == '已收录' ? '已撤回' : '已收录';
@@ -337,17 +337,18 @@ class ArticleController extends Controller
                     'submit' => '已收录',
                 ],
             ]);
-          $category->submited_status = '已收录';
+            $category->submited_status = '已收录';
 
-           // $article->user->notify(new CategoryCollected($cid, $aid));
+            // $article->user->notify(new CategoryCollected($cid, $aid));
         }
 
-      $category->submit_status =$category->submited_status== '已收录' ? '移除' : '收录';
-      return $category;
+        $category->submit_status = $category->submited_status == '已收录' ? '移除' : '收录';
+        return $category;
     }
 
-    public function adminCategoriesCheckArticle(Request $request,$aid){
-        $user=$request->user();
+    public function adminCategoriesCheckArticle(Request $request, $aid)
+    {
+        $user = $request->user();
 
         $qb = $user->adminCategories()->with('user');
 
@@ -355,18 +356,34 @@ class ArticleController extends Controller
             $qb = $qb->where('categories.name', 'like', request('q') . '%');
         }
 
-        $categories =$qb->paginate(12);
+        $categories = $qb->paginate(12);
 
         //get article status
-        foreach($categories as $category){
-            $category->submited_status='';
+        foreach ($categories as $category) {
+            $category->submited_status = '';
             $query                     = $category->articles()->wherePivot('article_id', $aid);
             if ($query->count()) {
                 $category->submited_status = $query->first()->pivot->submit;
             }
-            $category->submit_status =$category->submited_status=='已收录' ? '移除' : '收录';
+            $category->submit_status = $category->submited_status == '已收录' ? '移除' : '收录';
         }
 
         return $categories;
+    }
+
+    public function recommendCategoriesCheckArticle(Request $request, $aid)
+    {
+       $categories=Category::orderBy('id','desc')->paginate(9);
+
+       //get article status
+       foreach ($categories as $category) {
+            $category->submited_status='';
+            $query  =$category->articles()->wherePivot('article_id',$aid);
+            if($query->count()){
+                $category->submited_status=$query->first()->pivot->submit;
+            }
+            $category->submit_status=$this->get_submit_status($category->submited_status);
+       }
+       return $categories;
     }
 }
