@@ -159,6 +159,7 @@ export default {
 <style lang="scss" scoped>
 	#support_modal {
 		.modal-dialog {
+			text-align: center;
 			.modal-header {
 				padding: 15px 20px 0;
 				border: none;
@@ -267,6 +268,18 @@ export default {
 						.leaving_message {
 							margin: 0 15px;
 						}
+						@media screen and (max-width: 768px) {
+							.amount_group {
+								margin: 0 -5px;
+								.option {
+									width: 46%;
+									margin: 0 1% 15px;
+								}
+							}
+							.leaving_message {
+								margin: 0;
+							}
+						}
 					}
 					.reward_info {
 						.amount {
@@ -282,13 +295,17 @@ export default {
 								height: 30px;
 								min-width: 80px;
 							}
+							@media screen and (max-width: 768px) {
+								width: 45%;
+								margin: 20px 1.5% 10px;
+							}
 						}
 					}
 				}
 		    }
 		    .modal-footer {
 		    	border: none;
-		    	padding: 0 15px 20px;
+		    	padding: 15px 20px;
 		    	text-align: center;
 		    }
 		}
