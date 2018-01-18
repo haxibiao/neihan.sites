@@ -31,6 +31,7 @@ class IndexController extends Controller
             //依靠获取到的categories来获取article
             $articles = Article::with('user')->with('category')
                 ->whereIn('category_id', $categorie_ids)
+                ->where('status','>',0)
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
             if (!$articles->isEmpty()) {
@@ -47,6 +48,7 @@ class IndexController extends Controller
                 ->take(7)
                 ->get();
             $articles = Article::with('user')->with('category')
+              ->where('status','>',0)
               ->orderBy('created_at','desc')
               ->paginate(10);
         }

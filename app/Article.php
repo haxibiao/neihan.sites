@@ -80,6 +80,7 @@ class Article extends Model
     public function image_top()
     {
         $image_url_path = parse_url($this->image_url, PHP_URL_PATH);
+        $image_url_path = str_replace('.small', '', $image_url_path);
         $image          = Image::firstOrNew([
             'path' => $image_url_path,
         ]);
