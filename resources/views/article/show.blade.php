@@ -89,7 +89,7 @@
                             </a>
                             <img src="/images/vip1.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者" class="badge_icon_sm" />
                             <div class="meta">
-                                写了 280343 字，被 {{ $article->user->count_favorites }} 人关注，获得了 {{ $article->user->count_likes }} 个喜欢
+                                写了 {{ $article->user->count_words }} 字，被 {{ $article->user->count_follows }} 人关注，获得了 {{ $article->user->count_likes }} 个喜欢
                             </div>
                         </div>
                     </div>
@@ -99,6 +99,7 @@
 
                 </div>
                 <div class="support_author">
+                  @if(Auth::user()->is_tips)
                     <p>
                         如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！
                     </p>
@@ -120,6 +121,7 @@
                         </span>
                         <support-modal user-id={{ $article->user->id }} article-id={{ $article->id }}></support-modal>
                     </div>
+                  @endif
                 </div>
                 <div class="meta_bottom">
                     <like id="{{ $article->id }}" type="article" is-login="{{ Auth::check() }}" article-likes="{{ $article->count_likes }}"></like>
