@@ -6,6 +6,7 @@ use App\Action;
 use App\Favorite;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Question;
 
 class FavoriteController extends Controller
 {
@@ -33,8 +34,14 @@ class FavoriteController extends Controller
                 'actionable_id'   => $favorite->id,
             ]);
             $action->save();
-        }
 
+            if($type=='questions'){
+            $question =Question::find($id);
+            $question->count_favorites++;
+            $question->save();
+           }
+        }
+        
         $user->count_favorites = $user->favorites()->count();
         $user->save();
         return $result;
