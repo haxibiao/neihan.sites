@@ -29,11 +29,15 @@
     @endif
 
     <div class="question_bottom">
-    	<a href="javascript:;" class="action_btn">
-    		{{-- <i class="iconfont icon-shoucang"></i> --}}
-    		<i class="iconfont icon-shoucang"></i>
-    		<span>收藏问题{{ $question->count_favorites }}</span>
-    	</a>
+                <a href="javascript:;" class="action_btn">
+          {{-- <i class="iconfont icon-shoucang"></i> --}}
+{{--             <i class="iconfont icon-shoucang"></i>
+            <span>收藏问题{{ $question->count_favorites }}</span> --}}
+            <favorite-question question-id="{{ $question->id }}"></favorite-question>
+        </a>
+
+        
+
     	<a href="javascript:;" class="action_btn">
     		<i class="iconfont icon-guanzhu"></i>
     		<span>邀请回答</span>
@@ -47,7 +51,7 @@
     	</div>
     </div>
     <div class="answer_write">
-      <form  method="post"  action="{{ route('answer.store') }}">
+      <form method="post"  action="{{ route('answer.store') }}">
         <input type="hidden" value="{{ csrf_token() }}" name="_token">
         <input type="hidden" name="user_id" value="{{ Auth::id() }}">
         <input type="hidden" value="{{ $question->id }}" name="question_id">

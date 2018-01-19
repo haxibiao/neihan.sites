@@ -64,6 +64,7 @@ Vue.component('support-modal', require('./components/detail/SupportModal.vue'));
 Vue.component('input-matching', require('./components/interlocution/InputMatching.vue'));
 Vue.component('question-modal', require('./components/interlocution/QuestionModal.vue'));
 Vue.component('answer-tool', require('./components/interlocution/AnswerTool.vue'));
+Vue.component('favorite-question', require('./components/interlocution/Favorite.vue'));
 
 
 // 分享

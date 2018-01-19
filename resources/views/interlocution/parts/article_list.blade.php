@@ -34,12 +34,12 @@
                 {{ $question->background }}
             </p>
             <div class="meta">
-                <a href="/v2/detail" target="_blank" class="count count_link">
+                <a href="/question" target="_blank" class="count count_link">
                     <i class="iconfont icon-liulan">
                     </i>
-                    717
+                    {{ $question->hits }}
                 </a>
-                <a href="/detail" target="_blank" class="count count_link">
+                <a href="/question" target="_blank" class="count count_link">
                     <i class="iconfont icon-svg37">
                     </i>
                     {{ $question->count_answers }}
@@ -47,7 +47,7 @@
                 <span class="count">
                     <i class="iconfont icon-03xihuan">
                     </i>
-                    13
+                    {{ $question->count_likes }}
                 </span>
                 {{-- <a href="/detail" target="_blank" class="count count_link">
                     <i class="iconfont icon-fabulous">
