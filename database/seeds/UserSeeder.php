@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
         foreach ($users as $user) {
             $user->api_token = str_random(60);
             $user->avatar = $user->avatar();
+            $user->is_tips=1;
             $user->save();
         }
     }
