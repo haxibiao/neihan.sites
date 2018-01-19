@@ -34,9 +34,10 @@
 {{--             <i class="iconfont icon-shoucang"></i>
             <span>收藏问题{{ $question->count_favorites }}</span> --}}
             <favorite-question question-id="{{ $question->id }}"></favorite-question>
+            <span>收藏问题</span>
         </a>
 
-        
+
 
     	<a href="javascript:;" class="action_btn">
     		<i class="iconfont icon-guanzhu"></i>
@@ -74,8 +75,8 @@
     	<div class="note_answers">
 
          @foreach($answers as $answer)
-            <div class="comment">
-                <div>
+            <div class="answer_item">
+                 <div class="answer_user">
                     <div class="author">
                         <a class="avatar avatar_xs" href="#">
                             <img src="{{ $answer->user->avatar }}"/>
@@ -95,13 +96,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="comment_wrap">
-                        <div class="article_content">
-                            {!! $answer->answer !!}
-                        </div>
-                        <answer-tool answer-id={{ $answer->id }} is-login={{ Auth::check() }}></answer-tool>
+                 </div>
+                <div class="article_content fold">
+                    <div class="answer_text_full">
+                        {!! $answer->answer !!}
                     </div>
                 </div>
+                <answer-tool answer-id={{ $answer->id }} is-login={{ Auth::check() }}></answer-tool>
             </div>
             @endforeach
     	</div>

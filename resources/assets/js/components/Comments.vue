@@ -45,111 +45,107 @@
                 </form>
             </div>
             <div class="normal_comment_list">
-                <div>
+                <div class="top_title">
+                    <span>
+                        {{ comments.length }}条评论
+                    </span>
+                    <a class="author_only" href="javascript:;">
+                        只看作者
+                    </a>
+                    <div class="pull-right">
+                        <a class="active" href="javascript:;">
+                            按喜欢排序
+                        </a>
+                        <a href="javascript:;">
+                            按时间正序
+                        </a>
+                        <a href="javascript:;">
+                            按时间倒序
+                        </a>
+                    </div>
+                </div>
+                <!-- 评论 -->
+                <div class="comment" v-for="comment in comments">
                     <div>
-                        <div class="top_title">
-                            <span>
-                                {{ comments.length }}条评论
-                            </span>
-                            <a class="author_only" href="javascript:;">
-                                只看作者
+                        <div class="author">
+                            <a :href="'/user'+comment.user.id" class="avatar avatar_xs">
+                                <img :src="comment.user.avatar"/>
                             </a>
-                            <div class="pull-right">
-                                <a class="active" href="javascript:;">
-                                    按喜欢排序
+                            <div class="info_meta">
+                                <a :href="'/user/'+comment.user.id" class="nickname">
+                                    {{ comment.user.name }}
+                                </a>
+                                <div class="meta">
+                                    <span>
+                                        {{ get_lou(comment.lou) }} ·{{ comment.time }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="comment_wrap">
+                            <p>
+                                {{ comment.body }}
+                            </p>
+                            <div class="tool_group">
+                                <a href="javascript:;">
+                                    <i class="iconfont icon-fabulous">
+                                    </i>
+                                    <span @click="likeComment(comment)" v-if="!comment.liked">
+                                        赞
+                                    </span>
                                 </a>
                                 <a href="javascript:;">
-                                    按时间正序
+                                    <i class="iconfont icon-xinxi">
+                                    </i>
+                                    <span>
+                                        回复
+                                    </span>
                                 </a>
-                                <a href="javascript:;">
-                                    按时间倒序
+                                <a class="report" href="javascript:;">
+                                    <span>
+                                        举报
+                                    </span>
                                 </a>
                             </div>
                         </div>
-                    </div>
-                    <!-- 评论 -->
-                    <div class="comment" v-for="comment in comments">
-                        <div>
-                            <div class="author">
-                                <a :href="'/user'+comment.user.id" class="avatar">
-                                    <img :src="comment.user.avatar"/>
-                                </a>
-                                <div class="info">
-                                    <a :href="'/user/'+comment.user.id" class="name">
-                                        {{ comment.user.name }}
-                                    </a>
-                                    <div class="meta">
-                                        <span>
-                                            {{ get_lou(comment.lou) }} ·{{ comment.time }}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="comment_wrap">
+                        <div class="sub_comment_list">
+                            <div class="comment_wrap" v-for="reply in comment.reply_comments">
                                 <p>
-                                    {{ comment.body }}
+                                    <a class="moleskine_author" href="/user" target="_blank">
+                                        {{ reply.user.name }}
+                                    </a>
+                                    ：
+                                    <span>
+                                        <!-- <a href="#" class="moleskine_author">
+                                    @哈尼
+                                </a> -->
+                                        {{ reply.body }}
+                                    </span>
                                 </p>
                                 <div class="tool_group">
-                                    <a href="javascript:;">
-                                        <i class="iconfont icon-fabulous">
-                                        </i>
-                                        <span @click="likeComment(comment)" v-if="!comment.liked">
-                                            赞
-                                        </span>
-                                    </a>
-                                    <a href="javascript:;">
+                                    <span class="comment_time">
+                                        {{ reply.created_at }}
+                                    </span>
+                                    <a href="#">
                                         <i class="iconfont icon-xinxi">
                                         </i>
                                         <span>
                                             回复
                                         </span>
                                     </a>
-                                    <a class="report" href="javascript:;">
-                                        <span>
-                                            举报
-                                        </span>
+                                    <a class="report" href="#">
+                                        举报
                                     </a>
                                 </div>
                             </div>
-                            <div class="sub_comment_list">
-                                <div class="comment_wrap" v-for="reply in comment.reply_comments">
-                                    <p>
-                                        <a class="moleskine_author" href="/v1/user" target="_blank">
-                                            {{ reply.user.name }}
-                                        </a>
-                                        ：
-                                        <span>
-                                            <!-- <a href="#" class="moleskine_author">
-                                        @哈尼
-                                    </a> -->
-                                            {{ reply.body }}
-                                        </span>
-                                    </p>
-                                    <div class="tool_group">
-                                        <span class="comment_time">
-                                            {{ reply.created_at }}
-                                        </span>
-                                        <a href="#">
-                                            <i class="iconfont icon-xinxi">
-                                            </i>
-                                            <span>
-                                                回复
-                                            </span>
-                                        </a>
-                                        <a class="report" href="#">
-                                            举报
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="comment_wrap more_comment">
-                                    <a class="add_comment_btn">
-                                        <i class="iconfont icon-xie">
-                                        </i>
-                                        <span>
-                                            添加新评论
-                                        </span>
-                                    </a>
-                                </div>
+                            <div class="comment_wrap more_comment">
+                                <a class="add_comment_btn">
+                                    <i class="iconfont icon-xie">
+                                    </i>
+                                    <span>
+                                        添加新评论
+                                    </span>
+                                </a>
                             </div>
                         </div>
                     </div>

@@ -1,5 +1,5 @@
 <template>
-    <span :class="['iconfont',favorited?'icon-shoucang1':'icon-shoucang']" style="font-size: 1.5em;" @click="toggle"></span>
+    <i :class="['iconfont',favorited?'icon-shoucang1':'icon-shoucang']" @click="toggle"></i>
 </template>
 
 <script>

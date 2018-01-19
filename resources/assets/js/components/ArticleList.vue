@@ -52,7 +52,7 @@
     </li>
   </ul>
 
-      <a class="button btn_load_more" href="javascript:;">{{ page >= lastPage ? '已经到底了':'正在加载更多' }}...</a>
+      <a class="load_more" href="javascript:;">{{ page >= lastPage ? '已经到底了':'正在加载更多' }}...</a>
 
 	  </div>
 </template>
