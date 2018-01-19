@@ -31,6 +31,7 @@ class CreateCategoriesTable extends Migration {
 
 			//count
 			$table->integer('count_follows')->default(0)->index();
+			$table->integer('count_questions')->default(0);
 			$table->timestamps();
 		});
 	}
