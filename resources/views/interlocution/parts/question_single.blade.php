@@ -101,6 +101,7 @@
                     <div class="answer_text_full">
                         {!! $answer->answer !!}
                     </div>
+                    <a href="javascript:;" class="expand_bottom">展开全部</a>
                 </div>
                 <answer-tool answer-id={{ $answer->id }} is-login={{ Auth::check() }}></answer-tool>
             </div>
@@ -108,3 +109,18 @@
     	</div>
     </div>
 </div>
+
+@push('scripts')
+    <script>
+        $(function(){
+            $('.answer_item').each(function(index, el) {
+                if($(el).height()<300) {
+                    $(el).find('.article_content').removeClass('fold');
+                };
+            });
+            $('.answer_item .expand_bottom').on('click',function(){
+                $(this).parent('.article_content').removeClass('fold');
+            })
+        })
+    </script>
+@endpush

@@ -102,30 +102,6 @@
     }
 }
 
-.fold {
-    position: relative;
-    .answer_text_full {
-        max-height: 300px;
-        overflow: hidden;
-        margin-bottom: 30px;
-    }
-    .expand_bottom {
-        position: absolute;
-        font-size: 14px;
-        line-height: 240px;
-        bottom: 0;
-        left: 0;
-        text-align: center;
-        width: 100%;
-        color: $color-blue;
-        height: 136px;
-        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#ffffff));
-        background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
-        background-image: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
-        background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
-    }
-}
-
 // 文章投稿状态
 .push_action {
     margin-top: 10px;
@@ -259,6 +235,7 @@
     p {
         margin-bottom: 20px;
         line-height: 1.7;
+        word-wrap: break-word;
         img {
             max-width: 100%;
             padding-bottom: 25px;
@@ -266,7 +243,26 @@
             display: block;
         }
     }
-} 
+    .answer_text_full {
+        margin-bottom: 30px;
+    }
+    .expand_bottom {
+        position: absolute;
+        display: none;
+        font-size: 14px;
+        line-height: 240px;
+        bottom: 0;
+        left: 0;
+        text-align: center;
+        width: 100%;
+        color: $color-blue;
+        height: 136px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#ffffff));
+        background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+        background-image: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+        background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+    }
+}
 
 // 文章来源
 .article_foot {

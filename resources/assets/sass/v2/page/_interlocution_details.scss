@@ -106,6 +106,18 @@
                                         }
                                     }
                                 }
+                                .article_content {
+                                    position: relative;
+                                    &.fold {
+                                        .answer_text_full {
+                                            max-height: 300px;
+                                            overflow: hidden;
+                                        }
+                                        .expand_bottom {
+                                            display: block;
+                                        }
+                                    }
+                                }
                                 .tool_cabinet {
                                     .answer_tool {
                                         .tool_group {
