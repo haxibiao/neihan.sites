@@ -34,7 +34,7 @@
 {{--             <i class="iconfont icon-shoucang"></i>
             <span>收藏问题{{ $question->count_favorites }}</span> --}}
             <favorite-question question-id="{{ $question->id }}"></favorite-question>
-            <span>收藏问题</span>
+            <span>收藏问题({{ $question->count_favorites }})</span>
         </a>
 
 
