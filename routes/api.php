@@ -139,3 +139,7 @@ Route::get('/image', 'Api\ImageController@index');
 Route::middleware('auth:api')->post('/image/save', 'Api\ImageController@store');
 //首页轮播图
 Route::get('/image/poster','Api\ImageController@poster');
+
+
+//answer info
+Route::get('/answer/info/{id}','Api\AnswerController@get');

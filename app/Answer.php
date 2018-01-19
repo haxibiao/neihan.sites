@@ -49,4 +49,9 @@ class Answer extends Model
         }
         return $text;
     }
+
+    public function commments()
+    {
+        return $this->morphMany(\App\Comment::class, 'commentable');
+    }
 }

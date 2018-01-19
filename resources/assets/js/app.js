@@ -63,6 +63,7 @@ Vue.component('support-modal', require('./components/detail/SupportModal.vue'));
 // 问答页模态
 Vue.component('input-matching', require('./components/interlocution/InputMatching.vue'));
 Vue.component('question-modal', require('./components/interlocution/QuestionModal.vue'));
+Vue.component('answer-tool', require('./components/interlocution/AnswerTool.vue'));
 
 
 // 分享
