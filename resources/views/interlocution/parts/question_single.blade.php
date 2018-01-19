@@ -31,11 +31,8 @@
     <div class="question_bottom">
     	<a href="javascript:;" class="action_btn">
     		{{-- <i class="iconfont icon-shoucang"></i> --}}
-    		<i class="iconfont icon-shoucang1"></i>
-    		<span>收藏问题</span>
-    		(
-    			<span class="count">{{ $question->count_favorites }}</span>
-    		)
+    		<i class="iconfont icon-shoucang"></i>
+    		<span>收藏问题{{ $question->count_favorites }}</span>
     	</a>
     	<a href="javascript:;" class="action_btn">
     		<i class="iconfont icon-guanzhu"></i>
@@ -274,7 +271,13 @@
                                     {{ $answer->count_comments }} 评论
                                 </span>
                             </a>
-                            <a class="report" href="#">举报</a>
+                            <share class="action_btn" placement="top">
+                                <span>分享</span>
+                            </share>
+                            <a class="pull-right" href="#">
+                                <i class="iconfont icon-lajitong"></i>
+                                删除
+                            </a>
                         </div>
                     </div>
                 </div>

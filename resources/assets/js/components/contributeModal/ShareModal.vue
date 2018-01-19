@@ -1,7 +1,7 @@
 <template>
-    <a :data-content="dataContent" :data-placement="placement" class="share
-    _button" data-html="true" data-original-title="" data-toggle="popover" data-trigger="focus" role="button" tabindex="0" title="">
+    <a :data-content="dataContent" :data-placement="placement" data-html="true" data-original-title="" data-toggle="popover" data-trigger="focus" role="button" tabindex="0" title="">
         <i :class="iconClass"></i>
+        <slot></slot>
     </a>
 </template>
 <script>

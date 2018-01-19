@@ -34,9 +34,10 @@
                         font-size: 16px;
                         color: $color-gray;
                         line-height: 1.5;
+                        margin-bottom: 20px;
                     }
                     .question_img {
-                        margin: 20px 0;
+                        margin-bottom: 20px;
                         height: 120px;
                         overflow: hidden;
                         img {
@@ -64,6 +65,7 @@
                             font-size: 14px;
                             color: $color-gray;
                             cursor: pointer;
+                            margin-top: 6px;
                         }
                     }
                     .answer_write {

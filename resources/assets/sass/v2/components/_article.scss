@@ -80,6 +80,7 @@
 
 //问答页右侧精选文章摘要
 .selected {
+    min-height: 0;
     .paper_title {
         font-size: 14px;
     }

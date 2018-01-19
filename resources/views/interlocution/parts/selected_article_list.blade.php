@@ -26,7 +26,7 @@
                         {{ $item->user->name }}
                     </a>
                     <a href="/detail" target="_blank">
-                        <img src="/images/vip1.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者" class="badge_icon_xs"/>
+                        <img src="/images/verified.png" data-toggle="tooltip" data-placement="top" title="爱你城认证" class="badge_icon_xs"/>
                     </a>
                     <a href="/user" class="meta">
                         <em>|</em>

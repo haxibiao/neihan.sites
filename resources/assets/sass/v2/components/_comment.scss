@@ -72,6 +72,11 @@
             margin-top: 4px;
             display: none;
         }
+        .popover_share_menu {
+            a {
+                color: $color-black;
+            }
+        }
     }
     &:hover {
         .report {
