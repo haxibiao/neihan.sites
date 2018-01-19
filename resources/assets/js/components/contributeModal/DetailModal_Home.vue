@@ -34,7 +34,7 @@
 	                    	</a>
 	                        <div>
 	                            <div class="note_name">{{ category.name }}</div>
-	                            <span class="note_meta">{{ category.count }}篇文章 · {{ category.follow }}人关注</span>
+	                            <span class="note_meta">{{ category.count }}篇文章 · {{ category.count_follows }}人关注</span>
 	                         <a :class="getBtnClass(category.submit_status)" 
                            @click="add(category)">
                             {{ category.submit_status }}
@@ -52,7 +52,7 @@
 	                    	</a>
 	                        <div>
 	                            <div class="note_name">{{ category.name }}</div>
-	                            <span class="note_meta">{{ category.count }}篇文章 · {{ category.follow }}人关注</span>
+	                            <span class="note_meta">{{ category.count }}篇文章 · {{ category.count_follows }}人关注</span>
                                   <a :class="getBtn2Class(category.submit_status)" 
                            @click="submit(category)">
                             {{ category.submit_status }}

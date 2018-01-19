@@ -24,7 +24,7 @@ class Article extends Model
         'status',
     ];
 
-    protected $dates = ['edited_at'];
+    protected $dates = ['edited_at','delay_time'];
 
     protected $touches = ['category', 'categories', 'collections'];
 
