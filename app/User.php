@@ -30,6 +30,8 @@ class User extends Authenticatable
         'seo_tj',
         'api_token',
         'gender',
+        'introduction_tips',
+        'is_tips',
     ];
 
     /**

@@ -18,14 +18,14 @@
                 	<span class="name">个人资料</span>
                 </router-link>
             </li>
-<!--             <li>
+            <li>
                 <router-link to="/reward-setting">
                 	<div class="setting_icon">
                 		<i class="iconfont icon-jinqian1"></i>
                 	</div>
                 	<span class="name">赞赏设置</span>
                 </router-link>
-            </li> -->
+            </li>
         </ul>
     </div>
 </template>

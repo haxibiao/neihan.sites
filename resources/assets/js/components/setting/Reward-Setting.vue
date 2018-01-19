@@ -1,5 +1,6 @@
 <template>
 	<div id="reward_setting">
+    <form @submit.prevent="updateing">
 		<table>
 			<thead>
 				<tr>
@@ -12,11 +13,11 @@
 					<td class="top_line setting_title">赞赏功能</td>
 					<td class="top_line">
 						<div>
-							<input type="radio" name="appreciate" value="open" checked />
+							<input type="radio" name="is_tips" value="1"  v-model="user.is_tips"  checked />
 							<span>开启</span>
 						</div>
 						<div>
-							<input type="radio" name="appreciate" value="shut" />
+							<input type="radio" name="is_tips" value="0"  v-model="user.is_tips" />
 							<span>关闭</span>
 						</div>
 						<p>开启后赞赏按钮将出现在你的文章底部</p>
@@ -25,14 +26,15 @@
 				<tr>
 					<td class="setting_title pull-left">赞赏描述</td>
 					<td>
-						<form>
-							<textarea cols="30" rows="10" class="form-control" placeholder="如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！"></textarea>
-						</form>
-					</td>
+						<textarea cols="30" rows="10" class="form-control" placeholder="如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！" v-model="user.introduction_tips">{{ this.user.introduction_tips }}</textarea>					
+     				</td>
 				</tr>
+
 			</tbody>
+
 		</table>
 		<input type="submit" value="保存" class="btn_base btn_follow" />
+        </form>
 	</div>
 </template>
 
@@ -41,9 +43,37 @@ export default {
 
   name: 'Reward-Setting',
 
+  created(){
+      this.fetchData();
+  },
+
+  methods:{
+     fetchData(){
+          var api='/api/user/'+window.current_user_id;
+          var vm=this;
+          window.axios.get(api).then(function(response){
+                vm.user=response.data;
+          });
+     },
+
+     updateing(){
+         var api=window.tokenize('/api/user/'+window.current_user_id+'/update');
+         var vm=this;
+
+         var formdata={
+              is_tips:this.user.is_tips,
+              introduction_tips:this.user.introduction_tips,
+         };
+
+         window.axios.post(api,formdata).then(function(response){
+               response.data==0 ? vm.fail=true : vm.updated=true;
+         });
+       }
+  },
+
   data () {
     return {
-
+        user:[]
     }
   }
 }
