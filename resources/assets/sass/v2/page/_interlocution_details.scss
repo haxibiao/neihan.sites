@@ -47,7 +47,7 @@
                         }
                     }
                     .question_bottom {
-                        margin-bottom: 10px;
+                        margin-bottom: 20px;
                         i {
                             font-size: 16px;
                             margin-right: 3px;
@@ -70,6 +70,21 @@
                     }
                     .answer_write {
                         position: relative;
+                        .optimum {
+                            margin-bottom: 10px;
+                            .suggest_title {
+                                font-size: 15px;
+                                font-weight: 700;
+                                margin-bottom: 5px;
+                                .depict {
+                                    font-size: 10px;
+                                    background-color: #777;
+                                    color: $color-white;
+                                    padding: 3px 6px;
+                                    border-radius: 4px;
+                                }
+                            }
+                        }
                         .submitbar {
                             position: absolute;
                             height: 45px;

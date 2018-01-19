@@ -56,6 +56,15 @@
         <input type="hidden" value="{{ csrf_token() }}" name="_token">
         <input type="hidden" name="user_id" value="{{ Auth::id() }}">
         <input type="hidden" value="{{ $question->id }}" name="question_id">
+        <div class="optimum">
+            <div class="suggest_title">
+                最佳回答文章
+                <span class="depict">(可选，编辑人员可复制文章地址或文章ID填入)</span>
+            </div>
+            <div class="input_box">
+                <input type="text" class="form-control" />
+            </div>
+        </div>
         <editor name="answer"></editor>
         <div class="submitbar">
             <div class="pull-right">
