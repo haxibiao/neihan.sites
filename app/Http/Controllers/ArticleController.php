@@ -424,6 +424,7 @@ class ArticleController extends Controller
     {
         if ($request->delay > 0) {
             $article->status = 0;
+            $article->delay_time =now()->addHours($request->delay);
             $article->save();
 
             ArticleDelay::dispatch($article->id)
