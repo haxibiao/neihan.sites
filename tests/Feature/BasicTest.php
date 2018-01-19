@@ -48,7 +48,7 @@ class BasicTest extends TestCase
         ]);
 
         $response->assertStatus(302);
-        $response->assertRedirect('/home');
+        $response->assertRedirect('/');
     }
 
 }
