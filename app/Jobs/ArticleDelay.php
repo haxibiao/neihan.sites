@@ -38,6 +38,7 @@ class ArticleDelay implements ShouldQueue
         $article_id      = $this->article_id;
         $article         = Article::find($article_id);
         $article->status = 1;
+        $article->delay_time = null;
         $article->save();
     }
 }
