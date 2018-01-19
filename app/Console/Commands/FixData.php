@@ -9,6 +9,7 @@ use App\Favorite;
 use App\Image;
 use App\Like;
 use App\Video;
+use App\User;
 use Illuminate\Console\Command;
 
 class FixData extends Command
@@ -18,7 +19,7 @@ class FixData extends Command
      *
      * @var string
      */
-    protected $signature = 'fix:data {--favorite}{--small_image}{--tags}{--comments} {--traffic} {--articles} {--images} {--videos} {--categories} {--force}';
+    protected $signature = 'fix:data {--user_count}{--favorite}{--small_image}{--tags}{--comments} {--traffic} {--articles} {--images} {--videos} {--categories} {--force}';
 
     /**
      * The console command description.
@@ -74,6 +75,9 @@ class FixData extends Command
 
         if ($this->option('videos')) {
             $this->fix_videos();
+        }
+        if ($this->option('user_count')) {
+            $this->fix_user_count();
         }
 
     }
@@ -385,6 +389,23 @@ class FixData extends Command
             $traffic->save();
 
             $this->info($traffic->id);
+        }
+    }
+
+    public function fix_user_count()
+    {
+        $users =User::orderBy('id','desc')->get();
+
+        foreach($users as $user){
+             $user->count_articles=$user->articles()->count();
+             $articles=$user->articles;
+             foreach($articles as $article){
+                  $article_word=ceil(strlen(strip_tags($article->body)) / 2);
+                  $user->count_words=$user->count_words+$article_word;
+                  $user->count_likes=$user->count_likes+$article->count_likes; 
+             }
+             $this->info("$user->name fix");
+             $user->save();
         }
     }
 }
