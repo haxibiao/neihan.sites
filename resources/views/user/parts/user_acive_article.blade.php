@@ -22,12 +22,12 @@
     </p>
     <div class="meta">
       <a target="_blank" href="/article/{{ $article->id }}" class="count count_link">
-        <i class="iconfont icon-liulan"></i> 4184
+        <i class="iconfont icon-liulan"></i> {{ $article->hits }}
       </a>        
       <a target="_blank" href="/article/{{ $article->id }}" class="count count_link">
-        <i class="iconfont icon-svg37"></i> 70
+        <i class="iconfont icon-svg37"></i> {{ $article->count_replies }}
       </a>      
-      <span class="count"><i class="iconfont icon-03xihuan"></i> 288</span>
+      <span class="count"><i class="iconfont icon-03xihuan"></i> {{ $article->count_likes }}</span>
     </div>
   </div>
 </li>

@@ -61,7 +61,7 @@ echo {{ $www }}
 {{ $refresh_env_config }}
 {{ $run_migrate }}
 {{ $run_commands }}
-{{ $copy_worker_config }}
+{{-- {{ $copy_worker_config }} --}}
 {{ $cache_clear }}
 @endtask
 
