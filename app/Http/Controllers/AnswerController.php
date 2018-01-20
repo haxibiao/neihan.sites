@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Answer;
 use App\Notifications\QuestionAnswered;
 use App\Image;
+use App\Http\Requests\AnswerRequest;
 
 class AnswerController extends Controller
 {
@@ -35,7 +36,7 @@ class AnswerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AnswerRequest $request)
     {
         $user   = $request->user();
         $answer = new Answer($request->all());
@@ -51,7 +52,7 @@ class AnswerController extends Controller
         if($answer->article){
             $categories =$answer->article->categories;
             $category_ids =$categories->pluck('id');
-            $answer->answer =$answer->article->body;
+            $answer->answer =$request->answer.$answer->article->body;
             $question->categories()->syncWithoutDetaching($category_ids);
             foreach($categories as $category){
                 $category->count_questions= $category->questions->count();

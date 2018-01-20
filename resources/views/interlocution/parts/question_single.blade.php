@@ -72,6 +72,9 @@
                 <button class="btn_base btn_creation">发表答案</button>
             </div>
         </div>
+            <div class="form-group{{ $errors->has('answer') ? ' has-error' : '' }}">
+                <small class="text-danger">{{ $errors->first('answer') }}</small>
+            </div>
       </form>
     </div>
     @endif
