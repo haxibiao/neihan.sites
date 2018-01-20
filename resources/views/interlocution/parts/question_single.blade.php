@@ -51,6 +51,7 @@
     		<span>举报</span>
     	</div>
     </div>
+    @if(Auth::check())
     <div class="answer_write">
       <form method="post"  action="{{ route('answer.store') }}">
         <input type="hidden" value="{{ csrf_token() }}" name="_token">
@@ -62,7 +63,7 @@
                 <span class="depict">(可选，编辑人员可复制文章地址或文章ID填入)</span>
             </div>
             <div class="input_box">
-                <input type="text" class="form-control" />
+                <input type="text" class="form-control" name="article_id" id="article_id" />
             </div>
         </div>
         <editor name="answer"></editor>
@@ -73,6 +74,7 @@
         </div>
       </form>
     </div>
+    @endif
     <div class="answers">
     	<div class="note_title">
     		<div class="litter_title title_line">

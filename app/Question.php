@@ -30,7 +30,8 @@ class Question extends Model
         return $this->belongsToMany(\App\Category::class);
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(\App\User::class);
     }
 
@@ -57,7 +58,12 @@ class Question extends Model
         }
 
         //default image
-        $defalut=rand(1,8);
-        return "/images/details_0$defalut.jpeg" ;
+        $defalut = rand(1, 8);
+        return "/images/details_0$defalut.jpeg";
+    }
+
+    public function link()
+    {
+        return '<a href="/question/' . $this->id . '">' . $this->title . '</a>';
     }
 }
