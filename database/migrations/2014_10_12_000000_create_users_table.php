@@ -49,6 +49,9 @@ class CreateUsersTable extends Migration
             $table->string('gender')->nullable()->index();
             $table->string('website')->nullable();
             $table->string('qrcode')->nullable();
+
+            $table->string('introduction_tips')->nullable();
+            $table->integer('is_tips')->nullable();
             
             $table->string('api_token', 60)->nullable()->default(str_random(60));
             

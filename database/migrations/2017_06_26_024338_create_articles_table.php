@@ -44,6 +44,8 @@ class CreateArticlesTable extends Migration
 
             $table->string('image_top')->nullable();
 
+            
+
             $table->integer('hits')->default(0);
             $table->integer('count_replies')->default(0);
             $table->integer('count_favorites')->default(0);
@@ -52,7 +54,7 @@ class CreateArticlesTable extends Migration
             
             $table->text('json')->nullable();
             
-
+            $table->timestamp('delay_time')->nullable();
             $table->timestamps();
         });
     }
