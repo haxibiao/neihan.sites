@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Answer;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class AnswerController extends Controller
 {
@@ -15,6 +14,7 @@ class AnswerController extends Controller
             $answer->count_likes    = $answer->count_likes ? $answer->count_likes : 0;
             $answer->count_unlikes  = $answer->count_unlikes ? $answer->count_unlikes : 0;
             $answer->count_comments = $answer->commments()->count();
+            $answer->count_reports  = $answer->count_reports ? $answer->count_reports : 0;
             return $answer;
         }
     }

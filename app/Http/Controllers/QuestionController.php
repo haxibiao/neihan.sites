@@ -83,7 +83,7 @@ class QuestionController extends Controller
         $question->hits++;
         $question->save();         
 
-        $answers =Answer::with('user')->where('question_id',$question->id)->orderBy('id','desc')->paginate(10);
+        $answers =Answer::with('user')->where('question_id',$question->id)->where('status','>',0)->orderBy('id','desc')->paginate(10);
 
 
         $qb = Question::with('latestAnswer.article')->with('user')->orderBy('id', 'desc');
