@@ -6,9 +6,10 @@ use App\Action;
 use App\Article;
 use App\Http\Controllers\Controller;
 use App\Like;
-use App\Video;
 use App\Notifications\ArticleLiked;
+use App\Video;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class LikeController extends Controller
 {
@@ -64,6 +65,7 @@ class LikeController extends Controller
 
     public function notify($type, $id, $num)
     {
+        $user = request()->user();
         if ($type == 'article') {
             $article = Article::with('user')->findOrFail($id);
             $article->count_likes += $num;
@@ -72,11 +74,12 @@ class LikeController extends Controller
             $author              = $article->user;
             $author->count_likes = $author->count_likes + $num;
             $author->save();
-
-            if ($num > 0) {
-                $user = request()->user();
+            //避免短时间内重复提醒
+            $cacheKey = 'user_' . $user->id . '_like_' . $type . '_' . $id;
+            if (!Cache::get($cacheKey)) {
                 $author->notify(new ArticleLiked($article->id, $user->id));
                 $author->forgetUnreads();
+                Cache::put($cacheKey, 1, 60);
             }
 
         }

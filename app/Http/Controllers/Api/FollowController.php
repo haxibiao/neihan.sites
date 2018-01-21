@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Notifications\UserFollowed;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class FollowController extends Controller
 {
@@ -51,9 +52,14 @@ class FollowController extends Controller
 
             //notify when user follow
             if (get_polymorph_types($type) == 'users') {
+                //避免短时间内重复提醒
+                $cacheKey = 'user_' . $user->id . '_follow_' . $type . '_' . $id;
+                if(!Cache::get($cacheKey)){
                 $followed_user = $follow->followed;
                 $followed_user->notify(new UserFollowed($user));
                 $followed_user->forgetUnreads();
+                Cache::put($cacheKey, 1, 60);
+              }
             }
         }
 
