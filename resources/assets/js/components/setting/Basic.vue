@@ -81,6 +81,14 @@ export default {
   	  	  });
   	  },
 
+
+      //refresh avatar
+      refreshAvatars() {
+          $('img.avatar').each(function(){
+            $(this).attr('src', $(this).attr('src') + '?t=' + Date.now());
+          });
+      },
+
   	  //update avatar
   	  update_avatar(event){
           if(event.target && event.target.files[0]){
@@ -105,6 +113,7 @@ export default {
            }
 
   	  	  window.axios.post(api,formdata,config).then(function(response){
+               vm.refreshAvatars();
   	  	  	   vm.avatar =response.data;
   	  	  });
   	  }
