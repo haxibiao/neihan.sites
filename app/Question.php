@@ -62,6 +62,13 @@ class Question extends Model
         return "/images/details_0$defalut.jpeg";
     }
 
+    //check question has img
+
+    public function has_img()
+    {
+        return $this->relateImage() ? 'have_img' : '';
+    }
+
     public function link()
     {
         return '<a href="/question/' . $this->id . '">' . $this->title . '</a>';

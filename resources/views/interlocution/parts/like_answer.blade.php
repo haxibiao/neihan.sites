@@ -6,24 +6,19 @@
         </span>
     </div>
     <ul class="guess_list">
-        @foreach ([1,2,3] as $item)
-        @php
-            $has_img  = rand (0,3) > 0 ? 'have_img' : '';
-        @endphp
-        <li class="article_item selected {{ $has_img }}">
-            @if ($has_img)
+        @foreach ($data['hot'] as $question)
+        <li class="article_item selected {{ $question->has_img() }}">
             <a class="wrap_img" href="/interlocution/question">
-                <img src="/images/details_0{{ rand(1,6) }}.jpeg"/>
+                <img src="{{ $question->relateImage() }}"/>
             </a>
-            @endif
             <div class="content">
-                <a class="headline paper_title" href="/interlocution/question">
+                <a class="headline paper_title" href="/question/{{ $question->id }}">
                     <span>
-                        斗鱼已经变成“死妈TV”了，会不会整个平台被55开害凉了？
+                        {{ $question->title }}
                     </span>
                 </a>
                 <span class="meta">
-                    243 回答
+                    {{ $question->count_answer }} 回答
                 </span>
             </div>
         </li>

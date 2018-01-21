@@ -85,9 +85,14 @@ class QuestionController extends Controller
 
         $answers =Answer::with('user')->where('question_id',$question->id)->orderBy('id','desc')->paginate(10);
 
+
+        $qb = Question::with('latestAnswer.article')->with('user')->orderBy('id', 'desc');
+        $data['hot']=$qb->orderBy('hits','desc')->take(3)->get();
+
         return view('interlocution.show')
         ->withAnswers($answers)
-        ->withQuestion($question);
+        ->withQuestion($question)
+        ->withData($data);
     }
 
     /**
