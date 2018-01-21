@@ -41,10 +41,8 @@ class EnvRefresh extends Command
             return $this->refresh_local();
         }
 
-        if (!in_array(gethostname(), ['hk001', 'gz002'])) {
-            $this->refresh_local();
-        } else {
-            $this->refresh_prod();
+        if ($this->option('prod')) {
+            return $this->refresh_prod();
         }
     }
 
@@ -62,9 +60,6 @@ class EnvRefresh extends Command
         if ($data) {
             $webconfig = json_decode($data);
             $this->updateEnv([
-                'APP_ENV'       => 'prod',
-                'APP_DEBUG'     => 'false',
-                'DB_HOST'       => 'localhost',
                 'DB_USERNAME'   => $webconfig->db_user,
                 'DB_PASSWORD'   => $webconfig->db_passwd,
                 'MAIL_HOST'     => $webconfig->mail_host,
@@ -74,6 +69,11 @@ class EnvRefresh extends Command
         } else {
             $this->error('webconfig not found!');
         }
+        $this->updateEnv([
+            'APP_ENV'   => 'prod',
+            'APP_DEBUG' => 'false',
+            'DB_HOST'   => env('DB_SERVER'),
+        ]);
     }
 
     public function updateEnv($data = array())
