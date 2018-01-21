@@ -12,8 +12,8 @@ class CategoryController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth', ['except' => 'name_en']);
-        $this->middleware('auth.editor', ['except' => 'name_en']);
+        $this->middleware('auth', ['except' => ['name_en','categories_hot']]);
+        $this->middleware('auth.editor', ['except' => ['name_en','categories_hot']]);
     }
 
     /**

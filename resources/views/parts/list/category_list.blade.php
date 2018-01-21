@@ -8,7 +8,7 @@
         </div>
     </a>
 @endforeach
-    <a class="collection more_collection" href="/cate" target="_blank">
+    <a class="collection more_collection" href="/categories" target="_blank">
         <div class="name">
             更多热门专题
             <i class="iconfont icon-youbian">
