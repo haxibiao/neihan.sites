@@ -395,8 +395,12 @@ class FixData extends Command
     public function fix_user_count()
     {
         $users =User::orderBy('id','desc')->get();
+        
 
         foreach($users as $user){
+             $user->count_words=0;
+             $user->count_likes=0;
+
              $user->count_articles=$user->articles()->count();
              $articles=$user->articles;
              foreach($articles as $article){

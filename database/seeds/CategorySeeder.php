@@ -12,19 +12,19 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        foreach (Category::all() as $category) {
-            $category->admins()->syncWithoutDetaching([
-                $category->user->id => [
-                    'is_admin' => 1,
-                ],
-            ]);
+        // foreach (Category::all() as $category) {
+        //     $category->admins()->syncWithoutDetaching([
+        //         $category->user->id => [
+        //             'is_admin' => 1,
+        //         ],
+        //     ]);
 
-            $category->authors()->syncWithoutDetaching([
-                $category->user->id => [
-                    'approved' => 1,
-                ],
-            ]);
-        }
+        //     $category->authors()->syncWithoutDetaching([
+        //         $category->user->id => [
+        //             'approved' => 1,
+        //         ],
+        //     ]);
+        // }
 
         DB::table('article_category')->update(['submit' => '已收录']);
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Category;
 use App\Http\Requests\ArticleRequest;
 use App\Image;
 use App\Jobs\ArticleDelay;
@@ -11,9 +12,13 @@ use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use App\Traits\ArticleCount;
 
 class ArticleController extends Controller
 {
+    //count相关函数被我抽出去了
+    use ArticleCount;
+
     public function __construct()
     {
         $this->middleware('auth.editor')->except('show', 'article_new');
@@ -97,6 +102,11 @@ class ArticleController extends Controller
         //delay
         $this->article_delay($request, $article);
 
+        //count article
+        $this->article_count($request->get('category_ids'), $article);
+        //count user
+        $this->article_user_count($article->words);
+
         return redirect()->to('/article/' . $article->id);
     }
 
@@ -130,6 +140,10 @@ class ArticleController extends Controller
             $article->hits_robot = $article->hits_robot + 1;
         }
         $article->save();
+
+        //fix_article_count
+
+        $this->article_coment_count($article);
 
         //fix for show
         $article->body = $this->fix_body($article->body);
@@ -215,7 +229,7 @@ class ArticleController extends Controller
         //is_top
         $this->article_is_top($request, $article);
 
-         //delay
+        //delay
         $this->article_delay($request, $article);
 
         //images
@@ -420,11 +434,11 @@ class ArticleController extends Controller
         return $images;
     }
 
-    public function article_delay($request,$article)
+    public function article_delay($request, $article)
     {
         if ($request->delay > 0) {
-            $article->status = 0;
-            $article->delay_time =now()->addHours($request->delay);
+            $article->status     = 0;
+            $article->delay_time = now()->addHours($request->delay);
             $article->save();
 
             ArticleDelay::dispatch($article->id)

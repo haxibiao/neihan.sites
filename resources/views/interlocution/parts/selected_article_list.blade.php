@@ -35,10 +35,11 @@
                 </div>
             </div>
             <div class="question_warp">
-
+                @if($item->relateImage())
                 <a class="wrap_img" href="/detail" target="_blank">
                     <img src="{{ $item->relateImage() }}"/>
                 </a>
+                @endif
 
                 <div class="content">
                     <p class="abstract">
