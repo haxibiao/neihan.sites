@@ -13,7 +13,7 @@ class AnswerController extends Controller
             $answer                 = Answer::findOrFail($id);
             $answer->count_likes    = $answer->count_likes ? $answer->count_likes : 0;
             $answer->count_unlikes  = $answer->count_unlikes ? $answer->count_unlikes : 0;
-            $answer->count_comments = $answer->commments()->count();
+            $answer->count_comments = $answer->comments()->count();
             $answer->count_reports  = $answer->count_reports ? $answer->count_reports : 0;
             return $answer;
         }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Category;
 use App\Http\Requests\ArticleRequest;
 use App\Image;
 use App\Jobs\ArticleDelay;
@@ -97,6 +98,9 @@ class ArticleController extends Controller
         //delay
         $this->article_delay($request, $article);
 
+        //count article
+        $this->article_count($request->get('category_ids'), $article);
+
         return redirect()->to('/article/' . $article->id);
     }
 
@@ -130,6 +134,10 @@ class ArticleController extends Controller
             $article->hits_robot = $article->hits_robot + 1;
         }
         $article->save();
+
+        //fix_article_count
+
+        $this->article_coment_count($article);
 
         //fix for show
         $article->body = $this->fix_body($article->body);
@@ -215,7 +223,7 @@ class ArticleController extends Controller
         //is_top
         $this->article_is_top($request, $article);
 
-         //delay
+        //delay
         $this->article_delay($request, $article);
 
         //images
@@ -420,15 +428,34 @@ class ArticleController extends Controller
         return $images;
     }
 
-    public function article_delay($request,$article)
+    public function article_delay($request, $article)
     {
         if ($request->delay > 0) {
-            $article->status = 0;
-            $article->delay_time =now()->addHours($request->delay);
+            $article->status     = 0;
+            $article->delay_time = now()->addHours($request->delay);
             $article->save();
 
             ArticleDelay::dispatch($article->id)
                 ->delay(now()->addHours($request->delay));
         }
+    }
+
+    public function article_count($category_ids, $article)
+    {
+        if ($article->status > 0) {
+            //update category article_count
+            foreach ($category_ids as $category_id) {
+                $category        = Category::find($category_id);
+                $category->count = $category->articles()->count();
+                $category->save();
+            }
+        }
+    }
+
+    public function article_coment_count($article)
+    {
+            $article->count_replies=$article->comments()->count();
+            $article->count_likes =$article->likes()->count();
+            $article->save();
     }
 }

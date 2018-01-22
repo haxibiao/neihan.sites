@@ -17,7 +17,7 @@
                 {{ $category->name }}
         </a>
             <p class="info_count">
-                收录了{{ $category->articles->count() }}篇文章 · {{ $category->count_follows }}人关注
+                收录了{{ $category->count }}篇文章 · {{ $category->count_follows }}人关注
             </p>
     </div>
 </div>

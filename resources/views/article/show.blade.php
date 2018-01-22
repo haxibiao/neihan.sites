@@ -48,7 +48,7 @@
                                     评论 {{ $article->count_replies }}
                                 </span>
                                 <span>
-                                    喜欢 {{ $article->count_favorites }}
+                                    喜欢 {{ $article->count_likes }}
                                 </span>
                             </div>
                         </div>

@@ -50,7 +50,7 @@ class Answer extends Model
         return $text;
     }
 
-    public function commments()
+    public function comments()
     {
         return $this->morphMany(\App\Comment::class, 'commentable');
     }

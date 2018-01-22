@@ -3,11 +3,11 @@
 namespace App\Traits;
 
 use App\Collection;
-use Auth;
 
-trait ArticleRelation{
+trait ArticleRelation
+{
 
-   public function user()
+    public function user()
     {
         return $this->belongsTo('App\User');
     }
@@ -25,6 +25,11 @@ trait ArticleRelation{
     public function categories()
     {
         return $this->belongsToMany(\App\Category::class)->withPivot('submit')->withTimestamps();
+    }
+
+    public function likes()
+    {
+        return $this->morphMany(\App\Like::class, 'liked');
     }
 
     public function tags1()
@@ -52,7 +57,7 @@ trait ArticleRelation{
         return $this->belongsToMany(\App\Collection::class);
     }
 
-    public function commments()
+    public function comments()
     {
         return $this->morphMany(\App\Comment::class, 'commentable');
     }
