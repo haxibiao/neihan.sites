@@ -11,10 +11,11 @@
         </div>
     </div>
     <div class="question_answers">
-
-        <a class="wrap_img" href="/detail" target="_blank">
+       @if($question->relateImage())
+        <a class="wrap_img" href="/question/{{ $question->id }}" target="_blank">
             <img src="{{ $question->relateImage()}}"/>
         </a>
+       @endif
 
         <div class="content">
             <div class="author">
@@ -25,7 +26,7 @@
                     <a href="/user/{{ $question->user->id }}" target="_blank" class="nickname">
                         {{ $question->user->name }}
                     </a>
-                    <a href="/detail" target="_blank">
+                    <a href="/question/{{ $question->id }}" target="_blank">
                         <img src="/images/verified.png" data-toggle="tooltip" data-placement="top" title="爱你城认证" class="badge_icon_xs"/>
                     </a>
                 </div>

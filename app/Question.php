@@ -56,10 +56,9 @@ class Question extends Model
         if (!empty($this->image1)) {
             return $this->image1;
         }
-
-        //default image
-        $defalut = rand(1, 8);
-        return "/images/details_0$defalut.jpeg";
+        
+        //实在没有 只能凉了
+        return 0;
     }
 
     //check question has img
