@@ -1,6 +1,6 @@
 {{-- 问答文章摘要 --}}
 @foreach ($questions as $question)
-<li class="article_item question">
+<li class="article_item question {{ $question->relateImage()?'have_img' :'' }}">
     <div class="question_title">
         <a class="headline paper_title" href="/question/{{ $question->id }}" target="_blank">
             <span>{{ $question->title }}</span>
@@ -31,9 +31,15 @@
                     </a>
                 </div>
             </div>
-            <p class="abstract">
-                {{ $question->background }}
-            </p>
+                <p class="abstract">
+           @if($question->latestAnswer)
+                {{  strip_tags($question->latestAnswer->answer)  }}
+           @else
+                {{ $question->backgorund }}
+           @endif
+               </p>
+   
+
             <div class="meta">
                 <a href="/question" target="_blank" class="count count_link">
                     <i class="iconfont icon-liulan">

@@ -141,6 +141,7 @@ class AnswerController extends Controller
     {
         $question=$answer->question;
         $question->count_answers++;
+        $question->latest_answer_id =$answer->id;
         $question->save();
     }
 }
