@@ -8,7 +8,7 @@
                     </h4>
                     <p class="abstract">
                         欢迎来到爱你城的推荐专题
-                    
+
                         {{ $category->description }}
                     </p>
                 </a>
@@ -23,7 +23,7 @@
                     <a href="/category/{{ $category->name_en }}" target="_blank">
                        {{ $category->count }}篇文章
                     </a>
-                   {{ $category->count_follows }}人关注
+                    · {{ $category->count_follows }}人关注
                 </div>
             </div>
         </div>
