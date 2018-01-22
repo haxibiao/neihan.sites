@@ -51,6 +51,44 @@ class SitemapController extends Controller
             $sitemap->model->resetItems();
         }
 
+        //question sitemaps
+
+        $counter        = 0;
+        $sitemapCounter = 0;
+
+        DB::table('questions')->orderBy('created_at','desc')->where('status','>=',0)->chunk(100,function($questions) use (&$sitemap, &$counter, &$sitemapCounter){
+               // add every product to multiple sitemaps with one sitemap index
+            foreach ($questions as $question) {
+                if ($counter == 500) {
+                    // generate new sitemap file
+                    $sitemap->store('xml', 'sitemap-question-' . $sitemapCounter);
+                    // add the file to the sitemaps array
+                    $sitemap->addSitemap(secure_url('sitemap-question-' . $sitemapCounter . '.xml'));
+                    // reset items array (clear memory)
+                    $sitemap->model->resetItems();
+                    // reset the counter
+                    $counter = 0;
+                    // count generated sitemap
+                    $sitemapCounter++;
+                }
+
+                // add product to items array
+                $sitemap->add('/question/' . $question->id, $question->updated_at, 1.0, 'daily');
+                // count number of elements
+                $counter++;
+            }
+        });
+
+        // you need to check for unused items
+        if (!empty($sitemap->model->getItems())) {
+            // generate sitemap with last items
+            $sitemap->store('xml', 'sitemap-question-' . $sitemapCounter);
+            // add sitemap to sitemaps array
+            $sitemap->addSitemap(secure_url('sitemap-question-' . $sitemapCounter . '.xml'));
+            // reset items array
+            $sitemap->model->resetItems();
+        }
+
         // generate new sitemapindex that will contain all generated sitemaps above
         $sitemap->store('sitemapindex', 'sitemap');
     }
