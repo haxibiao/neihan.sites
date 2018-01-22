@@ -34,7 +34,7 @@
 
                         <hr/>
                         <div class="recent">最新更新</div>
-                        <div class="count recent_update">
+                        <div class="count">
                             @foreach($user->newArticle() as $article)
                             <a href="/article/{{ $article->id }}" class="new" target="_blank">{{ $article->title }}</a>
                             @endforeach

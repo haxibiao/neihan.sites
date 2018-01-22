@@ -35,7 +35,7 @@
                         </a>
                         <hr/>
                         <div class="recent">最新更新</div>
-                        <div class="recent_update">
+                        <div class="count">
                             <a href="/v2/detail" class="new" target="_blank">一切都恰到好处</a>
                             <a href="/v2/detail" class="new" target="_blank">如果你只是凑合活着如果你只是凑合活着</a>
                             <a href="/v2/detail" class="new" target="_blank">我是头上长角的人，你最好不要靠近|海洋</a>
@@ -64,7 +64,7 @@
                         </a>
                         <hr/>
                         <div class="recent">最新更新</div>
-                        <div class="recent_update">
+                        <div class="count">
                             <a href="/v2/detail" class="new" target="_blank">一切都恰到好处</a>
                             <a href="/v2/detail" class="new" target="_blank">如果你只是凑合活着如果你只是凑合活着</a>
                             <a href="/v2/detail" class="new" target="_blank">我是头上长角的人，你最好不要靠近|海洋</a>
@@ -90,7 +90,7 @@
                         </a>
                         <hr/>
                         <div class="recent">最新更新</div>
-                        <div class="recent_update">
+                        <div class="count">
                             <a href="/v2/detail" class="new" target="_blank">一切都恰到好处</a>
                             <a href="/v2/detail" class="new" target="_blank">如果你只是凑合活着如果你只是凑合活着</a>
                             <a href="/v2/detail" class="new" target="_blank">我是头上长角的人，你最好不要靠近|海洋</a>
@@ -116,7 +116,7 @@
                         </a>
                         <hr/>
                         <div class="recent">最新更新</div>
-                        <div class="recent_update">
+                        <div class="count">
                             <a href="/v2/detail" class="new" target="_blank">一切都恰到好处</a>
                             <a href="/v2/detail" class="new" target="_blank">如果你只是凑合活着如果你只是凑合活着</a>
                             <a href="/v2/detail" class="new" target="_blank">我是头上长角的人，你最好不要靠近|海洋</a>
@@ -142,7 +142,7 @@
                         </a>
                         <hr/>
                         <div class="recent">最新更新</div>
-                        <div class="recent_update">
+                        <div class="count">
                             <a href="/v2/detail" class="new" target="_blank">一切都恰到好处</a>
                             <a href="/v2/detail" class="new" target="_blank">如果你只是凑合活着如果你只是凑合活着</a>
                             <a href="/v2/detail" class="new" target="_blank">我是头上长角的人，你最好不要靠近|海洋</a>
@@ -168,7 +168,7 @@
                         </a>
                         <hr/>
                         <div class="recent">最新更新</div>
-                        <div class="recent_update">
+                        <div class="count">
                             <a href="/v2/detail" class="new" target="_blank">一切都恰到好处</a>
                             <a href="/v2/detail" class="new" target="_blank">如果你只是凑合活着如果你只是凑合活着</a>
                             <a href="/v2/detail" class="new" target="_blank">我是头上长角的人，你最好不要靠近|海洋</a>
@@ -194,7 +194,7 @@
                         </a>
                         <hr/>
                         <div class="recent">最新更新</div>
-                        <div class="recent_update">
+                        <div class="count">
                             <a href="/v2/detail" class="new" target="_blank">一切都恰到好处</a>
                             <a href="/v2/detail" class="new" target="_blank">如果你只是凑合活着如果你只是凑合活着</a>
                             <a href="/v2/detail" class="new" target="_blank">我是头上长角的人，你最好不要靠近|海洋</a>
@@ -220,7 +220,7 @@
                         </a>
                         <hr/>
                         <div class="recent">最新更新</div>
-                        <div class="recent_update">
+                        <div class="count">
                             <a href="/v2/detail" class="new" target="_blank">一切都恰到好处</a>
                             <a href="/v2/detail" class="new" target="_blank">如果你只是凑合活着如果你只是凑合活着</a>
                             <a href="/v2/detail" class="new" target="_blank">我是头上长角的人，你最好不要靠近|海洋</a>

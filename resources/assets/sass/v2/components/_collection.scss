@@ -74,6 +74,9 @@
         line-height: 25px;
         height: 75px;
         overflow: hidden;
+        .new {
+            @include line_number (1);
+        }
     }
     .recent {
         @include spacing (-29px 0 0 0,0 10px 0 0);
@@ -81,11 +84,6 @@
         color: $color-gray;
         float: left;
         background-color: #f8f8f8;
-    }
-    .recent_update {
-        .new {
-            @include line_number (1);
-        }
     }
     &:hover {
         box-shadow: 0 5px 20px rgba(0,0,0,.1);
