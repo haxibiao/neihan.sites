@@ -15,7 +15,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['except' => ['index', 'show', 'videos', 'articles']]);
-        $this->middleware('auth.editor',['only'=>['index']]);
+        $this->middleware('auth.editor', ['only' => ['index']]);
     }
     /**
      * Display a listing of the resource.
@@ -132,7 +132,7 @@ class UserController extends Controller
         }
         $data['actions'] = $actions;
 
-         $data['actions_article']=Article::where('user_id', $user->id)->orderBy('id', 'desc')->where('status', 1)->paginate(40);
+        $data['actions_article'] = Article::where('user_id', $user->id)->orderBy('id', 'desc')->where('status', 1)->paginate(40);
 
         return view('user.show')
             ->withUser($user)
@@ -298,8 +298,8 @@ class UserController extends Controller
             }
         }
         $data['actions'] = $actions;
-        
-        $data['actions_article']=Article::where('user_id', $user->id)->orderBy('id', 'desc')->where('status', 1)->paginate(40);
+
+        $data['actions_article'] = Article::where('user_id', $user->id)->orderBy('id', 'desc')->where('status', 1)->paginate(40);
 
         return view('user.home')
             ->withData($data)
@@ -318,5 +318,17 @@ class UserController extends Controller
         return view('user.wallet')
             ->withUser($user)
             ->withTransactions($transactions);
+    }
+
+    public function follows(Request $request)
+    {
+        $user =$request->user();
+
+        $data['follows']=$user->followingUsers()->with('user')->orderBy('id','desc')->paginate(10);
+        $data['followers']=$user->follows()->with('user')->orderBy('id','desc')->paginate(10);
+
+        return view('user.follow')
+        ->withData($data)
+        ->withUser($user);
     }
 }
