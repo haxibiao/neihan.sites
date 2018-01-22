@@ -33,7 +33,7 @@ header {
                             right: auto;
                             a {
                                 i {
-                                    @include font (22px, $color-red-watermelon, normal);
+                                    @include font (22px, $color-theme, normal);
                                     margin-right: 15px;
                                     vertical-align: middle;
                                 }
@@ -100,7 +100,7 @@ header {
                     }
                     .active {
                         .identifier {
-                            color: $color-red-watermelon;
+                            color: $color-theme;
                             background-color: initial;
                         }
                     }
@@ -160,7 +160,7 @@ footer {
                     font-weight: 700;
                 }
                 .icon-shoucang1 {
-                    color: $color-red-watermelon;
+                    color: $color-theme;
                 }
             }
             &:hover {

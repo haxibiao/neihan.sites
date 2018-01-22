@@ -106,10 +106,10 @@
                         font-size: 17px;
                     }
                     .btn_pay {
-                        @include button (100px, 0, $color-red-watermelon);
+                        @include button (100px, 0, $color-theme);
                         cursor: pointer;
                         &:hover {
-                            background-color: $color-red-watermelon-deep;
+                            background-color: $color-theme-deep;
                         }
                     }
                     .supporter {
@@ -125,11 +125,11 @@
                     .like {
                         display: inline-block;
                         .like_group {
-                            @include button (190px, 1px solid $color-red-watermelon, inherit);
+                            @include button (190px, 1px solid $color-theme, inherit);
                             @include spacing (0, 13px 0 15px);
                             font-size: 0;
                             a {
-                                color: $color-red-watermelon;
+                                color: $color-theme;
                             }
                             .btn_like {
                                 font-size: 19px;
@@ -353,7 +353,7 @@
                                                     }
                                                     &:hover {
                                                         .icon-fabulous {
-                                                            color: $color-red-watermelon;
+                                                            color: $color-theme;
                                                         }
                                                         .icon-xinxi {
                                                             color: $color-black;
@@ -541,7 +541,7 @@
                     .title {
                         font-size: 15px;
                         padding-left: 8px;
-                        border-left: 3px solid $color-red-watermelon;
+                        border-left: 3px solid $color-theme;
                         line-height: 1;
                     }
                     .include_collection {
@@ -562,7 +562,7 @@
                         .title {
                             font-size: 15px;
                             padding-left: 8px;
-                            border-left: 3px solid $color-red-watermelon;
+                            border-left: 3px solid $color-theme;
                             line-height: 1;
                             a {
                                 float: right;

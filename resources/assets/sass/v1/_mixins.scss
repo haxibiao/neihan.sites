@@ -266,12 +266,12 @@
         margin-right: 10px;
     }
     .category_tag {
-        @include border (3px, 1px solid $color-red-watermelon);
-        color: $color-red-watermelon;
+        @include border (3px, 1px solid $color-theme);
+        color: $color-theme;
         padding: 3px;
         vertical-align: middle;
         &:hover {
-            color: $color-red-watermelon;
+            color: $color-theme;
             background-color: $color-white-milk;
         }
     }
@@ -465,7 +465,7 @@
             margin-right: 5px;
             font-weight: 700;
             .push_remove {
-                @include font (12px,$color-red-watermelon,400);
+                @include font (12px,$color-theme,400);
                 margin-left: 5px;
             }
         }
@@ -524,7 +524,7 @@
         vertical-align: middle;
     }
     .icon-nvsheng1 {
-        color: $color-red-watermelon;
+        color: $color-theme;
     }
     .icon-nansheng1 {
         color: $color-blue;
@@ -721,7 +721,7 @@
 // 消息提醒数量
 @mixin badge {
     padding: 3px 6px;
-    background-color: $color-red-watermelon;
+    background-color: $color-theme;
     font-size: 12px;
 }
 
@@ -819,8 +819,8 @@
                             border-color: hsla(0, 0%, 59%, .6);
                         }
                         .remove {
-                            color: $color-red-watermelon;
-                            border-color: $color-red-watermelon;
+                            color: $color-theme;
+                            border-color: $color-theme;
                         }
                         .repush {
                             width: 70px;

@@ -106,7 +106,7 @@ export default {
                     border-radius: 4px;
                     i {
                         font-size: 24px;
-                        color: #fd5b78;
+                        color: #d96a5f;
                         font-weight: 400;
                         margin-right: 15px;
                         vertical-align: middle;

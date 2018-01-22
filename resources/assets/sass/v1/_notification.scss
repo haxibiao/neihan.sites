@@ -25,7 +25,7 @@
                         line-height: 30px;
                         width: 100%;
                         i {
-                            @include font (24px, $color-red-watermelon);
+                            @include font (24px, $color-theme);
                             margin-right: 15px;
                             vertical-align: middle;
                         }
@@ -463,7 +463,7 @@
                                 text-align: center;
                                 vertical-align: middle;
                                 i {
-                                    @include font (30px, $color-red-watermelon);
+                                    @include font (30px, $color-theme);
                                 }
                             }
                             .name {
@@ -785,7 +785,7 @@
                                 display: block;
                                 i {
                                     margin-right: 5px;
-                                    color: $color-red-watermelon;
+                                    color: $color-theme;
                                     font-size: 20px;
                                 }
                                 a {

@@ -12,7 +12,7 @@
         a {
             font-size: 45px;
             .love {
-                color: $color-red-watermelon;
+                color: $color-theme;
             }
             .you {
                 color: $color-blue;
@@ -41,8 +41,8 @@
                     padding: 10px;
                 }
                 .active {
-                    @include font (inherit, $color-red-watermelon, 700);
-                    border-bottom: 2px solid $color-red-watermelon;
+                    @include font (inherit, $color-theme, 700);
+                    border-bottom: 2px solid $color-theme;
                 }
             }
         }

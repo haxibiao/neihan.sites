@@ -58,7 +58,7 @@
         &::after {
             left: 0;
             padding-right: 2px;
-            border-bottom-color: $color-red-watermelon;
+            border-bottom-color: $color-theme;
             border-right-color: #f8f8f8;
         }
     }
@@ -68,7 +68,7 @@
 .recommend_title {
     font-size: 15px;
     padding-left: 8px;
-    border-left: 3px solid $color-red-watermelon;
+    border-left: 3px solid $color-theme;
     line-height: 1;
     a {
         float: right;
@@ -95,7 +95,7 @@
         vertical-align: middle;
     }
     .icon-nvsheng1 {
-        color: $color-red-watermelon;
+        color: $color-theme;
     }
     .icon-nansheng1 {
         color: $color-blue;
@@ -125,7 +125,7 @@
 // 消息提醒数量
 .badge {
     padding: 3px 6px;
-    background-color: $color-red-watermelon;
+    background-color: $color-theme;
 }
 
 // 热门专题分类页和推荐作者页的标题图

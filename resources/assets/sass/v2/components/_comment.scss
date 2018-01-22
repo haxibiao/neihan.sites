@@ -12,9 +12,9 @@
         color: $color-gray;
         font-weight: 700;
         &.active {
-            background-color: $color-red-watermelon;
+            background-color: $color-theme;
             color: $color-white;
-            border: 1px solid $color-red-watermelon;
+            border: 1px solid $color-theme;
         }
     }
     .pull-right {
@@ -63,7 +63,7 @@
             &:hover {
                 color: $color-black;
                 .icon-fabulous {
-                    color: $color-red-watermelon;
+                    color: $color-theme;
                 }
             }
         }

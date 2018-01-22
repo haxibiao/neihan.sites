@@ -60,7 +60,7 @@ export default {
 	                            color: #2B89CA;
 	                        }
 	                        .money {
-	                            color: #fd5b78;
+	                            color: #d96a5f;
 	                        }
 	                    }
 	                }

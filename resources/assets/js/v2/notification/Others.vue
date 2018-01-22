@@ -64,7 +64,7 @@ export default {
                     .info {
                         i {
                             margin-right: 5px;
-                            color: #fd5b78;
+                            color: #d96a5f;
                             font-size: 20px;
                         }
                         .title {

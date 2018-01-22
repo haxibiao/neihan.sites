@@ -18,13 +18,13 @@
     }
     // 类别标签
     .category_tag {
-        @include border (3px, 1px solid $color-red-watermelon);
-        color: $color-red-watermelon;
+        @include border (3px, 1px solid $color-theme);
+        color: $color-theme;
         margin-right: 10px;
         padding: 3px;
         vertical-align: middle;
         &:hover {
-            color: $color-red-watermelon;
+            color: $color-theme;
             background-color: $color-white-milk;
         }
     }

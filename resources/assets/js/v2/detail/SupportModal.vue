@@ -149,8 +149,8 @@ export default {
 					input[type="radio"] {
 						display: none;
 						&:checked+.option {
-							color: #fd5b78;
-							border-color: #fd5b78;
+							color: #d96a5f;
+							border-color: #d96a5f;
 							.custom_text {
 								opacity: 0;
 							}
@@ -181,7 +181,7 @@ export default {
 							vertical-align: middle;
 						}
 						i {
-							color: #fd5b78;
+							color: #d96a5f;
 							vertical-align: middle;
 						}
 					}
@@ -263,7 +263,7 @@ export default {
 						.amount {
 							font-size: 28px;
 							font-weight: 700;
-							color: #fd5b78;
+							color: #d96a5f;
 						}
 					}
 					.choose_pay {
@@ -307,7 +307,7 @@ export default {
 					color: #787878;
 					font-size: 18px;
 					span {
-						color: #fd5b78;
+						color: #d96a5f;
 					}
 	        	}
 	        }

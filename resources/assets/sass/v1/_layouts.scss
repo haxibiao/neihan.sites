@@ -82,7 +82,7 @@ header {
                             right: auto;
                             a {
                                 i {
-                                    @include font (22px, $color-red-watermelon);
+                                    @include font (22px, $color-theme);
                                     margin-right: 15px;
                                     vertical-align: middle;
                                 }
@@ -122,9 +122,9 @@ header {
                         a {
                             @include button;
                             @include spacing (8px 0 5px 14px, 7px);
-                            background-color: $color-red-watermelon;
+                            background-color: $color-theme;
                             &:hover {
-                                background-color: $color-red-watermelon-deep;
+                                background-color: $color-theme-deep;
                             }
                             i {
                                 font-size: 18px;
@@ -134,11 +134,11 @@ header {
                     } // 注册
                     .register {
                         a {
-                            @include button (70px, 1px solid $color-red-watermelon, inherit, none);
+                            @include button (70px, 1px solid $color-theme, inherit, none);
                             @include spacing (8px 0 5px, 6px);
-                            color: $color-red-watermelon;
+                            color: $color-theme;
                             &:hover {
-                                border-color: $color-red-watermelon-deep;
+                                border-color: $color-theme-deep;
                                 background-color: $color-white-milk;
                             }
                         }
@@ -165,7 +165,7 @@ header {
                     }
                     .active {
                         a {
-                            color: $color-red-watermelon;
+                            color: $color-theme;
                             background-color: initial;
                         }
                     }
@@ -371,8 +371,8 @@ footer {
             .submit {
                 @include news_button;
                 @include spacing (0 0 0 30px, 2px 4px);
-                color: $color-red-watermelon;
-                border-color: $color-red-watermelon;
+                color: $color-theme;
+                border-color: $color-theme;
                 width: 52px;
                 font-size: 13px;
             }
@@ -410,7 +410,7 @@ footer {
                     font-weight: 700;
                 }
                 .icon-shoucang1 {
-                    color: $color-red-watermelon;
+                    color: $color-theme;
                 }
             }
             &:hover {

@@ -73,21 +73,21 @@
 
 // 详情页赞赏支持
 .btn_pay {
-    @include btn (116px,0,$color-red-watermelon,$color-white);
+    @include btn (116px,0,$color-theme,$color-white);
     &:hover,&:focus {
-        background-color: $color-red-watermelon-deep;
+        background-color: $color-theme-deep;
         color: $color-white;
     }
 }
 
 // 详情页未喜欢
 .btn_like_group {
-    @include btn (190px, 1px solid $color-red-watermelon, inherit, $color-red-watermelon);
+    @include btn (190px, 1px solid $color-theme, inherit, $color-theme);
     padding: 13px 0 15px;
     a {
-        color: $color-red-watermelon;
+        color: $color-theme;
         &:hover,&:focus {
-            color: $color-red-watermelon;
+            color: $color-theme;
         }
     }
     .btn_like {
@@ -112,13 +112,13 @@
     }
     &:hover {
         background-color: #fff6f8;
-        color: $color-red-watermelon;
+        color: $color-theme;
     }
 }
 
 // 详情页已喜欢
 .btn_like_group_active {
-    background-color: $color-red-watermelon;
+    background-color: $color-theme;
     a {
         color: $color-white;
         &:hover,&:focus {
@@ -126,7 +126,7 @@
         }
     }
     &:hover {
-        background-color: $color-red-watermelon;
+        background-color: $color-theme;
     }
 }
 
@@ -142,20 +142,20 @@
 
 // 头部登录按钮
 .btn_register {
-    @include btn (70px,1px solid $color-red-watermelon,inherit,$color-red-watermelon);
+    @include btn (70px,1px solid $color-theme,inherit,$color-theme);
     padding: 6px;
     &:hover,&:focus {
         background-color: #fff6f8;
-        color: $color-red-watermelon;
+        color: $color-theme;
     }
 }
 
 // 头部写文章,提问按钮
 .btn_creation {
-    @include btn (100px,0,$color-red-watermelon,$color-white);
+    @include btn (100px,0,$color-theme,$color-white);
     padding: 7px;
     &:hover,&:focus {
-        background-color: $color-red-watermelon-deep;
+        background-color: $color-theme-deep;
         color: $color-white;
     }
     i {
@@ -234,21 +234,21 @@
 
 // 消息页移除按钮
 .btn_remove {
-    @include btn (40px,1px solid $color-red-watermelon,inherit,$color-red-watermelon);
+    @include btn (40px,1px solid $color-theme,inherit,$color-theme);
     padding: 0 2px;
     font-size: 12px;
     &:hover,&:focus {
         background-color: #fff6f8;
-        color: $color-red-watermelon;
+        color: $color-theme;
     }
 }
 
 // 消息页移除按钮
 .btn_font_remove {
-    @include font (12px,$color-red-watermelon,400);
+    @include font (12px,$color-theme,400);
     margin-left: 5px;
     &:hover,&:focus {
-        color: $color-red-watermelon;
+        color: $color-theme;
     }
 }
 

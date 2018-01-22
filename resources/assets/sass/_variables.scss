@@ -37,6 +37,12 @@ $input-color-placeholder: lighten($text-color, 30%);
 // Panels
 $panel-default-heading-bg: #fff;
 
+
+// 主题色
+$color-theme: #d96a5f;
+// 深主题色
+$color-theme-deep: #d75f53;
+
 // 黑色
 $color-black: #333;
 // 白色
@@ -55,10 +61,6 @@ $color-gray-shallow: #b4b4b4;
 $color-gray: #969696;
 // 深灰色
 $color-gray-deep: #646464;
-// 西瓜红
-$color-red-watermelon: #fd5b78;
-// 深西瓜红
-$color-red-watermelon-deep: #f04665;
 // 绿色
 $color-green: #42c02e;
 // 蓝色

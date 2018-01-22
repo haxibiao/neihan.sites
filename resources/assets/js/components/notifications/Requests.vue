@@ -76,7 +76,7 @@ export default {
                         margin-right: 10px;
                         i {
                             font-size: 28px;
-                            color: #fd5b78;
+                            color: #d96a5f;
                             font-weight: 700;
                         }
                     }

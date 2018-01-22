@@ -11,14 +11,8 @@
         top: 50px;
         a {
             font-size: 45px;
-            .love {
-                color: $color-red-watermelon;
-            }
-            .you {
-                color: $color-blue;
-            }
-            .city {
-                color: #ff9d23;
+            span {
+                color: $color-theme;
             }
         }
     }
@@ -41,8 +35,8 @@
                     padding: 10px;
                 }
                 .active {
-                    @include font (inherit, $color-red-watermelon, 700);
-                    border-bottom: 2px solid $color-red-watermelon;
+                    @include font (inherit, $color-theme, 700);
+                    border-bottom: 2px solid $color-theme;
                 }
             }
         }
