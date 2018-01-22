@@ -32,9 +32,9 @@ class Article extends Model
 
     public function description()
     {
-        $description = html_entity_decode($this->description);
-        $body        = html_entity_decode($this->body);
-        return !empty($this->description) ? $this->description : str_limit(strip_tags($this->body), 200);
+        $description = empty($this->description) ? str_limit(strip_tags($this->body), 200) : str_limit($this->description, 200);
+        $description = html_entity_decode($description);
+        return $description;
     }
 
     public function primaryImage()

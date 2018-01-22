@@ -62,7 +62,7 @@ class IndexController extends Controller
                 $article->primary_image = $article->primaryImage();
                 $article->small_img    = get_small_image($article->image_url);
                 $article->user->avatar = $article->user->avatar();
-                $article->description  = $article->description ? $article->description : str_limit(strip_tags($article->body));
+                $article->description  = $article->description();
             }
             return $articles;
         }
