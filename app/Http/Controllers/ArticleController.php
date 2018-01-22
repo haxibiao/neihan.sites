@@ -12,9 +12,13 @@ use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use App\Traits\ArticleCount;
 
 class ArticleController extends Controller
 {
+    //count相关函数被我抽出去了
+    use ArticleCount;
+
     public function __construct()
     {
         $this->middleware('auth.editor')->except('show', 'article_new');
@@ -100,6 +104,8 @@ class ArticleController extends Controller
 
         //count article
         $this->article_count($request->get('category_ids'), $article);
+        //count user
+        $this->article_user_count($article->words);
 
         return redirect()->to('/article/' . $article->id);
     }
@@ -438,24 +444,5 @@ class ArticleController extends Controller
             ArticleDelay::dispatch($article->id)
                 ->delay(now()->addHours($request->delay));
         }
-    }
-
-    public function article_count($category_ids, $article)
-    {
-        if ($article->status > 0) {
-            //update category article_count
-            foreach ($category_ids as $category_id) {
-                $category        = Category::find($category_id);
-                $category->count = $category->articles()->count();
-                $category->save();
-            }
-        }
-    }
-
-    public function article_coment_count($article)
-    {
-            $article->count_replies=$article->comments()->count();
-            $article->count_likes =$article->likes()->count();
-            $article->save();
     }
 }
