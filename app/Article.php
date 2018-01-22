@@ -32,6 +32,8 @@ class Article extends Model
 
     public function description()
     {
+        $description = html_entity_decode($this->description);
+        $body        = html_entity_decode($this->body);
         return !empty($this->description) ? $this->description : str_limit(strip_tags($this->body), 200);
     }
 
