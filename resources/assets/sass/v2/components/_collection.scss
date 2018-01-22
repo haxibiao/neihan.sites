@@ -57,6 +57,9 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+        .abstract {
+            height: 67px;
+        }
     }
     hr {
         background-color: #eaeaea;
@@ -68,6 +71,9 @@
         font-size: 14px;
         padding-bottom: 10px;
         width: 100%;
+        line-height: 25px;
+        height: 75px;
+        overflow: hidden;
     }
     .recent {
         @include spacing (-29px 0 0 0,0 10px 0 0);
@@ -77,9 +83,6 @@
         background-color: #f8f8f8;
     }
     .recent_update {
-        padding-bottom: 10px;
-        line-height: 25px;
-        font-size: 13px;
         .new {
             @include line_number (1);
         }

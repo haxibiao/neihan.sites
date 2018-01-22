@@ -111,7 +111,7 @@
         }
     }
     &:hover {
-        background-color: #fff6f8;
+        background-color: $color-theme-light;
         color: $color-theme;
     }
 }
@@ -140,12 +140,12 @@
     }
 }
 
-// 头部登录按钮
+// 头部注册按钮
 .btn_register {
     @include btn (70px,1px solid $color-theme,inherit,$color-theme);
     padding: 6px;
     &:hover,&:focus {
-        background-color: #fff6f8;
+        background-color: $color-theme-light;
         color: $color-theme;
     }
 }
@@ -238,7 +238,7 @@
     padding: 0 2px;
     font-size: 12px;
     &:hover,&:focus {
-        background-color: #fff6f8;
+        background-color: $color-theme-light;
         color: $color-theme;
     }
 }

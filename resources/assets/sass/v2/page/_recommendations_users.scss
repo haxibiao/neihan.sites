@@ -5,7 +5,6 @@
         .row {
             margin-top: 20px;
             .recommend_list {
-                height: 400px;
                 @media screen and (min-width: 450px) and (max-width: 768px) {
                     width: 50%;
                     .collection_wrap {

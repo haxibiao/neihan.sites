@@ -46,7 +46,7 @@
         <share class="action_btn" placement="top">
             <span>分享</span>
         </share>
-    	<div class="inform">
+    	<div class="inform action_btn">
     		<i class="iconfont icon-jinggao"></i>
     		<span>举报</span>
     	</div>

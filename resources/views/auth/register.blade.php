@@ -37,19 +37,19 @@
                  {{ csrf_field() }}
 
                         <div class="input_prepend restyle">
-                            <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus placeholder="你的昵称">
+                            <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus placeholder="你的昵称">
                             <i class="iconfont icon-yonghu01">
                             </i>
                         </div>
 
                         <div class="input_prepend restyle no_radius">
-                            <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required placeholder="邮箱">
+                            <input id="email" type="email" name="email" value="{{ old('email') }}" required placeholder="邮箱">
                             <i class="iconfont icon-ordinarymobile">
                             </i>
                         </div>
 
                         <div class="input_prepend">
-                             <input id="password" type="password" class="form-control" name="password" required placeholder="设置密码">
+                             <input id="password" type="password" name="password" required placeholder="设置密码">
                             <i class="iconfont icon-suo2">
                             </i>
                         </div>
@@ -92,13 +92,13 @@
                     </li>
                 </ul>
             </div> --}}
-                    <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">                
+                    <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                         <small class="text-danger">{{ $errors->first('name') }}</small>
                     </div>
-                    <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">                
+                    <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                         <small class="text-danger">{{ $errors->first('email') }}</small>
                     </div>
-                    <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">                
+                    <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                         <small class="text-danger">{{ $errors->first('password') }}</small>
                     </div>
         </div>
