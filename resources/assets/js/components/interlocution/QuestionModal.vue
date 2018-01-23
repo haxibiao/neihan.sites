@@ -38,8 +38,8 @@
                             <div class="tab-body-item" v-show="tabActive=='free'">
                                 <div class="material-search">
                                     <div class="search-icon"><i class="iconfont icon-sousuo"></i></div>
-                                    <input type="text" class="search-input" placeholder="免费图片由「爱你城」提供">
-                                    <input type="button" value="搜索" class="search-submit">
+                                    <input type="text" class="search-input" placeholder="免费图片由「爱你城」提供" v-model="query" @keyup.enter="searchImages">
+                                    <input type="button" value="搜索" class="search-submit" @click="searchImages">
                                 </div>
                                 <div class="img-container">
                                     <div class="img-container-outer">
@@ -182,6 +182,25 @@ import Dropzone from '../../plugins/Dropzone';
                 alert('提交失败');
             }
         )
+    },
+
+    searchImages(event){
+       event.preventDefault();
+       var vm=this;
+       var api=window.tokenize('/api/question/image?q='+this.query);
+       window.axios.get(api).then(function(response){
+            var images=response.data;
+            for(var i in images){
+                 var image=images[i];
+                 var imgs=[];
+                 imgs.push({
+                      img:image.path,
+                      title:image.title,
+                      selected:0
+                 });
+                 vm.imgItems =imgs.concat(vm.imgItems);
+            }
+       });
     }
   },
 
@@ -190,6 +209,7 @@ import Dropzone from '../../plugins/Dropzone';
         description:'',
         tabActive:'free',
         filesCount: 0,
+        query:null,
         top3Imgs:[],
         imgItems: [
             {'img':'/images/photo_01.jpg','selected': 0},
