@@ -17,12 +17,12 @@
                         {{ $article->title }}
                     </h1>
                     <div class="author">
-                        <a class="avatar" href="/user/{{ $user->id }}">
+                        <a class="avatar" href="/user/{{ $article->user->id }}">
                             <img src="{{ $article->user->avatar }}"/>
                         </a>
                         <div class="info">
                             <span class="nickname">
-                                <a href="/user/{{ $user->id }}">
+                                <a href="/user/{{ $article->user->id }}">
                                     {{ $article->user->name }}
                                 </a>
                             </span>
