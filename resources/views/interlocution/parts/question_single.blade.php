@@ -28,29 +28,10 @@
     </div>
     @endif
 
-    <div class="question_bottom">
-                <a href="javascript:;" class="action_btn">
-          {{-- <i class="iconfont icon-shoucang"></i> --}}
-{{--             <i class="iconfont icon-shoucang"></i>
-            <span>收藏问题{{ $question->count_favorites }}</span> --}}
-            <favorite-question question-id="{{ $question->id }}"></favorite-question>
-            <span>收藏问题({{ $question->count_favorites }})</span>
-        </a>
+    {{-- 问题的工具 --}}
+    <question-tool></question-tool>
 
 
-
-    	<a href="javascript:;" class="action_btn">
-    		<i class="iconfont icon-guanzhu"></i>
-    		<span>邀请回答</span>
-    	</a>
-        <share class="action_btn" placement="top">
-            <span>分享</span>
-        </share>
-    	<div class="inform action_btn">
-    		<i class="iconfont icon-jinggao"></i>
-    		<span>举报</span>
-    	</div>
-    </div>
     @if(Auth::check())
     <div class="answer_write">
       <form method="post"  action="{{ route('answer.store') }}">

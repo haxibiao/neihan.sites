@@ -1,0 +1,31 @@
+// 编辑器工具栏悬浮固定
+.simditor-toolbar {
+    top:52px!important;
+}
+
+// 提问回答页的发表答案
+.answer_write {
+    position: relative;
+    .optimum {
+        margin-bottom: 10px;
+        .suggest_title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            .depict {
+                font-size: 10px;
+                background-color: #777;
+                color: $color-white;
+                padding: 3px 6px;
+                border-radius: 4px;
+            }
+        }
+    }
+    .submitbar {
+        position: absolute;
+        height: 45px;
+        bottom: 0;
+        right: 7px;
+        z-index: 1;
+    }
+}

@@ -46,51 +46,6 @@
                             margin-right: 10px;
                         }
                     }
-                    .question_bottom {
-                        margin-bottom: 20px;
-                        i {
-                            font-size: 16px;
-                            margin-right: 3px;
-                        }
-                        .action_btn {
-                            font-size: 14px;
-                            color: $color-gray;
-                            margin-right: 30px;
-                            &:hover {
-                                color: $color-black;
-                            }
-                        }
-                        .inform {
-                            float: right;
-                            cursor: pointer;
-                            margin: 0;
-                        }
-                    }
-                    .answer_write {
-                        position: relative;
-                        .optimum {
-                            margin-bottom: 10px;
-                            .suggest_title {
-                                font-size: 15px;
-                                font-weight: 700;
-                                margin-bottom: 5px;
-                                .depict {
-                                    font-size: 10px;
-                                    background-color: #777;
-                                    color: $color-white;
-                                    padding: 3px 6px;
-                                    border-radius: 4px;
-                                }
-                            }
-                        }
-                        .submitbar {
-                            position: absolute;
-                            height: 45px;
-                            bottom: 0;
-                            right: 7px;
-                            z-index: 1;
-                        }
-                    }
                     .answers {
                         margin-top: 30px;
                         .note_answers {
@@ -115,43 +70,6 @@
                                             padding-right: 110px;
                                             .nickname {
                                                 font-weight: 700;
-                                            }
-                                        }
-                                    }
-                                }
-                                .article_content {
-                                    position: relative;
-                                    &.fold {
-                                        .answer_text_full {
-                                            max-height: 300px;
-                                            overflow: hidden;
-                                        }
-                                        .expand_bottom {
-                                            display: block;
-                                        }
-                                    }
-                                }
-                                .tool_cabinet {
-                                    .answer_tool {
-                                        .tool_group {
-                                            margin: 20px 0;
-                                        }
-                                    }
-                                    .comment_list {
-                                        background-color: $color-white-milk;
-                                        border-radius: 2px;
-                                        padding: 20px;
-                                        .normal_comment_list {
-                                            margin-top: 30px;
-                                            .top_title {
-                                                border-color: #DDDDDD;
-                                            }
-                                            .comment {
-                                                padding: 20px 0;
-                                                border-bottom: 1px solid #DDDDDD;
-                                                &:last-child {
-                                                    border-bottom: 0;
-                                                }
                                             }
                                         }
                                     }
