@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Answer;
 use App\Http\Controllers\Controller;
 use App\Question;
+use App\Image;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -23,11 +24,11 @@ class QuestionController extends Controller
 
     public function search_question_image(Request $request)
     {
-        $query  = $request->get('search');
+        $query  = $request->get('q');
         $images = Image::where('title', 'like', '%' . $query . '%')
             ->orderBy('id', 'desc')
             ->take(10)
-            ->pluck('path_small', 'id');
+            ->get();
 
         return $images;
     }

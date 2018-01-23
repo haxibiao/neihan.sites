@@ -85,20 +85,24 @@
                             <p class="small text-info">
                                 已启动定时发布于: ({{ $article->delay_time }})
                             </p>
-                            @endif
+                @endif
                             <small class="text-danger">
                                 {{ $errors->first('delay') }}
                             </small>
                         </div>
                     </div>
                 </div>
-                <div class="form-group{{ $errors->has('keywords') ? ' has-error' : '' }}">
-                    {!! Form::label('keywords', '关键词(用英文,隔开 或者按Tab键自动隔开关键词)') !!}
+
+
+            <div class="form-group{{ $errors->has('keywords') ? ' has-error-for-editor' : '' }}">
+            {!! Form::label('keywords', '关键词(用英文,隔开 或者按Tab键自动隔开关键词)') !!}
+            <div class="row">
+            <div class="col-md-12">
             {!! Form::text('keywords', str_replace(' ',',',$article->keywords), ['class' => 'form-control', 'required' => 'required', 'data-role' => 'tagsinput']) !!}
-                    <small class="text-danger">
-                        {{ $errors->first('keywords') }}
-                    </small>
-                </div>
+            </div>
+            </div>
+            <small class="text-danger">{{ $errors->first('keywords') }}</small>
+            </div>
                 {{--
                 <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                     {!! Form::label('description', '简介') !!}
@@ -146,5 +150,4 @@
 
 @push('css')
 <link href="/css/simditor.css" rel="stylesheet" type="text/css">
-    @endpush
-</link>
+@endpush

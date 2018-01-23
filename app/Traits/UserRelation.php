@@ -18,6 +18,11 @@ trait UserRelation
         return $this->hasMany(\App\Follow::class);
     }
 
+    public function followingUsers()
+    {
+        return $this->hasMany(\App\Follow::class)->where('followed_type', 'users');
+    }
+
     //取出该用户关注的专题
     public function followingCategories()
     {

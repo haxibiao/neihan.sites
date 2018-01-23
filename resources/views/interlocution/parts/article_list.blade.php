@@ -1,6 +1,6 @@
 {{-- 问答文章摘要 --}}
 @foreach ($questions as $question)
-<li class="article_item question">
+<li class="article_item question {{ $question->relateImage()?'have_img' :'' }}">
     <div class="question_title">
         <a class="headline paper_title" href="/question/{{ $question->id }}" target="_blank">
             <span>{{ $question->title }}</span>
@@ -19,21 +19,42 @@
 
         <div class="content">
             <div class="author">
+                @if($question->latestAnswer)
+                <a class="avatar" href="/user/{{ $question->latestAnswer->user->id }}" target="_blank">
+                    <img src="{{ $question->latestAnswer->user->avatar }}"/>
+                </a>
+                @else
                 <a class="avatar" href="/user/{{ $question->user->id }}" target="_blank">
                     <img src="{{ $question->user->avatar }}"/>
                 </a>
+                @endif
                 <div class="info_meta">
+                    @if($question->latestAnswer)
+                    <a href="/user/{{ $question->latestAnswer->user->id }}" target="_blank" class="nickname">
+                        {{ $question->latestAnswer->user->name }}
+                    </a>
+                    <a href="/question/{{ $question->id }}" target="_blank">
+                        <img src="/images/verified.png" data-toggle="tooltip" data-placement="top" title="爱你城认证" class="badge_icon_xs"/>
+                    </a>
+                    @else
                     <a href="/user/{{ $question->user->id }}" target="_blank" class="nickname">
                         {{ $question->user->name }}
                     </a>
                     <a href="/question/{{ $question->id }}" target="_blank">
                         <img src="/images/verified.png" data-toggle="tooltip" data-placement="top" title="爱你城认证" class="badge_icon_xs"/>
                     </a>
+                    @endif
                 </div>
             </div>
-            <p class="abstract">
-                {{ $question->background }}
-            </p>
+                <p class="abstract">
+           @if($question->latestAnswer)
+                {{  strip_tags($question->latestAnswer->answer)  }}
+           @else
+                {{ $question->backgorund }}
+           @endif
+               </p>
+   
+
             <div class="meta">
                 <a href="/question" target="_blank" class="count count_link">
                     <i class="iconfont icon-liulan">
