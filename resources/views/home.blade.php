@@ -140,6 +140,8 @@
                             <a class="btn btn-primary top5" href="/video/create" role="button">创建视频</a>
                             <a class="btn btn-warning top5" href="/video" role="button">管理视频</a>
                             <a class="btn btn-danger top5" href="/category?type=video" role="button">视频分类</a>
+                            <a class="btn btn-info top5" href="/music/create" role="button">创建音乐</a>
+                            <a class="btn btn-primary top5" href="/music" role="button">管理音乐</a>
                         </div>
                     </div>
                 </div>
