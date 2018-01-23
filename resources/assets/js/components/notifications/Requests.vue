@@ -19,7 +19,7 @@
 					</div>
 					<div class="name">
 						{{ category.name }}
-						<p class="new_abstract">
+						<p class="new_abstract single_line">
               {{ category.description }}
             </p>
 					</div>

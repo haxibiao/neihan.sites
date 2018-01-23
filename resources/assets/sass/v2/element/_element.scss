@@ -152,3 +152,10 @@
         }
     }
 }
+
+// 单行
+.single_line {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

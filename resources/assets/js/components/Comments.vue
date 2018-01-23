@@ -87,21 +87,21 @@
                                 {{ comment.body }}
                             </p>
                             <div class="tool_group">
-                                <a href="javascript:;">
+                                <a href="javascript:;" class="action_btn">
                                     <i class="iconfont icon-fabulous">
                                     </i>
                                     <span @click="likeComment(comment)" v-if="!comment.liked">
                                         赞
                                     </span>
                                 </a>
-                                <a href="javascript:;">
+                                <a href="javascript:;" class="action_btn">
                                     <i class="iconfont icon-xinxi">
                                     </i>
                                     <span>
                                         回复
                                     </span>
                                 </a>
-                                <a class="report" href="javascript:;">
+                                <a class="report action_btn" href="javascript:;">
                                     <span>
                                         举报
                                     </span>
@@ -126,14 +126,14 @@
                                     <span class="comment_time">
                                         {{ reply.created_at }}
                                     </span>
-                                    <a href="#">
+                                    <a href="#" class="action_btn">
                                         <i class="iconfont icon-xinxi">
                                         </i>
                                         <span>
                                             回复
                                         </span>
                                     </a>
-                                    <a class="report" href="#">
+                                    <a class="report action_btn" href="#">
                                         举报
                                     </a>
                                 </div>

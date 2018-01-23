@@ -2,38 +2,38 @@
     <div class="tool_cabinet">
         <div class="answer_tool comment_wrap">
             <div class="tool_group">
-                <a href="javascript:;" @click="likeAnswer">
+                <a href="javascript:;" @click="likeAnswer" class="action_btn">
                     <i :class="['iconfont', answer.liked ? 'icon-dianzan' : 'icon-fabulous']">
                     </i>
                     <span>
                         {{ this.answer.count_likes }} 赞
                     </span>
                 </a>
-                <a href="javascript:;" @click="unlikeAnswer">
+                <a href="javascript:;" @click="unlikeAnswer" class="action_btn">
                     <i :class="['iconfont',answer.unliked ? 'icon-zan2'  :'icon-dianzan1']">
                     </i>
                     <span>
                         {{ this.answer.count_unlikes }} 踩
                     </span>
                 </a>
-                <a href="javascript:;" @click="showComment">
+                <a href="javascript:;" @click="showComment" class="action_btn">
                     <i class="iconfont icon-xinxi">
                     </i>
                     <span>
                         {{ this.answer.count_comments }} 评论
                     </span>
                 </a>
-                <share placement="top">
+                <share placement="top" class="action_btn">
                     <span>分享</span>
                 </share>
-                <a class="pull-right" href="#" v-if="this.isLogin && isSelf && answer.deleted" @click="deleteAnswer">
+                <a class="pull-right action_btn" href="#" v-if="this.isLogin && isSelf && answer.deleted" @click="deleteAnswer">
                     <i class="iconfont icon-lajitong"></i>
                     <span>
                         删除
                     </span>
                 </a>
 
-                <a v-else class="inform pull-right" @click="reportAnswer">
+                <a v-else class="pull-right action_btn" @click="reportAnswer">
                         <i class="iconfont icon-jinggao"></i>
                         <span>举报({{ this.answer.count_reports }})</span>
                 </a>

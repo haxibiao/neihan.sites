@@ -19,7 +19,7 @@
 					</div>
 					<div class="name">
 						王者荣耀
-						<p class="new_abstract">有新投稿《起风了，谁是下一个王者荣耀？》</p>
+						<p class="new_abstract single_line">有新投稿《起风了，谁是下一个王者荣耀？》</p>
 					</div>
 				</router-link>
 			</li>
@@ -39,7 +39,7 @@
 					</div>
 					<div class="name">
 						暗恋
-						<p class="new_abstract">有新投稿《为什么说被马化腾点赞的《王者荣耀》已成为全球最赚钱的游戏？》</p>
+						<p class="new_abstract single_line">有新投稿《为什么说被马化腾点赞的《王者荣耀》已成为全球最赚钱的游戏？》</p>
 					</div>
 				</router-link>
 			</li>

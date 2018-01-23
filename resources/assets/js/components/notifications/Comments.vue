@@ -20,15 +20,15 @@
 				<div class="comment_wrap">
 					<div class="tool_group">
 						<p>{{ notification.comment }}</p>
-						<a :href="'/article/'+notification.article_id+'#'+notification.lou">
+						<a :href="'/article/'+notification.article_id+'#'+notification.lou" class="action_btn">
 							<i class="iconfont icon-xinxi2"></i>
 							<span>回复</span>
 						</a>
-						<a :href="'/article/'+notification.article_id+'#1'">
+						<a :href="'/article/'+notification.article_id+'#1'" class="action_btn">
 							<i class="iconfont icon-zhuanfa2"></i>
 							<span>查看对话</span>
 						</a>
-						<a href="javascript: ;" class="report">
+						<a href="javascript: ;" class="report action_btn">
 							<span>举报</span>
 						</a>
 					</div>
@@ -94,7 +94,7 @@ export default {
                         }
                     }
                     .tool_group {
-                    	a {
+                    	.action_btn {
 	                        font-size: 13px;
 	                        i {
 	                            font-size: 15px;

@@ -232,6 +232,7 @@
 // 文章内容
 .article_content {
     @include font (16px, $color-black, 400);
+    position: relative;
     p {
         margin-bottom: 20px;
         line-height: 1.7;
@@ -261,6 +262,15 @@
         background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
         background-image: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
         background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+    }
+    &.fold {
+        .answer_text_full {
+            max-height: 300px;
+            overflow: hidden;
+        }
+        .expand_bottom {
+            display: block;
+        }
     }
 }
 

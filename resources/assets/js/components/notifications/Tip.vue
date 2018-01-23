@@ -1,6 +1,5 @@
 <template>
 	<!-- 收到的赞赏 -->
-	<!-- 收到的赞赏 -->
 	<div id="tip">
 		<div class="notification_menu">收到的赞赏</div>
 		<ul class="tip_list">
@@ -44,11 +43,9 @@ export default {
 	        li {
 	            padding: 20px;
 	            border-top: 1px solid #f0f0f0;
+	            display: inline-block;
 	            .author {
 	                font-size: 15px;
-	                .avatar {
-	                    float: left;
-	                }
 	                .info_meta {
 	                    line-height: 1.7;
 	                    padding: 0 0 0 50px;
@@ -68,6 +65,7 @@ export default {
 	            .btn_base {
 	                font-size: 12px;
 	                padding: 5px;
+	                float: right;
 	            }
 	            @media screen and (max-width: 540px) {
 	                padding: 20px 5px;

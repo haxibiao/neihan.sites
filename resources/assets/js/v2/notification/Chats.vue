@@ -52,7 +52,7 @@
                 </a>
                 <a class="name" href="/v2/user">喵星菇凉</a>
                 <router-link to="/chat/1" class="wrap">
-                    <p class="new_abstract">
+                    <p class="new_abstract single_line">
                         呵呵哒
                     </p>
                 </router-link>
@@ -103,7 +103,7 @@
                 </a>
                 <a class="name" href="/v2/user">小食神</a>
                 <router-link to="/chat/2" class="wrap">
-                    <p class="new_abstract">
+                    <p class="new_abstract single_line">
                         欢迎加入丰富多彩的原创内容社区——懂美味。有任何疑问（如何投稿，专题主编，签约作者）可以随时联系我哟。
                     </p>
                 </router-link>

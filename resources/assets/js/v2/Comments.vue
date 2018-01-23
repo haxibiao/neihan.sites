@@ -78,21 +78,21 @@
                                 {{ comment.body }}
                             </p>
                             <div class="tool_group">
-                                <a href="javascript:;">
+                                <a href="javascript:;" class="action_btn">
                                     <i class="iconfont icon-fabulous">
                                     </i>
                                     <span v-if="!comment.liked" @click="likeComment(comment)">
                                           赞
                                     </span>
                                 </a>
-                                <a href="javascript:;">
+                                <a href="javascript:;" class="action_btn">
                                     <i class="iconfont icon-xinxi">
                                     </i>
                                     <span>
                                         回复
                                     </span>
                                 </a>
-                                <a class="report" href="javascript:;">
+                                <a class="report action_btn" href="javascript:;">
                                     <span>
                                         举报
                                     </span>

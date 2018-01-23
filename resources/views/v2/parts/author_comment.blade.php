@@ -47,21 +47,21 @@
                                 (2015年10月入坑，且已到贵族五，假设下所有人都充到了贵族五的话。。。)
                             </p>
                             <div class="tool_group">
-                                <a href="#">
+                                <a href="#" class="action_btn">
                                     <i class="iconfont icon-fabulous">
                                     </i>
                                     <span>
                                         赞
                                     </span>
                                 </a>
-                                <a href="#">
+                                <a href="#" class="action_btn">
                                     <i class="iconfont icon-xinxi">
                                     </i>
                                     <span>
                                         回复
                                     </span>
                                 </a>
-                                <a class="report" href="#">举报</a>
+                                <a class="report action_btn" href="#">举报</a>
                             </div>
                         </div>
                     </div>
@@ -88,21 +88,21 @@
                                 可是我觉得周围的精英很少有玩这个的，至少我的研究生同学没有…平庸的始终平庸，没有农药还有假药
                             </p>
                             <div class="tool_group">
-                                <a href="#">
+                                <a href="#" class="action_btn">
                                     <i class="iconfont icon-fabulous">
                                     </i>
                                     <span>
                                         237人赞
                                     </span>
                                 </a>
-                                <a href="#">
+                                <a href="#" class="action_btn">
                                     <i class="iconfont icon-xinxi">
                                     </i>
                                     <span>
                                         回复
                                     </span>
                                 </a>
-                                <a class="report" href="#">举报</a>
+                                <a class="report action_btn" href="#">举报</a>
                             </div>
                         </div>
                     </div>
@@ -124,14 +124,14 @@
                                 <span class="comment_time">
                                     2017.07.05 08:45
                                 </span>
-                                <a href="#">
+                                <a href="#" class="action_btn">
                                     <i class="iconfont icon-xinxi">
                                     </i>
                                     <span>
                                         回复
                                     </span>
                                 </a>
-                                <a class="report" href="#">举报</a>
+                                <a class="report action_btn" href="#">举报</a>
                             </div>
                         </div>
                         <div class="comment_wrap">
@@ -148,14 +148,14 @@
                                 <span class="comment_time">
                                     2017.07.05 08:45
                                 </span>
-                                <a href="#">
+                                <a href="#" class="action_btn">
                                     <i class="iconfont icon-xinxi">
                                     </i>
                                     <span>
                                         回复
                                     </span>
                                 </a>
-                                <a class="report" href="#">举报</a>
+                                <a class="report action_btn" href="#">举报</a>
                             </div>
                         </div>
                         <div class="comment_wrap">
@@ -172,14 +172,14 @@
                                 <span class="comment_time">
                                     2017.07.05 08:45
                                 </span>
-                                <a href="#">
+                                <a href="#" class="action_btn">
                                     <i class="iconfont icon-xinxi">
                                     </i>
                                     <span>
                                         回复
                                     </span>
                                 </a>
-                                <a class="report" href="#">举报</a>
+                                <a class="report action_btn" href="#">举报</a>
                             </div>
                         </div>
                         <div class="comment_wrap more_comment">
