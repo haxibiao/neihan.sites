@@ -19,16 +19,31 @@
 
         <div class="content">
             <div class="author">
+                @if($question->latestAnswer)
+                <a class="avatar" href="/user/{{ $question->latestAnswer->user->id }}" target="_blank">
+                    <img src="{{ $question->latestAnswer->user->avatar }}"/>
+                </a>
+                @else
                 <a class="avatar" href="/user/{{ $question->user->id }}" target="_blank">
                     <img src="{{ $question->user->avatar }}"/>
                 </a>
+                @endif
                 <div class="info_meta">
+                    @if($question->latestAnswer)
+                    <a href="/user/{{ $question->latestAnswer->user->id }}" target="_blank" class="nickname">
+                        {{ $question->latestAnswer->user->name }}
+                    </a>
+                    <a href="/question/{{ $question->id }}" target="_blank">
+                        <img src="/images/verified.png" data-toggle="tooltip" data-placement="top" title="爱你城认证" class="badge_icon_xs"/>
+                    </a>
+                    @else
                     <a href="/user/{{ $question->user->id }}" target="_blank" class="nickname">
                         {{ $question->user->name }}
                     </a>
                     <a href="/question/{{ $question->id }}" target="_blank">
                         <img src="/images/verified.png" data-toggle="tooltip" data-placement="top" title="爱你城认证" class="badge_icon_xs"/>
                     </a>
+                    @endif
                 </div>
             </div>
                 <p class="abstract">
