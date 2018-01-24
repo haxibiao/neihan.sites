@@ -44,58 +44,57 @@
 
         <div class="row">
             <div class="col-md-6">
-            <div class="form-group{{ $errors->has('category_ids') ? ' has-error' : '' }}">
-                {!! Form::label('category_ids', '分类(多选会默认第一个为主分类)') !!}
-                {!! Form::select('category_ids[]',$categories,null, ['id' => 'category_ids', 'class' => 'form-control', 'required' => 'required','multiple'=>'multiple']) !!}
-                <small class="text-danger">{{ $errors->first('category_ids') }}</small>
-            </div>
+                <div class="form-group{{ $errors->has('category_ids') ? ' has-error' : '' }}">
+                    {!! Form::label('category_ids', '分类(多选会默认第一个为主分类)') !!}
+                    {!! Form::select('category_ids[]',$categories,null, ['id' => 'category_ids', 'class' => 'form-control', 'required' => 'required','multiple'=>'multiple']) !!}
+                    <small class="text-danger">{{ $errors->first('category_ids') }}</small>
+                </div>
             </div>
             <div class="col-md-3">
-            <div class="form-group{{ $errors->has('author') ? ' has-error' : '' }}">
-                {!! Form::label('author', '作者') !!}
-                {!! Form::text('author', Auth::user()->name, ['class' => 'form-control', 'readonly' => 'true']) !!}
-                <small class="text-danger">{{ $errors->first('author') }}</small>
+                <div class="form-group{{ $errors->has('author') ? ' has-error' : '' }}">
+                    {!! Form::label('author', '作者') !!}
+                    {!! Form::text('author', Auth::user()->name, ['class' => 'form-control', 'readonly' => 'true']) !!}
+                    <small class="text-danger">{{ $errors->first('author') }}</small>
 
-                <input type="hidden" name="author_id" value="{{ Auth::user()->id }}">
-                <input type="hidden" name="user_name" value="{{ Auth::user()->name }}">
-                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-            </div>
-            </div>
-
-            <div class="col-md-3">
-            <div class="form-group{{ $errors->has('is_top') ? ' has-error' : '' }}">
-                {!! Form::label('is_top', '是否上首页') !!}
-                {!! Form::select('is_top',[ 0 => '否', 1 => '是'], null, ['id' => 'is_top', 'class' => 'form-control', 'required' => 'required']) !!}
-                <small class="text-danger">{{ $errors->first('is_top') }}</small>
-            </div>
+                    <input type="hidden" name="author_id" value="{{ Auth::user()->id }}">
+                    <input type="hidden" name="user_name" value="{{ Auth::user()->name }}">
+                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                </div>
             </div>
 
             <div class="col-md-3">
-            <div class="form-group{{ $errors->has('delay') ? ' has-error' : '' }}">
-                {!! Form::label('delay', '是否延迟发布(如果延迟发布请选择时间)') !!}
-                {!! Form::select('delay',[ 
-                    0 => '否', 
-                    12 => '延迟12小时发布',
-                    36 => '延迟一天半(36小时)',
-                    48 => '延迟2天发布',
-                    72 => '延迟3天发布',
-                    96 => '延迟4天发布',
-                    120 => '延迟5天发布',
-                    144 => '延迟6天发布',
-                    168 => '延迟7天发布',
-                ], null, ['class' => 'form-control']) !!}
-                <small class="text-danger">{{ $errors->first('delay') }}</small>
-            </div>
+                <div class="form-group{{ $errors->has('is_top') ? ' has-error' : '' }}">
+                    {!! Form::label('is_top', '是否上首页') !!}
+                    {!! Form::select('is_top',[ 0 => '否', 1 => '是'], null, ['id' => 'is_top', 'class' => 'form-control', 'required' => 'required']) !!}
+                    <small class="text-danger">{{ $errors->first('is_top') }}</small>
+                </div>
             </div>
 
-  {{--            <div class="col-md-3">
-                    <div class="form-group{{ $errors->has('music_id') ? ' has-error' : '' }}">
-                        {!! Form::label('music_id', '添加音乐(填写音乐的id)') !!}
-                        {!! Form::text('music_id', null, ['class' => 'form-control']) !!}
-                        <small class="text-danger">{{ $errors->first('music_id') }}</small>
-                    </div>
-                 </div>
-            </div> --}}
+            <div class="col-md-3">
+                <div class="form-group{{ $errors->has('delay') ? ' has-error' : '' }}">
+                    {!! Form::label('delay', '是否延迟发布(如果延迟发布请选择时间)') !!}
+                    {!! Form::select('delay',[
+                        0 => '否',
+                        12 => '延迟12小时发布',
+                        36 => '延迟一天半(36小时)',
+                        48 => '延迟2天发布',
+                        72 => '延迟3天发布',
+                        96 => '延迟4天发布',
+                        120 => '延迟5天发布',
+                        144 => '延迟6天发布',
+                        168 => '延迟7天发布',
+                    ], null, ['class' => 'form-control']) !!}
+                    <small class="text-danger">{{ $errors->first('delay') }}</small>
+                </div>
+            </div>
+
+             <div class="col-md-3">
+                <div class="form-group{{ $errors->has('music_id') ? ' has-error' : '' }}">
+                    {!! Form::label('music_id', '添加音乐(填写音乐的id)') !!}
+                    {!! Form::text('music_id', null, ['class' => 'form-control']) !!}
+                    <small class="text-danger">{{ $errors->first('music_id') }}</small>
+                </div>
+            </div>
 
 
         </div>
