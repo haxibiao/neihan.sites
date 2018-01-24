@@ -14,7 +14,11 @@
      	  	  @foreach($musics as $music)
      	  		<div class="pull-left">
      	  			   名字:{{ $music->title }}
-     	  		</div>                
+     	  		</div> 
+
+                    <div class="text-center">
+                          音乐id:{{ $music->id }}
+                    </div>               
 
      	  		<div class="pull-right">
      	  			   创建时间 {{ $music->created_at }}
