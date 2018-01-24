@@ -29,7 +29,7 @@
     @endif
 
     {{-- 问题的工具 --}}
-    <question-tool></question-tool>
+    <question-tool question-id="{{ $question->id }}"></question-tool>
 
 
     @if(Auth::check())

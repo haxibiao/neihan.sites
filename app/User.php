@@ -162,6 +162,17 @@ class User extends Authenticatable
 
     public function newArticle()
     {
-        return $this->articles()->orderBy('id','desc')->take(3)->get();
+        return $this->articles()->orderBy('id', 'desc')->take(3)->get();
+    }
+
+    public function introduction()
+    {
+        return empty($this->introduction) ? '这个人很懒，一点介绍都没留下...' : $this->introduction;
+    }
+
+    public function fillForJs()
+    {
+        $this->introduction = $this->introduction();
+        $this->avatar       = $this->avatar();
     }
 }

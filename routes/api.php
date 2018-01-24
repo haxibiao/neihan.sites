@@ -63,6 +63,8 @@ Route::get('/like/{id}/{type}', 'Api\LikeController@get');
 
 Route::get('/user/editors', 'Api\UserController@editors');
 
+Route::get('/user/question-{question_id}-uninvited', 'Api\UserController@questionUninvited');
+
 //获取推荐的作者
 Route::middleware('auth:api')->get('/user/recommend', 'Api\UserController@recommend');
 //获取用户详细资料
@@ -147,3 +149,6 @@ Route::middleware('auth:api')->get('/like-answer/{id}', 'Api\QuestionController@
 Route::middleware('auth:api')->get('/unlike-answer/{id}', 'Api\QuestionController@unlikeAnswer');
 Route::middleware('auth:api')->get('/report-answer/{id}', 'Api\QuestionController@reportAnswer');
 Route::middleware('auth:api')->get('/delete-answer/{id}', 'Api\QuestionController@deleteAnswer');
+//邀请
+Route::middleware('auth:api')->get('/user/{id}/question-invite/{qid}', 'Api\UserController@questionInvite');
+

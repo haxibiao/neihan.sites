@@ -4,7 +4,7 @@
             <div class="comment_wrap">
                 <div class="tool_group">
                     <a href="javascript:;" class="action_btn">
-                        <i :class="['iconfont',favorited?'icon-shoucang1':'icon-shoucang']"></i>
+                        <i :class="['iconfont',favorited?'icon-shoucang1':'icon-shoucang']" @click="toggle"></i>
                         <span>收藏问题</span>
                     </a>
                     <a href="javascript:;" class="action_btn" @click="showInvite">
@@ -25,21 +25,21 @@
             <div class="invite_user">
                 <div class="invite_status">立即邀请用户，更快获得回答</div>
                 <ul class="invite_list">
-                    <li class="note_info" v-for="item in 6">
+                    <li class="note_info" v-for="user in uninvited">
                         <div class="author">
-                            <a href="/user" class="avatar avatar_xs">
-                                <img src="/images/photo_03.jpg" />
+                            <a :href="'/user/'+user.id" class="avatar avatar_xs" v-if="!user.invited">
+                                <img :src="user.avatar" />
                             </a>
-                            <a href="javascript:;" class="btn_base btn_sign">
+                            <a class="btn_base btn_sign" @click="inviteUser(user)">
                                 <i class="iconfont icon-guanzhu"></i>
                                 <span>邀请</span>
                             </a>
                             <div class="info_meta">
-                                <a href="/user" class="headline nickname">
-                                    NIce Moon
+                                <a :href="'/user/'+user.id" class="headline nickname">
+                                    {{ user.name }}
                                 </a>
                                 <div class="meta single_line">
-                                    这个人很懒，一点介绍都没留下这个人很懒，一点介绍都没留下这个人很懒，一点介绍都没留下这个人很懒，一点介绍都没留下
+                                    {{ user.introduction }}
                                 </div>
                             </div>
                         </div>
@@ -55,15 +55,53 @@ export default {
 
   name: 'QuestionTool',
 
+  props:['questionId'],
+
+  mounted(){
+      this.get();
+  },
+
   methods:{
-      showInvite(){
+        showInvite(){
         this.isInvite=this.isInvite? false:true;
-      }
+        },
+
+        api(){
+            return window.tokenize('/api/favorite/' + this.questionId + '/questions');
+        },
+        toggle(){
+              var vm=this;
+              window.axios.post(this.api()).then(function(response){
+                   vm.favorited=response.data;
+              });
+           },
+         get(){
+              var vm=this;
+              window.axios.get(this.api()).then(function(response){
+                 vm.favorited=response.data;
+              });
+              
+              var api=window.tokenize('/api/user/question-'+this.questionId+'-uninvited');
+              window.axios.get(api).then(function(response){
+                     vm.users = response.data;
+                     vm.uninvited = vm.users;
+              });
+         },
+        inviteUser(user) {
+        user.invited = 1;
+        this.uninvited = _.filter(this.users, ['invited', 0]);
+        //ajax get to send question invite
+        window.axios.get(window.tokenize('/api/user/'+user.id+'/question-invite/'+this.questionId));
+        },
+
   },
 
   data () {
     return {
-        isInvite:false
+        isInvite:false,
+        favorited:null,
+        users:[],
+        uninvited:[]
     }
   }
 }

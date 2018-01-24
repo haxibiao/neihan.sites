@@ -11,6 +11,8 @@ use App\Video;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\QuestionInvited;
+use App\QuestionInvite;
 
 class UserController extends Controller
 {
@@ -190,5 +192,35 @@ class UserController extends Controller
     {
         $editors = User::where('is_editor', 1)->select('name', 'id')->paginate(100);
         return $editors;
+    }
+
+    public function questionUninvited(Request $request, $question_id)
+    {
+        $top_active_users = User::orderBy('updated_at', 'desc')->take(20)->get();
+        $users            = $top_active_users->count() > 10 ? $top_active_users->random(10) : $top_active_users;
+        foreach ($users as $user) {
+            $user->fillForJs();
+            $user->invited = 0;
+        }
+        return $users;
+    }
+
+    public function questionInvite(Request $request, $invite_uid, $qid)
+    {
+        $user        = $request->user();
+        $invite_user = User::find($invite_uid);
+        if ($invite_user) {
+            $invite = QuestionInvite::firstOrNew([
+                'user_id'        => $user->id,
+                'question_id'    => $qid,
+                'invite_user_id' => $invite_uid,
+            ]);
+
+            if(!$invite->id){
+                $invite_user->notify(new QuestionInvited($user->id, $qid));
+            }
+            $invite->save();
+        }
+        return $invite;
     }
 }

@@ -9,30 +9,14 @@
 		</div> -->
 		
 		<!-- 有消息 -->
-		<ul class="others_list">
-			<li>
+		<ul v-if="notifications.length" class="others_list">
+			<li v-for="notification in notifications">
 				<div class="info_meta">
 					<div class="info">
 						<i class="iconfont icon-paihang"></i>
-						<span>你投稿的文章</span>
-						<a href="javascript:;" class="title">《起风了，谁是下一个王者荣耀？》</a>
-						<span>已被加入专题</span>
-						<a href="javascript:;" class="title">《王者荣耀》</a>
+						<span v-html="notification.message"></span>
 					</div>
-					<div class="time">2017.11.15  08:09</div>
-				</div>
-			</li>
-			<li>
-				<div class="info_meta">
-					<div class="info">
-						<i class="iconfont icon-ku"></i>
-						<span>你投稿的文章</span>
-						<a href="javascript:;" class="title">《为什么说被马化腾点赞的《王者荣耀》已成为全球最赚钱的游戏？》</a>
-						<span>未能选入专题</span>
-						<a href="javascript:;" class="title">《王者荣耀》</a>
-						<span>，请继续加油～</span>
-					</div>
-					<div class="time">2017.11.15  08:09</div>
+					<div class="time">{{ notification.time }}</div>
 				</div>
 			</li>
 		</ul>
@@ -45,19 +29,22 @@ export default {
   name: 'Others',
 
   created(){
-  	 this.CacheClear();
+  	 this.fechData();
   },
 
   methods:{
-  	  CacheClear(){
+  	  fechData(){
   	  	 var api =window.tokenize('/api/notifications/others');
-  	  	 window.axios.get(api);
+  	  	 var vm =this;
+  	  	 window.axios.get(api).then(function(response){
+  	  	 	  vm.notifications =response.data;
+  	  	 });
   	  }
   },
 
   data () {
     return {
-  
+          notifications:[]
     }
   }
 }
