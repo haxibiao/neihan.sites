@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    如果让你成为王者荣耀里面的一个英雄，你想成为谁？ - 爱你城问答
+    {{ $question->title }} - 爱你城问答
 @stop
 @section('content')
 <div id="interlocution_details">
