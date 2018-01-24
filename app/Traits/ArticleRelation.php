@@ -7,8 +7,9 @@ use App\Collection;
 trait ArticleRelation
 {
 
-    public function music(){
-        return $this->hasOne(\App\Music::class);
+    public function music()
+    {
+        return $this->belongsToMany(\App\Music::class);
     }
 
     public function user()
