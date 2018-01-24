@@ -91,6 +91,14 @@
                             </small>
                         </div>
                     </div>
+
+                 <div class="col-md-3">
+                    <div class="form-group{{ $errors->has('music_id') ? ' has-error' : '' }}">
+                        {!! Form::label('music_id', '添加音乐(填写音乐的id)') !!}
+                        {!! Form::text('music_id', $article->music_id, ['class' => 'form-control']) !!}
+                        <small class="text-danger">{{ $errors->first('music_id') }}</small>
+                    </div>
+                 </div>
                 </div>
 
 

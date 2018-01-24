@@ -24,6 +24,8 @@ class CreateAnswersTable extends Migration
             $table->integer('count_unlikes')->index()->nullable();
             $table->integer('count_comments')->nullable();
             $table->integer('count_reports')->nullable();
+
+            $table->integer('status')->default(1);   // -1 delete  0 disable
             $table->timestamps();
         });
     }

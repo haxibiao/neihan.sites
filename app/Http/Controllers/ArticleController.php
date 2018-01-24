@@ -8,11 +8,11 @@ use App\Http\Requests\ArticleRequest;
 use App\Image;
 use App\Jobs\ArticleDelay;
 use App\Tag;
+use App\Traits\ArticleCount;
 use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use App\Traits\ArticleCount;
 
 class ArticleController extends Controller
 {
@@ -222,6 +222,9 @@ class ArticleController extends Controller
 
         //videos
         $this->save_article_videos($request, $article);
+
+        //music
+        $this->save_article_music($request, $article);
 
         //tags
         $this->save_article_tags($article);
@@ -444,5 +447,11 @@ class ArticleController extends Controller
             ArticleDelay::dispatch($article->id)
                 ->delay(now()->addHours($request->delay));
         }
+    }
+
+    public function save_article_music($request, $article)
+    {
+        $music_id =$request->music_id;
+        $article->music()->syncWithoutDetaching($music_id);
     }
 }

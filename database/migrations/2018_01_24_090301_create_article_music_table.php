@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnStatusTable extends Migration
+class CreateArticleMusicTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddColumnStatusTable extends Migration
      */
     public function up()
     {
-        Schema::table('questions', function (Blueprint $table) {
-            $table->integer('status')->default(1);   // -1 delete  0 disable
+        Schema::create('article_music', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('article_id');
+            $table->integer('music_id');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class AddColumnStatusTable extends Migration
      */
     public function down()
     {
-        Schema::table('questions', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('article_music');
     }
 }

@@ -7,6 +7,11 @@ use App\Collection;
 trait ArticleRelation
 {
 
+    public function music()
+    {
+        return $this->belongsToMany(\App\Music::class);
+    }
+
     public function user()
     {
         return $this->belongsTo('App\User');

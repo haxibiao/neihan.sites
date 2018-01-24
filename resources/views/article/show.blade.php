@@ -17,12 +17,12 @@
                         {{ $article->title }}
                     </h1>
                     <div class="author">
-                        <a class="avatar" href="#">
+                        <a class="avatar" href="/user/{{ $article->user->id }}">
                             <img src="{{ $article->user->avatar }}"/>
                         </a>
                         <div class="info">
                             <span class="nickname">
-                                <a href="#">
+                                <a href="/user/{{ $article->user->id }}">
                                     {{ $article->user->name }}
                                 </a>
                             </span>
@@ -99,7 +99,7 @@
 
                 </div>
                 <div class="support_author">
-                  @if($article->user->is_tps)
+                  @if($article->user->is_tips)
                     <p>
                         如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！
                     </p>

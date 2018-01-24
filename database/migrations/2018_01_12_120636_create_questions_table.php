@@ -25,6 +25,9 @@ class CreateQuestionsTable extends Migration
             $table->integer('count_favorites')->nullable();
             $table->integer('count_comments')->nullable();
             $table->integer('count_likes')->nullable();
+            
+            $table->integer('latest_answer_id')->nullable();
+            $table->integer('status')->default(1);   // -1 delete  0 disable
             $table->integer('hits')->nullable();
             $table->timestamps();
         });
