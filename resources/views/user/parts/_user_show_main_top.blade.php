@@ -1,5 +1,5 @@
 <div class="main_top">
-    <a class="avatar avatar_lg" href="/user/{{ Auth::id() }}">
+    <a class="avatar avatar_lg" href="/user/{{ $user->id }}">
         <img src="{{ $user->avatar }}"/>
     </a>
     @if(!$user->isSelf())
@@ -14,7 +14,7 @@
     </a>
     @endif
     <div class="info_meta">
-        <a class="headline nickname" href="/user/{{ Auth::id() }}">
+        <a class="headline nickname" href="/user/{{ $user->id }}">
             <span>
                 {{ $user->name }}
             </span>
