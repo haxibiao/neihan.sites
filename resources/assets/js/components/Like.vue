@@ -32,6 +32,7 @@ export default {
 
   created(){
        this.likes=this.articleLikes;
+       this.get();
   },
 
   methods:{
@@ -42,6 +43,13 @@ export default {
              vm.liked=response.data.is_liked;
              vm.likes=response.data.likes;
          });
+     },
+     get(){
+        var vm=this;
+        var api =window.tokenize('/api/like/' + this.id + '/' + this.type);
+        window.axios.get(api).then(function(response){
+              vm.liked=response.data.likes;
+        });
      }
   },
 
