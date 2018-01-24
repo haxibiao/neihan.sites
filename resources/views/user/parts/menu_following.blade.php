@@ -60,7 +60,7 @@
             <ul class="user_list">
                 @foreach($data['followers'] as $follow)
                 @php
-                    $user=$follow->followed;
+                    $user=$follow->user;
                 @endphp
                 <li>
                     <div class="author">

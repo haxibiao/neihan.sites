@@ -320,9 +320,9 @@ class UserController extends Controller
             ->withTransactions($transactions);
     }
 
-    public function follows(Request $request)
+    public function follows(Request $request,$id)
     {
-        $user =$request->user();
+        $user =User::findOrFail($id);
 
         $data['follows']=$user->followingUsers()->with('user')->orderBy('id','desc')->paginate(10);
         $data['followers']=$user->follows()->with('user')->orderBy('id','desc')->paginate(10);
