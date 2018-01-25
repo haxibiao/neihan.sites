@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Answer;
 use App\Http\Controllers\Controller;
-use App\Question;
 use App\Image;
+use App\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class QuestionController extends Controller
 {
@@ -65,11 +66,17 @@ class QuestionController extends Controller
 
     public function reportAnswer(Request $request, $id)
     {
-        $answer = Answer::findOrFail($id);
-        $answer->count_reports++;
-        $answer->save();
-        $answer->reported = 1;
-        
+        $user     = $request->user();
+        $cacheKey = $user->id . 'answer' . $id;
+        $answer   = Answer::findOrFail($id);
+        if (!cache::get($cacheKey) || $user->is_editor) {
+            $answer->count_reports++;
+            $answer->save();
+            $answer->reported = 1;
+
+            cache::put($cacheKey, 1, 24*60);
+        }
+
         return $answer;
     }
 }
