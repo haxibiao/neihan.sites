@@ -151,9 +151,11 @@
 </div>
 @stop
 
+@if(Auth::check())
 @push('side_tools')
     <article-tool id="{{ $article->id }}"></article-tool>
 @endpush
+@endif
 
 @push('modals')
    <detailmodal-user article-id="{{ $article->id }}"></detailmodal-user>
