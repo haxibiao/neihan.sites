@@ -23,9 +23,9 @@ class CommentController extends Controller
                 ->count() + 1;
         }
         $comment->save();
-        if ($request->get('is_replay_comment')) {
-            $comment = $comment->commented()->with('user')->with('replyComments')->first();
-        }
+        // if ($request->get('is_replay_comment')) {
+        //     $comment = $comment->commented()->with('user')->with('replyComments')->first();
+        // }
         $comment->user = $comment->user;
 
         //notify ..
@@ -34,7 +34,17 @@ class CommentController extends Controller
             $article->user->notify(new ArticleCommented($article->id, $user->id, $comment->body, $comment->lou));
             $article->user->forgetUnreads();
         }
+        //record action
+        $action = Action::firstOrNew([
+            'user_id'         => $user->id,
+            'actionable_type' => 'comments',
+            'actionable_id'   => $comment->id,
+        ]);
+        $action->save();
 
+        //新评论，一起给前端返回 空的子评论 和 子评论的用户信息结构，方便前端直接回复刚发布的新评论
+        $comment = Comment::with('user')->with('replyComments.user')->find($comment->id);
+        
         return $comment;
     }
 
