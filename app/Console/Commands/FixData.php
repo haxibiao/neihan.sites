@@ -132,36 +132,49 @@ class FixData extends Command
 
     public function fix_categories()
     {
-        $categories = Category::all();
-        foreach ($categories as $category) {
-            $article = $category->articles()->orderBy('id')->where('image_url', '<>', '')->first();
-            if ($article) {
-                $image_url = parse_url($article->image_url, PHP_URL_PATH);
-                $this->info($image_url);
-                if (file_exists(public_path($image_url))) {
-                    $img = \ImageMaker::make(public_path($image_url));
-                    $img->resize(300, 200);
-                    $img->crop(200, 200, 50, 0);
+        // $categories = Category::all();
+        // foreach ($categories as $category) {
+        //     $article = $category->articles()->orderBy('id')->where('image_url', '<>', '')->first();
+        //     if ($article) {
+        //         $image_url = parse_url($article->image_url, PHP_URL_PATH);
+        //         $this->info($image_url);
+        //         if (file_exists(public_path($image_url))) {
+        //             $img = \ImageMaker::make(public_path($image_url));
+        //             $img->resize(300, 200);
+        //             $img->crop(200, 200, 50, 0);
 
-                    $img->resize(180, 180);
-                    $category->logo = $image_url . '.logo.jpg';
-                    $img->save(public_path($category->logo));
+        //             $img->resize(180, 180);
+        //             $category->logo = $image_url . '.logo.jpg';
+        //             $img->save(public_path($category->logo));
 
-                    $img->resize(32, 32);
-                    $small_logo = $image_url . '.logo.small.jpg';
-                    $img->save(public_path($small_logo));
+        //             $img->resize(32, 32);
+        //             $small_logo = $image_url . '.logo.small.jpg';
+        //             $img->save(public_path($small_logo));
 
-                    $this->info($category->id . ' articles:' . $category->articles()->count() . '-' . $category->name . ' logo:' . $category->logo);
-                } else {
-                    $this->error($category->id . ' articles:' . $category->articles()->count() . '-' . $category->name . ' 第一文章暂无图片.. ' . $image_url);
-                }
-            } else {
-                $this->comment($category->id . ' articles:' . $category->articles()->count() . '-' . $category->name . ' 暂无文章.. ');
-            }
+        //             $this->info($category->id . ' articles:' . $category->articles()->count() . '-' . $category->name . ' logo:' . $category->logo);
+        //         } else {
+        //             $this->error($category->id . ' articles:' . $category->articles()->count() . '-' . $category->name . ' 第一文章暂无图片.. ' . $image_url);
+        //         }
+        //     } else {
+        //         $this->comment($category->id . ' articles:' . $category->articles()->count() . '-' . $category->name . ' 暂无文章.. ');
+        //     }
 
-            $category->count = $category->articles()->count();
-            $category->save();
-        }
+        //     $category->count = $category->articles()->count();
+        //     $category->save();
+        // }
+
+        $category =Category::where('id',61)->first();
+        $category->admins()->syncWithoutDetaching([
+            $category->user->id => [
+                    'is_admin' => 1,
+                ],
+        ]);
+        $category->authors()->syncWithoutDetaching([
+                $category->user->id => [
+                    'approved' => 1,
+                ],
+            ]);
+        $this->info("$category->name fix done");
     }
 
     public function fix_videos()
