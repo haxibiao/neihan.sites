@@ -29,7 +29,7 @@
                 {{ article.description }}
             </p>
             <div class="meta">
-                <a class="category_tag" :href=" '/' + article.category.name_en" target="_blank">
+                <a v-if="!showCategory" class="category_tag" :href=" '/' + article.category.name_en" target="_blank">
                     {{ article.category.name }}
                 </a>
                 <a href="#" target="_blank" class="count count_link">
@@ -62,7 +62,7 @@ export default {
 
   name: 'ArticleList',
 
-  props: ['api','startPage'],
+  props: ['api','startPage','showCategory'],
 
   watch:{
      api(val){

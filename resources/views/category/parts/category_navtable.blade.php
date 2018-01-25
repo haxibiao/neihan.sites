@@ -27,17 +27,17 @@
     <div class="tab-content">
         <div class="tab-pane fade in active" id="pinglun" role="tabpanel">
             @include('category.parts.category_item',['articles'=>$data['commented']])
-            <article-list api="/{{ $category->name_en }}?commented=1" start-page="2">
+            <article-list api="/{{ $category->name_en }}?commented=1" start-page="2" show-category="1">
             </article-list>
         </div>
         <div class="tab-pane fade" id="shoulu" role="tabpanel">
             @include('category.parts.category_item',['articles'=>$data['collected']])
-            <article-list api="/{{ $category->name_en }}?collected=1" start-page="2">
+            <article-list api="/{{ $category->name_en }}?collected=1" start-page="2" show-category="1">
             </article-list>
         </div>
         <div class="tab-pane fade" id="huo" role="tabpanel">
             @include('category.parts.category_item',['articles'=>$data['hot']])
-            <article-list api="/{{ $category->name_en }}?hot=1" start-page="2">
+            <article-list api="/{{ $category->name_en }}?hot=1" start-page="2" show-category="1">
             </article-list>
         </div>
     </div>
