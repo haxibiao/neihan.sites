@@ -7,6 +7,8 @@ use App\Query;
 use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use App\User;
+
 
 class SearchController extends Controller
 {
@@ -103,11 +105,13 @@ class SearchController extends Controller
     }
     public function search_all()
     {
+        $users= User::all();
         $querys = Query::where('status', '>=', 0)->orderBy('hits', 'desc')->paginate();
         $data =[];
         $data['update']=Query::where('status', '>=', 0)->orderBy('updated_at','desc')->paginate(10);
         return view('parts.search_all')
         ->withData($data)
+        ->withUsers($users)
         ->withQuerys($querys);
     }
 }
