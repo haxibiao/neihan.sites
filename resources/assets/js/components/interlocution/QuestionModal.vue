@@ -96,13 +96,13 @@
                                         悬赏日期
                                     </div>
                                     <span>一天</span>
-                                    <input id="data1" type="radio" value="1" v-model="validity" />
+                                    <input id="data1" type="radio" value="1" v-model="validity" name="deadline" />
                                     <span>三天</span>
-                                    <input id="data2" type="radio" value="3" v-model="validity" />
+                                    <input id="data2" type="radio" value="3" v-model="validity" name="deadline" />
                                     <span>七天</span>
-                                    <input id="data3" type="radio" value="7" v-model="validity" />
+                                    <input id="data3" type="radio" value="7" v-model="validity" name="deadline"  />
                                     <span>不限制</span>
-                                    <input id="data4" type="radio" value="不限制" v-model="validity" />
+                                    <input id="data4" type="radio" value="不限制" v-model="validity" name="deadline" />
                                 </div>
                             </div>
                         </div>
