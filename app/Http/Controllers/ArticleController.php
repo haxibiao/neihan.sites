@@ -102,6 +102,9 @@ class ArticleController extends Controller
         //delay
         $this->article_delay($request, $article);
 
+        //music
+        $this->save_article_music($request, $article);
+
         //count article
         $this->article_count($request->get('category_ids'), $article);
         //count user
@@ -451,7 +454,9 @@ class ArticleController extends Controller
 
     public function save_article_music($request, $article)
     {
-        $music_id =$request->music_id;
-        $article->music()->syncWithoutDetaching($music_id);
+        $music_id = $request->music_id;
+        if (!empty($music_id)) {
+            $article->music()->syncWithoutDetaching($music_id);
+        }
     }
 }

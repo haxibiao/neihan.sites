@@ -6,6 +6,7 @@ use App\Comment;
 use App\Http\Controllers\Controller;
 use App\Notifications\ArticleCommented;
 use Illuminate\Http\Request;
+use App\Action;
 use Illuminate\Support\Facades\Cache;
 
 class CommentController extends Controller
