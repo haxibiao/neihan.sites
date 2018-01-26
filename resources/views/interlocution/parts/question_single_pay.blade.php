@@ -176,6 +176,13 @@
                     <a href="javascript:;" class="expand_bottom">展开全部</a>
                 </div>
                 <answer-tool answer-id={{ $answer->id }} is-login={{ Auth::check() }}></answer-tool>
+                
+                <div class="answer_useful">
+                    <div class="btn_base btn_pay btn_follow_lg">
+                        <input type="checkbox" />
+                        <span>这条回答对我有用</span>
+                    </div>
+                </div>
             </div>
             @endforeach
     	</div>

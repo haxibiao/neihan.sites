@@ -56,25 +56,25 @@
                                         付费金额
                                     </div>
                                     <div class="amount_group">
-                                        <input id="option2" type="radio" value="5" v-model="money" />
+                                        <input id="option2" type="radio" value="5" v-model="money" name="bonus" />
                                         <label for="option2" class="option" @click="selectMoney">
                                             <i class="iconfont icon-jinqian1"></i>
                                             <span class="amount">5</span>
                                             <span class="piece">元</span>
                                         </label>
-                                        <input id="option3" type="radio" value="10" v-model="money" />
+                                        <input id="option3" type="radio" value="10" v-model="money" name="bonus"/>
                                         <label for="option3" class="option" @click="selectMoney">
                                             <i class="iconfont icon-jinqian1"></i>
                                             <span class="amount">10</span>
                                             <span class="piece">元</span>
                                         </label>
-                                        <input id="option5" type="radio" value="50" v-model="money" />
+                                        <input id="option5" type="radio" value="50" v-model="money" name="bonus"/>
                                         <label for="option5" class="option" @click="selectMoney">
                                             <i class="iconfont icon-jinqian1"></i>
                                             <span class="amount">50</span>
                                             <span class="piece">元</span>
                                         </label>
-                                        <input id="option6" type="radio" value="100" v-model="money" />
+                                        <input id="option6" type="radio" value="100" v-model="money" name="bonus"/>
                                         <label for="option6" class="option" @click="selectMoney">
                                             <i class="iconfont icon-jinqian1"></i>
                                             <span class="amount">100</span>

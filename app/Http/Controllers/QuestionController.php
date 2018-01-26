@@ -66,6 +66,7 @@ class QuestionController extends Controller
      */
     public function store(QuestionRequest $request)
     {
+        // dd($request->all());
         $question =new Question($request->all());
         $question->save();
         return redirect()->to('/question/'.$question->id);
