@@ -6,6 +6,7 @@
 
 @section('content')
 <div class="container">
+    <p class="navbar-text">当前网站用户总数: {{ $users->count() }}</p>
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
