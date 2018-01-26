@@ -44,7 +44,7 @@ php artisan cache:clear
 EOT;
 
 
-$copy_worker_confi = <<<EOT
+$copy_worker_config = <<<EOT
 cp -rf ./config/worker/* /etc/supervisor/conf.d/
 supervisorctl reread
 supervisorctl update
