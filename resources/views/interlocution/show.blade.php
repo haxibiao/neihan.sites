@@ -53,5 +53,4 @@
         </div>
     </div> --}}
 </div>
-@include('parts.foot')
 @stop

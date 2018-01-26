@@ -60,17 +60,31 @@
     background-color: $color-white;
     border-radius: 4px;
     padding: 20px;
+    position: relative;
+    .pay_logo {
+        position: absolute;
+        left: -9px;
+        top: -9px;
+        width: 100%;
+    }
     .question_title {
         .question_info {
             color: $color-gray;
-        }
-        // 问答收藏人数
-        .question_follow_num {
-            &::before {
-                content: "·";
-                display: inline-block;
-                width: 13px;
-                text-align: center;
+            // 问答收藏人数
+            .question_follow_num {
+                &::before {
+                    content: "·";
+                    display: inline-block;
+                    width: 13px;
+                    text-align: center;
+                }
+            }
+            .money {
+                @include font (14px,$color-theme,700);
+                float: right;
+                i {
+                    font-size: 12px;
+                }
             }
         }
     }

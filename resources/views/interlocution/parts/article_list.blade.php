@@ -1,3 +1,106 @@
+{{-- 付费 --}}
+{{-- 实名用户问题 --}}
+<li class="article_item question have_img">
+    <div class="pay_logo">
+        <a href="#" target="_blank">
+            <img src="/images/pay_question.png" data-toggle="tooltip" data-placement="top" title="付费问题" class="badge_icon_md"/>
+        </a>
+    </div>
+    <div class="question_title">
+        <a class="headline paper_title" href="" target="_blank">
+            <span>孙尚香放技能是，应该怎么翻滚？</span>
+        </a>
+        <div class="question_info">
+            <span>还剩 10分钟</span>
+            <span class="question_follow_num">5 人已抢答</span>
+            <span class="money">
+                <i class="iconfont icon-jinqian1"></i>
+                5元
+            </span>
+        </div>
+    </div>
+    <div class="question_answers">
+        <a class="wrap_img" href="" target="_blank">
+            <img src="/images/details_22.jpeg"/>
+        </a>
+        <div class="content">
+            <div class="author">
+                <a class="avatar" href="" target="_blank">
+                    <img src="/images/photo_03.jpg"/>
+                </a>
+                <div class="info_meta">
+                    <a href="" target="_blank" class="nickname">
+                        尼策
+                    </a>
+                    <a href="" target="_blank">
+                        <img src="/images/verified.png" data-toggle="tooltip" data-placement="top" title="爱你城认证" class="badge_icon_xs"/>
+                    </a>
+                    <span class="time">
+                        5分钟 前
+                    </span>
+                </div>
+            </div>
+            <p class="abstract">
+                往要打英雄的左右翻滚?上下翻滚?提高普通攻击?打出更高的伤害?
+                往要打英雄的左右翻滚?上下翻滚?提高普通攻击?打出更高的伤害?
+                往要打英雄的左右翻滚?上下翻滚?提高普通攻击?打出更高的伤害?
+            </p>
+            <div class="meta">
+                <span class="count">
+                    20 分钟内抢答
+                </span>
+            </div>
+        </div>
+    </div>
+</li>
+{{-- 匿名用户问题 --}}
+<li class="article_item question">
+    <div class="pay_logo">
+        <a href="#" target="_blank">
+            <img src="/images/pay_question.png" data-toggle="tooltip" data-placement="top" title="付费问题" class="badge_icon_md"/>
+        </a>
+    </div>
+    <div class="question_title">
+        <a class="headline paper_title" href="" target="_blank">
+            <span>蔡文姬最重要的技能其实是？蔡文姬最重要的技能技能</span>
+        </a>
+        <div class="question_info">
+            <span>还剩 30分钟</span>
+            <span class="question_follow_num">7 人已抢答</span>
+            <span class="money">
+                <i class="iconfont icon-jinqian1"></i>
+                15元
+            </span>
+        </div>
+    </div>
+    <div class="question_answers">
+        <div class="content">
+            <div class="author">
+                <a class="avatar" href="" target="_blank">
+                    <img src="/images/photo_user.png"/>
+                </a>
+                <div class="info_meta">
+                    <a href="" target="_blank" class="nickname">
+                        匿名用户
+                    </a>
+                    <span class="time">
+                        10分钟 前
+                    </span>
+                </div>
+            </div>
+            <p class="abstract">
+                提高普通攻击?打出更高的伤害?提高普通攻击?打出更高的伤害?提高普通攻击?打出更高的伤害?
+            </p>
+            <div class="meta">
+                <span class="count">
+                    50 分钟内抢答
+                </span>
+            </div>
+        </div>
+    </div>
+</li>
+
+
 {{-- 问答文章摘要 --}}
 @foreach ($questions as $question)
 <li class="article_item question {{ $question->relateImage()?'have_img' :'' }}">
@@ -53,7 +156,7 @@
                 {{ $question->backgorund }}
            @endif
                </p>
-   
+
 
             <div class="meta">
                 <a href="/question" target="_blank" class="count count_link">

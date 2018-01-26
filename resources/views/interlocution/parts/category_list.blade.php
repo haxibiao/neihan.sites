@@ -1,14 +1,35 @@
 {{-- 问答分类 --}}
 <div class=" col-xs-12">
     <div class="classification">
-      @foreach($categories as $category)
-        <a class="collection active" href="/{{ $category->name_en }}" target="_blank">
-            <img src="{{ $category->logo }}"/>
+        <a class="collection pay fixed" href="" target="_blank">
+            <img src="/images/pay_question.png"/>
             <div class="name">
-                {{ $category->name }}
+                付费
             </div>
         </a>
-      @endforeach
+        <div class="collect fixed">
+            <a class="collection active" href="" target="_blank">
+                <img src="/images/new_huo.jpg"/>
+                <div class="name">
+                    热门
+                </div>
+            </a>
+            @foreach($categories as $category)
+            <a class="collection" href="/{{ $category->name_en }}" target="_blank">
+                <img src="{{ $category->logo }}"/>
+                <div class="name">
+                    {{ $category->name }}
+                </div>
+            </a>
+            @endforeach
+        </div>
+        <a class="collection more_collection fixed" href="/interlocution/more" target="_blank">
+            <div class="name">
+                更多
+                <i class="iconfont icon-youbian">
+                </i>
+            </div>
+        </a>
   {{--       <a class="collection" href="/category/2" target="_blank">
             <img src="/images/details_04.jpeg"/>
             <div class="name">

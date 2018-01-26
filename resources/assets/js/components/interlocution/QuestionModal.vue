@@ -20,6 +20,93 @@
                         <textarea placeholder='添加问题背景描述（选填)' v-model="description" maxlength='500' name="background"></textarea>
                         <span class="word-count">{{ description.length }}/500</span>
                     </div>
+                    <div class="pay_info">
+                        <div class="pat_choice">
+                            <div class="title">
+                                问答选项
+                            </div>
+                            <div class="setting_group">
+                                <div>
+                                    <span class="option">匿名提问</span>
+                                    <div class="switch_area anonymous on" v-model="anonymity" @click="showSwitch">
+                                        <i class="switch_btn"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="option hot">
+                                        <i class="iconfont icon-qianbao"></i>
+                                        付费咨询
+                                    </span>
+                                    <div class="switch_area consultation" v-model="whetherPay" @click="showPay">
+                                        <i class="switch_btn"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pay_group" v-if="whetherPay">
+                                <div class="pay_tip">
+                                    <span class="pay_tip_content">
+                                        使用付费咨询视为您已同意
+                                        <a href="javascript:;" target="_blank">
+                                            《问答细则及责任声明》
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="money_amount">
+                                    <div class="pay_title">
+                                        付费金额
+                                    </div>
+                                    <div class="amount_group">
+                                        <input id="option2" type="radio" value="5" v-model="money" />
+                                        <label for="option2" class="option" @click="selectMoney">
+                                            <i class="iconfont icon-jinqian1"></i>
+                                            <span class="amount">5</span>
+                                            <span class="piece">元</span>
+                                        </label>
+                                        <input id="option3" type="radio" value="10" v-model="money" />
+                                        <label for="option3" class="option" @click="selectMoney">
+                                            <i class="iconfont icon-jinqian1"></i>
+                                            <span class="amount">10</span>
+                                            <span class="piece">元</span>
+                                        </label>
+                                        <input id="option5" type="radio" value="50" v-model="money" />
+                                        <label for="option5" class="option" @click="selectMoney">
+                                            <i class="iconfont icon-jinqian1"></i>
+                                            <span class="amount">50</span>
+                                            <span class="piece">元</span>
+                                        </label>
+                                        <input id="option6" type="radio" value="100" v-model="money" />
+                                        <label for="option6" class="option" @click="selectMoney">
+                                            <i class="iconfont icon-jinqian1"></i>
+                                            <span class="amount">100</span>
+                                            <span class="piece">元</span>
+                                        </label>
+                                        <input id="custom_option" type="radio" class="custom_amount" ref="custom" :checked="custom" />
+                                        <label for="custom_option" class="option" @click="customMoney">
+                                            <span class="custom_text">自定义</span>
+                                            <div class="custom_amount_input">
+                                                <i class="iconfont icon-jinqian1"></i>
+                                                <input v-if="custom" type="number" oninput="value = parseInt(Math.min(Math.max(value, 0), 10000), 10)" v-model="money" ref="customInput" />
+                                                <span class="piece">元</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="expiration_date">
+                                    <div class="pay_title">
+                                        悬赏日期
+                                    </div>
+                                    <span>一天</span>
+                                    <input id="data1" type="radio" value="1" v-model="validity" />
+                                    <span>三天</span>
+                                    <input id="data2" type="radio" value="3" v-model="validity" />
+                                    <span>七天</span>
+                                    <input id="data3" type="radio" value="7" v-model="validity" />
+                                    <span>不限制</span>
+                                    <input id="data4" type="radio" value="不限制" v-model="validity" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="img-selector">
                         <div :class="['ask-img-header',top3Imgs.length>0?'bigger':'']">添加图片<span class="desc">（最多3张）</span></div>
                         <div class="img-preview">
@@ -100,6 +187,7 @@ import Dropzone from '../../plugins/Dropzone';
     export default {
 
   name: 'QuestionModal',
+
 
   computed:{
      token(){
@@ -201,7 +289,39 @@ import Dropzone from '../../plugins/Dropzone';
                  vm.imgItems =imgs.concat(vm.imgItems);
             }
        });
+    },
+
+    customMoney() {
+        this.money='';
+        this.custom = true;
+        var vm = this;
+        setTimeout(function(){
+            vm.$refs.customInput.focus();
+        },100);
+    },
+
+    selectMoney(value) {
+        this.custom = null;
+    },
+
+    showSwitch() {
+        this.anonymity=this.anonymity? false:true ;
+        if(this.anonymity){
+            $('.anonymous').addClass('on');
+        }else{
+            $('.anonymous').removeClass('on');
+        }  
+    },
+
+    showPay() {
+        this.whetherPay=this.whetherPay? false:true ;
+        if(this.whetherPay){
+            $('.consultation').addClass('on');
+        }else{  
+            $('.consultation').removeClass('on');
+        }
     }
+
   },
 
   data () {
@@ -218,6 +338,11 @@ import Dropzone from '../../plugins/Dropzone';
             {'img':'/images/photo_04.png','selected': 0},
             {'img':'/images/photo_user.png','selected': 0},
         ],
+        anonymity:true,
+        whetherPay:false,
+        money:5,
+        custom: null,
+        validity:'不限制',
     }
   }
 }
@@ -232,8 +357,8 @@ import Dropzone from '../../plugins/Dropzone';
                 }
                 .modal-body {
                     padding: 20px 40px;
-                    max-height: unset;
-                    overflow: unset;
+                    height: 480px;
+                    overflow: auto;
                     &>div {
                         line-height: normal;
                     }
@@ -249,6 +374,9 @@ import Dropzone from '../../plugins/Dropzone';
                             color: #969696;
                             font-size: 14px;
                         }
+                    }
+                    .pay_info {
+                        margin-top: 20px;
                     }
                     .img-selector {
                         margin-top: 20px;
@@ -311,7 +439,7 @@ import Dropzone from '../../plugins/Dropzone';
                                     margin-right: 30px;
                                     cursor: pointer;
                                     &.tab-header-actived {
-                                        border-bottom: solid 2px #FF9D23;
+                                        border-bottom: solid 2px #d96a5f;
                                         font-weight: bold;
                                     }
                                 }

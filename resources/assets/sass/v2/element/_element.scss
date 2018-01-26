@@ -114,6 +114,11 @@
     margin-right: 5px;
 }
 
+// 32大小的优秀作者图标
+.badge_icon_md {
+    @include size (32px,32px);
+}
+
 // 推荐页的标签图
 .tag_banner {
     width: 100%;

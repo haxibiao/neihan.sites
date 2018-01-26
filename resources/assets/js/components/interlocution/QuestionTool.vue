@@ -3,8 +3,8 @@
         <div class="question_bottom">
             <div class="comment_wrap">
                 <div class="tool_group">
-                    <a href="javascript:;" class="action_btn">
-                        <i :class="['iconfont',favorited?'icon-shoucang1':'icon-shoucang']" @click="toggle"></i>
+                    <a href="javascript:;" class="action_btn"　@click="toggle">
+                        <i :class="['iconfont',favorited?'icon-shoucang1':'icon-shoucang']" ></i>
                         <span>收藏问题</span>
                     </a>
                     <a href="javascript:;" class="action_btn" @click="showInvite">

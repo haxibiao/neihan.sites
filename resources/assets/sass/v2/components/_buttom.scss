@@ -319,3 +319,32 @@
 .btn_hollow_sm {
     width: 90px;
 }
+
+// 开关按钮
+.switch_area {
+    width: 36px;
+    height: 19px;
+    border-radius: 24px;
+    padding: 3px;
+    display: inline-block;
+    box-sizing: border-box;
+    vertical-align: middle;
+    background-color: #d6d6d6;
+    transition: all .1s;
+    .switch_btn {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background-color: $color-white;
+        display: inline-block;
+        transition: all .1s;
+        float: left;
+    }
+    &.on {
+        background-color: $color-green;
+        transition: all .1s;
+        .switch_btn {
+            float: right;
+        }
+    }
+}

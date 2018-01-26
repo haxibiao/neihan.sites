@@ -30,14 +30,16 @@
                         margin-top: 4px;
                         font-size: 28px;
                     }
+                    .question_tips_body {
+                        margin-bottom: 8px;
+                    }
                     .question_text {
                         font-size: 16px;
                         color: $color-gray;
                         line-height: 1.5;
-                        margin-bottom: 20px;
                     }
                     .question_img {
-                        margin-bottom: 20px;
+                        margin: 20px 0;
                         height: 120px;
                         overflow: hidden;
                         img {
@@ -66,6 +68,10 @@
                                         .btn_base {
                                             float: right;
                                         }
+                                        .pay_question_user {
+                                            float: right;
+                                            padding: 10px 10px 0;
+                                        }
                                         .info_meta {
                                             padding-right: 110px;
                                             .nickname {
@@ -74,10 +80,28 @@
                                         }
                                     }
                                 }
+                                .answer_useful {
+                                    text-align: center;
+                                    input[type="checkbox"] {
+                                        @include size (15px,15px);
+                                        margin: 0;
+                                    }
+                                }
                                 &:last-child {
                                     border-bottom: none;
                                 }
                             }
+                        }
+                        .note_foot {
+                            position: fixed;
+                            width: 100%;
+                            height: 70px;
+                            line-height: 70px;
+                            bottom: 0;
+                            right: 0;
+                            z-index: 1030;
+                            text-align: center;
+                            background-color: $color-white;
                         }
                     }
                 }

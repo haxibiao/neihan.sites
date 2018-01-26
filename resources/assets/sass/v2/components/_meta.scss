@@ -62,6 +62,14 @@
         float: right;
         font-weight: bold;
     }
+    .pay_question_user {
+        color: $color-theme;
+        font-size: 17px;
+        margin-right: 5px;
+        i {
+            font-size: 16px;
+        }
+    }
 }
 
 // 作者信息
