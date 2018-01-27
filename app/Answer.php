@@ -54,4 +54,10 @@ class Answer extends Model
     {
         return $this->morphMany(\App\Comment::class, 'commentable');
     }
+
+    public function description()
+    {
+        $text=strip_tags($this->answer);
+        return str_limit($text,20);
+    }
 }

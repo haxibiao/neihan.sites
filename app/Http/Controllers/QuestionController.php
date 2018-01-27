@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Category;
-use App\Question;
 use App\Answer;
+use App\Category;
 use App\Http\Requests\QuestionRequest;
+use App\Question;
+use App\Transaction;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 class QuestionController extends Controller
 {
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth.editor')->only('destroy');
     }
     /**
@@ -22,8 +24,8 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        $data=[];
-        $qb = Question::with('latestAnswer.article')->with('user')->where('status','>',0)->orderBy('id', 'desc');
+        $data = [];
+        $qb   = Question::with('latestAnswer.article')->with('user')->where('status', '>', 0)->orderBy('id', 'desc');
 
         if (request('cid')) {
             $category = Category::findOrFail(request('cid'));
@@ -32,21 +34,21 @@ class QuestionController extends Controller
 
         $categories = Category::where('count_questions', '>', 0)->orderBy('updated_at', 'desc')->take(7)->get();
 
-        $questions =$qb->paginate(10);
+        $questions = $qb->paginate(10);
 
-        if(count($categories) <7){
-          $categories=Category::with('questions')
-            ->orderBy('id','desc')
-            ->take(7)
-            ->get();
+        if (count($categories) < 7) {
+            $categories = Category::with('questions')
+                ->orderBy('id', 'desc')
+                ->take(7)
+                ->get();
         }
 
-        $data['hot']=$qb->orderBy('hits','desc')->take(3)->get();
+        $data['hot'] = $qb->orderBy('hits', 'desc')->take(3)->get();
 
         return view('interlocution.index')
-        ->withData($data)
-        ->withCategories($categories)
-        ->withQuestions($questions);
+            ->withData($data)
+            ->withCategories($categories)
+            ->withQuestions($questions);
     }
 
     /**
@@ -67,22 +69,22 @@ class QuestionController extends Controller
      */
     public function store(QuestionRequest $request)
     {
-        $question =new Question($request->all());
+        $question        = new Question($request->all());
         $question->bonus = -1;
-        if($question->deadline){
-            $deadline=Carbon::now()->addHours(24*$question->deadline)->toDateTimeString();
-            $question->deadline =$deadline;
+        if ($question->deadline) {
+            $deadline           = Carbon::now()->addHours(24 * $question->deadline)->toDateTimeString();
+            $question->deadline = $deadline;
         }
 
-        if($request->bonus){
-            $question->status  = -1;
+        if ($request->bonus) {
+            $question->status = -1;
         }
         $question->save();
-        if(!empty($request->bonus)){
-            $pay_url="/pay?amount=0.01&type=question&question_id=$question->id";
+        if (!empty($request->bonus)) {
+            $pay_url = "/pay?amount=0.01&type=question&question_id=$question->id";
             return redirect()->to($pay_url);
         }
-        return redirect()->to('/question/'.$question->id);
+        return redirect()->to('/question/' . $question->id);
     }
 
     /**
@@ -93,21 +95,20 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        $data=[];
-        $question =Question::with('answers')->with('user')->with('categories')->findOrFail($id);
+        $data     = [];
+        $question = Question::with('answers')->with('user')->with('categories')->findOrFail($id);
         $question->hits++;
-        $question->save();         
+        $question->save();
 
-        $answers =Answer::with('user')->where('question_id',$question->id)->where('status','>',0)->orderBy('id','desc')->paginate(10);
+        $answers = Answer::with('user')->where('question_id', $question->id)->where('status', '>', 0)->orderBy('id', 'desc')->paginate(10);
 
-
-        $qb = Question::with('latestAnswer.article')->with('user')->orderBy('id', 'desc');
-        $data['hot']=$qb->orderBy('hits','desc')->take(3)->get();
+        $qb          = Question::with('latestAnswer.article')->with('user')->orderBy('id', 'desc');
+        $data['hot'] = $qb->orderBy('hits', 'desc')->take(3)->get();
 
         return view('interlocution.show')
-        ->withAnswers($answers)
-        ->withQuestion($question)
-        ->withData($data);
+            ->withAnswers($answers)
+            ->withQuestion($question)
+            ->withData($data);
     }
 
     /**
@@ -141,17 +142,48 @@ class QuestionController extends Controller
      */
     public function destroy($id)
     {
-        $question =Question::findOrFail($id);
-        $answers =$question->answers;
+        $question = Question::findOrFail($id);
+        $answers  = $question->answers;
 
-        if($answers->count()>0){
+        if ($answers->count() > 0) {
             foreach ($answers as $answer) {
-                  $answer->delete();
+                $answer->status = -1;
+                $answer->save();
             }
         }
 
-        $question->delete();
+        $question->status = -1;
+        $question->save();
 
         return redirect()->to('/question');
+    }
+
+    public function pay_tip(Request $request)
+    {
+        $question = Question::findOrFail($request->question_id);
+        if (is_array($request->answer_ids) && $request->deadline) {
+            $pay_count = count($request->answer_ids);
+            //每位回答者应该收到的钱
+            $amount = $question->bonus / $pay_count;
+            foreach ($request->answer_ids as $answer_id) {
+                $type        = '回答打赏';
+                $answer      = Answer::find($answer_id);
+                $answer->tip = $amount;
+                $answer->save();
+                $user = $answer->user;
+                $log  = '你的回答' . $answer->description() . '获得金额:' . $amount . '元';
+                Transaction::create([
+                    'user_id' => $user->id,
+                    'type'    => $type,
+                    'log'     => $log,
+                    'amount'  => $amount,
+                    'status'  => '已到账',
+                    'balance' => $user->balance() + $amount,
+                ]);
+            }
+            $question->deadline = null;
+            $question->save();
+            return redirect()->to('/question/'+$question->id);
+        }
     }
 }

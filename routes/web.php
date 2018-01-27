@@ -34,6 +34,7 @@ require_once 'sitemap.php';
 // 问答
 Route::resource('/question','QuestionController');
 Route::resource('/answer','AnswerController');
+Route::post('/tip-answer','QuestionController@pay_tip')->name('tip-answer');
 
 // 问答更多分类
 Route::get('/interlocution/more', function () {

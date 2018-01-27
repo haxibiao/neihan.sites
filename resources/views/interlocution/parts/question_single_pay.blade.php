@@ -96,6 +96,9 @@
 		        </span>
 		    </div>
     	</div>
+      <form action="/tip-answer" method="POST">
+        <input type="hidden" value="{{ csrf_token() }}" name="_token">
+        <input type="hidden" name="question_id" class="form-control" value="{{ $question->id }}">
     	<div class="note_answers">
             {{-- 付费回答 --}}
 {{--            @foreach($answers as $answer)
@@ -152,12 +155,14 @@
                         <follow followed="{{ Auth::user()->isFollow('users', $answer->user->id)}}" id="{{ $answer->user->id }}" type="users" user-id="{{ Auth::user()->id }}">
                         </follow>
                         @endif
-                        <div class="pay_question_user">
-                            <span>
-                                <i class="iconfont icon-qianqianqian"></i>
-                                {{ $answer->tip }}
-                            </span>
-                        </div>
+                        @if($answer->tip)
+                            <div class="pay_question_user">
+                                <span>
+                                    <i class="iconfont icon-qianqianqian"></i>
+                                    {{ $answer->tip }}
+                                </span>
+                            </div>
+                        @endif
                         <div class="info_meta">
                             <a class="nickname" href="#">
                                 {{ $answer->user->name }}
@@ -189,11 +194,12 @@
     	</div>
         <div class="note_foot">
             <div class="submit_select">
-                <div class="btn_base btn_follow btn_follow_lg">
-                    确认这些对我有用
-                </div>
+                {{-- <div class="btn_base btn_follow btn_follow_lg"> --}}
+                 <button type="submit" class="btn_base btn_follow btn_follow_lg">确认这些对我有用</button>
+                {{-- </div> --}}
             </div>
         </div>
+      </form>
     </div>
 </div>
 
