@@ -7,6 +7,7 @@ use App\Category;
 use App\Question;
 use App\Answer;
 use App\Http\Requests\QuestionRequest;
+use Illuminate\Support\Carbon;
 
 class QuestionController extends Controller
 {
@@ -22,7 +23,7 @@ class QuestionController extends Controller
     public function index()
     {
         $data=[];
-        $qb = Question::with('latestAnswer.article')->with('user')->orderBy('id', 'desc');
+        $qb = Question::with('latestAnswer.article')->with('user')->where('status','>',0)->orderBy('id', 'desc');
 
         if (request('cid')) {
             $category = Category::findOrFail(request('cid'));
@@ -66,9 +67,21 @@ class QuestionController extends Controller
      */
     public function store(QuestionRequest $request)
     {
-        // dd($request->all());
         $question =new Question($request->all());
+        $question->bonus = -1;
+        if($question->deadline){
+            $deadline=Carbon::now()->addHours(24*$question->deadline)->toDateTimeString();
+            $question->deadline =$deadline;
+        }
+
+        if($request->bonus){
+            $question->status  = -1;
+        }
         $question->save();
+        if(!empty($request->bonus)){
+            $pay_url="/pay?amount=0.01&type=question&question_id=$question->id";
+            return redirect()->to($pay_url);
+        }
         return redirect()->to('/question/'.$question->id);
     }
 

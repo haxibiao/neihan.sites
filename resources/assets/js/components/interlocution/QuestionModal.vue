@@ -56,25 +56,25 @@
                                         付费金额
                                     </div>
                                     <div class="amount_group">
-                                        <input id="option2" type="radio" value="5" v-model="money" name="bonus" />
+                                        <input id="option2" type="radio" value="5" v-model="bonus" name="bonus" />
                                         <label for="option2" class="option" @click="selectMoney">
                                             <i class="iconfont icon-jinqian1"></i>
                                             <span class="amount">5</span>
                                             <span class="piece">元</span>
                                         </label>
-                                        <input id="option3" type="radio" value="10" v-model="money" name="bonus"/>
+                                        <input id="option3" type="radio" value="10" v-model="bonus" name="bonus"/>
                                         <label for="option3" class="option" @click="selectMoney">
                                             <i class="iconfont icon-jinqian1"></i>
                                             <span class="amount">10</span>
                                             <span class="piece">元</span>
                                         </label>
-                                        <input id="option5" type="radio" value="50" v-model="money" name="bonus"/>
+                                        <input id="option5" type="radio" value="50" v-model="bonus" name="bonus"/>
                                         <label for="option5" class="option" @click="selectMoney">
                                             <i class="iconfont icon-jinqian1"></i>
                                             <span class="amount">50</span>
                                             <span class="piece">元</span>
                                         </label>
-                                        <input id="option6" type="radio" value="100" v-model="money" name="bonus"/>
+                                        <input id="option6" type="radio" value="100" v-model="bonus" name="bonus"/>
                                         <label for="option6" class="option" @click="selectMoney">
                                             <i class="iconfont icon-jinqian1"></i>
                                             <span class="amount">100</span>
@@ -85,7 +85,7 @@
                                             <span class="custom_text">自定义</span>
                                             <div class="custom_amount_input">
                                                 <i class="iconfont icon-jinqian1"></i>
-                                                <input v-if="custom" type="number" oninput="value = parseInt(Math.min(Math.max(value, 0), 10000), 10)" v-model="money" ref="customInput" />
+                                                <input v-if="custom" type="number" oninput="value = parseInt(Math.min(Math.max(value, 0), 10000), 10)" v-model="bonus" ref="customInput" />
                                                 <span class="piece">元</span>
                                             </div>
                                         </label>
@@ -292,7 +292,7 @@ import Dropzone from '../../plugins/Dropzone';
     },
 
     customMoney() {
-        this.money='';
+        this.bonus='';
         this.custom = true;
         var vm = this;
         setTimeout(function(){

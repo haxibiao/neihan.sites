@@ -210,6 +210,7 @@ function diffForHumansCN($time)
         $humanStr = str_replace('month', '月', $humanStr);
         $humanStr = str_replace('years', '年', $humanStr);
         $humanStr = str_replace('year', '年', $humanStr);
+        $humanStr = str_replace('from now', '', $humanStr);
         return $humanStr;
     }
 }

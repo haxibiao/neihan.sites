@@ -22,17 +22,6 @@
     <h1 class="headline">
         {{ $question->title }}
     </h1>
-    <div class="question_tips_body">
-        <div class="question_tip">
-            <span class="question_tip_text">
-                未在48小时内选中回答，前10位抢答者平分赏金
-            </span>
-            <span class="question_tip_money">
-                <i class="iconfont icon-jinqian1"></i>
-                5元
-            </span>
-        </div>
-    </div>
     <div class="question_text">
         {{ $question->background }}
     </div>
@@ -50,13 +39,6 @@
         <img src="/images/details_17.jpeg" /> --}}
     </div>
     @endif
-
-    {{-- 已抢答人数 --}}
-    <div class="pay_answer_num">
-        <div class="status">还剩10分钟</div>
-        <div class="middle_tips">已有1人抢答，抢答被选中者可获得赏金。</div>
-    </div>
-
     {{-- 问题的工具 --}}
     <question-tool question-id="{{ $question->id }}"></question-tool>
 
@@ -97,55 +79,6 @@
 		    </div>
     	</div>
     	<div class="note_answers">
-            {{-- 付费回答 --}}
-            <div class="answer_item">
-                 <div class="answer_user">
-                    <div class="author">
-                        <a class="avatar avatar_xs" href="#">
-                            <img src="/images/photo_02.jpg"/>
-                        </a>
-                        <follow></follow>
-                        <div class="pay_question_user">
-                            <span>
-                                <i class="iconfont icon-qianqianqian"></i>
-                                2.00
-                            </span>
-                        </div>
-                        <div class="info_meta">
-                            <a class="nickname" href="#">
-                                小小
-                            </a>
-                            <div class="meta">
-                                <span>
-                                    2018-01-02 12:05:35
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                 </div>
-                <div class="article_content fold">
-                    <div class="answer_text_full">
-                        <p>
-                            往要打英雄的左右翻滚?上下翻滚?提高普通攻击?打出更高的伤害?
-                            往要打英雄的左右翻滚?上下翻滚?提高普通攻击?打出更高的伤害?
-                            往要打英雄的左右翻滚?上下翻滚?提高普通攻击?打出更高的伤害?
-                        </p>
-                        <p>
-                            <img src="/images/details_22.jpeg" />
-                        </p>
-                    </div>
-                    <a href="javascript:;" class="expand_bottom">展开全部</a>
-                </div>
-                <answer-tool></answer-tool>
-                <div class="answer_useful">
-                    <div class="btn_base btn_pay btn_follow_lg">
-                        <input type="checkbox" />
-                        <span>这条回答对我有用</span>
-                    </div>
-                </div>
-            </div>
-
-
             @foreach($answers as $answer)
             <div class="answer_item">
                  <div class="answer_user">
@@ -179,13 +112,6 @@
             </div>
             @endforeach
     	</div>
-        <div class="note_foot">
-            <div class="submit_select">
-                <div class="btn_base btn_follow btn_follow_lg">
-                    确认这些对我有用
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 

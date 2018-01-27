@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Transaction;
 use Auth;
 use Omnipay\Omnipay;
+use App\Question;
 
 class WapController extends Controller
 {
@@ -44,6 +45,9 @@ class WapController extends Controller
         if (request('type') == 'tip') {
             $type = '打赏';
         }
+        if(request('type')=='question'){
+            $type='付费问题';
+        }
         $subject = $type;
 
         if (Auth::check()) {
@@ -69,6 +73,15 @@ class WapController extends Controller
                     $tran_id2 = $transaction->id;
                 }
             }
+
+            if($type =='付费问题' && request('question_id')){
+                $question =Question::with('user')->find(request('question_id'));
+                if($question){
+                     $subject=$type.$question->title;
+                     $log  ='你创建了付费问题'.$question->title.'付费金额:'.$amount.'元';
+                }
+            }
+
             $transaction = Transaction::create([
                 'user_id' => $user->id,
                 'type'    => $type,
@@ -77,12 +90,19 @@ class WapController extends Controller
                 'status'  => '未支付',
                 'balance' => $user->balance(),
             ]);
+
             $tran_id1     = $transaction->id;
             $out_trade_no = $this->encodeOutTradeNo(request('type') . '-' . $tran_id1 . '-' . $tran_id2);
+            if($type =='付费问题' && request('question_id')){
+                    $tran_id     = $transaction->id;
+                    $out_trade_no = $this->encodeOutTradeNo(request('type') . '-' . $tran_id.'-'.request('question_id'));
+            }
         } else {
             //未登录游客直接打赏
             $out_trade_no = $this->encodeOutTradeNo(request('article_id'));
         }
+
+
 
         $response = $this->gateway()->purchase()->setBizContent([
             'subject'      => $subject,
@@ -212,9 +232,16 @@ class WapController extends Controller
     {
         $out_trade_no                     = array_get($response->getData(), 'out_trade_no');
         $out_trade_no                     = $this->decodeOutTradeNo($out_trade_no);
+        if(str_contains($out_trade_no,'article')){
         list($type, $tran_id1, $tran_id2) = explode('-', $out_trade_no);
         $tran1                            = Transaction::find($tran_id1);
-        if ($tran1) {
+        }
+        if(str_contains($out_trade_no,'question')){
+                 list($type,$tran_id,$question_id)  =explode('-', $out_trade_no);
+                 $question =Question::find($question_id);
+                 $tran = Transaction::find($tran_id);
+        }
+        if (!empty($tran1)) {
             if ($type == 'tip') {
                 $tran1->status = '已到账';
                 // $tran1->balance = $transaction->balance - $transaction->amount;
@@ -233,6 +260,17 @@ class WapController extends Controller
                 $tran1->status  = '已到账';
                 $tran1->balance = $tran1->balance + $tran1->amount;
                 $tran1->save();
+            }
+            return true;
+        }
+
+        if(!empty($tran)){
+            if($type =='question'){
+                $tran->status='已到账';
+                $tran->save();
+                $question->bonus =$tran->amount;
+                $question->status = 1;
+                $question->save();
             }
             return true;
         }

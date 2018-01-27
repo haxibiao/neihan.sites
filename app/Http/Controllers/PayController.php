@@ -6,6 +6,7 @@ use App\Article;
 use App\Transaction;
 use Auth;
 use DB;
+use App\Question;
 use Illuminate\Http\Request;
 
 class PayController extends Controller
@@ -43,12 +44,33 @@ class PayController extends Controller
                     }
                 }, 3);
             }
+            if(request('question_id')){
+                DB::transaction(function(){
+                     $type ='付费问题';
+                     $amount =request('amount');
+                     $question =Question::with('user')->find(request('question_id'));
+                     if($question){
+                         $log = '你创建了付费问题'.$question->title.'付费金额:'.$amount.'元';
+                          Transaction::create([
+                              'user_id'=> Auth::id(),
+                              'type' =>$type,
+                              'log'=>$log,
+                              'amount'=>$amount,
+                              'status'=>'已到账',
+                              'balance'=> Auth::user()->balance() - $amount,
+                          ]);
+                     }
+                },3);
+            }
             return redirect()->to('/wallet');
         } else {
             //未登录或者不够钱的-=
             $realPayUrl = '/alipay/wap/pay?amount=' . $amount . '&type=' . request('type');
             if (request('article_id')) {
                 $realPayUrl .= '&article_id=' . request('article_id');
+            }
+            if(request('question_id')){
+                $realPayUrl .= '&question_id=' . request('question_id');
             }
             return redirect()->to($realPayUrl);
         }

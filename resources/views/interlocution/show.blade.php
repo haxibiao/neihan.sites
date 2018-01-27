@@ -11,7 +11,11 @@
                 {{-- 左侧 --}}
                 <div class="main col-xs-12 col-sm-8">
                     {{-- 问答详情 --}}
+                  @if($question->bonus > 0)
+                    @include('interlocution.parts.question_single_pay')
+                  @else
                     @include('interlocution.parts.question_single')
+                  @endif
                 </div>
                 {{-- 右侧 --}}
                 <div class="aside col-sm-4">

@@ -1,14 +1,14 @@
 {{-- 回答问题 --}}
 <div class="question_single">
     <div class="question_tags">
-      {{-- @foreach($question->categories as $category)
+      @foreach($question->categories as $category)
         <a class="collection" href="/{{ $category->name_en }}" target="_blank">
             <div class="name">
                 {{ $category->name }}
             </div>
         </a>
-       @endforeach --}}
-       <a class="collection" href="" target="_blank">
+       @endforeach
+{{--        <a class="collection" href="" target="_blank">
             <div class="name">
                 王者荣耀
             </div>
@@ -17,7 +17,7 @@
             <div class="name">
                 技能点
             </div>
-        </a>
+        </a> --}}
     </div>
     <h1 class="headline">
         {{ $question->title }}
@@ -29,7 +29,7 @@
             </span>
             <span class="question_tip_money">
                 <i class="iconfont icon-jinqian1"></i>
-                5元
+                {{ $question->bonus }}元
             </span>
         </div>
     </div>
@@ -53,7 +53,7 @@
 
     {{-- 已抢答人数 --}}
     <div class="pay_answer_num">
-        <div class="status">还剩10分钟</div>
+        <div class="status">还剩{{ diffForHumansCN($question->deadline) }}</div>
         <div class="middle_tips">已有1人抢答，抢答被选中者可获得赏金。</div>
     </div>
 
@@ -98,6 +98,7 @@
     	</div>
     	<div class="note_answers">
             {{-- 付费回答 --}}
+{{--            @foreach($answers as $answer)
             <div class="answer_item">
                  <div class="answer_user">
                     <div class="author">
@@ -125,14 +126,7 @@
                  </div>
                 <div class="article_content fold">
                     <div class="answer_text_full">
-                        <p>
-                            往要打英雄的左右翻滚?上下翻滚?提高普通攻击?打出更高的伤害?
-                            往要打英雄的左右翻滚?上下翻滚?提高普通攻击?打出更高的伤害?
-                            往要打英雄的左右翻滚?上下翻滚?提高普通攻击?打出更高的伤害?
-                        </p>
-                        <p>
-                            <img src="/images/details_22.jpeg" />
-                        </p>
+                            {!! $answer->answer !!}
                     </div>
                     <a href="javascript:;" class="expand_bottom">展开全部</a>
                 </div>
@@ -144,6 +138,7 @@
                     </div>
                 </div>
             </div>
+         @endforeach --}}
 
 
             @foreach($answers as $answer)
@@ -157,6 +152,12 @@
                         <follow followed="{{ Auth::user()->isFollow('users', $answer->user->id)}}" id="{{ $answer->user->id }}" type="users" user-id="{{ Auth::user()->id }}">
                         </follow>
                         @endif
+                        <div class="pay_question_user">
+                            <span>
+                                <i class="iconfont icon-qianqianqian"></i>
+                                {{ $answer->tip }}
+                            </span>
+                        </div>
                         <div class="info_meta">
                             <a class="nickname" href="#">
                                 {{ $answer->user->name }}
@@ -179,7 +180,7 @@
                 
                 <div class="answer_useful">
                     <div class="btn_base btn_pay btn_follow_lg">
-                        <input type="checkbox" />
+                        <input type="checkbox" value="{{ $answer->id }}" name="answer_ids[]" />
                         <span>这条回答对我有用</span>
                     </div>
                 </div>
