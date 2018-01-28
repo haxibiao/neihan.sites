@@ -53,8 +53,12 @@
 
     {{-- 已抢答人数 --}}
     <div class="pay_answer_num">
+        @if($question->deadline)
         <div class="status">还剩{{ diffForHumansCN($question->deadline) }}</div>
         <div class="middle_tips">已有1人抢答，抢答被选中者可获得赏金。</div>
+        @else
+          <div class="status">抢答已经结束</div>
+        @endif
     </div>
 
     {{-- 问题的工具 --}}
@@ -182,16 +186,18 @@
                     <a href="javascript:;" class="expand_bottom">展开全部</a>
                 </div>
                 <answer-tool answer-id={{ $answer->id }} is-login={{ Auth::check() }}></answer-tool>
-                
+                @if(Auth::check() && Auth::id()==$question->user->id && $question->deadline)
                 <div class="answer_useful">
                     <div class="btn_base btn_pay btn_follow_lg">
                         <input type="checkbox" value="{{ $answer->id }}" name="answer_ids[]" />
                         <span>这条回答对我有用</span>
                     </div>
                 </div>
+                @endif
             </div>
             @endforeach
     	</div>
+        @if(Auth::check() && Auth::id()==$question->user->id && $question->deadline)
         <div class="note_foot">
             <div class="submit_select">
                 {{-- <div class="btn_base btn_follow btn_follow_lg"> --}}
@@ -199,6 +205,7 @@
                 {{-- </div> --}}
             </div>
         </div>
+        @endif
       </form>
     </div>
 </div>

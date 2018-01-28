@@ -9,6 +9,7 @@ use App\Question;
 use App\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Auth;
 
 class QuestionController extends Controller
 {
@@ -160,8 +161,10 @@ class QuestionController extends Controller
 
     public function pay_tip(Request $request)
     {
-        $question = Question::findOrFail($request->question_id);
-        if (is_array($request->answer_ids) && $request->deadline) {
+        $question = Question::with('user')->findOrFail($request->question_id);
+        $now  =Carbon::now()->toDateTimeString();
+        $user =Auth::user();
+        if (is_array($request->answer_ids) && $question->deadline && $question->deadline > $now && $question->user->id ==$user->id ) {
             $pay_count = count($request->answer_ids);
             //每位回答者应该收到的钱
             $amount = $question->bonus / $pay_count;
@@ -183,7 +186,9 @@ class QuestionController extends Controller
             }
             $question->deadline = null;
             $question->save();
-            return redirect()->to('/question/'+$question->id);
+            return redirect()->to('/question/'.$question->id);
+        }else{
+            return abort(403);
         }
     }
 }
