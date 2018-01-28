@@ -237,7 +237,7 @@ class CategoryController extends Controller
         $categories = Category::where('type', $type)->orderBy('id', 'desc')->paginate(24);
 
         if (AjaxOrDebug() && request('recommend')) {
-            return $categories;
+            return $categories; 
         }
         $data['hot'] = $categories;
 
@@ -271,9 +271,22 @@ class CategoryController extends Controller
 
     public function saveAdmins($request, $category, $is_editor = null)
     {
-        $admins = json_decode($request->uids);
-        if (is_array($admins)) {
+        //save category user
+        $category->admins()->syncWithoutDetaching([
+                    $category->user->id => [
+                        'is_admin' => 1,
+                    ],
+        ]);
+        $category->authors()->syncWithoutDetaching([
+                $category->user->id => [
+                    'approved' => 1,
+                ],
+        ]);
+        
 
+        $admins = json_decode($request->uids);
+
+        if (is_array($admins)) {
             if ($is_editor) {
                 $admineds = $category->admins;
                 foreach ($admineds as $admin) {
@@ -281,12 +294,6 @@ class CategoryController extends Controller
                 }
             }
             foreach ($admins as $admin) {
-                $category->admins()->syncWithoutDetaching([
-                    $category->user->id => [
-                        'is_admin' => 1,
-                    ],
-                ]);
-
                 $category->admins()->syncWithoutDetaching([
                     $admin->id => [
                         'is_admin' => 1,

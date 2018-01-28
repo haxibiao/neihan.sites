@@ -163,7 +163,7 @@ class FixData extends Command
         //     $category->save();
         // }
 
-        $category =Category::where('id',61)->first();
+        $category =Category::where('id',62)->first();
         $category->admins()->syncWithoutDetaching([
             $category->user->id => [
                     'is_admin' => 1,
