@@ -19,6 +19,7 @@ class CreateAnswersTable extends Migration
             $table->integer('question_id')->index();
             $table->integer('article_id')->index()->nullable();
             $table->longText('answer');
+            $table->decimal('tip')->nullable();
             $table->string('image_url')->index()->nullable();  //save primary image small path
             $table->integer('count_likes')->index()->nullable();
             $table->integer('count_unlikes')->index()->nullable();
