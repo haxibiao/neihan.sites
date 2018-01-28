@@ -15,7 +15,7 @@ class PayController extends Controller
     {
         $amount = request('amount');
 
-        if (Auth::check() && Auth::user()->balance() > $amount) {
+        if (Auth::check() && Auth::user()->balance() >= $amount) {
             if (request('article_id')) {
                 DB::transaction(function () {
                     $type    = '打赏';
@@ -59,6 +59,9 @@ class PayController extends Controller
                               'status'=>'已到账',
                               'balance'=> Auth::user()->balance() - $amount,
                           ]);
+                         $question->bonus =$amount;
+                         $question->status =1 ;
+                         $question->save();
                      }
                 },3);
             }

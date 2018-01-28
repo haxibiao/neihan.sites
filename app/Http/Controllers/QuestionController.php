@@ -72,8 +72,8 @@ class QuestionController extends Controller
     {
         $question        = new Question($request->all());
         $question->bonus = -1;
-        if ($question->deadline) {
-            $deadline           = Carbon::now()->addHours(24 * $question->deadline)->toDateTimeString();
+        if ($request->deadline) {
+            $deadline           = Carbon::now()->addHours(24 * $request->deadline)->toDateTimeString();
             $question->deadline = $deadline;
         }
 
@@ -82,7 +82,7 @@ class QuestionController extends Controller
         }
         $question->save();
         if (!empty($request->bonus)) {
-            $pay_url = "/pay?amount=0.01&type=question&question_id=$question->id";
+            $pay_url = "/pay?amount=$request->bonus&type=question&question_id=$question->id";
             return redirect()->to($pay_url);
         }
         return redirect()->to('/question/' . $question->id);
