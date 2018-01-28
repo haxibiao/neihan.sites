@@ -28,7 +28,8 @@
                             <div class="setting_group">
                                 <div>
                                     <span class="option">匿名提问</span>
-                                    <div class="switch_area anonymous on" v-model="anonymity" @click="showSwitch">
+                                    <div class="switch_area anonymous" v-model="anonymity" @click="showSwitch" >
+                                       <input type="hidden" name="is_anonymous" class="form-control" id="anonymous" value=0 >
                                         <i class="switch_btn"></i>
                                     </div>
                                 </div>
@@ -307,9 +308,11 @@ import Dropzone from '../../plugins/Dropzone';
     showSwitch() {
         this.anonymity=this.anonymity? false:true ;
         if(this.anonymity){
-            $('.anonymous').addClass('on');
-        }else{
             $('.anonymous').removeClass('on');
+            $('#anonymous').attr('value',0);
+        }else{
+            $('.anonymous').addClass('on');
+            $('#anonymous').attr('value',1);
         }  
     },
 
@@ -340,7 +343,7 @@ import Dropzone from '../../plugins/Dropzone';
         ],
         anonymity:true,
         whetherPay:false,
-        money:5,
+        bonus:5,
         custom: null,
         validity:'不限制',
     }

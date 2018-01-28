@@ -13,7 +13,8 @@ class Question extends Model
         'image1',
         'image2',
         'image3',
-        'deadline'
+        'deadline',
+        'is_anonymous'
     ];
 
     protected $dates=['deadline'];
