@@ -25,7 +25,7 @@
     <div class="question_tips_body">
         <div class="question_tip">
             <span class="question_tip_text">
-                未在48小时内选中回答，前10位抢答者平分赏金
+                未在结束时间内选中回答，前10位抢答者平分赏金
             </span>
             <span class="question_tip_money">
                 <i class="iconfont icon-jinqian1"></i>

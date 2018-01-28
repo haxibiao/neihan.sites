@@ -99,7 +99,12 @@ class QuestionController extends Controller
         $data     = [];
         $question = Question::with('answers')->with('user')->with('categories')->findOrFail($id);
         $question->hits++;
+        $now      =Carbon::now()->toDateTimeString();
+        if($question->deadline <= $now){
+            $question->deadline = null;
+        }
         $question->save();
+
 
         $answers = Answer::with('user')->where('question_id', $question->id)->where('status', '>', 0)->orderBy('id', 'desc')->paginate(10);
 
