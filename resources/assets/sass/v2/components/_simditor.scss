@@ -5,7 +5,6 @@
 
 // 提问回答页的发表答案
 .answer_write {
-    position: relative;
     .optimum {
         margin-bottom: 10px;
         .suggest_title {
@@ -21,6 +20,10 @@
             }
         }
     }
+}
+
+.simditor_submi {
+    position: relative;
     .submitbar {
         position: absolute;
         height: 45px;

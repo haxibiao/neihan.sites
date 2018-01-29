@@ -61,6 +61,11 @@
     border-radius: 4px;
     padding: 20px;
     position: relative;
+    &.have_img {
+        .content {
+            min-height: 120px;
+        }
+    }
     .pay_logo {
         position: absolute;
         left: -9px;
@@ -90,15 +95,17 @@
     }
     .question_answers {
         margin-top: 16px;
-        .content {
-            min-height: 120px;
-        }
     }
 }
 
 //问答页右侧精选文章摘要
 .selected {
     min-height: 0;
+    &.have_img {
+        .content {
+            min-height: 67px;
+        }
+    }
     .paper_title {
         font-size: 14px;
     }

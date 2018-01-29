@@ -44,7 +44,7 @@
 
 
     @if(Auth::check())
-    <div class="answer_write">
+    <div class="answer_write simditor_submi">
       <form method="post"  action="{{ route('answer.store') }}">
         <input type="hidden" value="{{ csrf_token() }}" name="_token">
         <input type="hidden" name="user_id" value="{{ Auth::id() }}">
