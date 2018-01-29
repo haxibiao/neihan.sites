@@ -14,10 +14,10 @@ class Question extends Model
         'image2',
         'image3',
         'deadline',
-        'is_anonymous'
+        'is_anonymous',
     ];
 
-    protected $dates=['deadline'];
+    protected $dates = ['deadline'];
 
     public function articles()
     {
@@ -60,7 +60,7 @@ class Question extends Model
         if (!empty($this->image1)) {
             return $this->image1;
         }
-        
+
         //实在没有 只能凉了
         return 0;
     }
@@ -70,6 +70,14 @@ class Question extends Model
     public function has_img()
     {
         return $this->relateImage() ? 'have_img' : '';
+    }
+
+    public function count_defalut()
+    {
+        $this->count_answers   = $this->count_answers > 0 ? $this->count_answers : 0;
+        $this->count_favorites = $this->count_favorites > 0 ? $this->count_favorites : 0;
+        $this->count_comments  = $this->count_comments > 0 ? $this->count_comments : 0;
+        $this->count_likes     = $this->count_likes > 0 ? $this->count_likes : 0;
     }
 
     public function link()

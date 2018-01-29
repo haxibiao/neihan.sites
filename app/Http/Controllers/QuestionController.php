@@ -7,9 +7,9 @@ use App\Category;
 use App\Http\Requests\QuestionRequest;
 use App\Question;
 use App\Transaction;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Auth;
 
 class QuestionController extends Controller
 {
@@ -42,6 +42,12 @@ class QuestionController extends Controller
                 ->orderBy('id', 'desc')
                 ->take(7)
                 ->get();
+        }
+
+        // null defalut 0
+
+        foreach ($questions as $question) {
+            $question->count_defalut();
         }
 
         $data['hot'] = $qb->orderBy('hits', 'desc')->take(3)->get();
@@ -99,12 +105,11 @@ class QuestionController extends Controller
         $data     = [];
         $question = Question::with('answers')->with('user')->with('categories')->findOrFail($id);
         $question->hits++;
-        $now      =Carbon::now()->toDateTimeString();
-        if($question->deadline <= $now){
+        $now = Carbon::now()->toDateTimeString();
+        if ($question->deadline <= $now) {
             $question->deadline = null;
         }
         $question->save();
-
 
         $answers = Answer::with('user')->where('question_id', $question->id)->where('status', '>', 0)->orderBy('id', 'desc')->paginate(10);
 
@@ -167,9 +172,9 @@ class QuestionController extends Controller
     public function pay_tip(Request $request)
     {
         $question = Question::with('user')->findOrFail($request->question_id);
-        $now  =Carbon::now()->toDateTimeString();
-        $user =Auth::user();
-        if (is_array($request->answer_ids) && $question->deadline && $question->deadline > $now && $question->user->id ==$user->id ) {
+        $now      = Carbon::now()->toDateTimeString();
+        $user     = Auth::user();
+        if (is_array($request->answer_ids) && $question->deadline && $question->deadline > $now && $question->user->id == $user->id) {
             $pay_count = count($request->answer_ids);
             //每位回答者应该收到的钱
             $amount = $question->bonus / $pay_count;
@@ -191,8 +196,8 @@ class QuestionController extends Controller
             }
             $question->deadline = null;
             $question->save();
-            return redirect()->to('/question/'.$question->id);
-        }else{
+            return redirect()->to('/question/' . $question->id);
+        } else {
             return abort(403);
         }
     }
