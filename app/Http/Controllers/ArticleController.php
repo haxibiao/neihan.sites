@@ -105,6 +105,9 @@ class ArticleController extends Controller
         //music
         $this->save_article_music($request, $article);
 
+        //defalut 默认会被收录
+        $this->category_article_submit($request, $article);
+
         //count article
         $this->article_count($request->get('category_ids'), $article);
         //count user
@@ -458,5 +461,10 @@ class ArticleController extends Controller
         if (!empty($music_id)) {
             $article->music()->syncWithoutDetaching($music_id);
         }
+    }
+
+    public function category_article_submit($request, $article)
+    {
+        DB::table('article_category')->where('article_id',$article->id)->update(['submit' => '已收录']);
     }
 }
