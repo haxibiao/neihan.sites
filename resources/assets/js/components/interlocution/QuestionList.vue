@@ -129,6 +129,8 @@ export default {
   	  	 var vm = this;
   	  	 window.axios.get(api).then(function(response){
              vm.questions =response.data.data;
+             vm.lastPage = response.data.last_page;
+             console.log(vm.lastPage);
   	  	 });
   	  },
 
