@@ -85,7 +85,7 @@
                                             <span class="custom_text">自定义</span>
                                             <div class="custom_amount_input">
                                                 <i class="iconfont icon-jinqian1"></i>
-                                                <input v-if="custom" type="number" oninput="value = parseInt(Math.min(Math.max(value, 0), 10000), 10)" v-model="bonus" ref="customInput" />
+                                                <input v-if="custom" type="number" oninput="value = parseInt(Math.min(Math.max(value, 0), 10000), 10)" v-model="bonus" ref="customInput" name="bonus" />
                                                 <span class="piece">元</span>
                                             </div>
                                         </label>
