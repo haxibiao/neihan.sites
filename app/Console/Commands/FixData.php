@@ -19,7 +19,7 @@ class FixData extends Command
      *
      * @var string
      */
-    protected $signature = 'fix:data {--user_count}{--favorite}{--small_image}{--tags}{--comments} {--traffic} {--articles} {--images} {--videos} {--categories} {--force}';
+    protected $signature = 'fix:data {--article_count}{--user_count}{--favorite}{--small_image}{--tags}{--comments} {--traffic} {--articles} {--images} {--videos} {--categories} {--force}';
 
     /**
      * The console command description.
@@ -78,6 +78,10 @@ class FixData extends Command
         }
         if ($this->option('user_count')) {
             $this->fix_user_count();
+        }
+
+        if($this->option('article_count')){
+            $this->fix_article_count();
         }
 
     }
@@ -430,6 +434,15 @@ class FixData extends Command
              }
              $this->info("$user->name fix");
              $user->save();
+        }
+    }
+
+    public function fix_article_count(){
+        $categories =Category::where('count',0)->get();
+        foreach($categories as $category){
+             $category->count =$category->articles()->count();
+             $category->save();
+             $this->info("$category->name fix done");
         }
     }
 }
