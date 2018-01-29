@@ -35,7 +35,6 @@
                                 </div>
                                 <div>
                                     <span class="option hot">
-                                        <i class="iconfont icon-qianbao"></i>
                                         付费咨询
                                     </span>
                                     <div class="switch_area consultation" v-model="whetherPay" @click="showPay">
@@ -616,7 +615,7 @@ import Dropzone from '../../plugins/Dropzone';
                     }
                 }
                 footer {
-                    padding: 0 40px 20px 40px;
+                    padding: 10px 40px;
                 }
             }
         }

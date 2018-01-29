@@ -34,12 +34,10 @@
 .pat_choice {
     .title {
         font-size: 14px;
-        margin-bottom: 5px;
     }
     .setting_group {
         >div {
-            display: inline-block;
-            margin-right: 10px;
+            margin-top: 5px;
             .option {
                 font-size: 14px;
                 color: $color-gray;
@@ -48,6 +46,9 @@
                 &.hot {
                     color: $color-theme;
                 }
+            }
+            .switch_area {
+                float: right;
             }
         }
     }
