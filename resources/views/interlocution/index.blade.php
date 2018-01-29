@@ -19,39 +19,8 @@
                     {{-- 文章摘要 --}}
                     <div class="article_list">
                         @include('interlocution.parts.article_list',['questions'=>$questions])
+                        <question-list></question-list>
                     </div>
-                    {{-- 分页 --}}
-                    {{-- <ul class="pagination">
-                        <li>
-                            <a href="#">
-                                <span>
-                                    上一页
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                1
-                            </a>
-                        </li>
-                        <li>
-                            <a class="active" href="#">
-                                2
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                3
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span>
-                                    下一页
-                                </span>
-                            </a>
-                        </li>
-                    </ul> --}}
                 </div>
                 {{-- 右侧 --}}
                 <div class="aside col-sm-4">

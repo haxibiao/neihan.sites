@@ -52,6 +52,18 @@ class QuestionController extends Controller
 
         $data['hot'] = $qb->orderBy('hits', 'desc')->take(3)->get();
 
+        if(AjaxOrDebug() && request('page')){
+             foreach($questions as $question){
+                $question->count_defalut();
+                $question->relateImage =$question->relateImage();
+                $question->deadline =diffForHumansCN($question->deadline);
+                if(!empty($question->latestAnswer)){
+                $question->latestAnswer->answer=strip_tags($question->latestAnswer->answer);
+               }
+             }
+             return $questions;
+        }
+
         return view('interlocution.index')
             ->withData($data)
             ->withCategories($categories)
