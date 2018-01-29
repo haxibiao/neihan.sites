@@ -298,9 +298,16 @@ class FixData extends Command
         //破除内存限制,这里有可能处理大量数据
         ini_set('memory_limit', '-1');
 
-        $article = Article::find(1158);
-        $this->info("$article->title delete");
-        $article->delete();
+        $article = Article::find(1242);
+        $this->info("$article->title done");
+        $article->created_at ='2018-01-28 17:09:36';
+        $article->save();
+
+        $article =Article::find(1241);
+        $this->info("$article->title done");
+        $article->created_at ='2018-01-28 17:09:36';
+        $article->save();
+
     }
 
     public function fix_article_image($article)
