@@ -58,11 +58,19 @@ class Question extends Model
         }
         //没有，只好用问题里的图片
         if (!empty($this->image1)) {
-            return $this->image1;
+            return $this->question_small_image();
         }
 
         //实在没有 只能凉了
         return 0;
+    }
+
+    public function question_small_image(){
+        $image_url_path = parse_url($this->image1, PHP_URL_PATH);
+        $image          = Image::firstOrNew([
+            'path' => $image_url_path,
+        ]);
+        return $image->path_small();
     }
 
     //check question has img
