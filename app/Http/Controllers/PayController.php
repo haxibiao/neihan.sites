@@ -50,7 +50,7 @@ class PayController extends Controller
                      $amount =request('amount');
                      $question =Question::with('user')->find(request('question_id'));
                      if($question){
-                         $log = '你创建了付费问题'.$question->title.'付费金额:'.$amount.'元';
+                         $log = '你创建了付费问题'.$question->link().'付费金额:'.$amount.'元';
                           Transaction::create([
                               'user_id'=> Auth::id(),
                               'type' =>$type,

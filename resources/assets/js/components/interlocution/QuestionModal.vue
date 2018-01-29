@@ -93,7 +93,7 @@
                                 </div>
                                 <div class="expiration_date">
                                     <div class="pay_title">
-                                        悬赏日期
+                                        悬赏日期(必须选择)
                                     </div>
                                     <span>一天</span>
                                     <input id="data1" type="radio" value="1" v-model="validity" name="deadline" />
@@ -101,8 +101,8 @@
                                     <input id="data2" type="radio" value="3" v-model="validity" name="deadline" />
                                     <span>七天</span>
                                     <input id="data3" type="radio" value="7" v-model="validity" name="deadline"  />
-                                    <span>不限制</span>
-                                    <input id="data4" type="radio" value="不限制" v-model="validity" name="deadline" />
+<!--                                     <span>不限制</span>
+                                    <input id="data4" type="radio" value="不限制" v-model="validity" name="deadline" /> -->
                                 </div>
                             </div>
                         </div>
@@ -344,7 +344,8 @@ import Dropzone from '../../plugins/Dropzone';
         whetherPay:false,
         bonus:5,
         custom: null,
-        validity:'不限制',
+        validity:1,
+        optionCheck:true,
     }
   }
 }

@@ -78,7 +78,7 @@ class WapController extends Controller
                 $question =Question::with('user')->find(request('question_id'));
                 if($question){
                      $subject=$type.$question->title;
-                     $log  ='你创建了付费问题'.$question->title.'付费金额:'.$amount.'元';
+                     $log  ='你创建了付费问题'.$question->link().'付费金额:'.$amount.'元';
                 }
             }
 
