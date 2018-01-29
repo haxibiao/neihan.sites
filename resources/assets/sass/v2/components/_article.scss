@@ -89,7 +89,10 @@
         }
     }
     .question_answers {
-        padding-top: 16px;
+        margin-top: 16px;
+        .content {
+            min-height: 120px;
+        }
     }
 }
 
