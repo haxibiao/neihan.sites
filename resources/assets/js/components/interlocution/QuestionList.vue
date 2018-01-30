@@ -111,6 +111,8 @@
         </div>
     </div>
   </li>
+  
+   <a class="load_more" href="javascript:;">{{ page >= lastPage ? '已经到底了':'正在加载更多' }}...</a>
 </div>
 </template>
 
@@ -130,7 +132,7 @@ export default {
   	  	 window.axios.get(api).then(function(response){
              vm.questions =response.data.data;
              vm.lastPage = response.data.last_page;
-             console.log(vm.lastPage);
+             
   	  	 });
   	  },
 
