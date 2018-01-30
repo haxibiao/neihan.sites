@@ -20,7 +20,7 @@
         </div>
     </a>
     @endforeach
-    <a class="collection more_collection" href="/interlocution/more" target="_blank">
+    <a class="collection more_collection" href="/categories" target="_blank">
         <div class="name">
             更多
             <i class="iconfont icon-youbian">

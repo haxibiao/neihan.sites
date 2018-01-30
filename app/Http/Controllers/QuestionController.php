@@ -101,8 +101,8 @@ class QuestionController extends Controller
         }
         $question->save();
         if (!empty($request->bonus)) {
-            PayQuestion::dispatch($question->id);
-            // ->delay(now()->addHours(24 * $request->deadline));
+            PayQuestion::dispatch($question->id)
+            ->delay(now()->addHours(24 * $request->deadline));
 
             $pay_url = "/pay?amount=$request->bonus&type=question&question_id=$question->id";
             return redirect()->to($pay_url);
