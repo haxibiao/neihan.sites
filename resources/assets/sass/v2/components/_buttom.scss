@@ -210,6 +210,39 @@
     }
 }
 
+// 问答回答已采纳
+.btn_font_adopt {
+    vertical-align: middle;
+    i {
+        @include font (14px!important, $color-theme, 700);
+    }
+    &:hover,&:focus {
+        color: $color-theme;
+    }
+    &.btn_font_adopt {
+        &::after {
+            content: '已采纳';
+        }
+        .icon-cha {
+            display: none;
+        }
+        .icon-weibiaoti12 {
+            display: inline-block;
+        }
+        &:hover {
+            &::after {
+                content: '取消采纳';
+            }
+            .icon-cha {
+                display: inline-block;
+            }
+            .icon-weibiaoti12 {
+                display: none;
+            }
+        }
+    }
+}
+
 // 消息页接受按钮
 .btn_push {
     @include btn (40px,1px solid $color-green,inherit,$color-green);

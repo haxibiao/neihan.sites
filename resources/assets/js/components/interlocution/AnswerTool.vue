@@ -3,7 +3,7 @@
         <div class="answer_tool comment_wrap">
             <div class="tool_group">
                 <a href="javascript:;" @click="likeAnswer" class="action_btn">
-                    <i :class="['iconfont', answer.liked ? 'icon-dianzan' : 'icon-fabulous']">
+                    <i :class="['iconfont', answer.liked ? 'icon-dianzan like_active' : 'icon-fabulous like']">
                     </i>
                     <span>
                         {{ this.answer.count_likes }} 赞
@@ -26,16 +26,30 @@
                 <share placement="top" class="action_btn">
                     <span>分享</span>
                 </share>
+
+                <!-- 未采纳 -->
+                <!-- <a href="javascript:;" class="action_btn adopt">
+                    <span>
+                        采纳
+                    </span>
+                </a> -->
+                <a href="javascript:;" class="action_btn adopt btn_font_adopt">
+                    <span>
+                        <i class="iconfont icon-weibiaoti12">
+                        </i>
+                        <i class="iconfont icon-cha">
+                        </i>
+                    </span>
+                </a>
                 <a class="pull-right action_btn" href="#" v-if="this.isLogin && isSelf && answer.deleted" @click="deleteAnswer">
                     <i class="iconfont icon-lajitong"></i>
                     <span>
                         删除
                     </span>
                 </a>
-
                 <a v-else class="pull-right action_btn" @click="reportAnswer">
-                        <i class="iconfont icon-jinggao"></i>
-                        <span>举报({{ this.answer.count_reports }})</span>
+                    <i class="iconfont icon-jinggao"></i>
+                    <span>举报({{ this.answer.count_reports }})</span>
                 </a>
             </div>
         </div>

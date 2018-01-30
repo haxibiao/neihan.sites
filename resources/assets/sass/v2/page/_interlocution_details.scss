@@ -80,13 +80,6 @@
                                         }
                                     }
                                 }
-                                .answer_useful {
-                                    text-align: center;
-                                    input[type="checkbox"] {
-                                        @include size (15px,15px);
-                                        margin: 0;
-                                    }
-                                }
                                 &:last-child {
                                     border-bottom: none;
                                 }
@@ -102,6 +95,7 @@
                             z-index: 1030;
                             text-align: center;
                             background-color: $color-white;
+                            display: none;
                         }
                     }
                 }

@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="money_amount">
                                     <div class="pay_title">
-                                        付费金额
+                                        付费金额 (当前账户余额：￥385) 
                                     </div>
                                     <div class="amount_group">
                                         <input id="option2" type="radio" value="5" v-model="bonus" name="bonus" />
@@ -334,11 +334,12 @@ import Dropzone from '../../plugins/Dropzone';
         query:null,
         top3Imgs:[],
         imgItems: [
-            {'img':'/images/photo_01.jpg','selected': 0},
-            {'img':'/images/photo_02.jpg','selected': 0},
-            {'img':'/images/photo_03.jpg','selected': 0},
-            {'img':'/images/photo_04.png','selected': 0},
-            {'img':'/images/photo_user.png','selected': 0},
+            {'img':'/images/details_12.jpeg','selected': 0},
+            {'img':'/images/details_04.jpeg','selected': 0},
+            {'img':'/images/details_06.jpeg','selected': 0},
+            {'img':'/images/details_01.jpeg','selected': 0},
+            {'img':'/images/details_08.jpeg','selected': 0},
+            {'img':'/images/category_08.jpg','selected': 0},
         ],
         anonymity:true,
         whetherPay:false,

@@ -60,19 +60,17 @@
 <li class="article_item question {{ $question->relateImage()?'have_img' :'' }}">
     @if($question->bonus >0)
     <div class="pay_logo">
-        <a href="#" target="_blank">
-            <img src="/images/pay_question.png" data-toggle="tooltip" data-placement="top" title="付费问题" class="badge_icon_md"/>
-        </a>
+        付费问题
     </div>
     @endif
 
-    
+
     <div class="question_title">
         <a class="headline paper_title" href="/question/{{ $question->id }}" target="_blank">
             <span>{{ $question->title }}</span>
         </a>
     @if($question->bonus >0)
-        <div class="question_info"> 
+        <div class="question_info">
             @if($question->deadline)
             <span>还剩 {{ diffForHumansCN($question->deadline) }}</span>
             <span class="question_follow_num">{{ $question->count_answers }} 人已抢答</span>

@@ -4,7 +4,7 @@
             <div class="comment_wrap">
                 <div class="tool_group">
                     <a href="javascript:;" class="action_btn"　@click="toggle">
-                        <i :class="['iconfont',favorited?'icon-shoucang1':'icon-shoucang']" ></i>
+                        <i :class="['iconfont',favorited?'icon-shoucang1 like_active':'icon-shoucang']" ></i>
                         <span>收藏问题</span>
                     </a>
                     <a href="javascript:;" class="action_btn" @click="showInvite">

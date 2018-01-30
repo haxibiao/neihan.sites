@@ -186,14 +186,14 @@
                     <a href="javascript:;" class="expand_bottom">展开全部</a>
                 </div>
                 <answer-tool answer-id={{ $answer->id }} is-login={{ Auth::check() }}></answer-tool>
-                @if(Auth::check() && Auth::id()==$question->user->id && $question->deadline)
+                {{-- @if(Auth::check() && Auth::id()==$question->user->id && $question->deadline)
                 <div class="answer_useful">
                     <div class="btn_base btn_pay btn_follow_lg">
                         <input type="checkbox" value="{{ $answer->id }}" name="answer_ids[]" />
                         <span>这条回答对我有用</span>
                     </div>
                 </div>
-                @endif
+                @endif --}}
             </div>
             @endforeach
     	</div>
@@ -201,7 +201,7 @@
         <div class="note_foot">
             <div class="submit_select">
                 {{-- <div class="btn_base btn_follow btn_follow_lg"> --}}
-                 <button type="submit" class="btn_base btn_follow btn_follow_lg">确认这些对我有用</button>
+                 <button type="submit" class="btn_base btn_pay btn_follow_lg">确认这些对我有用</button>
                 {{-- </div> --}}
             </div>
         </div>
@@ -220,7 +220,14 @@
             });
             $('.answer_item .expand_bottom').on('click',function(){
                 $(this).parent('.article_content').removeClass('fold');
-            })
+            });
+            $(window).on("scroll",function(){
+                if($(window).scrollTop()>50) {
+                    $(".note_foot").fadeIn(300);
+                }else{
+                    $(".note_foot").fadeOut(300);
+                }
+            });
         })
     </script>
 @endpush
