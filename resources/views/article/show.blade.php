@@ -17,25 +17,26 @@
                         {{ $article->title }}
                     </h1>
                     <div class="author">
-                        <a class="avatar" href="/user/{{ $article->user->id }}">
+                        <a class="avatar avatar_sm" href="/user/{{ $article->user->id }}">
                             <img src="{{ $article->user->avatar }}"/>
                         </a>
-                        <div class="info">
-                            <span class="nickname">
-                                <a href="/user/{{ $article->user->id }}">
-                                    {{ $article->user->name }}
-                                </a>
-                            </span>
-                                  <follow
-                                    type="users"
-                                    id="{{ $article->user->id }}"
-                                    user-id="{{ Auth::check() ? Auth::user()->id : false }}"
-                                    followed="{{ Auth::check() ? Auth::user()->isFollow('user', $article->user->id) : false }}"
-                                    is_small="btn_follow_xs"
-                                    is_small_followed="btn_followed_xs">
-                                  </follow>
+                        <div class="info_meta">
+                            <a href="/user/{{ $article->user->id }}" class="nickname">
+                                {{ $article->user->name }}
+                            </a>
+                            <follow
+                                type="users"
+                                id="{{ $article->user->id }}"
+                                user-id="{{ Auth::check() ? Auth::user()->id : false }}"
+                                followed="{{ Auth::check() ? Auth::user()->isFollow('user', $article->user->id) : false }}"
+                                is_small="btn_follow_xs"
+                                is_small_followed="btn_followed_xs">
+                            </follow>
+                            @if(Auth::check() && Auth::user()->is_editor)
+                               <a href="/article/{{ $article->id }}/edit" target="_blank" class="btn_base btn_edit pull-right">编辑文章</a>
+                            @endif
                             <div class="meta">
-                                <span>
+                                <span data-toggle="tooltip" data-placement="bottom" title="最后编辑于 {{ diffForHumansCN($article->created_at) }}">
                                     {{ diffForHumansCN($article->created_at) }}
                                 </span>
                                 <span>
@@ -52,9 +53,6 @@
                                 </span>
                             </div>
                         </div>
-                        @if(Auth::check() && Auth::user()->is_editor)
-                           <a href="/article/{{ $article->id }}/edit" target="_blank" class="btn_base btn_edit pull-right">编辑文章</a>
-                        @endif
                     </div>
 
                     @include('article.parts.article_body')
@@ -140,8 +138,48 @@
                         </a>
                     </div>
                 </div>
-                <div>
-                     <comments type="articles" id="{{ $article->id }}" is-login="{{ Auth::check() }}"></comments>
+                <div class="all_comments">
+                     <comments type="articles" id="{{ $article->id }}" is-login="{{ Auth::check() }}">
+                        <a href="javascript:;" class="action_btn">
+                            <i class="simditor-icon simditor-icon-quote-left">
+                            </i>
+                            <span>
+                                引用
+                            </span>
+                        </a>
+                     </comments>
+                     <div class="connection">
+                        <div class="comment">
+                            <div class="author">
+                                <a class="avatar avatar_xs" href="#">
+                                    <img src="/images/photo_02.jpg"/>
+                                </a>
+                                <div class="info_meta">
+                                    <a class="nickname" href="#">
+                                        小小
+                                    </a>
+                                    <div class="meta">
+                                        <span>
+                                            2018-01-02 12:05:35
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="article_content fold">
+                                <div class="answer_text_full">
+                                    <p>
+                                        往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。
+                                    </p>
+                                    <p>
+                                        <img src="/images/details_24.jpeg" />
+                                    </p>
+                                </div>
+                                <a href="javascript:;" class="expand_bottom">展开全部</a>
+                            </div>
+                            <comment-tool></comment-tool>
+                        </div>
+                     </div>
+
                 </div>
             </div>
         </div>
@@ -152,6 +190,9 @@
 @stop
 
 @if(Auth::check())
+@push('article_tool')
+    <article-tools></article-tools>
+@endpush
 @push('side_tools')
     <article-tool id="{{ $article->id }}"></article-tool>
 @endpush
@@ -160,4 +201,19 @@
 @push('modals')
    <detailmodal-user article-id="{{ $article->id }}"></detailmodal-user>
    <detailmodal-home article-id="{{ $article->id }}"></detailmodal-home>
+@endpush
+
+@push('scripts')
+    <script>
+        $(function(){
+            $('.comment').each(function(index, el) {
+                if($(el).height()<300) {
+                    $(el).find('.article_content').removeClass('fold');
+                };
+            });
+            $('.comment .expand_bottom').on('click',function(){
+                $(this).parent('.article_content').removeClass('fold');
+            })
+        })
+    </script>
 @endpush

@@ -44,7 +44,11 @@ Vue.component('user-select', require('./components/UserSelect.vue'));
 
 // 详情页评论
 Vue.component('new-comment', require('./components/detail/NewComment.vue'));
-
+// 详情页文章工具
+Vue.component('article-tools', require('./components/detail/ArticleTools.vue'));
+Vue.component('writer', require('./components/detail/Writer.vue'));
+Vue.component('catalog', require('./components/detail/Catalog.vue'));
+Vue.component('comment-tool', require('./components/detail/CommentTool.vue'));
 
 
 /* 模态框 */

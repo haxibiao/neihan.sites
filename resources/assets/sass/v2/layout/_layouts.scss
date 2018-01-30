@@ -137,7 +137,7 @@ footer {
 // 底部小火箭、分享、收藏、投稿
 .side_tool {
     position: fixed;
-    bottom: 50px;
+    bottom: 27px;
     right: 20px;
     ul {
         li {
@@ -172,6 +172,33 @@ footer {
         }
         .toup_rocket {
             display: none;
+        }
+    }
+    &.article_top {
+        bottom: auto;
+        top: 80px;
+        .popover {
+            top: 0!important;
+            .popover-content {
+                .popover_share_menu {
+                    height: 275px;
+                    overflow: auto;
+                }
+            }
+        }
+        .writer {
+            .popover {
+                .arrow {
+                    top: 25px!important;
+                }
+            }
+        }
+        .catalog {
+            .popover {
+                .arrow {
+                    top: 75px!important;
+                }
+            }
         }
     }
 }

@@ -31,6 +31,8 @@
 
             @yield('content')
 
+            @stack('article_tool')
+
             <div class="side_tool">
                 <go-top></go-top>
                 @stack('side_tools')

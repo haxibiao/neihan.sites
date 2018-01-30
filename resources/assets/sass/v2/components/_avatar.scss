@@ -16,6 +16,12 @@
     @include avatar (32px,32px);
 }
 
+// 25大小的默认头像
+.avatar_xx {
+    width: 25px;
+    height: 25px;
+}
+
 // 36大小的头像
 .avatar_ty {
     width: 36px;

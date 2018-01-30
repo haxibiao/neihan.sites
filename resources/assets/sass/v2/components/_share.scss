@@ -76,7 +76,7 @@
         font-size: 14px;
         line-height: 25px;
         border: none !important;
-        a {
+        >a {
             display: block;
             padding: 6px 15px;
             color: #252525;
@@ -98,6 +98,15 @@
         }
         &:hover {
             background-color: #f0f0f0;
+        }
+        .author {
+            padding: 6px 10px;
+            .info_meta {
+                padding-left: 30px;
+                .nickname {
+                    font-size: 12px;
+                }
+            }
         }
     }
 }
