@@ -7,6 +7,8 @@
 // 文章标题
 .paper_title {
     display: inline-block;
+    word-wrap: break-word;
+    word-break: break-all;
     span {
         @include line_number (2);
         &:hover {

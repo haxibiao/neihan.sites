@@ -22,7 +22,7 @@
                 </div>
             </div>
             <a class="headline paper_title" href="/article/{{ $article->id }}" target="_blank">
-                {{ $article->title }}
+                <span>{{ $article->title }}</span>
             </a>
             <p class="abstract">
                 {{ $article->description() }}

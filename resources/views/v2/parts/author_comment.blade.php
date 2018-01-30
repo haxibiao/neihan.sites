@@ -48,7 +48,7 @@
                             </p>
                             <div class="tool_group">
                                 <a href="#" class="action_btn">
-                                    <i class="iconfont icon-fabulous">
+                                    <i class="iconfont icon-fabulous like">
                                     </i>
                                     <span>
                                         赞
@@ -89,7 +89,7 @@
                             </p>
                             <div class="tool_group">
                                 <a href="#" class="action_btn">
-                                    <i class="iconfont icon-fabulous">
+                                    <i class="iconfont icon-fabulous like">
                                     </i>
                                     <span>
                                         237人赞

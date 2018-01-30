@@ -79,7 +79,7 @@
                             </p>
                             <div class="tool_group">
                                 <a href="javascript:;" class="action_btn">
-                                    <i class="iconfont icon-fabulous">
+                                    <i class="iconfont icon-fabulous like">
                                     </i>
                                     <span v-if="!comment.liked" @click="likeComment(comment)">
                                           赞

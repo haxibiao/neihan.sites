@@ -23,7 +23,7 @@
                 </div>
             </div>
             <a class="headline paper_title" href="/article/{{ $article->id }}" target="_blank">
-                {{ $article->title }}
+                <span>{{ $article->title }}</span>
             </a>
             <p class="abstract">
                 {{ str_limit(strip_tags($article->body),200) }}
@@ -48,5 +48,5 @@
         </div>
     </li>
     @endforeach
-   
+
 </ul>

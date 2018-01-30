@@ -13,7 +13,7 @@
 
   computed: {
     iconClass(){
-        return this.placement=='left'?'iconfont icon-gengduo':'iconfont icon-fenxiang1';
+        return this.placement=='left'?'iconfont icon-fenxiang1':'iconfont icon-fenxiang1';
     },
     dataContent() {
         return `<ul class='popover_share_menu'>

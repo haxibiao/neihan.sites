@@ -88,7 +88,7 @@
                             </p>
                             <div class="tool_group">
                                 <a href="javascript:;" class="action_btn">
-                                    <i class="iconfont icon-fabulous">
+                                    <i class="iconfont icon-fabulous like">
                                     </i>
                                     <span @click="likeComment(comment)" v-if="!comment.liked">
                                         赞
@@ -101,6 +101,7 @@
                                         回复
                                     </span>
                                 </a>
+                                <slot></slot>
                                 <a class="report action_btn" href="javascript:;">
                                     <span>
                                         举报
@@ -133,6 +134,7 @@
                                             回复
                                         </span>
                                     </a>
+                                    <slot></slot>
                                     <a class="report action_btn" href="#">
                                         举报
                                     </a>

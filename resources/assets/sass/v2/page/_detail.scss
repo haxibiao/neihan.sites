@@ -35,22 +35,36 @@
                     float: right;
                 }
             } // 评论
-            .comment_list {
-                padding-top: 20px; // 用户评论
-                .normal_comment_list {
-                    margin-top: 30px;
-                    .comment {
-                        padding: 20px 0 30px;
-                        border-bottom: 1px solid $color-white-silver;
-                        .author {
-                            margin-bottom: 15px;
-                            font-size: 15px;
-                            .info_meta {
-                                padding: 2px 0 0 50px;
+            .all_comments {
+                .comment {
+                    padding: 20px 0 30px;
+                    border-top: 1px solid $color-white-silver;
+                    .author {
+                        margin-bottom: 15px;
+                        font-size: 15px;
+                        .info_meta {
+                            padding: 2px 0 0 50px;
+                        }
+                    }
+                }
+                .comment_list {
+                    padding-top: 20px; // 用户评论
+                    .normal_comment_list {
+                        margin-top: 30px;
+                        .comment {
+                            &:first-child {
+                                border-top: none;
                             }
                         }
-                        &:last-child {
-                            border-bottom: none;
+                    }
+                }
+                .connection {
+                    .tool_cabinet {
+                        .again_comment {
+                            margin-top: 20px;
+                            .comment {
+                                border-color: #DDDDDD;
+                            }
                         }
                     }
                 }
