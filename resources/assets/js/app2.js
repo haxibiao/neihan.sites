@@ -55,6 +55,8 @@ Vue.component('withdraw-modal', require('./v2/wallet/WithdrawModal.vue'));
 
 // 详情页评论
 Vue.component('new-comment', require('./v2/detail/NewComment.vue'));
+// 小火箭
+Vue.component('go-top', require('./v2/GoTop.vue'));
 
 
 // 分享
