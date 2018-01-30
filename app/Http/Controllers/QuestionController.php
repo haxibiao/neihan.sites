@@ -220,7 +220,14 @@ class QuestionController extends Controller
     {
         $answers      = $question->answers()->take(10)->get();
         $count_answer = $answers->count();
-        $amount       = $question->bonus / $count_answer;
+        $question->deadline = null;
+        //实在没有回答 返回钱款给提问者
+        if($count_answer > 0){
+           $amount       = $question->bonus / $count_answer;
+        }else{
+           $this->return_money($question);
+           return $question;
+        }
         foreach ($answers as $answer) {
             $type        = '回答打赏';
             $answer->tip = $amount;
@@ -236,7 +243,23 @@ class QuestionController extends Controller
                 'balance' => $user->balance() + $amount,
             ]);
         }
-        $question->deadline = null;
         return $question;
+    }
+
+    public function return_money($question)
+    {
+         $type ="退回金额";
+         $amount =$question->bonus;
+         $user = $question->user;
+         $log  = '你的问题' . $question->link() . '超时且没有一人回答退回金额:' . $amount . '元';
+         Transaction::create([
+            'user_id' => $user->id,
+            'type'    => $type,
+            'log'     => $log,
+            'amount'  => $amount,
+            'status'  => '已到账',
+            'balance' => $user->balance() + $amount,
+         ]);
+         return $question;
     }
 }
