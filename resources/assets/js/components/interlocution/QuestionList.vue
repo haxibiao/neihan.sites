@@ -15,7 +15,7 @@
         <div v-if="question.bonus >0" class="question_info"> 
           
            <div v-if="question.deadline">
-                  <span>还剩 {{ question.deadline }}分钟</span>
+                  <span>还剩 {{ question.deadline }}</span>
                   <span class="question_follow_num">{{ question.count_answers }} 人已抢答</span>
            </div>
             

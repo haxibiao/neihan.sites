@@ -55,7 +55,7 @@
     <div class="pay_answer_num">
         @if($question->deadline)
         <div class="status">还剩{{ diffForHumansCN($question->deadline) }}</div>
-        <div class="middle_tips">已有1人抢答，抢答被选中者可获得赏金。</div>
+        <div class="middle_tips">已有{{ $question->answers()->count() }}人抢答，抢答被选中者可获得赏金。</div>
         @else
           <div class="status">抢答已经结束</div>
         @endif

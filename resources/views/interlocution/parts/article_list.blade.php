@@ -74,7 +74,7 @@
     @if($question->bonus >0)
         <div class="question_info"> 
             @if($question->deadline)
-            <span>还剩 {{ diffForHumansCN($question->deadline) }}分钟</span>
+            <span>还剩 {{ diffForHumansCN($question->deadline) }}</span>
             <span class="question_follow_num">{{ $question->count_answers }} 人已抢答</span>
             @else
              <span>抢答已经结束</span>
