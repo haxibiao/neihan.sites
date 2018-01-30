@@ -120,7 +120,7 @@ class QuestionController extends Controller
 
         //check deadline
         $now = Carbon::now()->toDateTimeString();
-        if ($question->deadline <= $now) {
+        if (!empty($question->deadline) && $question->deadline <= $now) {
             $this->check_deadline($question);
         }
         $question->save();
