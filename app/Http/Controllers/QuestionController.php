@@ -10,6 +10,7 @@ use App\Transaction;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use App\Jobs\PayQuestion;
 
 class QuestionController extends Controller
 {
@@ -100,6 +101,9 @@ class QuestionController extends Controller
         }
         $question->save();
         if (!empty($request->bonus)) {
+            PayQuestion::dispatch($question->id);
+            // ->delay(now()->addHours(24 * $request->deadline));
+
             $pay_url = "/pay?amount=$request->bonus&type=question&question_id=$question->id";
             return redirect()->to($pay_url);
         }
@@ -118,11 +122,6 @@ class QuestionController extends Controller
         $question = Question::with('answers')->with('user')->with('categories')->findOrFail($id);
         $question->hits++;
 
-        //check deadline
-        $now = Carbon::now()->toDateTimeString();
-        if (!empty($question->deadline) && $question->deadline <= $now) {
-            $this->check_deadline($question);
-        }
         $question->save();
 
         $answers = Answer::with('user')->where('question_id', $question->id)->where('status', '>', 0)->orderBy('id', 'desc')->paginate(10);
@@ -214,52 +213,5 @@ class QuestionController extends Controller
         } else {
             return abort(403);
         }
-    }
-
-    public function check_deadline($question)
-    {
-        $answers      = $question->answers()->take(10)->get();
-        $count_answer = $answers->count();
-        $question->deadline = null;
-        //实在没有回答 返回钱款给提问者
-        if($count_answer > 0){
-           $amount       = $question->bonus / $count_answer;
-        }else{
-           $this->return_money($question);
-           return $question;
-        }
-        foreach ($answers as $answer) {
-            $type        = '回答打赏';
-            $answer->tip = $amount;
-            $answer->save();
-            $user = $answer->user;
-            $log  = '你的回答' . $answer->description() . '获得金额:' . $amount . '元';
-            Transaction::create([
-                'user_id' => $user->id,
-                'type'    => $type,
-                'log'     => $log,
-                'amount'  => $amount,
-                'status'  => '已到账',
-                'balance' => $user->balance() + $amount,
-            ]);
-        }
-        return $question;
-    }
-
-    public function return_money($question)
-    {
-         $type ="退回金额";
-         $amount =$question->bonus;
-         $user = $question->user;
-         $log  = '你的问题' . $question->link() . '超时且没有一人回答退回金额:' . $amount . '元';
-         Transaction::create([
-            'user_id' => $user->id,
-            'type'    => $type,
-            'log'     => $log,
-            'amount'  => $amount,
-            'status'  => '已到账',
-            'balance' => $user->balance() + $amount,
-         ]);
-         return $question;
     }
 }
