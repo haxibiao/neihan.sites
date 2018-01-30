@@ -52,16 +52,16 @@ class QuestionController extends Controller
 
         $data['hot'] = $qb->orderBy('hits', 'desc')->take(3)->get();
 
-        if(AjaxOrDebug() && request('page')){
-             foreach($questions as $question){
+        if (AjaxOrDebug() && request('page')) {
+            foreach ($questions as $question) {
                 $question->count_defalut();
-                $question->relateImage =$question->relateImage();
-                $question->deadline =diffForHumansCN($question->deadline);
-                if(!empty($question->latestAnswer)){
-                $question->latestAnswer->answer=strip_tags($question->latestAnswer->answer);
-               }
-             }
-             return $questions;
+                $question->relateImage = $question->relateImage();
+                $question->deadline    = diffForHumansCN($question->deadline);
+                if (!empty($question->latestAnswer)) {
+                    $question->latestAnswer->answer = strip_tags($question->latestAnswer->answer);
+                }
+            }
+            return $questions;
         }
 
         return view('interlocution.index')
@@ -117,9 +117,11 @@ class QuestionController extends Controller
         $data     = [];
         $question = Question::with('answers')->with('user')->with('categories')->findOrFail($id);
         $question->hits++;
+
+        //check deadline
         $now = Carbon::now()->toDateTimeString();
         if ($question->deadline <= $now) {
-            $question->deadline = null;
+            $this->check_deadline($question);
         }
         $question->save();
 
@@ -212,5 +214,29 @@ class QuestionController extends Controller
         } else {
             return abort(403);
         }
+    }
+
+    public function check_deadline($question)
+    {
+        $answers      = $question->answers()->take(10)->get();
+        $count_answer = $answers->count();
+        $amount       = $question->bonus / $count_answer;
+        foreach ($answers as $answer) {
+            $type        = '回答打赏';
+            $answer->tip = $amount;
+            $answer->save();
+            $user = $answer->user;
+            $log  = '你的回答' . $answer->description() . '获得金额:' . $amount . '元';
+            Transaction::create([
+                'user_id' => $user->id,
+                'type'    => $type,
+                'log'     => $log,
+                'amount'  => $amount,
+                'status'  => '已到账',
+                'balance' => $user->balance() + $amount,
+            ]);
+        }
+        $question->deadline = null;
+        return $question;
     }
 }
