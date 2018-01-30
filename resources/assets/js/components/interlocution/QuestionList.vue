@@ -127,7 +127,7 @@ export default {
 
   methods:{
   	  fetchData(){
-  	  	 var api ='/question?page=2';
+  	  	 var api ='/question?page='+this.page;
   	  	 var vm = this;
   	  	 window.axios.get(api).then(function(response){
              vm.questions =response.data.data;
@@ -162,7 +162,7 @@ export default {
     return {
        questions:[],
        page: this.startPage ? this.startPage : 1,
-       lastPage: -1,
+       lastPage: 2,
     }
   }
 }
