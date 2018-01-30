@@ -56,6 +56,7 @@
             window.current_user_id = {{ Auth::user()->id }};
             window.current_user_name = '{{ Auth::user()->name }}';
             window.current_user_avatar = '{{ Auth::user()->avatar }}';
+            window.current_user_balance = {{ Auth::user()->balance() }};
         </script>
         @else
             <script type="text/javascript">

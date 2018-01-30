@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="money_amount">
                                     <div class="pay_title">
-                                        付费金额 (当前账户余额：￥385) 
+                                        付费金额 (当前账户余额：￥{{ balance }}) 
                                     </div>
                                     <div class="amount_group">
                                         <input id="option2" type="radio" value="5" v-model="bonus" name="bonus" />
@@ -200,6 +200,7 @@ import Dropzone from '../../plugins/Dropzone';
 
   mounted() {
     Dropzone($('.img-upload-field')[0], this.dragDropUpload);
+    this.balance =window.current_user_balance;
   },
 
   methods: {
