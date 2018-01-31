@@ -59,6 +59,10 @@ class NotificationController extends Controller
             }
         }
 
+        if ($message->id) {
+            $chat->touch();
+        }
+
         $message = Message::with('user')->find($message->id);
 
         return $message;
@@ -106,8 +110,8 @@ class NotificationController extends Controller
                 }
 
                 if ($type == 'category_request') {
-                     $notification->markAsRead();
-                     $user->forgetUnreads();
+                    $notification->markAsRead();
+                    $user->forgetUnreads();
                     if (request('category_id')) {
                         if ($data['category_id'] != request('category_id')) {
                             continue;
@@ -136,11 +140,11 @@ class NotificationController extends Controller
 
                 $notifications[] = $data;
             }
-           
-           //clear cache
-            if($type =='others'){
-                 $notification->markAsRead();
-                 $user->forgetUnreads();
+
+            //clear cache
+            if ($type == 'others') {
+                $notification->markAsRead();
+                $user->forgetUnreads();
             }
         }
         return $notifications;
