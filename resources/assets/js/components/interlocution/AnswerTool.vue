@@ -27,20 +27,7 @@
                     <span>分享</span>
                 </share>
 
-                <!-- 未采纳 -->
-                <!-- <a href="javascript:;" class="action_btn adopt">
-                    <span>
-                        采纳
-                    </span>
-                </a> -->
-                <a href="javascript:;" class="action_btn adopt btn_font_adopt">
-                    <span>
-                        <i class="iconfont icon-weibiaoti12">
-                        </i>
-                        <i class="iconfont icon-cha">
-                        </i>
-                    </span>
-                </a>
+
                 <a class="pull-right action_btn" href="#" v-if="this.isLogin && isSelf && answer.deleted" @click="deleteAnswer">
                     <i class="iconfont icon-lajitong"></i>
                     <span>
