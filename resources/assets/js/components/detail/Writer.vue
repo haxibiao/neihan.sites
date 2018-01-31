@@ -12,25 +12,33 @@ export default {
 
   props:['placement','articleId'],
 
-  created(){
+  mounted(){
     this.fetchData();
+    this.author_each();
   },
 
   computed: {
+  	authorUsers() {
+  		var users = '';
+  		this.users.forEach(function(ele){
+	        users+=`<li id="author-users">
+	       	 	<div class='author'>
+	       	 		<a href='javascript:;' class='avatar avatar_xx'>
+	                    <img src='${ele.avatar}' />
+	                </a>
+	                <div class='info_meta'>
+	                	<a href='' class='nickname'>
+	                		${ele.name}
+	                	</a>
+	                </div>
+	       	 	</div>
+	       	</li>`
+  		});
+  		return users;
+  	},
     dataContent() {
         return `<ul class='popover_share_menu'>
-                    <li>
-                   	 	<div class='author'>
-                   	 		<a href='javascript:;' class='avatar avatar_xx'>
-	                            <img :src='user.avatar' />
-	                        </a>
-	                        <div class='info_meta'>
-	                        	<a href='' class='nickname'>
-	                        		{{ user.name }}
-	                        	</a>
-	                        </div>
-                   	 	</div>
-                   	</li>
+                    ${this.authorUsers}
                 </ul>`;
     }
   },
@@ -42,12 +50,20 @@ export default {
   	 	window.axios.get(api).then(function(response){
   	 		 vm.users =response.data;
   	 	});
-  	 }
+  	 },
+     
+     author_each(){
+     	$('#author-users').each(function(){
+     		 console.log(this.users);
+     	});
+     	
+     }
   },
 
   data () {
     return {
-
+       users:[]
+       ,
     }
   }
 }
