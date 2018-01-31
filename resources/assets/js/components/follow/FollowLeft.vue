@@ -54,7 +54,7 @@
             <li v-for="follow in follows_showing" @click="skip">
                 <router-link :to="'/'+follow.type+'/'+follow.id">
                     <a href="javascript:;" class="category">
-                        <div class="avatar avatar_xs avatar_collection">
+                        <div :class="['avatar avatar_xs',follow.type== 'categories' ? 'avatar_collection':'']">
                             <img :src="follow.img" alt="">
                         </div>
                         <div class="name">{{ follow.name }}</div>
