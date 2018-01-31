@@ -148,6 +148,9 @@
                             </span>
                         </a>
                      </comments>
+
+         @foreach($article->comments as $comment)
+          @if($comment->user->id==$article->user->id)
                      <div class="connection">
                         <div class="comment">
                             <div class="author">
@@ -167,18 +170,15 @@
                             </div>
                             <div class="article_content fold">
                                 <div class="answer_text_full">
-                                    <p>
-                                        往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。往要打英雄的左右翻滚，然后提高普通攻击，打出更高的伤害。
-                                    </p>
-                                    <p>
-                                        <img src="/images/details_24.jpeg" />
-                                    </p>
+                                   
                                 </div>
                                 <a href="javascript:;" class="expand_bottom">展开全部</a>
                             </div>
                             <comment-tool></comment-tool>
                         </div>
                      </div>
+          @endif
+         @endforeach
 
                 </div>
             </div>
