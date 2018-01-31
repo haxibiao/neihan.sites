@@ -150,27 +150,27 @@
                      </comments>
 
          @foreach($article->comments as $comment)
-          @if($comment->user->id==$article->user->id)
+          @if($comment->user->id==$article->user->id && $comment->commentable_type =='articles_author')
                      <div class="connection">
                         <div class="comment">
                             <div class="author">
-                                <a class="avatar avatar_xs" href="#">
-                                    <img src="/images/photo_02.jpg"/>
+                                <a class="avatar avatar_xs" href="/user/{{ $comment->user->id }}">
+                                    <img src="{{ $comment->user->avatar }}"/>
                                 </a>
                                 <div class="info_meta">
                                     <a class="nickname" href="#">
-                                        小小
+                                        {{ $comment->user->name }}
                                     </a>
                                     <div class="meta">
                                         <span>
-                                            2018-01-02 12:05:35
+                                            {{ $comment->created_at }}
                                         </span>
                                     </div>
                                 </div>
                             </div>
                             <div class="article_content fold">
                                 <div class="answer_text_full">
-                                   
+                                    {!! $comment->body !!}
                                 </div>
                                 <a href="javascript:;" class="expand_bottom">展开全部</a>
                             </div>
@@ -191,7 +191,7 @@
 
 @if(Auth::check())
 @push('article_tool')
-    <article-tools></article-tools>
+    <article-tools user-id={{ Auth::id() }} article-user-id={{ $article->user->id }} article-id="{{ $article->id }}"></article-tools>
 @endpush
 @push('side_tools')
     <article-tool id="{{ $article->id }}"></article-tool>

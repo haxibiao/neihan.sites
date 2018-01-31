@@ -125,7 +125,7 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $article = Article::with('user')->with('category')->with('tags')->with('images')->findOrFail($id);
+        $article = Article::with('user')->with('category')->with('tags')->with('images')->with('comments')->findOrFail($id);
         if ($article->category->parent_id) {
             $data['parent_category'] = $article->category->parent()->first();
         }

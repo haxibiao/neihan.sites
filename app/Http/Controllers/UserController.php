@@ -25,6 +25,17 @@ class UserController extends Controller
     public function index()
     {
         $users = User::orderBy('id', 'desc')->paginate(24);
+
+        if(AjaxOrDebug() && request('article_id')){
+             $users=[];
+             $article =Article::findOrFail(request('article_id'));
+             $comments=$article->comments()->where('commentable_type','article_author')->get();
+             foreach($comments as $comment){
+                 $users[]=$comment->user;
+             }
+             $users[] = $article->user;
+             return $users;
+        }
         return view('user.index')->withUsers($users);
     }
 

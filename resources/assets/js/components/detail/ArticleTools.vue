@@ -2,8 +2,8 @@
     <div>
         <div class="side_tool article_top">
             <ul>
-                <li class="writer" data-container="body" data-title="作者" data-placement="left" data-toggle="tooltip" data-trigger="hover" @click="tooltipHide">
-                    <writer class="function_button" placement="left"></writer>
+                <li v-if="isSelf()" class="writer" data-container="body" data-title="作者" data-placement="left" data-toggle="tooltip" data-trigger="hover" @click="tooltipHide">
+                    <writer class="function_button" placement="left" :article-id="this.articleId"></writer>
                 </li>
                 <li class="catalog" data-container="body" data-title="目录" data-placement="left" data-toggle="tooltip" data-trigger="hover" @click="tooltipHide">
                     <catalog class="function_button" placement="left"></catalog>
@@ -37,6 +37,8 @@ export default {
 
   name: 'ArticleTools',
 
+  props:['articleId','userId','articleUserId'],
+
   methods:{
 
     tooltipHide() {
@@ -50,6 +52,9 @@ export default {
     closeBtn() {
         this.isEditor = false;
     },
+    isSelf(){
+        return this.userId == this.articleUserId;
+    }
 
   },
 

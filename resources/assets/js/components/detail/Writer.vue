@@ -10,121 +10,39 @@ export default {
 
   name: 'Writer',
 
-  props:['placement'],
+  props:['placement','articleId'],
+
+  created(){
+    this.fetchData();
+  },
 
   computed: {
     dataContent() {
         return `<ul class='popover_share_menu'>
                     <li>
                    	 	<div class='author'>
-                   	 		<a href='' class='avatar avatar_xx'>
-	                            <img src='/images/photo_04.png' />
+                   	 		<a href='javascript:;' class='avatar avatar_xx'>
+	                            <img :src='user.avatar' />
 	                        </a>
 	                        <div class='info_meta'>
 	                        	<a href='' class='nickname'>
-	                        		NICE  MOON
+	                        		{{ user.name }}
 	                        	</a>
 	                        </div>
                    	 	</div>
-                    </li>
-                    <li>
-                        <div class='author'>
-                   	 		<a href='' class='avatar avatar_xx'>
-	                            <img src='/images/photo_03.jpg' />
-	                        </a>
-	                        <div class='info_meta'>
-	                        	<a href='' class='nickname'>
-	                        		兵长一米六
-	                        	</a>
-	                        </div>
-                   	 	</div>
-                    </li>
-                    <li>
-                        <div class='author'>
-                   	 		<a href='' class='avatar avatar_xx'>
-	                            <img src='/images/photo_04.png' />
-	                        </a>
-	                        <div class='info_meta'>
-	                        	<a href='' class='nickname'>
-	                        		Online Loan
-	                        	</a>
-	                        </div>
-                   	 	</div>
-                    </li>
-                    <li>
-                        <div class='author'>
-                   	 		<a href='' class='avatar avatar_xx'>
-	                            <img src='/images/photo_03.jpg' />
-	                        </a>
-	                        <div class='info_meta'>
-	                        	<a href='' class='nickname'>
-	                        		NICE  MOON
-	                        	</a>
-	                        </div>
-                   	 	</div>
-                    </li>
-                    <li>
-                        <div class='author'>
-                   	 		<a href='' class='avatar avatar_xx'>
-	                            <img src='/images/photo_04.png' />
-	                        </a>
-	                        <div class='info_meta'>
-	                        	<a href='' class='nickname'>
-	                        		NICE  MOON
-	                        	</a>
-	                        </div>
-                   	 	</div>
-                    </li>
-                    <li>
-                        <div class='author'>
-                   	 		<a href='' class='avatar avatar_xx'>
-	                            <img src='/images/photo_03.jpg' />
-	                        </a>
-	                        <div class='info_meta'>
-	                        	<a href='' class='nickname'>
-	                        		NICE  MOON
-	                        	</a>
-	                        </div>
-                   	 	</div>
-                    </li>
-                    <li>
-                        <div class='author'>
-                   	 		<a href='' class='avatar avatar_xx'>
-	                            <img src='/images/photo_04.png' />
-	                        </a>
-	                        <div class='info_meta'>
-	                        	<a href='' class='nickname'>
-	                        		NICE  MOON
-	                        	</a>
-	                        </div>
-                   	 	</div>
-                    </li>
-                    <li>
-                        <div class='author'>
-                   	 		<a href='' class='avatar avatar_xx'>
-	                            <img src='/images/photo_03.jpg' />
-	                        </a>
-	                        <div class='info_meta'>
-	                        	<a href='' class='nickname'>
-	                        		NICE  MOON
-	                        	</a>
-	                        </div>
-                   	 	</div>
-                    </li>
-                    <li>
-                        <div class='author'>
-                   	 		<a href='' class='avatar avatar_xx'>
-	                            <img src='/images/photo_04.png' />
-	                        </a>
-	                        <div class='info_meta'>
-	                        	<a href='' class='nickname'>
-	                        		NICE  MOON
-	                        	</a>
-	                        </div>
-                   	 	</div>
-                    </li>
+                   	</li>
                 </ul>`;
     }
+  },
+
+  methods:{
+  	 fetchData(){
+  	 	var api ='/user/?article_id='+this.articleId;
+  	 	var vm =this;
+  	 	window.axios.get(api).then(function(response){
+  	 		 vm.users =response.data;
+  	 	});
+  	 }
   },
 
   data () {
