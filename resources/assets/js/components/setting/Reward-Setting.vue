@@ -10,7 +10,7 @@
 			</thead>
 			<tbody class="setting_pay">
 				<tr>
-					<td class="top_line setting_title">赞赏功能</td>
+					<td class="top_line setting_title">功能</td>
 					<td class="top_line">
 						<div>
 							<input type="radio" name="is_tips" value="1"  v-model="user.is_tips"  checked />
@@ -24,7 +24,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="setting_title pull-left">赞赏描述</td>
+					<td class="setting_title pull-left">描述</td>
 					<td>
 						<textarea cols="30" rows="10" class="form-control" placeholder="如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！" v-model="user.introduction_tips">{{ this.user.introduction_tips }}</textarea>					
      				</td>
@@ -90,7 +90,7 @@ export default {
                             width: 140px;
                         }
                         @media screen and (max-width: 768px) {
-                            width: 85px;
+                            width: 40px;
                         }
                     }
                 }

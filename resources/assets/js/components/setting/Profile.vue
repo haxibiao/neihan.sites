@@ -18,7 +18,7 @@
 
 			<tbody class="information">
 				<tr>
-					<td class="top_line setting_title">性别(此处只可以修改哦)</td>
+					<td class="top_line setting_title">性别</td>
 					<td class="top_line">
 						<div>
 							<input type="radio" name="gender" value="男" v-model="user.gender"/>
@@ -36,7 +36,7 @@
 				</tr>
 
 				<tr>
-					<td class="setting_title pull-left">个人简介</td>
+					<td class="setting_title pull-left">简介</td>
 					<td>
 							<textarea :placeholder="user.introduction" cols="30" rows="10" class="form-control" v-model="user.introduction"></textarea>
 					</td>
@@ -114,7 +114,7 @@ export default {
                             width: 140px;
                         }
                         @media screen and (max-width: 768px) {
-                            width: 85px;
+                            width: 40px;
                         }
                     }
                 }

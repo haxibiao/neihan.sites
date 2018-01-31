@@ -91,6 +91,7 @@
     span {
         margin-right: 5px;
         vertical-align: middle;
+        display: block;
     }
     i {
         font-weight: normal;
@@ -165,4 +166,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+// 小屏幕隐藏
+.s_s_hide {
+    @media screen and (max-width: 425px) {
+        display: none!important;
+    }
 }

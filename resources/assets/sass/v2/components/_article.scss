@@ -42,12 +42,14 @@
         margin-bottom: 7px;
         font-size: 13px;
         .info_meta {
-            padding: 5px 0 0 40px;
+            padding: 4px 0 0 40px;
         }
     }
-    @media screen and (max-width: 500px) {
+    @media screen and (max-width: 600px) {
         .paper_title {
-            @include line_number(1);
+            span {
+                @include line_number(1);
+            }
         }
         .abstract {
             @include line_number(2);

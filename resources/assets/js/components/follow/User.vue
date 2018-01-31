@@ -21,15 +21,14 @@
                 </span>
             </a>
             <div class="info_meta">
-	            <a class="headline name_title" :href="'/user/'+user.id" target="_blank">
-	                <span>
+	            <a class="headline nickname" :href="'/user/'+user.id" target="_blank">
+	                <span class="single_line">
 	                    {{ user.name }}
 	                </span>
 	            </a>
-        	
-            <p class="info_count">
-                写了{{ user.count_words }}字，获得了{{ user.count_favorites }}个喜欢
-            </p>
+                <p class="info_count">
+                    写了{{ user.count_words }}字，获得了{{ user.count_favorites }}个喜欢
+                </p>
              </div>
         </div>
         <div>
@@ -39,14 +38,14 @@
                     <a aria-controls="wenzhang" data-toggle="tab" href="#wenzhang" role="tab">
                         <i class="iconfont icon-wenji">
                         </i>
-                        <span>最新发布</span>
+                        <span>最新<span class="s_s_hide">发布</span></span>
                     </a>
                 </li>
                 <li role="presentation">
                     <a aria-controls="pinglun" data-toggle="tab" href="#pinglun" role="tab">
                         <i class="iconfont icon-svg37">
                         </i>
-                        <span>最新评论</span>
+                        <span><span class="s_s_hide">最新</span>评论</span>
                     </a>
                 </li>
                 <li role="presentation">
@@ -122,7 +121,7 @@ export default {
 <style lang="scss" scoped>
     #user {
         .main_top {
-            @media screen and (max-width: 640px) {
+            @media screen and (max-width: 768px) {
                 padding-bottom: 30px;
                 .btn_base {
                     position: absolute;
@@ -136,11 +135,11 @@ export default {
                 }
             }
         }
-        @media screen and (max-width: 610px) {
+        @media screen and (max-width: 630px) {
             .trigger_menu {
                 li {
                     a {
-                        padding: 13px 3px 4px 3px;
+                        padding: 13px 4px 4px 4px;
                         i {
                             margin: 0;
                         }

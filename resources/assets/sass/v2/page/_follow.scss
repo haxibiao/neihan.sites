@@ -11,7 +11,7 @@
             @media screen and (max-width: 992px) {
                 width: 200px;
             }
-            @media screen and (max-width: 540px) {
+            @media screen and (max-width: 600px) {
                 width: 93px;
             }
         }
@@ -20,8 +20,18 @@
             @media screen and (max-width: 992px) {
                 margin-left: 230px;
             }
-            @media screen and (max-width: 540px) {
+            @media screen and (max-width: 600px) {
                 margin-left: 105px;
+            }
+            @media screen and (max-width: 600px) {
+                .category_tag {
+                    display: none;
+                }
+                .info_meta {
+                    .info_count {
+                        @include line_number (2);
+                    }
+                }
             }
         }
     }

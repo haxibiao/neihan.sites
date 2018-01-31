@@ -53,13 +53,11 @@
             </li>
             <li v-for="follow in follows_showing" @click="skip">
                 <router-link :to="'/'+follow.type+'/'+follow.id">
-                    <a href="javascript:;" class="category">
-                        <div :class="['avatar avatar_xs',follow.type== 'categories' ? 'avatar_collection':'']">
-                            <img :src="follow.img" alt="">
-                        </div>
-                        <div class="name">{{ follow.name }}</div>
-                        <span class="count">{{ follow.updates }}</span>
-                    </a>
+                    <div :class="['avatar avatar_xs',follow.type== 'categories' ? 'avatar_collection':'']">
+                        <img :src="follow.img" alt="">
+                    </div>
+                    <div class="name">{{ follow.name }}</div>
+                    <span class="count">{{ follow.updates }}</span>
                 </router-link>
             </li>
         </ul>
@@ -145,22 +143,33 @@ export default {
             display: inline-block;
             font-size: 15px;
             margin: 4px 0 0 10px;
+            .dropdown-menu {
+                left: -10px;
+            }
+            @media screen and (max-width: 600px) {
+                display: none;
+            }
         }
         .add_people {
             font-size: 13px;
             float: right;
             margin: 4px 8px 0 0;
+            @media screen and (max-width: 600px) {
+                float: none;
+            }
         }
         .js_subscription_list {
             margin-top: 7px;
             border-top: 1px solid #f0f0f0;
-            clear: both;
             li {
                 a {
                     display: inline-block;
                     padding: 10px;
                     font-size: 14px;
                     width: 100%;
+                    @media screen and (max-width: 600px) {
+                        text-align: center;
+                    }
                     .name {
                         display: inline-block;
                         vertical-align: middle;
@@ -171,9 +180,9 @@ export default {
                         @media screen and (max-width: 992px) {
                             max-width: 90px;
                         }
-                        @media screen and (max-width: 540px) {
+                        @media screen and (max-width: 600px) {
                             display: block;
-                            padding: 5px 0 0 0;
+                            padding-top: 5px;
                         }
                     }
                     .count {

@@ -14,52 +14,8 @@
             @media screen and (max-width: 768px) {
                 width: 180px;
             }
-            @media screen and (max-width: 464px) {
+            @media screen and (max-width: 430px) {
                 width: 90px;
-            }
-            ul {
-                li {
-                    a {
-                        padding: 10px 25px;
-                        display: block;
-                        width: 100%;
-                        font-size: 15px;
-                        .setting_icon {
-                            @include size (32px, 32px);
-                            display: inline-block;
-                            margin-right: 15px;
-                            vertical-align: middle;
-                            background-color: #a0a0a0;
-                            border-radius: 4px;
-                            text-align: center;
-                            color: $color-white;
-                            i {
-                                font-size: 18px;
-                                margin: 6px 0 0 1px;
-                                display: block;
-                            }
-                        }
-                        span {
-                            vertical-align: middle;
-                        }
-                        &:hover {
-                            background-color: $color-white-silver;
-                        }
-                        @media screen and (max-width: 450px) {
-                            padding: 10px 15px;
-                            i {
-                                margin-right: 3px;
-                            }
-                            .name {
-                                display: none;
-                            }
-                        }
-                    }
-                    .router-link-active {
-                        background-color: #f0f0f0;
-                        border-radius: 4px;
-                    }
-                }
             }
         }
         .main {
@@ -71,7 +27,7 @@
             @media screen and (max-width: 768px) {
                 margin-left: 210px;
             }
-            @media screen and (max-width: 464px) {
+            @media screen and (max-width: 430px) {
                 margin-left: 105px;
             }
             table {
