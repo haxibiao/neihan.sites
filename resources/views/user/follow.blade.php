@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    空评 - 爱你城
+    {{ $user->name }} - 爱你城
 @stop
 @section('content')
 <div id="user">
@@ -11,7 +11,8 @@
                 @include('user.parts._user_show_main_top')
                 @include('user.parts.menu_following')
             </div>
-            @include('v2.parts.aside.aside_user')
+           <div class="aside col-sm-4">
+                @include('user.parts._user_show_aside')
         </div>
     </div>
 </div>
