@@ -2,13 +2,13 @@
     <div>
         <div class="side_tool article_top">
             <ul>
-                <li class="writer" data-container="body" data-title="作者" data-placement="left" data-toggle="tooltip" data-trigger="hover" @click="tooltipHide">
+                <li  class="writer" data-container="body" data-title="作者" data-placement="left" data-toggle="tooltip" data-trigger="hover" @click="tooltipHide">
                     <writer class="function_button" placement="left" :article-id="this.articleId"></writer>
                 </li>
                 <li class="catalog" data-container="body" data-title="目录" data-placement="left" data-toggle="tooltip" data-trigger="hover" @click="tooltipHide">
                     <catalog class="function_button" placement="left"></catalog>
                 </li>
-                <li data-container="body" data-title="编辑器" data-placement="left" data-toggle="tooltip" data-trigger="hover" @click="showEditor">
+                <li  data-container="body" data-title="编辑器" data-placement="left" data-toggle="tooltip" data-trigger="hover" @click="showEditor">
                     <a href="javascript:;" class="function_button">
                         <i class="iconfont icon-xie">
                         </i>
@@ -17,17 +17,19 @@
             </ul>
         </div>
         <div class="editor_container" v-if="isEditor">
+          <form @submit.prevent="sendComment">
             <div class="editor_box simditor_submi">
                 <div class="clearfix">
                     <div class="close" @click="closeBtn">×</div>
                 </div>
-                <editor></editor>
+                <editor v-model="report.body"></editor>
                 <div class="submitbar">
                     <div class="pull-right">
-                        <button class="btn_base btn_creation btn_followed_xs">发表</button>
+                        <button type="submit" class="btn_base btn_creation btn_followed_xs">发表</button>
                     </div>
                 </div>
             </div>
+           </form>
         </div>
     </div>
 </template>
@@ -54,6 +56,20 @@ export default {
     },
     isSelf(){
         return this.userId == this.articleUserId;
+    },
+
+    sendComment(){
+        var api=window.tokenize('/api/comment');
+        var vm=this;
+        var formdata=new FormData();
+        formdata.append('commentable_id',this.articleId);
+        formdata.append('body',report.body);
+        formdata.append('commentable_type','articles_author');
+        window.axios.post(api).then(function(response){
+             if(response.status==200){
+                window.location.reload();
+             }
+        });
     }
 
   },
@@ -61,6 +77,8 @@ export default {
   data () {
     return {
         isEditor:false,
+        report:[]
+
     }
   }
 }

@@ -13,6 +13,7 @@ class CommentController extends Controller
 {
     public function save(Request $request)
     {
+        return $request->all();
         $user             = $request->user();
         $comment          = new Comment($request->all());
         $comment->user_id = $user->id;
@@ -23,6 +24,12 @@ class CommentController extends Controller
                 ->where('commentable_type', get_polymorph_types($request->get('commentable_type')))
                 ->count() + 1;
         }
+        //if article_author commment
+        if(request('commentable_type')=='articles_author'){
+             $comment->lou = 0;
+             $comment->commentable_type=request('commentable_type');
+        }
+
         $comment->save();
         // if ($request->get('is_replay_comment')) {
         //     $comment = $comment->commented()->with('user')->with('replyComments')->first();
