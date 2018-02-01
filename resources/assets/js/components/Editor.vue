@@ -64,7 +64,7 @@ export default {
 
             this.editor.on("valuechanged", function(e, src) {
                 _this.editorHtml = _this.editor.getValue();
-                window.bus.$emit('editor_value_changed');
+                _this.$emit('changeBody',_this.editor.getValue());
             })
             
             //valuechanged是simditor自带获取值得方法

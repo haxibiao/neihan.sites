@@ -13,7 +13,6 @@ class CommentController extends Controller
 {
     public function save(Request $request)
     {
-        return $request->all();
         $user             = $request->user();
         $comment          = new Comment($request->all());
         $comment->user_id = $user->id;

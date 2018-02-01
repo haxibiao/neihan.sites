@@ -22,7 +22,7 @@
                 <div class="clearfix">
                     <div class="close" @click="closeBtn">×</div>
                 </div>
-                <editor v-model="report.body"></editor>
+                <editor @changeBody="changeValue"></editor>
                 <div class="submitbar">
                     <div class="pull-right">
                         <button type="submit" class="btn_base btn_creation btn_followed_xs">发表</button>
@@ -54,8 +54,11 @@ export default {
     closeBtn() {
         this.isEditor = false;
     },
-    isSelf(){
+    isAuthor(){
         return this.userId == this.articleUserId;
+    },
+    changeValue(value) {
+        this.editor_value = value;
     },
 
     sendComment(){
@@ -63,9 +66,9 @@ export default {
         var vm=this;
         var formdata=new FormData();
         formdata.append('commentable_id',this.articleId);
-        formdata.append('body',report.body);
+        formdata.append('body',this.editor_value);
         formdata.append('commentable_type','articles_author');
-        window.axios.post(api).then(function(response){
+        window.axios.post(api,formdata).then(function(response){
              if(response.status==200){
                 window.location.reload();
              }
@@ -77,6 +80,7 @@ export default {
   data () {
     return {
         isEditor:false,
+        editor_value:'',
         report:[]
 
     }
