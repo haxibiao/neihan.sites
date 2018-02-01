@@ -19,6 +19,8 @@ window.bus = new Vue();
 
 //index
 Vue.component('recommend-authors', require('./components/contributeModal/RecommendAuthors.vue'));
+Vue.component('categorys-list', require('./components/contributeModal/CategoryList.vue'));
+
 
 Vue.component('editor', require('./components/Editor.vue'));
 Vue.component('bar', require('./components/Bar.vue'));

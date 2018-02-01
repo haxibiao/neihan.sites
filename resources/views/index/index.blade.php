@@ -14,6 +14,7 @@
                 {{-- 专题分类 --}}
 
                 @include('parts.list.category_list',['categories'=>$data->categories])
+                <categorys-list></categorys-list>
                 <div class="split_line">
                 </div>
                 {{-- 文章摘要 --}}
@@ -67,7 +68,7 @@
                         <img src="/images/scan.jpeg"/>
                     </div>
                 </div>
-            
+
                 @if(Auth::check())
                 <recommend-authors></recommend-authors>
                 @endif

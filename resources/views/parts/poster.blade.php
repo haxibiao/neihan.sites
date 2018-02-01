@@ -1,5 +1,5 @@
 {{-- 轮播图 --}}
-<div class="col-xs-12 posters" id="poster">
+<div class="col-xs-12 posters s_s_hide" id="poster">
 </div>
 @push('scripts')
 <script>
@@ -8,7 +8,7 @@
     @foreach($data->carousel as $article)
         dataImage.push(['/article/{{ $article->id }}','{{ $article->image_top }}']);
     @endforeach
-  
+
     if(dataImage.length<8){
          dataImage=      [
              ['javascript:;','/images/carousel001.jpg'],

@@ -5,6 +5,16 @@
         .trigger_menu {
             text-align: left;
             margin-top: 30px;
+            @media screen and (max-width: 400px) {
+                li {
+                    a {
+                        padding: 0 10px;
+                        i {
+                            margin: 0;
+                        }
+                    }
+                }
+            }
         }
         .recommend_list {
             @media screen and (min-width: 450px) and (max-width: 768px) {

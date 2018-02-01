@@ -6,6 +6,14 @@
         // 专题分类
         .classification {
             margin-bottom: 10px;
+        }
+        @media screen and (max-width: 768px) {
+            .classification {
+                display: none;
+            }
+            .s_s_classification {
+                display: block;
+            }
         } // 分割线
         .split_line {
             border-bottom: 1px solid $color-white-silver;

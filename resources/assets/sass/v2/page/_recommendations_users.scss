@@ -5,6 +5,13 @@
         .row {
             margin-top: 20px;
             .recommend_list {
+                .collection_wrap {
+                    a {
+                        .avatar_lg {
+                            border-radius: 50%;
+                        }
+                    }
+                }
                 @media screen and (min-width: 450px) and (max-width: 768px) {
                     width: 50%;
                     .collection_wrap {
