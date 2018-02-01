@@ -121,15 +121,24 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $article = Article::with('user')->with('category')->with('tags')->with('images')->with('comments')->findOrFail($id);
+        $article = Article::with('user')
+        ->with('category')
+        ->with('tags')
+        ->with('images')
+        ->with('comments')
+        ->findOrFail($id);
+
         if ($article->category->parent_id) {
             $data['parent_category'] = $article->category->parent()->first();
         }
+
         if ($article->status < 0) {
             return "该文章不存在或者已经删除。。。。";
         }
+
         $article->hits = $article->hits + 1;
         $agent         = new \Jenssegers\Agent\Agent();
+
         if ($agent->isMobile()) {
             $article->hits_mobile = $article->hits_mobile + 1;
         }

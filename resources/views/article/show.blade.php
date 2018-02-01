@@ -142,7 +142,7 @@
                      <new-comment type="articles" id="{{ $article->id }}" is-login="{{ Auth::check() }}">
                      </new-comment>
 
-         @foreach($article->comments as $comment)
+         @foreach($article->author_comments() as $comment)
           @if($comment->user->id==$article->user->id && $comment->commentable_type =='articles_author')
                      <div class="connection">
                         <div class="comment">
@@ -167,7 +167,7 @@
                                 </div>
                                 <a href="javascript:;" class="expand_bottom">展开全部</a>
                             </div>
-                            <comment-tool></comment-tool>
+                            <comment-tool id="{{ $comment->id }} is-login={{ Auth::check() }}"></comment-tool>
                         </div>
                      </div>
           @endif

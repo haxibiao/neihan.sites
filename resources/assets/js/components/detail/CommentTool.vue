@@ -2,7 +2,7 @@
 	  <div class="tool_cabinet">
         <div class="comment_wrap">
             <div class="tool_group">
-                <a href="javascript:;" class="action_btn">
+<!--                 <a href="javascript:;" class="action_btn">
                     <i class="iconfont icon-xin like">
                     </i>
                     <span>
@@ -15,7 +15,7 @@
                     <span>
                         1 喜欢
                     </span>
-                </a>
+                </a> -->
                 <a href="javascript:;" class="action_btn">
                     <i class="iconfont icon-fabulous like">
                     </i>
@@ -55,7 +55,8 @@
             </div>
         </div>
         <div v-if="isComent" class="again_comment">
-            <comments></comments>
+             <new-comment type="comments" :id="this.id" is-login="this.isLogin">
+             </new-comment>
         </div>
     </div>
 </template>
@@ -65,8 +66,13 @@ export default {
 
   name: 'CommentTool',
 
-  methods:{
+  props:['id','isLogin'],
 
+  mounted(){
+     this.get();
+  },
+
+  methods:{
       showComment(){
         this.isComent=this.isComent? false:true ;
       }

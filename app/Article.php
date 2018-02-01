@@ -4,6 +4,7 @@ namespace App;
 
 use App\Model;
 use App\Traits\ArticleRelation;
+use Illuminate\Support\Facades\DB;
 
 class Article extends Model
 {
@@ -24,7 +25,7 @@ class Article extends Model
         'status',
     ];
 
-    protected $dates = ['edited_at','delay_time'];
+    protected $dates = ['edited_at', 'delay_time'];
 
     protected $touches = ['category', 'categories', 'collections'];
 
@@ -88,5 +89,10 @@ class Article extends Model
         ]);
 
         return $image->path_top();
+    }
+
+    public function author_comments()
+    {
+        return Comment::with('user')->where('commentable_type', 'articles_author')->get();
     }
 }
