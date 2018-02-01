@@ -149,7 +149,7 @@
                         </li> --}}
                         <li class="tab own">
                             <a class="avatar" href="/home">
-                                <img src="{{ Auth::user()->avatar() }}"/>
+                                <img src="{{ Auth::user()->getLatestAvatar() }}"/>
                             </a>
                             <ul class="dropdown-menu">
                                 <li>

@@ -175,4 +175,24 @@ class User extends Authenticatable
         $this->introduction = $this->introduction();
         $this->avatar       = $this->avatar();
     }
+
+    public function getLatestAvatar()
+    {
+        //如果用户刚更新过，刷新头像图片的浏览器缓存
+        if ($this->updated_at->addMinutes(10) > now()) {
+            return $this->checkAvatar() . '?t=' . time();
+        }
+        return $this->checkAvatar();
+    }
+
+    public function checkAvatar()
+    {
+        if (\App::environment('local')) {
+            if (!starts_with($this->avatar, env('APP_URL'))) {
+                return file_exists(public_path($this->avatar)) ? $this->avatar : env('APP_URL') . $this->avatar;
+            }
+        }
+        return $this->avatar;
+    }
+
 }
