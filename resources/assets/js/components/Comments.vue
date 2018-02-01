@@ -101,7 +101,6 @@
                                         回复
                                     </span>
                                 </a>
-                                <slot></slot>
                                 <a class="report action_btn" href="javascript:;">
                                     <span>
                                         举报
@@ -346,7 +345,7 @@
 }
 </script>
 <style lang="scss" scoped="">
-    .new_comment {
+.new_comment {
     position: relative;
     margin-left: 48px;
     .avatar {

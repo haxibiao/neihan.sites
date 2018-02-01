@@ -139,15 +139,8 @@
                     </div>
                 </div>
                 <div class="all_comments">
-                     <comments type="articles" id="{{ $article->id }}" is-login="{{ Auth::check() }}">
-                        <a href="javascript:;" class="action_btn">
-                            <i class="simditor-icon simditor-icon-quote-left">
-                            </i>
-                            <span>
-                                引用
-                            </span>
-                        </a>
-                     </comments>
+                     <new-comment type="articles" id="{{ $article->id }}" is-login="{{ Auth::check() }}">
+                     </new-comment>
 
          @foreach($article->comments as $comment)
           @if($comment->user->id==$article->user->id && $comment->commentable_type =='articles_author')
