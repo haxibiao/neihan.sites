@@ -19,7 +19,14 @@
                     {{-- 文章摘要 --}}
                     <div class="article_list">
                         @include('interlocution.parts.article_list',['questions'=>$questions])
-                        <question-list></question-list>
+                        @if(str_contains(url()->full(),'cid'))
+                           @php
+                                 $cids=explode('?',url()->full());
+                           @endphp
+                           <question-list api="/question?{{ $cids[1] }}"></question-list>
+                        @else
+                          <question-list></question-list>
+                        @endif
                     </div>
                 </div>
                 {{-- 右侧 --}}

@@ -121,13 +121,20 @@ export default {
 
   name: 'QuestionList',
 
+  props: ['api'],
+
   mounted(){
   	  this.listenScrollBottom();
   },
 
   methods:{
+      apiUrl(){
+         return this.api ?this.api+'&page='+this.page:'/question?page='+this.page
+      },
+
+
   	  fetchData(){
-  	  	 var api ='/question?page='+this.page;
+  	  	 var api =this.apiUrl();
   	  	 var vm = this;
   	  	 window.axios.get(api).then(function(response){
              vm.questions =response.data.data;

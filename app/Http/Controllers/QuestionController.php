@@ -5,15 +5,16 @@ namespace App\Http\Controllers;
 use App\Answer;
 use App\Category;
 use App\Http\Requests\QuestionRequest;
+use App\Jobs\PayQuestion;
 use App\Question;
-use App\Transaction;
-use Auth;
+use App\Traits\QuestionControllerFunction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use App\Jobs\PayQuestion;
 
 class QuestionController extends Controller
 {
+    //计算相关函数全部抽离至接口中
+    use QuestionControllerFunction;
 
     public function __construct()
     {
@@ -29,24 +30,26 @@ class QuestionController extends Controller
         $data = [];
         $qb   = Question::with('latestAnswer.article')->with('user')->where('status', '>', 0)->orderBy('id', 'desc');
 
-        if (request('cid')) {
+        if (request('cid') > 0) {
             $category = Category::findOrFail(request('cid'));
             $qb       = $category->questions()->with('latestAnswer.article')->orderBy('id', 'desc');
         }
 
         $categories = Category::where('count_questions', '>', 0)->orderBy('updated_at', 'desc')->take(7)->get();
-
+        
         $questions = $qb->paginate(10);
 
-        if (count($categories) < 7) {
-            $categories = Category::with('questions')
-                ->orderBy('id', 'desc')
-                ->take(7)
-                ->get();
-        }
+        // if (count($categories) < 7) {
+        //     $categories = Category::with('questions')
+        //         ->orderBy('id', 'desc')
+        //         ->take(7)
+        //         ->get();
+        // }
 
         // null defalut 0
-
+        if(request('cid')==-1){
+          $questions =$qb->where('bonus','>',0)->orderBy('deadline','desc')->orderBy('id','desc')->paginate(10);
+        }
         foreach ($questions as $question) {
             $question->count_defalut();
         }
@@ -102,7 +105,7 @@ class QuestionController extends Controller
         $question->save();
         if (!empty($request->bonus)) {
             PayQuestion::dispatch($question->id)
-            ->delay(now()->addHours(24 * $request->deadline));
+                ->delay(now()->addHours(24 * $request->deadline));
 
             $pay_url = "/pay?amount=$request->bonus&type=question&question_id=$question->id";
             return redirect()->to($pay_url);
@@ -180,38 +183,5 @@ class QuestionController extends Controller
         $question->save();
 
         return redirect()->to('/question');
-    }
-
-    public function pay_tip(Request $request)
-    {
-        $question = Question::with('user')->findOrFail($request->question_id);
-        $now      = Carbon::now()->toDateTimeString();
-        $user     = Auth::user();
-        if (is_array($request->answer_ids) && $question->deadline && $question->deadline > $now && $question->user->id == $user->id) {
-            $pay_count = count($request->answer_ids);
-            //每位回答者应该收到的钱
-            $amount = $question->bonus / $pay_count;
-            foreach ($request->answer_ids as $answer_id) {
-                $type        = '回答打赏';
-                $answer      = Answer::find($answer_id);
-                $answer->tip = $amount;
-                $answer->save();
-                $user = $answer->user;
-                $log  = '你的回答' . $answer->description() . '获得金额:' . $amount . '元';
-                Transaction::create([
-                    'user_id' => $user->id,
-                    'type'    => $type,
-                    'log'     => $log,
-                    'amount'  => $amount,
-                    'status'  => '已到账',
-                    'balance' => $user->balance() + $amount,
-                ]);
-            }
-            $question->deadline = null;
-            $question->save();
-            return redirect()->to('/question/' . $question->id);
-        } else {
-            return abort(403);
-        }
     }
 }
