@@ -57,8 +57,10 @@ class CommentController extends Controller
 
     public function get(Request $request, $id, $type)
     {
+        //一起给前端返回 子评论 和 子评论的用户信息
         $comments = Comment::with('user')->with('commented.user')->with('replyComments.user')
             ->orderBy('lou')
+            ->where('comment_id', null)
             ->where('commentable_type', $type)
             ->where('commentable_id', $id)
             ->paginate(5);
@@ -68,13 +70,22 @@ class CommentController extends Controller
             $comment->reported = $request->user() ? $this->check_cache($request, $comment->id, 'report_comment') : 0;
         }
 
+        foreach ($comments as $comment) {
+            $comment->replying = 0;
+        }
+
         return $comments;
+
     }
 
     public function like(Request $request, $id)
     {
-        $liked          = $this->sync_cache($request, $id, 'like_comment');
         $comment        = Comment::find($id);
+        if($request->get('get_comment')){
+              $comment->count_comments =$comment->commented;
+              return $comment;
+        }
+        $liked          = $this->sync_cache($request, $id, 'like_comment');
         $comment->likes = $comment->likes + ($liked ? -1 : 1);
         $comment->save();
         return $comment;

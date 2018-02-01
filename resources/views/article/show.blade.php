@@ -167,7 +167,7 @@
                                 </div>
                                 <a href="javascript:;" class="expand_bottom">展开全部</a>
                             </div>
-                            <comment-tool id="{{ $comment->id }} is-login={{ Auth::check() }}"></comment-tool>
+                            <comment-tool id="{{ $comment->id }}" is-login="{{ Auth::check() }}"></comment-tool>
                         </div>
                      </div>
           @endif
