@@ -111,7 +111,7 @@
                     <li>
                         <div class="author">
 
-                            <a class="avatar avatar_collection" :href="'/'+category.name_en">
+                            <a class="avatar avatar_in avatar_collection" :href="'/'+category.name_en">
                                 <img :src="category.logo"/>
                             </a>
                                 <follow type="categories" :id="category.id" :user-id="user.id" :followed="category.followed"></follow>
@@ -179,7 +179,7 @@ export default {
 
 <style lang="scss" scoped>
     #add {
-        @media screen and (max-width: 660px) {
+        @media screen and (max-width: 768px) {
             .trigger_menu {
                 li {
                     a {
@@ -191,7 +191,7 @@ export default {
                 }
             }
         }
-        @media screen and (max-width: 600px) {
+        @media screen and (max-width: 768px) {
             .btn_base {
                 width: 84px;
                 padding: 4px;

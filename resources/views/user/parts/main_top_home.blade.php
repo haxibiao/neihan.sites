@@ -31,6 +31,18 @@
             </li>
             <li>
                 <div class="meta_block">
+                    <a href="#">
+                        <p>
+                            5
+                        </p>
+                        粉丝
+                        <i class="iconfont icon-youbian">
+                        </i>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div class="meta_block">
                     <a href="javascript:;">
                         <p>
                             {{ $user->count_articles }}

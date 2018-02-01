@@ -3,7 +3,7 @@
         <!-- 关注页的左侧 -->
         <div class="dropdown change_type">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                全部关注
+                <span class="s_s_hide">全部关注</span>
                 <i class="iconfont icon-xialaxuan">
                 </i>
             </a>
@@ -30,7 +30,7 @@
                 </li>
                 <li>
                     <a href="#">
-                        只看推送更新
+                        只看<span class="s_s_hide">推送</span>更新
                     </a>
                 </li>
             </ul>
@@ -38,7 +38,7 @@
         <router-link to="/add" class="add_people">
             <i class="iconfont icon-guanzhu">
             </i>
-            添加关注
+            <span class="s_s_hide">添加关注</span>
         </router-link>
         <ul class="js_subscription_list">
             <li>
@@ -145,17 +145,24 @@ export default {
             margin: 4px 0 0 10px;
             .dropdown-menu {
                 left: -10px;
-            }
-            @media screen and (max-width: 600px) {
-                display: none;
+                @media screen and (max-width: 768px) {
+                    min-width: 71px;
+                    li {
+                        margin-bottom: 10px;
+                        a {
+                            padding: 10px 0;
+                            text-align: center;
+                        }
+                    }
+                }
             }
         }
         .add_people {
             font-size: 13px;
             float: right;
             margin: 4px 8px 0 0;
-            @media screen and (max-width: 600px) {
-                float: none;
+            @media screen and (max-width: 768px) {
+                // float: none;
             }
         }
         .js_subscription_list {
@@ -167,7 +174,7 @@ export default {
                     padding: 10px;
                     font-size: 14px;
                     width: 100%;
-                    @media screen and (max-width: 600px) {
+                    @media screen and (max-width: 768px) {
                         text-align: center;
                     }
                     .name {
@@ -180,7 +187,7 @@ export default {
                         @media screen and (max-width: 992px) {
                             max-width: 90px;
                         }
-                        @media screen and (max-width: 600px) {
+                        @media screen and (max-width: 768px) {
                             display: block;
                             padding-top: 5px;
                         }

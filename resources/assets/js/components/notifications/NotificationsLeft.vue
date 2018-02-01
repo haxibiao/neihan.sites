@@ -123,7 +123,7 @@ export default {
                     &:hover,&.router-link-active {
                         background-color: #f0f0f0;
                     }
-                    @media screen and (max-width: 540px) {
+                    @media screen and (max-width: 768px) {
                         padding: 10px;
                         .name {
                             display: none;

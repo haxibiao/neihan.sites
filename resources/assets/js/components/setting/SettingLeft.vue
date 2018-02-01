@@ -79,7 +79,7 @@ export default {
                 &:hover {
                     background-color: #f0f0f0;
                 }
-                @media screen and (max-width: 425px) {
+                @media screen and (max-width: 768px) {
                     padding: 10px 15px;
                     i {
                         margin-right: 3px;
@@ -89,7 +89,7 @@ export default {
                         padding-top: 5px;
                     }
                 }
-                @media screen and (max-width: 425px) {
+                @media screen and (max-width: 768px) {
                     text-align: center;
                     .setting_icon {
                         margin-right: 0;

@@ -3,39 +3,60 @@
 	<div id="chats">
 		<div class="notification_menu">全部消息</div>
 		<ul class="chats_list">
-			 <li v-for="chat in chats">
-			  <div class="pull-right">
-				<span class="time">
-					<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						{{ chat.time }} <i class="iconfont icon-xia"></i>
-					</a>
-					<ul class="dropdown-menu">
-						<li><a href="javascript:;" class="link"><i class="iconfont icon-lajitong"></i><span>删除会话</span></a></li>
-						<li><a href="javascript:;" class="link"><i class="iconfont icon-heimingdan1"></i><span>加入黑名单</span></a></li>
-						<li><a href="javascript:;" class="report link"><i class="iconfont icon-iconset03100"></i><span>举报用户</span></a></li>
-					</ul>
-				</span>
-       </div>
-     
-				<div class="chats_item">
-					<a :href="'/user/'+chat.with_id" class="avatar avatar_sm"><img :src="chat.with_avatar" alt="">
-						<span v-if="chat.unreads" class="badge">{{ chat.unreads }}</span>
-					</a>
-					<div class="title">
-						<a :href="'/user/'+chat.with_id" class="name">{{ chat.with_name }}</a>
-					</div>
-					<router-link :to="'/chat/'+chat.id" class="wrap">
-						<div class="new_abstract single_line"><p>{{ chat.last_message }}</p></div>
-					</router-link>
-				   </div>
-			   
+			<li v-for="chat in chats">
+			    <div class="pull-right">
+                    <span class="time">
+                        {{ chat.time }}
+                    </span>
+    				<div class="operation">
+                        <a data-toggle="dropdown" href="">
+                            <i class="iconfont icon-xia">
+                            </i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="link" href="javascript:;">
+                                    <i class="iconfont icon-lajitong">
+                                    </i>
+                                    <span>
+                                        删除会话
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="link" href="javascript:;">
+                                    <i class="iconfont icon-heimingdan1">
+                                    </i>
+                                    <span>
+                                        加入黑名单
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="report link" href="javascript:;">
+                                    <i class="iconfont icon-iconset03100">
+                                    </i>
+                                    <span>
+                                        举报用户
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <a class="avatar avatar_sm" :href="'/user/'+chat.with_id">
+                    <img :src="chat.with_avatar" alt="" />
+                    <span v-if="chat.unreads" class="badge">{{ chat.unreads }}</span>
+                </a>
+                <a class="nickname" :href="'/user/'+chat.with_id">
+                    <span class="single_line">{{ chat.with_name }}</span>
+                </a>
+                <router-link :to="'/chat/'+chat.id" class="wrap">
+                    <p class="new_abstract single_line">{{ chat.last_message }}</p>
+                </router-link>
 			</li>
 		</ul>
-
-
-</div>
-
- 
+    </div>
 </template>
 
 <script>
@@ -63,7 +84,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-	#chats {
+	   #chats {
         .chats_list {
             li {
                 border-top: 1px solid #f0f0f0;
@@ -97,10 +118,14 @@ export default {
                         right: -5px;
                     }
                 }
-                .name {
+                .nickname {
                     position: absolute;
                     top: 25px;
                     font-size: 15px;
+                    max-width: 580px;
+                    @media screen and (max-width: 768px) {
+                        width: 38%;
+                    }
                 }
                 .wrap {
                     display: block;

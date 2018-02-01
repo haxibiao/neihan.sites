@@ -40,7 +40,7 @@
                         <p>
                             {{ $user->count_actions }}
                         </p>
-                        动态
+                        粉丝
                         <i class="iconfont icon-youbian">
                         </i>
                     </a>

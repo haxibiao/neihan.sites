@@ -99,7 +99,7 @@ export default {
                 }
             }
         }
-        @media screen and (max-width: 630px) {
+        @media screen and (max-width: 768px) {
             .trigger_menu {
                 li {
                     a {

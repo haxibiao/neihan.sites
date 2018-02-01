@@ -8,12 +8,15 @@
                 margin-left: 5px;
             }
             @media screen and (max-width: 992px) {
-                padding-bottom: 50px;
+                padding-bottom: 30px;
                 position: relative;
                 .btn_base {
                     position: absolute;
-                    top: 125px;
+                    top: 70px;
                     margin-bottom: 0;
+                    @media screen and (max-width: 410px) {
+                        top: 100px;
+                    }
                 }
                 .btn_follow,.btn_followed {
                     right: 40px;

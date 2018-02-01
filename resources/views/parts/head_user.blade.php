@@ -148,7 +148,7 @@
                             </a>
                         </li> --}}
                         <li class="tab own">
-                            <a class="avatar" href="/home">
+                            <a class="avatar" href="javascript:;">
                                 <img src="{{ Auth::user()->getLatestAvatar() }}"/>
                             </a>
                             <ul class="dropdown-menu">

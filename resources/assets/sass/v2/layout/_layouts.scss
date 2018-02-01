@@ -42,7 +42,7 @@ header {
                                 }
                             }
                             @media screen and (max-width: 768px) {
-                                left: 40%;
+                                left: 30%;
                             }
                         }
                         .badge {
@@ -51,7 +51,8 @@ header {
                     } // 个人用户
                     .own {
                         .avatar {
-                            @include spacing (5px 25px 5px 20px, 0);
+                            @include spacing (10px 25px 9px 20px, 0);
+                            display: inline-block;
                             &::before {
                                 content: "";
                                 position: absolute;
