@@ -75,6 +75,7 @@ export default {
 
           formdata.append('name',this.inputtext.name);
   	  	  window.axios.post(api,formdata).then(function(response){
+            vm.refreshAvatars();
                if(response.status==200){
                  // window.location.href = location.href + (location.href.indexOf("?")>-1?"&":"?") + "time="+(new Date()).getTime();
                }
@@ -84,7 +85,7 @@ export default {
 
       //refresh avatar
       refreshAvatars() {
-          $('img.avatar').each(function(){
+          $('#avatar').each(function(){
             $(this).attr('src', $(this).attr('src') + '?t=' + Date.now());
           });
       },
@@ -112,8 +113,7 @@ export default {
               }
            }
 
-  	  	  window.axios.post(api,formdata,config).then(function(response){
-               vm.refreshAvatars();
+  	  	  window.axios.post(api,formdata,config).then(function(response){      
   	  	  	   vm.avatar =response.data;
   	  	  });
   	  }

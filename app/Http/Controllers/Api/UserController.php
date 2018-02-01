@@ -185,6 +185,7 @@ class UserController extends Controller
                 $user->save();
             }
         }
+        $user->touch();
         return $user->avatar;
     }
 
