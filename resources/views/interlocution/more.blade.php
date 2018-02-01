@@ -258,5 +258,6 @@
             </a>
         </div>
     </div>
+    <question-modal></question-modal>
 </div>
 @stop

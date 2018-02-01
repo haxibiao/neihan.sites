@@ -29,6 +29,7 @@
             </div>
         </div>
     </div>
+    <question-modal></question-modal>
     {{-- <div class="note_bottom">
         <div class="note_title">
             <div class="container">

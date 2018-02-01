@@ -33,6 +33,15 @@
                     .question_tips_body {
                         margin-bottom: 8px;
                     }
+                    .inquisitorial {
+                        margin-bottom: 10px;
+                        .author {
+                            font-size: 13px;
+                            .info_meta {
+                                padding: 6px 0 0 40px;
+                            }
+                        }
+                    }
                     .question_text {
                         font-size: 16px;
                         color: $color-gray;

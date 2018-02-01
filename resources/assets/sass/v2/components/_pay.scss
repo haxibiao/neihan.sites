@@ -60,6 +60,12 @@
         .pay_title {
             font-size: 13px;
             margin-bottom: 10px;
+            .go_wallet {
+                color: $color-gray;
+                &:hover {
+                    color: $color-black;
+                }
+            }
         }
         .pay_tip {
             .pay_tip_content {

@@ -53,7 +53,8 @@
                                 </div>
                                 <div class="money_amount">
                                     <div class="pay_title">
-                                        付费金额 (当前账户余额：￥{{ balance }}) 
+                                        付费金额 (当前账户余额：￥{{ balance }})
+                                        <a href="/wallet" v-if="bonus>balance" class="go_wallet">去充值</a>
                                     </div>
                                     <div class="amount_group">
                                         <input id="option2" type="radio" value="5" v-model="bonus" name="bonus" />
@@ -168,7 +169,8 @@
                     </div>
                 </div>
                 <footer class="clearfix">
-                    <button class="btn_base btn_follow btn_followed_xs pull-right">提交</button>
+                    <a href="/wallet" v-if="whetherPay && balance < bonus" class="btn_base btn_follow btn_followed_xs pull-right">充值</a>
+                    <button v-else class="btn_base btn_follow btn_followed_xs pull-right">提交</button>
                 </footer>
                 <input type="hidden" name="user_id" :value="userId">
                 <input v-if="top3Imgs.length>0" name="image1" type="hidden" :value="top3Imgs[0].img">

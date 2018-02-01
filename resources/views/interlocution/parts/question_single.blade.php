@@ -22,6 +22,35 @@
     <h1 class="headline">
         {{ $question->title }}
     </h1>
+    <div class="inquisitorial">
+        {{-- <div class="author">
+            <a class="avatar" href="" target="_blank">
+                <img src="/images/photo_03.jpg"/>
+            </a>
+            <div class="info_meta">
+                <a href="" target="_blank" class="nickname">
+                    小小
+                </a>
+                <span class="time">
+                    2分钟 前
+                </span>
+            </div>
+        </div> --}}
+        {{-- 匿名用户 --}}
+        <div class="author">
+            <a class="avatar" href="" target="_blank">
+                <img src="/images/photo_user.png"/>
+            </a>
+            <div class="info_meta">
+                <a href="" target="_blank" class="nickname">
+                    匿名用户
+                </a>
+                <span class="time">
+                    2分钟 前
+                </span>
+            </div>
+        </div>
+    </div>
     <div class="question_text">
         {{ $question->background }}
     </div>
