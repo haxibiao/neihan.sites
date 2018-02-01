@@ -36,7 +36,7 @@
             </li>
             <li>
                 <div class="meta_block">
-                    <a href="#">
+                    <a aria-controls="fans" data-toggle="tab" href="#fans" role="tab">
                         <p>
                             {{ $user->count_actions }}
                         </p>

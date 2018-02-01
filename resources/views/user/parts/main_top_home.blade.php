@@ -19,7 +19,7 @@
         <ul>
             <li>
                 <div class="meta_block">
-                    <a href="javascript:;">
+                    <a href="#follow">
                         <p>
                             {{ $user->count_follows }}
                         </p>
@@ -31,7 +31,7 @@
             </li>
             <li>
                 <div class="meta_block">
-                    <a href="#">
+                    <a href="#fans">
                         <p>
                             5
                         </p>
@@ -43,7 +43,7 @@
             </li>
             <li>
                 <div class="meta_block">
-                    <a href="javascript:;">
+                    <a href="/user/{{ $user->id }}">
                         <p>
                             {{ $user->count_articles }}
                         </p>

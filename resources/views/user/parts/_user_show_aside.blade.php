@@ -10,7 +10,7 @@
 
 <ul class="aside_list user_dynamic">
     <li>
-        <a href="#">
+        <a href="/user/{{ $user->id }}/likes">
             <i class="iconfont icon-duoxuan">
             </i>
             <span>
@@ -19,7 +19,7 @@
         </a>
     </li>
     <li>
-        <a href="#">
+        <a href="/user/{{ $user->id }}/likes">
             <i class="iconfont icon-xin">
             </i>
             <span>

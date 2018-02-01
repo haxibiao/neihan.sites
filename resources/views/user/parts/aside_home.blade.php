@@ -36,7 +36,7 @@
             </a>
         </li>
         <li>
-            <a href="/v1/home/liked_note">
+            <a href="/user/{{ $user->id }}/likes">
                 <i class="iconfont icon-xin">
                 </i>
                 <span>
