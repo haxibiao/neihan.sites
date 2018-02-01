@@ -12,7 +12,7 @@
 				<tr>
 					<td v-if="!avatar" class="top_line">
 						<div class="avatar avatar_sp">
-							<img :src="user.avatar" id="avatar" />
+							<img :src="user.avatar+'?t='+dataNow()" id="avatar" />
 						</div>
 					</td>
 
@@ -67,6 +67,10 @@ export default {
            	    vm.user=response.data;
            });
   	  },
+
+      dataNow(){
+          return Date.now();
+      },
 
   	  updateing(){
   	  	  var api=window.tokenize('/api/user/'+window.current_user_id+'/update');
