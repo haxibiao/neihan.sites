@@ -39,8 +39,13 @@ export default {
 <style lang="scss">
 .FAQ {
 	.modal-dialog.simple {
+		width: 320px;
+		.modal-header {
+			padding: 15px 20px;
+		}
 		.modal-body {
 			border-bottom: 1px solid #e5e5e5;
+			padding: 20px;
 			.solution {
 				font-size: 14px;
 				ul {
@@ -51,7 +56,7 @@ export default {
 			}
 		}
 		footer {
-			text-align: center;
+			padding: 16px;
 			.cancel {
 				float: unset;
 				font-size: 16px;
