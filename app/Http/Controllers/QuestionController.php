@@ -48,7 +48,9 @@ class QuestionController extends Controller
 
         // null defalut 0
         if(request('cid')==-1){
-          $questions =$qb->where('bonus','>',0)->orderBy('deadline','desc')->orderBy('id','desc')->paginate(10);
+            $questions=$this->pay_question();
+            $categories = Category::where('count_questions', '>', 0)->orderBy('updated_at', 'desc')->take(7)->get();
+            $hot        = Question::with('latestAnswer.article')->orderBy('hits', 'desc')->take(3)->get();
         }
         foreach ($questions as $question) {
             $question->count_defalut();
@@ -97,6 +99,7 @@ class QuestionController extends Controller
         if ($request->deadline) {
             $deadline           = Carbon::now()->addHours(24 * $request->deadline)->toDateTimeString();
             $question->deadline = $deadline;
+            $question->closed = 1 ;
         }
 
         if ($request->bonus) {

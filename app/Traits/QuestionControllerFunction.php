@@ -44,4 +44,14 @@ trait QuestionControllerFunction
             return abort(403);
         }
     }
+
+    public function pay_question()
+    {
+       $questions=Question::with('latestAnswer.article')
+       ->where('bonus','>',0)
+       ->orderBy('deadline','desc')
+       ->orderBy('id','desc')
+       ->paginate(10);
+       return $questions;
+    }
 }
