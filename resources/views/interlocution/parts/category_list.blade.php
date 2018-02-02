@@ -1,19 +1,19 @@
 {{-- 问答分类 --}}
 <div class="classification">
-    <a class="collection pay" href="/question?cid=-1" target="_blank">
+    <a class="collection pay {{ request('cid') == -1 ? 'active' : '' }}" href="/question?cid=-1" target="_blank">
         <img src="/images/money.small.jpg"/>
         <div class="name">
             付费
         </div>
     </a>
-    <a class="collection huo active" href="/question" target="_blank">
+    <a class="collection huo {{ request()->path() == 'question' && empty(request('cid')) ? 'active' : '' }}" href="/question" target="_blank">
         <img src="/images/hot.small.jpg"/>
         <div class="name">
             热门
         </div>
     </a>
     @foreach($categories as $category)
-    <a class="collection" href="/question/?cid={{ $category->id }}" target="_blank">
+    <a class="collection {{ request('cid') == $category->id ? 'active' : '' }}" href="/question/?cid={{ $category->id }}" target="_blank">
         <img src="{{ $category->logo }}"/>
         <div class="name">
             {{ $category->name }}
