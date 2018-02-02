@@ -48,19 +48,35 @@
             </div>
         </div> --}}
         {{-- 匿名用户 --}}
+        @if($question->is_anonymous==0)
         <div class="author">
-            <a class="avatar" href="" target="_blank">
-                <img src="/images/photo_user.png"/>
+            <a class="avatar" href="/user/{{ $question->user->id }}" target="_blank">
+                <img src="{{ $question->user->getLatestAvatar() }}"/>
             </a>
             <div class="info_meta">
-                <a href="" target="_blank" class="nickname">
-                    匿名用户
+                <a href="/user/{{ $question->user->id }}" target="_blank" class="nickname">
+                    {{ $question->user->name }}
                 </a>
                 <span class="time">
-                    2分钟 前
+                  {{ diffForHumansCN($question->created_at) }}
                 </span>
             </div>
         </div>
+        @else
+        <div class="author">
+            <a class="avatar" href="javascript:;" target="_blank">
+                <img src="/images/photo_user.png"/>
+            </a>
+            <div class="info_meta">
+                <a href="javascript:;" target="_blank" class="nickname">
+                    匿名用户
+                </a>
+                <span class="time">
+                  {{ diffForHumansCN($question->created_at) }}
+                </span>
+            </div>
+        </div>
+        @endif
     </div>
     <div class="question_text">
         {{ $question->background }}

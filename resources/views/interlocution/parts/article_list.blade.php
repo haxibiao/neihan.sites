@@ -75,7 +75,7 @@
                     </a>
                     @endif
                     <span class="time">
-                        2分钟 前
+                        {{ diffForHumansCN($question->created_at) }}
                     </span>
                 </div>
             </div>
