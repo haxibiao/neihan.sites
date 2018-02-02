@@ -128,6 +128,9 @@ Route::middleware('auth:api')->post('/image/save', 'Api\ImageController@store');
 Route::get('/image/poster','Api\ImageController@poster');
 
 
+//write
+require_once 'api/write.php';
+
 //answer info
 require_once 'api/answer.php';
 
