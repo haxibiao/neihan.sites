@@ -21,7 +21,7 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="tab">
+                        <li class="tab {{ get_active_css('/') }}">
                             <a href="/" class="identifier">
                                 <i class="iconfont icon-faxian">
                                 </i>
@@ -30,7 +30,7 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="tab interlocution">
+                        <li class="tab {{ get_active_css('question') }}">
                             <a href="/question" class="identifier">
                                 <i class="iconfont icon-help">
                                 </i>
@@ -39,7 +39,7 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="tab follow">
+                        <li class="tab {{ get_active_css('follow') }}">
                             <a href="/follow" class="identifier">
                                 <i class="iconfont icon-huizhang">
                                 </i>
@@ -48,7 +48,7 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="tab notification">
+                        <li class="tab {{ get_active_css('notification') }}">
                             <a href="/notification" class="identifier">
                                 <i class="iconfont icon-zhongyaogaojing">
                                 </i>

@@ -7,14 +7,14 @@ use Illuminate\Support\Facades\Request;
 
 function topAdmins_json($topAdmins)
 {
-    $names="";
+    $names     = "";
     $topAdmins = json_decode($topAdmins);
-    if(!count($topAdmins)){
+    if (!count($topAdmins)) {
         return "";
     }
     foreach ($topAdmins as $topAdmin) {
-        $name= $topAdmin->name;
-        $names=$names.$name;
+        $name  = $topAdmin->name;
+        $names = $names . $name;
     }
     return $name;
 }
@@ -122,6 +122,7 @@ function get_active_css($path, $full_match = 0)
     } else if (starts_with(Request::path(), $path)) {
         $active = 'active';
     }
+    
     if ($full_match) {
         if (Request::path() == $path) {
             $active = 'active';
