@@ -1,17 +1,17 @@
 <template>
-	<div>
+  <div>
         <div class="comment_list">
-            <!-- 写评论 -->
-            <div>
-                <!-- 详情页的评论 -->
+            <!-- 写评论框 -->
+            <!-- <div class="comment_box">
                 <form class="new_comment">
                     <div v-if="isLogin">
                         <a class="avatar avatar_xs">
                             <img :src="currentUser.avatar"/>
                         </a>
-                        <textarea @click="showSend" class="text_container" placeholder="写下你的评论..." v-model="newComment.body">
-                        </textarea>
-                        <div class="write_block">
+                        <div class="textarea_box">
+                            <textarea @click="showSend" placeholder="写下你的评论..." v-model="newComment.body"></textarea>
+                        </div>
+                        <div v-if="showButton" class="write_block">
                             <div class="emoji_wrap">
                                 <a class="emoji" href="javascript:;">
                                     <i class="iconfont icon-smile">
@@ -29,11 +29,11 @@
                             </a>
                         </div>
                     </div>
-                    <div v-else="">
+                    <div v-else>
                       <a class="avatar avatar_xs" href="#">
                           <img src="/images/photo_user.png"/>
                       </a>
-                        <div class="text_container sign_container">
+                        <div class="textarea_box sign_container">
                             <a class="btn_base btn_sign" href="/login">
                                 登录
                             </a>
@@ -43,8 +43,9 @@
                         </div>
                     </div>
                 </form>
-            </div>
-            <div class="normal_comment_list">
+            </div> -->
+            <!-- 全部评论 -->
+            <!-- <div class="normal_comment_list">
                 <div class="top_title">
                     <span>
                         {{ comments.length }}条评论
@@ -64,7 +65,6 @@
                         </a>
                     </div>
                 </div>
-                <!-- 评论 -->
                 <div class="comment" v-for="comment in comments">
                     <div>
                         <div class="author">
@@ -123,9 +123,9 @@
                                     </a>
                                     ：
                                     <span>
-                                        <!-- <a href="#" class="moleskine_author">
-                                    @哈尼
-                                </a> -->
+                                        <a href="#" class="moleskine_author">
+                                            @哈尼
+                                        </a>
                                         {{ reply.body }}
                                     </span>
                                 </p>
@@ -158,8 +158,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <ul class="pagination" v-if="lastPage >1">
+            </div> -->
+            <!-- 分页 -->
+            <!-- <ul class="pagination" v-if="lastPage >1">
                 <li @click="goPage(page)" v-for="page in lastPage">
                     <a :class="page==currentPage ?'active':''">
                         {{ page }}
@@ -172,7 +173,7 @@
                         </span>
                     </a>
                 </li>
-            </ul>
+            </ul> -->
         </div>
     </div>
 </template>
@@ -355,68 +356,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.new_comment {
-    position: relative;
-    margin-left: 48px;
-    .avatar {
-        position: absolute;
-        left: -48px;
-    }
-    .text_container {
-        width: 100%;
-        height: 80px;
-        border-radius: 4px;
-        border: 1px solid #dcdcdc;
-        font-size: 13px;
-        background-color: hsla(0, 0%, 71%, .1);
-        padding: 10px 15px;
-    }
-    .sign_container {
-        text-align: center;
-    }
-    textarea {
-        resize: none;
-        vertical-align: top;
-    }
-    .write_block {
-        height: 50px;
-        display: none;
-        color: #969696;
-        .emoji_wrap {
-            position: relative;
-            .emoji {
-                float: left;
-                margin-top: 14px;
-                color: #969696;
-                i {
-                    font-size: 20px;
-                }
-                &:hover {
-                    color: #333;
-                }
-            }
-        }
-        .hint {
-            font-size: 13px;
-            float: left;
-            margin: 19px 0 0 20px;
-        }
-        .btn_followed_sm {
-            margin: 10px 0;
-        }
-        .cancel {
-            font-size: 16px;
-            color: #969696;
-            margin: 18px 30px 0 0;
-        }
-        @media screen and (max-width: 400px) {
-            .btn_follow {
-                width: 60px;
-            }
-            .cancel {
-                margin-right: 5px;
-            }
-        }
-    }
-}
 </style>

@@ -58,8 +58,8 @@
             </div>
         </div>
         <div v-if="isComent" class="again_comment">
-             <new-comment type="comments" :id="this.id" is-login="this.isLogin">
-             </new-comment>
+             <comments type="comments" :id="this.id" is-login="this.isLogin">
+             </comments>
         </div>
     </div>
 </template>

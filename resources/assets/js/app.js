@@ -37,15 +37,18 @@ Vue.component('favorite', require('./components/Favorite.vue'));
 Vue.component('like', require('./components/Like.vue'));
 Vue.component('comment', require('./components/Comment.vue'));
 Vue.component('follow', require('./components/Follow.vue'));
-Vue.component('comments', require('./components/Comments.vue'));
 Vue.component('search', require('./components/Search.vue'));
 Vue.component('article-tool', require('./components/contributeModal/ArticleTool.vue'));
 
 Vue.component('user-select', require('./components/UserSelect.vue'));
 
 
-// 详情页评论
+// 评论
 Vue.component('new-comment', require('./components/detail/NewComment.vue'));
+Vue.component('comments', require('./components/Comments.vue'));
+Vue.component('reply-comment', require('./components/ReplyComment.vue'));
+
+
 // 详情页文章工具
 Vue.component('article-tools', require('./components/detail/ArticleTools.vue'));
 Vue.component('writer', require('./components/detail/Writer.vue'));

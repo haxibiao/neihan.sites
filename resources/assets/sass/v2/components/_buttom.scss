@@ -133,7 +133,6 @@
 // 详情页登录发表评论
 .btn_sign {
     @include btn (78px, 0, $color-blue, $color-white);
-    margin: 11px 10px 0 0;
     &:hover,&:focus {
         background-color: #156dab;
         color: $color-white;

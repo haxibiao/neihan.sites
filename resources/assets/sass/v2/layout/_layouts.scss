@@ -182,7 +182,7 @@ footer {
             top: 0!important;
             .popover-content {
                 .popover_share_menu {
-                    height: 275px;
+                    max-height: 275px;
                     overflow: auto;
                 }
             }

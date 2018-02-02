@@ -139,8 +139,8 @@
                     </div>
                 </div>
                 <div class="all_comments">
-                     <new-comment type="articles" id="{{ $article->id }}" is-login="{{ Auth::check() }}">
-                     </new-comment>
+                     <comments type="articles" id="{{ $article->id }}" is-login="{{ Auth::check() }}">
+                     </comments>
 
          @foreach($article->author_comments() as $comment)
           @if($comment->user->id==$article->user->id && $comment->commentable_type =='articles_author')

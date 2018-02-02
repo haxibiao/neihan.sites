@@ -41,7 +41,6 @@ Vue.component('favorite', require('./components/Favorite.vue'));
 Vue.component('like', require('./components/Like.vue'));
 Vue.component('comment', require('./components/Comment.vue'));
 Vue.component('follow', require('./components/Follow.vue'));
-Vue.component('comments', require('./components/Comments.vue'));
 Vue.component('search', require('./components/Search.vue'));
 Vue.component('go-top', require('./components/contributeModal/GoTop.vue'));
 Vue.component('Article-tool', require('./components/contributeModal/ArticleTool.vue'));
@@ -56,8 +55,10 @@ Vue.component('follow-left', require('./components/follow/FollowLeft.vue'));
 // 消息页
 Vue.component('notifications-left', require('./components/notifications/NotificationsLeft.vue'));
 
-// 详情页评论
+// 评论
 Vue.component('new-comment', require('./components/detail/NewComment.vue'));
+Vue.component('comments', require('./components/Comments.vue'));
+Vue.component('reply-comment', require('./components/ReplyComment.vue'));
 
 // 设置页
 Vue.component('setting-left', require('./components/setting/SettingLeft.vue'));

@@ -1,39 +1,41 @@
 <template>
     <div>
         <div class="comment_list">
-            <!-- 写评论 -->
-            <div>
-                <!-- 详情页的评论 -->
+            <!-- 写评论框 -->
+            <div class="comment_box">
                 <form class="new_comment">
                     <div v-if="isLogin">
                         <a class="avatar avatar_xs">
                             <img :src="currentUser.avatar"/>
                         </a>
-                        <textarea @click="showSend" class="text_container" placeholder="写下你的评论..." v-model="newComment.body">
-                        </textarea>
-                        <div class="write_block">
-                            <div class="emoji_wrap">
-                                <a class="emoji" href="javascript:;">
-                                    <i class="iconfont icon-smile">
-                                    </i>
+                        <div class="textarea_box">
+                            <textarea @click="showSend" placeholder="写下你的评论..." v-model="newComment.body"></textarea>
+                        </div>
+                        <transition name="fade">
+                            <div v-if="showButton" class="write_block">
+                                <div class="emoji_wrap">
+                                    <a class="emoji" href="javascript:;">
+                                        <i class="iconfont icon-smile">
+                                        </i>
+                                    </a>
+                                </div>
+                                <div class="hint">
+                                    ⌘+Return 发表
+                                </div>
+                                <a @click="postComment" class="btn_base btn_follow btn_followed_sm pull-right">
+                                    发送
+                                </a>
+                                <a @click="hideSend" class="cancel pull-right">
+                                    取消
                                 </a>
                             </div>
-                            <div class="hint">
-                                ⌘+Return 发表
-                            </div>
-                            <a @click="postComment" class="btn_base btn_follow btn_followed_sm pull-right">
-                                发送
-                            </a>
-                            <a @click="hideSend" class="cancel pull-right">
-                                取消
-                            </a>
-                        </div>
+                        </transition>
                     </div>
-                    <div v-else="">
+                    <div v-else>
                       <a class="avatar avatar_xs" href="#">
                           <img src="/images/photo_user.png"/>
                       </a>
-                        <div class="text_container sign_container">
+                        <div class="textarea_box sign_container">
                             <a class="btn_base btn_sign" href="/login">
                                 登录
                             </a>
@@ -44,6 +46,7 @@
                     </div>
                 </form>
             </div>
+            <!-- 全部评论 -->
             <div class="normal_comment_list">
                 <div class="top_title">
                     <span>
@@ -94,7 +97,7 @@
                                         赞
                                     </span>
                                 </a>
-                                <a href="javascript:;" class="action_btn">
+                                <a href="javascript:;" class="action_btn" @click="replyingComment(comment)">
                                     <i class="iconfont icon-xinxi">
                                     </i>
                                     <span>
@@ -108,6 +111,7 @@
                                 </a>
                             </div>
                         </div>
+                        <!-- 子评论 -->
                         <div class="sub_comment_list">
                             <div class="comment_wrap" v-for="reply in comment.reply_comments">
                                 <p>
@@ -140,18 +144,29 @@
                                 </div>
                             </div>
                             <div class="comment_wrap more_comment">
-                                <a class="add_comment_btn">
+                                <a class="add_comment_btn" @click="toggle(comment)">
                                     <i class="iconfont icon-xie">
                                     </i>
                                     <span>
                                         添加新评论
                                     </span>
                                 </a>
+                                <!-- <span class="line_warp">
+                                    <span>还有67条评论，</span>
+                                    <a href="#">
+                                        展开查看
+                                    </a>
+                                    <a href="#">
+                                        收起
+                                    </a>
+                                </span> -->
                             </div>
+                            <reply-comment :is-show="comment.replying" :body="replyComment.body" @sendReply="sendReply" @toggle-replycomment="toggle(comment)"></reply-comment>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- 分页 -->
             <ul class="pagination" v-if="lastPage >1">
                 <li @click="goPage(page)" v-for="page in lastPage">
                     <a :class="page==currentPage ?'active':''">
@@ -192,10 +207,10 @@
 
   methods:{
       showSend(){
-          $('.new_comment .write_block').fadeIn();
+          this.showButton = true;
       },
       hideSend(){
-          $('.new_comment .write_block').fadeOut('fast');
+          this.showButton = false;
       },
 
       get_lou(lou){
@@ -296,7 +311,7 @@
        });
       },
 
-      replyComment(comment){
+      replyComments(comment){
         this.newComment.body='@'+comment.user.name+':';
         this.newComment.comment_id=comment.id;
         this.newComment.comment=coment;
@@ -314,7 +329,59 @@
       goPage(page){
         this.currentPage=page;
         this.loadComments();
+      },
+
+      toggle(comment){
+      if(this.checkLogin()) {
+        this.replyComment.body = '';
+        comment.replying = !comment.replying;
+        if(comment.replying) {
+          this.commented = comment;
+          this.replyComment.comment_id = comment.id;
+          this.replyComment.user = this.user;
+        }
       }
+    },
+
+    checkLogin() {      
+      if(!this.isLogin) {
+        window.location.href = '/login';
+        return false;
+      }
+      return true;
+    },
+
+    //回复评论
+    sendReply(body) {
+      console.log(body);
+      this.replyComment.body = body;
+
+      //乐观更新
+      this.commented.reply_comments.push(this.replyComment);
+
+      var _this = this;      
+      window.axios.post(this.postApiUrl(), this.replyComment).then(function(response) { 
+        //更新被回复的楼中comments...
+
+        //这里服务器返回数据..
+        _this.commented.reply_comments.pop();
+        _this.commented.reply_comments.push(response.data);
+
+        //发布成功，清空
+        _this.replyComment.body = null;
+      });
+    },
+
+    replyingComment: function(comment) {
+      if(this.checkLogin()) {
+        this.replyComment.body = '';
+        comment.replying = !comment.replying;
+        this.commented = comment;
+        this.replyComment.comment_id = comment.id;
+        this.replyComment.user = this.user;
+      }
+    },
+
   },
 
   data () {
@@ -338,75 +405,32 @@
             is_replay_comment:false,
 
         },
+        replyComment: {
+            user: {},
+            is_reply: 1,
+            time: '刚刚',
+            body: null,
+            comment_id: null, //回复的评论id
+            commentable_id: this.id,
+            commentable_type: this.type,
+            likes: 0,
+            reports: 0
+        },
         isSingIn:true,
-        sendBox:false
+        sendBox:false,
+        showButton: false
     }
   }
 }
 </script>
 <style lang="scss" scoped="">
-.new_comment {
-    position: relative;
-    margin-left: 48px;
-    .avatar {
-        position: absolute;
-        left: -48px;
+    .fade-enter-active {
+      transition: opacity .3s
     }
-    .text_container {
-        width: 100%;
-        height: 80px;
-        border-radius: 4px;
-        border: 1px solid #dcdcdc;
-        font-size: 13px;
-        background-color: hsla(0, 0%, 71%, .1);
-        padding: 10px 15px;
+    .fade-leave-active {
+        transition: opacity .5s
     }
-    .sign_container {
-        text-align: center;
+    .fade-enter, .fade-leave-to {
+      opacity: 0
     }
-    textarea {
-        resize: none;
-        vertical-align: top;
-    }
-    .write_block {
-        height: 50px;
-        display: none;
-        color: #969696;
-        .emoji_wrap {
-            position: relative;
-            .emoji {
-                float: left;
-                margin-top: 14px;
-                color: #969696;
-                i {
-                    font-size: 20px;
-                }
-                &:hover {
-                    color: #333;
-                }
-            }
-        }
-        .hint {
-            font-size: 13px;
-            float: left;
-            margin: 19px 0 0 20px;
-        }
-        .btn_followed_sm {
-            margin: 10px 0;
-        }
-        .cancel {
-            font-size: 16px;
-            color: #969696;
-            margin: 18px 30px 0 0;
-        }
-        @media screen and (max-width: 400px) {
-            .btn_follow {
-                width: 60px;
-            }
-            .cancel {
-                margin-right: 5px;
-            }
-        }
-    }
-}
 </style>

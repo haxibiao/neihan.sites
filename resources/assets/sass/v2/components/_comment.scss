@@ -200,3 +200,62 @@
         }
     }
 }
+
+// 写评论的框
+.comment_box {
+    .new_comment {
+        position: relative;
+        margin-left: 48px;
+        .avatar {
+            position: absolute;
+            left: -48px;
+        }
+        .textarea_box {
+            height: 80px;
+            font-size: 13px;
+        }
+        .sign_container {
+            text-align: center;
+            line-height: 55px;
+        }
+        .write_block {
+            height: 50px;
+            color: #969696;
+            .emoji_wrap {
+                position: relative;
+                .emoji {
+                    float: left;
+                    margin-top: 14px;
+                    color: #969696;
+                    i {
+                        font-size: 20px;
+                    }
+                    &:hover {
+                        color: #333;
+                    }
+                }
+            }
+            .hint {
+                font-size: 13px;
+                float: left;
+                margin: 19px 0 0 20px;
+            }
+            .btn_followed_sm {
+                margin: 10px 0;
+            }
+            .cancel {
+                font-size: 16px;
+                color: #969696;
+                margin: 18px 30px 0 0;
+            }
+            @media screen and (max-width: 400px) {
+                .btn_follow {
+                    width: 60px;
+                }
+                .cancel {
+                    margin-right: 5px;
+                }
+            }
+        }
+    }
+}
