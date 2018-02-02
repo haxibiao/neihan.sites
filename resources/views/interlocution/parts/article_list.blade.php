@@ -58,12 +58,7 @@
 {{-- 问答文章摘要 --}}
 @foreach ($questions as $question)
 <li class="article_item question {{ $question->relateImage()?'have_img' :'' }}">
-    @if($question->bonus >0)
-    <div class="pay_logo">
-        付费问题
-    </div>
-    @endif
-
+    {{-- pay_continue   pay_closed --}}
 
     <div class="question_title">
         <a class="headline paper_title" href="/question/{{ $question->id }}" target="_blank">
@@ -75,7 +70,10 @@
             <span>还剩 {{ diffForHumansCN($question->deadline) }}</span>
             <span class="question_follow_num">{{ $question->count_answers }} 人已抢答</span>
             @else
-             <span>抢答已经结束</span>
+             <div class="question_info">
+                <span>{{ $question->count_answers }} 回答</span>
+                <span class="question_follow_num">{{ $question->count_favorites }} 收藏</span>
+            </div>
             @endif
             <span class="money">
                 <i class="iconfont icon-jinqian1"></i>
@@ -132,6 +130,9 @@
                         <img src="/images/verified.png" data-toggle="tooltip" data-placement="top" title="爱你城认证" class="badge_icon_xs"/>
                     </a>
                     @endif
+                    <span class="time">
+                        2分钟 前
+                    </span>
                 </div>
             </div>
                 <p class="abstract">

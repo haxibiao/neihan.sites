@@ -68,38 +68,14 @@
             min-height: 120px;
         }
     }
-    .pay_logo {
-        position: absolute;
-        right: -20px;
-        top: 13px;
-        background-color: $color-theme;
-        color: $color-white;
-        transform: rotate(45deg);
-        padding: 1px 20px;
-        &::before,&::after {
-            content: "";
-            position: absolute;
-            border-bottom-color: $color-theme;
-        }
-        &::before {
-            top: -1px;
-            right: -2px;
-            border-width: 23px;
-            border-style: none dashed dashed none;
-            border-right-color: $color-white-silver;
-        }
-        &::after {
-            top: -1px;
-            left: -2px;
-            border-width: 23px;
-            border-style: none none dashed dashed;
-            border-left-color: $color-white-silver;
+    &.pay_continue,&.pay_closed {
+        .question_title {
+            .paper_title {
+                padding-right: 4%;
+            }
         }
     }
     .question_title {
-        .paper_title {
-            padding-right: 20px;
-        }
         .question_info {
             color: $color-gray;
             // 问答收藏人数

@@ -17,6 +17,71 @@
     }
 }
 
+.pay_logo {
+        position: absolute;
+        right: -20px;
+        top: 13px;
+        background-color: $color-theme;
+        color: $color-white;
+        transform: rotate(45deg);
+        padding: 1px 20px;
+        &::before,&::after {
+            content: "";
+            position: absolute;
+            border-bottom-color: $color-theme;
+        }
+        &::before {
+            top: -1px;
+            right: -2px;
+            border-width: 23px;
+            border-style: none dashed dashed none;
+            border-right-color: $color-white-silver;
+        }
+        &::after {
+            top: -1px;
+            left: -2px;
+            border-width: 23px;
+            border-style: none none dashed dashed;
+            border-left-color: $color-white-silver;
+        }
+    }
+
+// 付费问题未结束标志
+.pay_continue {
+    overflow: hidden;
+    &::after {
+        content: "付费问题";
+        position: absolute;
+        top: 10px;
+        right: -28px;
+        color: $color-white;
+        background-color: rgba($color-theme,0.8);
+        font-size: 12px;
+        line-height: 20px;
+        width: 100px;
+        text-align: center;
+        transform: rotateZ(40deg);
+    }
+}
+
+// 付费问题已结束标志
+.pay_closed {
+    overflow: hidden;
+    &::after {
+        content: "已结束";
+        position: absolute;
+        top: 10px;
+        right: -28px;
+        color: $color-white;
+        background-color: rgba($color-black,0.7);
+        font-size: 12px;
+        line-height: 20px;
+        width: 100px;
+        text-align: center;
+        transform: rotateZ(40deg);
+    }
+}
+
 // 付费回答问题人数
 .pay_answer_num {
     text-align: center;
