@@ -31,10 +31,15 @@ require_once 'v2/web.php';
 //sitemap
 require_once 'sitemap.php';
 
+// 新版创作页
+Route::get('/write', function () {
+	return view('write');
+});
+
 // 问答
-Route::resource('/question','QuestionController');
-Route::resource('/answer','AnswerController');
-Route::post('/tip-answer','QuestionController@pay_tip')->name('tip-answer');
+Route::resource('/question', 'QuestionController');
+Route::resource('/answer', 'AnswerController');
+Route::post('/tip-answer', 'QuestionController@pay_tip')->name('tip-answer');
 
 // 问答更多分类
 Route::get('/interlocution/more', function () {
@@ -88,10 +93,10 @@ Route::get('/setting', 'UserController@setting');
 
 //多媒体
 Route::resource('/image', 'ImageController');
-Route::get('/index/poster','ImageController@poster');
-Route::get('/index/image-all','ImageController@poster_all');
+Route::get('/index/poster', 'ImageController@poster');
+Route::get('/index/image-all', 'ImageController@poster_all');
 Route::resource('/video', 'VideoController');
-Route::resource('/music','MusicController');
+Route::resource('/music', 'MusicController');
 
 //collection
 Route::resource('/collection', 'CollectionController');

@@ -15,7 +15,7 @@ export default {
 
     name: 'Editor',
 
-    props: ['placeholder', 'name', 'value', 'picture', 'video'],
+    props: ['placeholder', 'name', 'value', 'picture', 'video','write', 'focus'],
 
     computed: {
 	    html() {
@@ -43,11 +43,24 @@ export default {
             //     this.toolbar.push('video');
             // }
 
+            //自定义按钮
+            if(this.picture　!== undefined) {
+                this.toolbar.push('picture');
+            }
+            if(this.video　!== undefined) {
+                this.toolbar.push('video');
+            }
+            if(this.write !== undefined) {
+                this.toolbar.push('save');
+                this.toolbar.push('publish');
+            }
+
             this.editor = new Simditor({
                 textarea: $('#' + _this.textareaId),
                 toolbar: _this.toolbar,
                 // picture: {},
                 // video: {},
+                toolbarFloat: true,
                 upload: {
                     url: window.tokenize('/api/image/save'), //api for post to upload image 
                     params: {
@@ -66,6 +79,28 @@ export default {
                 _this.editorHtml = _this.editor.getValue();
                 _this.$emit('changeBody',_this.editor.getValue());
             })
+
+
+            this.editor.on("imageuploaded", function(e, src) {
+                window.$bus.$emit('imageuploaded', _this.editor.getValue());
+            })
+
+            this.editor.on("valuechanged", function(e, src) {
+                _this.$emit('valuechanged', _this.editor.getValue());
+            })
+
+            if(this.write !== undefined) {
+                this.editor.on("editorsaved", function(e, src) {
+                    _this.$emit('editorsaved', _this.editor.getValue());
+                    //TODO:: 光标应该跑最后跳动的位置
+                    _this.editor.focus();
+                })
+                this.editor.on("editorpublished", function(e, src) {
+                    _this.$emit('editorpublished', _this.editor.getValue());
+                    //TODO:: 光标应该跑最后跳动的位置
+                    _this.editor.focus();
+                })
+            } 
             
             //valuechanged是simditor自带获取值得方法
         }
@@ -84,7 +119,7 @@ export default {
 	            'ol', 'ul', 'blockquote', 'hr',
 	            // 'code',
 	            'link', 
-	            '|',
+	            // '|',
 	            'image', 
 	            'picture',
                  // 'video',
@@ -101,5 +136,8 @@ export default {
     img {
         max-width: 99%;
     }
+}
+.simditor-toolbar {
+    top:52px!important;
 }
 </style>

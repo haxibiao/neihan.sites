@@ -3332,6 +3332,8 @@
 
   Simditor.i18n = {
     "zh-CN": {
+      'save': '保存',
+      'publish': '发布',
       blockquote: "引用",
       bold: "加粗文字",
       code: "插入代码",
@@ -3592,9 +3594,13 @@
 
     Button.prototype.iconClassOf = function(icon) {
       if (icon) {
+        //允许自定义图标做按钮
+        if(icon.indexOf('icon-') !== -1) {
+          return "iconfont "+icon;
+        }
         return "simditor-icon simditor-icon-" + icon;
       } else {
-        return "";
+        return '';
       }
     };
 
@@ -6861,6 +6867,38 @@
   })(Button);
 
   Simditor.Toolbar.addButton(PictureButton);
+
+  SaveButton = (function(superClass) {
+    extend(SaveButton, superClass);
+    function SaveButton() {
+      return SaveButton.__super__.constructor.apply(this, arguments);
+    }
+    SaveButton.prototype.name = 'save';
+    SaveButton.prototype.icon = 'icon-iconset0237';
+    SaveButton.prototype._status = function() {};
+    SaveButton.prototype.needFocus = false;
+    SaveButton.prototype.command = function() { 
+      this.editor.trigger('editorsaved');
+    };
+    return SaveButton;
+  })(Button);
+  Simditor.Toolbar.addButton(SaveButton);
+
+  PublishButton = (function(superClass) {
+    extend(PublishButton, superClass);
+    function PublishButton() {
+      return PublishButton.__super__.constructor.apply(this, arguments);
+    }
+    PublishButton.prototype.name = 'publish';
+    PublishButton.prototype.icon = 'icon-icon-feixingmanyou';
+    PublishButton.prototype._status = function() {};
+    PublishButton.prototype.needFocus = false;
+    PublishButton.prototype.command = function() { 
+      this.editor.trigger('editorpublished');
+    };
+    return PublishButton;
+  })(Button);
+  Simditor.Toolbar.addButton(PublishButton);
 
   return Simditor;
 });

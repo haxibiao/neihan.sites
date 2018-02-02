@@ -28,7 +28,14 @@ mix
     )
     .version();
 
-
+mix
+    .styles(
+        [
+            "public/css/simditor.css"
+        ],
+        "public/css/e.css"
+    )
+    .version();
 
 // v1 
 mix
@@ -41,7 +48,10 @@ mix
     .version();
 
 
+// js
 mix.js("resources/assets/js/spa.js", "public/js/b.js");
+//write
+mix.js("resources/assets/js/write.js", "public/js/write.js");
 
 // v2
 mix
