@@ -130,12 +130,14 @@ class QuestionController extends Controller
 
         $question->save();
 
+        $categories=$question->categories;
         $answers = Answer::with('user')->where('question_id', $question->id)->where('status', '>', 0)->orderBy('id', 'desc')->paginate(10);
 
         $qb          = Question::with('latestAnswer.article')->with('user')->orderBy('id', 'desc');
         $data['hot'] = $qb->orderBy('hits', 'desc')->take(3)->get();
 
         return view('interlocution.show')
+            ->withCategories($categories)
             ->withAnswers($answers)
             ->withQuestion($question)
             ->withData($data);

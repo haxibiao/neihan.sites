@@ -1,7 +1,7 @@
 {{-- 回答问题 --}}
 <div class="question_single">
     <div class="question_tags">
-      @foreach($question->categories as $category)
+      @foreach($categories as $category)
         <a class="collection" href="/{{ $category->name_en }}" target="_blank">
             <div class="name">
                 {{ $category->name }}

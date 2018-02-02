@@ -1,23 +1,20 @@
 {{-- 回答问题 --}}
 <div class="question_single">
     <div class="question_tags">
-      {{-- @foreach($question->categories as $category)
+{{--       @foreach($question->categories as $category)
         <a class="collection" href="/{{ $category->name_en }}" target="_blank">
             <div class="name">
                 {{ $category->name }}
             </div>
         </a>
        @endforeach --}}
-       <a class="collection" href="" target="_blank">
+     @foreach($categories as $category)
+       <a class="collection" href="/{{ $category->name_en }}" target="_blank">
             <div class="name">
-                王者荣耀
+                {{ $category->name }}
             </div>
         </a>
-        <a class="collection" href="" target="_blank">
-            <div class="name">
-                技能点
-            </div>
-        </a>
+     @endforeach
     </div>
     <h1 class="headline">
         {{ $question->title }}
