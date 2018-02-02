@@ -167,18 +167,14 @@ class FixData extends Command
         //     $category->save();
         // }
 
-        $category =Category::where('id',62)->first();
-        $category->admins()->syncWithoutDetaching([
-            $category->user->id => [
-                    'is_admin' => 1,
-                ],
-        ]);
-        $category->authors()->syncWithoutDetaching([
-                $category->user->id => [
-                    'approved' => 1,
-                ],
-            ]);
-        $this->info("$category->name fix done");
+        $categories =Category::where('logo',null)->get();
+        $defalut='/logo/ainicheng.com.touch.jpg';
+        foreach($categories as $category){
+             $category->logo =$defalut;
+             $category->save();
+             $this->info("$category->name fix done");
+        }
+
     }
 
     public function fix_videos()
@@ -437,7 +433,8 @@ class FixData extends Command
         }
     }
 
-    public function fix_article_count(){
+    public function fix_article_count()
+    {
         $categories =Category::where('count',0)->get();
         foreach($categories as $category){
              $category->count =$category->articles()->count();
