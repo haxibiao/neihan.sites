@@ -104,7 +104,7 @@ class ArticleController extends Controller
     {
         $category = Category::findOrFail($id);
         $user     = $request->user();
-        $articles = $user->articles()->paginate(10);
+        $articles = $user->articles()->paginate(7);
         foreach ($articles as $article) {
             $query = $article->categories()->wherePivot('category_id', $id);
             if ($query->count()) {

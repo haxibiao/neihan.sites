@@ -99,19 +99,7 @@ Route::get('/articles', 'Api\ArticleController@getIndex');
 Route::get('/article/{id}', 'Api\ArticleController@getShow');
 
 //投稿
-Route::middleware('auth:api')->get('/articles/check-category-{id}', 'Api\ArticleController@checkCategory');
-//投稿、撤销投稿
-Route::middleware('auth:api')->get('/article/{aid}/submit-category-{cid}', 'Api\ArticleController@submitCategory');
-//批准、拒绝投稿请求
-Route::middleware('auth:api')->get('/article/{aid}/approve-category-{cid}', 'Api\ArticleController@approveCategory');
-//收录，移除
-Route::middleware('auth:api')->get('/article/{aid}/add-category-{cid}', 'Api\ArticleController@addCategory');
-
-//文章加入推荐专题 
-Route::middleware('auth:api')->get('/recommend-categories-check-article-{aid}', 'Api\ArticleController@recommendCategoriesCheckArticle');
-
-//文章加入管理的专题 
-Route::middleware('auth:api')->get('/admin-categories-check-article-{aid}', 'Api\ArticleController@adminCategoriesCheckArticle');
+require_once 'api/request_article.php';
 
 
 //保存文章相关片段数据
@@ -144,11 +132,5 @@ Route::get('/image/poster','Api\ImageController@poster');
 
 
 //answer info
-Route::get('/answer/info/{id}','Api\AnswerController@get');
-Route::middleware('auth:api')->get('/like-answer/{id}', 'Api\QuestionController@likeAnswer');
-Route::middleware('auth:api')->get('/unlike-answer/{id}', 'Api\QuestionController@unlikeAnswer');
-Route::middleware('auth:api')->get('/report-answer/{id}', 'Api\QuestionController@reportAnswer');
-Route::middleware('auth:api')->get('/delete-answer/{id}', 'Api\QuestionController@deleteAnswer');
-//邀请
-Route::middleware('auth:api')->get('/user/{id}/question-invite/{qid}', 'Api\UserController@questionInvite');
+require_once 'api/answer.php';
 
