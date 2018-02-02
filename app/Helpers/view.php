@@ -122,7 +122,7 @@ function get_active_css($path, $full_match = 0)
     } else if (starts_with(Request::path(), $path)) {
         $active = 'active';
     }
-    
+
     if ($full_match) {
         if (Request::path() == $path) {
             $active = 'active';
@@ -234,4 +234,11 @@ function get_polymorph_types($type)
 function get_category_logo($logo)
 {
     return is_file($logo) ? $logo : "/images/category_01.jpeg";
+}
+
+function question_is_closed($question)
+{
+   if($question->bonus >0){
+      return !empty($question->deadline) ?'pay_continue' : 'pay_closed' ;;
+   }
 }

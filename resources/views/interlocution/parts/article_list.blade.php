@@ -1,7 +1,7 @@
 
 {{-- 问答文章摘要 --}}
 @foreach ($questions as $question)
-<li class="article_item question {{ $question->relateImage()?'have_img' :'' }}">
+<li class="article_item question {{ question_is_closed($question) }} {{ $question->relateImage()?'have_img' :'' }}">
     {{-- pay_continue   pay_closed --}}
 
     <div class="question_title">
