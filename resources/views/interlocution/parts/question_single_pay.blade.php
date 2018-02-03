@@ -107,7 +107,9 @@
     </div>
 
     {{-- 问题的工具 --}}
+    @if(Auth::check())
     <question-tool question-id="{{ $question->id }}"></question-tool>
+    @endif
 
 
     @if(Auth::check())

@@ -120,6 +120,8 @@ Route::get('/video/{id}/{key}', 'Api\VideoController@getRelation');
 //question
 Route::middleware('auth:api')->get('/question/search','Api\QuestionController@search_question');
 Route::middleware('auth:api')->get('/question/image','Api\QuestionController@search_question_image');
+Route::get('/question/{id}','Api\QuestionController@get');
+Route::middleware('auth:api')->get('/question/{id}/report','Api\QuestionController@QuestionReport');
 
 //图片
 Route::get('/image', 'Api\ImageController@index');

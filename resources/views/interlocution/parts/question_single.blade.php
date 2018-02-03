@@ -82,8 +82,9 @@
     </div>
     @endif
     {{-- 问题的工具 --}}
+    @if(Auth::check())
     <question-tool question-id="{{ $question->id }}"></question-tool>
-
+    @endif
 
     @if(Auth::check())
     <div class="answer_write simditor_submi">

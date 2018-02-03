@@ -74,9 +74,31 @@ class QuestionController extends Controller
             $answer->save();
             $answer->reported = 1;
 
-            cache::put($cacheKey, 1, 24*60);
+            cache::put($cacheKey, 1, 24 * 60);
         }
 
         return $answer;
+    }
+
+    public function QuestionReport(Request $request, $id)
+    {
+        $user     = $request->user();
+        $cacheKey = $cacheKey = $user->id . 'question' . $id;
+        $question = Question::findOrFail($id);
+        if (!cache::get($cacheKey) || $user->is_editor) {
+            $question->count_reports++;
+            $question->save();
+            $question->reported = 1;
+
+            cache::put($cacheKey, 1, 24 * 60);
+        }
+
+        return $question;
+    }
+
+    public function get(Request $request, $id)
+    {
+        $question = Question::findOrFail($id);
+        return $question;
     }
 }

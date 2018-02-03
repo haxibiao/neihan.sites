@@ -14,9 +14,9 @@
                     <share class="action_btn" placement="top">
                         <span>分享</span>
                     </share>
-                    <a href class="pull-right action_btn">
+                    <a href="javascript:;" class="pull-right action_btn" @click="questionReport">
                         <i class="iconfont icon-jinggao"></i>
-                        <span>举报</span>
+                        <span>举报({{ question.count_reports }})</span>
                     </a>
                 </div>
             </div>
@@ -59,6 +59,7 @@ export default {
 
   mounted(){
       this.get();
+      this.fechData();
   },
 
   methods:{
@@ -84,6 +85,7 @@ export default {
               var api=window.tokenize('/api/user/question-'+this.questionId+'-uninvited');
               window.axios.get(api).then(function(response){
                      vm.users = response.data;
+                     console.log(vm.users);
                      vm.uninvited = vm.users;
               });
          },
@@ -94,6 +96,21 @@ export default {
         window.axios.get(window.tokenize('/api/user/'+user.id+'/question-invite/'+this.questionId));
         },
 
+        fechData(){
+             var api='/api/question/'+this.questionId;
+             var vm=this;
+             window.axios.get(api).then(function(response){
+                     vm.question=response.data;
+             });
+        },
+
+        questionReport(){
+             var vm=this;
+             vm.question.count_reports++;
+             var api=window.tokenize('/api/question/'+this.questionId+'/report');
+             window.axios.get(api);
+        }
+
   },
 
   data () {
@@ -101,7 +118,8 @@ export default {
         isInvite:false,
         favorited:null,
         users:[],
-        uninvited:[]
+        uninvited:[],
+        question:[]
     }
   }
 }
