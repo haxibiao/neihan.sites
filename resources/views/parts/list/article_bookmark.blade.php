@@ -42,7 +42,7 @@
                 <span class="count">
                     <i class="iconfont icon-03xihuan">
                     </i>
-                    {{ $article->likes }}
+                    {{ $article->count_likes }}
                 </span>
                 <a class="count count_link cancal" href="javascript:;">
                     取消收藏
