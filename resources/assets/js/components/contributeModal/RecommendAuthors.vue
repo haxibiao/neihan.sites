@@ -4,8 +4,8 @@
                 <span>
                     推荐作者
                 </span>
-                <a href="javascript:;" @click="fetchData">
-                    <i class="iconfont icon-shuaxin">
+                <a href="javascript:;" @click="fetchData" class="rotation">
+                    <i class="iconfont icon-shuaxin" ref="fresh">
                     </i>
                     换一批
                 </a>
@@ -53,6 +53,8 @@ export default {
   methods:{
   	  fetchData(){
          var vm=this;
+         this.counter ++;
+         $(this.$refs.fresh).css('transform',`rotate(${360*this.counter}deg)`);
          $('.recommended_authors ul').fadeOut();
           var api=window.tokenize('/api/user/recommend');
            window.axios.get(api).then(function(response){
@@ -71,7 +73,8 @@ export default {
 
   data () {
     return {
-         users:[]
+         users:[],
+         counter:1
     }
   }
 }

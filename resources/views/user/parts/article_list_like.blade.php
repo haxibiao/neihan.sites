@@ -6,14 +6,14 @@
         </a>
         <div class="content">
             <div class="author">
-                <a class="avatar" href="/v1/user" target="_blank">
+                <a class="avatar" href="/user/{{ $article->user->id }}" target="_blank">
                     <img src="{{ $article->user->avatar }}"/>
                 </a>
                 <div class="info_meta">
                     <a href="/user/{{ $article->user->id }}" target="_blank">
                         {{ $article->user->name }}
                     </a>
-                    <a href="/v1/detail" target="_blank">
+                    <a href="javascript:;" target="_blank">
                        <img src="/images/vip1.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者"  class="badge_icon_xs" />
                     </a>
                     <span class="time">

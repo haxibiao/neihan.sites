@@ -53,6 +53,10 @@ export default {
     display: none;
     .litter_title {
         margin: 10px 0;
+        span {
+            font-weight: 700;
+            color: #333;
+        }
     }
     .collection {
     	border-color: #d96a5f;

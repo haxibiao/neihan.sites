@@ -162,7 +162,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/user/{{ Auth::id() }}/likes">
+                                    <a href="/user/{{ Auth::id() }}">
                                         <i class="iconfont icon-yonghu01">
                                         </i>
                                         <span>

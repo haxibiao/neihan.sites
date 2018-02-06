@@ -2,12 +2,6 @@
 	<!-- 收到的其他消息 -->
 	<div id="others">
 		<div class="notification_menu">其他消息</div>
-		<!-- 没有消息 -->
-		<!-- <div class="unMessage">
-			<p>这里还木有内容哦~</p>
-			<span class="iconfont icon-meiyouxiaoxi1"></span>
-		</div> -->
-		
 		<!-- 有消息 -->
 		<ul v-if="notifications.length" class="others_list">
 			<li v-for="notification in notifications">
@@ -20,6 +14,10 @@
 				</div>
 			</li>
 		</ul>
+        <!-- 空白页面 -->
+        <div v-else class="blank_content">
+            <blank-content></blank-content>
+        </div>
 	</div>
 </template>
 

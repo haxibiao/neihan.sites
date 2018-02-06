@@ -27,11 +27,11 @@
     </div>
     <ul class="aside_list user_dynamic">
         <li>
-            <a href="/follow#/timeline">
+            <a href="/user/{{ $user->id }}/likes">
                 <i class="iconfont icon-duoxuan">
                 </i>
                 <span>
-                    我关注的专题
+                    关注的专题/文集
                 </span>
             </a>
         </li>
@@ -106,7 +106,7 @@
         error:function(data){
              location.reload()
         }
-       }); 
+       });
     })
 </script>
 @endpush

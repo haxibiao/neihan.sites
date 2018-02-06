@@ -57,6 +57,7 @@ export default {
                 display: block;
                 width: 100%;
                 font-size: 15px;
+                border-radius: 4px;
                 .setting_icon {
                     width: 32px;
                     height: 32px;
@@ -76,7 +77,7 @@ export default {
                 span {
                     vertical-align: middle;
                 }
-                &:hover {
+                &:hover,&.router-link-active {
                     background-color: #f0f0f0;
                 }
                 @media screen and (max-width: 768px) {
@@ -95,10 +96,6 @@ export default {
                         margin-right: 0;
                     }
                 }
-            }
-            .router-link-active {
-                background-color: #f0f0f0;
-                border-radius: 4px;
             }
         }
     }

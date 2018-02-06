@@ -41,7 +41,6 @@ Vue.component('favorite', require('./components/Favorite.vue'));
 Vue.component('like', require('./components/Like.vue'));
 Vue.component('comment', require('./components/Comment.vue'));
 Vue.component('follow', require('./components/Follow.vue'));
-Vue.component('search', require('./components/Search.vue'));
 Vue.component('go-top', require('./components/contributeModal/GoTop.vue'));
 Vue.component('Article-tool', require('./components/contributeModal/ArticleTool.vue'));
 
@@ -63,8 +62,19 @@ Vue.component('reply-comment', require('./components/ReplyComment.vue'));
 // 设置页
 Vue.component('setting-left', require('./components/setting/SettingLeft.vue'));
 
+// 搜索
+Vue.component('search', require('./components/search/SearchBox.vue'));
+Vue.component('hot-search', require('./components/search/Hot.vue'));
+Vue.component('recently-search', require('./components/search/Recently.vue'));
+// 搜索页
+Vue.component('search-left', require('./components/search/SearchLeft.vue'));
+
+
 Vue.component('article-list', require('./components/ArticleList.vue'));
 Vue.component('category-list', require('./components/CategoryList.vue'));
+
+// 空白的页面
+Vue.component('blank-content', require('./components/BlankContent.vue'));
 
 const routes = [
     // 关注页路由
@@ -87,7 +97,12 @@ const routes = [
     // 设置页路由
     { path: '/basic', component: require('./components/setting/Basic.vue') },
     { path: '/profile', component: require('./components/setting/Profile.vue') },
-    { path: '/reward-setting', component: require('./components/setting/Reward-Setting.vue') }
+    { path: '/reward-setting', component: require('./components/setting/Reward-Setting.vue') },
+    // 搜索页路由
+    { path: '/note', component: require('./components/search/Note.vue') },
+    { path: '/user', component: require('./components/search/User.vue') },
+    { path: '/collection', component: require('./components/search/Collection.vue') },
+    { path: '/notebook', component: require('./components/search/NoteBook.vue') }
 ];
 
 const router = new VueRouter({

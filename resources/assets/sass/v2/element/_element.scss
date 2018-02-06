@@ -85,6 +85,24 @@
     }
 }
 
+// 搜索总结果标题
+.sort_type {
+    color: $color-gray;
+    font-size: 13px;
+    padding-bottom: 20px;
+    display: inline-block;
+    width: 100%;
+    a {
+        color: $color-gray;
+        &:hover,&.active {
+            color: $color-black;
+        }
+    }
+    .result {
+        float: right;
+    }
+}
+
 // 专题名、用户名、个人名
 .nickname {
     vertical-align: middle;
@@ -172,5 +190,36 @@
 .s_s_hide {
     @media screen and (max-width: 768px) {
         display: none!important;
+    }
+}
+
+// 搜索的lab
+.search_lab {
+    @include font (12px, $color-gray, normal);
+    @include border (3px, 1px solid #ddd);
+    padding: 2px 6px;
+    &:hover {
+        color: $color-black;
+        border-color: $color-gray-deep;
+    }
+}
+
+// 分割线
+.split_line {
+    border-bottom: 1px solid $color-white-silver;
+    margin: 15px 0;
+}
+
+// 旋转更新
+.rotation {
+    i {
+        font-size: 14px;
+        display: inline-block;
+        vertical-align: middle;
+        margin: -2px 5px 0 0;
+        &.icon-shuaxin{
+            transform: rotate(360deg);
+            transition: all .5s ease-out;
+        }
     }
 }

@@ -199,6 +199,9 @@ export default {
             .btn_followed {
                 padding: 3px;
             }
+            .info_meta {
+                padding-right: 90px;
+            }
         }
         .user_list {
             .info_meta {

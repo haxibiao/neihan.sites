@@ -65,7 +65,6 @@ export default {
 	            .btn_base {
 	                font-size: 12px;
 	                padding: 5px;
-	                float: right;
 	            }
 	            @media screen and (max-width: 540px) {
 	                padding: 20px 5px;

@@ -37,7 +37,6 @@ Vue.component('favorite', require('./components/Favorite.vue'));
 Vue.component('like', require('./components/Like.vue'));
 Vue.component('comment', require('./components/Comment.vue'));
 Vue.component('follow', require('./components/Follow.vue'));
-Vue.component('search', require('./components/Search.vue'));
 Vue.component('article-tool', require('./components/contributeModal/ArticleTool.vue'));
 
 Vue.component('user-select', require('./components/UserSelect.vue'));
@@ -88,6 +87,14 @@ Vue.component('go-top', require('./components/contributeModal/GoTop.vue'));
 
 Vue.component('article-list', require('./components/ArticleList.vue'));
 Vue.component('category-list', require('./components/CategoryList.vue'));
+
+// 空白的页面
+Vue.component('blank-content', require('./components/BlankContent.vue'));
+
+// 搜索
+Vue.component('search', require('./components/search/SearchBox.vue'));
+Vue.component('hot-search', require('./components/search/Hot.vue'));
+Vue.component('recently-search', require('./components/search/Recently.vue'));
 
 
 //editor needed modals..
