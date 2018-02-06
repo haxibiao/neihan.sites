@@ -13,20 +13,26 @@
         </span>
     </a>
     @endif
+    
     <div class="info_meta">
         <a class="headline nickname" href="/user/{{ $user->id }}">
             <span>
                 {{ $user->name }}
             </span>
+            @if($user->gender=="男")
+            <i class="iconfont icon-nansheng1">
+            </i>
+            @else
             <i class="iconfont icon-nvsheng1">
             </i>
+            @endif
         </a>
         <ul>
             <li>
                 <div class="meta_block">
                     <a href="/user/{{ $user->id }}/followings">
                         <p>
-                            {{ $user->count_follows }}
+                            {{ $user->count_followings }}
                         </p>
                         关注
                         <i class="iconfont icon-youbian">
@@ -38,7 +44,7 @@
                 <div class="meta_block">
                     <a aria-controls="fans" data-toggle="tab" href="#fans" role="tab">
                         <p>
-                            {{ $user->count_actions }}
+                            {{ $user->count_follows }}
                         </p>
                         粉丝
                         <i class="iconfont icon-youbian">

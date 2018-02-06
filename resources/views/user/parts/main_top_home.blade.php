@@ -19,7 +19,7 @@
         <ul>
             <li>
                 <div class="meta_block">
-                    <a href="#follow">
+                    <a href="/user/{{ $user->id }}/followings">
                         <p>
                             {{ $user->count_follows }}
                         </p>
