@@ -428,6 +428,7 @@ class FixData extends Command
                   $user->count_words=$user->count_words+$article_word;
                   $user->count_likes=$user->count_likes+$article->count_likes; 
              }
+             $user->count_followings = $user->followingUsers->count();
              $this->info("$user->name fix");
              $user->save();
         }
