@@ -99,7 +99,6 @@ class QuestionController extends Controller
         if ($request->deadline) {
             $deadline           = Carbon::now()->addHours(24 * $request->deadline)->toDateTimeString();
             $question->deadline = $deadline;
-            $question->closed = 1 ;
         }
 
         if ($request->bonus) {

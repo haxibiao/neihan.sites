@@ -53,7 +53,6 @@ class PayQuestion implements ShouldQueue
             $amount = $question->bonus / $count_answer;
         } else {
             $this->return_money($question);
-            return $question;
         }
         foreach ($answers as $answer) {
             $type        = '回答打赏';
@@ -70,6 +69,7 @@ class PayQuestion implements ShouldQueue
                 'balance' => $user->balance() + $amount,
             ]);
         }
+        $question->save();
         return $question;
     }
 
