@@ -2,7 +2,7 @@
 	     <form class="navbar-form navbar-left" role="search" action="/search" method="get" id="searchForm">
 	        <div class="form-group">
 	            <div class="search_wrp search_box">
-	                <input class="form-control" placeholder="搜索" type="text" name="q"/>
+	                <input class="form-control" placeholder="搜索" type="text" name="q" autocomplete="off" />
 	                <i class="iconfont icon-sousuo" @click="search">
 	                </i>
 	                <div class="hot_search_wrp hidden-xs">
