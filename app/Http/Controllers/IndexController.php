@@ -90,7 +90,12 @@ class IndexController extends Controller
 
     public function weekly()
     {
-        $articles = Article::orderBy('hits', 'desc')->with('user')->paginate(10);
+        $now =now()->toDateTimeString();
+        $week=now()->subHours(24 * 7)->toDateTimeString();
+        $articles = Article::with('user')
+        ->whereBetween('created_at',[$week,$now])
+        ->orderBy('hits','desc')
+        ->paginate(10);
         return view('index.trending_weekly')
             ->withArticles($articles)
         ;
@@ -98,7 +103,12 @@ class IndexController extends Controller
 
     public function monthly()
     {
-        $articles = Article::orderBy('hits', 'desc')->with('user')->paginate(10);
+        $now =now()->toDateTimeString();
+        $week=now()->subHours(24 * 30)->toDateTimeString();
+        $articles = Article::with('user')
+        ->whereBetween('created_at',[$week,$now])
+        ->orderBy('hits','desc')
+        ->paginate(10);
         return view('index.trending_monthly')
             ->withArticles($articles)
         ;
