@@ -159,7 +159,7 @@
 @elseif(get_class($action->actionable)=='App\Comment')
   @php
       $comment=$action->actionable;
-      $item =$comment->commented;
+      $item =$comment->commentable;
   @endphp
 <li class="article_item">
     <div class="author">
