@@ -5,14 +5,14 @@
 		<ul class="comment_list">
 			<li v-for="notification in notifications">
 				<div class="author">
-					<a :href="notification.user_id" class="avatar">
+					<a :href="'/user/'+notification.user_id" class="avatar">
 						<img :src="notification.user_avatar" />
 					</a>
 				  <div class="info_meta">	
 					<div class="info">
-						<a href="javascript: ;" class="user">{{ notification.user_name }}</a>
+						<a :href="'/user/'+notification.user_id" class="user">{{ notification.user_name }}</a>
 						<span>评论了你的文章</span>
-						<a href="javascript: ;" class="title">{{ notification.article_title }}</a>
+						<a :href="'/article/'+notification.article_id" class="title">{{ notification.article_title }}</a>
 					</div>
 					<div class="time">{{ notification.time }}</div>
 				  </div>
