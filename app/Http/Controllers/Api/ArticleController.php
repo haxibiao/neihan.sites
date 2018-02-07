@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Article;
 use App\Category;
 use App\Http\Controllers\Controller;
+use App\Notifications\ArticleApproved;
 use App\Notifications\CategoryRequested;
 use App\Query;
-use App\Notifications\ArticleApproved;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -174,27 +174,27 @@ class ArticleController extends Controller
 
     public function approveCategory(Request $request, $aid, $cid)
     {
-        $user= $request->user();
-        $article=Article::findOrFail($aid);
-        $category=Category::findOrFail($cid);
+        $user     = $request->user();
+        $article  = Article::findOrFail($aid);
+        $category = Category::findOrFail($cid);
 
-        //update pivot submit 
-        $query =$article->categories()->wherePivot('category_id',$cid);
-        if($query->count()){
-              $pivot =$query->first()->pivot;
-              if($request->get('remove')){
-                 $pivot->delete();
-                 $article->submited_status='';
-              }else{
-                 $pivot->submit =$request->get('deny')?'已拒绝' : '已收录';
-                 $pivot->save();
-                 $article->submited_status =$pivot->submit;
-              }
+        //update pivot submit
+        $query = $article->categories()->wherePivot('category_id', $cid);
+        if ($query->count()) {
+            $pivot = $query->first()->pivot;
+            if ($request->get('remove')) {
+                $pivot->delete();
+                $article->submited_status = '';
+            } else {
+                $pivot->submit = $request->get('deny') ? '已拒绝' : '已收录';
+                $pivot->save();
+                $article->submited_status = $pivot->submit;
+            }
         }
 
-        $article->submit_status=$this->get_submit_status($article->submited_status);
+        $article->submit_status = $this->get_submit_status($article->submited_status);
 
-        //mark 
+        //mark
         foreach ($user->notifications as $notification) {
             $data = $notification->data;
             if ($data['type'] == 'category_request') {
@@ -404,17 +404,42 @@ class ArticleController extends Controller
 
     public function recommendCategoriesCheckArticle(Request $request, $aid)
     {
-       $categories=Category::orderBy('id','desc')->paginate(9);
+        $categories = Category::orderBy('id', 'desc')->paginate(9);
 
-       //get article status
-       foreach ($categories as $category) {
-            $category->submited_status='';
-            $query  =$category->articles()->wherePivot('article_id',$aid);
-            if($query->count()){
-                $category->submited_status=$query->first()->pivot->submit;
+        //get article status
+        foreach ($categories as $category) {
+            $category->submited_status = '';
+            $query                     = $category->articles()->wherePivot('article_id', $aid);
+            if ($query->count()) {
+                $category->submited_status = $query->first()->pivot->submit;
             }
-            $category->submit_status=$this->get_submit_status($category->submited_status);
-       }
-       return $categories;
+            $category->submit_status = $this->get_submit_status($category->submited_status);
+        }
+        return $categories;
     }
+
+    public function update(Request $request, $id)
+    {
+        $user           = $request->user();
+        $article        = Article::findOrFail($id);
+        $article->words = ceil(strlen(strip_tags($article->body)) / 2);
+        $article->update($request->all());
+
+        if ($request->status == 1) {
+            //可能是发布了文章，需要统计文集的文章数，字数
+            foreach ($article->collections as $collection) {
+                $collection->count       = $collection->articles()->count();
+                $collection->count_words = $collection->articles()->sum('words');
+                $collection->save();
+            }
+
+            //统计用户的文章数，字数
+            $user->count_articles = $user->articles()->count();
+            $user->count_words    = $user->articles()->sum('words');
+            $user->save();
+        }
+
+        return $article;
+    }
+
 }

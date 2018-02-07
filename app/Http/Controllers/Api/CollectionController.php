@@ -75,7 +75,12 @@ class CollectionController extends Controller
     {
         $article          = new Article($request->all());
         $article->user_id = $request->user()->id;
+        // $article->body    ="请填写";
+        // $article->keywords="并未填写";
+        $article->author  =$request->user()->name;
+        // $article->category_id = 1;
         $article->save();
+
         $article->collections()->sync($id);
         return $article;
     }
