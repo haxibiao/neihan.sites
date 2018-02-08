@@ -2,7 +2,7 @@
 	<!-- 收到的聊天消息列表 -->
 	<div id="chats">
 		<div class="notification_menu">全部消息</div>
-		<ul class="chats_list">
+		<ul v-if="chats.length" class="chats_list">
 			<li v-for="chat in chats">
 			    <div class="pull-right">
                     <span class="time">
@@ -56,6 +56,10 @@
                 </router-link>
 			</li>
 		</ul>
+        <!-- 空白页面 -->
+        <div v-else class="blank_content">
+            <blank-content></blank-content>
+        </div>
     </div>
 </template>
 

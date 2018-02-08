@@ -2,7 +2,7 @@
 	<!-- 收到的喜欢和赞 -->
 	<div id="likes">
 		<div class="notification_menu">收到的喜欢和赞</div>
-		<ul class="likes_list">
+		<ul v-if="notifications.length" class="likes_list">
 			<li v-for="notification in notifications">
 				<div class="author">
 					<a :href="'/user/'+notification.user_id" class="avatar avatar_xs">
@@ -19,6 +19,10 @@
 				</div>
 			</li>
 		</ul>
+        <!-- 空白页面 -->
+        <div v-else class="blank_content">
+            <blank-content></blank-content>
+        </div>
 	</div>
 </template>
 

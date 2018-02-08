@@ -2,7 +2,7 @@
 	<!-- 收到的评论 -->
 	<div id="comments">
 		<div class="notification_menu">收到的评论</div>
-		<ul class="comment_list">
+		<ul v-if="notifications.length" class="comment_list">
 			<li v-for="notification in notifications">
 				<div class="author">
 					<a :href="'/user/'+notification.user_id" class="avatar">
@@ -35,6 +35,10 @@
 				</div>
 			</li>
 		</ul>
+        <!-- 空白页面 -->
+        <div v-else class="blank_content">
+            <blank-content></blank-content>
+        </div>
 	</div>
 </template>
 

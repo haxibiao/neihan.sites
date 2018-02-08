@@ -2,10 +2,9 @@
     <!-- 收到的关注 -->
 	<div id="follows">
 		<div class="notification_menu">全部关注</div>
-		<ul class="follows_list">
+		<ul v-if="notifications.length" class="follows_list">
             <li v-for="notification in notifications">
                 <div class="author">
-
                     <follow type="users" :id="notification.user_id" :user-id="current_user_id" :followed="notification.is_followed"></follow>
 
                     <a class="avatar avatar_xs" :href="'/user/'+notification.user_id">
@@ -23,6 +22,10 @@
                 </div>
 			</li>
 		</ul>
+        <!-- 空白页面 -->
+        <div v-else class="blank_content">
+            <blank-content></blank-content>
+        </div>
 	</div>
 </template>
 

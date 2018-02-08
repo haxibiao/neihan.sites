@@ -21,6 +21,10 @@
 				<a class="btn_base btn_hollow btn_followed_xs">消息回复</a>
 			</li>
 		</ul>
+		<!-- 空白页面 -->
+        <!-- <div v-else class="blank_content">
+            <blank-content></blank-content>
+        </div> -->
 	</div>
 </template>
 
