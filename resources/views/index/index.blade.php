@@ -49,7 +49,7 @@
                             </i>
                         </span>
                     </a>
-                    <a href="#" target="_blank">
+                    <a href="/ainichengguanfang" target="_blank">
                         <img src="/images/board05.png"/>
                         <span class="board_tit hot_school">
                             爱你城官方小课堂
