@@ -44,10 +44,10 @@
             <li>
                 <router-link to="/timeline">
                     <div class="avatar avatar_xs">
-                        <img src="/images/photo_02.jpg"/>
+                        <img src="/logo/ainicheng.com.jpg"/>
                     </div>
                     <div class="name">
-                        爱你城朋友圈
+                        爱你城动态圈
                     </div>
                 </router-link>
             </li>
