@@ -442,4 +442,49 @@ class ArticleController extends Controller
         return $article;
     }
 
+    public function trash(Request $request)
+    {
+        $user     = $request->user();
+        $articles = $user->deletedArticles;
+        return $articles;
+    }
+
+    public function store(Request $request)
+    {
+        $article          = new Article($request->all());
+        $article->user_id = $request->user()->id;
+        $article->save();
+        return $article;
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        return Article::destroy($id);
+    }
+
+    public function delete(Request $request, $id)
+    {
+        $article         = Article::findOrFail($id);
+        $article->status = -1;
+        $article->save();
+        return $article;
+    }
+
+    public function restore(Request $request, $id)
+    {
+        $article         = Article::findOrFail($id);
+        $article->status = 0;
+        $article->save();
+
+        //如果文集也被删除了，恢复出来
+        foreach ($article->collections as $collection) {
+            if ($collection->status == -1) {
+                $collection->status = 0;
+                $collection->save();
+            }
+        }
+
+        return $article;
+    }
+
 }

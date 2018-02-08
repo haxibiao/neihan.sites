@@ -9,6 +9,12 @@ trait UserRelation
 {
 
     //该用户参加的赛季
+
+    public function deletedArticles()
+    {
+        return $this->hasMany(\App\Article::class)->where('status', -1);
+    }
+
     public function compare()
     {
 
@@ -61,7 +67,7 @@ trait UserRelation
 
     public function categories()
     {
-        return $this->hasMany(\App\Category::class)->where('type','article');
+        return $this->hasMany(\App\Category::class)->where('type', 'article');
     }
 
     public function collections()
