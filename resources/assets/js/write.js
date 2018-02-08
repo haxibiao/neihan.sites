@@ -40,6 +40,10 @@ Vue.component('delete-note', require('./components/write/deleteNote.vue'));
 // 彻底删除
 Vue.component('thorough-delete', require('./components/write/thoroughDelete.vue'));
 
+// 发布成功
+Vue.component('success', require('./components/write/success.vue'));
+
+
 //editor needed modals..
 Vue.component('image-list-modal', require('./modals/ImageListModal.vue'));
 Vue.component('image-list', require('./components/ImageList.vue'));

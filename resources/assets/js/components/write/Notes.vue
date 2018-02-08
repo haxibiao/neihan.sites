@@ -22,6 +22,7 @@
 		</div>
 		<div class="note-item-container col-xs-8">
 			<div class="note-item-wrap">
+				<success></success>
 				<div class="note-item" v-if="article">
 					<p class="note-status">{{ article.saved ? '已保存' : '未保存' }}</p>
 					<div class="note-content">
