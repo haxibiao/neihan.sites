@@ -11,8 +11,21 @@
         top: 50px;
         a {
             font-size: 45px;
-            span {
-                color: $color-theme;
+            // span {
+            //     color: $color-theme;
+            // }
+            .love {
+                color: #fc7aac;
+            }
+            .you {
+                color: #dca15b;
+            }
+            .city {
+                color: #84bef8;
+            }
+            img {
+                width: 160px;
+                height: 100%;
             }
         }
     }

@@ -11,7 +11,7 @@
 				</div>
 				<div class="create-notebook-box" v-show="new_notebook">
 					<div>
-						<input type="text" class="input-style" placeholder="请输入文集名..." v-model="new_notebook_name">
+						<input type="text" class="input_style" placeholder="请输入文集名..." v-model="new_notebook_name">
 						<a class="submit btn_base btn_hollow btn_follow_xs" @click="creatednotebook">提 交</a>
 						<a class="cancel" @click="toggleCreator">取 消</a>
 					</div>
@@ -202,20 +202,13 @@ export default {
 						margin-top: 10px;
 						input {
 							margin-bottom: 10px;
-							&.input-style {
-							  width: 100%;
-							  padding: 5px 10px;
-							  font-size: 15px;
-							  border: 1px solid #333;
-							  border-radius: 4px;
-							  background-color: #595959;
-							}
+							border-color: #333;
+							background-color: #595959;
 						}
 						&>a {
 							display: inline-block;
 							cursor: pointer;
 							margin-left: 5px;
-							background-color: transparent;
 							&.submit {
 								min-width: auto;
 								padding: 2px 10px;

@@ -1,5 +1,6 @@
 <template>
 	<div class="simditor-box">
+        <slot></slot>
         <textarea :id="textareaId" :name="name" :placeholder="placeholderText">
             {{ html }}
         </textarea>

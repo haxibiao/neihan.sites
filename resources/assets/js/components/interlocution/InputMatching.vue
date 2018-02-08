@@ -1,6 +1,6 @@
 <template>
 	<div class='input_box input-matching' ref="input-matching">
-		<input :name="name" :class="question&&matchedData?'matching':''" type="text" placeholder="请输入问题(不超过40字)" v-model="question" @input="inputQuestion" class="form-control" autocomplete="off">
+		<input :name="name" :class="['form-control',question&&matchedData?'matching':'']" type="text" placeholder="请输入问题(不超过40字)" v-model="question" @input="inputQuestion" autocomplete="off">
 		<div class="matched-wrap" v-show="question&&matchedData">
 			<h5>相似问题</h5>
 			<ul class="matched">
