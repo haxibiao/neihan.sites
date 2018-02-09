@@ -106,7 +106,7 @@ Route::get('/article/{id}/lists', 'Api\ArticleController@getAllRelations');
 //删除文章相关片段数据
 Route::get('/article/{id}/del-{key}', 'Api\ArticleController@deleteRelation');
 //获取文章相关片段数据
-Route::get('/article/{id}/{key}', 'Api\ArticleController@getRelation');
+Route::get('/article/{id}/info/{key}', 'Api\ArticleController@getRelation');
 //ajax  article
 Route::middleware('auth:api')->post('/article/create', 'Api\ArticleController@store');
 Route::middleware('auth:api')->put('/article/{id}/update', 'Api\ArticleController@update');
