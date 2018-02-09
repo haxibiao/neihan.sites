@@ -68,13 +68,24 @@ export default {
 	.thorough-delete {
 		.modal-dialog.simple {
 			width: 400px;
+			.modal-header {
+	            padding: 15px 20px;
+	            .modal-title {
+	                font-weight: 500;
+	            }
+	        }
 			.modal-body {
+				padding: 20px;
 				.notice {
 					text-align: center;
+					font-size: 13px;
+					vertical-align: middle;
+					color: #969696;
 				}
 				.tip {
 					margin: 20px 0;
 					text-align: center;
+					font-size: 16px;
 					span {
 						font-size: 24px;
 						margin: 0 5px;
@@ -93,14 +104,15 @@ export default {
 						left: 5px;
 						top: 11px;
 						font-size: 20px;
+						color: #969696;
+						line-height: normal;
 					}
 				}
 			}
 			footer {
+				padding: 16px;
 				.submit {
 					font-size: 18px;
-					height: 45px;
-					line-height: 37px;
 				}
 			}
 		}

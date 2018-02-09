@@ -1,41 +1,46 @@
 <template>
-	<div class="release_after">
-		<div class="release_info">
-			<div class="after_info">
-				<div class="title">
-					<a href="" class="single_line">
-						<span>2018-02-08发布成功,点击查看文章发布成功</span>
-					</a>
+	<transition name="slide">
+		<div class="release_after" v-if="publishShow">
+			<div class="release_info">
+				<div class="after_info">
+					<a :href="'/article/'+articleId" class="note">发布成功,点击查看文章</a>
 				</div>
-				<a href="" class="note">发布成功,点击查看文章</a>
+				<ul class="release_share">
+					<li class="btn_base btn_follow weibo">
+						<i class="iconfont icon-sina"></i>
+						微博
+					</li>
+					<li class="btn_base btn_follow weixin">
+						<i class="iconfont icon-weixin1"></i>
+						微信
+					</li>
+					<li class="btn_base btn_follow qq">
+						<i class="iconfont icon-qq1"></i>
+						空间
+					</li>
+					<li class="btn_base btn_follow link">
+						复制链接
+					</li>
+				</ul>
 			</div>
-			<ul class="release_share">
-				<li class="btn_base btn_follow weibo">
-					<i class="iconfont icon-sina"></i>
-					微博
-				</li>
-				<li class="btn_base btn_follow weixin">
-					<i class="iconfont icon-weixin1"></i>
-					微信
-				</li>
-				<li class="btn_base btn_follow qq">
-					<i class="iconfont icon-qq1"></i>
-					空间
-				</li>
-				<li class="btn_base btn_follow link">
-					复制链接
-				</li>
-			</ul>
+			<div class="close" @click="closeBtn">x</div>
+			<div class="arc"></div>
 		</div>
-		<div class="close">x</div>
-		<div class="arc"></div>
-	</div>
+	</transition>
 </template>
 
 <script>
 export default {
 
   name: 'success',
+
+  props: ['publishShow','articleId'],
+
+  methods: {
+  	closeBtn() {
+  		this.$emit('hideSuccess');
+  	}
+  },
 
   data () {
     return {
@@ -46,6 +51,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.slide-enter-active {
+  	transition: all .2s linear;
+}
+.slide-leave-active {
+  	transition: all .4s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-enter, .slide-leave-to {
+  	transform: translateY(-10px);
+  	opacity: 0;
+}
 .release_after {
 	background-color: #f2f2f2;
 	text-align: center;
@@ -53,21 +68,6 @@ export default {
 		padding: 0 13px 90px;
 		.after_info {
 			padding: 40px 0;
-			.title {
-				height: 40px;
-				font-size: 28px;
-				font-weight: 500;
-				color: #333;
-				margin-bottom: 24px;
-				a {
-					display: block;
-					span {
-						&:hover {
-							text-decoration: underline;
-						}
-					}
-				}
-			}
 			.note {
 				font-size: 16px;
 				font-weight: 600;

@@ -9,8 +9,8 @@
                   <input type="text" class="input_style" v-model="name">
                 </div>
                 <footer class="clearfix">
-                	<a class="submit btn_base btn_hollow btn_follow_xs" @click="submit">确认</a>
-                	<a class="cancel" data-dismiss="modal" aria-label="Close" href="javascript:;">取消</a>
+                  <a class="submit btn_base btn_hollow btn_follow_xs" @click="submit">确认</a>
+                  <a class="cancel" data-dismiss="modal" aria-label="Close" href="javascript:;">取消</a>
                 </footer>
             </div>
         </div>
@@ -36,9 +36,9 @@ export default {
   },
 
   methods: {
-  	submit() {
-  		this.$store.dispatch('renameCollection', { name: this.name });
-  	}
+    submit() {
+      this.$store.dispatch('renameCollection', { name: this.name });
+    }
   },
 
   data () {

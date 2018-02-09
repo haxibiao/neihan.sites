@@ -21,8 +21,8 @@
 			</div>
 		</div>
 		<div class="note-item-container col-xs-8">
+			<success @hideSuccess="publishHide" :publish-show="publishShow" :article-id="article?article.id:''"></success>
 			<div class="note-item-wrap">
-				<success></success>
 				<div class="note-item" v-if="article">
 					<p class="note-status">{{ article.saved ? '已保存' : '未保存' }}</p>
 					<div class="note-content">
@@ -53,6 +53,7 @@ export default {
   		if(previewArticle) {
   			previewArticle.body = this.body;
   		}
+  		this.publishShow = false;
   	}
   },
   
@@ -101,6 +102,9 @@ export default {
   },
 
   methods:{
+  	publishHide() {
+  		this.publishShow = false;
+  	},
   	showSetting() {
   	   var _this = this;
   	   $('.note-setting-menu i.icon-icon-feixingmanyou').parent().click(function() {
@@ -141,6 +145,9 @@ export default {
   		this.$set(this.ui, 'updated_at', Date.now());
 
   		this.$store.dispatch('publishArticle');
+  		if (this.article.status == 1) {
+  			this.publishShow = true;
+  		}
   	},
   	unpublish() {
   		this.article.body = this.body;
@@ -177,7 +184,8 @@ export default {
   data () {
     return {
     	ui: {},
-    	body: ''
+    	body: '',
+    	publishShow: false
     }
   }
 }
