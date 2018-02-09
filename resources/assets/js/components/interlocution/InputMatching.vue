@@ -1,11 +1,12 @@
 <template>
 	<div class='input_box input-matching' ref="input-matching">
-		<input :name="name" :class="['form-control',question&&matchedData?'matching':'']" type="text" placeholder="请输入问题(不超过40字)" v-model="question" @input="inputQuestion" autocomplete="off">
-		<div class="matched-wrap" v-show="question&&matchedData">
+		<input :name="name" :class="['form-control',title&&matchedData.length?'matching':'']" type="text" placeholder="请输入问题(不超过40字)" v-model="title" @input="inputQuestion" autocomplete="off">
+		<div class="matched-wrap" v-show="title&&matchedData.length">
 			<h5>相似问题</h5>
 			<ul class="matched">
-				<li v-for="item in matchedData" @click="selectQuestion">
-					<a :href="'/answer/'+item.id" class="matchItem">{{ item.text }}</a>
+				<li v-for="question in matchedData" @click="selectQuestion(question)">
+					<span class="small pull-right">继续提问</span>
+					<a :href="'/question/'+question.id" class="matchItem">{{ question.title }}</a>
 				</li>
 			</ul>
 		</div>
@@ -19,37 +20,40 @@ export default {
 
   props:['name'],
 
-    methods: {
+  methods: {
   	inputQuestion() {
+  		this.$nextTick(function() {
+			$(document).click(function() {
+				$('.matched-wrap').hide();
+			});  					
+		});
   		var vm = this;
-  		var api=window.tokenize('/api/question/search');
-  		window.axios.get(api,this.question).then(function(data){
-  				// 因为没有api所以就凉了
-  				vm.matchedData = data.matched;
-  				console.log(vm.matchedData);
+  		var api=window.tokenize('/api/question/search?que='+this.title);
+  		window.axios.get(api).then(function(data){
+  				vm.matchedData = data.data;
   			},function(error){
-  				vm.matchedData = vm.simulationData;
+  				vm.matchedData = [];
   			}
   		)
   	},
-  	selectQuestion(index) {
-  		this.question = this.simulationData[index]
+  	selectQuestion(question) {
+  		this.title = question.title;
   	}
   },
 
   data () {
     return {
-	  question: '',
-	  matchedData:null,
+	  title: '',
+	  matchedData:[],
 	  simulationData:[
-		{'id':'','text':'你要多喝水才行啊'},
-		{'id':'','text':'怎么才能让你去多喝水'},
-		{'id':'','text':'你要怎么样才去喝水'},
-		{'id':'','text':'快点去喝水，最好是热水'},
-		{'id':'','text':'我们怎么做到一天喝水喝到吐'},
-		{'id':'','text':'喝水喝到什么程度才算厉害'},
-		{'id':'','text':'你们今天喝水了吗'},
-		{'id':'','text':'医生说没事多喝水'},
+		{'id':1,'text':'你要多喝水才行啊'},
+		{'id':2,'text':'怎么才能让你去多喝水'},
+		{'id':3,'text':'你要怎么样才去喝水'},
+		{'id':4,'text':'快点去喝水，最好是热水'},
+		{'id':5,'text':'我们怎么做到一天喝水喝到吐'},
+		{'id':6,'text':'喝水喝到什么程度才算厉害'},
+		{'id':7,'text':'你们今天喝水了吗'},
+		{'id':8,'text':'医生说没事多喝水'},
 	  ]
     }
   }
@@ -64,7 +68,6 @@ export default {
 		height: 35px;
 		&.matching {
 			border: 1px solid #c4c4c4;
-			border-bottom: none;
 			border-radius: 2px 2px 0 0;
 		}
 	}
@@ -82,6 +85,7 @@ export default {
 			li {
 				padding-right: 10px;
 				cursor: pointer;
+				line-height: 30px;
 				&:hover{
 					background-color: #ececec;
 				}
