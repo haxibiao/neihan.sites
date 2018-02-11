@@ -8,7 +8,7 @@
                         <img src="/images/photo_04.png"/>
                     </a>
                     <div class="textarea_box">
-                        <textarea placeholder="写下你的评论..."></textarea>
+                        <textarea placeholder="写下你的评论..." v-model="content"></textarea>
                     </div>
                     <div class="write_block">
                         <div class="emoji_wrap">
@@ -56,8 +56,8 @@ export default {
 
   methods: {
     postComment() {
-        this.$emit('sendReply', this._body);
-        this._body = null;
+        console.log(this.content);
+        this.$emit('sendReply', this.content);
     },
 
     toggle() {
@@ -69,6 +69,7 @@ export default {
   data () {
     return {
         _body: null,
+        content:null
     }
   }
 }

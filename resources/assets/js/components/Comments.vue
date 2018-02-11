@@ -230,7 +230,7 @@
       get_get_url(){
           var api_url='/api/comment/'+this.id+'/'+this.type;
           if(this.currentPage >1 ){
-              api_url += '&page=' +this.currentPage;
+              api_url += '?page=' +this.currentPage;
           }
           return api_url;
       },
@@ -360,7 +360,7 @@
       this.commented.reply_comments.push(this.replyComment);
 
       var _this = this;      
-      window.axios.post(this.postApiUrl(), this.replyComment).then(function(response) { 
+      window.axios.post(this.get_post_url(), this.replyComment).then(function(response) { 
         //更新被回复的楼中comments...
 
         //这里服务器返回数据..
