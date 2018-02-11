@@ -1,10 +1,12 @@
 {{-- 没有专题标签的文章摘要 --}}
 <ul class="article_list">
     @foreach($articles as $article)
-    <li class="article_item {{ $article->hasImage()?'have_img':'' }}">
+    <li class="article_item {{ $article->primaryImage()?'have_img':'' }}">
+       @if($article->primaryImage())
         <a class="wrap_img" href="/article/{{ $article->id }}" target="_blank">
             <img src="{{ get_small_image($article->image_url) }}"/>
         </a>
+       @endif
         <div class="content">
             <div class="author">
                 <a class="avatar" href="/user/{{ $article->user->id  }}" target="_blank">
