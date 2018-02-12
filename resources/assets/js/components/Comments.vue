@@ -115,7 +115,7 @@
                         <div class="sub_comment_list">
                             <div class="comment_wrap" v-for="reply in comment.reply_comments">
                                 <p>
-                                    <a class="moleskine_author" href="/user" target="_blank">
+                                    <a class="moleskine_author" :href="'/user/'+reply.user.id" target="_blank">
                                         {{ reply.user.name }}
                                     </a>
                                     ：
@@ -130,7 +130,7 @@
                                     <span class="comment_time">
                                         {{ reply.created_at }}
                                     </span>
-                                    <a href="#" class="action_btn">
+                                    <a href="javascript:;" class="action_btn" @click="replyingComment(comment,replyCommentUser=reply.user.name)">
                                         <i class="iconfont icon-xinxi">
                                         </i>
                                         <span>
@@ -353,7 +353,6 @@
 
     //回复评论
     sendReply(body) {
-      console.log(body);
       this.replyComment.body = body;
 
       //乐观更新
@@ -372,9 +371,13 @@
       });
     },
 
-    replyingComment: function(comment) {
+    replyingComment(comment,replyCommentUser=false) {
       if(this.checkLogin()) {
         this.replyComment.body = '';
+        if(replyCommentUser){
+            this.replyComment.body ='@'+replyCommentUser;
+        }
+        console.log(this.replyComment.body);
         comment.replying = !comment.replying;
         this.commented = comment;
         this.replyComment.comment_id = comment.id;
