@@ -31,4 +31,12 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         return $category;
     }
+
+    public function commendCategory()
+    {
+       $page_size=4;
+       $page=rand(1,ceil(Category::count()/$page_size));
+       $categories=Category::orderBy('id','desc')->skip($page)->take($page_size)->get();
+       return $categories;
+    }
 }

@@ -5,32 +5,17 @@
             <span>
                 热门专题
             </span>
-            <a href="javascript:;">
+            <a href="javascript:;" @click="fetchData" >
                 <i class="iconfont icon-shuaxin">
                 </i>
                 换一批
             </a>
         </div>
-	    <a class="collection" href="javascript:;" target="_blank">
-	        <div class="name">
-	        	动漫女生头像
-	        </div>
-	    </a>
-	    <a class="collection" href="" target="_blank">
-	        <div class="name">
-	        	韩文昵称
-	        </div>
-	    </a>
-	    <a class="collection" href="" target="_blank">
-	        <div class="name">
-	        	熊本熊表情包
-	        </div>
-	    </a>
-	    <a class="collection" href="" target="_blank">
-	        <div class="name">
-	        	无所畏惧的少女
-	        </div>
-	    </a>
+    	    <a v-for="category in categories" class="collection" :href="'/'+category.name_en" target="_blank">
+    	        <div class="name">
+    	        	{{ category.name }}
+    	        </div>
+    	    </a>
 	</div>
 </template>
 
@@ -39,9 +24,28 @@ export default {
 
   name: 'CategoryList',
 
+  mounted(){
+    this.fetchData();
+  },
+
+  methods:{
+      fetchData(){
+         var api=window.tokenize('/api/category/commend');
+         var vm =this;
+         this.counter ++;
+         $(this.$refs.fresh).css('transform',`rotate(${360*this.counter}deg)`);
+         $('.collection').fadeOut();
+         window.axios.get(api).then(function(response){
+             vm.categories=response.data;
+             $('.collection').fadeIn();
+         });
+      },
+  },
+
   data () {
     return {
-
+        categories:[],
+        counter:1
     }
   }
 }
