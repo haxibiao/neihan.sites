@@ -14,10 +14,8 @@
             <span>还剩 {{ diffForHumansCN($question->deadline) }}</span>
             <span class="question_follow_num">{{ $question->count_answers }} 人已抢答</span>
             @else
-             <div class="question_info">
-                <span>{{ $question->count_answers }} 回答</span>
-                <span class="question_follow_num">{{ $question->count_favorites }} 收藏</span>
-            </div>
+            <span>{{ $question->count_answers }} 回答</span>
+            <span class="question_follow_num">{{ $question->count_favorites }} 收藏</span>
             @endif
             <span class="money">
                 <i class="iconfont icon-jinqian1"></i>
