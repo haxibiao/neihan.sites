@@ -8,8 +8,9 @@ use App\Comment;
 use App\Favorite;
 use App\Image;
 use App\Like;
-use App\Video;
+use App\Question;
 use App\User;
+use App\Video;
 use Illuminate\Console\Command;
 
 class FixData extends Command
@@ -19,7 +20,7 @@ class FixData extends Command
      *
      * @var string
      */
-    protected $signature = 'fix:data {--article_count}{--user_count}{--favorite}{--small_image}{--tags}{--comments} {--traffic} {--articles} {--images} {--videos} {--categories} {--force}';
+    protected $signature = 'fix:data {--question} {--article_count}{--user_count}{--favorite}{--small_image}{--tags}{--comments} {--traffic} {--articles} {--images} {--videos} {--categories} {--force}';
 
     /**
      * The console command description.
@@ -80,8 +81,11 @@ class FixData extends Command
             $this->fix_user_count();
         }
 
-        if($this->option('article_count')){
+        if ($this->option('article_count')) {
             $this->fix_article_count();
+        }
+        if ($this->option('question')) {
+            $this->fix_question();
         }
 
     }
@@ -167,12 +171,12 @@ class FixData extends Command
         //     $category->save();
         // }
 
-        $categories =Category::where('logo',null)->get();
-        $defalut='/logo/ainicheng.com.touch.jpg';
-        foreach($categories as $category){
-             $category->logo =$defalut;
-             $category->save();
-             $this->info("$category->name fix done");
+        $categories = Category::where('logo', null)->get();
+        $defalut    = '/logo/ainicheng.com.touch.jpg';
+        foreach ($categories as $category) {
+            $category->logo = $defalut;
+            $category->save();
+            $this->info("$category->name fix done");
         }
 
     }
@@ -300,12 +304,12 @@ class FixData extends Command
 
         $article = Article::find(1242);
         $this->info("$article->title done");
-        $article->created_at ='2018-01-28 17:09:36';
+        $article->created_at = '2018-01-28 17:09:36';
         $article->save();
 
-        $article =Article::find(1241);
+        $article = Article::find(1241);
         $this->info("$article->title done");
-        $article->created_at ='2018-01-28 17:09:36';
+        $article->created_at = '2018-01-28 17:09:36';
         $article->save();
 
     }
@@ -414,33 +418,46 @@ class FixData extends Command
 
     public function fix_user_count()
     {
-        $users =User::orderBy('id','desc')->get();
-        
+        $users = User::orderBy('id', 'desc')->get();
 
-        foreach($users as $user){
-             $user->count_words=0;
-             $user->count_likes=0;
+        foreach ($users as $user) {
+            $user->count_words = 0;
+            $user->count_likes = 0;
 
-             $user->count_articles=$user->articles()->count();
-             $articles=$user->articles;
-             foreach($articles as $article){
-                  $article_word=ceil(strlen(strip_tags($article->body)) / 2);
-                  $user->count_words=$user->count_words+$article_word;
-                  $user->count_likes=$user->count_likes+$article->count_likes; 
-             }
-             $user->count_followings = $user->followingUsers->count();
-             $this->info("$user->name fix");
-             $user->save();
+            $user->count_articles = $user->articles()->count();
+            $articles             = $user->articles;
+            foreach ($articles as $article) {
+                $article_word      = ceil(strlen(strip_tags($article->body)) / 2);
+                $user->count_words = $user->count_words + $article_word;
+                $user->count_likes = $user->count_likes + $article->count_likes;
+            }
+            $user->count_followings = $user->followingUsers->count();
+            $this->info("$user->name fix");
+            $user->save();
         }
     }
 
     public function fix_article_count()
     {
-        $categories =Category::where('count',0)->get();
-        foreach($categories as $category){
-             $category->count =$category->articles()->count();
-             $category->save();
-             $this->info("$category->name fix done");
+        $categories = Category::where('count', 0)->get();
+        foreach ($categories as $category) {
+            $category->count = $category->articles()->count();
+            $category->save();
+            $this->info("$category->name fix done");
         }
+    }
+
+    public function fix_question()
+    {
+        Question::orderBy('id')->chunk(100, function ($questions) {
+            foreach ($questions as $question) {
+                $now = now()->toDateTimeString();
+                if ($question->bonus > 0 && !empty($question->deadline) && $question->deadline < $now) {
+                    $this->info("$question->title 已过期被清除");
+                    $question->deadline = null;
+                    $question->save();
+                }
+            }
+        });
     }
 }
