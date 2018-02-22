@@ -1,52 +1,50 @@
 <template>
 	 <div id="basic">
-		<table>
-			<thead>
-				<tr>
-					<th class="setting_head"></th>
-					<th></th>
-				</tr>
-			</thead>
-    <form @submit.prevent="updateing">
-			<tbody class="base">
-				<tr>
-					<td v-if="!avatar" class="top_line">
-						<div class="avatar avatar_sp">
-							<img :src="user.avatar+'?t='+dataNow()" id="avatar" />
-						</div>
-					</td>
-
-					<td v-else class="top_line">
-						<div class="avatar avatar_sp">
-							<img :src="avatar" id="avatar" />
-						</div>
-					</td>
-
-					<td class="top_line">
-						<a  class="btn_base btn_hollow btn_hollow_sm" >
-							<input type="file" class="hide" unselectable="on" @change="update_avatar($event)"  />
-							更换头像
-						</a>
-					</td>
-
-				</tr>
-        
-      
-  				<tr>
-  					<td class="setting_title">昵称</td>
-  					<td>
-  						<input type="text" :placeholder="user.name" class="form-control" v-model="inputtext.name" />
-  					</td>
-  				</tr>
-    
-
-			</tbody>
-             <input type="submit" value="保存" class="btn_base btn_follow" />
+        <transition name="alert">
+            <div v-if="updated" class="alert alert-success">
+                保存成功!
+            </div>
+            <div v-if="fail" class="alert alert-danger">
+                保存失败！请检查您的输入是否有误!
+            </div>
+        </transition>
+        <form @submit.prevent="updateing">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="setting_head"></th>
+                        <th></th>
+                    </tr>
+                </thead>
+    			<tbody class="base">
+    				<tr>
+    					<td v-if="!avatar" class="top_line">
+    						<div class="avatar avatar_sp">
+    							<img :src="user.avatar+'?t='+dataNow()" id="avatar" />
+    						</div>
+    					</td>
+    					<td v-else class="top_line">
+    						<div class="avatar avatar_sp">
+    							<img :src="avatar" id="avatar" />
+    						</div>
+    					</td>
+    					<td class="top_line">
+    						<a  class="btn_base btn_hollow btn_hollow_sm" >
+    							<input type="file" class="hide" unselectable="on" @change="update_avatar($event)"  />
+    							更换头像
+    						</a>
+    					</td>
+				    </tr>
+      				<tr>
+      					<td class="setting_title">昵称</td>
+      					<td>
+      						<input type="text" :placeholder="user.name" class="form-control" v-model="inputtext.name" />
+      					</td>
+      				</tr>
+			    </tbody>
+            </table>
+            <input type="submit" value="保存" class="btn_base btn_follow" />
        </form>
-
-		</table>
-		
-
 	</div>
 </template>
 
@@ -80,6 +78,7 @@ export default {
           formdata.append('name',this.inputtext.name);
   	  	  window.axios.post(api,formdata).then(function(response){
             vm.refreshAvatars();
+            response.data==0 ? vm.updated=true : vm.fail=true;
                if(response.status==200){
                  // window.location.href = location.href + (location.href.indexOf("?")>-1?"&":"?") + "time="+(new Date()).getTime();
                }
@@ -127,8 +126,9 @@ export default {
     return {
        avatar:false,
        user:[],
+       inputtext:[],
        fail:false,
-       inputtext:[]
+       updated:false
     }
   }
 }

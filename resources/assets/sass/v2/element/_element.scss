@@ -223,3 +223,26 @@
         }
     }
 }
+
+// 设置页提示
+.alert {
+    position: fixed;
+    top: 54px;
+    padding: 7px 95px;
+    border: 1px solid $color-green;
+    border-radius: 4px;
+    color: $color-green;
+    font-size: 14px;
+    background-color: $color-white;
+    &.alert-enter-active {
+        transition: all .2s linear;
+    }
+    &.alert-leave-active {
+        transition: all .4s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+    &.alert-enter, &.alert-leave-to {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+}
+

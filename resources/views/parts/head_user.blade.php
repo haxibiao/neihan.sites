@@ -48,7 +48,7 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="tab {{ get_active_css('notification') }}">
+                        <li class="tab news {{ get_active_css('notification') }}">
                             <a href="/notification" class="identifier">
                                 <i class="iconfont icon-zhongyaogaojing">
                                 </i>
@@ -147,8 +147,8 @@
                                 Aa
                             </a>
                         </li> --}}
-                        <li class="tab own">
-                            <a class="avatar" href="javascript:;">
+                        <li class="tab my">
+                            <a class="avatar avatar_xs" href="javascript:;">
                                 <img src="{{ Auth::user()->getLatestAvatar() }}"/>
                             </a>
                             <ul class="dropdown-menu">

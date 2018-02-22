@@ -48,10 +48,22 @@ header {
                         .badge {
                             margin-top: -11px;
                         }
+                    } // 消息
+                    .news {
+                        .dropdown-menu {
+                            width: 200px;
+                            .badge {
+                                margin-top: 6px;
+                                float: right;
+                            }
+                        }
+                        &:hover>.dropdown-menu {
+                            display: block;
+                        }
                     } // 个人用户
-                    .own {
+                    .my {
                         .avatar {
-                            @include spacing (10px 25px 9px 20px, 0);
+                            @include spacing (5px 25px 5px 20px, 0);
                             display: inline-block;
                             &::before {
                                 content: "";
@@ -62,6 +74,9 @@ header {
                                 border-right: 5px solid transparent;
                                 border-top: 6px solid $color-gray;
                             }
+                        }
+                        &:hover>.dropdown-menu {
+                            display: block;
                         }
                     }
                     // 注册、写文章
@@ -84,21 +99,7 @@ header {
                             background-color: $color-white-milk;
                         }
                     }
-                    .notification {
-                        .dropdown-menu {
-                            width: 200px;
-                            .badge {
-                                margin-top: 6px;
-                                float: right;
-                            }
-                        }
-                        &:hover>.dropdown-menu {
-                            display: block;
-                        }
-                    }
-                    .own:hover>.dropdown-menu {
-                        display: block;
-                    }
+                    
                     .active {
                         .identifier {
                             color: $color-theme;

@@ -5,8 +5,8 @@
             <span>
                 热门专题
             </span>
-            <a href="javascript:;" @click="fetchData" >
-                <i class="iconfont icon-shuaxin">
+            <a href="javascript:;" @click="fetchData" class="rotation">
+                <i class="iconfont icon-shuaxin" ref="fresh">
                 </i>
                 换一批
             </a>
@@ -34,10 +34,8 @@ export default {
          var vm =this;
          this.counter ++;
          $(this.$refs.fresh).css('transform',`rotate(${360*this.counter}deg)`);
-         $('.collection').fadeOut();
          window.axios.get(api).then(function(response){
              vm.categories=response.data;
-             $('.collection').fadeIn();
          });
       },
   },

@@ -1,39 +1,45 @@
 <template>
 	<div id="reward_setting">
-    <form @submit.prevent="updateing">
-		<table>
-			<thead>
-				<tr>
-					<th class="setting_head"></th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody class="setting_pay">
-				<tr>
-					<td class="top_line setting_title">功能</td>
-					<td class="top_line">
-						<div>
-							<input type="radio" name="is_tips" value="1"  v-model="user.is_tips"  checked />
-							<span>开启</span>
-						</div>
-						<div>
-							<input type="radio" name="is_tips" value="0"  v-model="user.is_tips" />
-							<span>关闭</span>
-						</div>
-						<p>开启后赞赏按钮将出现在你的文章底部</p>
-					</td>
-				</tr>
-				<tr>
-					<td class="setting_title pull-left">描述</td>
-					<td>
-						<textarea cols="30" rows="10" class="form-control" placeholder="如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！" v-model="user.introduction_tips">{{ this.user.introduction_tips }}</textarea>					
-     				</td>
-				</tr>
-
-			</tbody>
-
-		</table>
-		<input type="submit" value="保存" class="btn_base btn_follow" />
+        <transition name="alert">
+            <div v-if="updated" class="alert alert-success">
+                保存成功!
+            </div>
+            <div v-if="fail" class="alert alert-danger">
+                保存失败！请检查您的输入是否有误!
+            </div>
+        </transition>
+        <form @submit.prevent="updateing">
+    		<table>
+    			<thead>
+    				<tr>
+    					<th class="setting_head"></th>
+    					<th></th>
+    				</tr>
+    			</thead>
+    			<tbody class="setting_pay">
+    				<tr>
+    					<td class="top_line setting_title">功能</td>
+    					<td class="top_line">
+    						<div>
+    							<input type="radio" name="is_tips" value="1"  v-model="user.is_tips"  checked />
+    							<span>开启</span>
+    						</div>
+    						<div>
+    							<input type="radio" name="is_tips" value="0"  v-model="user.is_tips" />
+    							<span>关闭</span>
+    						</div>
+    						<p>开启后赞赏按钮将出现在你的文章底部</p>
+    					</td>
+    				</tr>
+    				<tr>
+    					<td class="setting_title pull-left">描述</td>
+    					<td>
+    						<textarea cols="30" rows="10" class="form-control" placeholder="如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！" v-model="user.introduction_tips">{{ this.user.introduction_tips }}</textarea>					
+         				</td>
+    				</tr>
+    			</tbody>
+    		</table>
+    		<input type="submit" value="保存" class="btn_base btn_follow" />
         </form>
 	</div>
 </template>
@@ -73,7 +79,9 @@ export default {
 
   data () {
     return {
-        user:[]
+        user:[],
+        fail:false,
+        updated:false
     }
   }
 }

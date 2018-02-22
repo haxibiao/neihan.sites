@@ -1,62 +1,58 @@
 <template>
 	<div id="profile">
-	 <div v-if="updated" class="alert alert-success">
- 	     更新成功!
-      </div>
-
-       <div v-if="fail" class="alert alert-danger">
-        更新失败！请检查您的输入是否有错误
-      </div>
-			<form @submit.prevent="updateing">
-		<table>
-			<thead>
-				<tr>
-					<th class="setting_head"></th>
-					<th></th>
-				</tr>
-			</thead>
-
-			<tbody class="information">
-				<tr>
-					<td class="top_line setting_title">性别</td>
-					<td class="top_line">
-						<div>
-							<input type="radio" name="gender" value="男" v-model="user.gender"/>
-							<span>男</span>
-						</div>
-						<div>
-							<input type="radio" name="gender" value="女" v-model="user.gender"/>
-							<span>女</span>
-						</div>
-						<div>
-							<input type="radio" name="gender" value="保密" v-model="user.gender"/>
-							<span>保密</span>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td class="setting_title pull-left">简介</td>
-					<td>
-							<textarea :placeholder="user.introduction" cols="30" rows="10" class="form-control" v-model="user.introduction"></textarea>
-					</td>
-				</tr>
-
-<!-- 				<tr>
-					<td class="setting_title pull-left">个人网站</td>
-					<td>
-						<form>
-							<input type="text" placeholder="http://你的网址" class="form-control" />
-							<p class="pull-right">填写后会在个人主页显示图标</p>
-						</form>
-					</td>
-				</tr> -->
-
-			</tbody>
-
-		</table>
-		<input type="submit" value="保存" class="btn_base btn_follow" />
-		 </form>
+        <transition name="alert">
+            <div v-if="updated" class="alert alert-success">
+                保存成功!
+            </div>
+            <div v-if="fail" class="alert alert-danger">
+                保存失败！请检查您的输入是否有误!
+            </div>
+        </transition>
+		<form @submit.prevent="updateing">
+    		<table>
+    			<thead>
+    				<tr>
+    					<th class="setting_head"></th>
+    					<th></th>
+    				</tr>
+    			</thead>
+    			<tbody class="information">
+    				<tr>
+    					<td class="top_line setting_title">性别</td>
+    					<td class="top_line">
+    						<div>
+    							<input type="radio" name="gender" value="男" v-model="user.gender"/>
+    							<span>男</span>
+    						</div>
+    						<div>
+    							<input type="radio" name="gender" value="女" v-model="user.gender"/>
+    							<span>女</span>
+    						</div>
+    						<div>
+    							<input type="radio" name="gender" value="保密" v-model="user.gender"/>
+    							<span>保密</span>
+    						</div>
+    					</td>
+    				</tr>
+    				<tr>
+    					<td class="setting_title pull-left">简介</td>
+    					<td>
+    							<textarea :placeholder="user.introduction" cols="30" rows="10" class="form-control" v-model="user.introduction"></textarea>
+    					</td>
+    				</tr>
+    				<!-- <tr>
+    					<td class="setting_title pull-left">个人网站</td>
+    					<td>
+    						<form>
+    							<input type="text" placeholder="http://你的网址" class="form-control" />
+    							<p class="pull-right">填写后会在个人主页显示图标</p>
+    						</form>
+    					</td>
+    				</tr> -->
+    			</tbody>
+    		</table>
+		    <input type="submit" value="保存" class="btn_base btn_follow" />
+		</form>
 	</div>
 </template>
 
