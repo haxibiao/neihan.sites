@@ -37,9 +37,7 @@ Route::get('/write', function () {
 });
 
 // 新版搜索页
-Route::get('/new_search', function () {
-	return view('search.index');
-});
+Route::get('/new_search','SearchController@new_search');
 
 // 问答
 Route::resource('/question', 'QuestionController');

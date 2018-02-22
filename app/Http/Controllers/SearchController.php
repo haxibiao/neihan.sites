@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Query;
 use App\Tag;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use App\User;
-
 
 class SearchController extends Controller
 {
@@ -44,7 +43,6 @@ class SearchController extends Controller
         //     }
         //     $total = count($articles_hxb);
         // }
-        
 
         if (!empty($query) && $total) {
             $query_item = Query::firstOrNew([
@@ -105,13 +103,19 @@ class SearchController extends Controller
     }
     public function search_all()
     {
-        $users= User::all();
-        $querys = Query::where('status', '>=', 0)->orderBy('hits', 'desc')->paginate();
-        $data =[];
-        $data['update']=Query::where('status', '>=', 0)->orderBy('updated_at','desc')->paginate(10);
+        $users          = User::all();
+        $querys         = Query::where('status', '>=', 0)->orderBy('hits', 'desc')->paginate();
+        $data           = [];
+        $data['update'] = Query::where('status', '>=', 0)->orderBy('updated_at', 'desc')->paginate(10);
         return view('parts.search_all')
-        ->withData($data)
-        ->withUsers($users)
-        ->withQuerys($querys);
+            ->withData($data)
+            ->withUsers($users)
+            ->withQuerys($querys);
+    }
+
+    public function new_search(Request $request)
+    {
+         $query =$request->get('query');
+         return view('search.index')->withQuery($query);
     }
 }

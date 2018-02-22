@@ -144,3 +144,6 @@ require_once 'api/write.php';
 //answer info
 require_once 'api/answer.php';
 
+//search
+require_once 'api/search.php';
+

@@ -8,7 +8,7 @@
     <div class="container">
         <div class="search_wrp">
             <div class="aside">
-                <search-left>
+                <search-left query="{{ $query }}">
                 </search-left>
             </div>
             <div class="main">

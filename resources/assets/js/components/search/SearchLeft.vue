@@ -3,7 +3,7 @@
         <!-- 搜索页的左侧 -->
         <ul class="left_link">
             <li>
-                <router-link to="/note" class="action_link">
+                <router-link :to="'/note/'+this.query" class="action_link" >
                 	<div class="search_icon">
                 		<i class="iconfont icon-icon_article"></i>
                 	</div>
@@ -11,7 +11,7 @@
                 </router-link>
             </li>
             <li>
-                <router-link to="/user" class="action_link">
+                <router-link :to="'/user/'+this.query" class="action_link">
                 	<div class="search_icon">
                 		<i class="iconfont icon-yonghu01"></i>
                 	</div>
@@ -19,7 +19,7 @@
                 </router-link>
             </li>
             <li>
-                <router-link to="/collection" class="action_link">
+                <router-link :to="'/collection/'+this.query" class="action_link">
                 	<div class="search_icon">
                 		<i class="iconfont icon-zhuanti1"></i>
                 	</div>
@@ -27,7 +27,7 @@
                 </router-link>
             </li>
             <li>
-                <router-link to="/notebook" class="action_link">
+                <router-link :to="'/notebook/'+this.query" class="action_link">
                 	<div class="search_icon">
                 		<i class="iconfont icon-wenji"></i>
                 	</div>
@@ -47,17 +47,18 @@ export default {
 
   name: 'SearchLeft',
 
+  props:['query'],
+
     created(){
     //default timeline
-    this.$router.push({path:"/note"});
-    var route_path = window.location.hash.replace("#/","");
-    this.route_path = route_path;
-
-    this.fetchData();
   },
 
   mounted(){
-     this.fetchData();
+        this.$router.push({path:"/note/"+this.query});
+        var route_path = window.location.hash.replace("#/","");
+        this.route_path = route_path;
+
+        this.fetchData();
   },
 
   methods:{

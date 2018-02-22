@@ -4,7 +4,6 @@ namespace App;
 
 use App\Model;
 use App\Traits\ArticleRelation;
-use Illuminate\Support\Facades\DB;
 
 class Article extends Model
 {
@@ -35,6 +34,12 @@ class Article extends Model
     {
         $description = empty($this->description) ? str_limit(strip_tags($this->body), 200) : str_limit($this->description, 200);
         $description = html_entity_decode($description);
+        return $description;
+    }
+
+    public function introduction()
+    {
+        $description = empty($this->description) ? str_limit(strip_tags($this->body), 200) : str_limit($this->description, 200);
         return $description;
     }
 

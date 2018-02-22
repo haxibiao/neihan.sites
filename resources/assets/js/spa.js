@@ -99,10 +99,10 @@ const routes = [
     { path: '/profile', component: require('./components/setting/Profile.vue') },
     { path: '/reward-setting', component: require('./components/setting/Reward-Setting.vue') },
     // 搜索页路由
-    { path: '/note', component: require('./components/search/Note.vue') },
-    { path: '/user', component: require('./components/search/User.vue') },
-    { path: '/collection', component: require('./components/search/Collection.vue') },
-    { path: '/notebook', component: require('./components/search/NoteBook.vue') }
+    { path: '/note/:query', component: require('./components/search/Note.vue') ,props:true},
+    { path: '/user/:query', component: require('./components/search/User.vue') },
+    { path: '/collection/:query', component: require('./components/search/Collection.vue') },
+    { path: '/notebook/:query', component: require('./components/search/NoteBook.vue') }
 ];
 
 const router = new VueRouter({

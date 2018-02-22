@@ -60,91 +60,57 @@
 				<a href="javascript:;">最新发布</a>
 				<em>·</em>
 				<a href="javascript:;">最新评论</a>
-				<span class="result">244578个结果</span>
+				<span class="result">{{ this.article_count }}个结果</span>
 			</div>
 			<div class="article_list">
-				<li class="article_item" v-for="list in 5">
+				<li class="article_item" v-for="article in articles">
 					<div class="content">
 			            <div class="author">
-			                <a class="avatar" href="" target="_blank">
-			                    <img src="/images/photo_02.jpg" />
+			                <a class="avatar" :href="'/user/'+article.user.id" target="_blank">
+			                    <img :src="article.user.avatar" />
 			                </a>
 			                <div class="info_meta">
-			                    <a href="" target="_blank" class="nickname">
-			                        郭静
+			                    <a :href="'/user/'+article.user.id" target="_blank" class="nickname">
+			                        {{ article.user.name }}
 			                    </a>
 			                    <span class="time">
-			                        13 天前
+			                        {{ article.created_at }}
 			                    </span>
 			                </div>
 			            </div>
-			            <a class="headline paper_title" href="" target="_blank">
-			                <span>
-			                	山寨版<em class="search_result_highlight">旅行青蛙</em>应用超20款，<em class="search_result_highlight">旅行青蛙</em>这款游戏还能火多久？
+			            <a class="headline paper_title" :href="'/article/'+article.id" target="_blank">
+			                <span v-html="article.title">
 			                </span>
 			            </a>
-			            <p class="abstract">
-			                抄袭、洗稿、伪原创深受业界的鄙视和唾弃，然而，这一“沉珂”始终无法得到治愈，有些人鸡贼+钻漏洞的速度比行业的管理速度要快的多，而外界除了谴责外竟无计可施。<em class="search_result_highlight">旅行青蛙</em>游戏的火爆非常出人意料，但最出人意料的应该是国内相关产业“蹭热点”的能力。有些企业以<em class="search_result_highlight">旅行青蛙</em>为原始IP，做出一些与公司业务/形象相关的宣传图，企图通过社交网络的传播，提升企业形象和印象口碑。
+			            <p v-html="article.description" class="abstract">
+
 			            </p>
 			            <div class="meta">
-			                <a href="#" target="_blank" class="count count_link">
+			                <a :href="'/article/'+article.id" target="_blank" class="count count_link">
 			                    <i class="iconfont icon-liulan">
 			                    </i>
-			                    375
+			                    {{ article.hits }}
 			                </a>
-			                <a href="#" target="_blank" class="count count_link">
+			                <a :href="'/article/'+article.id" target="_blank" class="count count_link">
 			                    <i class="iconfont icon-svg37">
 			                    </i>
-			                    2
+			                    {{ article.count_replies }}
 			                </a>
 			                <span class="count">
 			                    <i class="iconfont icon-03xihuan">
 			                    </i>
-			                    54
+			                    {{ article.count_likes }}
 			                </span>
 			            </div>
 			        </div>
 				</li>
 			</div>
-			<ul class="pagination">
-	            <li>
-	                <a href="#">
-	                    首页
-	                </a>
-	            </li>
-	            <li>
-	                <a href="#">
-	                    10
-	                </a>
-	            </li>
-	            <li>
-	                <a href="#">
-	                    11
-	                </a>
-	            </li>
-	            <li>
-	                <a href="#" class="active">
-	                    12
-	                </a>
-	            </li>
-	            <li>
-	                <a href="#">
-	                    13
-	                </a>
-	            </li>
-	            <li>
-	                <a href="#">
-	                    14
-	                </a>
-	            </li>
-	            <li>
-	                <a href="#">
-	                    15
-	                </a>
-	            </li>
-	            <li>
-	                <a href="#">
-	                    尾页
+
+
+			<ul class="pagination" v-if="this.lastPage > 1">
+	            <li v-for="page in this.lastPage">
+	                <a href="javascript:;" @click="loadMore(page)">
+	                    {{ page }}
 	                </a>
 	            </li>
 	        </ul>
@@ -157,8 +123,44 @@ export default {
 
   name: 'Note',
 
+  props:['query'],
+
+  mounted(){
+    this.query =this.$route.params.query;
+    this.fetchData();
+  },
+
+  methods:{
+  	fetchData(page=null){
+        var vm=this;
+        var api= page ?'/api/v2/search/note?page='+page :'/api/v2/search/note';
+        var formdata =new FormData();
+        formdata.append('query',this.query);
+        window.axios.post(api,formdata).then(function(response){
+        	vm.articles=response.data.data;
+        	vm.article_count =response.data.total;
+        	vm.lastPage=response.data.last_page;
+               
+        	vm.articles.forEach(function(article) {
+                  vm.user =article;
+        	});
+        	console.log(vm.user);
+        });
+  	},
+
+  	loadMore(page){
+        this.fetchData(page);
+  	}
+  },
+
   data () {
     return {
+    	id:null,
+    	article_count:null,
+    	lastPage:null,
+    	articles:[],
+    	user:null,
+    	users:[]
 
     }
   }
