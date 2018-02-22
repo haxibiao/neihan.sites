@@ -118,7 +118,7 @@
                                     <a class="moleskine_author" :href="'/user/'+reply.user.id" target="_blank">
                                         {{ reply.user.name }}
                                     </a>
-                                    ：
+                                    :
                                     <span>
                                         <!-- <a href="#" class="moleskine_author">
                                     @哈尼
@@ -353,9 +353,11 @@
 
     //回复评论
     sendReply(body) {
+      // console.log(body);
       this.replyComment.body = body;
 
       //乐观更新
+      // console.log(this.replyComment);
       this.commented.reply_comments.push(this.replyComment);
 
       var _this = this;      
@@ -373,14 +375,12 @@
 
     replyingComment(comment,replyCommentUser=false) {
       if(this.checkLogin()) {
-        this.replyComment.body = '';
-        if(replyCommentUser){
-            this.replyComment.body ='@'+replyCommentUser;
-        }
-        console.log(this.replyComment.body);
         comment.replying = !comment.replying;
         this.commented = comment;
         this.replyComment.comment_id = comment.id;
+        if(replyCommentUser){
+           this.replyComment.body = '@' + replyCommentUser + ' ';
+        }
         this.replyComment.user = this.user;
       }
     },
@@ -409,15 +409,15 @@
 
         },
         replyComment: {
-            user: {},
-            is_reply: 1,
-            time: '刚刚',
-            body: null,
-            comment_id: null, //回复的评论id
-            commentable_id: this.id,
-            commentable_type: this.type,
-            likes: 0,
-            reports: 0
+              user: {},
+              is_reply: 1,
+              time: '刚刚',
+              body: null,
+              comment_id: null, //回复的评论id
+              commentable_id: this.id,
+              commentable_type: this.type,
+              likes: 0,
+              reports: 0
         },
         isSingIn:true,
         sendBox:false,

@@ -56,8 +56,8 @@ export default {
 
   methods: {
     postComment() {
-        console.log(this.content);
         this.$emit('sendReply', this.content);
+        this.content=null;
     },
 
     toggle() {
