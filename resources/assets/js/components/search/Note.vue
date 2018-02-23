@@ -1,25 +1,30 @@
 <template>
-	<div class="note_main">
+	<div v-if="!articles.length > 0">
+		    什么都没有搜索到
+	</div>
+
+
+	<div v-else class="note_main">
 		<div class="top">
 			<div class="relevant">
 				<div class="litter_title">
 					<span>相关用户</span>
-					<a href="/new_search#/user">
+					<a href="/user">
 						查看全部
 						<i class="iconfont icon-youbian"></i>
 					</a>
 				</div>
 				<div class="list clearfix">
-					<div class="col-xs-12 col-sm-4" v-for="list in 3">
+					<div class="col-xs-12 col-sm-4" v-for="user in users">
 						<div class="author">
-							<a href="" class="avatar avatar_sm">
-								<img src="/images/photo_02.jpg" />
+							<a :href="'/user/'+user.id" class="avatar avatar_sm">
+								<img :src="user.avatar" />
 							</a>
 							<div class="info_meta">
-								<a href="" class="headline nickname">
-									<span class="single_line">旅行青蛙</span>
+								<a :href="'/user/'+user.id" class="headline nickname">
+									<span class="single_line">{{ user.name }}</span>
 								</a>
-								<p class="meta">写了 1168 字・0 喜欢</p>
+								<p class="meta">写了 {{ user.count_words }} 字・0 喜欢</p>
 							</div>
 						</div>
 					</div>
@@ -29,22 +34,22 @@
 			<div class="relevant">
 				<div class="litter_title">
 					<span>相关专题</span>
-					<a href="/new_search#/collection">
+					<a href="/categories">
 						查看全部
 						<i class="iconfont icon-youbian"></i>
 					</a>
 				</div>
 				<div class="list clearfix">
-					<div class="col-xs-12 col-sm-4" v-for="list in 3">
+					<div class="col-xs-12 col-sm-4" v-for="category in categories">
 						<div class="author">
-							<a href="" class="avatar avatar_sm avatar_collection">
-								<img src="/images/category_06.jpg" />
+							<a :href="'/'+category.name_en" class="avatar avatar_sm avatar_collection">
+								<img :src="category.logo" />
 							</a>
 							<div class="info_meta">
-								<a href="" class="headline nickname">
-									<span class="single_line">旅行青蛙爆红背后的秘密</span>
+								<a :href="'/'+category.name_en" class="headline nickname">
+									<span class="single_line">{{ category.name }}</span>
 								</a>
-								<p class="meta">119 文章・145 关注</p>
+								<p class="meta">{{ category.count }} 文章・{{ category.count_follows }} 关注</p>
 							</div>
 						</div>
 					</div>
@@ -137,14 +142,13 @@ export default {
         var formdata =new FormData();
         formdata.append('query',this.query);
         window.axios.post(api,formdata).then(function(response){
-        	vm.articles=response.data.data;
-        	vm.article_count =response.data.total;
-        	vm.lastPage=response.data.last_page;
-               
-        	vm.articles.forEach(function(article) {
-                  vm.user =article;
-        	});
-        	console.log(vm.user);
+        	vm.articles=response.data.articles.data;
+        	vm.article_count =response.data.articles.total;
+        	vm.lastPage=response.data.articles.last_page;
+
+        	vm.users =response.data.users;
+        	vm.categories=response.data.categories;
+ 			
         });
   	},
 
@@ -159,8 +163,8 @@ export default {
     	article_count:null,
     	lastPage:null,
     	articles:[],
-    	user:null,
-    	users:[]
+    	users:[],
+    	categories:[]
 
     }
   }
@@ -219,16 +223,7 @@ export default {
 		}
 	}
 	.search_content {
-		.article_list {
-			.article_item {
-				.content {
-					.search_result_highlight {
-						font-style: normal;
-						color: #d96a5f;
-					}
-				}
-			}	
-		}
+
 		.pagination {
 			margin: 20px 0;
 		}

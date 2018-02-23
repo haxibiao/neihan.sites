@@ -1,5 +1,5 @@
 <template>
-	     <form class="navbar-form navbar-left" role="search" action="/search" method="get" id="searchForm">
+	     <form class="navbar-form navbar-left" role="search" action="/new_search" method="get" id="searchForm">
 	        <div class="form-group">
 	            <div class="search_wrp search_box">
 	                <input class="form-control" placeholder="搜索" type="text" name="q" autocomplete="off" />

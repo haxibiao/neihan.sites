@@ -115,7 +115,8 @@ class SearchController extends Controller
 
     public function new_search(Request $request)
     {
-         $query =$request->get('query');
+         $query =$request->q;
+         
          return view('search.index')->withQuery($query);
     }
 }

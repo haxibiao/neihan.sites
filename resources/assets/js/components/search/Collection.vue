@@ -6,22 +6,22 @@
 			<a href="javascript:;">最近更新</a>
 			<em>·</em>
 			<a href="javascript:;">热门专题</a>
-			<span class="result">5个结果</span>
+			<span class="result">{{ this.total }}个结果</span>
 		</div>
 		<ul class="user_list">
-            <li v-for="list in 5">
+            <li v-for="category in categories">
                 <div class="author">
                     <a class="avatar avatar_in avatar_collection" href="">
-                        <img src="/images/category_06.jpg" />
+                        <img :src="category.logo" />
                     </a>
                     <follow>
                     </follow>
                     <div class="info_meta">
-                        <a class="headline nickname" href="">
-                            <span class="single_line">旅行青蛙爆红背后的秘密</span>
+                        <a class="headline nickname" :href="'/'+category.name_en">
+                            <span class="single_line">{{ category.name }}</span>
                         </a>
                         <p class="meta">
-                            收录了 119 篇文章，146 人关注
+                            收录了 {{ category.count }} 篇文章，{{ category.count_follows }} 人关注
                         </p>
                     </div>
                 </div>
@@ -35,9 +35,31 @@ export default {
 
   name: 'Collection',
 
+  props:['query'],
+
+  mounted(){
+    this.fetchData();
+  },
+
+  methods:{
+     fetchData(page=null){
+        var vm=this;
+        var api= '/api/v2/search/collection';
+
+        var formdata = new FormData();
+        formdata.append('query',this.$route.params.query);
+
+        window.axios.post(api,formdata).then(function(response){
+              vm.categories=response.data.data;
+              vm.total=response.data.total;
+        });
+     }
+  },
+
   data () {
     return {
-
+        categories:[],
+        total:null
     }
   }
 }

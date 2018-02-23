@@ -19,7 +19,7 @@
                 </router-link>
             </li>
             <li>
-                <router-link :to="'/collection/'+this.query" class="action_link">
+                <router-link :to="'/collection/search/'+this.query" class="action_link">
                 	<div class="search_icon">
                 		<i class="iconfont icon-zhuanti1"></i>
                 	</div>
