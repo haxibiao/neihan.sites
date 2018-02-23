@@ -12,7 +12,7 @@
       </a> 
       <div class="info_meta">
         <a class="nickname" target="_blank" href="/user/{{ $article->user->id }}">{{ $article->user->name }}</a>
-        <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
+        {{-- <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt=""> --}}
         <span class="time" data-shared-at="2017-11-06T09:20:28+08:00">{{ $article->created_at }}发表了文章</span>
       </div>
     </div>
