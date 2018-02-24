@@ -207,7 +207,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/question">
+                                    <a href="/index/question">
                                         <i class="iconfont icon-remen1">
                                         </i>
                                         <span>
