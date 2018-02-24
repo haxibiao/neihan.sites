@@ -147,7 +147,7 @@
                      <div class="connection">
                         <div class="comment">
                             <div class="author">
-                                <a class="avatar avatar_xs" href="/user/{{ $comment->user->id }}">
+                                <a  id="author{{ $comment->id }}" class="avatar avatar_xs" href="/user/{{ $comment->user->id }}">
                                     <img src="{{ $comment->user->avatar }}"/>
                                 </a>
                                 <div class="info_meta">

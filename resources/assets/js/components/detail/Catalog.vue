@@ -10,68 +10,50 @@ export default {
 
   name: 'Catalog',
 
-    props:['placement'],
+  props:['placement','articleId'],
+
+  mounted(){
+      this.fetchData();
+  },
 
   computed: {
     dataContent() {
+       if(this.count_comment.length > 0){ 
         return `<ul class='popover_share_menu'>
-                    <li>
-                        <a href='javascript:;'>
-                            第一楼
-                        </a>
-                    </li>
-                    <li>
-                        <a href='javascript:;'>
-                            第二楼
-                        </a>
-                    </li>
-                    <li>
-                        <a href='javascript:;'>
-                            第三楼
-                        </a>
-                    </li>
-                    <li>
-                        <a href='javascript:;'>
-                            第四楼
-                        </a>
-                    </li>
-                    <li>
-                        <a href='javascript:;'>
-                            第五楼
-                        </a>
-                    </li>
-                    <li>
-                        <a href='javascript:;'>
-                            第六楼
-                        </a>
-                    </li>
-                    <li>
-                        <a href='javascript:;'>
-                            第七楼
-                        </a>
-                    </li>
-                    <li>
-                        <a href='javascript:;'>
-                            第八楼
-                        </a>
-                    </li>
-                    <li>
-                        <a href='javascript:;'>
-                            第九楼
-                        </a>
-                    </li>
-                    <li>
-                        <a href='javascript:;'>
-                            第十楼
-                        </a>
-                    </li>
+                    ${this.comments_count}
                 </ul>`;
+       }else{
+        return `作者没有在这篇文章评论哦`;
+       }
+    },
+
+    comments_count(){
+        var lou='';
+        this.count_comment.forEach(function(lou){
+                 lou+=`<li>
+                            <a href="#author${lou.id}">
+                                第${lou}楼
+                            </a>
+                        </li>`
+        });
+
+        
     }
+  },
+
+  methods:{
+     fetchData(){
+        var api='/api/comment/'+this.articleId+'/articles/author'
+        var vm=this;
+        window.axios.get(api).then(function(response){
+             vm.count_comment =response.data;
+        });
+     }
   },
 
   data () {
     return {
-
+       count_comment:[]
     }
   }
 }

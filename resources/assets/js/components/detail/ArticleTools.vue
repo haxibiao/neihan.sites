@@ -6,7 +6,7 @@
                     <writer class="function_button" placement="left" :article-id="this.articleId"></writer>
                 </li>
                 <li class="catalog" data-container="body" data-title="目录" data-placement="left" data-toggle="tooltip" data-trigger="hover" @click="tooltipHide">
-                    <catalog class="function_button" placement="left"></catalog>
+                    <catalog :article-id="this.articleId" class="function_button" placement="left"></catalog>
                 </li>
                 <li v-if="isAuthor()"  data-container="body" data-title="编辑器" data-placement="left" data-toggle="tooltip" data-trigger="hover" @click="showEditor">
                     <a href="javascript:;" class="function_button">

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Action;
 use App\Comment;
 use App\Http\Controllers\Controller;
 use App\Notifications\ArticleCommented;
 use Illuminate\Http\Request;
-use App\Action;
 use Illuminate\Support\Facades\Cache;
 
 class CommentController extends Controller
@@ -24,9 +24,9 @@ class CommentController extends Controller
                 ->count() + 1;
         }
         //if article_author commment
-        if(request('commentable_type')=='articles_author'){
-             $comment->lou = 0;
-             $comment->commentable_type=request('commentable_type');
+        if (request('commentable_type') == 'articles_author') {
+            $comment->lou              = 0;
+            $comment->commentable_type = request('commentable_type');
         }
 
         $comment->save();
@@ -51,7 +51,7 @@ class CommentController extends Controller
 
         //新评论，一起给前端返回 空的子评论 和 子评论的用户信息结构，方便前端直接回复刚发布的新评论
         $comment = Comment::with('user')->with('replyComments.user')->find($comment->id);
-        
+
         return $comment;
     }
 
@@ -80,10 +80,10 @@ class CommentController extends Controller
 
     public function like(Request $request, $id)
     {
-        $comment        = Comment::find($id);
-        if($request->get('get_comment')){
-              $comment->count_comments =$comment->commented;
-              return $comment;
+        $comment = Comment::find($id);
+        if ($request->get('get_comment')) {
+            $comment->count_comments = $comment->commented;
+            return $comment;
         }
         $liked          = $this->sync_cache($request, $id, 'like_comment');
         $comment->likes = $comment->likes + ($liked ? -1 : 1);
@@ -122,5 +122,15 @@ class CommentController extends Controller
             Cache::put($cache_key, 0, 60 * 24);
         }
         return $done;
+    }
+
+    public function get_author_comment(Request $request, $id, $type)
+    {
+        $comments=Comment::where('commentable_type',$type)
+        ->where('commentable_id',$id)
+        ->get();
+
+
+        return $comments;
     }
 }
