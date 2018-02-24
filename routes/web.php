@@ -41,6 +41,7 @@ Route::get('/new_search','SearchController@new_search');
 
 // 问答
 Route::resource('/question', 'QuestionController');
+Route::get('/index/question','QuestionController@myQuestion');
 Route::resource('/answer', 'AnswerController');
 Route::post('/tip-answer', 'QuestionController@pay_tip')->name('tip-answer');
 

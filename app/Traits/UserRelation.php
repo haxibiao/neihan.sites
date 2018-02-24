@@ -19,6 +19,11 @@ trait UserRelation
     {
 
     }
+
+    public function questions()
+    {
+        return $this->hasMany(\App\Question::class);
+    }
     public function followings()
     {
         return $this->hasMany(\App\Follow::class);

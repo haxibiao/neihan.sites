@@ -206,6 +206,15 @@
                                         </span>
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="/question">
+                                        <i class="iconfont icon-remen1">
+                                        </i>
+                                        <span>
+                                            我的提问
+                                        </span>
+                                    </a>
+                                </li>
                                 {{-- <li>
                                     <a href="#">
                                         <i class="iconfont icon-svg37">

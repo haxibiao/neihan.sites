@@ -6,6 +6,7 @@ use App\Answer;
 use App\Question;
 use App\Traits\QuestionControllerFunction;
 use App\Transaction;
+use App\User;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -47,11 +48,19 @@ trait QuestionControllerFunction
 
     public function pay_question()
     {
-       $questions=Question::with('latestAnswer.article')
-       ->where('bonus','>',0)
-       ->orderBy('deadline','desc')
-       ->orderBy('id','desc')
-       ->paginate(10);
-       return $questions;
+        $questions = Question::with('latestAnswer.article')
+            ->where('bonus', '>', 0)
+            ->orderBy('deadline', 'desc')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+        return $questions;
+    }
+
+    public function myQuestion(Request $request)
+    {
+        $user = $request->user();
+        $questions =$user->questions()->orderBy('id','desc')->get();
+        
+        return view('user.question')->withQuestions($questions);
     }
 }
