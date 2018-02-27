@@ -9,7 +9,14 @@
         <div class="row">
             {{-- 左侧 --}}
             <div class="main col-xs-12 col-sm-8">
-            	<img src="/images/board_01.png" class="tag_banner" />
+                <div class="page_banner">
+                    <div class="banner_img new_list">
+                        <div>
+                            <i class="iconfont icon-paihangbang"></i>
+                            <span>新上榜</span>
+                        </div>
+                    </div>
+                </div>
                 {{-- 文章摘要 --}}
                 @include('category.parts.category_item',['articles'=>$articles])
             </div>

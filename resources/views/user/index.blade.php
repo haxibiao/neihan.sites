@@ -7,8 +7,13 @@
 <div id="hot_users">
     <div class="container">
         <div class="recommend">
-            <div class="recommend_img">
-                <img src="/images/recommend_users.png"/>
+            <div class="page_banner">
+                <div class="banner_img recommend_author">
+                    <div>
+                        <i class="iconfont icon-admin"></i>
+                        <span>推荐作者</span>
+                    </div>
+                </div>
                 <a class="help" href="javascript:;" target="_blank">
                     <i class="iconfont icon-bangzhu">
                     </i>

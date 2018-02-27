@@ -27,7 +27,8 @@
         i {
             font-size: 14px;
         }
-        &:hover,&:focus {
+        &:hover,
+        &:focus {
             color: $color-gray-deep;
         }
     }
@@ -41,7 +42,8 @@
         position: relative;
         font-weight: bold;
         color: $color-black;
-        &::before,&::after {
+        &::before,
+        &::after {
             position: absolute;
             content: '';
             bottom: -13px;
@@ -79,7 +81,8 @@
         i {
             font-size: 14px;
         }
-        &:hover,&:focus {
+        &:hover,
+        &:focus {
             color: #A0A0A0;
         }
     }
@@ -94,7 +97,8 @@
     width: 100%;
     a {
         color: $color-gray;
-        &:hover,&.active {
+        &:hover,
+        &.active {
             color: $color-black;
         }
     }
@@ -125,27 +129,19 @@
 
 // 15大小的优秀作者图标
 .badge_icon_xs {
-    @include size (15px,15px);
+    @include size (15px, 15px);
     margin-right: 5px;
 }
 
 // 20大小的优秀作者图标
 .badge_icon_sm {
-    @include size (20px,20px);
+    @include size (20px, 20px);
     margin-right: 5px;
 }
 
 // 32大小的优秀作者图标
 .badge_icon_md {
-    @include size (32px,32px);
-}
-
-// 推荐页的标签图
-.tag_banner {
-    width: 100%;
-    min-height: 78px;
-    border-radius: 4px;
-    margin-bottom: 30px;
+    @include size (32px, 32px);
 }
 
 // 消息提醒数量
@@ -154,27 +150,67 @@
     background-color: $color-theme;
 }
 
-// 热门专题分类页和推荐作者页的标题图
-.recommend_img {
+// banner标题图
+.page_banner {
     position: relative;
-    img {
+    width: 100%;
+    margin-bottom: 20px;
+    .banner_img {
         width: 100%;
-        min-height: 78px;
-        border-radius: 4px;
+        height: 80px;
+        color: $color-white;
+        border-radius: 6px;
+        background: url(/images/banner.png) no-repeat;
+        background-size: 100% 100%;
+        &>div {
+            display: inline-block;
+            position: absolute;
+            top: 19%;
+            left: 5%;
+            i {
+                font-size: 30px;
+                margin-right: 8px;
+            }
+            span {
+                font-size: 23px;
+                font-weight: 400;
+            }
+        }
+        &.new_list {
+            background-color: #c094fe;
+        }
+        &.seven_list {
+            background-color: #feb247;
+        }
+        &.thirty_list {
+            background-color: #f58a76;
+        }
+        &.recommend_banner {
+            background-color: #feb347;
+        }
+        &.recommend_author {
+            background-color: #6ecafa;
+        }
+        &.recommend_question {
+            background-color: #3fb7f6;
+        }
+        &.collect_note {
+            background-color: #f59581;
+        }
+        &.question_note {
+            background-color: #f2a08f;
+        }
     }
     .help {
-        @include font (16px,$color-white,400);
         position: absolute;
-        top: 28px;
-        right: 30px;
+        right: 5%;
+        top: 70%;
+        font-size: 16px;
+        color: $color-white;
+        margin-top: -28px;
         i {
-            margin-right: 5px;
-        }
-        @media screen and (min-width: 992px) {
-            top: 38px;
-        }
-        @media screen and (min-width: 1200px) {
-            top: 48px;
+            font-size: 16px;
+            margin-right: 3px;
         }
     }
 }
@@ -217,7 +253,7 @@
         display: inline-block;
         vertical-align: middle;
         margin: -2px 5px 0 0;
-        &.icon-shuaxin{
+        &.icon-shuaxin {
             transform: rotate(360deg);
             transition: all .5s ease-out;
         }
@@ -240,7 +276,8 @@
     &.alert-leave-active {
         transition: all .4s cubic-bezier(1.0, 0.5, 0.8, 1.0);
     }
-    &.alert-enter, &.alert-leave-to {
+    &.alert-enter,
+    &.alert-leave-to {
         transform: translateY(-10px);
         opacity: 0;
     }
@@ -250,4 +287,3 @@
     font-style: normal;
     color: #d96a5f;
 }
-

@@ -6,7 +6,14 @@
 @section('content')
 <div id="bookmark">
     <div class="container">
-        <img class="tag_banner" src="/images/bookmark.png"/>
+        <div class="page_banner">
+            <div class="banner_img collect_note">
+                <div>
+                    <i class="iconfont icon-biaoqian"></i>
+                    <span>收藏的文章</span>
+                </div>
+            </div>
+        </div>
       @foreach($data['fav_articles'] as $favorite)
          @php
          	$article=$favorite->faved;

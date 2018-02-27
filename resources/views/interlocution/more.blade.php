@@ -7,12 +7,18 @@
 <div id="interlocution_recommend">
     <div class="container">
         <div class="recommend">
-            <div class="recommend_img">
-                <img src="/images/recommend_banner.png"/>
-                <a class="help" href="/v2/detail" target="_blank">
+            <div class="page_banner">
+                <div class="banner_img recommend_question">
+                    <div>
+                        <i class="iconfont icon-help"></i>
+                        <span>推荐回答</span>
+                    </div>
+                </div>
+                <a class="help" href="javascript:;" target="_blank">
                     <i class="iconfont icon-bangzhu">
                     </i>
                     如何创建并玩转问答
+                </a>
             </div>
             <div class="row">
                 <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">

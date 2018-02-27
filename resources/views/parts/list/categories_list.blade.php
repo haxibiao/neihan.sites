@@ -7,14 +7,19 @@
 <div id="categories">
     <div class="container">
         <div class="recommend">
-          <div class="recommend_img">
-            <img src="/images/recommend_banner.png"/>
-            <a class="help" href="javascript:;" target="_blank">
-                <i class="iconfont icon-bangzhu">
-                </i>
-                如何创建并玩转专题
-            </a>
-          </div>
+            <div class="page_banner">
+                <div class="banner_img recommend_banner">
+                    <div>
+                        <i class="iconfont icon-zhuanti1"></i>
+                        <span>热门专题</span>
+                    </div>
+                </div>
+                <a class="help" href="javascript:;" target="_blank">
+                    <i class="iconfont icon-bangzhu">
+                    </i>
+                    如何创建并玩转专题
+                </a>
+            </div>
             <div>
                 <!-- Nav tabs -->
                 <ul class="trigger_menu" role="tablist">

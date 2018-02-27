@@ -171,6 +171,15 @@
                                     </a>
                                 </li>
                                 <li>
+                                    <a href="/index/question">
+                                        <i class="iconfont icon-svg37">
+                                        </i>
+                                        <span>
+                                            我的问答
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
                                     <a href="/user/{{ Auth::id() }}/favorites">
                                         <i class="iconfont icon-biaoqian">
                                         </i>
@@ -203,15 +212,6 @@
                                         </i>
                                         <span>
                                             设置
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/index/question">
-                                        <i class="iconfont icon-remen1">
-                                        </i>
-                                        <span>
-                                            我的提问
                                         </span>
                                     </a>
                                 </li>
