@@ -141,6 +141,7 @@ export default {
         var api= page ?'/api/v2/search/note?page='+page :'/api/v2/search/note';
         var formdata =new FormData();
         formdata.append('query',this.query);
+        formdata.append('user_id',window.current_user_id);
         window.axios.post(api,formdata).then(function(response){
         	vm.articles=response.data.articles.data;
         	vm.article_count =response.data.articles.total;

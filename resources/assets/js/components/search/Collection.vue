@@ -48,6 +48,7 @@ export default {
 
         var formdata = new FormData();
         formdata.append('query',this.$route.params.query);
+        formdata.append('user_id',window.current_user_id);
 
         window.axios.post(api,formdata).then(function(response){
               vm.categories=response.data.data;

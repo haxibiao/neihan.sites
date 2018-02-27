@@ -10,7 +10,7 @@
         </div>
         <ul class="search_trending_tag_wrap">
             <li v-for="q in queries">
-                <a :href="'/search?q='+q.full" :title="q.full" target="_blank" class="search_lab">
+                <a :href="'/new_search?q='+q.full" :title="q.full" target="_blank" class="search_lab">
                     {{ q.short }}
                 </a>
             </li>

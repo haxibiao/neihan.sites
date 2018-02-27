@@ -2,23 +2,16 @@
 	<div class="search_recent">
         <div class="litter_title" v-if="!hideTitle">
             最近搜索
-            <a href="javascript:;">
+            <a href="javascript:;" @click="clear">
                 清空
             </a>
         </div>
-        <ul class="search_recent_item_wrap">
+        <ul class="search_recent_item_wrap" v-if="this.history">
             <li>
-                <a href="#" target="_blank">
+                <a href="javascript:;" target="_blank">
                     <i class="iconfont icon-unie646 browse"></i>
-                    <span class="single_line">王者</span>
-                    <i class="iconfont icon-cha clear"></i>
-                </a>
-            </li>
-            <li>
-                <a href="#" target="_blank">
-                    <i class="iconfont icon-unie646 browse"></i>
-                    <span class="single_line">王者荣耀王者荣耀王者荣耀王者荣耀</span>
-                    <i class="iconfont icon-cha clear"></i>
+                    <span class="single_line">{{ this.history }}</span>
+                    <i class="iconfont icon-cha clear" @click="clear"></i>
                 </a>
             </li>
         </ul>
@@ -32,9 +25,29 @@ export default {
 
   props: ['hideTitle'],
 
+  mounted(){
+     this.fetchData();
+  },
+
+  methods:{
+     fetchData(){
+        var api =window.tokenize('/api/user/'+window.current_user_id+'/serach_history');
+        var vm=this;
+        window.axios.get(api).then(function(response){
+              vm.history=response.data;
+        });
+     },
+     clear(){
+        var vm=this;
+        vm.history=null;
+        var api=window.tokenize('/api/user/'+window.current_user_id+'/clear_serach_history');
+        window.axios.get(api).then();
+     }
+  },
+
   data () {
     return {
-
+        history:null
     }
   }
 }
