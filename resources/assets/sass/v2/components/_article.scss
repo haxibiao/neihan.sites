@@ -98,6 +98,7 @@
     }
     .question_answers {
         margin-top: 16px;
+        position: relative;
     }
 }
 
@@ -121,11 +122,14 @@
         }
     }
     &.have_img {
-        .content {
-            padding-right: 35%;
-        }
-        .wrap_img {
-            width: 30%;
+        .question_warp {
+            position: relative;
+            .content {
+                padding-right: 35%;
+            }
+            .wrap_img {
+                width: 30%;
+            }
         }
     }
 }
