@@ -26,7 +26,7 @@ class SearchController extends Controller
         return $hot_queries;
     }
 
-    public function serach(Request $request)
+    public function search(Request $request)
     {
         $type    = $request->type;
         $query   = $request->get('query');
@@ -155,28 +155,39 @@ class SearchController extends Controller
     public function save_user_serachHistory($user_id, $query)
     {
         $cache_key = $user_id . 'searchHistory';
+        $history   = Cache::get($cache_key);
 
-        if(cache::get($cache_key)){
-           $history=cache::get($cache_key);
-           cache::put($cache_key, $history.','.$query);
+        if (is_array($history) && !in_array($query, $history)) {
+            array_push($history, $query);
+            Cache::put($cache_key, $history, 24 * 60 * 3);
+        } elseif ($history == null) {
+            $data = [];
+            array_push($data, $query);
+            Cache::put($cache_key, $data, 24 * 60 * 3);
         }
-        cache::put($cache_key, $query);
     }
 
     public function get_user_histroy(Request $request, $id)
     {
         $cache_key = $id . 'searchHistory';
-        $historys  = cache::get($cache_key);
-        if(str_contains($historys,',')){
-            $historys = explode(',', $historys);
-        }
+        $historys  = Cache::get($cache_key);
 
         return $historys;
     }
 
-    public function clear_user_history(Request $request, $id)
+    public function clear_user_history(Request $request, $id, $history)
     {
         $cache_key = $id . 'searchHistory';
-        cache::forget($cache_key);
+        $historys  = Cache::get($cache_key);
+
+        if (is_array($historys) && in_array($history, $historys)) {
+            $index = array_search($history, $historys);
+            if ($index) {
+                array_splice($historys, $index, 1);
+                Cache::put($cache_key, $historys, 24 * 60 * 3);
+            } else {
+                return response($content = '没有找到该条历史记录', $status = 404);
+            }
+        }
     }
 }
