@@ -22,6 +22,9 @@ Route::get('/index/weekly', 'IndexController@weekly');
 Route::get('/index/monthly', 'IndexController@monthly');
 Route::get('/index/new-list', 'IndexController@recommendations_notes');
 
+
+// Route::get('/testerror','IndexController@demo');
+
 //v1
 require_once 'v1/web.php';
 

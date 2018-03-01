@@ -163,6 +163,7 @@ return [
 		Illuminate\Validation\ValidationServiceProvider::class,
 		Illuminate\View\ViewServiceProvider::class,
 
+
 		/*
 			         * Package Service Providers...
 		*/
@@ -181,6 +182,7 @@ return [
 		Overtrue\LaravelWechat\ServiceProvider::class,
 		Collective\Remote\RemoteServiceProvider::class,
 		Jenssegers\Agent\AgentServiceProvider::class,
+		Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class,
 
 	],
 
