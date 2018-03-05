@@ -18,8 +18,10 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
-        'password' => $password ?: $password = bcrypt('secret'),
+        'password' => $password = bcrypt(123456),
         'remember_token' => str_random(10),
+        'created_at'=>now()->toDateTimeString(),
+        'updated_at'=>now()->toDateTimeString(),
         'api_token'=>str_random(60),
     ];
 });
