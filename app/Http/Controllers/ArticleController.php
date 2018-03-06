@@ -128,7 +128,7 @@ class ArticleController extends Controller
         ->with('comments')
         ->findOrFail($id);
 
-        if ($article->category->parent_id) {
+        if (!empty($article->category) && $article->category->parent_id) {
             $data['parent_category'] = $article->category->parent()->first();
         }
 
