@@ -182,7 +182,7 @@ class SearchController extends Controller
 
         if (is_array($historys) && in_array($history, $historys)) {
             $index = array_search($history, $historys);
-            if ($index) {
+            if ($index >= 0) {
                 array_splice($historys, $index, 1);
                 Cache::put($cache_key, $historys, 24 * 60 * 3);
             } else {
