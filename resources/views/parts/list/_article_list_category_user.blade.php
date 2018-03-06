@@ -32,9 +32,11 @@
                 {{ str_limit(strip_tags($article->body),200) }}
             </p>
             <div class="meta">
+                @if(!empty($article->category))
                 <a class="category_tag" href="/{{ $article->category->name_en }}" target="_blank">
                     {{ $article->category->name }}
                 </a>
+                @endif
                 <a href="/article/{{ $article->id }}" target="_blank" class="count count_link">
                     <i class="iconfont icon-liulan" >
                     </i>
