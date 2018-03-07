@@ -106,16 +106,16 @@
                     </div>
                     <div>
                         <ul class="collection_follower">
-                         @foreach([1,2,3,4,5,6,7,8] as $f)
+                         @foreach($data['tips'] as $tip)
                             <li>
-                                <a class="avatar" href="javascript:;">
-                                    <img src="/images/photo_0{{ rand(2,3) }}.jpg"/>
+                                <a class="avatar" href="/user/{{ $tip->user->id }}">
+                                    <img src="{{ $tip->user->checkAvatar() }}"/>
                                 </a>
                             </li>
                          @endforeach
                         </ul>
                         <span class="rewad_user">
-                            等10人
+                            等{{ $data['tips']->count() }}人
                         </span>
                         <support-modal user-id={{ $article->user->id }} article-id={{ $article->id }}></support-modal>
                     </div>

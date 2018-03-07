@@ -11,7 +11,9 @@ use App\Like;
 use App\Question;
 use App\User;
 use App\Video;
+use App\Transaction;
 use Illuminate\Console\Command;
+use App\Tip;
 
 class FixData extends Command
 {
@@ -20,7 +22,7 @@ class FixData extends Command
      *
      * @var string
      */
-    protected $signature = 'fix:data {--question} {--article_count}{--user_count}{--favorite}{--small_image}{--tags}{--comments} {--traffic} {--articles} {--images} {--videos} {--categories} {--force}';
+    protected $signature = 'fix:data {--tip} {--question} {--article_count}{--user_count}{--favorite}{--small_image}{--tags}{--comments} {--traffic} {--articles} {--images} {--videos} {--categories} {--force}';
 
     /**
      * The console command description.
@@ -86,6 +88,10 @@ class FixData extends Command
         }
         if ($this->option('question')) {
             $this->fix_question();
+        }
+
+        if ($this->option('tip')) {
+            $this->fix_tip();
         }
 
     }
@@ -459,5 +465,38 @@ class FixData extends Command
                 }
             }
         });
+    }
+
+    public function fix_tip(){
+            $tips =Transaction::where('type','打赏')->where('status','已到账')->where('log','like','%'.'article'.'%')->get();
+
+            $preg ='/<a .*?href="\/article\/(.*?)".*?>/is';
+            $preg_user ='/<a .*?href="\/user\/(.*?)".*?>/is';
+
+            foreach($tips as $tip){
+                if(!str_contains($tip->log,'您')){
+                    continue;
+                }
+
+                preg_match_all($preg, $tip->log, $match);
+
+                preg_match_all($preg_user, $tip->log, $match_user);
+
+                // $tip_new =Tip::create([
+                //     'amount'=>$tip->amount,
+                //     'tipable_id'=>$match[1],
+                //     'tipable_type'=>'articles',
+                //     'user_id'=>$match_user[1],
+                // ]); 
+
+                $tip_new =new Tip();
+
+                $tip_new->amount=$tip->amount;
+                $tip_new->tipable_id=$match[1][0];
+                $tip_new->tipable_type='articles';
+                $tip_new->user_id=$match_user[1][0];
+
+                $tip_new->save();
+            }
     }
 }

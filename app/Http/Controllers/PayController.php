@@ -7,6 +7,7 @@ use App\Transaction;
 use Auth;
 use DB;
 use App\Question;
+use App\Tip;
 use Illuminate\Http\Request;
 
 class PayController extends Controller
@@ -40,6 +41,13 @@ class PayController extends Controller
                             'amount'  => $amount,
                             'status'  => '已到账',
                             'balance' => $article->user->balance() + $amount,
+                        ]);
+
+                        Tip::create([
+                            'user_id'=>Auth::user()->id,
+                            'tipable_type' =>'articles',
+                            'tipable_id'=>$article->id,
+                            'amount'=>$amount,
                         ]);
                     }
                 }, 3);

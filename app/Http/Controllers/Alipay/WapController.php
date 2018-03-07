@@ -9,6 +9,8 @@ use App\Transaction;
 use Auth;
 use Omnipay\Omnipay;
 use App\Question;
+use App\Tip;
+
 
 class WapController extends Controller
 {
@@ -89,6 +91,13 @@ class WapController extends Controller
                 'amount'  => $amount,
                 'status'  => '未支付',
                 'balance' => $user->balance(),
+            ]);
+
+            Tip::create([
+                'user_id'=>Auth::user()->id,
+                'tipable_type' =>'articles',
+                'tipable_id'=>$article->id,
+                'amount'=>$amount,
             ]);
 
             $tran_id1     = $transaction->id;

@@ -7,6 +7,7 @@ use App\Category;
 use App\Http\Requests\ArticleRequest;
 use App\Traits\ArticleControllerFunction;
 use Illuminate\Http\Request;
+use App\Tip;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
@@ -152,6 +153,10 @@ class ArticleController extends Controller
             $article->hits_robot = $article->hits_robot + 1;
         }
         $article->save();
+
+        $tips=Tip::with('user')->where('tipable_id',$article->id)->get();
+
+        $data['tips']=$tips;
 
         //fix_article_count
 
