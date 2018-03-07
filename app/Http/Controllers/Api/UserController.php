@@ -129,9 +129,10 @@ class UserController extends Controller
 
     public function recommend(Request $request)
     {
-        $page_size = 5;
-        $page      = rand(1, ceil(User::count() / $page_size));
-        $users     = User::orderBy('id', 'desc')->skip(($page - 1) * $page_size)->take($page_size)->get();
+        // $page_size = 5;
+        // $page      = rand(1, ceil(User::count() / $page_size));
+        $users     = User::orderBy('id', 'desc')->where('is_editor',1)->get();
+        $users =$users->random(5);
         foreach ($users as $user) {
             $user->is_followed = Auth::user()->isFollow('users', $user->id);
         }
