@@ -1,4 +1,4 @@
-@if($article->status >=0 || )
+@if($article->status >=0 )
 <div class="media">
 	@if(!empty($article->image_url))
 	<a class="pull-left hidden-sm hidden-xs" href="{{ get_article_url($article) }}" {!! $article->target_url ? 'target="_blank"' : '' !!}>
