@@ -16,7 +16,7 @@ class Collection extends Model
 
     public function articles()
     {
-        return $this->belongsToMany(\App\Article::class)->where('status','>',0);
+        return $this->belongsToMany(\App\Article::class)->where('status','>=',0);
     }
 
     public function user()
