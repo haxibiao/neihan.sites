@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-	搜索 - 旅行青蛙 - 爱你城
+	搜索 - {{ $query }} - 爱你城
 @stop
 @section('content')
 <div id="search">
