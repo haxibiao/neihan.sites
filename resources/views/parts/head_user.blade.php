@@ -258,9 +258,19 @@
                                 </span>
                             </a>
                         </li>
-                        @else
+                        @elseif(Auth::user()->is_editor)
                         <li class="creation">
                             <a href="/article/create">
+                                <span class="btn_base btn_creation">
+                                    <i class="iconfont icon-maobi">
+                                    </i>
+                                    写文章
+                                </span>
+                            </a>
+                        </li>
+                        @else
+                        <li class="creation">
+                            <a href="/write">
                                 <span class="btn_base btn_creation">
                                     <i class="iconfont icon-maobi">
                                     </i>

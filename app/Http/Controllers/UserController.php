@@ -15,7 +15,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['except' => ['index', 'show', 'videos', 'articles']]);
-        $this->middleware('auth.editor', ['only' => ['index']]);
+        // $this->middleware('auth.editor', ['only' => ['index']]);
     }
     /**
      * Display a listing of the resource.
@@ -24,7 +24,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy('id', 'desc')->paginate(24);
+        $users = User::orderBy('is_editor','desc')->orderBy('id', 'desc')->paginate(24);
 
         if(AjaxOrDebug() && request('article_id')){
              $users=[];

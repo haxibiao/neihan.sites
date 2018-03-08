@@ -162,7 +162,7 @@ class User extends Authenticatable
 
     public function newArticle()
     {
-        return $this->articles()->orderBy('id', 'desc')->take(3)->get();
+        return $this->articles()->where('status','>',0)->orderBy('id', 'desc')->take(3)->get();
     }
 
     public function introduction()
