@@ -180,6 +180,8 @@ class ArticleController extends Controller
             fix_lol_data($article);
         }
 
+        $data['collection'] =$article->collections()->where('user_id',$article->user->id)->first();
+
         return view('article.show')->withArticle($article)->withData($data);
     }
 

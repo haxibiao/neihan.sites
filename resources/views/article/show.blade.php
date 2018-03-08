@@ -32,8 +32,10 @@
                                 is_small="btn_follow_xs"
                                 is_small_followed="btn_followed_xs">
                             </follow>
-                            @if(Auth::check() && Auth::user()->is_editor)
+                            @if(Auth::check() && Auth::user()->is_editor )
                                <a href="/article/{{ $article->id }}/edit" target="_blank" class="btn_base btn_edit pull-right">编辑文章</a>
+                            @elseif(Auth::check() && Auth::id()==$article->user->id)
+                               <a href="/write#/notebooks/{{ $data['collection']->id }}/notes/{{ $article->id }}" target="_blank" class="btn_base btn_edit pull-right">编辑文章</a>
                             @endif
                             <div class="meta">
                                 <span data-toggle="tooltip" data-placement="bottom" title="最后编辑于 {{ diffForHumansCN($article->created_at) }}">
