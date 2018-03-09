@@ -406,8 +406,15 @@ export default {
 									background: #d9d9d9;
 									&>ul {
 										&>li {
-											.icon-icon-feixingmanyou {
-												font-size: 20px;
+											.toolbar-item-publish {
+												width: 100px;
+												.icon-icon-feixingmanyou {
+													font-size: 15px;
+													&::before {
+														font-size: 20px;
+														margin-right: 3px;
+													}
+												}
 											}
 											&>.toolbar-item {
 												&:hover {

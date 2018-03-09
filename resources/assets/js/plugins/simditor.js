@@ -6891,6 +6891,7 @@
     }
     PublishButton.prototype.name = 'publish';
     PublishButton.prototype.icon = 'icon-icon-feixingmanyou';
+    PublishButton.prototype.text = '发布文章';
     PublishButton.prototype._status = function() {};
     PublishButton.prototype.needFocus = false;
     PublishButton.prototype.command = function() { 
