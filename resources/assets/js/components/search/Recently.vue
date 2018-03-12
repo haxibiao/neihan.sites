@@ -26,7 +26,10 @@ export default {
   props: ['hideTitle'],
 
   mounted(){
-     this.fetchData();
+    if(this.loginCheck())
+    {
+          this.fetchData();
+    }
   },
 
   methods:{
@@ -42,6 +45,9 @@ export default {
         vm.historys.splice(index,1);
         var api=window.tokenize('/api/user/'+window.current_user_id+'/clear_serach_history/'+history);
         window.axios.get(api);
+     },
+     loginCheck(){
+        return window.loginCheck;
      }
   },
 

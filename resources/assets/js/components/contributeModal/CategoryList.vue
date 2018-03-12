@@ -25,7 +25,10 @@ export default {
   name: 'CategoryList',
 
   mounted(){
-    this.fetchData();
+    if(this.loginCheck())
+     {
+        this.fetchData();
+     }
   },
 
   methods:{
@@ -38,6 +41,10 @@ export default {
              vm.categories=response.data;
          });
       },
+
+      loginCheck(){
+        return window.loginCheck;
+      }
   },
 
   data () {
