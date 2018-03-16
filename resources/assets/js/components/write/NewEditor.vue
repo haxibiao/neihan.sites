@@ -1,39 +1,33 @@
 <template>
     <div class="simditor-box">
-        <div class="promptBox" v-show="draftShow">
-            <span class="title">{{autosavePrompt}}</span>
-            <span class="btn yes" @click="yesClick">yes</span>
-            <span class=" btn no" @click="noClick">no</span>
-        </div>
-        <textarea :id="textareaId" :name="name" :placeholder="placeholderText" data-autosave="editor-content">
-            {{ html }}
+        <slot></slot>
+        <textarea :id="textareaId" :name="name" :placeholder="placeholderText">
+            {{ value }}
         </textarea>
     </div>
 </template>
 <script>
-import Simditor from "../plugins/simditor";
+import Simditor from "../../plugins/simditor";
 
 export default {
 
-    name: 'Editor',
+    name: 'NewEditor',
 
-    props: ['placeholder', 'name', 'value', 'picture', 'video'],
+    props: ['placeholder', 'name', 'value', 'picture', 'video', 'write', 'focus'],
 
     computed: {
-        html() {
-            return this.editorHtml ? this.editorHtml : this.value;
-        },
         placeholderText() {
             return this.placeholder ? this.placeholder : '请开始您的写作...';
         }
     },
 
+    //vue中，通过修改value属性来更新编辑器中的内容
+    updated() {
+        this.editor.setValue(this.value);
+    },
+
     data() {
         return {
-            draft:'',
-            autosavePrompt:'',
-            draftShow:false,
-            editorHtml: null,
             textareaId: new Date().getTime(), //这里防止多个富文本发生冲突
             editor: null, //保存simditor对象
             toolbar: [
@@ -50,6 +44,7 @@ export default {
     },
 
     mounted() {
+        console.log('editor Component mounted.');
         this.loadEditor();
     },
 
@@ -64,6 +59,10 @@ export default {
             }
             if (this.video　 !== undefined) {
                 this.toolbar.push('video');
+            }
+            if (this.write !== undefined) {
+                this.toolbar.push('save');
+                this.toolbar.push('publish');
             }
 
             this.editor = new Simditor({
@@ -84,25 +83,27 @@ export default {
                 tabIndent: true
             });
 
-            this.editor.on("valuechanged", function(e, src) {
-                _this.editorHtml = _this.editor.getValue();
-                 window.$bus.$emit('editor_value_changed');
-            });
-
-            this.editor.on('promptdraft', function(e, data) {
-                _this.draft = data.draft;
-                _this.draftShow = !_this.draftShow;
-                _this.autosavePrompt=data.prompt;
+            this.editor.on("imageuploaded", function(e, src) {
+                window.$bus.$emit('imageuploaded', _this.editor.getValue());
             })
-        },
-        yesClick() {
-            this.draftShow = !this.draftShow;
-            this.editor.setValue(this.draft);
-        },
-        noClick() {
-            this.draftShow = !this.draftShow;
-            this.editor.setValue('');
-        },
+
+            this.editor.on("valuechanged", function(e, src) {
+                _this.$emit('valuechanged', _this.editor.getValue());
+            })
+
+            if (this.write !== undefined) {
+                this.editor.on("editorsaved", function(e, src) {
+                    _this.$emit('editorsaved', _this.editor.getValue());
+                    //TODO:: 光标应该跑最后跳动的位置
+                    _this.editor.focus();
+                })
+                this.editor.on("editorpublished", function(e, src) {
+                    _this.$emit('editorpublished', _this.editor.getValue());
+                    //TODO:: 光标应该跑最后跳动的位置
+                    _this.editor.focus();
+                })
+            }
+        }
     }
 }
 </script>

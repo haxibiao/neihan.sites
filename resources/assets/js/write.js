@@ -26,7 +26,7 @@ Vue.component('note-books', require('./components/write/Notebooks.vue'));
 Vue.component('notes', require('./components/write/Notes.vue'));
 Vue.component('recycle', require('./components/write/Recycle.vue'));
 
-Vue.component('editor', require('./components/Editor.vue'));
+Vue.component('editor', require('./components/write/NewEditor.vue'));
 Vue.component('scroll-top', require('./components/write/ScrollTop.vue'));
 
 // 文集重命名

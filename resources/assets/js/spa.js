@@ -10,7 +10,7 @@ import Vue from 'vue';
 Vue.prototype.$http = window.axios;
 
 import VueRouter from 'vue-router';
-window.bus = new Vue();
+window.$bus = new Vue();
 
 Vue.use(VueRouter);
 

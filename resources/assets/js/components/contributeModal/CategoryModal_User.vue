@@ -56,7 +56,7 @@ export default {
 
   created(){
   	var m=this;
-  	window.bus.$on('modal_contrinute_clicked',function(id){
+  	window.$bus.$on('modal_contrinute_clicked',function(id){
   		m.categoryId=id;;
   		m.clear();
   		m.fetchData();

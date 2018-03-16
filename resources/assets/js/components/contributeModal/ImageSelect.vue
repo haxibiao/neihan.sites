@@ -28,7 +28,7 @@ export default {
 
   created() {
   	var _this = this;
-  	window.bus.$on('editor_value_changed', function(){
+  	window.$bus.$on('editor_value_changed', function(){
   		_this.updateNewImgs();
   	});
   },

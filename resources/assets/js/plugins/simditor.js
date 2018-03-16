@@ -5346,15 +5346,13 @@
               }
               $img.removeData("mask");
 
-
               //记录新添加的图片地址，可用于已选配图vue
               if(window.new_imgs == undefined) {
                 window.new_imgs = [];
               }
               window.new_imgs.push(img_path);
-
-
-              _this.editor.trigger("valuechanged");
+              _this.editor.trigger('valuechanged');
+              
               if (_this.editor.body.find("img.uploading").length < 1) {
                 return _this.editor.uploader.trigger("uploadready", [
                   file,
@@ -6900,6 +6898,144 @@
     return PublishButton;
   })(Button);
   Simditor.Toolbar.addButton(PublishButton);
+
+  SimditorAutosave = (function(superClass) {
+      extend(SimditorAutosave, superClass);
+
+      function SimditorAutosave() {
+        return SimditorAutosave.__super__.constructor.apply(this, arguments);
+      }
+
+      SimditorAutosave.pluginName = 'Autosave';
+
+      SimditorAutosave.prototype.opts = {
+        autosave: true,
+        autosavePath: null
+      };
+
+      SimditorAutosave.prototype._init = function() {
+        var currentVal, link, name, val;
+        this.editor = this._module;
+        if (!this.opts.autosave) {
+          return;
+        }
+        this.name = typeof this.opts.autosave === 'string' ? this.opts.autosave : 'simditor';
+        if (this.opts.autosavePath) {
+          this.path = this.opts.autosavePath;
+        } else {
+          link = $("<a/>", {
+            href: location.href
+          });
+          name = this.editor.textarea.data('autosave') || this.name;
+          this.path = "/" + (link[0].pathname.replace(/\/$/g, "").replace(/^\//g, "")) + "/autosave/" + name + "/";
+        }
+        if (!this.path) {
+          return;
+        }
+        this.editor.on("valuechanged", (function(_this) {
+          return function() {
+            // _this.editor.trigger('save',['qqq']);
+            return _this.storage.set(_this.path, _this.editor.getValue());
+
+          };
+        })(this));
+        this.editor.el.closest('form').on('ajax:success.simditor-' + this.editor.id, (function(_this) {
+          return function(e) {
+            return _this.storage.remove(_this.path);
+          };
+        })(this));
+        val = this.storage.get(this.path);
+        if (!val) {
+          return;
+        }
+        currentVal = this.editor.textarea.val();
+        if (val === currentVal) {
+          return;
+        }
+        if (this.editor.textarea.is('[data-autosave]')) {
+          var draft = val;
+          var prompt = this.editor.textarea.data('autosave-prompt')? 
+            this.editor.textarea.data('autosave-prompt')
+          : '你有未保存的草稿,是否恢复?';
+
+          var _editor = this.editor;
+          setTimeout(function(){
+                _editor.trigger('promptdraft', {draft:draft, prompt:prompt});
+            },500);
+          // if (confirm(this.editor.textarea.data('autosave-confirm') || '你要恢复未保存的草稿吗?')) {
+          //   return this.editor.setValue(val);
+          // } else {
+          //   return this.storage.remove(this.path);
+          // }
+          
+          // var _this=this;
+          //     _this.editor.setValue(val);
+          // $('.promptBox').fadeIn();
+          // $('.yes').on('click',function () {
+          //     $('.promptBox').fadeOut();
+          // })
+          // $('.no').on('click',function () {
+          //     $('.promptBox').fadeOut();
+          //     _this.editor.setValue('')
+          // })
+
+        } else {
+          return this.editor.setValue(val);
+        }
+      };
+
+      SimditorAutosave.prototype.storage = {
+        supported: function() {
+          var error;
+          try {
+            localStorage.setItem('_storageSupported', 'yes');
+            localStorage.removeItem('_storageSupported');
+            return true;
+          } catch (_error) {
+            error = _error;
+            return false;
+          }
+        },
+        set: function(key, val, session) {
+          var storage;
+          if (session == null) {
+            session = false;
+          }
+          if (!this.supported()) {
+            return;
+          }
+          storage = session ? sessionStorage : localStorage;
+          return storage.setItem(key, val);
+        },
+        get: function(key, session) {
+          var storage;
+          if (session == null) {
+            session = false;
+          }
+          if (!this.supported()) {
+            return;
+          }
+          storage = session ? sessionStorage : localStorage;
+          return storage[key];
+        },
+        remove: function(key, session) {
+          var storage;
+          if (session == null) {
+            session = false;
+          }
+          if (!this.supported()) {
+            return;
+          }
+          storage = session ? sessionStorage : localStorage;
+          return storage.removeItem(key);
+        }
+      };
+
+      return SimditorAutosave;
+
+    })(SimpleModule);
+
+    Simditor.connect(SimditorAutosave);
 
   return Simditor;
 });

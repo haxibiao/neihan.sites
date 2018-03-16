@@ -97,7 +97,7 @@ export default {
 
        showModal() {
            
-            window.bus.$emit('showContribute',this.id);
+            window.$bus.$emit('showContribute',this.id);
        },
 
       fetchData(){

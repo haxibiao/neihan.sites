@@ -8,7 +8,7 @@ require('./bootstrap');
 
 import Vue from 'vue';
 Vue.prototype.$http = window.axios;
-window.bus = new Vue();
+window.$bus = new Vue();
 
 
 /**

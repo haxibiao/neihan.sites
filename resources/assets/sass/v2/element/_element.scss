@@ -283,6 +283,28 @@
     }
 }
 
+// 创作页提示
+.promptBox {
+    padding: 10px;
+    background-color: $color-theme;
+    border-radius: 4px;
+    color: $color-white;
+    font-size: 16px;
+    margin-bottom: 5px;
+    .title {
+        margin-right: 40px;
+    }
+    .btn {
+        padding: 2px 8px;
+        margin-right: 15px;
+        background-color: $color-theme-deep;
+        &:hover {
+            color: $color-white;
+        }
+    }
+}
+
+
 .search_result_highlight {
     font-style: normal;
     color: #d96a5f;
