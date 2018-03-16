@@ -44,7 +44,7 @@
                     <a href="/index/monthly" target="_blank">
                         <img src="/images/board03.png"/>
                         <span class="board_tit hot_thirty">
-                            30日热门
+                            经典热门
                             <i class="iconfont icon-youbian">
                             </i>
                         </span>

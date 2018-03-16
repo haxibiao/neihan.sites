@@ -13,12 +13,13 @@
                     <div class="banner_img thirty_list">
                         <div>
                             <i class="iconfont icon-huo1"></i>
-                            <span>30日热门</span>
+                            <span>经典热门</span>
                         </div>
                     </div>
                 </div>
                 {{-- 文章摘要 --}}
                 @include('category.parts.category_item',['articles'=>$articles])
+                {{-- <article-list api="/index/monthly" start-page="2" /> --}}
             </div>
             {{-- 右侧 --}}
             <div class="aside col-sm-4">
