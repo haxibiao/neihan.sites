@@ -36,7 +36,7 @@
                     <a href="/index/weekly" target="_blank">
                         <img src="/images/board02.png"/>
                         <span class="board_tit hot_seven">
-                            7日热门
+                            七日热门
                             <i class="iconfont icon-youbian">
                             </i>
                         </span>

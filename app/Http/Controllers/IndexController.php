@@ -121,7 +121,9 @@ class IndexController extends Controller
 
     public function recommendations_notes()
     {
-        $articles = Article::orderBy('created_at', 'desc')->with('user')->paginate(10);
+        $articles = Article::where('status','>',0)
+        ->orderBy('created_at', 'desc')
+        ->with('user')->paginate(10);
         return view('index.new_list')
             ->withArticles($articles)
         ;

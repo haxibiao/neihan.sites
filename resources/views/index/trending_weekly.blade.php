@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    7日热门 - 爱你城
+    七日热门 - 爱你城
 @stop
 @section('content')
 <div id="hot_articles">
@@ -13,7 +13,7 @@
                     <div class="banner_img seven_list">
                         <div>
                             <i class="iconfont icon-huo1"></i>
-                            <span>7日热门</span>
+                            <span>七日热门</span>
                         </div>
                     </div>
                 </div>
