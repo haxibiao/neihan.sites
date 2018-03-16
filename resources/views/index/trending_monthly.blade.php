@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    30日热门 - 爱你城
+    经典热门 - 爱你城
 @stop
 @section('content')
 <div id="hot_articles">
