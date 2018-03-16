@@ -103,7 +103,7 @@
                 </div> --}}
                 <input class="btn_base btn_sign_in" type="submit" value="登录"/>
             </form>
-            <div class="more_sign">
+{{--             <div class="more_sign">
                 <h6>
                     社交账号登录
                 </h6>
@@ -139,7 +139,7 @@
                         </a>
                     </li>
                 </ul>
-            </div>
+            </div> --}}
                     <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                         <small class="text-danger">{{ $errors->first('name') }}</small>
                     </div>
