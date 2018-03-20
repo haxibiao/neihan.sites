@@ -113,8 +113,8 @@
 
 
 			<ul class="pagination" v-if="this.lastPage > 1">
-	            <li v-for="page in this.lastPage">
-	                <a href="javascript:;" @click="loadMore(page)">
+	            <li v-for="page in this.lastPage" @click="loadMore(page)">
+	                <a :class="page==currentPage ?'active':''">
 	                    {{ page }}
 	                </a>
 	            </li>
@@ -155,6 +155,7 @@ export default {
 
   	loadMore(page){
         this.fetchData(page);
+  			this.currentPage=page;
   	}
   },
 
@@ -165,8 +166,8 @@ export default {
     	lastPage:null,
     	articles:[],
     	users:[],
-    	categories:[]
-
+    	categories:[],
+    	currentPage:1
     }
   }
 }
