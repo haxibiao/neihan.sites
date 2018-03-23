@@ -8,6 +8,7 @@
         <textarea :id="textareaId" :name="name" :placeholder="placeholderText" data-autosave="editor-content">
             {{ html }}
         </textarea>
+        <image-list-modal></image-list-modal>
     </div>
 </template>
 <script>
@@ -43,7 +44,8 @@ export default {
                 // 'code',
                 // 'link', '|',
                 'image',
-                // 'picture', 'video', '|', 
+                'picture',
+                // 'video', '|', 
                 // 'indent', 'outdent'
             ]
         }
