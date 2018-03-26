@@ -8,6 +8,7 @@ use App\Collection;
 use App\Http\Controllers\Controller;
 use App\Query;
 use App\User;
+use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -55,12 +56,18 @@ class SearchController extends Controller
     public function search_article($query)
     {
         $articles = Article::with('user')
-            ->where('title', 'like', '%' . $query . '%')
+            ->whereHas('tags',function($q) use($query){
+                $q->where('name','like','%'.$query.'%');
+            })
+            ->orWhere('title', 'like', '%' . $query . '%')
             ->orWhere('body', 'like', '%' . $query . '%')
             ->orderBy('id', 'desc')
             ->paginate(5)
         ;
 
+        if($articles->isEmpty()){
+            return;
+        }
         //处理数据
         foreach ($articles as $article) {
             $article->user->avatar = $article->user->getLatestAvatar();
