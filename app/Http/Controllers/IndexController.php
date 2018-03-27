@@ -19,36 +19,39 @@ class IndexController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
             //获取用户follow过的category
-            $follows = $user->followingCategories()
-                ->orderBy('id', 'desc')
-                ->take(7)
-                ->get();
-            $categories    = [];
-            $categorie_ids = [];
-            foreach ($follows as $follow) {
-                $category        = $follow->followed;
-                $categories[]    = $category;
-                $categorie_ids[] = $category->id;
-            }
+            // $follows = $user->followingCategories()
+            //     ->orderBy('id', 'desc')
+            //     ->take(7)
+            //     ->get();
+            // $categories    = [];
+            // $categorie_ids = [];
+            // foreach ($follows as $follow) {
+            //     $category        = $follow->followed;
+            //     $categories[]    = $category;
+            //     $categorie_ids[] = $category->id;
+            // }
             //依靠获取到的categories来获取article
-            $articles = Article::with('user')->with('category')
-                ->whereIn('category_id', $categorie_ids)
-                ->where('status', '>', 0)
-                ->orderBy('created_at', 'desc')
-                ->paginate(10);
-            if (!$articles->isEmpty()) {
-                $has_follow_articles = true;
-            }
+
+
+
+            // $articles = Article::with('user')->with('category')
+            //     ->whereIn('category_id', $categorie_ids)
+            //     ->where('status', '>', 0)
+            //     ->orderBy('created_at', 'desc')
+            //     ->paginate(10);
+            // if (!$articles->isEmpty()) {
+            //     $has_follow_articles = true;
+            // }
 
         }
 
         if (!$has_follow_articles) {
-            $categories = Category::orderBy('updated_at', 'desc')
-                ->where('type', 'article')
+            $categories = Category::where('type', 'article')
                 ->where('count', '>', 0)
-                ->orderBy('updated_at', 'desc')
+                ->orderBy('id', 'desc')
                 ->take(7)
                 ->get();
+      
             $articles = Article::with('user')->with('category')
                 ->where('status', '>', 0)
                 ->orderBy('created_at', 'desc')
