@@ -19,6 +19,7 @@
                     {{-- 文章摘要 --}}
                     <div class="article_list">
                         @include('interlocution.parts.article_list',['questions'=>$questions])
+                      @if(Auth::check())   
                         @if(str_contains(url()->full(),'cid'))
                            @php
                                  $cids=explode('?',url()->full());
@@ -27,6 +28,9 @@
                         @else
                           <question-list></question-list>
                         @endif
+                      @else
+                        {!! $questions->links() !!}
+                      @endif
                     </div>
                 </div>
                 {{-- 右侧 --}}
