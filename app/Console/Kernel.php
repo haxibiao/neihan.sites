@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\ImageResize::class,
         \App\Console\Commands\ImageTitle::class,
         \App\Console\Commands\ImageLogo::class,
+        \App\Console\Commands\CrawlArticle::class,
     ];
 
     /**

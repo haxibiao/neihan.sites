@@ -8,6 +8,7 @@
         "php": ">=7.0.0",
         "bugsnag/bugsnag-laravel": "^2.0",
         "doctrine/dbal": "^2.5",
+        "fabpot/goutte": "^3.2",
         "intervention/image": "^2.3",
         "jenssegers/agent": "^2.5",
         "laravel/framework": "5.5.*",

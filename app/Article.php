@@ -52,6 +52,7 @@ class Article extends Model
         if (str_contains($this->image_url, "haxibiao")) {
             return $this->image_url;
         }
+
         return $image->path_small();
     }
 

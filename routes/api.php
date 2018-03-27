@@ -148,3 +148,6 @@ require_once 'api/answer.php';
 //search
 require_once 'api/search.php';
 
+//crawl
+require_once 'api/crawl.php';
+

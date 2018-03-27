@@ -2,84 +2,99 @@
 
 namespace App\Console\Commands;
 
-use App\Article;
 use Goutte\Client;
 use Illuminate\Console\Command;
+use App\Article;
+use App\Image;
+use App\Category;
+use Illuminate\Support\Facades\DB;
 
-class CrawlArticle extends Command {
-	/**
-	 * The name and signature of the console command.
-	 *
-	 * @var string
-	 */
-	protected $signature = 'crawl:article {--categoryID=} {--articleID=}';
+class CrawlArticle extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'crawl:article {--api=}';
 
-	/**
-	 * The console command description.
-	 *
-	 * @var string
-	 */
-	protected $description = 'Command description';
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Command description';
 
-	/**
-	 * Create a new command instance.
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-		$this->cralwer = new Client();
-	}
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
 
-	/**
-	 * Execute the console command.
-	 *
-	 * @return mixed
-	 */
-	public function handle() {
-		if ($this->option('categoryID')) {
-			$category_id = $this->option('categoryID');
-			$this->get_category($category_id);
-		}
-		if ($this->option('articleID')) {
-			$article_id = $this->option('articleID');
-			$this->get_article($article_id);
-		}
-	}
-//https://haxibiao.com/api/articles?cate_id=12?page=2
-	public function get_category($category_id) {
+        $this->client = new Client();
+    }
 
-		$i = 1;
-		$url = "https://haxibiao.com/api/articles?cate_id=$category_id&page=$i";
-		$json = file_get_contents($url);
-		$json = json_decode($json);
-		$total = ($json->last_page);
-		for ($i = 1; $i <= $total; $i++) {
-			$url = "https://haxibiao.com/api/articles?cate_id=$category_id&page=$i";
-			$json = file_get_contents($url);
-			$json = json_decode($json);
-			foreach ($json->data as $js) {
-				$article = Article::firstOrNEW([
-					'title' => $js->title,
-				]);
-				$article->body = $js->body;
-				$article->status = 1;
-				$article->author = "system";
-				$article->user_name = "system";
-				$article->user_id = 16;
-				$article->description = "";
-				$article->keywords = "英雄联盟英雄资料";
-				$article->image_url = "https://haxibiao.com$js->image_url";
-				$article->category_id = 14;
-				$article->json = $js->json;
-				if ($article->id) {
-					$article->update();
-					$this->comment('已更新:' . $article->title);
-				} else {
-					$article->save();
-					$this->info('已导入:' . $article->title);
-				}
-			}
-		}
-	}
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        if ($this->option('api')) {
+            $api = $this->option('api');
+            $this->get_article($api);
+        }
+    }
+
+    public function get_article($api)
+    {
+        $articles = file_get_contents($api);
+
+        $articles = json_decode($articles);
+
+        foreach($articles as $article)
+        {
+        	 $user_id =rand(44,143);
+        	 $article_item =new Article();
+
+        	 $article_item->title =$article->title;
+        	 $article_item->body =$article->body;
+        	 $article_item->status =1;
+        	 $article_item->user_id=$user_id;
+
+        	 // category relations
+        	 $category=Category::findOrFail(67);
+        	 $article_item->category_id=$category->id;
+        	 $article_item->save();
+
+        	 $this->comment("$article->id article save success");
+        	 
+        	 $preg='/<img.*?src="(.*?)".*?>/is';
+
+        	 preg_match_all($preg, $article->body, $match);
+
+        	 $article_item->image_url=$match[1][0];
+
+        	 foreach($match[1] as $image_url){
+        	 	 $image =new Image();
+        	 	 $image->title=$article_item->title;
+        	 	 $image->path=$image_url;
+        	 	 $image->save();
+
+        	 	 $article_item->images()->syncWithoutDetaching($image->id);
+
+        	 	 $this->info("$image->id image save success");
+        	 }
+        	 
+        	 $article_item->categories()->syncWithoutDetaching($category->id);
+
+        	 $article_item->save();
+
+        	 DB::table('article_category')->where('article_id', $article_item->id)->update(['submit' => '已收录']);
+        }
+    }
 }
