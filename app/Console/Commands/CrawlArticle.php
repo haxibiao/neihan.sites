@@ -23,7 +23,7 @@ class CrawlArticle extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'usage:l.haxibiao.com/api/articies/{count}/{category_name}/crawl?skip=???';
 
     /**
      * Create a new command instance.
@@ -52,13 +52,18 @@ class CrawlArticle extends Command
 
     public function get_article($api)
     {
-        $articles = file_get_contents($api);
+        $articles = @file_get_contents($api);
 
+        if(empty($articles)){
+              dd("articles empty");
+        }
         $articles = json_decode($articles);
 
         foreach ($articles as $index => $article) {
             $user_id      = rand(44, 143);
-            $article_item = new Article();
+            $article_item =Article::firstOrNew([
+                'source_url'=>"https://haxibiao.com/article/$article->id"
+            ]);
 
             $article_item->title   = $article->title;
             $article_item->body    = $article->body;
@@ -67,17 +72,20 @@ class CrawlArticle extends Command
 
             // category relations
             $categories = Category::whereIn('name', [
-                'QQ昵称',
-                '情侣昵称',
+                '唯美图片',
             ])->get()
             ;
 
             $category = $categories->random();
 
+            $category->count=$category->count();
+
+            $category->save();
+
             $article_item->category_id = $category->id;
             $article_item->save();
 
-            $this->comment("$article->id article save success");
+            $this->comment("$article_item->id article save success");
 
             $preg = '/<img.*?src="(.*?)".*?>/is';
 
@@ -104,7 +112,7 @@ class CrawlArticle extends Command
 
             DB::table('article_category')->where('article_id', $article_item->id)->update(['submit' => '已收录']);
 
-            sleep(30);
+            sleep(15);
         }
     }
 }
