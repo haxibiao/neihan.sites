@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Article;
+use App\Category;
+use App\Image;
 use Goutte\Client;
 use Illuminate\Console\Command;
-use App\Article;
-use App\Image;
-use App\Category;
 use Illuminate\Support\Facades\DB;
 
 class CrawlArticle extends Command
@@ -56,45 +56,55 @@ class CrawlArticle extends Command
 
         $articles = json_decode($articles);
 
-        foreach($articles as $article)
-        {
-        	 $user_id =rand(44,143);
-        	 $article_item =new Article();
+        foreach ($articles as $index => $article) {
+            $user_id      = rand(44, 143);
+            $article_item = new Article();
 
-        	 $article_item->title =$article->title;
-        	 $article_item->body =$article->body;
-        	 $article_item->status =1;
-        	 $article_item->user_id=$user_id;
+            $article_item->title   = $article->title;
+            $article_item->body    = $article->body;
+            $article_item->status  = 1;
+            $article_item->user_id = $user_id;
 
-        	 // category relations
-        	 $category=Category::findOrFail(67);
-        	 $article_item->category_id=$category->id;
-        	 $article_item->save();
+            // category relations
+            $categories = Category::whereIn('name', [
+                'QQ昵称',
+                '情侣昵称',
+            ])->get()
+            ;
 
-        	 $this->comment("$article->id article save success");
-        	 
-        	 $preg='/<img.*?src="(.*?)".*?>/is';
+            $category = $categories->random();
 
-        	 preg_match_all($preg, $article->body, $match);
+            $article_item->category_id = $category->id;
+            $article_item->save();
 
-        	 $article_item->image_url=$match[1][0];
+            $this->comment("$article->id article save success");
 
-        	 foreach($match[1] as $image_url){
-        	 	 $image =new Image();
-        	 	 $image->title=$article_item->title;
-        	 	 $image->path=$image_url;
-        	 	 $image->save();
+            $preg = '/<img.*?src="(.*?)".*?>/is';
 
-        	 	 $article_item->images()->syncWithoutDetaching($image->id);
+            preg_match_all($preg, $article->body, $match);
 
-        	 	 $this->info("$image->id image save success");
-        	 }
-        	 
-        	 $article_item->categories()->syncWithoutDetaching($category->id);
+            if (!empty($match[1])) {
+                $article_item->image_url = $match[1][0];
 
-        	 $article_item->save();
+                foreach ($match[1] as $image_url) {
+                    $image        = new Image();
+                    $image->title = $article_item->title;
+                    $image->path  = $image_url;
+                    $image->save();
 
-        	 DB::table('article_category')->where('article_id', $article_item->id)->update(['submit' => '已收录']);
+                    $article_item->images()->syncWithoutDetaching($image->id);
+
+                    $this->info("$image->id image save success");
+                }
+            }
+
+            $article_item->categories()->syncWithoutDetaching($category->id);
+
+            $article_item->save();
+
+            DB::table('article_category')->where('article_id', $article_item->id)->update(['submit' => '已收录']);
+
+            sleep(30);
         }
     }
 }
