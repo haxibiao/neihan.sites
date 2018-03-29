@@ -10,147 +10,57 @@ use Illuminate\Http\Request;
 
 class CrawlController extends Controller
 {
-
-    protected $type = "haxibiao-crawl";
-
     public function getCrawl(Request $request)
     {
-        $header = $request->header();
-
         if (!empty($request->all())) {
+            $article = Article::firstOrNew([
+                'source_url' => $request->source_url,
+            ]);
 
-            $article = new Article($request->all());
+            $user_id          = rand(44, 143);
+            $article->title   = $request->title;
+            $article->body    = $request->body;
+            $article->status  = 1;
+            $article->user_id = $user_id;
 
             $article->save();
 
-            $category = Category::findOrFail($article->category_id);
+            // category relations
+            $categories = Category::whereIn('name', [
+                $request->category_name,
+            ])->get()
+            ;
 
-            $article->categories()->syncWithoutDetaching($article->category_id);
+            $category = $categories->random();
 
-            $content = $article->body;
+            $article->categories()->syncWithoutDetaching($category->category_id);
 
-            $preg = "/<[img|IMG].*?src=['|\"](.*?(?:[.gif|.jpg]))['|\"].*?[\/]?>/"; 
+            $article->category_id = $category->id;
 
-            preg_match_all($preg, $content, $match);
+            if (!empty($article->images)) {
+                return $article->images;
+                $image_ids = [];
+                foreach ($article->images as $image_url) {
+                    $image = Image::firstOrNew([
+                        'path' => $image_url,
+                    ]);
 
-            if (!empty($match[1])) {
-                foreach ($match[1] as $index => $image_url) {
-                    $image        = new Image();
                     $image->title = $article->title;
+                    $image->path  = $image_url;
                     $image->save();
 
-                    $dir  = '/storage/img/' . $image->id . '.jpg';
-                    $path = public_path($dir);
-                    file_put_contents($path, @file_get_contents($image_url));
-
-                    $image_item = \ImageMaker::make($path);
-
-                    //save small image
-                    if ($image_item) {
-                        //save small
-                        if ($image_item->width() / $image_item->height() < 1.5) {
-                            $image_item->resize(300, null, function ($constraint) {
-                                $constraint->aspectRatio();
-                            });
-                        } else {
-                            $image_item->resize(null, 240, function ($constraint) {
-                                $constraint->aspectRatio();
-                            });
-                        }
-                        $image_item->crop(300, 240);
-
-                        $small_path = '/storage/img/' . $image->id . '.small' . '.jpg';
-
-                        $image_item->save(public_path($small_path));
-
-                        $image->path_small = $small_path;
-
-                    }
-
-                    $image->path = $dir;
-
-                    $image->save();
-
-                    if ($index == 1 && !empty($image->path_small)) {
-                        $article->image_url = $image->path_small;
-                    }
-
-                    $body          = $article->body;
-                    $body          = str_replace($image_url, $dir, $body);
-                    $article->body = $body;
-
-                    $article->save();
-
-                    //save article_image relationships
-                    $article->images()->syncWithoutDetaching($image->id);
+                    $image_ids[] = $image->id;
                 }
+                $article->images()->syncWithoutDetaching($image->id);
             }
 
+            DB::table('article_category')->where('article_id', $article_item->id)->update(['submit' => '已收录']);
+
+            $article->save();
             return ['success' . $article->id . $article->title];
         } else {
             return 'empty request body';
         }
     }
 
-    /*  public function save_image($article)
-{
-
-$content=$article->body;
-
-preg_match_all($preg, $content, $match);
-
-if (!empty($match[1])) {
-foreach ($match[1] as $index => $image_url) {
-$image        = new Image();
-$image->title = $article->title;
-$image->save();
-
-$dir  = '/storage/img/' . $image->id . '.jpg';
-$path = public_path($dir);
-file_put_contents($path, @file_get_contents($image_url));
-
-$image_item = \ImageMaker::make($path);
-
-//save small image
-if ($image_item) {
-//save small
-if ($image_item->width() / $image_item->height() < 1.5) {
-$image_item->resize(300, null, function ($constraint) {
-$constraint->aspectRatio();
-});
-} else {
-$image_item->resize(null, 240, function ($constraint) {
-$constraint->aspectRatio();
-});
-}
-$image_item->crop(300, 240);
-
-$small_path = '/storage/img/' . $image->id . '.small' . '.jpg';
-
-$image_item->save(public_path($small_path));
-
-$image->path_small = $small_path;
-
-}
-
-$image->path = $dir;
-
-$image->save();
-
-if ($index == 1 && !empty($image->path_small)) {
-$article->image_url = $image->path_small;
-}
-
-$body          = $article->body;
-$body          = str_replace($image_url, $dir, $body);
-$article->body = $body;
-
-$article->save();
-
-//save article_image relationships
-$article->images()->syncWithoutDetaching($image->id);
-}
-}
-}
- */
 }

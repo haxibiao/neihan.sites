@@ -149,5 +149,5 @@ require_once 'api/answer.php';
 require_once 'api/search.php';
 
 //crawl
-require_once 'api/crawl.php';
+Route::post('/articleCrawl','Api\CrawlController@getCrawl');
 
