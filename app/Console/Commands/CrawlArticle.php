@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Article;
 use App\Category;
 use App\Image;
+use App\User;
 use Goutte\Client;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -54,19 +55,19 @@ class CrawlArticle extends Command
     {
         $articles = @file_get_contents($api);
 
-        if(empty($articles)){
-              dd("articles empty");
+        if (empty($articles)) {
+            dd("articles empty");
         }
         $articles = json_decode($articles);
 
         foreach ($articles as $index => $article) {
             $user_id      = rand(44, 143);
-            $article_item =Article::firstOrNew([
-                'source_url'=>"https://haxibiao.com/article/$article->id"
+            $article_item = Article::firstOrNew([
+                'source_url' => "https://haxibiao.com/article/$article->id",
             ]);
 
-            $unique=Article::where('source_url',"https://haxibiao.com/article/$article->id")->first();
-            if(!empty($unique)){
+            $unique = Article::where('source_url', "https://haxibiao.com/article/$article->id")->first();
+            if (!empty($unique)) {
                 $this->error("$article->id unique");
                 continue;
             }
@@ -78,15 +79,33 @@ class CrawlArticle extends Command
 
             // category relations
             $categories = Category::whereIn('name', [
-                'qq昵称',
-                '情侣昵称',
-                '昵称大全',
+                '心情',
+                '个性签名',
+                '精选投稿',
+                '情感笔记',
+                '句子',
             ])->get()
             ;
 
+            //user count
+
+            $user              = User::findOrFail($user_id);
+            $user->count_articles = Article::where('user_id', $user->id)->count();
+
+            $articles_user=$user->articles;
+
+            $article_word=0;
+            foreach($articles_user as $article_user){
+                $word=ceil(strlen(strip_tags($article_user->body)) / 2);
+                $article_word=$word+$article_word;
+            }
+            $user->count_words=$article_word;
+            
+            $user->save();
+
             $category = $categories->random();
 
-            $category->count=$category->count();
+            $category->count = $category->count();
 
             $category->save();
 
