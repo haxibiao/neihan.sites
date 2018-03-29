@@ -424,28 +424,24 @@ class FixData extends Command
 
     public function fix_user_count()
     {
-        // $users = User::orderBy('id', 'desc')->get();
+        $users = User::orderBy('id', 'desc')->get();
 
-        // foreach ($users as $user) {
-        //     $user->count_words = 0;
-        //     $user->count_likes = 0;
+        foreach ($users as $user) {
+            $user->count_words = 0;
+            $user->count_likes = 0;
 
-        //     $user->count_articles = $user->articles()->count();
-        //     $articles             = $user->articles;
-        //     foreach ($articles as $article) {
-        //         $article_word      = ceil(strlen(strip_tags($article->body)) / 2);
-        //         $user->count_words = $user->count_words + $article_word;
-        //         $user->count_likes = $user->count_likes + $article->count_likes;
-        //     }
-        //     $user->count_followings = $user->followingUsers->count();
-        //     $this->info("$user->name fix");
-        //     $user->save();
-        // }
+            $user->count_articles = $user->articles()->count();
+            $articles             = $user->articles;
+            foreach ($articles as $article) {
+                $article_word      = ceil(strlen(strip_tags($article->body)) / 2);
+                $user->count_words = $user->count_words + $article_word;
+                $user->count_likes = $user->count_likes + $article->count_likes;
+            }
+            $user->count_followings = $user->followingUsers->count();
+            $this->info("$user->name fix");
+            $user->save();
+        }
 
-
-        $users =User::whereBetween('id',['144','247'])->delete();
-
-        $this->info("users delete success");
     }
 
     public function fix_article_count()
