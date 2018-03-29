@@ -118,7 +118,7 @@ class CrawlArticle extends Command
 
             DB::table('article_category')->where('article_id', $article_item->id)->update(['submit' => '已收录']);
 
-            // sleep(15);
+            sleep(15);
         }
     }
 }
