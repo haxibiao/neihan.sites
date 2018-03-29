@@ -22,6 +22,7 @@ class Article extends Model
         'image_url',
         'is_top',
         'status',
+        'source_url'
     ];
 
     protected $dates = ['edited_at', 'delay_time'];

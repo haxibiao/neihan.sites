@@ -65,6 +65,12 @@ class CrawlArticle extends Command
                 'source_url'=>"https://haxibiao.com/article/$article->id"
             ]);
 
+            $unique=Article::where('source_url',"https://haxibiao.com/article/$article->id")->first();
+            if(!empty($unique)){
+                $this->error("$article->id unique");
+                continue;
+            }
+
             $article_item->title   = $article->title;
             $article_item->body    = $article->body;
             $article_item->status  = 1;
@@ -112,7 +118,7 @@ class CrawlArticle extends Command
 
             DB::table('article_category')->where('article_id', $article_item->id)->update(['submit' => '已收录']);
 
-            sleep(15);
+            // sleep(15);
         }
     }
 }
