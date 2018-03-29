@@ -62,7 +62,7 @@ class QuestionController extends Controller
             foreach ($questions as $question) {
                 $question->count_defalut();
                 $question->relateImage = $question->relateImage();
-                $question->deadline    = diffForHumansCN($question->deadline);
+                $question->deadline    = $question->deadline;
                 if (!empty($question->latestAnswer)) {
                     $question->latestAnswer->answer = strip_tags($question->latestAnswer->answer);
                 }
