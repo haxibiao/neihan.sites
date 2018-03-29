@@ -78,7 +78,9 @@ class CrawlArticle extends Command
 
             // category relations
             $categories = Category::whereIn('name', [
-                '唯美图片',
+                'qq昵称',
+                '情侣昵称',
+                '昵称大全',
             ])->get()
             ;
 
