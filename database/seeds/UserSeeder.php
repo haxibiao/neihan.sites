@@ -18,11 +18,5 @@ class UserSeeder extends Seeder
             $user->avatar    = $user->avatar();
             $user->save();
         }
-
-        $user_admin=User::where('name','汤圆er！')->first();
-
-        $user_admin->is_admin=1;
-
-        $user_admin->save();
     }
 }
