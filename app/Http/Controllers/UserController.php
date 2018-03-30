@@ -211,6 +211,19 @@ class UserController extends Controller
         if ($user) {
             $user->status = -1;
             $user->save();
+
+            $articles =$user->articles;
+
+            foreach($articles as $article){
+                 $article->status =-1;
+                 $article->save();
+            }
+
+            $comments=$user->comments;
+
+            foreach($comments as $comment){
+                 $comments->delete();
+            }
         }
         return redirect()->back();
     }
