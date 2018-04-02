@@ -41,21 +41,30 @@ class IndexController extends Controller
             //     ->paginate(10);
             // if (!$articles->isEmpty()) {
             //     $has_follow_articles = true;
-            // }
+            // }p
 
         }
 
-        if (!$has_follow_articles) {
-            $categories = Category::where('type', 'article')
-                ->where('count', '>', 0)
-                ->orderBy('id', 'desc')
-                ->take(7)
-                ->get();
-      
-            $articles = Article::with('user')->with('category')
-                ->where('status', '>', 0)
-                ->orderBy('created_at', 'desc')
-                ->paginate(10);
+        $articles=Article::with('user')->with('category')
+        ->whereHas('User',function($q){
+             $q->where('is_editor',1);
+        })
+        ->where('status','>',0)
+        ->orderBy('id','desc')
+        ->paginate(10);
+
+        $categories = Category::where('type', 'article')
+            ->where('count', '>', 0)
+            ->orderBy('id', 'desc')
+            ->take(7)
+            ->get();
+
+
+        if(empty($articles)){
+        $articles = Article::with('user')->with('category')
+            ->where('status', '>', 0)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
         }
 
         //为VUEajax加载准备数据
