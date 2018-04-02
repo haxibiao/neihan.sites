@@ -25,15 +25,12 @@ export default {
   name: 'CategoryList',
 
   mounted(){
-    if(this.loginCheck())
-     {
         this.fetchData();
-     }
   },
 
   methods:{
       fetchData(){
-         var api=window.tokenize('/api/category/commend');
+         var api='/api/category/commend';
          var vm =this;
          this.counter ++;
          $(this.$refs.fresh).css('transform',`rotate(${360*this.counter}deg)`);
