@@ -21,6 +21,7 @@ class CommentController extends Controller
         } else {
             $comment->lou = Comment::where('commentable_id', $request->get('commentable_id'))
                 ->where('commentable_type', get_polymorph_types($request->get('commentable_type')))
+                ->where('comment_id',null)
                 ->count() + 1;
         }
         //if article_author commment
