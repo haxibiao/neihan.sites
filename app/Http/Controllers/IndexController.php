@@ -87,7 +87,7 @@ class IndexController extends Controller
         if ($request->ajax() || request('debug')) {
 
             foreach ($articles as $article) {
-                $article->time_ago      = $article->timeAgo();
+                $article->time_ago      = $article->updatedAt();
                 $article->has_image     = !empty($article->image_url);
                 $article->primary_image = $article->primaryImage();
                 $article->small_img     = get_small_image($article->image_url);
