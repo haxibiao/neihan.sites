@@ -152,6 +152,11 @@ class ArticleController extends Controller
         if ($agent->isRobot()) {
             $article->hits_robot = $article->hits_robot + 1;
         }
+
+        $timestamps=$article->timestamps;
+
+        $article->timestamps=false;
+
         $article->save();
 
         $tips=Tip::with('user')->where('tipable_id',$article->id)->get();
@@ -160,8 +165,9 @@ class ArticleController extends Controller
 
         //fix_article_count
 
-        $this->article_coment_count($article);
+        $article->timestamps=$timestamps;
 
+        $this->article_coment_count($article);
         //fix for show
         $article->body = $this->fix_body($article->body);
 
