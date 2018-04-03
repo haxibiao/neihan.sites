@@ -9,11 +9,13 @@ use Auth;
 use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 use Illuminate\Http\Request;
 use RuntimeException;
+use Illuminate\Support\Facades\Cache;
 
 class IndexController extends Controller
 {
     public function index(Request $request)
     {
+        $data             = (object) [];
         $has_follow_articles = false;
         //TODO:以后优化取数组算法
         if (Auth::check()) {
@@ -45,12 +47,19 @@ class IndexController extends Controller
 
         }
 
+        $articles_top=Cache::get('commend_index_article');
+
+        if(!empty($articles_top)){
+            $articles_tops=Article::whereIn('id',$articles_top)->get();
+            $data->articles_tops=$articles_tops;
+        }
+
         $articles=Article::with('user')->with('category')
         ->whereHas('User',function($q){
              $q->where('is_editor',1);
         })
+        ->orderBy('updated_at','desc')
         ->where('status','>',0)
-        ->orderBy('id','desc')
         ->paginate(10);
 
         $categories = Category::where('type', 'article')
@@ -81,7 +90,6 @@ class IndexController extends Controller
             return $articles;
         }
 
-        $data             = (object) [];
         $data->categories = $categories;
         $data->articles   = $articles;
         $data->carousel   = Article::where('is_top', 1)->orderBy('id', 'desc')->take(8)->get();

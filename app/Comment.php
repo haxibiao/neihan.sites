@@ -14,6 +14,10 @@ class Comment extends Model
         'commentable_id',
     ];
 
+    protected $touches= [
+        'commentable'
+    ];
+
     public function commented()
     {
         return $this->belongsTo(\App\Comment::class);

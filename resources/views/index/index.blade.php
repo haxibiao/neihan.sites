@@ -18,6 +18,10 @@
                 <div class="split_line">
                 </div>
                 {{-- 文章摘要 --}}
+                @if(!empty($data->articles_tops))
+                    @include('parts.list._article_list_category_user',['articles'=>$data->articles_tops])
+                @endif
+
                 @include('parts.list.article_list_category',['articles'=>$data->articles])
 
 

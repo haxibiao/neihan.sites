@@ -96,6 +96,7 @@ Route::get('/video/{id}', 'Api\VideoController@getShow');
 //文章列表
 Route::get('/articles', 'Api\ArticleController@getIndex');
 Route::get('/article/{id}', 'Api\ArticleController@getShow');
+Route::get('/article/{id}/commend-index','Api\ArticleController@commendIndex');
 
 //投稿
 require_once 'api/request_article.php';

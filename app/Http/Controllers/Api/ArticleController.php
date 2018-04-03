@@ -9,6 +9,7 @@ use App\Notifications\ArticleApproved;
 use App\Notifications\CategoryRequested;
 use App\Query;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ArticleController extends Controller
 {
@@ -485,6 +486,21 @@ class ArticleController extends Controller
         }
 
         return $article;
+    }
+
+    public function commendIndex(Request $request,$id)
+    {
+          $cache_key="commend_index_article";
+          $commend_articles=Cache::get($cache_key);
+          if(!$commend_articles){
+               $commend_articles=[];
+               array_push($commend_articles,$id);
+               Cache::forever($cache_key,$commend_articles);
+          }else{
+               array_push($commend_articles,$id);
+          }
+
+          return $id;
     }
 
 }
