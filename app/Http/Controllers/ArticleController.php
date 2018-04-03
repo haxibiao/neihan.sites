@@ -26,6 +26,28 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+       public function push(Request $request)
+    {
+        $urls     = [];
+        $number   = $request->number;
+        $articles = Article::orderBy('id', 'desc')
+            ->where('status', '>', 0)->take($number)->get();
+        foreach ($articles as $article) {
+            $urls[] = 'http://ainicheng.com/article/' . $article->id;
+        }
+        $api     = 'http://data.zz.baidu.com/urls?appid=1585927114272168&token=0T7GLkgH83TrfdXL&type=realtime';
+        $ch      = curl_init();
+        $options = array(
+            CURLOPT_URL            => $api,
+            CURLOPT_POST           => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POSTFIELDS     => implode("\n", $urls),
+            CURLOPT_HTTPHEADER     => array('Content-Type: text/plain'),
+        );
+        curl_setopt_array($ch, $options);
+        $result = curl_exec($ch);
+        return $result;
+    }
     public function index(Request $request)
     {
         if ($request->get('draft')) {

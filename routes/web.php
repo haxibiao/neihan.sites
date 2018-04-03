@@ -57,6 +57,8 @@ Route::get('/interlocution/more', function () {
 Route::get('/search', 'SearchController@search');
 
 //文章
+
+Route::post('/push', 'ArticleController@push')->name('article.push');
 Route::resource('/article', 'ArticleController');
 Route::resource('/category', 'CategoryController');
 Route::get('/categories', 'CategoryController@categories_hot');

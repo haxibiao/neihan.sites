@@ -116,6 +116,30 @@
             </div>
             <div class="row">
                 @if(Auth::user()->is_editor || Auth::user()->is_admin)
+                 <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">文章:</h3>
+                        </div>
+                        <div class="panel-body">
+                            {!! Form::open(['method' => 'POST', 'route' => 'article.push', 'class' => 'form-horizontal']) !!}
+                            
+                                <div class="form-group{{ $errors->has('number') ? ' has-error' : '' }}">
+                                    {!! Form::label('number', '文章数目') !!}
+                                    {!! Form::text('number', null, ['class' => 'form-control', 'required' => 'required']) !!}
+                                    <small class="text-danger">{{ $errors->first('number') }}</small>
+                                </div>
+                            
+                                <div class="btn-group  ">
+                                    {!! Form::reset("重置", ['class' => 'btn btn-warning']) !!}
+                                    {!! Form::submit("提交", ['class' => 'btn btn-success']) !!}
+                                </div>
+                            
+                            {!! Form::close() !!}
+                             
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
