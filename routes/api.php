@@ -85,7 +85,7 @@ Route::middleware('auth:api')->post('/user/{id}/avatar','Api\UserController@upda
 
 //所有分类
 Route::get('categories', 'Api\CategoryController@getIndex');
-Route::get('/category/commend','Api\CategoryController@commendCategory');
+Route::get('/category/commend/{type?}','Api\CategoryController@commendCategory');
 //GET分类下的文章
 Route::middleware('auth:api')->get('/category/{id}','Api\CategoryController@show');
 

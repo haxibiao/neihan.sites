@@ -5,7 +5,7 @@
             <span>
                 热门专题
             </span>
-            <a href="javascript:;" @click="fetchData" class="rotation">
+            <a href="javascript:;" @click="fetchData(false)" class="rotation">
                 <i class="iconfont icon-shuaxin" ref="fresh">
                 </i>
                 换一批
@@ -29,8 +29,8 @@ export default {
   },
 
   methods:{
-      fetchData(){
-         var api='/api/category/commend';
+      fetchData(first=true){
+         var api=first?'/api/category/commend/first':'/api/category/commend';
          var vm =this;
          this.counter ++;
          $(this.$refs.fresh).css('transform',`rotate(${360*this.counter}deg)`);
