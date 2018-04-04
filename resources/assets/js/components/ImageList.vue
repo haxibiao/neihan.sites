@@ -1,6 +1,6 @@
 <template>
 	<div class="row image-list">
-		<div v-for="image in images" class="col-xs-4"><img :src="image.path" alt="" simditor></div>		
+		<div v-for="image in images_first" class="col-xs-4"><img :src="image.path" alt="" simditor></div>		
 	</div>
 </template>
 
@@ -9,22 +9,30 @@ export default {
 
   name: 'ImageList',
 
+  props:['images'],
+
   mounted() {
     this.fetchData();
+  },
+
+  watch:{
+     images(){
+        this.images_first=this.images;
+     }
   },
 
   methods: {
     fetchData() {
       var _this = this;
       window.axios.get('/api/image').then(function(response){
-        _this.images = response.data.data;
+        _this.images_first = response.data.data;
       });
     }
   },
 
   data () {
     return {
-      images: []
+      images_first: [],
     }
   }
 }

@@ -5,10 +5,20 @@
 	    	<div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	        <h4 class="modal-title" id="gridSystemModalLabel">选择最近图库里的图片</h4>
+	             <div class="row">
+					  <div class="col-lg-6">
+					    <div class="input-group">
+					      <input type="text" class="form-control" placeholder="搜索图片的关键字">
+					      <span class="input-group-btn">
+					        <button class="btn btn-default" type="button" @click="fetchData">搜索</button>
+					      </span>
+					    </div>
+					  </div>
+				</div>
 		    </div>
         <div class="modal-body">
         	<div class="col-md-12">
-        		<image-list></image-list>
+        		<image-list :images="this.images" ></image-list>
         	</div>
         </div>
 	    </div>
@@ -21,9 +31,20 @@ export default {
 
   name: 'ImageListModal',
 
+  methods:{
+
+  	fetchData(){
+  		var api=window.tokenize('/api/question/image');
+  		var vm=this;
+  		window.axios.get(api).then(function(response){
+  			 vm.images=response.data;
+  		});
+  	}
+  },
+
   data () {
     return {
-
+    	images:[],
     }
   }
 }
