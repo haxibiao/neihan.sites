@@ -56,6 +56,7 @@ class IndexController extends Controller
             ->whereHas('User', function ($q) {
                 $q->where('is_editor', 1);
             })
+            ->whereNotIn('id',$articles_top)
             ->orderBy('updated_at', 'desc')
             ->where('status', '>', 0)
             ->paginate(10);
