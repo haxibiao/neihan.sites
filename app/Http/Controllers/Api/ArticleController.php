@@ -488,27 +488,28 @@ class ArticleController extends Controller
         return $article;
     }
 
-    public function commendIndex(Request $request,$id)
+    public function commendIndex(Request $request, $id)
     {
-          $cache_key="commend_index_article";
-          $commend_articles=Cache::get($cache_key);
-          if(!$commend_articles){
-               $commend_articles=[];
-               array_push($commend_articles,$id);
-               Cache::forever($cache_key,$commend_articles);
-          }else{
-               array_push($commend_articles,$id);
-          }
+        $cache_key        = "commend_index_article";
+        $commend_articles = Cache::get($cache_key);
+        if (!$commend_articles) {
+            $commend_articles = [];
+            array_push($commend_articles, $id);
+            Cache::forever($cache_key, $commend_articles);
+        } else {
+            array_push($commend_articles, $id);
+            Cache::forever($cache_key, $commend_articles);
+        }
 
-          return $id;
+        return $id;
     }
 
-    public function deleteCommendIndex(Request $request,$id)
+    public function deleteCommendIndex(Request $request, $id)
     {
-          $cache_key="commend_index_article";
-          $commend_articles=Cache::get($cache_key);
+        $cache_key        = "commend_index_article";
+        $commend_articles = Cache::get($cache_key);
 
-          if (is_array($commend_articles) && in_array($id, $commend_articles)) {
+        if (is_array($commend_articles) && in_array($id, $commend_articles)) {
             $index = array_search($id, $commend_articles);
             if ($index >= 0) {
                 array_splice($commend_articles, $index, 1);
@@ -518,6 +519,12 @@ class ArticleController extends Controller
                 return response($content = '没有找到该条历史记录', $status = 404);
             }
         }
+
+        if ($id==-1) {
+            Cache::forget($cache_key);
+            return dd('delete all success');
+        }
+
     }
 
 }

@@ -47,18 +47,28 @@ class IndexController extends Controller
 
         $articles_top = Cache::get('commend_index_article');
 
+        // dd($articles_top);
         if (!empty($articles_top)) {
             $articles_tops       = Article::whereIn('id', $articles_top)->get();
             $data->articles_tops = $articles_tops;
-        }
 
-        $articles = Article::with('user')->with('category')
+            $articles = Article::with('user')->with('category')
+            ->whereHas('User', function ($q) {
+                $q->where('is_editor', 1);
+            })
+            ->whereNotIn('id',$articles_top)
+            ->orderBy('updated_at', 'desc')
+            ->where('status', '>', 0)
+            ->paginate(10);
+        }else{
+            $articles = Article::with('user')->with('category')
             ->whereHas('User', function ($q) {
                 $q->where('is_editor', 1);
             })
             ->orderBy('updated_at', 'desc')
             ->where('status', '>', 0)
             ->paginate(10);
+        }
 
         $categories = Category::where('type', 'article')
             ->whereIn('name', [
