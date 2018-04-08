@@ -305,19 +305,21 @@ class FixData extends Command
 
     public function fix_articles()
     {
-        //破除内存限制,这里有可能处理大量数据
-        ini_set('memory_limit', '-1');
+        $articles =Article::where('category_id',73)->get();
 
-        $article = Article::find(1242);
-        $this->info("$article->title done");
-        $article->created_at = '2018-01-28 17:09:36';
-        $article->save();
+        foreach($articles as $article){
+             $article->category_id = 67;
+             $article->save();
 
-        $article = Article::find(1241);
-        $this->info("$article->title done");
-        $article->created_at = '2018-01-28 17:09:36';
-        $article->save();
+             $article->categories()->sync([
+                67=>[
+                    'submit' => '已收录',
+                ]
+         ]);
 
+             $this->info("$article->id fix success");
+        }
+        
     }
 
     public function fix_article_image($article)
