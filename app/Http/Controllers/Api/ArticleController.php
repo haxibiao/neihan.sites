@@ -9,6 +9,7 @@ use App\Notifications\ArticleApproved;
 use App\Notifications\CategoryRequested;
 use App\Query;
 use App\User;
+use App\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -33,6 +34,8 @@ class ArticleController extends Controller
             'name_en' => $category['name_en'],
         ]);
         // if (!$category->id)
+
+
         {
             $category->user_id = $user_id;
             $category->status  = 1;
@@ -51,7 +54,8 @@ class ArticleController extends Controller
         $article->user_id     = $user_id;
         $article->category_id = $category->id;
         $article->status      = 1;
-        $article->count_words = count_words($article->body);
+        $article->words = count_words($article->body);
+        $article->body =fix_article_body_images($article->body);
 
         //random time
         $article->updated_at = strtotime($jsonData['time']);
@@ -61,7 +65,7 @@ class ArticleController extends Controller
         //images
         if (!empty($jsonData['article']['images'])) {
             foreach ($jsonData['article']['images'] as $image) {
-                $image = Image::firstOrnew([
+                $image = \App\Image::firstOrnew([
                     'path' => $image['path'],
                 ]);
                 $image->source_url = 'https://haxibiao.com/' . $image['path'];
@@ -81,9 +85,9 @@ class ArticleController extends Controller
         $article->save(['timestamp' => false]);
 
         //user
-        $user                 = User::findOrFail($user_id);
+        $user                 = \App\User::findOrFail($user_id);
         $user->count_articles = $user->articles()->count();
-        $user->count_words    = $user->articles()->sum('count_words');
+        $user->count_words    = $user->articles()->sum('words');
         $user->save();
 
         //category

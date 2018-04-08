@@ -79,6 +79,11 @@ class Category extends Model
         return str_replace(".logo.jpg", ".logo.small.jpg", $this->logo);
     }
 
+    public function publishedArticles()
+    {
+        return $this->belongsToMany('App\Article')->where('status','>',0)->withPivot('submit')->withTimestamps();
+    }
+
     //用于计算的方法
 
     public function topAdmins()
