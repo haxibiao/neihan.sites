@@ -29,10 +29,13 @@ class ArticleController extends Controller
         $category = $jsonData['category'];
 
         //category
-        $category = Category::where('name','唯美图片')->first();
+        $categories = Category::whereIn('name',[
+            '昵称大全',
+            'qq昵称',
+        ])->get();
         // if (!$category->id)
 
-
+        $category=$categories->random();
         {
             // $category->user_id = $user_id;
             // $category->status  = 1;
