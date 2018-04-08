@@ -17,7 +17,7 @@ class ArticleController extends Controller
 {
     public function fakeUsers()
     {
-        return User::where('is_editor', 1)->get();
+        return User::whereBetween('id', [44,143])->get();
     }
 
     public function import(Request $request)
@@ -29,21 +29,18 @@ class ArticleController extends Controller
         $category = $jsonData['category'];
 
         //category
-        $category = Category::firstOrnew([
-            'name'    => $category['name'],
-            'name_en' => $category['name_en'],
-        ]);
+        $category = Category::where('name','唯美图片')->first();
         // if (!$category->id)
 
 
         {
-            $category->user_id = $user_id;
-            $category->status  = 1;
-            $category->type    = 'article';
-            $category->save();
+            // $category->user_id = $user_id;
+            // $category->status  = 1;
+            // $category->type    = 'article';
+            // $category->save();
 
             //category admin
-            $category->admins()->syncWithoutDetaching([$user_id => ['is_admin' => 1]]);
+            // $category->admins()->syncWithoutDetaching([$user_id => ['is_admin' => 1]]);
         }
 
         //article
