@@ -8,11 +8,91 @@ use App\Http\Controllers\Controller;
 use App\Notifications\ArticleApproved;
 use App\Notifications\CategoryRequested;
 use App\Query;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class ArticleController extends Controller
 {
+    public function fakeUsers()
+    {
+        return User::where('is_editor', 1)->get();
+    }
+
+    public function import(Request $request)
+    {
+        $data     = $request->get('data');
+        $jsonData = json_decode($data, true);
+        $user_id  = $jsonData['user_id'];
+
+        $category = $jsonData['category'];
+
+        //category
+        $category = Category::firstOrnew([
+            'name'    => $category['name'],
+            'name_en' => $category['name_en'],
+        ]);
+        // if (!$category->id)
+        {
+            $category->user_id = $user_id;
+            $category->status  = 1;
+            $category->type    = 'article';
+            $category->save();
+
+            //category admin
+            $category->admins()->syncWithoutDetaching([$user_id => ['is_admin' => 1]]);
+        }
+
+        //article
+        $article = Article::firstOrnew([
+            'source_url' => $jsonData['article']['source_url'],
+        ]);
+        $article->fill($jsonData['article']);
+        $article->user_id     = $user_id;
+        $article->category_id = $category->id;
+        $article->status      = 1;
+        $article->count_words = count_words($article->body);
+
+        //random time
+        $article->updated_at = strtotime($jsonData['time']);
+        $article->created_at = strtotime($jsonData['time']);
+        $article->save(['timestamp' => false]);
+
+        //images
+        if (!empty($jsonData['article']['images'])) {
+            foreach ($jsonData['article']['images'] as $image) {
+                $image = Image::firstOrnew([
+                    'path' => $image['path'],
+                ]);
+                $image->source_url = 'https://haxibiao.com/' . $image['path'];
+                $image->title      = $article->title;
+                $image->save();
+                $img_ids[] = $image->id;
+            }
+            $article->images()->sync($img_ids);
+        }
+        $article->load('images');
+
+        $article->categories()->syncwithoutDetaching([
+            $category->id => [
+                'submit' => '已收录',
+            ],
+        ]);
+        $article->save(['timestamp' => false]);
+
+        //user
+        $user                 = User::findOrFail($user_id);
+        $user->count_articles = $user->articles()->count();
+        $user->count_words    = $user->articles()->sum('count_words');
+        $user->save();
+
+        //category
+        $category->count = $category->publishedArticles()->count();
+        $category->save();
+
+        return $article;
+    }
+
     public function getIndex(Request $request)
     {
         $query         = $request->get('query');
@@ -520,7 +600,7 @@ class ArticleController extends Controller
             }
         }
 
-        if ($id==-1) {
+        if ($id == -1) {
             Cache::forget($cache_key);
             return dd('delete all success');
         }
