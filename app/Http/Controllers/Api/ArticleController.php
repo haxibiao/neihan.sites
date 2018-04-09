@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Article;
 use App\Category;
 use App\Http\Controllers\Controller;
+use App\Image;
 use App\Notifications\ArticleApproved;
 use App\Notifications\CategoryRequested;
 use App\Query;
 use App\User;
-use App\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -17,7 +17,7 @@ class ArticleController extends Controller
 {
     public function fakeUsers()
     {
-        return User::whereBetween('id', [44,143])->get();
+        return User::whereBetween('id', [44, 143])->get();
     }
 
     public function import(Request $request)
@@ -29,13 +29,15 @@ class ArticleController extends Controller
         $category = $jsonData['category'];
 
         //category
-        $categories = Category::whereIn('name',[ 
-            '心情','个性签名','精选投稿','情感笔记','句子'])->get();
-        
-        
+        // $categories = Category::whereIn('name', [
+        //     '心情', '个性签名', '精选投稿', '情感笔记', '句子'])->get();
+
+        $categories = Category::whereIn('name', [
+            '唯美图片'])->get();
+
         // if (!$category->id)
 
-        $category=$categories->random();
+        $category = $categories->random();
         {
             // $category->user_id = $user_id;
             // $category->status  = 1;
@@ -54,8 +56,8 @@ class ArticleController extends Controller
         $article->user_id     = $user_id;
         $article->category_id = $category->id;
         $article->status      = 1;
-        $article->words = count_words($article->body);
-        $article->body =fix_article_body_images($article->body);
+        $article->words       = count_words($article->body);
+        $article->body        = fix_article_body_images($article->body);
 
         //random time
         $article->updated_at = strtotime($jsonData['time']);
@@ -64,12 +66,16 @@ class ArticleController extends Controller
 
         //images
         if (!empty($jsonData['article']['images'])) {
-            foreach ($jsonData['article']['images'] as $image) {
+            foreach ($jsonData['article']['images'] as $index => $image) {
                 $image = \App\Image::firstOrnew([
                     'path' => $image['path'],
                 ]);
                 $image->source_url = 'https://haxibiao.com/' . $image['path'];
-                $image->title      = $article->title;
+
+                if ($index == 0) {
+                    $article->image_url = $image->source_url;
+                }
+                $image->title = $article->title;
                 $image->save();
                 $img_ids[] = $image->id;
             }
