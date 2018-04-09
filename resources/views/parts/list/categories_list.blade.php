@@ -14,7 +14,7 @@
                         <span>热门专题</span>
                     </div>
                 </div>
-                <a class="help" href="javascript:;" target="_blank">
+                <a class="help" href="/article/2260" target="_blank">
                     <i class="iconfont icon-bangzhu">
                     </i>
                     如何创建并玩转专题
