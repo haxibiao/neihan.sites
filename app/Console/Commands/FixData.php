@@ -9,11 +9,11 @@ use App\Favorite;
 use App\Image;
 use App\Like;
 use App\Question;
+use App\Tip;
+use App\Transaction;
 use App\User;
 use App\Video;
-use App\Transaction;
 use Illuminate\Console\Command;
-use App\Tip;
 
 class FixData extends Command
 {
@@ -305,21 +305,26 @@ class FixData extends Command
 
     public function fix_articles()
     {
-        $articles =Article::where('category_id',73)->get();
+        Article::whereBetween('id', [2300, 2600])->chunk(100, function ($articles) {
+            foreach ($articles as $article) {
+                $preg = '/<img.*?src="(.*?)".*?>/is';
 
-        foreach($articles as $article){
-             $article->category_id = 67;
-             $article->save();
+                preg_match_all($preg, $article->body, $match);
 
-             $article->categories()->sync([
-                67=>[
-                    'submit' => '已收录',
-                ]
-         ]);
+                if (!empty($match[1]) && empty($article->image_url)) {
+                    foreach ($match[1] as $index => $image_url) {
+                        if ($index == 0) {
+                            $article->image_url = $image_url;
+                            $article->save(['timestamp' => false]);
+                            $this->info($article->id.'fix success');
+                        }
+                    }
+                } else {
+                    $this->comment($article->id . 'not exisit images or dont can images');
+                }
+            }
+        });
 
-             $this->info("$article->id fix success");
-        }
-        
     }
 
     public function fix_article_image($article)
@@ -470,36 +475,37 @@ class FixData extends Command
         });
     }
 
-    public function fix_tip(){
-            $tips =Transaction::where('type','打赏')->where('status','已到账')->where('log','like','%'.'article'.'%')->get();
+    public function fix_tip()
+    {
+        $tips = Transaction::where('type', '打赏')->where('status', '已到账')->where('log', 'like', '%' . 'article' . '%')->get();
 
-            $preg ='/<a .*?href="\/article\/(.*?)".*?>/is';
-            $preg_user ='/<a .*?href="\/user\/(.*?)".*?>/is';
+        $preg      = '/<a .*?href="\/article\/(.*?)".*?>/is';
+        $preg_user = '/<a .*?href="\/user\/(.*?)".*?>/is';
 
-            foreach($tips as $tip){
-                if(!str_contains($tip->log,'您')){
-                    continue;
-                }
-
-                preg_match_all($preg, $tip->log, $match);
-
-                preg_match_all($preg_user, $tip->log, $match_user);
-
-                // $tip_new =Tip::create([
-                //     'amount'=>$tip->amount,
-                //     'tipable_id'=>$match[1],
-                //     'tipable_type'=>'articles',
-                //     'user_id'=>$match_user[1],
-                // ]); 
-
-                $tip_new =new Tip();
-
-                $tip_new->amount=$tip->amount;
-                $tip_new->tipable_id=$match[1][0];
-                $tip_new->tipable_type='articles';
-                $tip_new->user_id=$match_user[1][0];
-
-                $tip_new->save();
+        foreach ($tips as $tip) {
+            if (!str_contains($tip->log, '您')) {
+                continue;
             }
+
+            preg_match_all($preg, $tip->log, $match);
+
+            preg_match_all($preg_user, $tip->log, $match_user);
+
+            // $tip_new =Tip::create([
+            //     'amount'=>$tip->amount,
+            //     'tipable_id'=>$match[1],
+            //     'tipable_type'=>'articles',
+            //     'user_id'=>$match_user[1],
+            // ]);
+
+            $tip_new = new Tip();
+
+            $tip_new->amount       = $tip->amount;
+            $tip_new->tipable_id   = $match[1][0];
+            $tip_new->tipable_type = 'articles';
+            $tip_new->user_id      = $match_user[1][0];
+
+            $tip_new->save();
+        }
     }
 }
