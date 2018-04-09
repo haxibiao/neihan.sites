@@ -19,6 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+
 //APP登录
 Route::get('login', 'Api\UserController@login');
 
@@ -116,6 +118,7 @@ Route::get('/video/{id}/del-{key}', 'Api\VideoController@deleteRelation');
 Route::get('/video/{id}/{key}', 'Api\VideoController@getRelation');
 
 //question
+Route::get('/commend-question','Api\QuestionController@commend');
 Route::middleware('auth:api')->get('/question/search','Api\QuestionController@search_question');
 Route::middleware('auth:api')->get('/question/image','Api\QuestionController@search_question_image');
 Route::get('/question/{id}','Api\QuestionController@get');
