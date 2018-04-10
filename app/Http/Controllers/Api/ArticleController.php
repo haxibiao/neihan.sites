@@ -29,11 +29,11 @@ class ArticleController extends Controller
         $category = $jsonData['category'];
 
         //category
-        // $categories = Category::whereIn('name', [
-        //     '心情', '个性签名', '精选投稿', '情感笔记', '句子'])->get();
-
         $categories = Category::whereIn('name', [
-            '昵称大全','qq昵称'])->get();
+            '心情', '个性签名', '精选投稿', '情感笔记', '句子'])->get();
+
+        // $categories = Category::whereIn('name', [
+        //     '昵称大全','qq昵称'])->get();
 
 
         // $categories = Category::whereIn('name', [
