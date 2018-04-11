@@ -251,7 +251,7 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
 
-        $article->update($request->except('image_url', 'category_id'));
+        $article->update($request->except('image_url', 'category_id','user_id'));
 
         $category_ids = request('category_ids');
         if (is_array($category_ids) && !empty($category_ids)) {
