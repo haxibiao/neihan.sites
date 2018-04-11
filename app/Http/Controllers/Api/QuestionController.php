@@ -27,8 +27,15 @@ class QuestionController extends Controller
         $query  = $request->get('q');
         $images = Image::where('title', 'like', '%' . $query . '%')
             ->orderBy('id', 'desc')
-            ->take(10)
             ->get();
+
+        $images=$images->random(10);
+
+        foreach($images as $image){
+            if($image->source_url){
+                $image->path=$image->source_url;
+            }
+        }
 
         return $images;
     }

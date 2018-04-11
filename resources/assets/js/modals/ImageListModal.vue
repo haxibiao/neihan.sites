@@ -8,12 +8,16 @@
 	             <div class="row">
 					  <div class="col-lg-6">
 					    <div class="input-group">
-					      <input type="text" class="form-control" placeholder="搜索图片的关键字">
+					      <input type="text" class="form-control" placeholder="搜索图片的关键字" v-model="query">
 					      <span class="input-group-btn">
 					        <button class="btn btn-default" type="button" @click="fetchData">搜索</button>
 					      </span>
 					    </div>
 					  </div>
+
+				      <span class="input-group-btn">
+					        <button class="btn btn-info" type="button" @click="fetchData">换一批</button>
+				      </span>
 				</div>
 		    </div>
         <div class="modal-body">
@@ -34,8 +38,9 @@ export default {
   methods:{
 
   	fetchData(){
-  		var api=window.tokenize('/api/question/image');
+  		var api=window.tokenize('/api/question/image?q='+this.query);
   		var vm=this;
+
   		window.axios.get(api).then(function(response){
   			 vm.images=response.data;
   		});
@@ -45,6 +50,7 @@ export default {
   data () {
     return {
     	images:[],
+    	query:null,
     }
   }
 }
