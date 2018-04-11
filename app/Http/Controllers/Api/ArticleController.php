@@ -17,7 +17,8 @@ class ArticleController extends Controller
 {
     public function fakeUsers()
     {
-        return User::whereBetween('id', [44, 143])->get();
+        // return User::whereBetween('id', [44, 143])->get();
+        return User::where('is_editor',1)->get();
     }
 
     public function import(Request $request)
@@ -32,12 +33,12 @@ class ArticleController extends Controller
         // $categories = Category::whereIn('name', [
         //     '心情', '个性签名', '精选投稿', '情感笔记', '句子'])->get();
 
-        // $categories = Category::whereIn('name', [
-        //     '昵称大全','qq昵称'])->get();
-
-
         $categories = Category::whereIn('name', [
-            '唯美图片'])->get();
+            '昵称大全','qq昵称'])->get();
+
+
+        // $categories = Category::whereIn('name', [
+        //     '唯美图片'])->get();
 
         // if (!$category->id)
 
@@ -62,6 +63,12 @@ class ArticleController extends Controller
         $article->status      = 1;
         $article->words       = count_words($article->body);
         $article->body        = fix_article_body_images($article->body);
+
+        $preg ='/(.*?)<\/br>/is';
+
+        preg_match($preg,$article->body, $match);
+
+        $article->title='好看的游戏昵称 个性游戏昵称'.'-'.$match[1];
 
         //random time
         $article->updated_at = strtotime($jsonData['time']);
