@@ -58,13 +58,17 @@
 		</div>
 		<div class="search_content">
 			<div class="sort_type">
-				<a href="javascript:;" class="active">综合排序</a>
+				<a id='all' href="javascript:;" class="active" @click="fetchData()">综合排序</a>
 				<em>·</em>
 				<a id="hits" href="javascript:;" @click="fetchData(1,order='hits')" >热门文章</a>
 				<em>·</em>
 				<a id="created_at" href="javascript:;" @click="fetchData(1,order='created_at')" >最新发布</a>
 				<em>·</em>
 				<a id="updated_at" href="javascript:;" @click="fetchData(1,order='updated_at')" >最新评论</a>
+				<em>·</em>
+				<a id="title" href="javascript:;" @click="fetchData(1,order='title')" >按照标题排序</a>
+				<em>·</em>
+				<a id="body" href="javascript:;" @click="fetchData(1,order='body')" >按照内容排序</a>
 				<span class="result">{{ this.article_count }}个结果</span>
 			</div>
 			<div class="article_list">
@@ -147,6 +151,9 @@ export default {
         	$('.sort_type a').attr('class','');
         	$('#'+order).addClass('active');
         	formdata.append('order',order);
+        }else{
+        	$('.sort_type a').attr('class','');
+        	$('#all').addClass('active');
         }
 
         window.axios.post(api,formdata).then(function(response){

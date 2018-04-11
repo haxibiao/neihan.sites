@@ -8,7 +8,6 @@ use App\Collection;
 use App\Http\Controllers\Controller;
 use App\Query;
 use App\User;
-use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -37,7 +36,7 @@ class SearchController extends Controller
         $this->save_user_serachHistory($user_id, $query);
 
         if ($type == "note") {
-            return empty($order)?$this->search_article($query):$this->search_article($query,$order);
+            return empty($order) ? $this->search_article($query) : $this->search_article($query, $order);
         }
 
         if ($type == 'user') {
@@ -54,19 +53,30 @@ class SearchController extends Controller
 
     }
 
-    public function search_article($query,$order='id')
+    public function search_article($query, $order = 'id')
     {
-        $articles = Article::with('user')
-            ->whereHas('tags',function($q) use($query){
-                $q->where('name','like','%'.$query.'%');
-            })
-            ->orWhere('title', 'like', '%' . $query . '%')
-            ->orWhere('body', 'like', '%' . $query . '%')
-            ->orderBy($order, 'desc')
-            ->paginate(5)
-        ;
+        if ($order == "title") {
+            $articles = Article::with('user')
+                ->Where('title', 'like', '%' . $query . '%')
+                ->orderBy('id', 'desc')
+                ->paginate(5);
+        } elseif ($order == 'body') {
+            $articles = Article::with('user')
+                ->Where('body', 'like', '%' . $query . '%')
+                ->orderBy('id', 'desc')
+                ->paginate(5);
+        } else {
+            $articles = Article::with('user')
+                ->Where('title', 'like', '%' . $query . '%')
+                ->orWhere('body', 'like', '%' . $query . '%')
+                ->orWhereHas('tags', function ($q) use ($query) {
+                    $q->where('name', 'like', '%' . $query . '%');
+                })
+                ->orderBy($order, 'desc')
+                ->paginate(5);
+        }
 
-        if($articles->isEmpty()){
+        if ($articles->isEmpty()) {
             return;
         }
         //处理数据
