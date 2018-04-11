@@ -6855,7 +6855,7 @@
         $("img[simditor]").click(function(e) {
           _selection.restore();
           _selection.insertNode(this.outerHTML);
-          _selection.insertNode("<p>添加图片的说明...</p>");
+          // _selection.insertNode("<p>添加图片的说明...</p>");
         });
         window.simditor_img_bond = 1;
       }
