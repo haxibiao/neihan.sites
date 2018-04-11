@@ -32,11 +32,12 @@ class SearchController extends Controller
         $type    = $request->type;
         $query   = $request->get('query');
         $user_id = $request->get('user_id');
+        $order   = $request->get('order');
 
         $this->save_user_serachHistory($user_id, $query);
 
         if ($type == "note") {
-            return $this->search_article($query);
+            return empty($order)?$this->search_article($query):$this->search_article($query,$order);
         }
 
         if ($type == 'user') {
@@ -53,7 +54,7 @@ class SearchController extends Controller
 
     }
 
-    public function search_article($query)
+    public function search_article($query,$order='id')
     {
         $articles = Article::with('user')
             ->whereHas('tags',function($q) use($query){
@@ -61,7 +62,7 @@ class SearchController extends Controller
             })
             ->orWhere('title', 'like', '%' . $query . '%')
             ->orWhere('body', 'like', '%' . $query . '%')
-            ->orderBy('id', 'desc')
+            ->orderBy($order, 'desc')
             ->paginate(5)
         ;
 

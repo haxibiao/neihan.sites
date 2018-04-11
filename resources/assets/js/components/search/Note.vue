@@ -60,11 +60,11 @@
 			<div class="sort_type">
 				<a href="javascript:;" class="active">综合排序</a>
 				<em>·</em>
-				<a href="javascript:;">热门文章</a>
+				<a id="hits" href="javascript:;" @click="fetchData(1,order='hits')" >热门文章</a>
 				<em>·</em>
-				<a href="javascript:;">最新发布</a>
+				<a id="created_at" href="javascript:;" @click="fetchData(1,order='created_at')" >最新发布</a>
 				<em>·</em>
-				<a href="javascript:;">最新评论</a>
+				<a id="updated_at" href="javascript:;" @click="fetchData(1,order='updated_at')" >最新评论</a>
 				<span class="result">{{ this.article_count }}个结果</span>
 			</div>
 			<div class="article_list">
@@ -113,7 +113,7 @@
 
 
 			<ul class="pagination" v-if="this.lastPage > 1">
-	            <li v-for="page in this.lastPage" @click="loadMore(page)">
+	            <li v-for="page in this.lastPage" @click="order?loadMore(page,order):loadMore(page)">
 	                <a :class="page==currentPage ?'active':''">
 	                    {{ page }}
 	                </a>
@@ -136,12 +136,19 @@ export default {
   },
 
   methods:{
-  	fetchData(page=null){
+  	fetchData(page=null,order=null){
         var vm=this;
         var api= page ?'/api/v2/search/note?page='+page :'/api/v2/search/note';
         var formdata =new FormData();
         formdata.append('query',this.query);
         formdata.append('user_id',window.current_user_id);
+
+        if(order){
+        	$('.sort_type a').attr('class','');
+        	$('#'+order).addClass('active');
+        	formdata.append('order',order);
+        }
+
         window.axios.post(api,formdata).then(function(response){
         	vm.articles=response.data.articles.data;
         	vm.article_count =response.data.articles.total;
@@ -153,9 +160,9 @@ export default {
         });
   	},
 
-  	loadMore(page){
-        this.fetchData(page);
-  			this.currentPage=page;
+  	loadMore(page,order){
+        order?this.fetchData(page,order):this.fetchData(page);
+		this.currentPage=page;
   	}
   },
 
@@ -167,7 +174,7 @@ export default {
     	articles:[],
     	users:[],
     	categories:[],
-    	currentPage:1
+    	currentPage:1,
     }
   }
 }
