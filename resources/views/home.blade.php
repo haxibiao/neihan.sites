@@ -148,6 +148,7 @@
                         <div class="panel-body">
                             <a class="btn btn-primary top5" href="/article/create" role="button">创建文章</a>
                             <a class="btn btn-warning top5" href="/article" role="button">管理文章</a>
+                            <a class="btn btn-warning top5" href="/article?myArticle=1" role="button">我的文章</a>
                             <a class="btn btn-warning top5" href="/article/?draft=1" role="button">管理草稿</a>
                             <a class="btn btn-danger top5" href="/category?type=article" role="button">所有专题</a>
                             <a class="btn btn-info top5" href="/category/create" role="button">创建专题</a>
