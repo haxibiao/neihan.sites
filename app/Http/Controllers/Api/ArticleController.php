@@ -68,7 +68,7 @@ class ArticleController extends Controller
 
         preg_match($preg,$article->body, $match);
 
-        $article->title='好看的游戏昵称 个性游戏昵称'.'-'.$match[1];
+        $article->title='唯美的昵称 经典昵称 有内涵的昵称'.'-'.$match[1];
 
         //random time
         $article->updated_at = strtotime($jsonData['time']);
