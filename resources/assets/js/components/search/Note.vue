@@ -60,18 +60,20 @@
 			<div class="sort_type">
 				<a id='all' href="javascript:;" class="active" @click="fetchData()">综合排序</a>
 				<em>·</em>
+				<a id="title" href="javascript:;" @click="fetchData(1,order='title')" >按照标题排序</a>
+				<em>·</em>
+				<a id="body" href="javascript:;" @click="fetchData(1,order='body')" >按照内容排序</a>
+				<em>·</em>
 				<a id="hits" href="javascript:;" @click="fetchData(1,order='hits')" >热门文章</a>
 				<em>·</em>
 				<a id="created_at" href="javascript:;" @click="fetchData(1,order='created_at')" >最新发布</a>
 				<em>·</em>
 				<a id="updated_at" href="javascript:;" @click="fetchData(1,order='updated_at')" >最新评论</a>
-				<em>·</em>
-				<a id="title" href="javascript:;" @click="fetchData(1,order='title')" >按照标题排序</a>
-				<em>·</em>
-				<a id="body" href="javascript:;" @click="fetchData(1,order='body')" >按照内容排序</a>
+				
 				<span class="result">{{ this.article_count }}个结果</span>
 			</div>
-			<div class="article_list">
+
+			<div v-if="!is_empty" class="article_list">
 				<li class="article_item" v-for="article in articles">
 					<div class="content">
 			            <div class="author">
@@ -115,6 +117,10 @@
 				</li>
 			</div>
 
+			
+			<div v-if="this.is_empty">
+				什么都没有搜索到
+			</div>
 
 			<ul class="pagination" v-if="this.lastPage > 1">
 	            <li v-for="page in this.lastPage" @click="order?loadMore(page,order):loadMore(page)">
@@ -157,12 +163,18 @@ export default {
         }
 
         window.axios.post(api,formdata).then(function(response){
-        	vm.articles=response.data.articles.data;
-        	vm.article_count =response.data.articles.total;
-        	vm.lastPage=response.data.articles.last_page;
+        	// console.log(!response.data);
+        	if(response.data){ 
+	        	vm.articles=response.data.articles.data;
+	        	vm.article_count =response.data.articles.total;
+	        	vm.lastPage=response.data.articles.last_page;
 
-        	vm.users =response.data.users;
-        	vm.categories=response.data.categories;
+	        	vm.users =response.data.users;
+	        	vm.categories=response.data.categories;
+	        	vm.is_empty=false;
+            }else{
+			    vm.is_empty=true;
+            }
  			
         });
   	},
@@ -170,7 +182,8 @@ export default {
   	loadMore(page,order){
         order?this.fetchData(page,order):this.fetchData(page);
 		this.currentPage=page;
-  	}
+  	},
+
   },
 
   data () {
@@ -182,6 +195,7 @@ export default {
     	users:[],
     	categories:[],
     	currentPage:1,
+    	is_empty:false,
     }
   }
 }
