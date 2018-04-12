@@ -64,11 +64,11 @@ class ArticleController extends Controller
         $article->words       = count_words($article->body);
         $article->body        = fix_article_body_images($article->body);
 
-        $preg ='/(.*?)<\/br>/is';
+        // $preg ='/(.*?)<\/br>/is';
 
-        preg_match($preg,$article->body, $match);
+        // preg_match($preg,$article->body, $match);
 
-        $article->title='唯美的昵称 经典昵称 有内涵的昵称'.'-'.$match[1];
+        // $article->title='唯美的昵称 经典昵称 有内涵的昵称'.'-'.$match[1];
 
         //random time
         $article->updated_at = strtotime($jsonData['time']);
