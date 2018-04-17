@@ -64,7 +64,7 @@
                 </div>
                    {{-- 二维码 --}}
                 <div class="app">
-                    <img src="/images/scan.jpeg"/>
+                    <img src="/logo/{{ env('APP_DOMAIN')}}.jpg"/>
                     <div class="info">
                         <div class="title">
                             下载爱你城手机App
@@ -76,7 +76,8 @@
                         </p>
                     </div>
                     <div class="hover_code">
-                        <img src="/images/scan.jpeg"/>
+                        {{-- <img src="/images/scan.jpeg"/> --}}
+                        还在火速研发中,尽请期待！！
                     </div>
                 </div>
 
