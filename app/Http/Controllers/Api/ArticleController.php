@@ -17,8 +17,8 @@ class ArticleController extends Controller
 {
     public function fakeUsers()
     {
-        // return User::whereBetween('id', [44, 143])->get();
-        return User::where('is_editor',1)->get();
+        return User::whereBetween('id', [44, 143])->get();
+        // return User::where('is_editor',1)->get();
     }
 
     public function import(Request $request)
