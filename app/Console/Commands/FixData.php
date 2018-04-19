@@ -14,6 +14,7 @@ use App\Transaction;
 use App\User;
 use App\Video;
 use Illuminate\Console\Command;
+use DB;
 
 class FixData extends Command
 {
@@ -305,26 +306,27 @@ class FixData extends Command
 
     public function fix_articles()
     {
-        Article::whereBetween('id', [2300, 2600])->chunk(100, function ($articles) {
-            foreach ($articles as $article) {
-                $preg = '/<img.*?src="(.*?)".*?>/is';
+        $articles=Article::whereBetween('id',[3306,3569])->get();
 
-                preg_match_all($preg, $article->body, $match);
+        foreach($articles as $article){
+            $article->category_id=6;
 
-                if (!empty($match[1]) && empty($article->image_url)) {
-                    foreach ($match[1] as $index => $image_url) {
-                        if ($index == 0) {
-                            $article->image_url = $image_url;
-                            $article->save(['timestamp' => false]);
-                            $this->info($article->id.'fix success');
-                        }
-                    }
-                } else {
-                    $this->comment($article->id . 'not exisit images or dont can images');
-                }
-            }
-        });
+            $article->categories()->sync(6);
 
+            $this->info("$article->title  fix success");
+
+            $this->comment("l.ainicheng.com/article/$article->id");
+
+            DB::table('article_category')->where('article_id', $article->id)->update(['submit' => '已收录']);
+
+            $article->save();
+        }
+
+        $category=Category::find(6);
+
+        $category->count=$category->articles()->count();
+
+        $category->save();
     }
 
     public function fix_article_image($article)
