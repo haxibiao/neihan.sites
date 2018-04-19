@@ -58,6 +58,18 @@
                     </tr>
 
                     <tr>
+                        <td class="setting_title"> 
+                                {!! Form::label('type', '专题类型') !!}
+                        </td>
+                        <td>
+                            {!! Form::select('type', [
+                                'article'=>'文章',
+                                'video'=>'视频',
+                                ], null, ['id' => 'type', 'class' => 'form-control']) !!}
+                        </td>
+                    </tr>
+
+                    <tr>
                         <td class="setting_title pull-left">
                              {!! Form::label('description', '描述') !!}
                         </td>

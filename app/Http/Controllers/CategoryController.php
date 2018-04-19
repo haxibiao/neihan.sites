@@ -122,7 +122,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $type           = 'article';
+        $type =$request->type?$request->type:'article';
         $category       = Category::firstOrNew($request->except(['_token', 'is_admin', 'submission', 'uids']));
         $category->logo = '/logo/ainicheng.com.touch.jpg';
 
