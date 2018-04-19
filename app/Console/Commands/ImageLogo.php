@@ -47,14 +47,14 @@ class ImageLogo extends Command
 
     public function makeLogo($domain)
     {
-        $image = \ImageMaker::make(public_path('logo/' . $domain . '.jpg'));
+        $image = \ImageMaker::make(public_path('logo/' . $domain . '.png'));
         $image->resize(60, 60);
-        $image->save(public_path('logo/' . $domain . '.small.jpg'));
+        $image->save(public_path('logo/' . $domain . '.small.png'));
 
         $image->resize(160, 160);
-        $image->save(public_path('logo/' . $domain . '.touch.jpg'));
+        $image->save(public_path('logo/' . $domain . '.touch.png'));
 
         $image->resize(120, 120);
-        $image->save(public_path('logo/' . $domain . '.web.jpg'));
+        $image->save(public_path('logo/' . $domain . '.web.png'));
     }
 }
