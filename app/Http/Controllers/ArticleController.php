@@ -19,7 +19,7 @@ class ArticleController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth.editor')->except('show', 'article_new');
+        $this->middleware('auth.editor')->except('create','show', 'article_new');
     }
     /**
      * Display a listing of the resource.
@@ -82,6 +82,11 @@ class ArticleController extends Controller
     public function create()
     {
         $categories = get_categories();
+
+        if(!Auth::user()->is_editor){
+            return redirect()->to('/write');
+        }
+
         return view('article.create')->withCategories($categories);
     }
 
