@@ -187,12 +187,18 @@ class User extends Authenticatable
 
     public function checkAvatar()
     {
-        if (\App::environment('local')) {
+        if (\App::environment('local') && !empty($this->avatar)) {
             if (!starts_with($this->avatar, env('APP_URL'))) {
                 return file_exists(public_path($this->avatar)) ? $this->avatar : env('APP_URL') . $this->avatar;
             }
         }
-        return $this->avatar;
+
+        if(!empty($this->avatar)){
+            return $this->avatar;
+        }else{
+            return get_avatar($this);
+        }
+    
     }
 
 }

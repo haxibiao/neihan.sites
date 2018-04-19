@@ -149,7 +149,7 @@
                         </li> --}}
                         <li class="tab my">
                             <a class="avatar avatar_xs" href="javascript:;">
-                                <img src="{{ Auth::user()->getLatestAvatar() }}"/>
+                                <img src="{{ Auth::user()->checkAvatar() }}"/>
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
