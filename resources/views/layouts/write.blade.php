@@ -4,9 +4,9 @@
         <meta charset="utf-8"/>
         <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
         <meta content="width=device-width, initial-scale=1" name="viewport"/>
-        <link href="/logo/{{ env('APP_DOMAIN')}}.small.jpg" rel="icon" sizes="60*60" type="image/png"/>
-        <link href="/logo/{{ env('APP_DOMAIN')}}.web.jpg" rel="icon" sizes="120*120" type="image/png"/>
-        <link href="/logo/{{ env('APP_DOMAIN')}}.touch.jpg" rel="apple-touch-icon"/>
+        <link href="/logo/{{ env('APP_DOMAIN')}}.small.png" rel="icon" sizes="60*60" type="image/png"/>
+        <link href="/logo/{{ env('APP_DOMAIN')}}.web.png" rel="icon" sizes="120*120" type="image/png"/>
+        <link href="/logo/{{ env('APP_DOMAIN')}}.touch.png" rel="apple-touch-icon"/>
         <!-- CSRF Token -->
         <meta content="{{ csrf_token() }}" name="csrf-token"/>
 

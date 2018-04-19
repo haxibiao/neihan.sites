@@ -37,12 +37,7 @@ class ImageLogo extends Command
      */
     public function handle()
     {
-        $this->makeLogo('dianmoge.com');
-        $this->makeLogo('dongmeiwei.com');
-        $this->makeLogo('dongdianyi.com');
-        $this->makeLogo('dongdianyao.com');
-        $this->makeLogo('ainicheng.com');
-        $this->makeLogo('qunyige.com');
+        $this->makeLogo(env('APP_DOMAIN'));
     }
 
     public function makeLogo($domain)
