@@ -1,4 +1,5 @@
-@if(get_class($action->actionable)=='App\Category')
+
+@if($action->actionable && $action->actionable->followed_type=='categories')
 @php
      $follow = $action->actionable;
      $item = $follow->followed;
@@ -13,14 +14,14 @@
                 {{ $action->user->name }}
             </a>
             <span class="time">
-                关注了专题 · {{ $action->created_at }}
+                关注了专题 ·{{ $item->name }}  ·{{ $action->created_at }}
             </span>
         </div>
     </div>
     <div class="follow_detail">
         <div class="author">
-            <a class="avatar avatar_sm avatar_collection" href="/category/{{ $action->actionable->name_en }}" target="_blank">
-                <img src="{{ $action->actionable->logo }}"/>
+            <a class="avatar avatar_sm avatar_collection" href="/category/{{ $item->name_en }}" target="_blank">
+                <img src="{{ $item->logo }}"/>
             </a>
             <a class="btn_base btn_followed" href="javascript:;">
                 <span>
@@ -31,20 +32,20 @@
                 </span>
             </a>
             <div class="info_meta">
-                <a class="nickname" href="/category/{{ $action->actionable->name_en }}" target="_blank">
-                    {{ $action->actionable->name }}
+                <a class="nickname" href="/category/{{ $item->name_en }}" target="_blank">
+                    {{ $item->name }}
                 </a>
                 <p class="meta">
-                    <a href="/user/{{ $action->actionable->id }}" target="_blank">
-                        {{ $action->actionable->user->name }}
+                    <a href="/user/{{ $item->id }}" target="_blank">
+                        {{ $item->user->name }}
                     </a>
-                    编，{{ $action->actionable->count }} 篇文章，{{ $action->actionable->count_follow }} 人关注
+                    编，{{ $item->count }} 篇文章，{{ $item->count_follows }} 人关注
                 </p>
             </div>
         </div>
         <div class="signature">
             <span>
-                   {{ $action->actionable->description }}
+                   {{ $item->description }}
             </span>
         </div>
     </div>
