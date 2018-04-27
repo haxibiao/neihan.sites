@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    个人编辑面板
+@stop
+
 @section('content')
 <div class="container-fluid">
     <div class="row">
@@ -131,7 +135,6 @@
                                 </div>
                             
                                 <div class="btn-group  ">
-                                    {!! Form::reset("重置", ['class' => 'btn btn-warning']) !!}
                                     {!! Form::submit("提交", ['class' => 'btn btn-success']) !!}
                                 </div>
                             
@@ -153,6 +156,7 @@
                             <a class="btn btn-danger top5" href="/category?type=article" role="button">所有专题</a>
                             <a class="btn btn-info top5" href="/category/create" role="button">创建专题</a>
                             <a class="btn btn-info top5" href="/index/poster" role="button">首页轮播图中的文章</a>
+                            <a class="btn btn-primary top5" href="/index/poster?top=1" role="button">首页轮播图中的文章</a>
                         </div>
                     </div>
                 </div>

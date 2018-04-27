@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Image;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class ImageController extends Controller
 {
@@ -193,17 +192,24 @@ class ImageController extends Controller
         }
 
         //response dopm
-        if($request->get('from') =='question'){
+        if ($request->get('from') == 'question') {
             return $image->path;
         }
 
         return $data;
     }
 
-    public function poster()
+    public function poster(Request $request)
     {
-        $data             = [];
-        $data['articles'] = Article::where('is_top', 1)->take(8)->get();
+        $data = [];
+        if ($request->top) {
+            $articles_top     = Cache::get('commend_index_article');
+            $articles_tops    = !empty($articles_top) ? Article::whereIn('id', $articles_top)->get() : [];
+            $data['articles'] = $articles_tops;
+            $data['top']      = $request->top;
+        } else {
+            $data['articles'] = Article::where('is_top', 1)->take(8)->get();
+        }
         return view('user.poster')
             ->withData($data);
     }
