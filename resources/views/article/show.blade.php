@@ -8,6 +8,11 @@
     {{ $article->description() }}
 @stop
 @section('content')
+
+@if(!empty($article->category))
+     {!! link_source_css($article->category) !!}
+@endif
+
 <div id="detail">
     <div class="note">
         <div class="container">

@@ -5,6 +5,16 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 
+function link_source_css($category)
+{
+    $cate_css_path = '/css/fix/' . $category->id . '.css';
+    if (file_exists(public_path($cate_css_path))) {
+        return '<link rel="stylesheet" href="' . $cate_css_path . '">';
+    }
+
+    return '';
+}
+
 function topAdmins_json($topAdmins)
 {
     $names     = "";
@@ -238,7 +248,7 @@ function get_category_logo($logo)
 
 function question_is_closed($question)
 {
-   if($question->bonus >0){
-      return !empty($question->deadline) ?'pay_continue' : 'pay_closed' ;;
-   }
+    if ($question->bonus > 0) {
+        return !empty($question->deadline) ? 'pay_continue' : 'pay_closed';
+    }
 }
