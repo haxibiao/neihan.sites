@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Category;
 use App\Http\Requests\ArticleRequest;
+use App\Tip;
 use App\Traits\ArticleControllerFunction;
 use Illuminate\Http\Request;
-use App\Tip;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
@@ -19,35 +19,97 @@ class ArticleController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth.editor')->except('create','show', 'article_new');
+        $this->middleware('auth.editor')->except('create', 'show', 'article_new');
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-       public function push(Request $request)
+    // public function push(Request $request)
+    // {
+    //     $urls     = [];
+    //     $number   = $request->number;
+    //     $articles = Article::orderBy('id', 'desc')
+    //         ->where('status', '>', 0)->take($number)->get();
+    //     foreach ($articles as $article) {
+    //         $urls[] = 'http://ainicheng.com/article/' . $article->id;
+    //     }
+
+    //     $ch      = curl_init();
+    //     $options = array(
+    //         CURLOPT_URL            => $api,
+    //         CURLOPT_POST           => true,
+    //         CURLOPT_RETURNTRANSFER => true,
+    //         CURLOPT_POSTFIELDS     => implode("\n", $urls),
+    //         CURLOPT_HTTPHEADER     => array('Content-Type: text/plain'),
+    //     );
+    //     curl_setopt_array($ch, $options);
+    //     $result = curl_exec($ch);
+    //     return $result;
+    // }
+
+    public function push(Request $request)
     {
-        $urls     = [];
-        $number   = $request->number;
-        $articles = Article::orderBy('id', 'desc')
-            ->where('status', '>', 0)->take($number)->get();
-        foreach ($articles as $article) {
-            $urls[] = 'http://ainicheng.com/article/' . $article->id;
+        $urls   = [];
+        $number = $request->number;
+        $type   = $request->type;
+
+        switch ($type) {
+            case 'pandaNumber':
+                $appid = config('seo.articlePush.pandaNumber.appid');
+                $token = config('seo.articlePush.pandaNumber.token');
+                $api   = 'http://data.zz.baidu.com/urls?appid=' . $appid . '&token=' . $token . '&type=realtime';
+                break;
+            case 'baiduNumber':
+                $token = config('seo.articlePush.baiduNumber.token') ?: dd("没有配置推送参数!");
+                $api   = 'http://data.zz.baidu.com/urls?site=' . env('APP_URL') . '&token=' . $token;
+                break;
+            case 'pushTopArticle':
+                $api = domain_env() . '/api/article/' . $number . '/commend-index';
+                break;
+            case 'deleteTopArticle';
+                $api = domain_env() . '/api/article/' . $number . '/commend-index-delete';
+                break;
+            default:
+                dd('提交的类型错误 没有这个类型');
+                break;
         }
-        $api     = 'http://data.zz.baidu.com/urls?appid=1585927114272168&token=0T7GLkgH83TrfdXL&type=realtime';
-        $ch      = curl_init();
-        $options = array(
-            CURLOPT_URL            => $api,
-            CURLOPT_POST           => true,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POSTFIELDS     => implode("\n", $urls),
-            CURLOPT_HTTPHEADER     => array('Content-Type: text/plain'),
-        );
+        $ch = curl_init();
+
+        $interface_types = [
+            'pushTopArticle',
+            'deleteTopArticle',
+        ];
+
+        if (in_array($type, $interface_types)) {
+            $options = array(
+                CURLOPT_URL            => $api,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HTTPHEADER     => array('Content-Type: text/plain'),
+            );
+        } else {
+            $articles = Article::orderBy('id', 'desc')
+                ->where('status', '>', 0)->take($number)->get();
+
+            foreach ($articles as $article) {
+                $urls[] = config('app.url') . '/article/' . $article->id;
+            }
+
+            $options = array(
+                CURLOPT_URL            => $api,
+                CURLOPT_POST           => true,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_POSTFIELDS     => implode("\n", $urls),
+                CURLOPT_HTTPHEADER     => array('Content-Type: text/plain'),
+            );
+        }
+
         curl_setopt_array($ch, $options);
         $result = curl_exec($ch);
         return $result;
     }
+
     public function index(Request $request)
     {
         if ($request->get('draft')) {
@@ -59,13 +121,11 @@ class ArticleController extends Controller
             return view('article.index')->withArticles($articles);
         }
 
-        if($request->get('myArticle')){
-            $articles=Auth::user()->articles()->where('status','>=',0)->orderBy('id','desc')->paginate(10);
+        if ($request->get('myArticle')) {
+            $articles = Auth::user()->articles()->where('status', '>=', 0)->orderBy('id', 'desc')->paginate(10);
             $articles->setPath('article?myArticle=1');
             return view('article.index')->withArticles($articles);
         }
-
-
 
         $articles = Article::orderBy('id', 'desc')->where('status', '>', 0)->paginate(10);
         if (!Auth::user()->is_admin) {
@@ -83,7 +143,7 @@ class ArticleController extends Controller
     {
         $categories = get_categories();
 
-        if(!Auth::user()->is_editor){
+        if (!Auth::user()->is_editor) {
             return redirect()->to('/write');
         }
 
@@ -158,11 +218,11 @@ class ArticleController extends Controller
     public function show($id)
     {
         $article = Article::with('user')
-        ->with('category')
-        ->with('tags')
-        ->with('images')
-        ->with('comments')
-        ->findOrFail($id);
+            ->with('category')
+            ->with('tags')
+            ->with('images')
+            ->with('comments')
+            ->findOrFail($id);
 
         if (!empty($article->category) && $article->category->parent_id) {
             $data['parent_category'] = $article->category->parent()->first();
@@ -188,19 +248,19 @@ class ArticleController extends Controller
             $article->hits_robot = $article->hits_robot + 1;
         }
 
-        $timestamps=$article->timestamps;
+        $timestamps = $article->timestamps;
 
-        $article->timestamps=false;
+        $article->timestamps = false;
 
         $article->save();
 
-        $tips=Tip::with('user')->where('tipable_id',$article->id)->get();
+        $tips = Tip::with('user')->where('tipable_id', $article->id)->get();
 
-        $data['tips']=$tips;
+        $data['tips'] = $tips;
 
         //fix_article_count
 
-        $article->timestamps=$timestamps;
+        $article->timestamps = $timestamps;
 
         $this->article_coment_count($article);
         //fix for show
@@ -223,7 +283,7 @@ class ArticleController extends Controller
 
         $article->words = ceil(strlen(strip_tags($article->body)) / 2);
 
-        $data['collection'] =$article->collections()->where('user_id',$article->user->id)->first();
+        $data['collection'] = $article->collections()->where('user_id', $article->user->id)->first();
 
         return view('article.show')->withArticle($article)->withData($data);
     }
@@ -264,7 +324,7 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
 
-        $article->update($request->except('image_url', 'category_id','user_id'));
+        $article->update($request->except('image_url', 'category_id', 'user_id'));
 
         $category_ids = request('category_ids');
         if (is_array($category_ids) && !empty($category_ids)) {

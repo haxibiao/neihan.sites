@@ -8,6 +8,20 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Request;
 use Jenssegers\Agent\Agent;
 
+function domain_env(){
+	if(env('APP_ENV')=='local'){
+		return 'l.'.env('APP_DOMAIN');
+	}
+
+	if(env('APP_ENV')=='prod'){
+		return env('APP_URL');
+	}
+
+	return '';
+}
+
+
+
 function get_seoer_meta() {
 	$data = User::where('is_seoer', 1)->pluck('seo_meta')->toArray();
 	$data = array_filter($data);
