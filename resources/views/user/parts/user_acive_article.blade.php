@@ -18,7 +18,7 @@
     </div>
     <a class="headline paper_title" target="_blank" href="/article/{{ $article->id }}"><span>{{ $article->title }}</span></a>
     <p class="abstract">
-      {{ $article->description }}
+      {{ $article->description() }}
     </p>
     <div class="meta">
       <a target="_blank" href="/article/{{ $article->id }}" class="count count_link">
