@@ -65,4 +65,7 @@ mix
 
 mix.js("resources/assets/js/spa2.js", "public/js/b2.js");
 
+// 爬虫文章css
+mix.sass("resources/assets/sass/fix/7.scss", "public/css/fix");
+
 mix.browserSync('l.ainicheng.com');
