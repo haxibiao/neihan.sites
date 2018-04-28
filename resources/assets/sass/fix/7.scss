@@ -12,6 +12,9 @@
 }
 
 .r_bar_bg {
+	br {
+		display: none;
+	}
 	.id_div {
 		.item_top {
 			margin-bottom: 25px;
@@ -57,6 +60,7 @@
 								@include word_line(0);
 								img {
 									padding-bottom: 0;
+									float: left;
 								}
 							}
 						}
@@ -122,6 +126,7 @@
 				.video_wrap {
 					margin: 10px 0 20px;
 					.gl_box {
+						margin-top: 10px;
 						.gl_one {
 							.gl_one_t {
 								font-weight: bold;
@@ -211,6 +216,7 @@
 										@include word_line(15px);
 										span {
 											font-weight: bold;
+											display: block;
 										}
 									}
 									.color_green {
@@ -274,6 +280,9 @@
 							}
 							.pop_skill_data {
 								@include word_line(15px);
+								span {
+									display: block;
+								}
 							}
 							.xiaohao_wrap {
 								margin-bottom: 15px;
@@ -351,6 +360,7 @@
 							display: inline-block;
 							width: 49%;
 							margin-bottom: 30px;
+							text-align: center;
 							@media screen and (max-width: 570px) {
 								display: block;
 								text-align: center;
