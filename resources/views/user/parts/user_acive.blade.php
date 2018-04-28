@@ -32,11 +32,11 @@
                 </span>
             </a>
             <div class="info_meta">
-                <a class="nickname" href="/category/{{ $item->name_en }}" target="_blank">
+                <a class="nickname" href="/{{ $item->name_en }}" target="_blank">
                     {{ $item->name }}
                 </a>
                 <p class="meta">
-                    <a href="/user/{{ $item->id }}" target="_blank">
+                    <a href="/user/{{ $item->user->id }}" target="_blank">
                         {{ $item->user->name }}
                     </a>
                     编，{{ $item->count }} 篇文章，{{ $item->count_follows }} 人关注
