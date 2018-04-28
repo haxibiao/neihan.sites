@@ -49,124 +49,129 @@
 
 <script>
 export default {
+	name: "CategoryModal_User",
 
-  name: 'CategoryModal_User',
-  
-  props:['categoryId'],
+	props: ["categoryId"],
 
-  created(){
-  	var m=this;
-  	window.$bus.$on('modal_contrinute_clicked',function(id){
-  		m.categoryId=id;;
-  		m.clear();
-  		m.fetchData();
-  	});
-  },
+	created() {
+		var m = this;
+		window.$bus.$on("modal_contrinute_clicked", function(id) {
+			m.categoryId = id;
+			m.clear();
+			m.fetchData();
+		});
+	},
 
-  mounted(){
-         this.fetchData();
-  },
- //TODO:加载更多的文章暂时还没有实现
-  methods:{
-         clear(){
-         	this.articles=[];
-         },
+	mounted() {
+		this.fetchData();
+	},
+	//TODO:加载更多的文章暂时还没有实现
+	methods: {
+		clear() {
+			this.articles = [];
+		},
 
-         loadMore(){
-         	if(this.page <this.lastPage){
-         		 this.page++;
-         		 this.fetchData();
-         	}
-         },
+		loadMore() {
+			if (this.page < this.lastPage) {
+				this.page++;
+				this.fetchData();
+			}
+		},
 
-         fetchData(){
-         	var api=window.tokenize('/api/articles/check-category-'+this.categoryId);
-         	var vm=this;
-         	window.axios.get(api).then(function(response){
-         		vm.articles =response.data.data;
-         		vm.lastPage =response.data.last_page;
-         	});
-         },
+		fetchData() {
+			var api = window.tokenize(
+				"/api/articles/check-category-" + this.categoryId
+			);
+			var vm = this;
+			window.axios.get(api).then(function(response) {
+				vm.articles = response.data.data;
+				vm.lastPage = response.data.last_page;
+			});
+		},
 
-         submit(article){
-         	var api=window.tokenize('/api/article/'+article.id+'/submit-category-'+this.categoryId);
-         	var vm=this;
-         	window.axios.get(api).then(function(response){
-         		article.submit_status=response.data.submit_status;
-         		article.submited_status=response.data.submited_status;
-         	});
-         },
+		submit(article) {
+			var api = window.tokenize(
+				"/api/article/" + article.id + "/submit-category-" + this.categoryId
+			);
+			var vm = this;
+			window.axios.get(api).then(function(response) {
+				article.submit_status = response.data.submit_status;
+				article.submited_status = response.data.submited_status;
+			});
+		},
 
-         getBtnClass(article){
-         	return article.submit_status.indexOf("投稿")===-1?'btn_revoke' 	:  'btn_push';
-         }
-  },
+		getBtnClass(article) {
+			return article.submit_status.indexOf("投稿") === -1
+				? "btn_revoke"
+				: "btn_push";
+		}
+	},
 
-  data () {
-    return {
-            lastPage: null,
-            page: 1,
-        	articles:[]
-    }
-  }
-  
-}
+	data() {
+		return {
+			lastPage: null,
+			page: 1,
+			articles: []
+		};
+	}
+};
 </script>
 
 <style lang="scss" scoped>
-	#categoryModal_user {
-		.modal-dialog {
-			transform: translate(-50%, -50%);
-			.modal-header {
-		        .notice {
-		            font-size: 13px;
-		            color: #969696;
-		        }
-		        .search_input {
-		            margin: 20px 0 0;
-		        }
-		    }
-		    .modal-body {
-		        height: 460px;
-		        ul {
-		            li {
-		                padding: 20px;
-		                font-size: 15px;
-		                border-bottom: 1px solid #e6e6e6;
-		                position: relative;
-		                div {
-		                    display: inline-block;
-		                    vertical-align: middle;
-		                    .note_name {
-		                        display: block;
-		                    }
-		                    .btn_base {
-		                        position: absolute;
-		                        top: 50%;
-		                        right: 20px;
-		                        margin-top: -11px;
-		                    }
-		                    .status {
-		                        color: #969696;
-		                        font-size: 13px;
-		                        display: none;
-		                    }
-		                    .waiting {
-		                    	display: block
-		                    }
-		                    .cancel {
-		                    	display: block
-		                    }
-		                    .add {
-		                    	display: block
-		                    }
-		                    .reject {
-		                    	display: block
-		                    }
-		                }
-		            }
-		        }
-		    }
+#categoryModal_user {
+	.modal-dialog {
+		transform: translate(-50%, -50%);
+		.modal-header {
+			.notice {
+				font-size: 13px;
+				color: #969696;
+			}
+			.search_input {
+				margin: 20px 0 0;
+			}
+		}
+		.modal-body {
+			height: 460px;
+			overflow: auto;
+			ul {
+				li {
+					padding: 20px;
+					font-size: 15px;
+					border-bottom: 1px solid #e6e6e6;
+					position: relative;
+					div {
+						display: inline-block;
+						vertical-align: middle;
+						.note_name {
+							display: block;
+						}
+						.btn_base {
+							position: absolute;
+							top: 45%;
+							right: 20px;
+							margin-top: -11px;
+						}
+						.status {
+							color: #969696;
+							font-size: 13px;
+							display: none;
+						}
+						.waiting {
+							display: block;
+						}
+						.cancel {
+							display: block;
+						}
+						.add {
+							display: block;
+						}
+						.reject {
+							display: block;
+						}
+					}
+				}
+			}
 		}
 	}
+}
 </style>

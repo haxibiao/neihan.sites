@@ -11,7 +11,8 @@
                     top: 70px;
                     margin-bottom: 0;
                 }
-                .btn_follow,.btn_followed {
+                .btn_follow,
+                .btn_followed {
                     right: 40px;
                 }
                 .btn_hollow {
@@ -48,7 +49,7 @@
     .row {
         margin: 0;
         h3 {
-            @include font (21px, $color-black, 700);
+            @include font(21px, $color-black, 700);
             margin: 10px 0 20px;
         }
         table {
@@ -73,24 +74,30 @@
                         .form-control {
                             padding: 9px 15px;
                             font-size: 15px;
-                            background-color: hsla(0, 0%, 71%, .1);
+                            background-color: hsla(0, 0%, 71%, 0.1);
                             box-shadow: none;
                             &:focus {
                                 box-shadow: none;
                                 border-color: #ccd0d2;
                             }
                         }
+                        .category_type {
+                            padding: 5px 15px;
+                        }
                         .avatar_collection {
-                            @include avatar (100px, 100px);
+                            @include avatar(100px, 100px);
                             img {
                                 border-radius: 10%;
                             }
                         }
                         .btn_hollow {
                             position: relative;
+                            label {
+                                font-weight: normal;
+                            }
                             input {
                                 position: absolute;
-                                display: block!important;
+                                display: block !important;
                                 width: 166px;
                                 height: 44px;
                                 top: -1px;
@@ -108,11 +115,11 @@
                                 top: auto;
                                 left: auto;
                                 min-height: 100px;
-                                border-color: hsla(0, 0%, 71%, .2);
+                                border-color: hsla(0, 0%, 71%, 0.2);
                                 margin: 0;
                             }
                         }
-                        div {
+                        & > div {
                             display: inline-block;
                             input[type="radio"] {
                                 width: 13px;
@@ -122,10 +129,18 @@
                                 font-size: 15px;
                                 vertical-align: middle;
                             }
+                            label {
+                                font-size: 14px;
+                                font-weight: normal;
+                            }
                         }
                     }
                     .setting_title {
-                        // @include font (15px, $color-gray);
+                        font-size: 15px;
+                        color: $color-gray;
+                        & > label {
+                            font-weight: normal;
+                        }
                     }
                 }
             }

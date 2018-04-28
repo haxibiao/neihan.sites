@@ -65,7 +65,7 @@
                             {!! Form::select('type', [
                                 'article'=>'文章',
                                 'video'=>'视频',
-                                ], null, ['id' => 'type', 'class' => 'form-control']) !!}
+                                ], null, ['id' => 'type', 'class' => 'form-control category_type']) !!}
                         </td>
                     </tr>
 
@@ -87,15 +87,17 @@
                     </tr>
                     <tr>
                         <td class="setting_title">
-                            是否允许投稿
+                            <label for="is_submission">
+                               是否允许投稿
+                            </label> 
                         </td>
                         <td>
-                            <div>
+                            <div class="col-xs-6">
                                 <label for="submission">
                                    {!! Form::radio('submission', true,  true, ['id' => 'radio_id']) !!} 允许
                                 </label> 
                             </div>
-                            <div>
+                            <div class="col-xs-6">
                                 <label for="submission">
                                    {!! Form::radio('submission', false,  null, ['id' => 'radio_id']) !!} 不允许
                                 </label> 
@@ -156,5 +158,5 @@
             preview(this);
         });
     });
-</script>>
+</script>
 @endpush
