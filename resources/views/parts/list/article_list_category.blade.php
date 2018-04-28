@@ -47,11 +47,11 @@
                     </i>
                     {{ $article->count_replies }}
                 </a>
-                <span class="count">
+                <a href="/article/{{ $article->id }}" class="count">
                     <i class="iconfont icon-03xihuan">
                     </i>
                     {{ $article->count_favorites }}
-                </span>
+                </a>
             </div>
         </div>
     </li>
