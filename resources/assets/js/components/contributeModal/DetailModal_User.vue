@@ -11,7 +11,7 @@
 	                </button>
 	                <h4 class="modal-title" id="myModalLabel">
 	                    收入到我管理的专题
-	                    <a href="/category/create" class="new_note_btn">
+	                    <a href="/category/create" class="btn_font_new">
 	                        新建专题
 	                    </a>
 	                </h4>
@@ -48,121 +48,122 @@
 
 <script>
 export default {
+	name: "DetailModal_User",
 
-  name: 'DetailModal_User',
+	props: ["articleId"],
 
-  props:['articleId'],
+	mounted() {
+		this.fetchData();
+	},
 
-  mounted(){
-      this.fetchData();
-  },
+	methods: {
+		apiUrl() {
+			var api = "/api/admin-categories-check-article-" + this.articleId;
+			if (this.q) {
+				api = api + "?q=" + this.q;
+			}
+			return window.tokenize(api);
+		},
 
-  methods:{
-  	  apiUrl(){
-          var api='/api/admin-categories-check-article-' + this.articleId;
-          if(this.q){
-          	  api=api+'?q='+this.q;
-          }
-        return window.tokenize(api);
-  	  },
+		getBtnClass(status) {
+			switch (status) {
+				case "收录":
+					return "btn_base btn_push";
+			}
+			return "btn_base btn-hollow";
+		},
 
-  	  getBtnClass(status){
-           switch(status){
-           	 case '收录':
-           	 return "btn_base btn_push";
-           }
-           return "btn_base btn-hollow";
-  	  },
+		search() {
+			this.page = 1;
+			this.fetchData();
+		},
 
-  	  search(){
-  	  	 this.page=1;
-  	  	 this.fetchData();
-  	  },
+		add(category) {
+			// console.log(this.articleId);
+			var api = window.tokenize(
+				"/api/article/" + this.articleId + "/add-category-" + category.id
+			);
+			window.axios.get(api).then(function(response) {
+				category.submit_status = response.data.submit.status;
+				category.submited_status = response.data.submited_status;
+			});
+		},
 
-  	  add(category){
-  	  	  // console.log(this.articleId);
-  	  	  var api=window.tokenize('/api/article/'+this.articleId+'/add-category-'+category.id);
-  	  	  window.axios.get(api).then(function(response){
-  	  	  	    category.submit_status=response.data.submit.status;
-  	  	  	    category.submited_status =response.data.submited_status;
-  	  	  });
-  	  },
+		fetchData() {
+			var vm = this;
+			window.axios.get(this.apiUrl()).then(function(response) {
+				if (vm.page == 1) {
+					vm.categoryList = response.data.data;
+				} else {
+					vm.categoryList = vm.categoryList.concat(response.data.data);
+				}
+			});
+		}
+	},
 
-  	  fetchData(){
-  	  	 var vm=this;
-  	  	 window.axios.get(this.apiUrl()).then(function(response){
-  	  	 	   if(vm.page==1){
-  	  	 	   	  vm.categoryList =response.data.data;
-  	  	 	   }else{
-  	  	 	   	  vm.categoryList =vm.categoryList.concat(response.data.data);
-  	  	 	   }
-  	  	 });
-  	  }
-  },
-
-  data () {
-    return {
-          q:null,
-          page:1,
-          categoryList:[]
-    }
-  }
-}
+	data() {
+		return {
+			q: null,
+			page: 1,
+			categoryList: []
+		};
+	}
+};
 </script>
 
 <style lang="scss" scoped>
-	#detailModal_user {
-	    .modal-dialog {
-	        transform: translate(-50%, -50%);
-	        .modal-header {
-	            .notice {
-	                font-size: 13px;
-	                color: #969696;
-	            }
-	            .search_input {
-	                margin: 20px 0 0;
-	            }
-	        }
-	        .modal-body {
-	            height: 460px;
-	            ul {
-	                li {
-	                    padding: 20px;
-	                    font-size: 15px;
-	                    border-bottom: 1px solid #e6e6e6;
-	                    position: relative;
-	                    div {
-	                        display: inline-block;
-	                        vertical-align: middle;
-	                        .note_name {
-	                            display: block;
-	                        }
-	                        .note_meta {
-	                            font-size: 12px;
-	                            color: #969696;
-	                            display: inline-block;
-	                        }
-	                        .btn_base {
-	                            position: absolute;
-	                            top: 50%;
-	                            right: 20px;
-	                            margin-top: -11px;
-	                        }
-	                        .status {
-	                            color: #969696;
-	                            font-size: 13px;
-	                            display: none;
-	                        }
-	                        .has_add {
-	                            font-size: 12px;
-	                            color: #42c02e;
-	                            display: inline-block;
-	                            vertical-align: middle;
-	                        }
-	                    }
-	                }
-	            }
-	        }
-	    }
+#detailModal_user {
+	.modal-dialog {
+		transform: translate(-50%, -50%);
+		.modal-header {
+			.notice {
+				font-size: 13px;
+				color: #969696;
+			}
+			.search_input {
+				margin: 20px 0 0;
+			}
+		}
+		.modal-body {
+			height: 460px;
+			ul {
+				li {
+					padding: 20px;
+					font-size: 15px;
+					border-bottom: 1px solid #e6e6e6;
+					position: relative;
+					div {
+						display: inline-block;
+						vertical-align: middle;
+						.note_name {
+							display: block;
+						}
+						.note_meta {
+							font-size: 12px;
+							color: #969696;
+							display: inline-block;
+						}
+						.btn_base {
+							position: absolute;
+							top: 50%;
+							right: 20px;
+							margin-top: -11px;
+						}
+						.status {
+							color: #969696;
+							font-size: 13px;
+							display: none;
+						}
+						.has_add {
+							font-size: 12px;
+							color: #42c02e;
+							display: inline-block;
+							vertical-align: middle;
+						}
+					}
+				}
+			}
+		}
 	}
+}
 </style>

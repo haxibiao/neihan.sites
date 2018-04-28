@@ -13,7 +13,7 @@
 		                </button>
 		                <h4 class="modal-title" id="myModalLabel">
 		                    收录文章到该专题
-		                    <a href="#" class="new_note_btn">
+		                    <a href="#" class="btn_font_new">
 		                        写篇新文章
 		                    </a>
 		                </h4>
@@ -78,15 +78,12 @@
 
 <script>
 export default {
+	name: "CategoryModal_Home",
 
-  name: 'CategoryModal_Home',
-
-  data () {
-    return {
-
-    }
-  }
-}
+	data() {
+		return {};
+	}
+};
 </script>
 
 <style lang="css" scoped>
