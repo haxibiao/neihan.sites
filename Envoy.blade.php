@@ -38,6 +38,7 @@ cd {{ $www }}
 npm run prod
 {{ $git_push_to_web }}
 rsync -e ssh -P public/css/* root@ainicheng.com:/data/www/ainicheng.com/public/css/
+rsync -e ssh -P public/css/fix/* root@ainicheng.com:/data/www/ainicheng.com/public/css/fix
 rsync -e ssh -P public/js/* root@ainicheng.com:/data/www/ainicheng.com/public/js/
 rsync -e ssh -P public/mix-manifest.json root@ainicheng.com:/data/www/ainicheng.com/public/
 @endtask
