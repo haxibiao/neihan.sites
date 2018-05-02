@@ -306,27 +306,13 @@ class FixData extends Command
 
     public function fix_articles()
     {
-        $articles=Article::whereBetween('id',[3306,3569])->get();
+        $articles=Article::whereBetween('id',[4522,4621])->get();
+         foreach($articles as $article){
+             $article->body=fix_article_body_images($article->body);
+             $article->save();
 
-        foreach($articles as $article){
-            $article->category_id=6;
-
-            $article->categories()->sync(6);
-
-            $this->info("$article->title  fix success");
-
-            $this->comment("l.ainicheng.com/article/$article->id");
-
-            DB::table('article_category')->where('article_id', $article->id)->update(['submit' => '已收录']);
-
-            $article->save();
-        }
-
-        $category=Category::find(6);
-
-        $category->count=$category->articles()->count();
-
-        $category->save();
+             $this->info($article->id.'fix success');
+         }
     }
 
     public function fix_article_image($article)
