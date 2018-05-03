@@ -62,7 +62,7 @@ class ArticleController extends Controller
         $article->category_id = $category->id;
         $article->status      = 1;
         $article->words       = count_words($article->body);
-        // $article->body        = fix_article_body_images($article->body);
+        $article->body        = fix_article_body_images($article->body);
 
         // $preg ='/(.*?)<\/br>/is';
 
