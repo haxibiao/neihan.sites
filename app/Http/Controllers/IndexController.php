@@ -53,18 +53,14 @@ class IndexController extends Controller
             $data->articles_tops = $articles_tops;
 
             $articles = Article::with('user')->with('category')
-            ->whereHas('User', function ($q) {
-                $q->where('is_editor', 1);
-            })
+            ->where('source_url','0')
             ->whereNotIn('id',$articles_top)
             ->orderBy('updated_at', 'desc')
             ->where('status', '>', 0)
             ->paginate(10);
         }else{
             $articles = Article::with('user')->with('category')
-            ->whereHas('User', function ($q) {
-                $q->where('is_editor', 1);
-            })
+            ->where('source_url','0')
             ->orderBy('updated_at', 'desc')
             ->where('status', '>', 0)
             ->paginate(10);

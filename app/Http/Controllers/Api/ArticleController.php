@@ -295,6 +295,7 @@ class ArticleController extends Controller
         }
 
         $article->submit_status = $this->get_submit_status($article->submited_status);
+        $article->touch();
 
         //mark
         foreach ($user->notifications as $notification) {
