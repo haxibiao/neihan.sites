@@ -29,7 +29,7 @@
                 {{ article.description }}
             </p>
             <div class="meta">
-                <a v-if="!showCategory" class="category_tag" :href=" '/' + article.category.name_en" target="_blank">
+                <a v-if="!showCategory && article.category" class="category_tag" :href=" '/' + article.category.name_en" target="_blank">
                     {{ article.category.name }}
                 </a>
                 <a href="#" target="_blank" class="count count_link">
@@ -116,6 +116,7 @@ export default {
       //TODO:: loading ....
       window.axios.get(this.apiUrl).then(function(response){
         vm.articles = vm.articles.concat(response.data.data);
+        // console.log(vm.articles);
         vm.lastPage = response.data.last_page;
 
         //TODO:: loading done !!!
