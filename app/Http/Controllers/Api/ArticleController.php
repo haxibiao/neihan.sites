@@ -629,4 +629,17 @@ class ArticleController extends Controller
 
     }
 
+    public function refreshTopArticle()
+    {
+         $articles=Article::where('is_top', 1)->orderBy('id', 'desc')->get();
+         foreach($articles as $article){
+                $article->is_top=0;
+                $article->timestamps = false;
+
+                $article->save();
+         }
+
+         return dd("refresh success");
+    }
+
 }

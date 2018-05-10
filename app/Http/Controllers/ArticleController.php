@@ -71,6 +71,9 @@ class ArticleController extends Controller
             case 'deleteTopArticle';
                 $api = domain_env() . '/api/article/' . $number . '/commend-index-delete';
                 break;
+            case 'refreshTopArticle':
+                $api =domain_env().'/api/article/refreshTopArticle';
+                break;
             default:
                 dd('提交的类型错误 没有这个类型');
                 break;
@@ -80,6 +83,7 @@ class ArticleController extends Controller
         $interface_types = [
             'pushTopArticle',
             'deleteTopArticle',
+            'refreshTopArticle'
         ];
 
         if (in_array($type, $interface_types)) {

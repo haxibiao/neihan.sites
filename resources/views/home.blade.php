@@ -141,6 +141,7 @@
                                         'baiduNumber'=>'百度推送',
                                         'pushTopArticle'=>'置顶文章',
                                         'deleteTopArticle'=>'删除文章',
+                                        'refreshTopArticle'=>'清除所有轮播图的文章'
                                         ], null, ['id' => 'type', 'class' => 'form-control', 'required' => 'required']) !!}
                                     <small class="text-danger">{{ $errors->first('type') }}</small>
                                 </div>
@@ -167,7 +168,7 @@
                             <a class="btn btn-danger top5" href="/category?type=article" role="button">所有专题</a>
                             <a class="btn btn-info top5" href="/category/create" role="button">创建专题</a>
                             <a class="btn btn-info top5" href="/index/poster" role="button">首页轮播图中的文章</a>
-                            <a class="btn btn-primary top5" href="/index/poster?top=1" role="button">首页轮播图中的文章</a>
+                            <a class="btn btn-primary top5" href="/index/poster?top=1" role="button">已经被置顶的文章</a>
                         </div>
                     </div>
                 </div>

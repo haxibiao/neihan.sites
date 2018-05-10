@@ -96,6 +96,7 @@ Route::get('videos', 'Api\VideoController@getIndex');
 Route::get('/video/{id}', 'Api\VideoController@getShow');
 
 //文章列表
+Route::get('/article/refreshTopArticle', 'Api\ArticleController@refreshTopArticle');
 Route::get('/articles', 'Api\ArticleController@getIndex');
 Route::get('/article/{id}', 'Api\ArticleController@getShow');
 //article top

@@ -194,15 +194,14 @@ trait ArticleControllerFunction
     {
         if ($request->is_top) {
             $images = Image::where('path', $article->image_url)->orWhere('path_small', $article->image_url)->get();
-            $is_top = 0;
             foreach ($images as $image) {
-                if ($image->width < 760) {
+                if ($image->width < 768) {
                     continue;
                 } else {
-                    $is_top = 1;
+                    $article->is_top = 1;
                 }
             }
-            if ($is_top == 0) {
+            if ($article->is_top == 0) {
                 dd("上传图片太小不能上首页!");
             }
             $article->save();
