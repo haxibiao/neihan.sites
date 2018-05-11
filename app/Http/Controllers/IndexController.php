@@ -106,9 +106,10 @@ class IndexController extends Controller
         $data->categories = $categories;
         $data->articles   = $articles;
         $data->carousel   = Article::where('is_top', 1)->orderBy('id', 'desc')->take(8)->get();
-        foreach ($data->carousel as $article_img) {
-            $article_img->image_top = $article_img->image_top();
-        }
+        // foreach ($data->carousel as $article_img) {
+        //     $article_img->image_top = $article_img->image_top();
+        //     $article_imgs[]=$article_img->image_top;
+        // }
         return view('index.index')
             ->withData($data);
     }
