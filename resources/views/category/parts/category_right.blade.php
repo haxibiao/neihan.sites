@@ -32,7 +32,7 @@
                     @foreach($category->topAdmins() as $admin)
                     <li>
                         <a class="avatar" href="/user/{{ $admin->id }}">
-                            <img src="{{ $admin->avatar }}"/>
+                            <img src="{{ $admin->getLatestAvatar() }}"/>
                         </a>
                         <a class="name" href="/v1/user">
                             {{ $admin->name }}
@@ -56,7 +56,7 @@
                     @foreach($category->topAuthors() as $user)
                     <li>
                         <a class="avatar" href="/user/{{ $user->id }}">
-                            <img src="{{ $user->avatar }}"/>
+                            <img src="{{ $user->getLatestAvatar() }}"/>
                         </a>
                     </li>
                     @endforeach
@@ -70,7 +70,7 @@
                     @foreach($category->topFollowers() as $user)
                     <li>
                         <a class="avatar" href="/user/{{ $user->id }}">
-                            <img src="{{ $user->avatar }}"/>
+                            <img src="{{ $user->getLatestAvatar() }}"/>
                         </a>
                     </li>
                     @endforeach

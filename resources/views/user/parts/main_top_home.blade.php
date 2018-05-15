@@ -1,7 +1,7 @@
 {{-- 个人页左侧头部 --}}
 <div class="main_top">
     <a class="avatar avatar_lg" href="/user/{{ $user->id }}">
-        <img src="{{ $user->avatar }}"/>
+        <img src="{{ $user->getLatestAvatar() }}"/>
     </a>
     <div class="info_meta">
         <a class="headline nickname" href="/user/{{ $user->id }}">

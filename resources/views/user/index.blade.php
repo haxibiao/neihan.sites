@@ -25,7 +25,7 @@
                 <div class="recommend_list col-xs-12 col-sm-4 col-lg-3">
                     <div class="collection_wrap">
                         <a href="/user/{{ $user->id }}" target="_blank">
-                            <img class="avatar_lg" src="{{ $user->avatar }}"/>
+                            <img class="avatar_lg" src="{{ $user->getLatestAvatar() }}"/>
                             <h4 class="headline">
                                 {{ $user->name }}
                             </h4>

@@ -162,7 +162,7 @@ class User extends Authenticatable
 
     public function newArticle()
     {
-        return $this->articles()->where('status','>',0)->orderBy('id', 'desc')->take(3)->get();
+        return $this->articles()->where('status', '>', 0)->orderBy('id', 'desc')->take(3)->get();
     }
 
     public function introduction()
@@ -193,12 +193,12 @@ class User extends Authenticatable
             }
         }
 
-        if(!empty($this->avatar)){
-            return $this->avatar;
-        }else{
-            return get_avatar($this);
+        if (empty($this->avatar)) {
+            $this->avatar = '/images/avatar.jpg';
         }
-    
+
+        return $this->avatar;
+
     }
 
 }

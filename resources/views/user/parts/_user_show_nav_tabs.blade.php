@@ -45,7 +45,7 @@
                    <li class="article_item">
                         <div class="author">
                             <a class="avatar" href="/user/{{ $user->id }}" target="_blank">
-                                <img src="{{ $user->avatar }}"/>
+                                <img src="{{ $user->getLatestAvatar() }}"/>
                             </a>
                             <div class="info_meta">
                                 <a class="nickname" href="/user/{{ $user->id }}" target="_blank">

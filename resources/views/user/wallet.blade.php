@@ -10,7 +10,7 @@
             <div class="top clearfix">
                 <div class="user col-xs-12 col-sm-4">
                     <a class="avatar avatar_lg" href="/user/{{ $user->id }}">
-                        <img src="{{ $user->avatar }}"/>
+                        <img src="{{ $user->getLatestAvatar() }}"/>
                     </a>
                     <div class="info">
                         <a class="name" href="/user/{{ $user->id }}">

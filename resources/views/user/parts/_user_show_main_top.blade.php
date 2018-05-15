@@ -1,6 +1,6 @@
 <div class="main_top">
     <a class="avatar avatar_lg" href="/user/{{ $user->id }}">
-        <img src="{{ $user->avatar }}"/>
+        <img src="{{ $user->getLatestAvatar() }}"/>
     </a>
     @if(!$user->isSelf())
       @if(Auth::check())
