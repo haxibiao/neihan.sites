@@ -1,0 +1,204 @@
+// 关注页
+#notifications {
+    .notifications_wrp {
+        .aside {
+            @include spacing (81px 0 0, 0 0 30px);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            overflow: auto;
+            width: 330px;
+            @media screen and (max-width: 992px) {
+                width: 200px;
+            }
+            @media screen and (max-width: 768px) {
+                width: 20%;
+            }
+        }
+        .main {
+            margin-left: 360px;
+            @media screen and (max-width: 992px) {
+                margin-left: 230px;
+            }
+            @media screen and (max-width: 768px) {
+                margin-left: 24%;
+            }
+        }
+    }
+}
+
+// 消息页标题
+.notification_menu {
+    font-size: 14px;
+    color: $color-black;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.new_abstract {
+    font-size: 12px;
+    color: $color-gray;
+}
+
+.operation {
+    display: inline;
+    .dropdown-menu {
+        top: auto;
+        left: auto;
+        li {
+            a {
+                i {
+                    font-size: 14px;
+                    margin-right: 8px;
+                    vertical-align: middle;
+                }
+                span {
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+}
+
+.write_message {
+    position: fixed;
+    width: 780.01px;
+    bottom: 0;
+    background-color: $color-white;
+    form {
+        width: 100%;
+        margin-bottom: 20px;
+        textarea {
+            @include border (4px, 1px solid $color-gray-light);
+            width: 100%;
+            height: 50px;
+            padding: 6px 12px;
+            background-color: hsla(0, 0%, 71%, .1);
+            background-image: none;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            resize: none;
+            display: inline-block;
+            vertical-align: top;
+        }
+        input {
+            @include spacing (10px 0, 8px 18px);
+            @include border (20px, none);
+            float: right;
+            width: 78px;
+            font-size: 16px;
+            color: $color-white;
+            background-color: $color-green;
+            cursor: pointer;
+            outline: none;
+            display: block;
+        }
+    }
+    .hint {
+        font-size: 13px;
+        color: $color-gray;
+        padding-top: 3px;
+    }
+}
+
+.message_box {
+    position: relative;
+    display: block;
+    margin: 4px 56px 0;
+    min-height: 39px;
+    .clearfix {
+        .content {
+            position: relative;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid;
+            word-break: break-word!important;
+            line-height: 1.5;
+            display: table-cell;
+        }
+        &::before,&::after {
+            content: "";
+            display: table;
+        }
+        &::after {
+            clear: both;
+        }
+    }
+    .time {
+        font-size: 12px;
+        color: #d9d9d9;
+        margin-top: 2px;
+    }
+}
+
+.message {
+    @include spacing (0 0 15px 0, 20px);
+    border: none;
+    .message_box {
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            display: inline-block;
+            top: 0;
+        }
+        &::after {
+            top: 1px;
+        }
+    }
+}
+
+.notification_top {
+    position: fixed;
+    z-index: 1;
+    width: 780.01px;
+    min-height: 35px;
+    text-align: center;
+    background-color: $color-white;
+    border-bottom: 1px solid $color-white-silver;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    font-size: 14px;
+    color: $color-gray;
+    &::before {
+        content: "";
+        position: absolute;
+        top: -81px;
+        left: 0;
+        width: 100%;
+        height: 81px;
+        background-color: $color-white;
+    }
+    .back_list {
+        color: $color-gray;
+        float: left;
+        i {
+            font-size: inherit;
+        }
+        &:hover {
+            color: $color-black;
+        }
+    }
+    .thematic {
+        font-size: 14px;
+        font-weight: bold;
+        display: inline-block;
+        a {
+            display: inline-block;
+            vertical-align: middle;
+            max-width: 100px;
+            span {
+                display: block;
+            }
+        }
+    }
+    .operation {
+        float: right;
+        .dropdown-menu {
+            right: 0;
+        }
+    }
+    .more_option {
+        float: right;
+    }
+}

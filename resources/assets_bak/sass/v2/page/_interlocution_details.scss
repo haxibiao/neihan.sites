@@ -1,0 +1,144 @@
+// 问答详情页
+#interlocution_details {
+    @include aside;
+    .note_title {
+        background-color: $color-white;
+        .title_line {
+            font-size: 18px;
+            height: 35px;
+        }
+    }
+    // 问答详情
+    .note {
+        .container {
+            padding-bottom: 40px;
+            .main {
+                .question_single {
+                    .question_tags {
+                        width: 100%;
+                        height: 34px;
+                        overflow: hidden;
+                        .collection {
+                            height: 28px;
+                            line-height: 28px;
+                            border: 0;
+                            color: $color-gray-deep;
+                            margin-bottom: 0;
+                        }
+                    }
+                    .headline {
+                        margin-top: 4px;
+                        font-size: 28px;
+                    }
+                    .question_tips_body {
+                        margin-bottom: 8px;
+                    }
+                    .inquisitorial {
+                        margin-bottom: 10px;
+                        .author {
+                            font-size: 13px;
+                            .info_meta {
+                                padding: 6px 0 0 40px;
+                            }
+                        }
+                    }
+                    .question_text {
+                        font-size: 16px;
+                        color: $color-gray;
+                        line-height: 1.5;
+                    }
+                    .question_img {
+                        margin: 20px 0;
+                        height: 120px;
+                        overflow: hidden;
+                        img {
+                            width: auto;
+                            height: 100%;
+                            margin-right: 10px;
+                        }
+                    }
+                    .answers {
+                        margin-top: 30px;
+                        .note_answers {
+                            .answer_item {
+                                padding: 20px 0 30px;
+                                border-bottom: 1px solid $color-white-silver;
+                                .author {
+                                    .info_meta {
+                                        padding: 2px 0 0 50px;
+                                        .nickname {
+                                            font-size: 15px;
+                                        }
+                                    }
+                                }
+                                .answer_user {
+                                    .author {
+                                        margin-bottom: 15px;
+                                        .btn_base {
+                                            float: right;
+                                        }
+                                        .pay_question_user {
+                                            float: right;
+                                            padding: 10px 10px 0;
+                                        }
+                                        .info_meta {
+                                            padding-right: 110px;
+                                            .nickname {
+                                                font-weight: 700;
+                                            }
+                                        }
+                                    }
+                                }
+                                .answer_useful {
+                                    text-align: center;
+                                    input[type="checkbox"] {
+                                        @include size (15px,15px);
+                                        margin: 0;
+                                    }
+                                }
+                                &:last-child {
+                                    border-bottom: none;
+                                }
+                            }
+                        }
+                        .note_foot {
+                            position: fixed;
+                            width: 100%;
+                            height: 70px;
+                            line-height: 70px;
+                            bottom: 0;
+                            right: 0;
+                            z-index: 1030;
+                            text-align: center;
+                            background-color: $color-white;
+                            // display: none;
+                        }
+                    }
+                }
+            }
+            // 右侧
+            .aside {
+                padding-left: 35px;
+                .title_line {
+                    margin-bottom: 20px;
+                }
+                .article_item {
+                    border: none;
+                    padding: 0;
+                    .wrap_img {
+                        max-height: 100px;
+                    }
+                }
+            }
+        }
+    } // 推荐问答
+    .note_bottom {
+        background-color: #f5f5f5;
+        .note_recommend {
+            padding-top: 20px;
+            .recommend_note {
+                margin-bottom: 20px;
+            }
+        }
+    }
+}

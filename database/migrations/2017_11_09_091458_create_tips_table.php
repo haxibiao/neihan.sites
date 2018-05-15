@@ -14,6 +14,7 @@ class CreateTipsTable extends Migration {
 		Schema::create('tips', function (Blueprint $table) {
 			$table->increments('id');
 			$table->decimal('amount');
+			$table->integer('user_id');
 			$table->integer('tipable_id')->index();
 			$table->string('tipable_type')->index();
 			$table->timestamps();

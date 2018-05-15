@@ -1,0 +1,69 @@
+// 问答页
+#interlocution {
+    @include aside;
+    // 问答分类
+    .interlocution_top {
+        background-color: $color-white;
+        position: fixed;
+        width: 100%;
+        top: 51px;
+        padding-top: 15px;
+        z-index: 1001;
+        box-shadow: 0 2px 2px 1px #ececec;
+        .classification {
+            width: 100%;
+            height: 50px;
+            overflow: hidden;
+            padding-right: 45px;
+            position: relative;
+            .collection {
+                border-color: transparent;
+            }
+            .more_collection {
+                position: absolute;
+                top: 0;
+                right: 0;
+            }
+            .pay {
+                background-color: rgba(255,157,35,.2);
+                border-color: rgba(255,157,35,.3);
+            }
+            .huo {
+                background-color: hsla(0,100%,70%,.2);
+                border-color: hsla(0,100%,70%,.3);
+            }
+        }
+    }
+    .interlocution_note {
+        background-color: $color-white-silver;
+        padding-top: 65px;
+        // 右侧
+        .aside {
+            padding-left: 35px;
+            .selected_interlocution {
+                .article_list {
+                    li {
+                        &:first-child {
+                            padding-top: 20px;
+                        }
+                    }
+                }
+            }
+            .contact_us {
+                .title_line {
+                    margin-bottom: 12px;
+                }
+                .me {
+                    p {
+                        font-size: 14px;
+                        color: #717171;
+                        margin-top: 8px;
+                    }
+                    .cooperate {
+                        font-weight: 700;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,15 @@
+//收藏的文章页
+#bookmark {
+    padding: 30px 0 50px;
+    .tag_banner {
+        width: 100%;
+        min-height: 78px;
+        border-radius: 4px;
+        margin-bottom: 30px;
+    } // 内容
+    .article_list {
+        .article_item {
+            @include article_item;
+        }
+    }
+}

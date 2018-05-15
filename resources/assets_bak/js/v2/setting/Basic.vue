@@ -1,0 +1,230 @@
+<template>
+	<div id="basic">
+		<table>
+			<thead>
+				<tr>
+					<th class="setting_head"></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody class="base">
+				<tr>
+					<td class="top_line">
+						<div class="avatar avatar_sp">
+							<img src="/images/photo_04.png" />
+						</div>
+					</td>
+					<td class="top_line">
+						<a href="javascript:;" class="btn_base btn_hollow btn_hollow_sm">
+							<input type="file" class="hide" unselectable="on" />
+							更换头像
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_title">昵称</td>
+					<td>
+						<input type="text" placeholder="请输入昵称" class="form-control" />
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_title">电子邮件</td>
+					<td>
+						<form>
+							<input type="email" placeholder="请输入你的常用邮箱" class="form-control" />
+							<input type="button" value="发送" class="btn_base btn_hollow btn_follow_xs" />
+						</form>
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_title">手机</td>
+					<td class="setted">
+						<div>123456789101</div>
+						<i class="iconfont icon-weibiaoti12"></i>
+						<span>已验证</span>
+						<a href="javascript:;" class="cancel_bind">解除绑定</a>
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_title">语言设置</td>
+					<td>
+						<div>
+							<input type="radio" name="language" value="zh_CN" checked />
+							<span>中文简体</span>
+						</div>
+						<div>
+							<input type="radio" name="language" value="zh_TW" />
+							<span>中文繁体</span>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_title">接受谁的私信</td>
+					<td>
+						<div>
+							<input type="radio" name="letter" value="true" checked />
+							<span>所有人</span>
+						</div>
+						<div>
+							<input type="radio" name="letter" value="false" />
+							<span>我关注的人、我发过私信的人</span>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_title">提醒邮件通知</td>
+					<td>
+						<div>
+							<input type="radio" name="mail" value="instantly" checked />
+							<span>所有动态</span>
+						</div>
+						<div>
+							<input type="radio" name="mail" value="later" />
+							<span>每天未读汇总</span>
+						</div>
+						<div>
+							<input type="radio" name="mail" value="none" />
+							<span>不接受</span>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<input type="submit" value="保存" class="btn_base btn_follow" />
+	</div>
+</template>
+
+<script>
+export default {
+
+  name: 'Basic',
+
+  data () {
+    return {
+
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+	#basic {
+	    table {
+	        thead {
+	            tr {
+	                .setting_head {
+	                    width: 200px;
+	                    @media screen and (max-width: 992px) {
+	                        width: 140px;
+	                    }
+	                    @media screen and (max-width: 768px) {
+	                        width: 85px;
+	                    }
+	                }
+	            }
+	        }
+	        .base {
+	            tr {
+	                td {
+	                    input[type="text"] {
+	                        width: 216px;
+	                        @media screen and (max-width: 768px) {
+	                            width: 120px;
+	                        }
+	                    }
+	                    form {
+	                        .btn_follow_xs {
+	                            padding: 4px;
+	                            margin-bottom: 14px;
+	                            @media screen and (max-width: 768px) {
+	                                display: block;
+	                                margin: 10px 0 0 0;
+	                            }
+	                        }
+	                        input[type="email"] {
+	                            width: 270px;
+	                            display: inline-block;
+	                            @media screen and (max-width: 768px) {
+	                                width: 166px;
+	                            }
+	                        }
+	                    }
+	                    div {
+	                        display: inline-block;
+	                        span {
+	                            margin: 0 20px 0 6px;
+	                            font-size: 15px;
+	                            vertical-align: middle;
+	                        }
+	                    }
+	                }
+	                .top_line {
+	                    padding-top: 0;
+	                    .avatar {
+	                        @media screen and (max-width: 768px) {
+	                            width: 60px;
+	                            height: 60px;
+	                        }
+	                    }
+	                    .btn_hollow {
+	                        position: relative;
+	                        padding: 4px 12px;
+	                        font-size: 14px;
+	                        input {
+	                            position: absolute;
+	                            display: block!important;
+	                            top: -1px;
+	                            left: 1px;
+	                            width: 85px;
+	                            height: 30px;
+	                            opacity: 0;
+	                        }
+	                    }
+	                }
+	                .setting_title {
+	                    font-size: 15px;
+	                    color: #969696;
+	                }
+	                .setted {
+	                    div {
+	                        font-size: 15px;
+	                        display: inline-block;
+	                        @media screen and (max-width: 768px) {
+	                            display: block;
+	                        }
+	                    }
+	                    i {
+	                        font-size: 12px;
+	                        color: #969696;
+	                        font-weight: 700;
+	                        margin: 0 0 0 10px;
+	                        vertical-align: middle;
+	                    }
+	                    span,
+	                    .cancel_bind {
+	                        font-size: 14px;
+	                        color: #969696;
+	                        margin: 0 0 0 3px;
+	                        vertical-align: middle;
+	                    }
+	                    .cancel_bind {
+	                        margin: 0 0 0 8px;
+	                        display: none;
+	                        &:hover {
+	                            color: #333;
+	                        }
+	                    }
+	                    &:hover {
+	                        .cancel_bind {
+	                            display: inline;
+	                        }
+	                    }
+	                }
+	                &:first-child {
+	                    border: none;
+	                }
+	            }
+	        }
+	    }
+	}
+</style>

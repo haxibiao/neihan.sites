@@ -1,0 +1,92 @@
+// 分类专题按钮
+.collection {
+    @include border (4px, 1px solid $color-gray-light);
+    display: inline-block;
+    height: 35px;
+    margin: 0 12px 12px 0;
+    font-size: 13px;
+    overflow: hidden;
+    line-height: 35px;
+    background-color: $color-white-milk;
+    img {
+        @include size (35px, 35px);
+        @include border (4px 0px 0px 4px, 0);
+    }
+    .name {
+        display: inline-block;
+        vertical-align: middle;
+        padding: 0px 10px;
+        i {
+            font-size: inherit;
+        }
+    }
+    &.active {
+        color: #f66;
+    }
+}
+
+// 更多分类专题按钮
+.more_collection {
+    color: #787878;
+    border: none;
+    background-color: inherit;
+    .name {
+        padding: 0;
+    }
+    &:hover,&:focus {
+        color: #787878;
+    }
+}
+
+// 推荐分类专题页、推荐作者页组件
+.collection_wrap {
+    @include border (4px, 1px solid #e6e6e6);
+    @include spacing (60px 0 0 0, 0 20px);
+    background-color: hsla(0, 0%, 71%, .1);
+    text-align: center;
+    a {
+        .avatar_lg {
+            @include border (10px,1px solid #ddd);
+            margin: -40px 0 10px;
+            background-color: $color-white;
+        }
+        .headline {
+            font-size: 24px;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .abstract {
+            height: 67px;
+        }
+    }
+    hr {
+        background-color: #eaeaea;
+        margin: 20px 0;
+        border: 0;
+        border-top: 1px solid #e2e2e2;
+    }
+    .count {
+        font-size: 14px;
+        padding-bottom: 10px;
+        width: 100%;
+        line-height: 25px;
+        height: 75px;
+        overflow: hidden;
+        .new {
+            @include line_number (1);
+        }
+    }
+    .recent {
+        @include spacing (-29px 0 0 0,0 10px 0 0);
+        font-size: 12px;
+        color: $color-gray;
+        float: left;
+        background-color: #f8f8f8;
+    }
+    &:hover {
+        box-shadow: 0 5px 20px rgba(0,0,0,.1);
+        transition: all .3s ease-in-out;
+    }
+}

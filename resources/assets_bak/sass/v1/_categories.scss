@@ -1,0 +1,117 @@
+//更多专题列表页
+#categories {
+    .recommend {
+        position: relative;
+        text-align: center;
+        img {
+            width: 100%;
+            min-height: 78px;
+            border-radius: 4px;
+        }
+        .help {
+            @include font (16px,$color-white);
+            position: absolute;
+            top: 28px;
+            right: 30px;
+            i {
+                margin-right: 5px;
+            }
+            @media screen and (min-width: 992px) {
+                top: 38px;
+            }
+            @media screen and (min-width: 1200px) {
+                top: 48px;
+            }
+        }
+        div {
+            .trigger_menu {
+                @include trigger_menu;
+                margin: 30px 0 0;
+                text-align: left;
+                @media screen and (min-width: 470px) and (max-width: 768px) {
+                    li {
+                        a {
+                            padding: 0 20px;
+                        }
+                    }
+                }
+                @media screen and (max-width: 470px) {
+                    li {
+                        padding: 0;
+                    }
+                }
+            }
+            .tab-content {
+                .row {
+                    .recommend_list {
+                        height: 375px;
+                        .collection_wrap {
+                            @include border (4px, 1px solid #e6e6e6);
+                            @include spacing (80px 0 0 0, 0 20px);
+                            background-color: hsla(0, 0%, 71%, .1);
+                            a {
+                                display: inline-block;
+                                .avatar_collection {
+                                    @include avatar (80px, 80px);
+                                    @include border (8px, 1px solid #ddd);
+                                    margin: -40px 0 10px;
+                                    background-color: $color-white;
+                                }
+                                .name {
+                                    @include font (24px, $color-black, 700);
+                                    overflow: hidden;
+                                }
+                                .collection_description {
+                                    @include line_number (3);
+                                    font-size: 13px;
+                                    line-height: 25px;
+                                    margin-bottom: 10px;
+                                    height: 69px;
+                                }
+                            }
+                            .follow {
+                                @include button;
+                                margin: 0;
+                            }
+                            .following {
+                                @include following_button;
+                                @include spacing (0,7px);
+                                color: $color-gray;
+                                float: none;
+                                i {
+                                    font-weight: 700;
+                                }
+                            }
+                            hr {
+                                background-color: #eaeaea;
+                                margin: 20px 0;
+                                border: 0;
+                                border-top: 1px solid #e2e2e2;
+                            }
+                            .count {
+                                font-size: 14px;
+                                padding-bottom: 10px;
+                                width: 100%;
+                            }
+                            &:hover {
+                                box-shadow: 0 5px 20px rgba(0,0,0,.1);
+                            }
+                        }
+                    }
+                    @media screen and (min-width: 450px) and (max-width: 768px) {
+                        .recommend_list {
+                            width: 50%;
+                            .collection_wrap {
+                                width: 100%;
+                            }
+                        }
+                    }
+                }
+                .load_more {
+                    @include load_more;
+                    width: 35%;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,290 @@
+// 首页
+#index {
+    @include aside;
+    margin-top: -30px; // 轮播图
+    #poster {
+        position: relative;
+        border-radius: 0 0 6px 6px;
+        overflow: hidden;
+        z-index: 99;
+        margin-bottom: 3%;
+        .poster-inner {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            .item {
+                display: none;
+                .banner {
+                    display: inline-block;
+                    width: 33.333%;
+                    vertical-align: top;
+                    transition: .6s cubic-bezier(.6, 0, .2, 1);
+                    &:first-child {
+                        float: left;
+                        width: 66.666%;
+                    }
+                    a {
+                        position: relative;
+                        display: inline-block;
+                        &::before {
+                            content: '';
+                            position: absolute;
+                            @include proportion;
+                            transition: all .1s ease-in;
+                        }
+                        img {
+                            width: 100%;
+                        }
+                    }
+                    &:hover {
+                        a::before {
+                            background-color: rgba(0, 0, 0, .2)
+                        }
+                    }
+                }
+            }
+            .active,
+            .next,
+            .prev {
+                display: block;
+            }
+            .active {
+                &.left {
+                    .banner {
+                        transform: translate(0, -100%);
+                        &:first-child {
+                            opacity: 0;
+                            transform: translate(0, 0);
+                        }
+                    }
+                }
+                &.right {
+                    .banner {
+                        transform: translate(0, 100%);
+                        &:first-child {
+                            opacity: 0;
+                            transform: translate(0, 0);
+                        }
+                    }
+                }
+            }
+            .next {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                .banner {
+                    transform: translate(0, 100%);
+                    &:first-child {
+                        opacity: 0;
+                        transform: translate(0, 0);
+                    }
+                }
+                &.left {
+                    .banner {
+                        transform: translate(0, 0);
+                        &:first-child {
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+            .prev {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                .banner {
+                    transform: translate(0, -100%);
+                    &:first-child {
+                        opacity: 0;
+                        transform: translate(0, 0);
+                    }
+                }
+                &.right {
+                    .banner {
+                        transform: translate(0, 0);
+                        &:first-child {
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+        }
+        .banner-btn {
+            @include proportion (40px, 50px);
+            @include font (20px, $color-white);
+            position: absolute;
+            top: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transform: translate(0, -50%);
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 999;
+            &.left {
+                left: 15px;
+                border-radius: 0 4px 4px 0;
+            }
+            &.right {
+                right: 15px;
+                border-radius: 4px 0 0 4px;
+            }
+        }
+        &:hover {
+            .banner-btn {
+                display: flex;
+            }
+        }
+        @media screen and (max-width:600px) {
+            .banner-btn {
+                @include proportion (25px, 35px);
+                font-size: 14px;
+            }
+        }
+    } // 左侧
+    .essays {
+        // 专题分类
+        .classification {
+            margin-bottom: 17px;
+            .collection {
+                @include collection_button ($color-white-milk);
+            }
+            .more_hot_collection {
+                @include more;
+            }
+        }
+        .split_line {
+            border-bottom: 1px solid $color-white-silver;
+            margin: -5px 0 15px;
+        } // 内容
+        .article_list {
+            .article_item {
+                @include article_item;
+            }
+        } // 更多内容
+        .load_more {
+            @include load_more;
+        }
+    } // 右侧
+    .aside {
+        padding-left: 35px; // 热门榜
+        .board {
+            padding-bottom: 4px;
+            min-height: 228px;
+            a {
+                position: relative;
+                display: inline-block;
+                img {
+                    @include proportion (100%, 50px);
+                    border-radius: 4px;
+                    margin-bottom: 6px;
+                }
+                .board_tit {
+                    @include font (16px, $color-white);
+                    position: absolute;
+                    display: flex;
+                    width: 71%;
+                    padding-left: 10%;
+                    top: 8px;
+                    bottom: 8px;
+                    left: 1%;
+                    align-items: center;
+                    i {
+                        padding-left: 5px;
+                    }
+                    &.one {
+                        background-color: #C094FE;
+                    }
+                    &.two {
+                        background-color: #FEB247;
+                    }
+                    &.three {
+                        background-color: #F58A76;
+                    }
+                    &.four {
+                        background-color: #B9E0D9;
+                        color: #49837B;
+                    }
+                    &.five {
+                        background-color: #AED0E9;
+                        color: #437DA0;
+                    }
+                }
+            }
+        } // 二维码
+        .app {
+            @include border (6px, 1px solid $color-white-silver);
+            @include spacing (0 0 25px 0, 5px);
+            position: relative;
+            width: 100%;
+            background-color: $color-white;
+            cursor: pointer;
+            img {
+                width: 27%;
+            }
+            .info {
+                @include proportion (71%);
+                display: inline-block;
+                vertical-align: middle;
+                .title {
+                    @include font (13px, $color-black);
+                    i {
+                        font-size: inherit;
+                    }
+                }
+                .description {
+                    @include font (12px, #999);
+                    margin-top: 4px;
+                }
+            }
+            .hover_code {
+                @include border (4px, 1px solid $color-gray-light);
+                position: absolute;
+                opacity: 0;
+                display: none;
+                bottom: 115%;
+                left: 22%;
+                width: 57%;
+                padding: 5px;
+                background-color: $color-white;
+                box-shadow: 0 2px 2px 1px #ccc;
+                img {
+                    width: 100%;
+                }
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: 100%;
+                    left: 50%;
+                    padding: 5%;
+                    border: 1px solid $color-gray-light;
+                    border-color: transparent $color-gray-light $color-gray-light transparent;
+                    background-color: $color-white;
+                    transform: translate(-50%, -50%) rotateZ(45deg);
+                }
+            }
+            &:hover {
+                .hover_code {
+                    transition: all 0.4s linear 0.4s;
+                    opacity: 1;
+                    display: block;
+                }
+            }
+        } // 精章内容
+        .daily {
+            @include daily;
+        } // 推荐作者
+        .recommended_authors {
+            @include recommended_authors;
+        } // 热门视频
+        .videos {
+            @include daily;
+            .note {
+                img {
+                    @include proportion (95px, 70px);
+                }
+            }
+        }
+    }
+}

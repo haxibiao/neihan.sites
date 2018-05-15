@@ -1,0 +1,179 @@
+// 首页轮播图
+.posters {
+    position: relative;
+    border-radius: 0 0 6px 6px;
+    overflow: hidden;
+    z-index: 99;
+    margin-bottom: 3%;
+    .poster-inner {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        .item {
+            display: none;
+            .banner {
+                display: inline-block;
+                width: 33.333%;
+                vertical-align: top;
+                transition: .6s cubic-bezier(.6, 0, .2, 1);
+                &:first-child {
+                    float: left;
+                    width: 66.666%;
+                }
+                a {
+                    position: relative;
+                    display: inline-block;
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        @include size(100%, 100%);
+                        transition: all .1s ease-in;
+                    }
+                    img {
+                        width: 100%;
+                    }
+                }
+                &:hover {
+                    a::before {
+                        background-color: rgba(0, 0, 0, .2)
+                    }
+                }
+            }
+        }
+        .active,
+        .next,
+        .prev {
+            display: block;
+        }
+        .active {
+            &.left {
+                .banner {
+                    transform: translate(0, -100%);
+                    &:first-child {
+                        opacity: 0;
+                        transform: translate(0, 0);
+                    }
+                }
+            }
+            &.right {
+                .banner {
+                    transform: translate(0, 100%);
+                    &:first-child {
+                        opacity: 0;
+                        transform: translate(0, 0);
+                    }
+                }
+            }
+        }
+        .next {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            .banner {
+                transform: translate(0, 100%);
+                &:first-child {
+                    opacity: 0;
+                    transform: translate(0, 0);
+                }
+            }
+            &.left {
+                .banner {
+                    transform: translate(0, 0);
+                    &:first-child {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+        .prev {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            .banner {
+                transform: translate(0, -100%);
+                &:first-child {
+                    opacity: 0;
+                    transform: translate(0, 0);
+                }
+            }
+            &.right {
+                .banner {
+                    transform: translate(0, 0);
+                    &:first-child {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+    .banner-btn {
+        @include size (40px, 50px);
+        @include font (20px, $color-white, 700);
+        position: absolute;
+        top: 50%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        transform: translate(0, -50%);
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 999;
+        &.left {
+            left: 15px;
+            border-radius: 0 4px 4px 0;
+        }
+        &.right {
+            right: 15px;
+            border-radius: 4px 0 0 4px;
+        }
+    }
+    &:hover {
+        .banner-btn {
+            display: flex;
+        }
+    }
+    @media screen and (max-width:600px) {
+        .banner-btn {
+            @include size (25px, 35px);
+            font-size: 14px;
+        }
+    }
+}
+
+// 问答页轮播图
+.interlocution_slide {
+    margin-bottom: 35px;
+    .carousel-indicators {
+        bottom: 0;
+        li {
+            @include size (5px,5px);
+            &.active {
+                @include size (7px,7px);
+            }
+        }
+    }
+    .carousel-control {
+        display: none;
+        .symbol {
+            position: relative;
+            display: block;
+            height: 100%;
+            .iconfont {
+                position: absolute;
+                top: 42%;
+                &.icon-zuobian {
+                    right: 40%;
+                }
+                &.icon-youbian {
+                    left: 40%;
+                }
+            }
+        }
+    }
+    &:hover {
+        .carousel-control {
+            display: block;
+        }
+    }
+}

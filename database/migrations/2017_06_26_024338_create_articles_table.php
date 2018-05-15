@@ -16,14 +16,12 @@ class CreateArticlesTable extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title')->unique();
-            $table->string('keywords');
+            $table->string('keywords')->nullable();
 
             $table->mediumText('description')->nullable();
-            $table->longText('body');
             
-            $table->string('author');
             $table->integer('user_id');
-            $table->integer('category_id')->unsigned();
+            $table->integer('category_id')->nullable()->index()
             
             $table->string('image_url')->nullable()->index();
             $table->integer('status')->default(0)->index();
@@ -32,19 +30,22 @@ class CreateArticlesTable extends Migration
             $table->boolean('has_pic')->default(0)->index();
 
             $table->string('date')->nullable()->index();
-
-            $table->integer('author_id')->nullable();
             $table->string('user_name')->nullable();
             $table->timestamp('edited_at')->nullable();
 
             $table->integer('hits_mobile')->default(0);
             $table->integer('hits_phone')->default(0);
             $table->integer('hits_wechat')->default(0);
-            $table->integer('hits_robot')->default(0);
+            $table->integer('hits_robot')->default(0); 
 
             $table->string('image_top')->nullable();
 
-            
+
+            $table->integer('collection_id')->nullable()->index();
+           
+            $table->longText('body')->nullable();
+            $table->string('author')->nullable();
+            $table->integer('author_id')->nullable();
 
             $table->integer('hits')->default(0);
             $table->integer('count_replies')->default(0);

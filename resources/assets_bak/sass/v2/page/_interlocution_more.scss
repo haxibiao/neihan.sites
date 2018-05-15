@@ -1,0 +1,20 @@
+// 推荐问答页
+#interlocution_recommend {
+    .recommend {
+        text-align: center;
+        .row {
+            margin-top: 20px;
+            .recommend_list {
+                @media screen and (min-width: 450px) and (max-width: 768px) {
+                    width: 50%;
+                    .collection_wrap {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+        .load_more {
+            width: 35%;
+        }
+    }
+}

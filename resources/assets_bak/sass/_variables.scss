@@ -1,0 +1,69 @@
+// Body
+$body-bg: #f5f8fa;
+
+// Borders
+$laravel-border-color: darken($body-bg, 10%);
+$list-group-border: $laravel-border-color;
+$navbar-default-border: $laravel-border-color;
+$panel-default-border: $laravel-border-color;
+$panel-inner-border: $laravel-border-color;
+
+// Brands
+$brand-primary: #3097D1;
+$brand-info: #8eb4cb;
+$brand-success: #2ab27b;
+$brand-warning: #cbb956;
+$brand-danger: #bf5329;
+
+// Typography
+$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+$font-family-sans-serif: "Raleway",
+sans-serif;
+$font-size-base: 14px;
+$line-height-base: 1.6;
+$text-color: #636b6f;
+
+// Navbar
+$navbar-default-bg: #fff;
+
+// Buttons
+$btn-default-color: $text-color;
+
+// Inputs
+$input-border: lighten($text-color, 40%);
+$input-border-focus: lighten($brand-primary, 25%);
+$input-color-placeholder: lighten($text-color, 30%);
+
+// Panels
+$panel-default-heading-bg: #fff;
+
+
+// 主题色
+$color-theme: #d96a5f;
+// 深主题色
+$color-theme-deep: #d75b4f;
+// 淡主题色
+$color-theme-light: #fff5f1;
+
+// 黑色
+$color-black: #333;
+// 白色
+$color-white: #fff;
+// 奶白色
+$color-white-milk: #f7f7f7;
+// 雅士白色
+$color-white-aston:rgba(181, 181, 181, 0.1);
+// 银白色
+$color-white-silver: #f0f0f0;
+// 淡灰色
+$color-gray-light: #dcdcdc;
+// 浅灰色
+$color-gray-shallow: #b4b4b4;
+// 灰色
+$color-gray: #969696;
+// 深灰色
+$color-gray-deep: #646464;
+// 绿色
+$color-green: #42c02e;
+// 蓝色
+$color-blue: #2B89CA;

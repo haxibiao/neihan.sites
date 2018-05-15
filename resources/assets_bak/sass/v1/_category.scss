@@ -1,0 +1,222 @@
+//专题页
+#category {
+    @include aside;
+    .essays {
+        .main_top {
+            @include main_top;
+            .contribute {
+                outline-style: none;
+            }
+            
+            @media screen and (max-width: 768px) {
+                .botm {
+                    position: absolute;
+                    top: 50px;
+                    margin-bottom: 0;
+                }
+                .follow {
+                    right: 40px;
+                }
+                .contribute {
+                    left: 40px;
+                }
+            }
+        }
+        div {
+            .trigger_menu {
+                @include trigger_menu;
+                @media screen and (min-width: 470px) and (max-width: 768px) {
+                    li {
+                        a {
+                            padding: 0 20px;
+                        }
+                    }
+                }
+                @media screen and (max-width: 470px) {
+                    li {
+                        padding: 0;
+                    }
+                }
+            }
+            .tab-content {
+                .article_list {
+                    .article_item {
+                        @include article_item;
+                    }
+                }
+            }
+        }
+    }
+    .aside {
+        padding-left: 35px;
+        font-size: 14px;
+        .title {
+            margin-bottom: 10px;
+            color: $color-gray;
+        }
+        .description {
+            @include spacing (0 0 17px 0, 0 0 16px);
+            border-bottom: 1px solid $color-white-silver;
+            text-align: left;
+            a {
+                color: $color-gray;
+                &:hover {
+                    color: $color-black;
+                }
+            }
+        }
+        .share {
+            @include share;
+        }
+        .intendant {
+            div {
+                @include supporter;
+                .collection_follower {
+                    li {
+                        display: inline-block;
+                        a {
+                            margin-right: -10px;
+                            img {
+                                border: 3px solid $color-white;
+                                background-color: $color-white;
+                            }
+                        }
+                    }
+                    li:first-child {
+                        margin-left: -3px;
+                    }
+                    .function_btn {
+                        @include proportion (32px, 32px);
+                        @include border (50%, 3px solid $color-white);
+                        position: absolute;
+                        margin-left: 3px;
+                        background-color: $color-white-silver;
+                        color: #999;
+                        text-align: center;
+                        line-height: 2;
+                        &:hover {
+                            background-color: #E0E0E0;
+                            color: $color-gray;
+                        }
+                    }
+                }
+            }
+        }
+        .user_action {
+            color: $color-gray;
+            a {
+                @include font (13px, $color-gray);
+                vertical-align: middle;
+                &:hover {
+                    color: $color-black;
+                }
+            }
+            .delete_button {
+                margin-left: 3px;
+                .delete_href {
+                    margin-left: 3px;
+                    outline-style: none;
+                }
+            }
+        }
+    }
+}
+
+// 新建专题页
+#category_new {
+    .row {
+        margin: 0;
+        h3 {
+            @include font (21px, $color-black, 700);
+            margin: 10px 0 20px;
+        }
+        table {
+            width: 100%;
+            thead {
+                tr {
+                    td {
+                        padding: 20px 0;
+                    }
+                    .setting_head {
+                        width: 200px;
+                        @media screen and (max-width: 768px) {
+                            width: 140px;
+                        }
+                    }
+                }
+            }
+            .base {
+                tr {
+                    td {
+                        padding: 20px 0;
+                        .form-control {
+                            padding: 9px 15px;
+                            font-size: 15px;
+                            background-color: hsla(0, 0%, 71%, .1);
+                            box-shadow: none;
+                            &:focus {
+                                box-shadow: none;
+                                border-color: #ccd0d2;
+                            }
+                        }
+                        .avatar_collection {
+                            @include avatar (100px, 100px);
+                            img {
+                                border-radius: 10%;
+                            }
+                        }
+                        .btn_hollow {
+                            @include news_button;
+                            @include spacing (0, 4px 12px);
+                            position: relative;
+                            font-size: 14px;
+                            float: none;
+                            width: 120px;
+                            input {
+                                @include proportion (116px, 30px);
+                                position: absolute;
+                                display: block!important;
+                                top: -1px;
+                                left: 1px;
+                                opacity: 0;
+                            }
+                        }
+                        textarea {
+                            height: 100px;
+                            resize: none;
+                        }
+                        .user_add {
+                            display: block;
+                            .dropdown-menu {
+                                top: auto;
+                                left: auto;
+                                min-height: 100px;
+                                border-color: hsla(0, 0%, 71%, .2);
+                                margin: 0;
+                            }
+                        }
+                        div {
+                            display: inline-block;
+                            input[type="radio"] {
+                                width: 13px;
+                            }
+                            span {
+                                margin: 0 20px 0 6px;
+                                font-size: 15px;
+                                vertical-align: middle;
+                            }
+                        }
+                    }
+                    .setting_title {
+                        @include font (15px, $color-gray);
+                    }
+                }
+            }
+        }
+        .btn_success {
+            @include button;
+            margin: 20px 0 50px 0;
+            font-size: 16px;
+        }
+    }
+}

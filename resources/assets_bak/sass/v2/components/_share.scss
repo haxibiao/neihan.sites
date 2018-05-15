@@ -1,0 +1,117 @@
+// 专题页分享
+.share {
+    @include spacing (0 0 17px 0, 0 0 16px);
+    border-bottom: 1px solid $color-white-silver;
+    line-height: 30px;
+    span {
+        font-size: 14px;
+        vertical-align: middle;
+    }
+    a {
+        margin-left: 10px;
+        i {
+            font-size: 24px;
+            vertical-align: middle;
+        }
+        .icon-qq1 {
+            font-size: 21px;
+        }
+        &:hover {
+            .icon-weixin1 {
+                color: $color-green;
+            }
+            .icon-sina {
+                color: #e05244;
+            }
+            .icon-qq1 {
+                color: #ff9d23;
+            }
+        }
+    }
+}
+
+// 详情页分享
+.share_group {
+    margin-top: 8px;
+    .share_circle {
+        @include size (50px, 50px);
+        @include border (50%, 1px solid $color-gray-light);
+        display: inline-block;
+        margin-left: 5px;
+        text-align: center;
+        vertical-align: middle;
+        i {
+            margin-top: 10px;
+            font-size: 24px;
+            line-height: 2;
+        }
+        .icon-weixin1 {
+            color: $color-green;
+        }
+        .icon-sina {
+            color: #e05244;
+        }
+        .icon-zhaopian {
+            color: $color-gray;
+        }
+        &:hover {
+            background-color: $color-white-milk;
+        }
+    }
+    .more_share {
+        @include font (14px, $color-gray,400);
+        width: auto;
+        padding: 4px 18px;
+        line-height: 40px;
+        border-radius: 50px;
+    }
+}
+
+// 更多分享
+.popover_share_menu {
+    padding: 0 !important;
+    margin: 0 !important;
+    min-width: 135px;
+    li {
+        font-size: 14px;
+        line-height: 25px;
+        border: none !important;
+        >a {
+            display: block;
+            padding: 6px 15px;
+            color: #252525;
+            i {
+                font-size: 18px;
+                display: inline-block;
+                vertical-align: middle;
+                margin: -2px 10px 0 0;
+            }
+            .icon-weixin1 {
+                color: $color-green;
+            }
+            .icon-sina {
+                color: #e05244;
+            }
+            .icon-qq1 {
+                color: #ff9d23;
+            }
+        }
+        &:hover {
+            background-color: #f0f0f0;
+        }
+        .author {
+            padding: 6px 10px;
+            .info_meta {
+                padding-left: 30px;
+                .nickname {
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+}
+.popover {
+    .popover-content {
+        padding: 0;
+    }
+}

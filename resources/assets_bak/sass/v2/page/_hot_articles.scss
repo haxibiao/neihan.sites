@@ -1,0 +1,8 @@
+// 新上榜 // 7日热门 // 30日热门
+#hot_articles {
+    @include aside;
+     // 右侧
+    .aside {
+        padding-left: 35px;
+    }
+}

@@ -1,0 +1,206 @@
+// 头部
+header {
+    position: fixed;
+    width: 100%;
+    border-bottom: 1px solid $color-white-silver;
+    top: 0;
+    left: 0;
+    z-index: 1030;
+    text-align: center;
+    background-color: $color-white;
+    .navbar-default {
+        background-color: $color-white;
+    }
+    .navbar {
+        border: none;
+        margin: 0;
+        .navbar_wrp {
+            .navbar-header {
+                a {
+                    @include spacing (0, 0 15px 0 0);
+                    img {
+                        max-height: 50px;
+                    }
+                }
+            }
+            .navbar-collapse {
+                .navbar-nav {
+                    li {
+                        a {
+                            @include font (15px, $color-black, normal);
+                        }
+                        .dropdown-menu {
+                            right: auto;
+                            a {
+                                i {
+                                    @include font (22px, $color-theme, normal);
+                                    margin-right: 15px;
+                                    vertical-align: middle;
+                                }
+                                &:hover {
+                                    background-color: $color-white-milk;
+                                }
+                            }
+                            @media screen and (max-width: 768px) {
+                                left: 30%;
+                            }
+                        }
+                        .badge {
+                            margin-top: -11px;
+                        }
+                    } // 消息
+                    .news {
+                        .dropdown-menu {
+                            width: 200px;
+                            .badge {
+                                margin-top: 6px;
+                                float: right;
+                            }
+                        }
+                        &:hover>.dropdown-menu {
+                            display: block;
+                        }
+                    } // 个人用户
+                    .my {
+                        .avatar {
+                            @include spacing (5px 25px 5px 20px, 0);
+                            display: inline-block;
+                            &::before {
+                                content: "";
+                                position: absolute;
+                                top: 18px;
+                                right: -14px;
+                                border-left: 5px solid transparent;
+                                border-right: 5px solid transparent;
+                                border-top: 6px solid $color-gray;
+                            }
+                        }
+                        &:hover>.dropdown-menu {
+                            display: block;
+                        }
+                    }
+                    // 注册、写文章
+                    .register,.creation {
+                        a {
+                            padding: 6px;
+                        }
+                    }
+                    .tab {
+                        i {
+                            vertical-align: middle;
+                        }
+                        .menu_text {
+                            vertical-align: middle;
+                            @media screen and (max-width: 1200px) and (min-width: 768px) {
+                                display: none;
+                            }
+                        }
+                        &:hover {
+                            background-color: $color-white-milk;
+                        }
+                    }
+                    
+                    .active {
+                        .identifier {
+                            color: $color-theme;
+                            background-color: initial;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+//尾部
+footer {
+    padding: 3% 0;
+    text-align: center;
+    div {
+        color: $color-gray;
+        a {
+            color: $color-gray;
+            &:hover {
+                color: $color-black;
+            }
+        }
+    }
+    .icp {
+        color: $color-gray-shallow;
+        a {
+            color: $color-gray-shallow;
+            img {
+                height: 30px;
+            }
+        }
+    }
+}
+
+// 底部小火箭、分享、收藏、投稿
+.side_tool {
+    position: fixed;
+    bottom: 27px;
+    right: 20px;
+    ul {
+        li {
+            border: 1px solid $color-gray-light;
+            border-bottom: none;
+            background-color: #fff;
+            .function_button,.js_submit_button {
+                @include size (50px, 50px);
+                text-align: center;
+                display: block;
+                outline-style: none;
+                margin: 0;
+                i {
+                    font-size: 20px;
+                    display: block;
+                    line-height: 50px;
+                }
+                .icon-xiangshangjiantou,.icon-jia1,
+                .icon-tougaoguanli,.icon-fenxiang {
+                    font-weight: 700;
+                }
+                .icon-shoucang1 {
+                    color: $color-theme;
+                }
+            }
+            &:hover {
+                background-color: hsla(0, 0%, 71%, .1);
+            }
+            &:last-child {
+                border-bottom: 1px solid $color-gray-light;
+            }
+        }
+        .toup_rocket {
+            display: none;
+        }
+    }
+    &.article_top {
+        bottom: auto;
+        top: 80px;
+        .popover {
+            top: 0!important;
+            .popover-content {
+                .popover_share_menu {
+                    max-height: 275px;
+                    overflow: auto;
+                }
+            }
+        }
+        .writer {
+            .popover {
+                .arrow {
+                    top: 25px!important;
+                }
+            }
+        }
+        .catalog {
+            .popover {
+                .arrow {
+                    top: 75px!important;
+                }
+            }
+        }
+    }
+}
