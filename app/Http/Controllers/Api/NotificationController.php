@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Category;
 use App\Chat;
 use App\Http\Controllers\Controller;
 use App\Message;
 use App\User;
 use Auth;
-use DB;
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller
@@ -17,14 +17,11 @@ class NotificationController extends Controller
         $chat              = Chat::findOrFail($id);
         $data['with_user'] = $chat->withUser();
         $messages          = $chat->messages()->with('user')->orderBy('id', 'desc')->paginate(10);
-        // $data['last_page'] = $messages->last_page;
-
-        // if (request('page') == 1) {
-        //     $messages = $messages->sortBy('asc');
-        // }
 
         foreach ($messages as $message) {
-            $message->time = $message->timeAgo();
+            $message->time    = $message->timeAgo();
+            $message->message = str_replace("\n", "<br>", $message->message);
+            $message->user->fillForJs();
         }
         $data['messages'] = $messages;
 
@@ -34,7 +31,6 @@ class NotificationController extends Controller
                 $user->pivot->save();
             }
         }
-        Auth::user()->forgetUnreads();
 
         return $data;
     }
@@ -57,14 +53,11 @@ class NotificationController extends Controller
                 $user->pivot->save();
                 $user->forgetUnreads();
             }
-        }
-
-        if ($message->id) {
-            $chat->touch();
+            $user->fillForJs();
         }
 
         $message = Message::with('user')->find($message->id);
-
+        $message->user->fillForJs();
         return $message;
     }
 
@@ -73,10 +66,12 @@ class NotificationController extends Controller
         $user  = $request->user();
         $chats = $user->chats()->orderBy('id', 'desc')->paginate(10);
         foreach ($chats as $chat) {
-            $with_user         = $chat->withUser();
-            $chat->with_id     = $with_user->id;
-            $chat->with_name   = $with_user->name;
-            $chat->with_avatar = $with_user->avatar;
+            $with_user = $chat->withUser();
+            if ($with_user) {
+                $chat->with_id     = $with_user->id;
+                $chat->with_name   = $with_user->name;
+                $chat->with_avatar = $with_user->avatar();
+            }
 
             $last_message       = $chat->messages()->orderBy('id', 'desc')->first();
             $chat->last_message = '还没开始聊天...';
@@ -103,48 +98,60 @@ class NotificationController extends Controller
                 }
                 $data['unread'] = $notification->read_at ? 0 : 1;
 
-                //只要不是待审和投稿请求，都点开就标记已读...
+                //只要投稿请求，都点开就标记已读...
                 if ($type != 'category_request') {
                     $notification->markAsRead();
                     $user->forgetUnreads();
+
                 }
 
                 if ($type == 'category_request') {
-                    $notification->markAsRead();
-                    $user->forgetUnreads();
+                    //查看具体某个分类的新请求
+
+                    //TODO::这里有时会产生一个bug,请求的id和notification data中的id会不一致
+                    //点开的同时应该清理专题未读的新投稿请求
+                    $category = Category::find(request('category_id'));
+                    if (!empty($category)) {
+                        $category->new_requests = 0;
+                        $category->save(['timestamp' => false]);
+                    }
+
                     if (request('category_id')) {
                         if ($data['category_id'] != request('category_id')) {
                             continue;
-                        } else {
-                            $pviot = DB::table('article_category')
-                                ->where('category_id', $data['category_id'])
-                                ->where('article_id', $data['article_id'])
-                                ->first();
-                            if ($pviot) {
-                                $data['submited_status'] = $pviot->submit;
-                            }
                         }
                     } else {
+                        //只显示未处理的投稿请求(unread notification only)
                         if ($notification->read_at) {
                             continue;
                         }
-                        $pviot = DB::table('article_category')
-                            ->where('category_id', $data['category_id'])
-                            ->where('article_id', $data['article_id'])
-                            ->first();
-                        if ($pviot) {
-                            $data['submited_status'] = $pviot->submit;
+                    }
+
+                    //提取投稿状态
+                    $category = Category::find($data['category_id']);
+                    if ($category) {
+                        $article = $category->articles()->where('articles.id', $data['article_id'])->first();
+                        if ($article) {
+                            // 不是待审核, 都点开就标记已读
+                            if ($article->pivot->submit != '待审核') {
+                                $notification->markAsRead();
+                                $user->forgetUnreads();
+                            }
+                            $data['submited_status'] = $article->pivot->submit;
+                        }
+                    }
+                }
+
+                //fix avatar in local
+                if (\App::environment('local')) {
+                    if (!empty($data['user_avatar']) && !empty($data['user_id'])) {
+                        if ($user = User::find($data['user_id'])) {
+                            $data['user_avatar'] = $user->avatar();
                         }
                     }
                 }
 
                 $notifications[] = $data;
-            }
-
-            //clear cache
-            if ($type == 'others') {
-                $notification->markAsRead();
-                $user->forgetUnreads();
             }
         }
         return $notifications;

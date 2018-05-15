@@ -1,0 +1,71 @@
+// 侧栏板块标题信息
+.plate-title,
+.bottom-title {
+    font-size: 14px;
+    padding: 5px 0;
+    color: $gray-color2;
+    margin-bottom: 10px;
+    text-align: left;
+    span {
+        color: $dark-color1;
+    }
+    & > a {
+        &:hover {
+            color: $dark-color2;
+        }
+    }
+    .right {
+        font-weight: 400;
+        float: right;
+        height: 100%;
+        color: $gray-color2;
+        i {
+            font-size: 14px;
+            display: inline-block;
+            vertical-align: middle;
+            margin: -2px 5px 0 0;
+            &.icon-shuaxin {
+                transform: rotate(360deg);
+                transition: all 0.5s ease-out;
+            }
+        }
+    }
+    &.wd {
+        padding: 0 0 12px 0;
+        border-bottom: 3px solid $light-color1;
+        font-weight: bold;
+        margin-top: 0;
+        span {
+            position: relative;
+            font-size: 16px;
+            &::after,
+            &::before {
+                position: absolute;
+                content: "";
+                left: 0;
+                bottom: -13px;
+                width: 100%;
+                height: 0;
+                box-sizing: content-box;
+                border-width: 3px;
+                border-style: none dashed solid none;
+            }
+            &::after {
+                padding-right: 2px;
+                border-bottom-color: $hot-pink;
+                border-right-color: $light-color1;
+            }
+            &::before {
+                padding-right: 6px;
+                border-bottom-color: $light-color3;
+                border-right-color: $light-color1;
+            }
+        }
+    }
+}
+.bottom-title {
+    font-size: 15px;
+    padding: 0 0 0 8px;
+    border-left: 3px solid $theme-color;
+    margin-bottom: 20px;
+}

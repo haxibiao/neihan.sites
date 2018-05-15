@@ -41,6 +41,10 @@ class EnvRefresh extends Command
             return $this->refresh_local();
         }
 
+        if ($this->option('staging')) {
+            return $this->refresh_staging();
+        }
+
         if ($this->option('prod')) {
             return $this->refresh_prod();
         }
@@ -49,13 +53,42 @@ class EnvRefresh extends Command
     public function refresh_local()
     {
         file_put_contents(base_path('.env'), file_get_contents(base_path('.env.local')));
+
+        //fix env config for local
+        $this->updateEnv([
+            'APP_URL' => str_replace('https://', 'http://l.', env('APP_URL')),
+        ]);
+    }
+
+    public function refresh_staging()
+    {
+        $this->info('refreshing staging env ...');
+        file_put_contents(base_path('.env'), file_get_contents(base_path('.env.local')));
+        $this->updateWebConfig();
+
+        //fix env config for staging
+        $this->updateEnv([
+            'APP_ENV'   => 'staging',
+            'APP_DEBUG' => 'true',
+            'DB_HOST'   => env('DB_STAGING'),
+        ]);
     }
 
     public function refresh_prod()
     {
-        //fix env:refresh --prod not update other lines ...
-        $this->refresh_local();
-        //db
+        file_put_contents(base_path('.env'), file_get_contents(base_path('.env.local')));
+        $this->updateWebConfig();
+
+        //fix env config for prod
+        $this->updateEnv([
+            'APP_ENV'   => 'prod',
+            'APP_DEBUG' => 'false',
+            'DB_HOST'   => env('DB_SERVER'),
+        ]);
+    }
+
+    public function updateWebConfig()
+    {
         $data = @file_get_contents('/etc/webconfig.json');
         if ($data) {
             $webconfig = json_decode($data);
@@ -69,11 +102,6 @@ class EnvRefresh extends Command
         } else {
             $this->error('webconfig not found!');
         }
-        $this->updateEnv([
-            'APP_ENV'   => 'prod',
-            'APP_DEBUG' => 'false',
-            'DB_HOST'   => env('DB_SERVER'),
-        ]);
     }
 
     public function updateEnv($data = array())
@@ -107,7 +135,7 @@ class EnvRefresh extends Command
         $newContent = implode('', $newLines);
         $put_size   = @file_put_contents($envFile, $newContent);
         if ($put_size) {
-            $this->info('success');
+            $this->info('update env success');
         }
     }
 }

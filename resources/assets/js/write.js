@@ -26,8 +26,9 @@ Vue.component('note-books', require('./components/write/Notebooks.vue'));
 Vue.component('notes', require('./components/write/Notes.vue'));
 Vue.component('recycle', require('./components/write/Recycle.vue'));
 
-Vue.component('editor', require('./components/write/NewEditor.vue'));
+Vue.component('editor', require('./components/Editor.vue'));
 Vue.component('scroll-top', require('./components/write/ScrollTop.vue'));
+Vue.component('publish-successful', require('./components/write/PublishSuccessful.vue'));
 
 // 文集重命名
 Vue.component('modification-name', require('./components/write/modificationName.vue'));
@@ -40,13 +41,6 @@ Vue.component('delete-note', require('./components/write/deleteNote.vue'));
 // 彻底删除
 Vue.component('thorough-delete', require('./components/write/thoroughDelete.vue'));
 
-// 发布成功
-Vue.component('success', require('./components/write/success.vue'));
-
-
-//editor needed modals..
-Vue.component('image-list-modal', require('./modals/ImageListModal.vue'));
-Vue.component('image-list', require('./components/ImageList.vue'));
 
 
 const app = new Vue({

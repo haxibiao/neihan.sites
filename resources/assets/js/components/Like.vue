@@ -1,61 +1,77 @@
 <template>
-             <div class="like">
-            <div :class="liked?'btn_base btn_like_group btn_like_group_active':'btn_base btn_like_group'">
-              <div class="btn_like">
-                  <a v-if="isLogin" @click="toggle_like">
-                      <i :class="liked ? 'iconfont icon-03xihuan' : 'iconfont icon-xin' ">
-                      </i>
-                      喜欢
-                  </a>
-
-                  <a v-if="!isLogin" href="/login">
-                      <i class="iconfont icon-xin">
-                      </i>
-                      喜欢
-                  </a>
-              </div>
-              <div class="modal_wrap">
-                  <a href="javascrip:;">
-                      {{ likes }}
-                  </a>
-              </div>
-            </div>
-        </div>
+  <div class="like">
+    <div :class="['btn-base',isLiked?'btn-theme':'theme-tag']">
+      <div v-if="isLogin" class="btn-like" @click="toggle_like">
+        <a>
+          <i :class="isLiked ? 'iconfont icon-03xihuan' : 'iconfont icon-xin' "></i>
+          喜欢
+        </a>
+      </div>
+      <a v-else href="/login">
+      <div class="btn-like">
+        <a>
+          <i class="iconfont icon-xin"></i>
+          喜欢
+        </a>      
+      </div>
+      </a>
+      <div class="modal-wrap">
+        <a data-target=".like-user" data-toggle="modal">{{ likesTotal }}</a>
+      </div>
+    </div>
+    <modal-like-user :id="id" :type="type" :likes="likes"></modal-like-user>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "Like",
 
-  props: ["id", "type", "isLogin", "articleLikes"],
+  name: 'Like',
 
-  created() {
-    this.likes = this.articleLikes;
-    this.get();
-  },
+  props: ['id', 'type', 'isLogin', 'liked'],
 
-  methods: {
-    toggle_like() {
-      var vm = this;
-      var api_url = window.tokenize("/api/like/" + this.id + "/" + this.type);
-      this.$http.post(api_url).then(function(response) {
-        vm.liked = response.data.is_liked;
-        vm.likes = response.data.likes;
-      });
-    },
-    get() {
-      var vm = this;
-      var api = window.tokenize("/api/like/" + this.id + "/" + this.type);
-      window.axios.get(api).then(function(response) {
-        vm.liked = response.data.likes;
-      });
+  computed: {
+    isLiked() {
+      return this.is_liked !== null ? this.is_liked : this.liked ;
     }
   },
 
-  data() {
+  created() {
+    this.fetchData();
+  },
+
+  methods: {
+  	api() {
+      var api_url = '/api/like/' + this.id + '/' + this.type;
+  		return window.tokenize ? window.tokenize(api_url) : api_url + '/guest';
+  	},
+    fetchData() {
+      var _this = this;
+      window.axios.get(this.api()).then(function(response) {
+        _this.is_liked = response.data.is_liked;
+        _this.likes = response.data.likes.data;
+        _this.likesTotal = response.data.likes.total;
+      });
+    },
+    toggle_like() {
+      //乐观更新UI
+      this.is_liked = !this.is_liked;
+      this.is_liked ? this.likesTotal ++ : this.likesTotal --;
+      
+  		var _this = this;
+      window.axios.post(this.api()).then(function(response) {
+        _this.is_liked = response.data.is_liked;
+        _this.likes = response.data.likes.data;
+        _this.likesTotal = response.data.likes.total;
+      });
+  	}
+  },
+
+  data () {
     return {
-      liked: false,
-      likes: 0
+      is_liked: null,
+      likesTotal: 0,
+    	likes: [],
     };
   }
 };

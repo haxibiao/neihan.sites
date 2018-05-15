@@ -2,15 +2,17 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Model;
+use Auth;
 
 class Answer extends Model
 {
-    protected $fillable = [
-        'user_id',
+    public $fillable = [
         'question_id',
+        'user_id',
         'article_id',
         'answer',
+        'image_url',
     ];
 
     protected $touches = ['question'];
@@ -35,6 +37,20 @@ class Answer extends Model
         return !empty($this->image_url);
     }
 
+    public function primaryImage()
+    {
+        $image_url = parse_url($this->image_url, PHP_URL_PATH);
+        if (!str_contains($image_url, '.small.')) {
+            $image = Image::firstOrNew([
+                'path' => $image_url,
+            ]);
+            if ($image) {
+                $image_url = $image->url_small();
+            }
+        }
+        return $image_url;
+    }
+
     public function shortText()
     {
         //回答的前200
@@ -48,16 +64,5 @@ class Answer extends Model
             }
         }
         return $text;
-    }
-
-    public function comments()
-    {
-        return $this->morphMany(\App\Comment::class, 'commentable');
-    }
-
-    public function description()
-    {
-        $text=strip_tags($this->answer);
-        return str_limit($text,20);
     }
 }

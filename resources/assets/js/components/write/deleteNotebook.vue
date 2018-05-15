@@ -1,17 +1,17 @@
 <template>
-  <div class="modal fade delete-notebook">
-      <div class="modal-dialog simple">
-          <div class="modal-content">
-              <div class="modal-body">
-               <p>确认删除文集《{{ noteName }}》，文章将被移动到回收站。</p>
-              </div>
-              <footer class="clearfix">
-                <a class="submit btn_base btn_hollow btn_follow_xs" @click="submit">确认</a>
-                <a class="cancel" data-dismiss="modal" aria-label="Close" href="javascript:;">取消</a>
-              </footer>
-          </div>
-      </div>
-  </div>
+	<div class="modal fade delete-notebook">
+	    <div class="modal-dialog simple">
+	        <div class="modal-content">
+	            <div class="modal-body">
+	             <p>确认删除文集《{{ noteName }}》，文章将被移动到回收站。</p>
+	            </div>
+	            <footer class="clearfix">
+	            	<a class="submit btn-base btn-hollow btn-md" @click="submit">确认</a>
+	            	<a class="cancel" data-dismiss="modal" aria-label="Close" href="javascript:;">取消</a>
+	            </footer>
+	        </div>
+	    </div>
+	</div>
 </template>
 
 <script>
@@ -20,16 +20,16 @@ export default {
   name: 'deleteNotebook',
 
   computed: {
-    noteName() {
-      return this.$store.state.currentCollection.name;
-    }
+  	noteName() {
+  		return this.$store.state.currentCollection.name;
+  	}
   },
 
   methods: {
-    submit() {
-      $('.delete-notebook').modal('hide');
-      this.$store.dispatch('removeCollection',this.$store.state.currentCollection.id);
-    }
+  	submit() {
+  		$('.delete-notebook').modal('hide');
+  		this.$store.dispatch('removeCollection',this.$store.state.currentCollection.id);
+  	}
   },
 
   data () {
@@ -42,31 +42,12 @@ export default {
 
 <style lang="scss">
 .delete-notebook {
-	.modal-dialog.simple {
-        width: 320px;
-        .modal-body {
-            padding: 20px;
-            p {
+	.modal-dialog {
+		.modal-body {
+			p {
 				font-size: 14px;
 			}
-        }
-        footer {
-            padding: 16px;
-            .submit,.cancel {
-                float: right;
-                height: 30px;
-                line-height: 20px;
-                padding: 4px 12px;
-                font-size: 14px;
-                min-width: auto;
-            }
-            .cancel {
-                color: #969696;
-                &:hover {
-                    color: unset;
-                }
-            }
-        }
-    }
+		}
+	}
 }
 </style>

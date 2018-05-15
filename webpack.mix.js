@@ -9,63 +9,26 @@ let mix = require("laravel-mix");
  | file for the application as well as bundling up all the JS files.
  |
  */
+
+// css和js都打包了一份新的
 mix
     .js("resources/assets/js/app.js", "public/js")
-    .js("resources/assets/js/app2.js", "public/js")
-    .sass("resources/assets/sass/simditor/simditor.scss", "public/css")
-    .sass("resources/assets/sass/app.scss", "public/css");
-
+    .js("resources/assets/js/g.js", "public/js")
+    .sass("resources/assets/sass/app.scss", "public/css")
+    .sass("resources/assets/sass/simditor/simditor.scss", "public/css");
 
 //css
-mix
-    .styles(
-        [
-            "public/css/app.css",            
-            "node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css",
-            "public/fonts/iconfont.css"
-        ],
-        "public/css/a2.css"
-    )
-    .version();
+mix.styles(["public/css/app.css", "public/fonts/iconfont.css"], "public/css/a.css").version();
+
+mix.styles(["public/css/simditor.css"], "public/css/e.css").version();
 
 mix
-    .styles(
-        [
-            "public/css/simditor.css"
-        ],
-        "public/css/e.css"
-    )
+    .scripts(["public/js/app.js", "resources/assets/js/plugins/bootstrap-tagsinput.js", "resources/assets/js/plugins/poster.js"], "public/js/a.js")
     .version();
 
-// v1 
-mix
-    .scripts([
-            "public/js/app.js",
-            "node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.js",
-            "resources/assets/js/plugins/poster.js"
-        ], 
-        "public/js/a.js")
-    .version();
-
-
-// js
+//js
 mix.js("resources/assets/js/spa.js", "public/js/b.js");
 //write
 mix.js("resources/assets/js/write.js", "public/js/write.js");
 
-// v2
-mix
-    .scripts([
-            "public/js/app2.js",
-            "resources/assets/js/plugins/poster.js"
-        ], 
-        "public/js/a2.js")
-    .version();
-
-
-mix.js("resources/assets/js/spa2.js", "public/js/b2.js");
-
-// 爬虫文章css
-mix.sass("resources/assets/sass/fix/7.scss", "public/css/fix");
-
-mix.browserSync('l.ainicheng.com');
+mix.browserSync("l.ainicheng.com");

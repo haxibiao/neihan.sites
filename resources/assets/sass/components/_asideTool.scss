@@ -1,0 +1,45 @@
+#side-tool {
+  position: fixed;
+  right: 20px;
+  bottom: 50px;
+  &>ul {
+  	&>li {
+  		&>a {
+  			width: 50px;
+  			height: 50px;
+  			line-height: 50px;
+  			color: $dark-color2;
+  			cursor: pointer;
+  			border: 1px solid #dcdcdc;
+  			border-bottom: none;
+  			background-color: #fff;
+  			text-align: center;
+  			display: block;
+  			transition: all .4s ease-in-out;
+  			&:hover {
+  			  background-color: rgba(0,0,0,0.2);
+  			}
+	  		i {
+					font-size: 25px;
+					display: block;
+					&.icon-shoucang1 {
+						color: $theme-color;
+					}
+	  		}
+  		}
+  		&:last-child {
+  			a {
+  				border-bottom: 1px solid #dcdcdc;
+  			}
+  		}
+      .popover {
+        top: unset !important;
+        bottom: -36px !important;
+        left: -138px !important;
+        .arrow {
+          top: 53% !important;
+        }
+      }
+  	}
+  }
+}

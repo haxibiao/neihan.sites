@@ -21,11 +21,11 @@
             <div class="media">
                 <a class="pull-left" href="/image/{{ $image->id }}">
                     <img alt="{{ $image->title }}" class="media-object" 
-                    	src="{{ get_img($image->path_small) }}">
+                    	src="{{ $image->path_small }}">
                     </img>
                 </a>
                 <div class="media-body">
-                    @if(Auth::check() && Auth::user()->is_editor)
+                    @if(checkEditor())
                     <div class="pull-right">
                       {!! Form::open(['method' => 'delete', 'route' => ['image.destroy', $image->id], 'class' => 'form-horizontal pull-left right10']) !!}
                         {!! Form::submit('删除', ['class' => 'btn btn-danger']) !!}                
@@ -42,7 +42,7 @@
                         上传用户:　<a href="/user/{{ $image->user->id }}">{{ $image->user->name }}</a>
                     </p>
                     <p>
-                        最后更新: {{ diffForHumansCN($image->updated_at) }}
+                        最后更新: {{ $image->updatedAt()) }}
                     </p>
                 </div>
             </div>

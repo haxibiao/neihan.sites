@@ -14,7 +14,7 @@ class CollectionController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -46,15 +46,11 @@ class CollectionController extends Controller
      */
     public function show($id)
     {
-        $collcetion = Collection::with('user')->findOrFail($id);
-
-        $articles              = [];
-        $articles['new']       = $collcetion->articles()->where('status', '>', 0)->orderBy('created_at', 'desc')->paginate(10);
-        $articles['commented'] = $collcetion->articles()->where('status', '>', 0)->orderBy('created_at', 'desc')->paginate(10);
-        $articles['list']      = $collcetion->articles()->where('status', '>', 0)->orderBy('created_at', 'desc')->paginate(10);
-        return view('collcetion.show')
-            ->withCollection($collcetion)
-            ->withArticles($articles);
+        $collection        = Collection::with('user')->with('follows')->findOrFail($id);
+        $data['new']       = $collection->articles()->orderBy('id', 'desc')->paginate(10);
+        $data['commented'] = $collection->articles()->orderBy('updated_at', 'desc')->paginate(10);
+        $data['old']       = $collection->articles()->orderBy('id')->paginate(10);
+        return view('collection.show')->withCollection($collection)->withData($data);
     }
 
     /**

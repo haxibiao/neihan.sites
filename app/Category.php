@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Model;
+use Auth;
 
 class Category extends Model
 {
@@ -14,40 +15,65 @@ class Category extends Model
         'parent_id',
         'type',
         'order',
+        'status',
+        'request_status',
+        'is_official',
+        'is_for_app',
+        'logo_app',
     ];
 
-    public function questions()
-    {
-        return $this->belongsToMany(\App\Question::class);
-    }
-
-    public function creator()
+    public function user()
     {
         return $this->belongsTo(\App\User::class);
     }
 
     public function admins()
     {
-        return $this->belongsToMany(\App\User::class)->wherePivot('is_admin', 1);
+        return $this->belongsToMany('App\User')->wherePivot('is_admin', 1)->withTimestamps();
     }
 
     public function authors()
     {
-        return $this->belongsToMany(\App\User::class)->wherePivot('approved', 1);
+        // return $this->belongsToMany('App\User')->wherePivot('approved', 1)->withTimestamps();
+        return $this->belongsToMany('App\User');
     }
 
-    public function member()
+    public function users()
     {
-        return $this->belongsToMany(\App\User::class)->withPivot('approved', 'is_admin');
+        return $this->belongsToMany('App\User');
     }
-    public function user()
+
+    public function questions()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsToMany('App\Question');
     }
 
     public function articles()
     {
-        return $this->belongsToMany('App\Article')->withPivot('submit')->withTimestamps();
+        return $this->belongsToMany('App\Article')
+            ->withPivot('submit')
+            ->withTimestamps()
+            ->orderBy('pivot_updated_at', 'desc');
+    }
+
+    public function newRequestArticles()
+    {
+        return $this->belongsToMany('App\Article')
+            ->wherePivot('submit','待审核')
+            ->withPivot('submit')
+            ->withTimestamps()
+            ->orderBy('id', 'desc');
+    }
+
+    public function publishedArticles()
+    {
+        return $this->belongsToMany('App\Article')
+            ->where('articles.status', '>', 0)
+        //TODO:: fix data !! 专题下的文章，submit都必须是已收录，避免status 1的未审核文章显示了
+        // ->wherePivot('submit', '已收录')
+            ->withPivot('submit')
+            ->withTimestamps()
+            ->orderBy('id', 'desc');
     }
 
     public function parent()
@@ -55,48 +81,61 @@ class Category extends Model
         return $this->belongsTo(\App\Category::class, 'parent_id');
     }
 
-    public function comments()
-    {
-        return $this->hasMany(\App\Comment::class, 'object_id');
-    }
-
     public function follows()
     {
         return $this->morphMany(\App\Follow::class, 'followed');
     }
 
-    public function videos()
+    //methods .............
+
+    public function fillForJs()
     {
-        return $this->belongsToMany(\App\Video::class);
+        $this->logo        = $this->logo();
+        $this->description = $this->description();
     }
-    public function favorites()
+
+    public function logo()
     {
-        return $this->morphMany(\App\Favorite::class, 'faved');
+        $path = empty($this->logo) ? '/images/category.logo.jpg' : $this->logo;
+        $url  = file_exists(public_path($path)) ? $path : starts_with($path, 'http') ? $path : env('APP_URL') . $path;
+
+        //APP 需要返回全Uri
+        return starts_with($url, 'http') ? $url : url($url);
+    }
+
+    public function logo_app()
+    {
+        $path = empty($this->logo_app) ? '/images/category.logo.jpg' : $this->logo_app;
+        $url  = file_exists(public_path($path)) ? $path : env('APP_URL') . $path;
+
+        //APP 需要返回全Uri
+        return starts_with($url, 'http') ? $url : url($url);
     }
 
     public function smallLogo()
     {
-        return str_replace(".logo.jpg", ".logo.small.jpg", $this->logo);
-    }
+        $path = empty($this->logo) ? '/images/category.logo.small.jpg' : str_replace('.logo.jpg', '.logo.small.jpg', $this->logo);
+        $url  = file_exists(public_path($path)) ? $path : env('APP_URL') . $path;
 
-    public function publishedArticles()
-    {
-        return $this->belongsToMany('App\Article')->where('status','>',0)->withPivot('submit')->withTimestamps();
+        //APP 需要返回全Uri
+        return starts_with($url, 'http') ? $url : url($url);
     }
-
-    //用于计算的方法
 
     public function topAdmins()
     {
-        $topAdmins = $this->admins()->get();
-        // ->orderBy('id', 'desc')->take(10)->get();
+        $topAdmins = $this->admins()->orderBy('id', 'desc')->take(10)->get();
         foreach ($topAdmins as $admin) {
             $admin->isCreator = $admin->id == $this->user_id;
         }
-        if (!count($topAdmins)) {
-            return "";
-        }
         return $topAdmins;
+    }
+
+    public function isAdmin($user)
+    {
+        if ($this->admins()->where('users.id', $user->id)->count() || $this->user_id == $user->id) {
+            return true;
+        }
+        return false;
     }
 
     public function topAuthors()
@@ -115,8 +154,65 @@ class Category extends Model
         return $topFollowers;
     }
 
+    public function description()
+    {
+        return empty($this->description) ? '这专题管理很懒，一点介绍都没留下...' : $this->description;
+    }
+
     public function link()
     {
         return '<a href="/' . $this->name_en . '">' . $this->name . '</a>';
+    }
+
+    public function canAdmin()
+    {
+        if (!Auth::check()) {
+            return false;
+        }
+        $is_category_admin = in_array(Auth::id(), $this->admins->pluck('id')->toArray());
+        return $is_category_admin || Auth::user()->checkEditor();
+    }
+
+    public function isFollowed()
+    {
+        return Auth::check() && Auth::user()->isFollow('categories', $this->id);
+    }
+
+    public function saveLogo($request)
+    {
+        if ($request->logo) {
+            $storage_category = '/storage/category/';
+            if (!is_dir(public_path($storage_category))) {
+                mkdir(public_path($storage_category), 0777, 1);
+            }
+            $id         = $this->id ? $this->id : "c" . (\App\Category::max('id') + 1) . "_" . time();
+            $this->logo = $storage_category . $id . '.logo.jpg';
+            $img        = \ImageMaker::make($request->logo->path());
+            $img->resize(300, 200);
+            $img->crop(200, 200, 50, 0);
+            $img->resize(180, 180);
+            $img->save(public_path($this->logo));
+
+            $img->resize(32, 32);
+            $small_logo = $storage_category . $this->id . '.logo.small.jpg';
+            $img->save(public_path($small_logo));
+        }
+
+        if ($request->logo_app) {
+            $storage_category = '/storage/category/';
+            if (!is_dir(public_path($storage_category))) {
+                mkdir(public_path($storage_category), 0777, 1);
+            }
+            $this->logo_app = $storage_category . $this->id . '.logo.app.jpg';
+            $img            = \ImageMaker::make($request->logo_app->path());
+            $img->resize(300, 200);
+            $img->crop(200, 200, 50, 0);
+            $img->resize(180, 180);
+            $img->save(public_path($this->logo_app));
+
+            $img->resize(32, 32);
+            $small_logo = $storage_category . $this->id . '.logo.small.app.jpg';
+            $img->save(public_path($small_logo));
+        }
     }
 }

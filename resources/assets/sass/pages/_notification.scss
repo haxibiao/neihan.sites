@@ -1,0 +1,33 @@
+#notification {
+	.main {
+		ul {
+			li {
+				 padding: 20px;
+				 border-top: 1px solid $light-color2;
+			}
+		}
+	}
+}
+
+#follow {
+	.main {
+		  @media screen and (max-width:768px) {
+		  	.note-info.info-lg {
+			    .btn-base.btn-md {
+			        padding: 8px 3px;
+			        min-width: 60px;
+			    }
+			    .info {
+			    	font-size: 13px;
+			    }
+		  	}
+		  	.article-item {
+				.meta {
+					.collection-tag {
+						display: none;
+					}
+				}
+		  	}
+		 }
+	}
+}

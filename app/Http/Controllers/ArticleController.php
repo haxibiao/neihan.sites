@@ -5,136 +5,44 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Category;
 use App\Http\Requests\ArticleRequest;
-use App\Tip;
-use App\Traits\ArticleControllerFunction;
+use App\Image;
+use App\Jobs\DelayArticle;
+use App\Tag;
+use App\Video;
+use Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 
 class ArticleController extends Controller
 {
-    //除了curd相关函数全都被我抽出去了
-    use ArticleControllerFunction
-    ;
-
     public function __construct()
     {
-        $this->middleware('auth.editor')->except('create', 'show', 'article_new');
+        $this->middleware('auth')->except('show');
     }
+
+    public function drafts(Request $request)
+    {
+        $query = Article::orderBy('id', 'desc')
+            ->where('status', 0);
+        if (!Auth::user()->is_admin) {
+            $query = $query->where('user_id', Auth::user()->id);
+        }
+        $articles = $query->paginate(10);
+        return view('article.drafts')->withArticles($articles);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    // public function push(Request $request)
-    // {
-    //     $urls     = [];
-    //     $number   = $request->number;
-    //     $articles = Article::orderBy('id', 'desc')
-    //         ->where('status', '>', 0)->take($number)->get();
-    //     foreach ($articles as $article) {
-    //         $urls[] = 'http://ainicheng.com/article/' . $article->id;
-    //     }
-
-    //     $ch      = curl_init();
-    //     $options = array(
-    //         CURLOPT_URL            => $api,
-    //         CURLOPT_POST           => true,
-    //         CURLOPT_RETURNTRANSFER => true,
-    //         CURLOPT_POSTFIELDS     => implode("\n", $urls),
-    //         CURLOPT_HTTPHEADER     => array('Content-Type: text/plain'),
-    //     );
-    //     curl_setopt_array($ch, $options);
-    //     $result = curl_exec($ch);
-    //     return $result;
-    // }
-
-    public function push(Request $request)
-    {
-        $urls   = [];
-        $number = $request->number;
-        $type   = $request->type;
-
-        switch ($type) {
-            case 'pandaNumber':
-                $appid = config('seo.articlePush.pandaNumber.appid');
-                $token = config('seo.articlePush.pandaNumber.token');
-                $api   = 'http://data.zz.baidu.com/urls?appid=' . $appid . '&token=' . $token . '&type=realtime';
-                break;
-            case 'baiduNumber':
-                $token = config('seo.articlePush.baiduNumber.token') ?: dd("没有配置推送参数!");
-                $api   = 'http://data.zz.baidu.com/urls?site=' . env('APP_URL') . '&token=' . $token;
-                break;
-            case 'pushTopArticle':
-                $api = domain_env() . '/api/article/' . $number . '/commend-index';
-                break;
-            case 'deleteTopArticle';
-                $api = domain_env() . '/api/article/' . $number . '/commend-index-delete';
-                break;
-            case 'refreshTopArticle':
-                $api =domain_env().'/api/article/refreshTopArticle';
-                break;
-            default:
-                dd('提交的类型错误 没有这个类型');
-                break;
-        }
-        $ch = curl_init();
-
-        $interface_types = [
-            'pushTopArticle',
-            'deleteTopArticle',
-            'refreshTopArticle'
-        ];
-
-        if (in_array($type, $interface_types)) {
-            $options = array(
-                CURLOPT_URL            => $api,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_HTTPHEADER     => array('Content-Type: text/plain'),
-            );
-        } else {
-            $articles = Article::orderBy('id', 'desc')
-                ->where('status', '>', 0)->take($number)->get();
-
-            foreach ($articles as $article) {
-                $urls[] = config('app.url') . '/article/' . $article->id;
-            }
-
-            $options = array(
-                CURLOPT_URL            => $api,
-                CURLOPT_POST           => true,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_POSTFIELDS     => implode("\n", $urls),
-                CURLOPT_HTTPHEADER     => array('Content-Type: text/plain'),
-            );
-        }
-
-        curl_setopt_array($ch, $options);
-        $result = curl_exec($ch);
-        return $result;
-    }
-
     public function index(Request $request)
     {
-        if ($request->get('draft')) {
-            $articles = Article::orderBy('id', 'desc')->where('status', 0)->paginate(10);
-            if (!Auth::user()->is_admin) {
-                $articles = Auth::user()->articles()->where('status', 0)->orderBy('id', 'desc')->paginate(10);
-            }
-
-            return view('article.index')->withArticles($articles);
-        }
-
-        if ($request->get('myArticle')) {
-            $articles = Auth::user()->articles()->where('status', '>=', 0)->orderBy('id', 'desc')->paginate(10);
-            $articles->setPath('article?myArticle=1');
-            return view('article.index')->withArticles($articles);
-        }
-
-        $articles = Article::orderBy('id', 'desc')->where('status', '>', 0)->paginate(10);
+        $query = Article::orderBy('id', 'desc')
+            ->where('status', '>', 0);
         if (!Auth::user()->is_admin) {
-            $articles = Auth::user()->articles()->where('status', '>', 0)->orderBy('id', 'desc')->paginate(10);
+            $query = $query->where('user_id', Auth::user()->id);
         }
+        $articles = $query->paginate(10);
         return view('article.index')->withArticles($articles);
     }
 
@@ -146,11 +54,6 @@ class ArticleController extends Controller
     public function create()
     {
         $categories = get_categories();
-
-        if (!Auth::user()->is_editor) {
-            return redirect()->to('/write');
-        }
-
         return view('article.create')->withCategories($categories);
     }
 
@@ -162,53 +65,37 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
+        $user    = $request->user();
         $article = new Article($request->all());
 
-        if ($request->get('primary_image')) {
-            $article->image_url = $request->get('primary_image');
-        } else {
-
-        }
-        $category_ids     = request('category_ids');
         $article->has_pic = !empty($article->image_url);
         $article->date    = \Carbon\Carbon::now()->toDateString();
-        if (is_array($category_ids) && !empty($category_ids)) {
-            $article->category_id = max($category_ids);
-        }
-        //简单计算该文章有多少个字
-        $article->words = ceil(strlen(strip_tags($article->body)) / 2);
-        $article->body  = $this->fix_body($article->body);
+
+        $article->image_url   = $this->get_primary_image();
+        $article->count_words = ceil(strlen(strip_tags($article->body)) / 2);
         $article->save();
 
-        //categoies
-        $article->categories()->sync($request->get('category_ids'));
+        //delay
+        $this->process_delay($article);
+
+        //categories
+        $this->process_category($article);
 
         //videos
-        $this->save_article_videos($request, $article);
+        $this->save_article_videos($article);
 
         //tags
         $this->save_article_tags($article);
 
         //images
-        $imgs = $this->get_image_urls_from_body($article->body);
-        $this->auto_upadte_image_relations($imgs, $article);
+        $article->saveRelatedImagesFromBody();
 
-        //is_top
-        $this->article_is_top($request, $article);
+        //record action
+        $article->recordAction();
 
-        //delay
-        $this->article_delay($request, $article);
-
-        //music
-        $this->save_article_music($request, $article);
-
-        //defalut 默认会被收录
-        $this->category_article_submit($request, $article);
-
-        //count article
-        $this->article_count($request->get('category_ids'), $article);
-        //count user
-        $this->article_user_count($article->words);
+        $user->count_articles = $user->articles()->count();
+        $user->count_words    = $user->articles()->sum('count_words');
+        $user->save();
 
         return redirect()->to('/article/' . $article->id);
     }
@@ -221,24 +108,26 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $article = Article::with('user')
-            ->with('category')
-            ->with('tags')
-            ->with('images')
-            ->with('comments')
-            ->findOrFail($id);
+        $article = Article::with('user')->with('category')->with('tags')->with('images')->findOrFail($id);
 
-        if (!empty($article->category) && $article->category->parent_id) {
+        //draft article logic ....
+        if ($article->status <= 0) {
+            $has_permission_view_draf = false;
+            if (checkEditor() || $article->isSelf()) {
+                $has_permission_view_draf = true;
+            }
+            if (!$has_permission_view_draf) {
+                return abort(404);
+            }
+        }
+
+        if ($article->category && $article->category->parent_id) {
             $data['parent_category'] = $article->category->parent()->first();
         }
 
-        if ($article->status < 0) {
-            return "该文章不存在或者已经删除。。。。";
-        }
-
+        //count
         $article->hits = $article->hits + 1;
         $agent         = new \Jenssegers\Agent\Agent();
-
         if ($agent->isMobile()) {
             $article->hits_mobile = $article->hits_mobile + 1;
         }
@@ -251,45 +140,20 @@ class ArticleController extends Controller
         if ($agent->isRobot()) {
             $article->hits_robot = $article->hits_robot + 1;
         }
+        $article->save(['timestamps' => false]);
 
-        $timestamps = $article->timestamps;
+        //parse video and image, etc...
+        $article->body = $article->parsedBody();
 
-        $article->timestamps = false;
-
-        $article->save();
-
-        $tips = Tip::with('user')->where('tipable_id', $article->id)->get();
-
-        $data['tips'] = $tips;
-
-        //fix_article_count
-
-        $article->timestamps = $timestamps;
-
-        $this->article_coment_count($article);
-        //fix for show
-        $article->body = $this->fix_body($article->body);
-
-        $article->body = parse_video($article->body);
-
-        $data['json_lists'] = $this->get_json_lists($article);
-        $data['related']    = Article::where('category_id', $article->category_id)
+        $data['recommended'] = Article::whereIn('category_id', $article->categories->pluck('id'))
             ->where('id', '<>', $article->id)
-            ->orderBy('id', 'desc')
-            ->take(4)
+            ->orderBy('updated_at', 'desc')
+            ->take(10)
             ->get();
-        if (str_contains($article->keywords, '王者荣耀')) {
-            fix_wz_data($article);
-        }
-        if (str_contains($article->keywords, '英雄联盟英雄资料')) {
-            fix_lol_data($article);
-        }
 
-        $article->words = ceil(strlen(strip_tags($article->body)) / 2);
-
-        $data['collection'] = $article->collections()->where('user_id', $article->user->id)->first();
-
-        return view('article.show')->withArticle($article)->withData($data);
+        return view('article.show')
+            ->withArticle($article)
+            ->withData($data);
     }
 
     /**
@@ -300,19 +164,12 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        $article = Article::with('images')->findOrFail($id);
+        $article = Article::findOrFail($id);
 
         //fix img relation missing, 同是修复image_url对应的image_top 为主要image_top
-        $imgs = $this->get_image_urls_from_body($article->body);
-        if ($imgs) {
-            $this->auto_upadte_image_relations($imgs, $article);
-        }
-        $article = Article::with('images')->findOrFail($id);
+        $article->saveRelatedImagesFromBody();
 
-        //编辑文章的时候,可能没有插入图片,字段可能空,就会删除图片地址....
-        $this->clear_article_imgs($article);
-
-        $categories    = get_categories();
+        $categories    = request()->user()->adminCategories;
         $article->body = str_replace('<single-list id', '<single-list class="box-related-half" id', $article->body);
         return view('article.edit')->withArticle($article)->withCategories($categories);
     }
@@ -327,43 +184,27 @@ class ArticleController extends Controller
     public function update(Request $request, $id)
     {
         $article = Article::findOrFail($id);
-
-        $article->update($request->except('image_url', 'category_id', 'user_id'));
-
-        $category_ids = request('category_ids');
-        if (is_array($category_ids) && !empty($category_ids)) {
-            $article->category_id = max($category_ids);
-        }
-
-        if ($request->get('primary_image')) {
-            $article->image_url = $request->get('primary_image');
-        }
-
-        $article->has_pic   = !empty($article->image_url);
-        $article->edited_at = \Carbon\Carbon::now();
-        $article->body      = $this->fix_body($article->body);
+        $article->update($request->all());
+        $article->image_url   = $this->get_primary_image();
+        $article->has_pic     = !empty($article->image_url);
+        $article->edited_at   = \Carbon\Carbon::now();
+        $article->count_words = ceil(strlen(strip_tags($article->body)) / 2);
         $article->save();
 
-        $article->categories()->sync(request('category_ids'));
+        //允许编辑时定时发布
+        $this->process_delay($article);
+
+        //categories
+        $this->process_category($article);
 
         //videos
-        $this->save_article_videos($request, $article);
-
-        //music
-        $this->save_article_music($request, $article);
+        $this->save_article_videos($article);
 
         //tags
         $this->save_article_tags($article);
 
-        //is_top
-        $this->article_is_top($request, $article);
-
-        //delay
-        $this->article_delay($request, $article);
-
         //images
-        $imgs = $this->get_image_urls_from_body($article->body);
-        $this->auto_upadte_image_relations($imgs, $article);
+        $this->saveRelatedImagesFromBody();
 
         return redirect()->to('/article/' . $article->id);
     }
@@ -377,11 +218,145 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         $article = Article::findOrFail($id);
-        if ($article) {
-            $article->status = -1;
-            $article->save();
-        }
+        $article->update(['status' => -1]);
 
         return redirect()->back();
+    }
+
+    public function process_delay($article)
+    {
+        if (request()->delay) {
+            $article->user_id    = Auth::id();
+            $article->status     = 0; //草稿
+            $article->delay_time = now()->addDays(request()->delay);
+            $article->save();
+
+            DelayArticle::dispatch($article)
+                ->delay(now()->addDays(request()->delay));
+        }
+    }
+
+    public function save_article_videos($article)
+    {
+        $videos = request('videos');
+        if (is_array($videos)) {
+            foreach ($videos as $video_id) {
+                if (!is_numeric($video_id)) {
+                    continue;
+                }
+                $video = Video::find($video_id);
+                if ($video) {
+                    $video->count = $video->count + 1;
+                    $video->title = $article->title;
+                    $video->save();
+                }
+            }
+        }
+        $article->videos()->sync($videos);
+    }
+
+
+    public function save_article_tags($article)
+    {
+        $tag_ids  = [];
+        $keywords = preg_split("/(#|:|,|，|\s)/", $article->keywords);
+        foreach ($keywords as $word) {
+            $word = trim($word);
+            if (!empty($word)) {
+                $tag = Tag::firstOrNew([
+                    'name' => $word,
+                ]);
+                $tag->user_id = Auth::user()->id;
+                $tag->save();
+                $tag_ids[] = $tag->id;
+            }
+        }
+        $article->tags()->sync($tag_ids);
+    }
+
+    public function get_json_lists($article)
+    {
+        $lists = json_decode($article->json, true);
+        // return $lists;
+        $lists_new = [];
+        if (is_array($lists)) {
+            foreach ($lists as $key => $data) {
+                if (!is_array($data)) {
+                    $data = [];
+                }
+                $items = [];
+                if (!empty($data['aids']) && is_array($data['aids'])) {
+                    foreach ($data['aids'] as $aid) {
+                        $article = Article::find($aid);
+                        if ($article) {
+                            $items[] = [
+                                'id'        => $article->id,
+                                'title'     => $article->title,
+                                'image_url' => $article->image_url,
+                            ];
+                        }
+                    }
+                }
+                if (!empty($items)) {
+                    $data['items']   = $items;
+                    $lists_new[$key] = $data;
+                }
+            }
+        }
+        return $lists_new;
+    }
+
+    public function get_primary_image()
+    {
+        if (request('primary_image')) {
+            $image_url = request('primary_image');
+        } else {
+            $image_url = request('image_url');
+        }
+        $image_url = parse_url($image_url, PHP_URL_PATH);
+        // $image_url          = str_replace('.small', '', $image_url);
+        return $image_url;
+    }
+
+    public function process_category($article)
+    {
+        $old_categories   = $article->categories;
+        $new_categories   = json_decode(request('categories'));
+        $new_category_ids = [];
+        //记录选得第一个做文章的主分类，投稿的话，记最后一个专题做主专题
+        if (!empty($new_categories)) {
+            $article->category_id = $new_categories[0]->id;
+            $article->save();
+
+            foreach ($new_categories as $cate) {
+                $new_category_ids[] = $cate->id;
+            }
+        }
+
+        //sync
+        foreach ($new_category_ids as $category_id) {
+            $article->categories()->sync([
+                $category_id => [
+                    'submit' => '已收录',
+                ],
+            ]);
+        }
+        // $article->categories()->sync($new_category_ids);
+
+        //re-count
+        if (is_array($new_categories)) {
+            foreach ($new_categories as $category) {
+                //更新新分类文章数
+                if ($category = Category::find($category->id)) {
+                    $category->count = $category->publishedArticles()->count();
+                    $category->save();
+                }
+            }
+        }
+        foreach ($old_categories as $category) {
+            //更新旧分类文章数
+            $category->count = $category->publishedArticles()->count();
+            $category->save();
+        }
     }
 }

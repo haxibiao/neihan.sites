@@ -30,27 +30,13 @@ function get_site_domain()
     return env('APP_DOMAIN', get_domain());
 }
 
-function AjaxOrDebug()
-{
-    return (request()->ajax() || request('debug'));
-}
-
-function count_words($body)
-{
-    $body_text = strip_tags($body);
-    preg_match_all('/[\x{4e00}-\x{9fff}]+/u', strip_tags($body), $matches);
-    $str        = implode('', $matches[0]);
-    $body_count = strlen(strip_tags($body)) - strlen($str) / 3 * 2;
-    return $body_count;
-}
-
 function fix_article_body_images($body)
 {
     $preg = '/<img.*?src="(.*?)".*?>/is';
 
     preg_match_all($preg, $body, $match);
 
-    if (!empty($match[1])) {
+    if (!empty($match[1]) && !str_contains($body, 'haxibiao')) {
         foreach ($match[1] as $image_url) {
              $body=str_replace("$image_url", "https://haxibiao.com$image_url", $body);
         }

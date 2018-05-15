@@ -16,8 +16,7 @@ class TrafficController extends Controller
      */
     public function index($days_ago = 0)
     {
-        $datas=[];
-        $datas['traffic_by_date'] = DB::table('traffic')->select(DB::raw('count(*) as count, date'))
+        $chart = DB::table('traffic')->select(DB::raw('count(*) as count, date'))
             ->where('created_at', '>=', Carbon::now()->subDay(7))
             ->groupBy('date')
             ->pluck('count', 'date')
@@ -74,12 +73,10 @@ class TrafficController extends Controller
                 ->groupby('referer_domain')
                 ->pluck('count', 'referer_domain')];
 
-   
-
         return view('traffic.index')
             ->withCounts($counts)
             ->withData($data)
-            ->withDatas($datas)
+            ->withChart($chart)
             ->withAll($all);
     }
 

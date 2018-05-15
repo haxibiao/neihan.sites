@@ -3,20 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Notifications\ArticleTiped;
+use App\Tip;
 use App\Transaction;
 use Auth;
 use DB;
-use App\Question;
-use App\Tip;
-use Illuminate\Http\Request;
 
 class PayController extends Controller
 {
     public function pay()
     {
-        $amount = request('amount');
-
-        if (Auth::check() && Auth::user()->balance() >= $amount) {
+        $amount  = request('amount');
+        $message = urldecode(request('message'));
+        if (Auth::check() && Auth::user()->balance() > $amount) {
             if (request('article_id')) {
                 DB::transaction(function () {
                     $type    = '打赏';
@@ -42,48 +41,51 @@ class PayController extends Controller
                             'status'  => '已到账',
                             'balance' => $article->user->balance() + $amount,
                         ]);
-
-                        Tip::create([
-                            'user_id'=>Auth::user()->id,
-                            'tipable_type' =>'articles',
-                            'tipable_id'=>$article->id,
-                            'amount'=>$amount,
-                        ]);
                     }
                 }, 3);
-            }
-            if(request('question_id')){
-                DB::transaction(function(){
-                     $type ='付费问题';
-                     $amount =request('amount');
-                     $question =Question::with('user')->find(request('question_id'));
-                     if($question){
-                         $log = '你创建了付费问题'.$question->link().'付费金额:'.$amount.'元';
-                          Transaction::create([
-                              'user_id'=> Auth::id(),
-                              'type' =>$type,
-                              'log'=>$log,
-                              'amount'=>$amount,
-                              'status'=>'已到账',
-                              'balance'=> Auth::user()->balance() - $amount,
-                          ]);
-                         $question->bonus =$amount;
-                         $question->status =1 ;
-                         $question->save();
-                     }
-                },3);
+
+                $this->tip(request('article_id'), $amount, $message);
             }
             return redirect()->to('/wallet');
         } else {
-            //未登录或者不够钱的-=
+            //未登录或者不够钱的直接支付
             $realPayUrl = '/alipay/wap/pay?amount=' . $amount . '&type=' . request('type');
             if (request('article_id')) {
                 $realPayUrl .= '&article_id=' . request('article_id');
             }
-            if(request('question_id')){
-                $realPayUrl .= '&question_id=' . request('question_id');
+            //赞赏留言传过去
+            if (request('message')) {
+                session(['last_tip_message' => request('message')]);
             }
             return redirect()->to($realPayUrl);
         }
+    }
+
+    public function tip($article_id, $amount, $message = '')
+    {
+        $article = Article::with('user')->findOrFail($article_id);
+        //保存赞赏记录
+        $data = [
+            'user_id'      => Auth::user()->id,
+            'tipable_id'   => $article->id,
+            'tipable_type' => 'articles',
+            'amount'       => $amount,
+            'message'      => $message,
+        ];
+        $tip = Tip::create($data);
+
+        //action
+        $action = \App\Action::create([
+            'user_id'         => Auth::id(),
+            'actionable_type' => 'tips',
+            'actionable_id'   => $tip->id,
+        ]);
+
+        //更新文章赞赏数
+        $article->count_tips = $article->tips()->count();
+        $article->save();
+
+        //赞赏消息提醒
+        $article->user->notify(new ArticleTiped($article, Auth::user(), $tip));
     }
 }

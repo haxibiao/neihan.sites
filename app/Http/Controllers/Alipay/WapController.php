@@ -7,10 +7,8 @@ use App\Article;
 use App\Http\Controllers\Controller;
 use App\Transaction;
 use Auth;
+use DB;
 use Omnipay\Omnipay;
-use App\Question;
-use App\Tip;
-
 
 class WapController extends Controller
 {
@@ -47,71 +45,56 @@ class WapController extends Controller
         if (request('type') == 'tip') {
             $type = '打赏';
         }
-        if(request('type')=='question'){
-            $type='付费问题';
-        }
         $subject = $type;
 
         if (Auth::check()) {
-            $user     = Auth::user();
-            $log      = '';
-            $tran_id1 = '';
-            $tran_id2 = '';
+            $user = Auth::user();
             if ($type == '打赏' && request('article_id')) {
                 $article = Article::with('user')->find(request('article_id'));
                 if ($article) {
                     $subject = $type . $article->title;
-                    $log     = '向' . $article->user->link() . '的文章' . $article->link() . '打赏' . $amount . '元';
-                    $log2    = $user->link() . '向您的文章' . $article->link() . '打赏' . $amount . '元';
-
+                    //自己账户准备个交易记录
+                    $transaction = Transaction::create([
+                        'user_id' => $user->id,
+                        'type'    => $type,
+                        'log'     => '向' . $article->user->link() . '的文章' . $article->link() . '打赏' . $amount . '元',
+                        'amount'  => $amount,
+                        'status'  => '未支付',
+                        'balance' => $user->balance(),
+                    ]);
+                    $tran_id1 = $transaction->id;
+                    //对方账户准备个交易记录
                     $transaction = Transaction::create([
                         'user_id' => $article->user->id,
                         'type'    => $type,
-                        'log'     => $log2,
+                        'log'     => $user->link() . '向您的文章' . $article->link() . '打赏' . $amount . '元',
                         'amount'  => $amount,
                         'status'  => '未支付',
                         'balance' => $article->user->balance(),
                     ]);
                     $tran_id2 = $transaction->id;
+
+                    //打赏 - 到账后两个人钱包交易要更新
+                    $out_trade_no = $this->encodeOutTradeNo($type, request('article_id') . '.' . $tran_id1 . '-' . $tran_id2);
                 }
+            } else {
+                //充值　　－－　到账后只更新自己个人钱包
+                $transaction = Transaction::create([
+                    'user_id' => $user->id,
+                    'type'    => $type,
+                    'log'     => '充值',
+                    'amount'  => $amount,
+                    'status'  => '未支付',
+                    'balance' => $user->balance(),
+                ]);
+                $tran_id1     = $transaction->id;
+                $out_trade_no = $this->encodeOutTradeNo($type, '.' . $tran_id1);
             }
 
-            if($type =='付费问题' && request('question_id')){
-                $question =Question::with('user')->find(request('question_id'));
-                if($question){
-                     $subject=$type.$question->title;
-                     $log  ='你创建了付费问题'.$question->link().'付费金额:'.$amount.'元';
-                }
-            }
-
-            $transaction = Transaction::create([
-                'user_id' => $user->id,
-                'type'    => $type,
-                'log'     => $log,
-                'amount'  => $amount,
-                'status'  => '未支付',
-                'balance' => $user->balance(),
-            ]);
-
-            Tip::create([
-                'user_id'=>Auth::user()->id,
-                'tipable_type' =>'articles',
-                'tipable_id'=>$article->id,
-                'amount'=>$amount,
-            ]);
-
-            $tran_id1     = $transaction->id;
-            $out_trade_no = $this->encodeOutTradeNo(request('type') . '-' . $tran_id1 . '-' . $tran_id2);
-            if($type =='付费问题' && request('question_id')){
-                    $tran_id     = $transaction->id;
-                    $out_trade_no = $this->encodeOutTradeNo(request('type') . '-' . $tran_id.'-'.request('question_id'));
-            }
         } else {
             //未登录游客直接打赏
-            $out_trade_no = $this->encodeOutTradeNo(request('article_id'));
+            $out_trade_no = $this->encodeOutTradeNo('匿名', request('article_id'));
         }
-
-
 
         $response = $this->gateway()->purchase()->setBizContent([
             'subject'      => $subject,
@@ -134,23 +117,21 @@ class WapController extends Controller
          */
         try {
             $response = $request->send();
-
             if ($response->isPaid()) {
-                if (Auth::check()) {
+                $amount       = array_get($response->getData(), 'amount');
+                $out_trade_no = array_get($response->getData(), 'out_trade_no');
+
+                //匿名直接打赏
+                if (str_contains($out_trade_no, '匿名')) {
+                    $article_id = intval($this->decodeOutTradeNo($out_trade_no));
+                    $this->justTipForArticleUser($article_id, $response);
+                    return redirect()->to("/article/$article_id");
+                } else {
+                    //否充值，或者登录用户打赏完成后，返回钱包查看消费记录
                     if ($this->makePaymentProcess($response)) {
                         return redirect()->to('/wallet');
                     }
-                } else {
-                    //未登录用户打赏后，回到文章
-                    $out_trade_no = array_get($response->getData(), 'out_trade_no');
-                    $out_trade_no = $this->decodeOutTradeNo($out_trade_no);
-                    if (is_double(doubleval($out_trade_no))) {
-                        $article_id = $out_trade_no;
-                        $this->justTipForArticleUser($article_id, $response);
-                        return redirect()->to("/article/$article_id");
-                    }
                 }
-
             } else {
                 /**
                  * Payment is not successful
@@ -184,12 +165,15 @@ class WapController extends Controller
                 $process      = false;
                 $out_trade_no = array_get($response->getData(), 'out_trade_no');
                 $out_trade_no = $this->decodeOutTradeNo($out_trade_no);
-                if (is_double(doubleval($out_trade_no))) {
-                    $article_id = $out_trade_no;
-                    $process    = $this->justTipForArticleUser($article_id);
+
+                //匿名直接打赏
+                if (str_contains($out_trade_no, '匿名')) {
+                    $article_id = intval($this->decodeOutTradeNo($out_trade_no));
+                    $process    = $this->justTipForArticleUser($article_id, $response);
                 } else {
                     $process = $this->makePaymentProcess($response);
                 }
+
                 if ($process) {
                     die('success');
                 } else {
@@ -214,11 +198,17 @@ class WapController extends Controller
     {
         $article = Article::find($article_id);
         if ($article) {
-            $amount = array_get($response->getData(), 'total_amount');
+            $amount    = array_get($response->getData(), 'total_amount');
+            $user_link = Auth::check() ? Auth::user()->link() : '未登录用户打赏您的文章';
+
+            //登录用户来打赏了，给作者发个消息
+            if (Auth::check()) {
+
+            }
             return Transaction::create([
                 'user_id' => $article->user->id,
                 'type'    => '打赏',
-                'log'     => '未登录用户打赏您的文章' . $article->link(),
+                'log'     => $user_link . $article->link(),
                 'amount'  => $amount,
                 'status'  => '已到账',
                 'balance' => $article->user->balance() + $amount,
@@ -227,62 +217,63 @@ class WapController extends Controller
         return false;
     }
 
-    public function encodeOutTradeNo($out_trade_no)
+    public function encodeOutTradeNo($type, $out_trade_no)
     {
-        return date('YmdH') . 'a' . $out_trade_no;
+        return $type . date('YmdH') . $out_trade_no;
     }
 
     public function decodeOutTradeNo($out_trade_no)
     {
-        return str_replace(date('YmdH') . 'a', '', $out_trade_no);
+        $out_trade_no = str_replace('充值', '', $out_trade_no);
+        $out_trade_no = str_replace('打赏', '', $out_trade_no);
+        $out_trade_no = str_replace('匿名', '', $out_trade_no);
+        return str_replace(date('YmdH'), '', $out_trade_no);
     }
 
     public function makePaymentProcess($response)
     {
-        $out_trade_no                     = array_get($response->getData(), 'out_trade_no');
-        $out_trade_no                     = $this->decodeOutTradeNo($out_trade_no);
-        if(str_contains($out_trade_no,'article')){
-        list($type, $tran_id1, $tran_id2) = explode('-', $out_trade_no);
-        $tran1                            = Transaction::find($tran_id1);
-        }
-        if(str_contains($out_trade_no,'question')){
-                 list($type,$tran_id,$question_id)  =explode('-', $out_trade_no);
-                 $question =Question::find($question_id);
-                 $tran = Transaction::find($tran_id);
-        }
-        if (!empty($tran1)) {
-            if ($type == 'tip') {
-                $tran1->status = '已到账';
-                // $tran1->balance = $transaction->balance - $transaction->amount;
-                $tran1->save();
-                if (!empty($tran_id2)) {
-                    $tran2 = Transaction::find($tran_id2);
-                    if ($tran2) {
-                        if ($tran2->status != '已到账') {
-                            $tran2->status  = '已到账';
-                            $tran2->balance = $tran2->balance + $tran2->amount;
-                            $tran2->save();
-                        }
-                    }
-                }
-            } else {
-                $tran1->status  = '已到账';
-                $tran1->balance = $tran1->balance + $tran1->amount;
-                $tran1->save();
-            }
+        $out_trade_no = array_get($response->getData(), 'out_trade_no');
+        $ids          = $this->decodeOutTradeNo($out_trade_no);
+        if (str_contains($out_trade_no, '充值')) {
+            //充值, 只传过来个人充值交易记录tran1的id
+            $tran_id1       = str_replace('.', '', $ids);
+            $tran1          = Transaction::find($tran_id1);
+            $tran1->status  = '已到账';
+            $tran1->balance = $tran1->balance + $tran1->amount;
+            $tran1->save();
             return true;
+        } else {
+            //打赏，需要逐步提取article_id, ２个交易的tran_id;
+            list($article_id, $tran_ids) = explode('.', $ids);
+            list($tran_id1, $tran_id2)   = explode('-', $tran_ids);
+            $tran1                       = Transaction::find($tran_id1);
+            $tran2                       = Transaction::find($tran_id2);
+            if ($tran1 && $tran2) {
+                //事务保证账户金钱数据完整
+                DB::transaction(function () use ($tran1, $tran2) {
+                    //更新这笔账户状态
+                    $tran1->status = '已到账';
+                    $tran1->log    = $tran1->log . '(支付宝)';
+                    //这是直接充钱的，不扣现有账户余额...
+                    // $tran1->balance = $tran1->balance - $tran1->amount;
+                    $tran1->save();
+
+                    //给对方账户到账
+                    if ($tran2->status != '已到账') {
+                        $tran2->status  = '已到账';
+                        $tran2->balance = $tran2->balance + $tran2->amount;
+                        $tran2->save();
+                    }
+                });
+
+                //已登录用户，打赏成功, 记录文章赞赏数，给文章作者发赞赏消息提醒
+                $controller = new \App\Http\Controllers\PayController();
+                $controller->tip($article_id, $tran1->amount, session('last_tip_message'));
+
+                return true;
+            }
         }
 
-        if(!empty($tran)){
-            if($type =='question'){
-                $tran->status='已到账';
-                $tran->save();
-                $question->bonus =$tran->amount;
-                $question->status = 1;
-                $question->save();
-            }
-            return true;
-        }
         return false;
     }
 }

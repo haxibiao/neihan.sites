@@ -1,0 +1,21 @@
+// 新建/编辑专题
+#category-editor {
+	min-width: 400px;
+	.avatar-category {
+		width: 100px;
+		height: 100px;
+	}
+	h3 {
+		font-size: 21px;
+	}
+	.main {
+		margin: 0!important;
+		tr {
+			border-bottom: none!important;
+		}
+		.avatar-category {
+			width: 100px;
+			height: 100px;
+		}
+	}
+}

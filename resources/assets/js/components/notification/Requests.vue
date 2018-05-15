@@ -1,0 +1,112 @@
+<template>
+	<div>
+		<div class="menu">全部投稿请求</div>
+		<ul class="requests-list">
+			<li>
+				<router-link to="/pending_submissions">
+					<a href="javascript:;" class="all-request">
+						<div class="avatar-category"><i class="iconfont icon-tougaoguanli"></i></div>
+						<div class="info">全部未处理请求</div>
+					</a>
+				</router-link>
+			</li>
+			<li v-for="category in categories">
+				<router-link :to="'/submissions/'+category.id"　@click="clickName(category.name)">
+					<div class="single-media">
+						<a href="javascript:;" class="avatar-category">
+							<img :src="category.logo" alt="">
+							<span v-if="category.new_requests" class="badge">{{ category.new_requests }}</span>
+						</a>
+						<div class="info">
+							{{ category.name }}
+							<span>
+				        		<p>有新投稿《{{ category.new_request_title }}》</p>
+				      		</span>
+						</div>
+					</div>
+				</router-link>
+			</li>
+		</ul>
+	</div>
+</template>
+
+<script>
+export default {
+
+  name: 'Requests',
+
+  created() {
+  	var api = window.tokenize('/api/new-request-categories');
+  	var _this = this;
+  	window.axios.get(api).then(function(response){
+  		_this.categories = response.data;
+  	});
+  },
+
+  methods:{
+  	clickName(category_name) {
+  		window.category_name = category_name;
+  	}
+  },
+
+  data () {
+    return {
+    	categories: []
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.requests-list {
+	li {
+		.single-media {
+			position: relative;
+			margin-bottom: 0;
+			.avatar-category {
+				width: 50px;
+				height: 50px;
+				float: left;
+			}
+			.badge {
+				top: -5px;
+				right: -5px;
+			}
+			.info {
+				display: block;
+				padding: 15px 0 15px 60px;
+				color: #252525;
+				span {
+					p {
+					 display: -webkit-box;
+				   -webkit-line-clamp: 1;
+				   -webkit-box-orient: vertical;
+				   overflow: hidden;
+					}
+				}
+			}
+		}
+	}
+	.all-request {
+		.avatar-category,.info {
+			display: inline-block;
+		}
+		.avatar-category {
+			width: 50px;
+			height: 50px;
+			background-color: #FFF;
+			border: 1px solid #f0f0f0;
+			text-align: center;
+			line-height: 48px;
+			i {
+				font-size: 30px;
+				color: #FF9D23;
+			}
+		}
+		.info {
+			color: #252525;
+			font-size: 15px;
+		}
+	}
+}
+</style>

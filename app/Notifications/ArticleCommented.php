@@ -2,12 +2,13 @@
 
 namespace App\Notifications;
 
+use App\Article;
+use App\Comment;
+use App\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Article;
-use App\User;
+use Illuminate\Notifications\Notification;
 
 class ArticleCommented extends Notification implements ShouldQueue
 {
@@ -16,19 +17,17 @@ class ArticleCommented extends Notification implements ShouldQueue
     protected $article;
     protected $user;
     protected $comment;
-    protected $lou;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($article_id, $user_id, $comment, $lou)
+    public function __construct(Article $article, Comment $comment, User $user)
     {
-        $this->article = Article::find($article_id);
-        $this->user    = User::find($user_id);
+        $this->article = $article;
+        $this->user    = $user;
         $this->comment = $comment;
-        $this->lou     = $lou;
     }
 
     /**
@@ -50,10 +49,12 @@ class ArticleCommented extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        $article = $this->$article;
+        $url     = '/article/' . $article->id;
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line('您的文章收到了新的评论.')
+            ->action('回复他', url($url))
+            ->line('××用户，在您的文章××× 下写道： ' . str_limit($this->comment->body));
     }
 
     /**
@@ -71,8 +72,8 @@ class ArticleCommented extends Notification implements ShouldQueue
             'user_name'     => $this->user->name,
             'article_title' => $this->article->title,
             'article_id'    => $this->article->id,
-            'lou'           => $this->lou,
-            'comment'       => $this->comment,
+            'comment_id'    => $this->comment->id,
+            'comment'       => $this->comment->body,
         ];
     }
 }

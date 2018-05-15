@@ -1,13 +1,16 @@
 <?php
 
-function app_link_with_title($id, $title) {
-	return 'javascript: appGoDetail(' . $id . ', \'' . $title . '\')';
+function getUser()
+{
+    $user = session('user');
+
+    if (!$user) {
+        throw new \Exception('客户端还没登录...');
+    }
+    return $user;
 }
 
-function app_link($article) {
-	if (is_in_app()) {
-		return app_link_with_title($article->id, $article->title);
-	} else {
-		return get_article_url($article);
-	}
+function ajaxOrDebug()
+{
+    return request()->ajax() || request('debug');
 }

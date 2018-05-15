@@ -14,14 +14,16 @@ class Favorite extends Model
 
     public function comment()
     {
-        return $this->belongsTo(\App\Comment::class, 'faved_id');
+        return $this->belongsTo(\App\Comment::class);
     }
+
     public function faved()
     {
         return $this->morphTo();
     }
 
-    public function user(){
-    	return $this->belongsTo(\App\User::class);
+    //actionable target
+    public function target() {
+        return $this->morphTo();
     }
 }

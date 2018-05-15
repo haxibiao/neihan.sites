@@ -17,11 +17,11 @@ class Tag extends Model
 
     public function articles()
     {
-        return $this->morphedByMany(\App\Article::class, 'taggable');
+        return $this->morphedByMany('App\Article', 'taggable');
     }
-    
+
     public function videos()
     {
-        return $this->morphedByMany(\App\Video::class, 'taggable');
+        return $this->morphedByMany('App\Video', 'taggable');
     }
 }

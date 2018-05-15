@@ -1,158 +1,97 @@
 <template>
-	<div v-if="!category" class="loading">
-		正在加载....
-	</div>
-	<!-- 关注的专题 -->
-	<div v-else="category" id="category">
-		<div class="main_top">
-            <a class="avatar avatar_lg avatar_collection" :href="'/'+category.name_en" target="_blank">
-                <img :src="category.logo"/>
+    <div v-if="!category" class="loading">
+        正在加载...
+    </div>
+    <div v-else="category" class="categorys">
+        <!-- 分类信息 -->
+        <div class="note-info info-lg">
+            <a class="avatar-category" :href="'/'+category.name_en">
+            <img :src="category.logo" alt="">
             </a>
-            <a class="btn_base btn_hollow" :href="'/'+category.name_en" target="_blank">
-                <span>
-                	专题主页
-                </span>
-                <i class="iconfont icon-youbian">
-                </i>
-            </a>
-            <a class="btn_base btn_hollow btn_hollow_xs" data-target=".modal-contribute" data-toggle="modal"  href="javascript:;"  @click="showModal()">
-                <span>
-                    投稿
-                </span>
-            </a>
-            <div class="info_meta">
-		        <a class="headline nickname" :href="'/'+category.name_en" target="_blank">
-		            <span class="single_line">
-		                 {{ category.name }}
-		            </span>
-		        </a>
-                <p class="info_count">
-                    收录了{{ category.count }}篇文章 · {{ category.count_follows }}人关注
-                </p>
+            <div class="btn-wrap">
+                <a class="btn-base btn-hollow btn-md" :href="'/'+category.name_en">专题主页<i class="iconfont icon-youbian"></i></a>
+                <a class="btn-base btn-hollow btn-md" data-target=".modal-contribute" data-toggle="modal"  href="javascript:;" @click="showModal()">投稿</a>
             </div>
-        </div>  
-        <div>
+            <div class="title">
+                <a class="name" :href="'/'+category.name_en">{{ category.name }}</a>
+            </div>
+            <div class="info">
+                收录了{{ category.count }}篇文章 · {{ category.count_follows }}人关注
+            </div>
+        </div>
+        <!-- 内容 -->
+        <div class="content">
             <!-- Nav tabs -->
-            <ul class="trigger_menu" role="tablist">
-            	<li class="active" role="presentation">
-                    <a aria-controls="wenzhang" data-toggle="tab" href="#wenzhang" role="tab">
-                        <i class="iconfont icon-wenji">
-                        </i>
-                        <span>最新<span class="s_s_hide">收录</span></span>
-                    </a>
+            <ul id="trigger-menu" class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#include" aria-controls="include" role="tab" data-toggle="tab"><i class="iconfont icon-wenji"></i>最新收录</a>
                 </li>
                 <li role="presentation">
-                    <a aria-controls="pinglun" data-toggle="tab" href="#pinglun" role="tab">
-                        <i class="iconfont icon-svg37">
-                        </i>
-                        <span><span class="s_s_hide">最新</span>评论</span>
-                    </a>
+                    <a href="#comment" aria-controls="comment" role="tab" data-toggle="tab"><i class="iconfont icon-svg37"></i>最新评论</a>
                 </li>
                 <li role="presentation">
-                    <a aria-controls="huo" data-toggle="tab" href="#huo" role="tab">
-                        <i class="iconfont icon-huo">
-                        </i>
-                        <span>热门</span>
-                    </a>
+                    <a href="#hot" aria-controls="hot" role="tab" data-toggle="tab"><i class="iconfont icon-huo"></i>热门</a>
                 </li>
             </ul>
             <!-- Tab panes -->
-            <div class="tab-content">
-                <div class="tab-pane fade in active" id="wenzhang" role="tabpanel">
-                    <ul class="article_list">
-                           <article-list :api="'/'+category.name_en+'?collected=1'" />
-					</ul>
-                </div>
-                <div class="tab-pane fade" id="pinglun" role="tabpanel">
-                    <ul class="article_list">
-                           <article-list :api="'/'+category.name_en+'?commented=1'" />
-					</ul>
-                </div>
-                <div class="tab-pane fade" id="huo" role="tabpanel">
-                    <ul class="article_list">
-                           <article-list :api="'/'+category.name_en+'?hot=1'" />
-					</ul>
-                </div>
+            <div class="article_list tab-content">
+                <ul role="tabpanel" class="fade in article-list tab-pane active" id="include">
+                    <article-list :api="'/'+category.name_en+'?collected=1'" />
+                </ul>
+                <ul role="tabpanel" class="fade in article-list tab-pane" id="comment">
+                    <article-list :api="'/'+category.name_en+'?commented=1'" />
+                </ul>
+                <ul role="tabpanel" class="fade in article-list tab-pane" id="hot">
+                    <article-list :api="'/'+category.name_en+'?hot=1'" />
+                </ul>
             </div>
-
         </div>
-	</div>
+    </div>
 </template>
-
 <script>
 export default {
 
-  name: 'Category',
+    name: 'Category',
 
-  created(){
-     this.fetchData();
-  },
+    created() {
+        this.fetchData();
+    },
 
-  watch:{
-  	  //监视情况，路由变化就会再执行该方法.
-     '$route' : 'fetchData'
-  },
+    watch: {
+        // 如果路由有变化，会再次执行该方法
+        '$route': 'fetchData'
+    },
 
-  methods:{
+    methods: {
+        showModal() {
+            //use vue 2.0 event bus ...
+            $bus.$emit('showContribute',this.id);
+        },
 
-       showModal() {
-           
-            window.$bus.$emit('showContribute',this.id);
-       },
+        fetchData() {
+            this.id = this.$route.params.id;
+            if(this.id){
+                var api_url = window.tokenize('/api/category/' + this.id);
+                var vm = this;
+                window.axios.get(api_url).then(function(response) {
+                    vm.category = response.data;
 
-      fetchData(){
-         this.id = this.$route.params.id;
-        if(this.id){
-          var vm=this;
-          var api_url=window.tokenize('/api/category/' + this.id);
-          window.axios.get(api_url).then(function(response){
-          	   vm.category=response.data;
+                    //标记关注的最后查看时间
+                    var api_touch = window.tokenize('/api/follow/' + vm.id + '/categories');
+                    window.axios.get(api_touch);
+                });                
+            }
+        }
 
-                //标记关注的最后查看时间
-                var api_touch = window.tokenize('/api/follow/' + vm.id + '/categories');
-                window.axios.get(api_touch);
-          });
-         }
-      }
-  },
+    },
 
-  data () {
-    return {
-         category:null,
-         id:null
+    data() {
+        return {
+            id: null,
+            category: null
+        }
     }
-  }
 }
 </script>
-
-<style lang="scss" scoped>
-    #category {
-        .main_top {
-            @media screen and (max-width: 768px) {
-                padding-bottom: 30px;
-                .btn_base {
-                    position: absolute;
-                    top: 155px;
-                }
-                .btn_hollow {
-                    right: 40px;
-                }
-                .btn_hollow_xs {
-                    margin-right: 110px;
-                }
-            }
-        }
-        @media screen and (max-width: 768px) {
-            .trigger_menu {
-                li {
-                    a {
-                        padding: 13px 4px 4px 4px;
-                        i {
-                            margin: 0;
-                        }
-                    }
-                }
-            }
-        }
-    }
+<style lang="css" scoped>
 </style>

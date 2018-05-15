@@ -6,19 +6,16 @@ use App\Article;
 use App\Category;
 use App\Http\Controllers\Controller;
 use App\Image;
-use App\Notifications\ArticleApproved;
-use App\Notifications\CategoryRequested;
 use App\Query;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Pagination\Paginator;
 
 class ArticleController extends Controller
 {
     public function fakeUsers()
     {
-        return User::whereBetween('id', [44, 143])->get();
-        // return User::where('is_editor',1)->get();
+        return User::where('is_editor', 1)->get();
     }
 
     public function import(Request $request)
@@ -30,27 +27,20 @@ class ArticleController extends Controller
         $category = $jsonData['category'];
 
         //category
-        // $categories = Category::whereIn('name', [
-        //     '心情', '个性签名', '精选投稿', '情感笔记', '句子'])->get();
-
-        // $categories = Category::whereIn('name', [
-        //     '昵称大全','qq昵称'])->get();
-
-
-        $categories = Category::whereIn('name', [
-            '唯美图片'])->get();
-
+        // $category = Category::firstOrnew([
+        //     'name'    => $category['name'],
+        //     'name_en' => $category['name_en'],
+        // ]);
+        $category = Category::where('name', '家常菜菜谱')->first();
         // if (!$category->id)
-
-        $category = $categories->random();
         {
-            // $category->user_id = $user_id;
-            // $category->status  = 1;
-            // $category->type    = 'article';
-            // $category->save();
+            $category->user_id = $user_id;
+            $category->status  = 1;
+            $category->type    = 'article';
+            $category->save();
 
             //category admin
-            // $category->admins()->syncWithoutDetaching([$user_id => ['is_admin' => 1]]);
+            $category->admins()->syncWithoutDetaching([$user_id => ['is_admin' => 1]]);
         }
 
         //article
@@ -61,14 +51,8 @@ class ArticleController extends Controller
         $article->user_id     = $user_id;
         $article->category_id = $category->id;
         $article->status      = 1;
-        $article->words       = count_words($article->body);
+        $article->count_words = count_words($article->body);
         $article->body        = fix_article_body_images($article->body);
-
-        // $preg ='/(.*?)<\/br>/is';
-
-        // preg_match($preg,$article->body, $match);
-
-        // $article->title='唯美的昵称 经典昵称 有内涵的昵称'.'-'.$match[1];
 
         //random time
         $article->updated_at = strtotime($jsonData['time']);
@@ -77,16 +61,12 @@ class ArticleController extends Controller
 
         //images
         if (!empty($jsonData['article']['images'])) {
-            foreach ($jsonData['article']['images'] as $index => $image) {
-                $image = \App\Image::firstOrnew([
+            foreach ($jsonData['article']['images'] as $image) {
+                $image = Image::firstOrnew([
                     'path' => $image['path'],
                 ]);
                 $image->source_url = 'https://haxibiao.com/' . $image['path'];
-
-                if ($index == 0) {
-                    $article->image_url = $image->source_url;
-                }
-                $image->title = $article->title;
+                $image->title      = $article->title;
                 $image->save();
                 $img_ids[] = $image->id;
             }
@@ -102,9 +82,9 @@ class ArticleController extends Controller
         $article->save(['timestamp' => false]);
 
         //user
-        $user                 = \App\User::findOrFail($user_id);
+        $user                 = User::findOrFail($user_id);
         $user->count_articles = $user->articles()->count();
-        $user->count_words    = $user->articles()->sum('words');
+        $user->count_words    = $user->articles()->sum('count_words');
         $user->save();
 
         //category
@@ -114,10 +94,17 @@ class ArticleController extends Controller
         return $article;
     }
 
-    public function getIndex(Request $request)
+    // api 给前端 app 用
+    public function index(Request $request)
     {
-        $query         = $request->get('query');
-        $query_builder = Article::with('category')->orderBy('id', 'desc');
+        $page_size     = 12;
+        $page          = request('page') ? request('page') : 1;
+        $query_builder = Article::with('category')
+            ->orderBy('id', 'desc')
+            ->where('status', '>', 0);
+
+        //支持首页搜索
+        $query = $request->get('query');
         if ($request->get('category_id')) {
             $query_builder = $query_builder->where('category_id', $request->get('category_id'));
         }
@@ -125,34 +112,34 @@ class ArticleController extends Controller
             $query_builder = $query_builder->where('title', 'like', '%' . $query . '%')
                 ->orWhere('keywords', 'like', '%' . $query . '%');
         }
-        $articles = $query_builder->paginate(12);
-        foreach ($articles as $article) {
-            $article->image_url      = get_full_url($article->image_url);
-            $article->user->avatar   = get_avatar($article->user);
-            $article->category->logo = get_full_url($article->category->logo);
-            $article->body           = $this->fix_inline_styles($article->body);
-            $article->pubtime        = diffForHumansCN($article->created_at);
-        }
+
+        $articles = $query_builder->paginate($page_size);
+
+        $articles->getCollection()->transform(function ($article) {
+            return $article->fillForApp();
+        });
+
         $total = $articles->total();
 
         if ($query && !$total) {
             $controller     = new \App\Http\Controllers\SearchController();
             $articles_taged = $controller->search_tags($query);
-            foreach ($articles_taged as $article) {
-                $articles->push($article);
-            }
-            $total = count($articles_taged);
+            $total          = count($articles_taged);
+            //给标签搜索到的分页
+            $articles = new Paginator($articles_taged->forPage($page, $page_size), $total, $page_size, $page);
         }
 
-        if ($query && !$total) {
-            $controller   = new \App\Http\Controllers\SearchController();
-            $articles_hxb = $controller->search_hxb($query);
-            foreach ($articles_hxb as $article) {
-                $articles->push($article);
-            }
-            $total = count($articles_hxb);
-        }
+        //暂时不搜索哈希表爬虫内容
+        // if ($query && !$total) {
+        //     $controller   = new \App\Http\Controllers\SearchController();
+        //     $articles_hxb = $controller->search_hxb($query);
+        //     foreach ($articles_hxb as $article) {
+        //         $articles->push($article);
+        //     }
+        //     $total = count($articles_hxb);
+        // }
 
+        //保存搜索记录
         if (!empty($query) && $total) {
             $query_item = Query::firstOrNew([
                 'query' => $query,
@@ -164,7 +151,93 @@ class ArticleController extends Controller
         return $articles;
     }
 
-    public function fix_inline_styles($body)
+    public function trash(Request $request)
+    {
+        $user     = $request->user();
+        $articles = $user->removedArticles;
+        return $articles;
+    }
+
+    public function store(Request $request)
+    {
+        $article          = new Article($request->all());
+        $article->user_id = $request->user()->id;
+        $article->save();
+
+        //images
+        $article->saveRelatedImagesFromBody();
+
+        return $article;
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user                 = $request->user();
+        $article              = Article::findOrFail($id);
+        $article->count_words = ceil(strlen(strip_tags($article->body)) / 2);
+        $article->update($request->all());
+
+        //images
+        $article->saveRelatedImagesFromBody();
+
+        if ($request->status == 1) {
+            //可能是发布了文章，需要统计文集的文章数，字数
+            foreach ($article->collections as $collection) {
+                $collection->count       = $collection->articles()->count();
+                $collection->count_words = $collection->articles()->sum('count_words');
+                $collection->save();
+            }
+
+            //统计用户的文章数，字数
+            $user->count_articles = $user->articles()->count();
+            $user->count_words    = $user->articles()->sum('count_words');
+            $user->save();
+        }
+
+        return $article;
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        return Article::destroy($id);
+    }
+
+    public function delete(Request $request, $id)
+    {
+        $article         = Article::findOrFail($id);
+        $article->status = -1;
+        $article->save();
+        return $article;
+    }
+
+    public function restore(Request $request, $id)
+    {
+        $article         = Article::findOrFail($id);
+        $article->status = 0;
+        $article->save();
+
+        //如果文集也被删除了，恢复出来
+        foreach ($article->collections as $collection) {
+            if ($collection->status == -1) {
+                $collection->status = 0;
+                $collection->save();
+            }
+        }
+
+        return $article;
+    }
+
+    public function likes(Request $request, $id)
+    {
+        $article = Article::findOrFail($id);
+        $likes   = $article->likes()->with('user')->paginate(10);
+        foreach ($likes as $like) {
+            $like = $like->createdAt();
+        }
+        return $likes;
+    }
+
+    public function remove_inline_styles($body)
     {
         //fix font-size <span style="font-size: 18px;">
         $pattern = "/font-size: (\d+)px;/";
@@ -178,154 +251,13 @@ class ArticleController extends Controller
         return $body;
     }
 
-    public function getShow($id)
-    {
-        $article                 = Article::with('user')->with('category')->findOrFail($id);
-        $article->image_url      = get_full_url($article->image_url);
-        $article->user->avatar   = get_avatar($article->user);
-        $article->category->logo = get_full_url($article->category->logo);
-
-        $controller         = new \App\Http\Controllers\ArticleController();
-        $article->connected = $controller->get_json_lists($article);
-        $article->similar   = Article::where('category_id', $article->category_id)
-            ->where('id', '<>', $article->id)
-            ->orderBy('id', 'desc')
-            ->take(4)
-            ->get();
-        foreach ($article->similar as $similar_article) {
-            $similar_article->body = $this->fix_inline_styles($similar_article->body);
-        }
-
-        $article->body    = $this->fix_inline_styles($article->body);
-        $article->pubtime = diffForHumansCN($article->created_at);
-
-        return $article;
-    }
-
-    public function checkCategory(Request $request, $id)
-    {
-        $category = Category::findOrFail($id);
-        $user     = $request->user();
-        $articles = $user->articles()->paginate(7);
-        foreach ($articles as $article) {
-            $query = $article->categories()->wherePivot('category_id', $id);
-            if ($query->count()) {
-                $article->submited_status = $query->first()->pivot->submit;
-            } else {
-                $article->submited_status = '';
-            }
-            $article->submit_status = $this->get_submit_status($article->submited_status);
-        }
-
-        return $articles;
-    }
-
-    public function submitCategory(Request $request, $aid, $cid)
-    {
-        $user     = $request->user();
-        $article  = Article::findOrFail($aid);
-        $category = Category::findOrFail($cid);
-
-        $query = $article->categories()->wherePivot('category_id', $cid);
-        if ($query->count()) {
-            $pivot         = $query->first()->pivot;
-            $pivot->submit = $pivot->submit == '待审核' ? '已撤回' : '待审核';
-            $pivot->save();
-            $article->submited_status = $pivot->submit;
-        } else {
-            $article->submited_status = '待审核';
-            $article->categories()->syncWithoutDetaching([
-                $cid => [
-                    'submit' => $article->submited_status,
-                ],
-            ]);
-        }
-        if ($article->submited_status == '待审核') {
-            $category->user->notify(new CategoryRequested($cid, $aid));
-        }
-        $category->new_requests = $category->articles()->wherePivot('submit', '待审核')->count();
-        $category->save();
-        $article->submit_status = $this->get_submit_status($article->submited_status);
-        return $article;
-    }
-
-    public function get_submit_status($submited_status)
-    {
-        $submit_status = '投稿';
-        switch ($submited_status) {
-            case '待审核':
-                $submit_status = '撤回';
-                break;
-            case '已收录':
-                $submit_status = '移除';
-                break;
-            case '已拒绝':
-                $submit_status = '再次投稿';
-                break;
-            case '已撤回':
-                $submit_status = '再次投稿';
-                break;
-
-            default:
-                # code...
-                break;
-        }
-
-        return $submit_status;
-    }
-
-    public function approveCategory(Request $request, $aid, $cid)
-    {
-        $user     = $request->user();
-        $article  = Article::findOrFail($aid);
-        $category = Category::findOrFail($cid);
-
-        //update pivot submit
-        $query = $article->categories()->wherePivot('category_id', $cid);
-        if ($query->count()) {
-            $pivot = $query->first()->pivot;
-            if ($request->get('remove')) {
-                $pivot->delete();
-                $article->submited_status = '';
-            } else {
-                $pivot->submit = $request->get('deny') ? '已拒绝' : '已收录';
-                $pivot->save();
-                $article->submited_status = $pivot->submit;
-            }
-        }
-
-        $article->submit_status = $this->get_submit_status($article->submited_status);
-        $article->touch();
-
-        //mark
-        foreach ($user->notifications as $notification) {
-            $data = $notification->data;
-            if ($data['type'] == 'category_request') {
-                if ($data['article_id'] == $aid && $data['category_id'] == $cid) {
-                    $notification->markAsRead();
-                }
-
-                //recount current category new_requests...
-                $category->new_requests = $category->articles()->wherePivot('submit', '待审核')->count();
-                $category->save();
-
-                //cache ...
-                $user->forgetUnreads();
-            }
-        }
-
-        //send notification to the user who submit
-        $article->user->notify(new ArticleApproved($article, $category, $article->submited_status));
-        $article->user->forgetUnreads();
-
-        return $article;
-    }
-
     public function show($id)
     {
-        $article                 = Article::with('user')->with('category')->findOrFail($id);
-        $article->image_url      = get_full_url($article->image_url);
-        $article->category->logo = get_full_url($article->category->logo);
+        $article            = Article::with('user')->with('category')->with('images')->findOrFail($id);
+        $article->image_url = get_full_url($article->image_url);
+        if ($article->category) {
+            $article->category->logo = get_full_url($article->category->logo);
+        }
 
         $controller         = new \App\Http\Controllers\ArticleController();
         $article->connected = $controller->get_json_lists($article);
@@ -335,10 +267,10 @@ class ArticleController extends Controller
             ->take(4)
             ->get();
         foreach ($article->similar as $similar_article) {
-            $similar_article->body = $this->fix_inline_styles($similar_article->body);
+            $similar_article->body = $this->remove_inline_styles($similar_article->body);
         }
 
-        $article->body    = $this->fix_inline_styles($article->body);
+        $article->body    = $this->remove_inline_styles($article->body);
         $article->pubtime = diffForHumansCN($article->created_at);
 
         return $article;
@@ -452,194 +384,4 @@ class ArticleController extends Controller
         }
         return null;
     }
-
-    public function addCategory(Request $request, $aid, $cid)
-    {
-        $user     = $request->user();
-        $article  = Article::findOrFail($aid);
-        $category = Category::findOrFail($cid);
-
-        $query = $category->articles()->wherePivot('article_id', $aid);
-        if ($query->count()) {
-            $pivot         = $query->first()->pivot;
-            $pivot->submit = $pivot->submit == '已收录' ? '已撤回' : '已收录';
-            $pivot->save();
-            $category->submited_status = $pivot->submit;
-        } else {
-            $category->articles()->syncWithoutDetaching([
-                $aid => [
-                    'submit' => '已收录',
-                ],
-            ]);
-            $category->submited_status = '已收录';
-
-            // $article->user->notify(new CategoryCollected($cid, $aid));
-        }
-
-        $category->submit_status = $category->submited_status == '已收录' ? '移除' : '收录';
-        return $category;
-    }
-
-    public function adminCategoriesCheckArticle(Request $request, $aid)
-    {
-        $user = $request->user();
-
-        $qb = $user->adminCategories()->with('user');
-
-        if (request('q')) {
-            $qb = $qb->where('categories.name', 'like', request('q') . '%');
-        }
-
-        $categories = $qb->paginate(12);
-
-        //get article status
-        foreach ($categories as $category) {
-            $category->submited_status = '';
-            $query                     = $category->articles()->wherePivot('article_id', $aid);
-            if ($query->count()) {
-                $category->submited_status = $query->first()->pivot->submit;
-            }
-            $category->submit_status = $category->submited_status == '已收录' ? '移除' : '收录';
-        }
-
-        return $categories;
-    }
-
-    public function recommendCategoriesCheckArticle(Request $request, $aid)
-    {
-        $categories = Category::orderBy('id', 'desc')->paginate(9);
-
-        //get article status
-        foreach ($categories as $category) {
-            $category->submited_status = '';
-            $query                     = $category->articles()->wherePivot('article_id', $aid);
-            if ($query->count()) {
-                $category->submited_status = $query->first()->pivot->submit;
-            }
-            $category->submit_status = $this->get_submit_status($category->submited_status);
-        }
-        return $categories;
-    }
-
-    public function update(Request $request, $id)
-    {
-        $user           = $request->user();
-        $article        = Article::findOrFail($id);
-        $article->words = ceil(strlen(strip_tags($article->body)) / 2);
-        $article->update($request->all());
-
-        if ($request->status == 1) {
-            //可能是发布了文章，需要统计文集的文章数，字数
-            foreach ($article->collections as $collection) {
-                $collection->count       = $collection->articles()->count();
-                $collection->count_words = $collection->articles()->sum('words');
-                $collection->save();
-            }
-
-            //统计用户的文章数，字数
-            $user->count_articles = $user->articles()->count();
-            $user->count_words    = $user->articles()->sum('words');
-            $user->save();
-        }
-
-        return $article;
-    }
-
-    public function trash(Request $request)
-    {
-        $user     = $request->user();
-        $articles = $user->deletedArticles;
-        return $articles;
-    }
-
-    public function store(Request $request)
-    {
-        $article          = new Article($request->all());
-        $article->user_id = $request->user()->id;
-        $article->save();
-        return $article;
-    }
-
-    public function destroy(Request $request, $id)
-    {
-        return Article::destroy($id);
-    }
-
-    public function delete(Request $request, $id)
-    {
-        $article         = Article::findOrFail($id);
-        $article->status = -1;
-        $article->save();
-        return $article;
-    }
-
-    public function restore(Request $request, $id)
-    {
-        $article         = Article::findOrFail($id);
-        $article->status = 0;
-        $article->save();
-
-        //如果文集也被删除了，恢复出来
-        foreach ($article->collections as $collection) {
-            if ($collection->status == -1) {
-                $collection->status = 0;
-                $collection->save();
-            }
-        }
-
-        return $article;
-    }
-
-    public function commendIndex(Request $request, $id)
-    {
-        $cache_key        = "commend_index_article";
-        $commend_articles = Cache::get($cache_key);
-        if (!$commend_articles) {
-            $commend_articles = [];
-            array_push($commend_articles, $id);
-            Cache::forever($cache_key, $commend_articles);
-        } else {
-            array_push($commend_articles, $id);
-            Cache::forever($cache_key, $commend_articles);
-        }
-
-        return $id;
-    }
-
-    public function deleteCommendIndex(Request $request, $id)
-    {
-        $cache_key        = "commend_index_article";
-        $commend_articles = Cache::get($cache_key);
-
-        if (is_array($commend_articles) && in_array($id, $commend_articles)) {
-            $index = array_search($id, $commend_articles);
-            if ($index >= 0) {
-                array_splice($commend_articles, $index, 1);
-                Cache::forever($cache_key, $commend_articles);
-                return dd("$id 删除成功!");
-            } else {
-                return response($content = '没有找到该条历史记录', $status = 404);
-            }
-        }
-
-        if ($id == -1) {
-            Cache::forget($cache_key);
-            return dd('delete all success');
-        }
-
-    }
-
-    public function refreshTopArticle()
-    {
-         $articles=Article::where('is_top', 1)->orderBy('id', 'desc')->get();
-         foreach($articles as $article){
-                $article->is_top=0;
-                $article->timestamps = false;
-
-                $article->save();
-         }
-
-         return dd("refresh success");
-    }
-
 }

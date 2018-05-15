@@ -1,7 +1,7 @@
 {{-- <link rel="stylesheet" href="/fonts/iconfont.css"> --}}
 
 <!--向上小火箭-->
-<div class="toUp-rocket iconfont icon-feiji3"></div>
+<div class="toUp-rocket" data-toggle="tooltip" data-placement="left" title="回到顶部"><i class="iconfont icon-xia"></i></div>
 
 
 <style>
@@ -9,23 +9,33 @@
 .toUp-rocket {
   position: fixed;
   right: 20px;
-  bottom: 40px;
+  bottom: 50px;
   width: 50px;
-  height: 80px;
-  border-radius: 5px;
-  background-color: rgba(95, 180, 255, 0.3);
-  font-size: 50px;
-  color: #F47723;
+  height: 50px;
+  border: 1px solid #ccc;
+  border-radius: 1px;
+  background-color: #fff;
+  color: #333;
   cursor: pointer;
-  display: none;
+  display: none;;
+  text-align: center;;
+  line-height: 50px;
+  transition: all .4s ease-in-out;
 }
 .toUp-rocket:hover {
-  background-color: rgba(95, 180, 255, 0.6);
+  background-color: rgba(0,0,0,0.7);
+  border: 1px solid rgba(0,0,0,0.7);
+  color: #fff;
+}
+.toUp-rocket i {
+  display: inline-block;
+  font-size: 30px;
+  transform: rotate(180deg);
 }
 </style>
 
 <script type="text/javascript">
-
+  
   $(function() {
     //2-底部小火箭
     $(window).on("scroll",function () {

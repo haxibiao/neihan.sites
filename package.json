@@ -1,37 +1,44 @@
 {
-  "private": true,
-  "scripts": {
-    "dev": "npm run development",
-    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "watch-poll": "npm run watch -- --watch-poll",
-    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "prod": "npm run production",
-    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
-  },
-  "devDependencies": {
-    "axios": "^0.16.2",
-    "bootstrap-sass": "^3.3.7",
-    "browser-sync": "^2.23.3",
-    "browser-sync-webpack-plugin": "^1.2.0",
-    "cross-env": "^5.0.1",
-    "jquery": "^3.1.1",
-    "laravel-mix": "^1.0",
-    "lodash": "^4.17.4"
-  },
-  "dependencies": {
-    "bootstrap-tagsinput": "^0.7.1",
-    "chart.js": "^2.6.0",
-    "codemirror": "^5.27.2",
-    "simditor": "^2.3.6",
-    "simditor-dropzone": "^2.0.1",
-    "vue": "^2.5.13",
-    "vue-chartjs": "^2.7.1",
-    "vue-gesture": "^1.0.8",
-    "vue-multiselect": "^2.0.8",
-    "vue-router": "^3.0.1",
-    "vue-template-compiler": "^2.5.13",
-    "vue-touch": "^2.0.0-beta.4",
-    "vuex": "^3.0.1"
-  }
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch-poll": "npm run watch -- --watch-poll",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "prod": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    },
+    "devDependencies": {
+        "axios": "^0.15.3",
+        "bootstrap-sass": "^3.3.7",
+        "browser-sync": "^2.18.13",
+        "browser-sync-webpack-plugin": "^1.2.0",
+        "cross-env": "^3.2.3",
+        "jquery": "^3.1.1",
+        "laravel-mix": "^1.0",
+        "less": "^2.7.3",
+        "less-loader": "^4.0.5",
+        "lodash": "^4.17.4",
+        "vue": "^2.1.10"
+    },
+    "dependencies": {
+        "apollo-cache-inmemory": "^1.1.10",
+        "apollo-client": "^1.2.2",
+        "apollo-link": "^1.2.1",
+        "apollo-link-http": "^1.5.3",
+        "bootstrap-tagsinput": "^0.7.1",
+        "chart.js": "^2.6.0",
+        "graphiql": "^0.11.11",
+        "graphql": "^0.13.1",
+        "graphql-tag": "^2.8.0",
+        "node-sass": "^4.7.2",
+        "simditor": "^2.3.6",
+        "simditor-dropzone": "^2.0.1",
+        "vue-apollo": "^2.1.0-beta.8",
+        "vue-chartjs": "^2.7.1",
+        "vue-multiselect": "^2.0.8",
+        "vue-router": "^3.0.1",
+        "vuex": "^3.0.1"
+    }
 }

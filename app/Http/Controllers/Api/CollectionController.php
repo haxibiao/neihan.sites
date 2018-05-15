@@ -2,31 +2,36 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Article;
 use App\Collection;
 use App\Http\Controllers\Controller;
-use App\Article;
 use Illuminate\Http\Request;
 
 class CollectionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         $user        = $request->user();
-        $collections = $user->collections()->with('articles')->where('status', '>=', 0)
-            ->orderBy('id', 'desc')->get();
+        $collections = $user->collections()->with('articles')->where('status', '>=', 0)->orderBy('id', 'desc')->get();
         return $collections;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function show(Request $request, $id)
+    {
+        return Collection::findOrFail($id);
+    }
+
+    public function articles(Request $request, $id)
+    {
+        $collection = Collection::findOrFail($id);
+        $articles   = $collection->articles()->with('user')->orderBy(request('collected') ? 'created_at' : 'updated_at', 'desc')->paginate(10);
+        foreach ($articles as $article) {
+            $article->user        = $article->user->fillForJs();
+            $article->description = $article->description();
+        }
+        return $articles;
+    }
+
     public function create(Request $request)
     {
         $collection          = new Collection($request->all());
@@ -35,13 +40,7 @@ class CollectionController extends Controller
         $collection->load('articles');
         return $collection;
     }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         $collection = Collection::findOrFail($id);
@@ -55,7 +54,7 @@ class CollectionController extends Controller
         $collection->status = -1;
         $collection->save();
 
-        //delete collection articles
+        //delete articles to trash
         foreach ($collection->articles as $article) {
             $article->status = -1;
             $article->save();
@@ -75,13 +74,11 @@ class CollectionController extends Controller
     {
         $article          = new Article($request->all());
         $article->user_id = $request->user()->id;
-        // $article->body    ="请填写";
-        // $article->keywords="并未填写";
-        $article->author  =$request->user()->name;
-        // $article->category_id = 1;
         $article->save();
 
+        //暂时维护个和文集的多对多关系，方便今后文集之间复制文章的时候用
         $article->collections()->sync($id);
+
         return $article;
     }
 }

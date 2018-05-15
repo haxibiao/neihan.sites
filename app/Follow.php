@@ -6,7 +6,7 @@ use App\Model;
 
 class Follow extends Model
 {
-    protected $fillable = [
+    public $fillable = [
         'user_id',
         'followed_type',
         'followed_id',

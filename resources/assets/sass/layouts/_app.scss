@@ -1,0 +1,6 @@
+#app {
+	padding-top: 81px;
+	@media screen and(max-width:768px) {
+		padding-top: 61px;
+	}
+}

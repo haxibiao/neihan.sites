@@ -14,7 +14,7 @@ class CategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::user()->is_editor;
+        return true; //允许注册用户创建专题
     }
 
     /**
@@ -27,7 +27,8 @@ class CategoryRequest extends FormRequest
         return [
             'name' => 'required|unique:categories,name',
             'name_en' => 'required|unique:categories,name_en',
-            'parent_id' => 'required',
+            // 'parent_id' => 'required',
+            'description'=>'max:190',
         ];
     }
 }

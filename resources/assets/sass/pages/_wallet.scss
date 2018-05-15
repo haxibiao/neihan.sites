@@ -1,0 +1,124 @@
+#wallet {
+	width: 90%;
+	margin: 0 auto;
+	.wallet-top{
+		margin: 10px -15px 40px -15px;
+		.left {
+			padding-top: 20px;
+			padding-bottom: 20px;
+		}
+		.middle {
+			padding: 10px 50px;
+			border-left: 1px solid $light-color1;
+			border-right: 1px solid $light-color1;
+		}
+		.right {
+			padding: 20px 40px;
+		}
+	}
+}
+
+//components
+.note-info.note-info-wallet {
+	margin: 0;
+	.title {
+		padding-top: 10px;
+	}
+	.info {
+		margin-top: 0;
+		padding-top: 0;
+		font-size: $font-size-detail;
+	}
+}
+.wallet-account {
+	.account-money {
+		margin-right: 20px;
+		font-size: 16px;
+		color: $gray-color2;
+		display: inline-block;
+	}
+	.main-money {
+		font-size: 28px;
+	}
+	.money-sub {
+		font-size: 18px;
+	}
+	.action {
+		margin-top: 20px;
+		.btn-base  {
+			margin-right: 15px;
+		}
+		.warn {
+			font-size: 13px;
+			color: $gray-color2;
+		}
+	}
+}
+.wallet-meta {
+	.help {
+		font-size: 13px;
+		color: $linkColor;
+		display: block;
+	}
+}
+.wallet-history {
+	border: 1px solid #dcdcdc;
+	border-radius: 6px 6px 0 0;
+	li {
+		padding: 15px 20px;
+		font-size: 12px;
+		border-bottom: 1px solid #dcdcdc;
+		&:nth-child(2n) {
+			background-color: hsla(0,0%,71%,.1);
+		}
+		&:last-child {
+			border-bottom: 0;
+		}
+		&.title {
+			padding: 25px 20px;
+			div {
+				border-right: 1px dashed $gray-color3;
+				font-size: 14px !important;
+				color: $dark-color1;
+				&.remark {
+					border-right: 0;
+				}
+			}
+		}
+		div {
+			display: inline-block;
+			vertical-align: middle;
+			&:nth-child(n+1) {
+				padding-left: 15px;
+			}
+		}
+		.time {
+			width: 17%;
+		}
+		.type {
+			width: 12%;
+		}
+		.details {
+			width: 37%;
+			a {
+				color: $link-color;
+			}
+		}
+		.amount {
+			width: 14%;
+			color: $weixin-color;
+			font-size: 13px;
+		}
+		.remark {
+			width: 17%;
+			font-size: 13px;
+			color: $gray-color2;
+			.state {
+				padding-left: 0;
+			}
+		}
+		@media screen and (max-width:768px) {
+			padding: 5px;
+		}
+	}
+}

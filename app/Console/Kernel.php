@@ -15,11 +15,11 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \App\Console\Commands\EnvRefresh::class,
         \App\Console\Commands\GetSql::class,
-        \App\Console\Commands\FixData::class,
         \App\Console\Commands\ImageResize::class,
         \App\Console\Commands\ImageTitle::class,
         \App\Console\Commands\ImageLogo::class,
-        \App\Console\Commands\CrawlArticle::class,
+        \App\Console\Commands\SitemapRefresh::class,
+        \App\Console\Commands\AdminSet::class,
     ];
 
     /**
@@ -30,8 +30,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('sitemap:refresh')
+                 ->daily();
     }
 
     /**
@@ -42,5 +42,6 @@ class Kernel extends ConsoleKernel
     protected function commands()
     {
         require base_path('routes/console.php');
+        require base_path('tools/commands.php'); //include fix:data etc ...
     }
 }

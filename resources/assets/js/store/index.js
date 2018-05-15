@@ -17,6 +17,7 @@ const state = {
   articleId: null,
   previewArticle: {},
   trash: [],
+  isPublishView: false,
 }
 
 export default new Vuex.Store({

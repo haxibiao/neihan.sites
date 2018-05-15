@@ -8,6 +8,8 @@ use App\Follow;
 use App\Like;
 use App\User;
 use App\Video;
+use App\Question;
+use Auth;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -15,7 +17,6 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['except' => ['index', 'show', 'videos', 'articles']]);
-        // $this->middleware('auth.editor', ['only' => ['index']]);
     }
     /**
      * Display a listing of the resource.
@@ -24,18 +25,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy('is_editor','desc')->orderBy('id', 'desc')->paginate(24);
+        $users = User::orderBy('id', 'desc')->paginate(24);
 
-        if(AjaxOrDebug() && request('article_id')){
-             $users=[];
-             $article =Article::findOrFail(request('article_id'));
-             $comments=$article->comments()->where('commentable_type','article_author')->get();
-             foreach($comments as $comment){
-                 $users[]=$comment->user;
-             }
-             $users[] = $article->user;
-             return $users;
-        }
+        //TODO:: need add debug and ajax ...
+        
         return view('user.index')->withUsers($users);
     }
 
@@ -73,7 +66,7 @@ class UserController extends Controller
         //文章
         $articles = Article::where('user_id', $user->id)
             ->with('user')->with('category')
-            ->where('status', 1)
+            ->where('status', '>', 0)
             ->orderBy('id', 'desc')
             ->paginate(10);
         if (ajaxOrDebug() && request('articles')) {
@@ -87,7 +80,7 @@ class UserController extends Controller
         //最新评论
         $articles = Article::where('user_id', $user->id)
             ->with('user')->with('category')
-            ->where('status', 1)
+            ->where('status', '>', 0)
             ->orderBy('updated_at', 'desc')
             ->paginate(10);
         if (ajaxOrDebug() && request('commented')) {
@@ -101,7 +94,7 @@ class UserController extends Controller
         //热门
         $articles = Article::where('user_id', $user->id)
             ->with('user')->with('category')
-            ->where('status', 1)
+            ->where('status', '>', 0)
             ->orderBy('hits', 'desc')
             ->paginate(10);
         if (ajaxOrDebug() && request('hot')) {
@@ -143,32 +136,30 @@ class UserController extends Controller
         }
         $data['actions'] = $actions;
 
-        $data['actions_article'] = Article::where('user_id', $user->id)->orderBy('id', 'desc')->where('status', 1)->paginate(40);
-
         return view('user.show')
             ->withUser($user)
             ->withData($data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+/**
+ * Show the form for editing the specified resource.
+ *
+ * @param  int  $id
+ * @return \Illuminate\Http\Response
+ */
     public function edit($id)
     {
         $user = User::findOrFail($id);
         return view('user.edit')->withUser($user);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+/**
+ * Update the specified resource in storage.
+ *
+ * @param  \Illuminate\Http\Request  $request
+ * @param  int  $id
+ * @return \Illuminate\Http\Response
+ */
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -199,31 +190,18 @@ class UserController extends Controller
         return redirect()->to('/user/' . $user->id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+/**
+ * Remove the specified resource from storage.
+ *
+ * @param  int  $id
+ * @return \Illuminate\Http\Response
+ */
     public function destroy($id)
     {
         $user = User::find($id);
         if ($user) {
             $user->status = -1;
             $user->save();
-
-            $articles =$user->articles;
-
-            foreach($articles as $article){
-                 $article->status =-1;
-                 $article->save();
-            }
-
-            $comments=$user->comments;
-
-            foreach($comments as $comment){
-                 $comments->delete();
-            }
         }
         return redirect()->back();
     }
@@ -255,86 +233,6 @@ class UserController extends Controller
             ->withData($data);
     }
 
-    public function favorites(Request $request)
-    {
-        $user                 = $request->user();
-        $fav_articles         = Favorite::with('faved')->with('user')->where('user_id', $user->id)->where('faved_type', 'articles')->orderBy('id', 'desc')->paginate(10);
-        $data['fav_articles'] = $fav_articles;
-
-        return view('user.favorites')
-            ->withUser($user)
-            ->withData($data);
-    }
-
-    public function likes(Request $request)
-    {
-        $user = $request->user();
-
-        $data['like_articles'] = Like::with('liked')->with('user')
-            ->where('user_id', $user->id)
-            ->where('liked_type', 'articles')
-            ->orderBy('id', 'desc')
-            ->paginate(10)
-        ;
-        //TODO:: ajax loading
-
-        $data['followed_categories'] = Follow::with('followed')
-            ->where('user_id', $user->id)
-            ->where('followed_type', 'categories')
-            ->orderBy('id', 'desc')
-            ->paginate(10)
-        ;
-
-        $data['followed_collections'] = Follow::with('foldatlowed')
-            ->where('user_id', $user->id)
-            ->where('followed_type', 'collections')
-            ->orderBy('id', 'desc')
-            ->paginate(10)
-        ;
-
-        //动态
-        $actions = $user->actions()
-            ->with('user')
-            ->with('actionable')
-            ->orderBy('id', 'desc')
-            ->paginate(10);
-        foreach ($actions as $action) {
-            switch (get_class($action->actionable)) {
-                case 'App\Article':
-                    # code...
-                    break;
-                case 'App\Comment':
-                    $action = $action->load('actionable.commentable.user');
-                    break;
-                case 'App\Favorite':
-                    $action = $action->load('actionable.faved.user');
-                    break;
-                case 'App\Like':
-                    $action = $action->load('actionable.liked.user');
-                    break;
-                case 'App\Follow':
-                    if (get_class($action->actionable->followed) == 'App\Category') {
-                        $action = $action->load('actionable.followed.user');
-                    } else {
-                        $action = $action->load('actionable.followed');
-                    }
-                    break;
-            }
-        }
-        $data['actions'] = $actions;
-
-        $data['actions_article'] = Article::where('user_id', $user->id)->orderBy('id', 'desc')->where('status', 1)->paginate(40);
-
-        return view('user.home')
-            ->withData($data)
-            ->withUser($user);
-    }
-
-    public function setting()
-    {
-        return view('user.setting');
-    }
-
     public function wallet(Request $request)
     {
         $user         = $request->user();
@@ -344,15 +242,85 @@ class UserController extends Controller
             ->withTransactions($transactions);
     }
 
-    public function follows(Request $request,$id)
+    public function favorites(Request $request)
     {
-        $user =User::findOrFail($id);
+        $user              = $request->user();
+        $data['articles'] = Favorite::with('faved')
+            ->where('user_id', $user->id)
+            ->where('faved_type', 'articles')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+        $data['questions'] = Favorite::with('faved')
+            ->where('user_id', $user->id)
+            ->where('faved_type', 'questions')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
 
-        $data['follows']=$user->followingUsers()->with('user')->orderBy('id','desc')->paginate(10);
-        $data['followers']=$user->follows()->with('user')->orderBy('id','desc')->paginate(10);
+        return view('user.favorites')
+            ->withUser($user)
+            ->withData($data);
+    }
+    public function questions(Request $request)
+    {
+        $user=Auth::user();
+        $questions[]=null;
+        $data['questions']=Question::where('user_id',$user->id)->where('status','>=',0)->orderBy('id', 'desc')->paginate(10);
+        
+        $ans=$user->answers;
+        foreach ($ans as $answer) {
+            $question=$answer->question;
+            if($question->status>=0){
+                 $questions[]=$question;
+            }
+        }
+        $data['answer_questions']=$questions;
+        return view('user.questions')->withUser($user)->withData($data);
+    }
 
-        return view('user.follow')
-        ->withData($data)
-        ->withUser($user);
+    public function likes(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $data['liked_articles'] = Like::with('liked')
+            ->where('user_id', $user->id)
+            ->where('liked_type', 'articles')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
+        //TODO:: handle for ajax load more ...
+
+        $data['followed_categories'] = Follow::with('followed')
+            ->where('user_id', $user->id)
+            ->where('followed_type', 'categories')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
+        $data['followed_collections'] = Follow::with('followed')
+            ->where('user_id', $user->id)
+            ->where('followed_type', 'collections')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
+        return view('user.likes')
+            ->withUser($user)
+            ->withData($data);
+    }
+
+    public function follows(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $data['follows']   = $user->followingUsers()->orderBy('id', 'desc')->paginate(10);
+        $data['followers'] = $user->follows()->orderBy('id', 'desc')->paginate(10);
+
+        return view('user.follows')
+            ->withUser($user)
+            ->withData($data);
+    }
+
+    public function settings(Request $request)
+    {
+        $user = $request->user();
+        return view('user.settings')->withUser($user);
     }
 }

@@ -10,7 +10,6 @@ class Image extends Model
         'path',
         'path_origin',
         'path_small',
-        'extension',
     ];
 
     public function articles()
@@ -23,9 +22,14 @@ class Image extends Model
         return $this->belongsTo(\App\User::class);
     }
 
-    public function tips()
+    public function url_prod()
     {
-        return $this->belongsTo(\App\Tip::class);
+        return env('APP_URL') . $this->path;
+    }
+
+    public function url_small()
+    {
+        return env('APP_URL') . $this->path_small();
     }
 
     public function path_small()
@@ -36,5 +40,11 @@ class Image extends Model
     public function path_top()
     {
         return str_replace($this->extension, 'top.' . $this->extension, $this->path);
+    }
+
+    public function fillForJs()
+    {
+        $this->path       = $this->url_prod();
+        $this->path_small = $this->url_small();
     }
 }

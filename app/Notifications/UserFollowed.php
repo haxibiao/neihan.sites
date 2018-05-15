@@ -21,7 +21,7 @@ class UserFollowed extends Notification
      */
     public function __construct(User $user)
     {
-        $this->user=$user;
+        $this->user = $user;
     }
 
     /**
@@ -59,7 +59,7 @@ class UserFollowed extends Notification
     {
         return [
             'type' => 'follow',
-            'user_avatar' => $this->user->avatar(),
+            'user_avatar' => $this->user->avatar,
             'user_name' => $this->user->name,
             'user_id' => $this->user->id,
         ];

@@ -1,0 +1,42 @@
+//推荐专题
+.category-label,.question-label,.tags {
+    display: inline-block;
+    height: 34px;
+    line-height: 32px;
+    background-color: $light-color3;
+    border: 1px solid $gray-color3;
+    border-radius: 4px;
+    vertical-align: top;
+    overflow: hidden;
+    color: $dark-color2;
+    font-size: 0;
+    &.active {
+        color: $theme-color !important;
+    }
+    img {
+        width: 32px;
+        height: 32px;
+        vertical-align: top;
+    }
+    .name {
+        display: inline-block;
+        padding: 0 11px 0 11px;
+        font-size: $font-size-info;
+    }
+    &.more,&.tag {
+        border: none;
+        color: $gray-color1;
+        &:hover {
+            color: $gray-color2;
+        }
+    }
+}
+.category-label,.question-label {
+    margin: 0 18px 18px 0;
+}
+.tags {
+    margin: 0 12px 8px 0;
+    .name {
+        padding: 0 10px 0 10px;
+    }
+}

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Article;
 use App\Http\Controllers\Controller;
 use App\Image;
+use App\QuestionInvite;
 use App\Traffic;
 use App\User;
 use App\Video;
@@ -12,10 +13,68 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\QuestionInvited;
-use App\QuestionInvite;
 
 class UserController extends Controller
 {
+    public function index()
+    {
+        $users = User::orderBy('id', 'desc')->paginate(10);
+        foreach ($users as $user) {
+            $user->fillForJs();
+        }
+        return $users;
+    }
+
+    public function saveAvatar(Request $request)
+    {
+        $user        = $request->user();
+        $avatar_path = '/storage/avatar/' . $user->id . '.jpg';
+
+        //save avatar
+        $img = \ImageMaker::make($request->avatar->path());
+        if ($img->width() < $img->height()) {
+            $img->resize(100, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+        } else {
+            $img->resize(null, 100, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+        }
+        $img->crop(100, 100);
+        $img->save(public_path($avatar_path));
+
+        $user->update([
+            'avatar' => $avatar_path,
+        ]);
+
+        return url($user->avatar);
+    }
+
+    public function save(Request $request)
+    {
+        $user = $request->user();
+        $user->update($request->all());
+        return $user;
+    }
+
+    public function editors(Request $request)
+    {
+        $users = User::orderBy('id', 'desc')->select('name', 'id')->paginate(100);
+        return $users;
+    }
+
+    public function recommend(Request $request)
+    {
+        $page_size = 5;
+        $page      = rand(1, ceil(User::count() / $page_size));
+        $users     = User::orderBy('id', 'desc')->skip(($page - 1) * $page_size)->take($page_size)->get();
+        foreach ($users as $user) {
+            $user->fillForJs();
+            $user->is_followed = $request->user()->isFollow('users', $user->id);
+        }
+        return $users;
+    }
 
     public function login(Request $request)
     {
@@ -50,7 +109,12 @@ class UserController extends Controller
         return $user;
     }
 
-    public function getArticles(Request $request, $id)
+    public function unreads(Request $request)
+    {
+        return $request->user()->unreads();
+    }
+
+    public function articles(Request $request, $id)
     {
         $query = Article::with('category')->where('user_id', $id)->orderBy('id', 'desc');
         if ($request->get('title')) {
@@ -58,12 +122,12 @@ class UserController extends Controller
         }
         $articles = $query->paginate(12);
         foreach ($articles as $article) {
-            $article->image_url = get_img($article->image_url);
+            $article->fillForJs();
         }
         return $articles;
     }
 
-    public function getVideos(Request $request, $id)
+    public function videos(Request $request, $id)
     {
         $query = Video::with('category')
             ->where('user_id', $id)
@@ -74,13 +138,12 @@ class UserController extends Controller
         }
         $videos = $query->paginate(12);
         foreach ($videos as $video) {
-            $video->path  = get_img($video->path);
-            $video->cover = get_img($video->cover);
+            $video->fillForJs();
         }
         return $videos;
     }
 
-    public function getImages(Request $request, $id)
+    public function images(Request $request, $id)
     {
         $query = Image::where('user_id', $id)->where('count', '>', 0)->orderBy('updated_at', 'desc');
         if ($request->get('title')) {
@@ -88,27 +151,22 @@ class UserController extends Controller
         }
         $images = $query->paginate(12);
         foreach ($images as $image) {
-            $image->path       = get_img($image->path);
-            $image->path_small = get_img($image->path_small);
+            $image->fillForJs();
         }
         return $images;
     }
 
-    public function getInfoByName(Request $request, $name)
+    public function name(Request $request, $name)
     {
         $user = User::where('name', $name)->first();
         return $user;
     }
 
-    public function getInfo(Request $request, $id)
+    public function show(Request $request, $id)
     {
-        $user             = User::findOrFail($id);
-        $user->avatar_url = $user->avatar();
-        $data['user']     = $user;
-
-        if (request()->ajax() || request()->get('debug')) {
-            return $user;
-        }
+        $user         = User::findOrFail($id);
+        $user->fillForJs();
+        $data['user'] = $user;
 
         $data['articles_count'] = Article::where('user_id', $user->id)->count();
         $data['traffic_count']  = Traffic::where('user_id', $user->id)->count();
@@ -120,109 +178,5 @@ class UserController extends Controller
         $data['traffic_count_today']  = Traffic::where('user_id', $user->id)->where('date', Carbon::now()->toDateString())->count();
 
         return $data;
-    }
-
-    public function unreads(Request $request)
-    {
-        return $request->user()->unreads();
-    }
-
-    public function recommend(Request $request)
-    {
-        // $page_size = 5;
-        // $page      = rand(1, ceil(User::count() / $page_size));
-        $users     = User::orderBy('id', 'desc')->where('is_editor',1)->get();
-        $users =$users->random(5);
-        foreach ($users as $user) {
-            $user->is_followed = Auth::user()->isFollow('users', $user->id);
-        }
-
-        return $users;
-    }
-
-    public function update(Request $request, $id)
-    {
-        $user  = $request->user();
-        $forms = $request->all();
-        foreach ($forms as $key => $form) {
-            if ($form == "undefined") {
-                unset($forms[$key]);
-            }
-        }
-
-        if (count($forms) > 1) {
-            $user->update($request->except('api_token'));
-        } else {
-            return 0;
-        }
-
-        return 1;
-    }
-
-    public function update_avatar(Request $request, $id)
-    {
-        $user = $request->user();
-
-        $dir        = '/storage/avatar/';
-        $image_path = public_path($dir);
-
-        if (!is_dir($image_path)) {
-            mkdir($image_path, 0777, 1);
-        }
-        if ($request->file) {
-            $filename = $user->id . '.jpg';
-            $img      = \ImageMaker::make($request->file);
-            if ($img->width() > 100) {
-                $img->resize(100, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-            }
-
-            $file_path = $image_path . $filename;
-            $img->save($file_path);
-
-            if ($user->avatar != $dir . $filename) {
-                $user->avatar = $dir . $filename;
-                $user->save();
-            }
-        }
-        $user->touch();
-        return $user->avatar;
-    }
-
-    public function editors(Request $request)
-    {
-        $editors = User::where('is_editor', 1)->select('name', 'id')->paginate(100);
-        return $editors;
-    }
-
-    public function questionUninvited(Request $request, $question_id)
-    {
-        $top_active_users = User::orderBy('updated_at', 'desc')->take(20)->get();
-        $users            = $top_active_users->count() > 10 ? $top_active_users->random(10) : $top_active_users;
-        foreach ($users as $user) {
-            $user->fillForJs();
-            $user->invited = 0;
-        }
-        return $users;
-    }
-
-    public function questionInvite(Request $request, $invite_uid, $qid)
-    {
-        $user        = $request->user();
-        $invite_user = User::find($invite_uid);
-        if ($invite_user) {
-            $invite = QuestionInvite::firstOrNew([
-                'user_id'        => $user->id,
-                'question_id'    => $qid,
-                'invite_user_id' => $invite_uid,
-            ]);
-
-            if(!$invite->id){
-                $invite_user->notify(new QuestionInvited($user->id, $qid));
-            }
-            $invite->save();
-        }
-        return $invite;
     }
 }

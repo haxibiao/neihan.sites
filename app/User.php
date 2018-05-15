@@ -3,14 +3,14 @@
 namespace App;
 
 use App\Traits\TimeAgo;
-use App\Traits\UserRelation;
+use Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 
 class User extends Authenticatable
 {
-    use Notifiable, TimeAgo, UserRelation;
+    use Notifiable, TimeAgo;
 
     /**
      * The attributes that are mass assignable.
@@ -22,16 +22,18 @@ class User extends Authenticatable
         'email',
         'password',
         'qq',
+        'gender',
+        'avatar',
         'introduction',
+        'website',
         'is_editor',
         'is_seoer',
         'seo_meta',
         'seo_push',
         'seo_tj',
         'api_token',
-        'gender',
-        'introduction_tips',
-        'is_tips',
+        'enable_tips',
+        'tip_words',
     ];
 
     /**
@@ -43,10 +45,178 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    //relations
+    public function questions()
+    {
+        return $this->hasMany(\App\Question::class);
+    }
+    public function answers()
+    {
+        return $this->hasMany(\App\Answer::class);
+    }
+    public function querylogs()
+    {
+        return $this->hasMany(\App\Querylog::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(\App\Transaction::class);
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(\App\Favorite::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(\App\Like::class);
+    }
+
+    public function follows()
+    {
+        return $this->morphMany(\App\Follow::class, 'followed');
+    }
+
+    public function followings()
+    {
+        return $this->hasMany(\App\Follow::class);
+    }
+
+    public function followingCategories()
+    {
+        return $this->hasMany(\App\Follow::class)->where('followed_type', 'categories');
+    }
+
+    public function followingCollections()
+    {
+        return $this->hasMany(\App\Follow::class)->where('followed_type', 'collections');
+    }
+
+    public function followingUsers()
+    {
+        return $this->hasMany(\App\Follow::class)->where('followed_type', 'users');
+    }
+
+    public function collections()
+    {
+        //默认给个文集...
+        if (!Collection::where('user_id', $this->id)->count()) {
+            $collection = Collection::firstOrNew([
+                'user_id' => $this->id,
+                'name'    => '日记本',
+            ]);
+            $collection->save();
+            $this->count_collections = 1;
+        }
+
+        return $this->hasMany(\App\Collection::class);
+    }
+
+    public function actions()
+    {
+        return $this->hasMany(\App\Action::class);
+    }
+
+    public function chats()
+    {
+        return $this->belongsToMany(\App\Chat::class)->withPivot('with_users', 'unreads')->orderBy('updated_at', 'desc');
+    }
+
+    public function categories()
+    {
+        return $this->hasMany(\App\Category::class)->where('type', 'article');
+    }
+
+    public function articles()
+    {
+        return $this->hasMany(\App\Article::class)->where('status', '>', 0);
+    }
+
+    public function drafts()
+    {
+        return $this->hasMany(\App\Article::class)->where('status', 0);
+    }
+
+    public function removedArticles()
+    {
+        return $this->hasMany(\App\Article::class)->where('status', -1);
+    }
+
+    public function allArticles()
+    {
+        return $this->hasMany(\App\Article::class)->where('status', '>=', 0);
+    }
+
+    public function publishedArticles()
+    {
+        return $this->hasMany(\App\Article::class)->where('status', '>', 0);
+    }
+
+    public function adminCategories()
+    {
+        return $this->belongsToMany(\App\Category::class)->where('type', 'article')->wherePivot('is_admin', 1);
+    }
+
+    public function requestCategories()
+    {
+        return $this->belongsToMany(\App\Category::class)->wherePivot('approved', 0);
+    }
+
+    public function joinCategories()
+    {
+        return $this->belongsToMany(\App\Category::class)->wherePivot('approved', 1);
+    }
+
+    //computed props methods ................................................................................
+
+    public function checkSeoer()
+    {
+        return $this->is_seoer || $this->is_admin;
+    }
+
+    public function checkEditor()
+    {
+        return $this->is_editor || $this->is_admin;
+    }
+
+    public function isFollow($type, $id)
+    {
+        return $this->followings()->where('followed_type', get_polymorph_types($type))->where('followed_id', $id)->count() ? true : false;
+    }
+
+    public function isLiked($type, $id)
+    {
+        return $this->likes()->where('liked_type', get_polymorph_types($type))->where('liked_id', $id)->count() ? true : false;
+    }
+
     public function avatar()
     {
-        //读取qq头像
+        //修复没设置默认头像的
         if (empty($this->avatar)) {
+            $this->avatar = '/images/avatar.jpg';
+            $this->save();
+        }
+
+        $avatar_url = $this->avatar;
+        if (\App::environment('local')) {
+            if (!starts_with($this->avatar, env('APP_URL'))) {
+                $avatar_url = file_exists(public_path($this->avatar)) ? $this->avatar : env('APP_URL') . $this->avatar;
+            }
+        }
+        //如果用户刚更新过，刷新头像图片的浏览器缓存
+        if ($this->updated_at && $this->updated_at->addMinutes(2) > now()) {
+            $avatar_url = $avatar_url . '?t=' . time();
+        }
+        //APP 需要返回全Uri
+        return starts_with($avatar_url, 'http') ? $avatar_url : url($avatar_url);
+    }
+
+    public function makeQQAvatar()
+    {
+        //尝试读取qq头像
+        if (empty($this->email)) {
             $qq = $this->qq;
             if (empty($qq)) {
                 $pattern = '/(\d+)\@qq\.com/';
@@ -55,12 +225,7 @@ class User extends Authenticatable
                 }
             }
             if (!empty($qq)) {
-
-                if (!is_dir(public_path('/storage/avatar/'))) {
-                    mkdir(public_path('/storage/avatar/'), 0777, 1);
-                }
-
-                $avatar_path = '/storage/avatar/' . $this->id . '.jpg';
+                $avatar_path = '/storage/avatar/' . $this->id . '.qq.jpg';
                 $qq_pic      = get_qq_pic($qq);
                 $qq_img_data = @file_get_contents($qq_pic);
                 if ($qq_img_data) {
@@ -68,24 +233,17 @@ class User extends Authenticatable
                     $hash = md5_file(public_path($avatar_path));
                     if ($hash != md5_file(public_path('/images/qq_default.png')) && $hash != md5_file(public_path('/images/qq_tim_default.png'))) {
                         $this->avatar = $avatar_path;
-                        $this->save();
                     }
                 }
             }
         }
-
-        //最后使用默认头像地址
-        if (empty($this->avatar)) {
-            $this->avatar = '/images/avatar.jpg';
-            $this->save();
-        }
+        $this->save();
 
         return $this->avatar;
     }
 
-    public function unreads($type = '', $num = null)
+    public function unreads($type = null, $num = null)
     {
-        //TODO:: read cache
         $unreads = Cache::get('unreads_' . $this->id);
         if (!$unreads) {
             $unreadNotifications = $this->unreadNotifications;
@@ -140,6 +298,11 @@ class User extends Authenticatable
         Cache::forget('unreads_' . $this->id);
     }
 
+    public function newReuqestCategories()
+    {
+        return $this->adminCategories()->where('new_requests', '>', 0);
+    }
+
     public function link()
     {
         return '<a href="/user/' . $this->id . '">' . $this->name . '</a>';
@@ -155,19 +318,19 @@ class User extends Authenticatable
         return $balance;
     }
 
-    public function newReuqestCategories()
-    {
-        return $this->categories()->where('new_requests', '>', 0);
-    }
-
-    public function newArticle()
-    {
-        return $this->articles()->where('status', '>', 0)->orderBy('id', 'desc')->take(3)->get();
-    }
-
     public function introduction()
     {
         return empty($this->introduction) ? '这个人很懒，一点介绍都没留下...' : $this->introduction;
+    }
+
+    public function ta()
+    {
+        return $this->isSelf() ? '我' : '他';
+    }
+
+    public function isSelf()
+    {
+        return Auth::check() && Auth::id() == $this->id;
     }
 
     public function fillForJs()
@@ -175,30 +338,4 @@ class User extends Authenticatable
         $this->introduction = $this->introduction();
         $this->avatar       = $this->avatar();
     }
-
-    public function getLatestAvatar()
-    {
-        //如果用户刚更新过，刷新头像图片的浏览器缓存
-        if ($this->updated_at->addMinutes(10) > now()) {
-            return $this->checkAvatar() . '?t=' . time();
-        }
-        return $this->checkAvatar();
-    }
-
-    public function checkAvatar()
-    {
-        if (\App::environment('local') && !empty($this->avatar)) {
-            if (!starts_with($this->avatar, env('APP_URL'))) {
-                return file_exists(public_path($this->avatar)) ? $this->avatar : env('APP_URL') . $this->avatar;
-            }
-        }
-
-        if (empty($this->avatar)) {
-            $this->avatar = '/images/avatar.jpg';
-        }
-
-        return $this->avatar;
-
-    }
-
 }

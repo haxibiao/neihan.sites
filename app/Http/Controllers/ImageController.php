@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Article;
 use App\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 
 class ImageController extends Controller
 {
@@ -88,8 +86,8 @@ class ImageController extends Controller
                 $extension = pathinfo(public_path($image->path), PATHINFO_EXTENSION);
                 $filename  = pathinfo($image->path)['basename'];
                 $file      = [
-                    'url'          => $image->path,
-                    'thumbnailUrl' => $image->path_small,
+                    'url'          => base_uri() . $image->path,
+                    'thumbnailUrl' => base_uri() . $image->path_small,
                     'name'         => $filename,
                     'id'           => $image->id,
                     "type"         => str_replace("jpg", "jpeg", "image/" . $extension),
@@ -105,20 +103,23 @@ class ImageController extends Controller
 
     public function jsonStore($request)
     {
-        $user_id = 1;
-        $images  = $request->file('files');
+        $user = $request->user();
+        $images      = $request->file('files');
+
+        $images = $request->file('files');
         if (!is_array($images)) {
             $images = [$request->photo];
         }
-        $files = [];
+        $files       = [];
         foreach ($images as $file) {
             $image = new Image();
             $image->save();
-            $extension        = $file->getClientOriginalExtension();
-            $filename         = $image->id . '.' . $extension;
+            $extension = $file->getClientOriginalExtension();
             $image->extension = $extension;
-            $image->path      = '/storage/img/' . $filename;
-            $image->user_id   = Auth::check() ? Auth::user()->id : $user_id;
+            $filename  = $image->id . '.' . $extension;
+            $image->path    = '/storage/img/' . $filename;
+            $image->user_id = Auth::user()->id;
+            
 
             $local_dir = public_path('/storage/img/');
             if (!is_dir($local_dir)) {
@@ -144,7 +145,7 @@ class ImageController extends Controller
             if ($extension != 'gif') {
                 if ($img->width() >= 760) {
                     $img->crop(760, 327);
-                    $image->path_top = '/storage/img/' . $image->id . '.top.' . $extension;
+                    $image->path_top = '/storage/img/' .$image->id . '.top.' . $extension;
                     $img->save(public_path($image->path_top));
                 }
             } else {
@@ -164,12 +165,12 @@ class ImageController extends Controller
                 });
             }
             $img->crop(300, 240);
-            $image->path_small = '/storage/img/' . $image->id . '.small.' . $extension;
+            $image->path_small = $image->path_small();
             $img->save(public_path($image->path_small));
             $image->save();
             $files[] = [
-                'url'          => $image->path,
-                'thumbnailUrl' => $image->path_small,
+                'url'          => base_uri() . $image->path,
+                'thumbnailUrl' => base_uri() . $image->path_small,
                 'name'         => $image->path,
                 'id'           => $image->id,
                 "type"         => str_replace("jpg", "jpeg", "image/" . $extension),
@@ -191,26 +192,11 @@ class ImageController extends Controller
             return json_encode($json);
         }
 
-        //response dopm
+        //给drapzone 提供返回图片地址...
         if ($request->get('from') == 'question') {
             return $image->path;
         }
-
+        
         return $data;
-    }
-
-    public function poster(Request $request)
-    {
-        $data = [];
-        if ($request->top) {
-            $articles_top     = Cache::get('commend_index_article');
-            $articles_tops    = !empty($articles_top) ? Article::whereIn('id', $articles_top)->get() : [];
-            $data['articles'] = $articles_tops;
-            $data['top']      = $request->top;
-        } else {
-            $data['articles'] = Article::where('is_top', 1)->take(8)->get();
-        }
-        return view('user.poster')
-            ->withData($data);
     }
 }

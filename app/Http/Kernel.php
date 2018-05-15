@@ -18,6 +18,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        \App\Http\Middleware\Cors::class,
     ];
 
     /**
@@ -35,12 +36,12 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\CookieChecker::class,
-            \App\Http\Middleware\TrafficMan::class,
+            // \App\Http\Middleware\TrafficMan::class,
             // \App\Http\Middleware\BeianRedirect::class,
         ],
 
         'api' => [
-            'throttle:90,1',
+            'throttle:100,1',
             'bindings',
         ],
     ];

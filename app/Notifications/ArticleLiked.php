@@ -2,12 +2,12 @@
 
 namespace App\Notifications;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notification;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
 use App\Article;
 use App\User;
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Notification;
 
 class ArticleLiked extends Notification implements ShouldQueue
 {
@@ -24,7 +24,7 @@ class ArticleLiked extends Notification implements ShouldQueue
     public function __construct($article_id, $user_id)
     {
         $this->article = Article::find($article_id);
-        $this->user    = User::find($user_id);
+        $this->user = User::find($user_id);
     }
 
     /**
@@ -47,9 +47,9 @@ class ArticleLiked extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+                    ->line('The introduction to the notification.')
+                    ->action('Notification Action', url('/'))
+                    ->line('Thank you for using our application!');
     }
 
     /**
@@ -61,12 +61,12 @@ class ArticleLiked extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'type'          => 'like',
-            'user_avatar'   => $this->user->avatar(),
-            'user_name'     => $this->user->name,
-            'user_id'       => $this->user->id,
+            'type' => 'like',
+            'user_avatar' => $this->user->avatar,
+            'user_name' => $this->user->name,
+            'user_id' => $this->user->id,
             'article_title' => $this->article->title,
-            'article_id'    => $this->article->id,
+            'article_id' => $this->article->id,
         ];
     }
 }

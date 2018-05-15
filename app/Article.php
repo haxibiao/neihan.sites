@@ -2,13 +2,12 @@
 
 namespace App;
 
+use App\Action;
 use App\Model;
-use App\Traits\ArticleRelation;
+use Auth;
 
 class Article extends Model
 {
-    use ArticleRelation;
-
     protected $fillable = [
         'title',
         'keywords',
@@ -18,68 +17,202 @@ class Article extends Model
         'user_name',
         'user_id',
         'category_id',
+        'collection_id',
         'body',
         'image_url',
         'is_top',
         'status',
-        'source_url'
+        'source_url',
     ];
+
+    protected $touches = ['category', 'collections', 'categories'];
 
     protected $dates = ['edited_at', 'delay_time'];
 
-    protected $touches = ['category', 'categories', 'collections'];
+    //relations
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 
-    //计算用方法
+    //主专题
+    public function category()
+    {
+        return $this->belongsTo('App\Category');
+    }
+
+    //主文集
+    public function collection()
+    {
+        return $this->belongsTo('App\Collection');
+    }
+
+    //所有分类关系，包含未审核通过的
+    public function allCategories()
+    {
+        return $this->belongsToMany(\App\Category::class)
+            ->withPivot(['id', 'submit'])
+            ->withTimestamps();
+    }
+
+    //有效的分类关系
+    public function categories()
+    {
+        return $this->belongsToMany(\App\Category::class)
+            ->wherePivot('submit', '已收录')
+            ->withPivot(['id', 'submit'])
+            ->withTimestamps();
+    }
+    public function fixcategories()
+    {
+        return $this->belongsToMany(\App\Category::class)
+            ->wherePivot('submit', null)
+            ->withPivot(['id', 'submit'])
+            ->withTimestamps();
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(\App\Comment::class, 'commentable');
+    }
+
+    public function likes()
+    {
+        return $this->morphMany(\App\Like::class, 'liked');
+    }
+
+    public function tags1()
+    {
+        return $this->belongsToMany('App\Tag');
+    }
+
+    public function tags()
+    {
+        return $this->morphToMany('App\Tag', 'taggable');
+    }
+
+    public function images()
+    {
+        return $this->belongsToMany('App\Image')->withTimestamps();
+    }
+
+    public function videos()
+    {
+        return $this->belongsToMany('App\Video')->withTimestamps();
+    }
+
+    public function collections()
+    {
+        return $this->belongsToMany('App\Collection')->withTimestamps();
+    }
+
+    public function tips()
+    {
+        return $this->morphMany(\App\Tip::class, 'tipable');
+    }
+
+    //computed props or methods -------------------------
 
     public function description()
     {
-        $description = empty($this->description) ? str_limit(strip_tags($this->body), 200) : str_limit($this->description, 200);
-        $description = html_entity_decode($description);
+        $description = html_entity_decode($this->description);
+        $body        = html_entity_decode($this->body);
+        $description = empty($description) ? str_limit(strip_tags($body), 80) : str_limit($description, 80);
         return $description;
     }
 
-    public function introduction()
+    public function topImage()
     {
-        $description = empty($this->description) ? str_limit(strip_tags($this->body), 200) : str_limit($this->description, 200);
-        return $description;
+        $image_top = parse_url($this->image_top, PHP_URL_PATH);
+        if (file_exists(public_path($image_top))) {
+            return url($image_top);
+        }
+        return env('APP_URL') . $image_top;
     }
 
     public function primaryImage()
     {
-        $image_url_path = parse_url($this->image_url, PHP_URL_PATH);
-        $image          = Image::firstOrNew([
-            'path' => $image_url_path,
-        ]);
-        if (str_contains($this->image_url, "haxibiao")) {
+        //爬蟲文章的圖片,直接顯示
+        if (str_contains($this->image_url, 'haxibiao.com/storage/image')) {
             return $this->image_url;
         }
 
-        return $image->path_small();
+        $image_path = parse_url($this->image_url, PHP_URL_PATH);
+
+        //如果不是小圖地址,就找小圖的url
+        if (!str_contains($image_path, '.small.')) {
+            $image = Image::firstOrNew([
+                'path' => $image_path,
+            ]);
+            if ($image) {
+                return $image->url_small();
+            }
+        }
+
+        //APP 需要返回全Uri
+        return url($image_path);
     }
 
     public function hasImage()
     {
-        $image_url_path = parse_url($this->image_url, PHP_URL_PATH);
-        $image          = Image::firstOrNew([
-            'path' => $image_url_path,
+        $image_url = parse_url($this->image_url, PHP_URL_PATH);
+        $image_url = str_replace('.small', '', $image_url);
+        $image     = Image::firstOrNew([
+            'path' => $image_url,
         ]);
-
-        if (str_contains($this->image_url, "haxibiao")) {
-            return 1;
-        }
         return $image->id;
     }
 
     public function fillForJs()
     {
-        $this->time_ago      = $this->timeAgo();
+        $this->user->fillForJs();
+        if ($this->category) {
+            $this->category->fillForJs();
+        }
         $this->has_image     = $this->hasImage();
         $this->primary_image = $this->primaryImage();
+        $this->image_url     = $this->primaryImage();
+        $this->description   = $this->description();
     }
 
-    public function isSelf()
+    public function fillForApp()
     {
-        return Auth::check() && Auth::id() == $this->user_id;
+        $data              = (object) [];
+        $data->id          = $this->id;
+        $data->title       = $this->title;
+        $data->time_ago    = $this->timeAgo();
+        $data->has_image   = $this->hasImage();
+        $data->pic         = $this->primaryImage();
+        $data->image_url   = $this->primaryImage();
+        $data->description = $this->description();
+
+        if ($this->user) {
+            $user              = $this->user;
+            $userForJs         = (object) [];
+            $userForJs->avatar = $user->avatar();
+            $userForJs->name   = $user->name;
+            $userForJs->id     = $user->id;
+            $userForJs->time   = $user->updatedAt();
+            $data->user        = $userForJs;
+        }
+
+        if ($this->category) {
+            $category            = $this->category;
+            $categoryForJs       = (object) [];
+            $categoryForJs->id   = $category->id;
+            $categoryForJs->name = $category->name;
+            $categoryForJs->logo = $category->smallLogo();
+            $data->category      = $categoryForJs;
+        }
+
+        //for app api
+        $meta       = [];
+        $meta[]     = '阅读' . $this->hits;
+        $meta[]     = '评论' . $this->count_replies;
+        $meta[]     = '喜欢' . $this->count_likes;
+        $meta[]     = '赞赏' . $this->count_tips;
+        $data->meta = $meta;
+        return $data;
     }
 
     public function link()
@@ -87,19 +220,92 @@ class Article extends Model
         return '<a href="/article/' . $this->id . '">' . $this->title . '</a>';
     }
 
-    public function image_top()
+    public function recordAction()
     {
-        $image_url_path = parse_url($this->image_url, PHP_URL_PATH);
-        $image_url_path = str_replace('.small', '', $image_url_path);
-        $image          = Image::firstOrNew([
-            'path' => $image_url_path,
-        ]);
-
-        return $image->path_top();
+        if ($this->status > 0) {
+            $action = Action::firstOrNew([
+                'user_id'         => Auth::id(),
+                'actionable_type' => 'articles',
+                'actionable_id'   => $this->id,
+            ]);
+            $action->save();
+        }
     }
 
-    public function author_comments()
+    public function parsedBody()
     {
-        return Comment::with('user')->where('commentable_type', 'articles_author')->get();
+        $this->body = parse_image($this->body);
+        $prep       = "/<img alt=\"(.*?)\" .*?>/is";
+        preg_match_all($prep, $this->body, $match);
+        // $content="";
+        foreach ($match[1] as $index => $base) {
+            // dd($base);
+            if ($index == 0) {
+                $this->body = str_replace($base, $this->title, $this->body);
+            }
+
+            // $this->body = str_replace($base, '', $this->body);
+        }
+        // $this->body=preg_replace($prep, '', $this->body);
+
+        // $this->body=str_replace("alt", $alt, $this->body);
+
+        $this->body = parse_video($this->body);
+        return $this->body;
+    }
+
+    public function saveRelatedImagesFromBody()
+    {
+        $imgs             = [];
+        $pattern_img_path = '/src=\"(\/storage\/img\/\d+\.(jpg|gif|png|jpeg))\"/';
+        if (preg_match_all($pattern_img_path, $this->body, $match)) {
+            $imgs = $match[1];
+        }
+        $image_ids           = [];
+        $has_primary_top     = false;
+        $last_img_small_path = '';
+        foreach ($imgs as $img) {
+            $path      = parse_url($img)['path'];
+            $extension = pathinfo($path, PATHINFO_EXTENSION);
+            $path      = str_replace('.small.' . $extension, '', $path);
+            if (str_contains($img, 'base64') || str_contains($path, 'storage/video')) {
+                continue;
+            }
+            $image = Image::firstOrNew([
+                'path' => $path,
+            ]);
+            if ($image->id) {
+                $image_ids[]  = $image->id;
+                $image->count = $image->count + 1;
+                $image->title = $this->title;
+                $image->save();
+                $last_img_small_path = $image->path_small();
+
+                //auto get is_top an image_top
+                if ($image->path_top) {
+                    // $this->is_top    = 1;
+                    if (!$has_primary_top) {
+                        if ($image->path == $this->image_url) {
+                            $has_primary_top = true;
+                        }
+                        $this->image_top = $image->path_top;
+                    }
+                }
+            }
+        }
+
+        //fix primary image url if not
+        if (empty($this->image_url)) {
+            $this->image_url = $last_img_small_path;
+        }
+
+        //沒有可以上首頁的圖片，上首頁失敗
+        if (!$has_primary_top) {
+            $this->is_top = 0;
+        }
+        $this->save();
+
+        //如果文章图片关系中得图片地址不在文中，清除掉！
+        $this->images()->sync($image_ids);
     }
 }

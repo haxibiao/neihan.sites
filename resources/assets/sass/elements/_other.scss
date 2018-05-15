@@ -1,0 +1,69 @@
+// 标题
+.title {
+  display: block;
+  color: $dark-color1;
+  font-weight: 700;
+}
+//距离样式：板块距离、文章列表距离、。。。列表距离
+.distance {
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid $light-color2;
+}
+//环绕距离
+.surround {
+  padding: 20px;
+}
+// 分割线
+.division-line,hr {
+  border: none;
+  border-bottom: 1px solid $light-color1;
+  margin: 20px 0;
+  @media screen and (max-width:768px) {
+    border: none;
+    margin: 5px -16px 15px;
+    height: 10px;
+    background-color: $light-color2;
+  }
+}
+// 通知徽章
+.badge {
+  position: absolute;
+  min-width: 20px;
+  height: 20px;
+  padding: 4px 6px;
+  font-size: 12px;
+  line-height: 1;
+  text-align: center;
+  border-radius: 10px;
+  color: #fff;
+  background-color: $theme-color;
+}
+// 展开更多
+.open-more {
+  display: inline-block;
+  padding-top: 10px;
+  font-size: 14px !important;
+  color: $gray-color2;
+  &:hover {
+    color: $dark-color1;
+  }
+}
+// 公告
+.notice,.descriptor {
+  font-size: 13px;
+  vertical-align: middle;
+  color: $gray-color2;
+}
+
+// 描述信息 
+.descriptor {
+  font-size: 12px;
+}
+
+//单行
+.single-line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,367 +1,165 @@
 <template>
-    <div>
-        <div class="comment_list">
-            <!-- 写评论框 -->
-            <div class="comment_box">
-                <form class="new_comment">
-                    <div v-if="isLogin">
-                        <a class="avatar avatar_xs">
-                            <img :src="currentUser.avatar"/>
-                        </a>
-                        <div class="textarea_box">
-                            <textarea @click="showSend" placeholder="写下你的评论..." v-model="newComment.body"></textarea>
-                        </div>
-                        <transition name="fade">
-                            <div v-if="showButton" class="write_block">
-                                <div class="emoji_wrap">
-                                    <a class="emoji" href="javascript:;">
-                                        <i class="iconfont icon-smile">
-                                        </i>
-                                    </a>
-                                </div>
-                                <div class="hint">
-                                    ⌘+Return 发表
-                                </div>
-                                <a @click="postComment" class="btn_base btn_follow btn_followed_sm pull-right">
-                                    发送
-                                </a>
-                                <a @click="hideSend" class="cancel pull-right">
-                                    取消
-                                </a>
-                            </div>
-                        </transition>
-                    </div>
-                    <div v-else>
-                      <a class="avatar avatar_xs" href="#">
-                          <img src="/images/photo_user.png"/>
-                      </a>
-                        <div class="textarea_box sign_container">
-                            <a class="btn_base btn_sign" href="/login">
-                                登录
-                            </a>
-                            <span>
-                                后发表评论
-                            </span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <!-- 全部评论 -->
-            <div class="normal_comment_list">
-                <div class="top_title">
-                    <span>
-                        {{ comments.length }}条评论
-                    </span>
-                    <a class="author_only" href="javascript:;">
-                        只看作者
-                    </a>
-                    <div class="pull-right">
-                        <a class="active" href="javascript:;">
-                            按喜欢排序
-                        </a>
-                        <a href="javascript:;">
-                            按时间正序
-                        </a>
-                        <a href="javascript:;">
-                            按时间倒序
-                        </a>
-                    </div>
-                </div>
-                <!-- 评论 -->
-                <div class="comment" v-for="comment in comments">
-                    <div>
-                        <div class="author">
-                            <a :href="'/user'+comment.user.id" class="avatar avatar_xs">
-                                <img :src="comment.user.avatar"/>
-                            </a>
-                            <div class="info_meta">
-                                <a :href="'/user/'+comment.user.id" class="nickname">
-                                    {{ comment.user.name }}
-                                </a>
-                                <div class="meta">
-                                    <span>
-                                        {{ get_lou(comment.lou) }} ·{{ comment.time }}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment_wrap">
-                            <p>
-                                {{ comment.body }}
-                            </p>
-                            <div class="tool_group">
-                                <a href="javascript:;" class="action_btn">
-                                    <i class="iconfont icon-fabulous like">
-                                    </i>
-                                    <span @click="likeComment(comment)" v-if="!comment.liked">
-                                        赞
-                                    </span>
-                                </a>
-                                <a href="javascript:;" class="action_btn" @click="replyingComment(comment)">
-                                    <i class="iconfont icon-xinxi">
-                                    </i>
-                                    <span>
-                                        回复
-                                    </span>
-                                </a>
-                                <a class="report action_btn" href="javascript:;">
-                                    <span>
-                                        举报
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-                        <!-- 子评论 -->
-                        <div class="sub_comment_list">
-                            <div class="comment_wrap" v-for="reply in comment.reply_comments">
-                                <p>
-                                    <a class="moleskine_author" :href="'/user/'+reply.user.id" target="_blank">
-                                        {{ reply.user.name }}
-                                    </a>
-                                    :
-                                    <span>
-                                        <!-- <a href="#" class="moleskine_author">
-                                    @哈尼
-                                </a> -->
-                                        {{ reply.body }}
-                                    </span>
-                                </p>
-                                <div class="tool_group">
-                                    <span class="comment_time">
-                                        {{ reply.created_at }}
-                                    </span>
-                                    <a href="javascript:;" class="action_btn" @click="replyingComment(comment,replyCommentUser=reply.user.name)">
-                                        <i class="iconfont icon-xinxi">
-                                        </i>
-                                        <span>
-                                            回复
-                                        </span>
-                                    </a>
-                                    <slot></slot>
-                                    <a class="report action_btn" href="#">
-                                        举报
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="comment_wrap more_comment">
-                                <a class="add_comment_btn" @click="toggle(comment)">
-                                    <i class="iconfont icon-xie">
-                                    </i>
-                                    <span>
-                                        添加新评论
-                                    </span>
-                                </a>
-                                <!-- <span class="line_warp">
-                                    <span>还有67条评论，</span>
-                                    <a href="#">
-                                        展开查看
-                                    </a>
-                                    <a href="#">
-                                        收起
-                                    </a>
-                                </span> -->
-                            </div>
-                            <reply-comment :is-show="comment.replying" :body="replyComment.body" @sendReply="sendReply" @toggle-replycomment="toggle(comment)"></reply-comment>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- 分页 -->
-            <ul class="pagination" v-if="lastPage >1">
-                <li @click="goPage(page)" v-for="page in lastPage">
-                    <a :class="page==currentPage ?'active':''">
-                        {{ page }}
-                    </a>
-                </li>
-                <li @click="nextPage">
-                    <a>
-                        <span>
-                            下一页
-                        </span>
-                    </a>
-                </li>
-            </ul>
+   <div class="comment-content">
+    <!-- {{-- 写评论 --}} -->
+    <new-comment @sendComment="postComment"></new-comment>
+    <!-- {{-- 默认评论 --}} -->
+    <div class="normal-comment">
+      <div>
+        <!-- {{-- 顶部信息 --}} -->
+        <div class="top">
+          <span>{{ comments.length }}条评论</span> 
+          <a :class="['btn-base','btn-light','btn-sm',isOnlyAuthor?'active':'']" @click="showOnlyAuthor">只看作者</a> 
+          <div class="pull-right">
+            <a :class="order=='like' ? 'active' : ''" @click="sortComments('like')">按喜欢排序</a>
+            <a :class="order=='timeAsc' ? 'active hidden-xs' : 'hidden-xs'" @click="sortComments('timeAsc')">按时间正序</a>
+            <a :class="order=='timeDesc' ? 'active hidden-xs' : 'hidden-xs'" @click="sortComments('timeDesc')">按时间倒序</a>
+          </div>
         </div>
+        <!-- {{-- 评论 --}} -->
+        <div class="comment-item" v-for="comment in comments" :key="comment.id">
+          <div>
+            <div class="user-info info-xs">
+              <a :href="'/user/'+comment.user.id" target="_blank" class="avatar"><img :src="comment.user.avatar"></a>
+              <div class="title">
+                <a :href="'/user/'+comment.user.id" target="_blank" class="nickname">{{ comment.user.name }}</a>
+              </div>
+              <div class="info">
+                <span>{{ lou(comment.lou) }} · {{ comment.time }}</span>
+              </div>
+            </div>
+            <div class="comment-dtl">
+              <p>{{ comment.body }}</p>
+              <div class="tool-group">
+                <a :class="['like',comment.liked?'active':'']" @click="like(comment)"><i :class="['iconfont',comment.liked?'icon-dianzan':'icon-fabulous']"></i> <span><b v-show="comment.likes">{{comment.likes+'人'}}</b>赞</span></a>
+                <a class="reply" @click="replyingComment(comment)"><i class="iconfont icon-xinxi"></i> <span>回复</span></a>
+                <a href="javascript:;" class="report" @click="report(comment)"><span>{{ comment.reported ? '已举报':'举报'}}</span></a>
+              </div>
+            </div>
+              <blockquote class="sub-comment-list" v-if="comment.replying || comment.reply_comments.length">
+                <div class="sub-comment" v-for="reply in comment.reply_comments" v-if="!reply.hide">
+                  <p>
+                    <a :href="'/user'+reply.user.id" target="_blank">{{ reply.user.name }}</a>：
+                    <span>
+                      <!-- <a href="javascript:;" class="maleskine-author" target="_blank">@babysha</a> 唯爱和美食不可辜负。 -->
+                      {{ reply.body }}
+                    </span>
+                  </p>
+                  <div class="sub-tool-group">
+                    <span>{{ reply.created_at }}</span>
+                    <a class="reply" @click="replyingSubComment(reply, comment)"><i class="iconfont icon-xinxi"></i> <span>回复</span></a>
+                    <a href="javascript:;" class="report" @click="report(reply)"><span>举报</span></a>
+                  </div>
+                </div>
+                <div class="more-comment" v-if="comment.reply_comments.length">
+                  <a class="add-comment-btn" @click="toggle(comment)">
+                    <i class="iconfont icon-xie"></i>
+                    <span>添加新评论</span>
+                  </a>
+                  <span class="line-warp" v-if="comment.reply_comments.length>3">
+                    <span v-if="!comment.expanded">还有{{ comment.reply_comments.length - 3 }}条评论，</span>
+                    <a v-if="!comment.expanded" @click="openReplyComment(comment)">展开查看</a>
+                    <a v-else @click="packupReplyComment(comment)">收起</a>
+                  </span>
+                </div>           
+                <reply-comment :is-show="comment.replying" @sendReply="sendReply" @toggle-replycomment="toggle(comment)"></reply-comment>
+              </blockquote>
+              <!-- <reply-comment v-if="comment.replying" :body="replyComment.body" @sendReply="sendReply"></reply-comment> -->
+          </div>
+        </div>
+      </div>
     </div>
+    <!-- {{-- 分页 --}} -->
+    <ul class="paging" v-if="lastPage > 1">
+      <li @click="prevPage" v-if="currentPage != 1"><a>上一页</a></li>
+      <li v-for="page in lastPage" @click="goPage(page)"><a :class="page==currentPage?'active':''">{{ page }}</a></li>
+      <li @click="nextPage" v-if="currentPage != lastPage"><a>下一页</a></li>
+    </ul>
+  </div>
 </template>
+
 <script>
-    export default {
+export default {
+  name: "Comments",
 
-  name: 'Comments',
+  props: ["id", "type", "authorId"],
 
-  props: ['id','type','isLogin'],
-
-  mounted(){
-      this.loadComments();
+  mounted() {
+    this.loadComments();
   },
 
-  computed:{
-    currentUser(){
-      return{
-            id:window.current_user_id,
-            name:window.current_user_name,
-            avatar:window.current_user_avatar,
-      };
+  computed: {
+    user() {
+      return window.user;
+    },
+    isLogin() {
+      return window.user !== undefined;
     }
   },
 
-  methods:{
-      showSend(){
-          this.showButton = true;
-      },
-      hideSend(){
-          this.showButton = false;
-      },
-
-      get_lou(lou){
-        if(lou==1){
-          return "沙发";
-        }
-        if(lou==2){
-          return "板凳";
-        }
-        return lou+'楼';
-      },
-
-      get_post_url(){
-        return window.tokenize('/api/comment');
-      },
-
-      get_get_url(){
-          var api_url='/api/comment/'+this.id+'/'+this.type;
-          if(this.currentPage >1 ){
-              api_url += '?page=' +this.currentPage;
-          }
-          return api_url;
-      },
-
-      get_action_url(id,action){
-          return window.tokenize('/api/comment'+ id +'/'+action);
-      },
-
-      likeComment(comment){
-         comment.liked=1;
-         window.axios.get(this.get_action_url(comment.id,'like')).then(function(response){
-           comment.likes=response.data.likes;
-         });
-      },
-
-      unlikeComment(comment){
-         comment.liked=0;
-         window.axios.get(this.get_action_url(comment.id,'like')).then(function(response){
-            comment.likes=response.data.likes;
-         });
-      },
-
-      reportComment(comment){
-        comment.reported=1;
-        window.axios.get(this.get_action_url(comment.id,'report')).then(function(response){
-           comment.reports=response.data.reports;
-        });
-      },
-
-      unreportComment(comment){
-        comment.reported=0;
-        window.axios.get(this.get_action_url(comment.id,'report')).then(function(response){
-          comment.reports=response.data.reports;
-        });
-      },
-
-      loadComments(){
-         var vm=this;
-         window.axios.get(this.get_get_url()).then(function(response){
-           vm.comments=response.data.data;
-           vm.lastPage=response.data.last_page;
-           vm.total=response.data.total;
-         });
-      },
-
-      loadMoreComments(){
-        if(this.lastPage >this.currentPage){
-          this.currentPage++;
-          this.loadComments();
-        }
-      },
-      
-      //乐观更新函数
-      postComment(){
-         if(!this.newComment.is_replay_comment){
-
-           this.newComment.lou=this.total+1;
-           var newComment=Object.assign({},this.newComment);
-           newComment.user=this.currentUser;
-           this.comments=this.comments.concat(newComment);
-         }
-
-      var vm=this;
-       window.axios.post(this.get_post_url(),this.newComment).then(function(response){
-        //更新楼中的comments
-        if(vm.newComment.is_replay_comment){
-          var commented=response.data;
-          vm.commented=commented;
-        }else{
-          vm.comments.pop();
-          vm.comments=vm.comments.concat(response.data);
-
-          //发布一次直接干掉
-          vm.newComment.body='';
-          vm.newComment.comment_id=null;
-          vm.newComment.comment=null;
-        }
-       });
-      },
-
-      replyComments(comment){
-        this.newComment.body='@'+comment.user.name+':';
-        this.newComment.comment_id=comment.id;
-        this.newComment.comment=coment;
-        this.newComment.is_replay_comment=true;
-        this.commented=comment;
-      },
-
-      nextPage(){
-          if(this.currentPage < this.lastPage){
-            this.currentPage++
-            this.loadComments();
-          }
-      },
-
-      goPage(page){
-        this.currentPage=page;
-        this.loadComments();
-      },
-
-      toggle(comment){
-      if(this.checkLogin()) {
-        this.replyComment.body = '';
-        comment.replying = !comment.replying;
-        if(comment.replying) {
-          this.commented = comment;
-          this.replyComment.comment_id = comment.id;
-          this.replyComment.user = this.user;
-        }
+  methods: {
+    sortComments(order) {
+      this.order = order;
+      switch (order) {
+        case "timeAsc":
+          this.comments.sort(function(a, b) {
+            return a.id - b.id;
+          });
+          break;
+        case "timeDesc":
+          this.comments.sort(function(a, b) {
+            return b.id - a.id;
+          });
+          break;
+        default:
+          this.comments.sort(function(a, b) {
+            return b.likes - a.likes;
+          });
+          break;
       }
     },
-
-    checkLogin() {      
-      if(!this.isLogin) {
-        window.location.href = '/login';
-        return false;
+    showOnlyAuthor() {
+      this.isOnlyAuthor = !this.isOnlyAuthor;
+      if (this.isOnlyAuthor) {
+        this.commentsAll = this.comments;
+        this.comments = this.comments.filter(item => item.user_id == this.authorId);
+      } else {
+        this.comments = this.commentsAll;
       }
-      return true;
+    },
+    lou: function(lou) {
+      if (lou == 1) return "沙发";
+      if (lou == 2) return "板凳";
+      return lou + "楼";
+    },
+    postApiUrl: function() {
+      return window.tokenize("/api/comment");
+    },
+    getApiUrl: function() {
+      var api = "/api/comment/" + this.id + "/" + this.type;
+      if (window.user) {
+        api = "/api/comment/" + this.id + "/" + this.type + "/with-token";
+      }
+      if (this.currentPage > 1) {
+        api += "?page=" + this.currentPage;
+      }
+      if (window.user) {
+        api = window.tokenize(api);
+      }
+      return api;
+    },
+    actionApiUrl: function(id, action) {
+      return window.tokenize("/api/comment/" + id + "/" + action);
     },
 
     //回复评论
     sendReply(body) {
-      // console.log(body);
       this.replyComment.body = body;
 
       //乐观更新
-      // console.log(this.replyComment);
       this.commented.reply_comments.push(this.replyComment);
 
-      var _this = this;      
-      window.axios.post(this.get_post_url(), this.replyComment).then(function(response) { 
+      var _this = this;
+      window.axios.post(this.postApiUrl(), this.replyComment).then(function(response) {
         //更新被回复的楼中comments...
 
         //这里服务器返回数据..
@@ -373,67 +171,280 @@
       });
     },
 
-    replyingComment(comment,replyCommentUser=false) {
-      if(this.checkLogin()) {
+    //写新评论
+    postComment(body) {
+      //乐观更新
+      this.newComment.lou = this.total + 1;
+      this.newComment.body = body;
+      this.newComment.user = this.user;
+      this.newComment.reply_comments = [];
+      this.newComment.replying = false;
+      this.comments = this.comments.concat(this.newComment);
+
+      var _this = this;
+      window.axios.post(this.postApiUrl(), this.newComment).then(function(response) {
+        //发布成功后，替换服务器返回数据
+        response.data.reply_comments = [];
+        response.data.replying = false;
+        _this.comments.pop();
+        _this.comments = _this.comments.concat(response.data);
+      });
+    },
+    replyingComment: function(comment) {
+      if (this.checkLogin()) {
+        this.replyComment.body = "";
         comment.replying = !comment.replying;
         this.commented = comment;
         this.replyComment.comment_id = comment.id;
-        if(replyCommentUser){
-           this.replyComment.body = '@' + replyCommentUser + ' ';
-        }
         this.replyComment.user = this.user;
       }
     },
+    replyingSubComment: function(reply, comment) {
+      if (this.checkLogin()) {
+        comment.replying = !comment.replying;
+        this.commented = comment;
+        this.replyComment.comment_id = comment.id;
+        this.replyComment.body = "@" + reply.user.name + " ";
+        this.replyComment.user = this.user;
+      }
+    },
+    openReplyComment(comment) {
+      comment.reply_comments.forEach(function(el, index) {
+        if (index >= 3) {
+          el.hide = false;
+        }
+      });
+      this.$set(comment, "expanded", true);
+    },
+    packupReplyComment(comment) {
+      comment.reply_comments.forEach(function(el, index) {
+        if (index >= 3) {
+          el.hide = true;
+        }
+      });
+      this.$set(comment, "expanded", false);
+    },
+    toggle(comment) {
+      if (this.checkLogin()) {
+        this.replyComment.body = "";
+        comment.replying = !comment.replying;
+        if (comment.replying) {
+          this.commented = comment;
+          this.replyComment.comment_id = comment.id;
+          this.replyComment.user = this.user;
+        }
+      }
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.loadComments();
+      }
+    },
+    nextPage: function() {
+      if (this.currentPage < this.lastPage) {
+        this.currentPage++;
+        this.loadComments();
+      }
+    },
+    goPage(page) {
+      this.currentPage = page;
+      this.loadComments();
+    },
 
+    checkLogin() {
+      if (!this.isLogin) {
+        window.location.href = "/login";
+        return false;
+      }
+      return true;
+    },
+
+    //actions ...
+    like: function(comment) {
+      if (this.checkLogin()) {
+        this.$set(comment, "liked", !comment.liked);
+        window.axios.get(this.actionApiUrl(comment.id, "like")).then(function(response) {
+          comment.likes = response.data.likes;
+        });
+      }
+    },
+    report: function(comment) {
+      if (this.checkLogin()) {
+        this.$set(comment, "reported", !comment.reported);
+        window.axios.get(this.actionApiUrl(comment.id, "report")).then(function(response) {
+          comment.reports = response.data.reports;
+        });
+      }
+    },
+    loadComments: function() {
+      var _this = this;
+      window.axios.get(this.getApiUrl()).then(function(response) {
+        _this.comments = response.data.data;
+        //折叠楼中评论3条之后的
+        _this.comments.forEach(function(el) {
+          if (el.reply_comments.length > 3) {
+            el.reply_comments.forEach(function(reply, index) {
+              if (index >= 3) {
+                reply.hide = true;
+              }
+            });
+          }
+        });
+        _this.lastPage = response.data.last_page;
+        _this.total = response.data.total;
+      });
+    }
   },
 
-  data () {
+  data() {
     return {
-        currentPage:1,
-        lastPage:null,
-        total:0,
-        comments:[],
-        commented:null,
-        newComment:{
-            user:this.currentUser,
-            is_new:true,
-            time:'刚刚',
-               body:null,
-               commentable_id: this.id,
-               commentable_type:this.type,
-               comment_id:null,
-            comment:null,
-            likes:0,
-            reports:0,
-            is_replay_comment:false,
+      currentPage: 1,
+      lastPage: null,
+      total: 0,
+      isOnlyAuthor: false,
+      commentsAll: [],
+      comments: [],
+      commented: null,
+      order: "timeAsc",
+      newComment: {
+        user: {},
+        is_reply: null,
+        time: "刚刚",
+        body: null,
+        commentable_id: this.id,
+        commentable_type: this.type,
+        likes: 0,
+        reports: 0
+      },
+      replyComment: {
+        user: {},
+        is_reply: 1,
+        time: "刚刚",
+        body: null,
+        comment_id: null, //回复的评论id
+        commentable_id: this.id,
+        commentable_type: this.type,
+        likes: 0,
+        reports: 0
+      },
+      isSignIn: true,
+      sendBox: false
+    };
+  }
+};
+</script>
 
-        },
-        replyComment: {
-              user: {},
-              is_reply: 1,
-              time: '刚刚',
-              body: null,
-              comment_id: null, //回复的评论id
-              commentable_id: this.id,
-              commentable_type: this.type,
-              likes: 0,
-              reports: 0
-        },
-        isSingIn:true,
-        sendBox:false,
-        showButton: false
+<style lang="scss" scoped>
+.comment-content {
+  padding-top: 20px;
+  .normal-comment {
+    margin-top: 30px;
+    .top {
+      padding-bottom: 20px;
+      font-size: 17px;
+      font-weight: 700;
+      border-bottom: 1px solid #f0f0f0;
+      .btn-base {
+        margin: -2px 0 0 10px;
+        &.active {
+          background-color: #ff9d23;
+          color: #fff !important;
+          border-color: #ff9d23 !important;
+        }
+      }
+      .pull-right {
+        a {
+          margin-left: 10px;
+          font-size: 12px;
+          font-weight: 400;
+          color: #969696;
+          display: inline-block;
+          cursor: pointer;
+          &.active {
+            color: #252525;
+          }
+          &:hover {
+            color: #252525;
+          }
+        }
+      }
+    }
+    @media screen and (max-width: 600px) {
+      .top {
+        font-size: 15px;
+        .btn-base {
+          padding: 3px 5px;
+        }
+        .pull-right {
+          a {
+            margin-left: 0;
+          }
+        }
+      }
+    }
+    // 评论列表项
+    .comment-item {
+      padding: 20px 0 30px;
+      border-bottom: 1px solid #f0f0f0;
+      .comment-dtl {
+        p {
+          font-size: 16px;
+          margin: 10px 0;
+          word-break: break-all;
+        }
+      }
+    }
+    // 回复楼层
+    .sub-comment-list {
+      margin-bottom: 0;
+      color: #969696;
+      border-left: 2px solid #c4c4c4;
+      .sub-comment {
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px dashed #f0f0f0;
+        color: #252525;
+        p {
+          margin: 0 0 5px;
+          font-size: 14px;
+          line-height: 1.5;
+          a {
+            color: #2b89ca;
+          }
+        }
+      }
+      .more-comment {
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px dashed #f0f0f0;
+        font-size: 14px;
+        color: #969696;
+        &:last-child {
+          margin: 0;
+          padding: 0;
+          border: none;
+        }
+        i {
+          margin-right: 5px;
+        }
+        .add-comment-btn {
+          cursor: pointer;
+          &:hover {
+            color: #252525;
+          }
+        }
+        .line-warp {
+          margin-left: 10px;
+          padding-left: 10px;
+          border-left: 1px solid #d9d9d9;
+          a {
+            color: #2b89ca;
+            cursor: pointer;
+          }
+        }
+      }
     }
   }
 }
-</script>
-<style lang="scss" scoped="">
-    .fade-enter-active {
-      transition: opacity .3s
-    }
-    .fade-leave-active {
-        transition: opacity .5s
-    }
-    .fade-enter, .fade-leave-to {
-      opacity: 0
-    }
 </style>

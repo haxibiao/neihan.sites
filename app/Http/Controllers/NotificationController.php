@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 class NotificationController extends Controller
 {
-    public function index()
-    {
-        return view('notifications.index');
+    function index() {
+    	return view('notications.index');
     }
 }

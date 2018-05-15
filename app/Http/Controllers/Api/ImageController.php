@@ -10,7 +10,14 @@ class ImageController extends Controller
 {
     public function index(Request $request)
     {
-        $images = Image::orderBy('id', 'desc')->paginate(12);
+        $qb = Image::orderBy('updated_at', 'desc');
+        if (request('q')) {
+            $qb = $qb->where('title', 'like', '%' . request('q') . '%');
+        }
+        $images = $qb->paginate(12);
+        foreach($images as $image) {
+            $image->path = $image->url_small();
+        }
         return $images;
     }
 
@@ -18,19 +25,5 @@ class ImageController extends Controller
     {
         $controller = new \App\Http\Controllers\ImageController();
         return $controller->store($request);
-    }
-
-    public function poster()
-    {
-        $images  =Image::orderBy('id','desc')->take(8)->get();
-        foreach($images as $image){
-            $image->path_top();
-        }
-        $images=$images->pluck('title','path');
-        foreach ($images as $path=>$title) {
-             $img=[$title,$path];
-             $imgs[]=$img;
-        }
-        return $imgs;
     }
 }

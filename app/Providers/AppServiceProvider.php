@@ -2,47 +2,75 @@
 
 namespace App\Providers;
 
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Blade;
+use Auth;
 
-class AppServiceProvider extends ServiceProvider {
-	/**
-	 * Bootstrap any application services.
-	 *
-	 * @return void
-	 */
-	public function boot() {
-		Schema::defaultStringLength(191);
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->app->alias('bugsnag.logger', \Illuminate\Contracts\Logging\Log::class);
+        $this->app->alias('bugsnag.logger', \Psr\Log\LoggerInterface::class);
 
-		View::composer(
-			'*', 'App\Http\ViewComposers\SiteComposer'
-		);
+        Schema::defaultStringLength(191);
 
-		$this->app->alias('bugsnag.logger', \Illuminate\Contracts\Logging\Log::class);
-		$this->app->alias('bugsnag.logger', \Psr\Log\LoggerInterface::class);
-	}
+        View::composer(
+            '*', 'App\Http\ViewComposers\SiteComposer'
+        );
 
-	/**
-	 * Register any application services.
-	 *
-	 * @return void
-	 */
-	public function register() {
-		Relation::morphMap([
-			'articles' => 'App\Article',
-			'videos' => 'App\Video',
-			'comments' => 'App\Comment',
-			'likes' => 'App\Like',
-			'favorites' => 'App\Favorite',
-			'categories' => 'App\Category',
-			'users'=>'App\User',
-			'follows'=>'App\Follow',
-			'answers'=>'App\Answer'
-		]);
-		foreach (glob(app_path() . '/Helpers/*.php') as $filename) {
-			require_once $filename;
-		}
-	}
+        Blade::directive('timeago', function ($expression) {
+            return "<?php echo diffForHumansCN($expression); ?>";
+        });
+
+        Blade::if('seoer', function () {
+            return Auth::check() && Auth::user()->checkSeoer();
+        });
+
+        Blade::if('editor', function () {
+            return Auth::check() && Auth::user()->checkEditor();
+        });
+
+        Blade::if('weixin', function () {
+            return request('weixin');
+        });
+    }
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        Relation::morphMap([
+            'users' => 'App\User',
+            'categories' => 'App\Category',
+            'collections' => 'App\Collection',
+            'articles' => 'App\Article',
+            'comments' => 'App\Comment',
+            'videos' => 'App\Video',
+            'likes' => 'App\Like',
+            'favorites' => 'App\Favorite',
+            'follows' => 'App\Follow',
+            'tips' => 'App\Tip',
+            'questions' => 'App\Question',
+            'answers' => 'App\Answer',
+        ]);
+
+        foreach (glob(app_path() . '/Helpers/*.php') as $filename) {
+            require_once $filename;
+        }
+        foreach (glob(app_path() . '/../tools/helpers/*.php') as $filename) {
+            require_once $filename;
+        }
+    }
 }

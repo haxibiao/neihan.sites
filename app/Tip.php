@@ -6,21 +6,27 @@ use App\Model;
 
 class Tip extends Model
 {
-
-    protected $fillable = [
+    public $fillable = [
         'user_id',
-        'amount',
-        'tipable_type',
         'tipable_id',
+        'tipable_type',
+        'amount',
+        'message',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(\App\User::class);
+    }
 
     public function tipable()
     {
         return $this->morphTo();
     }
 
-    public function user()
+    //actionable target
+    public function target()
     {
-        return $this->belongsTo(\App\User::class);
+        return $this->morphTo();
     }
 }

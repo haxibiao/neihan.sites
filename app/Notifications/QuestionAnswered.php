@@ -62,6 +62,7 @@ class QuestionAnswered extends Notification
         return [
             'type'    => 'other',
             'subtype' => 'question_answered',
+            'question_id' => $this->question->id,
             'message' => $this->user->link() . '回答了您的问题' . $this->question->link(),
         ];
     }

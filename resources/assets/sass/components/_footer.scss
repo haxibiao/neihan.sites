@@ -1,0 +1,20 @@
+#footer {
+	text-align: center;
+	margin: 20px 0;
+	color: $gray-color2;
+	font-size: 13px;
+	a {
+		display: inline-block;
+		color: $gray-color1;
+	}
+	img {
+		height: 30px;
+	}
+	.icp {
+		margin-top: 10px;
+		font-size: 12px;
+		a {
+			color: $gray-color2;
+		}
+	}
+}

@@ -1,0 +1,70 @@
+// 新评论输入框
+.new-comment {
+	.avatar {
+		width: 40px;
+    height: 40px;
+		margin-right: 8px;
+		float: left;
+		& + div {
+			overflow: hidden;
+		}
+	}
+	.sign-container {
+		text-align: center;
+		.btn-base {
+			width: 78px;
+			margin: 11px 10px 0 0;
+		}
+		span {
+			font-size: 14px;
+			vertical-align: -7px;
+		}
+	}
+}
+//输入组件底部工具
+.write-block {
+	height: 50px;
+	.emoji-wrap {
+		position: relative;
+		.emoji {
+			float: left;
+			margin-top: 14px;
+			i {
+				font-size: 20px;
+				color: $gray-color2;
+			}
+		}
+	}
+	.hint {
+		float: left;
+		margin: 20px 0 0 20px;
+		font-size: 13px;
+		color: $gray-color2;
+	}
+	.btn-handle {
+		width: 78px;
+		font-size: 16px;
+		float: right;
+		margin: 10px 0;
+	}
+	.cancel {
+		float: right;
+		margin: 16px 30px 0 0;
+		font-size: 16px;
+		color: $gray-color2;
+	}
+	.emoji i,.cancel {
+		cursor: pointer;
+		&:hover {
+			color: $dark-color2;
+		}
+	}
+	@media screen and (max-width:600px) {
+		.hint {
+			margin: 20px 0 0 5px;
+		}
+		.cancel {
+			margin: 16px 5px 0 0;
+		}
+	}
+}

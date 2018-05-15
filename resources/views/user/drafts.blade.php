@@ -6,13 +6,9 @@
 
 @section('content')
 <div class="container">
-      <ol class="breadcrumb">
-        <li><a href="/">{{ config('app.name') }}</a></li>
-        <li><a href="/user/{{ $user->id }}">{{ $user->name }}</a></li>
-      </ol>
     <div class="panel panel-default">
         <div class="panel-body">
-            <img alt="" class="img img-circle" src="{{ get_avatar($user) }}">
+            <img alt="" class="img img-circle" src="{{ $user->avatar() }}">
                 <h4>
                     {{ $user->name }}
                 </h4>

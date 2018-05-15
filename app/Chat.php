@@ -2,13 +2,12 @@
 
 namespace App;
 
-use App\User;
-use Auth;
 use App\Model;
+use Auth;
 
 class Chat extends Model
 {
-    protected $fillable = [
+    public $fillable = [
         'uids',
     ];
 
@@ -19,14 +18,15 @@ class Chat extends Model
 
     public function users()
     {
-        return $this->belongsToMany(\App\User::class);
+        return $this->belongsToMany(\App\User::class)->withPivot('unreads');
     }
 
-    //计算用方法将uid中的json转换,并算出with_id,最后query出wiht_id的信息并全部返回
+    //computed methods..
     public function withUser()
     {
-        $uids    = json_decode($this->uids);
-        $with_id = array_sum($uids) - Auth::id();
+        $uids        = json_decode($this->uids);
+        $current_uid = Auth::id() ? Auth::id() : (session('user') ? session('user')->id : 0);
+        $with_id     = array_sum($uids) - $current_uid;
         return User::find($with_id);
     }
 }

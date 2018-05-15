@@ -6,19 +6,27 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use App\User;
+use App\Article;
+use App\Tip;
 
 class ArticleTiped extends Notification
 {
     use Queueable;
+    protected $article;
+    protected $user;
+    protected $tip;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Article $article, User $user, Tip $tip)
     {
-        //
+        $this->article = $article;
+        $this->user = $user;
+        $this->tip = $tip;
     }
 
     /**
@@ -29,7 +37,7 @@ class ArticleTiped extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -55,7 +63,15 @@ class ArticleTiped extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'type' => 'tip',
+            'amount' => $this->tip->amount,
+            'tip_id' => $this->tip->id,
+            'message' => $this->tip->message,
+            'user_name' => $this->user->name,
+            'user_avatar' => $this->user->avatar,
+            'user_id' => $this->user->id,
+            'article_title' => $this->article->title,
+            'article_id' => $this->article->id,
         ];
     }
 }

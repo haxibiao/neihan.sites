@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('title')
-    搜索
+    搜索 
 @endsection
 
 @section('content')
-<div id="search" class="container">
+<div id="bookmarks" class="container">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
@@ -14,9 +14,11 @@
         </div>
         <div class="panel-body">
             <div class="main">
-                <div>
-                    <ul class="article_list">
-                         @include('parts.list.article_category', ['articles'=>$data['articles'] ,'search'=>true])
+                <div class="article_list">
+                    <ul class="note_list">
+                    @foreach($data['articles'] as $article)
+                        @include('parts.article_item', ['search'=>true])
+                    @endforeach
                     </ul>
                 </div>
             </div>

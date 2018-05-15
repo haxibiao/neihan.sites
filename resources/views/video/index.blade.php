@@ -12,7 +12,7 @@
       </ol>
     <div class="panel panel-default">
         <div class="panel-heading">
-            @if(Auth::check() && Auth::user()->is_editor)
+            @if(checkEditor())
             <div class="pull-right">
                 <a class="btn btn-primary" href="/video/create" role="button">
                     添加视频
@@ -27,15 +27,15 @@
             @foreach($videos as $video)
             <div class="media">
                 <a class="pull-left" href="/video/{{ $video->id }}">
-                    <img alt="{{ $video->title }}" class="img img-thumbnail img-responsive"
-                    	src="{{ get_img($video->cover) }}">
+                    <img alt="{{ $video->title }}" class="img img-thumbnail img-responsive" 
+                    	src="{{ $video->cover }}">
                     </img>
                 </a>
                 <div class="media-body">
-                    @if(Auth::check() && Auth::user()->is_editor)
+                    @if(checkEditor())
                     <div class="pull-right">
                       {!! Form::open(['method' => 'delete', 'route' => ['video.destroy', $video->id], 'class' => 'form-horizontal pull-left right10']) !!}
-                        {!! Form::submit('删除', ['class' => 'btn btn-danger']) !!}
+                        {!! Form::submit('删除', ['class' => 'btn btn-danger']) !!}                
                       {!! Form::close() !!}
                         <a class="btn btn-success" href="/video/{{ $video->id }}/edit" role="button">
                             编辑
@@ -48,15 +48,13 @@
                         </a>
                     </h4>
                     <p>
-                        @if(!empty($video->category))
                         分类: {{ $video->category->name }}
-                        @endif
                     </p>
                     <p>
                         上传用户:　<a href="/user/{{ $video->user->id }}">{{ $video->user->name }}</a>
                     </p>
                     <p>
-                        最后更新: {{ diffForHumansCN($video->updated_at) }}
+                        最后更新: {{ $video->updatedAt() }}
                     </p>
                 </div>
             </div>

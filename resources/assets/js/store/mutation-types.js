@@ -8,6 +8,7 @@ export const ADD_ARTICLE = 'ADD_ARTICLE'
 export const SAVED_ARTICLE = 'SAVED_ARTICLE'
 export const MOVED_ARTICLE = 'MOVED_ARTICLE'
 export const REMOVE_ARTICLE = 'REMOVE_ARTICLE'
+export const PUBLISH_STATUS = 'PUBLISH_STATUS' 
 
 //文集
 export const GOT_COLLECTIONS = 'GOT_COLLECTIONS'

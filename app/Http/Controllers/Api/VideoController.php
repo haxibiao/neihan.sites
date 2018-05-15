@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class VideoController extends Controller
 {
-    public function getIndex(Request $request)
+    public function index(Request $request)
     {
         $query = Video::with('category')->orderBy('id', 'desc');
         if ($request->get('category_id')) {
@@ -18,19 +18,17 @@ class VideoController extends Controller
         foreach ($videos as $video) {
             $video->cover          = get_full_url($video->cover);
             $video->path           = get_full_url($video->path);
-            $video->user->avatar   = get_avatar($video->user);
             $video->category->logo = get_full_url($video->category->logo);
             $video->pubtime        = diffForHumansCN($video->created_at);
         }
         return $videos;
     }
 
-    public function getShow($id)
+    public function show($id)
     {
         $video                 = Video::with('user')->with('category')->findOrFail($id);
         $video->path           = get_full_url($video->path);
         $video->cover          = get_full_url($video->cover);
-        $video->user->avatar   = get_avatar($video->user);
         $video->category->logo = get_full_url($video->category->logo);
         $video->pubtime        = diffForHumansCN($video->created_at);
         $controller            = new \App\Http\Controllers\VideoController();

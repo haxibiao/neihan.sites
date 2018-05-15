@@ -1,0 +1,42 @@
+#contribute-note-list {
+  .title {
+    padding: 20px 0 10px 20px;
+    font-size: 15px;
+    background-color: #f4f4f4;
+    border-bottom: 1px solid $light-color2;
+  }
+  li {
+    position: relative;
+    padding: 20px 100px 20px 25px;
+    font-size: 15px;
+    border-bottom: 1px solid $gray-color3;
+    .action-btn {
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      margin-top: -12px;
+    }
+    .status {
+      font-size: 13px;
+      color: $gray-color2;
+      &.has-add {
+        font-size: 12px;
+        color: $weixin-color;
+      }
+    }
+    .collection-info {
+      vertical-align: middle;
+      display: inline-block;
+      .collection-name {
+        font-weight: 700;
+        color: $dark-color1;
+        display: block;
+      }
+      .meta {
+        font-size: 12px;
+        color: $gray-color2;
+        display: inline-block;
+      }
+    }
+  }
+}

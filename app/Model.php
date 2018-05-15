@@ -3,10 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model as BaseModel;
-use App\Model;
 use App\Traits\TimeAgo;
+use App\Traits\UserRelated;
 
 class Model extends BaseModel
 {
-	use timeAgo;    
+	use timeAgo; 
+	use UserRelated;
 }

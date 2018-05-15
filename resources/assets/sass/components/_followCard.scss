@@ -1,0 +1,23 @@
+//关注卡：关注用户、专题、文集卡片样式
+.follow-card {
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: rgba(181, 181, 181, 0.1);
+  border: 1px solid $light-color1;
+  border-radius: 4px;
+  font-size: $font-size-detail;
+  color: $gray-color2;
+  .note-info {
+      .title {
+        .name {
+          font-size: 17px;
+        }
+      }
+    }
+    .signature {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid $gray-color3;
+      @include line-Number(1);
+    }
+}

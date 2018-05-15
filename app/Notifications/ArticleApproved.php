@@ -2,22 +2,19 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
-use App\article;
+use App\Article;
 use App\Category;
+use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class ArticleApproved extends Notification
 {
     use Queueable;
 
-
     protected $article;
     protected $category;
     protected $approve_status;
-
 
     /**
      * Create a new notification instance.
@@ -27,7 +24,7 @@ class ArticleApproved extends Notification
     public function __construct(Article $article, Category $category, $approve_status)
     {
         $this->article        = $article;
-        $this->category           = $category;
+        $this->category       = $category;
         $this->approve_status = $approve_status;
     }
 
@@ -51,9 +48,9 @@ class ArticleApproved extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
 
     /**
@@ -65,9 +62,11 @@ class ArticleApproved extends Notification
     public function toArray($notifiable)
     {
         return [
-            'type'    => 'other',
-            'subtype' => 'article_approve',
-            'message' => $this->category->link() . $this->approve_status . $this->article->link(),
+            'type'       => 'other',
+            'subtype'    => 'article_approve',
+            'article_id' => $this->article->id,
+            'category_id' => $this->category->id,
+            'message'    => $this->category->link() . $this->approve_status . $this->article->link(),
         ];
     }
 }

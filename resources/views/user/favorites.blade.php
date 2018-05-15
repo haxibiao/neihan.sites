@@ -1,25 +1,46 @@
 @extends('layouts.app')
 
-@section('title')
-    收藏的文章 - 爱你城
-@stop
 @section('content')
-<div id="bookmark">
-    <div class="container">
-        <div class="page_banner">
-            <div class="banner_img collect_note">
-                <div>
-                    <i class="iconfont icon-biaoqian"></i>
-                    <span>收藏的文章</span>
+        <div id="bookmarks">
+                <div class="main col-sm-8 col-sm-offset-2">
+                    <div class="page-banner">
+                        {{-- <img src="/images/collect-note.png" alt=""> --}}
+                        <div class="banner-img collect-note">
+                            <div>
+                                <i class="iconfont icon-biaoqian"></i>
+                                <span>收藏的文章</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel">
+                        <!-- Nav tabs -->
+                        <ul id="trigger-menu" class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#articles" aria-controls="articles" role="tab" data-toggle="tab">收藏的文章</a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#questions_tab" aria-controls="questions_tab" role="tab" data-toggle="tab">收藏的问题</a>
+                            </li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="articles">
+                                <ul class="article-list">
+                                    @foreach($data['articles'] as $fav)
+                                        @include('parts.article_item', ['article' => $fav->faved])
+                                    @endforeach
+                                </ul>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="questions_tab">
+                                <div>
+                                    @foreach($data['questions'] as $fav)
+                                        @include('question.parts.question_item', ['question' => $fav->faved])
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
         </div>
-      @foreach($data['fav_articles'] as $favorite)
-         @php
-         	$article=$favorite->faved;
-         @endphp
-        @include('parts.list.article_bookmark')
-      @endforeach
-    </div>
-</div>
 @stop

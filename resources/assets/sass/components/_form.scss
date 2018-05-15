@@ -1,0 +1,17 @@
+// 搜索框包装
+.search-wrapper {
+  position: relative;
+  margin: 0 auto;
+  .search-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 28px;
+    height: 28px;
+    font-size: 20px;
+    text-align: center;
+    line-height: 28px;
+    color: $gray-color1;
+    border-radius: 50%;
+  }
+}

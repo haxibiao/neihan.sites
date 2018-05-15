@@ -17,7 +17,7 @@ class CreateLikesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->index();
             $table->integer('liked_id')->index();
-            $table->string('liked_type')->index();
+            $table->string('liked_type')->default('articles')->index();
             $table->timestamps();
         });
     }

@@ -1,6 +1,6 @@
 <div class="form-group top30">
     <label>配图 (注意光标需要先保证在编辑器中，再来这里加入图片)</label>
-
+    
     <!-- The file upload form used as target for the file upload widget -->
     <form id="fileupload_image" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data">
         <!-- Redirect browsers with JavaScript disabled to the origin page -->
@@ -54,14 +54,11 @@
         window.article_image_uploaded = function(){
 
             $('.preview img').off('click');
-            $('.preview img').each(function() {
-                $(this).addClass('img-responsive');
-            });
             $('.preview img').click(function(e) {
-
+            
                 console.log('restoreRange editor range ...');
                 $('.editable').summernote('restoreRange');
-
+            
                 $(this).parent().parent().parent().parent().hide();
                 var is_video = $(this).parent().attr('title').indexOf('.mp4') !== -1;
                 var img_url = $(this).attr('src');
@@ -75,7 +72,9 @@
 
                 //插入图片到编辑器
                 $('.editable').summernote('insertImage', img_url,function ($image) {
-
+                    if(is_video){
+                        //$image.attr('data-video', video_id);
+                    }
                 });
 
                 //默认最后选的图做主配图

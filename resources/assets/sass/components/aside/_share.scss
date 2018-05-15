@@ -1,0 +1,38 @@
+//分享
+.share {
+	span {
+		font-size: $font-size-info;
+		vertical-align: middle;
+	}
+	&>a{
+		display: inline-block;
+		margin-left: 10px;
+		vertical-align: middle;
+		i {
+			font-size: 24px;
+			color: $dark-color2;
+			&.qqzone {
+				font-size: 21px;
+				margin-top: -2px;
+				display: inline-block;
+			}
+		}
+		&:hover {
+			.weixin {
+			  color: $weixin-color;
+			}
+			.weibo {
+			  color: $weibo-color;
+			}
+			.qq {
+			  color: $qq-color;
+			}
+			.more,.qqzone {
+			  color: $theme-color;
+			}
+			.other {
+			  color: $gray-color2;
+			}
+		}
+	}
+}

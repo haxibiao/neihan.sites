@@ -1,0 +1,17 @@
+// 个人、专题描述
+.description {
+	position: relative;
+  text-align: left;
+  font-size: $font-size-info;
+  line-height: 20px;
+  word-break: break-all;
+	.social {
+		margin-top: 10px;
+		display: inline-block;
+		img {
+			width: 20px;
+			height: 20px;
+			margin-right: 5px;
+		}
+	}
+}

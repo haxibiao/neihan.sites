@@ -1,219 +1,138 @@
 @extends('layouts.app')
 
-@section('title')
-    {{ $article->title }} - 爱你城
-@stop
+@section('title') {{ $article->title }} -{{ config('app.name') }}  @endsection
+@section('keywords') {{ $article->keywords }} @endsection
+@section('description') {{ $article->description() }} @endsection
 
-@section('description')
-    {{ $article->description() }}
-@stop
+@push('seo_metatags')
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://{{ get_domain() }}/article/{{ $article->id }}" />
+<meta property="og:title" content="{{ $article->title }}" />
+<meta property="og:description" content="{{ $article->description() }}" />
+
+<meta property="og:image" content="{{ $article->primaryImage() }}" />
+<meta name="weibo: article:create_at" content="{{ $article->created_at }}" />
+<meta name="weibo: article:update_at" content="{{ $article->updated_at }}" />
+@endpush
+
 @section('content')
 
-@if(!empty($article->category))
-     {!! link_source_css($article->category) !!}
-@endif
-
 <div id="detail">
-    <div class="note">
-        <div class="container">
-            <div class="col-xs-12 col-md-8 col-md-offset-2">
-                <div class="article">
-                    <h1 class="title">
-                        {{ $article->title }}
-                    </h1>
-                    <div class="author">
-                        <a class="avatar avatar_sm" href="/user/{{ $article->user->id }}">
-                            <img src="{{ $article->user->avatar }}"/>
-                        </a>
-                        <div class="info_meta">
-                            <a href="/user/{{ $article->user->id }}" class="nickname">
-                                {{ $article->user->name }}
-                            </a>
-                            <follow
-                                type="users"
-                                id="{{ $article->user->id }}"
-                                user-id="{{ Auth::check() ? Auth::user()->id : false }}"
-                                followed="{{ Auth::check() ? Auth::user()->isFollow('user', $article->user->id) : false }}"
-                                is_small="btn_follow_xs"
-                                is_small_followed="btn_followed_xs">
-                            </follow>
-                            @if(Auth::check() && Auth::user()->is_editor )
-                               <a href="/article/{{ $article->id }}/edit" target="_blank" class="btn_base btn_edit pull-right">编辑文章</a>
-                            @elseif(Auth::check() && Auth::id()==$article->user->id)
-                               <a href="/write#/notebooks/{{ $data['collection']->id }}/notes/{{ $article->id }}" target="_blank" class="btn_base btn_edit pull-right">编辑文章</a>
-                            @endif
-                            <div class="meta">
-                                <span data-toggle="tooltip" data-placement="bottom" title="最后编辑于 {{ diffForHumansCN($article->created_at) }}">
-                                    {{ diffForHumansCN($article->created_at) }}
-                                </span>
-                                <span>
-                                    字数 {{ $article->words }}
-                                </span>
-                                <span>
-                                    阅读 {{ $article->hits }}
-                                </span>
-                                <span>
-                                    评论 {{ $article->count_replies }}
-                                </span>
-                                <span>
-                                    喜欢 {{ $article->count_likes }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+    <section class="clearfix col-sm-offset-2 col-sm-8">
+        <article>
+          @editor
+          <div class="text-right">
+            @weixin
+              <a href="/article/{{ $article->id }}" class="btn btn-danger">退出微信含微信二维码模式</a>
+            @else
+              <a href="?weixin=1" class="btn btn-success">微信粘贴模式</a>
+            @endweixin
+          </div>
+          @endeditor
 
-                    @include('article.parts.article_body')
-                    <div class="article_foot">
-                        <a class="notebook" href="#">
-                            <i class="iconfont icon-wenji">
-                            </i>
-                            <span>
-                                日记本
-                            </span>
-                        </a>
-                        <div class="copyright">
-                            © 著作权归作者所有
-                        </div>
+          <h1>{{ $article->title }}</h1>
+          {{-- 作者 --}}
+          @include('article.parts.author')
+          {{-- 内容 --}}
+          <div class="show-content">
+            <p>@include('article.parts.body')</p>
+          </div>
+          {{-- 底部注释 --}}
+          @include('article.parts.foot')
+          {{-- 底部作者信息 --}}
+          @include('article.parts.follow_card')
+          
+          {{-- 支持作者  --}}
+          <div class="support-author">
+            <p>{{ $article->user->tip_words ? $article->user->tip_words : '如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！' }}</p>
 
-                    </div>
-                </div>
-                <div class="follow_detail">
-                    <div class="author">
-                        <a class="avatar avatar_sm" href="/user/{{ $article->user->id  }}" target="_blank">
-                            <img src="{{ $article->user->avatar }}"/>
-                        </a>
-                                  <follow
-                                    type="users"
-                                    id="{{ $article->user->id }}"
-                                    user-id="{{ Auth::check() ? Auth::user()->id : false }}"
-                                    followed="{{ Auth::check() ? Auth::user()->isFollow('user', $article->user->id) : false }}">
-                                  </follow>
-                        <div class="info_meta">
-                            <a class="nickname" href="/user/{{ $article->user->id }}" target="_blank">
-                                {{ str_limit($article->user->name) }}
-                            </a>
-                            <img src="/images/vip1.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者" class="badge_icon_sm" />
-                            <div class="meta">
-                                写了 {{ $article->user->count_words }} 字，被 {{ $article->user->count_follows }} 人关注，获得了 {{ $article->user->count_likes }} 个喜欢
-                            </div>
-                        </div>
-                    </div>
-                    <div class="signature">
-                        {{ $article->user->introduction }}
-                    </div>
+            @if(!$article->isSelf())
+              @if($article->user->enable_tips)
+                <a class="btn-base btn-theme" data-target=".modal-admire" data-toggle="modal">赞赏支持</a>
+                <modal-admire article-id="{{ $article->id }}"></modal-admire>
+              @endif
+            @endif
+            
+            {{-- 赞赏用户 --}}
+            @include('article.parts.supporters')
+          </div>
 
-                </div>
-                <div class="support_author">
-                  @if($article->user->is_tips)
-                    <p>
-                        如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！
-                    </p>
-                     <div class="btn_base btn_pay" data-target="#support_modal" data-toggle="modal">
-                        赞赏支持
-                    </div>
-                    <div>
-                        <ul class="collection_follower">
-                         @foreach($data['tips'] as $tip)
-                            <li>
-                                <a class="avatar" href="/user/{{ $tip->user->id }}">
-                                    <img src="{{ $tip->user->checkAvatar() }}"/>
-                                </a>
-                            </li>
-                         @endforeach
-                        </ul>
-                        <span class="rewad_user">
-                            等{{ $data['tips']->count() }}人
-                        </span>
-                        <support-modal user-id={{ $article->user->id }} article-id={{ $article->id }}></support-modal>
-                    </div>
-                  @endif
-                </div>
-                <div class="meta_bottom">
-                    <like id="{{ $article->id }}" type="article" is-login="{{ Auth::check() }}" article-likes="{{ $article->count_likes }}"></like>
-                    <div class="share_group">
-                        <a class="share_circle" href="#" data-placement="top" data-container="body" data-toggle="tooltip" data-trigger="hover" data-original-title="分享到微信">
-                            <i class="iconfont icon-weixin1">
-                            </i>
-                        </a>
-                        <a class="share_circle" href="#" data-placement="top" data-container="body" data-toggle="tooltip" data-trigger="hover" data-original-title="分享到微博">
-                            <i class="iconfont icon-sina">
-                            </i>
-                        </a>
-                        <a class="share_circle" href="#" data-placement="top" data-container="body" data-toggle="tooltip" data-trigger="hover" data-original-title="下载长微博图片">
-                            <i class="iconfont icon-zhaopian">
-                            </i>
-                        </a>
-                    </div>
-                </div>
-                <div class="all_comments">
-                     <comments type="articles" id="{{ $article->id }}" is-login="{{ Auth::check() }}">
-                     </comments>
+          {{-- 喜欢和分享 --}}
+          <div class="mate-bottom">
 
-         @foreach($article->author_comments() as $comment)
-          @if($comment->user->id==$article->user->id && $comment->commentable_type =='articles_author')
-                     <div class="connection">
-                        <div class="comment">
-                            <div class="author">
-                                <a  id="author{{ $comment->id }}" class="avatar avatar_xs" href="/user/{{ $comment->user->id }}">
-                                    <img src="{{ $comment->user->avatar }}"/>
-                                </a>
-                                <div class="info_meta">
-                                    <a class="nickname" href="#">
-                                        {{ $comment->user->name }}
-                                    </a>
-                                    <div class="meta">
-                                        <span>
-                                            {{ $comment->created_at }}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="article_content fold">
-                                <div class="answer_text_full">
-                                    {!! $comment->body !!}
-                                </div>
-                                <a href="javascript:;" class="expand_bottom">展开全部</a>
-                            </div>
-                            <comment-tool id="{{ $comment->id }}" is-login="{{ Auth::check() }}"></comment-tool>
-                        </div>
-                     </div>
-          @endif
-         @endforeach
-
-                </div>
+            <like 
+              id="{{ $article->id }}" 
+              type="article" 
+              is-login="{{ Auth::check() }}"></like>
+            
+            <div class="share-circle">
+              <a href="javascript:;" data-toggle="tooltip" data-placement="top" title="分享到微信"><i class="iconfont icon-weixin1 weixin"></i></a>
+              <a href="javascript:;" data-toggle="tooltip" data-placement="top" title="分享到微博"><i class="iconfont icon-sina weibo"></i></a>
+              <a href="javascript:;" data-toggle="tooltip" data-placement="top" title="下载微博长图片"><i class="iconfont icon-zhaopian other"></i></a>
             </div>
-        </div>
-    </div>
-    @include('article.parts._show_category')
-
+          </div>
+          {{-- 评论中心 --}}
+          <comments type="articles" id="{{ $article->id }}" author-id="{{ $article->user_id }}"></comments>
+        </article>
+    </section>
 </div>
-@stop
 
-@if(Auth::check())
-@push('article_tool')
-    <article-tools user-id={{ Auth::id() }} article-user-id={{ $article->user->id }} article-id="{{ $article->id }}"></article-tools>
+@endsection
+
+@push('section')
+  {{-- 底部内容 --}}
+  <div class="note-bottom">
+    <div class="container">
+      <div class="wrapper clearfix">
+        <div class="col-sm-offset-2 col-sm-8">
+          <div class="bottom-title"><span>被以下专题收入，发现更多相似内容</span></div>
+
+           <div class="recommend-category">
+            <a data-target=".modal-category-contribute" data-toggle="modal" class="category-label">
+              <span class="name">＋ 收入我的专题</span>
+            </a>
+            @foreach($article->categories as $category)
+            <a href="/{{ $category->name_en }}" class="category-label">
+              <img src="{{ $category->smallLogo() }}" alt="">
+              <span class="name">{{ $category->name }}</span>
+            </a>
+            @endforeach
+          </div>
+
+          <div class="bottom-title">
+            <span>推荐阅读</span>
+            <a target="_blank" href="javascript:;" class="right">
+             更多精彩内容<i class="iconfont icon-youbian"></i>
+           </a>
+          </div>
+
+          <ul class="article-list">
+            {{-- 文章 --}}
+            @each('parts.article_item', $data['recommended'], 'article')
+          </ul>   
+
+        </div>
+      </div>
+    </div>
+  </div>
 @endpush
+
 @push('side_tools')
-    <article-tool id="{{ $article->id }}"></article-tool>
+  <article-tool 
+    id="{{ $article->id }}" 
+    is-self="{{ $article->isSelf() }}" 
+    is-login="{{ Auth::check() }}">
+    <share 
+      placement='left' 
+      url="{{ url('/article/'.$article->id) }}" 
+      author="{{ $article->user->name }}" 
+      title="{{ $article->title }}"></share>
+  </article-tool>
 @endpush
-@endif
 
 @push('modals')
-   <detailmodal-user article-id="{{ $article->id }}"></detailmodal-user>
-   <detailmodal-home article-id="{{ $article->id }}"></detailmodal-home>
-@endpush
-
-@push('scripts')
-    <script>
-        $(function(){
-            $('.comment').each(function(index, el) {
-                if($(el).height()<300) {
-                    $(el).find('.article_content').removeClass('fold');
-                };
-            });
-            $('.comment .expand_bottom').on('click',function(){
-                $(this).parent('.article_content').removeClass('fold');
-            })
-        })
-    </script>
+  @if(Auth::check())
+  <modal-add-category article-id="{{ $article->id }}"></modal-add-category>
+  <modal-category-contribute article-id="{{ $article->id }}"></modal-category-contribute>
+  @endif
 @endpush

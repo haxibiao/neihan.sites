@@ -2,13 +2,13 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Model;
 
 class QuestionInvite extends Model
 {
-    protected $fillable = [
-        'user_id',
-        'question_id',
-        'invite_user_id',
+    public $fillable = [
+    	'user_id',
+    	'question_id',
+    	'invite_user_id',
     ];
 }

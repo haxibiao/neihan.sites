@@ -1,0 +1,30 @@
+// 图标+文字
+.icon-text-list {
+	li {
+		margin-bottom: 6px;
+		font-size: $font-size-info;
+		a {
+			display: inline-block;
+			color: $dark-color2;
+			img {
+				margin: -3px 5px 0 0;
+				vertical-align: middle;
+				width: 20px;
+				height: 20px;
+			}
+			i {
+				color: $gray-color2;
+			}
+		}
+	}
+	&.icon-fix {
+		i {
+			font-size: 18px;
+			font-weight: 500;
+			color: $dark-color2;
+			vertical-align: middle;
+			margin: -3px 0 0 0;
+			display: inline-block;
+		}
+	}
+}

@@ -13,7 +13,6 @@ class CreateSnippetsTable extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('snippets');
         Schema::create('snippets', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->index();

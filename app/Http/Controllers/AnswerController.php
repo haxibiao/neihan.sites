@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Answer;
-use App\Notifications\QuestionAnswered;
 use App\Image;
-use App\Http\Requests\AnswerRequest;
+use App\Notifications\QuestionAnswered;
+use Illuminate\Http\Request;
 
 class AnswerController extends Controller
 {
@@ -36,39 +35,45 @@ class AnswerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AnswerRequest $request)
+    public function store(Request $request)
     {
         $user   = $request->user();
         $answer = new Answer($request->all());
-        //从文章地址(https://l.dongmeiwei.com/article/1139)提取文章id （1139）
+
+        if(empty($answer->answer)) {
+            if(checkEditor()){
+                $answer->answer = '<p></p>'; //允许编辑用户填写文章后，答案不写
+            } else {
+                dd('回答不能是空白的!');
+            }
+        }
+
+        //从文章地址(https://dongmeiwei.com/article/1139)提取文章id （1139）
         if (starts_with($answer->article_id, 'http')) {
             $answer->article_id = parse_url($answer->article_id, PHP_URL_PATH);
             $answer->article_id = str_replace('/article/', '', $answer->article_id);
         }
         $answer->save();
 
-        //get this answer request category
-        $question =$answer->question;
-        if($answer->article){
-            $categories =$answer->article->categories;
-            $category_ids =$categories->pluck('id');
-            $answer->answer =$request->answer.$answer->article->body;
+        $question = $answer->question;
+        //根据回答的文章的分类关系，定义问题的分类关系
+        if ($answer->article) {
+            $categories   = $answer->article->categories;
+            $category_ids = $categories->pluck('id');
             $question->categories()->syncWithoutDetaching($category_ids);
-            foreach($categories as $category){
-                $category->count_questions= $category->questions->count();
+            foreach ($categories as $category) {
+                $category->count_questions = $category->questions->count();
                 $category->save();
             }
         }
 
-        //find answer content image
-
-        $imgs=extractImagePaths($answer->answer);
-
-        if(!empty($imgs)){
-            $answer->image_url=$imgs[0];
-            $image =Image::where('path',$answer->image_url)->first();
-            if($image){
-                $answer->image_url= $image->path_small();
+        //find images
+        $imgs = extractImagePaths($answer->answer);
+        if (!empty($imgs)) {
+            $answer->image_url = $imgs[0];
+            $image = Image::where('path', $answer->image_url)->first();
+            if($image) {
+                $answer->image_url = $image->path_small();
             }
         }
 
@@ -78,18 +83,22 @@ class AnswerController extends Controller
         }
         $answer->save();
 
-        //question user notify
+        //消息提醒
         $question->user->notify(new QuestionAnswered($user->id, $question->id));
-        
-        //save question relations;
-        $this->save_question_relation($answer);
+        //刷新消息数字
+        $question->user->forgetUnreads();
 
+        //update question counts
+        $question                = $answer->question;
+        $question->count_answers = $question->answers()->count();
+
+        //latest answer
         if (!$question->latest_answer_id) {
             $question->latest_answer_id = $question->answers()->first()->id;
         }
         $question->save();
 
-        return redirect()->to('/question/'.$request->question_id);
+        return redirect()->to('/question/' . $answer->question_id);
     }
 
     /**
@@ -135,13 +144,5 @@ class AnswerController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function save_question_relation($answer)
-    {
-        $question=$answer->question;
-        $question->count_answers++;
-        $question->latest_answer_id =$answer->id;
-        $question->save();
     }
 }

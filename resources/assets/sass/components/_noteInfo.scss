@@ -1,0 +1,225 @@
+// 注解信息（两行媒体组件）：首页推荐作者、作者信息、专题/文集信息、聊天列表。。。
+.note-info,.user-info {
+  font-size: $font-size-info;
+  .avatar,.avatar-category {
+    float: left;
+  }
+  .btn-base {
+    margin: 4px 0 0 10px;
+  }
+  .title,.info {
+    padding: 3px 0 0 58px;
+  }
+  .title {
+    a {
+      color: $link-color;
+    }
+    .name,.nickname {
+      vertical-align: middle;
+      color: $dark-color1;
+      font-size: $font-size-tip;
+    }
+    .man {
+      color: $link-color;
+    }
+    .woman {
+      color: $hot-pink;
+      font-size: 18px;
+    }
+    .badge-icon {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  .info {
+    color: $gray-color2;
+    font-size: $font-size-detail;
+    &>p {
+      @include line-Number(1);
+      a {
+        color: $linkColor;
+      }
+      span {
+        i {
+          font-size: $font-size-info;
+          margin-right: 2px;
+        }
+        margin-right: 5px;
+      }
+    }
+    .info-list {
+      li {
+        display: inline-block;
+        padding-right: 5px;
+        margin: 0 5px 5px 0;
+        border-right: 1px solid $light-color2;
+        a {
+          display: inline-block;
+          font-size: $font-size-detail;
+          color: $gray-color2;
+          p {
+            font-size: $font-size-tip;
+            line-height: 18px;
+            color: $dark-color1;
+          }
+          i {
+            font-size: 8px;
+          }
+        }
+      }
+    } 
+  }
+  &.info-xs {
+    .avatar,.avatar-category {
+      width: 40px;
+      height: 40px;
+      margin-right: 8px;
+    }
+    .title,.info {
+      padding: 0 0 0 48px;
+    }
+    .btn-base {
+      margin: 0 0 0 10px;
+    }
+  }
+  &.info-md {
+    .avatar,.avatar-category {
+      width: 52px;
+      height: 52px;
+    }
+    .title,.info {
+      padding: 5px 0 0 62px;
+    }
+    .btn-base {
+      margin: 7px 0 0 10px;
+    }
+  }
+  &.info-lg {
+    margin: 0 0 35px 0;
+    .btn-base {
+      min-width: 90px;
+      margin: 21px 0 20px 15px;
+      float: right;
+    }
+    .btn-md {
+      min-width: 70px;
+    }
+    .avatar,.avatar-category {
+      width: 80px;
+      height: 80px;
+    }
+    .title,.info {
+      padding: 10px 0 0 0;
+    }
+    .title {
+      font-size: $font-size-slogan;
+      .name,.nickname {
+        font-size: $font-size-slogan;
+      }
+    }
+    .info {
+      font-size: $font-size-info;
+    }
+    @media screen and (max-width:1000px) {
+      .btn-base {
+        margin: 20px 0 0 10px;
+      }
+    }
+    @media screen and (max-width:768px) {
+      position: relative;
+      padding-bottom: 35px;
+      .btn-wrap {
+        position: absolute;
+        left: 90px;
+        top: 80px;
+        .btn-base {
+          float: unset;
+          margin: 7px 5px 0 0;
+        }
+      }
+      .title,.info {
+        padding: 5px 0 0 0;
+      }
+    }
+  }
+}
+.user-info {
+  .title {
+    font-weight: normal;
+    .name {
+      font-weight: 700;
+    }
+  }
+}
+.note-list,.user-list {
+  .note-info,.user-info {
+    @include item-distance(0 0 20px 0);
+  }
+}
+//关注用户列表
+.follow-user-list {
+  .user-info {
+    .avatar {
+      margin-top: 5px;
+    }
+    .title,.info {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    .info {
+      .meta {
+        padding-top: 2px;
+        font-size: 12px;
+        color: $gray-color2;
+        span {
+          margin-right: 10px;
+          padding-right: 10px;
+          border-right: 1px solid $gray-color2;
+        }
+      }
+    }
+    .btn-base {
+      margin: 12.5px 0 12.5px 25px;
+    }
+    @media screen and (max-width:768px) {
+      .btn-base {
+        margin: 7px 5px 0 0;
+      }
+    }
+  }
+}
+// 首页推荐关注
+.recommend-follower {
+  ul {
+    margin-bottom: 25px;
+    li {
+      margin-top: 15px;
+      .follow {
+          float: right;
+          margin-top: 5px;
+          color: $weixin-color;
+          i {
+              margin-right: 2px;
+              font-weight: 700;
+              font-size: 15px;
+          }
+      }
+      .toggle-followed {
+        float: right;
+        margin: 5px 0 0 0;
+        text-align: right;
+      }
+    }
+  }
+  .btn-base {
+    width: 100%;
+    padding: 10px 0;
+    border-radius: 4px;
+    font-size: 13px;
+    i {
+      font-size: 13px;
+      padding-left: 2px;
+    }
+  }
+}
+

@@ -16,7 +16,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => ['loginAs']]);
     }
 
     /**
@@ -121,12 +121,9 @@ class HomeController extends Controller
 
     public function loginAs($id)
     {
-        if (!Auth::user()->is_admin) {
-            return '需要管理权限';
-        }
         $user = User::findOrFail($id);
         Auth::login($user);
-        return redirect()->to('/home');
+        return redirect()->to('/user/' . $id);
     }
 
     public function hxbLoginAs(Request $request, $name)

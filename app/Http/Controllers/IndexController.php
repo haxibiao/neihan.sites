@@ -6,110 +6,71 @@ use App\Article;
 use App\Category;
 use App\User;
 use Auth;
-use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use RuntimeException;
 
 class IndexController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $data                = (object) [];
         $has_follow_articles = false;
-        //TODO:以后优化取数组算法
+        //get user related categories ..
         if (Auth::check()) {
             $user = Auth::user();
-            //获取用户follow过的category
-            // $follows = $user->followingCategories()
-            //     ->orderBy('id', 'desc')
-            //     ->take(7)
-            //     ->get();
-            // $categories    = [];
-            // $categorie_ids = [];
-            // foreach ($follows as $follow) {
-            //     $category        = $follow->followed;
-            //     $categories[]    = $category;
-            //     $categorie_ids[] = $category->id;
-            // }
-            //依靠获取到的categories来获取article
+            //get top n user followed categories
+            if ($user->followingCategories()->count() > 6) {
+                $follows = $user->followingCategories()
+                    ->orderBy('id', 'desc')
+                    ->take(7)
+                    ->get();
+                $categories    = [];
+                $categorie_ids = [];
+                foreach ($follows as $follow) {
+                    $category        = $follow->followed;
+                    $categories[]    = $category;
+                    $categorie_ids[] = $category->id;
+                }
+                // get user followed categories related articles ...
+                $articles = Article::with('user')->with('category')
+                    ->where('status', '>', 0)
+                    ->where('source_url','=','0')
+                    ->whereIn('category_id', $categorie_ids)
+                    ->orderBy('updated_at', 'desc')
+                    ->paginate(10);
 
-            // $articles = Article::with('user')->with('category')
-            //     ->whereIn('category_id', $categorie_ids)
-            //     ->where('status', '>', 0)
-            //     ->orderBy('created_at', 'desc')
-            //     ->paginate(10);
-            // if (!$articles->isEmpty()) {
-            //     $has_follow_articles = true;
-            // }p
-
+                if (!$articles->isEmpty()) {
+                    $has_follow_articles = true;
+                }
+            }
         }
 
-        $articles_top = Cache::get('commend_index_article');
+        if (!$has_follow_articles) {
+            $categories = Category::orderBy('updated_at', 'desc')
+                ->where('count', '>=', 0)
+                ->where('status','>=',0)
+                ->orderBy('updated_at', 'desc')
+                ->take(7)
+                ->get();
 
-        // dd($articles_top);
-        if (!empty($articles_top)) {
-            $articles_tops       = Article::whereIn('id', $articles_top)->get();
-            $data->articles_tops = $articles_tops;
-
-            $articles = Article::with('user')->with('category')
-            ->where('source_url','0')
-            ->whereNotIn('id',$articles_top)
-            ->orderBy('updated_at', 'desc')
-            ->where('status', '>', 0)
-            ->paginate(10);
-        }else{
-            $articles = Article::with('user')->with('category')
-            ->where('source_url','0')
-            ->orderBy('updated_at', 'desc')
-            ->where('status', '>', 0)
-            ->paginate(10);
-        }
-
-        $categories = Category::where('type', 'article')
-            ->whereIn('name', [
-                '游戏',
-                '昵称',
-                '头像',
-                '句子',
-                '表情包',
-                '情感笔记',
-                '情侣日常',
-                '爱你城官方小课堂'])
-            ->get();
-
-        $categories=$categories->sortBy(function($category,$key){
-            return strlen($category->name);
-        });
-
-        if (empty($articles)) {
             $articles = Article::with('user')->with('category')
                 ->where('status', '>', 0)
-                ->orderBy('created_at', 'desc')
+                ->where('source_url','=','0')
+                ->whereIn('category_id', $categories->pluck('id'))
+                ->orderBy('id', 'desc')
                 ->paginate(10);
         }
 
-        //为VUEajax加载准备数据
-        if ($request->ajax() || request('debug')) {
-
+        //load more articles ...
+        if (request()->ajax() || request('debug')) {
             foreach ($articles as $article) {
-                $article->time_ago      = $article->updatedAt();
-                $article->has_image     = !empty($article->image_url);
-                $article->primary_image = $article->primaryImage();
-                $article->small_img     = get_small_image($article->image_url);
-                $article->user->avatar  = $article->user->avatar();
-                $article->description   = $article->description();
+                $article->fillForJs();
             }
             return $articles;
         }
 
+        $data             = (object) [];
         $data->categories = $categories;
         $data->articles   = $articles;
-        $data->carousel   = Article::where('is_top', 1)->orderBy('id', 'desc')->take(8)->get();
-        // foreach ($data->carousel as $article_img) {
-        //     $article_img->image_top = $article_img->image_top();
-        //     $article_imgs[]=$article_img->image_top;
-        // }
+        $data->carousel   = Article::where('is_top', 1)->where('image_top', '<>', '')->orderBy('id', 'desc')->take(8)->get();
+
         return view('index.index')
             ->withData($data);
     }
@@ -124,47 +85,24 @@ class IndexController extends Controller
         return view('index.about_us');
     }
 
-    public function weekly()
+    public function trending()
     {
-        $now      = now()->toDateTimeString();
-        $week     = now()->subHours(24 * 7)->toDateTimeString();
-        $articles = Article::with('user')
-            ->whereBetween('created_at', [$week, $now])
-            ->where('status', '>', 0)
-            ->orderBy('hits', 'desc')
-            ->paginate(10);
-        return view('index.trending_weekly')
-            ->withArticles($articles)
-        ;
-    }
-
-    public function monthly(Request $request)
-    {
-        $articles = Article::with('user')
-            ->where('status', '>', 0)
-            ->orderBy('hits', 'desc')
-            ->paginate(10);
-        if ($request->ajax()) {
-            return $articles;
+        if (request('type') == 'thirty') {
+            $articles = Article::orderBy('hits', 'desc')
+                ->where('status', '>', 0)
+                ->where('created_at', '>', \Carbon\Carbon::now()->addDays(-30))
+                ->paginate(10);
+        } else if (request('type') == 'seven') {
+            $articles = Article::orderBy('hits', 'desc')
+                ->where('status', '>', 0)
+                ->where('created_at', '>', \Carbon\Carbon::now()->addDays(-7))
+                ->paginate(10);
+        } else {
+            $articles = Article::orderBy('id', 'desc')
+                ->where('status', '>', 0)
+                ->paginate(10);
         }
 
-        return view('index.trending_monthly')
-            ->withArticles($articles)
-        ;
-    }
-
-    public function recommendations_notes()
-    {
-        $articles = Article::where('status', '>', 0)
-            ->orderBy('created_at', 'desc')
-            ->with('user')->paginate(10);
-        return view('index.new_list')
-            ->withArticles($articles)
-        ;
-    }
-
-    public function demo()
-    {
-        Bugsnag::notifyException(new RuntimeException("Test error"));
+        return view('index.trending')->withArticles($articles);
     }
 }

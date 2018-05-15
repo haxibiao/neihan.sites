@@ -1,138 +1,116 @@
 <template>
-	<div v-else>
-   <ul class="article_list">
-    <li v-for="article in articles" :class="article.primary_image ? 'article_item have_img' : 'article_item'">
-        <a v-if="article.primary_image" class="wrap_img" href="javascript:;" target="_blank">
-            <img :src="article.primary_image" :alt="article.title">
-        </a>
-        <div class="content">
-            <div class="author">
-                <a class="avatar" :href=" '/user/' + article.user.id" target="_blank">
-                    <img :src="article.user.avatar"/>
-                </a>
-                <div class="info_meta">
-                    <a :href="'/user/' + article.user.id" target="_blank" class="nickname">
-                        {{ article.user.name }}
-                    </a>
-                    <a :href="'/user/' + article.user.id" target="_blank">
-                        <img src="/images/vip1.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者" class="badge_icon_xs"/>
-                    </a>
-                    <span class="time">
-                        {{ article.time_ago }}
-                    </span>
-                </div>
-            </div>
-            <a class="headline paper_title" :href="'/article/' + article.id" target="_blank">
-                <span>{{ article.title }}</span>
-            </a>
-            <p class="abstract">
-                {{ article.description }}
-            </p>
-            <div class="meta">
-                <a v-if="!showCategory && article.category" class="category_tag" :href=" '/' + article.category.name_en" target="_blank">
-                    {{ article.category.name }}
-                </a>
-                <a href="#" target="_blank" class="count count_link">
-                    <i class="iconfont icon-liulan">
-                    </i>
-                    {{ article.hits }}
-                </a>
-                <a href="#" target="_blank" class="count count_link">
-                    <i class="iconfont icon-svg37">
-                    </i>
-                    {{ article.count_replies }}
-                </a>
-                <span class="count">
-                    <i class="iconfont icon-03xihuan">
-                    </i>
-                    {{ article.count_favorites }}
-                </span>
-            </div>
-        </div>
-    </li>
-  </ul>
-
-      <a class="load_more" href="javascript:;">{{ page >= lastPage ? '已经到底了':'正在加载更多' }}...</a>
-
-	  </div>
+	<div>	
+		<li v-for="article in articles" :class="article.has_image ? 'article-item have-img' : 'article-item'">
+		    <a v-if="article.has_image" class="wrap-img" :href="'/article/' + article.id" target="_blank">
+		        <img :src="article.primary_image" :alt="article.title">
+		    </a>  
+		  <div class="content">
+		    <div class="author">
+		      <a class="avatar" target="_blank" :href="'/user/'+article.user.id">
+		        <img :src="article.user.avatar" alt="">
+		      </a> 
+		      <div class="info">
+		        <a class="nickname" target="_blank" :href="'/user/'+article.user.id">{{ article.user.name }}</a>
+		        <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="懂美味签约作者" alt="">
+		        <span class="time">{{ article.time_ago }}</span>
+		      </div>
+		    </div>
+		    <a class="title" target="_blank" :href="'/article/' + article.id">
+		        <span>{{ article.title }}</span>
+		    </a>
+		    <p class="abstract">{{ article.description }}</p>
+		    <div class="meta">
+		      <a v-if="article.category" class="collection-tag" target="_blank" :href="'/' + article.category.name_en">{{ article.category.name }}</a>
+		      <a target="_blank" :href="'/article/' + article.id" class="browse_meta">
+		        <i class="iconfont icon-liulan"></i> {{ article.hits }}
+		      </a>        
+		      <a target="_blank" :href="'/article/' + article.id" class="comment_meta">
+		        <i class="iconfont icon-svg37"></i> {{ article.count_replies }}
+		      </a>      
+		      <a target="_blank" :href="'/article/' + article.id"><i class="iconfont icon-03xihuan"></i> {{ article.count_likes }}</a>
+		      <a v-if="article.count_tips" target="_blank" :href="'/article/' + article.id"><i class="iconfont icon-qianqianqian"></i> {{ article.count_tips }}</a>
+		    </div>
+		  </div>
+		</li>
+		<a class="btn-base btn-more" href="javascript:;" v-if="articles.length">{{ page >= lastPage ? '已经到底了':'正在加载更多' }}...</a>
+		<div v-else class="unMessage">
+			<blank-content></blank-content>
+		</div>
+	</div>	
 </template>
 
 <script>
 export default {
+	name: "ArticleList",
 
-  name: 'ArticleList',
+	props: ["api", "startPage"],
 
-  props: ['api','startPage','showCategory'],
+	watch: {
+		api(val) {
+			this.clear();
+			this.fetchData();
+		}
+	},
 
-  watch:{
-     api(val){
-       this.clear();
-       this.fetchData();
-     }
-  },
+	computed: {
+		apiUrl() {
+			var page = this.page;
+			var api = this.api ? this.api : this.apiDefault;
+			var api_url = api.indexOf("?") !== -1 ? api + "&page=" + page : api + "?page=" + page;
+			return api_url;
+		}
+	},
 
-  computed: {
-  	apiUrl() {
-  		var page = this.page;
-  		var api = this.api ? this.api : this.apiDefault;
-  		var api_url = api.indexOf('?') !== -1 ? api + '&page='+page : api + '?page='+page;
-  		return api_url;
-  	}
-  },
+	mounted() {
+		this.listenScrollBottom();
+		this.fetchData();
+	},
 
-  mounted() {
-    this.listenScrollBottom();
-  	this.fetchData();
-  },
+	methods: {
+		clear() {
+			this.articles = [];
+		},
+		listenScrollBottom() {
+			var m = this;
+			$(window).on("scroll", function() {
+				var aheadMount = 5; //sometimes need ahead a little ...
+				var is_scroll_to_bottom = $(this).scrollTop() >= $("body").height() - $(window).height() - aheadMount;
+				if (is_scroll_to_bottom) {
+					m.fetchMore();
+				}
+			});
+		},
 
-  methods: {
-    clear(){
-        this.articles=[];
-    },
+		fetchMore() {
+			++this.page;
+			if (this.lastPage > 0 && this.page > this.lastPage) {
+				//TODO: ui 提示  ...
+				return;
+			}
+			this.fetchData();
+		},
 
-  	listenScrollBottom() {
-  		var m = this;
-  		$(window).on("scroll", function() {
-        var aheadMount =5;
-  			var is_scroll_to_bottom=$(this).scrollTop() >= $("body").height() - $(window).height() - aheadMount;
-  			if(is_scroll_to_bottom){
-  				m.fetchMore();
-  			}
-  		});
-  	},
+		fetchData() {
+			var m = this;
+			//TODO:: loading ....
+			window.axios.get(this.apiUrl).then(function(response) {
+				m.articles = m.articles.concat(response.data.data);
+				m.lastPage = response.data.last_page;
+				$('[data-toggle="tooltip"]').tooltip();
+				//TODO:: loading done !!!
+			});
+		}
+	},
 
-  	fetchMore() {
-  		++this.page;
-	  	if(this.lastPage > 0 && this.page > this.lastPage) {
-	  		console.log('我是有底线的');
-	  		//TODO: ui 提示  ...
-	  		return;
-	  	}
-      this.fetchData();
-  	},
-
-    fetchData(){
-      var vm = this;
-      //TODO:: loading ....
-      window.axios.get(this.apiUrl).then(function(response){
-        vm.articles = vm.articles.concat(response.data.data);
-        // console.log(vm.articles);
-        vm.lastPage = response.data.last_page;
-
-        //TODO:: loading done !!!
-      });
-    }
-  },
-
-  data () {
-    return {
-    	apiDefault: '',
-    	page: this.startPage ? this.startPage : 1,
-    	lastPage: -1,
-    	articles: [],
-    }
-  }
-}
+	data() {
+		return {
+			apiDefault: "",
+			page: this.startPage ? this.startPage : 1,
+			lastPage: -1,
+			articles: []
+		};
+	}
+};
 </script>
 
 <style lang="css" scoped>

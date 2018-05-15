@@ -1,0 +1,12 @@
+#categories,#recommendations,.recommend-content {
+	width: 85%;
+	margin: 0 auto;
+  // 推荐列表：推荐专题、作者，资料卡
+  .recommend-list {
+    text-align: center;
+    margin: 0 -15px;
+    .btn-more {
+      width: 38.2%;
+    }
+  }
+}

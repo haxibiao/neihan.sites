@@ -1,120 +1,61 @@
 @extends('layouts.app')
 
 @section('title')
-    爱你城 - 最暖心的游戏社交网站
+   {{ config('app.name') }}-{{ config('seo.title') }} 
 @stop
+
+@section('keywords'){{ config('seo.keywords') }}
+@stop
+
+@section('description'){{ config('seo.description') }}
+@stop
+
 @section('content')
+
 <div id="index">
-    <div class="container">
-        <div class="row">
-            {{-- 轮播图 --}}
-            @include('parts.poster')
-            {{-- 左侧 --}}
-            <div class="main col-xs-12 col-sm-8">
-                {{-- 专题分类 --}}
+      {{-- 轮播图 --}}
+      @if(config('editor.ui.show_poster'))
+        @include('index.parts.poster')
+      @endif
 
-                @include('parts.list.category_list',['categories'=>$data->categories])
-                <categorys-list></categorys-list>
-                <div class="split_line">
-                </div>
-                {{-- 文章摘要 --}}
-                @if(!empty($data->articles_tops))
-                    @include('parts.list._article_list_category_user',['articles'=>$data->articles_tops])
-                @endif
+     <section class="clearfix">
+        {{-- 主要内容 --}}
+        <div class="main col-sm-7">
+          {{-- 推荐专题 --}}
+          @include('index.parts.recommend_categories')
+          <recommend-category></recommend-category>
+          <div class="division-line"></div>
+          {{-- 文章列表 --}}
+         <ul class="article-list">              
+            {{-- 文章 --}}          
+            @each('parts.article_item', $data->articles, 'article')
 
-                @include('parts.list.article_list_category',['articles'=>$data->articles])
-
-
-            </div>
-            {{-- 右侧 --}}
-            <div class="aside col-sm-4">
-                <div class="board">
-                    <a href="/index/new-list" target="_blank">
-                        <img src="/images/board01.png"/>
-                        <span class="board_tit hot_new">
-                            新上榜
-                            <i class="iconfont icon-youbian">
-                            </i>
-                        </span>
-                    </a>
-                    <a href="/index/weekly" target="_blank">
-                        <img src="/images/board02.png"/>
-                        <span class="board_tit hot_seven">
-                            七日热门
-                            <i class="iconfont icon-youbian">
-                            </i>
-                        </span>
-                    </a>
-                    <a href="/index/monthly" target="_blank">
-                        <img src="/images/board03.png"/>
-                        <span class="board_tit hot_thirty">
-                            经典热门
-                            <i class="iconfont icon-youbian">
-                            </i>
-                        </span>
-                    </a>
-                    <a href="/ainichengguanfang" target="_blank">
-                        <img src="/images/board05.png"/>
-                        <span class="board_tit hot_school">
-                            爱你城官方小课堂
-                            <i class="iconfont icon-youbian">
-                            </i>
-                        </span>
-                    </a>
-                </div>
-                   {{-- 二维码 --}}
-                <div class="app">
-                    <img src="/logo/{{ env('APP_DOMAIN')}}.png"/>
-                    <div class="info">
-                        <div class="title">
-                            下载爱你城手机App
-                            <i class="iconfont icon-youbian">
-                            </i>
-                        </div>
-                        <p>
-                            随时随地发现和创作内容
-                        </p>
-                    </div>
-                    <div class="hover_code">
-                        {{-- <img src="/images/scan.jpeg"/> --}}
-                        还在火速研发中,尽请期待！！
-                    </div>
-                </div>
-
-                @if(Auth::check())
-                <recommend-authors></recommend-authors>
-                @endif
-{{--                 <div class="videos">
-                    <div class="title">
-                        <span>
-                            热门视频
-                        </span>
-                        <a href="/v1/category" target="_blank">
-                            查看更多
-                        </a>
-                    </div>
-                    <a class="note" href="/v1/detail" target="_blank">
-                        <img src="/images/details_01.jpeg"/>
-                        <div class="note_title video_title">
-                            王者荣耀打野必备攻略 5v5野区地图分布详解
-                        </div>
-                    </a>
-                    <a class="note" href="/v1/detail" target="_blank">
-                        <img src="/images/details_09.jpg"/>
-                        <div class="note_title video_title">
-                            王者荣耀最强奶妈蔡文姬怎么玩2.0加强版
-                        </div>
-                    </a>
-                    <a class="note" href="/v1/detail" target="_blank">
-                        <img src="/images/details_01.jpeg"/>
-                        <div class="note_title video_title">
-                            手把手教你玩王者荣耀安琪拉
-                        </div>
-                    </a>
-                </div> --}}
-            </div>
+            {{-- 登录后才加载更多 --}}
+            @if(Auth::check())
+              <article-list api="/" start-page="2" />
+            @else 
+              <div>
+                {!! $data->articles->links() !!}
+              </div>
+            @endif
+            
+          </ul>
         </div>
-    </div>
+        {{-- 侧栏 --}}
+        <div class="aside col-sm-4 col-sm-offset-1 hidden-xs">
+            @include('index.parts.trendings')
+            {{-- app --}}
+            @include('index.parts.download_app')
+            {{-- 日报 --}}
+            {{-- @include('index.parts.daily') --}}
+            {{-- 推荐作者 --}}
+            @if(Auth::check())
+            <recommend-authors></recommend-authors>
+            @endif
+        </div>
+   </section>
+  {{-- 网站底部信息 --}}
+  @include('parts.footer')
 </div>
-@include('parts.foot')
-@stop
+
+@endsection

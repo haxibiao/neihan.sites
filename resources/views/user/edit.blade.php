@@ -1,12 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-	<div class="container">
-      <ol class="breadcrumb">
-        <li><a href="/">{{ config('app.name') }}</a></li>
-        <li><a href="/user/{{ $user->id }}">{{ $user->name }}</a></li>
-      </ol>
-      
+	<div class="container">      
 		{!! Form::open(['method' => 'put', 'route' => ['user.update', $user->id], 'class' => 'form-horizontal']) !!}
 			
 		    <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">

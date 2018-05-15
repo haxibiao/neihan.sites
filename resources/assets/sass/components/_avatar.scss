@@ -1,0 +1,23 @@
+// 头像
+.avatar,.avatar-category  {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  border-radius: 50%;
+  margin-right: 10px;
+  width: 48px;
+  height: 48px;
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 1px solid $light-color2;
+  }
+}
+// 专题头像
+.avatar-category {
+  border-radius: 10%;
+  img {
+    border-radius: 10%;
+  }
+}

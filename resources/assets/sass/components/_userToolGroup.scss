@@ -1,0 +1,60 @@
+// 点赞、回复、举报工具
+.tool-group,.sub-tool-group {
+	color: $gray-color2;
+  font-size: 14px;
+  a {
+    margin-right: 10px;
+    font-size: 0;
+    color: $gray-color2;
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: middle;
+    span {
+    	font-size: 14px;
+    }
+    i {
+      margin-right: 5px;
+      font-size: 18px;
+      vertical-align: middle;
+    }
+    &:hover {
+      color: $dark-color1;
+    }
+    &.like {
+      i {
+        margin-top: -2px;
+        display: inline-block;
+      }
+      &:hover,&.active {
+        color: rgba($theme-color,0.8);
+      }
+    }
+    &.report {
+      float: right;
+      margin: 1px 0 0 10px;
+      display: none;
+    }
+  }
+  span {
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+  &:hover {
+    .report {
+      display: block;
+    }
+  }
+}
+.sub-tool-group {
+	font-size: 12px;
+	a {
+		span {
+			font-size: 12px;
+		}
+		i {
+			margin-right: 5px;
+			font-size: 14px;
+			vertical-align: middle;
+		}
+	}
+}

@@ -36,29 +36,36 @@ class LikeController extends Controller
                 'actionable_type' => 'likes',
                 'actionable_id'   => $like->id,
             ]);
-            $user->actions()->save($action);
+            $action->save();
         }
+        return $this->get($request, $id, $type);
+    }
+
+    public function getForGuest(Request $request, $id, $type)
+    {
         return $this->get($request, $id, $type);
     }
 
     public function get(Request $request, $id, $type)
     {
-        if ($request->user()) {
-            $like = Like::firstOrNew([
-                'user_id'    => $request->user()->id,
-                'liked_id'   => $id,
-                'liked_type' => get_polymorph_types($type),
-            ]);
+        $user = $request->user();
+        if ($user) {
+            $like = Like::firstOrNew(
+                [
+                    'user_id'    => $user->id,
+                    'liked_id'   => $id,
+                    'liked_type' => get_polymorph_types($type),
+                ]);
             $data['is_liked'] = $like->id;
         }
-        $data['likes'] = 0;
+        $data['likes'] = [];
         if ($type == 'article') {
             $article       = Article::findOrFail($id);
-            $data['likes'] = $article->count_likes;
+            $data['likes'] = $article->likes()->with('user')->paginate(10);
         }
         if ($type == 'video') {
             $video         = Video::findOrFail($id);
-            $data['likes'] = $video->count_likes;
+            $data['likes'] = $video->likes()->with('user')->paginate(10);
         }
         return $data;
     }
@@ -72,17 +79,21 @@ class LikeController extends Controller
             $article->save();
 
             $author              = $article->user;
-            $author->count_likes = $author->count_likes + $num;
+            $author->count_likes = $author->articles()->sum('count_likes');
             $author->save();
-            //避免短时间内重复提醒
-            $cacheKey = 'user_' . $user->id . '_like_' . $type . '_' . $id;
-            if (!Cache::get($cacheKey)) {
-                $author->notify(new ArticleLiked($article->id, $user->id));
-                $author->forgetUnreads();
-                Cache::put($cacheKey, 1, 60);
+
+            if ($num > 0) {
+                //避免短时间内重复提醒
+                $cacheKey = 'user_' . $user->id . '_like_' . $type . '_' . $id;
+                if (!Cache::get($cacheKey)) {
+                    $author->notify(new ArticleLiked($article->id, $user->id));
+                    $author->forgetUnreads();
+                    Cache::put($cacheKey, 1, 60);
+                }
             }
 
         }
+
         if ($type == 'video') {
             $video = Video::with('user')->findOrFail($id);
             $video->count_likes += $num;

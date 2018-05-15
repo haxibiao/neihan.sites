@@ -1,0 +1,48 @@
+// 榜单
+.board {
+    margin-top: -4px;
+    padding-bottom: 4px;
+    min-height: 228px;
+    a {
+        position: relative;
+        display: inline-block;
+        img {
+            width: 100%;
+            min-height: 50px;
+            margin-bottom: 6px;
+            border-radius: 4px;
+        }
+        .board_tit {
+            position: absolute;
+            display: flex;
+            width: 68%;
+            padding-left: 10%;
+            top: 8px;
+            bottom: 8px;
+            left: 1%;
+            align-items: center;
+            font-size: 16px;
+            color: #fff;
+            i {
+                padding-left: 5px;
+            }
+            &.one {
+                background-color: #C094FE;
+            }
+            &.two {
+                background-color: #FEB247;
+            }
+            &.three {
+                background-color: #F58A76;
+            }
+            &.four {
+                background-color: #B9E0D9;
+                color: #49837B;
+            }
+            &.five {
+                background-color: #AED0E9;
+                color: #437DA0;
+            }
+        }
+    }
+} 

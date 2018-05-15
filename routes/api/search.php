@@ -1,7 +1,10 @@
 <?php
 
-
-//serach
-Route::post('/v2/search/{type}','Api\SearchController@search');
-Route::get('/user/{id}/serach_history','Api\SearchController@get_user_histroy');
-Route::get('/user/{id}/clear_serach_history/{history}','Api\SearchController@clear_user_history');
+//搜索
+Route::get('/search/hot-queries', 'Api\SearchController@hotQueries');
+//个人搜索历史
+Route::middleware('auth:api')->get('/search/latest-querylogs', 'Api\SearchController@latestQuerylog');
+//清空最近5个搜索
+Route::middleware('auth:api')->delete('/search/clear-querylogs', 'Api\SearchController@clearQuerylogs');
+//清空单个搜索
+Route::middleware('auth:api')->delete('/search/remove-querylog-{id}', 'Api\SearchController@removeQuerylog');

@@ -1,9 +1,9 @@
 <template>
-    <!-- 朋友圈 -->
-    <!-- TODO::算法比较随机,还待调整 -->
-	<div id="friend">
-        <article-list api="/" start-page="2" />
-    </div>
+<div>
+   <ul class="time-line">
+		<article-list api="/" />
+   </ul>
+</div>
 </template>
 
 <script>

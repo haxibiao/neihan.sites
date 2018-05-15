@@ -1,54 +1,57 @@
 <template>
-	<div class="note-books">
-		<div class="books-side col-xs-2">
-			<div class="home">
-				<a href="/">回首页</a>
-			</div>
-			<div class="create-notebook">
-				<div class="handle" @click="toggleCreator">
-					<i class="iconfont icon-icon20"></i>
-					<span>新建文集</span>
+	<div style='height:100%'>	
+		<div class="note-books">
+			<div class="books-side col-xs-2">
+				<div class="home">
+					<a href="/">回首页</a>
 				</div>
-				<div class="create-notebook-box" v-show="new_notebook">
-					<div>
-						<input type="text" class="input_style" placeholder="请输入文集名..." v-model="new_notebook_name">
-						<a class="submit btn_base btn_hollow btn_follow_xs" @click="creatednotebook">提 交</a>
-						<a class="cancel" @click="toggleCreator">取 消</a>
+				<div class="create-notebook">
+					<div class="handle" @click="toggleCreator">
+						<i class="iconfont icon-icon20"></i>
+						<span>新建文集</span>
 					</div>
-				</div> 
-			</div>
-			<ul class="notebook-list">
-				<router-link :to="'/notebooks/'+notebook.id" tag="li" active-class="active"  v-for="notebook in collections" :key="notebook.id">
-					<div class="setting pull-right">
-						<i class="iconfont icon-shezhi" tabindex="0" role="button" data-toggle="popover" data-trigger="focus" data-placement="bottom" data-html="true"
-      						:data-content="dataContent"></i>
+					<div class="create-notebook-box" v-show="new_notebook">
+						<div>
+							<input type="text" class="input-style" placeholder="请输入文集名..." v-model="new_notebook_name">
+							<a class="submit btn-base btn-hollow btn-md" @click="creatednotebook">提 交</a>
+							<a class="cancel" @click="toggleCreator">取 消</a>
+						</div>
+					</div> 
+				</div>
+				<ul class="notebook-list">
+					<router-link :to="'/notebooks/'+notebook.id" tag="li" active-class="active"  v-for="notebook in collections" :key="notebook.id">
+						<div class="setting pull-right">
+							<i class="iconfont icon-shezhi" tabindex="0" role="button" data-toggle="popover" data-trigger="focus" data-placement="bottom" data-html="true"
+	      						:data-content="dataContent"></i>
+						</div>
+						<span class="single-line">{{ notebook.name }}</span>
+					</router-link>
+				</ul>
+				<div class="side-bottom col-xs-2">
+					<div class="settings pull-left dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							<i class="iconfont icon-fenlei"></i>
+							<span>设置</span>
+						</a>
+						<ul class="dropdown-menu">
+							<li><router-link to="/recycle" class="link"><i class="iconfont icon-lajitong"></i><span>回收站</span></router-link></li>
+							<li><a href="javascript:;" class="report link"><i class="iconfont icon-bangzhu"></i><span>帮助与反馈</span></a></li>
+						</ul>
 					</div>
-					<span class="single-line">{{ notebook.name }}</span>
-				</router-link>
-			</ul>
-			<div class="side-bottom col-xs-2">
-				<div class="settings pull-left dropdown">
-					<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						<i class="iconfont icon-fenlei"></i>
-						<span>设置</span>
+					<a class="doubt pull-right" data-target=".FAQ" data-toggle="modal">
+						<span>遇到问题</span>
+						<i class="iconfont icon-bangzhu"></i>
 					</a>
-					<ul class="dropdown-menu">
-						<li><router-link to="/recycle" class="link"><i class="iconfont icon-lajitong"></i><span>回收站</span></router-link></li>
-						<li><a href="javascript:;" class="report link"><i class="iconfont icon-bangzhu"></i><span>帮助与反馈</span></a></li>
-					</ul>
 				</div>
-				<a class="doubt pull-right" data-target=".FAQ" data-toggle="modal">
-					<span>遇到问题</span>
-					<i class="iconfont icon-bangzhu"></i>
-				</a>
 			</div>
+			<div class="books-main col-xs-10">
+				<notes @article-added="articleAdded"></notes>
+			</div>
+			<modification-name></modification-name>
+			<delete-notebook></delete-notebook>
+			<frequently-asked-questions></frequently-asked-questions>
 		</div>
-		<div class="books-main col-xs-10">
-			<notes @article-added="articleAdded"></notes>
-		</div>
-		<modification-name></modification-name>
-		<delete-notebook></delete-notebook>
-		<frequently-asked-questions></frequently-asked-questions>
+		<publish-successful :publishShow="isPublishView"/>
 	</div>
 </template>
 
@@ -65,6 +68,9 @@ export default {
   },
 
   computed:{
+  	isPublishView () {
+  		return this.$store.state.isPublishView;
+  	},
   	collections() {
   		return this.$store.state.collections;
   	},
@@ -84,6 +90,7 @@ export default {
   	'$route' (to,from) {
   		this.getCurrentPathParams();
   		this.updateCurrentPathInfo();
+  		this.$store.state.isPublishView = false;
   	}
   },
   methods:{
@@ -154,7 +161,7 @@ export default {
 
 <style lang="scss">
 	.note-books {
-		height: 100%;
+		height: 100vh;
 		overflow: hidden;
 		.books-side {
 			position: relative;
@@ -194,7 +201,6 @@ export default {
 					}
 					span {
 						margin-left: 2px;
-						font-size: 14px;
 					}
 				}
 				.create-notebook-box {
@@ -209,19 +215,15 @@ export default {
 							display: inline-block;
 							cursor: pointer;
 							margin-left: 5px;
+							background-color: transparent;
 							&.submit {
 								min-width: auto;
-								padding: 2px 10px;
+								padding: 5px 10px;
 							}
 							&.cancel {
 								border: none;
 								outline: none;
 								margin-top: -2px;
-								color: #969696;
-								font-size: 14px;
-								&:hover {
-									color: unset;
-								}
 							}
 						}
 					}
@@ -321,15 +323,6 @@ export default {
 			    user-select: none;
 			    z-index: 150;
 			    background-color: #404040;
-			    .settings {
-					>a {
-						color: #969696;
-						font-size: 14px;
-						&:hover {
-							color: unset;
-						}
-					}
-				}
 			    .settings,.doubt {
 			    	display: inline-block;
 			    	color: #999;

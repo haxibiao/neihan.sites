@@ -11,7 +11,7 @@ class ImageLogo extends Command
      *
      * @var string
      */
-    protected $signature = 'image:logo';
+    protected $signature = 'image:logo {domain}';
 
     /**
      * The console command description.
@@ -37,14 +37,20 @@ class ImageLogo extends Command
      */
     public function handle()
     {
-        $this->makeLogo(env('APP_DOMAIN'));
+        if ($this->argument('domain')) {
+            $this->makeLogo($this->argument('domain'));
+        } else {
+            $this->makeLogo(env('APP_DOMAIN'));
+        }
     }
 
     public function makeLogo($domain)
     {
         $image = \ImageMaker::make(public_path('logo/' . $domain . '.png'));
         $image->resize(60, 60);
-        $image->save(public_path('logo/' . $domain . '.small.png'));
+        $logoPath = public_path('logo/' . $domain . '.small.png');
+        $image->save($logoPath);
+        $this->info($logoPath);
 
         $image->resize(160, 160);
         $image->save(public_path('logo/' . $domain . '.touch.png'));

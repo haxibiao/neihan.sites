@@ -47,11 +47,8 @@ class CreateTrafficTable extends Migration
             $table->string('daysInMonth')->nullable()->index();
             $table->string('weekOfMonth')->nullable()->index();
             $table->string('weekOfYear')->nullable()->index();
-
-            $table->string('referer', 2083)->nullable()->change();
-
             $table->string('path')->nullable();
-            $table->string('referer')->nullable();
+            $table->string('referer', 2083)->nullable();
             $table->string('referer_domain')->nullable();
             
             $table->timestamps();

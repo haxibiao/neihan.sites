@@ -1,0 +1,28 @@
+// 推荐作者 关注的人 支持者：糖葫芦样式列表
+.list-people {
+	li{
+		display: inline-block;
+    margin: 0 -5px;
+		.avatar {
+      width: 30px;
+      height: 30px;
+			margin-right: -5px;
+			img {
+				border: 3px solid $theme-skin;
+			}
+		}
+	}
+	.more {
+		position: absolute;
+		display: inline-block;
+		width: 30px;
+		height: 30px;
+		font-size: 12px;
+		color: $gray-color2;
+		border: 3px solid $theme-skin;
+		border-radius: 50%;
+		background-color: $gray-color3;
+		text-align: center;
+		line-height: 24px;
+	}
+}

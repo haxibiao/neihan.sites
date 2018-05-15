@@ -1,21 +1,17 @@
 <template>
-	<div class="search_trending">
-        <div class="litter_title">
-            热门搜索
-            <a href="javascript:;" @click="change" class="rotation">
-                <i class="iconfont icon-shuaxin" ref="fresh">
-                </i>
-                换一批
-            </a>
-        </div>
-        <ul class="search_trending_tag_wrap">
-            <li v-for="q in queries">
-                <a :href="'/new_search?q='+q.full" :title="q.full" target="_blank" class="search_lab">
-                    {{ q.short }}
-                </a>
-            </li>
-        </ul>
-    </div>
+	<div>
+		<div class="hot-search">
+			<div class="plate-title">
+			  热门搜索
+			  <a target="_blank" href="javascript:;" class="right" @click="change"><i class="iconfont icon-shuaxin" ref="fresh"></i>换一批</a>
+			</div>
+			<ul>
+				<li v-for="query in queries">
+					<a :href="'/search?q='+query.query" :title="query.query">{{ query.q }}</a>
+				</li>
+			</ul>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -23,49 +19,63 @@ export default {
 
   name: 'Hot',
 
-  mounted(){
-  	 this.fetchData();
+  mounted() {
+		this.fetchData();
   },
 
-  methods:{
-  	 change(){
-  	 	this.changes++;
-  	 	this.fetchData();
-  	 },
-  	 fetchData(){
-  	 	$(this.$refs.fresh).css('transform',`rotate(${360*this.changes}deg)`);
+  methods: {
+	change() {
+		this.page ++ ;
+		this.fetchData();
+	},
+	fetchData() {
+		if(this.lastPage && this.lastPage < this.page) {
+			this.page = 1;
+		}
 
-  	 	var api='/api/search/hot-queries?page='+this.changes;
-  	 	var vm=this;
-  	 	window.axios.get(api).then(function(response){
-  	 		if(response.data.length){
-  	 			vm.queries=response.data;
-  	 		}
-  	 	});
-  	 }
+		$(this.$refs.fresh).css('transform',`rotate(${360*this.page}deg)`);
+
+		var api = '/api/search/hot-queries?page='+this.page;
+		var _this = this;
+		window.axios.get(api).then(function(response){
+			_this.queries = response.data.data;
+			_this.lastPage = response.data.last_page;
+		});
+	}
   },
 
   data () {
     return {
-    	changes:1,
-        queries:[]
+    	page: 1,
+    	lastPage: null,
+    	queries:[]
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-.search_trending {
-    .litter_title {
-        line-height: 2;
-        margin-bottom: 10px;
-    }
-    .search_trending_tag_wrap {
-        li {
-            margin-right: 10px;
-            display: inline-block;
-            line-height: 28px;
-        }
-    }
+<style lang="scss">
+.hot-search {
+	padding: 15px 15px 10px;
+	background-color: #FFF;
+	ul {
+		text-align: left;
+		li {
+			margin-right: 10px;
+			display: inline-block;
+			line-height: 28px;
+			a {
+				padding: 2px 6px;
+				font-size: 12px;
+				color: #717171;
+				border: 1px solid #c4c4c4;
+				border-radius: 3px;
+				&:hover {
+					color: #252525;
+					border-color: #717171;
+				}
+			}
+		}
+	}
 }
 </style>

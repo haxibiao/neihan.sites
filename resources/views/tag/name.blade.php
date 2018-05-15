@@ -1,23 +1,16 @@
 @extends('layouts.app')
 @section('title')
-  {{ $tag->name }}
+  {{ $tag->name }} 
 @endsection
 @section('keywords')
-  {{ $tag->name }}
+  {{ $tag->name }} 
 @endsection
 @section('description')
-  {{ $tag->name }}
+  {{ $tag->name }} 
 @endsection
 
 @section('content')
 <div class="container">
-    <ol class="breadcrumb">
-    	<li><a href="/">{{ config('app.name') }}</a></li>
-        <li class="active">
-            {{ $tag->name }}
-        </li>
-    </ol>
-    @include('parts.carousel')
     <div class="panel panel-default top20">
         <div class="panel-heading">
             <h3 class="panel-title">
@@ -25,11 +18,9 @@
             </h3>
         </div>
         <div class="panel-body">
-            <div class="list-group">
-                @foreach($articles as $article)
-                   @include('article.parts.article_item')
-                @endforeach
-            </div>
+            @foreach($articles as $article)
+                @include('parts.article_item')
+            @endforeach
         </div>
     </div>
 </div>

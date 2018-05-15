@@ -1,8 +1,12 @@
+// Variables
+@import "variables";
+
 // Bootstrap
 @import "bootstrap";
 
-// Simditor
-@import "simditor/simditor";
-
-//v.2.0
-@import "v2";
+// layout
+@import "mixins";
+@import "elements";
+@import "components";
+@import "layouts";
+@import "pages";

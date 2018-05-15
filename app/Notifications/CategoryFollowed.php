@@ -7,18 +7,24 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
+use App\Category;
+use App\User;
+
 class CategoryFollowed extends Notification
 {
     use Queueable;
+    protected $category;
+    protected $user;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Category $category, User $user)
     {
-        //
+        $this->category = $category;
+        $this->user = $user;
     }
 
     /**
@@ -29,7 +35,7 @@ class CategoryFollowed extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -55,7 +61,11 @@ class CategoryFollowed extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'type' => 'other',
+            'subtype'    => 'category_followed',
+            'category_id' => $this->category->id,
+            'user_id' => $this->user->id,
+            'message'    => $this->user->link() . "关注了您的专题" . $this->category->link(),
         ];
     }
 }

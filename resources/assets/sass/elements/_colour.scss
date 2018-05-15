@@ -1,0 +1,52 @@
+// 特殊色彩
+.weixin {
+  color: $weixin-color;
+}
+.weibo {
+  color: $weibo-color;
+}
+.qq {
+  color: $qq-color;
+}
+.more,.qqzone {
+  color: $theme-color;
+}
+.other {
+  color: $gray-color2;
+}
+    
+.weixin-bg {
+   background-color: $weixin-color;
+}
+.weibo-bg {
+   background-color: $weibo-color;
+}
+.qq-bg {
+   background-color: $qq-color;
+}
+.theme-bg,.qqzone-bg {
+   background-color: $theme-color;
+}
+.other-bg {
+   background-color: $gray-color2;
+}
+
+.hover-colour {
+  &:hover {
+    .weixin {
+      color: $weixin-color;
+    }
+    .weibo {
+      color: $weibo-color;
+    }
+    .qq {
+      color: $qq-color;
+    }
+    .more,.qqzone {
+      color: $theme-color;
+    }
+    .other {
+      color: $gray-color2;
+    }
+  }
+}

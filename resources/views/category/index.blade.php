@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    分类列表
+    专题管理
 @endsection
 @section('keywords')
   
@@ -13,15 +13,10 @@
 @section('content')
 
 <div class="container">
-  <ol class="breadcrumb">
-    <li><a href="/">{{ config('app.name') }}</a></li>
-    <li class="active">专题管理</li>
-  </ol>
-
       <div class="panel panel-default">
         <div class="panel-heading">
           <div class="pull-right">
-            <a class="btn btn-primary" href="/category/create?type={{ Request::get('type') }}" role="button">添加分类</a>
+            <a class="btn btn-primary" href="/category/create{{ Request::get('type') ? '?type='.Request::get('type') : '' }}" role="button">添加分类</a>
           </div>
           <h3 class="panel-title" style="min-height: 50px">专题管理</h3>
         </div>
@@ -37,8 +32,8 @@
                 {!! Form::close() !!}
 
               </div>   
-                <a href="/{{ $category->name_en }}"><h5>{{ $category->name }} ({{ $category->name_en }})</h5></a>
-                <img src="{{ $category->logo }}" alt="">
+                <h5>{{ $category->name }} ({{ $category->name_en }})</h5>
+                <img src="{{ $category->logo() }}" alt="">
                 <div class="pull-right">
                   
                   {!! Form::open(['method' => 'delete', 'route' => ['category.destroy', $category->id], 'class' => 'form-horizontal']) !!}
@@ -53,7 +48,7 @@
           @endforeach
         </div>
         <div class="panel-footer">
-          {!! $categories->render() !!}
+          {!! $categories->links() !!}
         </div>
       </div>  
   

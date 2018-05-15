@@ -4,75 +4,132 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\Query;
+use App\Querylog;
 use App\Tag;
 use App\User;
+use App\Category;
+use App\Collection;
+use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection as LCollection;
 use Illuminate\Support\Facades\Cache;
 
 class SearchController extends Controller
 {
     public function search(Request $request)
     {
-        $query    = $request->get('q');
-        $articles = Article::where('title', 'like', '%' . $query . '%')
+        $page_size = 10;
+        $page      = request('page') ? request('page') : 1;
+        $query     = request('q');
+        $articles  = Article::where('title', 'like', '%' . $query . '%')
             ->orWhere('keywords', 'like', '%' . $query . '%')
             ->orderBy('id', 'desc')
             ->paginate(10);
-        $data['articles'] = $articles;
-        $total            = $articles->total();
+        $total = $articles->total();
 
-        if (!$total) {
-            $articles_taged = $this->search_tags($query);
-            foreach ($articles_taged as $article) {
-                $articles->push($article);
-            }
-            $total = count($articles_taged);
+        //高亮关键词
+        foreach ($articles as $article) {
+            $article->title       = str_replace($query, '<em>' . $query . '</em>', $article->title);
+            $article->description = str_replace($query, '<em>' . $query . '</em>', $article->description());
         }
 
-        //暂时不关联搜索哈希表里的文章了，后面优化下文章结构后再同步搜索
+        //如果标题无结果，搜索标签库
+        if (!$total) {
+            list($articles_taged, $matched_tags) = $this->search_tags($query);
+            $total                               = count($articles_taged);
 
+            //给标签搜索到的分页
+            $articles = new LengthAwarePaginator($articles_taged->forPage($page, $page_size),
+                $total, $page_size, $page, ['path' => '/search']);
+
+            //高亮标签
+            foreach ($articles as $article) {
+                $article->description = ' 关键词:' . $article->keywords . '， 简介：' . $article->description();
+                foreach ($matched_tags as $tag) {
+                    $article->title       = str_replace($tag, '<em>' . $tag . '</em>', $article->title);
+                    $article->description = str_replace($tag, '<em>' . $tag . '</em>', $article->description);
+                }
+            }
+        }
+
+        //TODO:: 暂时不关联搜索哈希表里的文章了，后面优化下文章结构后再同步搜索
         // if (!$total) {
         //     $articles_hxb = $this->search_hxb($query);
-        //     foreach ($articles_hxb as $article) {
-        //         $article->created_at  = \Carbon\Carbon::parse($article->created_at);
-        //         $article->updated_at  = \Carbon\Carbon::parse($article->updated_at);
-        //         $article->description = str_limit(strip_tags($article->body), 250);
-        //         $article->image_url   = get_full_url($article->image_url);
-        //         $article->target_url  = "http://haxibiao.com/article/" . $article->id;
-        //         $articles->push($article);
-        //     }
         //     $total = count($articles_hxb);
         // }
 
+        //用户，专题
+        $data['users'] = User::where('name', 'like', "%$query%")->paginate($page_size);
+        $data['categories'] = Category::where('name', 'like', "%$query%")->paginate($page_size);
+
         if (!empty($query) && $total) {
+            //保存全局搜索
             $query_item = Query::firstOrNew([
                 'query' => $query,
             ]);
             $query_item->results = $total;
             $query_item->hits++;
             $query_item->save();
-        }
-        $data['queries']     = Query::where('status', '>=', 0)->orderBy('hits', 'desc')->take(20)->get();
-        $data['queries_new'] = Query::where('status', '>=', 0)->orderBy('id', 'desc')->take(20)->get();
-        $data['query']       = $query;
-        $data['total']       = $total;
 
-        return view('search')->withData($data);
+            //保存个人搜索
+            $query_log = Querylog::firstOrNew([
+                'user_id' => Auth::id(),
+                'query'   => $query,
+            ]);
+            $query_log->save();
+        }
+        $data['articles'] = $articles;
+        $data['query']    = $query;
+        $data['total']    = $total;
+
+        return view('search.articles')->withData($data);
+    }
+
+    public function searchUsers()
+    {
+        $page_size = 10;
+        $page      = request('page') ? request('page') : 1;
+        $query     = request('q');
+        $data['users'] = User::where('name', 'like', "%$query%")->paginate($page_size);
+        $data['query'] = $query;
+        return view('search.users')->withData($data);
+    }
+
+    public function searchCategories()
+    {
+        $page_size = 10;
+        $page      = request('page') ? request('page') : 1;
+        $query     = request('q');
+        $data['categories'] = Category::where('name', 'like', "%$query%")->paginate($page_size);
+        $data['query'] = $query;
+        return view('search.categories')->withData($data);
+    }
+
+    public function searchCollections()
+    {
+        $page_size = 10;
+        $page      = request('page') ? request('page') : 1;
+        $query     = request('q');
+        $data['collections'] = Collection::where('name', 'like', "%$query%")->paginate($page_size);
+        $data['query'] = $query;
+        return view('search.collections')->withData($data);
     }
 
     public function search_tags($query)
     {
-        $articles_taged = [];
-        $tags           = Tag::all();
+        $articles     = [];
+        $tags         = Tag::all();
+        $matched_tags = [];
         foreach ($tags as $tag) {
             if (str_contains($query, $tag->name)) {
                 foreach ($tag->articles as $article) {
-                    $articles_taged[] = $article;
+                    $articles[] = $article;
                 }
+                $matched_tags[] = $tag->name;
             }
         }
-
-        return $articles_taged;
+        return [LCollection::make($articles), $matched_tags];
     }
 
     public function search_hxb($query)
@@ -84,39 +141,20 @@ class SearchController extends Controller
         $articles_hxb = [];
         $api_url      = 'http://haxibiao.com/api/articles';
         $api_url .= '?query=' . $query;
-        $api_url .= "&page=" . $this->get_page();
+        $api_url .= "&page=" . (request('page') ? request('page') : 1);
         if ($json = @file_get_contents($api_url)) {
             $json_data    = json_decode($json);
             $articles_hxb = collect($json_data->data);
             Cache::put('query_' . $query, $articles_hxb, 60 * 24);
         }
-        return $articles_hxb;
-    }
-
-    public function get_page()
-    {
-        $page = 1;
-        if (request('page')) {
-            $page = request('page');
+        //修复json过来的数据差异
+        foreach ($articles_hxb as $article) {
+            $article->created_at  = \Carbon\Carbon::parse($article->created_at);
+            $article->updated_at  = \Carbon\Carbon::parse($article->updated_at);
+            $article->description = str_limit(strip_tags($article->body), 250);
+            $article->image_url   = get_full_url($article->image_url);
+            $article->target_url  = "http://haxibiao.com/article/" . $article->id;
         }
-        return $page;
-    }
-    public function search_all()
-    {
-        $users          = User::all();
-        $querys         = Query::where('status', '>=', 0)->orderBy('hits', 'desc')->paginate();
-        $data           = [];
-        $data['update'] = Query::where('status', '>=', 0)->orderBy('updated_at', 'desc')->paginate(10);
-        return view('parts.search_all')
-            ->withData($data)
-            ->withUsers($users)
-            ->withQuerys($querys);
-    }
-
-    public function new_search(Request $request)
-    {
-         $query =$request->q;
-         
-         return view('search.index')->withQuery($query);
+        return $articles_hxb;
     }
 }

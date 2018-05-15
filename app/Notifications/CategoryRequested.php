@@ -9,12 +9,10 @@ use Illuminate\Notifications\Messages\MailMessage;
 use App\Category;
 use App\Article;
 
-
-//该通知用于处理投稿请求
 class CategoryRequested extends Notification
 {
     use Queueable;
-    
+
     protected $category;
     protected $article;
 
@@ -23,10 +21,10 @@ class CategoryRequested extends Notification
      *
      * @return void
      */
-    public function __construct($category_id, $article_id)
+    public function __construct(Category $category, Article $article)
     {
-        $this->category = Category::find($category_id);
-        $this->article = Article::with('user')->find($article_id);
+        $this->category = $category;
+        $this->article = $article;
     }
 
     /**
@@ -64,11 +62,11 @@ class CategoryRequested extends Notification
     {
         return [
             'type' => 'category_request',
-            'category_id' => $this->category->id,
-            'article_user_id' => $this->article->user->id,
-            'article_user_name' => $this->article->user->name,
-            'article_user_avatar' => $this->article->user->avatar,
-            'article_id' => $this->article->id,
+            'category_id' => $this->category->id,            
+            'user_id' => $this->article->user->id,            
+            'user_name' => $this->article->user->name,
+            'user_avatar' => $this->article->user->avatar,
+            'article_id' => $this->article->id,            
             'article_title' => $this->article->title,
             'article_description' => $this->article->description,
             'article_image_url' => $this->article->image_url,

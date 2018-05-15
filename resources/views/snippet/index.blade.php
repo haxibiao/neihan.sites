@@ -25,7 +25,7 @@
 			</div>
 			<div class="media">
 				<a class="pull-left" href="/snippet/{{ $snippet->id }}">
-					<img class="media-object" src="{{ get_img($snippet->image) }}" alt="{{ $snippet->title }}">
+					<img class="media-object" src="{{ $snippet->image }}" alt="{{ $snippet->title }}">
 				</a>
 				<div class="media-body">
 					<h4 class="media-heading">{{ $snippet->title }}</h4>

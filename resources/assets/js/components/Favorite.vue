@@ -1,6 +1,6 @@
 <template>
-<span　v-if="favorited" class="iconfont icon-03xihuan" style="font-size: 1.5em;"　@click="delfav"></span>
-<span v-else class="iconfont icon-xin" style="font-size: 1.5em;" @click="favorite"></span>
+<span　v-if="favorited" class="iconfont icon-03xihuan" style="font-size: 1.5em;"　@click="toggle"></span>
+<span v-else class="iconfont icon-xin" style="font-size: 1.5em;" @click="toggle"></span>
 </template>
 
 <script>
@@ -10,36 +10,26 @@ export default {
 
   props: ['id', 'type'],
 
-  mounted() {
-  	var vm = this;
-  	this.$http.get(this.get_api_url()).then(function(response){
-  		vm.favorited = response.data
+  created() {
+  	var _this = this;
+  	window.axios.get(window.tokenize('/api/favorite/' + this.id + '/' + this.type)).then(function(response){
+  		_this.favorited = response.data
   	});
   },
 
   methods: {
-  	get_api_url: function() {
-  		var api_url = '/api/favorite/' + this.id + '/' + this.type;
-  		api_url = window.tokenize(api_url);
-  		return api_url;
-  	},
-  	favorite: function() {
-  		var vm = this;
-  		this.$http.post(this.get_api_url()).then(function(response) {
-  			vm.favorited  = true;
+  	toggle: function() {
+  		var _this = this;
+  		window.axios.post(window.tokenize('/api/favorite/' + this.id + '/' + this.type))
+        .then(function(response) {
+  			_this.favorited  = response.data;
   		});
   	},
-  	delfav: function() {
-  		var vm = this;
-  		this.$http.delete(this.get_api_url()).then(function(response) {
-  			vm.favorited  = false;
-  		});  		
-  	}
   },
 
   data () {
     return {
-    	favorited: false,
+    	favorited: null,
     };
   }
 };

@@ -21,10 +21,10 @@ class QuestionInvited extends Notification
      *
      * @return void
      */
-    public function __construct($user_id,$question_id)
+     public function __construct($user_id, $question_id)
     {
-        $this->user  =User::find($user_id);
-        $this->question =Question::find($question_id);
+        $this->user     = User::find($user_id);
+        $this->question = Question::find($question_id);
     }
 
     /**
@@ -63,6 +63,7 @@ class QuestionInvited extends Notification
         return [
             'type'    => 'other',
             'subtype' => 'question_invite',
+            'question_id' => $this->question->id,
             'message' => $this->user->link() . '邀请了您去回答问题:' . $this->question->link(),
         ];
     }

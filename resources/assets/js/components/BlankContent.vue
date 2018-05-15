@@ -1,14 +1,16 @@
 <template>
-	<div class="unMessage">
-        <p>这里还木有内容哦~</p>
-        <span class="iconfont icon-meiyouxiaoxi1"></span>
-    </div>
+	<div class="blank-content">
+		<div class="tip">
+			<p>这里还木有内容哦~</p>
+			<span class="iconfont icon-meiyouxiaoxi1"></span>
+		</div>
+	</div>
 </template>
 
 <script>
 export default {
 
-  name: 'BlankContent',
+  name: 'unNotification',
 
   data () {
     return {
@@ -19,19 +21,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.unMessage {
-    font-size: 14px;
-    color: #969696;
-    margin-top: 150px;
-    text-align: center;
-    p {
-        font-size: 14px;
-        color: #333;
-        font-weight: 700;
-    }
-    span {
-        font-size: 100px;
-        color: #969696;
-    }
+.blank-content {
+	width: 100%;
+	height: 100%;
+	min-height: 300px;
+	text-align: center;
+	color: #969696;
+	font-size: 14px;
+	.tip {
+		span {
+			font-size: 100px;
+			color: #969696;
+		}
+	}
 }
 </style>

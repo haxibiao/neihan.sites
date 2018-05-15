@@ -1,0 +1,19 @@
+// 编辑框
+.profile-edit.intro-form {
+	margin-bottom: 20px;
+	display: none;
+	textarea {
+		height: 150px;
+		white-space: pre-line;
+		margin-bottom: 12px;
+	}
+	.btn-hollow {
+		padding: 8px 16px;
+	}
+	a {
+		margin-left: 10px;
+		font-size: 14px;
+		color: $gray-color2;
+		vertical-align: middle;
+	}
+}

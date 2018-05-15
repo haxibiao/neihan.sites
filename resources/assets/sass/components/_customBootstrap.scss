@@ -1,0 +1,132 @@
+// 切换菜单：覆盖bootstrap的nav-tabs
+#trigger-menu {
+  margin-bottom: 20px;
+  li {
+    display: inline-block;
+    height: 52px;
+    a {
+      padding: 12px 22px;
+      font-size: $font-size-tip;
+      font-weight: 700;
+      color: $gray-color2;
+      line-height: 25px;
+      border: none;
+      i {
+        padding-right: 3px;
+        font-size: 17px;
+      }
+    }
+    &:hover {
+      border-bottom: 2px solid $gray-color1;
+      a {
+        background-color: initial;
+        color: $gray-color1;
+      }
+    }
+    &.active {
+      border-bottom: 2px solid $dark-color2;
+      a {
+        color: $dark-color2;
+      }
+    }
+  }
+  @media screen and (max-width:1000px) {
+    li {
+      height: auto;
+      &>a {
+         padding: 12px 8px;
+      }
+    }
+  }
+  @media screen and (max-width:768px) {
+    li {
+      height: auto;
+      &>a {
+         font-size: 13px;
+         padding: 9px 5px;
+         i {
+           font-size: 15px;
+        }
+      }
+    }
+  }
+}
+
+//弹出菜单: 覆盖bootstrap的dropdown-menu
+.dropdown-menu {
+  top: auto;
+  left: auto;
+  min-width: 150px;
+  li {
+    font-size: 14px;
+    padding: 0 !important;
+    border-top: 0 !important;
+    &>a {
+      position: relative;
+      padding: 10px 20px;
+      line-height: 1.2;
+      display: block;
+      color: $dark-color1;
+      i {
+        margin-right: 8px;
+        font-size: 14px;
+        color: $dark-color1;
+        vertical-align: middle;
+      }
+      span {
+        vertical-align: middle;
+      }
+    }
+    &:hover {
+      background-color: $light-color2;
+    }
+    .noti-badge {
+      top: 50%;
+      right: 15px;
+      transform: translate(0,-50%);
+      font-size: 13px;
+    }
+  }
+}
+
+// hover菜单
+.hover-dropdown-menu {
+  top: 100% !important;
+  left: auto !important;
+  right: unset !important;
+  padding: 5px 0;
+  text-align: left;
+  width: 190px;
+  &>li {
+    font-size: 15px;
+    &>a {
+      line-height: 30px;
+      i {
+        margin-right: 15px !important;
+        font-size: 22px;
+        color: $theme-color;
+        display: inline-block;
+      }
+    }
+  }
+}
+[data-hover=dropdown] {
+  &:hover {
+    .dropdown-menu {
+      display: block;
+    }
+  }
+}
+// 迷你轮播图
+.carousel.mini {
+  margin: 0 0 30px 0;
+  .carousel-inner {
+    img {
+      max-height: 180px;
+      min-height: 120px;
+    }
+  }
+  .carousel-indicators {
+    bottom: 8px;
+  }
+}

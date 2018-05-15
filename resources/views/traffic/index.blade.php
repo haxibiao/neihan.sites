@@ -4,7 +4,7 @@
 	<div class="container">
 
 		<div class="col-md-6">
-			<bar title-one="最近7天流量" chart-labels='{{ json_encode(array_keys($datas['traffic_by_date'])) }}' chart-data='{{ json_encode(array_values($datas['traffic_by_date'])) }}' />
+			<bar title-one="最近7天流量" chart-labels='{{ json_encode(array_keys($chart)) }}' chart-data='{{ json_encode(array_values($chart)) }}' />
 		</div>
 		<div class="col-md-6">
 			<ul class="nav nav-tabs">
@@ -29,8 +29,8 @@
 						@foreach($counts as $name => $count)
 						<li class="list-group-item">
 						<div class="pull-right" style="width: 100px">
-							<span class="badge">{{ $count }}</span>
 							{{ $name }}
+							<span class="badge">{{ $count }}</span>
 						</div>
 							<div class="progress">
 							  <div class="progress-bar" role="progressbar" aria-valuenow="{{ ceil( 100 * $count / $all ) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ ceil( 100 * $count / $all ) }}%;">
@@ -58,8 +58,8 @@
 						@foreach($counts['data'] as $key => $count)
 							@if(!empty($key))
 								<li class="list-group-item">
-									<span class="badge">{{ $count }}</span>
 									<a href="/traffic/{{ $name }}/{{ urlencode($key)}}">{{ $key }}</a>
+									<span class="badge">{{ $count }}</span>
 								</li>
 							@endif
 						@endforeach

@@ -1,0 +1,56 @@
+.aside-menu {
+  li {
+    &.active {
+      background-color:$light-color2;
+      border-radius: 4px;
+    }
+    &>a {
+      height: auto;
+      padding: 10px 25px;
+      line-height: 30px;
+      display: block;
+      font-size: 15px;
+      color: #252525;
+      .icon-wrp {
+        width: 32px;
+        height: 32px;
+        margin-right: 15px;
+        text-align: center;
+        background-color: $gray-color23;
+        border-radius: 4px;
+        display: inline-block;
+        vertical-align: middle;
+        i {
+          font-size: 20px;
+          color: #fff;
+          vertical-align: middle;
+        }
+        span {
+          vertical-align: middle;
+        }
+      }
+      @media screen and (max-width:768px) {
+          padding: 10px 0;
+          text-align: center;
+          .icon-wrp {
+            width: auto;
+            height: auto;
+            margin-right: 0;
+            text-align: center;
+            background-color: transparent;
+            border-radius: 0;
+            display: block;
+            vertical-align: middle;
+            i {
+              padding: 5px;
+              background-color: $gray-color23;
+              border-radius: 4px;
+            }
+          }
+      }
+    }
+    &:hover {
+      background-color:$light-color2;
+    }
+  }
+}

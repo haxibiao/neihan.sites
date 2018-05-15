@@ -1,0 +1,14 @@
+// 指定行数
+@mixin line-Number($line-number:3) {
+    display: -webkit-box;
+    -webkit-line-clamp: $line-number;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+//带边框的列表项之间的距离样式
+@mixin item-distance($distance:0 0 15px 0,$border-color:$light-color2) {
+  margin: $distance;
+  padding: $distance;
+  border-bottom: 1px solid $border-color;
+}

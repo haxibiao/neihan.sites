@@ -1,32 +1,62 @@
 <?php
 
+use App\Image;
 use App\Video;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 
-function link_source_css($category)
+function get_submit_status($submited_status, $isAdmin = false)
 {
-    $cate_css_path = '/css/fix/' . $category->id . '.css';
-    if (file_exists(public_path($cate_css_path))) {
-        return '<link rel="stylesheet" href="' . $cate_css_path . '">';
+    $submit_status = $isAdmin ? '收录' : '投稿';
+    switch ($submited_status) {
+        case '待审核':
+            $submit_status = '撤回';
+            break;
+        case '已收录':
+            $submit_status = '移除';
+            break;
+        case '已拒绝':
+            $submit_status = '再次投稿';
+            break;
+        case '已撤回':
+            $submit_status = '再次投稿';
+            break;
+        case '已移除':
+            $submit_status = '再次收录';
+            break;
     }
 
-    return '';
+    return $submit_status;
 }
 
-function topAdmins_json($topAdmins)
+function count_words($body)
 {
-    $names     = "";
-    $topAdmins = json_decode($topAdmins);
-    if (!count($topAdmins)) {
-        return "";
-    }
-    foreach ($topAdmins as $topAdmin) {
-        $name  = $topAdmin->name;
-        $names = $names . $name;
-    }
-    return $name;
+    $body_text = strip_tags($body);
+    preg_match_all('/[\x{4e00}-\x{9fff}]+/u', strip_tags($body), $matches);
+    $str        = implode('', $matches[0]);
+    $body_count = strlen(strip_tags($body)) - strlen($str) / 3 * 2;
+    return $body_count;
+}
+
+function user_id()
+{
+    return Auth::check() ? Auth::user()->id : false;
+}
+
+function is_follow($type, $id)
+{
+    return Auth::check() ? Auth::user()->isFollow($type, $id) : false;
+}
+
+function checkEditor()
+{
+    return Auth::check() && Auth::user()->checkEditor();
+}
+
+function get_polymorph_types($type)
+{
+    return ends_with($type, 's') ? $type : $type . 's';
 }
 
 function is_weixin_editing()
@@ -43,6 +73,23 @@ function get_article_url($article)
     return $url;
 }
 
+function parse_image($body)
+{
+    //检测本地没图的时候取线上的
+    if (\App::environment('local')) {
+        $pattern_img = '/<img(.*?)src=\"(.*?)\"(.*?)>/';
+        preg_match_all($pattern_img, $body, $matches);
+        $imgs = $matches[2];
+        foreach ($imgs as $img) {
+            $image = Image::where('path', $img)->first();
+            if ($image) {
+                $body = str_replace($img, $image->url_prod(), $body);
+            }
+        }
+    }
+    return $body;
+}
+
 function parse_video($body)
 {
     //TODO:: [视频的尺寸还是不完美，后面要获取到视频的尺寸才好处理, 先默认用半个页面来站住]
@@ -54,7 +101,7 @@ function parse_video($body)
 
             $video = Video::find($video_id);
             if ($video) {
-                $video_html = '<div class="row"><div class="col-md-6"><div class="embed-responsive embed-responsive-4by3"><video class="embed-responsive-item" controls poster="' . get_img($video->cover) . '"><source src="' . $video->path . '" type="video/mp4"></video></div></div></div>';
+                $video_html = '<div class="row"><div class="col-md-6"><div class="embed-responsive embed-responsive-4by3"><video class="embed-responsive-item" controls poster="' . $video->cover . '"><source src="' . $video->path . '" type="video/mp4"></video></div></div></div>';
                 $body       = str_replace($img_html, $video_html, $body);
             }
         }
@@ -101,7 +148,7 @@ function get_top_nav_bg()
         return 'background-color: #9d2932';
     }
     if (get_domain() == 'ainicheng.com') {
-        return 'background-color: #F2B5C5';
+        return 'background-color: #3b5795';
     }
     if (get_domain() == 'qunyige.com') {
         return 'background-color: #f796c9';
@@ -132,7 +179,6 @@ function get_active_css($path, $full_match = 0)
     } else if (starts_with(Request::path(), $path)) {
         $active = 'active';
     }
-
     if ($full_match) {
         if (Request::path() == $path) {
             $active = 'active';
@@ -152,27 +198,6 @@ function get_full_url($path)
     return env('APP_URL') . $path;
 }
 
-function get_img($path)
-{
-    if (starts_with($path, 'http')) {
-        return $path;
-    }
-    if (\App::environment('local')) {
-        if (!file_exists(public_path($path))) {
-            return env('APP_URL') . $path;
-        }
-    }
-    return $path;
-}
-
-function get_avatar($user)
-{
-    if (!empty($user->avatar)) {
-        return get_img($user->avatar);
-    }
-    return get_qq_pic($user);
-}
-
 function get_qq_pic($qq)
 {
     return 'https://q.qlogo.cn/headimg_dl?bs=qq&dst_uin=' . $qq . '&src_uin=qq.com&fid=blog&spec=100';
@@ -183,29 +208,11 @@ function get_qzone_pic($qq)
     return 'https://qlogo2.store.qq.com/qzonelogo/' . $qq . '/1/' . time();
 }
 
-function get_small_image($image_url)
-{
-    if (!str_contains($image_url, '.small.')) {
-        $extension = pathinfo(parse_url($image_url)['path'], PATHINFO_EXTENSION);
-
-        //fix article only!
-        //如果是本地文章的图片,就尝试获取它的小图片.
-        if (!str_contains($image_url, 'haxibiao') && !str_contains($image_url, 'storage/video')) {
-            $image_url = str_replace('.' . $extension, '.small.' . $extension, $image_url);
-        }
-
-    }
-
-    //fix dirty .png.small.jpg
-    // $image_url = str_replace('.png.small.jpg', '.png.small.png', $image_url);
-
-    return get_img($image_url);
-}
-
 function diffForHumansCN($time)
 {
     if ($time) {
         $humanStr = $time->diffForHumans();
+        $humanStr = str_replace('from now', '以后', $humanStr);
         $humanStr = str_replace('ago', '前', $humanStr);
         $humanStr = str_replace('seconds', '秒', $humanStr);
         $humanStr = str_replace('second', '秒', $humanStr);
@@ -221,34 +228,6 @@ function diffForHumansCN($time)
         $humanStr = str_replace('month', '月', $humanStr);
         $humanStr = str_replace('years', '年', $humanStr);
         $humanStr = str_replace('year', '年', $humanStr);
-        $humanStr = str_replace('from now', '', $humanStr);
         return $humanStr;
-    }
-}
-
-function get_user_name($id)
-{
-    if ($id) {
-        $user = User::findOrFail($id);
-        $name = $user->name;
-        return $name;
-    } else {
-        return "system";
-    }
-}
-function get_polymorph_types($type)
-{
-    return ends_with($type, 's') ? $type : $type . 's';
-}
-
-function get_category_logo($logo)
-{
-    return is_file($logo) ? $logo : "/images/category_01.jpeg";
-}
-
-function question_is_closed($question)
-{
-    if ($question->bonus > 0) {
-        return !empty($question->deadline) ? 'pay_continue' : 'pay_closed';
     }
 }

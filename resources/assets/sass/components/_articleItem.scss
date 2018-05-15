@@ -1,0 +1,286 @@
+//单行媒体组件：文章列表作者信息、专题管理员列表、专题列表。。。
+.author,.single-media {
+    margin-bottom: 15px;
+    font-size: 13px;
+    .avatar,.avatar-category {
+        width: 32px;
+        height: 32px;
+        margin-right: 5px;
+    }
+    .info {
+        display: inline-block;
+        vertical-align: middle;
+        .nickname,.name {
+            color: $dark-color1;
+            vertical-align: middle;
+        }
+        .badge-icon {
+            width: 15px;
+            height: 15px;
+        }
+        .time,.dynamic,span {
+            display: inline-block;
+            padding-left: 3px;
+            color: $gray-color2;
+            vertical-align: middle;
+        }
+    }
+    // 专题创建者突出信息
+    .extrude {
+      padding: 1px 3px;
+      margin-left: 2px;
+      border-radius: 3px;
+      font-size: 12px;
+      color: $gray-color2;
+      border: 1px solid $gray-color2;
+    }
+}
+// 文章列表项,问题列表项
+.article-item,.question-item {
+  position: relative;
+  width: 100%;
+  min-height: 160px;
+  word-wrap: break-word;
+  color: $dark-color1;
+  @include item-distance;
+  .wrap-img {
+      position: absolute;
+      display: none;
+      top: 50%;
+      right: 0;
+      width: 24%;
+      max-width: 180px;
+      transform: translateY(-50%);
+      img {
+          width: 100%;
+          max-height: 150px;
+          border-radius: 4px;
+          border: 1px solid $light-color2;
+      }
+  }
+  .content,.question-answers {
+      min-height: 120px;
+  }
+  &.have-img {
+      .content,.question-answers {
+          padding-right: 26%;
+      }
+      .wrap-img {
+          display: inline-block;
+      }
+  }
+  .title,.abstract {
+     @include line-Number(2);
+  }
+  .title {
+     margin-bottom: 4px;
+     font-size: $font-size-title;
+     &:hover {
+         text-decoration: underline !important;
+     }
+     span {
+      color: $dark-color1;
+     }
+  }
+  //摘要内容
+  .abstract {
+     margin: 0 0 10px;
+     font-size: $font-size-abstract;
+     line-height: 24px;
+     -webkit-line-clamp: 3;
+  }
+  .meta {
+    font-size: $font-size-detail;
+    line-height: 20px;
+    a,span {
+      margin-right: 10px;
+      color: $gray-color3;
+    }
+    &>a {
+        &:hover {
+          color: $gray-color1;
+        }
+    }
+    .origin-author {
+      display: inline;
+      a {
+        color: $link-color;
+      }
+    }
+    .collection-tag {
+      display: inline-block;
+      padding: 3px 6px;
+      margin-top: -4px;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      line-height: 1;
+      vertical-align: middle;
+      border: 1px solid rgba($theme-color, .7);
+      border-radius: 3px;
+    }
+  }
+  //动态的特殊样式
+  .comment {
+    line-height: 1.5;
+    font-size: $font-size-tip;
+    a {
+      color: $link-color;
+    }
+    p {
+      margin-bottom: 10px;
+      font-size: $font-size-tip;
+       @include line-Number(5);
+    }
+  }
+  blockquote {
+    margin-bottom: 0;
+    color: $gray-color2;
+    border-left: 3px solid $light-color1;
+  }
+  @media screen and (max-width: 650px) {
+    min-height: 140px;
+    .content,.question-answers {
+        min-height: 80px;
+    }
+    .title {
+        -webkit-line-clamp: 1;
+    }
+    .abstract {
+        -webkit-line-clamp: 2;
+    }
+    .comment {
+      p {
+        -webkit-line-clamp: 3;
+      } 
+    }
+  }
+}
+.question-item {
+  overflow: hidden;
+  padding: 15px 20px;
+  background-color: $theme-skin;
+  &.pay{
+    &::after {
+       content: '付费咨询';
+       position: absolute;
+       top: 10px;
+       right: -28px;
+       color: #fff;
+       font-size: 12px;
+       line-height: 20px;
+       background-color: rgba($theme-color, 0.7);
+       width: 100px;
+       text-align: center;
+       transform: rotateZ(40deg);
+    }
+    &.payed {
+       &::after {
+          content: '已解决';
+          background-color: $thin-violet;
+       }
+       .question-info {
+         .amount {
+           color: $thin-violet;
+         }
+       }
+    }
+    .title {
+      padding-right: 5%;
+    }
+  }
+  &.simple {
+    padding: 30px 0 0 0;
+    background-color: unset;
+    min-height: 120px;
+    border-bottom: none;
+    .title {
+      font-size: 15px;
+    }
+    .author {
+      margin-bottom: 5px;
+      .avatar {
+        width: 28px;
+        height: 28px;
+      }
+      .pull-right {
+        font-weight: 700;
+        margin-top: 4px;
+      }
+    }
+    .question-warp {
+      .wrap-img {
+        width: 30%;
+        img {
+          max-height: 100px;
+        }
+      }
+      .content,.question-answers {
+          min-height: auto;
+      }
+    }
+    &.have-img .content {
+      padding-right: 35%;
+    }
+  }
+  .question-info {
+    margin: 8px 0 12px 0;
+    .amount {
+      font-size: 15px;
+      margin-top: -3px;
+      color: $theme-color;
+    }
+  }
+  .question-warp {
+    position: relative;
+  }
+}
+
+// 分页
+.paging,.pagination {
+  margin: 20px 0;
+  text-align: center;
+  li {
+    margin: 0 5px;
+    display: inline-block;
+    .active {
+      font-weight: 700;
+      border: none;
+      pointer-events: none;
+    }
+    a,span {
+      float: left;
+      padding: 6px 12px;
+      font-size: 14px;
+      color: $gray-color2!important;
+      border: 1px solid #dcdcdc;
+      border-radius: 20px;
+      cursor: pointer;
+      &:hover {
+        background-color: rgba($gray-color2, 0.1);
+      }
+    }
+  }
+}
+
+.pagination {
+  &>li {
+    &:first-child,&:last-child {
+      &>a,&>span {
+        border-radius: 20px;
+      }
+    }
+    &.active {
+      a,span {
+        font-weight: 700;
+        border: none;
+        pointer-events: none;
+        background-color: transparent;
+      }
+    }
+  }
+}
+
+
+

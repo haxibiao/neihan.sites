@@ -6,17 +6,9 @@
 
 @section('content')
 <div class="container">
-    @if(!is_in_app())
-      <ol class="breadcrumb">
-        <li><a href="/">{{ config('app.name') }}</a></li>
-        <li><a href="/video">视频</a></li>
-        <li class="active">{{ $video->title }}</li>
-      </ol>
-    @endif
-
     <div class="panel panel-default">
         <div class="panel-heading">            
-            @if(Auth::check() && Auth::user()->is_editor)
+            @if(checkEditor())
             <div class="pull-right">
                 <a class="btn btn-success" href="/video/{{ $video->id }}/edit" role="button">
                     编辑
@@ -32,7 +24,7 @@
                 上传用户: <a href="/user/{{ $video->user->id }}">{{ $video->user->name }}</a>
             </p>
             <p>
-                最后修改: {{ diffForHumansCN($video->updated_at) }}
+                最后修改: {{ $video->updatedAt() }}
             </p>
             @if(!empty($video->introduction))
             <p class="lead">
@@ -40,8 +32,8 @@
             </p>
             @endif
             <div class="embed-responsive embed-responsive-16by9">
-                <video controls="" poster="{{ get_img($video->cover) }}" preload="auto">
-                    <source src="{{ get_img($video->path) }}" type="video/mp4">
+                <video controls="" poster="{{ $video->cover }}" preload="auto">
+                    <source src="{{ $video->path }}" type="video/mp4">
                     </source>
                 </video>
             </div>

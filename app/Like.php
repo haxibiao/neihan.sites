@@ -12,13 +12,13 @@ class Like extends Model
         'liked_type',
     ];
 
-    public function liked()
-    {
-        return $this->morphTo();
-    }
-
     public function user()
     {
         return $this->belongsTo(\App\User::class);
+    }
+
+    public function liked()
+    {
+        return $this->morphTo();
     }
 }
