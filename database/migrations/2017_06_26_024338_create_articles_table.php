@@ -20,6 +20,9 @@ class CreateArticlesTable extends Migration
 
             $table->mediumText('description')->nullable();
             
+            //被评论时间
+            $table->timestamp('commented')->nullable();
+            
             $table->integer('user_id');
             $table->integer('category_id')->nullable()->index()
             
