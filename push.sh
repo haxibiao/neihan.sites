@@ -1,9 +1,21 @@
 #!bin/bash
 
-~/.config/composer/vendor/bin/envoy run push
-
-cd ../dongdianyao.com
-~/.config/composer/vendor/bin/envoy run push
+source ~/.bash_aliases
 
 cd ../dongmeiwei.com
-~/.config/composer/vendor/bin/envoy run push
+run push
+
+cd ../dongdianyao.com
+run push
+
+cd ../dongdianyi.com
+run push
+
+cd ../qunyige.com
+run push
+
+cd ../youjianqi.com
+run push
+
+cd ../dianmoge.com
+run push

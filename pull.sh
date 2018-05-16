@@ -1,19 +1,32 @@
 #!bin/bash
 
 
-sudo chmod -R 777 .
-git config core.filemode false
+cd ../dongmeiwei.com
 git pull
 composer install
+php artisan env:refresh --local
 
 cd ../dongdianyao.com
-sudo chmod -R 777 .
-git config core.filemode false
 git pull
 composer install
+php artisan env:refresh --local
 
 cd ../dongmeiwei.com
-sudo chmod -R 777 .
-git config core.filemode false
 git pull
 composer install
+php artisan env:refresh --local
+
+cd ../qunyige.com
+git pull
+composer install
+php artisan env:refresh --local
+
+cd ../youjianqi.com
+git pull
+composer install
+php artisan env:refresh --local
+
+cd ../dianmoge.com
+git pull
+composer install
+php artisan env:refresh --local
