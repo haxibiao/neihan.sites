@@ -32,4 +32,4 @@ mix.js("resources/assets/js/spa.js", "public/js/b.js");
 //write
 mix.js("resources/assets/js/write.js", "public/js/write.js");
 
-mix.browserSync("l.ainicheng.com");
+// mix.browserSync("l.ainicheng.com");
