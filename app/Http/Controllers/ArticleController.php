@@ -191,6 +191,9 @@ class ArticleController extends Controller
         $article->count_words = ceil(strlen(strip_tags($article->body)) / 2);
         $article->save();
 
+        //images
+        $article->saveRelatedImagesFromBody();
+
         //允许编辑时定时发布
         $this->process_delay($article);
 
@@ -202,9 +205,6 @@ class ArticleController extends Controller
 
         //tags
         $this->save_article_tags($article);
-
-        //images
-        $this->saveRelatedImagesFromBody();
 
         return redirect()->to('/article/' . $article->id);
     }
