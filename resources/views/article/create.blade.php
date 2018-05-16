@@ -64,7 +64,7 @@
                     {{-- <div>
                     {!! Form::text('keywords',null, ['class' => 'form-control', 'required' => 'required', 'data-role' => 'tagsinput']) !!}
                     </div> --}}
-                    <tags-input name="keywords" required="required"></tags-input>
+                    <tags-input name="keywords"></tags-input>
                     <small class="text-danger">{{ $errors->first('keywords') }}</small>
                 </div>
             </div>
