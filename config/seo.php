@@ -15,4 +15,6 @@ return [
     'baiduNumber' => [
         'token' => '5gXEVRuomHcgZD5g',
     ],
+
+    'default_import_category_name' => '',
 ];

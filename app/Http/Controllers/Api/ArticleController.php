@@ -27,11 +27,17 @@ class ArticleController extends Controller
         $category = $jsonData['category'];
 
         //category
-        // $category = Category::firstOrnew([
-        //     'name'    => $category['name'],
-        //     'name_en' => $category['name_en'],
-        // ]);
-        $category = Category::where('name', '家常菜菜谱')->first();
+
+        $default_import_category_name = config('seo.default_import_category_name');
+        if (empty($default_import_category_name)) {
+            $category = Category::firstOrnew([
+                'name'    => $category['name'],
+                'name_en' => $category['name_en'],
+            ]);
+        } else {
+            $category = Category::where('name', $default_import_category_name)->first();
+        }
+
         // if (!$category->id)
         {
             $category->user_id = $user_id;
