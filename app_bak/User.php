@@ -157,7 +157,7 @@ class User extends Authenticatable
 
     public function newReuqestCategories()
     {
-        return $this->categories()->where('new_requests', '>', 0);
+        return $this->categories()->where('new_request_title', '<>', null);
     }
 
     public function newArticle()

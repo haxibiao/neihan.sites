@@ -92,7 +92,7 @@ export default {
       this.fetchData();
     },
     apiUrl() {
-      var api = "/api/admin-categories-check-article-" + this.articleId;
+      var api = "/api/categories/admin-check-article-" + this.articleId;
       if (this.q) {
         api = api + "?q=" + this.q;
       }
@@ -100,7 +100,7 @@ export default {
     },
     apiUrl2() {
       var page2 = this.page2;
-      var api = "/api/recommend-categories-check-article-" + this.articleId + "?page=" + page2;
+      var api = "/api/categories/recommend-check-article-" + this.articleId + "?page=" + page2;
       return window.tokenize(api);
     },
     getBtnClass(status) {

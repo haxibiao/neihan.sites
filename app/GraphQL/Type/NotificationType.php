@@ -22,16 +22,12 @@ class NotificationType extends GraphQLType
     public function fields()
     {
         return [
-            'id'             => [
+            'id'         => [
                 'type'        => Type::nonNull(Type::string()),
                 'description' => 'Th',
             ],
-            'time_ago'       => \App\GraphQL\Field\TimeField::class,
-            'type'           => [
-                'type'        => Type::string(),
-                'description' => 'type of notification',
-            ],
-            'read_at'        => [
+            'time_ago'   => \App\GraphQL\Field\TimeField::class,
+            'read_at'    => [
                 'type'        => Type::string(),
                 'description' => 'read_at of notification',
                 'resolve'     => function ($root, $args) {
@@ -40,7 +36,7 @@ class NotificationType extends GraphQLType
                     }
                 },
             ],
-            'time_ago'       => [
+            'time_ago'   => [
                 'type'        => Type::string(),
                 'description' => 'time ago of notification',
                 'resolve'     => function ($root, $args) {
@@ -49,33 +45,101 @@ class NotificationType extends GraphQLType
             ],
 
             //computed
+            'type'       => [
+                'type'        => Type::string(),
+                'description' => 'type of notification',
+                'resolve'     => function ($root, $args) {
+                    switch ($root->type) {
+                        case "App\\Notifications\\ArticleApproved":
+                            return "收录了文章";
+                        case "App\\Notifications\\ArticleRejected":
+                            return "拒绝了文章";
+                        case "App\\Notifications\\ArticleCommented":
+                            return "评论了文章";
+                        case "App\\Notifications\\ArticleFavorited":
+                            return "收藏了文章";
+                        case "App\\Notifications\\ArticleLiked":
+                            return "喜欢了文章";
+                        case "App\\Notifications\\CommentLiked":
+                            return "赞了评论";
+                        case "App\\Notifications\\ArticleTiped":
+                            return "打赏了文章";
+                        case "App\\Notifications\\CategoryFollowed":
+                            return "关注了专题";
+                        case "App\\Notifications\\CategoryRequested":
+                            return "投稿了专题";
+                        case "App\\Notifications\\CollectionFollowed":
+                            return "关注了文集";
+                        case "App\\Notifications\\UserFollowed":
+                            return "关注了";
+                        default:
+                            return "其他";
+                    }
+                },
+            ],
 
             //relation
-            'comment'        => [
+            'comment'    => [
                 'type'        => GraphQL::type('Comment'),
                 'description' => 'comment of Notification',
+                'resolve'     => function ($root, $args) {
+                    if (isset(($root->data['comment_id']))) {
+                        $comment = \App\Comment::find($root->data['comment_id']);
+                        return $comment;
+                    }
+                },
             ],
-            'article'        => [
+            'article'    => [
                 'type'        => GraphQL::type('Article'),
                 'description' => 'article of Notification',
+                'resolve'     => function ($root, $args) {
+                    if (isset(($root->data['article_id']))) {
+                        $article = \App\Article::find($root->data['article_id']);
+                        return $article;
+                    }
+                },
             ],
-            'question'       => [
+            'question'   => [
                 'type'        => GraphQL::type('Question'),
                 'description' => 'question of Notification',
+                'resolve'     => function ($root, $args) {
+                    if (isset(($root->data['question_id']))) {
+                        $question = \App\Question::find($root->data['question_id']);
+                        return $question;
+                    }
+                },
             ],
-            'user'           => [
+            'user'       => [
                 'type'        => GraphQL::type('User'),
                 'description' => 'user related to Notification',
+                'resolve'     => function ($root, $args) {
+                    if (isset(($root->data['user_id']))) {
+                        $user = \App\User::find($root->data['user_id']);
+                        return $user;
+                    }
+                },
             ],
-            'category'       => [
+            'category'   => [
                 'type'        => GraphQL::type('Category'),
                 'description' => 'category followed Notification',
+                'resolve'     => function ($root, $args) {
+                    if (isset(($root->data['category_id']))) {
+                        $category = \App\Category::find($root->data['category_id']);
+                        return $category;
+                    }
+                },
             ],
-            'collection'     => [
+            'collection' => [
                 'type'        => GraphQL::type('Collection'),
                 'description' => 'collection followed Notification',
+                'resolve'     => function ($root, $args) {
+                    if (isset($root->data['question_id'])) {
+                        $collection = \App\Collection::find($root->data['collection_id']);
+                        return $collection;
+                    }
+                },
             ],
-            'tip'            => [
+            'tip'        => [
                 'type'        => GraphQL::type('Tip'),
                 'description' => 'tip Notification',
                 'resolve'     => function ($root, $args) {
@@ -85,83 +149,5 @@ class NotificationType extends GraphQLType
                 },
             ],
         ];
-    }
-
-    public function resolveTypeField($root, $args)
-    {
-        switch ($root->type) {
-            case "App\\Notifications\\ArticleApproved":
-                return "收录了文章";
-            case "App\\Notifications\\ArticleRejected":
-                return "拒绝了文章";
-            case "App\\Notifications\\ArticleCommented":
-                return "评论了文章";
-            case "App\\Notifications\\ArticleFavorited":
-                return "收藏了文章";
-            case "App\\Notifications\\ArticleLiked":
-                return "喜欢了文章";
-            case "App\\Notifications\\CommentLiked":
-                return "赞了评论";
-            case "App\\Notifications\\ArticleTiped":
-                return "打赏了文章";
-            case "App\\Notifications\\CategoryFollowed":
-                return "关注了专题";
-            case "App\\Notifications\\CategoryRequested":
-                return "投稿了专题";
-            case "App\\Notifications\\CollectionFollowed":
-                return "关注了文集";
-            case "App\\Notifications\\UserFollowed":
-                return "关注了";
-            default:
-                return "其他";
-        }
-    }
-
-    public function resolveUserField($root, $args)
-    {
-        if (isset(($root->data['user_id']))) {
-            $user = \App\User::find($root->data['user_id']);
-            return $user;
-        }
-    }
-
-    public function resolveCategoryField($root, $args)
-    {
-        if (isset(($root->data['category_id']))) {
-            $category = \App\Category::find($root->data['category_id']);
-            return $category;
-        }
-    }
-
-    public function resolveArticleField($root, $args)
-    {
-        if (isset(($root->data['article_id']))) {
-            $article = \App\Article::find($root->data['article_id']);
-            return $article;
-        }
-    }
-
-    public function resolveCommentField($root, $args)
-    {
-        if (isset(($root->data['comment_id']))) {
-            $comment = \App\Comment::find($root->data['comment_id']);
-            return $comment;
-        }
-    }
-
-    public function resolveQuestionField($root, $args)
-    {
-        if (isset(($root->data['question_id']))) {
-            $question = \App\Question::find($root->data['question_id']);
-            return $question;
-        }
-    }
-
-    public function resolveCollectionField($root, $args)
-    {
-        if (isset($root->data['question_id'])) {
-            $collection = \App\Collection::find($root->data['collection_id']);
-            return $collection;
-        }
     }
 }

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Article;
 use App\Category;
 use App\Http\Controllers\Controller;
-use App\Jobs\SendCategoryRequest;
 use App\Notifications\ArticleApproved;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -59,6 +58,31 @@ class CategoryController extends Controller
         return $category;
     }
 
+    //投稿请求的逻辑放这里了
+    public function newReuqestCategories(Request $request)
+    {
+        $user = $request->user();
+        return $user->newReuqestCategories;
+    }
+
+    public function pendingArticles(Request $request)
+    {
+        $user     = $request->user();
+        $articles = [];
+        foreach ($user->adminCategories as $category) {
+            foreach ($category->newRequestArticles->load('user') as $article) {
+                $articles[] = $article;
+            }
+        }
+        return $articles;
+    }
+
+    public function requestedArticles(Request $request, $cid)
+    {
+        $category = Category::findOrFail($cid);
+        return $category->requestedInMonthArticles->load('user');
+    }
+
     public function checkCategory(Request $request, $id)
     {
         $category = Category::findOrFail($id);
@@ -100,9 +124,7 @@ class CategoryController extends Controller
             $article->submited_status = $pivot->submit;
         } else {
             $article->submited_status = '待审核';
-
-            //文章和分类的关系就在这，不能重复投稿，不然关联取通过审核的文章或者分类会重复！！
-            $article->allCategories()->sync([
+            $article->allCategories()->syncWithoutDetaching([
                 $cid => [
                     'submit' => $article->submited_status,
                 ],
@@ -111,7 +133,20 @@ class CategoryController extends Controller
 
         //给所有管理员延时10分钟发通知，提示有新的投稿请求
         if ($article->submited_status == '待审核') {
-            SendCategoryRequest::dispatch($article, $category)->delay(now()->addMinutes(1));
+            // SendCategoryRequest::dispatch($article, $category)->delay(now()->addMinutes(1));
+
+            //给所有专题管理发通知
+            foreach ($category->admins as $admin) {
+                $admin->forgetUnreads();
+            }
+            //also send to creator
+            $category->user->forgetUnreads();
+
+            //TODO::如果后面撤回了，这个标题也留这了
+            $category->new_request_title = $article->title;
+            //更新单个专题上的新请求数
+            $category->new_requests = $category->articles()->wherePivot('submit', '待审核')->count();
+            $category->save();
         }
 
         $article->submit_status = get_submit_status($article->submited_status);
@@ -211,60 +246,33 @@ class CategoryController extends Controller
         return $categoriesNotMine　;
     }
 
-    
-
-    public function approveCategory(Request $request, $aid, $cid)
+    public function approveCategory(Request $request, $cid, $aid)
     {
         $user = $request->user();
-
-        //文章or专题有可能被删除了，先把未读消息处理了
-        foreach ($user->notifications as $notification) {
-            $data = $notification->data;
-            if ($data['type'] == 'category_request') {
-                if ($data['article_id'] == $aid && $data['category_id'] == $cid) {
-                    $notification->markAsRead();
-                }
-            }
-        }
-
-        //总是记得清缓存，无论 接受 or 拒绝，后面成功ｏｒ失败 ...
         $user->forgetUnreads();
 
         $category = Category::findOrFail($cid);
-        $article  = Article::findOrFail($aid);
+        $article  = $category->requestedInMonthArticles()->where('article_id', $aid)->firstOrFail();
 
         //更新投稿请求的状态
-        $query           = $article->allCategories()->wherePivot('category_id', $cid);
-        $submited_status = '待审核';
-        if ($query->count()) {
-            //TODO::这里如果重复投稿，就出问题了
-            // $pivot = $query->first()->pivot;
-            foreach ($query->get() as $cate) {
-                $pivot = $cate->pivot;
-                if ($request->get('remove')) {
-                    $pivot->delete();
-                } else {
-                    $pivot->submit = $request->get('deny') ? '已拒绝' : '已收录';
-                    $pivot->save();
-                    $submited_status = $pivot->submit;
-
-                    if ($pivot->submit == '已收录') {
-                        //接受文章，更新专题文章数
-                        $category->count = $category->publishedArticles()->count();
-                        $category->save();
-                    }
-                }
-            }
+        $pivot         = $article->pivot;
+        $pivot->submit = $request->get('deny') ? '已拒绝' : '已收录';
+        if ($request->get('remove')) {
+            $pivot->submit = '已移除';
         }
-
-        // return $category->articles()->wherePivot('submit', '待审核')->get();
+        $pivot->save();
+        if ($pivot->submit == '已收录') {
+            //接受文章，更新专题文章数
+            $category->count = $category->publishedArticles()->count();
+            $category->save();
+        }
 
         //重新统计专题上的未处理投稿数...
         $category->new_requests = $category->articles()->wherePivot('submit', '待审核')->count();
         $category->save();
 
         //发送通知给投稿者
-        $article->user->notify(new ArticleApproved($article, $category, $submited_status));
+        $article->user->notify(new ArticleApproved($article, $category, $pivot->submit));
         $article->user->forgetUnreads();
 
         //更新文章主分类,方便上首页
@@ -272,9 +280,9 @@ class CategoryController extends Controller
         $article->save();
 
         //收录状态返回给UI
-        $article->submit_status   = get_submit_status($submited_status);
-        $article->submited_status = $submited_status;
-
+        // $article->submit_status   = get_submit_status($submited_status);
+        // $article->submited_status = $submited_status;
+        $article->load('user');
         return $article;
     }
 }

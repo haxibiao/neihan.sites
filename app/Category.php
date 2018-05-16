@@ -59,8 +59,17 @@ class Category extends Model
     public function newRequestArticles()
     {
         return $this->belongsToMany('App\Article')
-            ->wherePivot('submit','待审核')
-            ->withPivot('submit')
+            ->wherePivot('submit', '待审核')
+            ->withPivot('submit','updated_at')
+            ->withTimestamps()
+            ->orderBy('id', 'desc');
+    }
+
+    public function requestedInMonthArticles()
+    {
+        return $this->belongsToMany('App\Article')
+            ->wherePivot('created_at', '>', \Carbon\Carbon::now()->addDays(-30))
+            ->withPivot('submit', 'created_at')
             ->withTimestamps()
             ->orderBy('id', 'desc');
     }
@@ -68,9 +77,8 @@ class Category extends Model
     public function publishedArticles()
     {
         return $this->belongsToMany('App\Article')
-            ->where('articles.status', '>', 0)
-        //TODO:: fix data !! 专题下的文章，submit都必须是已收录，避免status 1的未审核文章显示了
-        // ->wherePivot('submit', '已收录')
+            ->where('articles.status', '>', 0) //TODO:: double check fix existing status = 1 articles pivot submit  ...
+            ->wherePivot('submit', '已收录')
             ->withPivot('submit')
             ->withTimestamps()
             ->orderBy('id', 'desc');

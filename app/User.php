@@ -254,10 +254,6 @@ class User extends Authenticatable
             $unreads['chats'] = $this->chats->sum(function ($item) {
                 return $item->pivot->unreads;
             });
-
-            $unreads['requests'] = $unreadNotifications->sum(function ($item) {
-                return $item->type == 'App\Notifications\CategoryRequested';
-            });
             $unreads['likes'] = $unreadNotifications->sum(function ($item) {
                 return $item->type == 'App\Notifications\ArticleLiked';
             });
@@ -270,12 +266,13 @@ class User extends Authenticatable
             $unreads['others'] = $unreadNotifications->sum(function ($item) {
                 return !in_array($item->type, [
                     'App\Notifications\ArticleCommented',
-                    'App\Notifications\CategoryRequested',
                     'App\Notifications\ArticleLiked',
                     'App\Notifications\UserFollowed',
                     'App\Notifications\ArticleTiped',
                 ]);
             });
+
+            $unreads['requests'] = Auth::user()->adminCategories()->sum('new_requests');
             //write cache
             Cache::put('unreads_' . $this->id, $unreads, 60);
         }

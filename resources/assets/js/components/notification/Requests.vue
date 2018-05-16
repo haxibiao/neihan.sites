@@ -32,29 +32,28 @@
 
 <script>
 export default {
+	name: "Requests",
 
-  name: 'Requests',
+	created() {
+		var api = window.tokenize("/api/categories/new-requested");
+		var _this = this;
+		window.axios.get(api).then(function(response) {
+			_this.categories = response.data;
+		});
+	},
 
-  created() {
-  	var api = window.tokenize('/api/new-request-categories');
-  	var _this = this;
-  	window.axios.get(api).then(function(response){
-  		_this.categories = response.data;
-  	});
-  },
+	methods: {
+		clickName(category_name) {
+			window.category_name = category_name;
+		}
+	},
 
-  methods:{
-  	clickName(category_name) {
-  		window.category_name = category_name;
-  	}
-  },
-
-  data () {
-    return {
-    	categories: []
-    }
-  }
-}
+	data() {
+		return {
+			categories: []
+		};
+	}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -78,29 +77,30 @@ export default {
 				color: #252525;
 				span {
 					p {
-					 display: -webkit-box;
-				   -webkit-line-clamp: 1;
-				   -webkit-box-orient: vertical;
-				   overflow: hidden;
+						display: -webkit-box;
+						-webkit-line-clamp: 1;
+						-webkit-box-orient: vertical;
+						overflow: hidden;
 					}
 				}
 			}
 		}
 	}
 	.all-request {
-		.avatar-category,.info {
+		.avatar-category,
+		.info {
 			display: inline-block;
 		}
 		.avatar-category {
 			width: 50px;
 			height: 50px;
-			background-color: #FFF;
+			background-color: #fff;
 			border: 1px solid #f0f0f0;
 			text-align: center;
 			line-height: 48px;
 			i {
 				font-size: 30px;
-				color: #FF9D23;
+				color: #ff9d23;
 			}
 		}
 		.info {

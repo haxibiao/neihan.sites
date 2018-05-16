@@ -13,10 +13,10 @@ class ArticleFilterEnum extends GraphQLType {
             'TOP' => 'TOP',
             'RECOMMEND' => 'RECOMMEND',
 
-            //category submit request
+            //filter with category submit request status showing ...
             'CATE_SUBMIT_STATUS' => 'CATE_SUBMIT_STATUS',
 
-            //new requested articles
+            //filter new requested articles
             'NEW_REQUESTED' => 'NEW_REQUESTED',
 
             //my

@@ -272,7 +272,7 @@ class UserType extends GraphQLType
                         return $root->adminCategories;
                     }
                     if (isset($args['filter']) && $args['filter'] == 'REQUESTED') {
-                        return $root->adminCategories()->where('new_requests', '>', 0)->get();
+                        return $root->adminCategories()->where('new_request_title', '<>', null)->get();
                     }
                     if (isset($args['filter']) && $args['filter'] == 'FOLLOWED') {
                         $categories           = [];

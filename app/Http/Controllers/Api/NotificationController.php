@@ -90,57 +90,19 @@ class NotificationController extends Controller
         $user          = $request->user();
         foreach ($user->notifications as $notification) {
             $data = $notification->data;
+            //每个通知里都有个group的 type值，方便组合通知列表
             if ($data['type'] == $type) {
                 $data['time'] = $notification->created_at->toDateTimeString();
 
+                //follow
                 if ($type == 'follow') {
                     $data['is_followed'] = Auth::user()->isFollow('users', $data['user_id']);
                 }
                 $data['unread'] = $notification->read_at ? 0 : 1;
 
-                //只要投稿请求，都点开就标记已读...
-                if ($type != 'category_request') {
-                    $notification->markAsRead();
-                    $user->forgetUnreads();
-
-                }
-
-                if ($type == 'category_request') {
-                    //查看具体某个分类的新请求
-
-                    //TODO::这里有时会产生一个bug,请求的id和notification data中的id会不一致
-                    //点开的同时应该清理专题未读的新投稿请求
-                    $category = Category::find(request('category_id'));
-                    if (!empty($category)) {
-                        $category->new_requests = 0;
-                        $category->save(['timestamp' => false]);
-                    }
-
-                    if (request('category_id')) {
-                        if ($data['category_id'] != request('category_id')) {
-                            continue;
-                        }
-                    } else {
-                        //只显示未处理的投稿请求(unread notification only)
-                        if ($notification->read_at) {
-                            continue;
-                        }
-                    }
-
-                    //提取投稿状态
-                    $category = Category::find($data['category_id']);
-                    if ($category) {
-                        $article = $category->articles()->where('articles.id', $data['article_id'])->first();
-                        if ($article) {
-                            // 不是待审核, 都点开就标记已读
-                            if ($article->pivot->submit != '待审核') {
-                                $notification->markAsRead();
-                                $user->forgetUnreads();
-                            }
-                            $data['submited_status'] = $article->pivot->submit;
-                        }
-                    }
-                }
+                //点开就标记已读...
+                $notification->markAsRead();
+                $user->forgetUnreads();                
 
                 //fix avatar in local
                 if (\App::environment('local')) {
@@ -155,11 +117,5 @@ class NotificationController extends Controller
             }
         }
         return $notifications;
-    }
-
-    public function newReuqestCategories(Request $request)
-    {
-        $user = $request->user();
-        return $user->newReuqestCategories;
     }
 }

@@ -40,7 +40,7 @@ function get_seo_tj()
     if (Storage::exists("seo_config")) {
         $json   = Storage::get('seo_config');
         $config = json_decode($json);
-        $tj   = $config->seo_tj;
+        $tj     = $config->seo_tj;
     }
     return $tj;
 }
