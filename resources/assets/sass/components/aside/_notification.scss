@@ -1,0 +1,36 @@
+.left-aside {
+  .notification-aside {
+    li {
+      &.active {
+        background-color: #f0f0f0;
+        border-radius: 4px;
+      }
+      & > a {
+        position: relative;
+        height: auto;
+        padding: 10px 25px;
+        line-height: 30px;
+        display: block;
+        font-size: 15px;
+        color: #252525;
+        i {
+          margin-right: 15px;
+          font-size: 22px;
+          color: $theme-color;
+          vertical-align: middle;
+        }
+        span {
+          vertical-align: middle;
+        }
+        .badge {
+          top: 50%;
+          margin-top: -10px;
+          right: 20px;
+        }
+      }
+      &:hover {
+        background-color: #f0f0f0;
+      }
+    }
+  }
+}

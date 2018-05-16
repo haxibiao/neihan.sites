@@ -1,0 +1,39 @@
+.other-message {
+	.hasMessage {
+		li {
+			.info {
+				font-size: 15px;
+				line-height: 1.7;
+				i {
+					color: $theme-color;
+					margin-right: 5px;
+					font-size: 20px;
+				}
+				a {
+					color: #2b89ca;
+					margin: 0 0 0 5px;
+					&:first-of-type {
+						margin: 0 5px 0 0;
+					}
+					&:nth-of-type(n + 2) {
+						&:before {
+							content: "《";
+						}
+						&:after {
+							content: "》";
+						}
+					}
+				}
+				span {
+					margin: 0 5px;
+				}
+			}
+			.time {
+				margin-top: 2px;
+				font-size: 12px;
+				color: #969696;
+				line-height: normal;
+			}
+		}
+	}
+}

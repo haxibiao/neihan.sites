@@ -47,6 +47,7 @@
     <!-- Scripts -->
     @if(Auth::check())
     <script type="text/javascript">
+            window.appName = '{{ config('app.name') }}';
             window.tokenize =　 function(api_url){
                 var api_token = '{{ Auth::user()->api_token }}'
                 if(api_url.indexOf('?') === -1) {
