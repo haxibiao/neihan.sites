@@ -130,6 +130,11 @@ class Category extends Model
         return $topAdmins;
     }
 
+    public function checkAdmin()
+    {
+        return Auth::check() && $this->isAdmin(Auth::user());
+    }
+
     public function isAdmin($user)
     {
         if ($this->admins()->where('users.id', $user->id)->count() || $this->user_id == $user->id) {

@@ -2,7 +2,6 @@
 
 echo "sync to $1..."
 cd ../$1.com/
-git reset --hard
 sudo chmod -R 777 .
 git config core.filemode false
 
