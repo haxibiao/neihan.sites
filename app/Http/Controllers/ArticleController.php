@@ -140,7 +140,10 @@ class ArticleController extends Controller
         if ($agent->isRobot()) {
             $article->hits_robot = $article->hits_robot + 1;
         }
-        $article->save(['timestamps' => false]);
+        
+        $article->timestamps = false;
+        $article->save();
+        $article->timestamps = true;
 
         //parse video and image, etc...
         $article->body = $article->parsedBody();
