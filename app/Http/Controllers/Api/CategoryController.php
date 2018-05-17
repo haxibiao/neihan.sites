@@ -13,14 +13,14 @@ class CategoryController extends Controller
 {
     public function search(Request $request, $aid)
     {
-        $article = Article::findOrFail($aid);
-        $query = $request->get('q');
+        $article    = Article::findOrFail($aid);
+        $query      = $request->get('q');
         $categories = Category::where('name', 'like', '%' . $query . '%')
             ->paginate(12);
-        foreach($categories as $category) {
-            $cate = $article->categories()->where('categories.id', $category->id)->first();
+        foreach ($categories as $category) {
+            $cate                      = $article->categories()->where('categories.id', $category->id)->first();
             $category->submited_status = "";
-            if($cate) {
+            if ($cate) {
                 $category->submited_status = $cate->pivot->submit;
             }
             $category->fillForJs();
@@ -282,7 +282,9 @@ class CategoryController extends Controller
         if ($pivot->submit == '已收录') {
             //接受文章，更新专题文章数
             $category->count = $category->publishedArticles()->count();
-            $category->save();
+            //更新文章主分类,方便上首页
+            $article->category_id = $cid;
+            $article->save();
         }
 
         //重新统计专题上的未处理投稿数...
@@ -292,10 +294,6 @@ class CategoryController extends Controller
         //发送通知给投稿者
         $article->user->notify(new ArticleApproved($article, $category, $pivot->submit));
         $article->user->forgetUnreads();
-
-        //更新文章主分类,方便上首页
-        $article->category_id = $cid;
-        $article->save();
 
         //收录状态返回给UI
         // $article->submit_status   = get_submit_status($submited_status);
