@@ -7,6 +7,7 @@ use App\Category;
 use App\User;
 use App\Video;
 use Auth;
+use Illuminate\Support\Collection;
 
 class IndexController extends Controller
 {
@@ -32,7 +33,7 @@ class IndexController extends Controller
                 // get user followed categories related articles ...
                 $articles = Article::with('user')->with('category')
                     ->where('status', '>', 0)
-                    ->where('source_url','=','0')
+                    ->where('source_url', '=', '0')
                     ->whereIn('category_id', $categorie_ids)
                     ->orderBy('updated_at', 'desc')
                     ->paginate(10);
@@ -46,14 +47,14 @@ class IndexController extends Controller
         if (!$has_follow_articles) {
             $categories = Category::orderBy('updated_at', 'desc')
                 ->where('count', '>=', 0)
-                ->where('status','>=',0)
+                ->where('status', '>=', 0)
                 ->orderBy('updated_at', 'desc')
                 ->take(7)
                 ->get();
 
             $articles = Article::with('user')->with('category')
                 ->where('status', '>', 0)
-                ->where('source_url','=','0')
+                ->where('source_url', '=', '0')
                 ->whereIn('category_id', $categories->pluck('id'))
                 ->orderBy('id', 'desc')
                 ->paginate(10);
@@ -69,11 +70,18 @@ class IndexController extends Controller
 
         $data             = (object) [];
         $data->categories = $categories;
-        $data->articles   = $articles;
-        $data->sticks = get_stick_articles('发现');
-        $data->carousel   = get_top_articles();
+        
+        //get sticks and filter sticks ....
+        $sticks           = new Collection(get_stick_articles('发现'));
+        $data->sticks     = $sticks;
+        $articles         = $articles->filter(function ($article) use ($sticks) {
+            return !in_array($article->id, $sticks->pluck('id')->toArray());
+        });
+        $data->articles = $articles;
 
-        $data->videos = Video::orderBy('id','desc')->take(4)->get();
+        $data->carousel = get_top_articles();
+
+        $data->videos = Video::orderBy('id', 'desc')->take(4)->get();
 
         return view('index.index')
             ->withData($data);
@@ -103,7 +111,7 @@ class IndexController extends Controller
                 ->paginate(10);
         } else {
             $articles = Article::where('status', '>', 0)
-                ->orderBy('hits','desc')
+                ->orderBy('hits', 'desc')
                 ->paginate(10);
         }
 
