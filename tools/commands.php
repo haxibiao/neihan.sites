@@ -26,7 +26,7 @@ Artisan::command('fix:data {operation} {--force}', function ($operation) {
     	$commander->fix_tags();
     }
     if($operation == "articles") {
-    	$commander->fix_tags();
+    	$commander->fix_articles();
     }
     if($operation == "images") {
     	$commander->fix_tags();
