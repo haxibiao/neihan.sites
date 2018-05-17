@@ -7,7 +7,7 @@
       <div class="banner-img recommend-question">
         <div>
           <i class="iconfont icon-help"></i>
-          <span>热门问答</span>
+          <span>热门问答分类</span>
         </div>
       </div>
     </div>
