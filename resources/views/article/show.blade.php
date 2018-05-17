@@ -57,6 +57,9 @@
             @include('article.parts.supporters')
           </div>
 
+          {{-- TODO:: #comments to here, use as top padding ...to comments section  --}}
+          <a name="comments"/>
+
           {{-- 喜欢和分享 --}}
           <div class="mate-bottom">
 

@@ -30,12 +30,12 @@
       <a target="_blank" href="/article/{{ $article->id }}" class="browse_meta">
         <i class="iconfont icon-liulan"></i> {{ $article->hits }}
       </a>
-      <a target="_blank" href="/article/{{ $article->id }}" class="comment_meta">
+      <a target="_blank" href="/article/{{ $article->id }}/#comments" class="comment_meta">
         <i class="iconfont icon-svg37"></i> {{ $article->count_replies }}
       </a>
-      <a target="_blank" href="/article/{{ $article->id }}"><i class="iconfont icon-03xihuan"></i> {{ $article->count_likes }}</a>
+      <a><i class="iconfont icon-03xihuan"></i> {{ $article->count_likes }} </a>
       @if($article->count_tips)
-        <a target="_blank" href="/article/{{ $article->id }}"><i class="iconfont icon-qianqianqian"></i> {{ $article->count_tips }}</a>
+        <a><i class="iconfont icon-qianqianqian"></i> {{ $article->count_tips }}</a>
       @endif
     </div>
   </div>
