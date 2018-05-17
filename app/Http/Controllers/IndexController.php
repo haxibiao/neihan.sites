@@ -8,6 +8,7 @@ use App\User;
 use App\Video;
 use Auth;
 use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class IndexController extends Controller
 {
@@ -72,12 +73,13 @@ class IndexController extends Controller
         $data->categories = $categories;
         
         //get sticks and filter sticks ....
+        $total = $articles->total();
         $sticks           = new Collection(get_stick_articles('发现'));
         $data->sticks     = $sticks;
         $articles         = $articles->filter(function ($article) use ($sticks) {
             return !in_array($article->id, $sticks->pluck('id')->toArray());
         });
-        $data->articles = $articles;
+        $data->articles = new LengthAwarePaginator(new Collection($articles), $total, 10);
 
         $data->carousel = get_top_articles();
 

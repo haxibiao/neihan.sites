@@ -7,7 +7,6 @@ use App\Category;
 use App\Http\Controllers\Controller;
 use App\Notifications\ArticleApproved;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class CategoryController extends Controller
 {
@@ -244,24 +243,10 @@ class CategoryController extends Controller
 
     public function recommendCategoriesCheckArticle(Request $request, $aid)
     {
-        $categories = Category::orderBy('id', 'desc')->paginate(9);
-        //获取当前文章的投稿状态
-        $categoriesWithOutMine = [];
-        foreach ($categories as $category) {
-            $category->fillForJs();
-            $category->submited_status = '';
-            $query                     = $category->articles()->wherePivot('article_id', $aid);
-            if ($query->count()) {
-                $category->submited_status = $query->first()->pivot->submit;
-            }
-            $category->submit_status = get_submit_status($category->submited_status);
-            if (!$category->isOfUser($request->user())) {
-                $categoriesWithOutMine[] = $category;
-            }
-        }
-        //推荐专题不包含可以收录的, 反回支持前端分页,加载更多的格式....
-        $categoriesNotMine　 = new LengthAwarePaginator(new \Illuminate\Support\Collection($categoriesWithOutMine), $categories->total(), 9);
-        return $categoriesNotMine　;
+        $user                  = $request->user();
+        $my_admin_category_ids = $user->adminCategories->pluck('id');
+        $categories            = Category::orderBy('id', 'desc')->whereNotIn('id', $my_admin_category_ids)->paginate(9);
+        return $categories;
     }
 
     public function approveCategory(Request $request, $cid, $aid)
@@ -303,9 +288,9 @@ class CategoryController extends Controller
         //自动置顶最新收录的文章到发现，时间７天
         stick_article([
             'article_id' => $article->id,
-            'expire' => 7,
-            'position' => '发现',
-            'reason' => '新收录',
+            'expire'     => 7,
+            'position'   => '发现',
+            'reason'     => '新收录',
         ], true);
 
         return $article;

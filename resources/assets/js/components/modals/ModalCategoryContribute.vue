@@ -51,7 +51,9 @@
                           v-else>{{ category.submited_status }}</a>
                         </div>
                       </li>
-                      <a class="btn-base btn-more" href="javascript:;" @click="fetchMore">{{ page2 >= lastPage ? '已经到底了':'正在加载更多' }}...</a>
+                      <div style="width: 200px; text-align:center; margin:auto">
+                        <a class="btn-base btn-more" href="javascript:;" @click="fetchMore">{{ page2 >= lastPage ? '已经到底了':'加载更多' }}...</a>
+                      </div>
                   </ul>
               </div>
           </div>
