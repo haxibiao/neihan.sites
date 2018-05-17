@@ -222,8 +222,9 @@ class CategoryController extends Controller
 
     public function adminCategoriesCheckArticle(Request $request, $aid)
     {
-        $user = $request->user();
-        $qb   = $user->adminCategories()->with('user');
+        $article = Article::findOrFail($aid);
+        $user    = $request->user();
+        $qb      = $user->adminCategories()->with('user');
         if (request('q')) {
             $qb = $qb->where('categories.name', 'like', request('q') . '%');
         }
@@ -231,9 +232,9 @@ class CategoryController extends Controller
         //获取当前文章的投稿状态
         foreach ($categories as $category) {
             $category->submited_status = '';
-            $query                     = $category->articles()->wherePivot('article_id', $aid);
-            if ($query->count()) {
-                $category->submited_status = $query->first()->pivot->submit;
+            $cateWithPivot             = $article->categories()->wherePivot('category_id', $category->id)->first();
+            if ($cateWithPivot) {
+                $category->submited_status = $cateWithPivot->pivot->submit;
             }
             $category->submit_status = $category->submited_status == '已收录' ? '移除' : '收录';
             $category->fillForJs();
@@ -243,9 +244,19 @@ class CategoryController extends Controller
 
     public function recommendCategoriesCheckArticle(Request $request, $aid)
     {
-        $user                  = $request->user();
-        $my_admin_category_ids = $user->adminCategories->pluck('id');
-        $categories            = Category::orderBy('id', 'desc')->whereNotIn('id', $my_admin_category_ids)->paginate(9);
+        $article    = Article::findOrFail($aid);
+        $user       = $request->user();
+        $categories = Category::orderBy('id', 'desc')->whereNotIn('id', $user->adminCategories()->pluck('categories.id'))->paginate(9);
+        $categories->map(function ($category) use ($article) {
+            $category->submited_status = '';
+            $cateWithPivot             = $article->categories()->wherePivot('category_id', $category->id)->first();
+            if ($cateWithPivot) {
+                $category->submited_status = $cateWithPivot->pivot->submit;
+            }
+            $category->submit_status = $category->submited_status == '已收录' ? '移除' : '投稿';
+            $category->fillForJs();
+            return $category;
+        });
         return $categories;
     }
 

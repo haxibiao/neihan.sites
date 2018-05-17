@@ -52,7 +52,7 @@
                         </div>
                       </li>
                       <div style="width: 200px; text-align:center; margin:auto">
-                        <a class="btn-base btn-more" href="javascript:;" @click="fetchMore">{{ page2 >= lastPage ? '已经到底了':'加载更多' }}...</a>
+                        <a class="btn-base btn-more" :style="page2 < lastPage?'background-color:green':''" href="javascript:;" @click="fetchMore">{{ page2 >= lastPage ? '已经到底了':'更多' }}...</a>
                       </div>
                   </ul>
               </div>
