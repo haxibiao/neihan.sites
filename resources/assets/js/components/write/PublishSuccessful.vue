@@ -38,7 +38,7 @@
 				</div>
 				<div class="categore-container" v-if="!q">
 					<div class="categories">
-						<h3>我管理的专题<a href="http://www.dongmeiwei.com/category/create">新建</a></h3>
+						<h3>我管理的专题<a href="/category/create">新建</a></h3>
 						<ul class="category-list clearfix">
 							<li v-for="category in categoryList" class="col-xs-4">
 								<img class="avatar-category" alt="png" :src="category.logo">
@@ -76,18 +76,18 @@
 						<!-- <div class="end">没有更多了</div> -->
 						<!-- 
 						 -->
-						   <a class="btn-base btn-more" href="javascript:;" @click="fetchMore">{{ page2 >= lastPage ? '已经到底了':'正在加载更多' }}...</a>
+						   <a class="btn-base btn-more" href="javascript:;" @click="fetchMore">{{ page2 >= lastPage ? '已经到底了':'点击加载更多' }}...</a>
 					</div>
 				</div>
 				<div class="search-categore" v-else>
 					<div class="categories">
 						<ul class="category-list clearfix">
-							<li v-for="category in recentlyCategoryList" class="col-xs-4">
+							<li v-for="category in searchCategoryList" class="col-xs-4">
 								<img class="avatar-category" alt="png" :src="category.logo">
 								<div class="info">
 									<span>{{category.name}}</span>
 								</div>
-								<a @click="submit(article)">{{category.submit_status}}</a>
+								<a :class="['action-btn',getBtn2Class(category.submit_status)]" @click="submit(category)">{{category.submit_status}}</a>
 							</li>
 						</ul>
 					</div>
@@ -133,39 +133,37 @@ export default {
 		closeBtn() {
 			this.$store.commit("PUBLISH_STATUS");
 		},
-		apiUrl() {
+		apiAdmin() {
 			var api = "/api/categories/admin-check-article-" + this.articleId;
 			if (this.q) {
 				api = api + "?q=" + this.q;
 			}
 			return window.tokenize(api);
 		},
-		apiUrl2() {
+		apiRecommend() {
 			var page2 = this.page2;
 			var api = "/api/categories/recommend-check-article-" + this.articleId + "?page=" + page2;
 			return window.tokenize(api);
 		},
-		apiUrl3() {
-			var api = "/api/categories/recently-" + this.article.id;
+		apiRecent() {
+			var api = "/api/categories/recently";
 			return window.tokenize(api);
 		},
 		add(category) {
 			var api = window.tokenize("/api/categories/" + this.article.id + "/add-category-" + category.id);
 			axios.get(api).then(response => {
-				category.submit_status = response.data.submit_status;
-				category.submited_status = response.data.submited_status;
+				category.submit_status = response.data.submit_status;			
 			});
 		},
 		submit(category) {
 			var api = window.tokenize("/api/categories/" + this.article.id + "/submit-category-" + category.id);
 			axios.get(api).then(response => {
 				category.submit_status = response.data.submit_status;
-				category.submited_status = response.data.submited_status;
 			});
 		},
 		fetchManage() {
 			var _this = this;
-			window.axios.get(this.apiUrl()).then(function(response) {
+			window.axios.get(this.apiAdmin()).then(function(response) {
 				if (_this.page == 1) {
 					_this.categoryList = response.data.data;
 				} else {
@@ -186,15 +184,12 @@ export default {
 		},
 		fetchRecomand() {
 			var _this = this;
-			window.axios.get(this.apiUrl2()).then(function(response) {
+			window.axios.get(this.apiRecommend()).then(function(response) {
 				_this.recommendCategoryList = _this.recommendCategoryList.concat(response.data.data);
-				// _this.page2 = response.data.currentPage;
+				_this.page2 = response.data.currentPage;
 				_this.page2_total = response.data.lastPage;
 				_this.lastPage = response.data.last_page;
 			});
-			// axios.get(this.apiUrl2()).then((response)=>{
-			//   _this.recommendCategoryList = response.data.data;
-			// });
 		},
 		fetchData() {
 			this.fetchManage();
@@ -202,7 +197,11 @@ export default {
 		},
 		search() {
 			this.page = 1;
-			this.fetchManage();
+			var _this=this;
+			var api='/api/categories/search-submit-for-article-'+this.article.id+'?q='+this.q;
+			window.axios.get(api).then(function(response){
+				_this.searchCategoryList = response.data.data;
+			});
 		}
 	},
 
@@ -218,102 +217,8 @@ export default {
 			page2_total: 1,
 			categoryList: [],
 			recommendCategoryList: [],
-			// categoryList: [
-			// 	// {
-			// 	// 	id:1,
-			// 	// 	name:'frontend',
-			// 	// 	logo: '/images/detail_01.jpg',
-			// 	// 	submit_status:'收录',
-			// 	// },
-			// 	// {
-			// 	// 	id:2,
-			// 	// 	name:'bookmarks',
-			// 	// 	logo: '/images/detail_02.jpg',
-			// 	// 	submit_status:'收录',
-			// 	// },
-			// 	// {
-			// 	// 	id:3,
-			// 	// 	name:'weichat',
-			// 	// 	logo: '/images/detail_03.jpg',
-			// 	// 	submit_status:'收录',
-			// 	// },
-			// ],
-			recentlyCategoryList: [
-				{
-					id: 1,
-					name: "美食",
-					logo: "/images/detail_04.jpg",
-					submit_status: "投稿"
-				},
-				{
-					id: 2,
-					name: "吃货大全",
-					logo: "/images/detail_05.jpg",
-					submit_status: "投稿"
-				},
-				{
-					id: 3,
-					name: "社会热点",
-					logo: "/images/dissertation_01.jpg",
-					submit_status: "投稿"
-				},
-				{
-					id: 4,
-					name: "@IT·互联网",
-					logo: "/images/dissertation_02.jpg",
-					submit_status: "投稿"
-				},
-				{
-					id: 5,
-					name: "raect-native",
-					logo: "/images/dissertation_03.jpg",
-					submit_status: "投稿"
-				}
-			]
-			// recommendCategoryList: [
-			// 	// {
-			// 	// 	id:1,
-			// 	// 	name:'社会热点',
-			// 	// 	meta:'248.5K篇文章，1343.1K人关注',
-			// 	// 	logo: '/images/dissertation_05.jpg',
-			// 	// 	submit_status:'投稿',
-			// 	// },
-			// 	// {
-			// 	// 	id:2,
-			// 	// 	name:'旅行·在路上',
-			// 	// 	meta:'248.5K篇文章，1343.1K人关注',
-			// 	// 	logo: '/images/dissertation_06.jpg',
-			// 	// 	submit_status:'投稿',
-			// 	// },
-			// 	// {
-			// 	// 	id:3,
-			// 	// 	name:'爱心早点',
-			// 	// 	meta:'248.5K篇文章，1343.1K人关注',
-			// 	// 	logo: '/images/dissertation_01.jpg',
-			// 	// 	submit_status:'投稿',
-			// 	// },
-			// 	// {
-			// 	// 	id:4,
-			// 	// 	name:'湖南美食',
-			// 	// 	meta:'248.5K篇文章，1343.1K人关注',
-			// 	// 	logo: '/images/dissertation_02.jpg',
-			// 	// 	submit_status:'投稿',
-			// 	// },
-			// 	// {
-			// 	// 	id:5,
-			// 	// 	name:'日韩料理',
-			// 	// 	meta:'248.5K篇文章，1343.1K人关注',
-			// 	// 	logo: '/images/dissertation_03.jpg',
-			// 	// 	submit_status:'投稿',
-			// 	// },
-			// 	// {
-			// 	// 	id:6,
-			// 	// 	name:'欧式美食',
-			// 	// 	meta:'248.5K篇文章，1343.1K人关注',
-			// 	// 	logo: '/images/dissertation_04.jpg',
-			// 	// 	submit_status:'投稿',
-			// 	// }
-			// ]
+			categoryList: [],
+			searchCategoryList: []
 		};
 	}
 };

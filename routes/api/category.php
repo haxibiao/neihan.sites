@@ -5,6 +5,9 @@ Route::get('categories', 'Api\CategoryController@index');
 Route::get('recommend-categories', 'Api\CategoryController@page');
 Route::get('category/{id}', 'Api\CategoryController@show');
 
+//搜索专题
+Route::get('/categories/search-submit-for-article-{aid}','Api\CategoryController@search');
+
 //编辑专题
 Route::middleware('auth:api')->post('category/new-logo', 'Api\CategoryController@newLogo');
 Route::middleware('auth:api')->post('category/{id}/edit-logo', 'Api\CategoryController@editLogo');

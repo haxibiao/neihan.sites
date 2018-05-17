@@ -11,6 +11,24 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class CategoryController extends Controller
 {
+    public function search(Request $request, $aid)
+    {
+        $article = Article::findOrFail($aid);
+        $query = $request->get('q');
+        $categories = Category::where('name', 'like', '%' . $query . '%')
+            ->paginate(12);
+        foreach($categories as $category) {
+            $cate = $article->categories()->where('categories.id', $category->id)->first();
+            $category->submited_status = "";
+            if($cate) {
+                $category->submited_status = $cate->pivot->submit;
+            }
+            $category->fillForJs();
+            $category->submit_status = get_submit_status($category->submited_status);
+        }
+        return $categories;
+    }
+
     public function newLogo(Request $request)
     {
         $category = new Category();
@@ -241,7 +259,7 @@ class CategoryController extends Controller
                 $categoriesWithOutMine[] = $category;
             }
         }
-        //推荐专题不包含可以收录的
+        //推荐专题不包含可以收录的, 反回支持前端分页,加载更多的格式....
         $categoriesNotMine　 = new LengthAwarePaginator(new \Illuminate\Support\Collection($categoriesWithOutMine), $categories->total(), 9);
         return $categoriesNotMine　;
     }
