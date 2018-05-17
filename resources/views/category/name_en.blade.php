@@ -15,13 +15,16 @@
                  <!-- Nav tabs -->
                  <ul id="trigger-menu" class="nav nav-tabs" role="tablist">
                    <li role="presentation" class="active">
-                    <a href="#comment" aria-controls="comment" role="tab" data-toggle="tab"><i class="iconfont icon-svg37"></i>最新评论</a>
+                    <a href="#comment" aria-controls="comment" role="tab" data-toggle="tab"><i class="iconfont icon-svg37"></i>新评论</a>
                    </li>
                    <li role="presentation">
-                    <a href="#include" aria-controls="include" role="tab" data-toggle="tab"><i class="iconfont icon-wenji"></i>最新收录</a>
+                    <a href="#include" aria-controls="include" role="tab" data-toggle="tab"><i class="iconfont icon-wenji"></i>新收录</a>
                    </li>
                    <li role="presentation">
                     <a href="#hot" aria-controls="hot" role="tab" data-toggle="tab"><i class="iconfont icon-huo"></i>热门</a>
+                   </li>
+                   <li role="presentation">
+                    <a href="#video" aria-controls="video" role="tab" data-toggle="tab"><i class="iconfont icon-huo"></i>视频</a>
                    </li>
                  </ul>
                  <!-- Tab panes -->
@@ -49,6 +52,24 @@
                        @else
                        <article-list api="/{{ $category->name_en }}?hot=1" start-page="2" />
                        @endif
+                   </ul>
+                   <ul role="tabpanel" class="fade note_list tab-pane" id="video">                                      
+                      
+                       @foreach($data['videos'] as $video) 
+                        <div class="col-md-3 col-xs-6">
+                          <div class="media">
+                              <a class="pull-left" href="/video/{{$video->id}}">
+                                  <img class="media-object" src="{{ $video->cover() }}" alt="{{ $video->title }}">
+                              </a>
+                              <div class="media-body">
+                                  <h4 class="media-heading">{{ $video->title }}</h4>
+                                  <p>{{ $video->description }}</p>
+                              </div>
+                          </div>
+                        </div>
+                       @endforeach
+
+                       <div>{!! $data['videos']->links() !!}</div>
                    </ul>
                  </div>
             </div>

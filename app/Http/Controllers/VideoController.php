@@ -100,6 +100,15 @@ class VideoController extends Controller
     {
         $video              = Video::with('user')->with('articles')->findOrFail($id);
         $data['json_lists'] = $this->get_json_lists($video);
+
+        //get some related videos ...
+        $videos = Video::orderBy('id', 'desc')->skip(rand(0, Video::count() - 8))->take(4)->get();
+        if ($video->category) {
+            $videos = $video->category->videos()->take(4)->get();
+        }
+
+        $data['related'] = $videos;
+
         return view('video.show')->withVideo($video)->withData($data);
     }
 

@@ -168,6 +168,7 @@ class ArticleController extends Controller
 
         //fix img relation missing, 同是修复image_url对应的image_top 为主要image_top
         $article->saveRelatedImagesFromBody();
+        $article->load('images');
 
         $categories    = request()->user()->adminCategories;
         $article->body = str_replace('<single-list id', '<single-list class="box-related-half" id', $article->body);

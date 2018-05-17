@@ -43,6 +43,11 @@ class Category extends Model
         return $this->belongsToMany('App\User');
     }
 
+    public function videos()
+    {
+        return $this->belongsToMany('App\Video');
+    }
+
     public function questions()
     {
         return $this->belongsToMany('App\Question');

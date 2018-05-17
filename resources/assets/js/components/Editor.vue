@@ -23,7 +23,9 @@ export default {
 
     //vue中，通过修改value属性来更新编辑器中的内容
     updated() {
-        this.editor.setValue(this.value);
+        if (this.value != this.editor.getValue()) {
+            this.editor.setValue(this.value);
+        }
     },
 
     data() {
@@ -90,21 +92,25 @@ export default {
             });
 
             this.editor.on("valuechanged", function(e, src) {
-                _this.$emit("valuechanged", _this.editor.getValue());
+                _this.$emit("changed", _this.editor.getValue());
             });
 
             if (this.write !== undefined) {
-                this.editor.on("editorsaved", function(e, src) {
-                    _this.$emit("editorsaved", _this.editor.getValue());
+                this.editor.on("saved", function(e, src) {
+                    _this.$emit("saved", _this.editor.getValue());
                     //TODO:: 光标应该跑最后跳动的位置
                     _this.editor.focus();
                 });
-                this.editor.on("editorpublished", function(e, src) {
-                    _this.$emit("editorpublished", _this.editor.getValue());
+                this.editor.on("published", function(e, src) {
+                    _this.$emit("published", _this.editor.getValue());
                     //TODO:: 光标应该跑最后跳动的位置
                     _this.editor.focus();
                 });
             }
+        },
+        textChanged() {
+            console.log("textchanged...");
+            this.$emit("textchanged");
         }
     }
 };

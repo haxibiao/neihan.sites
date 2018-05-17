@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Category;
 use App\User;
+use App\Video;
 use Auth;
 
 class IndexController extends Controller
@@ -70,6 +71,8 @@ class IndexController extends Controller
         $data->categories = $categories;
         $data->articles   = $articles;
         $data->carousel   = Article::where('is_top', 1)->where('image_top', '<>', '')->orderBy('id', 'desc')->take(8)->get();
+
+        $data->videos = Video::orderBy('id','desc')->take(4)->get();
 
         return view('index.index')
             ->withData($data);

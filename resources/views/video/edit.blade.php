@@ -27,11 +27,22 @@
                         {{ $errors->first('title') }}
                     </small>
                 </div>
-                <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
+             {{--    <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
                     {!! Form::label('category_id', '视频分类') !!}
                     {!! Form::select('category_id', $data['video_categories'], $video->category_id, ['id' => 'category_id', 'class' => 'form-control', 'required' => 'required']) !!}
                     <small class="text-danger">{{ $errors->first('category_id') }}</small>
+                </div> --}}
+                @editor
+                <div class="row">            
+                    <div class="col-md-6">
+                        <div class="form-group{{ $errors->has('category_ids') ? ' has-error' : '' }}">
+                            {!! Form::label('category_ids', '专题') !!}
+                            <category-select categories="{{ json_encode($video->categories->pluck('name','id')) }}"></category-select>
+                            <small class="text-danger">{{ $errors->first('category_ids') }}</small>
+                        </div>
+                    </div>
                 </div>
+                @endeditor
                 <div class="form-group{{ $errors->has('introduction') ? ' has-error' : '' }}">
                     {!! Form::label('introduction', '视频介绍(非必填)') !!}
 					        {!! Form::textarea('introduction', $video->introduction, ['class' => 'form-control']) !!}
