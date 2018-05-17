@@ -74,5 +74,5 @@ echo {{ $www }}
 {{ $run_migrate }}
 {{ $run_commands }}
 {{ $cache_clear }}
-{{ $copy_worker_config }}
+{{ $copy_worker_conf }}
 @endtask

@@ -55,9 +55,9 @@ EOT;
 function copy_ui_build($web_server)
 {
     return <<<EOT
-rsync -e ssh -P /data/www/dongmeiwei.com/public/css/* root@$web_server:/data/www/dongmeiwei.com/public/css/
-rsync -e ssh -P /data/www/dongmeiwei.com/public/js/* root@$web_server:/data/www/dongmeiwei.com/public/js/
-rsync -e ssh -P /data/www/dongmeiwei.com/public/mix-manifest.json root@$web_server:/data/www/dongmeiwei.com/public/
+rsync -e ssh -P /data/www/$domain/public/css/* root@$web_server:/data/www/$domain/public/css/
+rsync -e ssh -P /data/www/$domain/public/js/* root@$web_server:/data/www/$domain/public/js/
+rsync -e ssh -P /data/www/$domain/public/mix-manifest.json root@$web_server:/data/www/$domain/public/
 EOT;
 }
 
@@ -68,13 +68,13 @@ rsync -e ssh -P $www/public/mix-manifest.json root@$web_server:$www/public/
 EOT;
 
 $copy_worker_conf = <<<EOT
-cp -rf /data/www/dongmeiwei.com/config/worker/laravel-worker-dongmeiwei.com.conf /etc/supervisor/conf.d/
+cp -rf /data/www/$domain/config/worker/laravel-worker-$domain.conf /etc/supervisor/conf.d/
 supervisorctl reread
 supervisorctl update
 supervisorctl start laravel-worker:*
 EOT;
 
 $copy_crontab = <<<EOT
-cp -rf /data/www/dongmeiwei.com/config/cron/crontab /etc/crontab
+cp -rf /data/www/$domain/config/cron/crontab /etc/crontab
 service cron restart
 EOT;
