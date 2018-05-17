@@ -12,7 +12,11 @@
 					</div>
 					<div class="info">{{ notification.time }}</div>
 				</div>
-				<p>{{ notification.comment }}</p>
+
+				<!-- 这里如果是评论下的评论 返回的comment会是一个object -->
+				<p v-if="notification.comment.body">{{ notification.comment.body }}</p>
+				<p v-else>{{ notification.comment }}</p>
+				
 				<div class="tool-group">
 					<a :href="'/article/'+notification.article_id+'#'+notification.lou"><i class="iconfont icon-xinxi2"></i><span>回复</span></a>
 					<a :href="'/article/'+notification.article_id+'#1'"><i class="iconfont icon-zhuanfa2"></i><span>查看对话</span></a>
