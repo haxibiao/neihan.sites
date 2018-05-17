@@ -16,7 +16,7 @@
         @if(!str_contains($image->path_small, 'storage/video'))
             <div class="col-xs-3">
                 <p class="text-center">
-                    <img src="{{ $image->path_small }}" alt="" class="img img-responsive">
+                    <img src="{{ $image->url_small() }}" alt="" class="img img-responsive">
                     
                     <label class="radio text-center">
                       <input type="radio" name="primary_image" value="{{ $image->path_small }}" {{ $image->path_small == $article->image_url ? 'checked':'' }}>

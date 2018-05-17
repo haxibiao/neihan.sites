@@ -256,11 +256,17 @@ class Article extends Model
 
     public function saveRelatedImagesFromBody()
     {
-        $imgs             = [];
-        $pattern_img_path = '/src=\"(\/storage\/img\/\d+\.(jpg|gif|png|jpeg))\"/';
+        $images           = [];
+        $pattern_img_path = '/src=\"([^\"]*?)(\/storage\/image\/\d+\.(jpg|gif|png|jpeg))\"/';
         if (preg_match_all($pattern_img_path, $this->body, $match)) {
-            $imgs = $match[1];
+            $images = $match[2];
         }
+        $imgs             = [];
+        $pattern_img_path = '/src=\"([^\"]*?)(\/storage\/img\/\d+\.(jpg|gif|png|jpeg))\"/';
+        if (preg_match_all($pattern_img_path, $this->body, $match)) {
+            $imgs = $match[2];
+        }
+        $imgs                = array_merge($imgs, $images);
         $image_ids           = [];
         $has_primary_top     = false;
         $last_img_small_path = '';

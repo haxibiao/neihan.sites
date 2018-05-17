@@ -164,7 +164,7 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        $article = Article::findOrFail($id);
+        $article = Article::with('images')->findOrFail($id);
 
         //fix img relation missing, 同是修复image_url对应的image_top 为主要image_top
         $article->saveRelatedImagesFromBody();
