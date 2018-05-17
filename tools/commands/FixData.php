@@ -331,50 +331,17 @@ $names = ['厕所里蹦迪',
 
     public function fix_articles()
     {
-        $articles = Article::whereBetween('id', [1801, 1850])->get();
+       Article::orderBy('id')->chunk(100,function($articles){
+            foreach($articles as $article){
+                if((str_contains($article->image_url,'haxibiao')|| str_contains($article->title,'QQ情侣网名')) && $article->source_url=='0'){
+                        $article->source_url=1;
+                        $article->timestamps=false;
+                        $article->save();
 
-        foreach ($articles as $article) {
-            if (str_contains($article->image_url, 'haidoucaipu')) {
-                if (!str_contains($article->body, 'haxibiao')) {
-                    $article->image_url = 'https://haxibiao.com' . $article->image_url;
-                    $this->commander->info("$article->id fix image_url success");
-
-                    $article->save(['timestamp' => false]);
+                        $this->commander->info($article->id.'fix success');
                 }
-                $preg = '/<img.*?src="(.*?)".*?>/is';
-
-                preg_match_all($preg, $article->body, $match);
-
-                if (!empty($match[1])) {
-                    foreach ($match[1] as $image_url) {
-                        $image = new Image();
-                        $image->save();
-                        $filename=$image->id . '.jpg';
-                        $image->path = '/storage/img/' . $filename;
-                        $local_dir   = public_path('/storage/img/');
-                        $path_url=$local_dir.$filename;
-
-                        if (!is_dir($local_dir)) {
-                            mkdir($local_dir, 0777, 1);
-                        }
-
-                        file_put_contents($path_url, @file_get_contents($image_url));
-
-                        $this->commander->info("$image->id success save");
-
-                        $image->save();
-
-                        $article->body=str_replace($image_url, $image->path, $article->body);
-
-                        $image->articles()->syncWithoutDetaching($article->id);
-
-                        $this->commander->comment("$article->id fix image success");
-                    }
-                }
-
-                $article->save();
             }
-        }
+       });
     }
 
     public function fix_article_image($article)

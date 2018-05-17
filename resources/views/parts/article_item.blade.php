@@ -14,7 +14,7 @@
         @if($article->user->is_editor)
           <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
         @endif
-        <span class="time">{{ $article->timeAgo() }}</span>
+        <span class="time">{{ $article->updatedAt() }}</span>
       </div>
     </div>
     <a class="title" target="_blank" href="/article/{{ $article->id }}">

@@ -98,8 +98,8 @@ class IndexController extends Controller
                 ->where('created_at', '>', \Carbon\Carbon::now()->addDays(-7))
                 ->paginate(10);
         } else {
-            $articles = Article::orderBy('id', 'desc')
-                ->where('status', '>', 0)
+            $articles = Article::where('status', '>', 0)
+                ->orderBy('hits','desc')
                 ->paginate(10);
         }
 
