@@ -8,7 +8,7 @@
                         <div class="banner-img question-note">
                             <div>
                                 <i class="iconfont icon-help"></i>
-                                <span>收藏的问答</span>
+                                <span>我的问答</span>
                             </div>
                         </div>
                     </div>
