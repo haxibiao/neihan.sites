@@ -25,6 +25,24 @@
           @include('index.parts.recommend_categories')
           <recommend-category></recommend-category>
           <div class="division-line"></div>
+
+          {{-- top 4 videos --}}
+           <div class="row">
+             @foreach($data->videos as $video)
+             <div class="col-md-3 col-xs-6">
+              <div class="media">
+                  <a class="pull-left" href="/video/{{$video->id}}">
+                      <img class="media-object" src="{{ $video->cover() }}" alt="{{ $video->title }}">
+                  </a>
+                  <div class="media-body">
+                      <h4 class="media-heading">{{ $video->title }}</h4>
+                      <p>{{ $video->description }}</p>
+                  </div>
+              </div>
+            </div>
+              @endforeach
+           </div>
+
           {{-- 文章列表 --}}
          <ul class="article-list">              
             {{-- 文章 --}}          

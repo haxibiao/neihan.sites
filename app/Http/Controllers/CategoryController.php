@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Category;
 use App\Http\Requests\CategoryRequest;
+use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,7 +23,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $qb = Category::where('status','>=',0)->orderBy('id', 'desc');
+        $qb   = Category::where('status', '>=', 0)->orderBy('id', 'desc');
         $type = 'article';
         if ($request->get('type')) {
             $type = $request->get('type');
@@ -31,7 +32,7 @@ class CategoryController extends Controller
             case 'question':
                 $qb = $qb->where('count_questions', '>', 0);
                 break;
-            
+
             default:
                 $qb = $qb->where('count', '>=', 0);
                 break;
@@ -43,7 +44,7 @@ class CategoryController extends Controller
 
     public function categories(Request $request)
     {
-        $qb = Category::where('status','>=',0)->orderBy('id', 'desc');
+        $qb   = Category::where('status', '>=', 0)->orderBy('id', 'desc');
         $type = 'article';
         if ($request->get('type')) {
             $type = $request->get('type');
@@ -52,7 +53,7 @@ class CategoryController extends Controller
             case 'question':
                 $qb = $qb->where('count_questions', '>', 0);
                 break;
-            
+
             default:
                 $qb = $qb->where('count', '>=', 0);
                 break;
@@ -60,7 +61,7 @@ class CategoryController extends Controller
         //推荐
         $categories = $qb->orderBy('id', 'desc')->paginate(24);
         if (ajaxOrDebug() && request('recommend')) {
-            foreach($categories as $category) {
+            foreach ($categories as $category) {
                 $category->followed = $category->isFollowed();
             }
             return $categories;
@@ -70,7 +71,7 @@ class CategoryController extends Controller
         //热门
         $categories = $qb->orderBy('count_follows', 'desc')->paginate(24);
         if (ajaxOrDebug() && request('hot')) {
-            foreach($categories as $category) {
+            foreach ($categories as $category) {
                 $category->followed = $category->isFollowed();
             }
             return $categories;
@@ -81,7 +82,7 @@ class CategoryController extends Controller
         //城市
         $categories = $qb->paginate(24);
         if (ajaxOrDebug() && request('city')) {
-            foreach($categories as $category) {
+            foreach ($categories as $category) {
                 $category->followed = $category->isFollowed();
             }
             return $categories;
@@ -102,7 +103,7 @@ class CategoryController extends Controller
         if ($request->get('type')) {
             $type = $request->get('type');
         }
-        $user       = Auth::user();
+        $user = Auth::user();
         return view('category.create')->withUser($user);
     }
 
@@ -119,7 +120,7 @@ class CategoryController extends Controller
         //save logo
         $category->saveLogo($request);
         $category->save();
-        
+
         //save admins ...
         $this->saveAdmins($category, $request);
         return redirect()->to('/category');
@@ -196,6 +197,13 @@ class CategoryController extends Controller
         }
         $data['hot'] = $articles;
 
+        //get some related videos ...
+        $videos = Video::orderBy('id', 'desc')->skip(rand(0, Video::count() - 8))->paginate(12);
+        if ($category->videos()->count()) {
+            $videos = $category->videos()->paginate(12);
+        }
+        $data['videos'] = $videos;
+
         return view('category.name_en')
             ->withCategory($category)
             ->withData($data);
@@ -249,12 +257,12 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
         if ($category) {
-            $count = \App\Article::where('category_id', $category->id)->where('status','>',0)->count();
+            $count = \App\Article::where('category_id', $category->id)->where('status', '>', 0)->count();
             if ($count == 0) {
                 if (Category::where('parent_id', $id)->count()) {
                     return '该分类下还有分类，不能删除';
                 }
-                $category->status=-1;
+                $category->status = -1;
                 $category->save();
             } else {
                 return '该分类下还有文章，不能删除';

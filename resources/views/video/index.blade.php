@@ -28,7 +28,7 @@
             <div class="media">
                 <a class="pull-left" href="/video/{{ $video->id }}">
                     <img alt="{{ $video->title }}" class="img img-thumbnail img-responsive" 
-                    	src="{{ $video->cover }}">
+                    	src="{{ $video->cover() }}">
                     </img>
                 </a>
                 <div class="media-body">
@@ -48,7 +48,7 @@
                         </a>
                     </h4>
                     <p>
-                        分类: {{ $video->category->name }}
+                        分类: {{ !empty($video->category) ? $video->category->name : '' }}
                     </p>
                     <p>
                         上传用户:　<a href="/user/{{ $video->user->id }}">{{ $video->user->name }}</a>

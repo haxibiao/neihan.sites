@@ -39,6 +39,11 @@ class Video extends Model
         return $this->belongsToMany(\App\Article::class);
     }
 
+    public function likes()
+    {
+        return $this->morphMany(\App\Like::class, 'liked');
+    }
+
     public function user()
     {
         return $this->belongsTo(\App\User::class);
@@ -49,8 +54,20 @@ class Video extends Model
         return $this->morphMany(\App\Tip::class, 'tipable');
     }
 
+    //computed
+
+    public function source()
+    {
+        return file_exists(public_path($this->path)) ? url($this->path) : env('APP_URL') . $this->path;
+    }
+
+    public function cover()
+    {
+        return file_exists(public_path($this->cover)) ? url($this->cover) : env('APP_URL') . $this->cover;
+    }
+
     public function fillForJs()
     {
-        
+
     }
 }
