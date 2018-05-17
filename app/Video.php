@@ -63,7 +63,11 @@ class Video extends Model
 
     public function cover()
     {
-        return file_exists(public_path($this->cover)) ? url($this->cover) : env('APP_URL') . $this->cover;
+        $cover_url = "";
+        if (!empty($this->cover)) {
+            $cover_url = file_exists(public_path($this->cover)) ? url($this->cover) : env('APP_URL') . $this->cover;
+        }
+        return $cover_url;
     }
 
     public function fillForJs()
