@@ -31,7 +31,7 @@
 			<div class="contribute">
 				<div class="header">
 					<div class="search-wrapper">
-						<input type="text" placeholder="搜索专题" class="input-style" v-model="q" @keyup="search">
+						<input type="text" placeholder="搜索专题" class="input-style" v-model="q" @keyup.enter="search">
 						<i class="iconfont icon-sousuo"></i>
 					</div>
 					<div class="describe">向专题投稿，让文章被更多人发现</div>
@@ -152,7 +152,7 @@ export default {
 		add(category) {
 			var api = window.tokenize("/api/categories/" + this.article.id + "/add-category-" + category.id);
 			axios.get(api).then(response => {
-				category.submit_status = response.data.submit_status;			
+				category.submit_status = response.data.submit_status;
 			});
 		},
 		submit(category) {
@@ -197,9 +197,9 @@ export default {
 		},
 		search() {
 			this.page = 1;
-			var _this=this;
-			var api='/api/categories/search-submit-for-article-'+this.article.id+'?q='+this.q;
-			window.axios.get(api).then(function(response){
+			var _this = this;
+			var api = "/api/categories/search-submit-for-article-" + this.article.id + "?q=" + this.q;
+			window.axios.get(api).then(function(response) {
 				_this.searchCategoryList = response.data.data;
 			});
 		}
