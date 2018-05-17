@@ -24,12 +24,12 @@
     </p>
     <div class="meta">
       <a target="_blank" href="/article/{{ $item->id }}">
-        <i class="iconfont icon-liulan"></i> 4184
+        <i class="iconfont icon-liulan"></i> {{ $item->hits }}
       </a>        
       <a target="_blank" href="/article/{{ $item->id }}">
-        <i class="iconfont icon-svg37"></i> 70
+        <i class="iconfont icon-svg37"></i> {{ $item->count_replies }}
       </a>      
-      <span><i class="iconfont icon-03xihuan"></i> 288</span>
+      <span><i class="iconfont icon-03xihuan"></i> {{ $item->count_likes }}</span>
     </div>
   </div>
 </li>

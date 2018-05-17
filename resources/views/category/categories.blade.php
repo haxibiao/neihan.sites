@@ -25,9 +25,9 @@
 	   <li role="presentation">
 	   	<a href="#hot" aria-controls="hot" role="tab" data-toggle="tab"><i class="iconfont icon-huo"></i>热门</a>
 	   </li>
-	   <li role="presentation">
+	 {{--   <li role="presentation">
 	   	<a href="#city" aria-controls="city" role="tab" data-toggle="tab"><i class="iconfont icon-icon2"></i>城市</a>
-	   </li>
+	   </li> --}}
 	  </ul>
 		<!-- Tab panes -->
 		<div class="recommend-list tab-content">
