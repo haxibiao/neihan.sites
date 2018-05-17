@@ -10,7 +10,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    {!! get_seoer_meta() !!}
+    {!! get_seo_meta() !!}
 
     <title> @yield('title') {{ config('app.name') }} </title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -70,7 +70,8 @@
     @stack('js')
 
     <div style="display: none">
-    {!! get_seoer_footer() !!}
+    {!! get_seo_push() !!}
+    {!! get_seo_tj() !!}
     </div>
 
     @include('parts.to_up')

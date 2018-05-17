@@ -7,25 +7,6 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
 use Jenssegers\Agent\Agent;
 
-// function get_seoer_meta()
-// {
-//     $data = User::where('is_seoer', 1)->pluck('seo_meta')->toArray();
-//     $data = array_filter($data);
-//     return join(" ", $data);
-// }
-
-// function get_seoer_footer()
-// {
-//     $data = User::where('is_seoer', 1)->pluck('seo_push')->toArray();
-//     $data = array_filter($data);
-//     $push = join(" ", $data);
-//     $data = User::where('is_seoer', 1)->pluck('seo_tj')->toArray();
-//     $data = array_filter($data);
-//     $tj   = join(" ", $data);
-
-//     return $push . $tj;
-// }
-
 //TODO:: hardcode 获取3级分类,今后需要支持无限分类
 function get_categories($full = 0, $type = 'article', $for_parent = 0)
 {

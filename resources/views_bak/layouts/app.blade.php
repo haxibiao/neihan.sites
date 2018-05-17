@@ -9,8 +9,8 @@
         <link href="/logo/{{ env('APP_DOMAIN')}}.touch.jpg" rel="apple-touch-icon"/>
         <!-- CSRF Token -->
         <meta content="{{ csrf_token() }}" name="csrf-token"/>
-
-        {!! get_seoer_meta() !!}
+        {!! get_seo_meta() !!}
+        
         <title>
             @yield('title')
         </title>
@@ -93,7 +93,8 @@
         });
         </script>
 
-        {!! get_seoer_footer() !!}
+        {!! get_seo_push() !!}
+        {!! get_seo_tj() !!}
 
         @stack('scripts')
         @stack('js')
