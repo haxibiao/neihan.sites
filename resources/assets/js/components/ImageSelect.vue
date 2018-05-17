@@ -7,7 +7,7 @@
                     <img :src="img" alt="" class="img img-responsive">                    
                     <label class="radio text-center">
                       <input type="radio" name="primary_image" :value="img">
-                      设为主要图
+                      设为主图
                     </label>                    
                 </p>
             </div>

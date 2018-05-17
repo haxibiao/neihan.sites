@@ -140,17 +140,14 @@ class Article extends Model
         $image_path = parse_url($this->image_url, PHP_URL_PATH);
 
         //如果不是小圖地址,就找小圖的url
-        if (!str_contains($image_path, '.small.')) {
-            $image = Image::firstOrNew([
-                'path' => $image_path,
-            ]);
-            if ($image) {
-                return $image->url_small();
-            }
+        if (str_contains($image_path, '.small.')) {
+            $image_path = str_replace('.small', '', $image_path);
         }
-
-        //APP 需要返回全Uri
-        return url($image_path);
+        $image = Image::firstOrNew([
+            'path' => $image_path,
+        ]);
+        //all place including APP,  需要返回全Uri
+        return $image->url_small();
     }
 
     public function hasImage()
