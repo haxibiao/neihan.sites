@@ -39,7 +39,7 @@
 								    {!! Form::hidden('website_domain', $link['website_domain']) !!}
 								
 								    <div class="btn-group pull-right">						        
-								        {!! Form::submit("删除", ['class' => 'btn btn-danger']) !!}
+								        {!! Form::submit("删除", ['class' => 'btn btn-sm btn-danger']) !!}
 								    </div>
 								
 								{!! Form::close() !!}

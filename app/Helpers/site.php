@@ -7,119 +7,24 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
 use Jenssegers\Agent\Agent;
 
-function stick_article($data, $auto = false)
-{
-    $items = [];
-    if (Storage::exists("stick_articles")) {
-        $json  = Storage::get('stick_articles');
-        $items = json_decode($json, true);
-    }
-    $data['timestamp'] = time();
-    if ($auto) {
-        $items[] = $data;
-    } else {
-        $items = array_merge([$data], $items);
-    }
-    $json = json_encode($items);
-    Storage::put("stick_articles", $json);
-}
+// function get_seoer_meta()
+// {
+//     $data = User::where('is_seoer', 1)->pluck('seo_meta')->toArray();
+//     $data = array_filter($data);
+//     return join(" ", $data);
+// }
 
-function get_top_articles()
-{
-    $articles        = [];
-    $stick_articles  = get_stick_articles('轮播图');
-    $leftCount       = 8 - count($stick_articles);
-    $topped_articles = Article::where('is_top', 1)->where('image_top', '<>', '')->orderBy('id', 'desc')->take($leftCount)->get();
-    foreach ($topped_articles as $item) {
-        $articles[] = $item;
-    }
-    ;
-    $articles = array_merge($stick_articles, $articles);
-    return $articles;
-}
+// function get_seoer_footer()
+// {
+//     $data = User::where('is_seoer', 1)->pluck('seo_push')->toArray();
+//     $data = array_filter($data);
+//     $push = join(" ", $data);
+//     $data = User::where('is_seoer', 1)->pluck('seo_tj')->toArray();
+//     $data = array_filter($data);
+//     $tj   = join(" ", $data);
 
-function get_stick_articles($position = '', $all = false)
-{
-    $articles = [];
-    if (Storage::exists("stick_articles")) {
-        $json  = Storage::get('stick_articles');
-        $items = json_decode($json, true);
-        foreach ($items as $item) {
-            if (!$all) {
-                //position
-                if (!empty($position) && $position != $item['position']) {
-                    continue;
-                }
-
-                //expire
-                if (\Carbon\Carbon::createFromTimestamp($item['timestamp'])->addDays($item['expire']) < \Carbon\Carbon::now()) {
-                    continue;
-                }
-            }
-
-            $article = Article::find($item['article_id']);
-            if ($article) {
-                $article->expire     = $item['expire'];
-                $article->position   = $item['position'];
-                $article->stick_time = diffForHumansCN(\Carbon\Carbon::createFromTimestamp($item['timestamp']));
-                $articles[]          = $article;
-            }
-        }
-    }
-    return $articles;
-}
-
-function get_seoer_meta()
-{
-    $data = User::where('is_seoer', 1)->pluck('seo_meta')->toArray();
-    $data = array_filter($data);
-    return join(" ", $data);
-}
-
-function get_seo_meta()
-{
-    $meta = '';
-    if (Storage::exists("seo_config")) {
-        $json   = Storage::get('seo_config');
-        $config = json_decode($json);
-        $meta   = $config->seo_meta;
-    }
-    return $meta;
-}
-
-function get_seo_push()
-{
-    $push = '';
-    if (Storage::exists("seo_config")) {
-        $json   = Storage::get('seo_config');
-        $config = json_decode($json);
-        $push   = $config->seo_push;
-    }
-    return $push;
-}
-
-function get_seo_tj()
-{
-    $tj = '';
-    if (Storage::exists("seo_config")) {
-        $json   = Storage::get('seo_config');
-        $config = json_decode($json);
-        $tj     = $config->seo_tj;
-    }
-    return $tj;
-}
-
-function get_seoer_footer()
-{
-    $data = User::where('is_seoer', 1)->pluck('seo_push')->toArray();
-    $data = array_filter($data);
-    $push = join(" ", $data);
-    $data = User::where('is_seoer', 1)->pluck('seo_tj')->toArray();
-    $data = array_filter($data);
-    $tj   = join(" ", $data);
-
-    return $push . $tj;
-}
+//     return $push . $tj;
+// }
 
 //TODO:: hardcode 获取3级分类,今后需要支持无限分类
 function get_categories($full = 0, $type = 'article', $for_parent = 0)

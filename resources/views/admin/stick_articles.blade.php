@@ -18,8 +18,8 @@
 						    </div>
 
 							<div class="form-group{{ $errors->has('expire') ? ' has-error' : '' }}">
-							    {!! Form::label('expire', '失效时间(day)') !!}
-							    {!! Form::select('expire', [0,1,2,3,4,5,6,7], null, ['id' => 'expire', 'class' => 'form-control', 'required' => 'required']) !!}
+							    {!! Form::label('expire', '失效时间(days)') !!}
+							    {!! Form::select('expire', [1=>1, 2=>2, 3=>2, 4=>4, 5=>5, 6=>6, 7=>7], null, ['id' => 'expire', 'class' => 'form-control', 'required' => 'required']) !!}
 							    <small class="text-danger">{{ $errors->first('expire') }}</small>
 							</div>
 
@@ -44,12 +44,16 @@
 								    {!! Form::hidden('article_id',  $article->id) !!}
 								
 								    <div class="btn-group pull-right">						        
-								        {!! Form::submit("删除", ['class' => 'btn btn-danger']) !!}
+								        {!! Form::submit("删除", ['class' => 'btn btn-sm btn-danger']) !!}
 								    </div>
 								
 								{!! Form::close() !!}
 								<h4 class="list-group-item-heading">[{{ $article->position }}][{{ $article->expire }} days]{{  $article->title }}</h4>
-								<p class="list-group-item-text">{!! $article->link() !!} ({{ $article->stick_time }})</p>
+								<p class="list-group-item-text">
+									@if(!empty($article->reason))
+										<span class="label label-success">新收录</span>
+									@endif
+									{!! $article->link() !!} ({{ $article->stick_time }})</p>
 							</div>
 							@endforeach
 						</div>

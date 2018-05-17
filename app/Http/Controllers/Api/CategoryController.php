@@ -305,6 +305,7 @@ class CategoryController extends Controller
             'article_id' => $article->id,
             'expire' => 7,
             'position' => '发现',
+            'reason' => '新收录',
         ], true);
 
         return $article;
