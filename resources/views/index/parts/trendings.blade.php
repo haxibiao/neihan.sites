@@ -1,6 +1,6 @@
 <div class="board">
-   <a href="/trending?type=new">
-    <img src="/images/board01.png" alt=""><span class="board_tit one">新上榜 <i class="iconfont icon-youbian"></i></span>
+   <a href="/trending">
+    <img src="/images/board01.png" alt=""><span class="board_tit one">经典热门 <i class="iconfont icon-youbian"></i></span>
    </a>
    <a href="/trending?type=seven">
     <img src="/images/board02.png" alt=""><span class="board_tit two">7日热门 <i class="iconfont icon-youbian"></i></span>
