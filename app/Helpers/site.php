@@ -1,9 +1,73 @@
 <?php
 
+use App\Article;
 use App\Category;
 use App\User;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Storage;
 use Jenssegers\Agent\Agent;
+
+function stick_article($data, $auto = false)
+{
+    $items = [];
+    if (Storage::exists("stick_articles")) {
+        $json  = Storage::get('stick_articles');
+        $items = json_decode($json, true);
+    }
+    $data['timestamp'] = time();
+    if ($auto) {
+        $items[] = $data;
+    } else {
+        $items = array_merge([$data], $items);
+    }
+    $json = json_encode($items);
+    Storage::put("stick_articles", $json);
+}
+
+function get_top_articles()
+{
+    $articles        = [];
+    $stick_articles  = get_stick_articles('轮播图');
+    $leftCount       = 8 - count($stick_articles);
+    $topped_articles = Article::where('is_top', 1)->where('image_top', '<>', '')->orderBy('id', 'desc')->take($leftCount)->get();
+    foreach ($topped_articles as $item) {
+        $articles[] = $item;
+    }
+    ;
+    $articles = array_merge($stick_articles, $articles);
+    return $articles;
+}
+
+function get_stick_articles($position = '', $all = false)
+{
+    $articles = [];
+    if (Storage::exists("stick_articles")) {
+        $json  = Storage::get('stick_articles');
+        $items = json_decode($json, true);
+        foreach ($items as $item) {
+            if (!$all) {
+                //position
+                if (!empty($position) && $position != $item['position']) {
+                    continue;
+                }
+
+                //expire
+                if (\Carbon\Carbon::createFromTimestamp($item['timestamp'])->addDays($item['expire']) < \Carbon\Carbon::now()) {
+                    continue;
+                }
+            }
+
+            $article = Article::find($item['article_id']);
+            if ($article) {
+                $article->expire     = $item['expire'];
+                $article->position   = $item['position'];
+                $article->stick_time = diffForHumansCN(\Carbon\Carbon::createFromTimestamp($item['timestamp']));
+                $articles[]          = $article;
+            }
+        }
+    }
+    return $articles;
+}
 
 function get_seoer_meta()
 {

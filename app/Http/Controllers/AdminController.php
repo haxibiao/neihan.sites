@@ -25,12 +25,44 @@ class AdminController extends Controller
         return view('admin.users')->withUsers($users);
     }
 
+    public function articleSticks()
+    {
+        $articles = get_stick_articles('', true);
+        return view('admin.stick_articles')->withArticles($articles);
+    }
+
+    public function articleStick()
+    {
+        $data  = request()->all();
+        stick_article($data);
+        return redirect()->back();
+    }
+
+    public function deleteStickArticle()
+    {
+        $article_id = request()->get('article_id');
+        $items      = [];
+        if (Storage::exists("stick_articles")) {
+            $json  = Storage::get('stick_articles');
+            $items = json_decode($json, true);
+        }
+        $left_items = [];
+        foreach ($items as $item) {
+            if ($item['article_id'] != $article_id) {
+                $left_items[] = $item;
+            }
+        }
+        $json = json_encode($left_items);
+        Storage::put("stick_articles", $json);
+        return redirect()->back();
+    }
+
     public function seoConfig()
     {
-        $config = (object)[];
+        $config           = (object) [];
         $config->seo_meta = '';
         $config->seo_push = '';
-        $config->seo_tj = '';
+        $config->seo_tj   = '';
         if (Storage::exists("seo_config")) {
             $json   = Storage::get('seo_config');
             $config = json_decode($json);
@@ -41,9 +73,9 @@ class AdminController extends Controller
     public function saveSeoConfig()
     {
         $config = request()->all();
-        $json    = json_encode($config);
+        $json   = json_encode($config);
         Storage::put("seo_config", $json);
-        return redirect()->back()->with('saved',true);
+        return redirect()->back()->with('saved', true);
     }
 
     public function friendLinks()

@@ -46,6 +46,7 @@
           {{-- 文章列表 --}}
          <ul class="article-list">              
             {{-- 文章 --}}          
+            @each('parts.article_item', $data->sticks, 'article')
             @each('parts.article_item', $data->articles, 'article')
 
             {{-- 登录后才加载更多 --}}

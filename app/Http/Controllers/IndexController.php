@@ -70,7 +70,8 @@ class IndexController extends Controller
         $data             = (object) [];
         $data->categories = $categories;
         $data->articles   = $articles;
-        $data->carousel   = Article::where('is_top', 1)->where('image_top', '<>', '')->orderBy('id', 'desc')->take(8)->get();
+        $data->sticks = get_stick_articles('发现');
+        $data->carousel   = get_top_articles();
 
         $data->videos = Video::orderBy('id','desc')->take(4)->get();
 

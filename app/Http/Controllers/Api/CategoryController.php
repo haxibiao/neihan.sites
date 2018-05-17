@@ -299,6 +299,14 @@ class CategoryController extends Controller
         // $article->submit_status   = get_submit_status($submited_status);
         // $article->submited_status = $submited_status;
         $article->load('user');
+
+        //自动置顶最新收录的文章到发现，时间７天
+        stick_article([
+            'article_id' => $article->id,
+            'expire' => 7,
+            'position' => '发现',
+        ], true);
+
         return $article;
     }
 }

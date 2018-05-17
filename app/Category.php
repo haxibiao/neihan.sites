@@ -76,7 +76,7 @@ class Category extends Model
             ->wherePivot('created_at', '>', \Carbon\Carbon::now()->addDays(-30))
             ->withPivot('submit', 'created_at')
             ->withTimestamps()
-            ->orderBy('id', 'desc');
+            ->orderBy('pivot_created_at', 'desc');
     }
 
     public function publishedArticles()

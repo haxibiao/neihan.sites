@@ -107,10 +107,14 @@ Route::post('/admin/save-seo-config', 'AdminController@saveSeoConfig')->name('ad
 //友情链接
 Route::get('/admin/friend-links', 'AdminController@friendLinks');
 Route::post('/admin/add-friend-links', 'AdminController@addFriendLink')->name('admin.add_friend_link');
-Route::post('/admin/delete-friend-links', 'AdminController@deleteFriendLink')->name('admin.delete_friend_link');
+Route::post('/admin/delete-friend-link', 'AdminController@deleteFriendLink')->name('admin.delete_friend_link');
 //文章推送
 Route::get('/admin/article-push', 'AdminController@article_push');
 Route::post('/admin/push-article', 'AdminController@push_article')->name('admin.push_article');
+//stick文章
+Route::get('/admin/stick-articles', 'AdminController@articleSticks');
+Route::post('/admin/stick-article', 'AdminController@articleStick')->name('admin.stick_article');
+Route::post('/admin/delete-stick-article', 'AdminController@deleteStickArticle')->name('admin.delete_stick_article');
 
 //logs
 Route::get('/logshow', 'LogController@logShow');
