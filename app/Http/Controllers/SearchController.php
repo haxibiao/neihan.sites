@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Category;
+use App\Collection;
 use App\Query;
 use App\Querylog;
 use App\Tag;
 use App\User;
-use App\Category;
-use App\Collection;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -60,7 +60,7 @@ class SearchController extends Controller
         // }
 
         //用户，专题
-        $data['users'] = User::where('name', 'like', "%$query%")->paginate($page_size);
+        $data['users']      = User::where('name', 'like', "%$query%")->paginate($page_size);
         $data['categories'] = Category::where('name', 'like', "%$query%")->paginate($page_size);
 
         if (!empty($query) && $total) {
@@ -88,9 +88,9 @@ class SearchController extends Controller
 
     public function searchUsers()
     {
-        $page_size = 10;
-        $page      = request('page') ? request('page') : 1;
-        $query     = request('q');
+        $page_size     = 10;
+        $page          = request('page') ? request('page') : 1;
+        $query         = request('q');
         $data['users'] = User::where('name', 'like', "%$query%")->paginate($page_size);
         $data['query'] = $query;
         return view('search.users')->withData($data);
@@ -98,21 +98,21 @@ class SearchController extends Controller
 
     public function searchCategories()
     {
-        $page_size = 10;
-        $page      = request('page') ? request('page') : 1;
-        $query     = request('q');
+        $page_size          = 10;
+        $page               = request('page') ? request('page') : 1;
+        $query              = request('q');
         $data['categories'] = Category::where('name', 'like', "%$query%")->paginate($page_size);
-        $data['query'] = $query;
+        $data['query']      = $query;
         return view('search.categories')->withData($data);
     }
 
     public function searchCollections()
     {
-        $page_size = 10;
-        $page      = request('page') ? request('page') : 1;
-        $query     = request('q');
+        $page_size           = 10;
+        $page                = request('page') ? request('page') : 1;
+        $query               = request('q');
         $data['collections'] = Collection::where('name', 'like', "%$query%")->paginate($page_size);
-        $data['query'] = $query;
+        $data['query']       = $query;
         return view('search.collections')->withData($data);
     }
 
@@ -156,5 +156,17 @@ class SearchController extends Controller
             $article->target_url  = "http://haxibiao.com/article/" . $article->id;
         }
         return $articles_hxb;
+    }
+
+    public function search_all()
+    {
+        $users          = User::all();
+        $querys         = Query::where('status', '>=', 0)->orderBy('hits', 'desc')->paginate();
+        $data           = [];
+        $data['update'] = Query::where('status', '>=', 0)->orderBy('updated_at', 'desc')->paginate(10);
+        return view('search.search_all')
+            ->withData($data)
+            ->withUsers($users)
+            ->withQuerys($querys);
     }
 }

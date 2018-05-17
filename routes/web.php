@@ -127,6 +127,9 @@ Route::get('alipay/wap/pay', 'Alipay\WapController@wapPay');
 Route::get('alipay/wap/return', 'Alipay\WapController@wapReturn');
 Route::get('alipay/wap/notify', 'Alipay\WapController@wapNotify');
 
+//search_log
+Route::get('/searchQuery', 'SearchController@search_all');
+
 //sitemap
 Route::get('sitemap', 'SitemapController@index');
 

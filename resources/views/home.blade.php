@@ -157,6 +157,17 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">管理:</h3>
+                        </div>
+                        <div class="panel-body admin-section">
+                            <a class="btn btn-sm btn-primary" href="/searchQuery" role="button">搜索记录</a>
+                        </div>
+                    </div>
+                </div>
                 @endeditor
             </div>
 
