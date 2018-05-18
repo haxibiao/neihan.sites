@@ -2,11 +2,8 @@
 
 namespace tools\commands;
 
-use App\Article;
-use App\Category;
 use App\Comment;
 use App\Image;
-use App\Video;
 use Illuminate\Console\Command;
 
 class FixData extends Command
@@ -16,9 +13,34 @@ class FixData extends Command
      *
      * @return void
      */
-    public function __construct($commander)
+    public function __construct($cmd)
     {
-        $this->commander = $commander;
+        $this->cmd = $cmd;
+    }
+
+    public function run()
+    {
+        if ($this->cmd->argument('operation') == "tags") {
+            return $this->cmd->fix_tags();
+        }
+        if ($this->cmd->argument('operation') == "comments") {
+            return $this->cmd->fix_tags();
+        }
+        if ($this->cmd->argument('operation') == "articles") {
+            return $this->cmd->fix_articles();
+        }
+        if ($this->cmd->argument('operation') == "images") {
+            return $this->cmd->fix_images();
+        }
+        if ($this->cmd->argument('operation') == "videos") {
+            return $this->cmd->fix_videos();
+        }
+        if ($this->cmd->argument('operation') == "categories") {
+            return $this->cmd->fix_categories();
+        }
+        if ($this->cmd->argument('operation') == "users") {
+            return $this->cmd->fix_users();
+        }
     }
 
     public function fix_users()
@@ -28,7 +50,7 @@ class FixData extends Command
 
     public function fix_tags()
     {
-        
+
     }
 
     public function fix_comments()
@@ -38,18 +60,17 @@ class FixData extends Command
 
     public function fix_categories()
     {
-        
 
     }
 
     public function fix_videos()
     {
-       
+
     }
 
     public function fix_images()
     {
-        $this->commander->info('fix images ...');
+        $this->cmd->info('fix images ...');
         Image::orderBy('id')->chunk(100, function ($images) {
             foreach ($images as $image) {
                 //服务器上图片不在本地的，都设置disk=hxb
@@ -57,10 +78,10 @@ class FixData extends Command
                 if (file_exists(public_path($image->path))) {
                     $image->hash = md5_file(public_path($image->path));
                     $image->disk = 'local';
-                    $this->commander->info($image->id . '  ' . $image->extension);
+                    $this->cmd->info($image->id . '  ' . $image->extension);
                 } else {
                     $image->disk = 'hxb';
-                    $this->commander->comment($image->id . '  ' . $image->extension);
+                    $this->cmd->comment($image->id . '  ' . $image->extension);
                 }
                 $image->save();
             }
@@ -69,16 +90,6 @@ class FixData extends Command
 
     public function fix_articles()
     {
-        
-    }
 
-    public function fix_article_image($article)
-    {
-        
-    }
-
-    public function fix_traffic()
-    {
-        
     }
 }

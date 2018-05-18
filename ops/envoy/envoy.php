@@ -1,7 +1,7 @@
 <?php
 
-require_once 'domain.php';
 require_once 'commands.php';
+require_once 'domain.php';
 
 $git = 'root@' . $web_server . ':/data/www/' . $domain;
 
@@ -53,19 +53,16 @@ composer dump-autoload
 php artisan cache:clear
 EOT;
 
-function copy_ui_build($web_server)
-{
-    return <<<EOT
+$copy_ui_build = <<<EOT
 rsync -e ssh -P /data/www/$domain/public/css/* root@$web_server:/data/www/$domain/public/css/
 rsync -e ssh -P /data/www/$domain/public/js/* root@$web_server:/data/www/$domain/public/js/
 rsync -e ssh -P /data/www/$domain/public/mix-manifest.json root@$web_server:/data/www/$domain/public/
 EOT;
-}
 
 $copy_ui_build_staging = <<<EOT
-rsync -e ssh -P $www/public/css/* root@$web_server:$www/public/css/
-rsync -e ssh -P $www/public/js/* root@$web_server:$www/public/js/
-rsync -e ssh -P $www/public/mix-manifest.json root@$web_server:$www/public/
+rsync -e ssh -P $www/public/css/* root@$staging_server:$www/public/css/
+rsync -e ssh -P $www/public/js/* root@$staging_server:$www/public/js/
+rsync -e ssh -P $www/public/mix-manifest.json root@$staging_server:$www/public/
 EOT;
 
 $copy_worker_conf = <<<EOT

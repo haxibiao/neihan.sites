@@ -1,35 +1,58 @@
-@include('config/envoy.php')
+@include('ops/envoy/envoy.php')
 
-@servers(['local' => 'localhost','hk001' => $hk001, 'gz002' => $gz002, 'web' => $web])
+@servers(['local' => 'localhost','hk001' => $hk001, 'gz001' => $gz001,'gz002' => $gz002, 'gz003' => $gz003, 'gz004' => $gz004, 'gz005' => $gz005, 'gz006' => $gz006, 'web' => $web])
+
+@macro('push')
+local_push
+web_pull
+@endmacro
 
 @macro('ui')
 local_push_ui
-web_pull
 @endmacro
 
-@macro('push')
-push
-web_pull
+@macro('stagingui')
+local_push_ui_staging
+staging_pull
 @endmacro
 
 @macro('seed')
-push
+local_push
 web_seed
 @endmacro
 
 @macro('update')
-push
+local_push
 web_update
 @endmacro
 
-@task('pull', ['on' => 'local'])
+@macro('staging')
+local_push
+staging_update
+@endmacro
+
+@macro('sys')
+local_push
+web_sys
+@endmacro
+
+@macro('cmds')
+local_push
+web_cmds
+@endmacro
+
+@task('local_push', ['on' => 'local'])
 hostname
 cd {{ $www }}
-git pull
-sudo chmod -R 777 .
-git config core.filemode false
-php artisan env:refresh --local
-php artisan get:sql
+{{ $git_push_to_web }}
+@endtask
+
+@task('local_push_ui_staging', ['on' => 'local'])
+hostname
+cd {{ $www }}
+npm run prod
+{{ $git_push_to_web }}
+{{ $copy_ui_build_staging }}
 @endtask
 
 @task('local_push_ui', ['on' => 'local'])
@@ -37,16 +60,15 @@ hostname
 cd {{ $www }}
 npm run prod
 {{ $git_push_to_web }}
-rsync -e ssh -P public/css/* root@ainicheng.com:/data/www/ainicheng.com/public/css/
-rsync -e ssh -P public/css/fix/* root@ainicheng.com:/data/www/ainicheng.com/public/css/fix
-rsync -e ssh -P public/js/* root@ainicheng.com:/data/www/ainicheng.com/public/js/
-rsync -e ssh -P public/mix-manifest.json root@ainicheng.com:/data/www/ainicheng.com/public/
+{{ $copy_ui_build }}
 @endtask
 
-@task('push', ['on' => 'local'])
-hostname
+@task('staging_pull', ['on' => ['gz002'], 'parallel' => true])
 cd {{ $www }}
-{{ $git_push_to_web }}
+echo {{ $www }}
+git pull
+{{ $refresh_staging_config }}
+{{ $cache_clear }}
 @endtask
 
 @task('web_pull', ['on' => ['web'], 'parallel' => true])
@@ -54,7 +76,6 @@ cd {{ $www }}
 echo {{ $www }}
 {{ $refresh_env_config }}
 {{ $cache_clear }}
-{{ $run_commands }}
 @endtask
 
 @task('web_seed', ['on' => ['web'], 'parallel' => true])
@@ -63,17 +84,35 @@ echo {{ $www }}
 {{ $refresh_env_config }}
 {{ $run_migrate }}
 {{ $cache_clear }}
-{{ $run_commands }}
 @endtask
 
 @task('web_update', ['on' => ['web'], 'parallel' => true])
 cd {{ $www }}
 echo {{ $www }}
 {{ $clear_bootstrap_cache }}
-{{ $refresh_env_config }}
 {{ $run_composer }}
+{{ $refresh_env_config }}
 {{ $run_migrate }}
 {{ $cache_clear }}
+@endtask
+
+@task('staging_update', ['on' => ['gz002'], 'parallel' => true])
+cd {{ $www }}
+echo {{ $www }}
+git pull
+{{ $clear_bootstrap_cache }}
+{{ $run_composer }}
+{{ $refresh_staging_config }}
+{{ $run_migrate }}
+{{ $cache_clear }}
+@endtask
+
+@task('web_sys', ['on' => ['web'], 'parallel' => true])
 {{ $copy_worker_conf }}
+{{ $copy_crontab }}
+@endtask
+
+@task('web_cmds', ['on' => ['web'], 'parallel' => true])
+cd {{ $www }}
 {{ $run_commands }}
 @endtask

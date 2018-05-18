@@ -37,10 +37,6 @@ class EnvRefresh extends Command
      */
     public function handle()
     {
-        if ($this->option('local')) {
-            return $this->refresh_local();
-        }
-
         if ($this->option('staging')) {
             return $this->refresh_staging();
         }
@@ -48,6 +44,7 @@ class EnvRefresh extends Command
         if ($this->option('prod')) {
             return $this->refresh_prod();
         }
+        return $this->refresh_local();
     }
 
     public function refresh_local()
