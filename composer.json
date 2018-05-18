@@ -28,7 +28,7 @@
         "phpunit/phpunit": "~6.0"
     },
     "autoload": {
-        "classmap": ["database", "tools"],
+        "classmap": ["database", "ops"],
         "psr-4": {
             "App\\": "app/"
         }

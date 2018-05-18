@@ -69,7 +69,7 @@ class AppServiceProvider extends ServiceProvider
         foreach (glob(app_path() . '/Helpers/*.php') as $filename) {
             require_once $filename;
         }
-        foreach (glob(app_path() . '/../tools/helpers/*.php') as $filename) {
+        foreach (glob(app_path() . '/../ops/helpers/*.php') as $filename) {
             require_once $filename;
         }
     }

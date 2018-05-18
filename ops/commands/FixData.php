@@ -1,6 +1,6 @@
 <?php
 
-namespace tools\commands;
+namespace ops\commands;
 
 use App\Comment;
 use App\Image;
