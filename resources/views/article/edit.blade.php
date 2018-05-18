@@ -67,7 +67,7 @@
 
         <div class="article form-group{{ $errors->has('body') ? ' has-error-for-editor' : '' }}">
             {!! Form::label('body', '正文') !!}
-            <editor name="body" value="{{ $article->body }}"></editor>
+            <editor name="body" value="{{ $article->body }}"　autosave></editor>
             @push('css')
                 <link rel="stylesheet" type="text/css" href="/css/e.css">
             @endpush
@@ -76,7 +76,7 @@
 
       
 
-        @include('article.parts.images_selected', ['article_images' => $article->images, 'article' => $article])
+        @include('article.parts.images_selected', ['images' => $article->images, 'article' => $article])
         @editor
         <div class="row">            
             <div class="col-md-6">

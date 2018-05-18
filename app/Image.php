@@ -29,6 +29,10 @@ class Image extends Model
 
     public function url_small()
     {
+        //TODO:: use disk local, hxb, cos ...
+        if ($this->disk) {
+            return env('HXB_URL') . $this->path_small();
+        }
         return env('APP_URL') . $this->path_small();
     }
 

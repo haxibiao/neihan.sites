@@ -1,19 +1,19 @@
-import collectionApi from "../api/collection";
+import writeApi from "../api/writeApi";
 import * as types from "./mutation-types";
 import router from "../router";
 
 // actions
 
 export function destroyArticle({ commit, dispatch, state }, articleId) {
-	collectionApi.destroyArticle(articleId);
+	writeApi.destroyArticle(articleId);
 	commit(types.DESTROY_ARTICLE, articleId);
 	dispatch("goDefaultTrash");
 }
 
 export function restoreArticle({ commit, dispatch, state }, articleId) {
-	collectionApi.restoreArticle(articleId, () => {
+	writeApi.restoreArticle(articleId, () => {
 		//恢复文章后，刷新文集列表数据
-		collectionApi.getCollections(collections => {
+		writeApi.getCollections(collections => {
 			commit(types.GOT_COLLECTIONS, { collections });
 		});
 	});
@@ -22,7 +22,7 @@ export function restoreArticle({ commit, dispatch, state }, articleId) {
 }
 
 export function getTrash({ commit, dispatch, state }) {
-	collectionApi.getArticleTrash(articles => {
+	writeApi.getArticleTrash(articles => {
 		commit(types.GOT_TRASH, articles);
 		dispatch("goDefaultTrash");
 	});
@@ -38,34 +38,44 @@ export function goDefaultTrash({ state }) {
 }
 
 export function addArticle({ commit, dispatch, state }) {
-	collectionApi.addArticle(state.collectionId, article => {
+	writeApi.addArticle(state.collectionId, article => {
 		commit(types.ADD_ARTICLE, article);
 		dispatch("goArticle", { collectionId: state.collectionId, articleId: article.id });
+	});
+}
+
+export function autoSavePreviewArticle({ commit, dispatch, state }) {
+	let { previewArticle } = state;
+	let article = { id: previewArticle.id, title: previewArticle.title, body: previewArticle.body };
+	writeApi.saveArticle(article, article => {
+		commit(types.SAVED_ARTICLE, article);
 	});
 }
 
 export function saveArticle({ commit, dispatch, state }) {
 	let { currentArticle } = state;
 	let article = { id: currentArticle.id, title: currentArticle.title, body: currentArticle.body };
-	collectionApi.saveArticle(article, article => {
+	writeApi.saveArticle(article, article => {
 		commit(types.SAVED_ARTICLE, article);
 	});
 }
 
 export function publishArticle({ commit, dispatch, state }) {
 	let { currentArticle } = state;
-	let article = { id: currentArticle.id, title: currentArticle.title, body: currentArticle.body, status: 1 };
-	collectionApi.saveArticle(article, article => {
+	currentArticle.status = 1;
+	writeApi.saveArticle(currentArticle, article => {
 		commit(types.SAVED_ARTICLE, article);
 	});
+	commit(types.PUBLISH);
 }
 
 export function unpublishArticle({ commit, dispatch, state }) {
 	let { currentArticle } = state;
-	let article = { id: currentArticle.id, title: currentArticle.title, body: currentArticle.body, status: 0 };
-	collectionApi.saveArticle(article, article => {
+	currentArticle.status = 0;
+	writeApi.saveArticle(currentArticle, article => {
 		commit(types.SAVED_ARTICLE, article);
 	});
+	commit(types.UNPUBLISH);
 }
 
 export function moveArticle({ commit, dispatch, state }, collectionId) {
@@ -73,14 +83,14 @@ export function moveArticle({ commit, dispatch, state }, collectionId) {
 	let fromCollectionId = state.collectionId;
 	let article = { id: currentArticle.id, title: currentArticle.title, body: currentArticle.body, collection_id: collectionId };
 	let toCollectionId = collectionId;
-	collectionApi.moveArticle({ article, collectionId }, article => {
+	writeApi.moveArticle({ article, collectionId }, article => {
 		commit(types.MOVED_ARTICLE, { article, fromCollectionId, toCollectionId });
 		dispatch("goCollection", { collectionId: fromCollectionId });
 	});
 }
 
 export function removeArticle({ commit, dispatch, state }) {
-	collectionApi.removeArticle(state.currentArticle.id);
+	writeApi.removeArticle(state.currentArticle.id);
 	commit(types.REMOVE_ARTICLE);
 
 	//去当前文集下第一篇文章
@@ -92,7 +102,7 @@ export function updateCurrentPathInfo({ commit }, { collectionId, articleId }) {
 }
 
 export function getCollections({ state, commit, dispatch }) {
-	collectionApi.getCollections(collections => {
+	writeApi.getCollections(collections => {
 		commit(types.GOT_COLLECTIONS, { collections });
 		let { articleId, collectionId } = state;
 		if (articleId) {
@@ -106,7 +116,7 @@ export function getCollections({ state, commit, dispatch }) {
 }
 
 export function addCollection({ commit, dispatch }, { name }) {
-	collectionApi.addCollection(name, collection => {
+	writeApi.addCollection(name, collection => {
 		commit(types.ADD_COLLECTION, { collection });
 		dispatch("goDefaultCollection");
 	});
@@ -149,14 +159,14 @@ export function goArticle({ state, commit }, { collectionId, articleId }) {
 }
 
 export function removeCollection({ commit, dispatch }, collectionId) {
-	collectionApi.removeCollection(collectionId, collection => {
+	writeApi.removeCollection(collectionId, collection => {
 		commit(types.REMOVE_COLLECTION, { collectionId });
 		dispatch("goDefaultCollection");
 	});
 }
 
 export function renameCollection({ commit, state }, { name }) {
-	collectionApi.renameCollection({ id: state.currentCollection.id, name: name }, collection => {
+	writeApi.renameCollection({ id: state.currentCollection.id, name: name }, collection => {
 		// commit(types.RENAME_COLLECTION, { collection })
 		$(".modification-name").modal("hide");
 	});

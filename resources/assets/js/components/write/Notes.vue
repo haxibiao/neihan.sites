@@ -25,7 +25,7 @@
 				<div class="note-item" v-if="article">
 					<p class="note-status">{{ article.saved ? '已保存' : '未保存' }}</p>
 					<div class="note-content">
-						<editor :value="article.body" :focus="article.focus" @textchanged="save" @changed="changeBody" @saved="save" @published="publish" write>
+						<editor :value="article.body" @blur="save" @textchanged="save" @changed="changeBody" @saved="save" @published="publish" write>
 							<input type="text" v-model="article.title" class="note-title single-line" @input="changeTitle">
 						</editor>
 					</div>
@@ -46,10 +46,10 @@ export default {
 
 	watch: {
 		$route(to, from) {
-			//切换文章的时候，保存前一篇文章正文到store...
+			//切换文章的时候，保存前一篇文章
 			var { previewArticle, currentArticle } = this.$store.state;
 			if (previewArticle) {
-				previewArticle.body = this.body;
+				 this.$store.dispatch('autoSavePreviewArticle');
 			}
 		}
 	},
@@ -138,37 +138,16 @@ export default {
 
 			//乐观更新
 			this.article.saved = true;
-			this.article.status = 0;
 			this.$set(this.ui, "updated_at", Date.now());
 
 			this.$store.dispatch("saveArticle");
 		},
 		publish() {
 			this.article.body = this.body;
-
-			if (this.article.body) {
-				if (this.article.status) {
-					alert("本文章已发布");
-				}
-				//乐观更新
-				this.article.saved = true;
-				if (!this.article.status) {
-					this.$store.commit("PUBLISH_STATUS");
-				}
-				this.article.status = 1;
-				this.$set(this.ui, "updated_at", Date.now());
-
-				this.$store.dispatch("publishArticle");
-			}
+			this.$store.dispatch("publishArticle");
 		},
 		unpublish() {
 			this.article.body = this.body;
-
-			//乐观更新
-			this.article.saved = true;
-			this.article.status = 0;
-			this.$set(this.ui, "updated_at", Date.now());
-
 			this.$store.dispatch("unpublishArticle");
 		},
 		createNote() {
@@ -177,7 +156,9 @@ export default {
 		},
 		changeBody(value) {
 			//暂存编辑的改动，避免:value无限触发编辑器的valuechanged事件
-			this.body = value;
+			if(value && value.length){
+				this.body = value;
+			}
 
 			//尝试触发保存状态更新为未保存
 			this.article.saved = false;
@@ -188,11 +169,12 @@ export default {
 		},
 		changeTitle(e) {
 			//改动标题的时候，保存编辑器的改动到store
-			this.$store.state.currentArticle.body = this.body;
-			this.$store.state.currentArticle.title = e.target.value;
+			this.article.body = this.body;
+			this.article.title = e.target.value;
 
 			//更新ui状态
 			this.article.saved = false;
+			this.$set(this.ui, "updated_at", Date.now());
 		}
 	},
 

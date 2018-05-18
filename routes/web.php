@@ -29,7 +29,7 @@ Route::get('/vue-apollo', function () {
 
 
 //流量
-// require_once 'traffic.php';
+require_once 'traffic.php';
 
 Route::get('/', 'IndexController@index');
 Route::get('/app', 'IndexController@app');

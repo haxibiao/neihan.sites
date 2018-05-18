@@ -14,7 +14,6 @@
 						<th>ID</th>
 						<th>昵称</th>
 						<th> 是否编辑 </th>
-						<th> 是否SEO </th>
 						<th>状态</th>
 						<th>介绍</th>
 						<th style="width:200px"></th>
@@ -26,7 +25,6 @@
 						<td><a href="/user/{{ $user->id }}">{{ $user->id }}</a></td>
 						<td>{{ $user->name }}</td>
 						<td>{{ $user->is_editor ? '是' : '' }}</td>
-						<td>{{ $user->is_seoer ? '是' : '' }}</td>
 						<td>{{ $user->status == -1 ? '已删除' : '正常' }}</td>
 						<td>{{ $user->introduction }}</td>
 						<td>

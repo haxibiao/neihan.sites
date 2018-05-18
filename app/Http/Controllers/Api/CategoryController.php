@@ -246,7 +246,7 @@ class CategoryController extends Controller
     {
         $article    = Article::findOrFail($aid);
         $user       = $request->user();
-        $categories = Category::orderBy('id', 'desc')->whereNotIn('id', $user->adminCategories()->pluck('categories.id'))->paginate(9);
+        $categories = Category::orderBy('id', 'desc')->whereNotIn('id', $user->adminCategories()->pluck('categories.id'))->paginate(12);
         $categories->map(function ($category) use ($article) {
             $category->submited_status = '';
             $cateWithPivot             = $article->categories()->wherePivot('category_id', $category->id)->first();

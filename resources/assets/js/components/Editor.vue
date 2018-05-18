@@ -1,12 +1,12 @@
 <template>
     <div class="simditor-box">
         <slot></slot>
-        <div class="promptBox alert alert-success" v-show="draftShow">
+        <div class="alert alert-success" v-show="draftShow">
            你要恢复未保存的草稿吗
             <span class="btn yes" @click="yesClick">yes</span>
             <span class=" btn no" @click="noClick">no</span>
         </div>
-        <textarea :id="textareaId" :name="name" :placeholder="placeholderText" autofocus="autofocus" data-autosave="editor-content">
+        <textarea :id="textareaId" :name="name" :placeholder="placeholderText" autofocus="autofocus" :data-autosave="autosave?'editor-content':null">
             {{ value }}
         </textarea>
     </div>
@@ -18,7 +18,7 @@ import Simditor from "../plugins/simditor";
 export default {
     name: "Editor",
 
-    props: ["placeholder", "name", "value", "picture", "video", "write", "focus"],
+    props: ["placeholder", "name", "value", "picture", "video", "write", "focus", "autosave"],
 
     computed: {
         placeholderText() {
@@ -28,8 +28,8 @@ export default {
 
     //vue中，通过修改value属性来更新编辑器中的内容
     updated() {
-        if (this.value != this.editor.getValue()) {
-            this.editor.setValue(this.editor.getVlue());
+        if(this.value && this.value.length){
+            this.editor.setValue(this.value);
         }
     },
 
@@ -104,11 +104,16 @@ export default {
             });
 
             this.editor.on("promptdraft", function(e, data) {
+                console.log("promptdraft...");
                 _this.value_draft = data.draft;
                 _this.draftShow = !_this.draftShow;
             });
 
             if (this.write !== undefined) {
+                this.editor.on("blur", function(e, src) {
+                    _this.$emit("blur", _this.editor.getValue());
+                    //光标失去的时候，自动保存文章
+                });
                 this.editor.on("saved", function(e, src) {
                     _this.$emit("saved", _this.editor.getValue());
                     //TODO:: 光标应该跑最后跳动的位置
@@ -120,10 +125,6 @@ export default {
                     _this.editor.focus();
                 });
             }
-        },
-        textChanged() {
-            console.log("textchanged...");
-            this.$emit("textchanged");
         },
         yesClick() {
             this.draftShow = !this.draftShow;

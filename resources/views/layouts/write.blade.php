@@ -18,7 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ mix('css/a.css') }}" rel="stylesheet">
-    <link href="{{ mix('css/e.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/editor.css') }}" rel="stylesheet">
     <style>
         html,body {
             width: 100%;
@@ -40,7 +40,6 @@
     </div>
 
     <!-- Scripts -->   
-
     @if(Auth::check())
     <script type="text/javascript">
         window.appName = '{{ config('app.name') }}';
@@ -55,9 +54,7 @@
         };
     </script>
     @endif
-
-    <script src="{{ mix('js/write.js') }}"></script> 
-
+    <script src="{{ mix('js/write.js') }}"></script>
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {

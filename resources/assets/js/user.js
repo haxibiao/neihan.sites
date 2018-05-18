@@ -21,7 +21,7 @@ Vue.prototype.$http = window.axios;
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-//客人用户所能看到的js组件...
+//客人用户：　所能看到的js组件...
 Vue.component("blank-content", require("./components/BlankContent.vue"));
 Vue.component("single-list", require("./components/SingleList.vue"));
 
@@ -47,4 +47,30 @@ Vue.component("share", require("./components/Share.vue"));
 Vue.component("captcha", require("./components/logins/Captcha.vue"));
 Vue.component("social-login", require("./components/logins/SocialLogin.vue"));
 Vue.component("signs", require("./components/logins/Signs.vue"));
+
+//登录用户：　可见高级输入框组件...
+Vue.component("tags-input", require("./components/TagsInput.vue"));
+Vue.component("image-select", require("./components/ImageSelect.vue"));
+Vue.component("user-select", require("./components/UserSelect.vue"));
+Vue.component("category-select", require("./components/CategorySelect.vue"));
+
+Vue.component("input-matching", require("./components/question/InputMatching.vue"));
+Vue.component("modal-ask-question", require("./components/question/ModalAskQuestion.vue"));
+Vue.component("delete-button", require("./components/DeleteButton.vue"));
+
+Vue.component("recommend-category", require("./components/RecommendCategory.vue"));
+Vue.component("recommend-authors", require("./components/aside/RecommendAuthors.vue"));
+Vue.component("modal-contribute", require("./components/modals/ModalContribute.vue"));
+Vue.component("modal-add-category", require("./components/modals/ModalAddCategory.vue"));
+Vue.component("modal-category-contribute", require("./components/modals/ModalCategoryContribute.vue"));
+Vue.component("modal-delete", require("./components/modals/ModalDelete.vue"));
+Vue.component("modal-admire", require("./components/modals/ModalAdmire.vue"));
+Vue.component("modal-withdraw", require("./components/modals/ModalWithdraw.vue"));
+Vue.component("modal-to-up", require("./components/modals/ModalToUp.vue"));
+Vue.component("modal-like-user", require("./components/modals/ModalLikeUsers.vue"));
+Vue.component("setting-aside", require("./components/setting/Aside.vue"));
+
+Vue.component("answer-tool", require("./components/question/AnswerTool.vue"));
+Vue.component("question-bottom", require("./components/question/QuestionBottom.vue"));
+
 const app = new Vue({}).$mount("#app");

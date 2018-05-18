@@ -1,5 +1,5 @@
 <template>
-	<div style='height:100%'>	
+	<div style='height:100%'  @key.esc="closePublished">	
 		<div class="note-books">
 			<div class="books-side col-xs-2">
 				<div class="home">
@@ -51,7 +51,7 @@
 			<delete-notebook></delete-notebook>
 			<frequently-asked-questions></frequently-asked-questions>
 		</div>
-		<publish-successful :publishShow="isPublishView"/>
+		<published :show="published"/>
 	</div>
 </template>
 
@@ -67,8 +67,8 @@ export default {
 	},
 
 	computed: {
-		isPublishView() {
-			return this.$store.state.isPublishView;
+		published() {
+			return this.$store.state.published;
 		},
 		collections() {
 			return this.$store.state.collections;
@@ -89,10 +89,13 @@ export default {
 		$route(to, from) {
 			this.getCurrentPathParams();
 			this.updateCurrentPathInfo();
-			this.$store.state.isPublishView = false;
+			this.$store.state.published = false;
 		}
 	},
 	methods: {
+		closePublished() {
+			this.$store.state.published = false;
+		},
 		getCurrentPathParams() {
 			this.$store.state.articleId = parseInt(this.$router.currentRoute.params.articleId);
 			this.$store.state.collectionId = parseInt(this.$router.currentRoute.params.collectionId);

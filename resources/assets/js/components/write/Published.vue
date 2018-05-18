@@ -1,6 +1,6 @@
 <template>
 	<transition name="slide">
-		<div class="release-after" v-if="publishShow">
+		<div class="release-after" v-if="show">
 			<div class="release-info">
 				<div class="after-info">
 					<a :href="'/article/'+article.id" class="title">{{article.title}}</a>
@@ -73,10 +73,10 @@
 								<a :class="['action-btn',getBtn2Class(category.submit_status)]" @click="submit(category)">{{category.submit_status}}</a>
 							</li>
 						</ul>
-						<!-- <div class="end">没有更多了</div> -->
-						<!-- 
-						 -->
-						   <a class="btn-base btn-more" href="javascript:;" @click="fetchMore">{{ page2 >= lastPage ? '已经到底了':'点击加载更多' }}...</a>
+						<div style="width: 200px; margin: auto">
+						   <a class="btn-base btn-more" :style="page2<lastPage?'background-color:green':''" href="javascript:;" @click="fetchMore">
+						   	{{ page2 >= lastPage ? '已经到底了':'点击加载更多' }}...</a>
+					   	</div>
 					</div>
 				</div>
 				<div class="search-categore" v-else>
@@ -99,9 +99,15 @@
 
 <script>
 export default {
-	name: "PublishSuccessful",
+	name: "Published",
 
-	props: ["publishShow"],
+	props: ["show"],
+
+	updated() {
+		if(!this.fetched) {
+			this.fetchData();
+		}
+	},
 
 	mounted() {
 		this.fetchData();
@@ -131,10 +137,10 @@ export default {
 			return "btn-base btn-hollow theme-tag btn-sm";
 		},
 		closeBtn() {
-			this.$store.commit("PUBLISH_STATUS");
+			this.$store.commit("PUBLISHED_TOGGLE");
 		},
 		apiAdmin() {
-			var api = "/api/categories/admin-check-article-" + this.articleId;
+			var api = "/api/categories/admin-check-article-" + this.article.id;
 			if (this.q) {
 				api = api + "?q=" + this.q;
 			}
@@ -142,7 +148,7 @@ export default {
 		},
 		apiRecommend() {
 			var page2 = this.page2;
-			var api = "/api/categories/recommend-check-article-" + this.articleId + "?page=" + page2;
+			var api = "/api/categories/recommend-check-article-" + this.article.id + "?page=" + page2;
 			return window.tokenize(api);
 		},
 		apiRecent() {
@@ -170,6 +176,7 @@ export default {
 					_this.categoryList = _this.categoryList.concat(response.data.data);
 					_this.page = response.data.currentPage;
 					_this.page_total = response.data.lastPage;
+					_this.fetched = true;
 				}
 			});
 		},
@@ -189,11 +196,14 @@ export default {
 				_this.page2 = response.data.currentPage;
 				_this.page2_total = response.data.lastPage;
 				_this.lastPage = response.data.last_page;
+				_this.fetched = true;
 			});
 		},
 		fetchData() {
-			this.fetchManage();
-			this.fetchRecomand();
+			if(this.article.id){
+				this.fetchManage();
+				this.fetchRecomand();
+			}
 		},
 		search() {
 			this.page = 1;
@@ -201,12 +211,14 @@ export default {
 			var api = "/api/categories/search-submit-for-article-" + this.article.id + "?q=" + this.q;
 			window.axios.get(api).then(function(response) {
 				_this.searchCategoryList = response.data.data;
+				_this.fetched = true;
 			});
 		}
 	},
 
 	data() {
 		return {
+			fetched: false,
 			currentPage: 1,
 			searchResult: [],
 			q: null,

@@ -21,10 +21,10 @@ class Collection extends Model
 
     public function articles()
     {
-        return $this->belongsToMany(\App\Article::class)->where('status', '>', 0);
+        return $this->belongsToMany(\App\Article::class);
     }
 
-    public function allArticles()
+    public function publishedArticles()
     {
         return $this->belongsToMany(\App\Article::class);
     }

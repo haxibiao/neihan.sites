@@ -1,17 +1,15 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+require("./bootstrap");
 
-import Vue from 'vue' 
-import VueRouter from 'vue-router'
-import store from './store'
-import router from './router'
-
+import Vue from "vue";
+import VueRouter from "vue-router";
+import store from "./store";
+import router from "./router";
 
 window.$bus = new Vue();
 
@@ -21,29 +19,27 @@ window.$bus = new Vue();
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('write', require('./components/write/Write.vue'));
-Vue.component('note-books', require('./components/write/Notebooks.vue'));
-Vue.component('notes', require('./components/write/Notes.vue'));
-Vue.component('recycle', require('./components/write/Recycle.vue'));
+Vue.component("write", require("./components/write/Write.vue"));
+Vue.component("note-books", require("./components/write/Notebooks.vue"));
+Vue.component("notes", require("./components/write/Notes.vue"));
+Vue.component("recycle", require("./components/write/Recycle.vue"));
 
-Vue.component('editor', require('./components/Editor.vue'));
-Vue.component('scroll-top', require('./components/write/ScrollTop.vue'));
-Vue.component('publish-successful', require('./components/write/PublishSuccessful.vue'));
+Vue.component("editor", require("./components/Editor.vue"));
+Vue.component("scroll-top", require("./components/write/ScrollTop.vue"));
+Vue.component("published", require("./components/write/Published.vue"));
 
 // 文集重命名
-Vue.component('modification-name', require('./components/write/modificationName.vue'));
+Vue.component("modification-name", require("./components/write/modificationName.vue"));
 // 常见问题
-Vue.component('frequently-asked-questions', require('./components/write/FAQ.vue'));
+Vue.component("frequently-asked-questions", require("./components/write/FAQ.vue"));
 // 删除文集
-Vue.component('delete-notebook', require('./components/write/deleteNotebook.vue'));
+Vue.component("delete-notebook", require("./components/write/deleteNotebook.vue"));
 // 删除文章
-Vue.component('delete-note', require('./components/write/deleteNote.vue'));
+Vue.component("delete-note", require("./components/write/deleteNote.vue"));
 // 彻底删除
-Vue.component('thorough-delete', require('./components/write/thoroughDelete.vue'));
-
-
+Vue.component("thorough-delete", require("./components/write/thoroughDelete.vue"));
 
 const app = new Vue({
-    router,
-    store
-}).$mount('#app');
+	router,
+	store
+}).$mount("#app");

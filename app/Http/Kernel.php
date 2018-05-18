@@ -36,7 +36,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\CookieChecker::class,
-            // \App\Http\Middleware\TrafficMan::class,
+            \App\Http\Middleware\TrafficMan::class,
             // \App\Http\Middleware\BeianRedirect::class,
         ],
 

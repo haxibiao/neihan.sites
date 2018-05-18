@@ -31,8 +31,8 @@ class AppServiceProvider extends ServiceProvider
             return "<?php echo diffForHumansCN($expression); ?>";
         });
 
-        Blade::if('seoer', function () {
-            return Auth::check() && Auth::user()->checkSeoer();
+        Blade::if('admin', function () {
+            return Auth::check() && Auth::user()->checkAdmin();
         });
 
         Blade::if('editor', function () {

@@ -53,10 +53,9 @@
             'notification',
             'write'
         ]))
-        <script src="{{ mix('js/b.js') }}"></script>
-    @else
-        <script src="{{ mix('js/a.js') }}"></script>
+        <script src="{{ mix('js/spa.js') }}"></script>
     @endif
+    <script src="{{ mix('js/guest.js') }}"></script>
 
     <script type="text/javascript">
         $.ajaxSetup({

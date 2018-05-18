@@ -160,13 +160,6 @@ function get_stick_articles($position = '', $all = false)
     return $articles;
 }
 
-function get_seoer_meta()
-{
-    $data = User::where('is_seoer', 1)->pluck('seo_meta')->toArray();
-    $data = array_filter($data);
-    return join(" ", $data);
-}
-
 function get_seo_meta()
 {
     $meta = '';

@@ -171,9 +171,9 @@ class User extends Authenticatable
 
     //computed props methods ................................................................................
 
-    public function checkSeoer()
+    public function checkAdmin()
     {
-        return $this->is_seoer || $this->is_admin;
+        return $this->is_admin;
     }
 
     public function checkEditor()

@@ -1,5 +1,4 @@
 import * as types from "./mutation-types";
-import collectionApi from "../api/collection";
 
 // mutations
 export default {
@@ -26,8 +25,16 @@ export default {
     currentArticle.saved = true;
   },
 
-  [types.PUBLISH_STATUS](state) {
-    state.isPublishView = !state.isPublishView;
+  [types.PUBLISH](state) {
+    state.published = true;
+  },
+
+  [types.PUBLISHED_TOGGLE](state) {
+    state.published = false;
+  },
+
+  [types.PUBLISHED_TOGGLE](state) {
+    state.published = !state.published;
   },
 
   [types.MOVED_ARTICLE](state, { article, fromCollectionId, toCollectionId }) {

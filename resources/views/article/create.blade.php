@@ -78,7 +78,7 @@
 
         <div class="article form-group{{ $errors->has('body') ? ' has-error-for-editor' : '' }}">
             {!! Form::label('body', '正文') !!}
-            <editor name="body"></editor>
+            <editor name="body" autosave></editor>
             @push('css')
                 <link rel="stylesheet" type="text/css" href="/css/e.css">
             @endpush

@@ -15,10 +15,10 @@
         @foreach($article_images as $image)
             <div class="col-xs-4">
                 <p class="text-center">
-                    <img src="{{ $image->path_small }}" alt="" class="img img-responsive">
+                    <img src="{{ $image->url_small() }}" alt="" class="img img-responsive">
                     
                     <label class="radio text-center">
-                      <input type="radio" name="primary_image" value="{{ $image->path }}" {{ $image->path == $article->image_url ? 'checked':'' }}>
+                      <input type="radio" name="primary_image" value="{{ $image->url_small() }}" {{ $image->url_small() == $article->image_url ? 'checked':'' }}>
                       设为主要图
                     </label>
                     

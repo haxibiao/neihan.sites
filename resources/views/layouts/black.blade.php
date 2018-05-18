@@ -10,7 +10,6 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    {{-- {!! get_seoer_meta() !!} --}}
     {!! get_seo_meta() !!}
 
     <title> @yield('title') </title>
@@ -61,17 +60,14 @@
     <script type="text/javascript">
             window.csrf_token = '{{ csrf_token() }}';
     </script> 
-
-    @if(in_array(request()->path(), [
-            'follow',
-            'notification',
-            'settings'
-        ]))
-        <script src="{{ mix('js/b.js') }}"></script>
+    
+    @if(Auth::check() && Auth::user()->checkEditor())
+        <script src="{{ mix('js/editor.js') }}"></script>
+    @elseif(Auth::check())
+        <script src="{{ mix('js/user.js') }}"></script>
     @else
-        <script src="{{ mix('js/a.js') }}"></script>
+    <script src="{{ mix('js/guest.js') }}"></script>
     @endif
-
 
     <script type="text/javascript">
         $.ajaxSetup({
@@ -85,7 +81,6 @@
     @stack('js')
 
     <div style="display: none">
-    {{-- {!! get_seoer_footer() !!} --}}
     {!! get_seo_push() !!}
     {!! get_seo_tj() !!}
     </div>

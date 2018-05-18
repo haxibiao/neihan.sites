@@ -73,9 +73,17 @@
             'notification',
             'settings'
         ]))
-        <script src="{{ mix('js/b.js') }}"></script>
+        <script src="{{ mix('js/spa.js') }}"></script>
     @else
-        <script src="{{ mix('js/a.js') }}"></script>
+        @if(Auth::check() && Auth::user()->checkAdmin())
+            <script src="{{ mix('js/admin.js') }}"></script>
+        @elseif(Auth::check() && Auth::user()->checkEditor())
+            <script src="{{ mix('js/editor.js') }}"></script>
+        @elseif(Auth::check())
+            <script src="{{ mix('js/user.js') }}"></script>
+        @else
+        <script src="{{ mix('js/guest.js') }}"></script>
+        @endif
     @endif
 
 
