@@ -35,6 +35,11 @@ class AdminController extends Controller
     public function categoryStick()
     {
         $data = request()->all();
+
+        if(count(get_stick_categories())>=5){
+            dd("添加的专题太多了,首页置顶的专题不允许超过5个");
+        }
+
         $data['category_id']=Category::where('name',$data['category_name'])->pluck('id')->first();
         stick_category($data);
 
