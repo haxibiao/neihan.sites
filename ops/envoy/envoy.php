@@ -3,7 +3,10 @@
 require_once 'commands.php';
 require_once 'domain.php';
 
-$git = 'root@' . $web_server . ':/data/www/' . $domain;
+$git_push_to_web = 'git push origin master';
+$www = '/data/www/' . $domain;
+$staging = '/data/staging/' . $domain;
+$remote = 'root@' . $web_server . ':/data/www/' . $domain;
 
 $hk001 = 'root@hk001';
 $gz001 = 'root@gz001';
