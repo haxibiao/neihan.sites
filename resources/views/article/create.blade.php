@@ -107,7 +107,8 @@
             <input type="hidden" name="status" id="hidden_status" value="1">
             {!! Form::button("存稿", ['class' => 'btn btn-warning btn-draft', 'id'=>'draftBtn']) !!}
             {!! Form::submit("发布", ['class' => 'btn btn-success']) !!}
-        </div>        
+        </div>
+        <modal-images></modal-images>        
     </div>
       {!! Form::close() !!}
   </div>

@@ -6,35 +6,16 @@
 (function(root, factory) {
   if (typeof define === "function" && define.amd) {
     // AMD. Register as an anonymous module unless amdModuleId is set
-    define(
-      "simditor",
-      ["jquery", "simple-module", "simple-hotkeys", "simple-uploader"],
-      function($, SimpleModule, simpleHotkeys, simpleUploader) {
-        return (root["Simditor"] = factory(
-          $,
-          SimpleModule,
-          simpleHotkeys,
-          simpleUploader
-        ));
-      }
-    );
+    define("simditor", ["jquery", "simple-module", "simple-hotkeys", "simple-uploader"], function($, SimpleModule, simpleHotkeys, simpleUploader) {
+      return (root["Simditor"] = factory($, SimpleModule, simpleHotkeys, simpleUploader));
+    });
   } else if (typeof exports === "object") {
     // Node. Does not work with strict CommonJS, but
     // only CommonJS-like environments that support module.exports,
     // like Node.
-    module.exports = factory(
-      require("jquery"),
-      require("simple-module"),
-      require("simple-hotkeys"),
-      require("simple-uploader")
-    );
+    module.exports = factory(require("jquery"), require("simple-module"), require("simple-hotkeys"), require("simple-uploader"));
   } else {
-    root["Simditor"] = factory(
-      jQuery,
-      SimpleModule,
-      simple.hotkeys,
-      simple.uploader
-    );
+    root["Simditor"] = factory(jQuery, SimpleModule, simple.hotkeys, simple.uploader);
   }
 })(this, function($, SimpleModule, simpleHotkeys, simpleUploader) {
   var AlignmentButton,
@@ -165,16 +146,11 @@
         this.clear();
         this._selection.addRange(range);
         this._range = range;
-        ffOrIE =
-          this.editor.util.browser.firefox || this.editor.util.browser.msie;
+        ffOrIE = this.editor.util.browser.firefox || this.editor.util.browser.msie;
         if (!this.editor.inputManager.focused && ffOrIE) {
           this.editor.body.focus();
         }
-      } else if (
-        !this._range &&
-        this.editor.inputManager.focused &&
-        this._selection.rangeCount
-      ) {
+      } else if (!this._range && this.editor.inputManager.focused && this._selection.rangeCount) {
         this._range = this._selection.getRangeAt(0);
       }
       return this._range;
@@ -214,8 +190,7 @@
 
     Selection.prototype.containerNode = function() {
       if (this._range) {
-        this._containerNode ||
-          (this._containerNode = $(this._range.commonAncestorContainer));
+        this._containerNode || (this._containerNode = $(this._range.commonAncestorContainer));
       }
       return this._containerNode;
     };
@@ -236,20 +211,11 @@
                 nodes = _this.startNodes().get();
               } else {
                 _this.startNodes().each(function(i, node) {
-                  var $endNode,
-                    $node,
-                    $nodes,
-                    endIndex,
-                    index,
-                    sharedIndex,
-                    startIndex;
+                  var $endNode, $node, $nodes, endIndex, index, sharedIndex, startIndex;
                   $node = $(node);
                   if (_this.endNodes().index($node) > -1) {
                     return nodes.push(node);
-                  } else if (
-                    $node.parent().is(_this.editor.body) ||
-                    (sharedIndex = _this.endNodes().index($node.parent())) > -1
-                  ) {
+                  } else if ($node.parent().is(_this.editor.body) || (sharedIndex = _this.endNodes().index($node.parent())) > -1) {
                     if (sharedIndex && sharedIndex > -1) {
                       $endNode = _this.endNodes().eq(sharedIndex - 1);
                     } else {
@@ -258,10 +224,7 @@
                     $nodes = $node.parent().contents();
                     startIndex = $nodes.index($node);
                     endIndex = $nodes.index($endNode);
-                    return $.merge(
-                      nodes,
-                      $nodes.slice(startIndex, endIndex).get()
-                    );
+                    return $.merge(nodes, $nodes.slice(startIndex, endIndex).get());
                   } else {
                     $nodes = $node.parent().contents();
                     index = $nodes.index($node);
@@ -271,10 +234,7 @@
                 _this.endNodes().each(function(i, node) {
                   var $node, $nodes, index;
                   $node = $(node);
-                  if (
-                    $node.parent().is(_this.editor.body) ||
-                    _this.startNodes().index($node.parent()) > -1
-                  ) {
+                  if ($node.parent().is(_this.editor.body) || _this.startNodes().index($node.parent()) > -1) {
                     nodes.push(node);
                     return false;
                   } else {
@@ -324,12 +284,7 @@
     };
 
     Selection.prototype.rangeAtEndOf = function(node, range) {
-      var afterLastNode,
-        beforeLastNode,
-        endNode,
-        endNodeLength,
-        lastNodeIsBr,
-        result;
+      var afterLastNode, beforeLastNode, endNode, endNodeLength, lastNodeIsBr, result;
       if (range == null) {
         range = this.range();
       }
@@ -462,13 +417,7 @@
     };
 
     Selection.prototype.setRangeAtEndOf = function(node, range) {
-      var $lastNode,
-        $node,
-        contents,
-        lastChild,
-        lastChildLength,
-        lastText,
-        nodeLength;
+      var $lastNode, $node, contents, lastChild, lastChildLength, lastText, nodeLength;
       if (range == null) {
         range = this.range();
       }
@@ -496,10 +445,7 @@
             .last();
           if ($lastNode.is("br")) {
             nodeLength -= 1;
-          } else if (
-            $lastNode[0].nodeType !== 3 &&
-            this.editor.util.isEmptyNode($lastNode)
-          ) {
+          } else if ($lastNode[0].nodeType !== 3 && this.editor.util.isEmptyNode($lastNode)) {
             $lastNode.append(this.editor.util.phBr);
             node = $lastNode[0];
             nodeLength = 0;
@@ -568,13 +514,7 @@
     };
 
     Selection.prototype.restore = function() {
-      var endCaret,
-        endContainer,
-        endOffset,
-        range,
-        startCaret,
-        startContainer,
-        startOffset;
+      var endCaret, endContainer, endOffset, range, startCaret, startContainer, startOffset;
       if (!this._selectionSaved) {
         return false;
       }
@@ -696,19 +636,7 @@
     };
 
     Formatter.prototype.autolink = function($el) {
-      var $link,
-        $node,
-        findLinkNode,
-        k,
-        lastIndex,
-        len,
-        linkNodes,
-        match,
-        re,
-        replaceEls,
-        subStr,
-        text,
-        uri;
+      var $link, $node, findLinkNode, k, lastIndex, len, linkNodes, match, re, replaceEls, subStr, text, uri;
       if ($el == null) {
         $el = this.editor.body;
       }
@@ -722,10 +650,7 @@
           }
           if (!$node.is("iframe") && $node.contents().length) {
             return findLinkNode($node);
-          } else if (
-            (text = $node.text()) &&
-            /https?:\/\/|www\./gi.test(text)
-          ) {
+          } else if ((text = $node.text()) && /https?:\/\/|www\./gi.test(text)) {
             return linkNodes.push($node);
           }
         });
@@ -742,9 +667,7 @@
           subStr = text.substring(lastIndex, match.index);
           replaceEls.push(document.createTextNode(subStr));
           lastIndex = re.lastIndex;
-          uri = /^(http(s)?:\/\/|\/)/.test(match[0])
-            ? match[0]
-            : "http://" + match[0];
+          uri = /^(http(s)?:\/\/|\/)/.test(match[0]) ? match[0] : "http://" + match[0];
           $link = $('<a href="' + uri + '" rel="nofollow"></a>').text(match[0]);
           replaceEls.push($link[0]);
         }
@@ -802,24 +725,7 @@
     };
 
     Formatter.prototype.cleanNode = function(node, recursive) {
-      var $blockEls,
-        $childImg,
-        $node,
-        $p,
-        $td,
-        allowedAttributes,
-        attr,
-        contents,
-        isDecoration,
-        k,
-        l,
-        len,
-        len1,
-        n,
-        ref,
-        ref1,
-        text,
-        textNode;
+      var $blockEls, $childImg, $node, $p, $td, allowedAttributes, attr, contents, isDecoration, k, l, len, len1, n, ref, ref1, text, textNode;
       $node = $(node);
       if (!($node.length > 0)) {
         return;
@@ -842,11 +748,7 @@
           $node = $childImg;
           contents = null;
         }
-        if (
-          $node.is("td") &&
-          ($blockEls = $node.find(this.editor.util.blockNodes.join(",")))
-            .length > 0
-        ) {
+        if ($node.is("td") && ($blockEls = $node.find(this.editor.util.blockNodes.join(","))).length > 0) {
           $blockEls.each(
             (function(_this) {
               return function(i, blockEl) {
@@ -862,21 +764,14 @@
           $node.remove();
         }
         if (!isDecoration) {
-          allowedAttributes = this._allowedAttributes[
-            $node[0].tagName.toLowerCase()
-          ];
+          allowedAttributes = this._allowedAttributes[$node[0].tagName.toLowerCase()];
           ref = $.makeArray($node[0].attributes);
           for (k = 0, len = ref.length; k < len; k++) {
             attr = ref[k];
             if (attr.name === "style") {
               continue;
             }
-            if (
-              !(
-                allowedAttributes != null &&
-                ((ref1 = attr.name), indexOf.call(allowedAttributes, ref1) >= 0)
-              )
-            ) {
+            if (!(allowedAttributes != null && ((ref1 = attr.name), indexOf.call(allowedAttributes, ref1) >= 0))) {
               $node.removeAttr(attr.name);
             }
           }
@@ -974,9 +869,7 @@
               if (
                 lineBreak &&
                 i < contents.length - 1 &&
-                $node.is(
-                  "br, p, div, li,tr, pre, address, artticle, aside, dl, figcaption, footer, h1, h2,h3, h4, header"
-                )
+                $node.is("br, p, div, li,tr, pre, address, artticle, aside, dl, figcaption, footer, h1, h2,h3, h4, header")
               ) {
                 return (result += "\n");
               }
@@ -990,24 +883,16 @@
     Formatter.prototype.beautify = function($contents) {
       var uselessP;
       uselessP = function($el) {
-        return !!(
-          $el.is("p") &&
-          !$el.text() &&
-          $el.children(":not(br)").length < 1
-        );
+        return !!($el.is("p") && !$el.text() && $el.children(":not(br)").length < 1);
       };
       return $contents.each(function(i, el) {
         var $el, invalid;
         $el = $(el);
-        invalid = $el.is(
-          ':not(img, br, col, td, hr, [class^="simditor-"]):empty'
-        );
+        invalid = $el.is(':not(img, br, col, td, hr, [class^="simditor-"]):empty');
         if (invalid || uselessP($el)) {
           $el.remove();
         }
-        return $el
-          .find(':not(img, br, col, td, hr, [class^="simditor-"]):empty')
-          .remove();
+        return $el.find(':not(img, br, col, td, hr, [class^="simditor-"]):empty').remove();
       });
     };
 
@@ -1082,43 +967,36 @@
           return function() {
             var $rootBlocks;
             _this.lastCaretPosition = null;
-            $rootBlocks = _this.editor.body
-              .children()
-              .filter(function(i, node) {
-                return _this.editor.util.isBlockNode(node);
-              });
+            $rootBlocks = _this.editor.body.children().filter(function(i, node) {
+              return _this.editor.util.isBlockNode(node);
+            });
             if (_this.focused && $rootBlocks.length === 0) {
               _this.editor.selection.save();
               _this.editor.formatter.format();
               _this.editor.selection.restore();
             }
-            _this.editor.body
-              .find("hr, pre, .simditor-table")
-              .each(function(i, el) {
-                var $el, formatted;
-                $el = $(el);
-                if (
-                  $el.parent().is("blockquote") ||
-                  $el.parent()[0] === _this.editor.body[0]
-                ) {
-                  formatted = false;
-                  if ($el.next().length === 0) {
-                    $("<p/>")
-                      .append(_this.editor.util.phBr)
-                      .insertAfter($el);
-                    formatted = true;
-                  }
-                  if ($el.prev().length === 0) {
-                    $("<p/>")
-                      .append(_this.editor.util.phBr)
-                      .insertBefore($el);
-                    formatted = true;
-                  }
-                  if (formatted) {
-                    return _this.throttledValueChanged();
-                  }
+            _this.editor.body.find("hr, pre, .simditor-table").each(function(i, el) {
+              var $el, formatted;
+              $el = $(el);
+              if ($el.parent().is("blockquote") || $el.parent()[0] === _this.editor.body[0]) {
+                formatted = false;
+                if ($el.next().length === 0) {
+                  $("<p/>")
+                    .append(_this.editor.util.phBr)
+                    .insertAfter($el);
+                  formatted = true;
                 }
-              });
+                if ($el.prev().length === 0) {
+                  $("<p/>")
+                    .append(_this.editor.util.phBr)
+                    .insertBefore($el);
+                  formatted = true;
+                }
+                if (formatted) {
+                  return _this.throttledValueChanged();
+                }
+              }
+            });
             _this.editor.body.find("pre:empty").append(_this.editor.util.phBr);
             if (!_this.editor.util.support.onselectionchange && _this.focused) {
               return _this.throttledSelectionChanged();
@@ -1141,11 +1019,7 @@
           (function(_this) {
             return function(e) {
               e.preventDefault();
-              _this.editor.selection._selection.modify(
-                "move",
-                "backward",
-                "lineboundary"
-              );
+              _this.editor.selection._selection.modify("move", "backward", "lineboundary");
               return false;
             };
           })(this)
@@ -1155,11 +1029,7 @@
           (function(_this) {
             return function(e) {
               e.preventDefault();
-              _this.editor.selection._selection.modify(
-                "move",
-                "forward",
-                "lineboundary"
-              );
+              _this.editor.selection._selection.modify("move", "forward", "lineboundary");
               return false;
             };
           })(this)
@@ -1178,10 +1048,7 @@
               lastBlock = $children.last().get(0);
               range = document.createRange();
               range.setStart(firstBlock, 0);
-              range.setEnd(
-                lastBlock,
-                _this.editor.util.getNodeLength(lastBlock)
-              );
+              range.setEnd(lastBlock, _this.editor.util.getNodeLength(lastBlock));
               _this.editor.selection.range(range);
               return false;
             };
@@ -1242,10 +1109,7 @@
       this.editor.el.removeClass("focus");
       this.editor.sync();
       this.focused = false;
-      this.lastCaretPosition =
-        (ref = this.editor.undoManager.currentState()) != null
-          ? ref.caret
-          : void 0;
+      this.lastCaretPosition = (ref = this.editor.undoManager.currentState()) != null ? ref.caret : void 0;
       return this.editor.triggerHandler("blur");
     };
 
@@ -1267,10 +1131,7 @@
         this.throttledValueChanged();
         return false;
       }
-      if (
-        ((ref = e.which), indexOf.call(this._modifierKeys, ref) >= 0) ||
-        ((ref1 = e.which), indexOf.call(this._arrowKeys, ref1) >= 0)
-      ) {
+      if (((ref = e.which), indexOf.call(this._modifierKeys, ref) >= 0) || ((ref1 = e.which), indexOf.call(this._arrowKeys, ref1) >= 0)) {
         return;
       }
       if (this.editor.util.metaKey(e) && e.which === 86) {
@@ -1293,17 +1154,11 @@
       if (this.editor.triggerHandler(e) === false) {
         return false;
       }
-      if (
-        !this.editor.util.support.onselectionchange &&
-        ((ref = e.which), indexOf.call(this._arrowKeys, ref) >= 0)
-      ) {
+      if (!this.editor.util.support.onselectionchange && ((ref = e.which), indexOf.call(this._arrowKeys, ref) >= 0)) {
         this.throttledValueChanged();
         return;
       }
-      if (
-        (e.which === 8 || e.which === 46) &&
-        this.editor.util.isEmptyNode(this.editor.body)
-      ) {
+      if ((e.which === 8 || e.which === 46) && this.editor.util.isEmptyNode(this.editor.body)) {
         this.editor.body.empty();
         p = $("<p/>")
           .append(this.editor.util.phBr)
@@ -1352,18 +1207,12 @@
 
     Keystroke.prototype.respondTo = function(e) {
       var base, key, ref, result;
-      key =
-        (ref = this.editor.hotkeys.constructor.keyNameMap[e.which]) != null
-          ? ref.toLowerCase()
-          : void 0;
+      key = (ref = this.editor.hotkeys.constructor.keyNameMap[e.which]) != null ? ref.toLowerCase() : void 0;
       if (!key) {
         return;
       }
       if (key in this._keystrokeHandlers) {
-        result =
-          typeof (base = this._keystrokeHandlers[key])["*"] === "function"
-            ? base["*"](e)
-            : void 0;
+        result = typeof (base = this._keystrokeHandlers[key])["*"] === "function" ? base["*"](e) : void 0;
         if (!result) {
           this.editor.selection.startNodes().each(
             (function(_this) {
@@ -1372,12 +1221,8 @@
                 if (node.nodeType !== Node.ELEMENT_NODE) {
                   return;
                 }
-                handler =
-                  (ref1 = _this._keystrokeHandlers[key]) != null
-                    ? ref1[node.tagName.toLowerCase()]
-                    : void 0;
-                result =
-                  typeof handler === "function" ? handler(e, $(node)) : void 0;
+                handler = (ref1 = _this._keystrokeHandlers[key]) != null ? ref1[node.tagName.toLowerCase()] : void 0;
+                result = typeof handler === "function" ? handler(e, $(node)) : void 0;
                 if (result === true || result === false) {
                   return false;
                 }
@@ -1449,10 +1294,7 @@
             var $blockEl, $prevBlockEl, $rootBlock, isWebkit;
             $rootBlock = _this.editor.selection.rootNodes().first();
             $prevBlockEl = $rootBlock.prev();
-            if (
-              $prevBlockEl.is("hr") &&
-              _this.editor.selection.rangeAtStartOf($rootBlock)
-            ) {
+            if ($prevBlockEl.is("hr") && _this.editor.selection.rangeAtStartOf($rootBlock)) {
               _this.editor.selection.save();
               $prevBlockEl.remove();
               _this.editor.selection.restore();
@@ -1477,12 +1319,7 @@
             var $cloneNode, listEl, newBlockEl, newListEl;
             $cloneNode = $node.clone();
             $cloneNode.find("ul, ol").remove();
-            if (
-              !(
-                _this.editor.util.isEmptyNode($cloneNode) &&
-                $node.is(_this.editor.selection.blockNodes().last())
-              )
-            ) {
+            if (!(_this.editor.util.isEmptyNode($cloneNode) && $node.is(_this.editor.selection.blockNodes().last()))) {
               return;
             }
             listEl = $node.parent();
@@ -1494,17 +1331,13 @@
                 newBlockEl = $("<li/>")
                   .append(_this.editor.util.phBr)
                   .insertAfter(listEl.parent("li"));
-                newListEl = $("<" + listEl[0].tagName + "/>").append(
-                  $node.nextAll("li")
-                );
+                newListEl = $("<" + listEl[0].tagName + "/>").append($node.nextAll("li"));
                 newBlockEl.append(newListEl);
               } else {
                 newBlockEl = $("<p/>")
                   .append(_this.editor.util.phBr)
                   .insertAfter(listEl);
-                newListEl = $("<" + listEl[0].tagName + "/>").append(
-                  $node.nextAll("li")
-                );
+                newListEl = $("<" + listEl[0].tagName + "/>").append($node.nextAll("li"));
                 newBlockEl.after(newListEl);
               }
             } else {
@@ -1551,10 +1384,7 @@
             range = _this.editor.selection.range();
             breakNode = null;
             range.deleteContents();
-            if (
-              !_this.editor.util.browser.msie &&
-              _this.editor.selection.rangeAtEndOf($node)
-            ) {
+            if (!_this.editor.util.browser.msie && _this.editor.selection.rangeAtEndOf($node)) {
               breakNode = document.createTextNode("\n\n");
               range.insertNode(breakNode);
               range.setEnd(breakNode, 1);
@@ -1576,13 +1406,7 @@
           return function(e, $node) {
             var $closestBlock, range;
             $closestBlock = _this.editor.selection.blockNodes().last();
-            if (
-              !(
-                $closestBlock.is("p") &&
-                !$closestBlock.next().length &&
-                _this.editor.util.isEmptyNode($closestBlock)
-              )
-            ) {
+            if (!($closestBlock.is("p") && !$closestBlock.next().length && _this.editor.util.isEmptyNode($closestBlock))) {
               return;
             }
             $node.after($closestBlock);
@@ -1597,15 +1421,7 @@
         "li",
         (function(_this) {
           return function(e, $node) {
-            var $br,
-              $childList,
-              $newLi,
-              $prevChildList,
-              $prevNode,
-              $textNode,
-              isFF,
-              range,
-              text;
+            var $br, $childList, $newLi, $prevChildList, $prevNode, $textNode, isFF, range, text;
             $childList = $node.children("ul, ol");
             $prevNode = $node.prev("li");
             if (!($childList.length > 0 && $prevNode.length > 0)) {
@@ -1627,8 +1443,7 @@
               }
               return ($textNode = $(n));
             });
-            isFF =
-              _this.editor.util.browser.firefox && !$textNode.next("br").length;
+            isFF = _this.editor.util.browser.firefox && !$textNode.next("br").length;
             if ($textNode && text.length === 1 && isFF) {
               $br = $(_this.editor.util.phBr).insertAfter($textNode);
               $textNode.remove();
@@ -1665,8 +1480,7 @@
             if (!_this.editor.selection.rangeAtStartOf($node)) {
               return;
             }
-            codeStr =
-              $node.html().replace("\n", "<br/>") || _this.editor.util.phBr;
+            codeStr = $node.html().replace("\n", "<br/>") || _this.editor.util.phBr;
             $newNode = $("<p/>")
               .append(codeStr)
               .insertAfter($node);
@@ -1807,8 +1621,7 @@
 
     UndoManager.prototype.startPosition = function() {
       if (this.editor.selection._range) {
-        this._startPosition ||
-          (this._startPosition = this._getPosition("start"));
+        this._startPosition || (this._startPosition = this._getPosition("start"));
       }
       return this._startPosition;
     };
@@ -2075,46 +1888,31 @@
       if (ie) {
         return {
           msie: true,
-          version:
-            ((ref = ua.match(/(msie |rv:)(\d+(\.\d+)?)/i)) != null
-              ? ref[2]
-              : void 0) * 1
+          version: ((ref = ua.match(/(msie |rv:)(\d+(\.\d+)?)/i)) != null ? ref[2] : void 0) * 1
         };
       } else if (edge) {
         return {
           edge: true,
           webkit: true,
-          version:
-            ((ref1 = ua.match(/edge\/(\d+(\.\d+)?)/i)) != null
-              ? ref1[1]
-              : void 0) * 1
+          version: ((ref1 = ua.match(/edge\/(\d+(\.\d+)?)/i)) != null ? ref1[1] : void 0) * 1
         };
       } else if (chrome) {
         return {
           webkit: true,
           chrome: true,
-          version:
-            ((ref2 = ua.match(/(?:chrome|crios)\/(\d+(\.\d+)?)/i)) != null
-              ? ref2[1]
-              : void 0) * 1
+          version: ((ref2 = ua.match(/(?:chrome|crios)\/(\d+(\.\d+)?)/i)) != null ? ref2[1] : void 0) * 1
         };
       } else if (safari) {
         return {
           webkit: true,
           safari: true,
-          version:
-            ((ref3 = ua.match(/version\/(\d+(\.\d+)?)/i)) != null
-              ? ref3[1]
-              : void 0) * 1
+          version: ((ref3 = ua.match(/version\/(\d+(\.\d+)?)/i)) != null ? ref3[1] : void 0) * 1
         };
       } else if (firefox) {
         return {
           mozilla: true,
           firefox: true,
-          version:
-            ((ref4 = ua.match(/firefox\/(\d+(\.\d+)?)/i)) != null
-              ? ref4[1]
-              : void 0) * 1
+          version: ((ref4 = ua.match(/firefox\/(\d+(\.\d+)?)/i)) != null ? ref4[1] : void 0) * 1
         };
       } else {
         return {};
@@ -2164,41 +1962,21 @@
     Util.prototype.isEmptyNode = function(node) {
       var $node;
       $node = $(node);
-      return (
-        $node.is(":empty") ||
-        (!$node.text() && !$node.find(":not(br, span, div)").length)
-      );
+      return $node.is(":empty") || (!$node.text() && !$node.find(":not(br, span, div)").length);
     };
 
     Util.prototype.isDecoratedNode = function(node) {
       return $(node).is('[class^="simditor-"]');
     };
 
-    Util.prototype.blockNodes = [
-      "div",
-      "p",
-      "ul",
-      "ol",
-      "li",
-      "blockquote",
-      "hr",
-      "pre",
-      "h1",
-      "h2",
-      "h3",
-      "h4",
-      "h5",
-      "table"
-    ];
+    Util.prototype.blockNodes = ["div", "p", "ul", "ol", "li", "blockquote", "hr", "pre", "h1", "h2", "h3", "h4", "h5", "table"];
 
     Util.prototype.isBlockNode = function(node) {
       node = $(node)[0];
       if (!node || node.nodeType === 3) {
         return false;
       }
-      return new RegExp("^(" + this.blockNodes.join("|") + ")$").test(
-        node.nodeName.toLowerCase()
-      );
+      return new RegExp("^(" + this.blockNodes.join("|") + ")$").test(node.nodeName.toLowerCase());
     };
 
     Util.prototype.getNodeLength = function(node) {
@@ -2252,15 +2030,9 @@
             return false;
           }
         })();
-      BlobBuilder =
-        window.BlobBuilder ||
-        window.WebKitBlobBuilder ||
-        window.MozBlobBuilder ||
-        window.MSBlobBuilder;
+      BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder || window.MSBlobBuilder;
       supportBlob = hasBlobConstructor || BlobBuilder;
-      if (
-        !(supportBlob && window.atob && window.ArrayBuffer && window.Uint8Array)
-      ) {
+      if (!(supportBlob && window.atob && window.ArrayBuffer && window.Uint8Array)) {
         return false;
       }
       if (dataURL.split(",")[0].indexOf("base64") >= 0) {
@@ -2270,11 +2042,7 @@
       }
       arrayBuffer = new ArrayBuffer(byteString.length);
       intArray = new Uint8Array(arrayBuffer);
-      for (
-        i = k = 0, ref = byteString.length;
-        0 <= ref ? k <= ref : k >= ref;
-        i = 0 <= ref ? ++k : --k
-      ) {
+      for (i = k = 0, ref = byteString.length; 0 <= ref ? k <= ref : k >= ref; i = 0 <= ref ? ++k : --k) {
         intArray[i] = byteString.charCodeAt(i);
       }
       mimeString = dataURL
@@ -2329,15 +2097,7 @@
     };
 
     Util.prototype.formatHTML = function(html) {
-      var cursor,
-        indentString,
-        lastMatch,
-        level,
-        match,
-        re,
-        repeatString,
-        result,
-        str;
+      var cursor, indentString, lastMatch, level, match, re, repeatString, result, str;
       re = /<(\/?)(.+?)(\/?)>/g;
       result = "";
       level = 0;
@@ -2351,10 +2111,7 @@
         match.isStartTag = match[1] !== "/" && match[3] !== "/";
         match.isEndTag = match[1] === "/" || match[3] === "/";
         cursor = lastMatch ? lastMatch.index + lastMatch[0].length : 0;
-        if (
-          (str = html.substring(cursor, match.index)).length > 0 &&
-          $.trim(str)
-        ) {
+        if ((str = html.substring(cursor, match.index)).length > 0 && $.trim(str)) {
           result += str;
         }
         if (match.isBlockNode && match.isEndTag && !match.isStartTag) {
@@ -2456,12 +2213,7 @@
             _this.wrapper.width("auto");
             _this.editor.util.reflow(_this.wrapper);
             _this.wrapper.width(_this.wrapper.outerWidth());
-            _this.wrapper.css(
-              "left",
-              _this.editor.util.os.mobile
-                ? _this.wrapper.position().left
-                : _this.wrapper.offset().left
-            );
+            _this.wrapper.css("left", _this.editor.util.os.mobile ? _this.wrapper.position().left : _this.wrapper.offset().left);
             _this.wrapper.css("position", "");
             toolbarHeight = _this.wrapper.outerHeight();
             _this.editor.placeholderEl.css("top", toolbarHeight);
@@ -2482,28 +2234,17 @@
               }
               topEdge = _this.editor.wrapper.offset().top;
               bottomEdge = topEdge + _this.editor.wrapper.outerHeight() - 80;
-              scrollTop =
-                $(document).scrollTop() + _this.opts.toolbarFloatOffset;
+              scrollTop = $(document).scrollTop() + _this.opts.toolbarFloatOffset;
               if (scrollTop <= topEdge || scrollTop >= bottomEdge) {
-                _this.editor.wrapper
-                  .removeClass("toolbar-floating")
-                  .css("padding-top", "");
+                _this.editor.wrapper.removeClass("toolbar-floating").css("padding-top", "");
                 if (_this.editor.util.os.mobile) {
-                  return _this.wrapper.css(
-                    "top",
-                    _this.opts.toolbarFloatOffset
-                  );
+                  return _this.wrapper.css("top", _this.opts.toolbarFloatOffset);
                 }
               } else {
                 floatInitialized || (floatInitialized = initToolbarFloat());
-                _this.editor.wrapper
-                  .addClass("toolbar-floating")
-                  .css("padding-top", toolbarHeight);
+                _this.editor.wrapper.addClass("toolbar-floating").css("padding-top", toolbarHeight);
                 if (_this.editor.util.os.mobile) {
-                  return _this.wrapper.css(
-                    "top",
-                    scrollTop - topEdge + _this.opts.toolbarFloatOffset
-                  );
+                  return _this.wrapper.css("top", scrollTop - topEdge + _this.opts.toolbarFloatOffset);
                 }
               }
             };
@@ -2631,9 +2372,7 @@
         (function(_this) {
           return function(i, blockEl) {
             var r;
-            r = isBackward
-              ? _this.outdentBlock(blockEl)
-              : _this.indentBlock(blockEl);
+            r = isBackward ? _this.outdentBlock(blockEl) : _this.indentBlock(blockEl);
             if (r) {
               return (result = r);
             }
@@ -2644,16 +2383,7 @@
     };
 
     Indentation.prototype.indentBlock = function(blockEl) {
-      var $blockEl,
-        $childList,
-        $nextTd,
-        $nextTr,
-        $parentLi,
-        $pre,
-        $td,
-        $tr,
-        marginLeft,
-        tagName;
+      var $blockEl, $childList, $nextTd, $nextTr, $parentLi, $pre, $td, $tr, marginLeft, tagName;
       $blockEl = $(blockEl);
       if (!$blockEl.length) {
         return;
@@ -2682,9 +2412,7 @@
         this.editor.selection.restore();
       } else if ($blockEl.is("p, h1, h2, h3, h4")) {
         marginLeft = parseInt($blockEl.css("margin-left")) || 0;
-        marginLeft =
-          (Math.round(marginLeft / this.opts.indentWidth) + 1) *
-          this.opts.indentWidth;
+        marginLeft = (Math.round(marginLeft / this.opts.indentWidth) + 1) * this.opts.indentWidth;
         $blockEl.css("margin-left", marginLeft);
       } else if ($blockEl.is("table") || $blockEl.is(".simditor-table")) {
         $td = this.editor.selection.containerNode().closest("td, th");
@@ -2725,16 +2453,7 @@
     };
 
     Indentation.prototype.outdentBlock = function(blockEl) {
-      var $blockEl,
-        $parent,
-        $parentLi,
-        $pre,
-        $prevTd,
-        $prevTr,
-        $td,
-        $tr,
-        marginLeft,
-        range;
+      var $blockEl, $parent, $parentLi, $pre, $prevTd, $prevTr, $td, $tr, marginLeft, range;
       $blockEl = $(blockEl);
       if (!($blockEl && $blockEl.length > 0)) {
         return;
@@ -2773,9 +2492,7 @@
         this.editor.selection.restore();
       } else if ($blockEl.is("p, h1, h2, h3, h4")) {
         marginLeft = parseInt($blockEl.css("margin-left")) || 0;
-        marginLeft =
-          Math.max(Math.round(marginLeft / this.opts.indentWidth) - 1, 0) *
-          this.opts.indentWidth;
+        marginLeft = Math.max(Math.round(marginLeft / this.opts.indentWidth) - 1, 0) * this.opts.indentWidth;
         $blockEl.css("margin-left", marginLeft === 0 ? "" : marginLeft);
       } else if ($blockEl.is("table") || $blockEl.is(".simditor-table")) {
         $td = this.editor.selection.containerNode().closest("td, th");
@@ -2843,9 +2560,7 @@
               }
             } else {
               _this.editor.formatter.format();
-              _this.editor.selection.setRangeAtStartOf(
-                _this.editor.body.find("p:first")
-              );
+              _this.editor.selection.setRangeAtStartOf(_this.editor.body.find("p:first"));
             }
             if (_this._processPasteByClipboardApi(e)) {
               return false;
@@ -2872,11 +2587,7 @@
       if (this.editor.util.browser.edge) {
         return;
       }
-      if (
-        e.originalEvent.clipboardData &&
-        e.originalEvent.clipboardData.items &&
-        e.originalEvent.clipboardData.items.length > 0
-      ) {
+      if (e.originalEvent.clipboardData && e.originalEvent.clipboardData.items && e.originalEvent.clipboardData.items.length > 0) {
         pasteItem = e.originalEvent.clipboardData.items[0];
         if (/^image\//.test(pasteItem.type)) {
           imageFile = pasteItem.getAsFile();
@@ -2921,13 +2632,9 @@
             _this.editor.selection.reset();
             _this.editor.selection.range();
             _this._pasteInBlockEl = _this.editor.selection.blockNodes().last();
-            _this._pastePlainText =
-              _this.opts.cleanPaste || _this._pasteInBlockEl.is("pre, table");
+            _this._pastePlainText = _this.opts.cleanPaste || _this._pasteInBlockEl.is("pre, table");
             if (_this._pastePlainText) {
-              pasteContent = _this.editor.formatter.clearHtml(
-                _this._pasteBin.html(),
-                true
-              );
+              pasteContent = _this.editor.formatter.clearHtml(_this._pasteBin.html(), true);
             } else {
               pasteContent = $("<div/>").append(_this._pasteBin.contents());
               pasteContent.find("table colgroup").remove();
@@ -3107,8 +2814,7 @@
     Simditor.prototype._init = function() {
       var e, editor, form, uploadOpts;
       this.textarea = $(this.opts.textarea);
-      this.opts.placeholder =
-        this.opts.placeholder || this.textarea.attr("placeholder");
+      this.opts.placeholder = this.opts.placeholder || this.textarea.attr("placeholder");
       if (!this.textarea.length) {
         throw new Error("simditor: param textarea is required.");
         return;
@@ -3128,8 +2834,7 @@
         return;
       }
       if (this.opts.upload && simpleUploader) {
-        uploadOpts =
-          typeof this.opts.upload === "object" ? this.opts.upload : {};
+        uploadOpts = typeof this.opts.upload === "object" ? this.opts.upload : {};
         this.uploader = simpleUploader(uploadOpts);
       }
       form = this.textarea.closest("form");
@@ -3186,9 +2891,7 @@
       this.el = $(this._tpl).insertBefore(this.textarea);
       this.wrapper = this.el.find(".simditor-wrapper");
       this.body = this.wrapper.find(".simditor-body");
-      this.placeholderEl = this.wrapper
-        .find(".simditor-placeholder")
-        .append(this.opts.placeholder);
+      this.placeholderEl = this.wrapper.find(".simditor-placeholder").append(this.opts.placeholder);
       this.el.data("simditor", this);
       this.wrapper.append(this.textarea);
       this.textarea.data("simditor", this).blur();
@@ -3223,9 +2926,7 @@
       children = this.body.children();
       if (
         children.length === 0 ||
-        (children.length === 1 &&
-          this.util.isEmptyNode(children) &&
-          parseInt(children.css("margin-left") || 0) < this.opts.indentWidth)
+        (children.length === 1 && this.util.isEmptyNode(children) && parseInt(children.css("margin-left") || 0) < this.opts.indentWidth)
       ) {
         return this.placeholderEl.show();
       } else {
@@ -3332,8 +3033,8 @@
 
   Simditor.i18n = {
     "zh-CN": {
-      'save': '保存',
-      'publish': '发布',
+      save: "保存",
+      publish: "发布",
       blockquote: "引用",
       bold: "加粗文字",
       code: "插入代码",
@@ -3445,11 +3146,9 @@
     extend(Button, superClass);
 
     Button.prototype._tpl = {
-      item:
-        '<li><a tabindex="-1" unselectable="on" class="toolbar-item" href="javascript:;"><span></span></a></li>',
+      item: '<li><a tabindex="-1" unselectable="on" class="toolbar-item" href="javascript:;"><span></span></a></li>',
       menuWrapper: '<div class="toolbar-menu"></div>',
-      menuItem:
-        '<li><a tabindex="-1" unselectable="on" class="menu-item" href="javascript:;"><span></span></a></li>',
+      menuItem: '<li><a tabindex="-1" unselectable="on" class="menu-item" href="javascript:;"><span></span></a></li>',
       separator: '<li><span class="separator"></span></li>'
     };
 
@@ -3550,9 +3249,7 @@
         (function(_this) {
           return function() {
             var editorActive;
-            editorActive =
-              _this.editor.body.is(":visible") &&
-              _this.editor.body.is("[contenteditable]");
+            editorActive = _this.editor.body.is(":visible") && _this.editor.body.is("[contenteditable]");
             if (!(editorActive && !_this.editor.clipboard.pasting)) {
               return;
             }
@@ -3595,12 +3292,12 @@
     Button.prototype.iconClassOf = function(icon) {
       if (icon) {
         //允许自定义图标做按钮
-        if(icon.indexOf('icon-') !== -1) {
-          return "iconfont "+icon;
+        if (icon.indexOf("icon-") !== -1) {
+          return "iconfont " + icon;
         }
         return "simditor-icon simditor-icon-" + icon;
       } else {
-        return '';
+        return "";
       }
     };
 
@@ -3651,9 +3348,7 @@
           })
           .addClass("menu-item-" + menuItem.name);
         if (menuItem.icon) {
-          results.push(
-            $menuBtnEl.find("span").addClass(this.iconClassOf(menuItem.icon))
-          );
+          results.push($menuBtnEl.find("span").addClass(this.iconClassOf(menuItem.icon)));
         } else {
           results.push($menuBtnEl.find("span").text(menuItem.text));
         }
@@ -3681,9 +3376,7 @@
       var disabled, endNodes, startNodes;
       startNodes = this.editor.selection.startNodes();
       endNodes = this.editor.selection.endNodes();
-      disabled =
-        startNodes.filter(this.disableTag).length > 0 ||
-        endNodes.filter(this.disableTag).length > 0;
+      disabled = startNodes.filter(this.disableTag).length > 0 || endNodes.filter(this.disableTag).length > 0;
       this.setDisabled(disabled);
       if (this.disabled) {
         this.setActive(false);
@@ -3697,8 +3390,7 @@
       endNodes = this.editor.selection.endNodes();
       startNode = startNodes.filter(this.htmlTag);
       endNode = endNodes.filter(this.htmlTag);
-      active =
-        startNode.length > 0 && endNode.length > 0 && startNode.is(endNode);
+      active = startNode.length > 0 && endNode.length > 0 && startNode.is(endNode);
       this.node = active ? startNode : null;
       this.setActive(active);
       return this.active;
@@ -3788,10 +3480,7 @@
             if (!($label.length > 0)) {
               return;
             }
-            return (_this._labelWidth = Math.max(
-              _this._labelWidth,
-              $label.width()
-            ));
+            return (_this._labelWidth = Math.max(_this._labelWidth, $label.width()));
           };
         })(this)
       );
@@ -3948,9 +3637,7 @@
       if (active) {
         param || (param = this.node[0].tagName.toLowerCase());
       }
-      this.el.removeClass(
-        "active-p active-h1 active-h2 active-h3 active-h4 active-h5"
-      );
+      this.el.removeClass("active-p active-h1 active-h2 active-h3 active-h4 active-h5");
       if (active) {
         return this.el.addClass("active active-" + param);
       }
@@ -3965,12 +3652,7 @@
           return function(i, node) {
             var $node;
             $node = $(node);
-            if (
-              $node.is("blockquote") ||
-              $node.is(param) ||
-              $node.is(_this.disableTag) ||
-              _this.editor.util.isDecoratedNode($node)
-            ) {
+            if ($node.is("blockquote") || $node.is(param) || $node.is(_this.disableTag) || _this.editor.util.isDecoratedNode($node)) {
               return;
             }
             return $("<" + param + "/>")
@@ -4048,8 +3730,7 @@
       endNodes = this.editor.selection.endNodes();
       startNode = startNodes.filter('span[style*="font-size"]');
       endNode = endNodes.filter('span[style*="font-size"]');
-      active =
-        startNodes.length > 0 && endNodes.length > 0 && startNode.is(endNode);
+      active = startNodes.length > 0 && endNodes.length > 0 && startNode.is(endNode);
       this.setActive(active);
       return this.active;
     };
@@ -4275,14 +3956,10 @@
               if (!($p.length > 0)) {
                 return;
               }
-              rgb = window
-                .getComputedStyle($p[0], null)
-                .getPropertyValue("color");
+              rgb = window.getComputedStyle($p[0], null).getPropertyValue("color");
               hex = _this._convertRgbToHex(rgb);
             } else {
-              rgb = window
-                .getComputedStyle($link[0], null)
-                .getPropertyValue("background-color");
+              rgb = window.getComputedStyle($link[0], null).getPropertyValue("background-color");
               hex = _this._convertRgbToHex(rgb);
             }
             if (!hex) {
@@ -4356,12 +4033,7 @@
           return function(i, node) {
             var $node;
             $node = $(node);
-            if (
-              $node.is("blockquote, li") ||
-              $node.is(_this.disableTag) ||
-              _this.editor.util.isDecoratedNode($node) ||
-              !$.contains(document, node)
-            ) {
+            if ($node.is("blockquote, li") || $node.is(_this.disableTag) || _this.editor.util.isDecoratedNode($node) || !$.contains(document, node)) {
               return;
             }
             if ($node.is(_this.type)) {
@@ -4508,10 +4180,7 @@
             if ($node.is(_this.htmlTag)) {
               clearCache();
               return $node.children().unwrap();
-            } else if (
-              $node.is(_this.disableTag) ||
-              _this.editor.util.isDecoratedNode($node)
-            ) {
+            } else if ($node.is(_this.disableTag) || _this.editor.util.isDecoratedNode($node)) {
               return clearCache();
             } else {
               return nodeCache.push(node);
@@ -4581,11 +4250,8 @@
       var $blockNodes, range;
       range = this.editor.selection.range();
       if (
-        ($blockNodes = $(range.cloneContents()).find(
-          this.editor.util.blockNodes.join(",")
-        )) > 0 ||
-        (range.collapsed &&
-          this.editor.selection.startNodes().filter("code").length === 0)
+        ($blockNodes = $(range.cloneContents()).find(this.editor.util.blockNodes.join(","))) > 0 ||
+        (range.collapsed && this.editor.selection.startNodes().filter("code").length === 0)
       ) {
         this.inlineMode = false;
         return (this.htmlTag = "pre");
@@ -4612,10 +4278,7 @@
       var $code, lang, ref, ref1;
       $code = $pre.find("> code");
       if ($code.length > 0) {
-        lang =
-          (ref = $code.attr("class")) != null
-            ? (ref1 = ref.match(/lang-(\S+)/)) != null ? ref1[1] : void 0
-            : void 0;
+        lang = (ref = $code.attr("class")) != null ? ((ref1 = ref.match(/lang-(\S+)/)) != null ? ref1[1] : void 0) : void 0;
         $code.contents().unwrap();
         if (lang) {
           return $pre.attr("data-lang", lang);
@@ -4670,11 +4333,7 @@
                 .append($node.html().replace("\n", "<br/>"))
                 .replaceAll($node);
               return resultNodes.push($p[0]);
-            } else if (
-              $node.is(_this.disableTag) ||
-              _this.editor.util.isDecoratedNode($node) ||
-              $node.is("blockquote")
-            ) {
+            } else if ($node.is(_this.disableTag) || _this.editor.util.isDecoratedNode($node) || $node.is("blockquote")) {
               return clearCache();
             } else {
               return nodeCache.push(node);
@@ -4999,11 +4658,7 @@
         (function(_this) {
           return function(e) {
             var range;
-            if (
-              e.which === 13 ||
-              e.which === 27 ||
-              (!e.shiftKey && e.which === 9 && $(e.target).hasClass("link-url"))
-            ) {
+            if (e.which === 13 || e.which === 27 || (!e.shiftKey && e.which === 9 && $(e.target).hasClass("link-url"))) {
               e.preventDefault();
               range = document.createRange();
               _this.editor.selection.setRangeAfter(_this.target, range);
@@ -5133,10 +4788,7 @@
               return;
             }
             $contents = $(range.cloneContents()).contents();
-            if (
-              $contents.length === 1 &&
-              $contents.is("img:not([data-non-image])")
-            ) {
+            if ($contents.length === 1 && $contents.is("img:not([data-non-image])")) {
               $img = $(range.startContainer)
                 .contents()
                 .eq(range.startOffset);
@@ -5167,9 +4819,7 @@
                   if (file) {
                     _this.editor.uploader.cancel(file);
                     if (_this.editor.body.find("img.uploading").length < 1) {
-                      return _this.editor.uploader.trigger("uploadready", [
-                        file
-                      ]);
+                      return _this.editor.uploader.trigger("uploadready", [file]);
                     }
                   }
                 }
@@ -5273,9 +4923,7 @@
               return _this.loadImage($img, src, function() {
                 if (_this.popover.active) {
                   _this.popover.refresh();
-                  return _this.popover.srcEl
-                    .val(_this._t("uploading"))
-                    .prop("disabled", true);
+                  return _this.popover.srcEl.val(_this._t("uploading")).prop("disabled", true);
                 }
               });
             });
@@ -5347,17 +4995,14 @@
               $img.removeData("mask");
 
               //记录新添加的图片地址，可用于已选配图vue
-              if(window.new_imgs == undefined) {
+              if (window.new_imgs == undefined) {
                 window.new_imgs = [];
               }
               window.new_imgs.push(img_path);
-              _this.editor.trigger('valuechanged');
-              
+              _this.editor.trigger("valuechanged");
+
               if (_this.editor.body.find("img.uploading").length < 1) {
-                return _this.editor.uploader.trigger("uploadready", [
-                  file,
-                  result
-                ]);
+                return _this.editor.uploader.trigger("uploadready", [file, result]);
               }
             });
             if (_this.popover.active) {
@@ -5408,10 +5053,7 @@
             }
             _this.editor.trigger("valuechanged");
             if (_this.editor.body.find("img.uploading").length < 1) {
-              return _this.editor.uploader.trigger("uploadready", [
-                file,
-                result
-              ]);
+              return _this.editor.uploader.trigger("uploadready", [file, result]);
             }
           };
         })(this)
@@ -5442,9 +5084,7 @@
       $img.addClass("loading");
       $mask = $img.data("mask");
       if (!$mask) {
-        $mask = $(
-          '<div class="simditor-image-loading">\n  <div class="progress"></div>\n</div>'
-        )
+        $mask = $('<div class="simditor-image-loading">\n  <div class="progress"></div>\n</div>')
           .hide()
           .appendTo(this.editor.wrapper);
         positionMask();
@@ -5553,16 +5193,15 @@
         '" tabindex="-1">\n      <span class="simditor-icon simditor-icon-upload"></span>\n    </a>\n  </div>\n  <div class=\'settings-field\'>\n    <label>' +
         this._t("imageAlt") +
         '</label>\n    <input class="image-alt" id="image-alt" type="text" tabindex="1" />\n  </div>\n  <div class="settings-field">\n ' +
-        
-        //'<label>' + this._t("imageSize") + '</label>\n    
+        //'<label>' + this._t("imageSize") + '</label>\n
         //<input class="image-size" id="image-width" type="text" tabindex="2" />\n
         //<span class="times">×</span>\n
         //<input class="image-size" id="image-height" type="text" tabindex="3" />\n
         //<a class="btn-restore" href="javascript:;"\n title="' + this._t("restoreImageSize") +'" tabindex="-1">\n
         //<span class="simditor-icon simditor-icon-undo"></span>\n
-        //</a>\n  
+        //</a>\n
 
-        '</div>\n</div>';
+        "</div>\n</div>";
 
       this.el.addClass("image-popover").append(tpl);
       this.srcEl = this.el.find(".image-src");
@@ -5752,9 +5391,7 @@
 
     ImagePopover.prototype._restoreImg = function() {
       var ref, size;
-      size = ((ref = this.target.data("image-size")) != null
-        ? ref.split(",")
-        : void 0) || [this.width, this.height];
+      size = ((ref = this.target.data("image-size")) != null ? ref.split(",") : void 0) || [this.width, this.height];
       this.target.attr({
         width: size[0] * 1,
         height: size[1] * 1
@@ -5942,15 +5579,7 @@
 
     TableButton.prototype._init = function() {
       TableButton.__super__._init.call(this);
-      $.merge(this.editor.formatter._allowedTags, [
-        "thead",
-        "th",
-        "tbody",
-        "tr",
-        "td",
-        "colgroup",
-        "col"
-      ]);
+      $.merge(this.editor.formatter._allowedTags, ["thead", "th", "tbody", "tr", "td", "colgroup", "col"]);
       $.extend(this.editor.formatter._allowedAttributes, {
         td: ["rowspan", "colspan"],
         col: ["width"]
@@ -5985,9 +5614,7 @@
         (function(_this) {
           return function(e) {
             var $container, range;
-            _this.editor.body
-              .find(".simditor-table td, .simditor-table th")
-              .removeClass("active");
+            _this.editor.body.find(".simditor-table td, .simditor-table th").removeClass("active");
             range = _this.editor.selection.range();
             if (!range) {
               return;
@@ -6001,9 +5628,7 @@
               }
               _this.editor.selection.setRangeAtEndOf($container);
             }
-            return $container
-              .closest("td, th", _this.editor.body)
-              .addClass("active");
+            return $container.closest("td, th", _this.editor.body).addClass("active");
           };
         })(this)
       );
@@ -6011,9 +5636,7 @@
         "blur.table",
         (function(_this) {
           return function(e) {
-            return _this.editor.body
-              .find(".simditor-table td, .simditor-table th")
-              .removeClass("active");
+            return _this.editor.body.find(".simditor-table td, .simditor-table th").removeClass("active");
           };
         })(this)
       );
@@ -6065,18 +5688,14 @@
         direction = "up";
       }
       action = direction === "up" ? "prev" : "next";
-      (ref = direction === "up" ? ["tbody", "thead"] : ["thead", "tbody"]),
-        (parentTag = ref[0]),
-        (anotherTag = ref[1]);
+      (ref = direction === "up" ? ["tbody", "thead"] : ["thead", "tbody"]), (parentTag = ref[0]), (anotherTag = ref[1]);
       $tr = $td.parent("tr");
       $anotherTr = this["_" + action + "Row"]($tr);
       if (!($anotherTr.length > 0)) {
         return true;
       }
       index = $tr.find("td, th").index($td);
-      return this.editor.selection.setRangeAtEndOf(
-        $anotherTr.find("td, th").eq(index)
-      );
+      return this.editor.selection.setRangeAtEndOf($anotherTr.find("td, th").eq(index));
     };
 
     TableButton.prototype._nextRow = function($tr) {
@@ -6142,9 +5761,7 @@
           .find("td, th")
           .index($td);
         $col = $colgroup.find("col").eq(index);
-        if (
-          (ref1 = $resizeHandle.data("col")) != null ? ref1.is($col) : void 0
-        ) {
+        if ((ref1 = $resizeHandle.data("col")) != null ? ref1.is($col) : void 0) {
           $resizeHandle.show();
           return;
         }
@@ -6158,17 +5775,7 @@
         return $resizeHandle.hide();
       });
       return $wrapper.on("mousedown", ".simditor-resize-handle", function(e) {
-        var $handle,
-          $leftCol,
-          $leftTd,
-          $rightCol,
-          $rightTd,
-          minWidth,
-          startHandleLeft,
-          startLeftWidth,
-          startRightWidth,
-          startX,
-          tableWidth;
+        var $handle, $leftCol, $leftTd, $rightCol, $rightTd, minWidth, startHandleLeft, startLeftWidth, startRightWidth, startX, tableWidth;
         $handle = $(e.currentTarget);
         $leftTd = $handle.data("td");
         $leftCol = $handle.data("col");
@@ -6212,9 +5819,7 @@
         "ctrl+alt+up",
         (function(_this) {
           return function(e) {
-            _this.editMenu
-              .find(".menu-item[data-param=insertRowAbove]")
-              .click();
+            _this.editMenu.find(".menu-item[data-param=insertRowAbove]").click();
             return false;
           };
         })(this)
@@ -6223,9 +5828,7 @@
         "ctrl+alt+down",
         (function(_this) {
           return function(e) {
-            _this.editMenu
-              .find(".menu-item[data-param=insertRowBelow]")
-              .click();
+            _this.editMenu.find(".menu-item[data-param=insertRowBelow]").click();
             return false;
           };
         })(this)
@@ -6243,9 +5846,7 @@
         "ctrl+alt+right",
         (function(_this) {
           return function(e) {
-            _this.editMenu
-              .find(".menu-item[data-param=insertColRight]")
-              .click();
+            _this.editMenu.find(".menu-item[data-param=insertColRight]").click();
             return false;
           };
         })(this)
@@ -6317,9 +5918,7 @@
             if ($tr.parent().is("tbody")) {
               $trs = $trs.add($table.find("thead tr"));
             }
-            return $trs
-              .find("td:lt(" + num + "), th:lt(" + num + ")")
-              .addClass("selected");
+            return $trs.find("td:lt(" + num + "), th:lt(" + num + ")").addClass("selected");
           };
         })(this)
       );
@@ -6366,18 +5965,10 @@
       $table = $("<table/>");
       $thead = $("<thead/>").appendTo($table);
       $tbody = $("<tbody/>").appendTo($table);
-      for (
-        r = k = 0, ref = row;
-        0 <= ref ? k < ref : k > ref;
-        r = 0 <= ref ? ++k : --k
-      ) {
+      for (r = k = 0, ref = row; 0 <= ref ? k < ref : k > ref; r = 0 <= ref ? ++k : --k) {
         $tr = $("<tr/>");
         $tr.appendTo(r === 0 ? $thead : $tbody);
-        for (
-          c = l = 0, ref1 = col;
-          0 <= ref1 ? l < ref1 : l > ref1;
-          c = 0 <= ref1 ? ++l : --l
-        ) {
+        for (c = l = 0, ref1 = col; 0 <= ref1 ? l < ref1 : l > ref1; c = 0 <= ref1 ? ++l : --l) {
           $td = $(r === 0 ? "<th/>" : "<td/>").appendTo($tr);
           if (phBr) {
             $td.append(this.editor.util.phBr);
@@ -6413,9 +6004,7 @@
       return $tr.find("td, th").each(function(i, cell) {
         var $cell;
         $cell = $(cell);
-        return $cell.replaceWith(
-          "<" + tagName + ">" + $cell.html() + "</" + tagName + ">"
-        );
+        return $cell.replaceWith("<" + tagName + ">" + $cell.html() + "</" + tagName + ">");
       });
     };
 
@@ -6435,9 +6024,7 @@
           this._changeCellTag($newTr, "th");
         }
         $tr.remove();
-        return this.editor.selection.setRangeAtEndOf(
-          $newTr.find("td, th").eq(index)
-        );
+        return this.editor.selection.setRangeAtEndOf($newTr.find("td, th").eq(index));
       }
     };
 
@@ -6471,18 +6058,12 @@
       } else {
         $tr[direction]($newTr);
       }
-      for (
-        i = k = 1, ref = colNum;
-        1 <= ref ? k <= ref : k >= ref;
-        i = 1 <= ref ? ++k : --k
-      ) {
+      for (i = k = 1, ref = colNum; 1 <= ref ? k <= ref : k >= ref; i = 1 <= ref ? ++k : --k) {
         $("<" + cellTag + "/>")
           .append(this.editor.util.phBr)
           .appendTo($newTr);
       }
-      return this.editor.selection.setRangeAtStartOf(
-        $newTr.find("td, th").eq(index)
-      );
+      return this.editor.selection.setRangeAtStartOf($newTr.find("td, th").eq(index));
     };
 
     TableButton.prototype.deleteCol = function($td) {
@@ -6543,10 +6124,7 @@
       $newCol = $("<col/>");
       $col[direction]($newCol);
       tableWidth = $table.width();
-      width = Math.max(
-        parseFloat($col.attr("width")) / 2,
-        50 / tableWidth * 100
-      );
+      width = Math.max(parseFloat($col.attr("width")) / 2, 50 / tableWidth * 100);
       $col.attr("width", width + "%");
       $newCol.attr("width", width + "%");
       this.refreshTableWidth($table);
@@ -6845,6 +6423,7 @@
     PictureButton.prototype._status = function() {};
 
     PictureButton.prototype.command = function() {
+      console.log("ssss");
       //open modal ...
       $(".image-list-modal").modal({});
 
@@ -6871,12 +6450,12 @@
     function SaveButton() {
       return SaveButton.__super__.constructor.apply(this, arguments);
     }
-    SaveButton.prototype.name = 'save';
-    SaveButton.prototype.icon = 'icon-iconset0237';
+    SaveButton.prototype.name = "save";
+    SaveButton.prototype.icon = "icon-iconset0237";
     SaveButton.prototype._status = function() {};
     SaveButton.prototype.needFocus = false;
-    SaveButton.prototype.command = function() { 
-      this.editor.trigger('editorsaved');
+    SaveButton.prototype.command = function() {
+      this.editor.trigger("editorsaved");
     };
     return SaveButton;
   })(Button);
@@ -6887,155 +6466,156 @@
     function PublishButton() {
       return PublishButton.__super__.constructor.apply(this, arguments);
     }
-    PublishButton.prototype.name = 'publish';
-    PublishButton.prototype.icon = 'icon-icon-feixingmanyou';
-    PublishButton.prototype.text = '发布文章';
+    PublishButton.prototype.name = "publish";
+    PublishButton.prototype.icon = "icon-icon-feixingmanyou";
+    PublishButton.prototype.text = "发布文章";
     PublishButton.prototype._status = function() {};
     PublishButton.prototype.needFocus = false;
-    PublishButton.prototype.command = function() { 
-      this.editor.trigger('editorpublished');
+    PublishButton.prototype.command = function() {
+      this.editor.trigger("editorpublished");
     };
     return PublishButton;
   })(Button);
   Simditor.Toolbar.addButton(PublishButton);
 
   SimditorAutosave = (function(superClass) {
-      extend(SimditorAutosave, superClass);
+    extend(SimditorAutosave, superClass);
 
-      function SimditorAutosave() {
-        return SimditorAutosave.__super__.constructor.apply(this, arguments);
+    function SimditorAutosave() {
+      return SimditorAutosave.__super__.constructor.apply(this, arguments);
+    }
+
+    SimditorAutosave.pluginName = "Autosave";
+
+    SimditorAutosave.prototype.opts = {
+      autosave: true,
+      autosavePath: null
+    };
+
+    SimditorAutosave.prototype._init = function() {
+      var currentVal, link, name, val;
+      this.editor = this._module;
+      if (!this.opts.autosave) {
+        return;
       }
-
-      SimditorAutosave.pluginName = 'Autosave';
-
-      SimditorAutosave.prototype.opts = {
-        autosave: true,
-        autosavePath: null
-      };
-
-      SimditorAutosave.prototype._init = function() {
-        var currentVal, link, name, val;
-        this.editor = this._module;
-        if (!this.opts.autosave) {
-          return;
-        }
-        this.name = typeof this.opts.autosave === 'string' ? this.opts.autosave : 'simditor';
-        if (this.opts.autosavePath) {
-          this.path = this.opts.autosavePath;
-        } else {
-          link = $("<a/>", {
-            href: location.href
-          });
-          name = this.editor.textarea.data('autosave') || this.name;
-          this.path = "/" + (link[0].pathname.replace(/\/$/g, "").replace(/^\//g, "")) + "/autosave/" + name + "/";
-        }
-        if (!this.path) {
-          return;
-        }
-        this.editor.on("valuechanged", (function(_this) {
+      this.name = typeof this.opts.autosave === "string" ? this.opts.autosave : "simditor";
+      if (this.opts.autosavePath) {
+        this.path = this.opts.autosavePath;
+      } else {
+        link = $("<a/>", {
+          href: location.href
+        });
+        name = this.editor.textarea.data("autosave") || this.name;
+        this.path = "/" + link[0].pathname.replace(/\/$/g, "").replace(/^\//g, "") + "/autosave/" + name + "/";
+      }
+      if (!this.path) {
+        return;
+      }
+      this.editor.on(
+        "valuechanged",
+        (function(_this) {
           return function() {
             // _this.editor.trigger('save',['qqq']);
             return _this.storage.set(_this.path, _this.editor.getValue());
-
           };
-        })(this));
-        this.editor.el.closest('form').on('ajax:success.simditor-' + this.editor.id, (function(_this) {
+        })(this)
+      );
+      this.editor.el.closest("form").on(
+        "ajax:success.simditor-" + this.editor.id,
+        (function(_this) {
           return function(e) {
             return _this.storage.remove(_this.path);
           };
-        })(this));
-        val = this.storage.get(this.path);
-        if (!val) {
+        })(this)
+      );
+      val = this.storage.get(this.path);
+      if (!val) {
+        return;
+      }
+      currentVal = this.editor.textarea.val();
+      if (val === currentVal) {
+        return;
+      }
+      if (this.editor.textarea.is("[data-autosave]")) {
+        var draft = val;
+        var prompt = this.editor.textarea.data("autosave-prompt") ? this.editor.textarea.data("autosave-prompt") : "你有未保存的草稿,是否恢复?";
+
+        var _editor = this.editor;
+        setTimeout(function() {
+          _editor.trigger("promptdraft", { draft: draft, prompt: prompt });
+        }, 500);
+        // if (confirm(this.editor.textarea.data('autosave-confirm') || '你要恢复未保存的草稿吗?')) {
+        //   return this.editor.setValue(val);
+        // } else {
+        //   return this.storage.remove(this.path);
+        // }
+
+        // var _this=this;
+        //     _this.editor.setValue(val);
+        // $('.promptBox').fadeIn();
+        // $('.yes').on('click',function () {
+        //     $('.promptBox').fadeOut();
+        // })
+        // $('.no').on('click',function () {
+        //     $('.promptBox').fadeOut();
+        //     _this.editor.setValue('')
+        // })
+      } else {
+        return this.editor.setValue(val);
+      }
+    };
+
+    SimditorAutosave.prototype.storage = {
+      supported: function() {
+        var error;
+        try {
+          localStorage.setItem("_storageSupported", "yes");
+          localStorage.removeItem("_storageSupported");
+          return true;
+        } catch (_error) {
+          error = _error;
+          return false;
+        }
+      },
+      set: function(key, val, session) {
+        var storage;
+        if (session == null) {
+          session = false;
+        }
+        if (!this.supported()) {
           return;
         }
-        currentVal = this.editor.textarea.val();
-        if (val === currentVal) {
+        storage = session ? sessionStorage : localStorage;
+        return storage.setItem(key, val);
+      },
+      get: function(key, session) {
+        var storage;
+        if (session == null) {
+          session = false;
+        }
+        if (!this.supported()) {
           return;
         }
-        if (this.editor.textarea.is('[data-autosave]')) {
-          var draft = val;
-          var prompt = this.editor.textarea.data('autosave-prompt')? 
-            this.editor.textarea.data('autosave-prompt')
-          : '你有未保存的草稿,是否恢复?';
-
-          var _editor = this.editor;
-          setTimeout(function(){
-                _editor.trigger('promptdraft', {draft:draft, prompt:prompt});
-            },500);
-          // if (confirm(this.editor.textarea.data('autosave-confirm') || '你要恢复未保存的草稿吗?')) {
-          //   return this.editor.setValue(val);
-          // } else {
-          //   return this.storage.remove(this.path);
-          // }
-          
-          // var _this=this;
-          //     _this.editor.setValue(val);
-          // $('.promptBox').fadeIn();
-          // $('.yes').on('click',function () {
-          //     $('.promptBox').fadeOut();
-          // })
-          // $('.no').on('click',function () {
-          //     $('.promptBox').fadeOut();
-          //     _this.editor.setValue('')
-          // })
-
-        } else {
-          return this.editor.setValue(val);
+        storage = session ? sessionStorage : localStorage;
+        return storage[key];
+      },
+      remove: function(key, session) {
+        var storage;
+        if (session == null) {
+          session = false;
         }
-      };
-
-      SimditorAutosave.prototype.storage = {
-        supported: function() {
-          var error;
-          try {
-            localStorage.setItem('_storageSupported', 'yes');
-            localStorage.removeItem('_storageSupported');
-            return true;
-          } catch (_error) {
-            error = _error;
-            return false;
-          }
-        },
-        set: function(key, val, session) {
-          var storage;
-          if (session == null) {
-            session = false;
-          }
-          if (!this.supported()) {
-            return;
-          }
-          storage = session ? sessionStorage : localStorage;
-          return storage.setItem(key, val);
-        },
-        get: function(key, session) {
-          var storage;
-          if (session == null) {
-            session = false;
-          }
-          if (!this.supported()) {
-            return;
-          }
-          storage = session ? sessionStorage : localStorage;
-          return storage[key];
-        },
-        remove: function(key, session) {
-          var storage;
-          if (session == null) {
-            session = false;
-          }
-          if (!this.supported()) {
-            return;
-          }
-          storage = session ? sessionStorage : localStorage;
-          return storage.removeItem(key);
+        if (!this.supported()) {
+          return;
         }
-      };
+        storage = session ? sessionStorage : localStorage;
+        return storage.removeItem(key);
+      }
+    };
 
-      return SimditorAutosave;
+    return SimditorAutosave;
+  })(SimpleModule);
 
-    })(SimpleModule);
-
-    Simditor.connect(SimditorAutosave);
+  Simditor.connect(SimditorAutosave);
 
   return Simditor;
 });

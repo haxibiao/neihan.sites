@@ -6390,6 +6390,51 @@
 
   Simditor.connect(Dropzone);
 
+  PictureButton = (function(superClass) {
+    extend(PictureButton, superClass);
+
+    function PictureButton() {
+      return PictureButton.__super__.constructor.apply(this, arguments);
+    }
+
+    PictureButton.i18n = {
+      "zh-CN": {
+        picture: "从图库插入图片"
+      },
+      "en-US": {
+        picture: "insert image from library"
+      }
+    };
+
+    PictureButton.prototype.name = "picture";
+
+    PictureButton.prototype.icon = "picture-o";
+
+    PictureButton.prototype._status = function() {};
+
+    PictureButton.prototype.command = function() {
+      console.log("ssss");
+      //open modal ...
+      $(".image-list-modal").modal({});
+
+      var _selection = this.editor.selection;
+      _selection.save();
+
+      if (window.simditor_img_bond === undefined) {
+        $("img[simditor]").click(function(e) {
+          _selection.restore();
+          _selection.insertNode(this.outerHTML);
+          // _selection.insertNode("<p>添加图片的说明...</p>");
+        });
+        window.simditor_img_bond = 1;
+      }
+    };
+
+    return PictureButton;
+  })(Button);
+
+  Simditor.Toolbar.addButton(PictureButton);
+
   SaveButton = (function(superClass) {
     extend(SaveButton, superClass);
     function SaveButton() {

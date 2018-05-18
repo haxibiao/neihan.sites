@@ -1,7 +1,7 @@
 <template>
     <div class="simditor-box">
         <slot></slot>
-        <textarea :id="textareaId" :name="name" :placeholder="placeholderText">
+        <textarea :id="textareaId" :name="name" :placeholder="placeholderText" autofocus="autofocus">
             {{ value }}
         </textarea>
     </div>
@@ -42,8 +42,9 @@ export default {
                 "hr",
                 // 'code',
                 // 'link', '|',
-                "image"
-                // 'picture', 'video', '|',
+                "image",
+                "picture"
+                // 'video', '|',
                 // 'indent', 'outdent'
             ]
         };
@@ -122,6 +123,7 @@ export default {
         max-width: 100%;
         width: auto;
         height: auto;
+        margin-bottom: 10px !important;
     }
 }
 .simditor-toolbar {
