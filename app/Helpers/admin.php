@@ -15,12 +15,13 @@ function get_top_categoires($top_categoires){
     }
 
     $categories=array_merge($stick_categories,$categories);
+    $categories=array_unique($categories);
 
     return $categories;
 }
 
 
-function get_top_categoires_count(){
+function get_top_categories_count(){
     $categories=[];
 
     $stick_categories=get_stick_categories();

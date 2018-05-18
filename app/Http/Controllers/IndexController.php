@@ -16,8 +16,16 @@ class IndexController extends Controller
     {
         $has_follow_articles = false;
         //get user related categories ..
+        $categorie_ids = [];
 
-        $top_count=get_top_categoires_count();
+        $stick_categories=get_stick_categories();
+        $top_count=7-count($stick_categories);
+        if($top_count){
+            foreach($stick_categories as $stick_category){
+                $categorie_ids[]=$stick_category->id;
+            }
+        }
+
         if (Auth::check()) {
             $user = Auth::user();
             //get top n user followed categories
@@ -27,12 +35,13 @@ class IndexController extends Controller
                     ->take($top_count)
                     ->get();
                 $categories    = [];
-                $categorie_ids = [];
+                
                 foreach ($follows as $follow) {
                     $category        = $follow->followed;
                     $categories[]    = $category;
                     $categorie_ids[] = $category->id;
                 }
+
                 // get user followed categories related articles ...
                 $articles = Article::with('user')->with('category')
                     ->where('status', '>', 0)
