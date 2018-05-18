@@ -10,14 +10,14 @@ use Illuminate\Support\Facades\Storage;
 function get_top_categoires($top_categoires){
     $categories=[];
 
-    $stick_categories=get_stick_categories();
+    $stick_categories=get_stick_categories(false,true);
     foreach($top_categoires as $category){
         $categories[]=$category;
     }
 
     $categories=array_merge($stick_categories,$categories);
     $categories= new collection($categories);
-    $categories->unique();
+    $categories=$categories->unique();
 
     return $categories;
 }
@@ -32,7 +32,7 @@ function get_top_categories_count(){
 }
 
 
-function get_stick_categories($all = false)
+function get_stick_categories($all = false,$index=false)
 {
     $categories = [];
     if (Storage::exists("stick_categories")) {
@@ -47,6 +47,11 @@ function get_stick_categories($all = false)
             }
 
             $category = category::find($item['category_id']);
+
+            if($index && $category){
+                $categories[]          = $category;
+                continue;
+            }
             if ($category) {
                 $category->reason     = !empty($item['reason']) ? $item['reason'] : null;
                 $category->expire     = $item['expire'];
