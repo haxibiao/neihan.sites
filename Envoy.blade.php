@@ -54,6 +54,7 @@ cd {{ $www }}
 echo {{ $www }}
 {{ $refresh_env_config }}
 {{ $cache_clear }}
+{{ $run_commands }}
 @endtask
 
 @task('web_seed', ['on' => ['web'], 'parallel' => true])
@@ -61,8 +62,8 @@ cd {{ $www }}
 echo {{ $www }}
 {{ $refresh_env_config }}
 {{ $run_migrate }}
-{{ $run_commands }}
 {{ $cache_clear }}
+{{ $run_commands }}
 @endtask
 
 @task('web_update', ['on' => ['web'], 'parallel' => true])
@@ -72,7 +73,7 @@ echo {{ $www }}
 {{ $refresh_env_config }}
 {{ $run_composer }}
 {{ $run_migrate }}
-{{ $run_commands }}
 {{ $cache_clear }}
 {{ $copy_worker_conf }}
+{{ $run_commands }}
 @endtask

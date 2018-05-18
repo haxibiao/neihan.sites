@@ -33,6 +33,9 @@ class Image extends Model
         if ($this->source_url) {
             return $this->source_url;
         }
+        if($this->disk == 'hxb') {
+            env('HXB_URL') . $this->path_small();
+        }
         return env('APP_URL') . $this->path_small();
     }
 

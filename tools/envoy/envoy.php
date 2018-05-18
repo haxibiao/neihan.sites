@@ -1,6 +1,7 @@
 <?php
 
 require_once 'domain.php';
+require_once 'commands.php';
 
 $git = 'root@' . $web_server . ':/data/www/' . $domain;
 

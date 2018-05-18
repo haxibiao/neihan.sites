@@ -29,16 +29,17 @@ Artisan::command('fix:data {operation} {--force}', function ($operation) {
     	$commander->fix_articles();
     }
     if($operation == "images") {
-    	$commander->fix_tags();
+        $this->info('xxxx');
+    	$commander->fix_images();
     }
     if($operation == "videos") {
-    	$commander->fix_tags();
+    	$commander->fix_videos();
     }
     if($operation == "categories") {
-    	$commander->fix_tags();
+    	$commander->fix_categories();
     }
     if($operation == "users") {
-    	$commander->fix_tags();
+    	$commander->fix_users();
     }
 })->describe('fix data ...');
 
