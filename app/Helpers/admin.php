@@ -4,6 +4,7 @@ use App\Article;
 use App\Category;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 function get_top_categoires($top_categoires){
@@ -15,7 +16,8 @@ function get_top_categoires($top_categoires){
     }
 
     $categories=array_merge($stick_categories,$categories);
-    $categories=array_unique($categories);
+    $categories= new collection($categories);
+    $categories->unique();
 
     return $categories;
 }
