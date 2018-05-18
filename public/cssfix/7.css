@@ -1,0 +1,40 @@
+.r_bar_bg br {
+  display: none;
+}
+
+.r_bar_bg .id_div .item_top {
+  margin-bottom: 25px;
+}
+
+.r_bar_bg .id_div .item_top .top_hero_card > div {
+  margin-bottom: 20px;
+}
+
+.r_bar_bg .id_div .item_top .top_hero_card > div img {
+  max-width: 100%;
+  margin: 0 auto;
+  display: block;
+  height: auto;
+}
+
+.r_bar_bg .id_div .item_top .top_hero_card p {
+  margin-bottom: 20px;
+  line-height: 1.7;
+  word-wrap: break-word;
+  text-align: center;
+}
+
+.r_bar_bg .id_div .w1002 .item_left .l_title {
+  font-weight: bold;
+}
+
+.r_bar_bg .id_div .w1002 .item_left .hero_info {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 45px;
+}
+
+.r_bar_bg .id_div .w1002 .item_left .hero_info .hero_b {
+  float: left;
+  margin-right: 20px;
+}

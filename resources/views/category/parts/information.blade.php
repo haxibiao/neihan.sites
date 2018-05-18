@@ -1,6 +1,6 @@
 <div class="note-info info-lg">
-    <a class="avatar-category" href="{{ $category->checkAdmin() ? "/category/$category->id/edit": "javascript:;" }}">
-        <img src="{{ $category->logo() }}" alt="">
+    <a class="avatar-category" href="{{ $category->checkAdmin() ? "/category/$category->id/edit": "javascript:;" }}" title="{{ $category->id }}:{{ $category->name }}">
+        <img src="{{ $category->logo() }}" alt="{{ $category->id }}:{{ $category->name }}">
     </a>
     <div class="btn-wrap">
         <follow 

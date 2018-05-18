@@ -6,6 +6,16 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 
+
+function link_source_css($category)
+{
+    $cate_css_path = '/cssfix/' . $category->id . '.css';
+    if (file_exists(public_path($cate_css_path))) {
+        return '<link rel="stylesheet" href="' . $cate_css_path . '">';
+    }
+    return '';
+}
+
 function get_submit_status($submited_status, $isAdmin = false)
 {
     $submit_status = $isAdmin ? '收录' : '投稿';

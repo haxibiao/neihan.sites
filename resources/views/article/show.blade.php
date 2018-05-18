@@ -17,6 +17,11 @@
 
 @section('content')
 
+{{-- 允许cssfix来修复特定爬虫分类下的文章样式 --}}
+@foreach($article->categories as $category)
+     {!! link_source_css($category) !!}
+@endforeach
+
 <div id="detail">
     <section class="clearfix col-sm-offset-2 col-sm-8">
         <article>
@@ -95,8 +100,8 @@
               <span class="name">＋ 收入我的专题</span>
             </a>
             @foreach($article->categories as $category)
-            <a href="/{{ $category->name_en }}" class="category-label">
-              <img src="{{ $category->smallLogo() }}" alt="">
+            <a href="/{{ $category->name_en }}" class="category-label" title="{{ $category->id }}:{{ $category->name }}">
+              <img src="{{ $category->smallLogo() }}" alt="{{ $category->id }}:{{ $category->name }}">
               <span class="name">{{ $category->name }}</span>
             </a>
             @endforeach
