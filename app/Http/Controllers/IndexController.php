@@ -63,11 +63,10 @@ class IndexController extends Controller
                 ->orderBy('updated_at', 'desc')
                 ->take($top_count)
                 ->get();
-
             $articles = Article::with('user')->with('category')
                 ->where('status', '>', 0)
                 ->where('source_url', '=', '0')
-                ->whereIn('category_id', $categories->pluck('id'))
+                ->whereIn('category_id', array_merge($categorie_ids,$categories->pluck('id')->toArray()))
                 ->orderBy('id', 'desc')
                 ->paginate(10);
         }
