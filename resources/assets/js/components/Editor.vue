@@ -1,7 +1,12 @@
 <template>
     <div class="simditor-box">
         <slot></slot>
-        <textarea :id="textareaId" :name="name" :placeholder="placeholderText" autofocus="autofocus">
+        <div class="promptBox alert alert-success" v-show="draftShow">
+           你要恢复未保存的草稿吗
+            <span class="btn yes" @click="yesClick">yes</span>
+            <span class=" btn no" @click="noClick">no</span>
+        </div>
+        <textarea :id="textareaId" :name="name" :placeholder="placeholderText" autofocus="autofocus" data-autosave="editor-content">
             {{ value }}
         </textarea>
     </div>
@@ -24,12 +29,14 @@ export default {
     //vue中，通过修改value属性来更新编辑器中的内容
     updated() {
         if (this.value != this.editor.getValue()) {
-            this.editor.setValue(this.value);
+            this.editor.setValue(this.editor.getVlue());
         }
     },
 
     data() {
         return {
+            value_draft: "",
+            draftShow: false,
             textareaId: new Date().getTime(), //这里防止多个富文本发生冲突
             editor: null, //保存simditor对象
             toolbar: [
@@ -96,6 +103,11 @@ export default {
                 _this.$emit("changed", _this.editor.getValue());
             });
 
+            this.editor.on("promptdraft", function(e, data) {
+                _this.value_draft = data.draft;
+                _this.draftShow = !_this.draftShow;
+            });
+
             if (this.write !== undefined) {
                 this.editor.on("saved", function(e, src) {
                     _this.$emit("saved", _this.editor.getValue());
@@ -112,6 +124,14 @@ export default {
         textChanged() {
             console.log("textchanged...");
             this.$emit("textchanged");
+        },
+        yesClick() {
+            this.draftShow = !this.draftShow;
+            this.editor.setValue(this.value_draft);
+        },
+        noClick() {
+            this.draftShow = !this.draftShow;
+            this.editor.setValue("");
         }
     }
 };

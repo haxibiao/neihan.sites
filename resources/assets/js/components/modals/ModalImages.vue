@@ -37,12 +37,12 @@ export default {
 			$(this.$refs.fresh).css("transform", `rotate(${360 * this.changes}deg)`);
 			this.changes++;
 
-			var api = window.tokenize("/api/question/image?q=" + this.query);
-			var vm = this;
+			// var api = window.tokenize("/api/question/image?q=" + this.query);
+			// var vm = this;
 
-			window.axios.get(api).then(function(response) {
-				vm.images = response.data;
-			});
+			// window.axios.get(api).then(function(response) {
+			// 	vm.images = response.data;
+			// });
 		}
 	},
 
