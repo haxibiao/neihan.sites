@@ -3,4 +3,14 @@
 	@media screen and(max-width:768px) {
 		padding-top: 61px;
 	}
+	&.black {
+		padding-top: 51px;
+		& > div:first-child {
+			border-color: $dark-color3;
+			.navbar {
+				background-color: $dark-color3;
+				border-radius: 0;
+			}
+		}
+	}
 }

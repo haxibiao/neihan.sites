@@ -4,9 +4,12 @@
         padding-top: 30px;
         .main {
             padding: 0;
-        } 
+            .video {
+                padding: 0 5px;
+            }
+        }
         .aside {
-            padding: 0; 
+            padding: 0;
         }
     }
 }

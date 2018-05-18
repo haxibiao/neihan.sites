@@ -1,10 +1,10 @@
 // 按钮切换：已关注/取消关注
 @mixin button-toggle-followed() {
-	background-color: #FFF;
+	background-color: #fff;
 	border-color: $gray-color3;
 	color: $gray-color2 !important;
-  &::after {
-		content: '已关注';
+	&::after {
+		content: "已关注";
 	}
 	.chacha {
 		display: none;
@@ -16,8 +16,8 @@
 		background-color: $light-color1;
 		border-color: $gray-color2;
 		color: $gray-color1 !important;
-	  &::after {
-			content: '取消关注';
+		&::after {
+			content: "取消关注";
 		}
 		.chacha {
 			display: inline-block;
@@ -29,12 +29,12 @@
 }
 // 实心按钮hover
 @mixin button-hover($color:$weixin-color) {
-	background-color: rgba($color,0.9) !important;
-	border-color: rgba($color,0.9) !important;
+	background-color: rgba($color, 0.9) !important;
+	border-color: rgba($color, 0.9) !important;
 	color: #fff !important;
-  &:hover {
-    background-color: $color !important;
-  }
+	&:hover {
+		background-color: $color !important;
+	}
 }
 //空心按钮hover
 @mixin button-blank-hover($color:$weixin-color) {
@@ -57,15 +57,18 @@
 	font-size: 15px;
 	padding: 11px 18px;
 	i {
-	  	font-size: 15px;
+		font-size: 15px;
 	}
-	&.btn-md,&.btn-sm,&.btn-xs {
+	&.btn-md,
+	&.btn-sm,
+	&.btn-xs {
 		width: auto;
 		height: auto;
 		margin: 0;
 		float: unset;
 	}
-	&.btn-sm,&.btn-xs {
+	&.btn-sm,
+	&.btn-xs {
 		font-size: 12px;
 		i {
 			font-size: 13px;
@@ -101,29 +104,34 @@
 		min-width: 90px;
 	}
 }
-.btn-follow,.btn-toggle-followed {
+.btn-follow,
+.btn-toggle-followed {
 	width: 100px;
 	padding: 11px 0;
 }
-.btn-follow,.btn-toggle-followed,.btn-hollow {
+.btn-follow,
+.btn-toggle-followed,
+.btn-hollow {
 	float: right;
 	i {
 		margin-right: 3px;
 	}
-	@media screen and (max-width:768px) {
-	    width: 80px;
-	    padding: 10px 0;
-	    font-size: 14px;
-	    i {
-	    	font-size: 14px;
-	    }
+	@media screen and (max-width: 768px) {
+		width: 80px;
+		padding: 10px 0;
+		font-size: 14px;
+		i {
+			font-size: 14px;
+		}
 	}
 }
-.btn-follow,.btn-handle {
+.btn-follow,
+.btn-handle {
 	@include button-hover();
 }
 //切换：已关注/取消关注
-.btn-toggle-followed,.toggle-followed {
+.btn-toggle-followed,
+.toggle-followed {
 	@include button-toggle-followed;
 }
 .toggle-followed {
@@ -135,7 +143,8 @@
 .btn-hollow {
 	@include button-blank-hover;
 }
-.btn-gray,.btn-light {
+.btn-gray,
+.btn-light {
 	background-color: $light-color2;
 	border-color: $gray-color3;
 	color: $gray-color1 !important;
@@ -144,7 +153,7 @@
 	}
 }
 .btn-light {
-	background-color: #FFF;
+	background-color: #fff;
 }
 .btn-more {
 	width: 100%;
@@ -160,28 +169,79 @@
 }
 .btn-file {
 	position: relative;
-	input[type=file] {
+	input[type="file"] {
 		position: absolute;
 		top: 0;
 		left: 0;
 		width: 100%;
 		height: 100%;
 		opacity: 0;
-		cursor: pointer; 
+		cursor: pointer;
 	}
 }
 .disable {
-  opacity: 0.5;
-  pointer-events: none;
+	opacity: 0.5;
+	pointer-events: none;
 }
 // 主题色标签+触摸反馈
-.theme-tag,.collection-tag {
+.theme-tag,
+.collection-tag {
 	@include button-blank-hover($theme-color);
+}
+//喜欢按钮
+.likeButton {
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	.btn-base {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		padding: 0;
+		.btn-like {
+			display: inline-block;
+			font-size: 19px;
+			a {
+				color: $theme-color;
+				i {
+					font-size: 21px;
+					margin-right: 5px;
+				}
+			}
+		}
+		.modal-wrap {
+			padding-left: $font-size-article;
+			line-height: initial;
+			font-size: 18px;
+			border-left: 1px solid rgba($theme-color, 0.5);
+			display: inline-block;
+			a {
+				color: $theme-color;
+				padding-left: $font-size-article;
+			}
+		}
+	}
+	.btn-theme {
+		.btn-like {
+			a {
+				color: #fff;
+			}
+		}
+		.modal-wrap {
+			border-color: #fff;
+			a {
+				color: #fff;
+			}
+		}
+	}
 }
 // 新建专题
 .new-note-btn {
-  padding-left: 10px;
-  font-size: 13px;
-  font-weight: 400;
-  color: $weixin-color !important;
+	padding-left: 10px;
+	font-size: 13px;
+	font-weight: 400;
+	color: $weixin-color !important;
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="like">
+  <div class="likeButton">
     <div :class="['btn-base',isLiked?'btn-theme':'theme-tag']">
       <div v-if="isLogin" class="btn-like" @click="toggle_like">
         <a>
@@ -15,7 +15,7 @@
         </a>      
       </div>
       </a>
-      <div class="modal-wrap">
+      <div class="modal-wrap" v-if="type=='article'">
         <a data-target=".like-user" data-toggle="modal">{{ likesTotal }}</a>
       </div>
     </div>
