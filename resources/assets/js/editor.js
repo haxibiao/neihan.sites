@@ -80,7 +80,7 @@ Vue.component("my-image-list", require("./components/MyImageList.vue"));
 Vue.component("my-video-list", require("./components/MyVideoList.vue"));
 Vue.component("single-list-create", require("./components/SingleListCreate.vue"));
 Vue.component("single-list-select", require("./components/SingleListSelect.vue"));
-
+//免费图片素材
 Vue.component("modal-images", require("./components/modals/ModalImages.vue"));
 Vue.component("image-list", require("./components/ImageList.vue"));
 

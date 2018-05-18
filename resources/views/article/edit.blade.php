@@ -73,10 +73,10 @@
             @endpush
             <small class="text-danger">{{ $errors->first('body') }}</small>
         </div>
-
-      
-
+        
+        {{-- 选择配图 --}}
         @include('article.parts.images_selected', ['images' => $article->images, 'article' => $article])
+
         @editor
         <div class="row">            
             <div class="col-md-6">
@@ -99,6 +99,7 @@
     
       </div>
     {!! Form::close() !!}
+    <modal-images></modal-images>
   </div>
 </div>
 

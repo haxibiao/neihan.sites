@@ -84,10 +84,10 @@
             @endpush
             <small class="text-danger">{{ $errors->first('body') }}</small>
         </div>
-        
+
+        {{-- 选择配图 --}}
         <image-select></image-select>
 
-        
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
@@ -108,9 +108,9 @@
             {!! Form::button("存稿", ['class' => 'btn btn-warning btn-draft', 'id'=>'draftBtn']) !!}
             {!! Form::submit("发布", ['class' => 'btn btn-success']) !!}
         </div>
-        <modal-images></modal-images>        
     </div>
       {!! Form::close() !!}
+    <modal-images></modal-images>
   </div>
 </div>
 </div>

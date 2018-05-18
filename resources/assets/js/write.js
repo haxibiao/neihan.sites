@@ -28,6 +28,10 @@ Vue.component("editor", require("./components/Editor.vue"));
 Vue.component("scroll-top", require("./components/write/ScrollTop.vue"));
 Vue.component("published", require("./components/write/Published.vue"));
 
+//免费图片素材
+Vue.component("modal-images", require("./components/modals/ModalImages.vue"));
+Vue.component("image-list", require("./components/ImageList.vue"));
+
 // 文集重命名
 Vue.component("modification-name", require("./components/write/modificationName.vue"));
 // 常见问题

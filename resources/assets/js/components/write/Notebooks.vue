@@ -52,6 +52,7 @@
 			<frequently-asked-questions></frequently-asked-questions>
 		</div>
 		<published :show="published"/>
+        <modal-images></modal-images>
 	</div>
 </template>
 

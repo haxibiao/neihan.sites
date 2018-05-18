@@ -6535,7 +6535,6 @@
     PictureButton.prototype._status = function() {};
 
     PictureButton.prototype.command = function() {
-      console.log("ssss");
       //open modal ...
       $(".image-list-modal").modal({});
 
