@@ -5,6 +5,10 @@ cd ../$1.com/
 sudo chmod -R 777 .
 git config core.filemode false
 
+echo "sass code except variables ..."
+sudo /bin/cp -rf /data/www/ainicheng.com/resources/assets/sass /data/www/$1.com/resources/assets/
+git checkout resources/assets/sass/_theme.scss
+
 sudo /bin/cp -rf /data/www/ainicheng.com/app /data/www/$1.com/
 sudo /bin/cp -rf /data/www/ainicheng.com/database/migrations /data/www/$1.com/database/
 sudo /bin/cp -rf /data/www/ainicheng.com/resources/views /data/www/$1.com/resources/

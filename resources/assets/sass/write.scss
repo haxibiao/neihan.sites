@@ -1,3 +1,6 @@
+// theme
+@import "theme";
+
 // Variables
 @import "variables";
 
@@ -736,7 +739,7 @@
 				border-left: 3px solid transparent;
 				&.active {
 					background-color: #f2f2f2;
-					border-color: $theme-color;
+					border-color: #ff9d23;
 					.count-down {
 						display: none;
 					}

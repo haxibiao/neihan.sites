@@ -15,7 +15,7 @@
 					<a href="javascript:;" class="link" @click="show('collections')">只看文集</a>
 			</li>
 			<li>
-					<a href="javascript:;" class="link">只看<span class="hidden-xs">推送</span>更新</a>
+					<a href="javascript:;" class="link">只看<b class="hidden-xs" style="font-weight:400">推送</b>更新</a>
 			</li>
 		</ul>
 		<router-link to="/recommend" active-class="active-add-people">

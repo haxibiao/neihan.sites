@@ -10,7 +10,7 @@
           <span>{{ comments.length }}条评论</span> 
           <a :class="['btn-base','btn-light','btn-sm',isOnlyAuthor?'active':'']" @click="showOnlyAuthor">只看作者</a> 
           <div class="pull-right">
-            <a :class="order=='like' ? 'active' : ''" @click="sortComments('like')">按喜欢排序</a>
+            <a :class="order=='like' ? 'active' : ''" @click="sortComments('like')">按点赞排序</a>
             <a :class="order=='timeAsc' ? 'active hidden-xs' : 'hidden-xs'" @click="sortComments('timeAsc')">按时间正序</a>
             <a :class="order=='timeDesc' ? 'active hidden-xs' : 'hidden-xs'" @click="sortComments('timeDesc')">按时间倒序</a>
           </div>

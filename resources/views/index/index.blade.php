@@ -27,22 +27,33 @@
           <div class="division-line"></div>
 
           {{-- top 4 videos --}}
-           <div class="row">
-             @foreach($data->videos as $video)
-             <div class="col-md-3 col-xs-6">
-              <div class="media">
-                  <a class="pull-left" href="/video/{{$video->id}}">
-                      <img class="media-object" src="{{ $video->cover() }}" alt="{{ $video->title }}">
+          <div class="row videos distance">
+            @foreach($data->videos as $video)
+            <div class="col-xs-6 col-md-3 video">
+              <div class="video-item vt">
+                <div class="thumb">
+                  <a href="/video/{{$video->id}}">
+                    <img src="{{ $video->cover() }}" alt="{{ $video->title }}">
+                    <i class="duration">
+                      {{-- 持续时间 --}}
+                      0{{ rand(1,9) }}:{{ rand(10,59) }}
+                    </i>
                   </a>
-                  <div class="media-body">
-                      <h4 class="media-heading">{{ $video->title }}</h4>
-                      <p>{{ $video->description }}</p>
-                  </div>
+                </div>
+                <ul class="info-list">
+                  <li class="video-title">
+                    <a href="/video/{{$video->id}}">{{ $video->title }}</a>
+                  </li>
+                  <li>
+                    {{-- 播放量 --}}
+                    <p class="subtitle single-line">{{ rand(100,1000) }}次播放</p>
+                  </li>
+                </ul>
               </div>
             </div>
-              @endforeach
-           </div>
-
+            @endforeach
+          </div>
+          
           {{-- 文章列表 --}}
          <ul class="article-list">              
             {{-- 文章 --}}          

@@ -116,6 +116,10 @@ Route::get('/admin/stick-articles', 'AdminController@articleSticks');
 Route::post('/admin/stick-article', 'AdminController@articleStick')->name('admin.stick_article');
 Route::post('/admin/delete-stick-article', 'AdminController@deleteStickArticle')->name('admin.delete_stick_article');
 
+//stickcategory
+Route::get('/admin/stick-categorys', 'AdminController@categorySticks');
+Route::post('/admin/stick-category', 'AdminController@categoryStick')->name('admin.stick_category');
+Route::post('/admin/delete-stick-category', 'AdminController@deleteStickCategory')->name('admin.delete_stick_category');
 //logs
 Route::get('/logshow', 'LogController@logShow');
 Route::get('/logclear', 'LogController@logClear');

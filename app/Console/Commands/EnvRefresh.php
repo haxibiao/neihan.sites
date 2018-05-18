@@ -53,11 +53,6 @@ class EnvRefresh extends Command
     public function refresh_local()
     {
         file_put_contents(base_path('.env'), file_get_contents(base_path('.env.local')));
-
-        //fix env config for local
-        $this->updateEnv([
-            'APP_URL' => str_replace('https://', 'http://l.', env('APP_URL')),
-        ]);
     }
 
     public function refresh_staging()

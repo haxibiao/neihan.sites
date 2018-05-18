@@ -33,7 +33,7 @@
       <a target="_blank" href="/article/{{ $article->id }}/#comments" class="comment_meta">
         <i class="iconfont icon-svg37"></i> {{ $article->count_replies }}
       </a>
-      <a><i class="iconfont icon-03xihuan"></i> {{ $article->count_likes }} </a>
+      <span><i class="iconfont icon-03xihuan"></i> {{ $article->count_likes }} </span>
       @if($article->count_tips)
         <a><i class="iconfont icon-qianqianqian"></i> {{ $article->count_tips }}</a>
       @endif

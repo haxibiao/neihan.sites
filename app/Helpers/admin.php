@@ -1,9 +1,94 @@
 <?php
 
 use App\Article;
+use App\Category;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+
+function get_top_categoires($top_categoires){
+    $categories=[];
+
+    $stick_categories=get_stick_categories(false,true);
+    foreach($top_categoires as $category){
+        $categories[]=$category;
+    }
+
+    $categories=array_merge($stick_categories,$categories);
+    $categories= new collection($categories);
+    $categories=$categories->unique();
+
+    return $categories;
+}
+
+
+function get_top_categories_count(){
+    $categories=[];
+
+    $stick_categories=get_stick_categories();
+    $leftCount=7-count($stick_categories);
+    return $leftCount;
+}
+
+
+function get_stick_categories($all = false,$index=false)
+{
+    $categories = [];
+    if (Storage::exists("stick_categories")) {
+        $json  = Storage::get('stick_categories');
+        $items = json_decode($json, true);
+        foreach ($items as $item) {
+            if (!$all) {
+                //expire
+                if (Carbon::createFromTimestamp($item['timestamp'])->addDays($item['expire']) < Carbon::now()) {
+                    continue;
+                }
+            }
+
+            $category = category::find($item['category_id']);
+
+            if($index && $category){
+                $categories[]          = $category;
+                continue;
+            }
+            if ($category) {
+                $category->reason     = !empty($item['reason']) ? $item['reason'] : null;
+                $category->expire     = $item['expire'];
+                $category->stick_time = diffForHumansCN(Carbon::createFromTimestamp($item['timestamp']));
+                $categories[]          = $category;
+            }
+        }
+    }
+    return $categories;
+}
+
+
+function stick_category($data,$auto=false)
+{
+    $items = [];
+
+    if (Storage::exists("stick_categories")) {
+        $json = Storage::get("stick_categories");
+
+        foreach (json_decode($json, true) as $item) {
+            //expire
+            if (Carbon::createFromTimestamp($item['timestamp'])->addDays($item['expire']) < Carbon::now()) {
+                continue;
+            }
+            $items[] = $item;
+        }
+    }
+
+    $data['timestamp']=time();
+    if($auto){
+        $items[]=$data;
+    }else{
+        $items = array_merge([$data], $items);
+    }
+    $json=json_encode($items);
+    Storage::put("stick_categories",$json);
+}
 
 function stick_article($data, $auto = false)
 {

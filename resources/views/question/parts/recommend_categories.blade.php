@@ -16,6 +16,6 @@
   @endforeach
   
   <a href="/categories-for-question" class="question-label more">
-    <span class="name">更多<i class="iconfont icon-youbian"></i></span>
+    <span class="name">更多分类<i class="iconfont icon-youbian"></i></span>
   </a>
 </div>

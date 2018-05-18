@@ -16,21 +16,32 @@ class IndexController extends Controller
     {
         $has_follow_articles = false;
         //get user related categories ..
+        $categorie_ids = [];
+
+        $stick_categories=get_stick_categories();
+        $top_count=7-count($stick_categories);
+        if($top_count){
+            foreach($stick_categories as $stick_category){
+                $categorie_ids[]=$stick_category->id;
+            }
+        }
+
         if (Auth::check()) {
             $user = Auth::user();
             //get top n user followed categories
             if ($user->followingCategories()->count() > 6) {
                 $follows = $user->followingCategories()
                     ->orderBy('id', 'desc')
-                    ->take(7)
+                    ->take($top_count)
                     ->get();
                 $categories    = [];
-                $categorie_ids = [];
+                
                 foreach ($follows as $follow) {
                     $category        = $follow->followed;
                     $categories[]    = $category;
                     $categorie_ids[] = $category->id;
                 }
+
                 // get user followed categories related articles ...
                 $articles = Article::with('user')->with('category')
                     ->where('status', '>', 0)
@@ -50,13 +61,12 @@ class IndexController extends Controller
                 ->where('count', '>=', 0)
                 ->where('status', '>=', 0)
                 ->orderBy('updated_at', 'desc')
-                ->take(7)
+                ->take($top_count)
                 ->get();
-
             $articles = Article::with('user')->with('category')
                 ->where('status', '>', 0)
                 ->where('source_url', '=', '0')
-                ->whereIn('category_id', $categories->pluck('id'))
+                ->whereIn('category_id', array_merge($categorie_ids,$categories->pluck('id')->toArray()))
                 ->orderBy('id', 'desc')
                 ->paginate(10);
         }
@@ -69,6 +79,7 @@ class IndexController extends Controller
             return $articles;
         }
 
+        $categories=get_top_categoires($categories);
         $data             = (object) [];
         $data->categories = $categories;
         

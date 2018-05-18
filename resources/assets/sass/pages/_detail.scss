@@ -1,7 +1,7 @@
 #detail {
 	section {
 		padding: 0;
-		transition: all .3s linear;
+		transition: all 0.3s linear;
 		article {
 			width: 88%;
 			margin: 0 auto;
@@ -20,7 +20,7 @@
 					.btn-base {
 						margin-left: 5px;
 					}
-					.btn-light { 
+					.btn-light {
 						float: right;
 					}
 				}
@@ -56,7 +56,8 @@
 				margin: 30px 0;
 				font-size: $font-size-detail;
 				color: $gray-color2;
-				.copyright,.report {
+				.copyright,
+				.report {
 					float: right;
 					margin-top: 5px;
 				}
@@ -69,8 +70,8 @@
 				text-align: center;
 				border-bottom: 1px solid $light-color2;
 				p {
-			    margin-bottom: 20px;
-			    font-size: 17px;
+					margin-bottom: 20px;
+					font-size: 17px;
 				}
 				.btn-theme {
 					width: 110px;
@@ -85,80 +86,40 @@
 						}
 					}
 					.reward-user {
-				    cursor: pointer;
-				    padding-left: 5px;
-				    margin-right: -10px;
-				    font-size: 13px;
+						cursor: pointer;
+						padding-left: 5px;
+						margin-right: -10px;
+						font-size: 13px;
 					}
 				}
 			}
 			.mate-bottom {
 				margin: 30px 0 60px 0;
-				.like {
-					display: inline-block;
-					.btn-base {
-						width: 184px;
-						height: 60px;
-						line-height: 58px;
-						padding: 0;
-						.btn-like {
-							display: inline-block;
-							font-size: 19px;
-							a {
-								color: $theme-color;
-								padding-right: $font-size-article;
-								i {
-									font-size: 21px;
-									margin-right: 5px;
-								}
-							}
-						}
-						.modal-wrap {
-							line-height: initial;
-							font-size: 18px;
-							border-left: 1px solid rgba($theme-color,.5);
-							display: inline-block;
-							a {
-								color: $theme-color;
-								padding-left: $font-size-article;
-							}
-						}
-				 	}
-				 	.btn-theme {
-						.btn-like {
-							a {
-								color: #fff;
-							}
-						}
-						.modal-wrap {
-							border-color: #fff;
-							a {
-								color: #fff
-							}
-						}
-				 	}
+				.likeButton {
+					width: 184px;
+					height: 60px;
 				}
 				// 分享
 				.share-circle {
 					float: right;
 					margin-top: 6px;
 					a {
-				    width: 50px;
-				    height: 50px;
-				    margin-left: 5px;
-				    text-align: center;
-				    border: 1px solid $gray-color3;
-				    border-radius: 50%;
-				    vertical-align: middle;
-				    display: inline-block;
-				    i {
-				    	margin-top: 10px;
-				    	font-size: 24px;
-				    	line-height: 2;
-				    }
-				    &:hover {
-				    	background-color: $light-color2;
-				    }
+						width: 50px;
+						height: 50px;
+						margin-left: 5px;
+						text-align: center;
+						border: 1px solid $gray-color3;
+						border-radius: 50%;
+						vertical-align: middle;
+						display: inline-block;
+						i {
+							margin-top: 10px;
+							font-size: 24px;
+							line-height: 2;
+						}
+						&:hover {
+							background-color: $light-color2;
+						}
 					}
 					.more-share {
 						width: auto;
@@ -170,8 +131,8 @@
 				}
 			}
 			//小屏优化
-			@media screen and (max-width:600px) {
-				.mate-bottom  {
+			@media screen and (max-width: 600px) {
+				.mate-bottom {
 					.like {
 						.btn-base {
 							width: 110px;
@@ -179,7 +140,7 @@
 							line-height: 38px;
 							.btn-like {
 								font-size: 18px;
-								a { 
+								a {
 									padding-right: 0;
 									i {
 										margin-right: 0;
@@ -187,7 +148,7 @@
 								}
 							}
 							.modal-wrap a {
-							    padding-left: 8px;
+								padding-left: 8px;
 							}
 						}
 					}
@@ -197,7 +158,7 @@
 							width: 35px;
 							height: 35px;
 							i {
-								line-height: 35px; 
+								line-height: 35px;
 							}
 						}
 					}
@@ -226,18 +187,18 @@
 		ul {
 			li {
 				padding: 15px;
-			  border-bottom: 1px solid $light-color2;
-			  .avatar {
-			  	width: 32px;
-			  	height: 32px;
-			  }
-		    .name {
-			    font-size: 15px;
-			    color: $dark-color1;
-			    vertical-align: middle;
-			    display: inline-block;
-			  }
-			  .time {
+				border-bottom: 1px solid $light-color2;
+				.avatar {
+					width: 32px;
+					height: 32px;
+				}
+				.name {
+					font-size: 15px;
+					color: $dark-color1;
+					vertical-align: middle;
+					display: inline-block;
+				}
+				.time {
 					float: right;
 					margin-top: 7px;
 					font-size: 12px;

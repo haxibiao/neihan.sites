@@ -1,0 +1,158 @@
+.player-container {
+	// 播放中心
+	.playerBox {
+		background-color: $dark-color3;
+		color: $light-color1;
+		margin-bottom: 30px;
+		.player-basic {
+			margin-top: 10px;
+			background-color: $dark-color1;
+			position: relative;
+			// 播放器
+			.playerArea {
+				padding: 0;
+				.h5-player {
+					background-color: #000;
+				}
+				.h5-option {
+					height: 60px;
+					padding: 12px 15px;
+					.likeButton {
+						width: 100px;
+						height: 100%;
+					}
+				}
+			}
+			// 相关视频
+			.listArea {
+				position: absolute;
+				padding: 20px 20px 0px;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				display: flex;
+				flex-direction: column;
+				.classify {
+					.avatar {
+						float: left;
+						img {
+							border-color: $dark-color1;
+						}
+					}
+					.classify-info {
+						margin-left: 5px;
+						a {
+							font-size: 18px;
+							margin-bottom: 5px;
+							color: $light-color1;
+						}
+						span {
+							font-size: 14px;
+						}
+					}
+					.button-vd {
+						margin: 20px 0;
+					}
+				}
+				.related-video {
+					margin-right: -20px;
+					overflow-x: hidden;
+					overflow-y: auto;
+					&::-webkit-scrollbar {
+						width: 5px;
+						background: $dark-color1;
+					}
+					&::-webkit-scrollbar-track-piece {
+						background: 0 0;
+					}
+					&::-webkit-scrollbar-button {
+						display: none;
+					}
+					&::-webkit-scrollbar-thumb {
+						background: #555;
+						border-radius: 5px;
+					}
+					.video-list {
+						.video-item {
+							.info {
+								.video-title {
+									color: $light-color1;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		// 视频信息
+		.video-info {
+			padding: 25px 0;
+			color: $light-color1;
+			.video-title {
+				font-size: 25px;
+				margin-bottom: 15px;
+				font-weight: 300;
+			}
+			.desc {
+				line-height: 30px;
+				font-size: 15px;
+				.upload-time {
+					margin-right: 20px;
+				}
+				.upload-user {
+					.sub {
+						color: $light-color1;
+						img {
+							width: 30px;
+							height: 30px;
+							border-radius: 50%;
+							margin-right: 10px;
+						}
+					}
+					.button-vd {
+						display: inline-block;
+						margin-left: 10px;
+						a {
+							padding: 0 6px;
+							line-height: 30px;
+							font-size: 13px;
+							i {
+								font-size: 13px;
+							}
+						}
+					}
+				}
+			}
+		}
+		.button-vd {
+			& > a {
+				width: 100%;
+				background-color: $dark-color1 !important;
+				border-color: $gray-color1 !important;
+				color: $theme-color !important;
+				&:hover {
+					background-color: $theme-color !important;
+					border-color: $theme-color !important;
+					color: #fff !important;
+				}
+			}
+		}
+	}
+	// 评论+推荐视频
+	.sectionBox {
+		background-color: #fff;
+		margin-bottom: 20px;
+		.guess-like {
+			padding-top: 20px;
+			.guessVideo {
+				h4 {
+					font-weight: 300;
+					font-size: 25px;
+					margin: 0 0 20px;
+					line-height: 25px;
+					color: $dark-color2;
+				}
+			}
+		}
+	}
+}

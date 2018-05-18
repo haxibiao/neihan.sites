@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\User;
+use App\Category;
 use Illuminate\Http\Request;
 use Storage;
 
@@ -25,6 +26,48 @@ class AdminController extends Controller
         return view('admin.users')->withUsers($users);
     }
 
+    public function categorySticks()
+    {
+        $categories = get_stick_categories(true);
+        return view('admin.stick_categories')->withCategories($categories);
+    }
+
+    public function categoryStick()
+    {
+        $data = request()->all();
+
+        if(count(get_stick_categories())>=5){
+            dd("添加的专题太多了,首页置顶的专题不允许超过5个");
+        }
+
+        $data['category_id']=Category::where('name',$data['category_name'])->pluck('id')->first();
+        stick_category($data);
+
+        return redirect()->back();
+    }
+
+    public function deleteStickCategory()
+    {
+        $category_id = request()->get('category_id');
+        $items       = [];
+
+        if (Storage::exists("stick_categories")) {
+            $json  = Storage::get('stick_categories');
+            $items = json_decode($json, true);
+        }
+
+        $left_items = [];
+        foreach ($items as $item) {
+            if ($item['category_id'] != $category_id) {
+                $left_items[] = $item;
+            }
+        }
+
+        $json = json_encode($left_items);
+        Storage::put("stick_categories", $json);
+        return redirect()->back();
+    }
+
     public function articleSticks()
     {
         $articles = get_stick_articles('', true);
@@ -33,7 +76,7 @@ class AdminController extends Controller
 
     public function articleStick()
     {
-        $data  = request()->all();
+        $data = request()->all();
         stick_article($data);
         return redirect()->back();
     }

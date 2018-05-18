@@ -4,9 +4,9 @@
       <span>
         精选回答
       </span>
-       <a href="/question" class="right">
+       {{-- <a href="/question" class="right">
          更多<i class="iconfont icon-youbian"></i>
-       </a>
+       </a> --}}
      </h3>
      <div class="hot-questions-list">
         @each('question.parts.hot_question_item', $hot , 'question')
