@@ -16,13 +16,15 @@ class IndexController extends Controller
     {
         $has_follow_articles = false;
         //get user related categories ..
+
+        $top_count=get_top_categoires_count();
         if (Auth::check()) {
             $user = Auth::user();
             //get top n user followed categories
             if ($user->followingCategories()->count() > 6) {
                 $follows = $user->followingCategories()
                     ->orderBy('id', 'desc')
-                    ->take(7)
+                    ->take($top_count)
                     ->get();
                 $categories    = [];
                 $categorie_ids = [];
@@ -50,7 +52,7 @@ class IndexController extends Controller
                 ->where('count', '>=', 0)
                 ->where('status', '>=', 0)
                 ->orderBy('updated_at', 'desc')
-                ->take(7)
+                ->take($top_count)
                 ->get();
 
             $articles = Article::with('user')->with('category')
@@ -69,6 +71,7 @@ class IndexController extends Controller
             return $articles;
         }
 
+        $categories=get_top_categoires($categories);
         $data             = (object) [];
         $data->categories = $categories;
         

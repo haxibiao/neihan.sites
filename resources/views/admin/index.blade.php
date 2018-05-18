@@ -12,6 +12,7 @@
 					<a class="btn btn-default" href="/admin/article-push">推送文章</a>
 					<a class="btn btn-default" href="/admin/friend-links">友情链接</a>
 					<a class="btn btn-default" href="/admin/stick-articles">置顶文章</a>
+					<a class="btn btn-default" href="/admin/stick-categorys">置顶专题</a>
 				</p>
 			</div>
 		</div>

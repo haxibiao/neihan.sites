@@ -25,6 +25,42 @@ class AdminController extends Controller
         return view('admin.users')->withUsers($users);
     }
 
+    public function categorySticks()
+    {
+        $categories = get_stick_categories(true);
+        return view('admin.stick_categories')->withCategories($categories);
+    }
+
+    public function categoryStick()
+    {
+        $data = request()->all();
+        stick_category($data);
+
+        return redirect()->back();
+    }
+
+    public function deleteStickCategory()
+    {
+        $category_id = request()->get('category_id');
+        $items       = [];
+
+        if (Storage::exists("stick_categories")) {
+            $json  = Storage::get('stick_categories');
+            $items = json_decode($json, true);
+        }
+
+        $left_items = [];
+        foreach ($items as $item) {
+            if ($item['category_id'] != $category_id) {
+                $left_items[] = $item;
+            }
+        }
+
+        $json = json_encode($left_items);
+        Storage::put("stick_categories", $json);
+        return redirect()->back();
+    }
+
     public function articleSticks()
     {
         $articles = get_stick_articles('', true);
@@ -33,7 +69,7 @@ class AdminController extends Controller
 
     public function articleStick()
     {
-        $data  = request()->all();
+        $data = request()->all();
         stick_article($data);
         return redirect()->back();
     }
