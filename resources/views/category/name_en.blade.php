@@ -53,22 +53,31 @@
                        <article-list api="/{{ $category->name_en }}?hot=1" start-page="2" />
                        @endif
                    </ul>
-                   <ul role="tabpanel" class="fade note_list tab-pane" id="video">                                      
-                      
+                   <ul role="tabpanel" class="fade video-list tab-pane" id="video">                                      
                        @foreach($data['videos'] as $video) 
-                        <div class="col-md-3 col-xs-6">
-                          <div class="media">
-                              <a class="pull-left" href="/video/{{$video->id}}">
-                                  <img class="media-object" src="{{ $video->cover() }}" alt="{{ $video->title }}">
+                       <li class="col-xs-6 col-md-4 video">
+                          <div class="video-item vt">
+                            <div class="thumb">
+                              <a href="/video/{{$video->id}}">
+                                <img src="{{ $video->cover() }}" alt="{{ $video->title }}">
+                                <i class="duration">
+                                  {{-- 持续时间 --}}
+                                  0{{ rand(1,9) }}:{{ rand(10,59) }}
+                                </i>
                               </a>
-                              <div class="media-body">
-                                  <h4 class="media-heading">{{ $video->title }}</h4>
-                                  <p>{{ $video->description }}</p>
-                              </div>
+                            </div>
+                            <ul class="info-list">
+                              <li class="video-title">
+                                <a href="/video/{{$video->id}}">{{ $video->title }}</a>
+                              </li>
+                              <li>
+                                {{-- 播放量 --}}
+                                <p class="subtitle single-line">{{ rand(100,1000) }}次播放</p>
+                              </li>
+                            </ul>
                           </div>
-                        </div>
+                        </li>
                        @endforeach
-
                        <div>{!! $data['videos']->links() !!}</div>
                    </ul>
                  </div>

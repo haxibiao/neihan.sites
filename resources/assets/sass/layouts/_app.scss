@@ -10,6 +10,19 @@
 			.navbar {
 				background-color: $dark-color3;
 				border-radius: 0;
+				.navbar-nav {
+					& > li {
+						& > a {
+							color: #fff;
+						}
+						&:hover {
+							background-color: $dark-color3;
+							& > a {
+								color: $theme-color;
+							}
+						}
+					}
+				}
 			}
 		}
 	}

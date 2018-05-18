@@ -27,7 +27,7 @@
           <div class="division-line"></div>
 
           {{-- top 4 videos --}}
-          <div class="row video-list distance">
+          <div class="row videos distance">
             @foreach($data->videos as $video)
             <div class="col-xs-6 col-md-3 video">
               <div class="video-item vt">

@@ -30,22 +30,22 @@
       }
     }
   }
-  @media screen and (max-width:1000px) {
+  @media screen and (max-width: 1000px) {
     li {
       height: auto;
-      &>a {
-         padding: 12px 8px;
+      & > a {
+        padding: 12px 8px;
       }
     }
   }
-  @media screen and (max-width:768px) {
+  @media screen and (max-width: 768px) {
     li {
       height: auto;
-      &>a {
-         font-size: 13px;
-         padding: 9px 5px;
-         i {
-           font-size: 15px;
+      & > a {
+        font-size: 13px;
+        padding: 9px 5px;
+        i {
+          font-size: 15px;
         }
       }
     }
@@ -61,7 +61,7 @@
     font-size: 14px;
     padding: 0 !important;
     border-top: 0 !important;
-    &>a {
+    & > a {
       position: relative;
       padding: 10px 20px;
       line-height: 1.2;
@@ -83,7 +83,7 @@
     .noti-badge {
       top: 50%;
       right: 15px;
-      transform: translate(0,-50%);
+      transform: translate(0, -50%);
       font-size: 13px;
     }
   }
@@ -97,9 +97,9 @@
   padding: 5px 0;
   text-align: left;
   width: 190px;
-  &>li {
+  & > li {
     font-size: 15px;
-    &>a {
+    & > a {
       line-height: 30px;
       i {
         margin-right: 15px !important;
@@ -110,7 +110,7 @@
     }
   }
 }
-[data-hover=dropdown] {
+[data-hover="dropdown"] {
   &:hover {
     .dropdown-menu {
       display: block;

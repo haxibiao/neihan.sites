@@ -3,12 +3,12 @@
 			<div v-if="show">
 				<form class="new-comment">
 					<div>
-						<textarea placeholder="写下你的评论..." @keyup.enter="send" v-model="message"></textarea>
+						<textarea placeholder="写下你的评论..." @keyup.ctrl.enter="send" v-model="message"></textarea>
 						<div class="write-block">
 							<div class="emoji-wrap">
 								<a class="emoji"><i class="iconfont icon-smile"></i></a>
 							</div>
-							<div class="hint">⌘+Return 发表</div>
+							<div class="hint">Ctrl+Enter 发表</div>
 							<a class="btn-base btn-handle btn-md" :class="{'disable':message?false:true}" @click="send">发送</a>
 							<a class="cancel" @click="toggle">取消</a>
 						</div>

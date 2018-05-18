@@ -3,13 +3,13 @@
 		<form class="new-comment">
 			<a class="avatar"><img :src="isLogin?user.avatar:'/images/author_03.jpg'"></a>
 			<div v-if="isLogin" >
-				<textarea placeholder="写下你的评论..." @click="showSend" @keyup.enter="send" v-model="newComment"></textarea>
+				<textarea placeholder="写下你的评论..." @click="showSend" @keyup.ctrl.enter="send" v-model="newComment"></textarea>
 				<transition name="fade">
 					<div v-if="showButton" class="write-block">
 						<div class="emoji-wrap">
 							<a class="emoji"><i class="iconfont icon-smile"></i></a>
 						</div>
-						<div class="hint">⌘+Return 发表</div>
+						<div class="hint">Ctrl+Enter 发表</div>
 						<a class="btn-base btn-handle btn-md" :class="{'disable':!newComment}" @click="send">发送</a>
 						<a class="cancel" @click="hideSend">取消</a>
 					</div>

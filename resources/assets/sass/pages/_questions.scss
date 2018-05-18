@@ -11,7 +11,7 @@
 		height: 52px;
 		overflow: hidden;
 		position: relative;
-		padding-right: 66px;
+		padding-right: 90px;
 		.question-label {
 			border-color: transparent;
 			&.more {
@@ -21,8 +21,8 @@
 				margin-right: 0;
 			}
 			&.hot {
-				background-color: rgba($hot-pink ,0.2);
-				border-color: rgba($hot-pink ,0.3);
+				background-color: rgba($hot-pink, 0.2);
+				border-color: rgba($hot-pink, 0.3);
 				&.active {
 					color: $hot-pink !important;
 				}
@@ -47,15 +47,15 @@
 			}
 			.wd-contact {
 				.contact-info {
-				    padding-top: 8px;
-				    p {
-				    	font-size: 14px;
-				    	color: $gray-color1;
-				    	margin-top: 8px;
-				    	&.cooperate {
-				    		font-weight: 600;
-				    	}
-				    }
+					padding-top: 8px;
+					p {
+						font-size: 14px;
+						color: $gray-color1;
+						margin-top: 8px;
+						&.cooperate {
+							font-weight: 600;
+						}
+					}
 				}
 			}
 		}

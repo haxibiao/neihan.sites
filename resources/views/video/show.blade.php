@@ -78,7 +78,7 @@
                     {{ $video->title }}
                 </div>
                 <div class="desc">
-                    <span class="upload-time">上传于 2018-04-08</span>
+                    <span class="upload-time hidden-xs">上传于 2018-04-08</span>
                     <span class="upload-user">
                         <a href="/user/{{ $video->user->id }}" class="sub">
                             <img src="{{ $video->user->avatar }}" alt="{{ $video->user->name }}">
@@ -137,6 +137,7 @@
     </div>
 
     
+    {{-- 遗留代码 --}}
     <div style="display: none">
           <ol class="breadcrumb">
             <li><a href="/">{{ config('app.name') }}</a></li>

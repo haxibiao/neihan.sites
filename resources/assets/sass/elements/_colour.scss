@@ -8,27 +8,31 @@
 .qq {
   color: $qq-color;
 }
-.more,.qqzone {
+.more,
+.qqzone {
   color: $theme-color;
 }
 .other {
   color: $gray-color2;
 }
-    
+
 .weixin-bg {
-   background-color: $weixin-color;
+  background-color: $weixin-color;
 }
 .weibo-bg {
-   background-color: $weibo-color;
+  background-color: $weibo-color;
 }
 .qq-bg {
-   background-color: $qq-color;
+  background-color: $qq-color;
 }
-.theme-bg,.qqzone-bg {
-   background-color: $theme-color;
+.theme-bg {
+  background-color: $theme-color;
+}
+.qqzone-bg {
+  background-color: #ff9d23;
 }
 .other-bg {
-   background-color: $gray-color2;
+  background-color: $gray-color2;
 }
 
 .hover-colour {
@@ -42,7 +46,8 @@
     .qq {
       color: $qq-color;
     }
-    .more,.qqzone {
+    .more,
+    .qqzone {
       color: $theme-color;
     }
     .other {

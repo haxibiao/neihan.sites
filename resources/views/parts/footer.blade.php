@@ -16,12 +16,12 @@
             <a target="_blank" href="" alt="Smrz">
                 <img src="/images/smrz.png" alt="">
             </a> 
+            <a target="_blank" href="" alt="Zggsrz">
+                <img src="/images/yyzz.png" alt="">
+            </a> 
         </div>
 {{--         <a target="_blank" href="">{{ env('ICPGA') }} / </a>
         举报电话：028-69514351 / --}}
-        <a target="_blank" href="" alt="Zggsrz">
-            <img src="/images/yyzz.png" alt="">
-        </a> 
     </div>
     <div>
         友情链接: @include('parts.friend_links') <a target="_blank" href="/">{{ config('app.name') }}</a>
