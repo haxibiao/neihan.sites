@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\User;
+use App\Category;
 use Illuminate\Http\Request;
 use Storage;
 
@@ -34,6 +35,7 @@ class AdminController extends Controller
     public function categoryStick()
     {
         $data = request()->all();
+        $data['category_id']=Category::where('name',$data['category_name'])->pluck('id')->first();
         stick_category($data);
 
         return redirect()->back();

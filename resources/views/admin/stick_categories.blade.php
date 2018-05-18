@@ -11,10 +11,10 @@
 					<div class="col-md-6">
 						{!! Form::open(['method' => 'POST', 'route' => 'admin.stick_category', 'class' => 'form-horizontal']) !!}
 
-						    <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
-						        {!! Form::label('category_id', '专题ID') !!}
-						        {!! Form::text('category_id', null, ['class' => 'form-control', 'required' => 'required']) !!}
-						        <small class="text-danger">{{ $errors->first('category_id') }}</small>
+						    <div class="form-group{{ $errors->has('category_name') ? ' has-error' : '' }}">
+						        {!! Form::label('category_name', '专题ID') !!}
+						        {!! Form::text('category_name', null, ['class' => 'form-control', 'required' => 'required']) !!}
+						        <small class="text-danger">{{ $errors->first('category_name') }}</small>
 						    </div>
 
 							<div class="form-group{{ $errors->has('expire') ? ' has-error' : '' }}">
