@@ -5,14 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Article;
 use App\Http\Controllers\Controller;
 use App\Image;
-use App\QuestionInvite;
 use App\Traffic;
 use App\User;
 use App\Video;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\QuestionInvited;
 
 class UserController extends Controller
 {
@@ -71,7 +69,11 @@ class UserController extends Controller
         $users     = User::orderBy('id', 'desc')->skip(($page - 1) * $page_size)->take($page_size)->get();
         foreach ($users as $user) {
             $user->fillForJs();
-            $user->is_followed = $request->user()->isFollow('users', $user->id);
+
+            if (Auth::check()) {
+                $user->is_followed = $request->user()->isFollow('users', $user->id);
+            }
+
         }
         return $users;
     }
@@ -164,7 +166,7 @@ class UserController extends Controller
 
     public function show(Request $request, $id)
     {
-        $user         = User::findOrFail($id);
+        $user = User::findOrFail($id);
         $user->fillForJs();
         $data['user'] = $user;
 

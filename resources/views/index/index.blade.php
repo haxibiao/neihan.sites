@@ -79,9 +79,9 @@
             {{-- 日报 --}}
             {{-- @include('index.parts.daily') --}}
             {{-- 推荐作者 --}}
-            @if(Auth::check())
+            {{-- @if(Auth::check()) --}}
             <recommend-authors></recommend-authors>
-            @endif
+            {{-- @endif --}}
         </div>
    </section>
   {{-- 网站底部信息 --}}

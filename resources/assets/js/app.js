@@ -44,6 +44,11 @@ Vue.component("hot-search", require("./components/search/Hot.vue"));
 
 Vue.component("share", require("./components/Share.vue"));
 
+//recommend component
+Vue.component("recommend-category", require("./components/RecommendCategory.vue"));
+Vue.component("recommend-authors", require("./components/aside/RecommendAuthors.vue"));
+
+
 Vue.component("captcha", require("./components/logins/Captcha.vue"));
 Vue.component("social-login", require("./components/logins/SocialLogin.vue"));
 Vue.component("signs", require("./components/logins/Signs.vue"));
