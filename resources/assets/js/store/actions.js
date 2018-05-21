@@ -47,16 +47,16 @@ export function addArticle({ commit, dispatch, state }) {
 export function autoSavePreviewArticle({ commit, dispatch, state }) {
 	let { previewArticle } = state;
 	let article = { id: previewArticle.id, title: previewArticle.title, body: previewArticle.body };
-	writeApi.saveArticle(article, article => {
-		commit(types.SAVED_ARTICLE, article);
+	writeApi.saveArticle(article, articleResult => {
+		commit(types.SAVED_ARTICLE, articleResult);
 	});
 }
 
 export function saveArticle({ commit, dispatch, state }) {
 	let { currentArticle } = state;
 	let article = { id: currentArticle.id, title: currentArticle.title, body: currentArticle.body };
-	writeApi.saveArticle(article, article => {
-		commit(types.SAVED_ARTICLE, article);
+	writeApi.saveArticle(article, articleResult => {
+		commit(types.SAVED_ARTICLE, articleResult);
 	});
 }
 

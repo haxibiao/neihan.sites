@@ -21,8 +21,10 @@ export default {
   [types.SAVED_ARTICLE](state, article) {
     //目前只有发布文章后，状态字段status会变化
     var { currentArticle } = state;
-    currentArticle.status = article.status;
-    currentArticle.saved = true;
+    if (currentArticle && currentArticle.id) {
+      currentArticle.status = article.status;
+      currentArticle.saved = true;
+    }
   },
 
   [types.PUBLISH](state) {

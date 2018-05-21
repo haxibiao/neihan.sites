@@ -6537,7 +6537,7 @@
     PictureButton.prototype.command = function() {
       //open modal ...
       $(".image-list-modal").modal({});
-
+      var _this = this;
       var _selection = this.editor.selection;
       _selection.save();
 
@@ -6546,6 +6546,8 @@
           _selection.restore();
           _selection.insertNode(this.outerHTML);
           // _selection.insertNode("<p>添加图片的说明...</p>");
+          console.log("imgpicked");
+          _this.editor.trigger("imgpicked");
         });
         window.simditor_img_bond = 1;
       }

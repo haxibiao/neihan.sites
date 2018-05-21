@@ -28,8 +28,10 @@ export default {
 
     //vue中，通过修改value属性来更新编辑器中的内容
     updated() {
-        if(this.value && this.value.length){
+        // if(this.value && this.value.length)
+        {
             this.editor.setValue(this.value);
+            this.$emit("changed", this.value);
         }
     },
 
@@ -100,7 +102,12 @@ export default {
             });
 
             this.editor.on("valuechanged", function(e, src) {
-                _this.$emit("changed", _this.editor.getValue());
+                 _this.$emit("changed", _this.editor.getValue());
+            });
+
+            this.editor.on("imgpicked", function(e, src) {
+                 _this.$emit("changed", _this.editor.getValue());
+                 _this.$emit("imgpicked", _this.editor.getValue());
             });
 
             this.editor.on("promptdraft", function(e, data) {

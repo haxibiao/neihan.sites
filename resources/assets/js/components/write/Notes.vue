@@ -25,7 +25,7 @@
 				<div class="note-item" v-if="article">
 					<p class="note-status">{{ article.saved ? '已保存' : '未保存' }}</p>
 					<div class="note-content">
-						<editor :value="article.body" @blur="save" @textchanged="save" @changed="changeBody" @saved="save" @published="publish" write>
+						<editor :value="article.body" @blur="save" @imgpicked="save" @saved="save" @published="publish" @changed="changeBody" write>
 							<input type="text" v-model="article.title" class="note-title single-line" @input="changeTitle">
 						</editor>
 					</div>
@@ -48,7 +48,7 @@ export default {
 		$route(to, from) {
 			//切换文章的时候，保存前一篇文章
 			var { previewArticle, currentArticle } = this.$store.state;
-			if (previewArticle) {
+			if (previewArticle && previewArticle.id) {
 				 this.$store.dispatch('autoSavePreviewArticle');
 			}
 		}
@@ -156,16 +156,11 @@ export default {
 		},
 		changeBody(value) {
 			//暂存编辑的改动，避免:value无限触发编辑器的valuechanged事件
-			if(value && value.length){
-				this.body = value;
-			}
+			this.body = value;
 
 			//尝试触发保存状态更新为未保存
 			this.article.saved = false;
 			this.$set(this.ui, "updated_at", Date.now());
-
-			//TODO:: 尝试做自动保存，还有不少问题
-			// this.save();
 		},
 		changeTitle(e) {
 			//改动标题的时候，保存编辑器的改动到store
