@@ -19,13 +19,14 @@ class CreateImagesTable extends Migration
             $table->string('path')->nullable()->index();
             $table->string('path_top')->nullable();
             $table->string('extension')->nullable()->index();
-            $table->string('path_small')->nullable();
+            $table->string('disk')->nullable();
             $table->string('source_url')->nullable();
             $table->integer('count')->default(0)->index();
             $table->integer('status')->default(0)->index();
             $table->integer('user_id')->nullable();
             $table->integer('width')->nullable();
             $table->integer('height')->nullable();
+            $table->string('hash')->nullable();
             $table->timestamps();
         });
     }

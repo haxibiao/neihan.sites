@@ -165,12 +165,12 @@ class ImageController extends Controller
                 });
             }
             $img->crop(300, 240);
-            $image->path_small = $image->path_small();
-            $img->save(public_path($image->path_small));
+            $image->disk = "local";
+            $img->save(public_path($image->path_small()));
             $image->save();
             $files[] = [
                 'url'          => base_uri() . $image->path,
-                'thumbnailUrl' => base_uri() . $image->path_small,
+                'thumbnailUrl' => base_uri() . $image->path_small(),
                 'name'         => $image->path,
                 'id'           => $image->id,
                 "type"         => str_replace("jpg", "jpeg", "image/" . $extension),
