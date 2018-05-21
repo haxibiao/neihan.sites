@@ -18,28 +18,28 @@ class FixData extends Command
         $this->cmd = $cmd;
     }
 
-    public function run()
+    public function handle()
     {
         if ($this->cmd->argument('operation') == "tags") {
-            return $this->cmd->fix_tags();
+            return $this->fix_tags();
         }
         if ($this->cmd->argument('operation') == "comments") {
-            return $this->cmd->fix_tags();
+            return $this->fix_tags();
         }
         if ($this->cmd->argument('operation') == "articles") {
-            return $this->cmd->fix_articles();
+            return $this->fix_articles();
         }
         if ($this->cmd->argument('operation') == "images") {
-            return $this->cmd->fix_images();
+            return $this->fix_images();
         }
         if ($this->cmd->argument('operation') == "videos") {
-            return $this->cmd->fix_videos();
+            return $this->fix_videos();
         }
         if ($this->cmd->argument('operation') == "categories") {
-            return $this->cmd->fix_categories();
+            return $this->fix_categories();
         }
         if ($this->cmd->argument('operation') == "users") {
-            return $this->cmd->fix_users();
+            return $this->fix_users();
         }
     }
 
