@@ -73,4 +73,7 @@ Vue.component("setting-aside", require("./components/setting/Aside.vue"));
 Vue.component("answer-tool", require("./components/question/AnswerTool.vue"));
 Vue.component("question-bottom", require("./components/question/QuestionBottom.vue"));
 
+//回答问题的时候需要使用这个编辑器
+Vue.component("editor", require("./components/Editor.vue"));
+
 const app = new Vue({}).$mount("#app");
