@@ -296,10 +296,11 @@ class CategoryController extends Controller
         // $article->submited_status = $submited_status;
         $article->load('user');
 
-        //自动置顶最新收录的文章到发现，时间７天
+        //自动置顶最新收录的文章到发现，时间由pm来规定 没有就1天
+        $expire=config('seo.article_stick_day')?:1;
         stick_article([
             'article_id' => $article->id,
-            'expire'     => 7,
+            'expire'     => $expire,
             'position'   => '发现',
             'reason'     => '新收录',
         ], true);
