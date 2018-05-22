@@ -15,7 +15,7 @@ class EditImagesPathSmallDisk extends Migration
     {
         Schema::table('images', function (Blueprint $table) {
             $table->renameColumn('path_small', 'disk');
-            $table->renameColumn('path_origin', 'hash');
+            // $table->renameColumn('path_origin', 'hash');
             
         });
     }

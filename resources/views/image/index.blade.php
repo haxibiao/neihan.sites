@@ -21,7 +21,7 @@
             <div class="media">
                 <a class="pull-left" href="/image/{{ $image->id }}">
                     <img alt="{{ $image->title }}" class="media-object" 
-                    	src="{{ $image->path_small }}">
+                    	src="{{ $image->path_small() }}">
                     </img>
                 </a>
                 <div class="media-body">

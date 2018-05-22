@@ -13,7 +13,7 @@
             </p>
         </div>   
         @foreach($images as $image)
-        @if(!str_contains($image->path_small, 'storage/video'))
+        @if(!str_contains($image->path_small(), 'storage/video'))
             <div class="col-xs-3">
                 <p class="text-center">
                     <img src="{{ $image->url_small() }}" alt="" class="img img-responsive">
