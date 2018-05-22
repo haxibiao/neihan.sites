@@ -1,5 +1,5 @@
 <template>
-   <div class="comment-content">
+   <div id="comments">
     <!-- {{-- 写评论 --}} -->
     <new-comment @sendComment="postComment"></new-comment>
     <!-- {{-- 默认评论 --}} -->
@@ -336,7 +336,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.comment-content {
+#comments {
   padding-top: 20px;
   .normal-comment {
     margin-top: 30px;
