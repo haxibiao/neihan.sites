@@ -2,37 +2,37 @@
 
 use App\Article;
 use App\Category;
-use App\User;
+use App\Image;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
-function get_top_categoires($top_categoires){
-    $categories=[];
+function get_top_categoires($top_categoires)
+{
+    $categories = [];
 
-    $stick_categories=get_stick_categories(false,true);
-    foreach($top_categoires as $category){
-        $categories[]=$category;
+    $stick_categories = get_stick_categories(false, true);
+    foreach ($top_categoires as $category) {
+        $categories[] = $category;
     }
 
-    $categories=array_merge($stick_categories,$categories);
-    $categories= new collection($categories);
-    $categories=$categories->unique();
+    $categories = array_merge($stick_categories, $categories);
+    $categories = new collection($categories);
+    $categories = $categories->unique();
 
     return $categories;
 }
 
+function get_top_categories_count()
+{
+    $categories = [];
 
-function get_top_categories_count(){
-    $categories=[];
-
-    $stick_categories=get_stick_categories();
-    $leftCount=7-count($stick_categories);
+    $stick_categories = get_stick_categories();
+    $leftCount        = 7 - count($stick_categories);
     return $leftCount;
 }
 
-
-function get_stick_categories($all = false,$index=false)
+function get_stick_categories($all = false, $index = false)
 {
     $categories = [];
     if (Storage::exists("stick_categories")) {
@@ -48,23 +48,22 @@ function get_stick_categories($all = false,$index=false)
 
             $category = category::find($item['category_id']);
 
-            if($index && $category){
-                $categories[]          = $category;
+            if ($index && $category) {
+                $categories[] = $category;
                 continue;
             }
             if ($category) {
                 $category->reason     = !empty($item['reason']) ? $item['reason'] : null;
                 $category->expire     = $item['expire'];
                 $category->stick_time = diffForHumansCN(Carbon::createFromTimestamp($item['timestamp']));
-                $categories[]          = $category;
+                $categories[]         = $category;
             }
         }
     }
     return $categories;
 }
 
-
-function stick_category($data,$auto=false)
+function stick_category($data, $auto = false)
 {
     $items = [];
 
@@ -80,19 +79,29 @@ function stick_category($data,$auto=false)
         }
     }
 
-    $data['timestamp']=time();
-    if($auto){
-        $items[]=$data;
-    }else{
+    $data['timestamp'] = time();
+    if ($auto) {
+        $items[] = $data;
+    } else {
         $items = array_merge([$data], $items);
     }
-    $json=json_encode($items);
-    Storage::put("stick_categories",$json);
+    $json = json_encode($items);
+    Storage::put("stick_categories", $json);
 }
 
 function stick_article($data, $auto = false)
 {
     $items = [];
+    //检查该文章的主配图能否上首页
+    if ($data['position'] = '轮播图') {
+        $article   = Article::find($data['article_id']);
+        $image_url = str_replace('.small', '', $article->image_url);
+        $image     = Image::where('path', $image_url)->first();
+        if (empty($image) || $image->width < 760) {
+            dd("该文章的主配图达不到上首页的标准");
+        }
+    }
+
     if (Storage::exists("stick_articles")) {
         $json = Storage::get('stick_articles');
         //auto clear expired items

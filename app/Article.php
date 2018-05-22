@@ -123,11 +123,15 @@ class Article extends Model
 
     public function topImage()
     {
-        $image_top = parse_url($this->image_top, PHP_URL_PATH);
-        if (file_exists(public_path($image_top))) {
-            return url($image_top);
-        }
-        return env('APP_URL') . $image_top;
+        $image_url = parse_url($this->image_url, PHP_URL_PATH);
+        $image_url = str_replace('.small', '.top', $image_url);
+        
+        return url($image_url);
+        // if (file_exists(public_path($image_url))) {
+        // }
+        //轮播图应该默认取主配图的top 这里修复了一下image_top这个字段应该是多余的
+        // $image_top = parse_url($this->image_top, PHP_URL_PATH);
+        // return env('APP_URL') . $image_top;
     }
 
     public function primaryImage()
