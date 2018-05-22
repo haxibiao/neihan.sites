@@ -26,12 +26,12 @@
 					</li>
 				</ul>
 			</div>
-			<div class="close" @click="closeBtn">x</div>
+			<div class="close iconfont icon-cha" @click="closeBtn"></div>
 			<div class="arc"></div>
 			<div class="contribute">
 				<div class="header">
 					<div class="search-wrapper">
-						<input type="text" placeholder="搜索专题" class="input-style" v-model="q" @keyup.enter="search">
+						<input type="text" placeholder="搜索专题" class="input-style" v-model="q" @input="search">
 						<i class="iconfont icon-sousuo"></i>
 					</div>
 					<div class="describe">向专题投稿，让文章被更多人发现</div>
@@ -74,8 +74,8 @@
 							</li>
 						</ul>
 						<div style="width: 200px; margin: auto">
-						   <a class="btn-base btn-more" :style="page2<lastPage?'background-color:green':''" href="javascript:;" @click="fetchMore">
-						   	{{ page2 >= lastPage ? '已经到底了':'点击加载更多' }}...</a>
+						   <a class="btn-base btn-more" :style="page2<lastPage?'background-color:rgba(66, 192, 46, 0.9)':''" href="javascript:;" @click="fetchMore">
+						   	{{ page2 >= lastPage ? '已经到底了':'点击加载更多' }}</a>
 					   	</div>
 					</div>
 				</div>
@@ -104,7 +104,8 @@ export default {
 	props: ["show"],
 
 	updated() {
-		if(!this.fetched) {
+		if(!this.first_update) {
+			++this.first_update;
 			this.fetchData();
 		}
 	},
@@ -147,8 +148,7 @@ export default {
 			return window.tokenize(api);
 		},
 		apiRecommend() {
-			var page2 = this.page2;
-			var api = "/api/categories/recommend-check-article-" + this.article.id + "?page=" + page2;
+			var api = "/api/categories/recommend-check-article-" + this.article.id + "?page=" + this.page2;
 			return window.tokenize(api);
 		},
 		apiRecent() {
@@ -174,9 +174,8 @@ export default {
 					_this.categoryList = response.data.data;
 				} else {
 					_this.categoryList = _this.categoryList.concat(response.data.data);
-					_this.page = response.data.currentPage;
+					_this.page = response.data.current_page;
 					_this.page_total = response.data.lastPage;
-					_this.fetched = true;
 				}
 			});
 		},
@@ -193,10 +192,9 @@ export default {
 			var _this = this;
 			window.axios.get(this.apiRecommend()).then(function(response) {
 				_this.recommendCategoryList = _this.recommendCategoryList.concat(response.data.data);
-				_this.page2 = response.data.currentPage;
+				_this.page2 = response.data.current_page;
 				_this.page2_total = response.data.lastPage;
 				_this.lastPage = response.data.last_page;
-				_this.fetched = true;
 			});
 		},
 		fetchData() {
@@ -209,16 +207,17 @@ export default {
 			this.page = 1;
 			var _this = this;
 			var api = "/api/categories/search-submit-for-article-" + this.article.id + "?q=" + this.q;
-			window.axios.get(api).then(function(response) {
-				_this.searchCategoryList = response.data.data;
-				_this.fetched = true;
-			});
+			if(this.q.length>0) {
+				window.axios.get(api).then(function(response) {
+					_this.searchCategoryList = response.data.data;
+				});
+			}
 		}
 	},
 
 	data() {
 		return {
-			fetched: false,
+			first_update: 0,
 			currentPage: 1,
 			searchResult: [],
 			q: null,
