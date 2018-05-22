@@ -2,7 +2,7 @@
 
 @section('content')
 <div id="login">
-    <div class="logo"><a href="/"><img src="/logo/{{ get_domain() }}.text.png" alt="{{ config('app.name') }}"></a></div>
+    <div class="logo"><a href="/"><img src="{{'/logo/'.get_domain().'.text.png' ?:'/logo/'.get_domain().'.png' }}" alt="{{ config('app.name') }}"></a></div>
     <signs register></signs>
    
     @if($errors->any())
