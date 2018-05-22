@@ -29,14 +29,17 @@ export default {
     //vue中，通过修改value属性来更新编辑器中的内容
     updated() {
         // if(this.value && this.value.length)
-        {
+        if (this.write) {
             this.editor.setValue(this.value);
             this.$emit("changed", this.value);
+        } else {
+            this.editor.setValue(this.editor_value);
         }
     },
 
     data() {
         return {
+            editor_value: "",
             value_draft: "",
             draftShow: false,
             textareaId: new Date().getTime(), //这里防止多个富文本发生冲突
@@ -102,12 +105,12 @@ export default {
             });
 
             this.editor.on("valuechanged", function(e, src) {
-                 _this.$emit("changed", _this.editor.getValue());
+                _this.$emit("changed", _this.editor.getValue());
             });
 
             this.editor.on("imgpicked", function(e, src) {
-                 _this.$emit("changed", _this.editor.getValue());
-                 _this.$emit("imgpicked", _this.editor.getValue());
+                _this.$emit("changed", _this.editor.getValue());
+                _this.$emit("imgpicked", _this.editor.getValue());
             });
 
             this.editor.on("promptdraft", function(e, data) {
@@ -135,11 +138,12 @@ export default {
         },
         yesClick() {
             this.draftShow = !this.draftShow;
-            this.editor.setValue(this.value_draft);
+            this.editor_value = this.value_draft;
+            // this.editor.setValue(this.value_draft);
         },
         noClick() {
             this.draftShow = !this.draftShow;
-            this.editor.setValue("");
+            this.editor_value = "";
         }
     }
 };

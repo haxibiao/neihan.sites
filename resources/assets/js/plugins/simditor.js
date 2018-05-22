@@ -6449,6 +6449,7 @@
         return;
       }
       if (this.editor.textarea.is("[data-autosave]")) {
+        console.log("sdfsdfsdf");
         var draft = val;
         var _editor = this.editor;
         setTimeout(function() {
