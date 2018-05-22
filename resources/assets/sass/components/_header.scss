@@ -1,4 +1,5 @@
-#header,#header-auth {
+#header,
+#header-auth {
 	position: fixed;
 	width: 100%;
 	border-bottom: 1px solid $light-color1;
@@ -12,7 +13,7 @@
 		.navbar-wrp {
 			width: 100%;
 			.navbar-brand {
-				width: 50px;
+				width: auto;
 				padding: 5px;
 				img {
 					width: 100%;
@@ -20,7 +21,7 @@
 				}
 			}
 			.navbar-nav {
-				&>li {
+				& > li {
 					font-size: 16px;
 					a {
 						height: 100%;
@@ -36,7 +37,7 @@
 						right: -8px;
 					}
 					&.active {
-						&>a {
+						& > a {
 							color: $theme-color;
 							background-color: initial;
 						}
@@ -45,7 +46,8 @@
 						background-color: $light-color1;
 					}
 				}
-				.register,.creation {
+				.register,
+				.creation {
 					padding: 6px 0;
 					display: inline-block;
 					.btn-base {
@@ -56,7 +58,7 @@
 					}
 					&:hover {
 						background-color: transparent;
-					} 
+					}
 				}
 				.register {
 					margin-right: 20px;
@@ -73,11 +75,11 @@
 				// 消息
 				.notification {
 					.hover-dropdown-menu {
-					 	.badge {
-					 	  top: 50%;
-					 	  right: 15px;
-					 	  transform: translate(0,-50%);
-					 	}
+						.badge {
+							top: 50%;
+							right: 15px;
+							transform: translate(0, -50%);
+						}
 					}
 				}
 				//用户下拉框
@@ -92,7 +94,7 @@
 						width: 160px;
 						li {
 							font-size: 14px;
-							&>a {
+							& > a {
 								i {
 									font-size: 20px;
 									margin: -2px 15px 0 0;
@@ -111,8 +113,8 @@
 						.form-control {
 							width: 220px;
 							transition: all 0.3s ease-in-out;
-							&:focus{
-								outline:0 !important;
+							&:focus {
+								outline: 0 !important;
 								box-shadow: none;
 								width: 260px;
 								& + span {
@@ -120,12 +122,12 @@
 									background-color: $gray-color2;
 								}
 							}
-							@media screen and (max-width:1000px) and (min-width:768px) {
-								width: 160px;
-								&:focus{
-									outline:0 !important;
+							@media screen and (max-width: 1000px) and (min-width: 768px) {
+								width: 150px;
+								&:focus {
+									outline: 0 !important;
 									box-shadow: none;
-									width: 170px;
+									width: 160px;
 								}
 							}
 						}
@@ -134,7 +136,7 @@
 			}
 			@media screen and(max-width:768px) {
 				.navbar-nav {
-					&>li {
+					& > li {
 						.badge {
 							top: 8px;
 							right: unset;
@@ -146,10 +148,10 @@
 					}
 					.user {
 						.hover-dropdown-menu {
-						    width: 100%;
-						    text-align: center;
+							width: 100%;
+							text-align: center;
 							left: 50% !important;
-							transform: translate(-50%,0);
+							transform: translate(-50%, 0);
 							border: none;
 							box-shadow: unset;
 							li {

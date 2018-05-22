@@ -96,7 +96,7 @@
 							   </li>
 							   <li>
 							     <a href="/settings">
-							       <i class="iconfont icon-shezhi"></i><span>设置</span>
+							       <i class="iconfont icon-shezhi"></i><span>我的设置</span>
 									 </a>
 							   </li>
 							   {{-- <li>
