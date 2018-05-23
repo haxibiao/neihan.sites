@@ -29,7 +29,7 @@ export default {
     //vue中，通过修改value属性来更新编辑器中的内容
     updated() {
         // if(this.value && this.value.length)
-        if (this.write) {
+        if (this.write !== undefined) {
             this.editor.setValue(this.value);
             this.$emit("changed", this.value);
         } else {
@@ -114,7 +114,6 @@ export default {
             });
 
             this.editor.on("promptdraft", function(e, data) {
-                console.log("promptdraft...");
                 _this.value_draft = data.draft;
                 _this.draftShow = !_this.draftShow;
             });

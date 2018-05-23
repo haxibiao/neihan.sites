@@ -62,14 +62,12 @@
                 <div class="meta-block">
                         <p>{{ $user->count_words }}</p>
                         字数
-                        <i class="iconfont icon-youbian"></i>
                 </div>
             </li>
             <li>
                 <div class="meta-block">
                         <p>{{ $user->count_likes }}</p>
                         收获喜欢
-                        <i class="iconfont icon-youbian"></i>
                 </div>
             </li>
         </ul>
