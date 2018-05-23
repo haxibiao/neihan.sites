@@ -18,6 +18,7 @@ class ArticleFilterEnum extends GraphQLType {
 
             //filter new requested articles
             'NEW_REQUESTED' => 'NEW_REQUESTED',
+            'ALL' => 'ALL',
 
             //my
             'DRAFTS' => 'DRAFTS',

@@ -101,14 +101,25 @@ class CategoryType extends GraphQLType
             'articles'        => [
                 'type'        => Type::listOf(GraphQL::type('Article')),
                 'args'        => [
-                    'all' => ['name' => 'all', 'type' => Type::boolean()],
+                    'filter' => ['name' => 'filter', 'type' => GraphQL::type('ArticleFilter')],
+                    'offset' => ['name' => 'offset', 'type' => Type::int()],
+                    'limit'  => ['name' => 'limit', 'type' => Type::int()],
                 ],
                 'description' => 'category related articles, including newly requested ...',
                 'resolve'     => function ($root, $args) {
-                    if (isset($args['all']) && $args['all']) {
-                        return $root->articles;
+                    $qb = $root->newRequestArticles();
+                    if (isset($args['ALL']) && $args['ALL']) {
+                        $qb = $root->articles();
                     }
-                    return $root->newRequestArticles;
+                    if (isset($args['offset'])) {
+                        $qb = $qb->skip($args['offset']);
+                    }
+                    $limit = 10;
+                    if (isset($args['limit'])) {
+                        $limit = $args['limit'];
+                    }
+                    $qb = $qb->take($limit);
+                    return $qb->get();
                 },
             ],
 
