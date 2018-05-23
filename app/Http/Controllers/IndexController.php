@@ -41,7 +41,6 @@ class IndexController extends Controller
                     $categories[]    = $category;
                     $categorie_ids[] = $category->id;
                 }
-
                 // get user followed categories related articles ...
                 $articles = Article::with('user')->with('category')
                     ->where('status', '>', 0)
@@ -67,7 +66,7 @@ class IndexController extends Controller
                 ->where('status', '>', 0)
                 ->where('source_url', '=', '0')
                 ->whereIn('category_id', array_merge($categorie_ids,$categories->pluck('id')->toArray()))
-                ->orderBy('id', 'desc')
+                ->orderBy('updated_at', 'desc')
                 ->paginate(10);
         }
 
