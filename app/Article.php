@@ -124,12 +124,18 @@ class Article extends Model
     public function topImage()
     {
         $image_url = parse_url($this->image_url, PHP_URL_PATH);
-        $image_url = str_replace('.small', '.top', $image_url);
-        
+        $result= str_replace('.small', '', $image_url)==str_replace('.top', '', $this->image_top);
+
+        //改写了添加的置顶轮播图的取的机制，TODO::上轮播图那个地方以后要修复一下
+        if($result && file_exists(public_path($image_url))){
+            $image_top = parse_url($this->image_top, PHP_URL_PATH);
+            return env('APP_URL') . $image_top;
+        }else{
+            $image_url = str_replace('.small', '.top', $image_url);
+        }
         return url($image_url);
         // if (file_exists(public_path($image_url))) {
         // }
-        //轮播图应该默认取主配图的top 这里修复了一下image_top这个字段应该是多余的
         // $image_top = parse_url($this->image_top, PHP_URL_PATH);
         // return env('APP_URL') . $image_top;
     }
