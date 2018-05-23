@@ -100,6 +100,7 @@ class VideoController extends Controller
     {
         $video              = Video::with('user')->with('articles')->findOrFail($id);
         $data['json_lists'] = $this->get_json_lists($video);
+        // dd($data['json_lists']);
 
         //get some related videos ...
         $videos = Video::orderBy('id', 'desc')->skip(rand(0, Video::count() - 8))->take(4)->get();
@@ -314,15 +315,29 @@ class VideoController extends Controller
 
     public function make_cover($video_path, $cover)
     {
-        $clear_cover = exec('rm -rf $cover');
-        $cmd         = "ffmpeg -i $video_path -frames:v 1 -s 300x200 $cover 2>&1";
-        //dota2　英雄技能视频都15秒开始有标题...
-        if (starts_with($video_path, 'http')) {
-            $second = rand(14, 18);
-            $cmd    = "ffmpeg -i $video_path -deinterlace -an -s 300x200 -ss $second -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover 2>&1";
+        $covers = [];
+        $cmd_get_duration = 'ffprobe -i '.$video_path.' -show_entries format=duration -v quiet -of csv="p=0" 2>&1';
+        $duration         = `$cmd_get_duration`;
+        $duration         = intval($duration);
+        if ($duration > 15) {
+            //take 8 covers jpg file, return first ...
+            for ($i = 1; $i <= 8; $i++) {
+                $seconds = intval($duration * $i/8);
+                $cover_i = $cover.".$i.jpg";
+                $cmd    = "ffmpeg -i $video_path -deinterlace -an -s 300x200 -ss $seconds -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover_i 2>&1";
+                $exit_code = exec($cmd);
+                if($exit_code == 0){
+                    $covers[] = $cover_i;
+                }
+            }
+
+            if(count($covers)) {
+                //copy first screen as default cover..
+                copy($covers[0], $cover);
+            }
+
         }
-        $do = exec($cmd);
-        return $do;
+        return $covers;
     }
 
     public function get_json_lists($video)

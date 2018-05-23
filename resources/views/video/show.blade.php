@@ -108,24 +108,11 @@
                 </div>
                 <div class="guess-like col-sm-4 hidden-xs">
                     <div class="guessVideo">
-                        <h4>猜你喜欢</h4>
+                        <h4>推荐阅读</h4>
                         <ul class="video-list">
-                            @foreach($data['related'] as $video) 
-                                <li class="video-item hz">
-                                    <a href="/video/{{$video->id}}" class="clearfix">
-                                        <div class="cover">
-                                            <img src="{{ $video->cover() }}" alt="{{ $video->title }}">
-                                            <span class="duration">0{{ rand(1,9) }}:{{ rand(10,59) }}</span>
-                                        </div>
-                                        <div class="info">
-                                            <div class="video-title">{{ $video->title }}</div>
-                                            <span class="amount">
-                                                {{ rand(100,1000) }}次播放
-                                            </span>
-                                        </div>
-                                    </a>
-                                </li>
-                            @endforeach
+                            <div class="top10">
+                                @include('article.parts.connections')
+                            </div>
                         </ul>
                     </div>
                 </div>

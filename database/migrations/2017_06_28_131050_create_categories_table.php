@@ -16,7 +16,7 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->index();
-            $table->string('type')->nullable();
+            $table->string('type')->nullable();  //article, video
             $table->string('name');
             $table->string('name_en');
             $table->string('description')->nullable();
@@ -29,10 +29,12 @@ class CreateCategoriesTable extends Migration
             $table->integer('status')->default(0); // 0: disallow submit article, 1: allow
             $table->integer('request_status')->default(0);  //0: submit request dont need approve, 1: need approve
 
-            //count
-            $table->integer('count')->default(0);
+            //counts
             $table->integer('count_follows')->default(0)->index();
+            
+            $table->integer('count')->default(0);  //count_articles
             $table->integer('count_questions')->default(0);
+            $table->integer('count_videos')->default(0);
 
             //新投稿数
             $table->integer('new_requests')->default(0);

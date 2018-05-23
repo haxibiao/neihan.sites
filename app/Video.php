@@ -70,6 +70,18 @@ class Video extends Model
         return $cover_url;
     }
 
+    public function covers()
+    {
+        $covers = [];
+        for ($i = 1; $i <= 8; $i++) {
+            $cover = $this->cover . "." . $i . ".jpg";
+            if (file_exists(public_path($cover))) {
+                $covers[] = $cover;
+            }
+        }
+        return $covers;
+    }
+
     public function fillForJs()
     {
 
