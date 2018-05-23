@@ -1,6 +1,8 @@
 <template>
-  <div class="row image-list">
-    <div v-for="image in images" class="col-xs-4"><img :src="image.path" alt="" simditor></div>   
+  <div class="row img-list">
+    <div v-for="image in images" class="img-item">
+        <img :src="image.path" alt="" simditor>
+    </div>   
   </div>
 </template>
 
@@ -19,12 +21,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.image-list {
-  margin-top: 12px;
-  img {
-    display: block;
-    max-width: 100%;
-    padding: 15px 0;
-  }
+.img-list {
+  margin: 12px 0 8px;
 }
 </style>

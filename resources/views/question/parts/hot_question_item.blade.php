@@ -21,11 +21,6 @@
   @endif
 
   <div class="question-warp">    
-    @if(!empty($question->relateImage()))
-      <a class="wrap-img" href="/question/{{ $question->id }}" target="_blank">
-          <img src="{{ $question->relateImage() }}" alt="">
-      </a>
-    @endif
     <div class="content">
       <p class="abstract">
         @if($question->latestAnswer)
@@ -35,5 +30,10 @@
         @endif
       </p>
     </div>
+    @if(!empty($question->relateImage()))
+      <a class="wrap-img" href="/question/{{ $question->id }}" target="_blank">
+          <img src="{{ $question->relateImage() }}" alt="">
+      </a>
+    @endif
   </div>
 </li>
