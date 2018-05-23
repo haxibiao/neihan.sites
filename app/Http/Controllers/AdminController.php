@@ -90,11 +90,18 @@ class AdminController extends Controller
             $items = json_decode($json, true);
         }
         $left_items = [];
-        foreach ($items as $item) {
-            if ($item['article_id'] != $article_id) {
-                $left_items[] = $item;
+
+        //找到需要删除的元素就跳出,不必要全部递归
+        foreach ($items as $index=>$item) {
+            if ($item['article_id'] == $article_id) {
+                array_splice($items, $index, 1);
+                break;
             }
         }
+
+        //这里重新装车一遍,否则容易造成全部删除的情况
+        $left_items=$items;
+
         $json = json_encode($left_items);
         Storage::put("stick_articles", $json);
         return redirect()->back();
