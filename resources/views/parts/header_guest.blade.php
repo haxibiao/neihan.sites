@@ -11,7 +11,7 @@
 						<span class="icon-bar"></span>
 					</button>
 					<a class="navbar-brand" href="/">
-						<img src="/logo/{{ get_domain() }}.web.png" alt="">
+						<img src="/logo/{{ get_domain() }}.small.png" alt="">
 					</a>
 				</div>
 				<!-- Collect the nav links, forms, and other content for toggling -->
