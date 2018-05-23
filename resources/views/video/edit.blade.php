@@ -70,6 +70,18 @@
                         {{ $errors->first('video') }}
                     </small>
                 </div>
+
+                @foreach($data['thumbnail'] as $thumbnail)
+                <div class="radio{{ $errors->has('thumbnail') ? ' has-error' : '' }}">
+                    <img src="{{ $thumbnail }}">
+
+                    <label for="thumbnail">
+                        {!! Form::radio('thumbnail',$thumbnail,null) !!}
+                    </label>
+                    <small class="text-danger">{{ $errors->first('thumbnail') }}</small>
+                </div>
+                @endforeach
+
                 <div class="form-group{{ $errors->has('adstime') ? ' has-error' : '' }}">
                     {!! Form::label('adstime', '广告时间(非必填，如果有就填写，方便后续脚本清理广告)') !!}
                     {!! Form::text('adstime', $video->adstime, ['class' => 'form-control', 'placeholder' => '比如: ５秒之前,输入 <5s 4分33秒之后，输入: >4:33 中间时段： 2:20-2:25，多个时段，空格隔开']) !!}

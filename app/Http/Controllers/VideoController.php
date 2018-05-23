@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Category;
 use App\Video;
+use App\Jobs\videoCapture;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -84,7 +85,8 @@ class VideoController extends Controller
         $video_path   = starts_with($video->path, 'http') ? $video->path : public_path($video->path);
         $video->cover = '/storage/video/thumbnail_' . $video->id . '.jpg';
         $cover        = public_path($video->cover);
-        $this->make_cover($video_path, $cover);
+
+        videoCapture::dispatch($video_path, $cover);
 
         $video->save();
         return redirect()->to('/video');
@@ -123,6 +125,8 @@ class VideoController extends Controller
     {
         $video                    = Video::findOrFail($id);
         $data['video_categories'] = Category::where('type', 'video')->pluck('name', 'id');
+        $data['thumbnail']=$video->covers();
+
         return view('video.edit')->withVideo($video)->withData($data);
     }
 
@@ -137,6 +141,10 @@ class VideoController extends Controller
     {
         $video = Video::findOrFail($id);
         $video->update($request->all());
+
+        if(!empty($request->thumbnail)){
+            copy(public_path($request->thumbnail),public_path($video->cover));
+        }
 
         $video_path = $video->path;
         if (!starts_with($video_path, 'http')) {
@@ -168,7 +176,7 @@ class VideoController extends Controller
         //截取图片
         $video->cover = '/storage/video/thumbnail_' . $video->id . '.jpg';
         $cover        = public_path($video->cover);
-        $this->make_cover($video_path, $cover);
+        videoCapture::dispatch($video_path, $cover);
 
         $video->save();
 
@@ -292,7 +300,7 @@ class VideoController extends Controller
                 //make thumbnail
                 $video->cover = '/storage/video/thumbnail_' . $video->id . '.jpg';
                 $cover        = public_path($video->cover);
-                $this->make_cover($video_path, $cover);
+                videoCapture::dispatch($video_path, $cover);
                 $video->save();
             }
 
