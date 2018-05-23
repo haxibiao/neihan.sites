@@ -32,39 +32,45 @@
     <div class="info">
         <ul class="info-list">
             <li class="hidden-xs">
-                <a href="/user/{{ $user->id }}/followings">
-                    <p>{{ $user->count_followings }}</p>
-                    关注
-                    <i class="iconfont icon-youbian"></i>
-                </a>
+                <div class="meta-block">
+                    <a href="/user/{{ $user->id }}/followings">
+                        <p>{{ $user->count_followings }}</p>
+                        关注
+                        <i class="iconfont icon-youbian"></i>
+                    </a>
+                </div>
             </li>
             <li class="hidden-xs">
-                <a href="/user/{{ $user->id }}/followers">
-                    <p>{{ $user->count_follows }}</p>
-                    粉丝
-                    <i class="iconfont icon-youbian"></i>
-                </a>
+                <div class="meta-block">
+                    <a href="/user/{{ $user->id }}/followers">
+                        <p>{{ $user->count_follows }}</p>
+                        粉丝
+                        <i class="iconfont icon-youbian"></i>
+                    </a>
+                </div>
             </li>
             <li>
-                <a href="/user/{{ $user->id }}">
-                    <p>{{ $user->count_articles }}</p>
-                    文章
-                    <i class="iconfont icon-youbian"></i>
-                </a>
+                <div class="meta-block">
+                    <a href="/user/{{ $user->id }}">
+                        <p>{{ $user->count_articles }}</p>
+                        文章
+                        <i class="iconfont icon-youbian"></i>
+                    </a>
+                </div>
             </li>
             <li>
-                <a href="javascript:;">
-                    <p>{{ $user->count_words }}</p>
-                    字数
-                    <i class="iconfont icon-youbian"></i>
-                </a>
+                <div class="meta-block">
+                        <p>{{ $user->count_words }}</p>
+                        字数
+                        <i class="iconfont icon-youbian"></i>
+                </div>
             </li>
             <li>
-                <a href="javascript:;">
-                    <p>{{ $user->count_likes }}</p>
-                    收获喜欢
-                    <i class="iconfont icon-youbian"></i>
-                </a>
+                <div class="meta-block">
+                        <p>{{ $user->count_likes }}</p>
+                        收获喜欢
+                        <i class="iconfont icon-youbian"></i>
+                </div>
             </li>
         </ul>
     </div>

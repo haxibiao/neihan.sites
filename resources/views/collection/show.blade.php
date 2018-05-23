@@ -26,13 +26,13 @@
 					 </ul>
 					 <!-- Tab panes -->
 					 <div class="article_list tab-content">
-					   <ul role="tabpanel" class="fade in note_list tab-pane active" id="article">
+					   <ul role="tabpanel" class="fade in tab-pane active" id="article">
    		 					@each('parts.article_item', $data['new'], 'article')
 					   </ul>
-					   <ul role="tabpanel" class="fade note_list tab-pane" id="comment">
+					   <ul role="tabpanel" class="fade tab-pane" id="comment">
 	   						@each('parts.article_item', $data['commented'], 'article')
 					   </ul>
-					   <ul role="tabpanel" class="fade note_list tab-pane" id="catalog">
+					   <ul role="tabpanel" class="fade tab-pane" id="catalog">
 					   		@each('parts.article_item', $data['old'], 'article')
 					   </ul>
 					 </div>

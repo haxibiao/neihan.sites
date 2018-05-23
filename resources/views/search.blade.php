@@ -14,8 +14,8 @@
         </div>
         <div class="panel-body">
             <div class="main">
-                <div class="article_list">
-                    <ul class="note_list">
+                <div class="article-list">
+                    <ul class="note-list">
                     @foreach($data['articles'] as $article)
                         @include('parts.article_item', ['search'=>true])
                     @endforeach

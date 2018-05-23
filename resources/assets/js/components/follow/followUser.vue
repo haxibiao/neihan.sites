@@ -31,8 +31,8 @@
 			 </ul>
 			 <!-- Tab panes -->
 			 <div class="article_list tab-content">
-			   <ul role="tabpanel" class="fade in note_list tab-pane active" id="article">
-						<li class="note_item have_img">
+			   <ul role="tabpanel" class="fade in article-list tab-pane active" id="article">
+						<li class="article-item have-img">
 						  <a class="wrap_img" href="/v1/detail" target="_blank">
 						      <img src="/images/article_06.jpg" alt="">
 						  </a>
@@ -64,7 +64,7 @@
 						    </div>
 						  </div>
 						</li>
-						<li class="note_item have_img">
+						<li class="article-item have-img">
 						  <a class="wrap_img" href="/v1/detail" target="_blank">
 						      <img src="/images/article_07.jpg" alt="">
 						  </a>
@@ -96,7 +96,7 @@
 						    </div>
 						  </div>
 						</li>
-						<li class="note_item have_img">
+						<li class="article-item have-img">
 						  <a class="wrap_img" href="/v1/detail" target="_blank">
 						      <img src="/images/article_04.jpg" alt="">
 						  </a>
@@ -128,7 +128,7 @@
 						    </div>
 						  </div>
 						</li>
-						<li class="note_item have_img">
+						<li class="article-item have-img">
 						  <a class="wrap_img" href="/v1/detail" target="_blank">
 						      <img src="/images/article_08.jpg" alt="">
 						  </a>
@@ -160,7 +160,7 @@
 						    </div>
 						  </div>
 						</li>
-						<li class="note_item have_img">
+						<li class="article-item have-img">
 						  <a class="wrap_img" href="/v1/detail" target="_blank">
 						      <img src="/images/article_02.jpg" alt="">
 						  </a>
@@ -193,8 +193,8 @@
 						  </div>
 						</li>
 			   </ul>
-			   <ul role="tabpanel" class="fade note_list tab-pane" id="comment">
- 						<li class="note_item have_img">
+			   <ul role="tabpanel" class="fade article-list tab-pane" id="comment">
+ 						<li class="article-item have-img">
  						  <a class="wrap_img" href="/v1/detail" target="_blank">
  						      <img src="/images/article_01.jpg" alt="">
  						  </a>
@@ -226,7 +226,7 @@
  						    </div>
  						  </div>
  						</li>
- 		        <li class="note_item have_img">
+ 		        <li class="article-item have-img">
  		          <a class="wrap_img" href="/v1/detail" target="_blank">
  		              <img src="/images/article_02.jpg" alt="">
  		          </a>
@@ -258,7 +258,7 @@
  		            </div>
  		          </div>
  		        </li>
- 		        <li class="note_item have_img">
+ 		        <li class="article-item have-img">
  		          <a class="wrap_img" href="/v1/detail" target="_blank">
  		              <img src="/images/article_03.jpg" alt="">
  		          </a>
@@ -290,7 +290,7 @@
  		            </div>
  		          </div>
  		        </li>
- 		        <li class="note_item">
+ 		        <li class="article-item">
  		          <a class="wrap_img" href="/v1/detail" target="_blank">
  		              <img src="/images/article_04.jpg" alt="">
  		          </a>
@@ -322,7 +322,7 @@
  		            </div>
  		          </div>
  		        </li>
- 		        <li class="note_item have_img">
+ 		        <li class="article-item have-img">
  		          <a class="wrap_img" href="/v1/detail" target="_blank">
  		              <img src="/images/article_05.jpg" alt="">
  		          </a>
@@ -355,8 +355,8 @@
  		          </div>
  		        </li>
 			   </ul>
-			   <ul role="tabpanel" class="fade note_list tab-pane" id="hot">
-			   		<li class="note_item have_img">
+			   <ul role="tabpanel" class="fade article-list tab-pane" id="hot">
+			   		<li class="article-item have-img">
 			   		  <a class="wrap_img" href="/v1/detail" target="_blank">
 			   		      <img src="/images/article_03.jpg" alt="">
 			   		  </a>
@@ -389,7 +389,7 @@
 			   		    </div>
 			   		  </div>
 			   		</li>
-			   		<li class="note_item">
+			   		<li class="article-item">
 			   		  <a class="wrap_img" href="/v1/detail" target="_blank">
 			   		      <img src="/images/article_04.jpg" alt="">
 			   		  </a>
@@ -422,7 +422,7 @@
 			   		    </div>
 			   		  </div>
 			   		</li>
-		 					<li class="note_item have_img">
+		 					<li class="article-item have-img">
 		 					  <a class="wrap_img" href="/v1/detail" target="_blank">
 		 					      <img src="/images/article_04.jpg" alt="">
 		 					  </a>
@@ -455,7 +455,7 @@
 		 					    </div>
 		 					  </div>
 		 					</li>
-						<li class="note_item have_img">
+						<li class="article-item have-img">
 						  <a class="wrap_img" href="/v1/detail" target="_blank">
 						      <img src="/images/article_08.jpg" alt="">
 						  </a>
@@ -488,7 +488,7 @@
 						    </div>
 						  </div>
 						</li>
-						<li class="note_item have_img">
+						<li class="article-item have-img">
 						  <a class="wrap_img" href="/v1/detail" target="_blank">
 						      <img src="/images/article_02.jpg" alt="">
 						  </a>

@@ -1,20 +1,24 @@
-// 注解信息（两行媒体组件）：首页推荐作者、作者信息、专题/文集信息、聊天列表。。。
-.note-info,.user-info {
+// 注解信息（两行媒体组件）：作者信息、专题/文集信息、聊天列表。。。
+.note-info,
+.user-info {
   font-size: $font-size-info;
-  .avatar,.avatar-category {
+  .avatar,
+  .avatar-category {
     float: left;
   }
   .btn-base {
     margin: 4px 0 0 10px;
   }
-  .title,.info {
+  .title,
+  .info {
     padding: 3px 0 0 58px;
   }
   .title {
     a {
       color: $link-color;
     }
-    .name,.nickname {
+    .name,
+    .nickname {
       vertical-align: middle;
       color: $dark-color1;
       font-size: $font-size-tip;
@@ -34,7 +38,7 @@
   .info {
     color: $gray-color2;
     font-size: $font-size-detail;
-    &>p {
+    & > p {
       @include line-Number(1);
       a {
         color: $linkColor;
@@ -50,13 +54,14 @@
     .info-list {
       li {
         display: inline-block;
-        padding-right: 5px;
-        margin: 0 5px 5px 0;
-        border-right: 1px solid $light-color2;
-        a {
-          display: inline-block;
+        .meta-block {
+          padding-right: 5px;
+          margin: 0 5px 5px 0;
+          border-right: 1px solid $light-color2;
           font-size: $font-size-detail;
-          color: $gray-color2;
+          a {
+            color: $gray-color2;
+          }
           p {
             font-size: $font-size-tip;
             line-height: 18px;
@@ -66,16 +71,25 @@
             font-size: 8px;
           }
         }
+        &:last-child {
+          .meta-block {
+            margin: 0;
+            padding: 0;
+            border-right: none;
+          }
+        }
       }
-    } 
+    }
   }
   &.info-xs {
-    .avatar,.avatar-category {
+    .avatar,
+    .avatar-category {
       width: 40px;
       height: 40px;
       margin-right: 8px;
     }
-    .title,.info {
+    .title,
+    .info {
       padding: 0 0 0 48px;
     }
     .btn-base {
@@ -83,11 +97,13 @@
     }
   }
   &.info-md {
-    .avatar,.avatar-category {
+    .avatar,
+    .avatar-category {
       width: 52px;
       height: 52px;
     }
-    .title,.info {
+    .title,
+    .info {
       padding: 5px 0 0 62px;
     }
     .btn-base {
@@ -104,28 +120,31 @@
     .btn-md {
       min-width: 70px;
     }
-    .avatar,.avatar-category {
+    .avatar,
+    .avatar-category {
       width: 80px;
       height: 80px;
     }
-    .title,.info {
+    .title,
+    .info {
       padding: 10px 0 0 0;
     }
     .title {
       font-size: $font-size-slogan;
-      .name,.nickname {
+      .name,
+      .nickname {
         font-size: $font-size-slogan;
       }
     }
     .info {
       font-size: $font-size-info;
     }
-    @media screen and (max-width:1000px) {
+    @media screen and (max-width: 1000px) {
       .btn-base {
         margin: 20px 0 0 10px;
       }
     }
-    @media screen and (max-width:768px) {
+    @media screen and (max-width: 768px) {
       position: relative;
       padding-bottom: 35px;
       .btn-wrap {
@@ -137,7 +156,8 @@
           margin: 7px 5px 0 0;
         }
       }
-      .title,.info {
+      .title,
+      .info {
         padding: 5px 0 0 0;
       }
     }
@@ -151,8 +171,10 @@
     }
   }
 }
-.note-list,.user-list {
-  .note-info,.user-info {
+.note-list,
+.user-list {
+  .note-info,
+  .user-info {
     @include item-distance(0 0 20px 0);
   }
 }
@@ -162,7 +184,8 @@
     .avatar {
       margin-top: 5px;
     }
-    .title,.info {
+    .title,
+    .info {
       padding-top: 0;
       padding-bottom: 0;
     }
@@ -181,7 +204,7 @@
     .btn-base {
       margin: 12.5px 0 12.5px 25px;
     }
-    @media screen and (max-width:768px) {
+    @media screen and (max-width: 768px) {
       .btn-base {
         margin: 7px 5px 0 0;
       }
@@ -195,14 +218,14 @@
     li {
       margin-top: 15px;
       .follow {
-          float: right;
-          margin-top: 5px;
-          color: $weixin-color;
-          i {
-              margin-right: 2px;
-              font-weight: 700;
-              font-size: 15px;
-          }
+        float: right;
+        margin-top: 5px;
+        color: $weixin-color;
+        i {
+          margin-right: 2px;
+          font-weight: 700;
+          font-size: 15px;
+        }
       }
       .toggle-followed {
         float: right;
@@ -222,4 +245,3 @@
     }
   }
 }
-
