@@ -93,7 +93,7 @@ function stick_article($data, $auto = false)
 {
     $items = [];
     //检查该文章的主配图能否上首页
-    if ($data['position'] = '轮播图') {
+    if ($data['position'] =='轮播图') {
         $article   = Article::find($data['article_id']);
         $image_url = str_replace('.small', '', $article->image_url);
         $image     = Image::where('path', $image_url)->first();
