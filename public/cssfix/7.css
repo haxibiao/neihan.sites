@@ -1,3 +1,7 @@
+.r_bar_bg {
+  text-align: left;
+}
+
 .r_bar_bg .id_div .item_top {
   margin-bottom: 25px;
 }
@@ -42,7 +46,7 @@
 }
 
 .r_bar_bg .id_div .w1002 .item_left .property_box .pro6_box li {
-  padding: 20px;
+  padding: 20px 0;
 }
 
 .r_bar_bg
@@ -176,6 +180,7 @@
   display: inline-block;
   width: 17%;
   margin-bottom: 10px;
+  text-align: center;
 }
 
 @media screen and (max-width: 600px) {
@@ -214,7 +219,6 @@
 }
 
 .r_bar_bg .id_div .w1002 .item_right .skill_box dl dd .skill_wrap .skill_b {
-  float: left;
   max-width: 90px !important;
   max-height: 90px !important;
 }
@@ -320,7 +324,6 @@
 }
 
 .r_bar_bg .id_div .w1002 .item_right .ability_box .point_wrap .skill_m {
-  float: left;
   max-width: 90px !important;
   max-height: 90px !important;
 }
@@ -386,17 +389,6 @@
   .pop_box
   .xiaohao_wrap {
   margin-bottom: 15px;
-}
-
-.r_bar_bg
-  .id_div
-  .w1002
-  .item_right
-  .ability_box
-  .point_wrap
-  .pop_box
-  .pop_skill_s {
-  text-align: center !important;
 }
 
 .r_bar_bg .id_div .w1002 .item_right .ability_box .tree_box {
@@ -482,7 +474,6 @@
   .pop_box
   .pop_skill_p {
   margin: 10px 0 0;
-  text-align: center !important;
 }
 
 .r_bar_bg
@@ -511,7 +502,6 @@
   .pop_box
   .pop_skill_s {
   margin: 10px 0 0;
-  text-align: center !important;
 }
 
 .r_bar_bg
@@ -545,6 +535,7 @@
 
 .r_bar_bg .id_div .w1002 .item_right .r_box .match_ul {
   margin-top: 10px;
+  text-align: center;
 }
 
 .r_bar_bg .id_div .w1002 .item_right .r_box .match_ul li {
