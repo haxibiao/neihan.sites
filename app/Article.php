@@ -245,14 +245,11 @@ class Article extends Model
         $prep       = "/<img alt=\"(.*?)\" .*?>/is";
         preg_match_all($prep, $this->body, $match);
         // $content="";
-        foreach ($match[1] as $index => $base) {
             // dd($base);
-            if ($index == 0) {
-                $this->body = str_replace($base, $this->title, $this->body);
-            }
+                $image_first= str_replace($match[1][0],$this->title, $match[0][0]);
+                $this->body = str_replace($match[0][0], $image_first, $this->body);
 
             // $this->body = str_replace($base, '', $this->body);
-        }
         // $this->body=preg_replace($prep, '', $this->body);
 
         // $this->body=str_replace("alt", $alt, $this->body);
