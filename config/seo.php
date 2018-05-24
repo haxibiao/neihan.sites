@@ -10,10 +10,10 @@ return [
             'appid' => '1585927114272168',
             'token' => '0T7GLkgH83TrfdXL',
         ],
-    ],
 
-    'baiduNumber' => [
-        'token' => '5gXEVRuomHcgZD5g',
+        'baiduNumber' => [
+        'token' => 'llmWAm65s0vZsiuG',
+        ],
     ],
 
     'default_import_category_name' => '',
