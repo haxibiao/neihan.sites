@@ -124,13 +124,13 @@ class Article extends Model
     public function topImage()
     {
         $image_url = parse_url($this->image_url, PHP_URL_PATH);
-        $result= str_replace('.small', '', $image_url)==str_replace('.top', '', $this->image_top);
+        $result    = str_replace('.small', '', $image_url) == str_replace('.top', '', $this->image_top);
 
         //改写了添加的置顶轮播图的取的机制，TODO::上轮播图那个地方以后要修复一下
-        if($result && file_exists(public_path($image_url))){
+        if ($result && file_exists(public_path($image_url))) {
             $image_top = parse_url($this->image_top, PHP_URL_PATH);
             return env('APP_URL') . $image_top;
-        }else{
+        } else {
             $image_url = str_replace('.small', '.top', $image_url);
         }
         return url($image_url);
@@ -242,17 +242,14 @@ class Article extends Model
     public function parsedBody()
     {
         $this->body = parse_image($this->body);
-        $prep       = "/<img alt=\"(.*?)\" .*?>/is";
-        preg_match_all($prep, $this->body, $match);
-        // $content="";
-            // dd($base);
-                $image_first= str_replace($match[1][0],$this->title, $match[0][0]);
-                $this->body = str_replace($match[0][0], $image_first, $this->body);
-
-            // $this->body = str_replace($base, '', $this->body);
-        // $this->body=preg_replace($prep, '', $this->body);
-
-        // $this->body=str_replace("alt", $alt, $this->body);
+        $pattern    = "/<img alt=\"(.*?)\" .*?>/is";
+        preg_match_all($pattern, $this->body, $match);
+        
+        //try replace first image alt ...
+        // if ($match && count($match)) {
+        //     $image_first = str_replace($match[1][0], $this->title, $match[0][0]);
+        //     $this->body  = str_replace($match[0][0], $image_first, $this->body);
+        // }       
 
         $this->body = parse_video($this->body);
         return $this->body;
