@@ -4,13 +4,15 @@
 		font-size: $font-size-info;
 		vertical-align: middle;
 	}
-	&>a{
+	& > a {
 		display: inline-block;
 		margin-left: 10px;
 		vertical-align: middle;
+		cursor: pointer;
 		i {
 			font-size: 24px;
 			color: $dark-color2;
+			pointer-events: none;
 			&.qqzone {
 				font-size: 21px;
 				margin-top: -2px;
@@ -19,19 +21,20 @@
 		}
 		&:hover {
 			.weixin {
-			  color: $weixin-color;
+				color: $weixin-color;
 			}
 			.weibo {
-			  color: $weibo-color;
+				color: $weibo-color;
 			}
 			.qq {
-			  color: $qq-color;
+				color: $qq-color;
 			}
-			.more,.qqzone {
-			  color: $theme-color;
+			.more,
+			.qqzone {
+				color: $theme-color;
 			}
 			.other {
-			  color: $gray-color2;
+				color: $gray-color2;
 			}
 		}
 	}

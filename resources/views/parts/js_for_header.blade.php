@@ -13,6 +13,9 @@ $(function(){
         if($(e.target).parents('.search-wrapper')[0]!=$('.search-wrapper')[0]){
             $('.hot-search-wrp').css({'visibility':'hidden','opacity':0});
         }
+        if($(e.target).attr('data-action')=="weixin-share") {
+            $('.modal-share-weixin').modal({});
+        }
     });
 })
 </script>

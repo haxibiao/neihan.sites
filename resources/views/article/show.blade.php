@@ -70,9 +70,9 @@
               is-login="{{ Auth::check() }}"></like>
             
             <div class="share-circle">
-              <a href="/share/weixin/?url={{ url()->full() }}&article_id={{ $article->id }}" data-toggle="tooltip" data-placement="top" title="分享到微信" target="_blank"><i class="iconfont icon-weixin1 weixin"></i></a>
-              <a href="javascript:;" data-toggle="tooltip" data-placement="top" title="分享到微博"><i class="iconfont icon-sina weibo"></i></a>
-              <a href="javascript:;" data-toggle="tooltip" data-placement="top" title="下载微博长图片"><i class="iconfont icon-zhaopian other"></i></a>
+              <a data-action="weixin-share" data-toggle="tooltip" data-toggle="tooltip" data-placement="top" title="分享到微信"><i class="iconfont icon-weixin1 weixin"></i></a>
+              <a data-toggle="tooltip" data-placement="top" title="分享到微博"><i class="iconfont icon-sina weibo"></i></a>
+              <a data-toggle="tooltip" data-placement="top" title="下载微博长图片"><i class="iconfont icon-zhaopian other"></i></a>
             </div>
           </div>
           {{-- 评论中心 --}}
@@ -140,4 +140,6 @@
   <modal-add-category article-id="{{ $article->id }}"></modal-add-category>
   <modal-category-contribute article-id="{{ $article->id }}"></modal-category-contribute>
   @endif
+  {{-- 分享到微信 --}}
+  <modal-share-wx></modal-share-wx>
 @endpush

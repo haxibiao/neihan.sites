@@ -93,3 +93,8 @@
     </div>
 </div>
 @endsection
+
+@push('modals')
+  {{-- 分享到微信 --}}
+  <modal-share-wx></modal-share-wx>
+@endpush

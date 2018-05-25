@@ -41,7 +41,7 @@
 			<div class="aside col-sm-4 col-sm-offset-1">
 				<div class="share distance">
 					<span>分享到</span>
-					<a href="javascript:;"><i class="weibo iconfont icon-weixin1"></i></a>
+					<a data-action="weixin-share"><i class="weibo iconfont icon-weixin1"></i></a>
 					<a href="javascript:;"><i class="weixin iconfont icon-sina"></i></a>
 					<a href="javascript:;"><i class="more iconfont icon-gengduo"></i></a>
 				</div>
@@ -55,3 +55,8 @@
 		</section>
 	</div>
 @endsection
+
+@push('modals')
+  {{-- 分享到微信 --}}
+  <modal-share-wx></modal-share-wx>
+@endpush
