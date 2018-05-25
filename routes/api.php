@@ -36,6 +36,9 @@ require_once('api/relation.php');
 
 require_once('api/app.php');
 
+//create qrcode
+Route::get('/share/weixin/','Api\shareController@shareWechat');
+
 //收藏
 Route::middleware('auth:api')->post('/favorite/{id}/{type}', 'Api\FavoriteController@toggle');
 Route::middleware('auth:api')->get('/favorite/{id}/{type}', 'Api\FavoriteController@get');

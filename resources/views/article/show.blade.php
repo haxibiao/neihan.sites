@@ -141,5 +141,5 @@
   <modal-category-contribute article-id="{{ $article->id }}"></modal-category-contribute>
   @endif
   {{-- 分享到微信 --}}
-  <modal-share-wx></modal-share-wx>
+  <modal-share-wx  url="{{ url()->full() }}" aid="{{ $article->id }}"></modal-share-wx>
 @endpush
