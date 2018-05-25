@@ -128,7 +128,8 @@
     is-login="{{ Auth::check() }}">
     <share 
       placement='left' 
-      url="{{ url('/article/'.$article->id) }}" 
+      url="{{ url('/article/'.$article->id) }}"
+      article_id="{{ $article->id }}"
       author="{{ $article->user->name }}" 
       title="{{ $article->title }}"></share>
   </article-tool>
