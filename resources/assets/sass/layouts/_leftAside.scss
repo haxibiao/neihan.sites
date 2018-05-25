@@ -1,7 +1,7 @@
 .left-aside {
-  width: 950px;
-  margin: 0 auto;
-  transition: all .3s linear;
+	width: 950px;
+	margin: 0 auto;
+	transition: all 0.3s linear;
 	.aside {
 		position: fixed;
 		width: 280px;
@@ -18,12 +18,15 @@
 			font-size: 14px;
 			font-weight: 700;
 		}
-		.write-message,.chat-top,.push-top {
-		  width: 650px;
-		  transition: all .3s linear;
+		.write-message,
+		.chat-top,
+		.push-top {
+			width: 650px;
+			transition: all 0.3s linear;
 		}
 		// 顶部信息
-		.chat-top,.push-top {
+		.chat-top,
+		.push-top {
 			position: fixed;
 			z-index: 1;
 			min-height: 35px;
@@ -35,18 +38,18 @@
 			font-size: 14px;
 			&:before {
 				content: "";
-			    position: absolute;
-			    top: -81px;
-			    left: 0;
-			    height: 81px;
-			    width: 100%;
-			    background-color: $theme-skin;
+				position: absolute;
+				top: -81px;
+				left: 0;
+				height: 81px;
+				width: 100%;
+				background-color: $theme-skin;
 			}
 			.back-list {
-		    	float: left;
-		    &:hover {
-		    	color: $dark-color1;
-		    }
+				float: left;
+				&:hover {
+					color: $dark-color1;
+				}
 			}
 			b {
 				a {
@@ -58,58 +61,63 @@
 			}
 			.dropdown {
 				float: right;
-		    	margin-right: 15px;
-		    i {
-		    	color: $dark-color1;
-		    }
+				margin-right: 15px;
+				i {
+					color: $dark-color1;
+				}
 			}
 			.dropdown-menu {
 				right: 15px;
 			}
 		}
 	}
-	@media screen and (max-width:1050px) {
-	  width: 690px;
-	  .aside {
-	    width: 200px;
-	    li {
-	      .link {
-	        padding: 10px 10px!important;
-	      }
-	    }
-	  }
-	  .main {
-	    margin-left: 210px;
-	    .write-message,.chat-top,.push-top {
-	      width: 480px;
-	      b {
-	      	a {
-				max-width: 100px;
-			    display: inline-block;
-			    vertical-align: top;
-	      	}
-	      }
-	    }
-	  }
+	@media screen and (max-width: 1050px) {
+		width: 690px;
+		.aside {
+			width: 200px;
+			li {
+				.link {
+					padding: 10px 10px !important;
+				}
+			}
+		}
+		.main {
+			margin-left: 210px;
+			.write-message,
+			.chat-top,
+			.push-top {
+				width: 480px;
+				b {
+					a {
+						max-width: 100px;
+						display: inline-block;
+						vertical-align: top;
+					}
+				}
+			}
+		}
 	}
-	@media screen and (max-width:768px) {
-	  width: 100%;
-	  .aside {
-	    width: 20%;
-	    li {
-	      .link {
-	        padding: 10px !important;
-	        .badge {
-	        	right: 10px;
-	        }
-	      }
-	    }
-	  }
-	  .main {
-	    margin-left: 24%;
-	    .write-message,.chat-top,.push-top {
-	      width: 71%;
-	    }
-	  }
+	@media screen and (max-width: 768px) {
+		width: 100%;
+		.aside {
+			width: 20%;
+			margin: 61px 0 0;
+			li {
+				.link {
+					padding: 10px !important;
+					.badge {
+						right: 10px;
+					}
+				}
+			}
+		}
+		.main {
+			margin-left: 24%;
+			.write-message,
+			.chat-top,
+			.push-top {
+				width: 71%;
+			}
+		}
 	}
 }
