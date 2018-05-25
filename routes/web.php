@@ -135,6 +135,10 @@ Route::get('alipay/wap/pay', 'Alipay\WapController@wapPay');
 Route::get('alipay/wap/return', 'Alipay\WapController@wapReturn');
 Route::get('alipay/wap/notify', 'Alipay\WapController@wapNotify');
 
+//qrcode
+Route::get('/share/weixin/','shareController@shareWechat');
+
+
 //search_log
 Route::get('/searchQuery', 'SearchController@search_all');
 

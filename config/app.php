@@ -182,6 +182,7 @@ return [
 		Overtrue\LaravelWechat\ServiceProvider::class,
 		Collective\Remote\RemoteServiceProvider::class,
 		Jenssegers\Agent\AgentServiceProvider::class,
+		SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
 		Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class,
 
 	],
@@ -237,6 +238,7 @@ return [
       	'Html' => Collective\Html\HtmlFacade::class,
       	'EasyWeChat' => Overtrue\LaravelWechat\Facade::class,
       	'Agent' => Jenssegers\Agent\Facades\Agent::class,
+      	'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
 	],
 
 ];
