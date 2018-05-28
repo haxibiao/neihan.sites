@@ -62,7 +62,7 @@
 
 @include('article.parts.upload_js')
 
-@include('article.parts.summernote_init')
+{{-- @include('article.parts.summernote_init') --}}
 
 <script type="text/javascript">
 

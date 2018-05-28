@@ -24,15 +24,15 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $qb   = Category::where('status', '>=', 0)->orderBy('id', 'desc');
-        $type = 'article';
-        if ($request->get('type')) {
-            $type = $request->get('type');
-        }
+        $type = $request->get('type')?:'article';
+
         switch ($type) {
             case 'question':
                 $qb = $qb->where('count_questions', '>', 0);
                 break;
-
+            case  'snippet':
+                $qb= $qb->where('type','snippet');
+                break;
             default:
                 $qb = $qb->where('count', '>=', 0);
                 break;
