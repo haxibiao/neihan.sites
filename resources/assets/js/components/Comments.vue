@@ -121,7 +121,9 @@ export default {
       this.isOnlyAuthor = !this.isOnlyAuthor;
       if (this.isOnlyAuthor) {
         this.commentsAll = this.comments;
-        this.comments = this.comments.filter(item => item.user_id == this.authorId);
+        this.comments = this.comments.filter(
+          item => item.user_id == this.authorId
+        );
       } else {
         this.comments = this.commentsAll;
       }
@@ -159,16 +161,18 @@ export default {
       this.commented.reply_comments.push(this.replyComment);
 
       var _this = this;
-      window.axios.post(this.postApiUrl(), this.replyComment).then(function(response) {
-        //更新被回复的楼中comments...
+      window.axios
+        .post(this.postApiUrl(), this.replyComment)
+        .then(function(response) {
+          //更新被回复的楼中comments...
 
-        //这里服务器返回数据..
-        _this.commented.reply_comments.pop();
-        _this.commented.reply_comments.push(response.data);
+          //这里服务器返回数据..
+          _this.commented.reply_comments.pop();
+          _this.commented.reply_comments.push(response.data);
 
-        //发布成功，清空
-        _this.replyComment.body = null;
-      });
+          //发布成功，清空
+          _this.replyComment.body = null;
+        });
     },
 
     //写新评论
@@ -182,13 +186,15 @@ export default {
       this.comments = this.comments.concat(this.newComment);
 
       var _this = this;
-      window.axios.post(this.postApiUrl(), this.newComment).then(function(response) {
-        //发布成功后，替换服务器返回数据
-        response.data.reply_comments = [];
-        response.data.replying = false;
-        _this.comments.pop();
-        _this.comments = _this.comments.concat(response.data);
-      });
+      window.axios
+        .post(this.postApiUrl(), this.newComment)
+        .then(function(response) {
+          //发布成功后，替换服务器返回数据
+          response.data.reply_comments = [];
+          response.data.replying = false;
+          _this.comments.pop();
+          _this.comments = _this.comments.concat(response.data);
+        });
     },
     replyingComment: function(comment) {
       if (this.checkLogin()) {
@@ -264,17 +270,21 @@ export default {
     like: function(comment) {
       if (this.checkLogin()) {
         this.$set(comment, "liked", !comment.liked);
-        window.axios.get(this.actionApiUrl(comment.id, "like")).then(function(response) {
-          comment.likes = response.data.likes;
-        });
+        window.axios
+          .get(this.actionApiUrl(comment.id, "like"))
+          .then(function(response) {
+            comment.likes = response.data.likes;
+          });
       }
     },
     report: function(comment) {
       if (this.checkLogin()) {
         this.$set(comment, "reported", !comment.reported);
-        window.axios.get(this.actionApiUrl(comment.id, "report")).then(function(response) {
-          comment.reports = response.data.reports;
-        });
+        window.axios
+          .get(this.actionApiUrl(comment.id, "report"))
+          .then(function(response) {
+            comment.reports = response.data.reports;
+          });
       }
     },
     loadComments: function() {
@@ -348,9 +358,9 @@ export default {
       .btn-base {
         margin: -2px 0 0 10px;
         &.active {
-          background-color: #ff9d23;
+          background-color: #d96a5f;
           color: #fff !important;
-          border-color: #ff9d23 !important;
+          border-color: #d96a5f !important;
         }
       }
       .pull-right {

@@ -76,15 +76,32 @@ export default {
 			});
 		},
 		approve(article) {
-			var api = window.tokenize("/api/categories/approve-category-" + article.pivot.category_id + "-" + article.id);
+			var api = window.tokenize(
+				"/api/categories/approve-category-" +
+					article.pivot.category_id +
+					"-" +
+					article.id
+			);
 			this.requestApi(article, api);
 		},
 		deny(article) {
-			var api = window.tokenize("/api/categories/approve-category-" + article.pivot.category_id + "-" + article.id + "?deny=1");
+			var api = window.tokenize(
+				"/api/categories/approve-category-" +
+					article.pivot.category_id +
+					"-" +
+					article.id +
+					"?deny=1"
+			);
 			this.requestApi(article, api);
 		},
 		remove(article) {
-			var api = window.tokenize("/api/categories/approve-category-" + article.pivot.category_id + "-" + article.id + "?remove=1");
+			var api = window.tokenize(
+				"/api/categories/approve-category-" +
+					article.pivot.category_id +
+					"-" +
+					article.id +
+					"?remove=1"
+			);
 			this.requestApi(article, api);
 		}
 	},
@@ -124,7 +141,7 @@ export default {
 					.push-remove {
 						margin-left: 5px;
 						font-weight: 400;
-						color: #ff9d23;
+						color: #d96a5f;
 						vertical-align: middle;
 					}
 				}

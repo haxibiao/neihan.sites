@@ -54,119 +54,136 @@
 
 <script>
 export default {
+	name: "AnswerTool",
 
-  name: 'AnswerTool',
+	//有questionId是问题下的，有answerId是回答下的
+	props: ["questionId", "answerId", "isSelf", "isPayer", "closed"],
 
-  //有questionId是问题下的，有answerId是回答下的
-  props:['questionId', 'answerId', 'isSelf', 'isPayer', 'closed'],
+	computed: {
+		answered() {
+			return this.isJustAnswered !== null ? this.isJustAnswered : this.closed;
+		}
+	},
 
-  computed: {
-  	answered() {
-  		return this.isJustAnswered !== null ? this.isJustAnswered : this.closed;
-  	}
-  },
+	created() {
+		$bus.$on("questionAnswered", function() {
+			this.isJustAnswered = 1;
+		});
+		this.fetchData();
+	},
 
-  created() {
-  	$bus.$on('questionAnswered', function(){
-  		this.isJustAnswered = 1;
-  	});
-  	this.fetchData();
-  },
+	methods: {
+		checkAccept() {
+			if ($bus.state.answer.answerIds.length < 10) {
+				this.isAccept = !this.isAccept;
+				var answer_id = {
+					isAccept: this.isAccept,
+					answerId: this.answerId
+				};
+				if (this.isAccept) {
+					$bus.state.answer.answerIds.push(answer_id);
+				} else {
+					$bus.state.answer.answerIds = $bus.state.answer.answerIds.filter(
+						item => item.answerId != this.answerId
+					);
+				}
+				$bus.$emit("clickAnswer");
+			}
+		},
+		favoriteQuestion() {
+			this.question.favorited = !this.question.favorited;
+			this.question.count_favorites += this.question.favorited ? 1 : -1;
+			window.axios.get(
+				window.tokenize("/api/favorite-question-" + this.question.id)
+			);
+		},
+		reportQuestion() {
+			this.question.reported = !this.question.reported;
+			this.question.count_reports += this.question.reported ? 1 : -1;
+			window.axios.get(
+				window.tokenize("/api/report-question-" + this.question.id)
+			);
+		},
+		reportAnswer() {
+			this.answer.reported = !this.answer.reported;
+			this.answer.count_reports += this.answer.reported ? 1 : -1;
+			window.axios.get(window.tokenize("/api/report-answer-" + this.answer.id));
+		},
+		deleteAnswer() {
+			//调用Vue.set来触发数据响应，deleted默认loaded的时候没这个属性...
+			this.$set(this.answer, "deleted", !this.answer.deleted);
+			window.axios.get(window.tokenize("/api/delete-answer-" + this.answer.id));
+		},
+		unlikeAnswer() {
+			this.answer.unliked = !this.answer.unliked;
+			this.answer.count_unlikes += this.answer.unliked ? 1 : -1;
+			window.axios.get(window.tokenize("/api/unlike-answer-" + this.answer.id));
+		},
+		likeAnswer() {
+			this.answer.liked = !this.answer.liked;
+			this.answer.count_likes += this.answer.liked ? 1 : -1;
+			window.axios.get(window.tokenize("/api/like-answer-" + this.answer.id));
+		},
+		inviteUser(user) {
+			user.invited = 1;
+			this.uninvited = _.filter(this.users, ["invited", 0]);
+			window.axios.get(
+				window.tokenize(
+					"/api/question-" + this.questionId + "-invite-user-" + user.id
+				)
+			);
+		},
+		inviteAnswer() {
+			this.showInvite = !this.showInvite;
+		},
+		showComment() {
+			this.showComments = !this.showComments;
+		},
+		fetchData() {
+			var _this = this;
+			if (this.questionId) {
+				//邀请
+				window.axios
+					.get(
+						window.tokenize("/api/question-" + this.questionId + "-uninvited")
+					)
+					.then(function(response) {
+						_this.users = response.data;
+						_this.uninvited = _this.users;
+					});
+				//问题信息
+				window.axios
+					.get(window.tokenize("/api/question/" + this.questionId))
+					.then(function(response) {
+						_this.question = response.data;
+						_this.loaded = true;
+					});
+			} else if (this.answerId) {
+				//回答信息
+				window.axios
+					.get(window.tokenize("/api/answer/" + this.answerId))
+					.then(function(response) {
+						_this.answer = response.data;
+						_this.loaded = true;
+					});
+			}
+		}
+	},
 
-  methods: {
-  	checkAccept() {
-  		if($bus.state.answer.answerIds.length<10) {
-	  		this.isAccept = !this.isAccept;
-	  		var answer_id = {
-	  			isAccept: this.isAccept,
-	  			answerId: this.answerId
-	  		};
-	  		if(this.isAccept) {
-	  			$bus.state.answer.answerIds.push(answer_id);
-	  		}else {
-	  			$bus.state.answer.answerIds = $bus.state.answer.answerIds.filter( item => item.answerId != this.answerId);
-	  		}
-	  		$bus.$emit('clickAnswer');
-  		}
-  	},
-  	favoriteQuestion() {
-		this.question.favorited = !this.question.favorited;
-		this.question.count_favorites += this.question.favorited ? 1 : -1;
-  		window.axios.get(window.tokenize('/api/favorite-question-' + this.question.id));
-  	},
-  	reportQuestion() {
-  		this.question.reported = !this.question.reported;
-  		this.question.count_reports += this.question.reported ? 1 : -1;
-  		window.axios.get(window.tokenize('/api/report-question-' + this.question.id));
-  	},
-  	reportAnswer() {
-  		this.answer.reported = !this.answer.reported;
-  		this.answer.count_reports += this.answer.reported ? 1 : -1;
-  		window.axios.get(window.tokenize('/api/report-answer-' + this.answer.id));
-  	},
-  	deleteAnswer() {
-  		//调用Vue.set来触发数据响应，deleted默认loaded的时候没这个属性...
-  		this.$set(this.answer, 'deleted', !this.answer.deleted);
-  		window.axios.get(window.tokenize('/api/delete-answer-' + this.answer.id));
-  	},
-  	unlikeAnswer() {
-  		this.answer.unliked = !this.answer.unliked;
-  		this.answer.count_unlikes += this.answer.unliked ? 1 : -1;
-  		window.axios.get(window.tokenize('/api/unlike-answer-' + this.answer.id));
-  	},
-  	likeAnswer() {
-  		this.answer.liked = !this.answer.liked;
-  		this.answer.count_likes += this.answer.liked ? 1 : -1;
-  		window.axios.get(window.tokenize('/api/like-answer-' + this.answer.id));
-  	},
-  	inviteUser(user) {
-  		user.invited = 1;
-  		this.uninvited = _.filter(this.users, ['invited', 0]);
-  		window.axios.get(window.tokenize('/api/question-'+this.questionId+'-invite-user-'+user.id));
-  	},
-  	inviteAnswer() {
-  		this.showInvite = !this.showInvite;
-  	},
-  	showComment() {
-  		this.showComments = !this.showComments;
-  	},
-  	fetchData() {
-  		var _this = this;
-  		if(this.questionId) {
-  			//邀请
-	  		window.axios.get(window.tokenize('/api/question-'+this.questionId+'-uninvited')).then(function(response){
-	  			_this.users = response.data;
-	  			_this.uninvited = _this.users;
-	  		});
-	  		//问题信息
-	  		window.axios.get(window.tokenize('/api/question/'+this.questionId)).then(function(response){
-	  			_this.question = response.data;
-	  			_this.loaded = true;
-	  		});
-  		} else if (this.answerId) {
-  			//回答信息
-  			window.axios.get(window.tokenize('/api/answer/'+this.answerId)).then(function(response){
-	  			_this.answer = response.data;
-	  			_this.loaded = true;
-	  		});
-  		}
-  	}
-  },
-
-  data () {
-    return {
-    	loaded: false,
-    	answer: null,
-    	question: null,
-    	showInvite:false,
-    	showComments:false,
-    	users: [],
-    	uninvited: [],
-    	isAccept: false,
-    	isJustAnswered: null
-    }
-  }
-}
+	data() {
+		return {
+			loaded: false,
+			answer: null,
+			question: null,
+			showInvite: false,
+			showComments: false,
+			users: [],
+			uninvited: [],
+			isAccept: false,
+			isJustAnswered: null
+		};
+	}
+};
 </script>
 
 <style lang="scss">
@@ -178,41 +195,42 @@ export default {
 		font-size: 0;
 		margin: 20px 0;
 		.action-btn {
-		    background: none;
-		    height: 20px;
-		    line-height: 20px;
-		    color: #969696;
-		    margin-right: 36px;
-		    font-size: 14px;
-		    &.no-margin {
-		    	margin-right: 0;
-		    }
-		    i {
-		    	margin-right: 4px;
-		    }
+			background: none;
+			height: 20px;
+			line-height: 20px;
+			color: #969696;
+			margin-right: 36px;
+			font-size: 14px;
+			&.no-margin {
+				margin-right: 0;
+			}
+			i {
+				margin-right: 4px;
+			}
 			&.answer-btn {
-				color: #2B89CA;
+				color: #2b89ca;
 			}
 			&.like {
 				&:hover {
-					color: #FF9D23;
+					color: #d96a5f;
 				}
 				&.active {
-					color: #FF9D23;
+					color: #d96a5f;
 				}
 			}
-			&.report,&.delete {
+			&.report,
+			&.delete {
 				margin-right: 0;
 			}
 			&:hover {
-				 color: #515151;
+				color: #515151;
 			}
-			@media screen and (max-width:600px) {
-				 margin-right: 20px;
+			@media screen and (max-width: 600px) {
+				margin-right: 20px;
 			}
 			&.accept {
 				margin-right: 20px;
-				color: #FF9D23;
+				color: #d96a5f;
 				i {
 					margin-right: 0;
 					&.chacha {
@@ -235,7 +253,7 @@ export default {
 							display: none;
 						}
 						&::after {
-							content: '取消采纳';
+							content: "取消采纳";
 						}
 					}
 				}
@@ -253,30 +271,30 @@ export default {
 			border-top: 1px solid #efefef;
 			.invite-status {
 				height: 50px;
-			    line-height: 50px;
-			    color: #666;
-			    font-size: 14px;
+				line-height: 50px;
+				color: #666;
+				font-size: 14px;
 			}
 			.invite-list {
 				max-height: 338px;
-			    overflow: auto;
-			    border-top: 1px solid #f8f8f8;
-			    .note-info {
-			    	width: 98%;
-			    	margin-top: 20px;
-			    	.btn-base {
-			    		margin: 4px 0 0 10px;
-			    		padding: 7px 18px;
-			    		float: right;
-			    		&.btn-follow {
-				    		background-color: #2B89CA !important;
-				    		border-color: #2B89CA !important;
-			    		}
-				    	i {
-				    		font-size: 16px;
-				    	}
-			    	}
-			    }
+				overflow: auto;
+				border-top: 1px solid #f8f8f8;
+				.note-info {
+					width: 98%;
+					margin-top: 20px;
+					.btn-base {
+						margin: 4px 0 0 10px;
+						padding: 7px 18px;
+						float: right;
+						&.btn-follow {
+							background-color: #2b89ca !important;
+							border-color: #2b89ca !important;
+						}
+						i {
+							font-size: 16px;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -288,8 +306,8 @@ export default {
 			border-bottom: none !important;
 		}
 		.btn-base.btn-handle {
-			background-color: #2B89CA !important;
-			border-color: #2B89CA !important;
+			background-color: #2b89ca !important;
+			border-color: #2b89ca !important;
 		}
 	}
 }

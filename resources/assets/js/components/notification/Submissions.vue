@@ -72,7 +72,9 @@ export default {
 	},
 
 	created() {
-		var api_url = window.tokenize("/api/categories/requested-articles-" + this.$route.params.id);
+		var api_url = window.tokenize(
+			"/api/categories/requested-articles-" + this.$route.params.id
+		);
 		var _this = this;
 		window.axios.get(api_url).then(function(response) {
 			_this.articles = response.data;
@@ -89,21 +91,40 @@ export default {
 		},
 		onlyUnread(e) {
 			if (e.target.checked) {
-				this.articles = this.articles.filter(item => item.pivot.submit == "待审核");
+				this.articles = this.articles.filter(
+					item => item.pivot.submit == "待审核"
+				);
 			} else {
 				this.articles = this.all;
 			}
 		},
 		approve(article) {
-			var api = window.tokenize("/api/categories/approve-category-" + article.pivot.category_id + "-" + article.id);
+			var api = window.tokenize(
+				"/api/categories/approve-category-" +
+					article.pivot.category_id +
+					"-" +
+					article.id
+			);
 			this.requestApi(article, api);
 		},
 		deny(article) {
-			var api = window.tokenize("/api/categories/approve-category-" + article.pivot.category_id + "-" + article.id + "?deny=1");
+			var api = window.tokenize(
+				"/api/categories/approve-category-" +
+					article.pivot.category_id +
+					"-" +
+					article.id +
+					"?deny=1"
+			);
 			this.requestApi(article, api);
 		},
 		remove(article) {
-			var api = window.tokenize("/api/categories/approve-category-" + article.pivot.category_id + "-" + article.id + "?remove=1");
+			var api = window.tokenize(
+				"/api/categories/approve-category-" +
+					article.pivot.category_id +
+					"-" +
+					article.id +
+					"?remove=1"
+			);
 			this.requestApi(article, api);
 		}
 	},
@@ -154,7 +175,7 @@ export default {
 					.push-remove {
 						margin-left: 5px;
 						font-weight: 400;
-						color: #ff9d23;
+						color: #d96a5f;
 						vertical-align: middle;
 					}
 				}

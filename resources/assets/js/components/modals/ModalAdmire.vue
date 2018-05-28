@@ -137,7 +137,7 @@ export default {
 							vertical-align: middle;
 						}
 						i {
-							color: #ff9d23;
+							color: #d96a5f;
 							vertical-align: middle;
 						}
 					}
@@ -207,8 +207,8 @@ export default {
 							input {
 								display: none;
 								&:checked + .option {
-									color: #ff9d23;
-									border-color: #ff9d23;
+									color: #d96a5f;
+									border-color: #d96a5f;
 									.custom-amount-input {
 										z-index: 1;
 										opacity: 1;
@@ -230,7 +230,7 @@ export default {
 					.reward-info {
 						font-size: 28px;
 						font-weight: 700;
-						color: #ff9d23;
+						color: #d96a5f;
 					}
 					.choose-pay {
 						margin: 0 -5px;
@@ -256,8 +256,8 @@ export default {
 						input {
 							display: none;
 							&:checked + .option {
-								color: #ff9d23;
-								border-color: #ff9d23;
+								color: #d96a5f;
+								border-color: #d96a5f;
 							}
 						}
 					}
@@ -313,7 +313,7 @@ export default {
 						color: #787878;
 						font-size: 18px;
 						span {
-							color: #ff9d23;
+							color: #d96a5f;
 						}
 					}
 				}

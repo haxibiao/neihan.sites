@@ -26,49 +26,47 @@
 
 <script>
 export default {
+	name: "Tips",
 
-  name: 'Tips',
+	created() {
+		var api_url = window.tokenize("/api/notifications/tip");
+		var vm = this;
+		window.axios.get(api_url).then(function(response) {
+			vm.notifications = response.data;
+		});
+	},
 
-  created() {
-  	var api_url = window.tokenize('/api/notifications/tip');
-  	var vm = this;
-  	window.axios.get(api_url).then(function(response) {
-  		vm.notifications = response.data;
-  	});
-
-  },
-
-  data () {
-    return {
-    	notifications: []
-    }
-  }
-}
+	data() {
+		return {
+			notifications: []
+		};
+	}
+};
 </script>
 
 <style lang="scss" scoped>
-	.money-list {
-		li {
-			.user-info {
-				margin-bottom: 10px;
-				line-height: 1.7;
-				.nickname {
-					font-size: 14px;
-					vertical-align: unset;
-				}
-				.money {
-					color: #FF9D23;
-				}
-				.info {
-					padding-left: 48px;
-				}
+.money-list {
+	li {
+		.user-info {
+			margin-bottom: 10px;
+			line-height: 1.7;
+			.nickname {
+				font-size: 14px;
+				vertical-align: unset;
 			}
-			p {
-				font-size: 15px;
+			.money {
+				color: #d96a5f;
 			}
-			.btn-base {
-				margin-top: 10px;
+			.info {
+				padding-left: 48px;
 			}
 		}
+		p {
+			font-size: 15px;
+		}
+		.btn-base {
+			margin-top: 10px;
+		}
 	}
+}
 </style>

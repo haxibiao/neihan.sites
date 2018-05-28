@@ -364,7 +364,7 @@ export default {
 								display: inline-block;
 								vertical-align: middle;
 								&.hot {
-									color: #ff9d23;
+									color: #d96a5f;
 								}
 							}
 						}
@@ -456,8 +456,8 @@ export default {
 							input {
 								display: none;
 								&:checked + .option {
-									color: #ff9d23;
-									border-color: #ff9d23;
+									color: #d96a5f;
+									border-color: #d96a5f;
 									.custom-amount-input {
 										z-index: 1;
 										opacity: 1;
@@ -549,7 +549,7 @@ export default {
 								margin-right: 30px;
 								cursor: pointer;
 								&.tab-header-actived {
-									border-bottom: solid 2px #ff9d23;
+									border-bottom: solid 2px #d96a5f;
 									font-weight: bold;
 								}
 							}
