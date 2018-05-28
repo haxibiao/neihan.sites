@@ -48,6 +48,8 @@ Vue.component("share", require("./components/Share.vue"));
 Vue.component("recommend-category", require("./components/RecommendCategory.vue"));
 Vue.component("recommend-authors", require("./components/aside/RecommendAuthors.vue"));
 
+//share-wx
+Vue.component("modal-share-wx", require("./components/modals/ModalShareWX.vue"));
 
 Vue.component("captcha", require("./components/logins/Captcha.vue"));
 Vue.component("social-login", require("./components/logins/SocialLogin.vue"));
