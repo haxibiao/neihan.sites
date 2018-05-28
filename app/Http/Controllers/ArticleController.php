@@ -17,6 +17,7 @@ class ArticleController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except('show');
+        $this->middleware('auth.editor')->except('index','show');
     }
 
     public function drafts(Request $request)
