@@ -1,33 +1,83 @@
-#header,
-#header-auth {
+.navbar.navbar-fixed-top {
 	position: fixed;
 	width: 100%;
-	border-bottom: 1px solid $light-color1;
 	top: 0;
 	left: 0;
 	z-index: 999;
-	text-align: center;
-	.navbar {
-		border: none;
-		margin-bottom: 0;
-		.navbar-wrp {
-			width: 100%;
-			.navbar-brand {
-				width: auto;
-				padding: 5px;
+	border-bottom: 1px solid $light-color1;
+	.width-limit {
+		max-width: 1380px;
+		margin: 0 auto;
+		padding: 0 15px;
+		.logo {
+			float: left;
+			height: 56px;
+			margin-right: 15px;
+			img {
+				height: 100%;
+			}
+		}
+		.user {
+			float: right;
+			position: relative;
+			&>a {
+				display: block;
+				margin: 8px 20px;
 				img {
-					height: 100%;
+					height: 40px;
+					width: 40px;
 				}
 			}
+		}
+		.register,
+		.creation,
+		.ask {
+			float: right;
+			margin: 9px 0;
+			.btn-base {
+				font-size: 16px;
+				height: 38px;
+				line-height: 36px;
+				padding: 0 18px;
+			}
+			&:hover {
+				background-color: transparent;
+			}
+		}
+		.register {
+			margin-right: 20px;
+		}
+		.creation,
+		.ask {
+			a {
+				span {
+					font-size: 25px;
+					margin-right: 5px;
+					vertical-align: middle;
+				}
+			}
+		}
+		.login {
+			float: right;
+			margin: 8.5px 6px 0 10px;
+			font-size: 16px;
+		}
+		.container {
+			.navbar-toggle {
+				float: left;
+				padding: 11px 10px;
+				margin-top: 9px;
+			}
 			.navbar-nav {
-				& > li {
+				.tab {
 					font-size: 16px;
+					margin-right: 10px;
 					a {
-						height: 100%;
-						line-height: 50px;
-						padding: 0 15px;
+						height: 56px;
+					    line-height: 26px;
+					    padding: 15px;
 						i {
-							font-size: 20px !important;
+							font-size: 20px;
 							margin-right: 5px;
 						}
 					}
@@ -43,32 +93,6 @@
 					}
 					&:hover {
 						background-color: $light-color1;
-					}
-				}
-				.register,
-				.creation {
-					padding: 6px 0;
-					display: inline-block;
-					.btn-base {
-						font-size: 16px;
-						height: 38px;
-						line-height: 36px;
-						padding: 0 18px;
-					}
-					&:hover {
-						background-color: transparent;
-					}
-				}
-				.register {
-					margin-right: 20px;
-				}
-				.creation {
-					a {
-						span {
-							font-size: 25px;
-							margin-right: 5px;
-							vertical-align: middle;
-						}
 					}
 				}
 				// 消息
@@ -105,11 +129,13 @@
 			}
 			// 搜索
 			.navbar-form {
+				margin: 10px 0;
 				border-color: transparent;
 				.form-group {
+					text-align: center;
 					.search-wrapper {
 						display: inline-block;
-						.form-control {
+						#search-input,.form-control {
 							width: 220px;
 							transition: all 0.3s ease-in-out;
 							&:focus {
@@ -133,9 +159,20 @@
 					}
 				}
 			}
-			@media screen and(max-width:768px) {
+		}
+		@media screen and(max-width:768px) {
+			.user {
+				.hover-dropdown-menu {
+					left: -50% !important;
+				    width: 160px;
+				}
+			}
+			.container {
 				.navbar-nav {
-					& > li {
+					.tab {
+						margin-right: 0px;
+						border-bottom: 1px solid $light-color2;
+						text-align: center;
 						.badge {
 							top: 8px;
 							right: unset;
@@ -161,10 +198,8 @@
 						}
 					}
 				}
-				.navbar-collapse {
-					height: 100vh;
-				}
 			}
 		}
 	}
 }
+

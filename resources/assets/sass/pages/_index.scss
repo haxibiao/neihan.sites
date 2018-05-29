@@ -3,13 +3,12 @@
     section {
         padding-top: 30px;
         .main {
-            padding: 0;
-            .video {
-                padding: 0 5px;
+            .videos {
+                 margin: 0 -5px;
+                .video {
+                    padding: 0 5px;
+                }
             }
-        }
-        .aside {
-            padding: 0;
         }
     }
 }

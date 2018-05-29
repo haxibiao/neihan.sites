@@ -1,29 +1,42 @@
 #app {
-	padding-top: 81px;
-	@media screen and(max-width:768px) {
-		padding-top: 61px;
-	}
+	padding-top: 87px;
 	&.black {
-		padding-top: 51px;
-		& > div:first-child {
+		padding-top: 57px;
+		.navbar {
+			background-color: $dark-color3;
 			border-color: $dark-color3;
-			.navbar {
-				background-color: $dark-color3;
-				border-radius: 0;
-				.navbar-nav {
-					& > li {
+			border-radius: 0;
+			.navbar-nav {
+				& > li {
+					& > a {
+						color: #fff;
+					}
+					&:hover {
+						background-color: $dark-color3;
 						& > a {
-							color: #fff;
-						}
-						&:hover {
-							background-color: $dark-color3;
-							& > a {
-								color: $theme-color;
-							}
+							color: $theme-color;
 						}
 					}
 				}
 			}
+		}
+	}
+
+	@media screen and(max-width:768px) {
+		padding-top: 67px;
+		.main.col-sm-7 {
+			padding: 0;
+		}
+	}
+	@media screen and(min-width:768px) {
+		.main.col-sm-7 {
+			width: 66.66667%;
+			padding-right: 0;
+		}
+		.aside.col-sm-4 {
+		    margin-left: 4.16667%;
+		    width: 29.16667%;
+		    padding: 0;
 		}
 	}
 }

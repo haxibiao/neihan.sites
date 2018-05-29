@@ -169,9 +169,6 @@ export default {
 					display: inline-block;
 					vertical-align: middle;
 					max-width: 150px;
-					@media screen and (max-width: 1050px) {
-						max-width: 79px;
-					}
 				}
 				.count {
 					float: right;
@@ -194,18 +191,19 @@ export default {
 				.follow-warp {
 					padding: 10px 0 0 0;
 					text-align: center;
-					.avatar {
+					.avatar,.avatar-category {
 						display: block;
 						width: auto;
 						height: auto;
+						margin-right: 0;
 						img {
 							width: 40px;
 							height: 40px;
 						}
 					}
 					.name {
-						padding-right: 5px;
-						width: 70px;
+						display: block;
+						width: auto;
 					}
 				}
 			}

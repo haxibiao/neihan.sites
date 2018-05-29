@@ -8,6 +8,9 @@
       border-bottom: none;
       background-color: #fff;
       transition: .1s ease-in;
+      &#goTop {
+        display: none;
+      }
   		&>a {
   			cursor: pointer;
         width: 50px;
