@@ -30,7 +30,7 @@ Vue.component("recently", require("./components/search/Recently.vue"));
 Vue.component("notification-aside", require("./components/notification/Aside.vue"));
 Vue.component("follow-aside", require("./components/follow/Aside.vue"));
 Vue.component("setting-aside", require("./components/setting/Aside.vue"));
-Vue.component("go-top", require("./components/GoTop.vue"));
+Vue.component("side-tool", require("./components/SideTool.vue"));
 Vue.component("modal-contribute", require("./components/modals/ModalContribute.vue"));
 
 const routes = [

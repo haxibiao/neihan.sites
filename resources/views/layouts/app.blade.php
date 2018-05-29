@@ -35,8 +35,8 @@
         @stack('section')
 
         <div id="side-tool">
-          <go-top></go-top>    
-          @stack('side_tools')
+            <side-tool></side-tool>
+            @stack('side_tool')
         </div>
 
         @stack('modals')

@@ -33,8 +33,7 @@ Vue.component("comments", require("./components/Comments.vue"));
 Vue.component("new-comment", require("./components/NewComment.vue"));
 Vue.component("reply-comment", require("./components/ReplyComment.vue"));
 
-Vue.component("go-top", require("./components/GoTop.vue"));
-Vue.component("article-tool", require("./components/ArticleTool.vue"));
+Vue.component("side-tool", require("./components/SideTool.vue"));
 
 Vue.component("article-list", require("./components/ArticleList.vue"));
 Vue.component("category-list", require("./components/CategoryList.vue"));

@@ -8,7 +8,7 @@
 			</div>
 			<div class="panel-body">
 				<div class="col-md-12">
-					<div class="col-md-6">
+					<div class="col-md-6 clearfix">
 						{!! Form::open(['method' => 'POST', 'route' => 'admin.stick_article', 'class' => 'form-horizontal']) !!}
 
 						    <div class="form-group{{ $errors->has('article_id') ? ' has-error' : '' }}">
@@ -29,7 +29,7 @@
 							    <small class="text-danger">{{ $errors->first('position') }}</small>
 							</div>
 
-						    <div class="btn-group pull-right">
+						    <div class="form-group pull-right">
 						        {!! Form::submit("置顶", ['class' => 'btn btn-success']) !!}
 						    </div>						
 						{!! Form::close() !!}

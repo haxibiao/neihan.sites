@@ -121,8 +121,8 @@
   </div>
 @endpush
 
-@push('side_tools')
-  <article-tool 
+@push('side_tool')
+  <side-tool 
     id="{{ $article->id }}" 
     is-self="{{ $article->isSelf() }}" 
     is-login="{{ Auth::check() }}">
@@ -132,7 +132,7 @@
       article_id="{{ $article->id }}"
       author="{{ $article->user->name }}" 
       title="{{ $article->title }}"></share>
-  </article-tool>
+  </side-tool>
 @endpush
 
 @push('modals')
