@@ -1,8 +1,7 @@
 	<nav class="navbar navbar-default  navbar-fixed-top" role="navigation">
 		<div class="width-limit">
 			<a class="logo" href="/">
-				<img src="https://www.ainicheng.com/logo/ainicheng.com.small.png" alt="">
-				{{-- <img src="/logo/{{ get_domain() }}.small.png" alt=""> --}}
+				<img src="/logo/{{ get_domain() }}.small.png" alt="">
 			</a>
 			@if(starts_with(request()->path(), 'question'))
 				<div class="ask"><a href="/login" data-toggle="modal" class="btn-base btn-theme"><span class="iconfont icon-maobi hidden-xs"></span>提问</a></div>
