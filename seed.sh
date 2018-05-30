@@ -6,7 +6,7 @@ envoy run seed
 cd ../dongdianyao.com
 envoy run seed
 
-cd ../dongmeiwei.com
+cd ../dongdianyi.com
 envoy run seed
 
 cd ../qunyige.com

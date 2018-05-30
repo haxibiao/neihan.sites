@@ -8,7 +8,7 @@ cd ../dongdianyao.com
 git config core.filemode false 
 git diff
 
-cd ../dongmeiwei.com
+cd ../dongdianyi.com
 git config core.filemode false 
 git diff
 

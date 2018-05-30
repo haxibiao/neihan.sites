@@ -6,7 +6,7 @@ envoy run update
 cd ../dongdianyao.com
 envoy run update
 
-cd ../dongmeiwei.com
+cd ../dongdianyi.com
 envoy run update
 
 cd ../qunyige.com

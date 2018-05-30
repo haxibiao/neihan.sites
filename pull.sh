@@ -13,7 +13,7 @@ git pull
 composer install
 php artisan env:refresh --local
 
-cd ../dongmeiwei.com
+cd ../dongdianyi.com
 git stash -u
 git pull
 composer install
