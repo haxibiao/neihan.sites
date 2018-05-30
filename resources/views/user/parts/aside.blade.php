@@ -1,4 +1,4 @@
-<div class="aside col-sm-4 col-sm-offset-1 hidden-xs">
+<div class="aside sm-right hidden-xs">
     @if($user->is_editor)
       <ul class="icon-text-list distance">
           <li><a href="javascript:;"><img class="badge-icon" src="/images/signed.png" alt=""></i>{{ config('app.name') }}签约作者</a></li>

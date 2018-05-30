@@ -6,8 +6,8 @@
 
 @section('content')
  <div id="answer">
-   <section class="row clearfix">
-     <div class="main col-sm-8">
+  <div class="clearfix">
+     <div class="main sm-left">
        <div class="question-tags">
    		   @foreach($question->categories as $category)
          <a href="/question?cid={{ $category->id }}" target="_blank" class="tags tag"><span class="name">{{ $category->name }}</span></a>
@@ -112,7 +112,7 @@
            </div>
   	   </div>
      </div>
-     <div class="aside col-sm-4 hidden-xs">
+     <div class="aside sm-right hidden-xs">
        {{-- @include('question.parts.carousel') --}}
        <div class="qrcode-sidebar">
 	       <h3 class="plate-title wd">
@@ -129,7 +129,7 @@
       <question-bottom question-id="{{ $question->id }}"></question-bottom>
      @endif
 
-   </section>
+   </div>
    <modal-ask-question></modal-ask-question>
  </div>
 @stop

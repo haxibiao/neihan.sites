@@ -1,6 +1,7 @@
-#categories,#recommendations,.recommend-content {
-	width: 85%;
-	margin: 0 auto;
+#categories,
+#recommendations,
+.recommend-content {
+  padding-left: 15px;
   // 推荐列表：推荐专题、作者，资料卡
   .recommend-list {
     text-align: center;

@@ -21,22 +21,34 @@
 			}
 		}
 	}
-
-	@media screen and(max-width:768px) {
-		padding-top: 67px;
-		.main.col-sm-7 {
-			padding: 0;
+	.container {
+		@media screen and(min-width:992px) {
+			width: 960px;
 		}
 	}
 	@media screen and(min-width:768px) {
-		.main.col-sm-7 {
+		.main.sm-left {
+			float: left;
 			width: 66.66667%;
-			padding-right: 0;
+			padding-left: 15px;
 		}
-		.aside.col-sm-4 {
-		    margin-left: 4.16667%;
-		    width: 29.16667%;
-		    padding: 0;
+		.aside.sm-right {
+			float: right;
+			width: 29.16667%;
+			margin-left: 4.16667%;
+		}
+		.main.center {
+			width: 75%;
+			margin: 0 auto;
+		}
+	}
+	@media screen and(max-width:768px) {
+		padding-top: 67px;
+		.main.sm-left {
+			padding: 0 15px;
+		}
+		.main.center {
+			padding: 0 15px;
 		}
 	}
 }

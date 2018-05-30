@@ -14,13 +14,14 @@
 
 <div id="index">
       {{-- 轮播图 --}}
-      @if(config('editor.ui.show_poster'))
-        @include('index.parts.poster')
-      @endif
-
-     <section class="clearfix">
+      <div class="poster-container">
+        @if(config('editor.ui.show_poster'))
+          @include('index.parts.poster')
+        @endif
+      </div>
+      <div class="wrap clearfix">
         {{-- 主要内容 --}}
-        <div class="main col-sm-7">
+        <div class="main sm-left">
           {{-- 推荐专题 --}}
           @include('index.parts.recommend_categories')
           <recommend-category></recommend-category>
@@ -72,7 +73,7 @@
           </ul>
         </div>
         {{-- 侧栏 --}}
-        <div class="aside col-sm-4 col-sm-offset-1 hidden-xs">
+        <div class="aside sm-right hidden-xs">
             @include('index.parts.trendings')
             {{-- app --}}
             @include('index.parts.download_app')
@@ -83,9 +84,9 @@
             <recommend-authors></recommend-authors>
             {{-- @endif --}}
         </div>
-   </section>
-  {{-- 网站底部信息 --}}
-  @include('parts.footer')
+      </div>
+      {{-- 网站底部信息 --}}
+      @include('parts.footer')
 </div>
 
 @endsection

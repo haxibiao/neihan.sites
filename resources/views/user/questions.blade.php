@@ -2,7 +2,7 @@
 
 @section('content')
         <div id="bookmarks">
-                <div class="main col-sm-8 col-sm-offset-2">
+                <div class="main center">
                     <div class="page-banner">
                         {{-- <img src="/images/collect-note.png" alt=""> --}}
                         <div class="banner-img question-note">
@@ -24,7 +24,7 @@
                         </ul>
                         <!-- Tab panes -->
                         <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane active" id="articles">
+                            <div role="tabpanel" class="fade in tab-pane active" id="articles">
                                 <ul class="article-list">
                                      @foreach($data['questions'] as $question)
                                       <!-- {!! Form::open(['method' => 'delete', 'route' => ['question.destroy', $question->id], 'class' => 'form-horizontal']) !!}
@@ -34,7 +34,7 @@
                                     @endforeach
                                 </ul>
                             </div>
-                            <div role="tabpanel" class="tab-pane" id="questions_tab">
+                            <div role="tabpanel" class="fade tab-pane" id="questions_tab">
                                   <div>
                                      @foreach($data['answer_questions'] as $question)
                                      @if($question&&$question->status>=0) 

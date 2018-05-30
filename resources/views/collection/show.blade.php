@@ -6,8 +6,8 @@
 
 @section('content')
 	<div id="collection">
-		<section class="clearfix">
-			<div class="main col-sm-7">
+		<div class="clearfix">
+			<div class="main sm-left">
 				{{-- 信息 --}}
 				@include('collection.parts.information')
 				{{-- 内容 --}}
@@ -27,7 +27,7 @@
 					 <!-- Tab panes -->
 					 <div class="article_list tab-content">
 					   <ul role="tabpanel" class="fade in tab-pane active" id="article">
-   		 					@each('parts.article_item', $data['new'], 'article')
+			 					@each('parts.article_item', $data['new'], 'article')
 					   </ul>
 					   <ul role="tabpanel" class="fade tab-pane" id="comment">
 	   						@each('parts.article_item', $data['commented'], 'article')
@@ -38,7 +38,7 @@
 					 </div>
 				</div>
 			</div>
-			<div class="aside col-sm-4 col-sm-offset-1">
+			<div class="aside sm-right hidden-xs">
 				<div class="share distance">
 					<span>分享到</span>
 					<a data-action="weixin-share"><i class="weibo iconfont icon-weixin1"></i></a>
@@ -52,7 +52,7 @@
 					</ul>
 				</div>
 			</div>
-		</section>
+		</div>
 	</div>
 @endsection
 

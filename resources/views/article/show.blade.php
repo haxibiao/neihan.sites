@@ -23,7 +23,7 @@
 @endforeach
 
 <div id="detail">
-    <section class="clearfix col-sm-offset-2 col-sm-8">
+    <div class="main">
         <article>
           @editor
           <div class="text-right">
@@ -78,7 +78,7 @@
           {{-- 评论中心 --}}
           <comments type="articles" id="{{ $article->id }}" author-id="{{ $article->user_id }}"></comments>
         </article>
-    </section>
+    </div>
 </div>
 
 @endsection
@@ -87,7 +87,7 @@
   {{-- 底部内容 --}}
   <div class="note-bottom">
     <div class="container">
-      <div class="wrapper clearfix">
+      <div class="row clearfix">
         <div class="col-sm-offset-2 col-sm-8">
           <div class="bottom-title"><span>被以下专题收入，发现更多相似内容</span></div>
 

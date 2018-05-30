@@ -4,8 +4,8 @@
 
 @section('content')
 <div id="user">
-   <section class="clearfix">
-        <div class="main col-sm-7">
+    <div class="clearfix">
+        <div class="main sm-left">
             {{-- 用户信息 --}}
            @include('user.parts.information')
             {{-- 内容 --}}
@@ -76,6 +76,6 @@
         </div>
         {{-- 侧栏 --}}
         @include('user.parts.aside')
-    </section>
+    </div>
 </div>
 @endsection
