@@ -275,12 +275,36 @@ class CategoryController extends Controller
             $pivot->submit = '已移除';
         }
         $pivot->save();
+
         if ($pivot->submit == '已收录') {
             //接受文章，更新专题文章数
             $category->count = $category->publishedArticles()->count();
             //更新文章主分类,方便上首页
             $article->category_id = $cid;
             $article->save();
+
+            //自动置顶最新收录的文章到发现，时间由pm来规定 没有就1天
+            $expire = config('seo.article_stick_day') ?: 1;
+            stick_article([
+                'article_id' => $article->id,
+                'expire'     => $expire,
+                'position'   => '发现',
+                'reason'     => '新收录',
+            ], true);
+
+            //一旦收录成功一篇文章，该用户自动成为本专题作者, pivot.approved = 该专题收录他的文章数
+            $cate = $article->user->categories()->where('id', $category->id)->first();
+            if (!$cate) {
+                $article->user->categories()->syncWithoutDetaching([
+                    $category->id => [
+                        'count_approved' => 1,
+                    ],
+                ]);
+            } else {
+                //更新作者在专题的收录数
+                $cate->pivot->count_approved = $cate->pivot->count_approved + 1;
+                $cate->pivot->save();
+            }
         }
 
         //重新统计专题上的未处理投稿数...
@@ -295,15 +319,6 @@ class CategoryController extends Controller
         // $article->submit_status   = get_submit_status($submited_status);
         // $article->submited_status = $submited_status;
         $article->load('user');
-
-        //自动置顶最新收录的文章到发现，时间由pm来规定 没有就1天
-        $expire=config('seo.article_stick_day')?:1;
-        stick_article([
-            'article_id' => $article->id,
-            'expire'     => $expire,
-            'position'   => '发现',
-            'reason'     => '新收录',
-        ], true);
 
         return $article;
     }

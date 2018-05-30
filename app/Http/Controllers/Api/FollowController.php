@@ -41,6 +41,15 @@ class FollowController extends Controller
         ]);
         if ($follow->id) {
             $follow->delete();
+
+            //delete record action
+            $action = Action::firstOrNew([
+                'user_id'         => $user->id,
+                'actionable_type' => 'follows',
+                'actionable_id'   => $follow->id,
+            ]);
+            $action->delete();
+
         } else {
             $follow->save();
             $result = 1;

@@ -34,8 +34,10 @@ class Category extends Model
 
     public function authors()
     {
-        // return $this->belongsToMany('App\User')->wherePivot('approved', 1)->withTimestamps();
-        return $this->belongsToMany('App\User');
+        return $this->belongsToMany('App\User')
+            ->withTimestamps()->withPivot('count_approved')
+            ->wherePivot('count_approved', '>', 0)
+            ->orderBy('pivot_count_approved', 'desc');
     }
 
     public function users()
@@ -65,7 +67,7 @@ class Category extends Model
     {
         return $this->belongsToMany('App\Article')
             ->wherePivot('submit', '待审核')
-            ->withPivot('submit','updated_at')
+            ->withPivot('submit', 'updated_at')
             ->withTimestamps()
             ->orderBy('id', 'desc');
     }

@@ -17,7 +17,7 @@ class CreateCategoryUserTable extends Migration
             $table->increments('id');
             $table->integer('category_id');
             $table->integer('user_id');
-            $table->boolean('approved')->default(0);
+            $table->integer('count_approved')->default(0);
             $table->boolean('is_admin')->default(0);
             $table->timestamps();
         });

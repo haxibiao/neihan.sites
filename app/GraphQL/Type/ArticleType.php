@@ -2,10 +2,10 @@
 
 namespace App\GraphQL\Type;
 
+use App\Category;
 use Folklore\GraphQL\Support\Facades\GraphQL;
 use Folklore\GraphQL\Support\Type as GraphQLType;
 use GraphQL\Type\Definition\Type;
-use App\Category;
 
 class ArticleType extends GraphQLType
 {
@@ -77,21 +77,21 @@ class ArticleType extends GraphQLType
                     return $root->hasImage();
                 },
             ],
-            'pivot_time_ago' => [
+            'pivot_time_ago'  => [
                 'type'        => Type::string(),
                 'description' => 'article pivot category ...',
                 'resolve'     => function ($root, $args) {
                     return diffForHumansCN($root->pivot->updated_at);
                 },
             ],
-            'pivot_category' => [
+            'pivot_category'  => [
                 'type'        => GraphQL::type('Category'),
                 'description' => 'article pivot category ...',
                 'resolve'     => function ($root, $args) {
                     return Category::find($root->pivot->category_id);
                 },
             ],
-            'pivot_status' => [
+            'pivot_status'    => [
                 'type'        => Type::string(),
                 'description' => 'article pivot category pivot status ...',
                 'resolve'     => function ($root, $args) {
@@ -132,6 +132,9 @@ class ArticleType extends GraphQLType
             'count_comments'  => [
                 'type'        => Type::int(),
                 'description' => 'The count comments of article',
+                'resolve'     => function ($root, $args) {
+                    return $root->count_comments ? $root->count_comments : 0;
+                },
             ],
             'count_replies'   => [
                 'type'        => Type::int(),

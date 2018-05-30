@@ -244,12 +244,12 @@ class Article extends Model
         $this->body = parse_image($this->body);
         $pattern    = "/<img alt=\"(.*?)\" ([^>]*?)>/is";
         preg_match_all($pattern, $this->body, $match);
-        
+
         //try replace first image alt ...
         // if ($match && count($match)) {
         //     $image_first = str_replace($match[1][0], $this->title, $match[0][0]);
         //     $this->body  = str_replace($match[0][0], $image_first, $this->body);
-        // }       
+        // }
 
         $this->body = parse_video($this->body);
         return $this->body;
@@ -314,5 +314,31 @@ class Article extends Model
 
         //如果文章图片关系中得图片地址不在文中，清除掉！
         $this->images()->sync($image_ids);
+    }
+
+    public function report($type, $reason)
+    {
+        $this->count_reports = $this->count_reports + 1;
+
+        $json = json_decode($this->json);
+        if (!$json) {
+            $json = (object) [];
+        }
+
+        $user    = getUser();
+        $reports = [];
+        if (isset($json->reports)) {
+            $reports = $json->reports;
+        }
+        $reports[] = [
+            $user->id => [
+                'type'   => $type,
+                'reason' => $reason,
+            ],
+        ];
+
+        $json->reports = $reports;
+        $this->json    = json_encode($json, JSON_UNESCAPED_UNICODE);
+        $this->save();
     }
 }

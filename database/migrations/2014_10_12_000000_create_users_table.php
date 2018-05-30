@@ -29,10 +29,12 @@ class CreateUsersTable extends Migration
 
             //seo
             $table->boolean('is_seoer')->default(0)->index();
-            $table->string('seo_meta')->nullable();
-            $table->text('seo_push')->nullable();
-            $table->text('seo_tj')->nullable();
-            $table->text('seo_json')->nullable();
+
+            // $table->string('seo_meta')->nullable();            
+            // $table->text('seo_push')->nullable();
+            // $table->text('seo_tj')->nullable();
+
+            $table->text('seo_json')->nullable(); //-> json
 
             //count
             $table->integer('count_articles')->default(0);

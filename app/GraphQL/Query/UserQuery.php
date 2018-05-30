@@ -30,11 +30,7 @@ class UserQuery extends Query
             return \App\User::findOrFail($args['id']);
         }
 
-        $user = session('user');
-
-        if (!$user) {
-            throw new \Exception('not login yet');
-        }
+        $user = getUser();
 
         return $user;
     }

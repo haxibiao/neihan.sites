@@ -7,6 +7,7 @@ use Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Collection;
 
 class User extends Authenticatable
 {
@@ -272,7 +273,7 @@ class User extends Authenticatable
                 ]);
             });
 
-            $unreads['requests'] = Auth::user()->adminCategories()->sum('new_requests');
+            $unreads['requests'] = $this->adminCategories()->sum('new_requests');
             //write cache
             Cache::put('unreads_' . $this->id, $unreads, 60);
         }
@@ -334,5 +335,52 @@ class User extends Authenticatable
     {
         $this->introduction = $this->introduction();
         $this->avatar       = $this->avatar();
+    }
+
+    public function blockedUsers()
+    {
+        $json = json_decode($this->json, true);
+        if (!$json) {
+            $json = (object) [];
+        }
+
+        $blocked = [];
+        if (isset($json['blocked'])) {
+            $blocked = $json['blocked'];
+        }
+        return $blocked;
+    }
+
+    public function blockUser($user_id)
+    {
+        $user = User::findOrFail($user_id);
+        $json = json_decode($this->json, true);
+        if (!$json) {
+            $json = (object) [];
+        }
+
+        $blocked = [];
+        if (isset($json['blocked']) && is_array($json['blocked'])) {
+            $blocked = $json['blocked'];
+        }
+
+        $blocked = new Collection($blocked);
+
+        if ($blocked->contains('id', $user_id)) {
+            //unbloock
+            $blocked = $blocked->filter(function ($value, $key) use ($user_id) {
+                return $value['id'] != $user_id;
+            });
+        } else {
+            $blocked[] = [
+                'id'     => $user->id,
+                'name'   => $user->name,
+                'avatar' => $user->avatar(),
+            ];
+        }
+
+        $json['blocked'] = $blocked;
+        $this->json      = json_encode($json, JSON_UNESCAPED_UNICODE);
+        $this->save();
     }
 }

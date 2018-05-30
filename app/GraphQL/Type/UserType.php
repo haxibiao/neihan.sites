@@ -38,7 +38,7 @@ class UserType extends GraphQLType
                 'type'        => Type::string(),
                 'description' => 'avatar url of user',
                 'resolve'     => function ($root, $args) {
-                    return $root->avatar();
+                    return is_array($root) ? $root['avatar'] : $root->avatar();
                 },
             ],
             'token'             => [
@@ -106,6 +106,9 @@ class UserType extends GraphQLType
             'count_categories'  => [
                 'type'        => Type::int(),
                 'description' => 'count_categories of user',
+                'resolve'     => function ($root, $args) {
+                    return $root->categories()->count();
+                },
             ],
             'balance'           => [
                 'type'        => Type::int(),
@@ -130,6 +133,14 @@ class UserType extends GraphQLType
                         }
                     }
                     return 0;
+                },
+            ],
+
+            'blockedUsers'      => [
+                'type'        => Type::listOf(GraphQL::type('User')),
+                'description' => 'blocked users ',
+                'resolve'     => function ($root, $args) {
+                    return $root->blockedUsers();
                 },
             ],
 
@@ -197,9 +208,9 @@ class UserType extends GraphQLType
                 'description' => 'articles of user',
                 'resolve'     => function ($root, $args) {
                     if (isset($args['filter']) && $args['filter'] == 'NEW_REQUESTED') {
-                        $articles = [];                      
-                        foreach($root->adminCategories as $category) {
-                            foreach($category->newRequestArticles as $article) {
+                        $articles = [];
+                        foreach ($root->adminCategories as $category) {
+                            foreach ($category->newRequestArticles as $article) {
                                 $articles[] = $article;
                             }
                         }
@@ -219,7 +230,6 @@ class UserType extends GraphQLType
                     if (isset($args['filter']) && $args['filter'] == 'LIKED') {
                         $qb = $root->likes();
                     }
-
 
                     if (isset($args['offset'])) {
                         $qb = $qb->skip($args['offset']);
@@ -364,7 +374,7 @@ class UserType extends GraphQLType
                     if (isset($args['limit'])) {
                         $limit = $args['limit'];
                     }
-                    $qb = $qb->take($limit);
+                    $qb            = $qb->take($limit);
                     $notifications = $qb->get();
                     return $notifications;
                 },
@@ -440,6 +450,25 @@ class UserType extends GraphQLType
                     }
                     $qb = $qb->take($limit);
                     return $qb->get();
+                },
+            ],
+            'friends'           => [
+                'args'        => [
+                    'offset' => ['name' => 'offset', 'type' => Type::int()],
+                    'limit'  => ['name' => 'limit', 'type' => Type::int()],
+                ],
+                'type'        => Type::listOf(GraphQL::type('User')),
+                'description' => 'friends of current user ',
+                'resolve'     => function ($root, $args) {
+                    $friends = [];
+                    foreach ($root->followingUsers as $follow) {
+                        $friends[$follow->followed->id] = $follow->followed;
+                    }
+                    $count_need_followers = 500 - count($friends);
+                    foreach ($root->follows()->take($count_need_followers)->get() as $follow) {
+                        $friends[$follow->user->id] = $follow->user;
+                    }
+                    return $friends;
                 },
             ],
             'followings'        => [
