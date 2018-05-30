@@ -18,7 +18,12 @@
     <meta name="description" content=" @yield('description'), {{ config('app.name') }} ">
 
     <!-- Styles -->
-    <link href="{{ mix('css/a.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/guest.css') }}" rel="stylesheet">
+    @if(Auth::check())
+        <link href="{{ mix('css/editor.css') }}" rel="stylesheet">
+    @endif
+
+    @stack('css')
 
     @stack('css')
 
@@ -32,8 +37,8 @@
     @if(Auth::check())
     <script type="text/javascript">
             window.appName = '{{ config('app.name') }}';
-            window.tokenize =　 function(api_url){ 
-                var api_token = '{{ Auth::user()->api_token }}'　
+            window.tokenize =　 function(api_url){
+                var api_token = '{{ Auth::user()->api_token }}'
                 if(api_url.indexOf('?') === -1) {
                     api_url += '?api_token=' + api_token;
                 } else {
@@ -42,11 +47,11 @@
                 return api_url;
             };
             window.csrf_token = '{{ csrf_token() }}';
-    </script> 
-    @endif 
+    </script>
+    @endif
     <script type="text/javascript">
             window.csrf_token = '{{ csrf_token() }}';
-    </script> 
+    </script>
 
     @if(in_array(request()->path(), [
             'follow',
@@ -63,7 +68,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-    </script>    
+    </script>
 
     @stack('scripts')
     @stack('js')
