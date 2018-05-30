@@ -29,7 +29,7 @@
                  </ul>
                  <!-- Tab panes -->
                  <div class="article-list tab-content">
-                   <ul role="tabpanel" class="fade in tab-pane active" id="comment">                                     
+                   <ul role="tabpanel" class="fade in tab-pane active" id="comment">
                        @each('parts.article_item', $data['commented'], 'article')
                        @if(!Auth::check())
                        <div>{!! $data['commented']->links() !!}</div>
@@ -37,7 +37,7 @@
                        <article-list api="/{{ $category->name_en }}?commented=1" start-page="2" />
                       @endif
                    </ul>
-                   <ul role="tabpanel" class="fade tab-pane" id="include">                                      
+                   <ul role="tabpanel" class="fade tab-pane" id="include">
                        @each('parts.article_item', $data['collected'], 'article')
                        @if(!Auth::check())
                        <div>{!! $data['collected']->links() !!}</div>
@@ -45,7 +45,7 @@
                        <article-list api="/{{ $category->name_en }}?collected=1" start-page="2" />
                        @endif
                    </ul>
-                   <ul role="tabpanel" class="fade tab-pane" id="hot">                                      
+                   <ul role="tabpanel" class="fade tab-pane" id="hot">
                        @each('parts.article_item', $data['hot'], 'article')
                        @if(!Auth::check())
                        <div>{!! $data['hot']->links() !!}</div>
@@ -53,8 +53,8 @@
                        <article-list api="/{{ $category->name_en }}?hot=1" start-page="2" />
                        @endif
                    </ul>
-                   <ul role="tabpanel" class="fade video-list tab-pane" id="video">                                      
-                       @foreach($data['videos'] as $video) 
+                   <ul role="tabpanel" class="fade video-list tab-pane" id="video">
+                       @foreach($data['videos'] as $video)
                        <li class="col-xs-6 col-md-4 video">
                           <div class="video-item vt">
                             <div class="thumb">
@@ -96,5 +96,5 @@
 
 @push('modals')
   {{-- 分享到微信 --}}
-  <modal-share-wx></modal-share-wx>
+  <modal-share-wx url="{{ url()->full() }}" aid="{{ $category->id }}"></modal-share-wx>
 @endpush

@@ -4,7 +4,7 @@
 		    <a href="javascript:;" class="action-btn" @click="favoriteQuestion"><i :class="['iconfont', question.favorited ? 'icon-shoucang1' : 'icon-shoucang']"></i><span class="text">收藏问题{{ question.count_favorites ? '('+question.count_favorites+')' : '' }}</span></a>
 		    
 		    <a href="javascript:;" class="action-btn" @click="inviteAnswer"><i class="iconfont icon-guanzhu"></i><span class="text hidden-xs">邀请回答</span></a>
-		    <share placement="top" class="action-btn no-margin" :title="question.title"><span class="text">分享</span></share>
+		    <share placement="top" class="action-btn no-margin" :title="title" :author="author" :url="url"><span class="text">分享</span></share>
 		    
 		    <a href="javascript:;" class="action-btn report pull-right hidden-xs" @click="reportQuestion"><i class="iconfont icon-jinggao"></i><span class="text hidden-xs">{{ question.reported ? '已举报':'举报' }}{{ question.count_reports ? '('+question.count_reports+')' : '' }}</span></a>
 		</div>
@@ -12,7 +12,7 @@
 		    <a href="javascript:;" :class="['action-btn','like',answer.liked?'active':'']" @click="likeAnswer"><i :class="['iconfont', answer.liked ? 'icon-dianzan' : 'icon-fabulous' ]"></i><span class="text hidden-xs">{{ answer.count_likes }}赞</span></a>
 		    <a href="javascript:;" class="action-btn" @click="unlikeAnswer"><i :class="['iconfont', answer.unliked ? 'icon-zan2' : 'icon-dianzan1']"></i><span class="text hidden-xs">{{ answer.count_unlikes }}踩</span></a>
 		    <a href="javascript:;" class="action-btn" @click="showComment"><i class="iconfont icon-svg37"></i>{{ answer.count_comments }}<span class="text hidden-xs">评论</span></a>
-		    <share placement="top" class="action-btn no-margin"><span class="text">分享</span></share>
+		    <share placement="top" class="action-btn no-margin" :title="title" :author="author" :url="url"><span class="text">分享</span></share>
 		    
 		    <!-- 看别人的是举报，自己是删除 -->
 		    <!-- 删除按钮view组件-->
@@ -57,7 +57,16 @@ export default {
 	name: "AnswerTool",
 
 	//有questionId是问题下的，有answerId是回答下的
-	props: ["questionId", "answerId", "isSelf", "isPayer", "closed"],
+	props: [
+		"questionId",
+		"answerId",
+		"isSelf",
+		"isPayer",
+		"closed",
+		"title",
+		"author",
+		"url"
+	],
 
 	computed: {
 		answered() {

@@ -103,6 +103,11 @@
 								min-width: 60%;
 								height: auto;
 							}
+							& > div {
+								.col-md-6 {
+									width: 100%;
+								}
+							}
 						}
 						.expand-bottom {
 							position: absolute;

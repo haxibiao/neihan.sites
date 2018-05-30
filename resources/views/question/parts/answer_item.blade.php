@@ -3,7 +3,7 @@
         <div class="note-info">
             <a href="/user/{{ $answer->user->id }}" class="avatar">
                 <img src="{{ $answer->user->avatar() }}" alt=""></a>
-            
+
             @if(!$answer->isSelf())
               <follow
                 type="user"
@@ -37,15 +37,18 @@
     </div>
 
     @if(Auth::check())
-        <answer-tool 
-            answer-id="{{ $answer->id }}" 
+        <answer-tool
+            answer-id="{{ $answer->id }}"
             closed="{{ $question->closed ? true : false }}"
-            is-self="{{ $answer->isSelf() }}" 
-            is-payer="{{ $question->bonus && $question->isSelf() }}"></answer-tool>
+            is-self="{{ $answer->isSelf() }}"
+            is-payer="{{ $question->bonus && $question->isSelf() }}"
+            url="{{ url('/question/'.$question->id) }}"
+            author="{{ $answer->user->name }}"
+            title="{{ $question->title }}"></answer-tool>
     @endif
 </div>
 @push('scripts')
-    
+
     <script>
         $(function(){
             $('.answer-item').each(function(index, el) {

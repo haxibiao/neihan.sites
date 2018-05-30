@@ -70,7 +70,12 @@
   	   </div>
 
       @if(Auth::check() && !$question->closed)
-        <answer-tool question-id="{{ $question->id }}" is-self="{{ $question->isSelf() }}"></answer-tool>
+        <answer-tool
+        question-id="{{ $question->id }}"
+        is-self="{{ $question->isSelf() }}"
+        url="{{ url('/question/'.$question->id) }}"
+        author="{{ $question->user->name }}"
+        title="{{ $question->title }}"></answer-tool>
 
       {!! Form::open(['method' => 'POST', 'route' => $question->isSelf() ? 'question.add':'answer.store', 'class' => 'form-horizontal']) !!}
 
