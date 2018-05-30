@@ -1,10 +1,13 @@
 #index {
     margin-top: -30px;
-    section {
+    .poster-container {
+        padding-left: 15px;
+    }
+    .wrap {
         padding-top: 30px;
         .main {
             .videos {
-                 margin: 0 -5px;
+                margin: 0 -5px 15px;
                 .video {
                     padding: 0 5px;
                 }

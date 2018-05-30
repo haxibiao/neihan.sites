@@ -20,7 +20,7 @@
 		.user {
 			float: right;
 			position: relative;
-			&>a {
+			& > a {
 				display: block;
 				margin: 8px 20px;
 				img {
@@ -63,96 +63,102 @@
 			font-size: 16px;
 		}
 		.container {
-			.navbar-toggle {
-				float: left;
-				padding: 11px 10px;
-				margin-top: 9px;
-			}
-			.navbar-nav {
-				.tab {
-					font-size: 16px;
-					margin-right: 10px;
-					a {
-						height: 56px;
-					    line-height: 26px;
-					    padding: 15px;
-						i {
-							font-size: 20px;
-							margin-right: 5px;
-						}
-					}
-					.badge {
-						top: 8px;
-						right: -8px;
-					}
-					&.active {
-						& > a {
-							color: $theme-color;
-							background-color: initial;
-						}
-					}
-					&:hover {
-						background-color: $light-color1;
-					}
+			.navbar-header {
+				.navbar-toggle {
+					float: left;
+					padding: 11px 10px;
+					margin-top: 9px;
 				}
-				// 消息
-				.notification {
-					.hover-dropdown-menu {
+			}
+			.navbar-collapse {
+				margin-left: -15px;
+				.navbar-nav {
+					.tab {
+						font-size: 16px;
+						margin-right: 10px;
+						a {
+							height: 56px;
+							line-height: 26px;
+							padding: 15px;
+							i {
+								font-size: 20px;
+								margin-right: 5px;
+							}
+						}
 						.badge {
-							top: 50%;
-							right: 15px;
-							transform: translate(0, -50%);
+							top: 8px;
+							right: -8px;
 						}
-					}
-				}
-				//用户下拉框
-				.user {
-					img {
-						width: 40px;
-						height: 40px;
-						border: 1px solid #ddd;
-						border-radius: 50%;
-					}
-					.hover-dropdown-menu {
-						width: 160px;
-						li {
-							font-size: 14px;
+						&.active {
 							& > a {
-								i {
-									font-size: 20px;
-									margin: -2px 15px 0 0;
+								color: $theme-color;
+								background-color: initial;
+							}
+						}
+						&:hover {
+							background-color: $light-color1;
+						}
+					}
+					// 消息
+					.notification {
+						.hover-dropdown-menu {
+							.badge {
+								top: 50%;
+								right: 15px;
+								transform: translate(0, -50%);
+							}
+						}
+					}
+					//用户下拉框
+					.user {
+						img {
+							width: 40px;
+							height: 40px;
+							border: 1px solid #ddd;
+							border-radius: 50%;
+						}
+						.hover-dropdown-menu {
+							width: 160px;
+							li {
+								font-size: 14px;
+								& > a {
+									i {
+										font-size: 20px;
+										margin: -2px 15px 0 0;
+									}
 								}
 							}
 						}
 					}
 				}
-			}
-			// 搜索
-			.navbar-form {
-				margin: 10px 0;
-				border-color: transparent;
-				.form-group {
-					text-align: center;
-					.search-wrapper {
-						display: inline-block;
-						#search-input,.form-control {
-							width: 220px;
-							transition: all 0.3s ease-in-out;
-							&:focus {
-								outline: 0 !important;
-								box-shadow: none;
-								width: 260px;
-								& + span {
-									color: $light-color2;
-									background-color: $gray-color2;
-								}
-							}
-							@media screen and (max-width: 1000px) and (min-width: 768px) {
-								width: 150px;
+				// 搜索
+				.navbar-form {
+					margin: 10px 0;
+					border-color: transparent;
+					.form-group {
+						text-align: center;
+						.search-wrapper {
+							display: inline-block;
+							#search-input,
+							.form-control {
+								width: 220px;
+								transition: all 0.3s ease-in-out;
 								&:focus {
 									outline: 0 !important;
 									box-shadow: none;
-									width: 160px;
+									width: 260px;
+									& + span {
+										color: $light-color2;
+										background-color: $gray-color2;
+									}
+								}
+								@media screen and (max-width: 1000px) and (min-width: 768px) {
+									width: 150px;
+									&:focus {
+										outline: 0 !important;
+										box-shadow: none;
+										width: 160px;
+									}
 								}
 							}
 						}
@@ -164,7 +170,7 @@
 			.user {
 				.hover-dropdown-menu {
 					left: -50% !important;
-				    width: 160px;
+					width: 160px;
 				}
 			}
 			.container {
@@ -202,4 +208,3 @@
 		}
 	}
 }
-

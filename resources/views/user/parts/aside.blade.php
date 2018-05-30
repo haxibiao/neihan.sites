@@ -1,11 +1,11 @@
-<div class="aside col-sm-4 col-sm-offset-1 hidden-xs">
+<div class="aside sm-right hidden-xs">
     @if($user->is_editor)
       <ul class="icon-text-list distance">
           <li><a href="javascript:;"><img class="badge-icon" src="/images/signed.png" alt=""></i>{{ config('app.name') }}签约作者</a></li>
           <li><a href="javascript:;"><img class="badge-icon" src="/images/excellence.png" alt=""></i>{{ config('app.name') }}优秀作者</a></li>
       </ul>
     @endif
-    
+
     @include('user.aside.introduction')
 
     <ul class="icon-text-list icon-fix distance">
@@ -17,6 +17,6 @@
     @include('user.aside.created_categories')
     @include('user.aside.managed_categories')
     @include('user.aside.collections')
-    
-    <p class="plate-title"><a href="javascript:;">加入黑名单</a> · <a href="javascript:;">举报用户</a></p>
+
+    <p class="plate-title"><a data-target=".modal-blacklist" data-toggle="modal">加入黑名单</a> · <a data-target=".modal-report" data-toggle="modal">举报用户</a></p>
 </div>

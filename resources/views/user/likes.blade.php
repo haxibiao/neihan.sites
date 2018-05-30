@@ -2,9 +2,9 @@
 
 @section('content')
 <div id="user">
-    <div class="container">
-        <div id="user_wrp" class="clearfix">
-            <div class="main col-sm-7">
+    <div id="user_wrp">
+        <div class="clearfix">
+            <div class="main sm-left">
                 {{-- 用户信息 --}} 
                 @include('user.parts.information')
                 {{-- 内容 --}} 
@@ -35,11 +35,11 @@
                                 <a class="avatar-category" href="/{{ $category->name_en }}"><img src="{{ $category->logo() }}" alt=""></a>
                                 
                                 <follow 
-							        type="categories" 
-							        id="{{ $category->id }}" 
-							        user-id="{{ user_id() }}" 
-							        followed="{{ is_follow('categories', $category->id) }}">
-							      </follow>
+    						        type="categories" 
+    						        id="{{ $category->id }}" 
+    						        user-id="{{ user_id() }}" 
+    						        followed="{{ is_follow('categories', $category->id) }}">
+    						      </follow>
 
                                 <div class="title">
                                     <a href="/{{ $category->name_en }}" class="name">{{ $category->name }}</a>

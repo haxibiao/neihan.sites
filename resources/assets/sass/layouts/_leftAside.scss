@@ -1,6 +1,6 @@
-#app { 
+#app {
 	.left-aside {
-		width: 950px;
+		width: 960px;
 		margin: 0 auto;
 		transition: all 0.3s linear;
 		.aside {
@@ -41,9 +41,9 @@
 				&:before {
 					content: "";
 					position: absolute;
-					top: -81px;
+					top: -87px;
 					left: 0;
-					height: 81px;
+					height: 87px;
 					width: 100%;
 					background-color: $theme-skin;
 				}
@@ -101,6 +101,7 @@
 		}
 		@media screen and (max-width: 768px) {
 			width: 100%;
+			padding: 0 15px;
 			.aside {
 				width: 20%;
 				margin: 67px 0 0;

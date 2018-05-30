@@ -7,6 +7,6 @@
         © 著作权归作者 {{$article->user->name}} 所有
       </div>
       <div class="report">
-        <a href="javascript:;">举报文章</a>
+        <a data-target=".modal-report" data-toggle="modal">举报文章</a>
       </div>
 </div>

@@ -32,7 +32,9 @@
         @include('parts.header')
 
         <div class="container">
-        @yield('content')
+            <div class="row">
+                @yield('content')
+            </div>
         </div>
 
         @stack('section')

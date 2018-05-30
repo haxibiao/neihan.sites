@@ -1,10 +1,10 @@
 #detail {
-	section {
-		padding: 0;
+	.main {
+		width: 70%;
+		padding: 0 15px;
+		margin: 0 auto;
 		transition: all 0.3s linear;
 		article {
-			width: 88%;
-			margin: 0 auto;
 			padding-bottom: 30px;
 			color: $dark-color1;
 			h1 {
@@ -126,8 +126,10 @@
 					}
 				}
 			}
-			//小屏优化
-			@media screen and (max-width: 600px) {
+		}
+		//小屏优化
+		@media screen and (max-width: 600px) {
+			article {
 				h1 {
 					font-size: 25px;
 				}
@@ -163,6 +165,9 @@
 					}
 				}
 			}
+		}
+		@media screen and (max-width: 768px) {
+			width: 100%;
 		}
 	}
 }

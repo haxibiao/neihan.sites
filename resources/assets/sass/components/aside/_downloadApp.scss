@@ -1,39 +1,42 @@
 // download-app
 .download-app {
 	.app {
-	    display: block;
-	    position: relative;
-	    margin-bottom: 25px;
-	    padding: 10px 22px;
-	    width: 100%;
-	    border: 1px solid $light-color2;
-	    border-radius: 6px;
-	    background-color: #fff;
-	    color: $dark-color1;
-	    img {
-	        width: 30%;
-	    }
-	    .app-info {
-	        width: 66%;
-	        display: inline-block;
-	        vertical-align: middle;
-	        padding-left: 8px;
-	        .down {
-	            font-size: 15px;
-	        }
-	        .describe {
-	            margin-top: 4px;
-	            font-size: 13px;
-	            color: $gray-color2;
-	        }
-	    }
+		display: block;
+		position: relative;
+		margin-bottom: 25px;
+		padding: 10px 18px;
+		width: 100%;
+		border: 1px solid $light-color2;
+		border-radius: 6px;
+		background-color: #fff;
+		color: $dark-color1;
+		img {
+			width: 30%;
+		}
+		.app-info {
+			width: 66%;
+			display: inline-block;
+			vertical-align: middle;
+			padding-left: 8px;
+			.down {
+				font-size: 15px;
+				i {
+					font-size: 14px;
+				}
+			}
+			.describe {
+				margin-top: 4px;
+				font-size: 13px;
+				color: $gray-color2;
+			}
+		}
 	}
 	.popover {
-	    .popover-content {
-	        padding: 8px;
-	        img {
-	            width: 150px;
-	        }
-	    }
+		.popover-content {
+			padding: 8px;
+			img {
+				width: 150px;
+			}
+		}
 	}
 }

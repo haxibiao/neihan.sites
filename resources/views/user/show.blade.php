@@ -1,11 +1,11 @@
-@extends('layouts.app') 
+@extends('layouts.app')
 
-@section('title') {{ $user->name }} -{{ env('APP_NAME') }} @stop 
+@section('title') {{ $user->name }} -{{ env('APP_NAME') }} @stop
 
 @section('content')
 <div id="user">
-   <section class="clearfix">
-        <div class="main col-sm-7">
+    <div class="clearfix">
+        <div class="main sm-left">
             {{-- 用户信息 --}}
            @include('user.parts.information')
             {{-- 内容 --}}
@@ -59,7 +59,7 @@
                         @each('parts.article_item', $data['commented'], 'article')
                         @if(Auth::check())
                         <article-list api="/user/{{ $user->id }}?commented=1" start-page="2" />
-                        @else 
+                        @else
                         <div>{!! $data['commented']->links() !!}</div>
                         @endif
                     </ul>
@@ -76,6 +76,11 @@
         </div>
         {{-- 侧栏 --}}
         @include('user.parts.aside')
-    </section>
+    </div>
 </div>
 @endsection
+
+@push('modals')
+    <modal-blacklist></modal-blacklist>
+    <modal-report></modal-report>
+@endpush

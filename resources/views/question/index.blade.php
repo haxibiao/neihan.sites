@@ -8,25 +8,29 @@
  <div id="questions">
     {{-- 问答专题 --}}
     <div class="questions-list">
-      <div class="container clearfix">
-        <div class="col-xs-12">
-          @include('question.parts.recommend_categories')
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            @include('question.parts.recommend_categories')
+          </div>
         </div>
       </div>
     </div>
-   <section class="container">
-     <div class="main col-sm-8">
-       @each('question.parts.question_item',  $questions ,'question')
-       <div class="pager">
-         {!! $questions->appends(['cid' => request('cid')])->links() !!}
+   <div class="container">
+     <div class="wrap row">
+       <div class="main sm-left">
+         @each('question.parts.question_item',  $questions ,'question')
+         <div class="pager">
+           {!! $questions->appends(['cid' => request('cid')])->links() !!}
+         </div>
+       </div>
+       <div class="aside sm-right hidden-xs">
+         {{-- @include('question.parts.carousel') --}}
+         @include('question.parts.hot_questions')
+         @include('question.parts.contact')
        </div>
      </div>
-     <div class="aside col-sm-4 hidden-xs">
-       {{-- @include('question.parts.carousel') --}}
-       @include('question.parts.hot_questions')
-       @include('question.parts.contact')
-     </div>
-   </section>
+   </div>
      {{-- 网站底部信息 --}}
   @include('parts.footer')
   <modal-ask-question></modal-ask-question>
