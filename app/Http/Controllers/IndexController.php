@@ -7,8 +7,8 @@ use App\Category;
 use App\User;
 use App\Video;
 use Auth;
-use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class IndexController extends Controller
 {
@@ -18,11 +18,11 @@ class IndexController extends Controller
         //get user related categories ..
         $categorie_ids = [];
 
-        $stick_categories=get_stick_categories();
-        $top_count=7-count($stick_categories);
-        if($top_count){
-            foreach($stick_categories as $stick_category){
-                $categorie_ids[]=$stick_category->id;
+        $stick_categories = get_stick_categories();
+        $top_count        = 7 - count($stick_categories);
+        if ($top_count) {
+            foreach ($stick_categories as $stick_category) {
+                $categorie_ids[] = $stick_category->id;
             }
         }
 
@@ -34,8 +34,8 @@ class IndexController extends Controller
                     ->orderBy('id', 'desc')
                     ->take($top_count)
                     ->get();
-                $categories    = [];
-                
+                $categories = [];
+
                 foreach ($follows as $follow) {
                     $category        = $follow->followed;
                     $categories[]    = $category;
@@ -65,7 +65,7 @@ class IndexController extends Controller
             $articles = Article::with('user')->with('category')
                 ->where('status', '>', 0)
                 ->where('source_url', '=', '0')
-                ->whereIn('category_id', array_merge($categorie_ids,$categories->pluck('id')->toArray()))
+                ->whereIn('category_id', array_merge($categorie_ids, $categories->pluck('id')->toArray()))
                 ->orderBy('updated_at', 'desc')
                 ->paginate(10);
         }
@@ -78,15 +78,15 @@ class IndexController extends Controller
             return $articles;
         }
 
-        $categories=get_top_categoires($categories);
+        $categories       = get_top_categoires($categories);
         $data             = (object) [];
         $data->categories = $categories;
-        
+
         //get sticks and filter sticks ....
-        $total = $articles->total();
-        $sticks           = new Collection(get_stick_articles('发现'));
-        $data->sticks     = $sticks;
-        $articles         = $articles->filter(function ($article) use ($sticks) {
+        $total        = $articles->total();
+        $sticks       = new Collection(get_stick_articles('发现'));
+        $data->sticks = $sticks;
+        $articles     = $articles->filter(function ($article) use ($sticks) {
             return !in_array($article->id, $sticks->pluck('id')->toArray());
         });
         $data->articles = new LengthAwarePaginator(new Collection($articles), $total, 10);
@@ -101,7 +101,11 @@ class IndexController extends Controller
 
     public function app()
     {
-        return view('index.app');
+        if (file_exists(resource_path('views/index/apps/' . get_domain_key() . '.blade.php'))) {
+            return view('index.apps.' . get_domain_key());
+        } else {
+            return "app下载页面正在制作中...";
+        }
     }
 
     public function aboutUs()

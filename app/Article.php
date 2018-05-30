@@ -242,7 +242,7 @@ class Article extends Model
     public function parsedBody()
     {
         $this->body = parse_image($this->body);
-        $pattern    = "/<img alt=\"(.*?)\" .*?>/is";
+        $pattern    = "/<img alt=\"(.*?)\" ([^>]*?)>/is";
         preg_match_all($pattern, $this->body, $match);
         
         //try replace first image alt ...

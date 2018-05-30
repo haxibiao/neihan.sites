@@ -17,6 +17,11 @@ function get_ip()
     return $ip;
 }
 
+function get_domain_key()
+{
+    return str_replace('.', '_', get_domain());
+}
+
 function get_domain()
 {
     $domain = str_replace('*.', '', Request::server('SERVER_NAME'));
@@ -38,7 +43,7 @@ function fix_article_body_images($body)
 
     if (!empty($match[1]) && !str_contains($body, 'haxibiao')) {
         foreach ($match[1] as $image_url) {
-             $body=str_replace("$image_url", "https://haxibiao.com$image_url", $body);
+            $body = str_replace("$image_url", "https://haxibiao.com$image_url", $body);
         }
     }
 

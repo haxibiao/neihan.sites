@@ -25,7 +25,7 @@
 						<ul class="nav navbar-nav">
 							<li class="tab {{ get_active_css('/') }}"><a href="/"><i class="iconfont icon-faxian hidden-xs hidden-md"></i><span class="hidden-sm">首页</span></a></li>
 							<li class="tab {{ get_active_css('question') }}"><a href="/question"><i class="iconfont icon-help hidden-xs hidden-md"></i><span class="hidden-sm">问答</span></a></li>
-							<li class="tab {{ get_active_css('download-app') }}"><a href="/apps"><i class="iconfont icon-ordinarymobile hidden-xs hidden-md"></i><span class="hidden-sm">下载App</span></a></li>
+							<li class="tab {{ get_active_css('app') }}"><a href="/app"><i class="iconfont icon-ordinarymobile hidden-xs hidden-md"></i><span class="hidden-sm">下载App</span></a></li>
 						</ul>
 						<search-box></search-box>
 					</div>
