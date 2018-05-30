@@ -4,6 +4,10 @@
 @section('description') {{config('seo.description')  }} @stop
 @section('keywords') {{ config('seo.keywords') }} @stop
 
+@push('seo_metatags')
+<meta property="og:title" content="{{ $question->title }}" />
+@endpush
+
 @section('content')
  <div id="answer">
   <div class="clearfix">
@@ -136,4 +140,9 @@
 
 @push('css')
     <link rel="stylesheet" type="text/css" href="/css/e.css">
+@endpush
+
+@push('modals')
+  {{-- 分享到微信 --}}
+  <modal-share-wx url="{{ url()->full() }}" aid="{{ $question->id }}"></modal-share-wx>
 @endpush

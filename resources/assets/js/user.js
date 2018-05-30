@@ -100,6 +100,12 @@ Vue.component(
 );
 Vue.component("setting-aside", require("./components/setting/Aside.vue"));
 
+Vue.component(
+	"modal-blacklist",
+	require("./components/modals/ModalBlacklist.vue")
+);
+Vue.component("modal-report", require("./components/modals/ModalReport.vue"));
+
 Vue.component("answer-tool", require("./components/question/AnswerTool.vue"));
 Vue.component(
 	"question-bottom",

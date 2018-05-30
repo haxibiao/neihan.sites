@@ -1,6 +1,6 @@
-@extends('layouts.app') 
+@extends('layouts.app')
 
-@section('title') {{ $user->name }} -{{ env('APP_NAME') }} @stop 
+@section('title') {{ $user->name }} -{{ env('APP_NAME') }} @stop
 
 @section('content')
 <div id="user">
@@ -59,7 +59,7 @@
                         @each('parts.article_item', $data['commented'], 'article')
                         @if(Auth::check())
                         <article-list api="/user/{{ $user->id }}?commented=1" start-page="2" />
-                        @else 
+                        @else
                         <div>{!! $data['commented']->links() !!}</div>
                         @endif
                     </ul>
@@ -79,3 +79,8 @@
     </div>
 </div>
 @endsection
+
+@push('modals')
+    <modal-blacklist></modal-blacklist>
+    <modal-report></modal-report>
+@endpush

@@ -46,7 +46,7 @@
           @include('article.parts.foot')
           {{-- 底部作者信息 --}}
           @include('article.parts.follow_card')
-          
+
           {{-- 支持作者  --}}
           <div class="support-author">
             <p>{{ $article->user->tip_words ? $article->user->tip_words : '如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！' }}</p>
@@ -57,22 +57,22 @@
                 <modal-admire article-id="{{ $article->id }}"></modal-admire>
               @endif
             @endif
-            
+
             {{-- 赞赏用户 --}}
             @include('article.parts.supporters')
           </div>
 
           {{-- 喜欢和分享 --}}
           <div class="mate-bottom">
-            <like 
-              id="{{ $article->id }}" 
-              type="article" 
+            <like
+              id="{{ $article->id }}"
+              type="article"
               is-login="{{ Auth::check() }}"></like>
-            
+
             <div class="share-circle">
               <a data-action="weixin-share" data-toggle="tooltip" data-toggle="tooltip" data-placement="top" title="分享到微信"><i class="iconfont icon-weixin1 weixin"></i></a>
-              <a data-toggle="tooltip" data-placement="top" title="分享到微博"><i class="iconfont icon-sina weibo"></i></a>
-              <a data-toggle="tooltip" data-placement="top" title="下载微博长图片"><i class="iconfont icon-zhaopian other"></i></a>
+              <a href="javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f='http://v.t.sina.com.cn/share/share.php?appkey=1881139527',u=z||d.location,p=['&amp;url=',e(u),'&amp;title=',e(t||d.title),'&amp;source=',e(r),'&amp;sourceUrl=',e(l),'&amp;content=',c||'gb2312','&amp;pic=',e(p||'')].join('');function%20a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,'','','', '推荐 @ {{$article->user->name}} 的文章《{{$article->title}}》（ 分享自 @爱你城 ）','{{ url('/article/'.$article->id) }}?source=weibo','页面编码gb2312|utf-8默认gb2312'));" data-toggle="tooltip" data-placement="top" title="分享到微博"><i class="iconfont icon-sina weibo"></i></a>
+              {{-- <a data-toggle="tooltip" data-placement="top" title="下载微博长图片"><i class="iconfont icon-zhaopian other"></i></a> --}}
             </div>
           </div>
           {{-- 评论中心 --}}
@@ -113,7 +113,7 @@
           <ul class="article-list">
             {{-- 文章 --}}
             @each('parts.article_item', $data['recommended'], 'article')
-          </ul>   
+          </ul>
 
         </div>
       </div>
@@ -122,15 +122,15 @@
 @endpush
 
 @push('side_tool')
-  <side-tool 
-    id="{{ $article->id }}" 
-    is-self="{{ $article->isSelf() }}" 
+  <side-tool
+    id="{{ $article->id }}"
+    is-self="{{ $article->isSelf() }}"
     is-login="{{ Auth::check() }}">
-    <share 
-      placement='left' 
+    <share
+      placement='left'
       url="{{ url('/article/'.$article->id) }}"
       article_id="{{ $article->id }}"
-      author="{{ $article->user->name }}" 
+      author="{{ $article->user->name }}"
       title="{{ $article->title }}"></share>
   </side-tool>
 @endpush
@@ -142,4 +142,6 @@
   @endif
   {{-- 分享到微信 --}}
   <modal-share-wx  url="{{ url()->full() }}" aid="{{ $article->id }}"></modal-share-wx>
+  {{-- 举报 --}}
+  <modal-report></modal-report>
 @endpush

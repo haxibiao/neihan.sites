@@ -4,9 +4,9 @@
 		    <a href="javascript:;" class="action-btn" @click="favoriteQuestion"><i :class="['iconfont', question.favorited ? 'icon-shoucang1' : 'icon-shoucang']"></i><span class="text">收藏问题{{ question.count_favorites ? '('+question.count_favorites+')' : '' }}</span></a>
 		    
 		    <a href="javascript:;" class="action-btn" @click="inviteAnswer"><i class="iconfont icon-guanzhu"></i><span class="text hidden-xs">邀请回答</span></a>
-		    <share placement="top" class="action-btn no-margin"><span class="text">分享</span></share>
+		    <share placement="top" class="action-btn no-margin" :title="question.title"><span class="text">分享</span></share>
 		    
-		    <a href="javascript:;" class="action-btn report pull-right" @click="reportQuestion"><i class="iconfont icon-jinggao"></i><span class="text hidden-xs">{{ question.reported ? '已举报':'举报' }}{{ question.count_reports ? '('+question.count_reports+')' : '' }}</span></a>
+		    <a href="javascript:;" class="action-btn report pull-right hidden-xs" @click="reportQuestion"><i class="iconfont icon-jinggao"></i><span class="text hidden-xs">{{ question.reported ? '已举报':'举报' }}{{ question.count_reports ? '('+question.count_reports+')' : '' }}</span></a>
 		</div>
 		<div class="bottom-tool answer-tool" v-else>
 		    <a href="javascript:;" :class="['action-btn','like',answer.liked?'active':'']" @click="likeAnswer"><i :class="['iconfont', answer.liked ? 'icon-dianzan' : 'icon-fabulous' ]"></i><span class="text hidden-xs">{{ answer.count_likes }}赞</span></a>
@@ -21,7 +21,7 @@
 			  </delete-button>
 		    </a>
 		    <!-- <a v-if="isSelf" href="javascript:;" class="action-btn delete pull-right"  @click="deleteAnswer"><i class="iconfont icon-lajitong"></i><span class="text hidden-xs">{{ answer.deleted ? '已删除':'删除' }}</span></a>-->
-		    <a href="javascript:;" class="action-btn report pull-right" v-else @click="reportAnswer"><i class="iconfont icon-jinggao"></i><span class="text hidden-xs">{{ answer.reported ? '已举报':'举报' }}</span></a>
+		    <a href="javascript:;" class="action-btn report pull-right hidden-xs" v-else @click="reportAnswer"><i class="iconfont icon-jinggao"></i><span class="text hidden-xs">{{ answer.reported ? '已举报':'举报' }}</span></a>
 		    
 		    <a v-if="isPayer && ! answered" href="javascript:;" :class="['action-btn','accept','pull-right',isAccept?'already':'']" @click="checkAccept">
 		    	<i :class="['iconfont',isAccept?'icon-weibiaoti12':'']"></i>
