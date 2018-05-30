@@ -10,7 +10,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    {!! get_seo_meta() !!}   
+    {!! get_seo_meta() !!}
 
     <title> @yield('title') </title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -18,7 +18,10 @@
     <meta name="description" content="@yield('description') ,{{ config('app.name') }} ">
 
     <!-- Styles -->
-    <link href="{{ mix('css/a.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/guest.css') }}" rel="stylesheet">
+    @if(Auth::check())
+        <link href="{{ mix('css/editor.css') }}" rel="stylesheet">
+    @endif
 
     @stack('css')
 
@@ -40,7 +43,7 @@
         </div>
 
         @stack('modals')
-        
+
     </div>
 
     <!-- Scripts -->
@@ -66,7 +69,7 @@
     @endif
     <script type="text/javascript">
             window.csrf_token = '{{ csrf_token() }}';
-    </script> 
+    </script>
 
     @if(in_array(request()->path(), [
             'follow',
@@ -102,6 +105,6 @@
     {!! get_seo_push() !!}
     {!! get_seo_tj() !!}
     </div>
-    
+
 </body>
 </html>

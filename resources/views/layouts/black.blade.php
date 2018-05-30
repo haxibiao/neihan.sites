@@ -18,7 +18,10 @@
     <meta name="description" content="@yield('description') ,{{ config('app.name') }} ">
 
     <!-- Styles -->
-    <link href="{{ mix('css/a.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/guest.css') }}" rel="stylesheet">
+    @if(Auth::check())
+        <link href="{{ mix('css/editor.css') }}" rel="stylesheet">
+    @endif
 
     @stack('css')
 
@@ -33,7 +36,7 @@
         @stack('section')
 
         @stack('modals')
-        
+
     </div>
 
     <!-- Scripts -->
@@ -59,8 +62,8 @@
     @endif
     <script type="text/javascript">
             window.csrf_token = '{{ csrf_token() }}';
-    </script> 
-    
+    </script>
+
     @if(Auth::check() && Auth::user()->checkEditor())
         <script src="{{ mix('js/editor.js') }}"></script>
     @elseif(Auth::check())
@@ -84,6 +87,6 @@
     {!! get_seo_push() !!}
     {!! get_seo_tj() !!}
     </div>
-    
+
 </body>
 </html>
