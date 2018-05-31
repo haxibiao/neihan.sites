@@ -13,11 +13,11 @@
 			                        <input id="option1" type="radio" value="2" v-model="money">
 			                        <label for="option1" class="option" @click="selectMoney"><i class="iconfont icon-jinqian1"></i> <span class="amount">2</span> <span class="piece">元</span></label>
 			                        <input id="option2" type="radio" value="5" v-model="money">
-			                        <label for="option2" class="option" @click="selectMoney"><i class="iconfont icon-jinqian1"></i> <span class="amount">5</span> <span class="piece">元</span></label>
+			                        <label for="option2" class="option hidden-xs" @click="selectMoney"><i class="iconfont icon-jinqian1"></i> <span class="amount">5</span> <span class="piece">元</span></label>
 			                        <input id="option3" type="radio" value="10" v-model="money">
 			                        <label for="option3" class="option" @click="selectMoney"><i class="iconfont icon-jinqian1"></i> <span class="amount">10</span> <span class="piece">元</span></label>
 			                        <input id="option4" type="radio" value="20" v-model="money">
-			                        <label for="option4" class="option" @click="selectMoney"><i class="iconfont icon-jinqian1"></i> <span class="amount">20</span> <span class="piece">元</span></label>
+			                        <label for="option4" class="option hidden-xs" @click="selectMoney"><i class="iconfont icon-jinqian1"></i> <span class="amount">20</span> <span class="piece">元</span></label>
 			                        <input id="option5" type="radio" value="50" v-model="money">
 			                        <label for="option5" class="option" @click="selectMoney"><i class="iconfont icon-jinqian1"></i> <span class="amount">50</span> <span class="piece">元</span></label>
 			                        <input id="custom-option" type="radio" class="custom-amount" ref="custom" :checked="custom">
