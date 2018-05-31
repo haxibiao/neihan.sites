@@ -59,6 +59,10 @@ class UserType extends GraphQLType
             'time_ago'          => \App\GraphQL\Field\TimeField::class,
 
             //counts
+            'count_reports'     => [
+                'type'        => Type::int(),
+                'description' => 'The count reports of article',
+            ],
             'count_words'       => [
                 'type'        => Type::int(),
                 'description' => 'count_words of user',
@@ -119,6 +123,14 @@ class UserType extends GraphQLType
             ],
 
             //computed
+
+            'reports'           => [
+                'type'        => Type::listOf(GraphQL::type('Report')),
+                'description' => '举报列表',
+                'resolve'     => function ($root, $args) {
+                    return $root->reports();
+                },
+            ],
 
             'followed_status'   => [
                 'type'        => Type::int(),

@@ -330,15 +330,30 @@ class Article extends Model
         if (isset($json->reports)) {
             $reports = $json->reports;
         }
+
+        $report_data = [
+            'type'   => $type,
+            'reason' => $reason,
+        ];
         $reports[] = [
-            $user->id => [
-                'type'   => $type,
-                'reason' => $reason,
-            ],
+            $user->id => $report_data,
         ];
 
         $json->reports = $reports;
         $this->json    = json_encode($json, JSON_UNESCAPED_UNICODE);
         $this->save();
+    }
+
+    public function reports()
+    {
+        $json = json_decode($this->json, true);
+        if (empty($json)) {
+            $json = [];
+        }
+        $reports = [];
+        if (isset($json['reports'])) {
+            $reports = $json['reports'];
+        }
+        return $reports;
     }
 }

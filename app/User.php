@@ -339,8 +339,8 @@ class User extends Authenticatable
     public function blockedUsers()
     {
         $json = json_decode($this->json, true);
-        if (!$json) {
-            $json = (object) [];
+        if (empty($json)) {
+            $json = [];
         }
 
         $blocked = [];
@@ -354,8 +354,8 @@ class User extends Authenticatable
     {
         $user = User::findOrFail($user_id);
         $json = json_decode($this->json, true);
-        if (!$json) {
-            $json = (object) [];
+        if (empty($json)) {
+            $json = [];
         }
 
         $blocked = [];
@@ -363,7 +363,7 @@ class User extends Authenticatable
             $blocked = $json['blocked'];
         }
 
-        $blocked = new Illuminate\Support\Collection($blocked);
+        $blocked = new \Illuminate\Support\Collection($blocked);
 
         if ($blocked->contains('id', $user_id)) {
             //unbloock
@@ -381,5 +381,49 @@ class User extends Authenticatable
         $json['blocked'] = $blocked;
         $this->json      = json_encode($json, JSON_UNESCAPED_UNICODE);
         $this->save();
+    }
+
+    public function report($type, $reason, $comment_id = null)
+    {
+        $this->count_reports = $this->count_reports + 1;
+
+        $json = json_decode($this->json);
+        if (!$json) {
+            $json = (object) [];
+        }
+
+        $user    = getUser();
+        $reports = [];
+        if (isset($json->reports)) {
+            $reports = $json->reports;
+        }
+
+        $report_data = [
+            'type'   => $type,
+            'reason' => $reason,
+        ];
+        if ($comment_id) {
+            $report_data['comment_id'] = $comment_id;
+        }
+        $reports[] = [
+            $user->id => $report_data,
+        ];
+
+        $json->reports = $reports;
+        $this->json    = json_encode($json, JSON_UNESCAPED_UNICODE);
+        $this->save();
+    }
+
+    public function reports()
+    {
+        $json = json_decode($this->json, true);
+        if (empty($json)) {
+            $json = [];
+        }
+        $reports = [];
+        if (isset($json['reports'])) {
+            $reports = $json['reports'];
+        }
+        return $reports;
     }
 }

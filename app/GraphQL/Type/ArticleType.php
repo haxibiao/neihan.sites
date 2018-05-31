@@ -70,6 +70,14 @@ class ArticleType extends GraphQLType
 
             //computed
 
+            'reports'      => [
+                'type'        => Type::listOf(GraphQL::type('Report')),
+                'description' => '举报列表',
+                'resolve'     => function ($root, $args) {
+                    return $root->reports();
+                },
+            ],
+
             'has_image'       => [
                 'type'        => Type::boolean(),
                 'description' => 'is has image ...',
@@ -135,6 +143,10 @@ class ArticleType extends GraphQLType
                 'resolve'     => function ($root, $args) {
                     return $root->count_comments ? $root->count_comments : 0;
                 },
+            ],
+            'count_reports'   => [
+                'type'        => Type::int(),
+                'description' => 'The count reports of article',
             ],
             'count_replies'   => [
                 'type'        => Type::int(),

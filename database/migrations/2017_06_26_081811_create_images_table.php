@@ -15,18 +15,21 @@ class CreateImagesTable extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id')->nullable();
             $table->string('title')->nullable()->index();
+            $table->string('source_url')->nullable();
+            $table->string('hash')->nullable(); //TODO:: need add index 
             $table->string('path')->nullable()->index();
-            $table->string('path_top')->nullable();
+            
+            $table->string('path_top')->nullable(); // whether for top ...
+            
             $table->string('extension')->nullable()->index();
             $table->string('disk')->nullable();
-            $table->string('source_url')->nullable();
+            
             $table->integer('count')->default(0)->index();
             $table->integer('status')->default(0)->index();
-            $table->integer('user_id')->nullable();
             $table->integer('width')->nullable();
             $table->integer('height')->nullable();
-            $table->string('hash')->nullable();
             $table->timestamps();
         });
     }

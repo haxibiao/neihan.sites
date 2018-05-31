@@ -27,6 +27,11 @@ class CreateCommentsTable extends Migration
             $table->integer('lou')->index()->default(0);
             $table->integer('likes')->index()->default(0);
             $table->integer('reports')->index()->default(0);
+
+            //for app @user
+            $table->integer('at_uid')->index()->nullable();
+            $table->integer('status')->index()->nullable();
+
             $table->timestamps();
         });
     }

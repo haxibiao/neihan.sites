@@ -27,6 +27,7 @@ class ArticlesQuery extends Query
             'limit'         => ['name' => 'limit', 'type' => Type::int()],
             'offset'        => ['name' => 'offset', 'type' => Type::int()],
             'filter'        => ['name' => 'filter', 'type' => GraphQL::type('ArticleFilter')],
+            'hot_time'      => ['name' => 'hot_time', 'type' => Type::int()],
             'order'         => ['name' => 'order', 'type' => GraphQL::type('ArticleOrder')],
         ];
     }
@@ -36,12 +37,25 @@ class ArticlesQuery extends Query
 
         $qb = Article::orderBy('id', 'desc');
 
-        if (isset($args['filter']) && $args['filter'] == 'DRAFTS') {
-            $qb = $qb->where('status', '=', 0);
-        } else if (isset($args['filter']) && $args['filter'] == 'DELETED') {
-            $qb = $qb->where('status', '<=', 0);
-        } else {
-            $qb = $qb->where('status', '>', 0);
+        if (isset($args['filter'])) {
+            switch ($args['filter']) {
+                case 'DRAFTS':
+                    $qb = $qb->where('status', '=', 0);
+                    break;
+
+                case 'DELETED':
+                    $qb = $qb->where('status', '<=', 0);
+                    break;
+
+                default:
+                    $qb = $qb->where('status', '>', 0);
+                    break;
+            }
+        }
+
+        if (isset($args['hot_time'])) {
+            $qb = $qb->orderBy('hits', 'desc');
+            $qb = $qb->where('updated_at', '>', \Carbon\Carbon::now()->addDays(-$args['hot_time']));
         }
 
         if (isset($args['user_id'])) {

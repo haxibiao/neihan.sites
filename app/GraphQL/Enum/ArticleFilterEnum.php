@@ -20,6 +20,11 @@ class ArticleFilterEnum extends GraphQLType {
             'NEW_REQUESTED' => 'NEW_REQUESTED',
             'ALL' => 'ALL',
 
+            // //filter times;
+            // 'HOT_DAY'=>'HOT_DAY',
+            // 'HOT_WEEK'=>'HOT_WEEK',
+            // 'HOT_MOUNTH'=>'MOUNTH',
+
             //my
             'DRAFTS' => 'DRAFTS',
             'LIKED' => 'LIKED',

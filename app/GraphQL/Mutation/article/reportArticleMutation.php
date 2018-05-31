@@ -38,7 +38,7 @@ class reportArticleMutation extends Mutation
     public function resolve($root, $args)
     {
         $article = Article::findOrFail($args['id']);
-        $reason  = isset($args['type']) ? $args['type'] : '';
+        $reason  = isset($args['reason']) ? $args['reason'] : '';
         $article->report($args['type'], $reason);
         return $article;
     }

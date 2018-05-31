@@ -29,12 +29,7 @@ class CreateUsersTable extends Migration
 
             //seo
             $table->boolean('is_seoer')->default(0)->index();
-
-            // $table->string('seo_meta')->nullable();            
-            // $table->text('seo_push')->nullable();
-            // $table->text('seo_tj')->nullable();
-
-            $table->text('seo_json')->nullable(); //-> json
+            $table->text('json')->nullable();
 
             //count
             $table->integer('count_articles')->default(0);
@@ -45,6 +40,7 @@ class CreateUsersTable extends Migration
             $table->integer('count_collections')->default(0);
             $table->integer('count_favorites')->default(0);
             $table->integer('count_actions')->default(0);
+            $table->integer('count_reports')->default(0);
 
             //profile
             $table->boolean('enable_tips')->default(1);

@@ -2,8 +2,8 @@
 
 namespace App\GraphQL\Type;
 
-use GraphQL;
 use Folklore\GraphQL\Support\Type as GraphQLType;
+use GraphQL;
 use GraphQL\Type\Definition\Type;
 
 class ImageType extends GraphQLType
@@ -26,21 +26,27 @@ class ImageType extends GraphQLType
                 'type'        => Type::nonNull(Type::int()),
                 'description' => 'id of the Image',
             ],
-            'width'       => [
+            'width'     => [
                 'type'        => Type::int(),
                 'description' => 'width of Image',
             ],
-            'height'       => [
+            'height'    => [
                 'type'        => Type::int(),
                 'description' => 'height of Image',
             ],
             'url'       => [
                 'type'        => Type::string(),
                 'description' => 'url of Image',
+                'resolve'     => function ($root, $args) {
+                    return $root->url();
+                },
             ],
             'url_small' => [
                 'type'        => Type::string(),
                 'description' => 'url_small of Image',
+                'resolve'     => function ($root, $args) {
+                    return $root->url_small();
+                },
             ],
             'time_ago'  => \App\GraphQL\Field\TimeField::class,
 
@@ -48,22 +54,11 @@ class ImageType extends GraphQLType
             'user'      => [
                 'type'        => GraphQL::type('User'),
                 'description' => 'user who made this Image',
+                'resolve'     => function ($root, $args) {
+                    return $root->user;
+                },
             ],
         ];
     }
 
-    public function resolveUrlField($root, $args)
-    {
-        return $root->url();
-    }
-
-    public function resolveUrlSmallField($root, $args)
-    {
-        return $root->url_small();
-    }
-
-    public function resolveUserField($root, $args)
-    {
-        return $root->user;
-    }
 }
