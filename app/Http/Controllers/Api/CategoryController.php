@@ -284,21 +284,27 @@ class CategoryController extends Controller
             $article->save();
 
             //自动置顶最新收录的文章到发现，时间由pm来规定 没有就1天
-            $expire = config('seo.article_stick_day') ?: 1;
-            stick_article([
-                'article_id' => $article->id,
-                'expire'     => $expire,
-                'position'   => '发现',
-                'reason'     => '新收录',
-            ], true);
+            $stick_articles = collect(get_stick_articles());
+            $is_stick       = $stick_articles->search(function ($item, $key) {
+                    if ($item->id == 1374) {
+                        return true;
+                    }
+            });
+            if ($article->status > 0 &&$is_stick) {
+                $expire = config('seo.article_stick_day') ?: 1;
+                stick_article([
+                    'article_id' => $article->id,
+                    'expire'     => $expire,
+                    'position'   => '发现',
+                    'reason'     => '新收录',
+                ], true);
+            }
 
             //一旦收录成功一篇文章，该用户自动成为本专题作者, pivot.approved = 该专题收录他的文章数
-            $cate = $article->user->categories()->where('id', $category->id)->first();
+            $cate = $article->user->categories()->find($category->id);
             if (!$cate) {
                 $article->user->categories()->syncWithoutDetaching([
-                    $category->id => [
-                        'count_approved' => 1,
-                    ],
+                    $category->id => ['count_approved' => 1],
                 ]);
             } else {
                 //更新作者在专题的收录数

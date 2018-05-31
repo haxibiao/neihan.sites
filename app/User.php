@@ -126,7 +126,7 @@ class User extends Authenticatable
 
     public function categories()
     {
-        return $this->hasMany(\App\Category::class)->where('type', 'article');
+        return $this->belongsToMany(\App\Category::class)->where('type', 'article');
     }
 
     public function articles()
