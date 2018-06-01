@@ -34,15 +34,15 @@
 		<div class="invite-answer" v-if="questionId" v-show="showInvite">
 			<div class="invite-user">
 				<div class="invite-status">立即邀请用户，更快获得回答</div>
-				<ul class="invite-list"> 
-					<li class="note-info info-xs" v-for="user in uninvited">
+				<transition-group name="list" tag="ul" class="invite-list">
+					<li class="note-info info-xs" v-for="user in uninvited":key="user.id">
 						<a :href="'/user/'+user.id" class="avatar"  v-if="!user.invited">
 							<img :src="user.avatar" alt=""></a>
 							<a class="btn-base btn-follow btn-md" @click="inviteUser(user)"><i class="iconfont icon-guanzhu"></i><span>邀请</span></a>
 							<div class="title"><a :href="'/user/'+user.id" class="name">{{ user.name }}</a></div>
 							<div class="info"><p>{{ user.introduction }}</p></div>
 					</li>
-				</ul>
+				</transition-group>
 			</div>
 		</div>
 		<!-- 评论中心 -->
@@ -287,6 +287,7 @@ export default {
 			.invite-list {
 				max-height: 338px;
 				overflow: auto;
+				overflow-x: hidden;
 				border-top: 1px solid #f8f8f8;
 				.note-info {
 					width: 98%;
@@ -319,5 +320,12 @@ export default {
 			border-color: #2b89ca !important;
 		}
 	}
+}
+.list-enter-active, .list-leave-active {
+  transition: all 1s;
+}
+.list-enter, .list-leave-to {
+  opacity: 0;
+  transform: translateX(10%);
 }
 </style>

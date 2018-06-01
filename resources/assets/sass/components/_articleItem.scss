@@ -129,7 +129,7 @@
       border-radius: 3px;
     }
   }
-  //动态的特殊样式
+  //用户动态的特殊样式
   .comment {
     line-height: 1.5;
     font-size: $font-size-tip;
@@ -165,10 +165,12 @@
     }
   }
 }
+// 问答item
 .question-item {
   overflow: hidden;
   padding: 15px 20px;
   background-color: $theme-skin;
+  // 付费问答label
   &.pay {
     &::after {
       content: "付费咨询";
@@ -198,6 +200,7 @@
       padding-right: 5%;
     }
   }
+  //精选问答+.simple
   &.simple {
     padding: 30px 0 0 0;
     background-color: unset;
@@ -231,7 +234,7 @@
         }
       }
       .content {
-        padding-right: 0;
+        padding-right: 10px;
         flex: 1;
         min-height: auto;
       }
