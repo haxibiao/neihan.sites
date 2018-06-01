@@ -109,6 +109,14 @@
       }
     }
   }
+  &::before {
+    content: "";
+    position: absolute;
+    height: 6px;
+    width: 100%;
+    top: -6px;
+    opacity: 0;
+  }
 }
 [data-hover="dropdown"] {
   &:hover {
