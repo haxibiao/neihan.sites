@@ -79,10 +79,8 @@ class FixData extends Command
                     $video->duration  = $duration;
 
                     //截取图片
-                    $video->cover = '/storage/video/thumbnail_' . $video->id . '.jpg';
-                    $this->cmd->info("截取图片:$video->cover => $video_path");
-                    $cover = public_path($video->cover);
-                    \App\Jobs\videoCapture::dispatch($video_path, $cover, $video->id);
+                    $video->takeSnapshot();
+                    $this->cmd->info("截取图片:$video->cover => $video->path");
                 }
 
                 $video->category_id = 22;

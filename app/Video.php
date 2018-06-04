@@ -82,6 +82,11 @@ class Video extends Model
         return $covers;
     }
 
+    public function takeSnapshot($force = false)
+    {
+        \App\Jobs\videoCapture::dispatch($this, $force);
+    }
+
     public function fillForJs()
     {
 

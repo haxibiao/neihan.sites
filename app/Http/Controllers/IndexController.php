@@ -93,7 +93,7 @@ class IndexController extends Controller
 
         $data->carousel = get_top_articles();
 
-        $data->videos = Video::orderBy('id', 'desc')->take(4)->get();
+        $data->videos = Video::orderBy('id', 'desc')->where('status', '>', 0)->take(4)->get();
 
         return view('index.index')
             ->withData($data);

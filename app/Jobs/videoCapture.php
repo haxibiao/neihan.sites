@@ -13,20 +13,21 @@ class videoCapture implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $tries = 5;
+    public $tries = 2;
     // public $timeout = 600;  //TODO:: need pcntl PHP extension!!!
 
-    protected $video_path, $cover, $video_id;
+    protected $video;
+    protected $force;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($video_path, $cover, $video_id = null)
+    public function __construct(\App\Video $video, $force = false)
     {
-        $this->cover      = $cover;
-        $this->video_path = $video_path;
-        $this->video_id   = $video_id;
+        $this->video = $video;
+        $this->force = $force;
     }
 
     /**
@@ -36,36 +37,40 @@ class videoCapture implements ShouldQueue
      */
     public function handle()
     {
-        ini_set('memory_limit', '128M');
+        $video        = $this->video;
+        $video->cover = '/storage/video/' . $video->id . '.jpg';
 
-        $video_path = $this->video_path;
-        $cover      = $this->cover;
-        $video      = Video::findOrFail($this->video_id);
+        $video_path = starts_with($video->path, 'http') ? $video->path : public_path($video->path);
+        $cover      = public_path($video->cover);
 
+        //get duration
         $covers           = [];
         $cmd_get_duration = 'ffprobe -i ' . $video_path . ' -show_entries format=duration -v quiet -of csv="p=0" 2>&1';
         $duration         = `$cmd_get_duration`;
         $duration         = intval($duration);
         $video->duration  = $duration;
+
+        //TODO:: less than 15s video need cleanup or warinig ...
         if ($duration > 15) {
             //take 8 covers jpg file, return first ...
             for ($i = 1; $i <= 8; $i++) {
                 $seconds = intval($duration * $i / 8);
                 $cover_i = $cover . ".$i.jpg";
-                if (file_exists($cover_i)) {
-                    $cmd = "ffmpeg -i $video_path -an -s 300x200 -ss $seconds -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover_i 2>&1";
+                if ($this->force || !file_exists($cover_i)) {
+                    $cmd       = "ffmpeg -i $video_path -an -s 300x200 -ss $seconds -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover_i 2>&1";
+                    var_dump($cmd);
                     $exit_code = exec($cmd);
+                    $covers[] = $cover_i;
                 }
-                $covers[] = $cover_i;
             }
 
             if (count($covers)) {
                 //copy first screen as default cover..
                 copy($covers[0], $cover);
+                $video->status     = 1;
+                $video->timestamps = false;
+                $video->save();
             }
-
         }
-        $video->timestamps = false;
-        $video->save();
     }
 }

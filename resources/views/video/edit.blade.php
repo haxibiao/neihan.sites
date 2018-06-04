@@ -51,6 +51,23 @@
                     </small>
                 </div>
 
+
+                <div class="form-group{{ $errors->has('path') ? ' has-error' : '' }}">
+                    {!! Form::label('path', '视频地址(提供了cdn地址，下面视频文件可以无需上传)') !!}
+                    {!! Form::text('path', $video->path, ['class' => 'form-control']) !!}
+                    <small class="text-danger">{{ $errors->first('path') }}</small>
+                </div>
+                <div class="form-group{{ $errors->has('video') ? ' has-error' : '' }}">
+                    {!! Form::label('video', '视频文件') !!}
+                            {!! Form::file('video') !!}
+                    <p class="help-block">
+                        (目前只支持mp4格式，其他的需要先转码,　如果提供了cdn地址，这里就无需再上传了)
+                    </p>
+                    <small class="text-danger">
+                        {{ $errors->first('video') }}
+                    </small>
+                </div>
+
                 <div class="row">
                     <div class="panel panel-default">
                         <div class="panel-heading">

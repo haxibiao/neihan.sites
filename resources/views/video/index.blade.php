@@ -28,7 +28,7 @@
             <div class="media">
                 <a class="pull-left" href="/video/{{ $video->id }}">
                     <img alt="{{ $video->title }}" class="img img-thumbnail img-responsive" 
-                    	src="{{ $video->cover() }}">
+                    	src="{{ $video->cover() }}" style="max-width: 300px">
                     </img>
                 </a>
                 <div class="media-body">

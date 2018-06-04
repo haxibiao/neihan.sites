@@ -21,7 +21,7 @@
                 {!! Form::open(['method' => 'POST', 'route' => 'video.store', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
                 <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                     {!! Form::label('title', '视频标题(非必填,默认取上传的mp4文件名)') !!}
-                            {!! Form::text('title', null, ['class' => 'form-control']) !!}
+                            {!! Form::text('title', null, ['class' => 'form-control', 'required'=>true]) !!}
                     <small class="text-danger">
                         {{ $errors->first('title') }}
                     </small>

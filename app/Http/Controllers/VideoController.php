@@ -61,36 +61,32 @@ class VideoController extends Controller
 
         $file = $request->file('video');
         if ($file) {
-            $extension   = $file->getClientOriginalExtension();
-            $origin_name = $file->getClientOriginalName();
-            $filename    = str_replace('.mp4', '', $origin_name);
-            if (empty($video->title)) {
-                $video->title = $filename;
+            $hash  = md5_file($file->path());
+            $video = Video::firstOrNew([
+                'hash' => $hash,
+            ]);
+            if ($video->id) {
+                dd("相同视频已存在");
             }
+            $video->fill($request->all());
+            $video->save();
 
-            $video_index = get_cached_index(Video::max('id'), 'video');
-            $filename    = $video_index . '.' . $extension;
+            $extension   = $file->getClientOriginalExtension();
+            $filename    = $video->id . '.' . $extension;
             $path        = '/storage/video/' . $filename;
             $video->path = $path;
             $file->move(public_path('/storage/video/'), $filename);
-        } else {
-            if (empty($video->title)) {
-                //自动获取视频文件做标题
-                $filename     = pathinfo(parse_url($video->path)['path'])['filename'];
-                $filename     = str_replace('.flv', '', $filename);
-                $video->title = $filename;
-            }
         }
+
+        if (empty($video->path)) {
+            dd("请输入有效的cdn视频地址,或者上传合理的视频文件");
+        }
+
+        $video->cover = '/images/uploadImage.jpg';
         $video->save();
 
         //截取图片
-        $video_path   = starts_with($video->path, 'http') ? $video->path : public_path($video->path);
-        $video->cover = '/storage/video/thumbnail_' . $video->id . '.jpg';
-        $cover        = public_path($video->cover);
-
-        videoCapture::dispatch($video_path, $cover, $video->id);
-
-        $video->save();
+        $video->takeSnapshot();
         return redirect()->to('/video');
     }
 
@@ -151,7 +147,6 @@ class VideoController extends Controller
     public function update(Request $request, $id)
     {
         $video = Video::findOrFail($id);
-        $video->update($request->all());
         //维护分类关系
         $this->process_category($video);
 
@@ -159,14 +154,31 @@ class VideoController extends Controller
             $result = copy(public_path($request->thumbnail), public_path($video->cover));
         }
 
-        $video_path = $video->path;
-        if (!starts_with($video_path, 'http')) {
+        $changed = false;
+
+        //cdn url change
+        if ($request->path != $video->path) {
+            $changed = true;
+        }
+        $video->update($request->all());
+
+        if (!starts_with($request->path, 'http')) {
             //保存mp4
             $file = $request->file('video');
             if ($file) {
-                $extension   = $file->getClientOriginalExtension();
-                $origin_name = $file->getClientOriginalName();
-                $filename    = str_replace('.mp4', '', $origin_name);
+                $hash = md5_file($file->path());
+                if ($video->hash == $hash) {
+                    dd("视频未变更");
+                }
+                if (Video::where('hash', $hash)->count()) {
+                    dd("相同视频已存在");
+                }
+                $video->hash = $hash;
+                //hash changed
+                $changed = true;
+
+                $extension = $file->getClientOriginalExtension();
+
                 if (empty($video->title)) {
                     $video->title = $filename;
                 }
@@ -176,14 +188,10 @@ class VideoController extends Controller
                 $video->path = $path;
                 $file->move(public_path('/storage/video/'), $filename);
             }
-            $video_path = public_path($video->path);
-        } else {
-            if (empty($video->title)) {
-                //自动获取视频文件做标题
-                $filename     = pathinfo(parse_url($video->path)['path'])['filename'];
-                $filename     = str_replace('.mp4', '', $filename);
-                $video->title = $filename;
-            }
+        }
+
+        if ($changed) {
+            $video->takeSnapshot(true);
         }
 
         $video->save();
