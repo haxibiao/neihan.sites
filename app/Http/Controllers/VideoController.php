@@ -152,6 +152,8 @@ class VideoController extends Controller
 
         if (!empty($request->thumbnail)) {
             $result = copy(public_path($request->thumbnail), public_path($video->cover));
+            $video->status = 1;
+            $video->save();
         }
 
         $changed = false;
