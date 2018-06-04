@@ -37,7 +37,7 @@
                     <img src="{{ $video->cover() }}" alt="{{ $video->title }}">
                     <i class="duration">
                       {{-- 持续时间 --}}
-                      0{{ rand(1,9) }}:{{ rand(10,59) }}
+                      @sectominute($video->duration)
                     </i>
                   </a>
                 </div>
@@ -47,7 +47,7 @@
                   </li>
                   <li>
                     {{-- 播放量 --}}
-                    <p class="subtitle single-line">{{ rand(100,1000) }}次播放</p>
+                    <p class="subtitle single-line">{{ $video->hits }}次播放</p>
                   </li>
                 </ul>
               </div>

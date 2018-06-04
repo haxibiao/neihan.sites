@@ -4,6 +4,7 @@ namespace ops\commands;
 
 use App\Comment;
 use App\Image;
+use App\Video;
 use Illuminate\Console\Command;
 
 class FixData extends Command
@@ -65,7 +66,29 @@ class FixData extends Command
 
     public function fix_videos()
     {
+        $this->cmd->info('fix videos ...');
+        $qb = Video::orderBy('id');
+        $qb->chunk(100, function ($videos) {
+            foreach ($videos as $video) {
+                //fix duration
+                $video_path = starts_with($video->path, 'http') ? $video->path : public_path($video->path);
+                if (starts_with($video_path, 'http') || file_exists($video_path)) {
+                    $cmd_get_duration = 'ffprobe -i ' . $video_path . ' -show_entries format=duration -v quiet -of csv="p=0" 2>&1';
+                    $duration         = `$cmd_get_duration`;
+                    $duration         = intval($duration);
+                    $video->duration  = $duration;
 
+                    //截取图片
+                    $video->cover = '/storage/video/thumbnail_' . $video->id . '.jpg';
+                    $this->cmd->info("截取图片:$video->cover => $video_path");
+                    $cover = public_path($video->cover);
+                    \App\Jobs\videoCapture::dispatch($video_path, $cover, $video->id);
+                }
+
+                $video->category_id = 22;
+                $video->save();
+            }
+        });
     }
 
     public function fix_images()

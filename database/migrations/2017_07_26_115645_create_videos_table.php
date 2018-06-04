@@ -29,6 +29,10 @@ class CreateVideosTable extends Migration
             $table->text('json')->nullable();
             $table->string('adstime')->nullable();
             $table->integer('likes')->default(0)->index();
+
+            //2018-5-24-czg 添加字段 用于 统计视频播放量 
+            $table->integer('hits')->default(0);
+
             $table->timestamps();
         });
     }

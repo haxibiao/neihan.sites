@@ -18,7 +18,7 @@
             </h3>
         </div>
         <div class="panel-body">
-            <div class="col-md-10">
+            <div class="col-md-10 col-md-offset-1">
                 {!! Form::open(['method' => 'PUT', 'route' => ['video.update', $video->id], 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
                 <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                     {!! Form::label('title', '视频标题(非必填)') !!}
@@ -50,43 +50,36 @@
                         {{ $errors->first('introduction') }}
                     </small>
                 </div>
-                <div class="form-group{{ $errors->has('path') ? ' has-error' : '' }}">
-                    {!! Form::label('path', '视频地址') !!}
-                    {!! Form::text('path', $video->path, ['class' => 'form-control']) !!}
-                    <small class="text-danger">{{ $errors->first('path') }}</small>
-                </div>
-                {{-- <div class="form-group{{ $errors->has('hash') ? ' has-error' : '' }}">
-                    {!! Form::label('hash', '文件md5 hash') !!}
-                    {!! Form::text('hash',$video->hash, ['class' => 'form-control']) !!}
-                    <small class="text-danger">{{ $errors->first('hash') }}</small>
-                </div> --}}
-                <div class="form-group{{ $errors->has('video') ? ' has-error' : '' }}">
-                    {!! Form::label('video', '视频文件') !!}
-					        {!! Form::file('video') !!}
-                    <p class="help-block">
-                        (目前只支持mp4格式，其他的需要先转码,　如果提供了cdn地址，这里就无需再上传了)
-                    </p>
-                    <small class="text-danger">
-                        {{ $errors->first('video') }}
-                    </small>
-                </div>
 
-                @foreach($data['thumbnail'] as $thumbnail)
-                <div class="radio{{ $errors->has('thumbnail') ? ' has-error' : '' }}">
-                    <img src="{{ $thumbnail }}">
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">截图</h3>
+                        </div>
+                        <div class="panel-body">
+                            @php   
+                                $thumbIndex = 0; 
+                            @endphp
+                            @foreach($data['thumbnail'] as $thumbnail)
+                            @php
+                                $thumbIndex++;
+                            @endphp
+                            <div class="col-xs-6 col-md-3 {{ $errors->has('thumbnail') ? ' has-error' : '' }}">
+                                <label for="thumbnail{{ $thumbIndex }}">
+                                    <img src="{{ $thumbnail }}" class="img img-responsive">
+                                </label>
 
-                    <label for="thumbnail">
-                        {!! Form::radio('thumbnail',$thumbnail,null) !!}
-                    </label>
-                    <small class="text-danger">{{ $errors->first('thumbnail') }}</small>
-                </div>
-                @endforeach
+                                {!! str_replace('>','id="'.'thumbnail'.$thumbIndex.'">', Form::radio('thumbnail', $thumbnail)) !!}
+                                <label for="thumbnail{{ $thumbIndex }}">
+                                    选取
+                                </label>
+                                <small class="text-danger">{{ $errors->first('thumbnail') }}</small>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>      
+                </div>                 
 
-                <div class="form-group{{ $errors->has('adstime') ? ' has-error' : '' }}">
-                    {!! Form::label('adstime', '广告时间(非必填，如果有就填写，方便后续脚本清理广告)') !!}
-                    {!! Form::text('adstime', $video->adstime, ['class' => 'form-control', 'placeholder' => '比如: ５秒之前,输入 <5s 4分33秒之后，输入: >4:33 中间时段： 2:20-2:25，多个时段，空格隔开']) !!}
-                    <small class="text-danger">{{ $errors->first('adstime') }}</small>
-                </div>
                 <div class="btn-group pull-right">
                     {!! Form::hidden('user_id', Auth::user()->id) !!}
                     {!! Form::reset("重置", ['class' => 'btn btn-warning']) !!}
@@ -95,9 +88,6 @@
                 {!! Form::close() !!}
             </div>
 
-            <div class="col-md-2">
-                @include('video.parts.add_panel')
-            </div>
         </div>
     </div>
 </div>

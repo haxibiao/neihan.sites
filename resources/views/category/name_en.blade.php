@@ -6,8 +6,8 @@
 
 @section('content')
 <div id="category">
-      <div class="clearfix">
-        <div class="main sm-left">
+    <div class="clearfix">
+        <div class="main col-sm-7">
             {{-- 分类信息 --}}
             @include('category.parts.information')
             {{-- 内容 --}}
@@ -62,7 +62,7 @@
                                 <img src="{{ $video->cover() }}" alt="{{ $video->title }}">
                                 <i class="duration">
                                   {{-- 持续时间 --}}
-                                  0{{ rand(1,9) }}:{{ rand(10,59) }}
+                                  @sectominute($video->duration)
                                 </i>
                               </a>
                             </div>
@@ -72,7 +72,7 @@
                               </li>
                               <li>
                                 {{-- 播放量 --}}
-                                <p class="subtitle single-line">{{ rand(100,1000) }}次播放</p>
+                                <p class="subtitle single-line">{{ $video->hits }}次播放</p>
                               </li>
                             </ul>
                           </div>
@@ -83,14 +83,14 @@
                  </div>
             </div>
         </div>
-        <div class="aside sm-right hidden-xs">
+        <div class="aside col-sm-4 col-sm-offset-1">
             @include('category.parts.description')
             @include('parts.share')
             @include('category.parts.admins')
             @include('category.parts.authors')
             @include('category.parts.followers')
         </div>
-      </div>
+    </div>
 </div>
 @endsection
 

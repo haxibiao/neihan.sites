@@ -30,7 +30,10 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('timeago', function ($expression) {
             return "<?php echo diffForHumansCN($expression); ?>";
         });
-
+        //将秒数转换成 分:秒
+        Blade::directive('sectominute', function ($expression) {
+            return "<?php echo gmdate('i:s', $expression); ?>";
+        });
         Blade::if('admin', function () {
             return Auth::check() && Auth::user()->checkAdmin();
         });

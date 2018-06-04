@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\Category;
-use App\Video;
 use App\Jobs\videoCapture;
+use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -54,8 +54,10 @@ class VideoController extends Controller
         if ($request->ajax()) {
             return $this->jsonStore($request);
         }
-
         $video = new Video($request->all());
+
+        //处理视频与分类的关系
+        $this->process_category($video);
 
         $file = $request->file('video');
         if ($file) {
@@ -86,7 +88,7 @@ class VideoController extends Controller
         $video->cover = '/storage/video/thumbnail_' . $video->id . '.jpg';
         $cover        = public_path($video->cover);
 
-        videoCapture::dispatch($video_path, $cover);
+        videoCapture::dispatch($video_path, $cover, $video->id);
 
         $video->save();
         return redirect()->to('/video');
@@ -100,19 +102,28 @@ class VideoController extends Controller
      */
     public function show($id)
     {
-        $video              = Video::with('user')->with('articles')->findOrFail($id);
+        $video = Video::with('user')->with('articles')->with('category')->findOrFail($id);
+        //增加点击量
+        $video->increment('hits', 1);
+
         $data['json_lists'] = $this->get_json_lists($video);
         // dd($data['json_lists']);
 
         //get some related videos ...
-        $videos = Video::orderBy('id', 'desc')->skip(rand(0, Video::count() - 8))->take(4)->get();
-        if ($video->category) {
+        $videos               = Video::orderBy('id', 'desc')->skip(rand(0, Video::count() - 8))->take(4)->get();
+        $video_category_query = $video->category;
+        if ($video_category_query && $video_category_query->videos()->count() >= 4) {
             $videos = $video->category->videos()->take(4)->get();
         }
 
+        //dd($videos);
         $data['related'] = $videos;
 
-        return view('video.show')->withVideo($video)->withData($data);
+        $current_catagory = $video_category_query->first();
+        return view('video.show')
+            ->withVideoDesc($video)
+            ->withCategory($current_catagory)
+            ->withData($data);
     }
 
     /**
@@ -125,7 +136,7 @@ class VideoController extends Controller
     {
         $video                    = Video::findOrFail($id);
         $data['video_categories'] = Category::where('type', 'video')->pluck('name', 'id');
-        $data['thumbnail']=$video->covers();
+        $data['thumbnail']        = $video->covers();
 
         return view('video.edit')->withVideo($video)->withData($data);
     }
@@ -141,9 +152,11 @@ class VideoController extends Controller
     {
         $video = Video::findOrFail($id);
         $video->update($request->all());
+        //维护分类关系
+        $this->process_category($video);
 
-        if(!empty($request->thumbnail)){
-            copy(public_path($request->thumbnail),public_path($video->cover));
+        if (!empty($request->thumbnail)) {
+            $result = copy(public_path($request->thumbnail), public_path($video->cover));
         }
 
         $video_path = $video->path;
@@ -172,11 +185,6 @@ class VideoController extends Controller
                 $video->title = $filename;
             }
         }
-
-        //截取图片
-        $video->cover = '/storage/video/thumbnail_' . $video->id . '.jpg';
-        $cover        = public_path($video->cover);
-        videoCapture::dispatch($video_path, $cover);
 
         $video->save();
 
@@ -323,23 +331,23 @@ class VideoController extends Controller
 
     public function make_cover($video_path, $cover)
     {
-        $covers = [];
-        $cmd_get_duration = 'ffprobe -i '.$video_path.' -show_entries format=duration -v quiet -of csv="p=0" 2>&1';
+        $covers           = [];
+        $cmd_get_duration = 'ffprobe -i ' . $video_path . ' -show_entries format=duration -v quiet -of csv="p=0" 2>&1';
         $duration         = `$cmd_get_duration`;
         $duration         = intval($duration);
         if ($duration > 15) {
             //take 8 covers jpg file, return first ...
             for ($i = 1; $i <= 8; $i++) {
-                $seconds = intval($duration * $i/8);
-                $cover_i = $cover.".$i.jpg";
-                $cmd    = "ffmpeg -i $video_path -deinterlace -an -s 300x200 -ss $seconds -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover_i 2>&1";
+                $seconds   = intval($duration * $i / 8);
+                $cover_i   = $cover . ".$i.jpg";
+                $cmd       = "ffmpeg -i $video_path -deinterlace -an -s 300x200 -ss $seconds -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover_i 2>&1";
                 $exit_code = exec($cmd);
-                if($exit_code == 0){
+                if ($exit_code == 0) {
                     $covers[] = $cover_i;
                 }
             }
 
-            if(count($covers)) {
+            if (count($covers)) {
                 //copy first screen as default cover..
                 copy($covers[0], $cover);
             }
@@ -377,5 +385,38 @@ class VideoController extends Controller
             }
         }
         return $lists_new;
+    }
+
+    //处理视频与分类的关系
+    public function process_category($video)
+    {
+        $old_categories   = $video->categories;
+        $new_categories   = json_decode(request('categories'));
+        $new_category_ids = [];
+        //选取第一个分类做视频的主分类
+        if (!empty($new_categories)) {
+            $video->category_id = $new_categories[0]->id;
+            $video->save();
+            foreach ($new_categories as $cate) {
+                $new_category_ids[] = $cate->id;
+            }
+        }
+        //同步分类关系,以最后一次选取的为准
+        $video->categories()->sync($new_category_ids);
+        //更新分类下的视频数量
+        if (is_array($new_categories)) {
+            foreach ($new_categories as $category) {
+                //更新新分类文章数
+                if ($category = Category::find($category->id)) {
+                    $category->count_videos = $category->videos()->count();
+                    $category->save();
+                }
+            }
+        }
+        //更新旧分类文章数
+        foreach ($old_categories as $category) {
+            $category->count_videos = $category->videos()->count();
+            $category->save();
+        }
     }
 }

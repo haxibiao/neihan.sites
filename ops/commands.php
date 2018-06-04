@@ -14,7 +14,7 @@ use Illuminate\Foundation\Inspiring;
 */
 
 Artisan::command('fix:data {operation} {--force}', function ($operation) {
-	$cmd = new \tools\commands\FixData($this);
+	$cmd = new \ops\commands\FixData($this);
     $cmd->handle();
 })->describe('fix data ...');
 
