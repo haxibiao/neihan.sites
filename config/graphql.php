@@ -142,6 +142,11 @@ return [
                 'follows'   => '\App\GraphQL\Query\FollowsQuery',
             ],
             'mutation' => [
+                //report
+                'reportArticle'          => '\App\GraphQL\Mutation\article\reportArticleMutation',
+                'reportUser'             => '\App\GraphQL\Mutation\user\reportUserMutation',
+
+                //user
                 'signUp'                 => '\App\GraphQL\Mutation\user\signUpMutation',
                 'signIn'                 => '\App\GraphQL\Mutation\user\signInMutation',
                 'updateUserEmail'        => '\App\GraphQL\Mutation\user\updateUserEmailMutation',
@@ -253,6 +258,9 @@ return [
         'Message'          => '\App\GraphQL\Type\MessageType',
         'Tip'              => '\App\GraphQL\Type\TipType',
         'Image'            => '\App\GraphQL\Type\ImageType',
+
+        //simple json type
+        'Report'           => '\App\GraphQL\Type\ReportType',
 
         //enum
         'CollectionFilter' => '\App\GraphQL\Enum\CollectionFilterEnum',
