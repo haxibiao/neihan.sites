@@ -69,6 +69,8 @@ rsync -e ssh -P $www/public/mix-manifest.json root@$staging_server:$www/public/
 EOT;
 
 $copy_worker_conf = <<<EOT
+apt remove supervisor -y
+apt install supervisor -y
 cp -rf /data/www/$domain/ops/worker/laravel-worker-$domain.conf /etc/supervisor/conf.d/
 supervisorctl reread
 supervisorctl update

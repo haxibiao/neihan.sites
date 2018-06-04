@@ -199,7 +199,7 @@ class CategoryController extends Controller
 
         //get some related videos ...
         $videos = Video::orderBy('id', 'desc')
-            ->where('status',  > , 0)
+            ->where('status', '>', 0)
             ->skip(rand(0, Video::count() - 8))
             ->paginate(12);
         if ($category->videos()->count()) {
