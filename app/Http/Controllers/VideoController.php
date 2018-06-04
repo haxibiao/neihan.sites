@@ -102,9 +102,6 @@ class VideoController extends Controller
         //增加点击量
         $video->increment('hits', 1);
 
-        $data['json_lists'] = $this->get_json_lists($video);
-        // dd($data['json_lists']);
-
         //get some related videos ...
         $videos               = Video::orderBy('id', 'desc')->skip(rand(0, Video::count() - 8))->take(4)->get();
         $video_category_query = $video->category;
@@ -117,7 +114,7 @@ class VideoController extends Controller
 
         $current_catagory = $video_category_query->first();
         return view('video.show')
-            ->withVideoDesc($video)
+            ->withVideo($video)
             ->withCategory($current_catagory)
             ->withData($data);
     }

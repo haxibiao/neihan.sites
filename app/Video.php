@@ -58,6 +58,9 @@ class Video extends Model
 
     public function source()
     {
+        if (starts_with($this->path, 'http')) {
+            return $this->path;
+        }
         return file_exists(public_path($this->path)) ? url($this->path) : env('APP_URL') . $this->path;
     }
 

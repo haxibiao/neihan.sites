@@ -1,7 +1,7 @@
 @extends('layouts.black')
 
 @section('title')
-	视频: {{ $videoDesc->title }}
+	视频: {{ $video->title }}
 @stop
 
 @section('content')
@@ -13,14 +13,14 @@
                 <div class="playerArea col-sm-8">
                     <div class="h5-player">
                         <div class="embed-responsive embed-responsive-16by9">
-                            <video controls="" poster="{{ $videoDesc->cover }}" preload="auto" autoplay="true">
-                                <source src="{{ $videoDesc->source() }}" type="video/mp4">
+                            <video controls="" poster="{{ $video->cover }}" preload="auto" autoplay="true">
+                                <source src="{{ $video->source() }}" type="video/mp4">
                                 </source>
                             </video>
                         </div> 
                     </div>
                     <div class="h5-option">
-                       <like id="{{ $videoDesc->id }}" type="videos" is-login="{{ Auth::check() }}"></like>
+                       <like id="{{ $video->id }}" type="videos" is-login="{{ Auth::check() }}"></like>
                     </div>
                 </div>
                 <div class="listArea col-sm-4 hidden-xs">
@@ -42,9 +42,9 @@
                         <div class="button-vd clearfix">
                             <follow 
                                 type="users" 
-                                id="{{ $videoDesc->user->id }}" 
+                                id="{{ $video->user->id }}" 
                                 user-id="{{ user_id() }}" 
-                                followed="{{ is_follow('users', $videoDesc->user->id) }}"
+                                followed="{{ is_follow('users', $video->user->id) }}"
                                 size-class="btn-md"
                                 >
                             </follow>
@@ -52,19 +52,19 @@
                     </div>
                     <div class="related-video">
                         <ul class="video-list">
-                            @foreach($data['related'] as $video) 
+                            @foreach($data['related'] as $video_related) 
                                 <li class="video-item hz">
-                                    <a href="/video/{{$video->id}}" class="clearfix">
+                                    <a href="/video/{{$video_related->id}}" class="clearfix">
                                         <div class="cover">
-                                            <img src="{{ $video->cover() }}" alt="{{ $video->title }}">
+                                            <img src="{{ $video_related->cover() }}" alt="{{ $video_related->title }}">
                                             {{-- 时长 --}}
-                                            <span class="duration">@sectominute($video->duration)</span>
+                                            <span class="duration">@sectominute($video_related->duration)</span>
                                         </div>
                                         <div class="info">
-                                            <div class="video-title">{{ $video->title }}</div>
+                                            <div class="video-title">{{ $video_related->title }}</div>
                                             <span class="amount">
                                                 {{-- 播放量 --}}
-                                                {{ $video->hits }}次播放
+                                                {{ $video_related->hits }}次播放
                                             </span>
                                         </div>
                                     </a> 
@@ -76,21 +76,21 @@
             </div>
             <div class="video-info">
                 <div class="video-title">
-                    {{ $videoDesc->title }}
+                    {{ $video->title }}
                 </div> 
                 <div class="desc">
-                    <span class="upload-time hidden-xs">上传于 {{$videoDesc->createdAt()}}</span> 
+                    <span class="upload-time hidden-xs">上传于 {{$video->createdAt()}}</span> 
                     <span class="upload-user">
-                        <a href="/user/{{ $videoDesc->user->id }}" class="sub">
-                            <img src="{{ $videoDesc->user->avatar }}" alt="{{ $videoDesc->user->name }}">
-                            <span>{{ $videoDesc->user->name }}</span>
+                        <a href="/user/{{ $video->user->id }}" class="sub">
+                            <img src="{{ $video->user->avatar }}" alt="{{ $video->user->name }}">
+                            <span>{{ $video->user->name }}</span>
                         </a>
                         <span class="button-vd">
                             <follow 
                                 type="users" 
-                                id="{{ $videoDesc->user->id }}" 
+                                id="{{ $video->user->id }}" 
                                 user-id="{{ user_id() }}" 
-                                followed="{{ is_follow('users', $videoDesc->user->id) }}"
+                                followed="{{ is_follow('users', $video->user->id) }}"
                                 size-class="btn-md"
                                 >
                             </follow>
@@ -109,7 +109,7 @@
                 </div>
                 <div class="guess-like col-sm-4 hidden-xs">
                     <div class="guessVideo">
-                        <h4>推荐阅读</h4>
+                        <h4></h4>
                         <ul class="video-list">
                             <div class="top10">
                                 
