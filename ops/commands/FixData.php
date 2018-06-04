@@ -67,7 +67,7 @@ class FixData extends Command
     public function fix_videos()
     {
         $this->cmd->info('fix videos ...');
-        $qb = Video::orderBy('id');
+        $qb = Video::orderBy('id')->where('status', 0);
         $qb->chunk(100, function ($videos) {
             foreach ($videos as $video) {
                 //fix duration
