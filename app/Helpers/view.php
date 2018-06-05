@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 
+function smartPager($qb, $pageSize)
+{
+    return \Agent::isMobile() ? $qb->simplePaginate($pageSize) : $qb->paginate($pageSize);
+}
 
 function link_source_css($category)
 {

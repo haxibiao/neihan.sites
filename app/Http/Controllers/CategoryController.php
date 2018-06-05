@@ -159,10 +159,10 @@ class CategoryController extends Controller
         $category = Category::where('name_en', $name_en)->firstOrFail();
 
         //最新评论
-        $articles = $category->publishedArticles()
+        $qb = $category->publishedArticles()
             ->with('user')->with('category')
-            ->orderBy('updated_at', 'desc')
-            ->paginate(10);
+            ->orderBy('updated_at', 'desc');
+        $articles = smartPager($qb, 10);
         if (ajaxOrDebug() && $request->get('commented')) {
             foreach ($articles as $article) {
                 $article->fillForJs();
@@ -172,10 +172,10 @@ class CategoryController extends Controller
         $data['commented'] = $articles;
 
         //最新收录
-        $articles = $category->publishedArticles()
+        $qb = $category->publishedArticles()
             ->with('user')->with('category')
-            ->orderBy('pivot_created_at', 'desc')
-            ->paginate(10);
+            ->orderBy('pivot_created_at', 'desc');
+        $articles = smartPager($qb, 10);
         if (ajaxOrDebug() && $request->get('collected')) {
             foreach ($articles as $article) {
                 $article->fillForJs();
@@ -185,10 +185,10 @@ class CategoryController extends Controller
         $data['collected'] = $articles;
 
         //热门文章
-        $articles = $category->publishedArticles()
+        $qb = $category->publishedArticles()
             ->with('user')->with('category')
-            ->orderBy('hits', 'desc')
-            ->paginate(10);
+            ->orderBy('hits', 'desc');
+        $articles = smartPager($qb, 10);
         if (ajaxOrDebug() && $request->get('hot')) {
             foreach ($articles as $article) {
                 $article->fillForJs();
@@ -198,13 +198,13 @@ class CategoryController extends Controller
         $data['hot'] = $articles;
 
         //get some related videos ...
-        $videos = Video::orderBy('id', 'desc')
+        $qb = Video::orderBy('id', 'desc')
             ->where('status', '>', 0)
-            ->skip(rand(0, Video::count() - 8))
-            ->paginate(12);
+            ->skip(rand(0, Video::count() - 8));
         if ($category->videos()->count()) {
-            $videos = $category->videos()->paginate(12);
+            $qb = $category->videos();
         }
+        $videos         = smartPager($qb, 12);
         $data['videos'] = $videos;
 
         return view('category.name_en')

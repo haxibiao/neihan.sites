@@ -8,6 +8,7 @@ use App\User;
 use App\Video;
 use Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 
 class IndexController extends Controller
@@ -89,7 +90,14 @@ class IndexController extends Controller
         $articles     = $articles->filter(function ($article) use ($sticks) {
             return !in_array($article->id, $sticks->pluck('id')->toArray());
         });
-        $data->articles = new LengthAwarePaginator(new Collection($articles), $total, 10);
+
+        //移动端，用简单的分页样式
+        if (\Agent::isMobile()) {
+            $data->articles = new Paginator(new Collection($articles), 10);
+            $data->articles->hasMorePagesWhen($total > request('page') * 10);
+        } else {
+            $data->articles = new LengthAwarePaginator(new Collection($articles), $total, 10);
+        }
 
         $data->carousel = get_top_articles();
 

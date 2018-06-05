@@ -6,9 +6,9 @@ use App\Article;
 use App\Favorite;
 use App\Follow;
 use App\Like;
+use App\Question;
 use App\User;
 use App\Video;
-use App\Question;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -28,7 +28,7 @@ class UserController extends Controller
         $users = User::orderBy('id', 'desc')->paginate(24);
 
         //TODO:: need add debug and ajax ...
-        
+
         return view('user.index')->withUsers($users);
     }
 
@@ -64,11 +64,11 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         //文章
-        $articles = Article::where('user_id', $user->id)
+        $qb = Article::where('user_id', $user->id)
             ->with('user')->with('category')
             ->where('status', '>', 0)
-            ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->orderBy('id', 'desc');
+        $articles = smartPager($qb, 10);
         if (ajaxOrDebug() && request('articles')) {
             foreach ($articles as $article) {
                 $article->fillForJs();
@@ -78,11 +78,11 @@ class UserController extends Controller
         $data['articles'] = $articles;
 
         //最新评论
-        $articles = Article::where('user_id', $user->id)
+        $qb = Article::where('user_id', $user->id)
             ->with('user')->with('category')
             ->where('status', '>', 0)
-            ->orderBy('updated_at', 'desc')
-            ->paginate(10);
+            ->orderBy('updated_at', 'desc');
+        $articles = smartPager($qb, 10);
         if (ajaxOrDebug() && request('commented')) {
             foreach ($articles as $article) {
                 $article->fillForJs();
@@ -92,11 +92,11 @@ class UserController extends Controller
         $data['commented'] = $articles;
 
         //热门
-        $articles = Article::where('user_id', $user->id)
+        $qb = Article::where('user_id', $user->id)
             ->with('user')->with('category')
             ->where('status', '>', 0)
-            ->orderBy('hits', 'desc')
-            ->paginate(10);
+            ->orderBy('hits', 'desc');
+        $articles = smartPager($qb, 10);
         if (ajaxOrDebug() && request('hot')) {
             foreach ($articles as $article) {
                 $article->fillForJs();
@@ -106,11 +106,11 @@ class UserController extends Controller
         $data['hot'] = $articles;
 
         //动态
-        $actions = $user->actions()
+        $qb = $user->actions()
             ->with('user')
             ->with('actionable')
-            ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->orderBy('id', 'desc');
+        $actions = smartPager($qb, 10);
         foreach ($actions as $action) {
             switch (get_class($action->actionable)) {
                 case 'App\Article':
@@ -244,7 +244,7 @@ class UserController extends Controller
 
     public function favorites(Request $request)
     {
-        $user              = $request->user();
+        $user             = $request->user();
         $data['articles'] = Favorite::with('faved')
             ->where('user_id', $user->id)
             ->where('faved_type', 'articles')
@@ -262,18 +262,18 @@ class UserController extends Controller
     }
     public function questions(Request $request)
     {
-        $user=Auth::user();
-        $questions[]=null;
-        $data['questions']=Question::where('user_id',$user->id)->where('status','>=',0)->orderBy('id', 'desc')->paginate(10);
-        
-        $ans=$user->answers;
+        $user              = Auth::user();
+        $questions[]       = null;
+        $data['questions'] = Question::where('user_id', $user->id)->where('status', '>=', 0)->orderBy('id', 'desc')->paginate(10);
+
+        $ans = $user->answers;
         foreach ($ans as $answer) {
-            $question=$answer->question;
-            if($question->status>=0){
-                 $questions[]=$question;
+            $question = $answer->question;
+            if ($question->status >= 0) {
+                $questions[] = $question;
             }
         }
-        $data['answer_questions']=$questions;
+        $data['answer_questions'] = $questions;
         return view('user.questions')->withUser($user)->withData($data);
     }
 
