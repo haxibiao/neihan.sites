@@ -163,6 +163,9 @@ return [
                 'restoreArticle'         => '\App\GraphQL\Mutation\article\restoreArticleMutation',
                 'submitArticle'          => '\App\GraphQL\Mutation\article\submitArticleMutation',
                 'approveArticle'         => '\App\GraphQL\Mutation\article\approveArticleMutation',
+                'unpublishArticle'         => '\App\GraphQL\Mutation\article\unpublishArticleMutation',
+                'publishArticle'         => '\App\GraphQL\Mutation\article\publishArticleMutation',
+                'moveArticle'         => '\App\GraphQL\Mutation\article\moveArticleMutation',
 
                 //comment
                 'addComment'             => '\App\GraphQL\Mutation\comment\addCommentMutation',

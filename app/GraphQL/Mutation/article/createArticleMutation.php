@@ -23,7 +23,7 @@ class createArticleMutation extends Mutation
         return [
             'title'         => ['name' => 'title', 'type' => Type::string()],
             'body'          => ['name' => 'body', 'type' => Type::string()],
-            'collection_id' => ['name' => 'title', 'type' => Type::int()],
+            'collection_id' => ['name' => 'collection_id', 'type' => Type::int()],
         ];
     }
 
@@ -31,7 +31,7 @@ class createArticleMutation extends Mutation
     {
         return [
             'title' => ['required'],
-            'body'  => ['required|min:20|not_copyed_image'],
+            'body'  => ['required'],
         ];
     }
 
@@ -41,10 +41,18 @@ class createArticleMutation extends Mutation
 
         $article = Article::create([
             'user_id' => $user->id,
-            'title' => $args['title'],
-            'body'  => $args['body'],
-            'collection_id' => $args['collection_id']
+            'title'   => $args['title'],
+            'body'    => $args['body'],
         ]);
+
+        if (isset($args['collection_id'])) {
+            $article->collections()->sync($args['collection_id']);
+        } else {
+            $userDefaultCollection = $user->collections()->orderBy('id')->first();
+            if ($userDefaultCollection) {
+                $article->collections()->sync($userDefaultCollection->id);
+            }
+        }
 
         return $article;
     }

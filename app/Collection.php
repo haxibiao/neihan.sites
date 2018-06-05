@@ -26,7 +26,7 @@ class Collection extends Model
 
     public function publishedArticles()
     {
-        return $this->belongsToMany(\App\Article::class);
+        return $this->belongsToMany(\App\Article::class)->where('status', 1);
     }
 
     public function follows()

@@ -17,7 +17,7 @@
     <meta name="description" content=" @yield('description'), {{ config('app.name') }} ">
 
     <!-- Styles -->
-    <link href="{{ mix('css/a.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/guest.css') }}" rel="stylesheet">
     <link href="{{ mix('css/editor.css') }}" rel="stylesheet">
     <style>
         html,body {

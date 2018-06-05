@@ -61,10 +61,13 @@ class approveArticleMutation extends Mutation
         $article  = Article::findOrFail($aid);
 
         //更新投稿请求的状态
-        $article         = $category->newRequestArticles()->wherePivot('article_id', $article->id)->first();
+        $article = $category->newRequestArticles()->wherePivot('article_id', $article->id)->first();
+        if (!$article) {
+            throw new Exception('文章没在最新投稿列表了');
+        }
         // $submited_status = '待审核';
-        $pivot           = $article->pivot;
-        $pivot->submit   = $is_reject ? '已拒绝' : '已收录';
+        $pivot         = $article->pivot;
+        $pivot->submit = $is_reject ? '已拒绝' : '已收录';
         $pivot->save();
         $submited_status = $pivot->submit;
         if ($pivot->submit == '已收录') {
