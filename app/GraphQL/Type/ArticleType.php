@@ -172,7 +172,7 @@ class ArticleType extends GraphQLType
                 'type'        => GraphQL::type('Collection'),
                 'description' => 'collection of article',
                 'resolve'     => function ($root, $args) {
-                    return $root->collection;
+                    return $root->collections()->first();
                 },
             ],
             'categories'      => [
