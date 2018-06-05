@@ -139,7 +139,7 @@ return [
                 'collection'  => '\App\GraphQL\Query\CollectionQuery',
                 'actions'     => '\App\GraphQL\Query\ActionsQuery',
                 'questions'   => '\App\GraphQL\Query\QuestionsQuery',
-                'follows'   => '\App\GraphQL\Query\FollowsQuery',
+                'visits'      => '\App\GraphQL\Query\VisitsQuery',
             ],
             'mutation' => [
                 //report
@@ -153,15 +153,16 @@ return [
                 'updateUserPassword'     => '\App\GraphQL\Mutation\user\updateUserPasswordMutation',
                 'updateUserName'         => '\App\GraphQL\Mutation\user\updateUserNameMutation',
                 'updateUserIntroduction' => '\App\GraphQL\Mutation\user\updateUserIntroductionMutation',
+                'blockUser'              => '\App\GraphQL\Mutation\user\blockUserMutation',
 
                 //article
-                'createArticle'             => '\App\GraphQL\Mutation\article\createArticleMutation',
-                'editArticle'             => '\App\GraphQL\Mutation\article\editArticleMutation',
-                'removeArticle'             => '\App\GraphQL\Mutation\article\removeArticleMutation',
-                'deleteArticle'             => '\App\GraphQL\Mutation\article\deleteArticleMutation',
-                'restoreArticle'             => '\App\GraphQL\Mutation\article\restoreArticleMutation',
-                'submitArticle'             => '\App\GraphQL\Mutation\article\submitArticleMutation',
-                'approveArticle'             => '\App\GraphQL\Mutation\article\approveArticleMutation',
+                'createArticle'          => '\App\GraphQL\Mutation\article\createArticleMutation',
+                'editArticle'            => '\App\GraphQL\Mutation\article\editArticleMutation',
+                'removeArticle'          => '\App\GraphQL\Mutation\article\removeArticleMutation',
+                'deleteArticle'          => '\App\GraphQL\Mutation\article\deleteArticleMutation',
+                'restoreArticle'         => '\App\GraphQL\Mutation\article\restoreArticleMutation',
+                'submitArticle'          => '\App\GraphQL\Mutation\article\submitArticleMutation',
+                'approveArticle'         => '\App\GraphQL\Mutation\article\approveArticleMutation',
 
                 //comment
                 'addComment'             => '\App\GraphQL\Mutation\comment\addCommentMutation',
@@ -172,19 +173,19 @@ return [
 
                 //follow
                 'followCollection'       => '\App\GraphQL\Mutation\follow\followCollectionMutation',
-                'followCategory'       => '\App\GraphQL\Mutation\follow\followCategoryMutation',
-                'followUser'       => '\App\GraphQL\Mutation\follow\followUserMutation',
+                'followCategory'         => '\App\GraphQL\Mutation\follow\followCategoryMutation',
+                'followUser'             => '\App\GraphQL\Mutation\follow\followUserMutation',
 
                 //collection
-                'createCollection'=>'App\GraphQL\Mutation\collection\createCollectionMutation',
-                'editCollection'=>'App\GraphQL\Mutation\collection\editCollectionMutation',
-                'deleteCollection'=>'App\GraphQL\Mutation\collection\deleteCollectionMutation',
+                'createCollection'       => 'App\GraphQL\Mutation\collection\createCollectionMutation',
+                'editCollection'         => 'App\GraphQL\Mutation\collection\editCollectionMutation',
+                'deleteCollection'       => 'App\GraphQL\Mutation\collection\deleteCollectionMutation',
 
                 //category
-                'createCategory'=>'App\GraphQL\Mutation\category\createCategoryMutation',
-                'editCategory'=>'App\GraphQL\Mutation\category\editCategoryMutation',
-                'deleteCategory'=>'App\GraphQL\Mutation\category\deleteCategoryMutation',
-                'editCategoryAdmins'=>'App\GraphQL\Mutation\category\editCategoryAdminsMutation',
+                'createCategory'         => 'App\GraphQL\Mutation\category\createCategoryMutation',
+                'editCategory'           => 'App\GraphQL\Mutation\category\editCategoryMutation',
+                'deleteCategory'         => 'App\GraphQL\Mutation\category\deleteCategoryMutation',
+                'editCategoryAdmins'     => 'App\GraphQL\Mutation\category\editCategoryAdminsMutation',
 
                 //chat
                 'createChat'             => '\App\GraphQL\Mutation\chat\createChatMutation',
@@ -258,6 +259,9 @@ return [
         'Message'          => '\App\GraphQL\Type\MessageType',
         'Tip'              => '\App\GraphQL\Type\TipType',
         'Image'            => '\App\GraphQL\Type\ImageType',
+        'Visit'            => '\App\GraphQL\Type\VisitType',
+        'Visited'            => '\App\GraphQL\Type\VisitedType',
+        'Video'            => '\App\GraphQL\Type\VideoType',
 
         //simple json type
         'Report'           => '\App\GraphQL\Type\ReportType',
@@ -272,7 +276,7 @@ return [
         'CommentOrder'     => '\App\GraphQL\Enum\CommentOrderEnum',
         'UserFilter'       => '\App\GraphQL\Enum\UserFilterEnum',
         'NotificationType' => '\App\GraphQL\Enum\NotificationTypeEnum',
-        'FollowFilter' => '\App\GraphQL\Enum\FollowFilterEnum',
+        'VisitFilter'        => '\App\GraphQL\Enum\VisitFilterEnum',
     ],
 
     /*

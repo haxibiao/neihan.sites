@@ -5,6 +5,8 @@ namespace App\GraphQL\Type;
 use Folklore\GraphQL\Support\Facades\GraphQL;
 use Folklore\GraphQL\Support\Type as GraphQLType;
 use GraphQL\Type\Definition\Type;
+use App\Article;
+use App\Visit;
 
 class UserType extends GraphQLType
 {
@@ -62,6 +64,30 @@ class UserType extends GraphQLType
             'count_reports'     => [
                 'type'        => Type::int(),
                 'description' => 'The count reports of article',
+            ],
+            //阅读统计
+            "today_read_rate"              => [
+                'type'        => Type::string(),
+                'description' => 'The rate of the Visit',
+                'resolve'     => function ($root, $args) {
+                    $all_visits_today    = Visit::whereDay('updated_at', date('d'))->count();
+                    $current_user_visits = Visit::whereDay('updated_at', date('d'))->where('user_id', $root->id)->count();
+                    if (!$all_visits_today) {
+                        $all_visits_today = 1;
+                    }
+                    $rate = $current_user_visits / $all_visits_today;
+                    return round($rate * 100) . "%";
+                },
+            ],
+            //今日阅读字数
+            'today_read_num'    => [
+                'type'        => Type::int(),
+                'description' => 'The today_read_num of the Visit',
+                'resolve'     => function ($root, $args) {
+                    $visited_article_ids = Visit::whereDay('updated_at', date('d'))->where('visited_type', 'articles')->pluck('id');
+                    $total_sum           = Article::whereIn('id', $visited_article_ids)->sum('count_words');
+                    return $total_sum;
+                },
             ],
             'count_words'       => [
                 'type'        => Type::int(),
