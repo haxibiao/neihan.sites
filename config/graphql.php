@@ -193,6 +193,9 @@ return [
                 //chat
                 'createChat'             => '\App\GraphQL\Mutation\chat\createChatMutation',
                 'sendMessage'            => '\App\GraphQL\Mutation\chat\sendMessageMutation',
+
+                //favorite
+                'favoriteArticle'            => '\App\GraphQL\Mutation\favorite\favoriteArticleMutation',  
             ],
         ],
     ],
