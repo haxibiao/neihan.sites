@@ -20,9 +20,9 @@
     <a class="title" target="_blank" href="/article/{{ $article->id }}">
         <span>{{ $article->title }}</span>
     </a>
-    <p class="abstract">
+    <a class="abstract" target="_blank" href="/article/{{ $article->id }}">
       {{ $article->description() }}
-    </p>
+    </a>
     <div class="meta">
       @if($article->category)
         <a class="collection-tag" target="_blank" href="/{{ $article->category->name_en }}">{{ $article->category->name }}</a>
