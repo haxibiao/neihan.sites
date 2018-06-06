@@ -54,10 +54,6 @@ class VideoController extends Controller
         if ($request->ajax()) {
             return $this->jsonStore($request);
         }
-        $video = new Video($request->all());
-
-        //处理视频与分类的关系
-        $this->process_category($video);
 
         $file = $request->file('video');
         if ($file) {
@@ -65,26 +61,26 @@ class VideoController extends Controller
             $video = Video::firstOrNew([
                 'hash' => $hash,
             ]);
+            $video->cover = '/images/uploadImage.jpg';
             if ($video->id) {
                 dd("相同视频已存在");
             }
             $video->fill($request->all());
             $video->save();
+            //处理视频与分类的关系
+            $this->process_category($video);
 
             $extension   = $file->getClientOriginalExtension();
             $filename    = $video->id . '.' . $extension;
             $path        = '/storage/video/' . $filename;
             $video->path = $path;
             $file->move(public_path('/storage/video/'), $filename);
+            $video->save();
         }
 
         if (empty($video->path)) {
             dd("请输入有效的cdn视频地址,或者上传合理的视频文件");
         }
-
-        $video->cover = '/images/uploadImage.jpg';
-        $video->save();
-
         //截取图片
         $video->takeSnapshot();
         return redirect()->to('/video');
@@ -153,7 +149,10 @@ class VideoController extends Controller
         if ($request->path != $video->path) {
             $changed = true;
         }
-        $video->update($request->all());
+        //这个user_id是当前登录用户id
+        $req_parameters = $request->all();
+        unset($req_parameters['user_id']);
+        $video->update($req_parameters);
 
         if (!starts_with($request->path, 'http')) {
             //保存mp4
@@ -189,8 +188,8 @@ class VideoController extends Controller
 
         $video->save();
 
-        return redirect()->to('/video');
-    }
+        return redirect(session('url.intended'));  
+    } 
 
     /**
      * Remove the specified resource from storage.

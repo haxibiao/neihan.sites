@@ -1,7 +1,12 @@
 <?php
 use Illuminate\Support\Facades\Auth;
 
-function getUser()
+function checkUser()
+{
+    return Auth::check() || session('user');
+}
+
+function getUser() 
 {
     if (Auth::check()) {
         return Auth::user();

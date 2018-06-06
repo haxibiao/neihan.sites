@@ -55,6 +55,11 @@ class Article extends Model
             ->withTimestamps();
     }
 
+    public function favorites()
+    {
+        return $this->morphMany(\App\Favorite::class, 'faved');
+    }
+
     //有效的分类关系
     public function categories()
     {

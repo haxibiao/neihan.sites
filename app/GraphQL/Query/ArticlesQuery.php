@@ -28,7 +28,7 @@ class ArticlesQuery extends Query
             'offset'        => ['name' => 'offset', 'type' => Type::int()],
             'filter'        => ['name' => 'filter', 'type' => GraphQL::type('ArticleFilter')],
             'hot_time'      => ['name' => 'hot_time', 'type' => Type::int()],
-            'order'         => ['name' => 'order', 'type' => GraphQL::type('ArticleOrder')],
+            'order'         => ['name' => 'order', 'type' => GraphQL::type('ArticleOrder')], 
         ];
     }
 
@@ -78,7 +78,7 @@ class ArticlesQuery extends Query
             $collection = \App\Collection::findOrFail($args['collection_id']);
             $user       = session('user');
             if ($user && $collection->user_id == $user->id) {
-                $qb = $collection->allArticles();
+                $qb = $collection->allArticles();  
             } else {
                 $qb = $collection->articles();
             }

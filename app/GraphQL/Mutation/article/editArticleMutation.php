@@ -24,7 +24,7 @@ class editArticleMutation extends Mutation
             'id'            => ['name' => 'id', 'type' => Type::int()],
             'title'         => ['name' => 'title', 'type' => Type::string()],
             'body'          => ['name' => 'body', 'type' => Type::string()],
-            'collection_id' => ['name' => 'title', 'type' => Type::int()],
+            'collection_id' => ['name' => 'collection_id', 'type' => Type::int()],
         ];
     }
 
@@ -33,20 +33,28 @@ class editArticleMutation extends Mutation
         return [
             'id'    => ['required'],
             'title' => ['required'],
-            'body'  => ['required|min:20|not_copyed_image'],
+            /**
+             * TODO
+             * 'body'  => ['required|min:20|not_copyed_image']之前的验证规则，
+             * 但是graphql好像不全部兼容laravel自带验证规则，暂时放在这．
+             */
+            'body'  => ['required'],
         ];
     }
-
+     
     public function resolve($root, $args)
     {
         $user = getUser();
-
         $article = Article::findOrFail($args['id']);
-        $article->update([
+        $update_paramters = [
             'title'         => $args['title'],
-            'body'          => $args['body'],
-            'collection_id' => $args['collection_id'],
-        ]);
+            'body'          => $args['body'] ,
+        ];
+        if( isset( $args['collection_id'] ) ){ 
+            $update_paramters['collection_id'] = $args['collection_id'];
+        }
+        var_dump($update_paramters);
+        $article->update( $update_paramters);
 
         return $article;
     }
