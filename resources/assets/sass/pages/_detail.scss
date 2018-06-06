@@ -30,13 +30,11 @@
 				font-size: $font-size-article;
 				font-weight: 400;
 				line-height: 1.7;
-				text-align: center;
 				img {
 					max-width: 100%;
 					height: auto;
 					padding: 0 0 20px 0;
 					display: block;
-					margin: 0 auto;
 					& + i {
 						display: inline-block;
 						max-width: 80%;
