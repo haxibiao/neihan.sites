@@ -107,9 +107,9 @@ class CategoryType extends GraphQLType
                 ],
                 'description' => 'category related articles, including newly requested ...',
                 'resolve'     => function ($root, $args) {
-                    $qb = $root->newRequestArticles();
-                    if (isset($args['ALL']) && $args['ALL']) {
-                        $qb = $root->articles();
+                    $qb = $root->articles();
+                    if (isset($args['filter']) && $args['filter'] == 'PENDING') {
+                        $qb = $root->newRequestArticles();
                     }
                     if (isset($args['offset'])) {
                         $qb = $qb->skip($args['offset']);

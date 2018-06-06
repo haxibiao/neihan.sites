@@ -60,7 +60,7 @@ class addCommentMutation extends Mutation
             if ($commented) {
                 $comment->lou = $commented->lou;
                 //如果回复的是子评论， 对应的comment_id应该和他一样，同属于一个评论楼层的楼中楼回复
-                if($commented->comment_id) {
+                if ($commented->comment_id) {
                     $comment->comment_id = $commented->comment_id;
                 }
             }
@@ -84,6 +84,7 @@ class addCommentMutation extends Mutation
         $article                 = \App\Article::findOrFail($args['commentable_id']);
         $article->count_replies  = $article->comments()->count();
         $article->count_comments = $article->comments()->max('lou');
+        $article->commented      = \Carbon\Carbon::now();
         $article->save();
         $article->user->notify(new \App\Notifications\ArticleCommented($article, $comment, $user));
 

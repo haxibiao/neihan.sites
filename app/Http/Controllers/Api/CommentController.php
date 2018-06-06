@@ -31,8 +31,9 @@ class CommentController extends Controller
         if (get_polymorph_types($request->get('commentable_type')) == 'articles') {
             $article = $comment->commentable;
             //更新文章评论数
-            $article->count_replies = $article->comments()->count();
+            $article->count_replies  = $article->comments()->count();
             $article->count_comments = $article->comments()->max('lou');
+            $article->commented      = \Carbon\Carbon::now();
             $article->save();
             $article->user->notify(new ArticleCommented($article, $comment, $user));
             $article->user->forgetUnreads();

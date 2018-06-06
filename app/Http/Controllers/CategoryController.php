@@ -161,7 +161,7 @@ class CategoryController extends Controller
         //最新评论
         $qb = $category->publishedArticles()
             ->with('user')->with('category')
-            ->orderBy('updated_at', 'desc');
+            ->orderBy('commented', 'desc');
         $articles = smartPager($qb, 10);
         if (ajaxOrDebug() && $request->get('commented')) {
             foreach ($articles as $article) {

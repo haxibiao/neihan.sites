@@ -27,7 +27,7 @@ class Article extends Model
 
     protected $touches = ['category', 'collections', 'categories'];
 
-    protected $dates = ['edited_at', 'delay_time'];
+    protected $dates = ['edited_at', 'delay_time', 'commented'];
 
     //relations
     public function user()

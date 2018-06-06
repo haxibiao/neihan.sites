@@ -37,6 +37,14 @@ class ArticlesQuery extends Query
 
         $qb = Article::orderBy('id', 'desc');
 
+        if (isset($args['order'])) {
+            if ($args['order'] == 'COMMENTED') {
+                $qb = Article::orderBy('updated_at', 'desc'); //TODO:: later update article->commented while commented ...
+            } else if ($args['order'] == 'HOT') {
+                $qb = Article::orderBy('hits', 'desc');
+            }
+        }
+
         if (isset($args['filter'])) {
             switch ($args['filter']) {
                 case 'DRAFTS':
