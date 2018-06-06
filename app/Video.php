@@ -69,6 +69,11 @@ class Video extends Model
         $cover_url = "";
         if (!empty($this->cover)) {
             $cover_url = file_exists(public_path($this->cover)) ? url($this->cover) : env('APP_URL') . $this->cover;
+            $is_recent_modify = 
+                $this->updated_at&&$this->updated_at->addMinutes(10) > now();
+            if ($is_recent_modify) {
+                $cover_url = $cover_url . '?t=' . time();
+            }
         }
         return $cover_url;
     }
