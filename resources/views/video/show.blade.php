@@ -25,18 +25,19 @@
                 </div>
                 <div class="listArea col-sm-4 hidden-xs">
                     <div class="classify">
+                        @if($video->category)
                         <div>
-                            <a href="/{{ $category->name_en }}" class="avatar">
-                                <img src="{{ $category->logo() }}" alt="{{ $category->name }}">
+                            <a href="/{{ $video->category->name_en }}" class="avatar">
+                                <img src="{{ $video->category->logo() }}" alt="{{ $video->category->name }}">
                             </a>
                             <div class="classify-info">
                                 <div>
                                     {{-- 分类 --}}
-                                    <a href="/{{ $category->name_en }}">{{$category->name}}</a> 
+                                    <a href="/{{ $video->category->name_en }}">{{$video->category->name}}</a>
                                 </div> 
                                 {{-- 关注数 --}}
-                                <span>{{$category->count_follows}}人关注</span> 
-                                <span>- {{$category->count_videos}}个视频</span> 
+                                <span>{{$video->category->count_follows}}人关注</span> 
+                                <span>- {{$video->category->count_videos}}个视频</span> 
                             </div>
                         </div>
                         <div class="button-vd clearfix">
@@ -49,6 +50,7 @@
                                 >
                             </follow>
                         </div>
+                        @endif
                     </div>
                     <div class="related-video">
                         <ul class="video-list">
