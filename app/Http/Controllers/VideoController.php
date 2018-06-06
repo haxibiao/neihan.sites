@@ -104,18 +104,12 @@ class VideoController extends Controller
 
         //get some related videos ...
         $videos               = Video::orderBy('id', 'desc')->skip(rand(0, Video::count() - 8))->take(4)->get();
-        $video_category_query = $video->category;
-        if ($video_category_query && $video_category_query->videos()->count() >= 4) {
+        if ($video->category && $video->category->videos()->count() >= 4) {
             $videos = $video->category->videos()->take(4)->get();
         }
-
-        //dd($videos);
         $data['related'] = $videos;
-
-        $current_catagory = $video_category_query->first();
         return view('video.show')
             ->withVideo($video)
-            ->withCategory($current_catagory)
             ->withData($data);
     }
 
@@ -148,7 +142,7 @@ class VideoController extends Controller
         $this->process_category($video);
 
         if (!empty($request->thumbnail)) {
-            $result = copy(public_path($request->thumbnail), public_path($video->cover));
+            $result        = copy(public_path($request->thumbnail), public_path($video->cover));
             $video->status = 1;
             $video->save();
         }
@@ -420,7 +414,7 @@ class VideoController extends Controller
                 }
             }
         }
-        //更新旧分类文章数
+        //更新旧分类视频数
         foreach ($old_categories as $category) {
             $category->count_videos = $category->videos()->count();
             $category->save();
