@@ -26,7 +26,7 @@ class VideoController extends Controller
             return $this->jsonIndex($request);
         }
 
-        $videos = Video::with('user')->with('category')->orderBy('id', 'desc')->paginate(10);
+        $videos = Video::with('user')->with('category')->orderBy('id', 'desc')->where('status', '>', 0)->paginate(10);
         return view('video.index')->withVideos($videos);
     }
 
