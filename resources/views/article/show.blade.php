@@ -44,9 +44,17 @@
           </div>
           {{-- 底部注释 --}}
           @include('article.parts.foot')
+          {{-- 作者文章翻页 --}}
+         {{--  <div class="page-turning">
+            <div class="prev">
+              <a href="/article/{{ $article->id }}">上一篇:《{{ $article->title }}》</a>
+            </div>
+            <div class="next">
+              <a href="/article/{{ $article->id }}">下一篇:《{{ $article->title }}》</a>
+            </div>
+          </div> --}}
           {{-- 底部作者信息 --}}
           @include('article.parts.follow_card')
-
           {{-- 支持作者  --}}
           <div class="support-author">
             <p>{{ $article->user->tip_words ? $article->user->tip_words : '如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！' }}</p>

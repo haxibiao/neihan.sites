@@ -62,6 +62,41 @@
 					margin-right: 20px;
 				}
 			}
+			// 继续阅读作者文章
+			.read-more {
+				margin-bottom: 20px;
+				h4 {
+					font-size: 16px;
+					color: $dark-color3;
+				}
+				.article-item {
+					.wrap-img {
+						width: 20%;
+						max-height: 100px;
+						img {
+							max-height: 100px;
+						}
+					}
+					.content {
+						padding-right: 22%;
+					}
+				}
+			}
+			// 作者文章翻页
+			.page-turning {
+				margin-bottom: 20px;
+				.prev,
+				.next {
+					a {
+						color: $link-color;
+						font-size: 15px;
+						line-height: 28px;
+						&:hover {
+							text-decoration: underline !important;
+						}
+					}
+				}
+			}
 			.support-author {
 				padding: 30px 0 20px;
 				text-align: center;

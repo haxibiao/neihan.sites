@@ -17,7 +17,7 @@
 
     <div class="content">
       @if($question->latestAnswer)
-      <div class="author">
+      <div class="author hidden-xs">
         @if($question->is_anonymous)
           匿名用户
           <span class="time">{{ $question->createdAt() }}</span>

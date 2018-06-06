@@ -30,7 +30,8 @@
             }
         }
     }
-    &.wd {
+    &.wd,
+    &.read {
         padding: 0 0 12px 0;
         border-bottom: 3px solid $light-color1;
         font-weight: bold;
