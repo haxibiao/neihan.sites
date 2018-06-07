@@ -5,6 +5,8 @@ namespace ops\commands;
 use App\Comment;
 use App\Image;
 use App\Video;
+use App\Article;
+use App\Category;
 use Illuminate\Console\Command;
 
 class FixData extends Command
@@ -61,7 +63,14 @@ class FixData extends Command
 
     public function fix_categories()
     {
-
+        //重新统计分类下的文章数
+        $this->cmd->info('fix articles ...');
+        Category::orderBy('id')->chunk(100, function ($categories) {
+            foreach ($categories as $category) {
+                $category->count = $category->publishedArticles()->count();
+                $category->save();
+            }
+        });
     }
 
     public function fix_videos()
@@ -118,6 +127,32 @@ class FixData extends Command
 
     public function fix_articles()
     {
-
+        //修复dota2下面有问题的文章
+        $category = Category::findOrFail(6);
+        $category->publishedArticles()
+            ->whereNull('title')
+            ->orWhere('title','')
+            ->orWhere('title','like', '图纸%')
+            ->chunk(100, function ($articles) {
+                foreach ($articles as $article) {
+                    $article->status = -1;
+                    $article->save();
+                }
+            });
+        //重新计算文章收录
+        $category->count = $category->publishedArticles()->count();
+        $category->save();
+        //维护主分类与文章的多对多关系
+        /*$this->cmd->info('fix articles ...');
+        Article::orderBy('id')->where('category_id', 83)->chunk(100, function ($articles) {
+            foreach ($articles as $article) {
+                //这里是否要考虑该篇文章是否被收录的问题
+                $article->categories()
+                    ->syncWithoutDetaching(
+                        [$article->category_id=>['submit' => '已收录']]
+                    );
+                $this->cmd->info($article->category_id);
+            }
+        });*/
     }
 }
