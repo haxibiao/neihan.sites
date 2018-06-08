@@ -44,7 +44,7 @@ class ArticlesQuery extends Query
                 $qb = Article::orderBy('hits', 'desc');
             }
         }
-
+        //TODO关于filter的代码需要重构
         if (isset($args['filter'])) {
             switch ($args['filter']) {
                 case 'DRAFTS':
@@ -59,6 +59,8 @@ class ArticlesQuery extends Query
                     $qb = $qb->where('status', '>', 0);
                     break;
             }
+        } else {
+            $qb = $qb->where('status', '>', 0);
         }
 
         if (isset($args['hot_time'])) {
