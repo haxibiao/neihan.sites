@@ -1,9 +1,12 @@
 	<nav class="navbar navbar-default  navbar-fixed-top" role="navigation">
 		<div class="width-limit">
-			<a class="logo" href="/">
-				<img src="/logo/{{ get_domain() }}.small.png" alt="">
-			</a>
-			@if(starts_with(request()->path(), 'question'))
+			@section('logo')
+				<a class="logo" href="/">
+					<img src="/logo/{{ get_domain() }}.web.png" alt="">
+				</a>
+			@show  
+			
+			@if(starts_with(request()->path(), 'question')) 
 				<div class="ask"><a href="/login" data-toggle="modal" class="btn-base btn-theme"><span class="iconfont icon-maobi hidden-xs"></span>提问</a></div>
 			@else 
 				<div class="creation hidden-xs"><a href="/write" class="btn-base btn-theme"><span class="iconfont icon-maobi"></span>创作</a></div>
