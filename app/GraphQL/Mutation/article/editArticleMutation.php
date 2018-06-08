@@ -25,6 +25,7 @@ class editArticleMutation extends Mutation
             'title'         => ['name' => 'title', 'type' => Type::string()],
             'body'          => ['name' => 'body', 'type' => Type::string()],
             'collection_id' => ['name' => 'collection_id', 'type' => Type::int()],
+            'is_publish'    => ['name' => 'is_publish', 'type' => Type::boolean()],
         ];
     }
 
@@ -53,9 +54,11 @@ class editArticleMutation extends Mutation
         if( isset( $args['collection_id'] ) ){ 
             $update_paramters['collection_id'] = $args['collection_id'];
         }
-        var_dump($update_paramters);
+        if( isset( $args['is_publish'] ) && $args['is_publish'] ){
+            $update_paramters['status'] = 1;//１代表发布状态
+        }
         $article->update( $update_paramters);
 
-        return $article;
+        return $article; 
     }
 }
