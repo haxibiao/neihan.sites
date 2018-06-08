@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('title')
+    编辑面板 - {{ env('APP_NAME') }}
+@stop
 @section('content')
 <div class="container-fluid">
     <div class="row">

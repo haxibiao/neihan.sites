@@ -1,5 +1,7 @@
 @extends('layouts.blank')
-
+@section('title')
+    登录 - {{ env('APP_NAME') }}
+@stop　
 @section('content')
 
 @php

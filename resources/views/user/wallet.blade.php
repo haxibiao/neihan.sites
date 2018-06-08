@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('title')
+    我的钱包 - {{ env('APP_NAME') }}
+@stop　
 @section('content')
 <div id="wallet">
     <div class="wallet-top clearfix">

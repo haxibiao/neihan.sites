@@ -1,5 +1,7 @@
 @extends('layouts.write')
-
+@section('title')
+    写文章 - 
+@stop　
 @section('content')
    <write></write>
 @stop
