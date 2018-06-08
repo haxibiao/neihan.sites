@@ -23,6 +23,7 @@ class SearchController extends Controller
         $page      = request('page') ? request('page') : 1;
         $query     = request('q');
         $articles  = Article::where('title', 'like', '%' . $query . '%')
+            ->where('status', '>=', 0)
             ->orWhere('keywords', 'like', '%' . $query . '%')
             ->orderBy('id', 'desc')
             ->paginate(10);
@@ -60,8 +61,12 @@ class SearchController extends Controller
         // }
 
         //用户，专题
-        $data['users']      = User::where('name', 'like', "%$query%")->paginate($page_size);
-        $data['categories'] = Category::where('name', 'like', "%$query%")->paginate($page_size);
+        $data['users']      = User::where('name', 'like', "%$query%")
+            ->where('status', '>=', 0)
+            ->paginate($page_size);
+        $data['categories'] = Category::where('name', 'like', "%$query%")
+            ->where('status', '>=', 0)
+            ->paginate($page_size);
 
         if (!empty($query) && $total) {
             //保存全局搜索
