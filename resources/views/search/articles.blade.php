@@ -1,10 +1,12 @@
 @extends('layouts.app')
-	
+
+@section('title') 搜索 - {{ env('APP_NAME') }}  @endsection
+
 @section('content')
 	<div id="search-content" class="articles">
 		<section class="left-aside clearfix">
 			@include('search.aside')
-			<div class="main">
+			<div class="main"> 
 				<div class="top">
 					<div class="relevant">
 						<div class="plate-title">

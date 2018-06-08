@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') {{ $collection->user->name }}的{{ $collection->name }} - @endsection
+@section('title') {{ $collection->user->name }}的{{ $collection->name }}  @endsection
 @section('keywords') {{ $collection->user->name }}的{{ $collection->name }} @endsection
 @section('description') {{ $collection->user->name }}的{{ $collection->name }} @endsection
 

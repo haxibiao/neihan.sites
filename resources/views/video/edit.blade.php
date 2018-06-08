@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-	编辑视频 - 
+	编辑视频 - {{ $video->title }}
 @stop
 @php
     //编辑成功返回之前的页面

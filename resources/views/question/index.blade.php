@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title'){{ env('APP_NAME') }} 问答-{{ config('seo.title') }} @stop
+@section('title')问答 - {{ env('APP_NAME') }} @stop
 @section('description') {{config('seo.description')  }} @stop
 @section('keywords') {{ config('seo.keywords') }} @stop
 
