@@ -1,6 +1,6 @@
 @extends('layouts.blank')
 @section('title')
-    登录 - {{ env('APP_NAME') }}
+    登录 - 
 @stop　
 @section('content')
 

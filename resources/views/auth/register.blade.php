@@ -1,6 +1,6 @@
 @extends('layouts.blank')
 @section('title')
-    注册 - {{ env('APP_NAME') }}
+    注册 - 
 @stop　
 @section('content')
 <div id="login">

@@ -1,10 +1,16 @@
 	<nav class="navbar navbar-default  navbar-fixed-top" role="navigation">
 		<div class="width-limit">
 			@section('logo')
-				<a class="logo" href="/">
-					<img src="/logo/{{ get_domain() }}.web.png" alt="">
-				</a>
-			@show  
+				@if( \Agent::isMobile() )
+					<a class="logo" href="/">
+						<img src="/logo/{{ get_domain() }}.small.png" alt="">
+					</a>
+				@else
+				   <a class="logo" href="/">
+						<img src="/logo/{{ get_domain() }}.web.png" alt="">
+					</a>
+				@endif
+			@show    
 			
 			@if(starts_with(request()->path(), 'question')) 
 				<div class="ask"><a href="/login" data-toggle="modal" class="btn-base btn-theme"><span class="iconfont icon-maobi hidden-xs"></span>提问</a></div>
