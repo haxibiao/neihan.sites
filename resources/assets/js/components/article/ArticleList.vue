@@ -32,7 +32,7 @@
 		    </div>
 		  </div>
 		</li>
-		<a class="btn-base btn-more" href="javascript:;" v-if="articles.length">{{ page >= lastPage ? '已经到底了':'正在加载更多' }}...</a>
+		<a class="btn-base btn-more" href="javascript:;" v-if="articles.length || notEmpty">{{ page >= lastPage ? '已经到底了':'正在加载更多' }}...</a>
 		<div v-else class="unMessage">
 			<blank-content></blank-content>
 		</div>
@@ -43,7 +43,7 @@
 export default {
 	name: "ArticleList",
 
-	props: ["api", "startPage"],
+	props: ["api", "startPage", "notEmpty"],
 
 	watch: {
 		api(val) {
