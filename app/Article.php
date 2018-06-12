@@ -361,4 +361,23 @@ class Article extends Model
         }
         return $reports;
     }
+    /**
+     * @Desc     该文章是否被当前登录的用户收藏，如果用户没有登录将返回false
+     * 
+     * @Author   czg
+     * @DateTime 2018-06-12
+     * @return   bool     
+     */
+    public function currentUserHasFavorited(){
+        //未登录状态
+        if( !checkUser() ){
+            return false;
+        }
+        $loginUser = getUser();
+        return \DB::table('favorites')
+                    ->where('user_id'   , $loginUser->id)
+                    ->where('faved_id'  , $this->id)
+                    ->where('faved_type', 'articles')
+                    ->exists();
+    }
 }
