@@ -25,8 +25,6 @@
           {{-- 推荐专题 --}}
           @include('index.parts.recommend_categories')
           <recommend-category></recommend-category>
-          <div class="division-line"></div>
-
           {{-- top 4 videos --}}
           <div class="row videos distance">
            <div class="vd-head">
