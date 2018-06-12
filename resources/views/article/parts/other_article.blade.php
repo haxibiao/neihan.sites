@@ -1,6 +1,6 @@
 {{-- 阅读更多  详细版 --}}
 <div class="read-more">
-	<h4 class="plate-title read"><span>继续阅读</span></h4>
+	<h4 class="plate-title underline"><span>继续阅读</span></h4>
 	<div class="article-item {{ $article->hasImage() ? 'have-img' : '' }}">
 	  @if($article->hasImage())
 	    <a class="wrap-img" href="/article/{{ $article->id }}" target="_blank">

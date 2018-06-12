@@ -29,30 +29,37 @@
 
           {{-- top 4 videos --}}
           <div class="row videos distance">
-            @foreach($data->videos as $video)
-            <div class="col-xs-6 col-md-3 video">
-              <div class="video-item vt">
-                <div class="thumb">
-                  <a href="/video/{{$video->id}}">
-                    <img src="{{ $video->cover() }}" alt="{{ $video->title }}">
-                    <i class="duration">
-                      {{-- 持续时间 --}}
-                      @sectominute($video->duration)
-                    </i>
-                  </a>
-                </div>
-                <ul class="info-list">
-                  <li class="video-title">
-                    <a href="/video/{{$video->id}}">{{ $video->title }}</a>
-                  </li>
-                  <li>
-                    {{-- 播放量 --}}
-                    <p class="subtitle single-line">{{ $video->hits }}次播放</p>
-                  </li>
-                </ul>
-              </div>
+           <div class="vd-head">
+              <h3 class="vd-title">
+                <span class="title-icon">
+                  <i class="iconfont icon-huo"></i>推荐视频
+                </span>
+              </h3>
             </div>
-            @endforeach
+            @foreach($data->videos as $video)
+             <div class="col-xs-6 col-md-3 video">
+               <div class="video-item vt">
+                 <div class="thumb">
+                   <a href="/video/{{$video->id}}">
+                     <img src="{{ $video->cover() }}" alt="{{ $video->title }}">
+                     <i class="duration">
+                       {{-- 持续时间 --}}
+                       @sectominute($video->duration)
+                     </i>
+                   </a>
+                 </div>
+                 <ul class="info-list">
+                   <li class="video-title">
+                     <a href="/video/{{$video->id}}">{{ $video->title }}</a>
+                   </li>
+                   <li>
+                     {{-- 播放量 --}}
+                     <p class="subtitle single-line">{{ $video->hits }}次播放</p>
+                   </li>
+                 </ul>
+               </div>
+             </div>
+             @endforeach
           </div>
           
           {{-- 文章列表 --}}

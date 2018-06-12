@@ -1,5 +1,5 @@
 <div class="guess-wrapper">
-	<h3 class="plate-title wd">
+	<h3 class="plate-title underline">
 	 <span>
 	   猜你喜欢
 	 </span>

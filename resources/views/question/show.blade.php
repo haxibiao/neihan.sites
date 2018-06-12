@@ -109,7 +109,7 @@
 
       @endif
 
-  	   <h3 class="plate-title wd"><span>{{ $question->answers()->count() }}个回答</span></h3>
+  	   <h3 class="plate-title underline"><span>{{ $question->answers()->count() }}个回答</span></h3>
   	   <div class="all-answers">
            <div class="answer-items">
             @foreach($answers as $answer)
@@ -124,7 +124,7 @@
      <div class="aside sm-right hidden-xs">
        {{-- @include('question.parts.carousel') --}}
        <div class="qrcode-sidebar">
-	       <h3 class="plate-title wd">
+	       <h3 class="plate-title underline">
 	        <span>
 	          手机版下载
 	        </span>
