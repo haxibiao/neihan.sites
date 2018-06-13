@@ -27,7 +27,7 @@ class ArticlesQuery extends Query
             'limit'         => ['name' => 'limit', 'type' => Type::int()],
             'offset'        => ['name' => 'offset', 'type' => Type::int()],
             'filter'        => ['name' => 'filter', 'type' => GraphQL::type('ArticleFilter')],
-            'hot_time'      => ['name' => 'hot_time', 'type' => Type::int()],
+            'in_days'      => ['name' => 'in_days', 'type' => Type::int()],
             'order'         => ['name' => 'order', 'type' => GraphQL::type('ArticleOrder')],
         ];
     }
@@ -61,9 +61,8 @@ class ArticlesQuery extends Query
             }
         }
 
-        if (isset($args['hot_time'])) {
-            $qb = $qb->orderBy('hits', 'desc');
-            $qb = $qb->where('updated_at', '>', \Carbon\Carbon::now()->addDays(-$args['hot_time']));
+        if (isset($args['in_days'])) {
+            $qb = $qb->where('updated_at', '>', \Carbon\Carbon::now()->addDays(-$args['in_days']));
         }
 
         if (isset($args['user_id'])) {
