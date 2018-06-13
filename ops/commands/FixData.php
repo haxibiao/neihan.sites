@@ -7,6 +7,7 @@ use App\Image;
 use App\Video;
 use App\Article;
 use App\Category;
+use App\Collection;
 use Illuminate\Console\Command;
 
 class FixData extends Command
@@ -44,10 +45,19 @@ class FixData extends Command
         if ($this->cmd->argument('operation') == "users") {
             return $this->fix_users();
         }
+        if ($this->cmd->argument('operation') == "collections") {
+            return $this->fix_collections();
+        }
     }
 
     public function fix_users()
     {
+
+        $user = \App\User::where('id', 295)
+            ->update([
+                'is_editor'=>1,
+                'is_seoer' =>1
+            ]);
         // 今后，数据写到数据文件里，别堆代码里
     }
 
@@ -139,6 +149,22 @@ class FixData extends Command
                         [$article->category_id=>['submit' => '已收录']]
                     );
                 $this->cmd->info($article->title);
+            }
+        });
+    }
+    public function fix_collections()
+    {
+        $this->cmd->info('fix collections ...');
+        Collection::orderBy('id')->where('status',1)->chunk(100, function ($collections) {
+            foreach ($collections as $collection) {
+                $articles = $collection->publishedArticles()->get();
+                $total_words = 0;
+                foreach ($articles as $article) {
+                    $total_words += $article->count_words; 
+                }
+                $collection->count_words = $total_words;
+                $collection->count = count($articles);
+                $collection->save();
             }
         });
     }
