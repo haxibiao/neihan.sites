@@ -1,6 +1,6 @@
 <div class="hot-questions">
    <div class="recommended-questions">
-     <h3 class="plate-title wd">
+     <h3 class="plate-title underline">
       <span>
         精选回答
       </span>

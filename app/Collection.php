@@ -42,4 +42,7 @@ class Collection extends Model
         }
         return env('APP_URL') . $path;
     }
+    public function allArticles(){ 
+        return $this->belongsToMany(\App\Article::class)->where('articles.status', '>=', 0);
+    }
 }

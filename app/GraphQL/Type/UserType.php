@@ -359,7 +359,7 @@ class UserType extends GraphQLType
                     'limit'       => ['name' => 'limit', 'type' => Type::int()],
                     'offset'      => ['name' => 'offset', 'type' => Type::int()],
                     'category_id' => ['name' => 'category_id', 'type' => Type::int()],
-                    'type'        => ['name' => 'type', 'type' => GraphQL::type('NotificationType')],
+                    'type'        => ['name' => 'type', 'type' => GraphQL::type('NotificationType')], 
                 ],
                 'description' => '用户的通知',
                 'resolve'     => function ($root, $args) {
@@ -379,7 +379,7 @@ class UserType extends GraphQLType
                                 ->get();
                             foreach ($unread_notifications as $notification) {
                                 $notification->markAsRead();
-                            }
+                            } 
                             break;
                         case 'GROUP_LIKES':
                             $qb = $root->notifications()->orderBy('created_at', 'desc')

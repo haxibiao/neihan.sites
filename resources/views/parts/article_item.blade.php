@@ -5,7 +5,7 @@
     </a>
   @endif
   <div class="content">
-    <div class="author">
+    <div class="author hidden-xs">
       <a class="avatar" target="_blank" href="/user/{{ $article->user->id }}">
         <img src="{{ $article->user->avatar() }}" alt="">
       </a>
@@ -20,17 +20,17 @@
     <a class="title" target="_blank" href="/article/{{ $article->id }}">
         <span>{{ $article->title }}</span>
     </a>
-    <p class="abstract">
+    <a class="abstract" target="_blank" href="/article/{{ $article->id }}">
       {{ $article->description() }}
-    </p>
+    </a>
     <div class="meta">
       @if($article->category)
         <a class="collection-tag" target="_blank" href="/{{ $article->category->name_en }}">{{ $article->category->name }}</a>
       @endif
-      <a target="_blank" href="/article/{{ $article->id }}" class="browse_meta">
+      <a target="_blank" href="/article/{{ $article->id }}">
         <i class="iconfont icon-liulan"></i> {{ $article->hits }}
       </a>
-      <a target="_blank" href="/article/{{ $article->id }}/#comments" class="comment_meta">
+      <a target="_blank" href="/article/{{ $article->id }}/#comments">
         <i class="iconfont icon-svg37"></i> {{ $article->count_replies }}
       </a>
       <span><i class="iconfont icon-03xihuan"></i> {{ $article->count_likes }} </span>

@@ -1,5 +1,5 @@
 <div class="wd-contact">
-  <h3 class="plate-title wd">
+  <h3 class="plate-title underline">
    <span>
      联系我们
    </span>

@@ -243,6 +243,13 @@ class ArticleType extends GraphQLType
                     return $root->category;
                 },
             ],
+            'favorited'       => [
+                'type'        => Type::boolean(),
+                'description' => 'the article is favorited?',
+                'resolve'     => function ($root, $args) {
+                    return $root->currentUserHasFavorited();
+                },
+            ],
         ];
     }
 

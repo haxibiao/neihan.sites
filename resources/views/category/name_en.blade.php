@@ -34,7 +34,7 @@
                        @if(!Auth::check())
                        <div>{!! $data['commented']->links() !!}</div>
                        @else
-                       <article-list api="/{{ $category->name_en }}?commented=1" start-page="2" />
+                       <article-list api="/{{ $category->name_en }}?commented=1" start-page="2" not-empty="{{count($data['commented'])>0}}"/>
                       @endif
                    </ul>
                    <ul role="tabpanel" class="fade tab-pane" id="include">
@@ -42,7 +42,7 @@
                        @if(!Auth::check())
                        <div>{!! $data['collected']->links() !!}</div>
                        @else
-                       <article-list api="/{{ $category->name_en }}?collected=1" start-page="2" />
+                       <article-list api="/{{ $category->name_en }}?collected=1" start-page="2" not-empty="{{count($data['collected'])>0}}"/>
                        @endif
                    </ul>
                    <ul role="tabpanel" class="fade tab-pane" id="hot">
@@ -50,7 +50,7 @@
                        @if(!Auth::check())
                        <div>{!! $data['hot']->links() !!}</div>
                        @else
-                       <article-list api="/{{ $category->name_en }}?hot=1" start-page="2" />
+                       <article-list api="/{{ $category->name_en }}?hot=1" start-page="2" not-empty="{{count($data['hot'])>0}}"/>
                        @endif
                    </ul>
                    <ul role="tabpanel" class="fade video-list tab-pane" id="video">

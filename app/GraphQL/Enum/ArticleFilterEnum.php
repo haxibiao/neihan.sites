@@ -19,6 +19,7 @@ class ArticleFilterEnum extends GraphQLType {
             //filter new requested articles
             'NEW_REQUESTED' => 'NEW_REQUESTED',
             'ALL' => 'ALL',
+            'PEDING' => 'PENDING',//待审核投稿请求
 
             // //filter times;
             // 'HOT_DAY'=>'HOT_DAY',

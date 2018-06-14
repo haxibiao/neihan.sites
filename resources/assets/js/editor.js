@@ -25,18 +25,24 @@ Vue.prototype.$http = window.axios;
 Vue.component("blank-content", require("./components/BlankContent.vue"));
 Vue.component("single-list", require("./components/SingleList.vue"));
 
-Vue.component("follow", require("./components/Follow.vue"));
-Vue.component("favorite", require("./components/Favorite.vue"));
-Vue.component("like", require("./components/Like.vue"));
-// Vue.component('comment', require('./components/Comment.vue'));
-Vue.component("comments", require("./components/Comments.vue"));
-Vue.component("new-comment", require("./components/NewComment.vue"));
-Vue.component("reply-comment", require("./components/ReplyComment.vue"));
+Vue.component("follow", require("./components/button/Follow.vue"));
+Vue.component("favorite", require("./components/button/Favorite.vue"));
+Vue.component("like", require("./components/button/Like.vue"));
+// Vue.component('comment', require('./components/comment/Comment.vue'));
+Vue.component("comments", require("./components/comment/Comments.vue"));
+Vue.component("new-comment", require("./components/comment/NewComment.vue"));
+Vue.component(
+	"reply-comment",
+	require("./components/comment/ReplyComment.vue")
+);
 
 Vue.component("side-tool", require("./components/SideTool.vue"));
 
-Vue.component("article-list", require("./components/ArticleList.vue"));
-Vue.component("category-list", require("./components/CategoryList.vue"));
+Vue.component("article-list", require("./components/article/ArticleList.vue"));
+Vue.component(
+	"category-list",
+	require("./components/category/CategoryList.vue")
+);
 Vue.component("search-box", require("./components/search/SearchBox.vue"));
 Vue.component("recently", require("./components/search/Recently.vue"));
 Vue.component("hot-search", require("./components/search/Hot.vue"));
@@ -49,9 +55,12 @@ Vue.component("signs", require("./components/logins/Signs.vue"));
 
 //登录用户：　可见高级输入框组件...
 Vue.component("tags-input", require("./components/TagsInput.vue"));
-Vue.component("image-select", require("./components/ImageSelect.vue"));
+Vue.component("image-select", require("./components/image/ImageSelect.vue"));
 Vue.component("user-select", require("./components/UserSelect.vue"));
-Vue.component("category-select", require("./components/CategorySelect.vue"));
+Vue.component(
+	"category-select",
+	require("./components/category/CategorySelect.vue")
+);
 
 Vue.component(
 	"input-matching",
@@ -61,11 +70,11 @@ Vue.component(
 	"modal-ask-question",
 	require("./components/question/ModalAskQuestion.vue")
 );
-Vue.component("delete-button", require("./components/DeleteButton.vue"));
+Vue.component("delete-button", require("./components/button/DeleteButton.vue"));
 
 Vue.component(
 	"recommend-category",
-	require("./components/RecommendCategory.vue")
+	require("./components/category/RecommendCategory.vue")
 );
 Vue.component(
 	"recommend-authors",
@@ -109,8 +118,8 @@ Vue.component(
 //编辑用户：　能见到编辑编辑器，专题管理等
 Vue.component("editor", require("./components/Editor.vue"));
 //编辑器需要的模态框
-Vue.component("my-image-list", require("./components/MyImageList.vue"));
-Vue.component("my-video-list", require("./components/MyVideoList.vue"));
+Vue.component("my-image-list", require("./components/image/MyImageList.vue"));
+Vue.component("my-video-list", require("./components/video/MyVideoList.vue"));
 Vue.component(
 	"single-list-create",
 	require("./components/SingleListCreate.vue")
@@ -121,7 +130,7 @@ Vue.component(
 );
 //免费图片素材
 Vue.component("modal-images", require("./components/modals/ModalImages.vue"));
-Vue.component("image-list", require("./components/ImageList.vue"));
+Vue.component("image-list", require("./components/image/ImageList.vue"));
 
 //编辑用户：　能见到两个简单报表
 Vue.component("bar", require("./components/Bar.vue"));

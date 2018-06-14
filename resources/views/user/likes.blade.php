@@ -1,5 +1,7 @@
 @extends('layouts.app') 
-
+@section('title')
+    {{ $user->name }} - {{ env('APP_NAME') }}
+@stop　
 @section('content')
 <div id="user">
     <div id="user_wrp">

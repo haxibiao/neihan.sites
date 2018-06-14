@@ -14,5 +14,5 @@ class FollowFilterEnum extends GraphQLType {
             'CATEGORY' => 'CATEGORY',
             'USER_CATEGORY' => 'USER_CATEGORY',
         ],
-    ];
+    ]; 
 }

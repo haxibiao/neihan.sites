@@ -5,6 +5,9 @@ namespace ops\commands;
 use App\Comment;
 use App\Image;
 use App\Video;
+use App\Article;
+use App\Category;
+use App\Collection;
 use Illuminate\Console\Command;
 
 class FixData extends Command
@@ -42,10 +45,19 @@ class FixData extends Command
         if ($this->cmd->argument('operation') == "users") {
             return $this->fix_users();
         }
+        if ($this->cmd->argument('operation') == "collections") {
+            return $this->fix_collections();
+        }
     }
 
     public function fix_users()
     {
+
+        $user = \App\User::where('id', 295)
+            ->update([
+                'is_editor'=>1,
+                'is_seoer' =>1
+            ]);
         // 今后，数据写到数据文件里，别堆代码里
     }
 
@@ -61,12 +73,26 @@ class FixData extends Command
 
     public function fix_categories()
     {
-
-    }
+        //重新统计分类下已收录文章数
+        $this->cmd->info('fix categories ...');
+        Category::orderBy('id')->chunk(100, function ($categories) {
+            foreach ($categories as $category) {
+                $category->count = $category->publishedArticles()->count();
+                $category->save();
+            }
+        });
+    } 
 
     public function fix_videos()
     {
         $this->cmd->info('fix videos ...');
+        $qb = Video::orderBy('id')->whereNull('path');
+        $qb->chunk(100, function ($videos) {
+             foreach ($videos as $video) {
+                $video->delete();
+            }
+        });
+        /*$this->cmd->info('fix videos ...');
         $qb = Video::orderBy('id')->where('status', 0);
         $qb->chunk(100, function ($videos) {
             foreach ($videos as $video) {
@@ -86,7 +112,7 @@ class FixData extends Command
                 $video->category_id = 22;
                 $video->save();
             }
-        });
+        });*/
     }
 
     public function fix_images()
@@ -111,6 +137,35 @@ class FixData extends Command
 
     public function fix_articles()
     {
-
+        //维护主分类与文章的多对多关系
+        $this->cmd->info('fix articles ...');
+        Article::orderBy('id')->chunk(100, function ($articles) {
+            foreach ($articles as $article) {
+                if(empty($article->category_id)){
+                    continue;
+                }
+                $article->categories()
+                    ->syncWithoutDetaching(
+                        [$article->category_id=>['submit' => '已收录']]
+                    );
+                $this->cmd->info($article->title);
+            }
+        });
+    }
+    public function fix_collections()
+    {
+        $this->cmd->info('fix collections ...');
+        Collection::orderBy('id')->where('status',1)->chunk(100, function ($collections) {
+            foreach ($collections as $collection) {
+                $articles = $collection->publishedArticles()->get();
+                $total_words = 0;
+                foreach ($articles as $article) {
+                    $total_words += $article->count_words; 
+                }
+                $collection->count_words = $total_words;
+                $collection->count = count($articles);
+                $collection->save();
+            }
+        });
     }
 }

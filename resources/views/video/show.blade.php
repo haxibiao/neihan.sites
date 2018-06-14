@@ -4,6 +4,12 @@
 	视频: {{ $video->title }}
 @stop
 
+@section('logo')
+    <a class="logo" href="/">
+        <img src="/logo/{{ get_domain() }}.text.png" alt="">
+    </a>
+@stop
+
 @section('content')
 <div class="player-container">
     
@@ -40,7 +46,6 @@
                                 <span>- {{$video->category->count_videos}}个视频</span> 
                             </div>
                         </div>
-                        @endif
                         <div class="button-vd clearfix">
                             <follow 
                                 type="users" 
@@ -51,6 +56,7 @@
                                 >
                             </follow>
                         </div>
+                        @endif
                     </div>
                     <div class="related-video">
                         <ul class="video-list">

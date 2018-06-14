@@ -337,15 +337,14 @@ class ArticleController extends Controller
                 $new_category_ids[] = $cate->id;
             }
         }
-
         //sync
+        $parameters = [];
         foreach ($new_category_ids as $category_id) {
-            $article->categories()->sync([
-                $category_id => [
-                    'submit' => '已收录',
-                ],
-            ]);
+            $parameters[$category_id] = [
+                'submit' => '已收录',
+            ];
         }
+        $article->categories()->sync($parameters); 
         // $article->categories()->sync($new_category_ids);
 
         //re-count

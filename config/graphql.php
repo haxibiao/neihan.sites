@@ -122,7 +122,7 @@ return [
      *          ]
      *     ]
      * ]
-     */
+     */ 
     'schemas'               => [
         'default' => [
             'query'    => [
@@ -140,6 +140,7 @@ return [
                 'actions'     => '\App\GraphQL\Query\ActionsQuery',
                 'questions'   => '\App\GraphQL\Query\QuestionsQuery',
                 'visits'      => '\App\GraphQL\Query\VisitsQuery',
+                'follows'     => '\App\GraphQL\Query\FollowsQuery',
             ],
             'mutation' => [
                 //report
@@ -282,7 +283,8 @@ return [
         'CommentOrder'     => '\App\GraphQL\Enum\CommentOrderEnum',
         'UserFilter'       => '\App\GraphQL\Enum\UserFilterEnum',
         'NotificationType' => '\App\GraphQL\Enum\NotificationTypeEnum',
-        'VisitFilter'        => '\App\GraphQL\Enum\VisitFilterEnum',
+        'VisitFilter'      => '\App\GraphQL\Enum\VisitFilterEnum',
+        'FollowFilter'         => '\App\GraphQL\Enum\FollowFilterEnum',
     ],
 
     /*

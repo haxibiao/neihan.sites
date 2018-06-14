@@ -1,8 +1,12 @@
 @extends('layouts.app')
 
 @section('title')
-	编辑视频 - 
+	编辑视频 - {{ $video->title }}
 @stop
+@php
+    //编辑成功返回之前的页面
+    session()->put('url.intended', request()->headers->get('referer'));
+@endphp
 
 @section('content')
 <div class="container">
@@ -64,7 +68,7 @@
                         (目前只支持mp4格式，其他的需要先转码,　如果提供了cdn地址，这里就无需再上传了)
                     </p>
                     <small class="text-danger">
-                        {{ $errors->first('video') }}
+                        {{ $errors->first('video') }}　
                     </small>
                 </div>
 

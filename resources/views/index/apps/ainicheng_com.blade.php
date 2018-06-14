@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('title') 
+  {{ config('app.name') }}移动应用 App - {{ config('app.name') }}   
+@endsection
 @push('section')
   <div class="container-fluid apps">
     <div class="row">

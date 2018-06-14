@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('title')
+    收藏的文章 - {{ env('APP_NAME') }}
+@stop
 @section('content')
         <div id="bookmarks">
             <div class="main center">
