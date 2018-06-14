@@ -8,7 +8,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use App\Category;
 use App\Article;
-
+/**
+ * 作用:投稿请求的通知类型
+ * 注意这个通知类型已经被弃用了
+ */
 class CategoryRequested extends Notification
 {
     use Queueable;

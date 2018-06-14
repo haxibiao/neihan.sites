@@ -60,9 +60,10 @@ class submitArticleMutation extends Mutation
         }
 
         //给所有管理员延时1分钟发通知，提示有新的投稿请求
-        if ($submited_status == '待审核') {
+        //下面代码注释的原因是现在投稿通知的逻辑不通过消息通知表的流程，而是在代码层面计算
+        /*if ($submited_status == '待审核') {
             \App\Jobs\SendCategoryRequest::dispatch($article, $category)->delay(now()->addSeconds(1));
-        }
+        }*/
 
         $article->submited_status = $submited_status;
         $article->submit_status   = get_submit_status($submited_status);

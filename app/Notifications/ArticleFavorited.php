@@ -53,7 +53,7 @@ class ArticleFavorited extends Notification {
 	 */
 	public function toArray($notifiable) {
 		return [
-			'type' => 'favorite',
+			'type' => 'other',
 			'user_avatar' => $this->user->avatar,
 			'user_name' => $this->user->name,
 			'user_id' => $this->user->id,

@@ -48,16 +48,23 @@ class FixData extends Command
         if ($this->cmd->argument('operation') == "collections") {
             return $this->fix_collections();
         }
+        if ($this->cmd->argument('operation') == "notifications") {
+            return $this->fix_notifications();
+        }
+    }
+
+    public function fix_notifications(){
+        $this->cmd->info('fix notifications ...');
+        //删除通知表中投稿请求类型的通知类型
+        \DB::table('notifications')->where('type', 'App\Notifications\CategoryRequested')->delete();
+        //修复之前的脏数据
+        \App\Category::where('id', 76)->update([
+            'new_requests' => 0,
+        ]);
     }
 
     public function fix_users()
     {
-
-        $user = \App\User::where('id', 295)
-            ->update([
-                'is_editor'=>1,
-                'is_seoer' =>1
-            ]);
         // 今后，数据写到数据文件里，别堆代码里
     }
 
