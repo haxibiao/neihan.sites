@@ -24,7 +24,7 @@
                     <a href="#hot" aria-controls="hot" role="tab" data-toggle="tab"><i class="iconfont icon-huo"></i>热门</a>
                    </li>
                    <li role="presentation">
-                    <a href="#video" aria-controls="video" role="tab" data-toggle="tab"><i class="iconfont icon-huo"></i>视频</a>
+                    <a href="#video" aria-controls="video" role="tab" data-toggle="tab"><i class="iconfont icon-shipin"></i>视频</a>
                    </li>
                  </ul>
                  <!-- Tab panes -->
