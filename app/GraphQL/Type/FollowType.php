@@ -42,11 +42,13 @@ class FollowType extends GraphQLType
                 'type'        => Type::string(),
                 'description' => 'The avatar/logo of this follow',
                 'resolve'     => function ($root, $args) {
+                    $img_url = '';
                     if ($root->followed_type == 'users') {
-                        return $root->followed->avatar;
+                        $img_url =  $root->followed->avatar;
                     } else {
-                        return $root->followed->logo;
+                        $img_url =  $root->followed->logo;
                     }
+                    return get_full_url($img_url);
                 }, 
             ],
             'latest_article_title'        => [ 
