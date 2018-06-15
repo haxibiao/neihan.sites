@@ -313,24 +313,58 @@ class UserType extends GraphQLType
                 'type'        => Type::listOf(GraphQL::type('Category')),
                 'args'        => [
                     'filter' => ['name' => 'filter', 'type' => GraphQL::type('CategoryFilter')],
+                    'offset' => ['name' => 'offset', 'type' => Type::int()],
+                    'limit'  => ['name' => 'limit', 'type'  => Type::int()],
                 ],
                 'description' => 'user categories 包含　关注，管理的，创建的 ',
                 'resolve'     => function ($root, $args) {
-                    if (isset($args['filter']) && $args['filter'] == 'ADMIN') {
-                        return $root->adminCategories;
-                    }
-                    if (isset($args['filter']) && $args['filter'] == 'REQUESTED') {
-                        return $root->adminCategories()->where('new_request_title', '<>', null)->get();
-                    }
-                    if (isset($args['filter']) && $args['filter'] == 'FOLLOWED') {
-                        $categories           = [];
-                        $following_categories = $root->followings()->where('followed_type', 'categories')->get();
-                        foreach ($following_categories as $following) {
-                            $categories[] = $following->followed;
+                    //分页参数,后面可以把自定义分页功能提取出来
+                    $offset = isset($args['offset']) ? $args['offset'] : 0;
+                    $limit  = isset($args['offset']) ? $args['limit']  : 10;//获取多少条数据，默认为4
+
+                    if( isset($args['filter']) ){
+                        switch ($args['filter']) {
+                            //我管理的专题
+                            case 'ADMIN':
+                                return $root->adminCategories()
+                                    ->skip($offset)
+                                    ->take($limit)->get();
+                            //我管理的专题中有投稿请求的专题    
+                            case 'REQUESTED':
+                                return $root->adminCategories()->where('new_request_title', '<>', null)
+                                    ->skip($offset)
+                                    ->take($limit)
+                                    ->get();
+                            //我关注的专题
+                            case 'FOLLOWED':
+                                $categories           = [];
+                                $following_categories = $root->followings()
+                                    ->where('followed_type', 'categories')
+                                    ->skip($offset)
+                                    ->take($limit)
+                                    ->get();
+                                foreach ($following_categories as $following) {
+                                    $categories[] = $following->followed;
+                                }
+                                return $categories;
+                            //我最近投稿的专题
+                            case 'LATEST_REQUEST':
+                                return $root->categories()
+                                    ->orderBy('created_at', 'desc')
+                                    ->skip($offset)
+                                    ->take($limit)
+                                    ->get();
+                            //推荐专题
+                            case 'RECOMMEND':
+                                return \App\Category::orderBy('updated_at','desc')
+                                    ->skip($offset)
+                                    ->take($limit)
+                                    ->get();
+                            default:
+                                break;
                         }
-                        return $categories;
                     }
-                    return $root->categories;
+                    return $root->categories()->skip($offset)->take($limit)->get();
                 },
             ],
 
