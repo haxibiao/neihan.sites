@@ -267,8 +267,8 @@ class WapController extends Controller
                 });
 
                 //已登录用户，打赏成功, 记录文章赞赏数，给文章作者发赞赏消息提醒
-                $controller = new \App\Http\Controllers\PayController();
-                $controller->tip($article_id, $tran1->amount, session('last_tip_message'));
+                $article = \App\Article::findOrFail($article_id);
+                $article->tip($tran1->amount, session('last_tip_message'));
 
                 return true;
             }

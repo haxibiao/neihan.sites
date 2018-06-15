@@ -2,11 +2,13 @@
 
 namespace App\GraphQL\Type;
 
+use App\Article;
+use App\Category;
+use App\Visit;
+use DB;
 use Folklore\GraphQL\Support\Facades\GraphQL;
 use Folklore\GraphQL\Support\Type as GraphQLType;
 use GraphQL\Type\Definition\Type;
-use App\Article;
-use App\Visit;
 
 class UserType extends GraphQLType
 {
@@ -66,7 +68,7 @@ class UserType extends GraphQLType
                 'description' => 'The count reports of article',
             ],
             //阅读统计
-            "today_read_rate"              => [
+            "today_read_rate"   => [
                 'type'        => Type::string(),
                 'description' => 'The rate of the Visit',
                 'resolve'     => function ($root, $args) {
@@ -314,22 +316,22 @@ class UserType extends GraphQLType
                 'args'        => [
                     'filter' => ['name' => 'filter', 'type' => GraphQL::type('CategoryFilter')],
                     'offset' => ['name' => 'offset', 'type' => Type::int()],
-                    'limit'  => ['name' => 'limit', 'type'  => Type::int()],
+                    'limit'  => ['name' => 'limit', 'type' => Type::int()],
                 ],
                 'description' => 'user categories 包含　关注，管理的，创建的 ',
                 'resolve'     => function ($root, $args) {
                     //分页参数,后面可以把自定义分页功能提取出来
                     $offset = isset($args['offset']) ? $args['offset'] : 0;
-                    $limit  = isset($args['offset']) ? $args['limit']  : 10;//获取多少条数据，默认为4
+                    $limit  = isset($args['offset']) ? $args['limit'] : 10; //获取多少条数据，默认为4
 
-                    if( isset($args['filter']) ){
+                    if (isset($args['filter'])) {
                         switch ($args['filter']) {
                             //我管理的专题
                             case 'ADMIN':
                                 return $root->adminCategories()
                                     ->skip($offset)
                                     ->take($limit)->get();
-                            //我管理的专题中有投稿请求的专题    
+                            //我管理的专题中有投稿请求的专题
                             case 'REQUESTED':
                                 return $root->adminCategories()->where('new_request_title', '<>', null)
                                     ->skip($offset)
@@ -356,7 +358,7 @@ class UserType extends GraphQLType
                                     ->get();
                             //推荐专题
                             case 'RECOMMEND':
-                                return \App\Category::orderBy('updated_at','desc')
+                                return \App\Category::orderBy('updated_at', 'desc')
                                     ->skip($offset)
                                     ->take($limit)
                                     ->get();
@@ -393,7 +395,7 @@ class UserType extends GraphQLType
                     'limit'       => ['name' => 'limit', 'type' => Type::int()],
                     'offset'      => ['name' => 'offset', 'type' => Type::int()],
                     'category_id' => ['name' => 'category_id', 'type' => Type::int()],
-                    'type'        => ['name' => 'type', 'type' => GraphQL::type('NotificationType')], 
+                    'type'        => ['name' => 'type', 'type' => GraphQL::type('NotificationType')],
                 ],
                 'description' => '用户的通知',
                 'resolve'     => function ($root, $args) {
@@ -413,7 +415,7 @@ class UserType extends GraphQLType
                                 ->get();
                             foreach ($unread_notifications as $notification) {
                                 $notification->markAsRead();
-                            } 
+                            }
                             break;
                         case 'GROUP_LIKES':
                             $qb = $root->notifications()->orderBy('created_at', 'desc')
@@ -605,12 +607,41 @@ class UserType extends GraphQLType
                     if (isset($args['offset'])) {
                         $qb = $qb->skip($args['offset']);
                     }
-                    $limit = 100;
+                    $limit = 10;
                     if (isset($args['limit'])) {
                         $limit = $args['limit'];
                     }
                     $qb = $qb->take($limit);
                     return $qb->get();
+                },
+            ],
+
+            'submitedArticles'  => [
+                'args'        => [
+                    'offset' => ['name' => 'offset', 'type' => Type::int()],
+                    'limit'  => ['name' => 'limit', 'type' => Type::int()],
+                ],
+                'type'        => Type::listOf(GraphQL::type('Article')),
+                'description' => 'submited articles ',
+                'resolve'     => function ($root, $args) {
+                    $user = getUser();
+
+                    $aids   = $root->publishedArticles()->pluck('id');
+                    $qb     = DB::table('article_category')->whereIn('article_id', $aids);
+                    $offset = isset($args['offset']) ? $args['offset'] : 0;
+                    $limit  = isset($args['limit']) ? $args['limit'] : 10;
+                    $qb     = $qb->skip($offset)->take($limit);
+
+                    $articles = [];
+                    foreach ($qb->get() as $pivotItem) {
+                        $category                 = Category::find($pivotItem->category_id);
+                        $article                  = Article::find($pivotItem->article_id);
+                        $article->submitedCategory = $category;
+                        $article->submited_status = $pivotItem->submit;
+                        $article->submit_status   = get_submit_status($pivotItem->submit, $category->isAdmin($user));
+                        $articles[]               = $article;
+                    }
+                    return $articles;
                 },
             ],
         ];

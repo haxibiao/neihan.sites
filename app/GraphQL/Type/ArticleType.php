@@ -99,6 +99,13 @@ class ArticleType extends GraphQLType
                     return Category::find($root->pivot->category_id);
                 },
             ],
+            'submitedCategory'  => [
+                'type'        => GraphQL::type('Category'),
+                'description' => 'article pivot category ...',
+                'resolve'     => function ($root, $args) {
+                    return $root->submitedCategory;
+                },
+            ],
             'pivot_status'    => [
                 'type'        => Type::string(),
                 'description' => 'article pivot category pivot status ...',

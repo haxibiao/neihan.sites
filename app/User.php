@@ -426,4 +426,33 @@ class User extends Authenticatable
         }
         return $reports;
     }
+
+    public function transfer($amount, $to_user, $log_mine = '转账', $log_theirs = '转账')
+    {
+        \DB::beginTransaction();
+
+        try {
+            $type = '打赏';
+            \App\Transaction::create([
+                'user_id' => $this->id,
+                'type'    => $type,
+                'log'     => $log_mine,
+                'amount'  => $amount,
+                'status'  => '已到账',
+                'balance' => $user->balance() - $amount,
+            ]);
+            \App\Transaction::create([
+                'user_id' => $to_user->id,
+                'type'    => $type,
+                'log'     => $log_theirs,
+                'amount'  => $amount,
+                'status'  => '已到账',
+                'balance' => $to_user->balance() + $amount,
+            ]);
+        } catch (\Exception $ex) {
+            \DB::rollBack();
+        }
+
+        \DB::commit();
+    }
 }

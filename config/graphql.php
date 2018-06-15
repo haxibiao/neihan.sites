@@ -167,6 +167,7 @@ return [
                 'unpublishArticle'         => '\App\GraphQL\Mutation\article\unpublishArticleMutation',
                 'publishArticle'         => '\App\GraphQL\Mutation\article\publishArticleMutation',
                 'moveArticle'         => '\App\GraphQL\Mutation\article\moveArticleMutation',
+                'tipArticle'         => '\App\GraphQL\Mutation\article\tipArticleMutation',
 
                 //comment
                 'addComment'             => '\App\GraphQL\Mutation\comment\addCommentMutation',

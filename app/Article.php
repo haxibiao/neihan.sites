@@ -4,6 +4,7 @@ namespace App;
 
 use App\Action;
 use App\Model;
+use App\Tip;
 use Auth;
 
 class Article extends Model
@@ -363,21 +364,53 @@ class Article extends Model
     }
     /**
      * @Desc     该文章是否被当前登录的用户收藏，如果用户没有登录将返回false
-     * 
+     *
      * @Author   czg
      * @DateTime 2018-06-12
-     * @return   bool     
+     * @return   bool
      */
-    public function currentUserHasFavorited(){
+    public function currentUserHasFavorited()
+    {
         //未登录状态
-        if( !checkUser() ){
+        if (!checkUser()) {
             return false;
         }
         $loginUser = getUser();
         return \DB::table('favorites')
-                    ->where('user_id'   , $loginUser->id)
-                    ->where('faved_id'  , $this->id)
-                    ->where('faved_type', 'articles')
-                    ->exists();
+            ->where('user_id', $loginUser->id)
+            ->where('faved_id', $this->id)
+            ->where('faved_type', 'articles')
+            ->exists();
+    }
+
+    public function tip($amount, $message = '')
+    {
+        $user = getUser();
+
+        //保存赞赏记录
+        $data = [
+            'user_id'      => $user->id,
+            'tipable_id'   => $this->id,
+            'tipable_type' => 'articles',
+        ];
+
+        $tip          = \App\Tip::firstOrNew($data);
+        $tip->amount  = $tip->amount + $amount;
+        $tip->message = $message; //tips:: 当上多次，总计了总量，留言只保留最后一句，之前的应该通过通知发给用户了
+        $tip->save();
+
+        //action
+        $action = \App\Action::create([
+            'user_id'         => $user->id,
+            'actionable_type' => 'tips',
+            'actionable_id'   => $tip->id,
+        ]);
+
+        //更新文章赞赏数
+        $this->count_tips = $this->tips()->count();
+        $this->save();
+
+        //赞赏消息提醒
+        $this->user->notify(new \App\Notifications\ArticleTiped($this, $user, $tip));
     }
 }
