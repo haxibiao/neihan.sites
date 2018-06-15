@@ -2,42 +2,44 @@
 
 namespace App\GraphQL\Query;
 
-use App\Question;
+use App\Transaction;
 use Folklore\GraphQL\Support\Query;
 use GraphQL;
 use GraphQL\Type\Definition\Type;
 
-class QuestionsQuery extends Query
+class TransactionsQuery extends Query
 {
     protected $attributes = [
-        'name' => 'questons',
+        'name' => 'Transactions',
     ];
 
     public function type()
     {
-        return Type::listOf(GraphQL::type('Question'));
+        return Type::listOf(GraphQL::type('Transaction'));
     }
 
     public function args()
     {
         return [
-            'user_id'     => ['name' => 'user_id', 'type' => Type::int()],
-            'category_id' => ['name' => 'category_id', 'type' => Type::int()],
-            'limit'       => ['name' => 'limit', 'type' => Type::int()],
-            'offset'       => ['name' => 'offset', 'type' => Type::int()],
+            'user_id' => ['name' => 'user_id', 'type' => Type::int()],
+            'limit'   => ['name' => 'limit', 'type' => Type::int()],
+            'offset'  => ['name' => 'offset', 'type' => Type::int()],
         ];
     }
 
+    // public function rules()
+    // {
+    //     return [
+    //         'user_id' => ['required'],
+    //     ];
+    // }
+
     public function resolve($root, $args)
     {
-        $qb = Question::orderBy('id', 'desc');
+        $qb = Transaction::orderBy('id', 'desc');
 
         if (isset($args['user_id'])) {
             $qb = $qb->where('user_id', $args['user_id']);
-        }
-
-        if (isset($args['category_id'])) {
-            $qb = $qb->where('category_id', $args['category_id']);
         }
 
         if (isset($args['offset'])) {

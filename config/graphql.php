@@ -122,25 +122,26 @@ return [
      *          ]
      *     ]
      * ]
-     */ 
+     */
     'schemas'               => [
         'default' => [
             'query'    => [
-                'user'        => '\App\GraphQL\Query\UserQuery',
-                'users'       => '\App\GraphQL\Query\UsersQuery',
-                'chat'        => '\App\GraphQL\Query\ChatQuery',
-                'messages'    => '\App\GraphQL\Query\MessagesQuery',
-                'comments'    => '\App\GraphQL\Query\CommentsQuery',
-                'articles'    => '\App\GraphQL\Query\ArticlesQuery',
-                'article'     => '\App\GraphQL\Query\ArticleQuery',
-                'categories'  => '\App\GraphQL\Query\CategoriesQuery',
-                'category'    => '\App\GraphQL\Query\CategoryQuery',
-                'collections' => '\App\GraphQL\Query\CollectionsQuery',
-                'collection'  => '\App\GraphQL\Query\CollectionQuery',
-                'actions'     => '\App\GraphQL\Query\ActionsQuery',
-                'questions'   => '\App\GraphQL\Query\QuestionsQuery',
-                'visits'      => '\App\GraphQL\Query\VisitsQuery',
-                'follows'     => '\App\GraphQL\Query\FollowsQuery',
+                'user'         => '\App\GraphQL\Query\UserQuery',
+                'users'        => '\App\GraphQL\Query\UsersQuery',
+                'chat'         => '\App\GraphQL\Query\ChatQuery',
+                'messages'     => '\App\GraphQL\Query\MessagesQuery',
+                'comments'     => '\App\GraphQL\Query\CommentsQuery',
+                'articles'     => '\App\GraphQL\Query\ArticlesQuery',
+                'article'      => '\App\GraphQL\Query\ArticleQuery',
+                'categories'   => '\App\GraphQL\Query\CategoriesQuery',
+                'category'     => '\App\GraphQL\Query\CategoryQuery',
+                'collections'  => '\App\GraphQL\Query\CollectionsQuery',
+                'collection'   => '\App\GraphQL\Query\CollectionQuery',
+                'actions'      => '\App\GraphQL\Query\ActionsQuery',
+                'questions'    => '\App\GraphQL\Query\QuestionsQuery',
+                'visits'       => '\App\GraphQL\Query\VisitsQuery',
+                'follows'      => '\App\GraphQL\Query\FollowsQuery',
+                'transactions' => '\App\GraphQL\Query\TransactionsQuery',
             ],
             'mutation' => [
                 //report
@@ -155,6 +156,7 @@ return [
                 'updateUserName'         => '\App\GraphQL\Mutation\user\updateUserNameMutation',
                 'updateUserIntroduction' => '\App\GraphQL\Mutation\user\updateUserIntroductionMutation',
                 'blockUser'              => '\App\GraphQL\Mutation\user\blockUserMutation',
+                'userTransfer'           => '\App\GraphQL\Mutation\user\userTransferMutation',
 
                 //article
                 'createArticle'          => '\App\GraphQL\Mutation\article\createArticleMutation',
@@ -164,10 +166,10 @@ return [
                 'restoreArticle'         => '\App\GraphQL\Mutation\article\restoreArticleMutation',
                 'submitArticle'          => '\App\GraphQL\Mutation\article\submitArticleMutation',
                 'approveArticle'         => '\App\GraphQL\Mutation\article\approveArticleMutation',
-                'unpublishArticle'         => '\App\GraphQL\Mutation\article\unpublishArticleMutation',
+                'unpublishArticle'       => '\App\GraphQL\Mutation\article\unpublishArticleMutation',
                 'publishArticle'         => '\App\GraphQL\Mutation\article\publishArticleMutation',
-                'moveArticle'         => '\App\GraphQL\Mutation\article\moveArticleMutation',
-                'tipArticle'         => '\App\GraphQL\Mutation\article\tipArticleMutation',
+                'moveArticle'            => '\App\GraphQL\Mutation\article\moveArticleMutation',
+                'tipArticle'             => '\App\GraphQL\Mutation\article\tipArticleMutation',
 
                 //comment
                 'addComment'             => '\App\GraphQL\Mutation\comment\addCommentMutation',
@@ -197,7 +199,7 @@ return [
                 'sendMessage'            => '\App\GraphQL\Mutation\chat\sendMessageMutation',
 
                 //favorite
-                'favoriteArticle'            => '\App\GraphQL\Mutation\favorite\favoriteArticleMutation',  
+                'favoriteArticle'        => '\App\GraphQL\Mutation\favorite\favoriteArticleMutation',
             ],
         ],
     ],
@@ -268,8 +270,9 @@ return [
         'Tip'              => '\App\GraphQL\Type\TipType',
         'Image'            => '\App\GraphQL\Type\ImageType',
         'Visit'            => '\App\GraphQL\Type\VisitType',
-        'Visited'            => '\App\GraphQL\Type\VisitedType',
+        'Visited'          => '\App\GraphQL\Type\VisitedType',
         'Video'            => '\App\GraphQL\Type\VideoType',
+        'Transaction'      => '\App\GraphQL\Type\TransactionType',
 
         //simple json type
         'Report'           => '\App\GraphQL\Type\ReportType',
@@ -285,7 +288,7 @@ return [
         'UserFilter'       => '\App\GraphQL\Enum\UserFilterEnum',
         'NotificationType' => '\App\GraphQL\Enum\NotificationTypeEnum',
         'VisitFilter'      => '\App\GraphQL\Enum\VisitFilterEnum',
-        'FollowFilter'         => '\App\GraphQL\Enum\FollowFilterEnum',
+        'FollowFilter'     => '\App\GraphQL\Enum\FollowFilterEnum',
     ],
 
     /*

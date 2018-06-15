@@ -55,22 +55,24 @@ class WapController extends Controller
                     $subject = $type . $article->title;
                     //自己账户准备个交易记录
                     $transaction = Transaction::create([
-                        'user_id' => $user->id,
-                        'type'    => $type,
-                        'log'     => '向' . $article->user->link() . '的文章' . $article->link() . '打赏' . $amount . '元',
-                        'amount'  => $amount,
-                        'status'  => '未支付',
-                        'balance' => $user->balance(),
+                        'user_id'    => $user->id,
+                        'to_user_id' => $article->user_id,
+                        'type'       => $type,
+                        'log'        => '向' . $article->user->link() . '的文章' . $article->link() . '打赏' . $amount . '元',
+                        'amount'     => $amount,
+                        'status'     => '未支付',
+                        'balance'    => $user->balance(),
                     ]);
                     $tran_id1 = $transaction->id;
                     //对方账户准备个交易记录
                     $transaction = Transaction::create([
-                        'user_id' => $article->user->id,
-                        'type'    => $type,
-                        'log'     => $user->link() . '向您的文章' . $article->link() . '打赏' . $amount . '元',
-                        'amount'  => $amount,
-                        'status'  => '未支付',
-                        'balance' => $article->user->balance(),
+                        'user_id'      => $article->user->id,
+                        'from_user_id' => $user->id,
+                        'type'         => $type,
+                        'log'          => $user->link() . '向您的文章' . $article->link() . '打赏' . $amount . '元',
+                        'amount'       => $amount,
+                        'status'       => '未支付',
+                        'balance'      => $article->user->balance(),
                     ]);
                     $tran_id2 = $transaction->id;
 
@@ -249,8 +251,14 @@ class WapController extends Controller
             $tran1                       = Transaction::find($tran_id1);
             $tran2                       = Transaction::find($tran_id2);
             if ($tran1 && $tran2) {
+
+                //已登录用户，打赏成功, 记录文章赞赏数，给文章作者发赞赏消息提醒
+                $article = \App\Article::findOrFail($article_id);
+                $tip     = $article->tip($tran1->amount, session('last_tip_message'));
+
                 //事务保证账户金钱数据完整
-                DB::transaction(function () use ($tran1, $tran2) {
+                DB::transaction(function () use ($tran1, $tran2, $tip) {
+                    $tran1->relate_id = $tip->id;
                     //更新这笔账户状态
                     $tran1->status = '已到账';
                     $tran1->log    = $tran1->log . '(支付宝)';
@@ -260,15 +268,12 @@ class WapController extends Controller
 
                     //给对方账户到账
                     if ($tran2->status != '已到账') {
-                        $tran2->status  = '已到账';
-                        $tran2->balance = $tran2->balance + $tran2->amount;
+                        $tran2->relate_id = $tip->id;
+                        $tran2->status    = '已到账';
+                        $tran2->balance   = $tran2->balance + $tran2->amount;
                         $tran2->save();
                     }
                 });
-
-                //已登录用户，打赏成功, 记录文章赞赏数，给文章作者发赞赏消息提醒
-                $article = \App\Article::findOrFail($article_id);
-                $article->tip($tran1->amount, session('last_tip_message'));
 
                 return true;
             }

@@ -427,29 +427,33 @@ class User extends Authenticatable
         return $reports;
     }
 
-    public function transfer($amount, $to_user, $log_mine = '转账', $log_theirs = '转账')
+    public function transfer($amount, $to_user, $log_mine = '转账', $log_theirs = '转账', $relate_id = null, $type = "打赏")
     {
         \DB::beginTransaction();
 
         try {
-            $type = '打赏';
             \App\Transaction::create([
-                'user_id' => $this->id,
-                'type'    => $type,
-                'log'     => $log_mine,
-                'amount'  => $amount,
-                'status'  => '已到账',
-                'balance' => $user->balance() - $amount,
+                'user_id'    => $this->id,
+                'relate_id'  => $relate_id,
+                'to_user_id' => $to_user->id,
+                'type'       => $type,
+                'log'        => $log_mine,
+                'amount'     => $amount,
+                'status'     => '已到账',
+                'balance'    => $this->balance() - $amount,
             ]);
             \App\Transaction::create([
-                'user_id' => $to_user->id,
-                'type'    => $type,
-                'log'     => $log_theirs,
-                'amount'  => $amount,
-                'status'  => '已到账',
-                'balance' => $to_user->balance() + $amount,
+                'user_id'      => $to_user->id,
+                'relate_id'    => $relate_id,
+                'from_user_id' => $this->id,
+                'type'         => $type,
+                'log'          => $log_theirs,
+                'amount'       => $amount,
+                'status'       => '已到账',
+                'balance'      => $to_user->balance() + $amount,
             ]);
         } catch (\Exception $ex) {
+            var_dump($ex);die;
             \DB::rollBack();
         }
 

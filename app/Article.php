@@ -412,5 +412,7 @@ class Article extends Model
 
         //赞赏消息提醒
         $this->user->notify(new \App\Notifications\ArticleTiped($this, $user, $tip));
+
+        return $tip;
     }
 }

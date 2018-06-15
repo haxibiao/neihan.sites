@@ -14,12 +14,14 @@ class PayController extends Controller
         $message = urldecode(request('message'));
         if (Auth::check() && Auth::user()->balance() > $amount) {
             if (request('article_id')) {
-                $user       = getUser();
-                $article    = \App\Article::findOrFail(request('article_id'));
+                $user    = getUser();
+                $article = \App\Article::findOrFail(request('article_id'));
+                $tip     = $article->tip($amount, $message);
+
                 $log_mine   = '向' . $article->user->link() . '的文章' . $article->link() . '打赏' . $amount . '元';
                 $log_theirs = $user->link() . '向您的文章' . $article->link() . '打赏' . $amount . '元';
-                $user->transfer($amount, $article->user, $log_mine, $log_theirs);
-                $article->tip($amount, $message);
+                $user->transfer($amount, $article->user, $log_mine, $log_theirs, $tip->id);
+
             }
             return redirect()->to('/wallet');
         } else {
