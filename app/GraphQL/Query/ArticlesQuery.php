@@ -27,7 +27,7 @@ class ArticlesQuery extends Query
             'limit'         => ['name' => 'limit', 'type' => Type::int()],
             'offset'        => ['name' => 'offset', 'type' => Type::int()],
             'filter'        => ['name' => 'filter', 'type' => GraphQL::type('ArticleFilter')],
-            'in_days'      => ['name' => 'in_days', 'type' => Type::int()],
+            'in_days'       => ['name' => 'in_days', 'type' => Type::int()],
             'order'         => ['name' => 'order', 'type' => GraphQL::type('ArticleOrder')],
         ];
     }
@@ -35,7 +35,7 @@ class ArticlesQuery extends Query
     public function resolve($root, $args)
     {
 
-        $qb = Article::orderBy('id', 'desc');
+        $qb = Article::where('source_url', '=', '0')->where('category_id', '>', 0);
 
         if (isset($args['order'])) {
             if ($args['order'] == 'COMMENTED') {
@@ -43,7 +43,10 @@ class ArticlesQuery extends Query
             } else if ($args['order'] == 'HOT') {
                 $qb = Article::orderBy('hits', 'desc');
             }
+        } else {
+            $qb = $qb->orderBy('id', 'desc');
         }
+
         //TODO关于filter的代码需要重构
         if (isset($args['filter'])) {
             switch ($args['filter']) {
@@ -79,7 +82,7 @@ class ArticlesQuery extends Query
             $collection = \App\Collection::findOrFail($args['collection_id']);
             $user       = session('user');
             if ($user && $collection->user_id == $user->id) {
-                $qb = $collection->allArticles();  
+                $qb = $collection->allArticles();
             } else {
                 $qb = $collection->articles();
             }
