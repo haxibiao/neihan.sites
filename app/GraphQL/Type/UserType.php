@@ -634,14 +634,43 @@ class UserType extends GraphQLType
 
                     $articles = [];
                     foreach ($qb->get() as $pivotItem) {
-                        $category                 = Category::find($pivotItem->category_id);
-                        $article                  = Article::find($pivotItem->article_id);
+                        $category                  = Category::find($pivotItem->category_id);
+                        $article                   = Article::find($pivotItem->article_id);
                         $article->submitedCategory = $category;
-                        $article->submited_status = $pivotItem->submit;
-                        $article->submit_status   = get_submit_status($pivotItem->submit, $category->isAdmin($user));
-                        $articles[]               = $article;
+                        $article->submited_status  = $pivotItem->submit;
+                        $article->submit_status    = get_submit_status($pivotItem->submit, $category->isAdmin($user));
+                        $articles[]                = $article;
                     }
                     return $articles;
+                },
+            ],
+
+            'incomeHistory'     => [
+                'type'        => Type::listOf(Type::string()),
+                'description' => 'user last 4 month income summary ....',
+                'resolve'     => function ($root, $args) {
+                    $qb = $root->transactions()
+                        ->where('to_user_id', $root->id) // amount to me is income
+                        ->where('created_at', '>', \Carbon\Carbon::now()->addDays(-5 * 30));
+                    $current_month        = \Carbon\Carbon::now()->month;
+                    $current_year         = \Carbon\Carbon::now()->year;
+                    $sum_1                = $qb->whereMonth('created_at', $current_month)->sum('amount');
+                    $last_month           = \Carbon\Carbon::now()->addMonths(-1)->month;
+                    $last_month_year      = \Carbon\Carbon::now()->addMonths(-1)->year;
+                    $sum_2                = $qb->whereMonth('created_at', $last_month)->sum('amount');
+                    $two_month_ago        = \Carbon\Carbon::now()->addMonths(-2)->month;
+                    $two_month_ago_year   = \Carbon\Carbon::now()->addMonths(-2)->year;
+                    $sum_3                = $qb->whereMonth('created_at', $two_month_ago)->sum('amount');
+                    $three_month_ago      = \Carbon\Carbon::now()->addMonths(-3)->month;
+                    $three_month_ago_year = \Carbon\Carbon::now()->addMonths(-3)->year;
+                    $sum_4                = $qb->whereMonth('created_at', $three_month_ago)->sum('amount');
+
+                    return [
+                        "$current_year 年$current_month 月,$sum_1",
+                        "$last_month_year 年$last_month 月,$sum_2",
+                        "$two_month_ago_year 年$two_month_ago 月,$sum_3",
+                        "$three_month_ago_year 年$three_month_ago 月,$sum_4",
+                    ];
                 },
             ],
         ];

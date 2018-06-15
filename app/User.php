@@ -429,23 +429,29 @@ class User extends Authenticatable
 
     public function transfer($amount, $to_user, $log_mine = '转账', $log_theirs = '转账', $relate_id = null, $type = "打赏")
     {
+        if ($this->balance() < $amount) {
+            return false;
+        }
+
         \DB::beginTransaction();
 
         try {
             \App\Transaction::create([
-                'user_id'    => $this->id,
-                'relate_id'  => $relate_id,
-                'to_user_id' => $to_user->id,
-                'type'       => $type,
-                'log'        => $log_mine,
-                'amount'     => $amount,
-                'status'     => '已到账',
-                'balance'    => $this->balance() - $amount,
+                'user_id'      => $this->id,
+                'relate_id'    => $relate_id,
+                'from_user_id' => $this->id,
+                'to_user_id'   => $to_user->id,
+                'type'         => $type,
+                'log'          => $log_mine,
+                'amount'       => $amount,
+                'status'       => '已到账',
+                'balance'      => $this->balance() - $amount,
             ]);
             \App\Transaction::create([
                 'user_id'      => $to_user->id,
                 'relate_id'    => $relate_id,
                 'from_user_id' => $this->id,
+                'to_user_id'   => $to_user->id,
                 'type'         => $type,
                 'log'          => $log_theirs,
                 'amount'       => $amount,
@@ -453,10 +459,11 @@ class User extends Authenticatable
                 'balance'      => $to_user->balance() + $amount,
             ]);
         } catch (\Exception $ex) {
-            var_dump($ex);die;
             \DB::rollBack();
+            return false;
         }
 
         \DB::commit();
+        return true;
     }
 }

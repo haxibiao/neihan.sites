@@ -55,19 +55,21 @@ class WapController extends Controller
                     $subject = $type . $article->title;
                     //自己账户准备个交易记录
                     $transaction = Transaction::create([
-                        'user_id'    => $user->id,
-                        'to_user_id' => $article->user_id,
-                        'type'       => $type,
-                        'log'        => '向' . $article->user->link() . '的文章' . $article->link() . '打赏' . $amount . '元',
-                        'amount'     => $amount,
-                        'status'     => '未支付',
-                        'balance'    => $user->balance(),
+                        'user_id'      => $user->id,
+                        'from_user_id' => $user->id,
+                        'to_user_id'   => $article->user_id,
+                        'type'         => $type,
+                        'log'          => '向' . $article->user->link() . '的文章' . $article->link() . '打赏' . $amount . '元',
+                        'amount'       => $amount,
+                        'status'       => '未支付',
+                        'balance'      => $user->balance(),
                     ]);
                     $tran_id1 = $transaction->id;
                     //对方账户准备个交易记录
                     $transaction = Transaction::create([
                         'user_id'      => $article->user->id,
                         'from_user_id' => $user->id,
+                        'to_user_id'   => $article->user->id,
                         'type'         => $type,
                         'log'          => $user->link() . '向您的文章' . $article->link() . '打赏' . $amount . '元',
                         'amount'       => $amount,
