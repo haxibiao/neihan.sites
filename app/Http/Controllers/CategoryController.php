@@ -202,7 +202,7 @@ class CategoryController extends Controller
             ->where('status', '>', 0)
             ->skip(rand(0, Video::count() - 8));
         if ($category->videos()->count()) {
-            $qb = $category->videos();
+            $qb = $category->videos()->orderBy('id', 'desc');
         }
         $videos         = smartPager($qb, 12);
         $data['videos'] = $videos;
