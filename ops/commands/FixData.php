@@ -92,14 +92,14 @@ class FixData extends Command
 
     public function fix_videos()
     {
-        $this->cmd->info('fix videos ...');
+        $this->cmd->info('delete empty videos ...');
         $qb = Video::orderBy('id')->whereNull('path');
         $qb->chunk(100, function ($videos) {
              foreach ($videos as $video) {
                 $video->delete();
             }
         });
-        /*$this->cmd->info('fix videos ...');
+        $this->cmd->info('fix videos ...');
         $qb = Video::orderBy('id')->where('status', 0);
         $qb->chunk(100, function ($videos) {
             foreach ($videos as $video) {
@@ -119,7 +119,7 @@ class FixData extends Command
                 $video->category_id = 22;
                 $video->save();
             }
-        });*/
+        });
     }
 
     public function fix_images()
