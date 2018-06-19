@@ -49,7 +49,7 @@ export default {
 			//切换文章的时候，保存前一篇文章
 			var { previewArticle, currentArticle } = this.$store.state;
 			if (previewArticle && previewArticle.id) {
-				 this.$store.dispatch('autoSavePreviewArticle');
+				this.$store.dispatch("autoSavePreviewArticle");
 			}
 		}
 	},

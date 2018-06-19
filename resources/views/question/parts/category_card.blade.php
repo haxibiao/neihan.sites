@@ -4,7 +4,7 @@
       	<img class="avatar-category" src="{{ $category->logo() }}" alt="">
       <h4 class="name single-line">{{ $category->name }}</h4>
       <p class="category-description">
-        {{ $category->description }}
+        {{ $category->description }} 
 			</p>
 		</a>    
 		<a class="btn-base btn-follow"><span><i class="iconfont icon-icon20"></i>关注</span></a>
