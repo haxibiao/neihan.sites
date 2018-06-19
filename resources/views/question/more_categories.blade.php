@@ -14,6 +14,7 @@
     <div class="recommend-list">
      <ul class="clearfix">
       @each('question.parts.category_card', $categories, 'category')
+      
      </ul>
      <p>{!! $categories->links() !!}</p>
      {{-- <a class="btn-base btn-more" href="javascript:;">加载更多</a> --}}
