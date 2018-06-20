@@ -8,6 +8,7 @@ use App\Video;
 use App\Article;
 use App\Category;
 use App\Collection;
+use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Console\Command;
 
 class FixData extends Command
@@ -144,20 +145,107 @@ class FixData extends Command
 
     public function fix_articles()
     {
-        //维护主分类与文章的多对多关系
         $this->cmd->info('fix articles ...');
-        Article::orderBy('id')->chunk(100, function ($articles) {
+        //修复非爬虫文章文章内容中图片的问题
+        $qb = Article::where('id', '=', '1263')->chunk(100, function ($articles) {
             foreach ($articles as $article) {
-                if(empty($article->category_id)){
+                $body_html = $article->body;
+                if(empty($body_html)){
                     continue;
                 }
-                $article->categories()
-                    ->syncWithoutDetaching(
-                        [$article->category_id=>['submit' => '已收录']]
-                    );
-                $this->cmd->info($article->title);
+                //匹配正文中所有的图片路径
+                $pattern = "/<img.*?src=['|\"](.*?)['|\"].*?[\/]?>/iu";
+                preg_match_all($pattern, $body_html, $matches);
+                $img_urls = end($matches);
+                
+                foreach ($img_urls as $img_url) {
+                    $new_img_url = '';
+                    if( starts_with($img_url, 'https://ainicheng.com/') ){
+
+                        continue;
+                    } else if ( starts_with($img_url, '/storage/') ){
+                        //网站相对地址
+                        $new_img_url = url($img_url);
+                    } else {
+                        //下载图片
+                        $image          = new Image();
+                        $image->user_id = $article->user_id;
+                        $image->save(); 
+
+                        $extension       = substr($img_url,strripos($img_url,'.'));
+                        $image->extension = $extension;
+                        $filename        = $image->id . $extension;
+                        $image->path      = '/storage/img/' . $filename; 
+                        $local_dir = public_path('/storage/img/');
+                        if (!is_dir($local_dir)) {
+                            mkdir($local_dir, 0777, 1);
+                        }
+
+                        $img = \ImageMaker::make($img_url);
+                        if ($extension != 'gif') {
+                            $big_width = $img->width() > 900 ? 900 : $img->width();
+                            $img->resize($big_width, null, function ($constraint) {
+                                $constraint->aspectRatio();
+                            });
+                            //save big
+                            $img->save(public_path($image->path));
+
+                            $image->width  = $img->width();
+                            $image->height = $img->height();
+                        } else {
+                            $file->move($local_dir, $filename);
+                        }
+
+                        //save top
+                        if ($extension != 'gif') {
+                            if ($img->width() >= 760) {
+                                $img->crop(760, 327);
+                                $image->path_top = '/storage/img/' . $image->id . '.top.' . $extension;
+                                $img->save(public_path($image->path_top));
+                            }
+                        } else {
+                            if ($img->width() >= 760) {
+                                $image->path_top = $image->path;
+                            }
+                        }
+                        //save small
+                        if ($img->width() / $img->height() < 1.5) {
+                            $img->resize(300, null, function ($constraint) {
+                                $constraint->aspectRatio();
+                            });
+                        } else {
+                            $img->resize(null, 240, function ($constraint) {
+                                $constraint->aspectRatio();
+                            });
+                        }
+                        $img->crop(300, 240);
+                        $image->disk = "local";
+                        $img->save(public_path($image->path_small()));
+                        $image->save();
+
+                        $new_img_url = $image->url();
+                    }
+                    $article->body = str_replace($img_url, $new_img_url, $body_html);
+                    $article->save();
+                    var_dump('http://l.ainicheng.com/article/' . $article->id);
+                }
             }
         });
+
+        //维护主分类与文章的多对多关系
+        // $this->cmd->info('fix articles ...');
+        // Article::orderBy('id')->chunk(100, function ($articles) {
+        //     foreach ($articles as $article) {
+        //         if(empty($article->category_id)){
+        //             continue;
+        //         }
+        //         $article->categories()
+        //             ->syncWithoutDetaching(
+        //                 [$article->category_id=>['submit' => '已收录']]
+        //             );
+        //         $this->cmd->info($article->title);
+        //     }
+        // });
     }
     public function fix_collections()
     {
