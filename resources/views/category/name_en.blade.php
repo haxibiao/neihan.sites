@@ -3,7 +3,7 @@
 @section('title') {{ $category->name }} - {{ env('APP_NAME') }} @endsection
 @section('keywords') {{ $category->name }} @endsection
 @section('description') {{ $category->description?$category->description:config('seo.description') }} @endsection
-
+ 
 @section('content')
 <div id="category">
     <div class="clearfix">
@@ -92,9 +92,21 @@
         </div>
     </div>
 </div>
-@endsection
+@endsection   
 
 @push('modals')
   {{-- 分享到微信 --}}
   <modal-share-wx url="{{ url()->full() }}" aid="{{ $category->id }}"></modal-share-wx>
 @endpush
+
+@push('scripts')
+<script type="text/javascript">
+  $(function(){  
+    var url = window.location.href;
+    if(url.indexOf("page")){
+      $("[href='#video']").click(); 
+    }
+  });
+</script>
+@endpush
+
