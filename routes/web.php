@@ -52,7 +52,12 @@ Route::get('/search/collections', 'SearchController@searchCollections');
 Route::get('/drafts', 'ArticleController@drafts');
 Route::resource('/article', 'ArticleController');
 Route::get('/categories', 'CategoryController@categories');
-Route::resource('/category', 'CategoryController');
+
+//管理专题
+Route::group(['middleware'=>['auth.admin']],function(){
+	Route::resource('/category', 'CategoryController');	
+});
+
 Route::resource('/collection', 'CollectionController');
 Route::get('/tag/{name}', 'TagController@tagname');
 Route::resource('/tag', 'TagController');
