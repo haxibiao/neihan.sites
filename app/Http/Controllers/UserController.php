@@ -273,6 +273,7 @@ class UserController extends Controller
                 $questions[] = $question;
             }
         }
+        $questions                = array_unique($questions);
         $data['answer_questions'] = $questions;
         return view('user.questions')->withUser($user)->withData($data);
     }

@@ -16,7 +16,7 @@
       <img class="badge-icon" src="/images/verified.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}认证" alt="">
       <span class="time" data-shared-at="2017-11-06T09:20:28+08:00">知名自媒体人</span>
     </div>
-    <div class="pull-right">{{ $question->count_likes }}赞</div>
+    <div class="pull-right">{{ $question->latestAnswer->count_likes }}赞</div>
   </div>
   @endif
 
