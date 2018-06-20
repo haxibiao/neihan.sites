@@ -68,8 +68,8 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'api_token' => str_random(60),
         ]);
-        //默认头像地址
-        $user->avatar = '/images/avatar.jpg';
+        //默认头像地址 
+        $user->avatar = '/images/avatar-'.rand(1, 15).'.jpg';
         $user->save();
         // $user->makeQQAvatar();  //TODO:: 这个抓取QQ头像的可以后面再做，先不耽误注册用户体验
 

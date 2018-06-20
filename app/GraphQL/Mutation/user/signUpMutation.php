@@ -49,8 +49,9 @@ class signUpMutation extends Mutation
             throw new \Exception('Email already exists');
         }
 
-        $user->name = $name;
+        $user->name = $name; 
         $user->password = bcrypt($password);
+        $user->avatar = '/images/avatar-'.rand(1, 15).'.jpg';
         $user->api_token = str_random(60);
         $user->save();
 
