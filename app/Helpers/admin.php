@@ -128,12 +128,20 @@ function get_top_articles()
 {
     $articles        = [];
     $stick_articles  = get_stick_articles('轮播图');
+
+     $stick_article_ids = array_column( $stick_articles, 'id' );
+
     $leftCount       = 8 - count($stick_articles);
-    $topped_articles = Article::where('is_top', 1)->where('image_top', '<>', '')->orderBy('id', 'desc')->take($leftCount)->get();
+    $topped_articles = Article::where('is_top', 1)
+        ->where('image_top', '<>', '')
+        ->whereNotIn('id', $stick_article_ids)
+        ->orderBy('id', 'desc')
+        ->take($leftCount)->get();  
+    
     foreach ($topped_articles as $item) {
         $articles[] = $item;
     }
-    ;
+    
     $articles = array_merge($stick_articles, $articles);
     return $articles;
 }
