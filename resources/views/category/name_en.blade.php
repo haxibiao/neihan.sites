@@ -103,7 +103,7 @@
 <script type="text/javascript">
   $(function(){  
     var url = window.location.href;
-    if(url.indexOf("page")){
+    if( url.includes("page") ){
       $("[href='#video']").click(); 
     }
   });
