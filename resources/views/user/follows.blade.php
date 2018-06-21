@@ -18,7 +18,7 @@
 					   		关注用户 {{ $data['follows']->total() }}
 					   	</a>
 					   </li>
-					   <li role="presentation" {!! ends_with(request()->path(), 'followers') ? 'class="active"' : '' !!}>
+					   <li role="presentation" >
 					   	<a href="#followers" aria-controls="followers" role="tab" data-toggle="tab">
 					   		粉丝 {{ $data['followers']->total() }}
 					   	</a>
@@ -37,10 +37,21 @@
 					   		@endforeach									
 					   </ul>
 					 </div>
-				</div>
+				</div> 
 			</div>
 			{{-- 侧栏 --}}
-			@include('user.parts.aside')
+			@include('user.parts.aside') 
 		</div>
-	</div>
+	</div> 
 @endsection
+
+@push('scripts')
+	<script type="text/javascript">
+	  $(function(){
+	    var url = window.location.href;
+	    if( url.includes("followers") ){
+	    	$("[href='#followers']").click();
+	    }
+	  });
+	</script>
+@endpush
