@@ -145,92 +145,212 @@ class FixData extends Command
 
     public function fix_articles()
     {
+        //base64 fail 1370 12520 11298 12522
+        //webp 12520
         $this->cmd->info('fix articles ...');
-        //修复非爬虫文章文章内容中图片的问题
-        $qb = Article::where('id', '=', '1263')->chunk(100, function ($articles) {
+        //修复非爬虫文章文章内容中图片的问题(图片的宽高属性单独处理)
+        Article::where('source_url', '=', '0')->chunk(100, function ($articles) {
             foreach ($articles as $article) {
                 $body_html = $article->body;
-                if(empty($body_html)){
+                //body为空的情况
+                if(empty($body_html)){ 
                     continue;
                 }
                 //匹配正文中所有的图片路径
-                $pattern = "/<img.*?src=['|\"](.*?)['|\"].*?[\/]?>/iu";
-                preg_match_all($pattern, $body_html, $matches);
-                $img_urls = end($matches);
+                $img_from_image_urls = \ImageUtils::getImageUrlFromHtml($body_html);
                 
-                foreach ($img_urls as $img_url) {
-                    $new_img_url = '';
-                    if( starts_with($img_url, 'https://ainicheng.com/') ){
-
+                foreach ($img_from_image_urls as $img_url) {
+                    $new_img_url= '';
+                    $old_img_url = $img_url;
+                    //我们域名下的图片，直接跳过
+                    if( str_contains($img_url, [
+                            'ainicheng.com' , 
+                            'youjianqi.com' ,
+                            'qunyige.com'   ,
+                            'haxibiao.com'
+                        ]) )
+                    {
                         continue;
-                    } else if ( starts_with($img_url, '/storage/') ){
-                        //网站相对地址
-                        $new_img_url = url($img_url);
-                    } else {
-                        //下载图片
-                        $image          = new Image();
+                    //base64图片
+                    } else if( starts_with($img_url, 'data:image') ) {
+                        $image            = new Image();
                         $image->user_id = $article->user_id;
-                        $image->save(); 
-
-                        $extension       = substr($img_url,strripos($img_url,'.'));
+                        $image->title = $article ? $article->title : '';
+                        $image->save();
+                        $img_data  = \ImageUtils::getBase64ImgStream($img_url);
+                        //图片扩展名
+                        $extension = \StringUtils::getNeedBetween($img_url, 'data:image/', ';');
                         $image->extension = $extension;
-                        $filename        = $image->id . $extension;
-                        $image->path      = '/storage/img/' . $filename; 
+                        //图片相对路径
+                        $filename        = $image->id .'.'. $extension;
+                        $image->path      = '/storage/img/' . $filename;
+
                         $local_dir = public_path('/storage/img/');
                         if (!is_dir($local_dir)) {
                             mkdir($local_dir, 0777, 1);
                         }
+                        try { 
+                            $img         = \ImageMaker::make($img_data);
+                            //保存大图
+                            if ($extension != 'gif') {
+                                $big_width = $img->width() > 900 ? 900 : $img->width();
+                                $img->resize($big_width, null, function ($constraint) {
+                                    $constraint->aspectRatio();
+                                });
+                                $img->save(public_path($image->path));
 
-                        $img = \ImageMaker::make($img_url);
-                        if ($extension != 'gif') {
-                            $big_width = $img->width() > 900 ? 900 : $img->width();
-                            $img->resize($big_width, null, function ($constraint) {
-                                $constraint->aspectRatio();
-                            });
-                            //save big
-                            $img->save(public_path($image->path));
-
-                            $image->width  = $img->width();
-                            $image->height = $img->height();
-                        } else {
-                            $file->move($local_dir, $filename);
-                        }
-
-                        //save top
-                        if ($extension != 'gif') {
-                            if ($img->width() >= 760) {
-                                $img->crop(760, 327);
-                                $image->path_top = '/storage/img/' . $image->id . '.top.' . $extension;
-                                $img->save(public_path($image->path_top));
+                                $image->width  = $img->width();
+                                $image->height = $img->height();
+                            } else {
+                                file_put_contents($local_dir . $filename ,$img_data);
                             }
-                        } else {
-                            if ($img->width() >= 760) {
-                                $image->path_top = $image->path;
+
+                            //保存轮播图
+                            if ($extension != 'gif') {
+                                if ($img->width() >= 760) {
+                                    $img->crop(760, 327);
+                                    $image->path_top = '/storage/img/' . $image->id . '.top.' . $extension;
+                                    $img->save(public_path($image->path_top));
+                                }
+                            } else {
+                                if ($img->width() >= 760) {
+                                    $image->path_top = $image->path;
+                                }
                             }
-                        }
-                        //save small
-                        if ($img->width() / $img->height() < 1.5) {
-                            $img->resize(300, null, function ($constraint) {
-                                $constraint->aspectRatio();
-                            });
-                        } else {
-                            $img->resize(null, 240, function ($constraint) {
-                                $constraint->aspectRatio();
-                            });
-                        }
-                        $img->crop(300, 240);
-                        $image->disk = "local";
-                        $img->save(public_path($image->path_small()));
+                            //保存小图
+                            if ($img->width() / $img->height() < 1.5) {
+                                $img->resize(300, null, function ($constraint) {
+                                    $constraint->aspectRatio();
+                                });
+                            } else {
+                                $img->resize(null, 240, function ($constraint) {
+                                    $constraint->aspectRatio();
+                                });
+                            }
+                            $img->crop(300, 240);
+                            $image->disk = "local";
+                            $img->save(public_path($image->path_small()));
+                            $image->save();
+
+                            $new_img_url = $image->url();
+                            //$img_width  = $image->width;
+                            //$img_height = $image->height;
+                        } catch (\Exception $e) {
+                            file_put_contents($local_dir . $filename ,$img_data);
+                            var_dump('base64网络图片下载失败-文章链接:' . 'http://ainicheng.com/article/' . $article->id);
+                            continue;
+                        } 
                         $image->save();
-
                         $new_img_url = $image->url();
+                    } else if (str_contains($img_url, 'video/thumbnail_')) {      
+                        var_dump('视图截图-文章链接:' . 'http://ainicheng.com/article/' . $article->id);
+                        continue;
+                    //网站相对地址     
+                    } else if (starts_with($img_url, '/storage/')) {
+                        $new_img_url = url($img_url);
+                    //其他站点下的图片     
+                    } else if ( starts_with($img_url, 'http') ){
+                        //http://p2.qhimgs4.com/t01cf38507c3b62d50d.webp
+                        try {
+                            //规整url
+                            $img_url = str_replace('amp;', '', $img_url);
+                            //新浪图片服务器网址会发生301重定向
+                            if( str_contains($img_url,['r.sinaimg.cn'])){
+                                $img_url = 'https:' . \HttpUtils::getReal($img_url); 
+                            }
+
+                            $image            = Image::firstOrNew([
+                                'source_url' => $img_url,
+                            ]);
+                            $image->user_id = $article->user_id;
+                            $image->title = $article ? $article->title : '';
+                            $image->save();
+
+                            $img_data = file_get_contents($img_url);       
+
+                            if (!empty($img_data)) {
+                                //图片扩展名
+                                if(str_contains($img_url,'cms-bucket.nosdn.127.net')){
+                                    $extension = 'jpeg';
+                                } else if(str_contains($img_url,['am-a.akamaihd.net','img03.sogoucdn.com'])){
+                                    $extension = 'png';
+                                } else {
+                                    $extension= pathinfo($img_url, PATHINFO_EXTENSION);
+                                }
+
+                                $image->extension = $extension;
+                                //图片相对路径
+                                $filename        = $image->id .'.'. $extension;
+                                $image->path      = '/storage/img/' . $filename;
+
+                                $local_dir = public_path('/storage/img/');
+                                if (!is_dir($local_dir)) {
+                                    mkdir($local_dir, 0777, 1);
+                                }
+
+                                $img         = \ImageMaker::make($img_data);
+                                //保存大图
+                                if ($extension != 'gif') {
+                                    $big_width = $img->width() > 900 ? 900 : $img->width();
+                                    $img->resize($big_width, null, function ($constraint) {
+                                        $constraint->aspectRatio();
+                                    });
+                                    $img->save(public_path($image->path));
+
+                                    $image->width  = $img->width();
+                                    $image->height = $img->height();
+                                } else {
+                                    file_put_contents($local_dir . $filename ,$img_data);
+                                } 
+
+                                //保存轮播图
+                                if ($extension != 'gif') {
+                                    if ($img->width() >= 760) {
+                                        $img->crop(760, 327);
+                                        $image->path_top = '/storage/img/' . $image->id . '.top.' . $extension;
+                                        $img->save(public_path($image->path_top));
+                                    }
+                                } else {
+                                    if ($img->width() >= 760) {
+                                        $image->path_top = $image->path;
+                                    }
+                                }
+                                //保存小图
+                                if ($img->width() / $img->height() < 1.5) {
+                                    $img->resize(300, null, function ($constraint) {
+                                        $constraint->aspectRatio();
+                                    });
+                                } else {
+                                    $img->resize(null, 240, function ($constraint) {
+                                        $constraint->aspectRatio();
+                                    });
+                                }
+                                $img->crop(300, 240);
+                                $image->disk = "local";
+                                $img->save(public_path($image->path_small()));
+                                $image->save();
+                                $new_img_url = $image->url();
+                            }
+                        } catch (\Exception $e) {
+                            var_dump('网络图片下载失败:' . $old_img_url);
+                            continue;
+                        } 
+                    } else {
+                        var_dump('没有命中:' . $old_img_url);
                     }
-                    $article->body = str_replace($img_url, $new_img_url, $body_html);
-                    $article->save();
-                    var_dump('http://l.ainicheng.com/article/' . $article->id);
+                    $body_html = str_replace(
+                        $old_img_url , 
+                        $new_img_url , 
+                        $body_html
+                    );
                 }
+                $article->body = $body_html;
+                $article->save();
+               
+                var_dump('http://ainicheng.com/article/' . $article->id);
             }
         });
+        
 
         //维护主分类与文章的多对多关系
         // $this->cmd->info('fix articles ...');
