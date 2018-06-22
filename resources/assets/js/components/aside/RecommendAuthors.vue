@@ -6,7 +6,7 @@
   </div>
   <ul>
     <li v-for="user in users"  class="user-info">
-      <a :href="'/user/'+user.id" class="avatar"><img :src="user.avatar" alt=""></a>
+      <a target="_blank" :href="'/user/'+user.id" class="avatar"><img :src="user.avatar" alt=""></a>
       
       <a v-if="!user.is_followed" href="javascript:;" class="follow" @click="toggleFollow(user)">＋ 关注</a>
 
@@ -15,7 +15,7 @@
         <i class="chacha iconfont icon-cha"></i>
       </a>
       
-      <a :href="'/user/'+user.id" class="title">{{ user.name }}</a>
+      <a target="_blank" :href="'/user/'+user.id" class="title">{{ user.name }}</a>
       <p class="info">写了{{ user.count_words }}字 · {{ user.count_likes }}喜欢</p>
     </li>
   </ul>

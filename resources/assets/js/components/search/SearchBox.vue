@@ -1,6 +1,6 @@
 <template>
-  <form class="navbar-form navbar-left" role="search" action="/search" method="get" id='searchForm'>
-    <div class="form-group">
+  <form :target="isDesktop? '_blank' : '_self'" class="navbar-form navbar-left" role="search" action="/search" method="get" id='searchForm'>
+    <div class="form-group"> 
       <div class="search-wrapper">
         <input type="text" id="search-input" class="form-control" placeholder="搜索" name="q" autocomplete="off">
         <span class="iconfont icon-sousuo search-btn" @click="search"></span>
@@ -10,12 +10,14 @@
         </div>
       </div>
     </div>
-  </form>
+  </form> 
 </template>
 
 <script>
 export default {
   name: "SearchBox",
+
+  props:['isDesktop'],
 
   computed: {
     user() {

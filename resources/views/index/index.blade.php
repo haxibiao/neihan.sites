@@ -38,7 +38,7 @@
              <div class="col-xs-6 col-md-3 video">
                <div class="video-item vt">
                  <div class="thumb">
-                   <a href="/video/{{$video->id}}">
+                   <a href="/video/{{$video->id}}" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}">
                      <img src="{{ $video->cover() }}" alt="{{ $video->title }}">
                      <i class="duration">
                        {{-- 持续时间 --}}
@@ -48,7 +48,7 @@
                  </div>
                  <ul class="info-list">
                    <li class="video-title">
-                     <a href="/video/{{$video->id}}">{{ $video->title }}</a>
+                     <a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/video/{{$video->id}}">{{ $video->title }}</a>
                    </li>
                    <li>
                      {{-- 播放量 --}}
@@ -78,9 +78,9 @@
         </div>
         {{-- 侧栏 --}}
         <div class="aside sm-right hidden-xs">
-            @include('index.parts.trendings')
+            @include('index.parts.trendings') 
             {{-- app --}}
-            @include('index.parts.download_app')
+            @include('index.parts.download_app') 
             {{-- 日报 --}}
             {{-- @include('index.parts.daily') --}}
             {{-- 推荐作者 --}}
