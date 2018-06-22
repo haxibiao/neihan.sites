@@ -1,37 +1,37 @@
 <template>
 	<div>	
 		<li v-for="article in articles" :class="article.has_image ? 'article-item have-img' : 'article-item'">
-		    <a v-if="article.has_image" class="wrap-img" :href="'/article/' + article.id" target="_blank">
+		    <a v-if="article.has_image" class="wrap-img" :href="'/article/' + article.id" :target="isDesktop? '_blank' : '_self'">
 		        <img :src="article.primary_image" :alt="article.title">
 		    </a>  
 		  <div class="content">
 		    <div class="author">
-		      <a class="avatar" target="_blank" :href="'/user/'+article.user.id">
+		      <a class="avatar" :target="isDesktop? '_blank' : '_self'" :href="'/user/'+article.user.id">
 		        <img :src="article.user.avatar" alt="">
 		      </a> 
 		      <div class="info">
-		        <a class="nickname" target="_blank" :href="'/user/'+article.user.id">{{ article.user.name }}</a>
+		        <a class="nickname" :target="isDesktop? '_blank' : '_self'" :href="'/user/'+article.user.id">{{ article.user.name }}</a>
 		        <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="懂美味签约作者" alt="">
 		        <span class="time">{{ article.time_ago }}</span>
 		      </div>
 		    </div>
-		    <a class="title" target="_blank" :href="'/article/' + article.id">
+		    <a class="title" :target="isDesktop? '_blank' : '_self'" :href="'/article/' + article.id">
 		        <span>{{ article.title }}</span>
 		    </a>
 		    <p class="abstract">{{ article.description }}</p>
 		    <div class="meta">
-		      <a v-if="article.category" class="collection-tag" target="_blank" :href="'/' + article.category.name_en">{{ article.category.name }}</a>
+		      <a v-if="article.category" class="collection-tag" :target="isDesktop? '_blank' : '_self'" :href="'/' + article.category.name_en">{{ article.category.name }}</a>
 		      <a target="_blank" :href="'/article/' + article.id" class="browse_meta">
 		        <i class="iconfont icon-liulan"></i> {{ article.hits }}
 		      </a>        
-		      <a target="_blank" :href="'/article/' + article.id" class="comment_meta">
+		      <a :target="isDesktop? '_blank' : '_self'" :href="'/article/' + article.id" class="comment_meta">
 		        <i class="iconfont icon-svg37"></i> {{ article.count_replies }}
-		      </a>      
-		      <a target="_blank" :href="'/article/' + article.id"><i class="iconfont icon-03xihuan"></i> {{ article.count_likes }}</a>
-		      <a v-if="article.count_tips" target="_blank" :href="'/article/' + article.id"><i class="iconfont icon-qianqianqian"></i> {{ article.count_tips }}</a>
+		      </a>
+		      <a :target="isDesktop? '_blank' : '_self'" :href="'/article/' + article.id"><i class="iconfont icon-03xihuan"></i> {{ article.count_likes }}</a>
+		      <a v-if="article.count_tips" :target="isDesktop? '_blank' : '_self'" :href="'/article/' + article.id"><i class="iconfont icon-qianqianqian"></i> {{ article.count_tips }}</a>
 		    </div>
 		  </div>
-		</li>
+		</li> 
 		<a class="btn-base btn-more" href="javascript:;" v-if="articles.length || notEmpty">{{ page >= lastPage ? '已经到底了':'正在加载更多' }}...</a>
 		<div v-else class="unMessage">
 			<blank-content></blank-content>
@@ -43,7 +43,7 @@
 export default {
 	name: "ArticleList",
 
-	props: ["api", "startPage", "notEmpty"],
+	props: ["api", "startPage", "notEmpty", 'isDesktop'], 
 
 	watch: {
 		api(val) {
@@ -59,6 +59,7 @@ export default {
 			var api_url = api.indexOf("?") !== -1 ? api + "&page=" + page : api + "?page=" + page;
 			return api_url;
 		}
+
 	},
 
 	mounted() {

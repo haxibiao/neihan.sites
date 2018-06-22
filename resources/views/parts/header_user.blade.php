@@ -15,7 +15,7 @@
 			@if(starts_with(request()->path(), 'question'))
 				<div class="ask"><a data-target=".modal-ask-question" data-toggle="modal" class="btn-base btn-theme"><span class="iconfont icon-maobi hidden-xs"></span>提问</a></div>
 			@else
-				<div class="creation hidden-xs"><a href="/write" class="btn-base btn-theme"><span class="iconfont icon-maobi"></span>创作</a></div>
+				<div class="creation hidden-xs"><a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}"  href="/write" class="btn-base btn-theme"><span class="iconfont icon-maobi"></span>创作</a></div>
 			@endif
 			<div class="user" data-hover="dropdown">
 				<a><img class="avatar" src="{{ Auth::user()->avatar() }}" alt=""><i class="iconfont icon-xiangxiajiantou"></i></a>

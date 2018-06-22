@@ -33,7 +33,7 @@
                   <i class="iconfont icon-huo"></i>推荐视频
                 </span>
               </h3>
-            </div>
+            </div> 
             @foreach($data->videos as $video)
              <div class="col-xs-6 col-md-3 video">
                <div class="video-item vt">
@@ -59,16 +59,15 @@
              </div>
              @endforeach
           </div>
-          
           {{-- 文章列表 --}}
          <ul class="article-list">              
             {{-- 文章 --}}          
-            @each('parts.article_item', $data->sticks, 'article')
+            @each('parts.article_item', $data->sticks, 'article') 
             @each('parts.article_item', $data->articles, 'article')
 
             {{-- 登录后才加载更多 --}}
             @if(Auth::check())
-              <article-list api="/" start-page="2" />
+              <article-list api="/" start-page="2" is-desktop="{{ \Agent::isDeskTop() == 1 }}"/> 
             @else 
               <div>
                 {!! $data->articles->links() !!}
