@@ -54,7 +54,11 @@ class UserType extends GraphQLType
             ],
             'introduction'      => [
                 'type'        => Type::string(),
-                'description' => 'introduction of user',
+                'description' => 'introduction of user', 
+                'resolve'     => function ($root, $args) {                 
+                    
+                    return $root->introduction();
+                },
             ],
             'tip_words'         => [
                 'type'        => Type::string(),
@@ -322,7 +326,7 @@ class UserType extends GraphQLType
                 'resolve'     => function ($root, $args) {
                     //分页参数,后面可以把自定义分页功能提取出来
                     $offset = isset($args['offset']) ? $args['offset'] : 0;
-                    $limit  = isset($args['offset']) ? $args['limit'] : 10; //获取多少条数据，默认为4
+                    $limit  = isset($args['offset']) ? $args['limit'] : 10; //获取多少条数据，默认为10
 
                     if (isset($args['filter'])) {
                         switch ($args['filter']) {
@@ -358,7 +362,12 @@ class UserType extends GraphQLType
                                     ->get();
                             //推荐专题
                             case 'RECOMMEND':
+                                $followed_category_ids = \DB::table('follows') 
+                                    ->where('user_id', $root->id)
+                                    ->where('followed_type', 'categories')
+                                    ->pluck('followed_id')->toArray();
                                 return \App\Category::orderBy('updated_at', 'desc')
+                                    ->whereNotIn('id',$followed_category_ids)
                                     ->skip($offset)
                                     ->take($limit)
                                     ->get();

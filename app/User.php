@@ -317,7 +317,8 @@ class User extends Authenticatable
 
     public function introduction()
     {
-        return empty($this->introduction) ? '这个人很懒，一点介绍都没留下...' : $this->introduction;
+        $intro = $this->introduction;
+        return empty($intro) ? '这个人很懒，一点介绍都没留下...' : $intro;
     }
 
     public function ta()
