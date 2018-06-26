@@ -8,6 +8,9 @@ use App\Http\Controllers\Controller;
 use App\Image;
 use App\Query;
 use App\User;
+use App\Comment;
+use App\Like;
+use App\Favorite;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 
@@ -205,7 +208,23 @@ class ArticleController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        return Article::destroy($id);
+        \DB::beginTransaction();
+        try
+        {
+            $comments = Comment::where('comment_id','=',$id)->where('commentable_type','=','articles')->delete();
+            $likes = Like::where('liked_id','=',$id)->where('liked_type','=','articles')->delete();
+            $favorite = Favorite::where('faved_id','=',$id)->where('faved_type','=','articles')->delete();
+            $user = \Auth::User();
+            $user->decrement('count_articles');
+            $result = Article::destroy($id);
+            \DB::commit();
+            return $result;
+        }
+        catch(\Exception $e)
+        {
+            \DB::rollBack();
+            return 0;
+        }
     }
 
     public function delete(Request $request, $id)
