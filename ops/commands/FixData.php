@@ -8,6 +8,7 @@ use App\Video;
 use App\Article;
 use App\Category;
 use App\Collection;
+use App\User;
 use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Console\Command;
 
@@ -66,7 +67,15 @@ class FixData extends Command
 
     public function fix_users()
     {
-        // 今后，数据写到数据文件里，别堆代码里
+        //fix 用户头像
+        $this->cmd->info('fix usedr avatar ...');
+        User::where('avatar','like','%images/avatar.jpg')->chunk(100,function($users){
+            foreach ($users as $user) {
+                $user->avatar = '/images/avatar-'.rand(1, 15).'.jpg';
+                $user->save();
+            }
+        });
+        $this->cmd->info('success');
     }
 
     public function fix_tags()
