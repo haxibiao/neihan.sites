@@ -54,9 +54,7 @@ Route::resource('/article', 'ArticleController');
 Route::get('/categories', 'CategoryController@categories');
 
 //管理专题
-Route::group(['middleware'=>['auth.admin']],function(){
-	Route::resource('/category', 'CategoryController');	
-});
+Route::resource('/category', 'CategoryController');
 
 Route::resource('/collection', 'CollectionController');
 Route::get('/tag/{name}', 'TagController@tagname');
