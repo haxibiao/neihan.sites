@@ -53,9 +53,6 @@ class FixData extends Command
         if ($this->cmd->argument('operation') == "notifications") {
             return $this->fix_notifications();
         }
-        if ($this->cmd->argument('operation') == "user500") {
-            return $this->fix_user500();
-        }
     }
 
     public function fix_notifications(){
@@ -394,43 +391,5 @@ class FixData extends Command
                 $collection->save();
             }
         });
-    }
-
-    public function fix_user500()
-    {
-        $this->cmd->info('修复用户500数据');
-       \App\Like::where('liked_type','=','articles')->chunk(100,function($likes){
-            foreach ($likes as $like) {
-                $liked_id = $like->liked_id;
-                $article = Article::find($liked_id);
-                if(empty($article))
-                {
-                    $like->delete();
-                }
-            }
-       });
-
-       \App\Comment::where('commentable_type','=','articles')->chunk(100,function($comments){
-            foreach ($comments as $comment) {
-                $comment_id = $comment->comment_id;
-                $article = Article::find($comment_id);
-                if(empty($article))
-                {
-                    $comment->delete();
-                }
-            }
-       });
-
-       \App\Favorite::where('faved_type','=','articles')->chunk(100,function($favorites){
-            foreach ($favorites as $favorite) {
-                $faved_id = $favorite->faved_id;
-                $article = Article::find($faved_id);
-                if(empty($article))
-                {
-                    $favorite->delete();
-                }
-            }
-       });
-       $this->cmd->info('success');
     }
 }
