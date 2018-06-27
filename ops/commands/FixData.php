@@ -53,6 +53,9 @@ class FixData extends Command
         if ($this->cmd->argument('operation') == "notifications") {
             return $this->fix_notifications();
         }
+        if ($this->cmd->argument('operation') == "article_CountWords") {
+            return $this->fix_article_CountWords();
+        }
     }
 
     public function fix_notifications(){
@@ -391,5 +394,18 @@ class FixData extends Command
                 $collection->save();
             }
         });
+    }
+
+    public function fix_article_CountWords()
+    {
+        //修复article文章字数
+        $this->cmd->info('fix article CountWords...');
+        Article::where('count_words',0)->chunk(100,function($articles){
+            foreach ($articles as $article) {
+                $article->count_words = ceil(strlen(strip_tags($article->body)) / 2);
+                $article->save();
+            }
+        });
+        $this->cmd->info('fix success');
     }
 }

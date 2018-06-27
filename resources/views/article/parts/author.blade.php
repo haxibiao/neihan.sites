@@ -27,7 +27,7 @@
       <!-- 文章数据信息 -->
       <div class="info">
          <span class="publish-time">@timeago($article->created_at)</span>
-          <span class="wordage hidden-xs">字数 {{ $article->words }}</span>
+          <span class="wordage hidden-xs">字数 {{ $article->count_words }}</span>
           <span class="views-count">阅读 {{ $article->hits }}</span>
           <span class="comments-count">评论 {{ $article->count_replies }}</span>
           <span class="likes-count">喜欢 {{ $article->count_likes }}</span>
