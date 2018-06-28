@@ -23,7 +23,7 @@
                         <follow type="users" :id="recommend.id" :user-id="user.id" :followed="recommend.is_followed"></follow>
 
                         <div class="title">
-                            <a href="'/user/'+recommend.id" class="name">{{ recommend.name }}</a>
+                            <a :href="'/user/'+recommend.id" class="name">{{ recommend.name }}</a>
                         </div>
                         <div class="info">
                             <p class="preview">{{ recommend.introduction }}</p>
@@ -86,8 +86,7 @@
 </template>
 <script>
 export default {
-
-    name: 'Recommend',
+    name: "Recommend",
 
     created() {
         this.fetchData();
@@ -95,13 +94,14 @@ export default {
 
     methods: {
         fetchData() {
-            var api_url = window.tokenize('/api/follow/recommends');
+            var api_url = window.tokenize("/api/follow/recommends");
             var vm = this;
-            window.axios.get(api_url).then(function(response){
+            window.axios.get(api_url).then(function(response) {
                 vm.user = response.data.user;
                 vm.recommends = response.data.recommends;
                 vm.recommended_users = response.data.recommended_users.data;
-                vm.recommended_categories = response.data.recommended_categories.data;
+                vm.recommended_categories =
+                    response.data.recommended_categories.data;
                 vm.loaded = true;
             });
         }
@@ -113,30 +113,30 @@ export default {
             user: null,
             recommends: [],
             recommended_users: [],
-            recommended_categories: [],
-        }
+            recommended_categories: []
+        };
     }
-}
+};
 </script>
 <style lang="scss" scoped>
- .recommends {
-        #trigger-menu {
-            li {
-                padding: 0 !important;
-                border-top: none !important;
-            }
+.recommends {
+    #trigger-menu {
+        li {
+            padding: 0 !important;
+            border-top: none !important;
         }
-        .note-wrap {
-            .note-list {
-                .note-info {
-                    margin: 0 0 20px 0;
-                    padding: 0 0 20px 0;
-                    border-bottom: 1px solid #f0f0f0;
-                    p {
-                        margin-bottom: 4px;
-                    }
+    }
+    .note-wrap {
+        .note-list {
+            .note-info {
+                margin: 0 0 20px 0;
+                padding: 0 0 20px 0;
+                border-bottom: 1px solid #f0f0f0;
+                p {
+                    margin-bottom: 4px;
                 }
             }
         }
     }
+}
 </style>

@@ -20,6 +20,7 @@ class Article extends Model
         'category_id',
         'collection_id',
         'body',
+        'count_words',
         'image_url',
         'is_top',
         'status',

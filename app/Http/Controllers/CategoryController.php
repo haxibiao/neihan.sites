@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\Auth;
 class CategoryController extends Controller
 {
     public function __construct()
-    {
-        $this->middleware('auth', ['only' => ['store', 'update', 'destroy']]);
+    { 
+        $this->middleware('auth.admin',['only' => ['index']]); 
+        $this->middleware('auth', ['only' => ['store', 'update', 'destroy','create']]);
     }
 
     /**

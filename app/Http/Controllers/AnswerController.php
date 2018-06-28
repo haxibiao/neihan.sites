@@ -39,7 +39,6 @@ class AnswerController extends Controller
     {
         $user   = $request->user();
         $answer = new Answer($request->all());
-
         if(empty($answer->answer)) {
             if(checkEditor()){
                 $answer->answer = '<p></p>'; //允许编辑用户填写文章后，答案不写
@@ -47,7 +46,12 @@ class AnswerController extends Controller
                 dd('回答不能是空白的!');
             }
         }
-
+        $js_reg='#<a.*?href="(.*?)".*?#';
+        preg_match($js_reg, $answer->answer,$answerText);
+        if($answerText)
+        {
+            dd('提交含有非法字符，请重新回答');
+        }
         //从文章地址(https://dongmeiwei.com/article/1139)提取文章id （1139）
         if (starts_with($answer->article_id, 'http')) {
             $answer->article_id = parse_url($answer->article_id, PHP_URL_PATH);

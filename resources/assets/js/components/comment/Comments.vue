@@ -38,7 +38,7 @@
               <blockquote class="sub-comment-list" v-if="comment.replying || comment.reply_comments.length">
                 <div class="sub-comment" v-for="reply in comment.reply_comments" v-if="!reply.hide">
                   <p>
-                    <a :href="'/user'+reply.user.id" target="_blank">{{ reply.user.name }}</a>：
+                    <a :href="'/user/'+reply.user.id" target="_blank">{{ reply.user.name }}</a>：
                     <span>
                       <!-- <a href="javascript:;" class="maleskine-author" target="_blank">@babysha</a> 唯爱和美食不可辜负。 -->
                       {{ reply.body }}

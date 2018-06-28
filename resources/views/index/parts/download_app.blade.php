@@ -1,5 +1,5 @@
 <div class="download-app">
-<a class="app" href="javascript:;" data-toggle="popover" data-placement="top" data-html="true" data-trigger="hover" 
+<a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" class="app" href="javascript:;" data-toggle="popover" data-placement="top" data-html="true" data-trigger="hover" 
 data-content="<img src=/qrcode/{{ get_domain() }}.jpg>">
   <img src="/qrcode/{{ get_domain() }}.jpg" alt="下载{{ config('app.name') }}手机App">
   <div class="app-info">

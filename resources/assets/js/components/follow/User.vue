@@ -12,7 +12,10 @@
 	      </div>
 	      <div class="title">
 	        <a class="name" :href="'/user/'+user.id">{{ user.name }}</a>
-	        <i class="man iconfont icon-nansheng1"></i>
+	        <i  v-if="user.gender" class="man iconfont icon-nansheng1"></i>
+	        <i  v-else class="iconfont woman icon-nvsheng1"></i>
+
+
 	      </div>
 	      <div class="info">
 	 					写了{{ user.count_words }}个字，获得了{{ user.count_likes }}个喜欢
@@ -50,45 +53,45 @@
 
 <script>
 export default {
+	name: "User",
 
-  name: 'User',
+	created() {
+		this.fetchData();
+	},
 
-  created(){
-  	this.fetchData();
-  },
+	watch: {
+		// 如果路由有变化，会再次执行该方法
+		$route: "fetchData"
+	},
 
-  watch: {
-    // 如果路由有变化，会再次执行该方法
-    '$route': 'fetchData'
-  },
+	methods: {
+		fetchData() {
+			this.id = this.$route.params.id;
+			if (this.id) {
+				var api_url = window.tokenize("/api/user/" + this.id);
+				var vm = this;
+				window.axios.get(api_url).then(function(response) {
+					vm.user = response.data.user;
+					console.log(vm.user);
 
-  methods: {
-  	fetchData() {
-        this.id = this.$route.params.id;
-        if(this.id){
-	  		var api_url = window.tokenize('/api/user/' + this.id);
-	  		var vm = this;
-	  		window.axios.get(api_url).then(function(response){
-	  			vm.user = response.data.user;
+					//标记关注的最后查看时间
+					var api_touch = window.tokenize(
+						"/api/follow/" + vm.id + "/users"
+					);
+					window.axios.get(api_touch);
+				});
+			}
+		}
+	},
 
-	            //标记关注的最后查看时间
-	            var api_touch = window.tokenize('/api/follow/' + vm.id + '/users');
-	            window.axios.get(api_touch);
-	  		});
-	  	}
-  	}
-
-  },
-
-  data () {
-    return {
-        id: null,
-    	user: null
-    }
-  }
-}
+	data() {
+		return {
+			id: null,
+			user: null
+		};
+	}
+};
 </script>
 
 <style lang="scss">
-
 </style>

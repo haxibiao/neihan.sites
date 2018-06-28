@@ -9,7 +9,7 @@ use GraphQL\Type\Definition\Type;
 class CollectionType extends GraphQLType
 {
     protected $attributes = [
-        'name'        => 'Collection',
+        'name'        => 'Collection', 
         'description' => 'A Collection',
     ];
 
@@ -61,9 +61,14 @@ class CollectionType extends GraphQLType
                 'description' => '当前用户是否关注本collection',
                 'resolve'     => function ($root, $args) {
                     if ($user = session('user')) {
-                        return $user->followingCollections->contains((function ($item, $key) use ($root) {
-                            return $item->followed->id == $root->id;
-                        }));
+                        //使用DB减少join表的次数,使用DB可能不易维护，但是这个地方逻辑应该不会再变动了。
+                        $user_ids = \DB::table('follows')
+                            ->where('user_id', $user->id)
+                            ->where('followed_type', 'collections')
+                            ->pluck('followed_id')->toArray();
+                        if( in_array($root->id, $user_ids, true) ){
+                            return true;
+                        }
                     }
                     return false;
                 },

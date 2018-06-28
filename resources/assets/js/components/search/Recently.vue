@@ -6,7 +6,7 @@
 		</div>
 		<ul class="search-recent-item-wrap" v-if="histories.length">
 			<li v-for="history in histories">
-				<a :href="'/search?q='+history.name" target="_blank">
+				<a :href="'/search?q='+history.query" target="_blank">
 					<i class="iconfont icon-unie646"></i>
 					<span>{{ history.query }}</span>
 					<i class="iconfont icon-cha" :data-id="history.id" @click="deleteHistory"></i>

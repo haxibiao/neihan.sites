@@ -1,8 +1,8 @@
 <template>
 <div id='vue_comments'>
 
-	<!-- 评论列表 -->
-	<div class="panel panel-default" v-for="comment in comments">
+  <!-- 评论列表 -->
+  <div class="panel panel-default" v-for="comment in comments">
     <div class="panel-heading">
       <div class="pull-right" v-if="!comment.is_new">
         <span v-if="!comment.liked" class="icon iconfont icon-dianzan3" @click="likeComment(comment)"><i>{{ comment.likes }}</i></span>
@@ -31,8 +31,8 @@
   <p>
     <button v-if="lastPage　>　currentPage" type="button" class="btn btn-default" @click="loadMoreComments">加载更多...</button>
   </p>
-	
-	<!-- 发布评论 -->
+  
+  <!-- 发布评论 -->
   <div class="panel panel-default">
     <div class="panel-body">
       <div class="form-group">
@@ -51,10 +51,9 @@
 
 <script>
 export default {
+  name: "Comment",
 
-  name: 'Comment',
-
-  props: ['id', 'type'],
+  props: ["id", "type"],
 
   computed: {
     current_user() {
@@ -68,48 +67,56 @@ export default {
 
   methods: {
     get_lou: function(lou) {
-      if(lou == 1)
-        return '沙发';
-      if(lou == 2)
-        return '板凳';
-      return lou + '楼';
+      if (lou == 1) return "沙发";
+      if (lou == 2) return "板凳";
+      return lou + "楼";
     },
-  	get_post_url: function() {
-  		return window.tokenize('/api/comment');
-  	},
+    get_post_url: function() {
+      return window.tokenize("/api/comment");
+    },
     get_get_url: function() {
-      var api_url = window.tokenize('/api/comment/'+ this.id + '/' + this.type);
-      if(this.currentPage > 1) {
-        api_url += '&page='+ this.currentPage;
+      var api_url = window.tokenize(
+        "/api/comment/" + this.id + "/" + this.type
+      );
+      if (this.currentPage > 1) {
+        api_url += "&page=" + this.currentPage;
       }
       return api_url;
     },
-  	get_action_url: function(id, action) {
-  		return window.tokenize('/api/comment/'+ id + '/' + action);
-  	},
+    get_action_url: function(id, action) {
+      return window.tokenize("/api/comment/" + id + "/" + action);
+    },
     likeComment: function(comment) {
       comment.liked = 1;
-      this.$http.get(this.get_action_url(comment.id, 'like')).then(function(response) {
-        comment.likes = response.data.likes;
-      });
+      this.$http
+        .get(this.get_action_url(comment.id, "like"))
+        .then(function(response) {
+          comment.likes = response.data.likes;
+        });
     },
     unlikeComment: function(comment) {
       comment.liked = 0;
-      this.$http.get(this.get_action_url(comment.id, 'like')).then(function(response) {
-        comment.likes = response.data.likes;
-      });
+      this.$http
+        .get(this.get_action_url(comment.id, "like"))
+        .then(function(response) {
+          comment.likes = response.data.likes;
+        });
     },
     reportComment: function(comment) {
       comment.reported = 1;
-      this.$http.get(this.get_action_url(comment.id, 'report')).then(function(response) {
-        comment.reports = response.data.reports;
-      });
+      this.$http
+        .get(this.get_action_url(comment.id, "report"))
+        .then(function(response) {
+          comment.reports = response.data.reports;
+        });
     },
     unreportComment: function(comment) {
       comment.reported = 0;
-      this.$http.get(this.get_action_url(comment.id, 'report')).then(function(response) {
-        comment.reports = response.data.reports;
-      });
+      this.$http
+        .get(this.get_action_url(comment.id, "report"))
+        .then(function(response) {
+          comment.reports = response.data.reports;
+        });
     },
     loadComments: function() {
       var vm = this;
@@ -119,42 +126,39 @@ export default {
         vm.total = response.data.total;
       });
     },
-    loadMoreComments: function() {      
-      if(this.lastPage > this.currentPage) {
-        this.currentPage ++;
+    loadMoreComments: function() {
+      if (this.lastPage > this.currentPage) {
+        this.currentPage++;
         this.loadComments();
       }
     },
-  	postComment: function() {
-
-      if(!this.newComment.is_replay_comment){
+    postComment: function() {
+      if (!this.newComment.is_replay_comment) {
         //乐观更新
         this.newComment.lou = this.total + 1;
         var item = Object.assign({}, this.newComment);
         this.comments = this.comments.concat(item);
       }
 
+      var vm = this;
+      this.$http
+        .post(this.get_post_url(), this.newComment)
+        .then(function(response) {
+          // vm.loadComments();
+          //发布一次，清空...
+          vm.newComment.body = "";
+          vm.newComment.comment_id = null;
+          vm.newComment.comment = null;
 
-      var vm = this;      
-  		this.$http.post(this.get_post_url(), this.newComment).then(function(response) {
-        // vm.loadComments();        
-        //发布一次，清空...
-        vm.newComment.body = '';
-        vm.newComment.comment_id = null;
-        vm.newComment.comment = null;
-
-        //更新被回复的楼中comments...
-        if(vm.newComment.is_replay_comment) {
-          var commented = response.data;
-          vm.commented = commented;
-        }
-
-  		});
-
-
-  	},
+          //更新被回复的楼中comments...
+          if (vm.newComment.is_replay_comment) {
+            var commented = response.data;
+            vm.commented = commented;
+          }
+        });
+    },
     replyComment: function(comment) {
-      this.newComment.body = '回复' + comment.user.name + ': ' ;
+      this.newComment.body = "回复" + comment.user.name + ": ";
       this.newComment.comment_id = comment.id;
       this.newComment.comment = comment;
       this.newComment.is_replay_comment = true;
@@ -162,26 +166,26 @@ export default {
     }
   },
 
-  data () {
+  data() {
     return {
       currentPage: 1,
       lastPage: null,
-      total:0,
+      total: 0,
       comments: [],
       commented: null,
-    	newComment : {
+      newComment: {
         user: this.current_user,
         is_new: true,
-        time: '刚刚',
-    		body: null,
-    		commentable_id: this.id,
-    		commentable_type: this.type,
-    		comment_id: null,
+        time: "刚刚",
+        body: null,
+        commentable_id: this.id,
+        commentable_type: this.type,
+        comment_id: null,
         comment: null,
         likes: 0,
         reports: 0,
-        is_replay_comment: false,
-    	}
+        is_replay_comment: false
+      }
     };
   }
 };

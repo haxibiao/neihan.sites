@@ -7,7 +7,7 @@
 			</div>
 			<ul>
 				<li v-for="query in queries">
-					<a :href="'/search?q='+query.query" :title="query.query">{{ query.q }}</a>
+					<a target="_blank" :href="'/search?q='+query.query" :title="query.query">{{ query.q }}</a>
 				</li>
 			</ul>
 		</div>

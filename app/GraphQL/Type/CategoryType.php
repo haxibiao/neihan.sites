@@ -89,9 +89,14 @@ class CategoryType extends GraphQLType
                 'description' => '当前用户是否关注本专题',
                 'resolve'     => function ($root, $args) {
                     if ($user = session('user')) {
-                        return $user->followingCategories->contains((function ($item, $key) use ($root) {
-                            return $item->followed->id == $root->id;
-                        }));
+                        //使用DB减少join表的次数,使用DB可能不易维护，但是这个地方逻辑应该不会再变动.
+                        $user_ids = \DB::table('follows')
+                            ->where('user_id', $user->id)
+                            ->where('followed_type', 'categories')
+                            ->pluck('followed_id')->toArray();
+                        if( in_array($root->id, $user_ids, true) ){
+                            return true;
+                        }
                     }
                     return false;
                 },

@@ -13,6 +13,7 @@ class Answer extends Model
         'article_id',
         'answer',
         'image_url',
+        'count_likes',
     ];
 
     protected $touches = ['question'];

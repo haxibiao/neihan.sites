@@ -105,11 +105,15 @@ class UserController extends Controller
         $user = User::firstOrNew([
             'email' => $data['email'],
         ]);
+        if($user->id) {
+            throw new \Exception('Email already exists');
+        }
         $user->name     = $data['name'];
         $user->password = bcrypt($data['password']);
+        $user->avatar = '/images/avatar-'.rand(1, 15).'.jpg';
         $user->save();
         return $user;
-    }
+    } 
 
     public function unreads(Request $request)
     {

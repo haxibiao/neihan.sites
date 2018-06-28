@@ -33,12 +33,12 @@
                   <i class="iconfont icon-huo"></i>推荐视频
                 </span>
               </h3>
-            </div>
+            </div> 
             @foreach($data->videos as $video)
              <div class="col-xs-6 col-md-3 video">
                <div class="video-item vt">
                  <div class="thumb">
-                   <a href="/video/{{$video->id}}">
+                   <a href="/video/{{$video->id}}" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}">
                      <img src="{{ $video->cover() }}" alt="{{ $video->title }}">
                      <i class="duration">
                        {{-- 持续时间 --}}
@@ -48,7 +48,7 @@
                  </div>
                  <ul class="info-list">
                    <li class="video-title">
-                     <a href="/video/{{$video->id}}">{{ $video->title }}</a>
+                     <a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/video/{{$video->id}}">{{ $video->title }}</a>
                    </li>
                    <li>
                      {{-- 播放量 --}}
@@ -59,16 +59,15 @@
              </div>
              @endforeach
           </div>
-          
           {{-- 文章列表 --}}
          <ul class="article-list">              
             {{-- 文章 --}}          
-            @each('parts.article_item', $data->sticks, 'article')
+            @each('parts.article_item', $data->sticks, 'article') 
             @each('parts.article_item', $data->articles, 'article')
 
             {{-- 登录后才加载更多 --}}
             @if(Auth::check())
-              <article-list api="/" start-page="2" />
+              <article-list api="/" start-page="2" is-desktop="{{ \Agent::isDeskTop() == 1 }}"/> 
             @else 
               <div>
                 {!! $data->articles->links() !!}
@@ -79,9 +78,9 @@
         </div>
         {{-- 侧栏 --}}
         <div class="aside sm-right hidden-xs">
-            @include('index.parts.trendings')
+            @include('index.parts.trendings') 
             {{-- app --}}
-            @include('index.parts.download_app')
+            @include('index.parts.download_app') 
             {{-- 日报 --}}
             {{-- @include('index.parts.daily') --}}
             {{-- 推荐作者 --}}
