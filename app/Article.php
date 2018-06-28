@@ -130,21 +130,13 @@ class Article extends Model
 
     public function topImage()
     {
-        $image_url = parse_url($this->image_url, PHP_URL_PATH);
-        $result    = str_replace('.small', '', $image_url) == str_replace('.top', '', $this->image_top);
-
-        //改写了添加的置顶轮播图的取的机制，TODO::上轮播图那个地方以后要修复一下
-        if ($result && file_exists(public_path($image_url))) {
-            $image_top = parse_url($this->image_top, PHP_URL_PATH);
-            return env('APP_URL') . $image_top;
-        } else {
-            $image_url = str_replace('.small', '.top', $image_url);
+        //if image not exist locally, go check pord ...
+        $image_top_path = parse_url($this->image_top, PHP_URL_PATH);
+        if (!file_exists(public_path($image_top_path))) {
+            return env('APP_URL') . $image_top_path;
         }
-        return url($image_url);
-        // if (file_exists(public_path($image_url))) {
-        // }
-        // $image_top = parse_url($this->image_top, PHP_URL_PATH);
-        // return env('APP_URL') . $image_top;
+
+        return url($image_top_path);
     }
 
     public function primaryImage()

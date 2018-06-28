@@ -51,8 +51,8 @@ cd {{ $www }}
 hostname
 cd {{ $www }}
 npm run prod
-{{ $git_push_to_web }}
 {{ $copy_ui_build_staging }}
+{{ $git_push_to_staging }}
 @endtask
 
 @task('local_push_ui', ['on' => 'local'])
@@ -63,9 +63,9 @@ npm run prod
 {{ $copy_ui_build }}
 @endtask
 
-@task('staging_pull', ['on' => ['gz002'], 'parallel' => true])
-cd {{ $www }}
-echo {{ $www }}
+@task('staging_pull', ['on' => ['gz005'], 'parallel' => true])
+cd {{ $staging_www }}
+echo {{ $staging_www }}
 git pull
 {{ $refresh_staging_config }}
 {{ $cache_clear }}

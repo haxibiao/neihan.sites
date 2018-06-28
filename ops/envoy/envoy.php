@@ -4,6 +4,7 @@ require_once 'commands.php';
 require_once 'domain.php';
 
 $git_push_to_web = 'git push origin master';
+$git_push_to_staging = 'git push staging';
 $www = '/data/www/' . $domain;
 $staging_www = '/data/www/staging.' . $domain;
 $staging = '/data/staging/' . $domain;
