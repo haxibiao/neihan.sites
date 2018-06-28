@@ -62,7 +62,8 @@ class EnvRefresh extends Command
         $this->updateEnv([
             'APP_ENV'   => 'staging',
             'APP_DEBUG' => 'true',
-            'DB_HOST'   => env('DB_STAGING'),
+            'DB_HOST'   => env('DB_HOST_STAGING'),
+            'DB_DATABASE'   => env('DB_DATABASE_STAGING'),
         ]);
     }
 

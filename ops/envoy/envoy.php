@@ -5,6 +5,7 @@ require_once 'domain.php';
 
 $git_push_to_web = 'git push origin master';
 $www = '/data/www/' . $domain;
+$staging_www = '/data/www/staging.' . $domain;
 $staging = '/data/staging/' . $domain;
 $remote = 'root@' . $web_server . ':/data/www/' . $domain;
 
@@ -63,9 +64,9 @@ rsync -e ssh -P /data/www/$domain/public/mix-manifest.json root@$web_server:/dat
 EOT;
 
 $copy_ui_build_staging = <<<EOT
-rsync -e ssh -P $www/public/css/* root@$staging_server:$www/public/css/
-rsync -e ssh -P $www/public/js/* root@$staging_server:$www/public/js/
-rsync -e ssh -P $www/public/mix-manifest.json root@$staging_server:$www/public/
+rsync -e ssh -P $www/public/css/* root@$web_server:$staging_www/public/css/
+rsync -e ssh -P $www/public/js/* root@$web_server:$staging_www/public/js/
+rsync -e ssh -P $www/public/mix-manifest.json root@$web_server:$staging_www/public/
 EOT;
 
 $copy_worker_conf = <<<EOT
