@@ -35,7 +35,7 @@
       </a>
       <span><i class="iconfont icon-03xihuan"></i> {{ $article->count_likes }} </span>
       @if($article->count_tips)
-        <a><i class="iconfont icon-qianqianqian"></i> {{ $article->count_tips }}</a>
+        <span><i class="iconfont icon-qianqianqian"></i> {{ $article->count_tips }}</span>
       @endif
     </div>
   </div>

@@ -81,9 +81,6 @@
   .title {
     margin-bottom: 4px;
     font-size: $font-size-title;
-    &:hover {
-      text-decoration: underline !important;
-    }
     span {
       color: $dark-color1;
     }
@@ -173,6 +170,11 @@
           font-style: 16px;
         }
       }
+    }
+  }
+  &:hover {
+    .title {
+      text-decoration: underline !important;
     }
   }
 }

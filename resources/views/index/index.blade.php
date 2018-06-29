@@ -14,14 +14,14 @@
 
 <div id="index">
       {{-- 轮播图 --}}
-      <div class="poster-container">
-        @if(config('editor.ui.show_poster'))
-          @include('index.parts.poster')
-        @endif
-      </div>
       <div class="wrap clearfix">
         {{-- 主要内容 --}}
         <div class="main sm-left">
+          <div class="poster-container">
+            @if(config('editor.ui.show_poster'))
+              @include('index.parts.poster')
+            @endif
+          </div>
           {{-- 推荐专题 --}}
           @include('index.parts.recommend_categories')
           <recommend-category></recommend-category>

@@ -7,7 +7,7 @@
       var poster_items = [];
       @foreach($data->carousel as $article)
         @if(!empty($article->image_top)) 
-          poster_items.push(['/article/{{ $article->id }}','{{ $article->topImage() }}']);
+          poster_items.push(['/article/{{ $article->id }}','{{ $article->topImage() }}','{{ $article->title }}']);
         @endif
       @endforeach
 

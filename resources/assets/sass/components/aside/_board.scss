@@ -2,7 +2,6 @@
 .board {
     margin-top: -4px;
     padding-bottom: 4px;
-    min-height: 228px;
     a {
         position: relative;
         display: inline-block;
@@ -27,22 +26,22 @@
                 padding-left: 5px;
             }
             &.one {
-                background-color: #C094FE;
+                background-color: #c094fe;
             }
             &.two {
-                background-color: #FEB247;
+                background-color: #feb247;
             }
             &.three {
-                background-color: #F58A76;
+                background-color: #f58a76;
             }
             &.four {
-                background-color: #B9E0D9;
-                color: #49837B;
+                background-color: #b9e0d9;
+                color: #49837b;
             }
             &.five {
-                background-color: #AED0E9;
-                color: #437DA0;
+                background-color: #aed0e9;
+                color: #437da0;
             }
         }
     }
-} 
+}
