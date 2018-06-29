@@ -18,7 +18,16 @@ import Simditor from "../plugins/simditor";
 export default {
     name: "Editor",
 
-    props: ["placeholder", "name", "value", "picture", "video", "write", "focus", "autosave"],
+    props: [
+        "placeholder",
+        "name",
+        "value",
+        "picture",
+        "video",
+        "write",
+        "focus",
+        "autosave"
+    ],
 
     computed: {
         placeholderText() {
@@ -97,7 +106,8 @@ export default {
                     leaveConfirm: "正在上传文件"
                 },
                 pasteImage: true,
-                tabIndent: true
+                tabIndent: true,
+                cleanPaste: true
             });
 
             this.editor.on("imageuploaded", function(e, src) {
