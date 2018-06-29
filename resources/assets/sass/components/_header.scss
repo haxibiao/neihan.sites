@@ -166,6 +166,20 @@
 				}
 			}
 		}
+		@media screen and (max-width: 1000px) and (min-width: 768px) {
+			.logo {
+				margin-right: 0;
+			}
+			.container {
+				.navbar-collapse {
+					.navbar-nav {
+						.tab {
+							margin-right: 0;
+						}
+					}
+				}
+			}
+		}
 		@media screen and(max-width:768px) {
 			.user {
 				.hover-dropdown-menu {
