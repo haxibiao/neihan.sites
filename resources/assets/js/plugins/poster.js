@@ -31,7 +31,9 @@
 		    	            	<div class="banner">
 		    	            		<a target="_blank" href="${array[index][0]}" alt="">
 		    	            			<img src="${array[index][1]}" alt="">
-		    	            			<span>${array[index][2]}</span>
+		    	            			<div class="title">
+		    	            				<p>${array[index][2]}</p>
+		    	            			</div>
 		    	            		</a>
 		    	            	</div> 
 		    	            </div>
