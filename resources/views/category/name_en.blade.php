@@ -53,7 +53,7 @@
                        <article-list api="/{{ $category->name_en }}?hot=1" start-page="2" not-empty="{{count($data['hot'])>0}}"/>
                        @endif
                    </ul>
-                   <ul role="tabpanel" class="fade video-list tab-pane" id="video">
+                   <ul role="tabpanel" class="fade video-list tab-pane clearfix" id="video">
                        @foreach($data['videos'] as $video)
                        <li class="col-xs-6 col-md-4 video">
                           <div class="video-item vt">
