@@ -123,31 +123,6 @@ function parse_video($body)
     return $body;
 }
 
-function get_items_col($items)
-{
-    if (is_array($items)) {
-        if (count($items) >= 4) {
-            return 'col-sm-4 col-md-3';
-        }
-        if (count($items) == 3) {
-            return 'col-sm-4';
-        }
-    }
-    return '';
-}
-
-function get_cached_index($max_id, $type = 'image')
-{
-    if (empty(Cache::get($type . '_index'))) {
-        $id_new = $max_id + 1;
-        Cache::put($type . '_index', $id_new, 1);
-    } else {
-        $id_new = Cache::get($type . '_index') + 1;
-        Cache::put($type . '_index', $id_new, 1);
-    }
-    return Cache::get($type . '_index');
-}
-
 function is_in_app()
 {
     return Cookie::get('is_in_app', false) || Request::get('in_app');

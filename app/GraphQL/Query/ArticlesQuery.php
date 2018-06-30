@@ -21,14 +21,15 @@ class ArticlesQuery extends Query
     public function args()
     {
         return [
-            'user_id'       => ['name' => 'user_id', 'type' => Type::int()],
-            'category_id'   => ['name' => 'category_id', 'type' => Type::int()],
-            'collection_id' => ['name' => 'collection_id', 'type' => Type::int()],
-            'limit'         => ['name' => 'limit', 'type' => Type::int()],
-            'offset'        => ['name' => 'offset', 'type' => Type::int()],
-            'filter'        => ['name' => 'filter', 'type' => GraphQL::type('ArticleFilter')],
+            'user_id'       => ['name' => 'user_id', 'type'         => Type::int()],
+            'category_id'   => ['name' => 'category_id', 'type'     => Type::int()],
+            'collection_id' => ['name' => 'collection_id', 'type'   => Type::int()],
+            'limit'         => ['name' => 'limit', 'type'   => Type::int()],
+            'offset'        => ['name' => 'offset', 'type'  => Type::int()],
+            'filter'        => ['name' => 'filter', 'type'  => GraphQL::type('ArticleFilter')],
             'in_days'       => ['name' => 'in_days', 'type' => Type::int()],
-            'order'         => ['name' => 'order', 'type' => GraphQL::type('ArticleOrder')],
+            'order'         => ['name' => 'order',  'type'  => GraphQL::type('ArticleOrder')],
+            'type'          => ['name' => 'type', 'type'    => GraphQL::type('ArticleType')],
         ];
     }
 
@@ -36,7 +37,7 @@ class ArticlesQuery extends Query
     {
 
         $qb = Article::where('source_url', '=', '0')->where('category_id', '>', 0);
-
+    
         if (isset($args['order'])) {
             if ($args['order'] == 'COMMENTED') {
                 $qb = Article::orderBy('updated_at', 'desc'); //TODO:: later update article->commented while commented ...
@@ -64,6 +65,21 @@ class ArticlesQuery extends Query
             }
         } else {
             $qb = $qb->where('status', '>', 0);
+        }
+        //文章的类型，目前主要有视频与普通文章
+        if (isset($args['type'])) {
+            switch ($args['type']) {
+                case 'VIDEO':
+                    $qb = $qb->where('type', '=', 'video');
+                    break;
+
+                case 'ARTICLE':
+                    $qb = $qb->where('type', '=', 'article');
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         if (isset($args['in_days'])) {

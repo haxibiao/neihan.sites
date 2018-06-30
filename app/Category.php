@@ -45,9 +45,10 @@ class Category extends Model
         return $this->belongsToMany('App\User');
     }
 
-    public function videos()
+    public function videoArticles()
     {
-        return $this->belongsToMany('App\Video');
+        return $this->belongsToMany('App\Article')
+            ->where('articles.type','video');
     }
 
     public function questions()
@@ -85,6 +86,7 @@ class Category extends Model
     {
         return $this->belongsToMany('App\Article')
             ->where('articles.status', '>', 0) //TODO:: double check fix existing status = 1 articles pivot submit  ...
+            ->whereType('article')
             ->wherePivot('submit', '已收录')
             ->withPivot('submit')
             ->withTimestamps();

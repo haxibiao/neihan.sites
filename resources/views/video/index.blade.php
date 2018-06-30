@@ -27,8 +27,8 @@
             @foreach($videos as $video)
             <div class="media">
                 <a class="pull-left" href="/video/{{ $video->id }}">
-                    <img alt="{{ $video->title }}" class="img img-thumbnail img-responsive" 
-                    	src="{{ $video->cover() }}" style="max-width: 300px">
+                    <img alt="{{ $video->article->title }}" class="img img-thumbnail img-responsive" 
+                    	src="{{ $video->article->cover() }}" style="max-width: 300px">
                     </img>
                 </a>
                 <div class="media-body">
@@ -44,20 +44,22 @@
                     @endif
                     <h4 class="media-heading">
                         <a href="/video/{{ $video->id }}">
-                        {{ $video->title }}
+                        {{ $video->article->title }}
                         </a>
                     </h4>
                     <p>
-                        分类: {{ !empty($video->category) ? $video->category->name : '' }}
+                        主分类: {{ !empty($video->article->category) ? $video->article->category->name : '' }}
                     </p>
+                    @if($video->user)
                     <p>
-                        上传用户:　<a href="/user/{{ $video->user->id }}">{{ $video->user->name }}</a>
+                        上传用户:　<a href="/user/{{ $video->user_id }}">{{ $video->user->name }}</a>
                     </p>
+                    @endif
                     <p>
                         最后更新: {{ $video->updatedAt() }}
                     </p>
                     <p>
-                        @if(count($video->covers()) == 8)
+                        @if(count($video->article->covers()) == 8)
                             <span class="label label-success">截图已完成</span>
                         @else
                             <span class="label label-default">截图ing...</span>

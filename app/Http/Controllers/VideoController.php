@@ -8,6 +8,7 @@ use App\Jobs\videoCapture;
 use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\VideoRequest;
 
 class VideoController extends Controller
 {
@@ -16,18 +17,20 @@ class VideoController extends Controller
         $this->middleware('auth', ['except' => ['index', 'show']]);
     }
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource. 
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        if ($request->ajax()) {
-            return $this->jsonIndex($request);
-        }
-
-        $videos = Video::with('user')->with('category')->orderBy('id', 'desc')->where('status', '>', 0)->paginate(10);
-        return view('video.index')->withVideos($videos);
+    { 
+        $videos = Video::with('user')->with('article.category')
+            ->orderBy('id', 'desc')
+            ->where([
+                ['status', '>', 0]
+            ])
+            ->paginate(10);
+        return view('video.index')
+            ->withVideos($videos); 
     }
 
     /**
@@ -37,7 +40,7 @@ class VideoController extends Controller
      */
     public function create()
     {
-        $data['video_categories'] = Category::where('type', 'video')->pluck('name', 'id');
+        $data['video_categories'] = Category::pluck('name', 'id');
         return view('video.create')->withData($data);
     }
 
@@ -47,42 +50,47 @@ class VideoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(VideoRequest $request) 
     {
         ini_set('memory_limit', '256M');
-
-        if ($request->ajax()) {
-            return $this->jsonStore($request);
-        }
-
+        $uploadSuccess = false;
+        //如果是通过表单上传文件
         $file = $request->file('video');
         if ($file) {
             $hash  = md5_file($file->path());
             $video = Video::firstOrNew([
                 'hash' => $hash,
             ]);
-            $video->cover = '/images/uploadImage.jpg';
-            if ($video->id) {
-                dd("相同视频已存在");
+            if ($video->id) { 
+                abort(500, "相同视频已存在");
             }
-            $video->fill($request->all());
             $video->save();
+
+            //save article
+            $article = new Article(); 
+            $article->user_id = getUserId(); 
+            $params['video_url'] = $video->getPath();
+            $params['type']      = 'video';
+            $params['image_url'] = '/images/uploadImage.jpg';//默认图
+            $params['video_id']  = $video->id;
+            $article ->fill($params);
+            //文章title
+            $article->title = $request->title;
+            $article->description = $request->description;
+            if(empty($article ->title)){
+                $article ->title = str_limit($article->description, $limit = 20, $end = '...');
+            }
+            $article ->save();
+
             //处理视频与分类的关系
-            $this->process_category($video);
+            $this->process_category($article);
 
-            $extension   = $file->getClientOriginalExtension();
-            $filename    = $video->id . '.' . $extension;
-            $path        = '/storage/video/' . $filename;
-            $video->path = $path;
-            $file->move(public_path('/storage/video/'), $filename);
-            $video->save();
+            $uploadSuccess = $video->saveFile($file);
         }
-
-        if (empty($video->path)) {
-            dd("请输入有效的cdn视频地址,或者上传合理的视频文件");
+        if(!$uploadSuccess){
+            //视频上传失败
+            abort(500, '视频上传失败');
         }
-        //截取图片
-        $video->takeSnapshot();
         return redirect()->to('/video');
     }
 
@@ -94,20 +102,32 @@ class VideoController extends Controller
      */
     public function show($id)
     {
-        $video = Video::with('user')->with('articles')->with('category')->findOrFail($id);
-        //增加点击量
-        $video->increment('hits', 1);
+        $video = Video::with('article')
+            ->with('user')
+            ->findOrFail($id);   
+        $article = $video->article;
+        //记录用户浏览记录
+        $article->recordBrowserHistory();
 
-        //get some related videos ...
-        $videos               = Video::orderBy('id', 'desc')->skip(rand(0, Video::count() - 8))->take(4)->get();
-        if ($video->category && $video->category->videos()->count() >= 4) {
-            $videos = $video->category->videos()->take(4)->get();
+        //获取关联视频
+        $related =   Article::where('type', 'video')
+            ->orderBy('id', 'desc')
+            ->skip( 
+                    rand(0, Article::where('type', 'video')->count() - 8)
+                )
+            ->take(4)
+            ->get(); 
+
+        //if have category, relate some category videos...
+        if ($article->category && $article->category->videoArticles()->count() >= 4) {
+            $related = $article->category->videoArticles()->take(4)->get();
         }
-        $data['related'] = $videos;
+        $data['related'] = $related;
+
         return view('video.show')
-            ->withVideo($video)
+            ->withVideo($video) 
             ->withData($data);
-    }
+    } 
 
     /**
      * Show the form for editing the specified resource.
@@ -118,10 +138,12 @@ class VideoController extends Controller
     public function edit($id)
     {
         $video                    = Video::findOrFail($id);
-        $data['video_categories'] = Category::where('type', 'video')->pluck('name', 'id');
-        $data['thumbnail']        = $video->covers();
+        $data['video_categories'] = Category::pluck('name', 'id');
+        $data['thumbnails']        = $video->article->covers();
 
-        return view('video.edit')->withVideo($video)->withData($data);
+        return view('video.edit')
+            ->withVideo($video)
+            ->withData($data);
     }
 
     /**
@@ -131,292 +153,116 @@ class VideoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(VideoRequest $request, $id) 
     {
         $video = Video::findOrFail($id);
-        //维护分类关系
-        $this->process_category($video);
-
+        $article   = $video->article;
+        //维护分类关系 
+        $this->process_category($article);
+        //选取封面图
         if (!empty($request->thumbnail)) {
-            $result        = copy(public_path($request->thumbnail), public_path($video->cover));
-            $video->status = 1;
-            $video->save();
-        }
+            $result        = copy(
+                public_path($request->thumbnail), 
+                public_path($article->image_url)
+            );
+            $article->status = 1;
+            $article->save();
+        } 
+       
+        //save article description ...
+        $article->update($request->all());
 
-        $changed = false;
+        //文件发生变动 TODO:注意这里没有删除磁盘上的文件，后面的兄弟注意一下
+        //这里不能使用直接使用$request->video。因为与路由参数重名了
+        $file = $request->file('video');
+        $file_is_modify = !empty($file) 
+                && 
+            md5_file($file->path()) != $video->hash;
 
-        //cdn url change
-        if ($request->path != $video->path) {
-            $changed = true;
-        }
-        //这个user_id是当前登录用户id
-        $req_parameters = $request->all();
-        unset($req_parameters['user_id']);
-        $video->update($req_parameters);
-
-        if (!starts_with($request->path, 'http')) {
-            //保存mp4
-            $file = $request->file('video');
-            if ($file) {
-                $hash = md5_file($file->path());
-                if ($video->hash == $hash) {
-                    dd("视频未变更");
-                }
-                if (Video::where('hash', $hash)->count()) {
-                    dd("相同视频已存在");
-                }
-                $video->hash = $hash;
-                //hash changed
-                $changed = true;
-
-                $extension = $file->getClientOriginalExtension();
-
-                if (empty($video->title)) {
-                    $video->title = $filename;
-                }
-
-                $filename    = $video->id . '.' . $extension;
-                $path        = '/storage/video/' . $filename;
-                $video->path = $path;
-                $file->move(public_path('/storage/video/'), $filename);
+        if($file_is_modify) { 
+            //视频源发生变动时首页暂时隐藏，因为有截图延迟
+            $video   ->update(['status' => 0]); 
+            $article ->update(['status' => 0]); 
+            if(!$video->saveFile($request->video)){
+                //视频上传失败
+                abort(500, '视频上传失败');
             }
         }
 
-        if ($changed) {
-            $video->takeSnapshot(true);
+        //防止用户直接访问编辑界面无session导致页面报错
+        $refer_url = session('url.intended');
+        if( empty($refer_url) ){
+            return redirect()->to('/video');
         }
-
-        $video->save();
-
-        return redirect(session('url.intended'));  
+        return redirect( $refer_url ); 
     } 
 
     /**
-     * Remove the specified resource from storage.
+     * 删除视频是硬删除，同时删除磁盘上的视频文件
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id)  
     {
-        $video = Video::with('articles')->findOrFail($id);
-        if ($video->articles->isEmpty()) {
-            if (!starts_with($video->path, 'http')) {
-                $video_path = public_path($video->path);
-                if (file_exists($video_path)) {
-                    unlink($video_path);
-                }
-            }
-        } else {
-            return '视频还在被文章引用...　无法删除...';
-        }
+        $video = Video::findOrFail($id);
+        $article   = $video->article;
+    
+        $video  ->delete();
+        $article->delete();
 
-        $video->delete();
+        //TODO:: now keep consistent with existing soft delete logic ...
+        $article->update(['status' => -1]);
+        
+        //TODO 清除关系 分类关系 冗余的统计信息  评论信息 点赞信息 喜欢的信息 收藏的信息
         return redirect()->to('/video');
     }
 
-    public function jsonIndex($request)
+
+    /**
+     * @Desc     处理视频与分类的关系
+     * @Author   czg
+     * @DateTime 2018-06-27
+     * @param    [type]     $article article是一篇type为video的文章
+     * @return   [type]            [description]
+     */
+    public function process_category($article)
     {
-        $data      = [];
-        $delete_id = $request->get('d');
-        if (!empty($delete_id)) {
-            //删除
-            $video = Video::find($delete_id);
-            if ($video) {
-                $video->status = -1;
-                $video->save();
+        if(request('categories')){
+            $old_categories   = $article->categories;
+            $new_categories   = json_decode( request('categories') );
+            $new_category_ids = [];
+            //选取第一个分类做视频的主分类
+            if (!empty($new_categories)) {
+                $article->category_id = $new_categories[0]->id;
+                $article->save();
+                $new_category_ids = array_pluck($new_categories, 'id');
             }
-            $path = $video->path;
-            if (file_exists(public_path($path))) {
-                unlink(public_path($path));
-            }
-            $data[$path] = true;
-            $cover       = $video->cover;
-            if (file_exists(public_path($cover))) {
-                unlink(public_path($cover));
-            }
-            $data[$cover] = true;
-        } else {
-            //加载当前用户已上传，未使用的
-            $query = Video::where('status', '>=', 0)->where('count', 0)->orderBy('id', 'desc');
-            if (Auth::check()) {
-                $query = $query->where('user_id', Auth::user()->id);
-            }
-            $videos = $query->take(2)->get();
-            foreach ($videos as $video) {
-                $extension = pathinfo(public_path($video->path), PATHINFO_EXTENSION);
-                $filename  = pathinfo($video->path)['basename'];
-                $file      = [
-                    'url'          => base_uri() . $video->path,
-                    'thumbnailUrl' => base_uri() . $video->cover,
-                    'name'         => $filename,
-                    'id'           => $video->id,
-                    "type"         => str_replace("jpg", "jpeg", "video/" . $extension),
-                    "size"         => 0,
-                    'deleteUrl'    => url('/video?d=' . $video->id),
-                    "deleteType"   => "GET",
+            //维护分类关系
+            $parameters = [];
+            foreach ($new_category_ids as $category_id) {
+                $parameters[$category_id] = [
+                     'submit' => '已收录',
                 ];
-                $data['files'][] = $file;
             }
-        }
-        return $data;
-    }
+            //同步分类关系,以最后一次选取的为准
+            $article->categories()->sync($parameters);
 
-    public function jsonStore($request)
-    {
-        $videos      = $request->file('files');
-        $video_index = get_cached_index(Video::max('id'), 'video');
-        $video_dir   = public_path('/storage/video/');
-        if (!is_dir($video_dir)) {
-            mkdir($video_dir, 0777, 1);
-        }
-
-        $files = [];
-        foreach ($videos as $file) {
-            $extension   = $file->getClientOriginalExtension();
-            $origin_name = $file->getClientOriginalName();
-            $filename    = $video_index . '.' . $extension;
-            $path        = '/storage/video/' . $filename;
-            $local_dir   = public_path('/storage/video/');
-            $size        = filesize($file->path());
-
-            //save video item
-            $hash  = md5_file($file->path());
-            $video = Video::firstOrNew([
-                'hash' => $hash,
-            ]);
-            if (!$video->id) {
-                $video->title       = $origin_name;
-                $video->user_id     = Auth::user()->id;
-                $video->path        = $path;
-                $video->hash        = $hash;
-                $video->category_id = Category::where('name', '有意思')->where('type', 'video')->first()->id;
-                $video->save();
-
-                //save video file
-                $file->move($local_dir, $filename);
-
-                //get duration
-                $video_path = public_path($path);
-                // $cmd        = "ffmpeg -i $video_path 2>&1";
-                // if (preg_match('/Duration: ((\d+):(\d+):(\d+))/s', `$cmd`, $time)) {
-                //     $total = ($time[2] * 3600) + ($time[3] * 60) + $time[4];
-                //     $video->duration = $total;
-                //     $second = rand(1, ($total - 1));
-                // }
-
-                //make thumbnail
-                $video->cover = '/storage/video/thumbnail_' . $video->id . '.jpg';
-                $cover        = public_path($video->cover);
-                videoCapture::dispatch($video_path, $cover);
-                $video->save();
-            }
-
-            $files[] = [
-                'url'          => $video->path,
-                'thumbnailUrl' => $video->cover,
-                'name'         => $filename,
-                'id'           => $video->id,
-                "type"         => 'video/mp4',
-                "size"         => $size,
-                'deleteUrl'    => url('/video?d=' . $video->id),
-                "deleteType"   => "GET",
-            ];
-        }
-
-        $data['files'] = $files;
-
-        return $data;
-    }
-
-    public function make_cover($video_path, $cover)
-    {
-        $covers           = [];
-        $cmd_get_duration = 'ffprobe -i ' . $video_path . ' -show_entries format=duration -v quiet -of csv="p=0" 2>&1';
-        $duration         = `$cmd_get_duration`;
-        $duration         = intval($duration);
-        if ($duration > 15) {
-            //take 8 covers jpg file, return first ...
-            for ($i = 1; $i <= 8; $i++) {
-                $seconds   = intval($duration * $i / 8);
-                $cover_i   = $cover . ".$i.jpg";
-                $cmd       = "ffmpeg -i $video_path -deinterlace -an -s 300x200 -ss $seconds -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $cover_i 2>&1";
-                $exit_code = exec($cmd);
-                if ($exit_code == 0) {
-                    $covers[] = $cover_i;
-                }
-            }
-
-            if (count($covers)) {
-                //copy first screen as default cover..
-                copy($covers[0], $cover);
-            }
-
-        }
-        return $covers;
-    }
-
-    public function get_json_lists($video)
-    {
-        $lists     = json_decode($video->json, true);
-        $lists_new = [];
-        if (is_array($lists)) {
-            foreach ($lists as $key => $data) {
-                if (!is_array($data)) {
-                    $data = [];
-                }
-                $items = [];
-                if (!empty($data['aids']) && is_array($data['aids'])) {
-                    foreach ($data['aids'] as $aid) {
-                        $article = Article::find($aid);
-                        if ($article) {
-                            $items[] = [
-                                'id'        => $article->id,
-                                'title'     => $article->title,
-                                'image_url' => $article->image_url,
-                            ];
-                        }
+            //更新分类下的视频数量
+            if ( is_array($new_categories) ) {
+                foreach ($new_categories as $category) {
+                    //更新新分类文章数
+                    if ($category = Category::find($category->id)) {
+                        $category->count_videos = $category->videoArticles()->count();
+                        $category->save();
                     }
                 }
-                if (!empty($items)) {
-                    $data['items']   = $items;
-                    $lists_new[$key] = $data;
-                }
             }
-        }
-        return $lists_new;
-    }
-
-    //处理视频与分类的关系
-    public function process_category($video)
-    {
-        $old_categories   = $video->categories;
-        $new_categories   = json_decode(request('categories'));
-        $new_category_ids = [];
-        //选取第一个分类做视频的主分类
-        if (!empty($new_categories)) {
-            $video->category_id = $new_categories[0]->id;
-            $video->save();
-            foreach ($new_categories as $cate) {
-                $new_category_ids[] = $cate->id;
+            //更新旧分类视频数
+            foreach ($old_categories as $category) {
+                $category->count_videos = $category->videoArticles()->count();
+                $category->save();
             }
-        }
-        //同步分类关系,以最后一次选取的为准
-        $video->categories()->sync($new_category_ids);
-        //更新分类下的视频数量
-        if (is_array($new_categories)) {
-            foreach ($new_categories as $category) {
-                //更新新分类文章数
-                if ($category = Category::find($category->id)) {
-                    $category->count_videos = $category->videos()->count();
-                    $category->save();
-                }
-            }
-        }
-        //更新旧分类视频数
-        foreach ($old_categories as $category) {
-            $category->count_videos = $category->videos()->count();
-            $category->save();
         }
     }
 }

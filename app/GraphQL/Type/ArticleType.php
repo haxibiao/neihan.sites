@@ -40,7 +40,13 @@ class ArticleType extends GraphQLType
                 'description' => 'The image_url of article',
                 'resolve'     => function ($root, $args) {
                     // var_dump($root); die;
-                    return $root ? $root->primaryImage() : null;
+                    if($root){
+                       if($root->type=='videos'){
+                        return $root->cover();
+                       }
+                       return $root->primaryImage();
+                    }
+                    return null;
                 },
             ],
             'top_image'       => [
@@ -249,12 +255,30 @@ class ArticleType extends GraphQLType
                 'resolve'     => function ($root, $args) {
                     return $root->category;
                 },
-            ],
+            ], 
             'favorited'       => [
                 'type'        => Type::boolean(),
                 'description' => 'the article is favorited?',
                 'resolve'     => function ($root, $args) {
                     return $root->currentUserHasFavorited();
+                },
+            ],
+            'video_url'       => [
+                'type'        => Type::string(),
+                'description' => 'the article video_url',
+                'resolve'     => function ($root, $args) {
+                    return $root->video_source(); 
+                },
+            ],
+            'type'       => [
+                'type'        => Type::string(),
+                'description' => 'type of article',
+            ],
+            'video'       => [
+                'type'        => GraphQL::type('Video'), 
+                'description' => 'the article video detail',
+                'resolve'     => function ($root, $args) {
+                    return $root->video;
                 },
             ],
         ];

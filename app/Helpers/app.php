@@ -1,9 +1,19 @@
 <?php
 use Illuminate\Support\Facades\Auth;
 
+function getUserId() {
+    if(Auth::id()) {
+        return Auth::id();
+    }  
+    if(request()->user()) {
+        return request()->user()->id;
+    }
+    return 0;
+}
+
 function checkUser()
 {
-    return Auth::check() || session('user');
+    return Auth::check() || session('user') || request()->user();
 }
 
 function getUser() 

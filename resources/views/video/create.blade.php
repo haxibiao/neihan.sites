@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-	添加视频 - 
+	添加视频
 @stop
 
 @section('content')
@@ -21,55 +21,38 @@
                 {!! Form::open(['method' => 'POST', 'route' => 'video.store', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
                 <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                     {!! Form::label('title', '视频标题(非必填,默认取上传的mp4文件名)') !!}
-                            {!! Form::text('title', null, ['class' => 'form-control', 'required'=>true]) !!}
+                    {!! Form::text('title', null, ['class' => 'form-control']) !!}
                     <small class="text-danger">
                         {{ $errors->first('title') }}
                     </small>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
-                            {!! Form::label('category_ids', '专题(直接收录！)') !!}
+                        <div class="form-group{{ $errors->has('categories') ? ' has-error' : '' }}">
+                            {!! Form::label('categories', '专题(直接收录！)') !!}
                             <category-select></category-select>
-                            <small class="text-danger">{{ $errors->first('category_id') }}</small>
+                            <small class="text-danger">{{ $errors->first('categories') }}</small>
                         </div>
                     </div>
                 </div>
-                {{-- <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
-                    {!! Form::label('category_id', '视频分类') !!}
-                    {!! Form::select('category_id', $data['video_categories'], null, ['id' => 'category_id', 'class' => 'form-control', 'required' => 'required']) !!}
-                    <small class="text-danger">{{ $errors->first('category_id') }}</small>
-                </div> --}}
-                <div class="form-group{{ $errors->has('introduction') ? ' has-error' : '' }}">
-                    {!! Form::label('introduction', '视频介绍(非必填)') !!}
-                            {!! Form::textarea('introduction', null, ['class' => 'form-control']) !!}
+                <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
+                    {!! Form::label('description', '视频介绍(必填)') !!}
+                    {!! Form::textarea('description', null, ['class' => 'form-control', 'required'=>true]) !!}
                     <small class="text-danger">
-                        {{ $errors->first('introduction') }}
+                        {{ $errors->first('description') }}
                     </small>
-                </div>
-                <div class="form-group{{ $errors->has('path') ? ' has-error' : '' }}">
-                    {!! Form::label('path', '视频地址(提供了cdn地址，下面视频文件可以无需上传)') !!}
-                    {!! Form::text('path', null, ['class' => 'form-control']) !!}
-                    <small class="text-danger">{{ $errors->first('path') }}</small>
                 </div>
                 <div class="form-group{{ $errors->has('video') ? ' has-error' : '' }}">
                     {!! Form::label('video', '视频文件') !!}
                             {!! Form::file('video') !!}
                     <p class="help-block">
-                        (目前只支持mp4格式，其他的需要先转码,　如果提供了cdn地址，这里就无需再上传了)
+                        (目前只支持mp4格式)
                     </p>
                     <small class="text-danger">
                         {{ $errors->first('video') }}
                     </small>
                 </div>
-                <div class="form-group{{ $errors->has('adstime') ? ' has-error' : '' }}">
-                    {!! Form::label('adstime', '广告时间(非必填，如果有就填写，方便后续脚本清理广告)') !!}
-                    {!! Form::text('adstime', null, ['class' => 'form-control', 'placeholder'=>'(比如: ５秒之前,输入 <5s 4分33秒之后，输入: >4:33 中间时段： 2:20-2:25，多个时段，空格隔开)']) !!}
-                    <small class="text-danger">{{ $errors->first('adstime') }}</small>
-                </div>
                 <div class="btn-group pull-right">
-                    {!! Form::hidden('user_id', Auth::user()->id) !!}
-                    {!! Form::reset("重置", ['class' => 'btn btn-warning']) !!}
 			        {!! Form::submit("提交", ['class' => 'btn btn-success']) !!}
                 </div>
                 {!! Form::close() !!}

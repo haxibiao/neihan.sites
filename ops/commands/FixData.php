@@ -1,5 +1,4 @@
 <?php
-
 namespace ops\commands;
 
 use App\Comment;
@@ -95,17 +94,102 @@ class FixData extends Command
     {
         //重新统计分类下已收录文章数
         $this->cmd->info('fix categories ...');
-        Category::orderBy('id')->chunk(100, function ($categories) {
+        /*Category::orderBy('id')->chunk(100, function ($categories) {
             foreach ($categories as $category) {
                 $category->count = $category->publishedArticles()->count();
                 $category->save();
             }
+        });*/
+        //统计分类下视频数
+        Category::orderBy('id')->chunk(100, function ($categories) {
+            foreach ($categories as $category) {
+                $category->count_videos = $category->videoArticles()->count();
+                $category->timestamps = false;
+                $category->save();
+            }
         });
+        
     } 
 
-    public function fix_videos()
+    public function fix_videos() 
     {
+        //将Video表修复到article表中并完成关系的维护
         $this->cmd->info('delete empty videos ...');
+        Video::orderBy('id')->chunk(100, function ($videos) {
+            foreach ($videos as $video) {
+                //如果是删除状态的视频或者视频的title为空直接跳过
+                if( $video->status<1 || empty($video->title) ){
+                    $this->cmd->error('该视频id为>>'. $video->id .'<<不符合处理请求');
+                    continue;
+                }
+                \DB::beginTransaction();
+                try {
+                    //视频评论 
+                    $qb_video_commnets = \DB::table('comments')
+                        ->where([
+                            ['commentable_type','videos'],
+                            ['commentable_id'  ,$video->id]
+                        ]);
+                    $qb_video_likes = \DB::table('likes')
+                        ->where([
+                            ['liked_type','videos'],
+                            ['liked_id'  ,$video->id]]);
+                    //数据规整
+                    $data['hits']           = $video->hits;                  
+                    $data['category_id']    = $video->category_id;   //主分类id
+                    $data['description']    = $video->introduction;
+                    $data['image_url']      = $video->cover;
+                    $data['count_likes']    = $qb_video_likes->count();
+                    $data['user_id']        = $video->user_id;
+                    $data['title']          = $video->title;
+                    $data['count_comments'] = $qb_video_commnets->count();
+                    $data['video_id']       = $video->id;
+                    $data['type']           = 'video';
+                    $data['video_url']      = $video->path;
+                    $data['status']         = 1;
+
+                    //保存文章信息
+                    $article = Article::firstOrNew(['video_id'=>$video->id]);
+                    $article->fill( $data );
+                    $article->save(); 
+
+                    
+                    //维护分类关系, category中的count_article冗余字段可以不用更改
+                    $video_cate_ids = \DB::table('category_video') 
+                        ->where('id',$video->id)
+                        ->pluck('category_id')
+                        ->toArray();
+                    //维护video中的category，直接收录
+                     $parameters = [];
+                     foreach ($video_cate_ids as $category_id) {
+                         $parameters[$category_id] = [
+                             'submit' => '已收录',
+                         ];
+                     }
+                    $article->categories()->syncwithoutDetaching($parameters);
+                    
+                    //维护评论关系
+                    $qb_video_commnets->update([
+                        'commentable_type'  => 'articles',
+                        'commentable_id'    => $article->id,
+                    ]);
+                    //维护like
+                    $qb_video_likes->update([
+                        'liked_type'  => 'articles',
+                        'liked_id'    => $article->id,
+                    ]);
+                    
+                    \DB::commit();
+                } catch (\Exception $e) {
+                    dd($e->getMessage());
+                    $this->cmd->error('处理视频id为>>'. $video->id .'<<的视频失败'); 
+                    \DB::rollBack();
+                    continue;
+                }
+                $this->cmd->info('处理视频id为>>'. $video->id .'<<的视频成功');
+            }
+        });
+        /*$this->cmd->info('delete empty videos ...');
         $qb = Video::orderBy('id')->whereNull('path');
         $qb->chunk(100, function ($videos) {
              foreach ($videos as $video) {
@@ -132,7 +216,7 @@ class FixData extends Command
                 $video->category_id = 22;
                 $video->save();
             }
-        });
+        });*/
     }
 
     public function fix_images()
@@ -157,11 +241,60 @@ class FixData extends Command
 
     public function fix_articles()
     {
-        //base64 fail 1370 12520 11298 12522
-        //webp 12520
-        $this->cmd->info('fix articles ...');
-        //修复非爬虫文章文章内容中图片的问题(图片的宽高属性单独处理)
-        Article::where('source_url', '=', '0')->chunk(100, function ($articles) {
+        //维护文章与图片的关系
+        /*Article::where('source_url', '=', '0')->chunk(100, function ($articles) {
+            foreach ($articles as $article) {
+                $body_html = $article->body;
+                $img_from_image_urls = \ImageUtils::getImageUrlFromHtml($body_html);
+                $paths = [];
+                foreach ($img_from_image_urls as $image_url) {
+                    //排除base64图片
+                    if( strlen($image_url)<100 && str_contains($image_url,'ainicheng.com') ){
+                        $paths[] = substr($image_url, strpos($image_url,"/storage"));
+                    }
+                }
+                $img_ids = Image::whereIn('path',$paths)->pluck('id');
+                $article->images()->syncWithoutDetaching($img_ids);
+            }
+        });*/
+        //img标签添加宽高属性
+        /*Article::where('source_url', '=', '0')->chunk(100, function ($articles) {
+            foreach ($articles as $article) {
+                $this->cmd->error('正在替换文章:'. $article->id);
+                $body_html = $article->body;
+                $pattern = "/<img.*?src=['|\"](.*?)['|\"].*?[\/]?>/iu";
+                preg_match_all($pattern, $body_html, $matches);
+
+                $paths = [];
+                foreach ($matches[0] as $img) {
+                    $image_url = \ImageUtils::getImageUrlFromHtml($img)[0];
+                    //防止img中src属性为空
+                    if( empty($image_url) ){
+                        $this->cmd->notice($article->id.'图为空' . $image_url); 
+                        continue;
+                    }
+                    //判断是否有width与height属性
+                    if( strlen($image_url)<100 && (!str_contains( $img, [ 'width=','height='] )) ){
+                        try {
+                            list($width,$height,$type,$attr)=getimagesize($image_url);
+                            $body_html = str_replace(
+                                $image_url . '"' , 
+                                $image_url . '" ' . 'width="'.$width.'" ' . 'height="'.$height.'" ' , 
+                                $body_html
+                            );
+                        } catch (\Exception $e) {
+                            $this->cmd->error($article->id.'获取宽高属性失败' . $image_url); 
+                        }
+                    }
+                }
+                $article->body = $body_html;
+                $article->save();
+            }
+        });*/
+        
+        //$this->cmd->info('fix articles ...');
+        //修复非爬虫文章文章内容中图片的问题(图片的宽高属性单独处理) hash
+        /*Article::where('source_url', '=', '0')->chunk(100, function ($articles) {
             foreach ($articles as $article) {
                 $body_html = $article->body;
                 //body为空的情况
@@ -361,7 +494,7 @@ class FixData extends Command
                
                 var_dump('http://ainicheng.com/article/' . $article->id);
             }
-        });
+        });*/
         
 
         //维护主分类与文章的多对多关系

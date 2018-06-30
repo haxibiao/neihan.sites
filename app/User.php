@@ -467,4 +467,10 @@ class User extends Authenticatable
         \DB::commit();
         return true;
     }
+
+    public function videoArticles()
+    {
+        return $this->hasMany('App\Article')
+            ->where('articles.type','video');
+    }
 }

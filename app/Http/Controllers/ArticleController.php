@@ -126,21 +126,8 @@ class ArticleController extends Controller
             $data['parent_category'] = $article->category->parent()->first();
         }
 
-        //count
-        $article->hits = $article->hits + 1;
-        $agent         = new \Jenssegers\Agent\Agent();
-        if ($agent->isMobile()) {
-            $article->hits_mobile = $article->hits_mobile + 1;
-        }
-        if ($agent->isPhone()) {
-            $article->hits_phone = $article->hits_phone + 1;
-        }
-        if ($agent->match('micromessenger')) {
-            $article->hits_wechat = $article->hits_wechat + 1;
-        }
-        if ($agent->isRobot()) {
-            $article->hits_robot = $article->hits_robot + 1;
-        }
+        //记录用户浏览记录
+        $article->recordBrowserHistory();
         
         $article->timestamps = false;
         $article->save();
@@ -344,7 +331,7 @@ class ArticleController extends Controller
                 'submit' => '已收录',
             ];
         }
-        $article->categories()->sync($parameters); 
+        $article->categories()->sync($parameters);  
         // $article->categories()->sync($new_category_ids);
 
         //re-count

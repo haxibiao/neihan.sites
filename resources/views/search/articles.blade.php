@@ -62,10 +62,12 @@
 					</div>
 					<div class="note-list">
 						@foreach($data['articles'] as $article) 
-						<li class="article-item">
-						  <a class="wrap-img" href="/article/{{ $article->id }}" target="_blank">
-						      <img src="{{ $article->primaryImage() }}" alt="">
-						  </a>
+						<li class="article-item {{ $article->hasImage() ? 'have-img' : '' }}">
+					      @if($article->hasImage())
+							  <a class="wrap-img" href="{{ $article->content_url() }}" target="_blank">
+							      <img src="{{ $article->primaryImage() }}" alt="">
+							  </a>
+						  @endif 
 						  <div class="content">
 						    <div class="author">
 						      <a class="avatar" target="_blank" href="/user/{{ $article->user_id }}">
@@ -75,19 +77,19 @@
 						        <a class="nickname" target="_blank" href="/user/{{ $article->user_id }}">{{ $article->user->name }}</a>
 						        <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
 						        <span class="time" data-shared-at="{{ $article->created_at }}">{{ $article->timeAgo() }}</span>
-						      </div>
+						      </div> 
 						    </div>
-						    <a class="title" target="_blank" href="/article/{{ $article->id }}">
+						    <a class="title" target="_blank" href="{{ $article->content_url() }}">
 						        <span>{!! $article->title !!}</span>
 						    </a>
-						    <p class="abstract">
+						    <p class="abstract"> 
 						      {!! $article->description !!}
 						    </p>
 						    <div class="meta">
-						      <a target="_blank" href="/article/{{ $article->id }}">
+						      <a target="_blank" href="{{ $article->content_url() }}">
 						        <i class="iconfont icon-liulan"></i> {{ $article->hits }}
 						      </a>        
-						      <a target="_blank" href="/article/{{ $article->id }}">
+						      <a target="_blank" href="{{ $article->content_url() }}">
 						        <i class="iconfont icon-svg37"></i> {{ $article->count_replies }}
 						      </a>      
 						      <span><i class="iconfont icon-03xihuan"></i> {{ $article->count_likes }}</span>
