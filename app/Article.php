@@ -151,9 +151,6 @@ class Article extends Model
     }
     public function primaryImage()
     {
-        if( $this->type == 'video' ){ 
-            return env('APP_URL') . $this->image_url;
-        }
         //爬蟲文章的圖片,直接顯示
         if (str_contains($this->image_url, 'haxibiao.com/storage/image')) {
             return $this->image_url;

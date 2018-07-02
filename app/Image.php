@@ -24,7 +24,10 @@ class Image extends Model
 
     public function url()
     {
-        return url($this->path);
+        if (file_exists(public_path($this->path))) {
+            return url($this->path);
+        }
+        return url_prod();
     }
 
     public function url_prod()
@@ -40,6 +43,9 @@ class Image extends Model
         }
         if ($this->disk == 'hxb') {
             return env('HXB_URL') . $this->path_small();
+        }
+        if (file_exists(public_path($this->path_small()))) {
+            return url($this->path_small());
         }
         return env('APP_URL') . $this->path_small();
     }
