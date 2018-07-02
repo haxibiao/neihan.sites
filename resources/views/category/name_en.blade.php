@@ -54,31 +54,31 @@
                        @endif
                    </ul>
                    <ul role="tabpanel" class="fade video-list tab-pane clearfix" id="video">
-                       @foreach($data['videos'] as $video)
+                       @foreach($data['video_articles'] as $article)
                        <li class="col-xs-6 col-md-4 video">
                           <div class="video-item vt">
                             <div class="thumb">
-                              <a href="/video/{{$video->id}}">
-                                <img src="{{ $video->cover() }}" alt="{{ $video->title }}">
+                              <a href="{{ $article->content_url() }}">
+                                <img src="{{ $article->cover() }}" alt="{{ $article->title }}">
                                 <i class="duration">
                                   {{-- 持续时间 --}}  
-                                  @sectominute($video->video->duration)
+                                  @sectominute($article->video->duration)
                                 </i>
                               </a>
                             </div>
                             <ul class="info-list">
                               <li class="video-title">
-                                <a href="/video/{{$video->id}}">{{ $video->title }}</a>
+                                <a href="{{ $article->content_url() }}">{{ $article->title }}</a>
                               </li>
                               <li>
                                 {{-- 播放量 --}}
-                                <p class="subtitle single-line">{{ $video->hits }}次播放</p>
+                                <p class="subtitle single-line">{{ $article->hits }}次播放</p>
                               </li>
                             </ul>
                           </div>
                         </li>
                        @endforeach
-                       <div>{!! $data['videos']->fragment('video')->links() !!}</div>
+                       <div>{!! $data['video_articles']->fragment('video')->links() !!}</div>
                    </ul>
                  </div>
             </div>

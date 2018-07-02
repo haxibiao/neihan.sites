@@ -151,7 +151,7 @@ class Article extends Model
     }
     public function primaryImage()
     {
-        if( $this->type='video' ){ 
+        if( $this->type == 'video' ){ 
             return env('APP_URL') . $this->image_url;
         }
         //爬蟲文章的圖片,直接顯示

@@ -66,6 +66,7 @@ class UserController extends Controller
         //文章
         $qb = Article::where('user_id', $user->id)
             ->with('user')->with('category')
+            ->where('type','article')
             ->where('status', '>', 0)
             ->orderBy('id', 'desc');
         $articles = smartPager($qb, 10);

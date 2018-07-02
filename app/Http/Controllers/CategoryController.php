@@ -198,11 +198,11 @@ class CategoryController extends Controller
         }
         $data['hot'] = $articles;
 
-        //get some related videos ...
+        //videos
         $qb = $category->videoArticles()->whereStatus(1)->orderBy('id', 'desc');
 
         $videos         = smartPager($qb, 12);
-        $data['videos'] = $videos;
+        $data['video_articles'] = $videos;
 
         return view('category.name_en')
             ->withCategory($category)
