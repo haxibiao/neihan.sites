@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AlertVideoStep2 extends Migration
 {
@@ -14,15 +14,17 @@ class AlertVideoStep2 extends Migration
     public function up()
     {
         Schema::table('videos', function (Blueprint $table) {
-            // $table->dropColumn([
-            //     'hits',
-            //     'category_id',  
-            //     'introduction',
-            //     'path_mp4',  
-            //     'count',
-            //     'likes',
-            //     'cover'
-            // ]);
+            if (Schema::hasColumn('videos', 'hits')) {
+                $table->dropColumn([
+                    'hits',
+                    'category_id',
+                    'introduction',
+                    'path_mp4',
+                    'count',
+                    'likes',
+                    'cover',
+                ]);
+            }
         });
     }
 

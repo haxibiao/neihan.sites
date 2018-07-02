@@ -34,7 +34,8 @@
                 </span>
               </h3>
             </div> 
-            {{-- @foreach($data->videos as $video)
+            @foreach($data->videos as $video)
+            @if($video->article)
              <div class="col-xs-6 col-md-3 video">
                <div class="video-item vt">
                  <div class="thumb">
@@ -55,7 +56,8 @@
                  </ul>
                </div>
              </div>
-             @endforeach --}}
+             @endif
+             @endforeach
           </div>
           {{-- 文章列表 --}}
          <ul class="article-list">              

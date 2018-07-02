@@ -84,8 +84,6 @@ echo {{ $www }}
 {{ $refresh_env_config }}
 {{ $run_migrate }}
 {{ $cache_clear }}
-php artisan fix:data videos
-php artisan fix:data categories
 @endtask
 
 @task('web_update', ['on' => ['web'], 'parallel' => true])

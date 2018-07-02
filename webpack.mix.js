@@ -35,13 +35,11 @@ mix
 
 // ====== js
 mix.js("resources/assets/js/app.js", "public/js");
+mix.babel("resources/assets/js/plugins/poster.js", "public/js/poster.js");
 
 //guest.js
 mix
-	.scripts(
-		["public/js/app.js", "resources/assets/js/plugins/poster.js"],
-		"public/js/guest.js"
-	)
+	.scripts(["public/js/app.js", "public/js/poster.js"], "public/js/guest.js")
 	.version();
 
 // test graphql
@@ -54,7 +52,7 @@ mix
 	.scripts(
 		[
 			"public/js/_user.js",
-			"resources/assets/js/plugins/poster.js",
+			"public/js/poster.js",
 			"resources/assets/js/plugins/bootstrap-tagsinput.js"
 		],
 		"public/js/user.js"
@@ -67,7 +65,7 @@ mix
 	.scripts(
 		[
 			"public/js/_editor.js",
-			"resources/assets/js/plugins/poster.js",
+			"public/js/poster.js",
 			"resources/assets/js/plugins/bootstrap-tagsinput.js"
 		],
 		"public/js/editor.js"
@@ -86,7 +84,7 @@ mix
 	.scripts(
 		[
 			"public/js/_admin.js",
-			"resources/assets/js/plugins/poster.js",
+			"public/js/poster.js",
 			"resources/assets/js/plugins/bootstrap-tagsinput.js"
 		],
 		"public/js/admin.js"
