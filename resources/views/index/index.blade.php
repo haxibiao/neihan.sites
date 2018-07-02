@@ -34,14 +34,13 @@
                 </span>
               </h3>
             </div> 
-            @foreach($data->videos as $video)
+            {{-- @foreach($data->videos as $video)
              <div class="col-xs-6 col-md-3 video">
                <div class="video-item vt">
                  <div class="thumb">
                    <a href="/video/{{$video->id}}" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}">
                      <img src="{{ $video->article->cover() }}" alt="{{ $video->article->title }}">
                      <i class="duration"> 
-                       {{-- 持续时间 --}}
                        @sectominute($video->duration)
                      </i>
                    </a>
@@ -51,13 +50,12 @@
                      <a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/video/{{$video->id}}">{{ $video->article->title }}</a>
                    </li>
                    <li>
-                     {{-- 播放量 --}}
                      <p class="subtitle single-line">{{ $video->article->hits }}次播放</p>
                    </li>
                  </ul>
                </div>
              </div>
-             @endforeach
+             @endforeach --}}
           </div>
           {{-- 文章列表 --}}
          <ul class="article-list">              
