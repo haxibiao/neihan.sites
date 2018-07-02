@@ -289,6 +289,7 @@ return [
         'NotificationType' => '\App\GraphQL\Enum\NotificationTypeEnum',
         'VisitFilter'      => '\App\GraphQL\Enum\VisitFilterEnum',
         'FollowFilter'     => '\App\GraphQL\Enum\FollowFilterEnum',
+        'ArticleType'      => '\App\GraphQL\Enum\ArticleTypeEnum',
     ],
 
     /*

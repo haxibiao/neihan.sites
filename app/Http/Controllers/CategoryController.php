@@ -199,12 +199,8 @@ class CategoryController extends Controller
         $data['hot'] = $articles;
 
         //get some related videos ...
-        $qb = Video::orderBy('id', 'desc')
-            ->where('status', '>', 0)
-            ->skip(rand(0, Video::count() - 8));
-        if ($category->videos()->count()) {
-            $qb = $category->videos()->orderBy('id', 'desc');
-        }
+        $qb = $category->videoArticles()->whereStatus(1)->orderBy('id', 'desc');
+
         $videos         = smartPager($qb, 12);
         $data['videos'] = $videos;
 

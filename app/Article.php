@@ -6,9 +6,14 @@ use App\Action;
 use App\Model;
 use App\Tip;
 use Auth;
+use App\Traits\Playable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Article extends Model
+class Article extends Model 
 {
+    use SoftDeletes;
+    use Playable;
+ 
     protected $fillable = [
         'title',
         'keywords',
@@ -25,6 +30,12 @@ class Article extends Model
         'is_top',
         'status',
         'source_url',
+        'hits',
+        'count_likes',
+        'count_comments',
+        'type',
+        'video_url', 
+        'video_id'
     ];
 
     protected $touches = ['category', 'collections', 'categories'];
@@ -138,9 +149,11 @@ class Article extends Model
 
         return url($image_top_path);
     }
-
     public function primaryImage()
     {
+        if( $this->type='video' ){ 
+            return env('APP_URL') . $this->image_url;
+        }
         //爬蟲文章的圖片,直接顯示
         if (str_contains($this->image_url, 'haxibiao.com/storage/image')) {
             return $this->image_url;
@@ -161,6 +174,10 @@ class Article extends Model
 
     public function hasImage()
     {
+        $model_is_video = $this->type == 'video';
+        if( $model_is_video ){
+            return !empty($this->image_url); 
+        }
         $image_url = parse_url($this->image_url, PHP_URL_PATH);
         $image_url = str_replace('.small', '', $image_url);
         $image     = Image::firstOrNew([
@@ -179,6 +196,7 @@ class Article extends Model
         $this->primary_image = $this->primaryImage();
         $this->image_url     = $this->primaryImage();
         $this->description   = $this->description();
+        $this->url           = $this->content_url();
     }
 
     public function fillForApp()
@@ -407,5 +425,54 @@ class Article extends Model
         $this->user->notify(new \App\Notifications\ArticleTiped($this, $user, $tip));
 
         return $tip;
+    }
+    /**
+     * @Desc     记录用户浏览记录
+     * @Author   czg
+     * @DateTime 2018-06-28
+     * @return   [type]     [description]
+     */
+    public function recordBrowserHistory(){
+        //增加点击量  
+        $this->hits = $this->hits + 1;
+        $agent         = new \Jenssegers\Agent\Agent();
+        if ($agent->isMobile()) {
+            $this->hits_mobile = $this->hits_mobile + 1;
+        }
+        if ($agent->isPhone()) {
+            $this->hits_phone = $this->hits_phone + 1;
+        }
+        if ($agent->match('micromessenger')) {
+            $this->hits_wechat = $this->hits_wechat + 1;
+        }
+        if ($agent->isRobot()) {
+            $this->hits_robot = $this->hits_robot + 1;
+        }
+        //记录浏览历史
+        if (checkUser()) { 
+            $user = getUser();
+            //如果重复浏览只更新纪录的时间戳            
+            $visit = \App\Visit::firstOrNew([
+                'user_id'      => $user->id,
+                'visited_type' => $this->type,
+                'visited_id'   => $this->id,
+            ]);
+            $visit->save(); 
+        }
+        $this->save();
+    }
+    /**
+     * @Desc      返回资源的url
+     * 
+     * @Author   czg
+     * @DateTime 2018-06-29
+     * @return   [type]     [description]
+     */
+    public function content_url(){
+        $url_template = '/%s/%d';
+        if( $this->type == 'video' ){
+            return sprintf($url_template, $this->type, $this->video_id);
+        }
+        return sprintf($url_template, $this->type, $this->id);
     }
 }

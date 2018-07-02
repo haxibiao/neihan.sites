@@ -116,6 +116,7 @@ class NotificationController extends Controller
                 $notifications[] = $data;
             }
         }
+        dd('ok');
         return $notifications;
     }
 }

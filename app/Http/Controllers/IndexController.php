@@ -91,7 +91,7 @@ class IndexController extends Controller
             return !in_array($article->id, $sticks->pluck('id')->toArray());
         });
 
-        //移动端，用简单的分页样式
+        //移动端，用简单的分页样式 
         if (\Agent::isMobile()) {
             $data->articles = new Paginator(new Collection($articles), 10);
             $data->articles->hasMorePagesWhen($total > request('page') * 10);
@@ -100,8 +100,12 @@ class IndexController extends Controller
         }
 
         $data->carousel = get_top_articles();
-
-        $data->videos = Video::orderBy('id', 'desc')->where('status', '>', 0)->take(4)->get();
+        
+        //首页推荐视频  TODO  评论时间来排序
+        $data->videos = Video::with('article')
+                ->orderBy('id', 'desc')
+                ->where('status', '>', 0)
+                ->paginate(4);  
 
         return view('index.index')
             ->withData($data);
@@ -125,16 +129,19 @@ class IndexController extends Controller
     {
         if (request('type') == 'thirty') {
             $articles = Article::orderBy('hits', 'desc')
+                ->whereType('article')
                 ->where('status', '>', 0)
                 ->where('created_at', '>', \Carbon\Carbon::now()->addDays(-30))
                 ->paginate(10);
         } else if (request('type') == 'seven') {
             $articles = Article::orderBy('hits', 'desc')
+                ->whereType('article')
                 ->where('status', '>', 0)
                 ->where('created_at', '>', \Carbon\Carbon::now()->addDays(-7))
                 ->paginate(10);
         } else {
             $articles = Article::where('status', '>', 0)
+                ->whereType('article')
                 ->orderBy('hits', 'desc')
                 ->paginate(10);
         }

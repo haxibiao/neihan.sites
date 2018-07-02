@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddVideosAddHits extends Migration
+class AlertVideosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,10 @@ class AddVideosAddHits extends Migration
     public function up()
     {
         Schema::table('videos', function (Blueprint $table) {
-            $table->integer('hits')->default(0);  
+            $table->integer('duration')->default(0)->change();
+            $table->integer('user_id') ->default(0)->index()->change();
+            $table->softDeletes();
+            
         });
     }
 
@@ -25,6 +28,8 @@ class AddVideosAddHits extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('videos', function (Blueprint $table) {
+            //
+        });
     }
 }

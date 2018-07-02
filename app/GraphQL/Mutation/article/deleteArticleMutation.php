@@ -35,7 +35,7 @@ class deleteArticleMutation extends Mutation
     public function resolve($root, $args)
     {
         $article       = Article::findOrFail($args['id']);
-        $article->delete();
+        $article->forceDelete();
 
         return $article;
     }

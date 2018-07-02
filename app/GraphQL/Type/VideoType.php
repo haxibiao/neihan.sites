@@ -29,6 +29,13 @@ class VideoType extends GraphQLType
                 'description' => 'The description of Video',
             ],
             'time_ago'   => \App\GraphQL\Field\TimeField::class,
+            'duration' => [
+                'type'        => Type::string(),
+                'description' => 'The duration of Video',
+                'resolve'     => function ($root, $args) {
+                    return gmdate('i:s', $root->duration);
+                },
+            ],
         ];
     }
 }

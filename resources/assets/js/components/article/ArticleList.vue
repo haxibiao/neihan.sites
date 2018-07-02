@@ -1,7 +1,7 @@
 <template>
 	<div>	
 		<li v-for="article in articles" :class="article.has_image ? 'article-item have-img' : 'article-item'">
-		    <a v-if="article.has_image" class="wrap-img" :href="'/article/' + article.id" :target="isDesktop? '_blank' : '_self'">
+		    <a v-if="article.has_image" class="wrap-img" :href="article.url" :target="isDesktop? '_blank' : '_self'">
 		        <img :src="article.primary_image" :alt="article.title">
 		    </a>  
 		  <div class="content">
@@ -15,20 +15,20 @@
 		        <span class="time">{{ article.time_ago }}</span>
 		      </div>
 		    </div>
-		    <a class="title" :target="isDesktop? '_blank' : '_self'" :href="'/article/' + article.id">
+		    <a class="title" :target="isDesktop? '_blank' : '_self'" :href="article.url">
 		        <span>{{ article.title }}</span>
 		    </a>
 		    <p class="abstract">{{ article.description }}</p>
 		    <div class="meta">
 		      <a v-if="article.category" class="collection-tag" :target="isDesktop? '_blank' : '_self'" :href="'/' + article.category.name_en">{{ article.category.name }}</a>
-		      <a target="_blank" :href="'/article/' + article.id" class="browse_meta">
+		      <a target="_blank" :href="article.url" class="browse_meta">
 		        <i class="iconfont icon-liulan"></i> {{ article.hits }}
 		      </a>        
-		      <a :target="isDesktop? '_blank' : '_self'" :href="'/article/' + article.id" class="comment_meta">
+		      <a :target="isDesktop? '_blank' : '_self'" :href="article.url" class="comment_meta">
 		        <i class="iconfont icon-svg37"></i> {{ article.count_replies }}
 		      </a>
-		      <a :target="isDesktop? '_blank' : '_self'" :href="'/article/' + article.id"><i class="iconfont icon-03xihuan"></i> {{ article.count_likes }}</a>
-		      <a v-if="article.count_tips" :target="isDesktop? '_blank' : '_self'" :href="'/article/' + article.id"><i class="iconfont icon-qianqianqian"></i> {{ article.count_tips }}</a>
+		      <a :target="isDesktop? '_blank' : '_self'" :href="article.url"><i class="iconfont icon-03xihuan"></i> {{ article.count_likes }}</a>
+		      <a v-if="article.count_tips" :target="isDesktop? '_blank' : '_self'" :href="article.url"><i class="iconfont icon-qianqianqian"></i> {{ article.count_tips }}</a>
 		    </div>
 		  </div>
 		</li> 

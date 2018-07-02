@@ -39,8 +39,8 @@
                <div class="video-item vt">
                  <div class="thumb">
                    <a href="/video/{{$video->id}}" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}">
-                     <img src="{{ $video->cover() }}" alt="{{ $video->title }}">
-                     <i class="duration">
+                     <img src="{{ $video->article->cover() }}" alt="{{ $video->article->title }}">
+                     <i class="duration"> 
                        {{-- 持续时间 --}}
                        @sectominute($video->duration)
                      </i>
@@ -48,11 +48,11 @@
                  </div>
                  <ul class="info-list">
                    <li class="video-title">
-                     <a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/video/{{$video->id}}">{{ $video->title }}</a>
+                     <a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/video/{{$video->id}}">{{ $video->article->title }}</a>
                    </li>
                    <li>
                      {{-- 播放量 --}}
-                     <p class="subtitle single-line">{{ $video->hits }}次播放</p>
+                     <p class="subtitle single-line">{{ $video->article->hits }}次播放</p>
                    </li>
                  </ul>
                </div>
@@ -63,7 +63,7 @@
          <ul class="article-list">              
             {{-- 文章 --}}          
             @each('parts.article_item', $data->sticks, 'article') 
-            @each('parts.article_item', $data->articles, 'article')
+            @each('parts.article_item', $data->articles, 'article') 
 
             {{-- 登录后才加载更多 --}}
             @if(Auth::check())

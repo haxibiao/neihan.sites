@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-	编辑视频 - {{ $video->title }}
+	编辑视频 - {{ $video->article->title }}
 @stop
 @php
     //编辑成功返回之前的页面
@@ -26,46 +26,37 @@
                 {!! Form::open(['method' => 'PUT', 'route' => ['video.update', $video->id], 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
                 <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                     {!! Form::label('title', '视频标题(非必填)') !!}
-					        {!! Form::text('title', $video->title, ['class' => 'form-control']) !!}
+					{!! Form::text('title', $video->article->title, ['class' => 'form-control']) !!}
                     <small class="text-danger">
                         {{ $errors->first('title') }}
                     </small>
                 </div>
-             {{--    <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
-                    {!! Form::label('category_id', '视频分类') !!}
-                    {!! Form::select('category_id', $data['video_categories'], $video->category_id, ['id' => 'category_id', 'class' => 'form-control', 'required' => 'required']) !!}
-                    <small class="text-danger">{{ $errors->first('category_id') }}</small>
-                </div> --}}
-                @editor
-                <div class="row">            
+            
+            
+                <div class="row">    
                     <div class="col-md-6">
-                        <div class="form-group{{ $errors->has('category_ids') ? ' has-error' : '' }}">
-                            {!! Form::label('category_ids', '专题') !!}
-                            <category-select categories="{{ json_encode($video->categories->pluck('name','id')) }}"></category-select>
-                            <small class="text-danger">{{ $errors->first('category_ids') }}</small>
+                        <div class="form-group{{ $errors->has('categories') ? ' has-error' : '' }}">
+                            {!! Form::label('categories', '专题') !!}
+                            <category-select categories="{{ json_encode($video->article->categories->pluck('name','id')) }}"></category-select>
+                            <small class="text-danger">{{ $errors->first('categories') }}</small>
                         </div>
                     </div>
                 </div>
-                @endeditor
-                <div class="form-group{{ $errors->has('introduction') ? ' has-error' : '' }}">
-                    {!! Form::label('introduction', '视频介绍(非必填)') !!}
-					        {!! Form::textarea('introduction', $video->introduction, ['class' => 'form-control']) !!}
+                
+                <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
+                    {!! Form::label('descri', '视频介绍(必填)') !!}
+					{!! Form::textarea('description', $video->article->description, ['class' => 'form-control', 'required'=>true]) !!}
                     <small class="text-danger">
-                        {{ $errors->first('introduction') }}
+                        {{ $errors->first('description') }}
                     </small>
                 </div>
 
 
-                <div class="form-group{{ $errors->has('path') ? ' has-error' : '' }}">
-                    {!! Form::label('path', '视频地址(提供了cdn地址，下面视频文件可以无需上传)') !!}
-                    {!! Form::text('path', $video->path, ['class' => 'form-control']) !!}
-                    <small class="text-danger">{{ $errors->first('path') }}</small>
-                </div>
                 <div class="form-group{{ $errors->has('video') ? ' has-error' : '' }}">
                     {!! Form::label('video', '视频文件') !!}
                             {!! Form::file('video') !!}
                     <p class="help-block">
-                        (目前只支持mp4格式，其他的需要先转码,　如果提供了cdn地址，这里就无需再上传了)
+                        (目前只支持mp4格式)
                     </p>
                     <small class="text-danger">
                         {{ $errors->first('video') }}　
@@ -81,7 +72,7 @@
                             @php   
                                 $thumbIndex = 0; 
                             @endphp
-                            @foreach($data['thumbnail'] as $thumbnail)
+                            @foreach($data['thumbnails'] as $thumbnail)
                             @php
                                 $thumbIndex++;
                             @endphp
@@ -102,8 +93,6 @@
                 </div>                 
 
                 <div class="btn-group pull-right">
-                    {!! Form::hidden('user_id', Auth::user()->id) !!}
-                    {!! Form::reset("重置", ['class' => 'btn btn-warning']) !!}
 			        {!! Form::submit("保存", ['class' => 'btn btn-success']) !!}
                 </div>
                 {!! Form::close() !!}

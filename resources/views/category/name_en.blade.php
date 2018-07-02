@@ -40,17 +40,17 @@
                    <ul role="tabpanel" class="fade tab-pane" id="include">
                        @each('parts.article_item', $data['collected'], 'article')
                        @if(!Auth::check())
-                       <div>{!! $data['collected']->links() !!}</div>
+                        <div>{!! $data['collected']->fragment('include')->links() !!}</div>
                        @else
-                       <article-list api="/{{ $category->name_en }}?collected=1" start-page="2" not-empty="{{count($data['collected'])>0}}"/>
+                        <article-list api="/{{ $category->name_en }}?collected=1" start-page="2" not-empty="{{count($data['collected'])>0}}"/>
                        @endif
                    </ul>
                    <ul role="tabpanel" class="fade tab-pane" id="hot">
                        @each('parts.article_item', $data['hot'], 'article')
                        @if(!Auth::check())
-                       <div>{!! $data['hot']->links() !!}</div>
+                          <div>{!! $data['hot']->fragment('hot')->links() !!}</div>
                        @else
-                       <article-list api="/{{ $category->name_en }}?hot=1" start-page="2" not-empty="{{count($data['hot'])>0}}"/>
+                          <article-list api="/{{ $category->name_en }}?hot=1" start-page="2" not-empty="{{count($data['hot'])>0}}"/>
                        @endif
                    </ul>
                    <ul role="tabpanel" class="fade video-list tab-pane clearfix" id="video">
@@ -61,8 +61,8 @@
                               <a href="/video/{{$video->id}}">
                                 <img src="{{ $video->cover() }}" alt="{{ $video->title }}">
                                 <i class="duration">
-                                  {{-- 持续时间 --}}
-                                  @sectominute($video->duration)
+                                  {{-- 持续时间 --}}  
+                                  @sectominute($video->video->duration)
                                 </i>
                               </a>
                             </div>
@@ -78,7 +78,7 @@
                           </div>
                         </li>
                        @endforeach
-                       <div>{!! $data['videos']->links() !!}</div>
+                       <div>{!! $data['videos']->fragment('video')->links() !!}</div>
                    </ul>
                  </div>
             </div>
@@ -103,8 +103,14 @@
 <script type="text/javascript">
   $(function(){  
     var url = window.location.href;
-    if( url.includes("page") ){
+    if( url.includes("video") ){
       $("[href='#video']").click(); 
+    }
+    if( url.includes("hot") ){
+      $("[href='#hot']").click(); 
+    }
+    if( url.includes("include") ){
+      $("[href='#include']").click(); 
     }
   });
 </script>

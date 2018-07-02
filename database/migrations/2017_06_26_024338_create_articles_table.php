@@ -62,9 +62,16 @@ class CreateArticlesTable extends Migration
 
             $table->integer('collection_id')->nullable()->index(); //编辑直接发布录入专题时，可能没归属的文集
 
-            //延迟发布
-            $table->timestamp('delay_time')->nullable();
-            $table->timestamps();
+            $table->unsignedInteger('video_id')
+                ->nullable()
+                ->index()->comment('视频id');
+            $table->string('video_url')
+                ->nullable()
+                ->comment('视频的url');
+            $table->string('type',10)
+                ->index()
+                ->default('article')
+                ->comment('内容的类型:article:普通文章，video:视频, post:动态');
         });
     }
 

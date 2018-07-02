@@ -8,6 +8,6 @@ use App\Traits\UserRelated;
 
 class Model extends BaseModel
 {
-	use timeAgo; 
+	use TimeAgo; 
 	use UserRelated;
 }
