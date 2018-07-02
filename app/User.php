@@ -169,6 +169,11 @@ class User extends Authenticatable
         return $this->belongsToMany(\App\Category::class)->wherePivot('approved', 1);
     }
 
+    public function hasManyCategories()
+    {
+        return $this->hasMany(\App\Category::class,'user_id','id')->where('type', 'article');
+    }
+
     //computed props methods ................................................................................
 
     public function checkAdmin()

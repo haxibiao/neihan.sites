@@ -6,7 +6,7 @@
 		@endif
 	</p>	
 	<ul>
-		@foreach( $user->categories()->orderBy('id','desc')->take(5)->get() as $category)
+		@foreach($user->hasManyCategories()->orderBy('id','desc')->take(5)->get() as $category)
 		<li class="single-media"><a href="/{{ $category->name_en }}" class="avatar-category"><img src="{{ $category->logo() }}" alt="{{ $category->name }}"></a><a href="/{{ $category->name_en }}" class="info">{{ $category->name }}</a></li>	
 		@endforeach
 	</ul>
