@@ -90,11 +90,16 @@ function stick_category($data, $auto = false)
 }
 
 function stick_article($data, $auto = false)
-{
+{ 
     $items = [];
+
+    $article   = Article::where('id', $data['article_id'])->whereStatus(1)->first();
+    //文章状态是否正常 
+    if(empty($article)){
+        dd("该文章已经删除不能上首页");
+    }
     //检查该文章的主配图能否上首页
     if ($data['position'] =='轮播图') {
-        $article   = Article::find($data['article_id']);
         $image_url = str_replace('.small', '', $article->image_url);
         $image     = Image::where('path', $image_url)->first();
         if (empty($image) || $image->width < 760) {
@@ -134,6 +139,7 @@ function get_top_articles()
     $leftCount       = 8 - count($stick_articles);
     $topped_articles = Article::where('is_top', 1)
         ->where('image_top', '<>', '')
+        ->where('status', '>', '0')
         ->whereNotIn('id', $stick_article_ids)
         ->orderBy('id', 'desc')
         ->take($leftCount)->get();  
