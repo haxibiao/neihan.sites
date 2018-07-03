@@ -23,7 +23,8 @@ class ArticleController extends Controller
     public function drafts(Request $request)
     {
         $query = Article::orderBy('id', 'desc')
-            ->where('status', 0);
+            ->where('status', 0)
+            ->whereType('article');
         if (!Auth::user()->is_admin) {
             $query = $query->where('user_id', Auth::user()->id);
         }
@@ -39,7 +40,8 @@ class ArticleController extends Controller
     public function index(Request $request)
     {
         $query = Article::orderBy('id', 'desc')
-            ->where('status', '>', 0);
+            ->where('status', '>', 0)
+            ->whereType('article');
         if (!Auth::user()->is_admin) {
             $query = $query->where('user_id', Auth::user()->id);
         }
