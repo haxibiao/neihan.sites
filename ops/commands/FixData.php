@@ -55,6 +55,10 @@ class FixData extends Command
         if ($this->cmd->argument('operation') == "article_CountWords") {
             return $this->fix_article_CountWords();
         }
+        if ($this->cmd->argument('operation') == "cate_videos") {
+            return $this->fix_cate_videos();
+        }
+        
     }
 
     public function fix_notifications(){
@@ -82,7 +86,7 @@ class FixData extends Command
 
     public function fix_tags()
     {
-
+        
     }
 
     public function fix_comments()
@@ -108,7 +112,7 @@ class FixData extends Command
                 $category->save();
             }
         });
-        
+         
     } 
 
     public function fix_videos() 
@@ -157,7 +161,7 @@ class FixData extends Command
                     //维护分类关系, category中的count_article冗余字段可以不用更改
                     $video_cate_ids = \DB::table('category_video') 
                         ->where('id',$video->id)
-                        ->pluck('category_id')
+                        ->pluck('category_id') 
                         ->toArray();
                     //维护video中的category，直接收录
                      $parameters = [];
@@ -166,7 +170,8 @@ class FixData extends Command
                              'submit' => '已收录',
                          ];
                      }
-                    $article->categories()->syncwithoutDetaching($parameters);
+                     //下面这段代码需要重新考虑下
+                    $article->categories()->syncwithoutDetaching($parameters); 
                     
                     //维护评论关系
                     $qb_video_commnets->update([
@@ -217,6 +222,19 @@ class FixData extends Command
                 $video->save();
             }
         });*/
+    }
+
+    //修复视频的分类问题
+    public function fix_cate_videos(){
+        $this->cmd->info('fix videos category relationship ...');
+        Article::where('type', 'video')->chunk(100, function ($articles) {
+            foreach ($articles as $article) {
+                $main_category_id = $article->category_id;
+                $article->allCategories()->sync([$main_category_id=>[
+                        'submit' => '已收录',
+                    ]]);  
+            }
+        });
     }
 
     public function fix_images()
