@@ -10,4 +10,5 @@ return [
 	'max_size'			=> 	null,
 	'use_styles'		=> 	true,
 	'styles_location'	=> 	null,
+	'map_file_size' => 1000,
 ];
