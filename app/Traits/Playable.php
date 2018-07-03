@@ -35,7 +35,7 @@ trait Playable
         for ($i = 1; $i <= 8; $i++) {
             $cover = $this->image_url . "." . $i . ".jpg";
             if (file_exists(public_path($cover))) {
-                $covers[] = $cover;
+                $covers[] = url($cover);
             }
         }
         return $covers;

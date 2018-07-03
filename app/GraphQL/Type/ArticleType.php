@@ -35,13 +35,25 @@ class ArticleType extends GraphQLType
                 'type'        => Type::string(),
                 'description' => 'The title of article',
             ],
+            'cover'       => [
+                'type'        => Type::string(),
+                'description' => 'The image_url of article',
+                'resolve'     => function ($root, $args) {
+                    if($root){
+                       if($root->type=='video'){
+                        return $root->cover();
+                       }
+                       return $root->primaryImage();
+                    }
+                    return null;
+                },
+            ],
             'image_url'       => [
                 'type'        => Type::string(),
                 'description' => 'The image_url of article',
                 'resolve'     => function ($root, $args) {
-                    // var_dump($root); die;
                     if($root){
-                       if($root->type=='videos'){
+                       if($root->type=='video'){
                         return $root->cover();
                        }
                        return $root->primaryImage();
@@ -181,6 +193,22 @@ class ArticleType extends GraphQLType
             'updated_at'      => \App\GraphQL\Field\UpdatedAtField::class,
 
             //relations ...
+            
+            'images'      => [
+                'type'        => Type::listOf(Type::string()),
+                'description' => 'images of article',
+                'resolve'     => function ($root, $args) {
+                    if($root->type == 'video') {
+                        return $root->covers();
+                    }
+                    $small_urls = [];
+                    foreach($root->images as $image){
+                        $small_urls[] = $image->url_small();
+                    }
+                    return $small_urls;
+                },
+            ],
+
             'collection'      => [
                 'type'        => GraphQL::type('Collection'),
                 'description' => 'collection of article',

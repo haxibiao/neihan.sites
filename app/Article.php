@@ -152,7 +152,7 @@ class Article extends Model
     public function primaryImage()
     {
         if (\App::environment('prod')) {
-            return $this->image_url;
+            return url($this->image_url);
         }
 
         //爬蟲文章的圖片,直接顯示
