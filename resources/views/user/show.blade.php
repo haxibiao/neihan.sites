@@ -32,7 +32,7 @@
                         @if(Auth::check())
                         <article-list api="/user/{{ $user->id }}?articles=1" start-page="2" />
                         @else
-                        <div>{!! $data['articles']->links() !!}</div>
+                        <div>{!! $data['articles']->fragment('article')->links() !!}</div> 
                         @endif
                     </ul>
                     {{-- 动态 --}}
@@ -60,7 +60,7 @@
                         @if(Auth::check())
                         <article-list api="/user/{{ $user->id }}?commented=1" start-page="2" />
                         @else
-                        <div>{!! $data['commented']->links() !!}</div>
+                        <div>{!! $data['commented']->fragment('comment')->links() !!}</div>
                         @endif
                     </ul>
                     <ul role="tabpanel" class="fade note-list tab-pane" id="hot">
@@ -68,17 +68,34 @@
                         @if(Auth::check())
                         <article-list api="/user/{{ $user->id }}?hot=1" start-page="2" />
                         @else
-                        <div>{!! $data['hot']->links() !!}</div>
+                        <div>{!! $data['hot']->fragment('hot')->links() !!}</div>
                         @endif
                     </ul>
                 </div>
             </div>
         </div>
         {{-- 侧栏 --}}
-        @include('user.parts.aside')
+        @include('user.parts.aside') 
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script type="text/javascript">
+  $(function(){  
+    var url = window.location.href;
+    if( url.includes("article") ){
+      $("[href='#article']").click();  
+    }
+    if( url.includes("comment") ){
+      $("[href='#comment']").click(); 
+    }
+    if( url.includes("hot") ){
+      $("[href='#hot']").click(); 
+    }
+  });
+</script>
+@endpush
 
 @push('modals')
     <modal-blacklist></modal-blacklist>
