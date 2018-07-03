@@ -62,7 +62,7 @@ class VideoController extends Controller
                 'hash' => $hash,
             ]);
             if ($video->id) { 
-                abort(500, "相同视频已存在");
+                abort(500, "相同视频已存在"); 
             }
             $video->save();
 
@@ -109,21 +109,27 @@ class VideoController extends Controller
         //记录用户浏览记录
         $article->recordBrowserHistory();
 
+//TODO 推荐算法需要修改
+        
         //获取关联视频
         $related =   Article::where('type', 'video')
             ->orderBy('id', 'desc')
+            ->whereStatus(1)
             ->skip( 
-                    rand(0, Article::where('type', 'video')->count() - 8)
+                    rand(0, Article::where('type', 'video')->whereStatus(1)->count() - 8)
                 )
             ->take(4)
-            ->get(); 
+            ->get();
 
         //if have category, relate some category videos...
-        if ($article->category && $article->category->videoArticles()->count() >= 4) {
-            $related = $article->category->videoArticles()->take(4)->get();
+        if ( $article->category ) {
+            $related_group = $article->category->videoArticles()->where('articles.status',1)->get();
+            if( count($related_group) > 4 ){
+                $related = $related_group;
+            }
         }
         $data['related'] = $related;
-
+ 
         return view('video.show')
             ->withVideo($video) 
             ->withData($data);
