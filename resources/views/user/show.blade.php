@@ -28,47 +28,64 @@
                 <!-- Tab panes -->
                 <div class="article-list tab-content">
                     <ul role="tabpanel" class="fade in note-list tab-pane active" id="article">
-                        @each('parts.article_item', $data['articles'], 'article')
-                        @if(Auth::check())
-                        <article-list api="/user/{{ $user->id }}?articles=1" start-page="2" />
+                        @if( count($data['articles'])==0)
+                          <blank-content></blank-content>
                         @else
-                        <div>{!! $data['articles']->fragment('article')->links() !!}</div> 
+                            @each('parts.article_item', $data['articles'], 'article')
+                            @if(Auth::check())
+                                <article-list api="/user/{{ $user->id }}?articles=1" start-page="2" />
+                            @else
+                                <div>{!! $data['articles']->fragment('article')->links() !!}</div> 
+                            @endif
                         @endif
-                    </ul>
+                    </ul> 
                     {{-- 动态 --}}
                     <ul role="tabpanel" class="fade feed-list tab-pane" id="dynamic">
-                        @each('user.parts.action_item', $data['actions'], 'action')
+                        @if( count($data['actions'])==0)
+                          <blank-content></blank-content>
+                        @else
+                            @each('user.parts.action_item', $data['actions'], 'action')
 
-                        {{-- 加入时间 --}}
-                        <li class="feed-info distance">
-                            <div class="content">
-                                <div class="author">
-                                    <a class="avatar" href="/user/{{ $user->id }}">
-                                            <img src="{{ $user->avatar() }}" alt="">
-                                                </a>
-                                    <div class="info">
-                                        <a class="nickname" target="_blank" href="/user/{{ $user->id }}">{{ $user->name }}</a>
-                                        {{-- <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt=""> --}}
-                                        <span class="time"> 加入了{{ config('app.name') }} · {{ $user->created_at }}</span>
+                            {{-- 加入时间 --}}
+                            <li class="feed-info distance">
+                                <div class="content">
+                                    <div class="author">
+                                        <a class="avatar" href="/user/{{ $user->id }}">
+                                                <img src="{{ $user->avatar() }}" alt="">
+                                                    </a>
+                                        <div class="info">
+                                            <a class="nickname" target="_blank" href="/user/{{ $user->id }}">{{ $user->name }}</a>
+                                            {{-- <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt=""> --}}
+                                            <span class="time"> 加入了{{ config('app.name') }} · {{ $user->created_at }}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </li>
+                            </li>
+                        @endif
+                        
                     </ul>
                     <ul role="tabpanel" class="fade note-list tab-pane" id="comment">
-                        @each('parts.article_item', $data['commented'], 'article')
-                        @if(Auth::check())
-                        <article-list api="/user/{{ $user->id }}?commented=1" start-page="2" />
+                        @if( count($data['commented'])==0)
+                          <blank-content></blank-content>
                         @else
-                        <div>{!! $data['commented']->fragment('comment')->links() !!}</div>
+                            @each('parts.article_item', $data['commented'], 'article')
+                            @if(Auth::check())
+                                <article-list api="/user/{{ $user->id }}?commented=1" start-page="2" />
+                            @else
+                                <div>{!! $data['commented']->fragment('comment')->links() !!}</div>
+                            @endif 
                         @endif
                     </ul>
                     <ul role="tabpanel" class="fade note-list tab-pane" id="hot">
-                        @each('parts.article_item', $data['hot'], 'article')
-                        @if(Auth::check())
-                        <article-list api="/user/{{ $user->id }}?hot=1" start-page="2" />
+                        @if( count($data['commented'])==0)
+                          <blank-content></blank-content>
                         @else
-                        <div>{!! $data['hot']->fragment('hot')->links() !!}</div>
+                            @each('parts.article_item', $data['hot'], 'article')
+                            @if(Auth::check())
+                                <article-list api="/user/{{ $user->id }}?hot=1" start-page="2" />
+                            @else
+                                <div>{!! $data['hot']->fragment('hot')->links() !!}</div>
+                            @endif
                         @endif
                     </ul>
                 </div>

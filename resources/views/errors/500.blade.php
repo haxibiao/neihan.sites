@@ -16,8 +16,8 @@
                 服务器遇到了一点搞不定的事情，抱歉... 我们已经记录下来，马上就有工程师来修复....
             </p>
             <p>
-                <a class="btn btn-primary btn-lg" href="/">
-                    返回首页
+                <a class="btn btn-primary btn-lg" href="{{ url()->previous() }}">
+                    返回
                 </a>
             </p>
         </div>

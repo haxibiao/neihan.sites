@@ -11,7 +11,7 @@
             {{-- 分类信息 --}}
             @include('category.parts.information')
             {{-- 内容 --}}
-            <div class="content">
+            <div class="content"> 
                  <!-- Nav tabs -->
                  <ul id="trigger-menu" class="nav nav-tabs" role="tablist">
                    <li role="presentation" class="active">
@@ -30,55 +30,71 @@
                  <!-- Tab panes -->
                  <div class="article-list tab-content">
                    <ul role="tabpanel" class="fade in tab-pane active" id="comment">
-                       @each('parts.article_item', $data['commented'], 'article')
-                       @if(!Auth::check())
-                       <div>{!! $data['commented']->links() !!}</div>
-                       @else
-                       <article-list api="/{{ $category->name_en }}?commented=1" start-page="2" not-empty="{{count($data['commented'])>0}}"/>
-                      @endif
+                       @if( count($data['commented'])==0)
+                          <blank-content></blank-content>
+                       @else 
+                        @each('parts.article_item', $data['commented'], 'article')
+                         @if(!Auth::check())
+                         <div>{!! $data['commented']->links() !!}</div>
+                         @else
+                         <article-list api="/{{ $category->name_en }}?commented=1" start-page="2" not-empty="{{count($data['commented'])>0}}"/>
+                        @endif
+                       @endif
                    </ul>
                    <ul role="tabpanel" class="fade tab-pane" id="include">
-                       @each('parts.article_item', $data['collected'], 'article')
-                       @if(!Auth::check())
-                        <div>{!! $data['collected']->fragment('include')->links() !!}</div>
-                       @else
-                        <article-list api="/{{ $category->name_en }}?collected=1" start-page="2" not-empty="{{count($data['collected'])>0}}"/>
+                       @if( count($data['collected'])==0)
+                          <blank-content></blank-content>
+                       @else 
+                            @each('parts.article_item', $data['collected'], 'article')
+                           @if(!Auth::check())
+                            <div>{!! $data['collected']->fragment('include')->links() !!}</div>
+                           @else
+                            <article-list api="/{{ $category->name_en }}?collected=1" start-page="2" not-empty="{{count($data['collected'])>0}}"/>
+                           @endif
                        @endif
                    </ul>
                    <ul role="tabpanel" class="fade tab-pane" id="hot">
-                       @each('parts.article_item', $data['hot'], 'article')
-                       @if(!Auth::check())
-                          <div>{!! $data['hot']->fragment('hot')->links() !!}</div>
-                       @else
-                          <article-list api="/{{ $category->name_en }}?hot=1" start-page="2" not-empty="{{count($data['hot'])>0}}"/>
+                       @if( count($data['hot'])==0)
+                          <blank-content></blank-content>
+                       @else 
+                         @each('parts.article_item', $data['hot'], 'article')
+                         @if(!Auth::check())
+                            <div>{!! $data['hot']->fragment('hot')->links() !!}</div>
+                         @else
+                            <article-list api="/{{ $category->name_en }}?hot=1" start-page="2" not-empty="{{count($data['hot'])>0}}"/>
+                         @endif
                        @endif
                    </ul>
                    <ul role="tabpanel" class="fade video-list tab-pane clearfix" id="video">
-                       @foreach($data['video_articles'] as $article)
-                       <li class="col-xs-6 col-md-4 video">
-                          <div class="video-item vt">
-                            <div class="thumb">
-                              <a href="{{ $article->content_url() }}">
-                                <img src="{{ $article->cover() }}" alt="{{ $article->title }}">
-                                <i class="duration">
-                                  {{-- 持续时间 --}}  
-                                  @sectominute($article->video->duration)
-                                </i>
-                              </a>
-                            </div>
-                            <ul class="info-list">
-                              <li class="video-title">
-                                <a href="{{ $article->content_url() }}">{{ $article->title }}</a>
-                              </li>
-                              <li>
-                                {{-- 播放量 --}}
-                                <p class="subtitle single-line">{{ $article->hits }}次播放</p>
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                       @endforeach
-                       <div>{!! $data['video_articles']->fragment('video')->links() !!}</div>
+                       @if( count($data['video_articles'])==0)
+                          <blank-content></blank-content>
+                       @else 
+                          @foreach($data['video_articles'] as $article)
+                           <li class="col-xs-6 col-md-4 video">
+                              <div class="video-item vt">
+                                <div class="thumb">
+                                  <a href="{{ $article->content_url() }}">
+                                    <img src="{{ $article->cover() }}" alt="{{ $article->title }}">
+                                    <i class="duration">
+                                      {{-- 持续时间 --}}  
+                                      @sectominute($article->video->duration)
+                                    </i>
+                                  </a>
+                                </div>
+                                <ul class="info-list">
+                                  <li class="video-title">
+                                    <a href="{{ $article->content_url() }}">{{ $article->title }}</a>
+                                  </li>
+                                  <li>
+                                    {{-- 播放量 --}}
+                                    <p class="subtitle single-line">{{ $article->hits }}次播放</p>
+                                  </li>
+                                </ul>
+                              </div>
+                            </li>
+                           @endforeach
+                           <div>{!! $data['video_articles']->fragment('video')->links() !!}</div>
+                       @endif
                    </ul>
                  </div>
             </div>
@@ -104,7 +120,7 @@
   $(function(){  
     var url = window.location.href;
     if( url.includes("video") ){
-      $("[href='#video']").click(); 
+      $("[href='#video']").click();  
     }
     if( url.includes("hot") ){
       $("[href='#hot']").click(); 
