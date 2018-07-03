@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
-    public function chat($id)
+    public function chat($id) 
     {
         $chat              = Chat::findOrFail($id);
         $data['with_user'] = $chat->withUser();
@@ -116,7 +116,6 @@ class NotificationController extends Controller
                 $notifications[] = $data;
             }
         }
-        dd('ok');
         return $notifications;
     }
 }
