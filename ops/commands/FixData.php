@@ -59,6 +59,9 @@ class FixData extends Command
             return $this->fix_cate_videos();
         }
         
+        if($this->cmd->argument('operation') == "article_comments"){
+            return $this->fix_article_comments();
+        }
     }
 
     public function fix_notifications(){
@@ -86,7 +89,7 @@ class FixData extends Command
 
     public function fix_tags()
     {
-        
+
     }
 
     public function fix_comments()
@@ -554,6 +557,31 @@ class FixData extends Command
         Article::where('count_words',0)->chunk(100,function($articles){
             foreach ($articles as $article) {
                 $article->count_words = ceil(strlen(strip_tags($article->body)) / 2);
+                $article->save();
+            }
+        });
+        $this->cmd->info('fix success');
+    }
+
+    public function fix_article_comments()
+    {
+        //修复Article评论数据
+        $this->cmd->info('fix article comments...');
+        Comment::whereNull('comment_id','and',true)->chunk(100,function($comments){
+            foreach ($comments as $comment) {
+                if(empty(Comment::find($comment->comment_id))){
+                    $article_id = $comment->commentable_id;
+                    $comment->delete();
+                    $this->cmd->info('文章： https://l.ainicheng.com/article/'.$article_id);
+                }
+            }
+        });
+        $this->cmd->info('fix articles count_comments...');
+        //修复Article评论统计数据
+        Article::chunk(100,function($articles){
+            foreach ($articles as $article) {
+                $article->count_replies  = $article->comments()->count();
+                $article->count_comments = $article->comments()->max('lou');
                 $article->save();
             }
         });
