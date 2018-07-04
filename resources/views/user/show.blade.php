@@ -33,9 +33,9 @@
                         @else
                             @each('parts.article_item', $data['articles'], 'article')
                             @if(Auth::check())
-                                <article-list api="/user/{{ $user->id }}?articles=1" start-page="2" />
+                                <article-list api="/user/{{ $user->id }}?articles=1" start-page="2" not-empty="{{empty($data['articles'])}}"/>
                             @else
-                                <div>{!! $data['articles']->fragment('article')->links() !!}</div> 
+                                <div>{!! $data['articles']->fragment('article')->links() !!}</div>  
                             @endif
                         @endif
                     </ul> 
@@ -70,19 +70,19 @@
                         @else
                             @each('parts.article_item', $data['commented'], 'article')
                             @if(Auth::check())
-                                <article-list api="/user/{{ $user->id }}?commented=1" start-page="2" />
+                                <article-list api="/user/{{ $user->id }}?commented=1" start-page="2" not-empty="{{empty($data['commented'])}}"/>
                             @else
                                 <div>{!! $data['commented']->fragment('comment')->links() !!}</div>
                             @endif 
                         @endif
                     </ul>
                     <ul role="tabpanel" class="fade note-list tab-pane" id="hot">
-                        @if( count($data['commented'])==0)
+                        @if( count($data['hot'])==0)
                           <blank-content></blank-content>
                         @else
                             @each('parts.article_item', $data['hot'], 'article')
                             @if(Auth::check())
-                                <article-list api="/user/{{ $user->id }}?hot=1" start-page="2" />
+                                <article-list api="/user/{{ $user->id }}?hot=1" start-page="2" not-empty="{{empty($data['hot'])}}"/>
                             @else
                                 <div>{!! $data['hot']->fragment('hot')->links() !!}</div>
                             @endif
