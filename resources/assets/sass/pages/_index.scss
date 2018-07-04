@@ -14,4 +14,18 @@
             }
         }
     }
+    .more-video{
+        float: right;
+        padding-top: 1px;
+        p{
+           color:$light-color4;
+           line-height: 12px;
+           margin-top: 10px;
+           font-size: 14px;
+        }
+        i{
+            font-size: 13px;
+        }
+
+    }
 }

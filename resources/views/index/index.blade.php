@@ -33,6 +33,12 @@
                   <i class="iconfont icon-huo"></i>推荐视频
                 </span>
               </h3>
+               <a href="/video" class="more-video">
+                <p>
+                    更多
+                    <i class="iconfont icon-youbian"></i>
+                </p>
+              </a>
             </div> 
             @foreach($data->videos as $video)
             @if($video->article)
