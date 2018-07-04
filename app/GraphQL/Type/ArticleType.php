@@ -72,9 +72,9 @@ class ArticleType extends GraphQLType
                 'type'        => Type::string(),
                 'description' => 'The description of article',
                 'resolve'     => function ($root, $args) {
-                    $description = !empty($root->description) ? $root->description
-                    : str_limit(trim(strip_tags(preg_replace('/\s+/', ' ', $root->body))), $limit = 100, $end = '...');
-                    return str_limit($description);
+                    $description = $root->description ?: str_limit(str_replace(array("&nbsp;"," "), "", trim(strip_tags(preg_replace('/\s+/', ' ', $root->body)))), $limit = 100, $end = '...');
+                    
+                    return $description;
                 },
             ],
             'body'            => [
