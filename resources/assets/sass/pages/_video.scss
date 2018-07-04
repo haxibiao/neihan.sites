@@ -1,0 +1,125 @@
+.video-top{
+	.more-cateory{
+		float: right;
+		padding-top: 1px;
+		p{
+		   color:$light-color4;
+		   line-height: 12px;
+		   margin-top: 10px;
+		   font-size: 14px;
+		}
+		i{
+			font-size: 13px;
+		}
+
+	}
+	.category-list{
+		clear: both;
+		overflow: hidden;
+		margin-right: -5px;
+		padding-left: 5px;
+		.category-item{
+			float: left;
+			width: 129px;
+			height: 196px;
+			margin:0 26px 20px 0;
+			position: relative;
+			background: $theme-skin;
+			.game-category{
+				width: 130px;
+				height: 175px;
+				border-radius: 4px;
+			}
+			p{
+			   text-align:center;
+			   color:$light-color4;
+			   line-height: 12px;
+			   margin-top: 10px;
+			   font-size: 12px;
+			}
+
+		}
+	}
+}
+.video-box{
+	width: 100%;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	.box-top{
+		display: flex;
+		justify-content:space-between;
+		align-items:center;
+		border-bottom: solid 1px $light-color2;
+		.top-left{
+			display: flex;
+			align-items:center;
+			img{
+				width: 48px;
+				height: 48px;
+			}
+			p{
+				font-size: 16px;
+				color:$light-color4;
+				margin-left: 10px;
+			}
+			i{
+				font-size: 30px;
+				color:$hot-pink;
+			}
+		}
+		.top-right{
+			position: relative;
+			right: 0px;
+			p{
+			   color:$light-color4;
+			   line-height: 12px;
+			   margin-top: 10px;
+			   font-size: 14px;
+			}
+			i{
+				font-size: 13px;
+			}
+		}
+	}
+	.box-body{
+		.game-video-list{
+			clear: both;
+			overflow: hidden;
+			.game-video-item{
+				float: left;
+				margin: 20px 20px 0 0;
+				width: 290px;
+				.video-photo{
+					width: 290px;
+					height: 165px;
+					border-radius: 4px;
+					margin-bottom: 10px;	
+				}
+				.info{
+					display: flex;
+				  	justify-content:space-between;
+					align-items:center;
+					padding-top: 5px;
+					span{
+						color:$light-color4;
+					}
+				}
+				.avatar{
+					width: 24px;
+					height: 24px;
+					border-radius: 50%;	
+				}
+				p{
+					font-size: 15px;
+					color: $light-color4;
+					padding-left: 5px;
+				}
+				i{	
+					padding-left: 5px;
+					font-size: 14px;
+					color: $gray-color3;
+				}
+			}
+		}
+	}
+}

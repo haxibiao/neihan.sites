@@ -49,6 +49,8 @@ Vue.component("hot-search", require("./components/search/Hot.vue"));
 
 Vue.component("share", require("./components/Share.vue"));
 
+Vue.component("video-list",require("./components/video/VideoList.vue"))
+
 //recommend component
 Vue.component(
 	"recommend-category",

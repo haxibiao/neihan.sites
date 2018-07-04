@@ -48,7 +48,7 @@
           @endforeach
         </div>
         <div class="panel-footer">
-          {!! $categories->links() !!}
+          {!! $categories->links() !!
         </div>
       </div>  
   

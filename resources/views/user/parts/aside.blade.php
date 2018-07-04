@@ -13,8 +13,7 @@
       <li><a href="/user/{{ $user->id }}/followed-collections"><i class="iconfont icon-wenji"></i> <span>{{ $user->ta() }}关注的文集</span></a></li>
       <li><a href="/user/{{ $user->id }}/likes"><i class="iconfont icon-xin"></i> <span>{{ $user->ta() }}喜欢的文章</span></a></li>
     </ul>
-
-    @include('user.aside.created_categories')
+    
     @include('user.aside.managed_categories')
     @include('user.aside.collections')
 
