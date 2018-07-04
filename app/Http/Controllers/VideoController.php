@@ -145,7 +145,16 @@ class VideoController extends Controller
     {
         $video                    = Video::findOrFail($id);
         $data['video_categories'] = Category::pluck('name', 'id');
-        $data['thumbnails']        = $video->article->covers();
+        //获取视频截图图片地址,相对地址
+        $covers = [];
+        $img_url = $video->article->image_url;
+        for ($i = 1; $i <= 8; $i++) {
+            $cover = $img_url . "." . $i . ".jpg";
+            if (file_exists(public_path($cover))) {
+                $covers[] = $cover;
+            }
+        }
+        $data['thumbnails']       = $covers;
 
         return view('video.edit')
             ->withVideo($video)

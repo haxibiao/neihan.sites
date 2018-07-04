@@ -24,7 +24,7 @@ trait Playable
         return $cover_url;
     }
     /**
-     * @Desc     获取视频所有的截图
+     * @Desc     获取视频所有的截图 全地址
      * @Author   czg
      * @DateTime 2018-06-27
      * @return   [type]     [description]
