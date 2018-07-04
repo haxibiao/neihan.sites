@@ -277,6 +277,8 @@
 .pagination {
   margin: 20px 0;
   text-align: center;
+  display: block;
+  clear: both;
   li {
     margin: 0 5px;
     display: inline-block;
