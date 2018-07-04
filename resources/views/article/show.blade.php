@@ -4,13 +4,12 @@
 @section('keywords') {{ $article->keywords }} @endsection
 @section('description') {{ $article->description() }} @endsection
 
-@push('seo_metatags')
+@push('seo_metatags') 
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://{{ get_domain() }}/article/{{ $article->id }}" />
 <meta property="og:title" content="{{ $article->title }}" />
 <meta property="og:description" content="{{ $article->description() }}" />
-
-<meta property="og:image" content="{{ $article->primaryImage() }}" />
+<meta property="og:image" content="{{ $article->hasImage()?'':$article->primaryImage() }}" />
 <meta name="weibo: article:create_at" content="{{ $article->created_at }}" />
 <meta name="weibo: article:update_at" content="{{ $article->updated_at }}" />
 @endpush
@@ -55,7 +54,7 @@
           </div> --}}
           {{-- 底部作者信息 --}}
           @include('article.parts.follow_card')
-          {{-- 支持作者  --}}
+          {{-- 支持作者  --}} 
           <div class="support-author">
             <p>{{ $article->user->tip_words ? $article->user->tip_words : '如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！' }}</p>
 
