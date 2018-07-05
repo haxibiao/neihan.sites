@@ -5,13 +5,14 @@
 @section('description') {{ $article->description() }} @endsection
 
 @push('seo_metatags') 
-<meta property="og:type" content="article" />
+<meta property="og:type" content="{{ $article->type }}" />
 <meta property="og:url" content="https://{{ get_domain() }}/article/{{ $article->id }}" />
 <meta property="og:title" content="{{ $article->title }}" />
 <meta property="og:description" content="{{ $article->description() }}" />
+<meta property="og:image" content="{{ $article->primaryImage() }}" />
 <meta name="weibo: article:create_at" content="{{ $article->created_at }}" />
 <meta name="weibo: article:update_at" content="{{ $article->updated_at }}" />
-@endpush
+@endpush  
 
 @section('content')
 
