@@ -11,7 +11,7 @@
 		      </a> 
 		      <div class="info">
 		        <a class="nickname" :target="isDesktop? '_blank' : '_self'" :href="'/user/'+article.user.id">{{ article.user.name }}</a>
-		        <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="懂美味签约作者" alt="">
+		        <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者" alt="">
 		        <span class="time">{{ article.time_ago }}</span>
 		      </div>
 		    </div>
