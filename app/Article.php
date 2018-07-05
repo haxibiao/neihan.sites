@@ -114,11 +114,6 @@ class Article extends Model
         return $this->belongsToMany('App\Image')->withTimestamps();
     }
 
-    public function videos()
-    {
-        return $this->belongsToMany('App\Video')->withTimestamps();
-    }
-
     public function collections()
     {
         return $this->belongsToMany('App\Collection')->withTimestamps();
@@ -151,10 +146,6 @@ class Article extends Model
     }
     public function primaryImage()
     {
-        if (\App::environment('prod')) {
-            return url($this->image_url);
-        }
-
         //爬蟲文章的圖片,直接顯示
         if (str_contains($this->image_url, 'haxibiao.com/storage/image')) {
             return $this->image_url;

@@ -84,9 +84,6 @@ class ArticleController extends Controller
         //categories
         $this->process_category($article);
 
-        //videos
-        $this->save_article_videos($article);
-
         //tags
         $this->save_article_tags($article);
 
@@ -194,9 +191,6 @@ class ArticleController extends Controller
         //categories
         $this->process_category($article);
 
-        //videos
-        $this->save_article_videos($article);
-
         //tags
         $this->save_article_tags($article);
 
@@ -228,25 +222,6 @@ class ArticleController extends Controller
             DelayArticle::dispatch($article)
                 ->delay(now()->addDays(request()->delay));
         }
-    }
-
-    public function save_article_videos($article)
-    {
-        $videos = request('videos');
-        if (is_array($videos)) {
-            foreach ($videos as $video_id) {
-                if (!is_numeric($video_id)) {
-                    continue;
-                }
-                $video = Video::find($video_id);
-                if ($video) {
-                    $video->count = $video->count + 1;
-                    $video->title = $article->title;
-                    $video->save();
-                }
-            }
-        }
-        $article->videos()->sync($videos);
     }
 
 
