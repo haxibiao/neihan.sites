@@ -101,6 +101,7 @@
         });
     </script>
 
+
     @stack('scripts')
     @stack('js')
 

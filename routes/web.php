@@ -28,6 +28,7 @@ Route::get('/vue-apollo', function () {
 });
 
 
+
 //流量
 require_once 'traffic.php';
 
@@ -64,6 +65,7 @@ Route::resource('/tag', 'TagController');
 Route::middleware('auth')->get('/write', function () {
     return view('write');
 });
+
 
 //片段
 Route::resource('/snippet', 'SnippetController');

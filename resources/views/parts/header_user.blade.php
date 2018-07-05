@@ -15,7 +15,19 @@
 			@if(starts_with(request()->path(), 'question'))
 				<div class="ask"><a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}"  data-target=".modal-ask-question" data-toggle="modal" class="btn-base btn-theme"><span class="iconfont icon-maobi hidden-xs"></span>提问</a></div>
 			@else
-				<div class="creation hidden-xs"><a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}"  href="/write" class="btn-base btn-theme"><span class="iconfont icon-maobi"></span>创作</a></div>
+				<div class="user" data-hover="dropdown">
+					<div class="creation hidden-xs"><a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}"  href="/write" class="btn-base btn-theme"><span class="iconfont icon-icon-feixingmanyou"></span>发布</a></div>
+					<ul class="dropdown-menu hover-dropdown-menu">
+					   <li>
+					     <a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}"  href="/write"><i class="iconfont icon-maobi"></i>写文章</a>
+					   </li>
+					   <li>
+					     <a data-target=".modal-post" data-toggle="modal">
+					       <i class="iconfont icon-icon20"></i><span>上传</span>
+						 </a>
+					   </li>
+					</ul>
+				</div>
 			@endif
 			<div class="user" data-hover="dropdown">
 				<a><img class="avatar" src="{{ Auth::user()->avatar() }}" alt=""><i class="iconfont icon-xiangxiajiantou"></i></a>
@@ -123,7 +135,8 @@
 							</ul>
 						</li>
 					</ul>
-					<search-box is-desktop="{{ \Agent::isDeskTop() == 1 }}"></search-box>	
+					<search-box is-desktop="{{ \Agent::isDeskTop() == 1 }}"></search-box>
+					<modal-post/>	
 				</div>
 			</div>
 		</div>
