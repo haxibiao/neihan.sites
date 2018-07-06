@@ -16,7 +16,7 @@
 				<div class="ask"><a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}"  data-target=".modal-ask-question" data-toggle="modal" class="btn-base btn-theme"><span class="iconfont icon-maobi hidden-xs"></span>提问</a></div>
 			@else
 				<div class="user" data-hover="dropdown">
-					<div class="creation hidden-xs"><a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}"  href="/write" class="btn-base btn-theme"><span class="iconfont icon-icon-feixingmanyou"></span>发布</a></div>
+					<div class="creation hidden-xs"><a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" class="btn-base btn-theme"><span class="iconfont icon-icon-feixingmanyou"></span>发布</a></div>
 					<ul class="dropdown-menu hover-dropdown-menu">
 					   <li>
 					     <a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}"  href="/write"><i class="iconfont icon-maobi"></i>写文章</a>
@@ -36,7 +36,7 @@
 				   <li>
 				     <a href="/home" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}">
 				       <i class="iconfont icon-wendangxiugai"></i><span>编辑面板</span>
-						 </a>
+					 </a>
 				   </li>
 				   @endeditor
 

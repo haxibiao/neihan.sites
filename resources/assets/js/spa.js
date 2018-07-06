@@ -23,10 +23,12 @@ Vue.prototype.$http = window.axios;
 Vue.component("blank-content", require("./components/BlankContent.vue"));
 Vue.component("follow", require("./components/button/Follow.vue"));
 Vue.component("article-list", require("./components/article/ArticleList.vue"));
-Vue.component("video-list",require("./components/video/VideoList.vue"))
+Vue.component("video-list", require("./components/video/VideoList.vue"));
 Vue.component("hot-search", require("./components/search/Hot.vue"));
 Vue.component("search-box", require("./components/search/SearchBox.vue"));
 Vue.component("recently", require("./components/search/Recently.vue"));
+
+Vue.component("modal-post", require("./components/modals/ModalPost.vue"));
 
 Vue.component(
   "notification-aside",
