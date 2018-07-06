@@ -23,7 +23,7 @@
 					   </li>
 					   <li>
 					     <a data-target=".modal-post" data-toggle="modal">
-					       <i class="iconfont icon-icon20"></i><span>上传</span>
+					       <i class="iconfont icon-shangchuan"></i><span>上传</span>
 						 </a>
 					   </li>
 					</ul>
