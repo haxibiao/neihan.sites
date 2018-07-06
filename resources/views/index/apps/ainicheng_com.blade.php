@@ -9,7 +9,8 @@
           <div class="top-logo">
             <img class="logo" src="/logo/ainicheng.com.small.png" alt="app logo">
             <div class="info">
-              <div class="title">最暖心的游戏社区</div>
+              <div class="title">最暖心的游戏社交平台</div>
+              <div class="slogan">一个专属你的优质社区</div>
             </div>
           </div>
           <img class="background-img" src="/images/appBackground.png" alt="app background">
@@ -87,7 +88,8 @@
         <div class="bottom-logo">
           <img src="/logo/ainicheng.com.small.png" alt="Misc logo">
           <div class="info">
-            <div class="title">最暖心的游戏社区</div>
+            <div class="title">最暖心的游戏社交平台</div>
+              <div class="slogan">一个专属你的优质社区</div>
           </div>
         </div>
       </div>
