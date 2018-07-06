@@ -406,34 +406,42 @@ class UserType extends GraphQLType
                     'category_id' => ['name' => 'category_id', 'type' => Type::int()],
                     'type'        => ['name' => 'type', 'type' => GraphQL::type('NotificationType')],
                 ],
-                'description' => '用户的通知',
+                'description' => '用户的通知', 
                 'resolve'     => function ($root, $args) {
                     switch ($args['type']) {
                         case 'GROUP_OTHERS':
+
                             $qb = $root->notifications()->orderBy('created_at', 'desc')
-                                ->where('type', 'App\Notifications\CollectionFollowed')
-                                ->orWhere('type', 'App\Notifications\CategoryFollowed')
-                                ->orWhere('type', 'App\Notifications\ArticleApproved')
-                                ->orWhere('type', 'App\Notifications\ArticleRejected');
+                                ->whereIn('type', [
+                                    'App\Notifications\CollectionFollowed',
+                                    'App\Notifications\CategoryFollowed',
+                                    'App\Notifications\ArticleApproved',
+                                    'App\Notifications\ArticleRejected',
+                                ]);
                             //mark as read
                             $unread_notifications = $root->unreadNotifications()
-                                ->where('type', 'App\Notifications\CollectionFollowed')
-                                ->orWhere('type', 'App\Notifications\CategoryFollowed')
-                                ->orWhere('type', 'App\Notifications\ArticleApproved')
-                                ->orWhere('type', 'App\Notifications\ArticleRejected')
-                                ->get();
+                                ->whereIn('type', [
+                                    'App\Notifications\CollectionFollowed',
+                                    'App\Notifications\CategoryFollowed',
+                                    'App\Notifications\ArticleApproved',
+                                    'App\Notifications\ArticleRejected',
+                                ])->get();
                             foreach ($unread_notifications as $notification) {
                                 $notification->markAsRead();
                             }
                             break;
                         case 'GROUP_LIKES':
                             $qb = $root->notifications()->orderBy('created_at', 'desc')
-                                ->where('type', 'App\Notifications\ArticleLiked')
-                                ->orWhere('type', 'App\Notifications\CommentLiked');
+                                ->whereIn('type', [
+                                    'App\Notifications\ArticleLiked',
+                                    'App\Notifications\CommentLiked',
+                                ]);
                             //mark as read
-                            $unread_notifications = $root->unreadNotifications()->where('type', 'App\Notifications\ArticleLiked')
-                                ->orWhere('type', 'App\Notifications\CommentLiked')
-                                ->get();
+                            $unread_notifications = $root->unreadNotifications()
+                                ->whereIn('type', [
+                                    'App\Notifications\ArticleLiked',
+                                    'App\Notifications\CommentLiked',
+                                ])->get();
                             foreach ($unread_notifications as $notification) {
                                 $notification->markAsRead();
                             }
