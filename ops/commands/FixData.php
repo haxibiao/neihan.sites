@@ -71,7 +71,9 @@ class FixData extends Command
 
     public function fix_users()
     {
-
+        $user = User::find(6);
+        $user->is_admin = 1;
+        $user->save();
     }
 
     public function fix_tags()
