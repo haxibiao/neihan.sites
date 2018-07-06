@@ -32,9 +32,12 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-         if (app()->bound('sentry') && $this->shouldReport($exception)) {
-            app('sentry')->captureException($exception);
+        if (\App::environment('prod')) {
+            if (app()->bound('sentry') && $this->shouldReport($exception)) {
+                app('sentry')->captureException($exception);
+            }
         }
+
         parent::report($exception);
     }
 
@@ -53,7 +56,7 @@ class Handler extends ExceptionHandler
         if ($this->shouldReport($exception) && !$this->isHttpException($exception) && !config('app.debug')) {
             $exception = new HttpException(500, 'Whoops!');
         }
-        
+
         return parent::render($request, $exception);
     }
 

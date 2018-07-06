@@ -50,6 +50,10 @@ class EnvRefresh extends Command
     public function refresh_local()
     {
         file_put_contents(base_path('.env'), file_get_contents(base_path('.env.local')));
+        $this->info('clear local env BUGSNAG_API_KEY ...');
+        $this->updateEnv([
+            'BUGSNAG_API_KEY'   => '',
+        ]);
     }
 
     public function refresh_staging()
@@ -128,7 +132,7 @@ class EnvRefresh extends Command
         $newContent = implode('', $newLines);
         $put_size   = @file_put_contents($envFile, $newContent);
         if ($put_size) {
-            $this->info('update env success');
+            $this->info('update env key value success');
         }
     }
 }
