@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
 
 class DropSomeTables extends Migration
 {
@@ -13,11 +12,25 @@ class DropSomeTables extends Migration
      */
     public function up()
     {
-        Schema::drop('article_video');
-        Schema::drop('teams');
-        Schema::drop('team_user');
-        Schema::drop('matches');
-        Schema::drop('compares');
+        if (Schema::hasTable('article_video')) {
+            Schema::drop('article_video');
+        }
+
+        if (Schema::hasTable('teams')) {
+            Schema::drop('teams');
+        }
+
+        if (Schema::hasTable('team_user')) {
+            Schema::drop('team_user');
+        }
+
+        if (Schema::hasTable('matches')) {
+            Schema::drop('matches');
+        }
+
+        if (Schema::hasTable('compares')) {
+            Schema::drop('compares');
+        }
     }
 
     /**
