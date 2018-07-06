@@ -36,7 +36,9 @@ class ArticlesQuery extends Query
     public function resolve($root, $args)
     {
 
-        $qb = Article::where('source_url', '=', '0')->where('category_id', '>', 0);
+        $qb = Article::where('source_url', '=', '0');
+        //下面代码注释掉的原因避免，用户发布一篇新文章在手机duan自己主页的公开文章中查询不到
+        /*->where('category_id', '>', 0)*/;
     
         if (isset($args['order'])) {
             if ($args['order'] == 'COMMENTED') {

@@ -106,6 +106,12 @@ class UserType extends GraphQLType
             'count_articles'    => [
                 'type'        => Type::int(),
                 'description' => 'count_articles of user',
+                'resolve'     => function ($root, $args) {
+                    return Article::where('source_url', '=', '0')
+                        ->where('status', '>', 0 )
+                        ->where('user_id',$root->id)
+                        ->get()->count();
+                },
             ],
             'count_follows'     => [
                 'type'        => Type::int(),
@@ -241,7 +247,7 @@ class UserType extends GraphQLType
 
             //relations ...
 
-            'articles'          => [
+            'articles'          => [ 
                 'args'        => [
                     'filter'      => ['name' => 'filter', 'type' => GraphQL::type('ArticleFilter')],
                     'category_id' => ['name' => 'category_id', 'type' => Type::int()],
@@ -260,8 +266,8 @@ class UserType extends GraphQLType
                         }
                         return $articles;
                     }
-
-                    $qb = $root->articles();
+                    //屏蔽爬虫文章
+                    $qb = $root->articles()->where('source_url','0'); 
                     if (isset($args['filter']) && $args['filter'] == 'TRASH') {
                         $qb = $root->removedArticles();
                     }
