@@ -26,6 +26,10 @@ Route::get('/graphiql', function () {
 Route::get('/vue-apollo', function () {
     return view('vue_apollo');
 });
+Route::get('/app_download', function () {
+    return view('index.apps.ainicheng_com');
+});
+
 
 
 
