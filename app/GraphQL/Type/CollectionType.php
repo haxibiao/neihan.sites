@@ -67,7 +67,7 @@ class CollectionType extends GraphQLType
                             ->where('user_id', $user->id)
                             ->where('followed_type', 'collections')
                             ->pluck('followed_id')->toArray();
-                        if( in_array($root->id, $user_ids, true) ){
+                        if( in_array($root->id, $collection_ids, true) ){
                             return true;
                         }
                     }

@@ -96,7 +96,7 @@ class CategoryType extends GraphQLType
                             ->where('user_id', $user->id)
                             ->where('followed_type', 'categories')
                             ->pluck('followed_id')->toArray();
-                        if( in_array($root->id, $user_ids, true) ){ 
+                        if( in_array($root->id, $category_ids, true) ){ 
                             return true;
                         }
                     }
