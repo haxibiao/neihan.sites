@@ -153,7 +153,7 @@ class UserType extends GraphQLType
                 },
             ],
             'balance'           => [
-                'type'        => Type::int(),
+                'type'        => Type::float(),
                 'description' => 'balance of user',
                 'resolve'     => function ($root, $args) {
                     return $root->balance();
@@ -432,9 +432,7 @@ class UserType extends GraphQLType
                                     'App\Notifications\ArticleApproved',
                                     'App\Notifications\ArticleRejected',
                                 ])->get();
-                            foreach ($unread_notifications as $notification) {
-                                $notification->markAsRead();
-                            }
+                            $unread_notifications ->markAsRead();
                             break;
                         case 'GROUP_LIKES':
                             $qb = $root->notifications()->orderBy('created_at', 'desc')
@@ -448,21 +446,17 @@ class UserType extends GraphQLType
                                     'App\Notifications\ArticleLiked',
                                     'App\Notifications\CommentLiked',
                                 ])->get();
-                            foreach ($unread_notifications as $notification) {
-                                $notification->markAsRead();
-                            }
+                            $unread_notifications -> markAsRead();
                             break;
 
-                        default:
+                        default: 
                             $qb = $root->notifications()->orderBy('created_at', 'desc')->where('type', $args['type']);
-                            //mark as read
+                            //mark as read 
                             $unread_notifications = $root->unreadNotifications()->where('type', $args['type'])->get();
-                            foreach ($unread_notifications as $notification) {
-                                $notification->markAsRead();
-                            }
+                            $unread_notifications -> markAsRead();
                             break;
                     }
-                    $root->forgetUnreads();
+                    //$root->forgetUnreads();
 
                     if (isset($args['offset'])) {
                         $qb = $qb->skip($args['offset']);
@@ -649,7 +643,7 @@ class UserType extends GraphQLType
                 'resolve'     => function ($root, $args) {
                     $user = getUser();
 
-                    $aids   = $root->publishedArticles()->pluck('id');
+                    $aids   = $root->publishedArticles()->pluck('id'); 
                     $qb     = DB::table('article_category')->whereIn('article_id', $aids);
                     $offset = isset($args['offset']) ? $args['offset'] : 0;
                     $limit  = isset($args['limit']) ? $args['limit'] : 10;
