@@ -46,8 +46,7 @@ class signUpMutation extends Mutation
         ]);
 
         if($user->id) {
-            $user->error = '邮箱已经存在';
-            return $user;
+            throw new \Exception('邮箱地址已经注册');
         }
 
         $user->name = $name; 
