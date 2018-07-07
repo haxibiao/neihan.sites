@@ -14,29 +14,11 @@
 Auth::routes();
 Route::pattern('id', '\d+');
 
-//app
-Route::get('/apps', function () {
-    return view('downloadApp');
-});
-
-//test apollo
-Route::get('/graphiql', function () {
-    return view('vender.graphql.graphiql');
-});
-Route::get('/vue-apollo', function () {
-    return view('vue_apollo');
-});
-Route::get('/app_download', function () {
-    return view('index.apps.ainicheng_com');
-});
-
-
-
-
-//流量
+//流量统计
 require_once 'traffic.php';
 
 Route::get('/', 'IndexController@index');
+//app
 Route::get('/app', 'IndexController@app');
 Route::get('/about-us', 'IndexController@aboutUs');
 Route::get('/trending', 'IndexController@trending');
