@@ -250,44 +250,57 @@ class User extends Authenticatable
     public function unreads($type = null, $num = null)
     {
         $unreads = Cache::get('unreads_' . $this->id);
+        //缓存未命中
         if (!$unreads) {
-            $unreadNotifications = $this->unreadNotifications;
-            $unreads['comments'] = $unreadNotifications->sum(function ($item) {
-                return $item->type == 'App\Notifications\ArticleCommented';
-            });
+            $unreadNotifications = $this->unreadNotifications()->get();
+            $unreads = [
+                'comments'=>null,
+                'likes'   =>null,
+                'follows' =>null,
+                'tips'    =>null,
+                'others'  =>null,
+            ];
+            //下列通知类型是进入了notification表的
+            $unreadNotifications->each(function ($item) use (&$unreads){
+                switch ($item->type) {
+                    //评论文章通知
+                    case 'App\Notifications\ArticleCommented':
+                        $unreads['comments'] ++;
+                        break;
+                    //喜欢文章通知
+                    case 'App\Notifications\ArticleLiked':
+                        $unreads['likes']++;
+                        break;
+                    //关注用户通知
+                    case 'App\Notifications\UserFollowed':
+                        $unreads['follows']++;
+                        break;
+                    //打赏文章通知
+                    case 'App\Notifications\ArticleTiped':
+                        $unreads['tips']++;
+                        break;
+                    //其他类型的通知
+                    default:
+                        $unreads['others']++;
+                        break;
+                }
 
+            });
+            //聊天消息数
             $unreads['chats'] = $this->chats->sum(function ($item) {
-                return $item->pivot->unreads;
-            });
-            $unreads['likes'] = $unreadNotifications->sum(function ($item) {
-                return $item->type == 'App\Notifications\ArticleLiked';
-            });
-            $unreads['follows'] = $unreadNotifications->sum(function ($item) {
-                return $item->type == 'App\Notifications\UserFollowed';
-            });
-            $unreads['tips'] = $unreadNotifications->sum(function ($item) {
-                return $item->type == 'App\Notifications\ArticleTiped';
-            });
-            $unreads['others'] = $unreadNotifications->sum(function ($item) {
-                return !in_array($item->type, [
-                    'App\Notifications\ArticleCommented',
-                    'App\Notifications\ArticleLiked',
-                    'App\Notifications\UserFollowed',
-                    'App\Notifications\ArticleTiped',
-                ]);
-            });
-
+                return $item->pivot->unreads; 
+            }); 
+            //投稿请求数
             $unreads['requests'] = $this->adminCategories()->sum('new_requests');
+
             //write cache
             Cache::put('unreads_' . $this->id, $unreads, 60);
         }
-
         if ($num) {
             $unreads[$type] = $num;
             //write cache
             Cache::put('unreads_' . $this->id, $unreads, 60);
         }
-
         if ($type) {
             return $unreads[$type] ? $unreads[$type] : null;
         }
@@ -317,7 +330,7 @@ class User extends Authenticatable
         if ($last) {
             $balance = $last->balance;
         }
-        return $balance;
+        return $balance; 
     }
 
     public function introduction()

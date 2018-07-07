@@ -24,9 +24,9 @@ class NotificationController extends Controller
             $message->user->fillForJs();
         }
         $data['messages'] = $messages;
-
         foreach ($chat->users as $user) {
             if ($user->id == Auth::id()) {
+                $user->forgetUnreads();
                 $user->pivot->unreads = 0;
                 $user->pivot->save();
             }
@@ -35,7 +35,7 @@ class NotificationController extends Controller
         return $data;
     }
 
-    public function sendMessage($id)
+    public function sendMessage($id) 
     {
         $chat    = Chat::findOrFail($id);
         $message = Message::create([
@@ -78,7 +78,7 @@ class NotificationController extends Controller
             if ($last_message) {
                 $chat->last_message = str_limit($last_message->message);
             }
-            $chat->time    = $chat->updatedAt();
+            $chat->time    = $chat->updatedAt(); 
             $chat->unreads = $chat->pivot->unreads;
         }
         return $chats;
