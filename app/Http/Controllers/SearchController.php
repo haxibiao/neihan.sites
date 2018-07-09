@@ -23,7 +23,8 @@ class SearchController extends Controller
         $page      = request('page') ? request('page') : 1;
         $query     = request('q');
         $articles  = Article::where('title', 'like', '%' . $query . '%')
-            ->where('status', '>=', 0)
+            ->where('status', 1)
+            ->whereType('article')
             ->orWhere('keywords', 'like', '%' . $query . '%')
             ->orderBy('id', 'desc')
             ->paginate(10);
@@ -62,10 +63,10 @@ class SearchController extends Controller
 
         //用户，专题
         $data['users']      = User::where('name', 'like', "%$query%")
-            ->where('status', '>=', 0)
+            ->where('status', 1)
             ->paginate($page_size);
         $data['categories'] = Category::where('name', 'like', "%$query%")
-            ->where('status', '>=', 0)
+            ->where('status', 1)
             ->paginate($page_size);
 
         if (!empty($query) && $total) {
@@ -91,6 +92,19 @@ class SearchController extends Controller
         return view('search.articles')->withData($data);
     }
 
+    public function searchVideos(){
+        $page_size          = 10;
+        $page               = request('page') ? request('page') : 1;
+        $query              = request('q');
+        $data['video'] = Article::whereType('video')
+            ->whereStatus(1)
+            ->where('title', 'like', "%$query%")
+            ->paginate($page_size);
+        $data['query']      = $query;
+
+        return view('search.video')->withData($data);
+    }
+
     public function searchUsers()
     {
         $page_size     = 10;
@@ -106,7 +120,9 @@ class SearchController extends Controller
         $page_size          = 10;
         $page               = request('page') ? request('page') : 1;
         $query              = request('q');
-        $data['categories'] = Category::where('name', 'like', "%$query%")->paginate($page_size);
+        $data['categories'] = Category::whereStatus(1)
+            ->where('name', 'like', "%$query%")
+            ->paginate($page_size);
         $data['query']      = $query;
         return view('search.categories')->withData($data);
     }
@@ -116,7 +132,9 @@ class SearchController extends Controller
         $page_size           = 10;
         $page                = request('page') ? request('page') : 1;
         $query               = request('q');
-        $data['collections'] = Collection::where('name', 'like', "%$query%")->paginate($page_size);
+        $data['collections'] = Collection::whereStatus(1)
+            ->where('name', 'like', "%$query%")
+            ->paginate($page_size);
         $data['query']       = $query;
         return view('search.collections')->withData($data);
     }

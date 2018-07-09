@@ -5,9 +5,11 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\User;
+use App\Article;
 
 class ArticleFavorited extends Notification {
-	use Queueable;
+	use Queueable; 
 
 	protected $article;
 	protected $user;
@@ -17,9 +19,9 @@ class ArticleFavorited extends Notification {
 	 *
 	 * @return void
 	 */
-	public function __construct($article_id, $user_id) {
-		$this->article = Article::find($article_id);
-		$this->user = User::find($user_id);
+	public function __construct(Article $article, User $user) {
+		$this->article = $article;
+		$this->user    = $user; 
 	}
 
 	/**
@@ -29,7 +31,7 @@ class ArticleFavorited extends Notification {
 	 * @return array
 	 */
 	public function via($notifiable) {
-		return ['database'];
+		return ['database']; 
 	}
 
 	/**
@@ -52,13 +54,14 @@ class ArticleFavorited extends Notification {
 	 * @return array
 	 */
 	public function toArray($notifiable) {
-		return [
+		return [ 
 			'type' => 'other',
-			'user_avatar' => $this->user->avatar,
-			'user_name' => $this->user->name,
-			'user_id' => $this->user->id,
-			'article_title' => $this->article->title,
-			'article_id' => $this->article->id,
+			'user_avatar' 	=> $this->user->avatar,
+			'user_name' 	=> $this->user->name,
+			'user_id' 		=> $this->user->id,
+			'article_title' => $this->article->title, 
+			'article_id' 	=> $this->article->id,
+			'message' 		=> $this->user->link() . "收藏了您的文章" . $this->article->link(),
 		];
 	}
 }

@@ -9,7 +9,7 @@
                   </h4>
                   <div class="search-wrapper">
                       <input type="text" placeholder="搜索我管理的专题" id="search-input" v-model="q" @keyup.enter="search">
-                      <a class="search-btn iconfont icon-sousuo"></a>
+                      <a class="search-btn iconfont icon-sousuo" @click="search"></a>
                   </div>
               </div>
               <div class="modal-body">
@@ -78,7 +78,9 @@ export default {
       var _this = this;
       $(window).on("scroll", function() {
         var aheadMount = 5; //sometimes need ahead a little ...
-        var is_scroll_to_bottom = $(this).scrollTop() >= $("body").height() - $(window).height() - aheadMount;
+        var is_scroll_to_bottom =
+          $(this).scrollTop() >=
+          $("body").height() - $(window).height() - aheadMount;
         if (is_scroll_to_bottom) {
           _this.fetchMore();
         }
@@ -102,7 +104,11 @@ export default {
     },
     apiUrl2() {
       var page2 = this.page2;
-      var api = "/api/categories/recommend-check-article-" + this.articleId + "?page=" + page2;
+      var api =
+        "/api/categories/recommend-check-article-" +
+        this.articleId +
+        "?page=" +
+        page2;
       return window.tokenize(api);
     },
     getBtnClass(status) {
@@ -126,14 +132,18 @@ export default {
       this.fetchManage();
     },
     add(category) {
-      var api = window.tokenize("/api/categories/" + this.articleId + "/add-category-" + category.id);
+      var api = window.tokenize(
+        "/api/categories/" + this.articleId + "/add-category-" + category.id
+      );
       window.axios.get(api).then(function(response) {
         category.submit_status = response.data.submit_status;
         category.submited_status = response.data.submited_status;
       });
     },
     submit(category) {
-      var api = window.tokenize("/api/categories/" + this.articleId + "/submit-category-" + category.id);
+      var api = window.tokenize(
+        "/api/categories/" + this.articleId + "/submit-category-" + category.id
+      );
       window.axios.get(api).then(function(response) {
         category.submit_status = response.data.submit_status;
         category.submited_status = response.data.submited_status;
@@ -155,7 +165,9 @@ export default {
       var _this = this;
       this.fetchManage();
       window.axios.get(this.apiUrl2()).then(function(response) {
-        _this.recommendCategoryList = _this.recommendCategoryList.concat(response.data.data);
+        _this.recommendCategoryList = _this.recommendCategoryList.concat(
+          response.data.data
+        );
         // _this.page2 = response.data.currentPage;
         _this.page2_total = response.data.lastPage;
         _this.lastPage = response.data.last_page;

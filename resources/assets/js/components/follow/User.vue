@@ -12,8 +12,8 @@
 	      </div>
 	      <div class="title">
 	        <a class="name" :href="'/user/'+user.id">{{ user.name }}</a>
-	        <i  v-if="user.gender" class="man iconfont icon-nansheng1"></i>
-	        <i  v-else class="iconfont woman icon-nvsheng1"></i>
+	        <i  v-if="user.gender=='男'"      class="man iconfont icon-nansheng1"></i>
+	        <i  v-else-if="user.gender=='女'" class="iconfont woman icon-nvsheng1"></i> 
 
 
 	      </div>

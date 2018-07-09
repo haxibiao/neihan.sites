@@ -38,11 +38,11 @@ class signInMutation extends Mutation
         $user = User::where('email', $args['email'])->first();
 
         if (!$user) {
-            throw new \Exception('email not exist');
+            throw new \Exception('邮箱不存在');
         }
 
         if (!password_verify($args['password'], $user->password)) {
-            throw new \Exception('password not correct');
+            throw new \Exception('邮箱或密码不正确');
         }
 
         session()->put('user', $user);

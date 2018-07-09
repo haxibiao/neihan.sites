@@ -8,6 +8,7 @@ use App\Video;
 use App\Action;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Notifications\ArticleFavorited;
 
 class FavoriteController extends Controller
 {
@@ -33,6 +34,10 @@ class FavoriteController extends Controller
                 'actionable_id'   => $favorite->id,
             ]);
             $action->save();
+            
+            //发送通知
+            $article = $favorite->faved; 
+            $article->user->notify(new ArticleFavorited($article, $user));  
         }
 
         $user->count_favorites = $user->favorites()->count();

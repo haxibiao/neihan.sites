@@ -14,17 +14,17 @@ class AlertVideoStep2 extends Migration
     public function up()
     {
         Schema::table('videos', function (Blueprint $table) {
-            if (Schema::hasColumn('videos', 'hits')) {
-                $table->dropColumn([
-                    'hits',
-                    'category_id',
-                    'introduction',
-                    'path_mp4',
-                    'count',
-                    'likes',
-                    'cover',
-                ]);
-            }
+            // if (Schema::hasColumn('videos', 'hits')) {
+            //     $table->dropColumn([
+            //         'hits',
+            //         'category_id',
+            //         'introduction',
+            //         'path_mp4',
+            //         'count',
+            //         'likes',
+            //         'cover',
+            //     ]);
+            // }
         });
     }
 

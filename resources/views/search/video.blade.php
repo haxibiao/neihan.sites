@@ -1,99 +1,64 @@
 @extends('layouts.app')
-
+	
 @section('title') 搜索 - {{ env('APP_NAME') }}  @endsection
 
 @section('content')
 	<div id="search-content" class="articles">
 		<section class="left-aside clearfix">
-			@include('search.aside')
+			@include('search.aside') 
 			<div class="main">
-				<div class="top">
-					<div class="relevant">
-						<div class="plate-title">
-							<span>相关用户</span>
-							<a href="/search/users{{ request('q') ? '?q='.request('q') : '' }}" class="all right">查看全部<i class="iconfont icon-youbian"></i></a>
-						</div>
-						<div class="container-fluid list">
-							<div class="row">
-								@foreach($data['users'] as $user)
-								<div class="col-sm-4 col-xs-12">
-									<div class="user-info user-sm">
-										<div class="avatar">
-											<img src="{{ $user->avatar() }}" alt="">
-										</div>
-										<div class="title">
-											<a href="/user/{{ $user->id }}" class="name">{{ $user->name }}</a>
-										</div>
-										<div class="info">写了{{ $user->count_words }}字 · {{ $user->count_likes }}喜欢</div>
-									</div>
-								</div>
-								@endforeach
-							</div>
-						</div>
-					</div>
-					<div class="relevant">
-						<div class="plate-title">
-							<span>相关专题</span>
-							<a href="/search/categories{{ request('q') ? '?q='.request('q') : '' }}" class="all right">查看全部<i class="iconfont icon-youbian"></i></a>
-						</div>
-						<div class="container-fluid list">
-							<div class="row">
-								@foreach($data['categories'] as $category)
-								<div class="col-sm-4 col-xs-12">
-									<div class="note-info note-sm">
-										<div class="avatar-category">
-											<img src="{{ $category->logo() }}" alt="">
-										</div>
-										<div class="title">
-											<a href="/{{ $category->name_en }}" class="name">{{ $category->name }}</a>
-										</div>
-										<div class="info">收录了{{ $category->count }}篇文章 · {{ $category->count_follows }}人关注</div>
-									</div>
-								</div>
-								@endforeach
-							</div>
-						</div>
-					</div>
-				</div>
 				<div class="search-content">
 					<div class="plate-title">
 						<span>综合排序</span>
-						<a href="javascript:;" class="right">{{ $data['total'] }} 个结果</a>
+						<a href="javascript:;" class="right">{{ $data['video']->total() }} 个结果</a>
 					</div>
 					<div class="note-list">
-						<div class="row videos distance">
-	             <div class="col-xs-6 col-md-4 video">
-	               <div class="video-item vt">
-	                 <div class="thumb">
-	                   <a href="#">
-	                     <img src="https://ainicheng.com/storage/video/294.jpg" alt="绝地求生：呆妹儿：你有女朋友吗？小学生：你给我闭嘴">
-	                     <i class="duration">
-	                       {{-- 持续时间 --}}
-	                       04:18
-	                     </i>
-	                   </a>
-	                 </div>
-	                 <ul class="info-list">
-	                   <li class="video-title">
-	                     <a href="#">绝地求生：呆妹儿：你有女朋友吗？小学生：你给我闭嘴</a>
-	                   </li>
-	                   <li>
-	                     {{-- 播放量 --}}
-	                     <p class="subtitle single-line">21次播放</p>
-	                   </li>
-	                 </ul>
-	               </div>
-	             </div>
-	          </div>
+						@foreach($data['video'] as $article) 
+						<li class="article-item {{ $article->hasImage() ? 'have-img' : '' }}">
+					      @if($article->hasImage())
+							  <a class="wrap-img" href="{{ $article->content_url() }}" target="_blank">
+							      <img src="{{ $article->primaryImage() }}" alt="">
+							  </a>
+						  @endif 
+						  <div class="content">
+						    <div class="author">
+						      <a class="avatar" target="_blank" href="/user/{{ $article->user_id }}">
+						        <img src="{{ $article->user->avatar() }}" alt="">
+						      </a> 
+						      <div class="info">
+						        <a class="nickname" target="_blank" href="/user/{{ $article->user_id }}">{{ $article->user->name }}</a>
+						        <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
+						        <span class="time" data-shared-at="{{ $article->created_at }}">{{ $article->timeAgo() }}</span>
+						      </div> 
+						    </div>
+						    <a class="title" target="_blank" href="{{ $article->content_url() }}">
+						        <span>{!! $article->title !!}</span>
+						    </a>
+						    <p class="abstract"> 
+						      {!! $article->description !!}
+						    </p>
+						    <div class="meta">
+						      <a target="_blank" href="{{ $article->content_url() }}">
+						        <i class="iconfont icon-liulan"></i> {{ $article->hits }}
+						      </a>        
+						      <a target="_blank" href="{{ $article->content_url() }}">
+						        <i class="iconfont icon-svg37"></i> {{ $article->count_replies }}
+						      </a>      
+						      <span><i class="iconfont icon-03xihuan"></i> {{ $article->count_likes }}</span>
+						      @if($article->count_tips)
+						      <span><i class="iconfont icon-qianqianqian"></i> {{ $article->count_tips }}</span>
+						      @endif
+						    </div>
+						  </div>
+						</li>
+						@endforeach
 					</div>
-
-					@if(!$data['articles']->total())
+					@if(!$data['video']->total())
 						<blank-content></blank-content>
 					@endif
-
-					{!! $data['articles']->appends(['q'=>$data['query']])->render() !!}
+					{!! $data['video']->appends(['q'=>$data['query']])->render() !!}
 				</div>
 			</div>
 		</section>
 	</div>
-@endsection
+@endsection 

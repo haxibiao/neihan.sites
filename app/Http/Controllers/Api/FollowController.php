@@ -38,7 +38,7 @@ class FollowController extends Controller
             'user_id'       => $user->id,
             'followed_id'   => $id,
             'followed_type' => get_polymorph_types($type),
-        ]);
+        ]); 
         if ($follow->id) {
             $follow->delete();
 
@@ -109,7 +109,7 @@ class FollowController extends Controller
             $follow['img'] = $item->followed_type == 'users' ?
             $item->followed->avatar() : $item->followed->logo();
 
-            $updates           = $item->followed->articles()->where('articles.created_at', '>', $item->updated_at)->count();
+            $updates           = $item->followed->articles()->where('articles.type','article')->where('articles.created_at', '>', $item->updated_at)->count();
             $follow['updates'] = $updates ? $updates : '';
             $follows[]         = $follow;
         }

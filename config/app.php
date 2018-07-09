@@ -243,6 +243,7 @@ return [
       	'ImageUtils'  =>  App\Helpers\ImageUtils::class,
       	'StringUtils' =>  App\Helpers\StringUtils::class,
       	'HttpUtils' =>  App\Helpers\HttpUtils::class,
+      	'Bugsnag' => Bugsnag\BugsnagLaravel\Facades\Bugsnag::class,
 	],
 
 ];

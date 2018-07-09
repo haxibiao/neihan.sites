@@ -34,7 +34,7 @@
             <li class="hidden-xs">
                 <div class="meta-block">
                     <a href="/user/{{ $user->id }}/followings">
-                        <p>{{ $user->count_followings }}</p>
+                        <p>{{ $user->followUsers }}</p>
                         关注
                         <i class="iconfont icon-youbian"></i>
                     </a>

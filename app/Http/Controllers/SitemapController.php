@@ -25,9 +25,8 @@ class SitemapController extends Controller
         // counters
         $counter        = 0;
         $sitemapCounter = 0;
-
         // get all products from db (or wherever you store them)
-        DB::table('articles')->orderBy('created_at', 'desc')->where('status', '>', 0)->chunk(100, function ($articles) use (&$sitemap, &$counter, &$sitemapCounter) {
+        \App\Article::orderBy('created_at', 'desc')->where('status', '>', 0)->chunk(100, function ($articles) use (&$sitemap, &$counter, &$sitemapCounter) {
 
             // add every product to multiple sitemaps with one sitemap index
             foreach ($articles as $article) {
@@ -43,9 +42,8 @@ class SitemapController extends Controller
                     // count generated sitemap
                     $sitemapCounter++;
                 }
-
                 // add product to items array
-                $sitemap->add('/article/' . $article->id, $article->updated_at, 1.0, 'daily');
+                $sitemap->add($article->content_url(), $article->updated_at, 1.0, 'daily');
                 // count number of elements
                 $counter++;
             }
