@@ -1,4 +1,4 @@
-<div class="atten-people">
+<div class="atten-people distance">
 	<p class="plate-title">关注的人</p>
     <ul class="list-people"> 
         
