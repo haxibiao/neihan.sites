@@ -25,10 +25,10 @@
             <div class="forget-btn">
                 <a class="javascript:;" data-toggle="dropdown" href="javascript:;">登录遇到问题?</a>
                 <ul class="dropdown-menu">
-                    <li><a class="link" href="javascript:;">用手机号重置密码</a></li>
-                    <li><a class="link" href="javascript:;">用邮箱重置密码</a></li>
-                    <li><a class="link" target="_blank" href="javascript:;">无法用海外手机号登录</a></li>
-                    <li><a class="link" target="_blank" href="javascript:;">无法用 Google 帐号登录</a></li>
+                    <!-- <li><a class="link" href="javascript:;">用手机号重置密码</a></li> -->
+                    <li><a class="link" href="/password/reset">用邮箱重置密码</a></li>
+                    <!-- <li><a class="link" target="_blank" href="javascript:;">无法用海外手机号登录</a></li>
+                    <li><a class="link" target="_blank" href="javascript:;">无法用 Google 帐号登录</a></li> -->
                 </ul>
             </div>
             <input type="submit" name="commit" value="登录" class="btn-base btn-login">
