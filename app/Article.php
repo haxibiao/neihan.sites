@@ -116,7 +116,7 @@ class Article extends Model
 
     public function collections()
     {
-        return $this->belongsToMany('App\Collection')->withTimestamps();
+        return $this->belongsTo('App\Collection');
     }
 
     public function tips()

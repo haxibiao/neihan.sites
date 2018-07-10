@@ -21,7 +21,7 @@ class ArticleType extends GraphQLType
     // protected $inputObject = true;
 
     public function fields()
-    {
+    { 
         return [
             'id'              => [
                 'type'        => Type::nonNull(Type::int()),
@@ -213,7 +213,7 @@ class ArticleType extends GraphQLType
                 'type'        => GraphQL::type('Collection'),
                 'description' => 'collection of article',
                 'resolve'     => function ($root, $args) {
-                    return $root->collections()->first();
+                    return $root->collections()->first(); 
                 },
             ],
             'categories'      => [
