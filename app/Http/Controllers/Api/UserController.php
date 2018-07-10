@@ -25,7 +25,10 @@ class UserController extends Controller
 
     public function saveAvatar(Request $request)
     {
-        $user        = $request->user();
+        $user = $request->user();
+        if (!is_dir(public_path('/storage/avatar'))) {
+            mkdir(public_path('/storage/avatar'), 0777, 1);
+        }
         $avatar_path = '/storage/avatar/' . $user->id . '.jpg';
 
         //save avatar
@@ -105,15 +108,15 @@ class UserController extends Controller
         $user = User::firstOrNew([
             'email' => $data['email'],
         ]);
-        if($user->id) {
+        if ($user->id) {
             throw new \Exception('Email already exists');
         }
         $user->name     = $data['name'];
         $user->password = bcrypt($data['password']);
-        $user->avatar = '/images/avatar-'.rand(1, 15).'.jpg';
+        $user->avatar   = '/images/avatar-' . rand(1, 15) . '.jpg';
         $user->save();
         return $user;
-    } 
+    }
 
     public function unreads(Request $request)
     {
