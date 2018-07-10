@@ -4,12 +4,12 @@
 	<div class="container">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title">置顶专题</h3>
+				<h3 class="panel-title">置顶视频专题</h3>
 			</div>
 			<div class="panel-body">
 				<div class="col-md-12">
 					<div class="col-md-6">
-						{!! Form::open(['method' => 'POST', 'route' => 'admin.stick_category', 'class' => 'form-horizontal']) !!}
+						{!! Form::open(['method' => 'POST', 'route' => 'admin.stick_video_category', 'class' => 'form-horizontal']) !!}
 
 						    <div class="form-group{{ $errors->has('category_name') ? ' has-error' : '' }}">
 						        {!! Form::label('category_name', '专题名称') !!}
@@ -31,9 +31,9 @@
 
 					<div class="col-md-6">
 						<div class="list-group">
-							@foreach($categories as $category)
+							@foreach($videoCategories as $category)
 							<div class="list-group-item">
-								{!! Form::open(['method' => 'POST', 'route' => 'admin.delete_stick_category', 'class' => 'form-horizontal']) !!}
+								{!! Form::open(['method' => 'POST', 'route' => 'admin.delete_stick_video_category', 'class' => 'form-horizontal']) !!}
 								
 								    {!! Form::hidden('category_id',  $category->id) !!}
 								

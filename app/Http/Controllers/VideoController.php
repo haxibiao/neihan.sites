@@ -280,4 +280,15 @@ class VideoController extends Controller
             }
         }
     }
+
+    public function video_list()
+    {
+        $stick_video_categories = get_stick_video_categories();
+        $video_category = [];
+        foreach ($stick_video_categories as $video_categories) {
+            $video_id = $video_categories->id;
+            $video_category[$video_categories->name]['video'] = Article::find($video_id)->orderby('count_likes','desc')->paginate(3);
+        }
+        return view('video.video_list')->withVideoCategories($stick_video_categories)->withVideolist($video_category);
+    }
 }
