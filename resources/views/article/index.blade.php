@@ -14,7 +14,11 @@
 
 <div class="container">
   <div class="panel panel-default">
-    <div class="panel-heading"><h3>管理文章</h3></div>
+    <div class="panel-heading">
+      <h3 style="margin:0;display:inline-block">管理文章</h3>
+        <basic-search></basic-search>
+    </div>
+    
   <div class="panel-body">
     @foreach($articles as $article)
     <div class="media">

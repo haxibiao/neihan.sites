@@ -1,7 +1,5 @@
 @extends('layouts.blank')
-@section('title')
-    注册 - 
-@stop　
+@section('title')注册 - @stop
 @section('content')
 <div id="login">
     <div class="logo"><a href="/"><img src="{{'/logo/'.get_domain().'.text.png' ?:'/logo/'.get_domain().'.png' }}" alt="{{ config('app.name') }}"></a></div>

@@ -105,6 +105,7 @@
             @include('category.parts.admins')
             @include('category.parts.authors')
             @include('category.parts.followers')
+            @include('category.parts.related')
         </div>
     </div>
 </div>

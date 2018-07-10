@@ -47,7 +47,7 @@ Vue.component("recently", require("./components/search/Recently.vue"));
 Vue.component("hot-search", require("./components/search/Hot.vue"));
 
 Vue.component("share", require("./components/Share.vue"));
-Vue.component("video-list",require("./components/video/VideoList.vue"))
+Vue.component("video-list", require("./components/video/VideoList.vue"));
 Vue.component(
 	"modal-share-wx",
 	require("./components/modals/ModalShareWX.vue")
@@ -122,6 +122,7 @@ Vue.component("editor", require("./components/Editor.vue"));
 //modals ...
 Vue.component("my-image-list", require("./components/image/MyImageList.vue"));
 Vue.component("my-video-list", require("./components/video/MyVideoList.vue"));
+Vue.component("basic-search", require("./components/search/BasicSearch.vue"));
 Vue.component(
 	"single-list-create",
 	require("./components/SingleListCreate.vue")

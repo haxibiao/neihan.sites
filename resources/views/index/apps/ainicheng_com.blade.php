@@ -59,7 +59,7 @@
               <h3>优质内容、独家创造</h3>
               <h6>在这里你可以创造属于你的特色专题内容。记录你的日常有趣瞬间、与共同爱好的玩家分享快乐，让你不再一个人游戏、给你带来不同寻常的邂逅。</h6>
             </div>
-            <div class="col-sm-6"><img class="" src="/images/download4.jpg" alt="Misc pic3"></div>
+            <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/download4.jpg" alt="Misc pic3"></div>
           </div>
         </div>
         <div class="row">

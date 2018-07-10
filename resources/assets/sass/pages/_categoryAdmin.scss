@@ -1,0 +1,17 @@
+.category-admin-header {
+	position: relative;
+	.category-admin-title {
+		min-height: 50px;
+		display: inline-block;
+	}
+}
+.category-item {
+	padding: 15px;
+	border-bottom: 1px solid #d3e0e9;
+	.item-info {
+		margin-left: 200px;
+		.category-name {
+			vertical-align: top;
+		}
+	}
+}
