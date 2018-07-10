@@ -194,7 +194,27 @@ class FixData extends Command
     }
     public function fix_collections()
     {
-        
+        $this->cmd->info('fix collections ...');
+        Collection::chunk(100,function($collections){
+            foreach ($collections as $conllection) {
+                $conllection_id = $conllection->id;
+                if(count($conllection->articles()->pluck('article_id')) > 0)
+                {
+                    $article_id_arr = $conllection->articles()->pluck('article_id');
+                    foreach ($article_id_arr as $article_id) {
+                        $article = Article::find($article_id);
+                        $article->collection_id = $conllection_id;
+                        $article->save();
+                        $conllection->count_words += $article->count_words;
+                        $this->cmd->info('Artcile:'.$article_id.' corresponding collections:'.$conllection_id);
+                    }
+                    $conllection->count = count($article_id_arr);
+                    $conllection->save();
+                }
+                //
+            }
+        });
+        $this->cmd->info('fix collections success');
     }
 
     public function fix_article_comments()

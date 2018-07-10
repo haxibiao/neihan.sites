@@ -12,6 +12,7 @@ class Collection extends Model
         'type',
         'name',
         'logo',
+        'count_words',
     ];
 
     public function user()
@@ -24,9 +25,9 @@ class Collection extends Model
         return $this->belongsToMany(\App\Article::class);
     }
 
-    public function publishedArticles()
+    public function hasManyArticles()
     {
-        return $this->belongsToMany(\App\Article::class)->where('status', 1);
+        return $this->hasMany(\App\Article::class)->where('status', '>=', '0');
     }
 
     public function follows()
