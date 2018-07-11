@@ -17,9 +17,10 @@
         <div class="count"><a target="_blank" :href="'/'+category.name_en">{{ category.count }}篇文章</a> · {{ category.count_follows }}人关注</div>
       </div>
     </li>
+    <div class="clear"></div>
     <a class="btn-base btn-more" href="javascript:;">{{ page >= lastPage ? '已经到底了':'正在加载更多' }}...</a>
   </div>  
-</template>
+</template> 
 
 <script>
 export default {
@@ -89,4 +90,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
+    .clear{
+      clear: both
+    }
 </style>

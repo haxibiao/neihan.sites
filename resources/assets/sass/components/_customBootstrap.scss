@@ -1,3 +1,27 @@
+//切换显示:覆盖bootstrap的nav-pills
+#select-menu{
+   position: absolute;
+   right: 15px;
+   top: 0px;
+   li{
+    border-style: solid;
+    border-color:$wxGreen;
+    border-width: 1px;
+    margin-left: 0px;
+      a{
+        border-radius: 0px;
+        padding: 4px 10px;
+        font-size: 12px;
+      } 
+    }
+}
+
+#select-menu > .active > a  {
+    background-color: $wxGreen;
+  }
+
+
+
 // 切换菜单：覆盖bootstrap的nav-tabs
 #trigger-menu {
   margin-bottom: 20px;
