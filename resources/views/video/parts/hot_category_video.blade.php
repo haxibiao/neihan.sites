@@ -1,13 +1,13 @@
  <div class="video-box">
     <div class="box-top">
         <div class="top-left">
-            <img src="/images/icons/绝地大逃杀.png">
+            <img  class="cateory-logo" src="/images/appicons/juedidataosha.png">
             <a href="/juedidataosha">
                 <p class="title">绝地求生</p>
             </a>
         </div>
         <div class="top-right">
-            <a href="/" class="more-cateory"><p>更多<i class="iconfont icon-youbian"></i></p></a>
+            <a href="/PUBG" class="more-cateory"><p>更多<i class="iconfont icon-youbian"></i></p></a>
         </div>
     </div>
     <div class="box-body">

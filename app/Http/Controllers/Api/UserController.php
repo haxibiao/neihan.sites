@@ -30,6 +30,9 @@ class UserController extends Controller
             mkdir(public_path('/storage/avatar'), 0777, 1);
         }
         $avatar_path = '/storage/avatar/' . $user->id . '.jpg';
+        if (!is_dir(public_path('/storage/avatar/'))) {
+            mkdir(public_path('/storage/avatar/'), 0777, 1);
+        }
 
         //save avatar
         $img = \ImageMaker::make($request->avatar->path());

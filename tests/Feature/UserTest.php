@@ -9,6 +9,21 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DatabaseTest extends TestCase
 {
+
+    public function testUserRegister()
+    {
+        // $response=$this->get('/');
+
+        // $response->assertStatus(200);
+        $response = $this->post('/register', [
+            'name'     => 'wangxin',
+            'email'    => time() . 'test@haxibiao.com',
+            'password' => '123123',
+        ]);
+
+        $response->assertStatus(302);
+    }
+
      public function testEditorCanVisitArticleCreatePage()
     {
         $editor   = \App\User::where('is_editor', 1)->take(10)->get()->random();
