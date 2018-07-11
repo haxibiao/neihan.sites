@@ -10,9 +10,15 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
  */
-$phpunit = simplexml_load_file('phpunit.xml');
+$is_testing = false;
+try {
+    $phpunit    = simplexml_load_file('phpunit.xml');
+    $is_testing = $phpunit->php->xpath('env[@name="APP_ENV"]')[0]['value'] != 'prod';
+} catch (Exception $ex) {
+
+}
 //如果不是生产环境，就按require的方式，不然Unit Test会出现404
-if ($phpunit->php->xpath('env[@name="APP_ENV"]')[0]['value'] != 'prod') {
+if ($is_testing) {
     require 'api/user.php';
     require 'api/follow.php';
     require 'api/notification.php';
@@ -20,12 +26,12 @@ if ($phpunit->php->xpath('env[@name="APP_ENV"]')[0]['value'] != 'prod') {
     require 'api/article.php';
     require 'api/comment.php';
     require 'api/collection.php';
-	//专题投稿
+    //专题投稿
     require 'api/category.php';
-	//保存文章相关片段数据
+    //保存文章相关片段数据
     require 'api/relation.php';
     require 'api/app.php';
-	//搜索
+    //搜索
     require 'api/search.php';
 } else {
     require_once 'api/user.php';
@@ -35,12 +41,12 @@ if ($phpunit->php->xpath('env[@name="APP_ENV"]')[0]['value'] != 'prod') {
     require_once 'api/article.php';
     require_once 'api/comment.php';
     require_once 'api/collection.php';
-	//专题投稿
+    //专题投稿
     require_once 'api/category.php';
-	//保存文章相关片段数据
+    //保存文章相关片段数据
     require_once 'api/relation.php';
     require_once 'api/app.php';
-	//搜索
+    //搜索
     require_once 'api/search.php';
 }
 
