@@ -33,7 +33,6 @@
 							</div>
 							<div v-if="videoPath">
 								<video class="video" :src="videoPath" controls="" ref="video_ele"></video>
-								<span class="size">{{videoObj.name}}</span>
 					            <div class="progress-box">
 					            	<div>{{conver(videoObj.size)}}</div>
 					            	<div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
@@ -56,7 +55,7 @@
 								    	<i class="iconfont icon-icon20"></i>
 								    	<span class="img-click-here">点击此处上传图片</span>
 								        <div class="img-file">
-								            <input type="file" @change="upload"  :accept="fileFormat" multiple>
+								            <input type="file" @change="upload"  :accept="fileFormat" multiple ref="upload">
 								        </div>
 								    	<span class="img-limit">支持图片拖拽上传</span>
 								    </div>
@@ -80,7 +79,8 @@
     </div>
 </template>
 
-
+<script src="/js/jquery.form.js">
+</script>
 <script>
 import Dropzone from "../../plugins/Dropzone";
 
@@ -120,7 +120,7 @@ export default {
 					if (this.filesCount >= 9) {
 						break;
 					}
-					var fileObj = e.target.files[i];
+					let fileObj = e.target.files[i];
 					this._upload(fileObj);
 					this.filesCount++;
 				} else if (e.target.files[0].type.indexOf("video") != -1) {
@@ -129,7 +129,9 @@ export default {
 
 					var _this = this;
 					var reader = new FileReader();
-					this.videoObj = e.target.files[0];
+					let fileObj = e.target.files[0];
+					this.videoObj = fileObj;
+					this.video_upload(fileObj);
 					reader.readAsDataURL(e.target.files[0]);
 
 					reader.onload = function(e) {
@@ -182,6 +184,39 @@ export default {
 					selected: 1
 				});
 				_this.top3Imgs = _this.selectedImgs();
+			});
+		},
+		video_upload(fileObj) {
+			$(this.$refs.questionForm).ajaxSubmit({
+				type: "POST",
+				url: " /api/image/save",
+				dataType: "json",
+				// data: formData,
+				contentType: false,
+				cache: false,
+				processData: false,
+				beforeSend: function() {},
+				uploadProgress: function(
+					event,
+					position,
+					total,
+					percentComplete
+				) {
+					console.log(event);
+					console.log("111");
+					// $('#progress').show().children().width(percentComplete+'%');
+				},
+				success: function(data) {
+					console.log(data);
+					// photoData = data[0];
+					// $('.photo_cont img')[0].src = data[0].slice(1);
+					// $('#progress').hide();
+					// $('.temptation').text('上传成功 O(∩_∩)O').css('color','#1E88C7');
+				},
+				error: function(data) {
+					// $('#progress').hide();
+					// $('.temptation').text('上传失败 /(ㄒoㄒ)/').css('color','#EE2C2C');
+				}
 			});
 		},
 		tabSwitch(tab) {
@@ -294,6 +329,7 @@ export default {
 	}
 };
 </script>
+
 
 <style lang="scss">
 .modal-backdrop {
