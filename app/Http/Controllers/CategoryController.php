@@ -5,16 +5,15 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Category;
 use App\Http\Requests\CategoryRequest;
-use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
     public function __construct()
-    { 
-        $this->middleware('auth.admin',['only' => ['index']]); 
-        $this->middleware('auth', ['only' => ['store', 'update', 'destroy','create']]);
+    {
+        $this->middleware('auth.admin', ['only' => ['index']]);
+        $this->middleware('auth', ['only' => ['store', 'update', 'destroy', 'create']]);
     }
 
     /**
@@ -70,7 +69,8 @@ class CategoryController extends Controller
         $data['recommend'] = $categories;
 
         //热门
-        $categories = $qb->orderBy('count_follows', 'desc')->paginate(24);
+        $categories = Category::where('status', '>=', 0)->orderBy('count', 'desc')->
+            orderBy('count_follows', 'desc')->paginate(24);
         if (ajaxOrDebug() && request('hot')) {
             foreach ($categories as $category) {
                 $category->followed = $category->isFollowed();
@@ -201,7 +201,7 @@ class CategoryController extends Controller
         //videos
         $qb = $category->videoArticles()->whereStatus(1)->orderBy('id', 'desc');
 
-        $videos         = smartPager($qb, 12);
+        $videos                 = smartPager($qb, 12);
         $data['video_articles'] = $videos;
 
         return view('category.name_en')
