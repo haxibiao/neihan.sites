@@ -4,14 +4,15 @@
 # {{ $greeting }}
 @else
 @if ($level == 'error')
-# Whoops!
+# 糟糕!
 @else
-# Hello!
+# 您好!
 @endif
 @endif
 
 {{-- Intro Lines --}}
 @foreach ($introLines as $line)
+
 {{ $line }}
 
 @endforeach
@@ -37,6 +38,7 @@
 
 {{-- Outro Lines --}}
 @foreach ($outroLines as $line)
+
 {{ $line }}
 
 @endforeach
@@ -45,13 +47,13 @@
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-Regards,<br>{{ config('app.name') }}
+谢谢!<br>{{ config('app.name') }}
 @endif
 
 {{-- Subcopy --}}
 @isset($actionText)
 @component('mail::subcopy')
-如果您点不开 "{{ $actionText }}" 这个按钮, 复制并粘贴这个地址去浏览器打开: [{{ $actionUrl }}]({{ $actionUrl }})
+如果您点不开 "{{ $actionText }}" 这个按钮, 请复制并粘贴这个地址去浏览器打开: [{{ $actionUrl }}]({{ $actionUrl }})
 @endcomponent
 @endisset
 @endcomponent

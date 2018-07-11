@@ -7,6 +7,7 @@ use Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
+use App\Notifications\MyOwnResetPassword as ResetPasswordNotification;
 
 class User extends Authenticatable
 {
@@ -490,5 +491,11 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Article')
             ->where('articles.type','video');
+    }
+
+    //重写用户的重置密码邮件通知
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }
