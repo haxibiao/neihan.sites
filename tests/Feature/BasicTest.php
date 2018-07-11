@@ -21,7 +21,7 @@ class BasicTest extends TestCase
 
     public function testArticleDetailOK()
     {
-        $rand_article_id = \App\Article::orderBy('id', 'desc')->take(10)->get()->random()->id;
+        $rand_article_id = \App\Article::orderBy('id', 'desc')->where('status','>',0)->take(10)->get()->random()->id;
         $response        = $this->get("/article/$rand_article_id");
         $response->assertStatus(200);
     }
@@ -48,7 +48,6 @@ class BasicTest extends TestCase
         ]);
 
         $response->assertStatus(302);
-        $response->assertRedirect('/');
     }
 
 }
