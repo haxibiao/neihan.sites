@@ -1,7 +1,7 @@
 <div class="plate-title">
 	个人介绍
 	@if($user->isSelf())
-		<a class="right write" href="javascript:void(0)"><i class="iconfont icon-bi1"></i>编辑</a>
+		<a class="right write" href="javascript:void(0)" style="height:auto"><i class="iconfont icon-bi1"></i>编辑</a>
 	@endif
 </div>
 <div class="description distance">

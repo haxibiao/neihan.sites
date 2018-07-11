@@ -173,6 +173,7 @@ export default {
 			let formdata = new FormData();
 			formdata.append("from", "question");
 			formdata.append("photo", fileObj);
+			console.log(fileObj);
 			let config = {
 				headers: {
 					"Content-Type": "multipart/form-data"
@@ -187,11 +188,12 @@ export default {
 			});
 		},
 		video_upload(fileObj) {
+			console.log(fileObj);
 			$(this.$refs.questionForm).ajaxSubmit({
 				type: "POST",
-				url: " /api/image/save",
+				url: " /api/video/save",
 				dataType: "json",
-				// data: formData,
+				data: fileObj,
 				contentType: false,
 				cache: false,
 				processData: false,
@@ -203,17 +205,21 @@ export default {
 					percentComplete
 				) {
 					console.log(event);
-					console.log("111");
+					console.log("uploadProgress");
 					// $('#progress').show().children().width(percentComplete+'%');
 				},
 				success: function(data) {
 					console.log(data);
+					console.log(success);
+
 					// photoData = data[0];
 					// $('.photo_cont img')[0].src = data[0].slice(1);
 					// $('#progress').hide();
 					// $('.temptation').text('上传成功 O(∩_∩)O').css('color','#1E88C7');
 				},
 				error: function(data) {
+					console.log(data);
+					console.log("error");
 					// $('#progress').hide();
 					// $('.temptation').text('上传失败 /(ㄒoㄒ)/').css('color','#EE2C2C');
 				}
@@ -339,13 +345,14 @@ export default {
 	.modal-dialog {
 		padding-bottom: 20px;
 		max-width: 720px !important;
+		top: 42%;
 		.modal-content {
 			.modal-header {
 				padding: 10px 20px;
 			}
 			.modal-body {
 				padding: 5px 40px 0px;
-				// max-height: 520px;
+				max-height: 660px;
 				overflow: auto;
 				& > div {
 					line-height: normal;
@@ -424,6 +431,7 @@ export default {
 							vertical-align: top;
 							display: inline-block;
 							width: 90px;
+							margin: 0 65px;
 						}
 						.video-del {
 							position: absolute;
