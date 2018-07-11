@@ -315,7 +315,7 @@ class User extends Authenticatable
 
     public function newReuqestCategories()
     {
-        return $this->adminCategories()->where('new_requests', '>', 0);
+        return $this->adminCategories()->orderBy('new_requests','desc')->orderBy('updated_at','desc');
     }
 
     public function link()
