@@ -71,9 +71,16 @@ class FixData extends Command
 
     public function fix_users()
     {
-        $user = User::find(6);
-        $user->is_admin = 1;
-        $user->save();
+        $this->cmd->info('fix user indentify ...');
+        User::whereIn('id',[293,323])->chunk(100, function ($users) {
+            foreach ($users as $user) {
+                $user->is_editor = 1;
+                $user->is_admin  = 1;
+                $user->is_seoer  = 1;
+                $user->timestamps   = false;
+                $user->save();
+            }
+        });
     }
 
     public function fix_tags()
@@ -187,7 +194,27 @@ class FixData extends Command
     }
     public function fix_collections()
     {
-        
+        $this->cmd->info('fix collections ...');
+        Collection::chunk(100,function($collections){
+            foreach ($collections as $conllection) {
+                $conllection_id = $conllection->id;
+                if(count($conllection->articles()->pluck('article_id')) > 0)
+                {
+                    $article_id_arr = $conllection->articles()->pluck('article_id');
+                    foreach ($article_id_arr as $article_id) {
+                        $article = Article::find($article_id);
+                        $article->collection_id = $conllection_id;
+                        $article->save();
+                        $conllection->count_words += $article->count_words;
+                        $this->cmd->info('Artcile:'.$article_id.' corresponding collections:'.$conllection_id);
+                    }
+                    $conllection->count = count($article_id_arr);
+                    $conllection->save();
+                }
+                //
+            }
+        });
+        $this->cmd->info('fix collections success');
     }
 
     public function fix_article_comments()

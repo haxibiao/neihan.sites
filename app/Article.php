@@ -38,7 +38,7 @@ class Article extends Model
         'video_id',
     ];
 
-    protected $touches = ['category', 'collections', 'categories'];
+    protected $touches = ['category', 'collection', 'categories'];
 
     protected $dates = ['edited_at', 'delay_time', 'commented'];
 
@@ -116,7 +116,7 @@ class Article extends Model
 
     public function collections()
     {
-        return $this->belongsToMany('App\Collection')->withTimestamps();
+        return $this->belongsTo('App\Collection');
     }
 
     public function tips()

@@ -63,6 +63,37 @@ function get_stick_categories($all = false, $index = false)
     return $categories;
 }
 
+function get_stick_video_categories($all = false, $index = false)
+{
+    $video_categories = [];
+    if (Storage::exists("stick_video_categories")) {
+        $json  = Storage::get('stick_video_categories');
+        $items = json_decode($json, true);
+        foreach ($items as $item) {
+            if (!$all) {
+                //expire
+                if (Carbon::createFromTimestamp($item['timestamp'])->addDays($item['expire']) < Carbon::now()) {
+                    continue;
+                }
+            }
+
+            $category = category::find($item['category_id']);
+
+            if ($index && $category) {
+                $video_categories[] = $category;
+                continue;
+            }
+            if ($category) {
+                $category->reason     = !empty($item['reason']) ? $item['reason'] : null;
+                $category->expire     = $item['expire'];
+                $category->stick_time = diffForHumansCN(Carbon::createFromTimestamp($item['timestamp']));
+                $video_categories[]         = $category;
+            }
+        }
+    }
+    return $video_categories;
+}
+
 function stick_category($data, $auto = false)
 {
     $items = [];
@@ -87,6 +118,32 @@ function stick_category($data, $auto = false)
     }
     $json = json_encode($items);
     Storage::put("stick_categories", $json);
+}
+
+function stick_video_category($data, $auto = false)
+{
+    $items = [];
+
+    if (Storage::exists("stick_video_categories")) {
+        $json = Storage::get("stick_video_categories");
+
+        foreach (json_decode($json, true) as $item) {
+            //expire
+            if (Carbon::createFromTimestamp($item['timestamp'])->addDays($item['expire']) < Carbon::now()) {
+                continue;
+            }
+            $items[] = $item;
+        }
+    }
+
+    $data['timestamp'] = time();
+    if ($auto) {
+        $items[] = $data;
+    } else {
+        $items = array_merge([$data], $items);
+    }
+    $json = json_encode($items);
+    Storage::put("stick_video_categories", $json);
 }
 
 function stick_article($data, $auto = false)

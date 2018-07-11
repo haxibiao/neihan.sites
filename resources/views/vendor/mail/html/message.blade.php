@@ -7,7 +7,22 @@
     @endslot
 
     {{-- Body --}}
-    {{ $slot }}
+    
+    @php 
+        $slot = str_replace('Reset Password', '重置密码', $slot);
+        $slot = str_replace('Reset Password', '重置密码', $slot);
+        $slot = str_replace('Reset Password', '重置密码', $slot);
+        $slot = str_replace('Reset Password', '重置密码', $slot);
+        $slot = str_replace('button-blue', 'button-red', $slot);
+    @endphp
+
+    <style type="text/css">
+        .button-red {
+            
+        }
+    </style>
+
+    {!! $slot !!}
 
     {{-- Subcopy --}}
     @isset($subcopy)

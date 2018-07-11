@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Article;
-use App\User;
 use App\Category;
+use App\User;
 use Illuminate\Http\Request;
 use Storage;
 
@@ -36,13 +36,41 @@ class AdminController extends Controller
     {
         $data = request()->all();
 
-        if(count(get_stick_categories())>=5){
+        if (count(get_stick_categories()) >= 5) {
             dd("添加的专题太多了,首页置顶的专题不允许超过5个");
         }
 
-        $data['category_id']=Category::where('name',$data['category_name'])->pluck('id')->first();
-        stick_category($data);
+        $qb = Category::where('name', $data['category_name']);
+        if ($qb->count()) {
+            $data['category_id'] = $qb->pluck('id')->first();
+            stick_category($data);
+        } else {
+            dd("专题不存在");
+        }
+        return redirect()->back();
+    }
 
+    public function videoCategorySticks()
+    {
+        $video_categories = get_stick_video_categories(true);
+        return view('admin.stick_video_categories')->withVideoCategories($video_categories);
+    }
+
+    public function videoCategoryStick()
+    {
+        $data = request()->all();
+        if (count(get_stick_video_categories()) >= 3) {
+            dd("添加的专题太多了,视频置顶的专题不允许超过3个");
+        }
+
+        $qb = Category::where('name', $data['category_name']);
+        if ($qb->count()) {
+            $data['category_id'] = $qb->pluck('id')->first();
+            stick_video_category($data);
+        } else {
+            dd("专题不存在");
+        }
+        
         return redirect()->back();
     }
 
@@ -65,6 +93,28 @@ class AdminController extends Controller
 
         $json = json_encode($left_items);
         Storage::put("stick_categories", $json);
+        return redirect()->back();
+    }
+
+    public function deleteStickVideoCategory()
+    {
+        $category_id = request()->get('category_id');
+        $items       = [];
+
+        if (Storage::exists("stick_video_categories")) {
+            $json  = Storage::get('stick_video_categories');
+            $items = json_decode($json, true);
+        }
+
+        $left_items = [];
+        foreach ($items as $item) {
+            if ($item['category_id'] != $category_id) {
+                $left_items[] = $item;
+            }
+        }
+
+        $json = json_encode($left_items);
+        Storage::put("stick_video_categories", $json);
         return redirect()->back();
     }
 
@@ -92,7 +142,7 @@ class AdminController extends Controller
         $left_items = [];
 
         //找到需要删除的元素就跳出,不必要全部递归
-        foreach ($items as $index=>$item) {
+        foreach ($items as $index => $item) {
             if ($item['article_id'] == $article_id) {
                 array_splice($items, $index, 1);
                 break;
@@ -100,7 +150,7 @@ class AdminController extends Controller
         }
 
         //这里重新装车一遍,否则容易造成全部删除的情况
-        $left_items=$items;
+        $left_items = $items;
 
         $json = json_encode($left_items);
         Storage::put("stick_articles", $json);

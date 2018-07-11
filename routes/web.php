@@ -88,8 +88,10 @@ Route::get('/hxb-login-as/{name}', 'HomeController@hxbLoginAs');
 //多媒体
 Route::resource('/image', 'ImageController');
 Route::resource('/video', 'VideoController');
-Route::get('video_list', function(){
-	return view('video.video_list');
+Route::get('video_list','VideoController@video_list');
+
+Route::get('video_list_demo', function(){
+	return view('video.video_list_demo');
 });
 
 //后台
@@ -115,6 +117,9 @@ Route::post('/admin/delete-stick-article', 'AdminController@deleteStickArticle')
 Route::get('/admin/stick-categorys', 'AdminController@categorySticks');
 Route::post('/admin/stick-category', 'AdminController@categoryStick')->name('admin.stick_category');
 Route::post('/admin/delete-stick-category', 'AdminController@deleteStickCategory')->name('admin.delete_stick_category');
+Route::get('/admin/stick-video-categorys','AdminController@videoCategorySticks');
+Route::post('/admin/stick-video-category', 'AdminController@videoCategoryStick')->name('admin.stick_video_category');
+Route::post('/admin/delete-stick-video-category', 'AdminController@deleteStickVideoCategory')->name('admin.delete_stick_video_category');
 //logs
 Route::get('/logshow', 'LogController@logShow');
 Route::get('/logclear', 'LogController@logClear');
