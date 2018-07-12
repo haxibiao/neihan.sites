@@ -50,6 +50,7 @@
                      <i class="duration"> 
                        @sectominute($video->duration)
                      </i>
+                     <i class="hover-play"> </i>
                    </a>
                  </div>
                  <ul class="info-list">

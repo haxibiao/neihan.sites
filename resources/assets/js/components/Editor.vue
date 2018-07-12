@@ -18,16 +18,7 @@ import Simditor from "../plugins/simditor";
 export default {
     name: "Editor",
 
-    props: [
-        "placeholder",
-        "name",
-        "value",
-        "picture",
-        "video",
-        "write",
-        "focus",
-        "autosave"
-    ],
+    props: ["placeholder", "name", "value", "picture", "video", "write", "focus", "autosave"],
 
     computed: {
         placeholderText() {
@@ -62,7 +53,8 @@ export default {
                 "blockquote",
                 "hr",
                 // 'code',
-                // 'link', '|',
+                "link",
+                "|",
                 "image",
                 "picture"
                 // 'video', '|',

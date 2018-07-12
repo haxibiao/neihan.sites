@@ -2,7 +2,7 @@
   <div class="form-group">
       <label for="article_images">选配图</label>
       <div class="row" id="article_images">
-            <div class="col-xs-3"　v-for="img in imgs">
+            <div class="col-xs-3 img_box"　v-for="img in imgs">
                 <p class="text-center">
                     <img :src="img" alt="" class="img img-responsive">                    
                     <label class="radio text-center">
@@ -53,6 +53,9 @@ export default {
 #article_images {
   img {
     max-width: 200px;
+  }
+  .img_box{
+    height:300px;
   }
 }
 </style>

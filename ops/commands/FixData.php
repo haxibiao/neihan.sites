@@ -100,6 +100,7 @@ class FixData extends Command
 
     public function fix_videos() 
     {
+        
     }
 
     public function fix_images()
@@ -124,71 +125,15 @@ class FixData extends Command
 
     public function fix_articles()
     {
-        //删除文章体中 视频部分
-        Article::where('id','<',1000)->chunk(100, function ($articles) {
-            foreach ($articles as $article) {
-                $body_html = $article->body;
-                $start = strpos( $body_html,'<div>新手教程：' );
-                if( !$start ){
-                    continue;
-                }
-                $end   = strpos( $body_html,'</div>', $start); 
-                $rep_str = substr($body_html, $start, $end-$start+6);
-                $article->body = str_replace($rep_str, '', $body_html);
-                $article->timestamps = false;
-                $article->save();
-                $this->cmd->info('删除文章体中视频>>>'.$article->id.'<<<成功');
-            }
-        });
-        //维护文章与图片的关系,非爬虫文章
-        Article::where('source_url', '=', '0')->chunk(100, function ($articles) {
-            foreach ($articles as $article) {
-                $body_html = $article->body;
-                $img_from_image_urls = \ImageUtils::getImageUrlFromHtml($body_html);
-                $paths = [];
-                foreach ($img_from_image_urls as $image_url) {
-                    //排除base64图片
-                    if( strlen($image_url)<100 && str_contains($image_url,'ainicheng.com') ){
-                        $paths[] = substr($image_url, strpos($image_url,"/storage"));
-                    }
-                }
-                $img_ids = Image::whereIn('path',$paths)->pluck('id');
-                $article->images()->syncWithoutDetaching($img_ids);
-            }
-        });
-        //给文章体中部分Img标签添加宽高属性
-        Article::where('source_url', '=', '0')->chunk(100, function ($articles) {
-            foreach ($articles as $article) {
-                $this->cmd->error('正在替换文章:'. $article->id);
-                $body_html = $article->body;
-                $pattern = "/<img.*?src=['|\"](.*?)['|\"].*?[\/]?>/iu";
-                preg_match_all($pattern, $body_html, $matches);
-
-                $paths = [];
-                foreach ($matches[0] as $img) {
-                    $image_url = \ImageUtils::getImageUrlFromHtml($img)[0];
-                    //防止img中src属性为空
-                    if( empty($image_url) ){
-                        $this->cmd->notice($article->id.'图为空' . $image_url); 
-                        continue;
-                    }
-                    //判断是否有width与height属性，同时跳过base64编码图片
-                    if( strlen($image_url)<100 && (!str_contains( $img, [ 'width=','height='] )) ){
-                        try {
-                            list($width,$height,$type,$attr)=getimagesize($image_url);
-                            $body_html = str_replace(
-                                $image_url . '"' , 
-                                $image_url . '" ' . 'width="'.$width.'" ' . 'height="'.$height.'" ' , 
-                                $body_html
-                            );
-                        } catch (\Exception $e) {
-                            $this->cmd->error($article->id.'获取宽高属性失败' . $image_url); 
-                        }
-                    }
-                }
-                $article->body = $body_html;
-                $article->timestamps = false;
-                $article->save();
+        $this->cmd->info('fix images ...');
+        Article::where('type','video')->chunk(100, function ($articles) {
+            foreach ($articles as $article) { 
+               $video = $article->video;
+               if( empty($video) || empty($video->duration) ){
+                    $article->status = -1;
+                    $article->save(['timestamps'=>false]);
+                    var_dump('66');
+               }
             }
         });
     }

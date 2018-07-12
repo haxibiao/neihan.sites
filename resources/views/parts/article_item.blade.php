@@ -1,7 +1,11 @@
 <li class="article-item {{ $article->hasImage() ? 'have-img' : '' }}">
   @if($article->hasImage())
-    <a class="wrap-img" href="{{ $article->content_url() }}" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}">
-        <img src="{{ $article->primaryImage() }}" alt="{{$article->title}}"> 
+    <a class="wrap-img {{ $article->type=='video'? 'video' : '' }}" href="{{ $article->content_url() }}"   target="{{ \Agent::isDeskTop()? '_blank':'_self' }}">
+        <img src="{{ $article->primaryImage() }}" alt="{{$article->title}}">
+        <i class="hover-play"> </i>
+        @if( $article->type=='video' )
+        <i class="duration">@sectominute($article->video->duration)</i>
+        @endif
     </a> 
   @endif 
   <div class="content">

@@ -26,7 +26,7 @@ class VideoController extends Controller
         $videos = Video::with('user')->with('article.category')
             ->orderBy('id', 'desc')
             ->where([
-                ['status', '>', 0]
+                ['status', '>=', 0]
             ])
             ->paginate(10);
         return view('video.index')
@@ -64,6 +64,14 @@ class VideoController extends Controller
             if ($video->id) { 
                 abort(500, "相同视频已存在"); 
             }
+
+            $title       = $request->title;
+            $description = $request->description;
+            if(empty($title)){
+                $title = str_limit($description, $limit = 20, $end = '...');
+            }
+            $video->title = $title;
+
             $video->save();
 
             //save article
@@ -75,11 +83,8 @@ class VideoController extends Controller
             $params['video_id']  = $video->id;
             $article ->fill($params);
             //文章title
-            $article->title = $request->title;
-            $article->description = $request->description;
-            if(empty($article ->title)){
-                $article ->title = str_limit($article->description, $limit = 20, $end = '...');
-            }
+            $article->title         = $title;
+            $article->description   = $description;
             $article ->save();
 
             //处理视频与分类的关系

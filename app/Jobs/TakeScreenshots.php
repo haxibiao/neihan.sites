@@ -19,16 +19,18 @@ class TakeScreenshots implements ShouldQueue
 
     protected $video;
     protected $force;
+    protected $flag;//该字段表示是否需要更新文章的状态
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(\App\Video $video, $force = false)
+    public function __construct(\App\Video $video, $force = false, $flag=true)
     {
         $this->video = $video;
         $this->force = $force;
+        $this->flag  = $flag;
     }
 
     /**
@@ -39,10 +41,9 @@ class TakeScreenshots implements ShouldQueue
     public function handle()
     { 
         $video        = \App\Video::findOrFail($this->video->id);
-        $article = $video->article;
-        $article->image_url = '/storage/video/' . $video->id . '.jpg';
+        $cover_path = '/storage/video/' . $video->id . '.jpg';
         $video_path = starts_with($video->path, 'http') ? $video->path : public_path($video->path);
-        $cover      = public_path($article->image_url);
+        $cover      = public_path($cover_path);
 
         //get duration 
         $covers           = [];
@@ -67,11 +68,18 @@ class TakeScreenshots implements ShouldQueue
             if (count($covers)) {
                 //copy first screen as default cover..
                 copy($covers[0], $cover);
-                $video->status     = 1; //1代表可用
                 $video->timestamps = false;
+                $video->status = ($this->flag) ? 1 :0;//1代表可用，0代表草稿
                 $video  ->save();
-                $article->status = 1;  //1代表可用
-                $article->save();
+                //更新文章的状态
+                $article = $video->article; 
+                if( !empty($article) ){
+                    $article->image_url = $cover_path;
+                    if( $this->flag ){
+                        $article->status   = 1;  //1代表可用(视频公开)
+                    }
+                    $article->save(['timestamps'=>false]);
+                }
             }
         }
     }
