@@ -77,7 +77,7 @@ class VideoController extends Controller
         ini_set('memory_limit', '256M');
         
         //如果是通过表单上传文件
-        $file = $request->file('video');  
+        $file = $request->file('video');
         if ($file) {
             $hash  = md5_file($file->path());
             $video = Video::firstOrNew([
@@ -85,7 +85,7 @@ class VideoController extends Controller
             ]); 
 
             if ($video->id) {
-                abort(505,"相同视频已存在");
+                // abort(505,"相同视频已存在");
             }
             $video->title = $file->getClientOriginalName();;
             $video->save(); 

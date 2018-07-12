@@ -9,7 +9,7 @@
 					</h4>
                 </div>
                 <div class="modal-body">
-    				<form method="post" action="/question" ref="questionForm">
+    				<form method="post" action="/" ref="questionForm" enctype="multipart/form-data">
     				<input type="hidden" name="_token" v-model="token">
 					<div class="input-question">
 						<input-matching name="title" placeholder="请输入标题"></input-matching>
@@ -22,7 +22,6 @@
 			        <input v-if="top3Imgs.length>0" name="image1" type="hidden" :value="top3Imgs[0].img">
 			        <input v-if="top3Imgs.length>1" name="image2" type="hidden" :value="top3Imgs[1].img">
 			        <input v-if="top3Imgs.length>2" name="image3" type="hidden" :value="top3Imgs[2].img">
-			        </form>
 
                     <div class="img-selector">
                     	<div :class="['ask-img-header',top3Imgs.length>0?'bigger':'']"><span class="desc">（最多9张图片或者1个视频）</span></div>
@@ -55,7 +54,7 @@
 								    	<i class="iconfont icon-icon20"></i>
 								    	<span class="img-click-here">点击此处上传图片</span>
 								        <div class="img-file">
-								            <input type="file" @change="upload"  :accept="fileFormat" multiple ref="upload">
+								            <input type="file" @change="upload"  :accept="fileFormat" multiple ref="upload" name="video">
 								        </div>
 								    	<span class="img-limit">支持图片拖拽上传</span>
 								    </div>
@@ -70,6 +69,7 @@
 							</div>
 						</div>
                     </div>
+			        </form>
                 </div>
                 <footer class="clearfix">
                 	<button class="btn-base btn-handle btn-md pull-right" @click="submit">提交</button>
@@ -188,15 +188,14 @@ export default {
 			});
 		},
 		video_upload(fileObj) {
-			console.log(fileObj);
+			// let formdata = new FormData();
+			// formdata.append("video", fileObj);
+			var api = window.tokenize("/api/video/save");
 			$(this.$refs.questionForm).ajaxSubmit({
-				type: "POST",
-				url: " /api/video/save",
+				type: "post",
+				url: api,
 				dataType: "json",
-				data: fileObj,
-				contentType: false,
-				cache: false,
-				processData: false,
+				// data: formdata,
 				beforeSend: function() {},
 				uploadProgress: function(
 					event,
@@ -204,24 +203,12 @@ export default {
 					total,
 					percentComplete
 				) {
-					console.log(event);
-					console.log("uploadProgress");
-					// $('#progress').show().children().width(percentComplete+'%');
+					let progress = (event.loaded / event.total) * 100 + "%";
+					$(".progress-bar-success").css("width", progress);
 				},
-				success: function(data) {
-					console.log(data);
-					console.log(success);
-
-					// photoData = data[0];
-					// $('.photo_cont img')[0].src = data[0].slice(1);
-					// $('#progress').hide();
-					// $('.temptation').text('上传成功 O(∩_∩)O').css('color','#1E88C7');
-				},
+				success: function(data) {},
 				error: function(data) {
-					console.log(data);
 					console.log("error");
-					// $('#progress').hide();
-					// $('.temptation').text('上传失败 /(ㄒoㄒ)/').css('color','#EE2C2C');
 				}
 			});
 		},
