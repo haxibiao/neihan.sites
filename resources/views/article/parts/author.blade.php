@@ -21,7 +21,7 @@
         @if(checkEditor())
           <a class="btn-base btn-light btn-sm" href="/article/{{ $article->id }}/edit">编辑文章</a>
         @elseif($article->isSelf())
-          <a class="btn-base btn-light btn-sm" href="/write#/notebooks/{{ $article->collections()->first()->id }}/notes/{{ $article->id }}">编辑文章</a>
+          <a class="btn-base btn-light btn-sm" href="/write#/notebooks/{{ $article->collection_id }}/notes/{{ $article->id }}">编辑文章</a>
         @endif
       </div>
       <!-- 文章数据信息 -->
