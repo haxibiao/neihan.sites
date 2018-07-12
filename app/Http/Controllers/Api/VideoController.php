@@ -77,23 +77,34 @@ class VideoController extends Controller
         ini_set('memory_limit', '256M');
         
         //如果是通过表单上传文件
-        $file = $request->video;
+        $file = $request->file('video');  
         if ($file) {
             $hash  = md5_file($file->path());
             $video = Video::firstOrNew([
                 'hash' => $hash,
-            ]);
+            ]); 
+
             if ($video->id) {
                 abort(505,"相同视频已存在");
             }
-            // $video->user_id = $request->user()->id;
+            $video->title = $file->getClientOriginalName();;
+            $video->save(); 
+            //虽然是简单的上传文件但是文章关系还是存了下来
+            $article = new Article(); 
+            $article->user_id   = getUserId();  
+            $article->video_url = $video->getPath();
+            $article->type      = 'video';
+            $article->image_url = '/images/uploadImage.jpg';//默认图
+            $article->video_id  = $video->id;
+            $article->title     = $file->getClientOriginalName();//新上传的文件直接使用文件的原始名称
+            $article->save();
             
-            //保存视频
-            $video->saveFile($file);
-
+            //保存视频,简单保存视频不需要更新文章的发布状态
+            $video->saveFile($file,false);
             return [
-                'video_id' => $video->id, 
-                'video_url' => $video->url()
+                'video_id'  => $video->id, 
+                'video_url' => $video->url(),
+                'image_url' => 'www.ainicheng.com/images/uploadImage.jpg',
             ];
         }
 

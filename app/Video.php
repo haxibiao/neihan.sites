@@ -28,9 +28,9 @@ class Video extends Model
         return $this->hasOne(\App\Article::class);
     }
 
-    public function takeSnapshot($force = false)
+    public function takeSnapshot($force = false, $flag=true)
     {
-        \App\Jobs\TakeScreenshots::dispatch($this, $force);
+        \App\Jobs\TakeScreenshots::dispatch($this, $force, $flag);
     }
 
     public function getPath() {
@@ -40,7 +40,7 @@ class Video extends Model
     }
 
     public function url() {
-        if (starts_with($this->path, 'http')) {
+        if (starts_with($this->path, 'http')) { 
             return $this->path;
         }
         return file_exists(public_path($this->path)) ? url($this->path) : env('APP_URL') . $this->path;
@@ -49,12 +49,14 @@ class Video extends Model
     /**
      * @Desc     保存视频文件
      * @Author   czg
-     * @DateTime 2018-06-28
-     * @return   [type]     [description]
+     * @DateTime 2018-07-11
+     * @param    [type]     $file [description]
+     * @param    [type]     $flag 是否改变文章的状态
+     * @return   [type]           [description]
      */
-    public function saveFile($file){
+    public function saveFile($file, $flag=true){
         if($file){
-            $this   ->user_id = getUserId(); 
+            $this   ->user_id = getUserId();
             $this   ->save();
 
             //保存视频地址
@@ -68,7 +70,7 @@ class Video extends Model
             $this->save();
 
             //截取图片
-            $this->takeSnapshot(true);
+            $this->takeSnapshot(true, $flag);
             return true;
         }
         return false;
