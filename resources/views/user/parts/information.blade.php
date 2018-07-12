@@ -38,12 +38,7 @@
                         关注
                         <i class="iconfont icon-youbian"></i>
                     </a>
-                    @push('scripts')
-                        <script>
-                            console.log(user.count_follows);
-
-                        </script>
-                    @endpush
+                    
                 </div>
             </li>
             <li class="hidden-xs">

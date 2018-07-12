@@ -75,7 +75,15 @@
         </div>
         
         {{-- 选择配图 --}}
-        @include('article.parts.images_selected', ['images' => $article->images, 'article' => $article])
+        {{-- @include('article.parts.images_selected', ['images' => $article->images, 'article' => $article]) --}}
+        {{-- 选择配图 vue --}}
+        @php
+           $img_urls = [];
+           foreach($article->images as $image) {
+            $img_urls[] = $image->url();
+           } 
+        @endphp 
+        <image-select :img-urls="{{ json_encode($img_urls) }}"></image-select>
 
         @editor
         <div class="row">            

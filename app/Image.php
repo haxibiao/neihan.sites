@@ -27,7 +27,7 @@ class Image extends Model
         if (file_exists(public_path($this->path))) {
             return url($this->path);
         }
-        return url_prod();
+        return $this->url_prod();
     }
 
     public function url_prod()

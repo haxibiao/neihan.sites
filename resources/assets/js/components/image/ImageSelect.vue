@@ -19,9 +19,12 @@
 export default {
   name: "ImageSelect",
 
+  props: ["imgUrls"],
+
   methods: {
     updateNewImgs() {
-      this.imgs = window.new_imgs ? window.new_imgs : [];
+      let imgUrls = this.imgUrls ? this.imgUrls : [];
+      this.imgs = window.new_imgs ? imgUrls.concat(window.new_imgs) : imgUrls;
     }
   },
 
@@ -30,6 +33,12 @@ export default {
     window.$bus.$on("imageuploaded", function() {
       _this.updateNewImgs();
     });
+  },
+
+  mounted() {
+    let imgUrls = this.imgUrls ? this.imgUrls : [];
+    console.log(imgUrls);
+    this.imgs = imgUrls;
   },
 
   data() {
