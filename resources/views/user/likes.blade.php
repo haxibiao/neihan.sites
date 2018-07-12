@@ -15,7 +15,7 @@
                     <!-- Nav tabs -->
                     <ul id="trigger-menu" class="nav nav-tabs" role="tablist">
                         <li role="presentation" {!! ends_with(request()->path(), 'followed-categories') ? 'class="active"' : '' !!}>
-                            <a href="#category" aria-controls="category" role="tab" data-toggle="tab">关注的专题 {{ $data['followed_categories']->total() }}</a>
+                            <a href="#categorys" aria-controls="categorys" role="tab" data-toggle="tab">关注的专题 {{ $data['followed_categories']->total() }}</a>
                         </li>
                         <li role="presentation" {!! ends_with(request()->path(), 'followed-collections') ? 'class="active"' : '' !!}>
                             <a href="#collection" aria-controls="collection" role="tab" data-toggle="tab">关注的文集 {{ $data['followed_collections']->total() }}</a>
@@ -26,7 +26,7 @@
                     </ul>
                     <!-- Tab panes -->
                     <div class="article-list tab-content">
-                        <ul role="tabpanel" class="fade in note-list tab-pane {{ ends_with(request()->path(), 'followed-categories') ? 'active' : '' }}" id="category">
+                        <ul role="tabpanel" class="fade in note-list tab-pane {{ ends_with(request()->path(), 'followed-categories') ? 'active' : '' }}" id="categorys">
 
                         	@foreach($data['followed_categories'] as $follow)
                         	@php

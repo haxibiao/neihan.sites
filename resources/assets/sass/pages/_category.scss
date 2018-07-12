@@ -1,21 +1,23 @@
-
-#category,#collection,#follow {
+#category,
+#collection,
+#follow {
 	.note-info.info-lg {
-		.title,.info {
+		.title,
+		.info {
 			padding: 10px 0 0 0;
 		}
 	}
 }
 
-#category{
-	.note-info.info-lg{
+#category {
+	.note-info.info-lg {
 		width: 100%;
 		float: left;
 		margin-bottom: 15px;
 	}
-	.btn-base{
-		margin:45px 0px 20px 15px;
-		padding:9px 0;
+	.btn-base {
+		margin: 45px 0px 20px 15px;
+		padding: 9px 0;
 		font-size: 13px;
 		width: 85px;
 	}
