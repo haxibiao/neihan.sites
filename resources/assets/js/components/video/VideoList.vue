@@ -11,10 +11,11 @@
     <div class="box-body">
        <ul class="game-video-list">
     		  <li v-for="article in articles" class="game-video-item">           
-              <a href="/video/287">   
+              <a href="/video/287" class="video-info">   
                   <img class="video-photo" src="https://www.ainicheng.com/storage/video/287.jpg">
-                   <p>绝地求生官方宣传视频”</p>
+                  <i class="hover-play"> </i>
               </a>
+              <a href="">绝地求生官方宣传视频</a>
               <div class="info">
                   <a class="user" href="/user/270">
                       <img src="https://ainicheng.com/storage/avatar/270.jpg" class="avatar">

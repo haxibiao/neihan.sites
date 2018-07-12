@@ -1,8 +1,10 @@
 <template>
 	<div>	
 		<li v-for="article in articles" :class="article.has_image ? 'article-item have-img' : 'article-item'">
-		    <a v-if="article.has_image" class="wrap-img" :href="article.url" :target="isDesktop? '_blank' : '_self'">
+		    <a v-if="article.has_image" :class="article.type =='video' ? 'wrap-img video' : 'wrap-img'" :href="article.url" :target="isDesktop? '_blank' : '_self'">
 		        <img :src="article.primary_image" :alt="article.title">
+		        <i class="hover-play"> </i>
+		        <i  v-if="article.type =='video'" class="duration">{{article.duration}}</i>  <!--当为视频时,取出视频的时长 -->
 		    </a>  
 		  <div class="content">
 		    <div class="author">
