@@ -70,7 +70,7 @@ class AdminController extends Controller
         } else {
             dd("专题不存在");
         }
-        
+
         return redirect()->back();
     }
 
@@ -234,12 +234,12 @@ class AdminController extends Controller
 
         switch ($type) {
             case 'pandaNumber':
-                $appid = config('seo.articlePush.pandaNumber.appid');
-                $token = config('seo.articlePush.pandaNumber.token');
+                $appid = config('seo.'get_domain_key()'.articlePush.pandaNumber.appid');
+                $token = config('seo.'get_domain_key()'.articlePush.pandaNumber.token');
                 $api   = 'http://data.zz.baidu.com/urls?appid=' . $appid . '&token=' . $token . '&type=realtime';
                 break;
             case 'baiduNumber':
-                $token = config('seo.articlePush.baiduNumber.token');
+                $token = config('seo.'get_domain_key()'.articlePush.baiduNumber.token');
                 $api   = 'http://data.zz.baidu.com/urls?site=' . env('APP_URL') . '&token=' . $token;
                 break;
             default:

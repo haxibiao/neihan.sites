@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('title')问答 - {{ env('APP_NAME') }} @stop
-@section('description') {{config('seo.description')  }} @stop
-@section('keywords') {{ config('seo.keywords') }} @stop
+@section('description') {{config('seo.'.get_domain_key().'.description')  }} @stop
+@section('keywords') {{ config('seo.'.get_domain_key().'.keywords') }} @stop
 
 @push('section')
  <div id="questions">

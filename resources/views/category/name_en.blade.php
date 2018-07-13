@@ -2,7 +2,7 @@
 
 @section('title') {{ $category->name }} - {{ env('APP_NAME') }} @endsection
 @section('keywords') {{ $category->name }} @endsection
-@section('description') {{ $category->description?$category->description:config('seo.description') }} @endsection
+@section('description') {{ $category->description?$category->description:config('seo.'.get_domain_key().'.description') }} @endsection
  
 @section('content')
 <div id="category">

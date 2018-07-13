@@ -31,7 +31,7 @@ class ArticleController extends Controller
 
         //category
 
-        $default_import_category_name = config('seo.default_import_category_name');
+        $default_import_category_name = config('seo.'.get_domain_key().'.default_import_category_name');
         if (empty($default_import_category_name)) {
             $category = Category::firstOrnew([
                 'name'    => $category['name'],

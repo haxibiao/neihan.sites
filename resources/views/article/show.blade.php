@@ -4,7 +4,7 @@
 @section('keywords') {{ $article->keywords }} @endsection
 @section('description') {{ $article->description() }} @endsection
 
-@push('seo_metatags') 
+@push('seo_og_result') 
 <meta property="og:type" content="{{ $article->type }}" />
 <meta property="og:url" content="https://{{ get_domain() }}/article/{{ $article->id }}" />
 <meta property="og:title" content="{{ $article->title }}" />

@@ -19,3 +19,4 @@ sudo /bin/cp -rf /data/www/ainicheng.com/resources/views /data/www/$1.com/resour
 sudo /bin/cp -rf /data/www/ainicheng.com/resources/assets/js /data/www/$1.com/resources/assets/
 sudo /bin/cp -rf /data/www/ainicheng.com/routes /data/www/$1.com/
 sudo /bin/cp -rf /data/www/ainicheng.com/composer.* /data/www/$1.com/
+sudo /bin/cp -rf /data/www/ainicheng.com/public/assets /data/www/$1.com/public
