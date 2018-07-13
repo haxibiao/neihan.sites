@@ -67,7 +67,7 @@
                                     type="collections" 
                                     id="{{ $collection->id }}" 
                                     user-id="{{ user_id() }}" 
-                                    followed="{{ is_follow('categories', $collection->id) }}">
+                                    followed="{{ is_follow('collections', $collection->id) }}">
                                   </follow>
 
                                 <div class="title">
