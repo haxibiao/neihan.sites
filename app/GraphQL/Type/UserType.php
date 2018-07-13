@@ -342,7 +342,7 @@ class UserType extends GraphQLType
                 'resolve'     => function ($root, $args) {
                     //分页参数,后面可以把自定义分页功能提取出来
                     $offset = isset($args['offset']) ? $args['offset'] : 0;
-                    $limit  = isset($args['offset']) ? $args['limit'] : 10; //获取多少条数据，默认为10
+                    $limit  = isset($args['limit']) ? $args['limit']   : 10; //获取多少条数据，默认为10
 
                     if (isset($args['filter'])) {
                         switch ($args['filter']) {
@@ -393,7 +393,7 @@ class UserType extends GraphQLType
                     }
                     return $root->categories()->skip($offset)->take($limit)->get();
                 },
-            ],
+            ], 
 
             'collections'       => [
                 'type'        => Type::listOf(GraphQL::type('Collection')),

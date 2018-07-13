@@ -142,6 +142,8 @@ return [
                 'visits'       => '\App\GraphQL\Query\VisitsQuery',
                 'follows'      => '\App\GraphQL\Query\FollowsQuery',
                 'transactions' => '\App\GraphQL\Query\TransactionsQuery',
+                'queries'      => '\App\GraphQL\Query\QueriesQuery',
+                'queryLogs'    => '\App\GraphQL\Query\QueryLogsQuery',
             ],
             'mutation' => [
                 //report
@@ -200,6 +202,9 @@ return [
 
                 //favorite
                 'favoriteArticle'        => '\App\GraphQL\Mutation\favorite\favoriteArticleMutation',
+                
+                //删除查询日志
+                'deleteQueryLog'        => '\App\GraphQL\Mutation\queryLog\DeleteQueryLogMutation',
             ],
         ],
     ],
@@ -273,6 +278,8 @@ return [
         'Visited'          => '\App\GraphQL\Type\VisitedType',
         'Video'            => '\App\GraphQL\Type\VideoType',
         'Transaction'      => '\App\GraphQL\Type\TransactionType',
+        'DBQuery'          => '\App\GraphQL\Type\QueryType',     //Model Query与GraphQL中Query冲突了
+        'QueryLog'         => '\App\GraphQL\Type\QueryLogType',
 
         //simple json type
         'Report'           => '\App\GraphQL\Type\ReportType',
@@ -290,6 +297,7 @@ return [
         'VisitFilter'      => '\App\GraphQL\Enum\VisitFilterEnum',
         'FollowFilter'     => '\App\GraphQL\Enum\FollowFilterEnum',
         'ArticleType'      => '\App\GraphQL\Enum\ArticleTypeEnum',
+        'QueryOrderEnum'   => '\App\GraphQL\Enum\QueryOrderEnum',
     ],
 
     /*

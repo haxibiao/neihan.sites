@@ -31,6 +31,9 @@ class ArticleFilterEnum extends GraphQLType {
             'LIKED' => 'LIKED',
             'FAVED' => 'FAVED',
             'TRASH' => 'TRASH',
+            //排序规则
+            'TIME' => 'TIME',//按时间排序
+            'HOT'  => 'HOT', //文章热度
         ],
     ];
 }

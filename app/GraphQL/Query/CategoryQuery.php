@@ -22,12 +22,14 @@ class CategoryQuery extends Query
     public function args()
     {
         return [
-            'id' => ['name' => 'id', 'type' => Type::int()],
+            'id'          => ['name' => 'id', 'type' => Type::int()],
+            'keyword'     => ['name' => 'keyword'   , 'type'    => Type::string()],
         ];
     }
 
     public function resolve($root, $args)
     {
+        
         return Category::findOrFail($args['id']);
     }
 }

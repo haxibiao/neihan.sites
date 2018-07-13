@@ -14,7 +14,7 @@ class ArticlesQuery extends Query
     ];
 
     public function type()
-    {
+    { 
         return Type::listOf(GraphQL::type('Article'));
     }
 
@@ -25,13 +25,14 @@ class ArticlesQuery extends Query
             'category_id'   => ['name' => 'category_id', 'type'     => Type::int()],
             'collection_id' => ['name' => 'collection_id', 'type'   => Type::int()],
             'limit'         => ['name' => 'limit', 'type'   => Type::int()],
-            'offset'        => ['name' => 'offset', 'type'  => Type::int()],
+            'offset'        => ['name' => 'offset', 'type'  => Type::int()], 
             'filter'        => ['name' => 'filter', 'type'  => GraphQL::type('ArticleFilter')],
             'in_days'       => ['name' => 'in_days', 'type' => Type::int()],
             'order'         => ['name' => 'order',  'type'  => GraphQL::type('ArticleOrder')],
             'type'          => ['name' => 'type', 'type'    => GraphQL::type('ArticleType')],
+            'keyword'     => ['name' => 'keyword'   , 'type'    => Type::string()],
         ];
-    }
+    } 
 
     public function resolve($root, $args)
     {
@@ -39,13 +40,43 @@ class ArticlesQuery extends Query
         $qb = Article::where('source_url', '=', '0');
         //下面代码注释掉的原因避免，用户发布一篇新文章在手机duan自己主页的公开文章中查询不到
         /*->where('category_id', '>', 0)*/;
-    
+        
+        if (isset($args['keyword'])) {
+            $keyword = trim($args['keyword']);
+            if( empty( $keyword ) ){
+                return null;
+            } 
+            $qb = $qb->where('status', 1)
+                ->where(function($query) use($keyword){
+                    $query->where('title', 'like', '%' . $keyword . '%')
+                        ->orWhere('keywords', 'like', '%' . $keyword . '%');
+                  });
+            $results = $qb->count();
+            //记录用户搜索日志
+            if ( $results ) { 
+                //保存全局搜索
+                $query_item = \App\Query::firstOrNew([
+                    'query' => $keyword,
+                ]);
+                $query_item->results = $results;
+                $query_item->hits++;
+                $query_item->save();
+
+                //保存个人搜索,游客也进行记录
+                $query_log = \App\Querylog::firstOrNew([
+                    'user_id' => checkUser() ? getUser()->id : null,
+                    'query'   => $keyword,
+                ]);
+                $query_log->save();
+            }
+        }
+
         if (isset($args['order'])) {
             if ($args['order'] == 'COMMENTED') {
-                $qb = Article::orderBy('updated_at', 'desc'); //TODO:: later update article->commented while commented ...
+                $qb = $qb->orderBy('updated_at', 'desc'); //TODO:: later update article->commented while commented ...
             } else if ($args['order'] == 'HOT') {
-                $qb = Article::orderBy('hits', 'desc');
-            }
+                $qb = $qb->orderBy('hits', 'desc');
+            } 
         } else {
             $qb = $qb->orderBy('id', 'desc');
         }
@@ -72,17 +103,18 @@ class ArticlesQuery extends Query
         if (isset($args['type'])) {
             switch ($args['type']) {
                 case 'VIDEO':
-                    $qb = $qb->where('type', '=', 'video');
+                    $qb = $qb->where('type','=','video'); 
                     break;
 
                 case 'ARTICLE':
-                    $qb = $qb->where('type', '=', 'article');
+                    $qb = $qb->where('type','=','article');
                     break;
 
                 default:
                     break;
             }
         }
+        
 
         if (isset($args['in_days'])) {
             $qb = $qb->where('updated_at', '>', \Carbon\Carbon::now()->addDays(-$args['in_days']));
