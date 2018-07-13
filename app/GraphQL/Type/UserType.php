@@ -261,6 +261,8 @@ class UserType extends GraphQLType
                 'type'        => Type::listOf(GraphQL::type('Article')),
                 'description' => 'articles of user',
                 'resolve'     => function ($root, $args) {
+
+                    //和这个用户相关的新的【未处理的投稿请求】的文章列表
                     if (isset($args['filter']) && $args['filter'] == 'NEW_REQUESTED') {
                         $articles = [];
                         foreach ($root->adminCategories as $category) {
@@ -279,10 +281,10 @@ class UserType extends GraphQLType
                         $qb = $root->drafts();
                     }
                     if (isset($args['filter']) && $args['filter'] == 'FAVED') {
-                        $qb = $root->favorites();
+                        $qb = $root->favoritedArticles();
                     }
                     if (isset($args['filter']) && $args['filter'] == 'LIKED') {
-                        $qb = $root->likes();
+                        $qb = $root->likedArticles();
                     }
 
                     if (isset($args['offset'])) {
@@ -293,6 +295,8 @@ class UserType extends GraphQLType
                         $limit = $args['limit'];
                     }
                     $qb = $qb->take($limit);
+
+                    //处理特殊filter的返回数据
                     if (isset($args['filter']) && $args['filter'] == 'FAVED') {
                         $articles = [];
                         foreach ($qb->get() as $fav) {
@@ -307,7 +311,9 @@ class UserType extends GraphQLType
                         }
                         return $articles;
                     }
+
                     $articles = $qb->get();
+                    //处理投稿请求的文章上得特殊状态字段
                     if (isset($args['filter']) && $args['filter'] == 'CATE_SUBMIT_STATUS' && isset($args['category_id'])) {
                         $category = \App\Category::findOrFail($args['category_id']);
                         foreach ($articles as $article) {
