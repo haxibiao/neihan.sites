@@ -114,11 +114,6 @@ class Article extends Model
         return $this->belongsToMany('App\Image')->withTimestamps();
     }
 
-    public function collections()
-    {
-        return $this->belongsTo('App\Collection');
-    }
-
     public function tips()
     {
         return $this->morphMany(\App\Tip::class, 'tipable');
@@ -287,7 +282,6 @@ class Article extends Model
                 $image->title = $this->title;
                 $image->save();
                 $last_img_small_path = $image->path_small();
-
                 //auto get is_top an image_top
                 if ($image->path_top) {
                     // $this->is_top    = 1;
@@ -300,7 +294,6 @@ class Article extends Model
                 }
             }
         }
-
         //fix primary image url if not
         if (empty($this->image_url)) {
             $this->image_url = $last_img_small_path;

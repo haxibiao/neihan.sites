@@ -22,7 +22,7 @@ class Collection extends Model
 
     public function articles()
     {
-        return $this->belongsToMany(\App\Article::class);
+        return $this->hasMany(\App\Article::class);
     }
 
     public function hasManyArticles()

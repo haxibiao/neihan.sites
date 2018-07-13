@@ -190,8 +190,9 @@ class ArticleController extends Controller
         $article->saveRelatedImagesFromBody();
 
         if ($request->status == 1) {
-            //可能是发布了文章，需要统计文集的文章数，字数
-            foreach ($article->collections as $collection) {
+            //可能是发布了文章，需要统计文集的文章数，字数 
+            $collections = $article->collection->get();
+            foreach ($collections as $collection) {
                 $collection->count       = $collection->articles()->count();
                 $collection->count_words = $collection->articles()->sum('count_words');
                 $collection->save();
