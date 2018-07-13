@@ -483,7 +483,7 @@ class UserType extends GraphQLType
                 'type'        => Type::listOf(GraphQL::type('Article')),
                 'description' => 'favorited articles of user',
                 'resolve'     => function ($root, $args) {
-                    $qb = $root->favorites();
+                    $qb = $root->favoritedArticles();
                     if (isset($args['offset'])) {
                         $qb = $qb->skip($args['offset']);
                     }
@@ -509,7 +509,7 @@ class UserType extends GraphQLType
                 'type'        => Type::listOf(GraphQL::type('Article')),
                 'description' => 'liked articles of user',
                 'resolve'     => function ($root, $args) {
-                    $qb = $root->likes();
+                    $qb = $root->likedArticles();
                     if (isset($args['offset'])) {
                         $qb = $qb->skip($args['offset']);
                     }

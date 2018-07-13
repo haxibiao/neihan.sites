@@ -2,12 +2,12 @@
 
 namespace App;
 
+use App\Notifications\MyOwnResetPassword as ResetPasswordNotification;
 use App\Traits\TimeAgo;
 use Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
-use App\Notifications\MyOwnResetPassword as ResetPasswordNotification;
 
 class User extends Authenticatable
 {
@@ -70,9 +70,19 @@ class User extends Authenticatable
         return $this->hasMany(\App\Favorite::class);
     }
 
+    public function favoritedArticles()
+    {
+        return $this->hasMany(\App\Favorite::class)->where('faved_type', 'articles');
+    }
+
     public function likes()
     {
         return $this->hasMany(\App\Like::class);
+    }
+
+    public function likedArticles()
+    {
+        return $this->hasMany(\App\Like::class)->where('liked_type', 'articles');
     }
 
     public function follows()
@@ -172,7 +182,7 @@ class User extends Authenticatable
 
     public function hasManyCategories()
     {
-        return $this->hasMany(\App\Category::class,'user_id','id')->where('type', 'article');
+        return $this->hasMany(\App\Category::class, 'user_id', 'id')->where('type', 'article');
     }
 
     //computed props methods ................................................................................
@@ -254,19 +264,19 @@ class User extends Authenticatable
         //缓存未命中
         if (!$unreads) {
             $unreadNotifications = $this->unreadNotifications()->get();
-            $unreads = [
-                'comments'=>null,
-                'likes'   =>null,
-                'follows' =>null,
-                'tips'    =>null,
-                'others'  =>null,
+            $unreads             = [
+                'comments' => null,
+                'likes'    => null,
+                'follows'  => null,
+                'tips'     => null,
+                'others'   => null,
             ];
             //下列通知类型是进入了notification表的
-            $unreadNotifications->each(function ($item) use (&$unreads){
+            $unreadNotifications->each(function ($item) use (&$unreads) {
                 switch ($item->type) {
                     //评论文章通知
                     case 'App\Notifications\ArticleCommented':
-                        $unreads['comments'] ++;
+                        $unreads['comments']++;
                         break;
                     //喜欢文章通知
                     case 'App\Notifications\ArticleLiked':
@@ -289,8 +299,8 @@ class User extends Authenticatable
             });
             //聊天消息数
             $unreads['chats'] = $this->chats->sum(function ($item) {
-                return $item->pivot->unreads; 
-            }); 
+                return $item->pivot->unreads;
+            });
             //投稿请求数
             $unreads['requests'] = $this->adminCategories()->sum('new_requests');
 
@@ -316,7 +326,7 @@ class User extends Authenticatable
 
     public function newReuqestCategories()
     {
-        return $this->adminCategories()->orderBy('new_requests','desc')->orderBy('updated_at','desc');
+        return $this->adminCategories()->orderBy('new_requests', 'desc')->orderBy('updated_at', 'desc');
     }
 
     public function link()
@@ -331,7 +341,7 @@ class User extends Authenticatable
         if ($last) {
             $balance = $last->balance;
         }
-        return $balance; 
+        return $balance;
     }
 
     public function introduction()
@@ -490,7 +500,7 @@ class User extends Authenticatable
     public function videoArticles()
     {
         return $this->hasMany('App\Article')
-            ->where('articles.type','video');
+            ->where('articles.type', 'video');
     }
 
     //重写用户的重置密码邮件通知
