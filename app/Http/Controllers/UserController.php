@@ -284,6 +284,7 @@ class UserController extends Controller
     public function likes(Request $request, $id)
     {
         $user = User::findOrFail($id);
+        $user->followUsers = $user->followings()->where('followed_type', 'users')->count();
 
         $data['liked_articles'] = Like::with('liked')
             ->where('user_id', $user->id)
