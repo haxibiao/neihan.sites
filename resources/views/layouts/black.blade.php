@@ -16,6 +16,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="keywords" content="@yield('keywords'),{{ config('app.name') }} ">
     <meta name="description" content="@yield('description') ,{{ config('app.name') }} ">
+    @stack('seo_metatags')
+    @stack('seo_og_result')
 
     <!-- Styles -->
     <link href="{{ mix('css/guest.css') }}" rel="stylesheet">

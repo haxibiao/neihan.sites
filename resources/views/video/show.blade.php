@@ -1,8 +1,20 @@
 @extends('layouts.black')
 
 @section('title')
-	视频: {{ $video->article->title }}
+	视频: {{ $video->article->title }} - @if($video->article && $video->article->category){{ $video->article->category->name }}@endif {{ env('APP_NAME') }}
 @stop
+
+@push('seo_og_result') 
+@if($video->article)
+<meta property="og:type" content="{{ $video->article->type }}" />
+<meta property="og:url" content="https://{{ get_domain() }}/video/{{ $video->article->video_id }}" />
+<meta property="og:title" content="{{ $video->article->title }}" />
+<meta property="og:description" content="{{ $video->article->description() }}" />
+<meta property="og:image" content="{{ $video->article->cover() }}" />
+<meta name="weibo: article:create_at" content="{{ $video->article->created_at }}" />
+<meta name="weibo: article:update_at" content="{{ $video->article->updated_at }}" />
+@endif
+@endpush  
 
 @section('logo')
     <a class="logo" href="/">
@@ -31,7 +43,7 @@
                 </div>
                 <div class="listArea col-sm-4 hidden-xs">
                     <div class="classify">
-                        @if($video->article->category)
+                        @if($video->article && $video->article->category)
                         <div>
                             <a href="/{{ $video->article->category->name_en }}" class="avatar">
                                 <img src="{{ $video->article->category->logo() }}" alt="{{ $video->article->category->name }}">
