@@ -191,4 +191,27 @@ class UserController extends Controller
 
         return $data;
     }
+
+    public function follows(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        if (ajaxOrDebug() && $request->get('followings')) {
+            $data = smartPager($user->followingUsers()->orderBy('id', 'desc'), 10);
+            foreach ($data as $follows) {
+                $follows->user = $follows->followed;
+                $follows->user->avatar = $follows->user->avatar();
+                $follows->user->is_follow = is_follow('users', $user->id);
+            }
+            return $data;
+        }
+
+        if (ajaxOrDebug() && $request->get('followers')) {
+            $data = smartPager($user->follows()->orderBy('id', 'desc'), 10);
+            foreach ($data as $followUser) {
+            $followUser->user->avatar = $followUser->user->avatar();
+            $followUser->user->is_follow = is_follow('users', $user->id);
+            }
+            return $data;
+        }
+    }
 }

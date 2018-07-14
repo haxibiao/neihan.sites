@@ -39,7 +39,7 @@ Vue.component(
 Vue.component("side-tool", require("./components/SideTool.vue"));
 
 Vue.component("article-list", require("./components/article/ArticleList.vue"));
-Vue.component("video-list",require("./components/video/VideoList.vue"))
+Vue.component("video-list", require("./components/video/VideoList.vue"));
 Vue.component(
 	"category-list",
 	require("./components/category/CategoryList.vue")
@@ -55,6 +55,7 @@ Vue.component("social-login", require("./components/logins/SocialLogin.vue"));
 Vue.component("signs", require("./components/logins/Signs.vue"));
 
 //登录用户：　可见高级输入框组件...
+Vue.component("follow-list", require("./components/follow/FollowList.vue"));
 Vue.component("tags-input", require("./components/TagsInput.vue"));
 Vue.component("image-select", require("./components/image/ImageSelect.vue"));
 Vue.component("user-select", require("./components/UserSelect.vue"));

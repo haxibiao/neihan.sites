@@ -17,6 +17,7 @@ Route::get('/user/editors', 'Api\UserController@editors');
 Route::get('/user/recommend', 'Api\UserController@recommend');
 Route::middleware('auth:api')->post('/user/save-avatar', 'Api\UserController@saveAvatar');
 Route::middleware('auth:api')->post('/user', 'Api\UserController@save');
+Route::middleware('auth:api')->post('/user/{id}/follow', 'Api\UserController@follows');
 Route::get('/user/{id}', 'Api\UserController@show');
 
 //按用户名搜索用户
