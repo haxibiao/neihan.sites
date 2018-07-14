@@ -12,8 +12,8 @@ class CollectionController extends Controller
     public function index(Request $request)
     {
         $user        = $request->user();
-        $collections = $user->collections()->with('articles')->orderBy('id', 'desc')->get();
-        return $collections;
+        $collections = $user->collections()->with('articles')->orderBy('id', 'desc')->get(); 
+        return $collections; 
     }
 
     public function show(Request $request, $id)
@@ -66,7 +66,10 @@ class CollectionController extends Controller
     public function moveArticle(Request $request, $id, $cid)
     {
         $article = Article::findOrFail($id);
-        $article->collections()->sync($cid);
+        $article->collection_id = $cid;
+        $article->timestamps = false;
+        $article->save();
+
         return $article;
     }
 
@@ -74,10 +77,11 @@ class CollectionController extends Controller
     {
         $article          = new Article($request->all());
         $article->user_id = $request->user()->id;
+        $article->collection_id = $id;
         $article->save();
 
         //暂时维护个和文集的多对多关系，方便今后文集之间复制文章的时候用
-        $article->collections()->sync($id);
+        // $article->collections()->sync($id);
 
         return $article;
     }
