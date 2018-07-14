@@ -37,7 +37,8 @@ class moveArticleMutation extends Mutation
     public function resolve($root, $args)
     {
         $article = Article::findOrFail($args['article_id']);
-        $article->collections()->sync($args['collection_id']);
+        $article->collection_id = $args['collection_id'];
+        $article->save();
         return $article;
     }
 }
