@@ -7,10 +7,9 @@
 			    <follow 
 			      type="users" 
 			      :id="user.user.id" 
-			      :user-id="user.user_id" 
-			      followed="user.user.is_follow">
+			      :user-id="currentUserId" 
+			      :followed="user.user.is_follow">
 			    </follow>
-
 			    <div class="title">
 			      <a :href="'/user/'+user.user.id" class="name">{{ user.user.name }}</a>
 			    </div>
@@ -32,7 +31,7 @@
 export default {
 	name: "FollowList",
 
-	props: ["api", "startPage", "notEmpty", "isDesktop", "flag"],
+	props: ["api", "startPage", "notEmpty", "isDesktop", "currentUserId"],
 
 	watch: {
 		api(val) {

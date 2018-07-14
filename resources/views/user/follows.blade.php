@@ -30,14 +30,14 @@
 					   		@foreach($data['follows'] as $follow)					   			
 					   			@include('user.parts.follow_item', ['user'=>$follow->followed])
 					   		@endforeach
-					   		<follow-list api="/api/user/{{ $user->id }}/follow?followings=1" start-page="2" not-empty="{{count($data['follows'])>0}}">
+					   		<follow-list api="/api/user/{{ $user->id }}/follow?followings=1" start-page="2" not-empty="{{count($data['follows'])>0}}" current-user-id="{{ user_id() }}">
 					   		</follow-list>
 					   </ul>
 					   <ul role="tabpanel" class="fade user-list follow-user-list tab-pane" id="followers">
 					   		@foreach($data['followers'] as $follow)
 					   			@include('user.parts.follow_item', ['user'=>$follow->user])
 					   		@endforeach
-					   		<follow-list api="/api/user/{{ $user->id }}/follow?followers=1" start-page="2" not-empty="{{count($data['followers'])>0}}">
+					   		<follow-list api="/api/user/{{ $user->id }}/follow?followers=1" start-page="2" not-empty="{{count($data['followers'])>0}}" current-user-id="{{ user_id() }}">
 					   		</follow-list>
 					   </ul>
 					 </div>
