@@ -13,7 +13,6 @@
 
 Auth::routes();
 Route::pattern('id', '\d+');
-
 //流量统计
 require_once 'traffic.php';
 

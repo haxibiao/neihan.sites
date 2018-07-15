@@ -206,7 +206,9 @@ export default {
 					let progress = (event.loaded / event.total) * 100 + "%";
 					$(".progress-bar-success").css("width", progress);
 				},
-				success: function(data) {},
+				success: function(data) {
+					console.log(data);
+				},
 				error: function(data) {
 					console.log("error");
 				}

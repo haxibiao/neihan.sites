@@ -2,45 +2,60 @@
 .board {
     margin-top: -4px;
     padding-bottom: 4px;
-    a {
-        position: relative;
-        display: inline-block;
-        img {
-            width: 100%;
-            min-height: 50px;
-            margin-bottom: 6px;
-            border-radius: 4px;
-        }
-        .board_tit {
-            position: absolute;
-            display: flex;
-            width: 68%;
-            padding-left: 10%;
-            top: 8px;
-            bottom: 8px;
-            left: 1%;
-            align-items: center;
-            font-size: 16px;
+    .board-list {
+        width: 280px;
+        height: 50px;
+        line-height: 50px;
+        margin-bottom: 12px;
+        .board-title {
+            margin-left: 30px;
+            font-size: 17px;
             color: #fff;
             i {
                 padding-left: 5px;
             }
-            &.one {
-                background-color: #c094fe;
+        }
+        .board-right {
+            float: right;
+            font-size: 48px;
+        }
+        .permanent,
+        .seven-days,
+        .thirty-days,
+        .question,
+        .classroom {
+            display: block;
+            background: #c094fe;
+            border-radius: 4px;
+            .board-right {
+                color: #9026ed;
             }
-            &.two {
-                background-color: #feb247;
+        }
+        .seven-days {
+            background: #feb247;
+            .board-right {
+                color: #f89b00;
             }
-            &.three {
-                background-color: #f58a76;
+        }
+        .thirty-days {
+            background: #f58a76;
+            .board-right {
+                color: #e16a52;
             }
-            &.four {
-                background-color: #b9e0d9;
-                color: #49837b;
+        }
+        .question {
+            background: #71c671;
+            .board-right {
+                color: #008b00;
             }
-            &.five {
-                background-color: #aed0e9;
+        }
+        .classroom {
+            background: #aed0e9;
+            .board-title {
                 color: #437da0;
+            }
+            .board-right {
+                color: #66aace;
             }
         }
     }
