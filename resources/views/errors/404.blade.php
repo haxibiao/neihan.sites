@@ -18,10 +18,10 @@
                 </div>
                 <div class="hot-recommend">
                     <span>精彩推荐：</span>
-                    <a href="">王者荣耀</a>
-                    <a href="">王者荣耀</a>
-                    <a href="">王者荣耀</a>
-                    <a href="">王者荣耀</a>
+                    <a href="/dota2">dota2</a>
+                    <a href="/nishuihan">逆水寒</a>
+                    <a href="/lushichuanshuo">炉石传说</a>
+                    <a href="/DNF">地下城与勇士</a>
                 </div>
                 <div class="video">
                     <div class="col-xs-6 col-md-3 video"><div class="video-item vt"><div class="thumb"><a href="/video/424" target="_blank"><img src="https://ainicheng.com/storage/video/424.jpg" alt="绝地求生之精彩集锦2-爱你城原创出品"> <i class="duration"> 
