@@ -1,0 +1,44 @@
+.error {
+	position: relative;
+	.info {
+		position: absolute;
+		top: 50px;
+		right: 0px;
+		.state {
+			width: 342px;
+			.return {
+				color: rgba(217, 106, 95, 0.9);
+				font-size: 16px;
+				font-weight: 700;
+			}
+		}
+		.icon-icon-test,
+		.icon-icon-test1 {
+			font-size: 100px;
+		}
+	}
+	.recommend {
+		margin-top: 100px;
+		.title {
+			background: url(/images/mid_line.png) no-repeat 10px;
+			h3 {
+				color: #777;
+				font-size: 18px;
+				line-height: 18px;
+				text-align: center;
+				width: 150px;
+				background: #fff;
+				margin: 0 auto;
+			}
+		}
+		.hot-recommend {
+			margin: 20px 0 30px;
+			padding-bottom: 24px;
+			border-bottom: 1px dashed #ededed;
+			a {
+				color: #9e7e6b;
+				padding: 0 8px;
+			}
+		}
+	}
+}

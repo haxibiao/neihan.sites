@@ -100,7 +100,7 @@
 				<div class="collapse navbar-collapse navbar-ex1-collapse">
 					<ul class="nav navbar-nav">
 						<li class="tab {{ get_active_css('/') }}"><a href="/"><i class="iconfont icon-faxian hidden-xs hidden-md"></i><span class="hidden-sm">发现</span></a></li>
-						<li class="tab {{ get_active_css('question') }}"><a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/question"><i class="iconfont icon-help hidden-xs hidden-md"></i><span class="hidden-sm">问答</span></a></li>
+						<li class="tab {{ get_active_css('video') }}"><a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/video"><i class="iconfont icon-shipin2 hidden-xs hidden-md"></i><span class="hidden-sm">视频</span></a></li>
 						<li class="tab {{ get_active_css('follow') }}" class="follow"><a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/follow"><i class="iconfont icon-huizhang hidden-xs hidden-md"></i><span class="hidden-sm">关注</span></a></li>
 						<li class="tab notification {{ get_active_css('notification') }}" data-hover="dropdown">
 							<a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/notification"><i class="iconfont icon-zhongyaogaojing hidden-xs hidden-md"></i><span class="hidden-sm">消息</span></a>

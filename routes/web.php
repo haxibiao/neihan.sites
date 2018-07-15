@@ -13,7 +13,9 @@
 
 Auth::routes();
 Route::pattern('id', '\d+');
-
+Route::get('/500', function(){
+	return view('errors.500');
+});
 //流量统计
 require_once 'traffic.php';
 
