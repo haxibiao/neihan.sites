@@ -9,7 +9,7 @@ use GraphQL\Type\Definition\Type;
 class QueryLogsQuery extends Query
 {
     protected $attributes = [
-        'name'        => 'QueryLogs',
+        'name'        => 'QueryLogs', 
         'description' => 'QueryLog list',
     ];
     public function args()
@@ -22,18 +22,16 @@ class QueryLogsQuery extends Query
     public function type() 
     {
         return Type::listOf(GraphQL::type('QueryLog'));  
-    }
+    } 
 
     public function resolve($root, $args)
     {
         $offset = isset($args['offset']) ? $args['offset'] : 0;
         $limit  = isset($args['limit'])  ? $args['limit']  : 10; //获取多少条数据，默认为10
-
-        //用户未登录的情况下,无最近搜索记录
-        if( checkUser() ){
+        //用户未登录的情况下,无最近搜索记录,后期可以做推荐
+        if( !checkUser() ){
             return null;
         }
-
         $user = getUser();
         $querylogs = $user->querylogs()
             ->orderBy('updated_at', 'desc')
