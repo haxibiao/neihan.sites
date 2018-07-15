@@ -16,7 +16,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index', 'show', 'videos', 'articles']]);
+        $this->middleware('auth', ['only' => ['store', 'update', 'destroy', 'settings']]);
     }
     /**
      * Display a listing of the resource.
@@ -61,7 +61,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
+        $user              = User::findOrFail($id);
         $user->followUsers = $user->followingUsers()->count();
         //文章
         $qb = Article::where('user_id', $user->id)
@@ -283,7 +283,7 @@ class UserController extends Controller
 
     public function likes(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        $user              = User::findOrFail($id);
         $user->followUsers = $user->followings()->where('followed_type', 'users')->count();
 
         $data['liked_articles'] = Like::with('liked')
@@ -313,7 +313,7 @@ class UserController extends Controller
 
     public function follows(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        $user              = User::findOrFail($id);
         $user->followUsers = $user->followingUsers()->count();
 
         $data['follows']   = $user->followingUsers()->orderBy('id', 'desc')->paginate(10);
