@@ -11,6 +11,10 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 /**
  * 有关于文章测试的GraphQL API
+ * 测试用例的顺序是严格按照 /ainicheng/graphql/article.graphql的顺序来书写的。
+ * 本测试用例最后的更新时间是2018年7月14日,后面的同事注意article.graphql文件的变动情况。
+ * 下面的测试用例没有将共性的东西进行抽离了，也是为了增加灵活性。
+ * 已经加了事务回滚，所以不会对数据库产生变动。
  */
 class ArticleTest extends TestCase
 {
@@ -311,6 +315,510 @@ STR;
                 ]
             ]);
     }
+
+    /**
+     * @Desc     toggle 收藏/取消收藏 文章
+     * @Author   czg
+     * @DateTime 2018-07-14
+     * @return   [type]     [description]
+     */
+    public function testFavoriteArticle()
+    { 
+        $article = Article::whereStatus(1)
+            ->inRandomOrder()
+            ->first();
+        $author = $article->user;
+        $undo   = random_int(0, 1);
+        $visitors = User::where('id', '<>', $author->id)
+            ->inRandomOrder()
+            ->first();
+        
+        $query = <<<STR
+        mutation favoriteArticleMutation(\$article_id: Int!, \$undo: Boolean) {
+            favoriteArticle(article_id: \$article_id, undo: \$undo) {
+                id
+                favorited
+            }
+        }  
+STR;
+        $variables = <<<STR
+        {
+          "article_id"        : $article->id,
+          "undo"              : $undo
+        }
+STR;
+        $response = $this->actingAs($visitors)
+            ->json("POST", "/graphql", [
+                'query'         => $query,  
+                'variables'     => $variables,
+            ]);
+        $response->assertStatus(200)  
+            ->assertJson([
+                'data' => [
+                    "favoriteArticle"=>[
+                        'id'         => $article->id,
+                        'favorited'  => $undo?0:1,
+                    ]
+                ]
+            ]);
+    }
+
+    /**
+     * @Desc     toggle 收藏/取消收藏 文章
+     * @Author   czg
+     * @DateTime 2018-07-14
+     * @return   [type]     [description]
+     */
+    public function testArticleContentQuery()
+    { 
+        $article = Article::whereStatus(1)
+            ->inRandomOrder()
+            ->first();
+        
+        $query = <<<STR
+        query articleContentQuery(\$id: Int!) {
+            article(id: \$id) {
+                id
+                type
+                title
+                status
+                body
+            }
+        }
+STR;
+        $variables = <<<STR
+        {
+          "id"        : $article->id
+        }
+STR;
+        $response = $this->json("POST", "/graphql", [
+                'query'         => $query,  
+                'variables'     => $variables,
+            ]);
+        $response->assertStatus(200)  
+            ->assertJson([
+                'data' => [
+                    "article"=>[
+                        'id'         => $article->id,
+                        'type'       => $article->type,
+                        'title'      => $article->title,
+                        'status'     => $article->status,
+                        'body'       => $article->body,
+                    ]
+                ]
+            ]);
+    }
+    /**
+     * @Desc     按热度获取文章
+     * @Author   czg
+     * @DateTime 2018-07-14
+     * @return   [type]     [description]
+     */
+    public function testRankingArticleQuery(){
+        
+        $in_days  = array_random([7,30]);
+
+        $query = <<<STR
+        query RankingArticleQuery(\$in_days: Int!) {
+            articles(in_days: \$in_days, order: HOT) {
+                id
+                type
+                title
+                status
+                hits
+                body 
+                time_ago
+                has_image
+                images
+                cover
+                hits
+                count_likes
+                count_replies
+                count_tips
+                user {
+                    id
+                    name
+                    avatar
+                }
+                category {
+                    id
+                    name
+                    logo
+                }
+            }
+        }
+STR;
+        $variables = <<<STR
+        {
+          "in_days"        : $in_days
+        }
+STR;
+        $response = $this->json("POST", "/graphql", [
+                'query'         => $query,  
+                'variables'     => $variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+
+    /**
+     * @Desc     举报文章
+     * @Author   czg
+     * @DateTime 2018-07-14
+     * @return   [type]     [description]
+     */
+    public function testReportArticleMutation(){
+
+        $article = Article::whereStatus(1)
+            ->inRandomOrder()
+            ->first();
+        $type    = array_random(['广告或垃圾信息','抄袭或转载','其他']);
+        $reason  =  'balabala';
+        
+        $author = $article->user;
+        $visitors = User::where('id', '<>', $author->id)
+            ->inRandomOrder()
+            ->first();
+
+
+        $query = <<<STR
+        mutation reportArticleMutation(\$id: Int!, \$type: String!, \$reason: String) {
+            reportArticle(id: \$id, type: \$type, reason: \$reason) {
+                id
+            }
+        }
+STR;
+        $variables = <<<STR
+        {
+          "id"        : $article->id,
+          "type"      : "$type",
+          "reason"    : "$reason"
+        }
+STR;
+        $response = $this->actingAs($visitors)
+            ->json("POST", "/graphql", [
+                'query'         => $query,  
+                'variables'     => $variables,
+            ]);
+        $response->assertStatus(200) 
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
     
-    
+    /**
+     * @Desc     文章详情
+     * @Author   czg
+     * @DateTime 2018-07-14
+     * @return   [type]     [description]
+     */
+    public function testArticleQuery(){
+
+        $article = Article::whereStatus(1)
+            ->inRandomOrder()
+            ->first();
+
+        $query = <<<STR
+        query articleQuery(\$id: Int!) {
+            article(id: \$id) {
+                id
+                type
+                title
+                body
+                video_url
+                user {
+                    id
+                    name
+                    avatar
+                    introduction
+                    count_articles
+                    count_likes
+                    tip_words
+                    followed_status
+                }
+                time_ago
+                count_words
+                hits
+                liked
+                favorited
+                count_likes
+                count_tips
+                count_replies
+                collection {
+                    id
+                    name
+                }
+                categories {
+                    id
+                    name
+                }
+                tipedUsers {
+                    id
+                    name
+                    avatar
+                }
+            }
+        }
+STR;
+        $variables = <<<STR
+        {
+          "id"        : $article->id
+        }
+STR;
+        $response = $this->json("POST", "/graphql", [
+                'query'         => $query,  
+                'variables'     => $variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+
+    /**
+     * @Desc     
+     * @Author   czg
+     * @DateTime 2018-07-14 
+     * @return   [type]     [description]
+     */
+    public function testArticleLikesQuery(){
+
+        $article = Article::whereStatus(1)
+            ->inRandomOrder()
+            ->first();
+
+        $query = <<<STR
+        query articleLikesQuery(\$id: Int!) {
+            article(id: \$id) {
+                id
+                type
+                liked
+                count_likes
+            }
+        }
+STR;
+        $variables = <<<STR
+        {
+          "id"        : $article->id
+        }
+STR;
+        $response = $this->json("POST", "/graphql", [
+                'query'         => $query,  
+                'variables'     => $variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+    /**
+     * @Desc     [desc]
+     * @Author   czg
+     * @DateTime 2018-07-14
+     * @return   [type]     [description]
+     */
+    public function testDraftQuery(){
+
+        $article = Article::whereStatus(1)
+            ->inRandomOrder()
+            ->first();
+
+        $query = <<<STR
+        query draftQuery(\$id: Int!) {
+            article(id: \$id) {
+                id
+                type
+                title
+                body
+                time_ago
+                count_words
+            }
+        }
+STR;
+        $variables = <<<STR
+        {
+          "id"        : $article->id
+        }
+STR;
+        $response = $this->json("POST", "/graphql", [
+                'query'         => $query,  
+                'variables'     => $variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+    /**
+     * @Desc     [desc]
+     * @Author   czg
+     * @DateTime 2018-07-14
+     * @return   [type]     [description]
+     */
+    public function testTopArticleWithImagesQuery(){
+        $query = <<<STR
+        query topArticleWithImagesQuery {
+            articles(filter: TOP, limit: 7) {
+                id
+                type
+                title
+                top_image
+            }
+        }
+STR;
+        $response = $this->json("POST", "/graphql", [
+                'query'         => $query,
+                ''
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+
+    /**
+     * @Desc     [desc]
+     * @Author   czg
+     * @DateTime 2018-07-14
+     * @return   [type]     [description]
+     */
+    public function testHotArticlesQuery(){
+        $offset = array_rand([0,10,20,30]);
+        
+        $query = <<<STR
+        query hotArticlesQuery(\$offset: Int) {
+            articles(offset: \$offset) {
+                id
+                type
+                title
+                has_image
+                images
+                cover
+                description
+                time_ago
+                user {
+                    id
+                    name
+                    avatar
+                }
+                category {
+                    id
+                    name
+                    logo
+                }
+                hits
+                count_likes
+                count_replies
+                count_tips
+            }
+        }
+STR;
+        $variables = <<<STR
+        {
+          "offset"        : $offset
+        }
+STR;
+        $response = $this->json("POST", "/graphql", [
+                'query'         => $query,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+    /**
+     * @Desc     [desc]
+     * @Author   czg
+     * @DateTime 2018-07-14
+     * @return   [type]     [description]
+     */
+    public function testRecommendArticlesQuery(){
+        $offset = array_rand([0,10,20,30]);
+        $limit  = array_rand([10,20,50,100]);
+
+        $query = <<<STR
+        query recommendArticlesQuery(\$offset: Int, \$limit: Int) {
+            articles(offset: \$offset, limit: \$limit) {
+                id
+                type
+                title
+                description
+                time_ago
+                has_image
+                images
+                cover
+                user {
+                    avatar
+                    name
+                    id
+                }
+                category {
+                    id
+                    name
+                    logo
+                }
+                hits
+                count_likes
+                count_replies
+                count_tips
+            }
+        }
+STR;
+        $variables = <<<STR
+        {
+          "offset"        : $offset,
+          "limit"         : $limit
+        }
+STR;
+        $response = $this->json("POST", "/graphql", [
+                'query'         => $query,
+                'variables'     => $variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+
+    /**
+     * @Desc     [desc]
+     * @Author   czg
+     * @DateTime 2018-07-14
+     * @return   [type]     [description]
+     */
+    public function testQueryArticleRequesRecommend(){
+
+        $visitors = User::inRandomOrder()
+            ->first();
+
+        $query = <<<STR
+        query queryArticleRequesRecommend(\$id: Int) {
+            user(id: \$id) {
+                id
+                categories(filter: RECOMMEND) {
+                    id
+                    name
+                    count_articles
+                    count_follows
+                    logo
+                }
+            }
+        }
+STR;
+        $variables = <<<STR
+        {
+          "id"        : $visitors->id
+        }
+STR;
+        $response = $this->json("POST", "/graphql", [
+                'query'         => $query,
+                'variables'     => $variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
 }
