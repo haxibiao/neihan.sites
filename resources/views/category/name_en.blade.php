@@ -34,9 +34,6 @@
                        <li role="presentation">
                         <a href="#hot" aria-controls="hot" role="tab" data-toggle="tab"><i class="iconfont icon-huo"></i>热门</a>
                        </li>
-                       <li role="presentation">
-                        <a href="#video" aria-controls="video" role="tab" data-toggle="tab"><i class="iconfont icon-shipin"></i>视频</a>
-                       </li>
                      </ul>
                      <!-- Tab panes -->
                      <div class="article-list tab-content">
@@ -76,37 +73,6 @@
                              @endif
                            @endif
                        </ul>
-                       <ul role="tabpanel" class="fade video-list tab-pane clearfix" id="video">
-                           @if( count($data['video_articles'])==0)
-                              <blank-content></blank-content>
-                           @else 
-                              @foreach($data['video_articles'] as $article)
-                               <li class="col-xs-6 col-md-4 video">
-                                  <div class="video-item vt">
-                                    <div class="thumb">
-                                      <a href="{{ $article->content_url() }}" target="_blank">
-                                        <img src="{{ $article->cover() }}" alt="{{ $article->title }}">
-                                        <i class="duration">
-                                          {{-- 持续时间 --}}  
-                                          @sectominute($article->video->duration)
-                                        </i>
-                                      </a>
-                                    </div>
-                                    <ul class="info-list">
-                                      <li class="video-title">
-                                        <a href="{{ $article->content_url() }}">{{ $article->title }}</a>
-                                      </li>
-                                      <li>
-                                        {{-- 播放量 --}}
-                                        <p class="subtitle single-line">{{ $article->hits }}次播放</p>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                </li>
-                               @endforeach
-                               <div>{!! $data['video_articles']->fragment('video')->links() !!}</div>
-                           @endif
-                       </ul>
                      </div>
                 </div>
               </ul>
@@ -115,21 +81,79 @@
                  <!-- Nav tabs -->
                   <ul id="trigger-menu" class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active">
-                      <a href="#new" aria-controls="comment" role="tab" data-toggle="tab">
+                      <a href="#video_new" aria-controls="comment" role="tab" data-toggle="tab">
                         <i class="iconfont icon-shipin1"></i>最新
                       </a>
                     </li>
                     <li role="presentation">
-                      <a href="#hot" aria-controls="include" role="tab" data-toggle="tab">
+                      <a href="#video_hot" aria-controls="include" role="tab" data-toggle="tab">
                         <i class="iconfont icon-huo"></i>热门
                       </a>
                     </li>
                   </ul>
                  <!-- Tab panes -->
                   <div class="article-list tab-content">
-                     <ul role="tabpanel" class="fade in tab-pane active" id="comment">
+                     <ul role="tabpanel" class="fade in tab-pane active" id="video_new">
+                        @if( count($data['video_new'])==0)
+                          <blank-content></blank-content>
+                        @else 
+                          @foreach($data['video_new'] as $article)
+                           <li class="col-xs-6 col-md-4 video">
+                              <div class="video-item vt">
+                                <div class="thumb">
+                                  <a href="{{ $article->content_url() }}" target="_blank">
+                                    <img src="{{ $article->cover() }}" alt="{{ $article->title }}">
+                                    <i class="duration">
+                                      {{-- 持续时间 --}}  
+                                      @sectominute($article->video->duration)
+                                    </i>
+                                  </a>
+                                </div>
+                                <ul class="info-list">
+                                  <li class="video-title">
+                                    <a href="{{ $article->content_url() }}">{{ $article->title }}</a>
+                                  </li>
+                                  <li>
+                                    {{-- 播放量 --}}
+                                    <p class="subtitle single-line">{{ $article->hits }}次播放</p>
+                                  </li>
+                                </ul>
+                              </div>
+                            </li>
+                           @endforeach
+                           <div>{!! $data['video_new']->fragment('video_new')->links() !!}</div>
+                        @endif
                      </ul>
-                     <ul role="tabpanel" class="fade tab-pane" id="include">   
+                     <ul role="tabpanel" class="fade tab-pane" id="video_hot">  
+                        @if( count($data['video_hot'])==0)
+                          <blank-content></blank-content>
+                        @else 
+                          @foreach($data['video_hot'] as $article)
+                           <li class="col-xs-6 col-md-4 video">
+                              <div class="video-item vt">
+                                <div class="thumb">
+                                  <a href="{{ $article->content_url() }}" target="_blank">
+                                    <img src="{{ $article->cover() }}" alt="{{ $article->title }}">
+                                    <i class="duration">
+                                      {{-- 持续时间 --}}  
+                                      @sectominute($article->video->duration)
+                                    </i>
+                                  </a>
+                                </div>
+                                <ul class="info-list">
+                                  <li class="video-title">
+                                    <a href="{{ $article->content_url() }}">{{ $article->title }}</a>
+                                  </li>
+                                  <li>
+                                    {{-- 播放量 --}}
+                                    <p class="subtitle single-line">{{ $article->hits }}次播放</p>
+                                  </li>
+                                </ul>
+                              </div>
+                            </li>
+                           @endforeach
+                           <div>{!! $data['video_hot']->fragment('video_hot')->links() !!}</div>
+                        @endif
                      </ul>
                   </div>
               </ul>
@@ -164,6 +188,14 @@
     }
     if( url.includes("include") ){
       $("[href='#include']").click(); 
+    }
+    if( url.includes("video_hot") ){
+      $("[href='#video-list']").click(); 
+      $("[href='#video_hot']").click(); 
+    }
+    if( url.includes("video_new") ){
+      $("[href='#video-list']").click(); 
+      $("[href='#video_new']").click(); 
     }
   });
 </script>
