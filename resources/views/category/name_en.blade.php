@@ -13,10 +13,10 @@
             {{-- 视频文章内容--}}
             <ul id="select-menu"  class="nav nav-pills"  role="tablist">
               <li role="presentation" class="active">
-                 <a href="#article" aria-controls="article" role="tab" data-toggle="tab">文章</a>
+                 <a href="#article" aria-controls="article" role="tab" data-toggle="tab" class="article">文章</a>
               </li>
               <li role="presentation" >
-                <a href="#video-list" aria-controls="video-list" role="tab" data-toggle="tab">视频</a>
+                <a href="#video-list" aria-controls="video-list" role="tab" data-toggle="tab" class="video">视频</a>
               </li>
             </ul>
             {{-- 内容 --}}
