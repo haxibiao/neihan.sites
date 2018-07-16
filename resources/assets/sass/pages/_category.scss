@@ -15,14 +15,16 @@
 		float: left;
 		margin-bottom: 15px;
 	}
-	.btn-base {
-		margin: 13px 260px 0px 15px;
-		padding: 6px 0;
-		font-size: 13px;
+	.btn-follow {
 		min-width: 65px;
 		width: 75px;
+		margin: 13px 260px 0px 15px;
+		padding: 6px 0;
 		i {
 			font-size: 13px;
 		}
+	}
+	.btn-base {
+		font-size: 13px;
 	}
 }
