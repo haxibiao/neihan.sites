@@ -7,6 +7,7 @@ use App\Category;
 use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
 class CategoryController extends Controller
 {
@@ -69,8 +70,7 @@ class CategoryController extends Controller
         $data['recommend'] = $categories;
 
         //热门
-        $categories = Category::where('status', '>=', 0)->orderBy('count', 'desc')->
-            orderBy('count_follows', 'desc')->paginate(24);
+        $categories = Category::where('updated_at','<=',Carbon::parse($request->end_date))->where('status', '>=', 0)->orderBy('count_follows','desc')->paginate(24);
         if (ajaxOrDebug() && request('hot')) {
             foreach ($categories as $category) {
                 $category->followed = $category->isFollowed();
