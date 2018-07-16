@@ -130,8 +130,6 @@ export default {
 					var _this = this;
 					var reader = new FileReader();
 					let fileObj = e.target.files[0];
-					this.videoObj = fileObj;
-					this.video_upload(fileObj);
 					reader.readAsDataURL(e.target.files[0]);
 
 					reader.onload = function(e) {
@@ -187,9 +185,7 @@ export default {
 				_this.top3Imgs = _this.selectedImgs();
 			});
 		},
-		video_upload(fileObj) {
-			// let formdata = new FormData();
-			// formdata.append("video", fileObj);
+		video_upload() {
 			var api = window.tokenize("/api/video/save");
 			$(this.$refs.questionForm).ajaxSubmit({
 				type: "post",
