@@ -2,14 +2,16 @@
   <div class="form-group">
       <label for="article_images">选配图</label>
       <div class="row" id="article_images">
-            <div class="col-xs-3 img_box"　v-for="img in imgs">
-                <p class="text-center">
-                    <img :src="img" alt="" class="img img-responsive">                    
+            <div class="col-xs-6 col-sm-6 col-lg-3"　v-for="img in imgs">
+                <div class="text-center img_item">
+                  <div class="img_box">
+                    <img :src="img" alt="" class="img img-responsive">
+                  </div>                 
                     <label class="radio text-center">
                       <input type="radio" name="primary_image" :value="img">
                       设为主图
                     </label>                    
-                </p>
+                </div>
             </div>
       </div>
   </div>
@@ -49,13 +51,27 @@ export default {
 };
 </script>
 
-<style lang="css">
+<style lang="scss">
 #article_images {
-  img {
-    max-width: 200px;
-  }
-  .img_box{
-    height:300px;
+  .img_item {
+    width: 100%;
+    height: 200px;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    .img_box {
+      height: 175px;
+      overflow: hidden;
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+    }
+    .radio {
+      color: #fff;
+    }
   }
 }
 </style>
