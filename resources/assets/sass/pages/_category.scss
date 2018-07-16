@@ -16,9 +16,13 @@
 		margin-bottom: 15px;
 	}
 	.btn-base {
-		margin: 45px 0px 20px 15px;
-		padding: 9px 0;
+		margin: 13px 260px 0px 15px;
+		padding: 6px 0;
 		font-size: 13px;
-		width: 85px;
+		min-width: 65px;
+		width: 75px;
+		i {
+			font-size: 13px;
+		}
 	}
 }
