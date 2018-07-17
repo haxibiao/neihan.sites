@@ -3,6 +3,11 @@
 namespace Tests\Feature\GraphQL;
 
 use App\User;
+use App\Comment;
+use App\Article;
+use App\Category;
+use App\Collection;
+
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -153,8 +158,416 @@ STR;
 				'errors',
 			]);
 	}
+    /**
+     * @Desc     举报用户
+     * @Author   czg
+     * @DateTime 2018-07-15
+     * @return   [type]     [description]
+     */
+    public function testReportUserMutation(){
+        $users = User::inRandomOrder()
+            ->take(2)
+            ->get();
+        $visitor = $users->last();
+        $author  = $users->first();
+        $type    = array_random(['广告或垃圾信息','抄袭或转载','其他']);
 
-	/**
+        $query = <<<STR
+        mutation reportUserMutation(\$id: Int!, \$type: String, \$reason: String) {
+            reportUser(id: \$id, type: \$type, reason: \$reason) {
+                id
+            }
+        }         
+STR;
+        $variables = <<<STR
+        {
+          "id"     : $author->id,
+          "type"    : "$type",
+          "reason"  : "balbala"
+        }
+STR;
+        $response = $this->actingAs($visitor)
+            ->json("POST", "/graphql", [
+                'query'       => $query,
+                'variables'   => $variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+
+    /**
+     * @Desc     举报用户评论
+     * @Author   czg
+     * @DateTime 2018-07-15
+     * @return   [type]     [description]
+     */
+    public function testReportUserCommentMutation(){
+        $users = User::inRandomOrder()
+            ->take(2)
+            ->get();
+        $visitor = $users->last();
+        $author  = $users->first();
+        $type    = array_random(['广告或垃圾信息','抄袭或转载','其他']);
+        $comment = Comment::inRandomOrder()
+            ->first();
+
+        $query = <<<STR
+        mutation reportUserCommentMutation(\$id: Int!, \$type: String, \$reason: String, \$comment_id: Int!) {
+            reportUser(id: \$id, type: \$type, reason: \$reason, comment_id: \$comment_id) {
+                id
+            }
+        }        
+STR;
+        $variables = <<<STR
+        {
+          "id"        : $author->id,
+          "type"      : "$type",
+          "reason"    : "balbala",
+          "comment_id": $comment->id
+        }
+STR;
+        $response = $this->actingAs($visitor)
+            ->json("POST", "/graphql", [
+                'query'       => $query,
+                'variables'   => $variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+    /**
+     * @Desc     拉黑用户
+     * @Author   czg
+     * @DateTime 2018-07-16
+     * @return   [type]     [description]
+     */
+    public function testBlockUserMutation(){
+
+        $users = User::inRandomOrder()
+            ->take(2)
+            ->get();
+        $visitor = $users->first();
+        $block_user  = $users->last(); 
+
+        $query = <<<STR
+        mutation blockUserMutation(\$user_id: Int!) {
+            blockUser(user_id: \$user_id) {
+                id
+                name
+                avatar
+            }
+        }
+STR;
+        $variables = <<<STR
+        {
+          "user_id"        : $block_user->id
+        }
+STR;
+        $response = $this->actingAs($visitor)
+            ->json("POST", "/graphql", [
+                'query'         => $query,
+                'variables'     => $variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+    /**
+     * @Desc     拉黑的用户
+     * @Author   czg
+     * @DateTime 2018-07-16
+     * @return   [type]     [description]
+     */
+    public function testBlockedUsersQuery(){
+
+        $visitor = User::inRandomOrder()
+            ->first();
+
+        $query = <<<STR
+        query blockedUsersQuery {
+            user {
+                id
+                blockedUsers {
+                    id
+                    name
+                    avatar
+                }
+            }
+        }
+STR;
+        $response = $this->actingAs($visitor)
+            ->json("POST", "/graphql", [
+                'query'         => $query
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+
+    /**
+     * @Desc     用户好友列表
+     * @Author   czg
+     * @DateTime 2018-07-16
+     * @return   [type]     [description]
+     */
+    public function testUserFriendsQuery(){
+
+        $visitor = User::inRandomOrder()
+            ->first();
+
+        $query = <<<STR
+        query userFriendsQuery(\$offset: Int) {
+            user {
+                id
+                friends(offset: \$offset) {
+                    id
+                    name
+                    avatar
+                }
+            }
+        }
+STR;
+        $response = $this->actingAs($visitor)
+            ->json("POST", "/graphql", [
+                'query'         => $query
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+
+    /**
+     * @Desc     移除文章
+     * @Author   czg
+     * @DateTime 2018-07-16
+     * @return   [type]     [description]
+     */
+    public function testRemoveArticleMutation(){
+
+        $article = Article::inRandomOrder()
+            ->first();
+        $author  = $article->user;
+
+        $query = <<<STR
+        mutation removeArticleMutation(\$id: Int!) {
+            removeArticle(id: \$id) {
+                id
+            }
+        }
+STR;
+        $variables = <<<STR
+        {
+          "id"        : $article->id
+        }
+STR;
+        $response = $this->actingAs($author)
+            ->json("POST", "/graphql", [
+                'query'         => $query,
+                'variables'     => $variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+
+    /**
+     * @Desc     恢复文章
+     * @Author   czg
+     * @DateTime 2018-07-16
+     * @return   [type]     [description]
+     */
+    public function testRestoreArticleMutation(){
+
+        $article = Article::inRandomOrder()
+            ->first();
+        $author  = $article->user; 
+
+        $query = <<<STR
+        mutation restoreArticleMutation(\$id: Int!) {
+            restoreArticle(id: \$id) {
+                id
+            }
+        }
+STR;
+        $variables = <<<STR
+        {
+          "id"        : $article->id
+        }
+STR;
+        $response = $this->actingAs($author)
+            ->json("POST", "/graphql", [
+                'query'         => $query,
+                'variables'     => $variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+    /**
+     * @Desc     删除文章
+     * @Author   czg
+     * @DateTime 2018-07-16
+     * @return   [type]     [description]
+     */
+    public function testDeleteArticleMutation(){
+
+        $article = Article::inRandomOrder()
+            ->first();
+        $author  = $article->user; 
+
+        $query = <<<STR
+        mutation deleteArticleMutation(\$id: Int!) {
+            deleteArticle(id: \$id) {
+                id
+            }
+        }
+STR;
+        $variables = <<<STR
+        {
+          "id"        : $article->id
+        }
+STR;
+        $response = $this->actingAs($author)
+            ->json("POST", "/graphql", [
+                'query'         => $query,
+                'variables'     => $variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+
+    /**
+     * @Desc     用户删除的文章
+     * @Author   czg
+     * @DateTime 2018-07-16
+     * @return   [type]     [description]
+     */
+    public function testUserTrashQuery(){
+
+        $user = User::inRandomOrder()
+            ->first();
+
+        $query = <<<STR
+        query userTrashQuery(\$offset: Int) {
+            user {
+                id
+                articles(filter: TRASH, offset: \$offset) {
+                    id
+                    title
+                    updated_at
+                }
+            }
+        }
+STR;
+        $response = $this->actingAs($user)
+            ->json("POST", "/graphql", [
+                'query'         => $query,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+    /**
+     * @Desc     注册，登录
+     * @Author   czg
+     * @DateTime 2018-07-16
+     * @return   [type]     [description]
+     */
+    public function testSignInAndUpMutation(){
+        $name = 'test6666666';
+        $password  = 'test6666666';
+        $email     = 'test6666666@haxibiao.com'; 
+        $regist_query= <<<STR
+        mutation signUpMutation(\$email: String!, \$password: String!, \$name: String!) {
+            signUp(email: \$email, password: \$password, name: \$name) {
+                id
+                name
+                email
+                avatar
+                token
+                introduction
+                count_words
+                count_articles
+                count_likes
+                count_follows
+                count_followers
+                count_followings
+                count_drafts
+                count_favorites
+                count_categories
+                count_collections
+                balance
+            }
+        }
+STR;
+        $login_query = <<<STR
+        mutation signInMutation(\$email: String!, \$password: String!) {
+          signIn(email: \$email, password: \$password) {
+              id
+              name
+              email
+              avatar
+              token
+              introduction
+              count_words
+              count_articles
+              count_likes
+              count_follows
+              count_followers
+              count_followings
+              count_drafts
+              count_favorites
+              count_categories
+              count_collections
+              balance
+              error
+          }
+      }
+STR;
+        $regist_variables= <<<STR
+        {
+          "email"   : "$email",
+          "name"    : "$name",
+          "password": "$password"
+        }
+STR;
+        $response = $this->json("POST", "/graphql", [
+                'query'         => $regist_query,
+                'variables'     => $regist_variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+
+        $login_variables= <<<STR
+        {
+          "email"   : "$email",
+          "password": "$password"
+        }
+STR;
+        
+        $response = $this->json("POST", "/graphql", [
+                'query'         => $login_query,
+                'variables'     => $login_variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+    /**
 	 * @Desc     更新用户名
 	 * @Author   LYY
 	 * @DateTime 2018-07-17
@@ -361,8 +774,8 @@ STR;
 		$variables = <<<STR
         {
             "offset"    : $offset,
-            "id"      : $visitor->id,
-            "user_id" : $visitor->id
+            "id"      	: $visitor->id,
+            "user_id" 	: $visitor->id
         }
 STR;
 		$response = $this->actingAs($visitor)
@@ -417,8 +830,8 @@ STR;
 STR;
 		$variables = <<<STR
         {
-            "offset" : $offset,
-            "user_id" : $visitor->id
+            "offset" 	: $offset,
+            "user_id" 	: $visitor->id
         }
 STR;
 		$response = $this->actingAs($visitor)
@@ -445,25 +858,25 @@ STR;
 
 		$query = <<<STR
         query draftsQuery(\$offset: Int) {
-                user {
+            user {
+                id
+                articles(offset: \$offset, filter: DRAFTS) {
                     id
-                    articles(offset: \$offset, filter: DRAFTS) {
+                    type
+                    title
+                    description
+                    updated_at
+                    has_image
+                    images
+                    cover
+                    time_ago
+                    collection {
                         id
-                        type
-                        title
-                        description
-                        updated_at
-                        has_image
-                        images
-                        cover
-                        time_ago
-                        collection {
-                            id
-                            name
-                        }
+                        name
                     }
                 }
             }
+        }
 STR;
 		$variables = <<<STR
         {
@@ -494,26 +907,26 @@ STR;
 
 		$query = <<<STR
         query userLikedArticlesQuery(\$offset: Int, \$user_id: Int!) {
-                articles(offset: \$offset, user_id: \$user_id, filter: LIKED) {
+            articles(offset: \$offset, user_id: \$user_id, filter: LIKED) {
+                id
+                type
+                title
+                description
+                has_image
+                images
+                cover
+                time_ago
+                user {
                     id
-                    type
-                    title
-                    description
-                    has_image
-                    images
-                    cover
-                    time_ago
-                    user {
-                        id
-                        name
-                        avatar
-                    }
-                    hits
-                    count_likes
-                    count_replies
-                    count_tips
+                    name
+                    avatar
                 }
+                hits
+                count_likes
+                count_replies
+                count_tips
             }
+        }
 STR;
 		$variables = <<<STR
         {
@@ -544,15 +957,15 @@ STR;
 
 		$query = <<<STR
         query removedArticlesQuery {
-                user {
-                    articles(filter: TRASH) {
-                        id
-                        type
-                        title
-                        time_ago
-                    }
+            user {
+                articles(filter: TRASH) {
+                    id
+                    type
+                    title
+                    time_ago
                 }
             }
+        }
 STR;
 		$response = $this->actingAs($visitor)
 			->json("POST", "/graphql", [
@@ -577,28 +990,28 @@ STR;
 
 		$query = <<<STR
         query favoritedArticlesQuery(\$offset: Int) {
-                user {
+            user {
+                id
+                articles(offset: \$offset, filter: FAVED) {
                     id
-                    articles(offset: \$offset, filter: FAVED) {
+                    type
+                    title
+                    description
+                    has_image
+                    images
+                    cover
+                    time_ago
+                    user {
                         id
-                        type
-                        title
-                        description
-                        has_image
-                        images
-                        cover
-                        time_ago
-                        user {
-                            id
-                            name
-                        }
-                        hits
-                        count_likes
-                        count_replies
-                        count_tips
+                        name
                     }
+                    hits
+                    count_likes
+                    count_replies
+                    count_tips
                 }
             }
+        }
 STR;
 		$variables = <<<STR
         {
@@ -628,22 +1041,22 @@ STR;
 
 		$query = <<<STR
         query userCategoriesQuery(\$user_id: Int!) {
-                categories(user_id: \$user_id, limit: 100) {
+            categories(user_id: \$user_id, limit: 100) {
+                id
+                name
+                logo
+                description
+                count_articles
+                count_follows
+                followed
+                user {
                     id
                     name
-                    logo
-                    description
-                    count_articles
-                    count_follows
-                    followed
-                    user {
-                        id
-                        name
-                    }
-                    allow_submit
-                    need_approve
                 }
+                allow_submit
+                need_approve
             }
+        }
 STR;
 		$variables = <<<STR
         {
@@ -758,21 +1171,21 @@ STR;
 
 		$query = <<<STR
         query myCollectionsQuery {
-                user {
+            user {
+                id
+                collections {
                     id
-                    collections {
+                    name
+                    logo
+                    count_articles
+                    count_follows
+                    user {
                         id
                         name
-                        logo
-                        count_articles
-                        count_follows
-                        user {
-                            id
-                            name
-                        }
                     }
                 }
             }
+        }
 STR;
 		$response = $this->actingAs($visitor)
 			->json("POST", "/graphql", [
@@ -796,19 +1209,19 @@ STR;
 
 		$query = <<<STR
         query userCollectionsQuery(\$user_id: Int!) {
-                collections(user_id: \$user_id) {
+            collections(user_id: \$user_id) {
+                id
+                name
+                logo
+                count_articles
+                count_follows
+                followed
+                user {
                     id
                     name
-                    logo
-                    count_articles
-                    count_follows
-                    followed
-                    user {
-                        id
-                        name
-                    }
                 }
             }
+        }
 STR;
 		$variables = <<<STR
         {
@@ -838,19 +1251,19 @@ STR;
 
 		$query = <<<STR
         query userFollowedCollectionsQuery(\$user_id: Int!) {
-                collections(user_id: \$user_id, limit: 100, filter: FOLLOWED) {
+            collections(user_id: \$user_id, limit: 100, filter: FOLLOWED) {
+                id
+                name
+                logo
+                count_articles
+                count_follows
+                followed
+                user {
                     id
                     name
-                    logo
-                    count_articles
-                    count_follows
-                    followed
-                    user {
-                        id
-                        name
-                    }
                 }
             }
+        }
 STR;
 		$variables = <<<STR
         {
@@ -880,8 +1293,8 @@ STR;
 		$offset = rand(1, 10);
 
 		$query = <<<STR
-               query userFollowingsQuery(\$user_id: Int!, \$offset: Int) {
-               users(user_id: \$user_id, offset: \$offset, filter: FOLLOWINGS) {
+        query userFollowingsQuery(\$user_id: Int!, \$offset: Int) {
+            users(user_id: \$user_id, offset: \$offset, filter: FOLLOWINGS) {
                 id
                 name
                 avatar
@@ -920,7 +1333,7 @@ STR;
 		$offset = rand(1, 10);
 
 		$query = <<<STR
-      query userFollowersQuery(\$user_id: Int!, \$offset: Int) {
+      	query userFollowersQuery(\$user_id: Int!, \$offset: Int) {
            users(user_id: \$user_id, offset: \$offset, filter: FOLLOWERS) {
                 id
                 name
@@ -960,7 +1373,7 @@ STR;
 		$offset = rand(1, 10);
 
 		$query = <<<STR
-       query userActionsQuery(\$offset: Int, \$user_id: Int!) {
+       	query userActionsQuery(\$offset: Int, \$user_id: Int!) {
             actions(offset: \$offset, user_id: \$user_id) {
                 id
                 type
@@ -1087,17 +1500,17 @@ STR;
 		$category_id = rand(1, 10);
 
 		$query = <<<STR
-       query userArticlesSubmitStatusQuery(\$category_id: Int!) {
-                user {
+       	query userArticlesSubmitStatusQuery(\$category_id: Int!) {
+            user {
+                id
+                articles(filter: CATE_SUBMIT_STATUS, category_id: \$category_id) {
                     id
-                    articles(filter: CATE_SUBMIT_STATUS, category_id: \$category_id) {
-                        id
-                        type
-                        title
-                        submit_status
-                    }
+                    type
+                    title
+                    submit_status
                 }
             }
+        }
 STR;
 		$variables = <<<STR
         {
@@ -1127,7 +1540,7 @@ STR;
 		$offset = rand(1, 10);
 
 		$query = <<<STR
-       query recommendFollowsQuery(\$user_id: Int!, \$offset: Int) {
+       	query recommendFollowsQuery(\$user_id: Int!, \$offset: Int) {
             follows(user_id: \$user_id, filter: USER_CATEGORY, offset: \$offset) {
                 id
                 user {
@@ -1173,7 +1586,6 @@ STR;
 				'errors',
 			]);
 	}
-
 	/**
 	 * @Desc     推荐关注的用户
 	 * @Author   LYY
@@ -1186,7 +1598,7 @@ STR;
 		$offset = rand(1, 10);
 
 		$query = <<<STR
-       query recommendFollowUsersQuery(\$user_id: Int!, \$offset: Int) {
+       	query recommendFollowUsersQuery(\$user_id: Int!, \$offset: Int) {
             follows(user_id: \$user_id, filter: USER, offset: \$offset) {
                 id
                 user {
@@ -1245,7 +1657,7 @@ STR;
 		$offset = rand(1, 10);
 
 		$query = <<<STR
-       query recommendFollowCategoriesQuery(\$user_id: Int!, \$offset: Int) {
+       	query recommendFollowCategoriesQuery(\$user_id: Int!, \$offset: Int) {
             follows(user_id: \$user_id, filter: CATEGORY, offset: \$offset) {
                 id
                 user {
@@ -1304,7 +1716,7 @@ STR;
 		$offset = rand(1, 10);
 
 		$query = <<<STR
-       query querySubmitedArticles(\$offset: Int, \$limit: Int) {
+       	query querySubmitedArticles(\$offset: Int, \$limit: Int) {
             user {
                 submitedArticles(offset: \$offset, limit: \$limit) {
                     id
@@ -1346,7 +1758,7 @@ STR;
 			->first();
 
 		$query = <<<STR
-      query queryIncomeHistory {
+      	query queryIncomeHistory {
            user {
                 incomeHistory
             }
@@ -1369,41 +1781,40 @@ STR;
 	 * @return   [type]
 	 */
 
-	/*
-		            public function testArticleRequestCenterQuery() {
-		                $visitor = User::inRandomOrder()
-		                    ->first();
+    public function testArticleRequestCenterQuery() {
+        $visitor = User::inRandomOrder()
+            ->first();
 
-		                $query = <<<STR
-		               query queryArticleRequestCenter(\$id: Int) {
-		            user(id: \$id) {
-		                id
-		                categories(filter: LATEST_REQUEST) {
-		                    id
-		                    name
-		                    count_articles
-		                    count_follows
-		                    submit_status
-		                    logo
-		                }
-		            }
+        $query = <<<STR
+       	query queryArticleRequestCenter(\$id: Int) {
+		    user(id: \$id) {
+		        id
+		        categories(filter: LATEST_REQUEST) {
+		            id
+		            name
+		            count_articles
+		            count_follows
+		            submit_status
+		            logo
 		        }
-		        STR;
-		                $variables = <<<STR
-		                {
-		                 "id" :
-		                }
-		        STR;
-		                $response = $this->actingAs($visitor)
-		                    ->json("POST", "/graphql", [
-		                        'query' => $query,
-		                        'variables' => $variables,
-		                    ]);
-		                $response->assertStatus(200)
-		                    ->assertJsonMissing([
-		                        'errors',
-		                    ]);
-	*/
+		    }
+		}
+STR;
+        $variables = <<<STR
+        {
+         	"id" : $visitor->id
+        }
+STR;
+        $response = $this->actingAs($visitor)
+            ->json("POST", "/graphql", [
+                'query' => $query,
+                'variables' => $variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors',
+            ]);
+	}
 
 	/**
 	 * @Desc     查询文章 用户 专题 文集
@@ -1415,12 +1826,12 @@ STR;
 		$visitor = User::inRandomOrder()
 			->first();
 		$keyword = Category::inRandomOrder()
-			->first
+			->first()
 			->name;
 		$offset = rand(1, 10);
 
 		$query = <<<STR
-       query SearchResaultQueries(\$keyword: String!, \$type: ArticleType, \$order: ArticleOrder, \$offset: Int) {
+       	query SearchResaultQueries(\$keyword: String!, \$type: ArticleType, \$order: ArticleOrder, \$offset: Int) {
             articles(keyword: \$keyword, type: \$type, order: \$order, offset: \$offset, limit: 10) {
                 id
                 title
@@ -1464,8 +1875,8 @@ STR;
 STR;
 		$variables = <<<STR
         {
-         "keyword" : "$keyword",
-         "offset" : "$offset"
+         	"keyword" : "$keyword",
+         	"offset" : "$offset"
         }
 STR;
 		$response = $this->actingAs($visitor)
@@ -1491,16 +1902,16 @@ STR;
 		$offset = rand(1, 10);
 
 		$query = <<<STR
-        query hotSearchAndLogsQuery(\$offset: Int) {
-                queryLogs(offset: 0) {
-                    id
-                    query
-                }
-                queries(offset: \$offset, limit: 15) {
-                    id
-                    query
-                }
+    	query hotSearchAndLogsQuery(\$offset: Int) {
+            queryLogs(offset: 0) {
+                id
+                query
             }
+            queries(offset: \$offset, limit: 15) {
+                id
+                query
+            }
+        }
 STR;
 		$variables = <<<STR
         {
@@ -1552,5 +1963,276 @@ STR;
 				'errors',
 			]);
 	}
+	/**
+     * @Desc     投稿请求与处理投稿请求放在一起处理
+     * @Author   czg
+     * @DateTime 2018-07-17
+     * @return   [type]     [description]
+     */
+    public function testSubmitAndApproveArticleMutation(){
+        $article = Article::whereStatus(1)
+          ->inRandomOrder()
+          ->first();
+        
+        $cids = [];
+        $categories = $article->categories; 
+        if( !empty($categories) ){
+          $cids = $categories->pluck('id')->toArray();
+        }
+        $category = Category::whereNotIn('id',$cids)
+          ->inRandomOrder()
+          ->first();
+        
+        $is_reject   = rand(0,1);
+
+        $admin     = $category->admins->random();
+        $author   = $article->user;
+        //投稿 
+        $submit_query =  <<<STR
+        mutation submitArticleMutation(\$article_id: Int!, \$category_id: Int!) {
+            submitArticle(article_id: \$article_id, category_id: \$category_id) {
+                id
+                submit_status
+            }
+        }
+STR;
+        //处理投稿请求
+        $approve_query = <<<STR
+        mutation approveArticleMutation(\$article_id: Int!, \$category_id: Int!, \$is_reject: Boolean!) {
+            approveArticle(article_id: \$article_id, category_id: \$category_id, is_reject: \$is_reject) {
+                id
+                pivot_status
+            }
+        }
+STR;
+        $submit_variables = <<<STR
+        {
+          "article_id"    :  $article->id,
+          "category_id"   :  $category->id
+        }
+STR;
+        //处理投稿请求
+        $approve_variables = <<<STR
+        {
+          "article_id"    :  $article->id,
+          "category_id"   :  $category->id,
+          "is_reject"     :  $is_reject
+        }
+STR;
+        //投稿请求
+        $response = $this->actingAs($author)
+            ->json("POST", "/graphql", [
+                'query'       => $submit_query,
+                'variables'   => $submit_variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+        //处理投稿请求
+        $response = $this->actingAs($admin)
+            ->json("POST", "/graphql", [
+                'query'       => $approve_query,
+                'variables'   => $approve_variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+
+    }
+    /**
+     * @Desc     给文章点赞
+     * @Author   czg
+     * @DateTime 2018-07-17
+     * @return   [type]     [description]
+     */
+    public function testLikeArticleMutation(){
+        $visitor = User::inRandomOrder()
+            ->first();
+        $article = Article::whereStatus(1)
+            ->inRandomOrder()
+            ->first();
+        $undo = !($visitor->isLiked('articles', $article->id));
+
+        $query = <<<STR
+        mutation likeArticleMutation(\$article_id: Int!, \$undo: Boolean) {
+            likeArticle(article_id: \$article_id, undo: \$undo) {
+                id
+                liked
+                count_likes
+            }
+        }
+STR;
+        $variables = <<<STR
+        {
+          "article_id"    :  $article->id,
+          "undo"          :  $undo
+        }
+STR;
+        $response = $this->actingAs($visitor)
+            ->json("POST", "/graphql", [
+                'query'       => $query,
+                'variables'   => $variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+
+    /**
+     * @Desc    给评论点赞
+     * @Author   czg
+     * @DateTime 2018-07-17
+     * @return   [type]     [description]
+     */
+    public function testLikeCommentMutation(){
+        $visitor = User::inRandomOrder()
+            ->first();
+        $comment = Comment::inRandomOrder()
+            ->first();
+        $undo = !($visitor->isLiked('comments', $comment->id));
+
+        $query = <<<STR
+        mutation likeCommentMutation(\$comment_id: Int!, \$undo: Boolean) {
+            likeComment(comment_id: \$comment_id, undo: \$undo) {
+                id
+                liked
+                likes
+            }
+        }
+STR;
+        $variables = <<<STR
+        {
+          "comment_id"    :  $comment->id,
+          "undo"          :  $undo
+        }
+STR;
+        $response = $this->actingAs($visitor)
+            ->json("POST", "/graphql", [
+                'query'       => $query,
+                'variables'   => $variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+    /**
+     * @Desc     关注用户
+     * @Author   czg
+     * @DateTime 2018-07-17
+     * @return   [type]     [description]
+     */
+    public function testFollowUserMutation(){
+        $visitor = User::inRandomOrder()
+            ->first();
+        $user = User::inRandomOrder()
+            ->first();
+        $undo = !($visitor->isFollow('users', $user->id));
+
+        $query = <<<STR
+        mutation followUserMutation(\$user_id: Int!, \$undo: Boolean) {
+            followUser(user_id: \$user_id, undo: \$undo) {
+                id
+                count_follows
+                followed_status
+            }
+        }
+STR;
+        $variables = <<<STR
+        {
+          "user_id"       :  $user->id,
+          "undo"          :  $undo
+        }
+STR;
+        $response = $this->actingAs($visitor)
+            ->json("POST", "/graphql", [
+                'query'       => $query,
+                'variables'   => $variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    } 
+    /**
+     * @Desc     关注文集
+     * @Author   czg
+     * @DateTime 2018-07-17
+     * @return   [type]     [description]
+     */
+    public function testFollowCollectionMutation(){
+        $visitor = User::inRandomOrder()
+            ->first();
+        $collection = Collection::inRandomOrder()
+            ->first();
+        $undo = !($visitor->isFollow('collections', $collection->id));
+
+        $query = <<<STR
+        mutation followCollectionMutation(\$collection_id: Int!, \$undo: Boolean) {
+            followCollection(collection_id: \$collection_id, undo: \$undo) {
+                id
+                count_follows
+                followed
+            }
+        }
+STR;
+        $variables = <<<STR
+        {
+          "collection_id" :  $collection->id,
+          "undo"          :  $undo
+        }
+STR;
+        $response = $this->actingAs($visitor)
+            ->json("POST", "/graphql", [
+                'query'       => $query,
+                'variables'   => $variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+
+    /**
+     * @Desc     关注专题
+     * @Author   czg
+     * @DateTime 2018-07-17
+     * @return   [type]     [description]
+     */
+    public function testFollowCategoryMutation(){
+        $visitor = User::inRandomOrder()
+            ->first();
+        $category = Category::inRandomOrder()
+            ->first();
+        $undo = !($visitor->isFollow('categories', $category->id));
+
+        $query = <<<STR
+        mutation followCategoryMutation(\$category_id: Int!, \$undo: Boolean) {
+            followCategory(category_id: \$category_id, undo: \$undo) {
+                id
+                count_follows
+                followed
+            }
+        }
+STR;
+        $variables = <<<STR
+        {
+          "category_id" :  $category->id,
+          "undo"        :  $undo
+        }
+STR;
+        $response = $this->actingAs($visitor)
+            ->json("POST", "/graphql", [
+                'query'       => $query,
+                'variables'   => $variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
 
 }

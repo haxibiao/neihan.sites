@@ -10,9 +10,10 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 /**
+ * 该测试用例最后的更新时间为2018年7月17日19时
  * 有关于文章测试的GraphQL API
  * 测试用例的顺序是严格按照 /ainicheng/graphql/article.graphql的顺序来书写的。
- * 本测试用例最后的更新时间是2018年7月14日,后面的同事注意article.graphql文件的变动情况。
+ * 后面的同事注意article.graphql文件的变动情况。
  * 下面的测试用例没有将共性的东西进行抽离了，也是为了增加灵活性。
  * 已经加了事务回滚，所以不会对数据库产生变动。
  */
@@ -364,7 +365,7 @@ STR;
     }
 
     /**
-     * @Desc     toggle 收藏/取消收藏 文章
+     * @Desc     toggle 查询文章内容
      * @Author   czg
      * @DateTime 2018-07-14
      * @return   [type]     [description]
@@ -451,6 +452,42 @@ STR;
         $variables = <<<STR
         {
           "in_days"        : $in_days
+        }
+STR;
+        $response = $this->json("POST", "/graphql", [
+                'query'         => $query,  
+                'variables'     => $variables,
+            ]);
+        $response->assertStatus(200)
+            ->assertJsonMissing([
+                'errors'
+            ]);
+    }
+
+    /**
+     * @Desc     [desc]
+     * @Author   czg
+     * @DateTime 2018-07-17
+     * @return   [type]     [description]
+     */
+    public function testTrashQuery(){
+
+        $article = Article::inRandomOrder()
+            ->first();
+
+        $query = <<<STR
+        query trashQuery(\$id: Int!) {
+            article(id: \$id) {
+                id
+                type
+                title
+                body
+            }
+        }
+STR;
+        $variables = <<<STR
+        {
+          "id"        : $article->id
         }
 STR;
         $response = $this->json("POST", "/graphql", [
@@ -614,7 +651,7 @@ STR;
             ]);
     }
     /**
-     * @Desc     [desc]
+     * @Desc     文章草稿
      * @Author   czg
      * @DateTime 2018-07-14
      * @return   [type]     [description]
@@ -652,7 +689,7 @@ STR;
             ]);
     }
     /**
-     * @Desc     [desc]
+     * @Desc     
      * @Author   czg
      * @DateTime 2018-07-14
      * @return   [type]     [description]
@@ -679,7 +716,7 @@ STR;
     }
 
     /**
-     * @Desc     [desc]
+     * @Desc     热门文章
      * @Author   czg
      * @DateTime 2018-07-14
      * @return   [type]     [description]
@@ -729,7 +766,7 @@ STR;
             ]);
     }
     /**
-     * @Desc     [desc]
+     * @Desc     推荐文章
      * @Author   czg
      * @DateTime 2018-07-14
      * @return   [type]     [description]
@@ -783,7 +820,7 @@ STR;
     }
 
     /**
-     * @Desc     [desc]
+     * @Desc     文章投稿推荐
      * @Author   czg
      * @DateTime 2018-07-14
      * @return   [type]     [description]
