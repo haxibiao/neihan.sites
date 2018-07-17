@@ -87,14 +87,14 @@ class UsersQuery extends Query
             }
             if ($args['filter'] == 'FOLLOWINGS') {
                 if (!isset($args['user_id'])) {
-                    throw new Exception('查看用户的关注必须提供user_id');
+                    throw new \Exception('查看用户的关注必须提供user_id');
                 }
                 $user = \App\User::findOrFail($args['user_id']);
                 $qb   = $user->followingUsers();
             }
             if ($args['filter'] == 'FOLLOWERS') {
                 if (!isset($args['user_id'])) {
-                    throw new Exception('查看用户的粉丝必须提供user_id');
+                    throw new \Exception('查看用户的粉丝必须提供user_id');
                 }
                 $user = \App\User::findOrFail($args['user_id']);
                 $qb   = $user->follows();

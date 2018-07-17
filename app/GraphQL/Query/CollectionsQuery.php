@@ -64,7 +64,7 @@ class CollectionsQuery extends Query
         
         if (isset($args['filter']) && $args['filter'] == 'FOLLOWED') {
             if (!isset($args['user_id'])) {
-                throw new Exception('查看用户关注的文集必须提供user_id');
+                throw new \Exception('查看用户关注的文集必须提供user_id');
             }
             $user = \App\User::findOrFail($args['user_id']);
             $qb   = $user->followings()->where('followed_type', 'collections');

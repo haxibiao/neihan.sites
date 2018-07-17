@@ -146,7 +146,7 @@ class ArticlesQuery extends Query
 
         if (isset($args['filter']) && $args['filter'] == 'LIKED') {
             if (!isset($args['user_id'])) {
-                throw new Exception('查看用户收藏的文章必须提供user_id');
+                throw new \Exception('查看用户收藏的文章必须提供user_id');
             }
             $user = \App\User::findOrFail($args['user_id']);
             $qb   = $user->likes()->where('liked_type', 'articles');

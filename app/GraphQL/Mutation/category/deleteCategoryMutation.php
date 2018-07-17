@@ -36,7 +36,7 @@ class deleteCategoryMutation extends Mutation
     {
         $category       = Category::findOrFail($args['id']);
         if($category->articles()->count()){
-            throw new Exception("专题下面还有文章,无法删除");
+            throw new \Exception("专题下面还有文章,无法删除");
         }
         $category->delete();
 

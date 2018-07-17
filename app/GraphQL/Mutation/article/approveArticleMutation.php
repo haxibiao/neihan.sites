@@ -63,7 +63,7 @@ class approveArticleMutation extends Mutation
         //更新投稿请求的状态
         $article = $category->newRequestArticles()->wherePivot('article_id', $article->id)->first();
         if (!$article) {
-            throw new Exception('文章没在最新投稿列表了');
+            throw new \Exception('文章没在最新投稿列表了');
         }
         // $submited_status = '待审核';
         $pivot         = $article->pivot;

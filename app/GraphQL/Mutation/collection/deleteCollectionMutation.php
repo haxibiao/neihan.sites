@@ -36,7 +36,7 @@ class deleteCollectionMutation extends Mutation
     {
         $collection       = Collection::findOrFail($args['id']);
         if($collection->articles()->count()){
-            throw new Exception("文集下面还有文章,无法删除");
+            throw new \Exception("文集下面还有文章,无法删除");
         }
         $collection->delete();
 

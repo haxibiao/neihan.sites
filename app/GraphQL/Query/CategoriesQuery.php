@@ -71,7 +71,7 @@ class CategoriesQuery extends Query
 
             if ($args['filter'] == 'ADMIN') {
                 if (!isset($args['user_id'])) {
-                    throw new Exception('查看用户管理的专题必须提供user_id');
+                    throw new \Exception('查看用户管理的专题必须提供user_id');
                 }
                 $user = \App\User::findOrFail($args['user_id']);
                 $qb   = $user->adminCategories();
@@ -79,7 +79,7 @@ class CategoriesQuery extends Query
 
             if ($args['filter'] == 'FOLLOWED') {
                 if (!isset($args['user_id'])) {
-                    throw new Exception('查看用户follow的专题必须提供user_id');
+                    throw new \Exception('查看用户follow的专题必须提供user_id');
                 }
                 $user = \App\User::findOrFail($args['user_id']);
                 $qb   = $user->followings()->where('followed_type', 'categories');
