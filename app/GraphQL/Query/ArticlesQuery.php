@@ -132,7 +132,7 @@ class ArticlesQuery extends Query
             $collection = \App\Collection::findOrFail($args['collection_id']);
             $user       = session('user');
             if ($user && $collection->user_id == $user->id) {
-                $qb = $collection->allArticles();
+                $qb = $collection->hasManyArticles();
             } else {
                 $qb = $collection->articles();
             }
