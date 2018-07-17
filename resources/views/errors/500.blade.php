@@ -4,7 +4,7 @@
 <div class="container">
     <div class="jumbotron">
         <div class="container error">
-            <img src="images/404.png" alt="">
+            <img src="/images/404.png" alt="">
             <div class="info">
                 <h2>服务器内部错误,崩溃啦！</h2>
                 <p class="state">没关系，我带你回去<a class="return" href="{{ url()->previous() }}"> 返回</a></p>

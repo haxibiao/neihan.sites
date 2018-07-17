@@ -4,7 +4,7 @@
 <div class="container">
     <div class="jumbotron">
         <div class="container error">
-            <img src="images/404.png" alt="">
+            <img src="/images/404.png" alt="">
             <div class="info">
                 <h2>很抱歉，你访问的页面不存在</h2>
                 <p class="state">输入地址有误或该地址已被删除，你可以<a class="return" href="/">
