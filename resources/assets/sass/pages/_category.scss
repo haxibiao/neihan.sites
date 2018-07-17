@@ -18,7 +18,18 @@
 	.btn-follow {
 		min-width: 65px;
 		width: 75px;
-		margin: 13px 260px 0px 15px;
+		margin: 0px 0px 0px 5px;
+		float: none;
+		padding: 6px 0;
+		i {
+			font-size: 13px;
+		}
+	}
+	.btn-toggle-followed {
+		min-width: 65px;
+		width: 75px;
+		margin: 0px 0px 0px 5px;
+		float: none;
 		padding: 6px 0;
 		i {
 			font-size: 13px;
