@@ -1080,7 +1080,7 @@ STR;
 	 * @DateTime 2018-07-17
 	 * @return   [type]
 	 */
-	public function UserAdminCategoriesQuery() {
+	public function testUserAdminCategoriesQuery() {
 		$visitor = User::inRandomOrder()
 			->first();
 
