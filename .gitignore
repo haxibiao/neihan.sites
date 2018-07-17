@@ -16,3 +16,4 @@ Homestead.yaml
 npm-debug.log
 .env
 *.zip
+*.log

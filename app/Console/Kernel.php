@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\ImageLogo::class,
         \App\Console\Commands\SitemapRefresh::class,
         \App\Console\Commands\AdminSet::class,
+        \App\Console\Commands\ImportVod::class,
     ];
 
     /**

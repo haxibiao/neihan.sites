@@ -18,6 +18,8 @@
         "overtrue/laravel-wechat": "~3.0",
         "overtrue/pinyin": "~3.0",
         "roumen/sitemap": "^2.7",
+        "qcloud/vod-sdk-v5": "v1.2.1",
+        "jingling0101/laravel-qcloud-cos": "^1.0",
         "simplesoftwareio/simple-qrcode": "^2.0"
     },
     "require-dev": {
