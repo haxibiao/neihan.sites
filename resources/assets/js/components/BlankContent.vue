@@ -10,7 +10,7 @@
 <script>
 export default {
 
-  name: 'unNotification',
+  name: 'BlankContent',
 
   data () {
     return {

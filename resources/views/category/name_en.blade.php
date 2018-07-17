@@ -10,17 +10,17 @@
         <div class="main col-sm-7">
             {{-- 分类信息 --}}
             @include('category.parts.information')
-            {{-- 视频文章内容--}}
-            <ul id="select-menu"  class="nav nav-pills"  role="tablist">
-              <li role="presentation" class="active">
-                 <a href="#article" aria-controls="article" role="tab" data-toggle="tab" class="article">文章</a>
-              </li>
-              <li role="presentation" >
-                <a href="#video-list" aria-controls="video-list" role="tab" data-toggle="tab" class="video">视频</a>
-              </li>
-            </ul>
             {{-- 内容 --}}
             <div class="article-list tab-content">
+              {{-- 视频文章内容--}}
+              <ul id="select-menu" class="nav nav-pills" role="tablist">
+                <li role="presentation" class="active">
+                   <a href="#article" aria-controls="article" role="tab" data-toggle="tab" class="article">文章</a>
+                </li>
+                <li role="presentation" >
+                  <a href="#video-list" aria-controls="video-list" role="tab" data-toggle="tab" class="video">视频</a>
+                </li>
+              </ul>
               <ul role="tabpanel" class="fade in tab-pane active" id="article">
                 <div class="content"> 
                      <!-- Nav tabs -->

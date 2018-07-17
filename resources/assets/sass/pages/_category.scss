@@ -7,35 +7,15 @@
 			padding: 10px 0 0 0;
 		}
 	}
-}
-
-#category {
-	.note-info.info-lg {
-		width: 100%;
-		float: left;
-		margin-bottom: 15px;
+	.article-list {
+		position: relative;
 	}
-	.btn-follow {
-		min-width: 65px;
-		width: 75px;
-		margin: 0px 0px 0px 5px;
-		float: none;
-		padding: 6px 0;
-		i {
-			font-size: 13px;
+	@media screen and(max-width:768px) {
+		#select-menu {
+			right: 5px;
+			a {
+				padding: 4px 6px;
+			}
 		}
-	}
-	.btn-toggle-followed {
-		min-width: 65px;
-		width: 75px;
-		margin: 0px 0px 0px 5px;
-		float: none;
-		padding: 6px 0;
-		i {
-			font-size: 13px;
-		}
-	}
-	.btn-base {
-		font-size: 13px;
 	}
 }
