@@ -34,7 +34,7 @@
 		    </div>
 		  </div>
 		</li> 
-		<a class="btn-base btn-more" href="javascript:;" v-if="articles.length || notEmpty">{{ page >= lastPage ? '已经到底了':'正在加载更多' }}...</a>
+		<loading-more  v-if="articles.length || notEmpty" :end="end"></loading-more>
 		<div v-else class="unMessage">
 			<blank-content></blank-content>
 		</div>
@@ -100,6 +100,9 @@ export default {
 				m.articles = m.articles.concat(response.data.data);
 				m.lastPage = response.data.last_page;
 				$('[data-toggle="tooltip"]').tooltip();
+				if(m.page>=m.lastPage){
+					m.end = true;
+				}
 				//TODO:: loading done !!!
 			});
 		}
@@ -110,7 +113,8 @@ export default {
 			apiDefault: "",
 			page: this.startPage ? this.startPage : 1,
 			lastPage: -1,
-			articles: []
+			articles: [],
+			end:false
 		};
 	}
 };

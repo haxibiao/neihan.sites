@@ -7,18 +7,15 @@
 			padding: 10px 0 0 0;
 		}
 	}
-}
-
-#category {
-	.note-info.info-lg {
-		width: 100%;
-		float: left;
-		margin-bottom: 15px;
+	.article-list {
+		position: relative;
 	}
-	.btn-base {
-		margin: 45px 0px 20px 15px;
-		padding: 9px 0;
-		font-size: 13px;
-		width: 85px;
+	@media screen and(max-width:768px) {
+		#select-menu {
+			right: 5px;
+			a {
+				padding: 4px 6px;
+			}
+		}
 	}
 }

@@ -8,7 +8,7 @@
     </div> 
     <ul class="category-video-list">
     	<li class="category-video-item">
-    		<a href="/juedidataosha">
+    		<a href="/PUBG">
             	<img class="game-category" src="/images/pubg.jpg" alt="绝地求生">
             	<p>绝地求生</p>
         	</a>
@@ -32,7 +32,7 @@
         	</a>
     	</li>
     	<li class="category-video-item">
-    		<a href="/PUBG">
+    		<a href="/cijizhanchang">
             	<img class="game-category" src="/images/ciji.jpg" alt="刺激战场">
             	<p>刺激战场</p>
         	</a>

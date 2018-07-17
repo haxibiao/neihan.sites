@@ -197,12 +197,28 @@ class CategoryController extends Controller
             return $articles;
         }
         $data['hot'] = $articles;
-
-        //videos
+        
+        //最新视频
         $qb = $category->videoArticles()->whereStatus(1)->orderBy('id', 'desc');
-
         $videos                 = smartPager($qb, 12);
-        $data['video_articles'] = $videos;
+        if (ajaxOrDebug() && $request->get('video_new')) {
+            foreach ($videos as $video) {
+                $video->fillForJs();
+            }
+            return $videos;
+        }
+        $data['video_new'] = $videos;
+
+        //热门视频
+        $qb = $category->videoArticles()->whereStatus(1)->orderBy('hits', 'desc');
+        $videos                 = smartPager($qb, 12);
+        if (ajaxOrDebug() && $request->get('video_hot')) {
+            foreach ($videos as $video) {
+                $video->fillForJs();
+            }
+            return $videos;
+        }
+        $data['video_hot'] = $videos;
 
         return view('category.name_en')
             ->withCategory($category)
