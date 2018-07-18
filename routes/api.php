@@ -33,6 +33,7 @@ if ($is_testing) {
     require 'api/app.php';
     //搜索
     require 'api/search.php';
+    require 'api/video.php';
 } else {
     require_once 'api/user.php';
     require_once 'api/follow.php';
@@ -48,6 +49,7 @@ if ($is_testing) {
     require_once 'api/app.php';
     //搜索
     require_once 'api/search.php';
+    require_once 'api/video.php';
 }
 
 //create qrcode

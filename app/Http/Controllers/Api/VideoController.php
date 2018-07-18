@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Video;
 use App\Article;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class VideoController extends Controller
@@ -191,5 +192,16 @@ class VideoController extends Controller
             return $data;
         }
         return null;
+    }
+
+    public function getLatestVideo()
+    {
+        $data = Article::where('type','video')->orderByDesc('updated_at')->paginate(1);
+        foreach ($data as $article) {
+            $article->image_url = $article->primaryImage();
+            $article->user = $article->user;
+            $article->user->avatar = $article->user->avatar();
+        }
+        return $data;
     }
 }

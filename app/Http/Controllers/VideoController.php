@@ -288,12 +288,26 @@ class VideoController extends Controller
 
     public function video_list()
     {
-        $stick_video_categories = get_stick_video_categories();
-        $video_category = [];
-        foreach ($stick_video_categories as $video_categories) {
-            $video_id = $video_categories->id;
-            $video_category[$video_categories->name]['video'] = Article::find($video_id)->orderby('count_likes','desc')->paginate(3);
+        //取置顶视频专题
+        // $stick_video_categories = get_stick_video_categories();
+        // $video_category = [];
+        // foreach ($stick_video_categories as $video_categories) {
+        //     $video_id = $video_categories->id;
+        //     $video_category[$video_categories->name]['video'] = Article::find($video_id)->orderby('count_likes','desc')->paginate(3);
+        // }
+        $c = Article::with('category')->where('type','video')
+            ->selectRaw('sum(hits) as hot,category_id')
+            ->groupBy('category_id')
+            ->orderby('hot', 'desc')
+            ->take(3)
+            ->get();
+        $categories = Category::whereIn('id',$c->pluck('category_id'))->get();
+        foreach ($categories as $category) {
+            $data[$category->name] = $category->videoArticles()->orderByDesc('hits')->take(3)->get();
+            foreach ($data[$category->name] as $article) {
+                $article->image_url = $article->primaryImage();
+            }
         }
-        return view('video.video_list')->withVideoCategories($stick_video_categories)->withVideolist($video_category);
+        return view('video.video_list')->with('data',$data);
     }
 }
