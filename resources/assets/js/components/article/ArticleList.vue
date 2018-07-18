@@ -4,7 +4,7 @@
 		    <a v-if="article.has_image" :class="article.type =='video' ? 'wrap-img video' : 'wrap-img'" :href="article.url" :target="isDesktop? '_blank' : '_self'">
 		        <img :src="article.primary_image" :alt="article.title">
 		        <i class="hover-play"> </i>
-		        <i  v-if="article.type =='video'" class="duration">{{article.duration}}</i>  <!--当为视频时,取出视频的时长 -->
+		        <i  v-if="article.type =='video'" class="duration">{{videotime}}</i>  <!--当为视频时,取出视频的时长 -->
 		    </a>  
 		  <div class="content">
 		    <div class="author">
@@ -45,7 +45,7 @@
 export default {
 	name: "ArticleList",
 
-	props: ["api", "startPage", "notEmpty", 'isDesktop'], 
+	props: ["api", "startPage", "notEmpty", "isDesktop", "videoDuration"],
 
 	watch: {
 		api(val) {
@@ -53,7 +53,6 @@ export default {
 			this.fetchData();
 		}
 	},
-
 	computed: {
 		apiUrl() {
 			var page = this.page;
@@ -61,14 +60,12 @@ export default {
 			var api_url = api.indexOf("?") !== -1 ? api + "&page=" + page : api + "?page=" + page;
 			return api_url;
 		}
-
 	},
 
 	mounted() {
 		this.listenScrollBottom();
 		this.fetchData();
 	},
-
 	methods: {
 		clear() {
 			this.articles = [];
@@ -100,11 +97,13 @@ export default {
 				m.articles = m.articles.concat(response.data.data);
 				m.lastPage = response.data.last_page;
 				$('[data-toggle="tooltip"]').tooltip();
-				if(m.page>=m.lastPage){
+				if (m.page >= m.lastPage) {
 					m.end = true;
 				}
 				//TODO:: loading done !!!
 			});
+			console.log(m.videotime);
+			console.log(m.videoDuration);
 		}
 	},
 
@@ -114,7 +113,11 @@ export default {
 			page: this.startPage ? this.startPage : 1,
 			lastPage: -1,
 			articles: [],
-			end:false
+			end: false,
+			videotime:
+				(this.videoDuration / 60 / 100).toFixed(2).slice(-2) +
+				":" +
+				((this.videoDuration % 60) / 100).toFixed(2).slice(-2)
 		};
 	}
 };
