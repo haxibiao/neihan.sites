@@ -236,4 +236,25 @@ class Category extends Model
             $img->save(public_path($small_logo));
         }
     }
+    /**
+     * @Desc     记录用户浏览记录
+     * @Author   czg
+     * @DateTime 2018-06-28
+     * @return   [type]     [description]
+     */
+    public function recordBrowserHistory()
+    {
+        //记录浏览历史
+        if (checkUser()) {
+            $user = getUser();
+            //如果重复浏览只更新纪录的时间戳
+            $visit = \App\Visit::firstOrNew([
+                'user_id'      => $user->id,
+                'visited_type' => 'categories',
+                'visited_id'   => $this->id,
+            ]);
+            $visit->save(); 
+        }
+        $this->save();
+    }
 }

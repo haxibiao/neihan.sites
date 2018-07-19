@@ -576,6 +576,7 @@ STR;
 	public function testUpdateUserName() {
 		$visitor = User::inRandomOrder()
 			->first();
+    $name = 'lyy_'.str_random(5);
 
 		$query = <<<STR
         mutation updateUserNameMutation(\$name: String!) {
@@ -587,7 +588,7 @@ STR;
 STR;
 		$variables = <<<STR
         {
-          "name":  "lyy"
+          "name":  "$name"
         }
 STR;
 		$response = $this->actingAs($visitor)
@@ -643,8 +644,8 @@ STR;
 		//
 		$user = new User();
 		$user->password = bcrypt('123123123');
-		$user->name = 123;
-		$user->email = 13;
+		$user->name = 'lyy'.'_'.str_random(5);
+		$user->email = 'lyy@haxibiao.com';
 		$user->save();
 
 		$query = <<<STR
@@ -1075,7 +1076,7 @@ STR;
 	}
 	/**
 	 * @Desc     用户管理专题
-	 * TODO
+	 * 删除submit_status字段
 	 * @Author   LYY
 	 * @DateTime 2018-07-17
 	 * @return   [type]
@@ -1091,8 +1092,7 @@ STR;
                 name
                 logo
                 count_articles
-                count_follows
-                submit_status
+                count_follows 
                 user {
                     id
                     name
@@ -1166,9 +1166,12 @@ STR;
 	 * @return   [type]
 	 */
 	public function testMyCollectionsQuery() {
-		$visitor = User::inRandomOrder()
-			->first();
+		$users = [];
+    $users[] = User::inRandomOrder()->first();
+    $collection = Collection::inRandomOrder()->first();
+    $users[] = $collection->user;
 
+    $visitor = array_random($users);
 		$query = <<<STR
         query myCollectionsQuery {
             user {
@@ -1408,12 +1411,7 @@ STR;
                     user {
                         id
                         name
-                        avatar
-                    }
-                    atUser {
-                        id
-                        name
-                        avatar
+                        avatar  
                     }
                     article {
                         id
@@ -1776,6 +1774,7 @@ STR;
 
 	/**
 	 * @Desc     最近投稿
+   * 删除submit_status字段 
 	 * @Author   LYY
 	 * @DateTime 2018-07-17
 	 * @return   [type]
@@ -1792,9 +1791,8 @@ STR;
 		        categories(filter: LATEST_REQUEST) {
 		            id
 		            name
-		            count_articles
+		            count_articles  
 		            count_follows
-		            submit_status
 		            logo
 		        }
 		    }
@@ -2126,11 +2124,12 @@ STR;
      * @return   [type]     [description]
      */
     public function testFollowUserMutation(){
-        $visitor = User::inRandomOrder()
-            ->first();
-        $user = User::inRandomOrder()
-            ->first();
-        $undo = !($visitor->isFollow('users', $user->id));
+        $users = User::inRandomOrder()
+            ->take(2)
+            ->get();
+        $visitor = $users->first();
+        $user    = $users->last();
+        $undo    = !($visitor->isFollow('users', $user->id));
 
         $query = <<<STR
         mutation followUserMutation(\$user_id: Int!, \$undo: Boolean) {
@@ -2138,7 +2137,7 @@ STR;
                 id
                 count_follows
                 followed_status
-            }
+            } 
         }
 STR;
         $variables = <<<STR

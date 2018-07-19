@@ -88,7 +88,7 @@ class ArticleController extends Controller
                 'submit' => '已收录',
             ],
         ]);
-        $article->save(['timestamp' => false]);
+        $article->save(['timestamps' => false]);
 
         //user
         $user                 = User::findOrFail($user_id);

@@ -40,19 +40,22 @@ class signUpMutation extends Mutation
         $password = $args['password'];
         $email = $args['email'];
         $name = $args['name'];
+        
+        //用户名或邮箱都不能重复，这里没有放到rules中的原因是：检验的错误信息json结构不兼容前端已经绑定的结构。后面有时间可以考虑与前端重构一下
+        $user_existed = User::where('email',$email)
+            ->orWhere('name',$name)
+            ->exists();
 
-        $user = User::firstOrNew([
-            'email' => $email,
-        ]);
-
-        if($user->id) {
-            throw new \Exception('邮箱地址已经注册');
+        if( $user_existed ) {
+            throw new \Exception('该用户名或邮箱已经存在');
         }
 
-        $user->name = $name; 
-        $user->password = bcrypt($password);
-        $user->avatar = '/images/avatar-'.rand(1, 15).'.jpg';
-        $user->api_token = str_random(60);
+        $user = new User();
+        $user->email        = $email;
+        $user->name         = $name; 
+        $user->password     = bcrypt($password);
+        $user->avatar       = '/images/avatar-'.rand(1, 15).'.jpg';
+        $user->api_token    = str_random(60);
         $user->introduction = '';
         $user->save();
 

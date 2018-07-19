@@ -34,6 +34,15 @@ class updateUserNameMutation extends Mutation
     public function resolve($root, $args)
     {
         $user = getUser();
+        
+        //validation邮箱是否重复
+        $name_existed = User::where('name',$args['name'])
+            ->where('id','<>',$user->id)
+            ->exists();
+
+        if( $name_existed ) {
+            throw new \Exception('该用户名已经存在');
+        }
 
         $user->name = $args['name'];
         $user->save();

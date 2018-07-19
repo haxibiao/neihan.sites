@@ -60,32 +60,28 @@ class FixData extends Command
 
     public function fix_notifications()
     {
-        $this->cmd->info('fix notifications ...');
-        //删除通知表中投稿请求类型的通知类型
-        \DB::table('notifications')->where('type', 'App\Notifications\CategoryRequested')->delete();
-        //修复之前的脏数据
-        \App\Category::where('id', 76)->update([
-            'new_requests' => 0,
-        ]);
+        
     }
 
     public function fix_users()
     {
-        $this->cmd->info('fix user indentify ...');
-        User::whereIn('id',[293,323])->chunk(100, function ($users) {
+        //修复网站用户名重复问题
+        $this->cmd->info('fix users ...');
+        User::chunk(100,function($users){
             foreach ($users as $user) {
-                $user->is_editor = 1;
-                $user->is_admin  = 1;
-                $user->is_seoer  = 1;
-                $user->timestamps   = false;
-                $user->save();
+                $user_name = $user->name;
+                $has_same  = User::whereName($user_name)->count()>=2;
+                if(!$has_same){
+                    continue;
+                }
+                $user->name = $user->name.'_'.str_random(5);;
+                $user->save(['timestamps'=>false]);
             }
         });
     }
 
     public function fix_tags()
     {
-
     }
 
     public function fix_comments()

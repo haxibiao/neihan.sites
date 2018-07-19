@@ -184,7 +184,9 @@ STR;
      * @return   [type]     [description]
      */
     public function testDeleteCollectionMutation(){
-        $collection = Collection::inRandomOrder()->first();
+        $collection = Collection::whereCount(0)
+            ->inRandomOrder()
+            ->first();
         $user = $collection->user;
 
         $query = <<<STR

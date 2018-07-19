@@ -35,6 +35,15 @@ class updateUserEmailMutation extends Mutation
     {
         $user = getUser();
 
+        //validation邮箱是否重复
+        $email_existed = User::where('email',$args['email'])
+            ->where('id','<>',$user->id)
+            ->exists();
+
+        if( $email_existed ) {
+            throw new \Exception('该邮箱已注册');
+        }
+
         $user->email = $args['email'];
         $user->save();
 
