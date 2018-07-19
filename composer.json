@@ -7,19 +7,20 @@
     "require": {
         "php": ">=7.0.0",
         "bugsnag/bugsnag-laravel": "^2.0",
+        "bvanhoekelen/performance": "^2.3",
         "doctrine/dbal": "^2.5",
         "folklore/graphql": "~1.0.0",
         "intervention/image": "^2.3",
         "jenssegers/agent": "^2.5",
+        "jingling0101/laravel-qcloud-cos": "^1.0",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4",
         "lokielse/omnipay-alipay": "^2.0",
         "overtrue/laravel-wechat": "~3.0",
         "overtrue/pinyin": "~3.0",
-        "roumen/sitemap": "^2.7",
         "qcloud/vod-sdk-v5": "v1.2.1",
-        "jingling0101/laravel-qcloud-cos": "^1.0",
+        "roumen/sitemap": "^2.7",
         "simplesoftwareio/simple-qrcode": "^2.0"
     },
     "require-dev": {
