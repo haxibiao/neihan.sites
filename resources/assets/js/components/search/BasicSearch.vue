@@ -2,8 +2,8 @@
   <form  class="navbar-form form-box" id='searchForm'>
     <div class="form-group"> 
       <div class="search-wrapper">
-        <input type="text" id="search-input" class="form-control" placeholder="搜索">
-        <span class="iconfont icon-sousuo search-btn"></span>
+        <input type="text" id="search-input" class="form-control" placeholder="搜索" v-model="inputValue" @keyup.enter="searchArticles">
+        <span class="iconfont icon-sousuo search-btn" @click="searchArticles"></span>
       </div>
     </div>
   </form> 
@@ -17,10 +17,17 @@ export default {
 
   computed: {},
 
-  methods: {},
+  methods: {
+    searchArticles() {
+      window.location.href = this.searchApi + this.inputValue;
+    }
+  },
 
   data() {
-    return {};
+    return {
+      searchApi: "/article?q=",
+      inputValue: ""
+    };
   }
 };
 </script>
