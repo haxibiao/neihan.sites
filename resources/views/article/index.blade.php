@@ -16,7 +16,7 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 style="margin:0;display:inline-block">管理文章</h3>
-        <basic-search></basic-search>
+        <basic-search api="/article?q="></basic-search>
     </div>
     
   <div class="panel-body">

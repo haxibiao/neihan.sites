@@ -23,12 +23,15 @@ class VideoController extends Controller
      */
     public function index(Request $request)
     { 
-        $videos = Video::with('user')->with('article.category')
-            ->orderBy('id', 'desc')
-            ->where([
-                ['status', '>=', 0]
-            ])
-            ->paginate(10);
+        $videos = Video::with('user')->with('article.category')->orderBy('id', 'desc')->where('status', '>=', 0);
+        //Search videos
+        if($request->get('q'))
+        {
+            $keywords = $request->get('q');
+            $videos = Video::with('user')->with('article.category')->orderBy('id', 'desc')->where('status', '>=', 0)
+            ->where('title','like',"%$keywords%");
+        }
+        $videos = $videos->paginate(10);
         return view('video.index')
             ->withVideos($videos); 
     }

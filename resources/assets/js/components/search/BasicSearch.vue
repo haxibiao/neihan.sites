@@ -13,19 +13,18 @@
 export default {
   name: "CategorySearch",
 
-  props: [],
+  props: ["api"],
 
   computed: {},
 
   methods: {
     searchArticles() {
-      window.location.href = this.searchApi + this.inputValue;
+      window.location.href = this.api + this.inputValue;
     }
   },
 
   data() {
     return {
-      searchApi: "/article?q=",
       inputValue: ""
     };
   }
