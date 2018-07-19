@@ -15,7 +15,7 @@
                     <img class="video-photo" :src="article.image_url">
                     <i class="hover-play"> </i>
                 </a>
-                <a href="">{{ article.title }}</a>
+                <a :href="'/video/'+article.video_id"  class="video-title">{{ article.title }}</a>
                 <div class="info">
                     <a class="user" :href="'/user/'+article.user_id">
                         <img :src="article.user.avatar" class="avatar">
@@ -53,8 +53,7 @@ export default {
     apiUrl() {
       var page = this.page;
       var api = this.api ? this.api : this.apiDefault;
-      var api_url =
-        api.indexOf("?") !== -1 ? api + "&page=" + page : api + "?page=" + page;
+      var api_url = api.indexOf("?") !== -1 ? api + "&page=" + page : api + "?page=" + page;
       return api_url;
     }
   },
@@ -72,9 +71,7 @@ export default {
       var m = this;
       $(window).on("scroll", function() {
         var aheadMount = 5;
-        var is_scroll_to_botton =
-          $(this).scrollTop() >=
-          $("body").height() - $(window).height() - aheadMount;
+        var is_scroll_to_botton = $(this).scrollTop() >= $("body").height() - $(window).height() - aheadMount;
         if (is_scroll_to_botton) {
           m.fetchMore();
         }
@@ -94,6 +91,8 @@ export default {
         vm.articles = vm.articles.concat(response.data.data);
         vm.lastPage = response.data.lastPage;
       });
+      console.log("视频");
+      console.log(vm.articles);
     }
   },
 

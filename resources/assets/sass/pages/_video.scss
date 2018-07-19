@@ -1,194 +1,197 @@
-.video-top{
-	.more-cateory{
+.video-top {
+	.more-cateory {
 		float: right;
 		padding-top: 1px;
-		p{
-		   color:$light-color4;
-		   line-height: 12px;
-		   margin-top: 10px;
-		   font-size: 14px;
+		p {
+			color: $light-color4;
+			line-height: 12px;
+			margin-top: 10px;
+			font-size: 14px;
 		}
-		i{
+		i {
 			font-size: 13px;
 		}
-
 	}
-	.category-video-list{
+	.category-video-list {
 		clear: both;
 		overflow: hidden;
 		margin-right: -5px;
 		padding-left: 5px;
-		.category-video-item{
+		.category-video-item {
 			float: left;
 			width: 129px;
 			height: 196px;
-			margin:0 26px 20px 0;
+			margin: 0 26px 20px 0;
 			position: relative;
 			background: $theme-skin;
-			.game-category{
+			.game-category {
 				width: 130px;
 				height: 175px;
 				border-radius: 4px;
 			}
-			p{
-			   text-align:center;
-			   color:$light-color4;
-			   line-height: 12px;
-			   margin-top: 10px;
-			   font-size: 12px;
+			p {
+				text-align: center;
+				color: $light-color4;
+				line-height: 12px;
+				margin-top: 10px;
+				font-size: 12px;
 			}
-
 		}
 	}
 }
-.video-navs{
+.video-navs {
 	width: 100%;
-	padding:15px 0;
-	.nav-menus:after{
+	padding: 15px 0;
+	.nav-menus:after {
 		content: "";
 		clear: both;
 		display: block;
 	}
-	.nav-menus{
+	.nav-menus {
 		height: auto;
 		position: relative;
-	    padding: 0 10px;
-	    .menu-title{
-	    	color:#333;
-	    	line-height: 40px;
-	    	font-size: 26px;
-	    	margin-right: 32px;
-	    	width: auto;
-	    	font-weight: 700;
-	    	position: relative;
-	    	p{	
-				padding-top:3px;
-	    	}
-	    }
-		li{
-			float:left;
+		padding: 0 10px;
+		.menu-title {
+			color: #333;
+			line-height: 40px;
+			font-size: 26px;
+			margin-right: 32px;
+			width: auto;
+			font-weight: 700;
+			position: relative;
+			p {
+				padding-top: 3px;
+			}
+		}
+		li {
+			float: left;
 			position: relative;
 			width: 96px;
 			text-align: left;
 			overflow: visible;
 			line-height: 32px;
 			font-size: 14px;
-			padding-right:5px;
+			padding-right: 5px;
 			height: 42px;
-			a{
-				color:#666;
+			a {
+				color: #666;
 				max-width: 75px;
 				height: 30px;
 				position: absolute;
 				bottom: 0;
 			}
-	
 		}
 	}
 }
-.video-box{
+.video-box {
 	width: 100%;
 	padding-top: 20px;
 	padding-bottom: 20px;
 
-	.box-top{
+	.box-top {
 		display: flex;
-		justify-content:space-between;
-		align-items:center;
+		justify-content: space-between;
+		align-items: center;
 		border-bottom: solid 1px $light-color2;
 		width: 915px;
-		.top-left{
+		.top-left {
 			display: flex;
-			align-items:center;
-			img{
+			align-items: center;
+			img {
 				width: 36px;
 				height: 36px;
-				margin:5px;
+				margin: 5px;
 			}
-			p{
+			p {
 				font-size: 16px;
-				color:$light-color4;
+				color: $light-color4;
 				margin-left: 10px;
 			}
-			i{
+			i {
 				font-size: 26px;
-				color:$hot-pink;
+				color: $hot-pink;
 			}
 		}
-		.top-right{
+		.top-right {
 			position: relative;
 			right: 0px;
-			p{
-			   color:$light-color4;
-			   line-height: 12px;
-			   margin-top: 10px;
-			   font-size: 14px;
+			p {
+				color: $light-color4;
+				line-height: 12px;
+				margin-top: 10px;
+				font-size: 14px;
 			}
-			i{
+			i {
 				font-size: 13px;
 			}
 		}
 	}
-	.box-body{
-		.game-video-list{
+	.box-body {
+		.game-video-list {
 			clear: both;
 			overflow: hidden;
 			width: 100%;
-			.game-video-item{
+			.game-video-item {
 				float: left;
-				margin:20px 20px 0 0;
+				margin: 20px 20px 0 0;
 				width: 290px;
-				.video-info{
+				.video-info {
 					display: block;
 					position: relative;
 					width: 100%;
 					margin-bottom: 10px;
-					overflow:hidden;	
+					overflow: hidden;
 					&:hover {
-						img{
+						img {
 							box-shadow: 0 1px 5px 1px $gray-color3;
 							transform: scale(1.1);
 							transition: all 0.3s ease-in-out;
 						}
-						.hover-play{
+						.hover-play {
 							opacity: 1;
-							transform:scale(0.8);
-							transition:all ease-out 250ms;
+							transform: scale(0.8);
+							transition: all ease-out 250ms;
 						}
 					}
-					.video-photo{
+					.video-photo {
 						width: 100%;
 						border-radius: 4px;
 					}
 				}
-				.info{
+				.video-title {
+					display: block;
+					overflow: hidden;
+					white-space: nowrap;
+					width: 295px;
+					text-overflow: ellipsis;
+				}
+				.info {
 					display: flex;
-				  	justify-content:space-between;
-					align-items:center;
+					justify-content: space-between;
+					align-items: center;
 					padding-top: 5px;
 					width: 290px;
-					span{
-						color:$light-color4;
+					span {
+						color: $light-color4;
 					}
 				}
-				.avatar{
+				.avatar {
 					width: 24px;
 					height: 24px;
-					border-radius: 50%;	
+					border-radius: 50%;
 				}
-				a{
+				a {
 					font-size: 15px;
 					color: $light-color4;
-					
 				}
-				i{	
+				i {
 					padding-left: 5px;
 					font-size: 14px;
 					color: $gray-color3;
 				}
-			   .hover-play{
-			        padding: 0px;
-			   }
+				.hover-play {
+					padding: 0px;
+				}
 			}
 		}
 	}
