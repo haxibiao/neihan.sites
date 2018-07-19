@@ -9,8 +9,8 @@ use Tests\TestCase;
 
 /**
  * 有关于文章测试的GraphQL API
- * 测试用例的顺序是严格按照 /ainicheng/graphql/article.graphql的顺序来书写的。
- * 本测试用例最后的更新时间是2018年7月16日,后面的同事注意article.graphql文件的变动情况。
+ * 测试用例的顺序是严格按照 /ainicheng/graphql/category.graphql的顺序来书写的。
+ * 本测试用例最后的更新时间是2018年7月19日,后面的同事注意category.graphql文件的变动情况。
  * 下面的测试用例没有将共性的东西进行抽离了，也是为了增加灵活性。
  * 已经加了事务回滚，所以不会对数据库产生变动。
  */
@@ -451,6 +451,11 @@ STR;
         $response->assertStatus(200)->assertJsonMissing(['errors']);
     }
 
+    /**
+     * @Desc     变更专题管理员
+     * @Author   XXM
+     * @DateTime 2018-07-19
+     */
     public function testEditCategoryAdminsMutation()
     {
     	$user = User::inRandomOrder()->first();
