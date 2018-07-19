@@ -10,7 +10,7 @@
                   </h4>
                   <div class="search-wrapper">
                       <input type="text" placeholder="搜索我管理的专题" id="search-input" v-model="q" @keyup.enter="search">
-                      <a class="search-btn iconfont icon-sousuo"></a>
+                      <a class="search-btn iconfont icon-sousuo" @click="search"></a>
                   </div>
               </div>
               <div class="modal-body">
@@ -70,7 +70,9 @@ export default {
       this.fetchData();
     },
     add(category) {
-      var api = window.tokenize("/api/categories/" + this.articleId + "/add-category-" + category.id);
+      var api = window.tokenize(
+        "/api/categories/" + this.articleId + "/add-category-" + category.id
+      );
       window.axios.get(api).then(function(response) {
         category.submit_status = response.data.submit_status;
         category.submited_status = response.data.submited_status;
