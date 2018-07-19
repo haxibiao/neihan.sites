@@ -24,7 +24,7 @@
                         <img class="video-photo" src=" {{ $article->image_url }}">
                         <i class="hover-play"> </i>
                     </a>
-                    <a href="/video/{{ $article->video_id }}">{{$article->title}}</a>
+                    <a href="/video/{{ $article->video_id }}" class="video-title">{{$article->title}}</a>
                     <div class="info">
                         <a class="user" href="/user/{{ $article->user_id }}">
                             <img src="{{ $article->user->avatar() }}" class="avatar">

@@ -102,8 +102,8 @@ export default {
 				}
 				//TODO:: loading done !!!
 			});
-			console.log(m.videotime);
-			console.log(m.videoDuration);
+			console.log("首页");
+			console.log(m.articles);
 		}
 	},
 
