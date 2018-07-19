@@ -16,7 +16,12 @@
 						    <a class="avatar" href="/user/{{ $user->id }}">
 						      <img src="{{ $user->avatar() }}" alt="">
 						      </a>        
-						      <follow></follow>
+						      <follow
+								type="users"
+								id="{{ $user->id }}" 
+								user-id="{{ user_id() }}" 
+      							followed="{{ is_follow('users', $user->id) }}">
+						      </follow>
 						    <div class="title">
 						      <a href="/user/{{ $user->id }}" class="name">{{ $user->name }}</a>
 						    </div>
