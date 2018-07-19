@@ -52,6 +52,8 @@ if ($is_testing) {
     require_once 'api/video.php';
 }
 
+Route::get('/test/perf', 'Api\TestController@perf');
+
 //create qrcode
 Route::get('/share/weixin/', 'Api\shareController@shareWechat');
 

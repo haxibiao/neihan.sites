@@ -17,3 +17,4 @@ npm-debug.log
 .env
 *.zip
 *.log
+*.DS_Store
