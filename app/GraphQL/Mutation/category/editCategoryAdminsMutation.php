@@ -48,8 +48,8 @@ class editCategoryAdminsMutation extends Mutation
                     $data[$uid] = ['is_admin' => 1];
                 }
             }
-            $category->admins()->sync($data);
         }
+        $category->admins()->sync($data);
 
         return $category;
     }
