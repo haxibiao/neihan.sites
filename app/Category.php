@@ -51,6 +51,11 @@ class Category extends Model
             ->where('articles.type','video');
     }
 
+    public function hasManyVideoArticles()
+    {
+        return $this->hasMany('App\Article')->where('articles.type','video');
+    }
+
     public function questions()
     {
         return $this->belongsToMany('App\Question');
