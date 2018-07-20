@@ -58,7 +58,11 @@ class ImportVideo extends Command
                 return;
             }
             if ($this->option('cos')) {
-                if ($cdn_url = $this->cosUpload(public_path($video->getPath()))) {
+                $localPath = public_path($video->getPath());
+                if (!file_exists($localPath)) {
+                    $localPath = public_path($video->path);
+                }
+                if ($cdn_url = $this->cosUpload($localPath)) {
                     $video->path = $cdn_url;
                     $video->save();
                     $this->info("$video->id $video->path");
@@ -80,7 +84,8 @@ class ImportVideo extends Command
     {
         $this->comment($srcPath);
         if (!file_exists($srcPath)) {
-            dd("$srcPath not exist");
+            $this->error("$srcPath not exist");
+            return false;
         }
         $result = VodApi::upload(
             array(
@@ -113,7 +118,7 @@ class ImportVideo extends Command
         $dstPath = "video/" . PATHINFO($srcPath, PATHINFO_FILENAME) . "." . PATHINFO($srcPath, PATHINFO_EXTENSION);
         $this->info($dstPath);
         $result = $cos::upload($bucket, $srcPath, $dstPath);
-        $res = json_decode($result);
+        $res    = json_decode($result);
         if ($res && !empty($res->data->access_url)) {
             $this->info('上传成功! cdn access url:' . $res->data->access_url);
             return $res->data->access_url;
