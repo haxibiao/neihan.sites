@@ -26,3 +26,6 @@ sudo /bin/cp -rf /data/www/ainicheng.com/webpack.mix.js /data/www/$1.com/
 
 echo 'sync assets ...'
 sudo /bin/cp -rf /data/www/ainicheng.com/public/assets /data/www/$1.com/public
+
+echo 'sync fonts ...'
+sudo /bin/cp -rf /data/www/ainicheng.com/public/fonts /data/www/$1.com/public

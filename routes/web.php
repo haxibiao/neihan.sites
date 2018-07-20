@@ -86,8 +86,8 @@ Route::get('/hxb-login-as/{name}', 'HomeController@hxbLoginAs');
 
 //多媒体
 Route::resource('/image', 'ImageController');
+Route::get('/video/list','VideoController@list');
 Route::resource('/video', 'VideoController');
-Route::get('video_list','VideoController@video_list');
 
 Route::get('video_list_demo', function(){
 	return view('video.video_list_demo');

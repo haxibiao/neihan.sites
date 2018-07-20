@@ -1,3 +1,4 @@
+ @if(get_domain_key() == 'ainicheng_com')
  <div class="video-top">
  	<div class="vd-head">
               <h3 class="vd-title">
@@ -45,3 +46,4 @@
     	</li>
 	</ul>
 </div>  
+@endif

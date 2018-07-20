@@ -1,8 +1,6 @@
-
 <div class="video-box">
     @foreach($articles as $article)
         @if($loop->last)
-
             <div class="box-top">
                 <div class="top-left">
                     <img  class="cateory-logo" src="{{ $article->category->logo() }}">
