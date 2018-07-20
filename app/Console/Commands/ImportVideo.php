@@ -58,10 +58,11 @@ class ImportVideo extends Command
                 return;
             }
             if ($this->option('cos')) {
-                $cdn_url     = $this->cosUpload(public_path($video->getPath()));
-                $video->path = $cdn_url;
-                $video->save();
-                $this->info("$video->id $video->path");
+                if ($cdn_url = $this->cosUpload(public_path($video->getPath()))) {
+                    $video->path = $cdn_url;
+                    $video->save();
+                    $this->info("$video->id $video->path");
+                }
             }
             if ($this->option('vod')) {
                 $vod_url     = $this->vodUpload(public_path($video->getPath()), "ainicheng_" . $video->id . ".mp4");
@@ -103,7 +104,8 @@ class ImportVideo extends Command
     {
         $this->comment($srcPath);
         if (!file_exists($srcPath)) {
-            dd("$srcPath not exist");
+            $this->error("$srcPath not exist");
+            return;
         }
         $bucket = env('DB_DATABASE');
         $cos    = app('qcloudcos');
@@ -111,12 +113,14 @@ class ImportVideo extends Command
         $dstPath = "video/" . PATHINFO($srcPath, PATHINFO_FILENAME) . "." . PATHINFO($srcPath, PATHINFO_EXTENSION);
         $this->info($dstPath);
         $res = $cos::upload($bucket, $srcPath, $dstPath);
+        $res = json_decode($res);
         if ($res && !empty($res->data->access_url)) {
-            $res = json_decode($res);
             $this->info('上传成功! cdn access url:' . $res->data->access_url);
+            return $res->data->access_url;
         } else {
             $this->comment($res);
             $this->error('上传失败');
         }
+        return false;
     }
 }
