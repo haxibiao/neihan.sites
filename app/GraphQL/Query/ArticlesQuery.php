@@ -76,7 +76,9 @@ class ArticlesQuery extends Query
                 $qb = $qb->orderBy('updated_at', 'desc'); //TODO:: later update article->commented while commented ...
             } else if ($args['order'] == 'HOT') {
                 $qb = $qb->orderBy('hits', 'desc');
-            } 
+            } else{
+                $qb = $qb->orderBy('id', 'desc');
+            }
         } else {
             $qb = $qb->orderBy('id', 'desc');
         }
