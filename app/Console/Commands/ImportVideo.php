@@ -112,13 +112,13 @@ class ImportVideo extends Command
         $cos::createFolder($bucket, 'video');
         $dstPath = "video/" . PATHINFO($srcPath, PATHINFO_FILENAME) . "." . PATHINFO($srcPath, PATHINFO_EXTENSION);
         $this->info($dstPath);
-        $res = $cos::upload($bucket, $srcPath, $dstPath);
-        $res = json_decode($res);
+        $result = $cos::upload($bucket, $srcPath, $dstPath);
+        $res = json_decode($result);
         if ($res && !empty($res->data->access_url)) {
             $this->info('上传成功! cdn access url:' . $res->data->access_url);
             return $res->data->access_url;
         } else {
-            $this->comment($res);
+            $this->comment($result);
             $this->error('上传失败');
         }
         return false;
