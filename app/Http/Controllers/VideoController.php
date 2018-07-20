@@ -306,7 +306,8 @@ class VideoController extends Controller
             ->get();
         $categories = Category::whereIn('id',$c->pluck('category_id'))->get();
         foreach ($categories as $category) {
-            $data[$category->name] = $category->videoArticles()->orderByDesc('hits')->take(3)->get();
+            
+            $data[$category->name] = $category->hasManyVideoArticles()->orderByDesc('hits')->take(3)->get();
             foreach ($data[$category->name] as $article) {
                 $article->image_url = $article->primaryImage();
             }
