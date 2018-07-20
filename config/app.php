@@ -184,7 +184,7 @@ return [
 		Jenssegers\Agent\AgentServiceProvider::class,
 		SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
 		Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class,
-
+		YueCode\Cos\QCloudCosServiceProvider::class,
 	],
 
 	/*
