@@ -121,15 +121,39 @@ class FixData extends Command
 
     public function fix_articles()
     {
-        $this->cmd->info('fix images ...');
-        Article::where('type','video')->chunk(100, function ($articles) {
-            foreach ($articles as $article) { 
-               $video = $article->video;
-               if( empty($video) || empty($video->duration) ){
-                    $article->status = -1;
-                    $article->save(['timestamps'=>false]);
-                    var_dump('66');
-               }
+        //修复缺少alt的Image
+        $qb = Article::where('source_url',0)->chunk(100,function($articles){
+            foreach ($articles as $article) {
+                $body = $article->body;
+                $preg = "/<img.*?src=[\"|\'](.*?)[\"|\'].*?>/";
+                preg_match_all($preg, $body, $matches);
+                if(!empty($matches[0])){
+                    $title = $article->title;
+                    foreach ($matches[0] as $image) {
+                        //是否含有alt title属性
+                        $oldImage = $image;
+                        $newImage = $image;
+                        if(str_contains($image,'alt'))
+                        {
+                            //重新替换alt
+                            preg_match_all('/alt=\"(.*?)\"/i', $image,$alt);
+                            if(!empty($alt[1][0]))
+                            {
+                                $str = $alt[1][0];
+                                $newImage = str_replace($str, $title, $oldImage);
+                            }else{
+                                $newImage = str_replace(['alt=""','alt=','alt'], "alt=\"$title\"", $oldImage);
+                            }
+                        }else{
+                            //追加alt属性
+                            $newImage = str_replace('>', '', $oldImage);
+                            $newImage.= " alt=\"$title\">";
+                        }
+                        $article->body = str_replace($image, $newImage, $article->body);
+                    }
+                }
+                $article->save(['timestamps'=>false]);
+                $this->cmd->info("https://www.ainicheng.com/article/$article->id fix success");
             }
         });
     }
