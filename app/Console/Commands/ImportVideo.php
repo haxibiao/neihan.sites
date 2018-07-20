@@ -62,7 +62,7 @@ class ImportVideo extends Command
                 if (!file_exists($localPath)) {
                     $localPath = public_path($video->path);
                 }
-                if ($cdn_url = $this->cosUpload($localPath)) {
+                if ($cdn_url = $this->cosUpload($localPath, $video->id)) {
                     $video->path = $cdn_url;
                     $video->save();
                     $this->info("$video->id $video->path");
@@ -105,7 +105,7 @@ class ImportVideo extends Command
         // echo "delete vod file result: " . json_encode($result) . "\n";
     }
 
-    public function cosUpload($srcPath)
+    public function cosUpload($srcPath, $video_id)
     {
         $this->comment($srcPath);
         if (!file_exists($srcPath)) {
@@ -115,10 +115,10 @@ class ImportVideo extends Command
         $bucket = env('DB_DATABASE');
         $cos    = app('qcloudcos');
         $cos::createFolder($bucket, 'video');
-        $dstPath = "video/" . PATHINFO($srcPath, PATHINFO_FILENAME) . "." . PATHINFO($srcPath, PATHINFO_EXTENSION);
+        $dstPath = "video/" . $video_id . ".mp4";
         $this->info($dstPath);
         $result = $cos::upload($bucket, $srcPath, $dstPath);
-        $res = json_decode($result);
+        $res    = json_decode($result);
         if ($res && !empty($res->data->access_url)) {
             $this->info('上传成功! cdn access url:' . $res->data->access_url);
             return $res->data->access_url;

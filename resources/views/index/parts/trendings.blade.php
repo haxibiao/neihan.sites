@@ -19,7 +19,7 @@
   </div>
    <div class="board-list">
     <a class="question" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/question">
-      <span class="board-title">爱你城问答<i class="iconfont icon-youbian"></i></span>
+      <span class="board-title">{{ env("APP_NAME") }}问答<i class="iconfont icon-youbian"></i></span>
       <i class="iconfont icon-changjianwenti board-right"></i>
     </a>
   </div>
