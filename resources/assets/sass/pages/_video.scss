@@ -16,7 +16,13 @@
 		clear: both;
 		overflow: hidden;
 		margin-right: -5px;
-		padding-left: 5px;
+		text-align: center;
+		@media screen and (max-width:768px) {
+			.category-video-item {
+				width: 50% !important;
+				margin-right: 0px !important;
+			}
+		}
 		.category-video-item {
 			float: left;
 			width: 129px;
@@ -93,7 +99,7 @@
 		justify-content: space-between;
 		align-items: center;
 		border-bottom: solid 1px $light-color2;
-		width: 915px;
+		width: 98%;
 		.top-left {
 			display: flex;
 			align-items: center;
@@ -131,6 +137,13 @@
 			clear: both;
 			overflow: hidden;
 			width: 100%;
+			@media screen and (max-width:768px) {
+				.game-video-item {
+					margin-left: 20px !important;
+					float: none !important;
+					width: auto !important;
+				}
+			}
 			.game-video-item {
 				float: left;
 				margin: 20px 20px 0 0;
@@ -172,7 +185,7 @@
 					justify-content: space-between;
 					align-items: center;
 					padding-top: 5px;
-					width: 290px;
+					width: 100%;
 					span {
 						color: $light-color5;
 						font-size: 13px;
