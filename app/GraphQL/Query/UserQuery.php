@@ -27,7 +27,9 @@ class UserQuery extends Query
     public function resolve($root, $args)
     {
         if (isset($args['id'])) {
-            return \App\User::findOrFail($args['id']);
+            $user = \App\User::findOrFail($args['id']);
+            $user->count_followings = $user->followingUsers()->count();;
+            return $user;
         }
 
         $user = getUser();
