@@ -82,12 +82,14 @@ export default {
 			if (this.payMethod == "wx-pay") {
 				this.wexinPay = true;
 			} else {
-				var payUrl = this.payUrl.replace("amount=2", "amount=" + this.money);
-				payUrl = payUrl + "&article_id=" + this.articleId;
-				if (this.message) {
-					payUrl = payUrl + "&message=" + encodeURIComponent(this.message);
+				if(this.money >= 1) {
+					var payUrl = this.payUrl.replace("amount=2", "amount=" + this.money);
+					payUrl = payUrl + "&article_id=" + this.articleId;
+					if (this.message) {
+						payUrl = payUrl + "&message=" + encodeURIComponent(this.message);
+					}
+					window.location.href = payUrl;
 				}
-				window.location.href = payUrl;
 			}
 		},
 		rollBack() {
