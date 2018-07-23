@@ -36,11 +36,11 @@ class QuestionController extends Controller
         $qb       = Question::with('latestAnswer.article')
             ->orderBy('closed')
             ->orderBy('id', 'desc')
-            ->where('status','>=',0)
+            ->where('status', '>=', 0)
             ->where('bonus', '>', 0);
         $questions  = $qb->paginate(10);
         $categories = Category::where('count_questions', '>', 0)->orderBy('updated_at', 'desc')->take(7)->get();
-        $hot        = Question::with('latestAnswer.article')->orderBy('hits', 'desc')->where('status','>=',0)->take(3)->get();
+        $hot        = Question::with('latestAnswer.article')->orderBy('hits', 'desc')->where('status', '>=', 0)->take(3)->get();
         return view('question.index')
             ->withHot($hot)
             ->withCategory($category)
@@ -56,16 +56,16 @@ class QuestionController extends Controller
     {
         $qb = Question::with('latestAnswer.article')
             ->orderBy('closed')
-            ->where('status','>=',0)
+            ->where('status', '>=', 0)
             ->orderBy('id', 'desc');
         $category = null;
         if (request('cid')) {
             $category = Category::findOrFail(request('cid'));
-            $qb       = $category->questions()->with('latestAnswer.article')->where('status','>=',0)->orderBy('id', 'desc');
+            $qb       = $category->questions()->with('latestAnswer.article')->where('status', '>=', 0)->orderBy('id', 'desc');
         }
         $questions  = $qb->paginate(10);
         $categories = Category::where('count_questions', '>', 0)->orderBy('updated_at', 'desc')->take(7)->get();
-        $hot        = Question::with('latestAnswer.article')->orderBy('hits', 'desc')->where('status','>=',0)->take(3)->get();
+        $hot        = Question::with('latestAnswer.article')->orderBy('hits', 'desc')->where('status', '>=', 0)->take(3)->get();
         return view('question.index')
             ->withHot($hot)
             ->withCategory($category)
@@ -91,8 +91,8 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        $user     = $request->user();
-        $question = new Question($request->all());
+        $user            = $request->user();
+        $question        = new Question($request->all());
         //付费问题
         $question->save();
         if (request()->is_pay) {
@@ -120,7 +120,7 @@ class QuestionController extends Controller
             }
         } else {
             //免费问题
-            $question->bonus    = null;
+            $question->bonus    = 0;
             $question->deadline = null;
         }
         $question->save();
@@ -135,7 +135,7 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        $question = Question::with('answers')->with('user')->with('categories')->where('status','>=',0)->findOrFail($id);
+        $question = Question::with('answers')->with('user')->with('categories')->where('status', '>=', 0)->findOrFail($id);
         $question->hits++;
         $question->save();
 
