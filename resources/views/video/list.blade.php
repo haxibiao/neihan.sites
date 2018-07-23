@@ -21,7 +21,7 @@
             @endif
             <h3 class="panel-title" style="line-height: 30px">
                 视频列表
-                <basic-search api="/video?q="></basic-search>
+                <basic-search api="/video/list?q="></basic-search>
             </h3>
         </div>
         <div class="panel-body">

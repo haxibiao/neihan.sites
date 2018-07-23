@@ -22,6 +22,11 @@ class CategoryController extends Controller
      */
     function list(Request $request) {
         $qb   = Category::where('status', '>=', 0)->orderBy('id', 'desc');
+        if ($request->get('q')) {
+            $keywords = $request->get('q');
+            $qb   = Category::orderBy('id', 'desc')->where('status', '>=', 0)
+                ->where('name', 'like', "%$keywords%");
+        }
         $type = $request->get('type') ?: 'article';
 
         switch ($type) {

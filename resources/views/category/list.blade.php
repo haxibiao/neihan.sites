@@ -19,7 +19,7 @@
             <a class="btn btn-primary" href="/category/create{{ Request::get('type') ? '?type='.Request::get('type') : '' }}" role="button">添加专题</a>
           </div>
           <h3 class="panel-title category-admin-title">专题管理</h3>
-          <basic-search></basic-search>
+          <basic-search api="/category/list?q="></basic-search>
         </div>
         <div class="panel-body small">
           @foreach($categories->chunk(3) as $category_group)
