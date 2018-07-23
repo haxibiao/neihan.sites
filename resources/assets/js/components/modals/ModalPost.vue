@@ -10,7 +10,6 @@
                 </div>
                 <div class="modal-body">
     				<form method="post" action="/" ref="questionForm" enctype="multipart/form-data">
-    				<input type="hidden" name="_token" v-model="token">
 					<div class="input-question">
 						<input-matching name="title" placeholder="请输入标题"></input-matching>
 					</div>
@@ -18,11 +17,6 @@
                 		<textarea name="background" placeholder='快来说点什么吧' v-model="description" maxlength='500'></textarea>
                 		<span class="word-count">{{ description.length }}/500</span>
 					</div>
-			        <input type="hidden" name="user_id" :value="user.id">
-			        <input v-if="top3Imgs.length>0" name="image1" type="hidden" :value="top3Imgs[0].img">
-			        <input v-if="top3Imgs.length>1" name="image2" type="hidden" :value="top3Imgs[1].img">
-			        <input v-if="top3Imgs.length>2" name="image3" type="hidden" :value="top3Imgs[2].img">
-
                     <div class="img-selector">
                     	<div :class="['ask-img-header',top3Imgs.length>0?'bigger':'']"><span class="desc">（最多9张图片或者1个视频）</span></div>
 						<div class="img-preview clearfix">
@@ -124,18 +118,18 @@ export default {
 					this._upload(fileObj);
 					this.filesCount++;
 				} else if (e.target.files[0].type.indexOf("video") != -1) {
-					this.fileFormat =
+					let _this = this;
+
+					_this.fileFormat =
 						".avi,.wmv,.mpeg,.mp4,.mov,.mkv,.flv,.f4v,.m4v,.rmvb,.rm,.3gp,.dat,.ts,.mts,.vob";
-
-					var _this = this;
-					var reader = new FileReader();
-					let fileObj = e.target.files[0];
+					_this.videoObj = e.target.files[0];
+					let reader = new FileReader();
 					reader.readAsDataURL(e.target.files[0]);
-
 					reader.onload = function(e) {
 						_this.videoPath = e.target.result;
 					};
-					if (this.videoObj.length >= 1) {
+					_this.video_upload()
+					if (_this.videoObj && _this.videoObj.length >= 1) {
 						break;
 					}
 				}
@@ -171,7 +165,6 @@ export default {
 			let formdata = new FormData();
 			formdata.append("from", "question");
 			formdata.append("photo", fileObj);
-			console.log(fileObj);
 			let config = {
 				headers: {
 					"Content-Type": "multipart/form-data"
@@ -201,11 +194,13 @@ export default {
 				) {
 					let progress = (event.loaded / event.total) * 100 + "%";
 					$(".progress-bar-success").css("width", progress);
+					console.log("11111");
 				},
 				success: function(data) {
 					console.log(data);
 				},
 				error: function(data) {
+					console.log(data);
 					console.log("error");
 				}
 			});
@@ -422,6 +417,7 @@ export default {
 							position: absolute;
 							top: -22px;
 							right: 0;
+							cursor:pointer
 						}
 					}
 					.tab-header {
