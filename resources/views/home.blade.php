@@ -120,7 +120,17 @@
             </div>
             <div class="row">
                 @editor
-
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">专题:</h3>
+                        </div>
+                        <div class="panel-body admin-section">
+                            <a class="btn btn-sm btn-primary" href="/category/create" role="button">创建专题</a>
+                            <a class="btn btn-sm btn-danger" href="/category/list" role="button">管理专题</a>
+                        </div>
+                    </div>
+                </div>
                 
                 <div class="col-md-12">
                     <div class="panel panel-default">
@@ -131,7 +141,6 @@
                             <a class="btn btn-sm btn-primary" href="/article/create" role="button">创建文章</a>
                             <a class="btn btn-sm btn-warning" href="/article" role="button">管理文章</a>
                             <a class="btn btn-sm btn-warning" href="/drafts" role="button">管理草稿</a>
-                            <a class="btn btn-sm btn-danger" href="/category?type=article" role="button">文章分类</a>
                         </div>
                     </div>
                 </div>
@@ -143,7 +152,6 @@
                         <div class="panel-body admin-section">
                             <a class="btn btn-sm btn-primary" href="/video/create" role="button">创建视频</a>
                             <a class="btn btn-sm btn-warning" href="/video/list" role="button">管理视频</a>
-                            <a class="btn btn-sm btn-danger" href="/category?type=video" role="button">视频分类</a>
                         </div>
                     </div>
                 </div>
@@ -155,7 +163,6 @@
                         <div class="panel-body admin-section">
                             <a class="btn btn-sm btn-primary" href="/snippet/create" role="button">创建片段</a>
                             <a class="btn btn-sm btn-warning" href="/snippet" role="button">管理片段</a>
-                            <a class="btn btn-sm btn-danger" href="/category?type=snippet" role="button">片段分类</a>
                         </div>
                     </div>
                 </div>

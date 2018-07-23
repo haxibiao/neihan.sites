@@ -6,24 +6,21 @@ use App\Article;
 use App\Category;
 use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth.admin', ['only' => ['index']]);
+        $this->middleware('auth.admin', ['only' => ['list']]);
         $this->middleware('auth', ['only' => ['store', 'update', 'destroy', 'create']]);
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+      专题管理列表
      */
-    public function index(Request $request)
-    {
+    function list(Request $request) {
         $qb   = Category::where('status', '>=', 0)->orderBy('id', 'desc');
         $type = $request->get('type') ?: 'article';
 
@@ -31,19 +28,25 @@ class CategoryController extends Controller
             case 'question':
                 $qb = $qb->where('count_questions', '>', 0);
                 break;
+            case 'video':
+                $qb = $qb->where('count_videos', '>', 0);
+                break;
             case 'snippet':
-                $qb = $qb->where('type', 'snippet');
+                $qb = $qb->where('count_snippets', '>', 0);
                 break;
             default:
                 $qb = $qb->where('count', '>=', 0);
                 break;
         }
         $categories = $qb->paginate(12);
-        return view('category.index')
+        return view('category.list')
             ->withCategories($categories);
     }
 
-    public function categories(Request $request)
+    /**
+     *   专题首页
+     */
+    public function index(Request $request)
     {
         $qb   = Category::where('status', '>=', 0)->orderBy('id', 'desc');
         $type = 'article';
@@ -59,8 +62,9 @@ class CategoryController extends Controller
                 $qb = $qb->where('count', '>=', 0);
                 break;
         }
+
         //推荐
-        $categories = $qb->orderBy('id', 'desc')->paginate(24);
+        $categories = $qb->orderBy('id', 'desc')->paginate(12);
         if (ajaxOrDebug() && request('recommend')) {
             foreach ($categories as $category) {
                 $category->followed = $category->isFollowed();
@@ -70,7 +74,10 @@ class CategoryController extends Controller
         $data['recommend'] = $categories;
 
         //热门
-        $categories = Category::where('updated_at','<=',Carbon::parse($request->end_date))->where('status', '>=', 0)->orderBy('count_follows','desc')->paginate(24);
+        $categories = Category::where('updated_at', '<=', Carbon::parse($request->end_date))
+            ->where('status', '>=', 0)
+            ->orderBy('count_follows', 'desc')
+            ->paginate(12);
         if (ajaxOrDebug() && request('hot')) {
             foreach ($categories as $category) {
                 $category->followed = $category->isFollowed();
@@ -81,15 +88,16 @@ class CategoryController extends Controller
 
         //TODO::  how to filter city categories ? ...
         //城市
-        $categories = $qb->paginate(24);
-        if (ajaxOrDebug() && request('city')) {
-            foreach ($categories as $category) {
-                $category->followed = $category->isFollowed();
-            }
-            return $categories;
-        }
-        $data['city'] = $categories;
-        return view('category.categories')
+        // $categories = $qb->paginate(24);
+        // if (ajaxOrDebug() && request('city')) {
+        //     foreach ($categories as $category) {
+        //         $category->followed = $category->isFollowed();
+        //     }
+        //     return $categories;
+        // }
+        // $data['city'] = $categories;
+
+        return view('category.index')
             ->withData($data);
     }
 
@@ -197,10 +205,10 @@ class CategoryController extends Controller
             return $articles;
         }
         $data['hot'] = $articles;
-        
+
         //最新视频
-        $qb = $category->videoArticles()->whereStatus(1)->orderBy('id', 'desc');
-        $videos                 = smartPager($qb, 12);
+        $qb     = $category->videoArticles()->whereStatus(1)->orderBy('id', 'desc');
+        $videos = smartPager($qb, 12);
         if (ajaxOrDebug() && $request->get('video_new')) {
             foreach ($videos as $video) {
                 $video->fillForJs();
@@ -210,8 +218,8 @@ class CategoryController extends Controller
         $data['video_new'] = $videos;
 
         //热门视频
-        $qb = $category->videoArticles()->whereStatus(1)->orderBy('hits', 'desc');
-        $videos                 = smartPager($qb, 12);
+        $qb     = $category->videoArticles()->whereStatus(1)->orderBy('hits', 'desc');
+        $videos = smartPager($qb, 12);
         if (ajaxOrDebug() && $request->get('video_hot')) {
             foreach ($videos as $video) {
                 $video->fillForJs();

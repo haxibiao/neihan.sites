@@ -38,9 +38,9 @@ Route::get('/search/collections', 'SearchController@searchCollections');
 
 Route::get('/drafts', 'ArticleController@drafts');
 Route::resource('/article', 'ArticleController');
-Route::get('/categories', 'CategoryController@categories');
 
 //管理专题
+Route::get('/category/list', 'CategoryController@list');
 Route::resource('/category', 'CategoryController');
 
 Route::resource('/collection', 'CollectionController');

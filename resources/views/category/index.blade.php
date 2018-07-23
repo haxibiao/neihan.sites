@@ -1,66 +1,60 @@
 @extends('layouts.app')
 
-@section('title')
-    专题管理
-@endsection
-@section('keywords')
-  
-@endsection
-@section('description')
-  
-@endsection
+@section('title')专题首页 - {{ env("APP_NAME") }} @endsection
 
 @section('content')
-
-<div class="container">
-      <div class="panel panel-default">
-        <div class="panel-heading category-admin-header">
-          <div class="pull-right">
-            <a class="btn btn-primary" href="/category/create{{ Request::get('type') ? '?type='.Request::get('type') : '' }}" role="button">添加分类</a>
-          </div>
-          <h3 class="panel-title category-admin-title">专题管理</h3>
-          <basic-search></basic-search>
-        </div>
-        <div class="panel-body small">
-          @foreach($categories->chunk(3) as $category_group)
-            <div class="row">
-              @foreach ($category_group as $category)
-                  <div class=" category-item top10 col-xs-12 clearfix">
-                     <img src="{{ $category->logo() }}" alt="" class="pull-left">
-                    <div class="pull-right">
-
-                      {!! Form::open(['method' => 'get', 'route' => ['category.edit', $category->id], 'class' => 'form-horizontal']) !!}
-                          <div class="btn-group pull-right right10">
-                              {!! Form::submit("编辑", ['class' => 'btn btn-sm btn-primary']) !!}
-                          </div>        
-                      {!! Form::close() !!}
-                    </div>
-                    <div class="pull-right">
-                        
-                        {!! Form::open(['method' => 'delete', 'route' => ['category.destroy', $category->id], 'class' => 'form-horizontal']) !!}
-                            <div class="btn-group pull-right">
-                                {!! Form::submit("删除", ['class' => 'btn btn-sm btn-danger']) !!}
-                            </div>    
-                        {!! Form::close() !!} 
-                      </div>   
-                      
-                     
-                      <div class="item-info">
-                        <h5 class="category-name">{{ $category->name }} ({{ $category->name_en }})</h5>
-                        <span>创建人: {{ $category->user->name }} </span>
-                        <p style="min-height: 100px" class="small well">{{ $category->description }}</p>
-                      </div>
-                  </div>
-              @endforeach
-            </div>
-          @endforeach
-        </div>
-        <div class="panel-footer">
-          {!! $categories->links() !!}
-        </div>
-      </div>  
-  
-
+<div id="categories">
+	<div class="page-banner">
+		{{-- <img src="/images/recommend_banner.png" alt=""> --}}
+		<div class="banner-img recommend-banner">
+			<div>
+				<i class="iconfont icon-zhuanti1"></i>
+				<span>热门专题</span>
+			</div>
+		</div>
+		<a target="_blank" class="help" href="/article/{{ config('editor.category.how_to_create') }}">
+		    <i class="iconfont icon-bangzhu"></i>
+		    如何创建并玩转专题
+		</a>
+	</div>
+	  <!-- Nav tabs -->
+	  <ul id="trigger-menu" class="nav nav-tabs" role="tablist">
+	   <li role="presentation" class="active">
+	   	<a href="#recommend" aria-controls="recommend" role="tab" data-toggle="tab"><i class="iconfont icon-tuijian1"></i>推荐</a>
+	   </li>
+	   <li role="presentation">
+	   	<a href="#hot" aria-controls="hot" role="tab" data-toggle="tab"><i class="iconfont icon-huo"></i>热门</a>
+	   </li>
+	 {{--   <li role="presentation">
+	   	<a href="#city" aria-controls="city" role="tab" data-toggle="tab"><i class="iconfont icon-icon2"></i>城市</a>
+	   </li> --}}
+	  </ul>
+		<!-- Tab panes -->
+		<div class="recommend-list tab-content">
+	   <ul role="tabpanel" class="fade in tab-pane active clearfix" id="recommend">
+			@each('category.parts.category_card', $data['recommend'], 'category')
+			@if(Auth::check())
+			<category-list api="{{ request()->path() }}?recommend=1" start-page="2"></category-list>
+			@else
+			<div>{!! $data['recommend']->links() !!}</div>
+			@endif
+	   </ul>
+	   <ul role="tabpanel" class="fade tab-pane clearfix" id="hot">
+			@each('category.parts.category_card', $data['hot'], 'category')
+			@if(Auth::check())
+			<category-list api="{{ request()->path() }}?hot=1" start-page="2"></category-list>
+			@else
+			<div>{!! $data['hot']->links() !!}</div>
+			@endif
+	   </ul>
+	   {{-- <ul role="tabpanel" class="fade tab-pane clearfix" id="city">
+			@each('category.parts.category_card', $data['city'], 'category')
+			@if(Auth::check())
+			<category-list api="{{ request()->path() }}?city=1" start-page="2"></category-list>
+			@else
+			<div>{!! $data['city']->links() !!}</div>
+			@endif
+	   </ul> --}}
+	</div>
 </div>
-
 @endsection
