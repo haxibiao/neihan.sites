@@ -142,7 +142,7 @@
                         </div>
                         <div class="panel-body admin-section">
                             <a class="btn btn-sm btn-primary" href="/video/create" role="button">创建视频</a>
-                            <a class="btn btn-sm btn-warning" href="/video" role="button">管理视频</a>
+                            <a class="btn btn-sm btn-warning" href="/video/list" role="button">管理视频</a>
                             <a class="btn btn-sm btn-danger" href="/category?type=video" role="button">视频分类</a>
                         </div>
                     </div>
