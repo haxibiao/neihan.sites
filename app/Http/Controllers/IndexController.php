@@ -27,6 +27,7 @@ class IndexController extends Controller
             }
         }
 
+        //已登录，优先显示专注的专题的文章
         if (Auth::check()) {
             $user = Auth::user();
             //get top n user followed categories
@@ -56,8 +57,9 @@ class IndexController extends Controller
             }
         }
 
+        //未登录或者未关注任何专题，直接取官方专题和文章
         if (!$has_follow_articles) {
-            $categories = Category::orderBy('updated_at', 'desc')
+            $categories = Category::orderBy('is_official', 'desc')
                 ->where('count', '>=', 0)
                 ->where('status', '>=', 0)
                 ->orderBy('updated_at', 'desc')

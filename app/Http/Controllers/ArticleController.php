@@ -135,10 +135,6 @@ class ArticleController extends Controller
         //记录用户浏览记录
         $article->recordBrowserHistory();
         
-        $article->timestamps = false;
-        $article->save();
-        $article->timestamps = true;
-
         //parse video and image, etc...
         $article->body = $article->parsedBody();
 

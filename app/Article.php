@@ -436,7 +436,9 @@ class Article extends Model
             ]);
             $visit->save();
         }
+        $this->timestamps = false;
         $this->save();
+        $this->timestamps = true;
     }
     /**
      * @Desc      返回资源的url
