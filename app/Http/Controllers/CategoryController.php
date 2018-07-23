@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\Category;
+use App\User;
 use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -234,6 +235,10 @@ class CategoryController extends Controller
             return $videos;
         }
         $data['video_hot'] = $videos;
+
+        //相关专题
+        $related_category = User::find($category->user_id)->adminCategories->take(5);
+        $data['related_category'] = $related_category;
 
         return view('category.name_en')
             ->withCategory($category)
