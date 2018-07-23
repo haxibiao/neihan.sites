@@ -27,7 +27,7 @@
         
         <div class="row">
 
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="form-group{{ $errors->has('delay') ? ' has-error' : '' }}">
                    {!! Form::label('delay', '定时发布') !!}
                    {!! Form::select('delay',[
@@ -47,13 +47,13 @@
                 </div>
             </div> 
 
-            <div class="col-md-6">
+          {{--   <div class="col-md-6">
                 <div class="form-group{{ $errors->has('is_top') ? ' has-error' : '' }}">
                     {!! Form::label('is_top', '是否上首页') !!}
                     {!! Form::select('is_top',[ 0 => '否', 1 => '是'], null, ['id' => 'is_top', 'class' => 'form-control', 'required' => 'required']) !!}
                     <small class="text-danger">{{ $errors->first('is_top') }}</small>
                 </div>
-            </div>
+            </div> --}}
 
         </div>
         
