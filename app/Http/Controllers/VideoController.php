@@ -143,31 +143,40 @@ class VideoController extends Controller
         if ($article->status < 0) {
             abort(404);
         }
-        
         //记录用户浏览记录
         $article->recordBrowserHistory();
-
-        //TODO 推荐算法需要修改
-
-        //获取关联视频
-        $related = Article::where('type', 'video')
-            ->orderBy('id', 'desc')
-            ->whereStatus(1)
-            ->skip(
-                rand(0, Article::where('type', 'video')->whereStatus(1)->count() - 8)
-            )
-            ->take(4)
-            ->get();
-
-        //if have category, relate some category videos...
+        
+        //关联视频
+        $data['related'] = [];
+        $article_ids = [$id];
+        //优先从主分类中随机选择4个 
         if ($article->category) {
-            $related_group = $article->category->videoArticles()->where('articles.status', 1)->get();
-            if (count($related_group) > 4) {
-                $related = $related_group;
-            }
-        }
-        $data['related'] = $related;
+            $related_group = $article
+                ->category
+                ->videoArticles()
+                ->where('articles.status', 1)
+                ->where('video_id','<>',$id)
+                ->take(4)
+                ->get();
 
+            if ( !empty($related_group) ) {
+                $article_ids = array_merge(
+                    $related_group->pluck('id')->toArray()
+                );
+                $data['related'] = $related_group;
+            }
+        } 
+        $related_length = count($data['related']);
+        //主专题下文章数不够时候随机填充至4个()
+        if( $related_length < 4 ){
+            $related = Article::where('type', 'video')
+                ->orderBy('id', 'desc')
+                ->whereStatus(1)
+                ->whereNotIn('id',$article_ids)
+                ->take(4-$related_length)  
+                ->get();
+            $data['related'] = $data['related']->merge($related); 
+        }
         return view('video.show')
             ->withVideo($video)
             ->withData($data);
@@ -258,7 +267,7 @@ class VideoController extends Controller
      */
     public function destroy($id)
     {
-        $video   = Video::findOrFail($id);
+        $video   = Video::findOrFail($id); 
         $article = $video->article;
 
         //软删除 video
@@ -266,6 +275,9 @@ class VideoController extends Controller
 
         //软删除 article
         $article->update(['status' => -1]);
+
+        //维护分类关系
+        $this->process_category($article); 
 
         //TODO 清除关系 分类关系 冗余的统计信息  评论信息 点赞信息 喜欢的信息 收藏的信息
         return redirect()->to('/video');

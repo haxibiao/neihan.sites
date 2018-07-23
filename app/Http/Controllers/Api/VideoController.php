@@ -196,7 +196,10 @@ class VideoController extends Controller
 
     public function getLatestVideo()
     {
-        $data = Article::where('type','video')->orderByDesc('updated_at')->paginate(9);
+        $data = Article::where('type','video')
+            ->whereStatus(1)
+            ->orderByDesc('updated_at')
+            ->paginate(9);
         foreach ($data as $article) {
             $article->image_url = $article->primaryImage();
             $article->user = $article->user;

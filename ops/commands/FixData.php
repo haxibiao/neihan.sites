@@ -86,17 +86,25 @@ class FixData extends Command
 
     public function fix_comments()
     {
-
+ 
     }
 
     public function fix_categories()
     {
-         
+         Category::orderBy('id')->chunk(100, function ($categories) {
+            foreach ($categories as $category) {
+                $count_video = $category->videoArticles()
+                    ->where('status','>',0) 
+                    ->count();
+                $category->count_videos = $count_video;
+                $category->save(['timestamp'=>false]);
+            }
+        });
     } 
 
     public function fix_videos() 
     {
-        
+
     }
 
     public function fix_images()
@@ -121,41 +129,16 @@ class FixData extends Command
 
     public function fix_articles()
     {
-        //修复缺少alt的Image
-        $qb = Article::where('source_url',0)->chunk(100,function($articles){
-            foreach ($articles as $article) {
-                $body = $article->body;
-                $preg = "/<img.*?src=[\"|\'](.*?)[\"|\'].*?>/";
-                preg_match_all($preg, $body, $matches);
-                if(!empty($matches[0])){
-                    $title = $article->title;
-                    foreach ($matches[0] as $image) {
-                        //是否含有alt title属性
-                        $oldImage = $image;
-                        $newImage = $image;
-                        if(str_contains($image,'alt'))
-                        {
-                            //重新替换alt
-                            preg_match_all('/alt=\"(.*?)\"/i', $image,$alt);
-                            if(!empty($alt[1][0]))
-                            {
-                                $str = $alt[1][0];
-                                $newImage = str_replace($str, $title, $oldImage);
-                            }else{
-                                $newImage = str_replace(['alt=""','alt=','alt'], "alt=\"$title\"", $oldImage);
-                            }
-                        }else{
-                            //追加alt属性
-                            $newImage = str_replace('>', '', $oldImage);
-                            $newImage.= " alt=\"$title\">";
-                        }
-                        $article->body = str_replace($image, $newImage, $article->body);
-                    }
-                }
+        $category = Category::where('name', 'dota2')->first();
+        $articles = $category->articles;
+        foreach ($articles as $article) {
+            $body = $article->body;
+            $is_modify = count( \ImageUtils::getImageUrlFromHtml($body) ) >= 2;
+            if( !$is_modify ){
+                $article->status = -1;
                 $article->save(['timestamps'=>false]);
-                $this->cmd->info("https://www.ainicheng.com/article/$article->id fix success");
             }
-        });
+        }
     }
     public function fix_collections()
     {
