@@ -74,10 +74,12 @@ class CategoryController extends Controller
         $data['recommend'] = $categories;
 
         //热门
-        $categories = Category::where('updated_at', '<=', Carbon::parse($request->end_date))
-            ->where('status', '>=', 0)
-            ->orderBy('count_follows', 'desc')
-            ->paginate(12);
+        //获取最近七天发布的Article 按照hits order by desc
+        $week_start = Carbon::now()->subWeek()->startOfWeek()->toDateTimeString();
+        $articles = Article::where('updated_at','<=',$week_start)
+        ->where('status', '>=', 0)->whereNotNull('category_id')->selectRaw('category_id')
+        ->groupBy('category_id')->get()->toArray();
+        $categories = Category::whereIn('id',$articles)->paginate(24);
         if (ajaxOrDebug() && request('hot')) {
             foreach ($categories as $category) {
                 $category->followed = $category->isFollowed();
