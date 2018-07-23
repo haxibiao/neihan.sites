@@ -35,6 +35,7 @@ class VideoController extends Controller
         $data       = [];
         foreach ($categories as $category) {
             $articles = $category->hasManyVideoArticles()
+                ->where('status', '>', 0)
                 ->orderByDesc('hits')
                 ->take(3)
                 ->get();
@@ -139,10 +140,14 @@ class VideoController extends Controller
             ->with('user')
             ->findOrFail($id);
         $article = $video->article;
+        if ($article->status < 0) {
+            abort(404);
+        }
+        
         //记录用户浏览记录
         $article->recordBrowserHistory();
 
-//TODO 推荐算法需要修改
+        //TODO 推荐算法需要修改
 
         //获取关联视频
         $related = Article::where('type', 'video')
@@ -246,7 +251,7 @@ class VideoController extends Controller
     }
 
     /**
-     * 删除视频是硬删除，同时删除磁盘上的视频文件
+     * 删除视频是软删除，同时删除磁盘上的视频文件
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -256,10 +261,10 @@ class VideoController extends Controller
         $video   = Video::findOrFail($id);
         $article = $video->article;
 
-        $video->delete();
-        $article->delete();
+        //软删除 video
+        $video->update(['status' => -1]);
 
-        //TODO:: now keep consistent with existing soft delete logic ...
+        //软删除 article
         $article->update(['status' => -1]);
 
         //TODO 清除关系 分类关系 冗余的统计信息  评论信息 点赞信息 喜欢的信息 收藏的信息

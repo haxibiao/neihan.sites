@@ -48,12 +48,12 @@ class Category extends Model
     public function videoArticles()
     {
         return $this->belongsToMany('App\Article')
-            ->where('articles.type','video');
+            ->where('articles.type', 'video');
     }
 
     public function hasManyVideoArticles()
     {
-        return $this->hasMany('App\Article')->where('articles.type','video');
+        return $this->hasMany('App\Article')->where('articles.type', 'video');
     }
 
     public function questions()
@@ -258,7 +258,7 @@ class Category extends Model
                 'visited_type' => 'categories',
                 'visited_id'   => $this->id,
             ]);
-            $visit->save(); 
+            $visit->save();
         }
         $this->save();
     }

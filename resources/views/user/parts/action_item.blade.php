@@ -39,6 +39,7 @@
     $comment = $action->actionable;
     $item = $comment->commentable;
 @endphp
+@if($item)
 <li class="article-item have-img">
     <a class="wrap-img" href="/article/{{ $item->id }}" target="_blank">
       <img src="{{ $item->primaryImage() }}" alt="">
@@ -75,6 +76,7 @@
         </blockquote>
     </div>
 </li>
+@endif
 {{-- 点赞article --}}
 @elseif(get_class($action->actionable) == 'App\Like')
 @php
