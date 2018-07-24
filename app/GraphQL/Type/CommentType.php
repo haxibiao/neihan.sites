@@ -38,7 +38,7 @@ class CommentType extends GraphQLType
                 'type'        => Type::string(),
                 'description' => 'body of comment',
                 'resolve'     => function ($root, $args) {
-                    return $root->at_uid ? str_replace("@" . $root->atUser->name, "", $root->body) : $root->body;
+                    return $root->wrapperBodyToMobile();
                 },
             ],
             'lou'     => [
@@ -100,13 +100,6 @@ class CommentType extends GraphQLType
                 'description' => 'user who made this comment',
                 'resolve'     => function ($root, $args) {
                     return $root->user;
-                },
-            ],
-            'atUser'         => [
-                'type'        => GraphQL::type('User'),
-                'description' => '@ user ',
-                'resolve'     => function ($root, $args) {
-                    return $root->atUser;
                 },
             ],
         ];

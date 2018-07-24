@@ -83,7 +83,7 @@
             </div>
           </div>
           {{-- 评论中心 --}}
-          <comments type="articles" id="{{ $article->id }}" author-id="{{ $article->user_id }}"></comments>
+          <comments type="articles" id="{{ $article->id }}" author-id="{{ $article->user_id }}" comment-replies={{ $article->count_replies }}></comments>
         </article>
     </div>
 </div>

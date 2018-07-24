@@ -3,11 +3,11 @@
     <!-- {{-- 写评论 --}} -->
     <new-comment @sendComment="postComment"></new-comment>
     <!-- {{-- 默认评论 --}} -->
-    <div class="normal-comment">
+    <div class="normal-comment"> 
       <div>
         <!-- {{-- 顶部信息 --}} -->
         <div class="top">
-          <span>{{ comments.length }}条评论</span> 
+          <span>{{ commentReplies }}条评论</span> 
           <a :class="['btn-base','btn-light','btn-sm',isOnlyAuthor?'active':'']" @click="showOnlyAuthor">只看作者</a> 
           <div class="pull-right">
             <a :class="order=='like' ? 'active' : ''" @click="sortComments('like')">按点赞排序</a>
@@ -28,7 +28,7 @@
               </div>
             </div>
             <div class="comment-dtl">
-              <p>{{ comment.body }}</p>
+              <p v-html="comment.body"></p>
               <div class="tool-group">
                 <a :class="['like',comment.liked?'active':'']" @click="like(comment)"><i :class="['iconfont',comment.liked?'icon-dianzan':'icon-fabulous']"></i> <span><b v-show="comment.likes">{{comment.likes+'人'}}</b>赞</span></a>
                 <a class="reply" @click="replyingComment(comment)"><i class="iconfont icon-xinxi"></i> <span>回复</span></a>
@@ -39,9 +39,8 @@
                 <div class="sub-comment" v-for="reply in comment.reply_comments" v-if="!reply.hide">
                   <p>
                     <a :href="'/user/'+reply.user.id" target="_blank">{{ reply.user.name }}</a>：
-                    <span>
+                    <span v-html="reply.body">
                       <!-- <a href="javascript:;" class="maleskine-author" target="_blank">@babysha</a> 唯爱和美食不可辜负。 -->
-                      {{ reply.body }}
                     </span>
                   </p>
                   <div class="sub-tool-group">
@@ -81,7 +80,7 @@
 export default {
   name: "Comments",
 
-  props: ["id", "type", "authorId"],
+  props: ["id", "type", "authorId", "commentReplies"],
 
   mounted() {
     this.loadComments();
