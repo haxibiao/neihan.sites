@@ -8,7 +8,7 @@
 	            <div class="modal-body">
 	             <h5>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</h5>
 	             <div class="scan-code">
-	               <img :src="this.qrCode_url" alt="Scan me!">
+	              <!--  <img :src="this.qrCode_url" alt="Scan me!"> -->
 	             </div>
 	            </div>
 	        </div>
@@ -30,7 +30,9 @@ export default {
   methods:{
         getQcode(){
                var vm=this;
-               var api='/share/weixin/?url='+vm.url;
+               var myDate = new Date();
+               var api='api/share/weixin/?url='+vm.url;
+               console.log(api);
                window.axios.get(api).then(function(response){
                    vm.qrCode_url=response.data;
                });
