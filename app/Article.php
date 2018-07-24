@@ -284,9 +284,9 @@ class Article extends Model
                 $image->title = $this->title;
                 $image->save();
                 $last_img_small_path = $image->path_small();
-                //auto get is_top an image_top
+                //自动上轮播图，只要图片满足条件
                 if ($image->path_top) {
-                    // $this->is_top    = 1;
+                    $this->is_top    = 1;
                     if (!$has_primary_top) {
                         if ($image->path == $this->image_url) {
                             $has_primary_top = true;
