@@ -22,6 +22,25 @@
 							padding: 7px 15px;
 						}
 					}
+					.share-circle {
+						float: right;
+						a {
+							width: 50px;
+							height: 37px;
+							margin-left: 5px;
+							text-align: center;
+							border-radius: 50%;
+							vertical-align: middle;
+							display: inline-block;
+							cursor: pointer;
+							margin-bottom: 5px;
+							i {
+								margin-top: 5px;
+								font-size: 24px;
+								pointer-events: none;
+							}
+						}
+					}
 				}
 			}
 			// 相关视频

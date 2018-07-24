@@ -102,6 +102,8 @@ export default {
 				}
 				//TODO:: loading done !!!
 			});
+			console.log(m.videotime);
+			console.log(m.videoDuration);
 		}
 	},
 
