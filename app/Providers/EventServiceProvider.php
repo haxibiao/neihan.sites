@@ -13,9 +13,19 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\Event' => [
-            'App\Listeners\EventListener',
+        'App\Events\CommentWasCreated' => [
+            'App\Listeners\NewComment',  
         ],
+        'App\Events\CommentWasDeleted' => [
+            'App\Listeners\DestroyedComment',
+        ], 
+    ];
+    /**
+     * 消息订阅者，
+     * @var [type]
+     */
+    protected $subscribe = [
+
     ];
 
     /**

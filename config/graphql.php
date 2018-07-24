@@ -202,9 +202,11 @@ return [
 
                 //favorite
                 'favoriteArticle'        => '\App\GraphQL\Mutation\favorite\favoriteArticleMutation',
-                
+                 
                 //删除查询日志
                 'deleteQueryLog'        => '\App\GraphQL\Mutation\queryLog\DeleteQueryLogMutation',
+                //创建动态
+                'createPost'            => '\App\GraphQL\Mutation\post\createPostMutation',
             ],
         ],
     ],
@@ -295,9 +297,10 @@ return [
         'UserFilter'       => '\App\GraphQL\Enum\UserFilterEnum',
         'NotificationType' => '\App\GraphQL\Enum\NotificationTypeEnum',
         'VisitFilter'      => '\App\GraphQL\Enum\VisitFilterEnum',
+        'VisitTypeEnum'    => '\App\GraphQL\Enum\VisitTypeEnum',
         'FollowFilter'     => '\App\GraphQL\Enum\FollowFilterEnum',
         'ArticleType'      => '\App\GraphQL\Enum\ArticleTypeEnum',
-        'QueryOrderEnum'   => '\App\GraphQL\Enum\QueryOrderEnum',
+        'QueryOrderEnum'   => '\App\GraphQL\Enum\QueryOrderEnum', 
     ],
 
     /*

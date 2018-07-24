@@ -334,6 +334,11 @@ class User extends Authenticatable
         return '<a href="/user/' . $this->id . '">' . $this->name . '</a>';
     }
 
+    public function at_link()
+    {
+        return '<a href="/user/' . $this->id . '">@' . $this->name . '</a>';
+    }
+
     public function balance()
     {
         $balance = 0;

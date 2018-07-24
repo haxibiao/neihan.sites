@@ -1,8 +1,10 @@
 @extends('layouts.app')
 
 @section('title')
-	视频列表
+	视频主页 - {{ config('app.name') }}
 @stop
+@section('keywords') 视频主页,{{ implode(",", array_keys($data)) }} @endsection
+@section('description') 视频主页, {{ implode(",", array_keys($data)) }} @endsection
 
 @section('content')
 <div class="container">

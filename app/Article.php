@@ -5,6 +5,7 @@ namespace App;
 use App\Action;
 use App\Model;
 use App\Tip;
+use App\Video;
 use App\Traits\Playable;
 use Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -119,8 +120,9 @@ class Article extends Model
         return $this->morphMany(\App\Tip::class, 'tipable');
     }
 
-    //computed props or methods -------------------------
-
+    /* --------------------------------------------------------------------- */
+    /* ------------------------------- service ----------------------------- */
+    /* --------------------------------------------------------------------- */
     public function description()
     {
         $description = html_entity_decode($this->description);
@@ -219,7 +221,7 @@ class Article extends Model
 
     public function link()
     {
-        return '<a href="/article/' . $this->id . '">' . $this->title . '</a>';
+        return '<a href=' . $this->content_url() . '>《' . $this->title . '》</a>';
     }
 
     public function recordAction()
@@ -410,9 +412,7 @@ class Article extends Model
      */
     public function recordBrowserHistory()
     {
-        //增加点击量
-        $this->hits = $this->hits + 1;
-        $agent      = new \Jenssegers\Agent\Agent();
+        $agent = new \Jenssegers\Agent\Agent();
         if ($agent->isMobile()) {
             $this->hits_mobile = $this->hits_mobile + 1;
         }
@@ -422,19 +422,23 @@ class Article extends Model
         if ($agent->match('micromessenger')) {
             $this->hits_wechat = $this->hits_wechat + 1;
         }
+        //增加点击量
         if ($agent->isRobot()) {
             $this->hits_robot = $this->hits_robot + 1;
-        }
-        //记录浏览历史
-        if (checkUser()) {
-            $user = getUser();
-            //如果重复浏览只更新纪录的时间戳
-            $visit = \App\Visit::firstOrNew([
-                'user_id'      => $user->id,
-                'visited_type' => $this->type,
-                'visited_id'   => $this->id,
-            ]);
-            $visit->save();
+        } else {
+            //非爬虫请求才统计热度
+            $this->hits = $this->hits + 1;
+            //记录浏览历史
+            if (checkUser()) {
+                $user = getUser();
+                //如果重复浏览只更新纪录的时间戳
+                $visit = \App\Visit::firstOrNew([
+                    'user_id'      => $user->id,
+                    'visited_type' => str_plural($this->type),
+                    'visited_id'   => $this->id,
+                ]);
+                $visit->save();
+            }
         }
         $this->timestamps = false;
         $this->save();
@@ -442,8 +446,6 @@ class Article extends Model
     }
     /**
      * @Desc      返回资源的url
-     *
-     * @Author   czg
      * @DateTime 2018-06-29
      * @return   [type]     [description]
      */
@@ -454,5 +456,50 @@ class Article extends Model
             return sprintf($url_template, $this->type, $this->video_id);
         }
         return sprintf($url_template, $this->type, $this->id);
+    }
+    /**
+     * @Desc     创建动态
+     * @DateTime 2018-07-23
+     * @param    [type]     $input [description]
+     * @return   [type]            [description]
+     */
+    public function createPost($input){
+        $user  = getUser();  
+        $body  = $input['body'];
+        $title = $input['title']?:str_limit($body, $limit = 20, $end = '...');
+        //通过video_id来判断上传的是否是视频
+        if( isset($input['video_id']) ){
+            $video = Video::findOrFail($input['video_id']);
+            $video->title       = $title;
+            $video->save();
+            $artcle = $video->article;
+            $artcle->title       = $title;
+            $artcle->description = $title;
+            $artcle->status      = 1;
+            $artcle->save();
+            return $artcle;
+        } else {
+            $this->title              = $title;
+            $this->body               = $body; 
+            $this->description        = $title;
+            $this->status      = 1;
+            $this->type        = 'post';//type有三种类型:video,article,post
+            $this->user_id     = $user->id;
+            $this->save();
+
+            //带图动态
+           if( isset($input['image_urls']) && is_array( $input['image_urls'] )){
+                //由于传图片的API只返回上传完成后的图片路径,如果改动会对其他地方造成影响。
+                //此处将图片路径转换成图片ID
+                $image_ids = array_map(function($url){ 
+                    return intval( pathinfo($url)['filename'] );
+                }, $input['image_urls']);
+                $this->image_url = $input['image_urls'][0];
+                $this->has_pic = 1;//1代表内容含图
+                $this->save();
+                $this->images()->sync( $image_ids );
+            }
+        }
+        return $this;
     }
 }

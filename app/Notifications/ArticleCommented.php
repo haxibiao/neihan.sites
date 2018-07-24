@@ -17,17 +17,21 @@ class ArticleCommented extends Notification implements ShouldQueue
     protected $article;
     protected $user;
     protected $comment;
+    protected $title;
+    protected $body;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Article $article, Comment $comment, User $user)
+    public function __construct(Article $article, Comment $comment, User $user, String $title='', String $body='')
     {
         $this->article = $article;
         $this->user    = $user;
         $this->comment = $comment;
+        $this->title   = $title;
+        $this->body    = $body;
     }
 
     /**
@@ -65,6 +69,9 @@ class ArticleCommented extends Notification implements ShouldQueue
      */
     public function toArray($notifiable)
     {
+        if( empty($this->body) ){
+            $this->body = $this->comment->body;
+        }
         return [
             'type'          => 'comment',
             'user_id'       => $this->user->id,
@@ -74,6 +81,8 @@ class ArticleCommented extends Notification implements ShouldQueue
             'article_id'    => $this->article->id,
             'comment_id'    => $this->comment->id,
             'comment'       => $this->comment->body,
+            'title'         => $this->title,
+            'body'          => $this->body,
         ];
     }
 }

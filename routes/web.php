@@ -22,6 +22,9 @@ Route::get('/app', 'IndexController@app');
 Route::get('/about-us', 'IndexController@aboutUs');
 Route::get('/trending', 'IndexController@trending');
 
+//动态 
+Route::post('/post', 'ArticleController@storePost');
+
 //问答
 Route::resource('/question', 'QuestionController');
 Route::resource('/answer', 'AnswerController');
@@ -111,6 +114,12 @@ Route::post('/admin/push-article', 'AdminController@push_article')->name('admin.
 Route::get('/admin/stick-articles', 'AdminController@articleSticks');
 Route::post('/admin/stick-article', 'AdminController@articleStick')->name('admin.stick_article');
 Route::post('/admin/delete-stick-article', 'AdminController@deleteStickArticle')->name('admin.delete_stick_article');
+//stick视频
+Route::get('/admin/stick-videos', 'AdminController@videoSticks');
+Route::post('/admin/stick-videos', 'AdminController@videoStick')->name('admin.stick_video');
+Route::post('/admin/delete-stick-videos', 'AdminController@deleteStickVideos')->name('admin.delete_stick_video');
+
+
 
 //stickcategory
 Route::get('/admin/stick-categorys', 'AdminController@categorySticks');

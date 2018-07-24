@@ -2,55 +2,26 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Action;
+use App\Action; 
 use App\Comment;
 use App\Http\Controllers\Controller;
-use App\Notifications\ArticleCommented;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
-class CommentController extends Controller
+class CommentController extends Controller 
 {
-
+    /**
+     * @Desc     保存评论
+     * @Author   czg
+     * @DateTime 2018-07-09
+     * @param    Request    $request [description]
+     * @return   [type]              [description]
+     */
     public function save(Request $request)
     {
-        $user             = $request->user();
-        $comment          = new Comment($request->all());
-        $comment->user_id = $user->id;
-        if ($request->get('is_reply')) {
-            $comment->lou = 0;
-        } else {
-            $comment->lou = Comment::where('commentable_id', $request->get('commentable_id'))
-                ->where('comment_id', null)
-                ->where('commentable_type', get_polymorph_types($request->get('commentable_type')))
-                ->count() + 1;
-        }
-        $comment->save();
-
-        //notify ..
-        if (get_polymorph_types($request->get('commentable_type')) == 'articles') {
-            $article = $comment->commentable;
-            //更新文章评论数
-            $article->count_replies  = $article->comments()->count();
-            $article->count_comments = $article->comments()->max('lou');
-            $article->commented      = \Carbon\Carbon::now();
-            $article->save();
-            $article->user->notify(new ArticleCommented($article, $comment, $user));
-            $article->user->forgetUnreads();
-
-            //record action while comment on article
-            $action = Action::firstOrNew([
-                'user_id'         => $user->id,
-                'actionable_type' => 'comments',
-                'actionable_id'   => $comment->id,
-            ]);
-            $action->save();
-        }
-
-        //新评论，一起给前端返回 空的子评论 和 子评论的用户信息结构，方便前端直接回复刚发布的新评论
-        $comment = Comment::with('user')->with('replyComments.user')->find($comment->id);
-
-        return $comment;
+        $input   = $request->all();
+        $comment = new Comment(); 
+        return $comment->store($input);
     }
 
     public function getWithToken(Request $request, $id, $type)
@@ -69,7 +40,7 @@ class CommentController extends Controller
             ->paginate(5);
         foreach ($comments as $comment) {
             $comment->time     = $comment->createdAt();
-            $comment->liked    = $request->user() ? $this->check_cache($request, $comment->id, 'like_comment') : 0;
+            $comment->liked    = $request->user() ? $this->check_cache($request, $comment->id, 'like_comment')   : 0;
             $comment->reported = $request->user() ? $this->check_cache($request, $comment->id, 'report_comment') : 0;
         }
 

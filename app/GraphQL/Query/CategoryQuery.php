@@ -29,7 +29,9 @@ class CategoryQuery extends Query
 
     public function resolve($root, $args)
     {
-        
-        return Category::findOrFail($args['id']);
+        $category = Category::findOrFail($args['id']);
+        //记录日志
+        $category->recordBrowserHistory();  
+        return $category;
     }
 }

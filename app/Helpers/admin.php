@@ -3,6 +3,7 @@
 use App\Article;
 use App\Category;
 use App\Image;
+use App\Video;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -238,6 +239,69 @@ function get_stick_articles($position = '', $all = false)
         }
     }
     return $articles;
+}
+
+function get_stick_videos($position = '', $all = false)
+{
+    $videos = [];
+    if (Storage::exists("stick_videos")) {
+        $json  = Storage::get('stick_videos');
+        $items = json_decode($json, true);
+        foreach ($items as $item) {
+            if (!$all) {
+                //position
+                if (!empty($position) && $position != $item['position']) {
+                    continue;
+                }
+                //expire
+                if (Carbon::createFromTimestamp($item['timestamp'])->addDays($item['expire']) < Carbon::now()) {
+                    continue;
+                }
+            }
+
+            $video = Video::find($item['video_id']);
+            if ($video) {
+                $video->reason     = !empty($item['reason']) ? $item['reason'] : null;
+                $video->expire     = $item['expire'];
+                $video->position   = $item['position'];
+                $video->stick_time = diffForHumansCN(Carbon::createFromTimestamp($item['timestamp']));
+                $videos[]          = $video;
+            }
+        }
+    }
+    return $videos;
+}
+
+function stick_video($data, $auto = false)
+{ 
+    $items = [];
+
+    $video   = Video::where('id', $data['video_id'])->whereStatus(1)->first();
+    //视频状态是否正常 
+    if(empty($video)){
+        dd("该文章已经删除不能上首页");
+    }
+
+    if (Storage::exists("stick_videos")) {
+        $json = Storage::get('stick_videos');
+        //auto clear expired items
+        foreach (json_decode($json, true) as $item) {
+            //expire
+            if (Carbon::createFromTimestamp($item['timestamp'])->addDays($item['expire']) < Carbon::now()) {
+                continue;
+            }
+            $items[] = $item;
+        }
+    }
+
+    $data['timestamp'] = time();
+    if ($auto) {
+        $items[] = $data;
+    } else {
+        $items = array_merge([$data], $items);
+    }
+    $json = json_encode($items);
+    Storage::put("stick_videos", $json);
 }
 
 function get_seo_meta()
