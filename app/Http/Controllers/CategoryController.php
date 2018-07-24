@@ -23,8 +23,12 @@ class CategoryController extends Controller
      */
     function list(Request $request) {
         $qb   = Category::where('status', '>=', 0)->orderBy('id', 'desc');
+        $accurateCategory = '';
         if ($request->get('q')) {
             $keywords = $request->get('q');
+            //精准匹配
+            $accurateCategory = Category::where('status', '>=', 0)->where('name',$keywords)->orderBy('id', 'desc')->paginate(5);
+            //模糊匹配
             $qb   = Category::orderBy('id', 'desc')->where('status', '>=', 0)
                 ->where('name', 'like', "%$keywords%");
         }
@@ -45,8 +49,7 @@ class CategoryController extends Controller
                 break;
         }
         $categories = $qb->paginate(12);
-        return view('category.list')
-            ->withCategories($categories);
+        return view('category.list')->withCategories($categories)->withAccurateCategory($accurateCategory);
     }
 
     /**

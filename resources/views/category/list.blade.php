@@ -22,36 +22,14 @@
           <basic-search api="/category/list?q="></basic-search>
         </div>
         <div class="panel-body small">
+          @foreach($accurateCategory->chunk(3) as $category_group)
+            <div class="row">
+              @each('category.parts.list_item',$category_group,'category')
+            </div>
+          @endforeach
           @foreach($categories->chunk(3) as $category_group)
             <div class="row">
-              @foreach ($category_group as $category)
-                  <div class=" category-item top10 col-xs-12 clearfix">
-                     <img src="{{ $category->logo() }}" alt="" class="pull-left">
-                    <div class="pull-right">
-
-                      {!! Form::open(['method' => 'get', 'route' => ['category.edit', $category->id], 'class' => 'form-horizontal']) !!}
-                          <div class="btn-group pull-right right10">
-                              {!! Form::submit("编辑", ['class' => 'btn btn-sm btn-primary']) !!}
-                          </div>        
-                      {!! Form::close() !!}
-                    </div>
-                    <div class="pull-right">
-                        
-                        {!! Form::open(['method' => 'delete', 'route' => ['category.destroy', $category->id], 'class' => 'form-horizontal']) !!}
-                            <div class="btn-group pull-right" style="padding-right: 5px">
-                                {!! Form::submit("删除", ['class' => 'btn btn-sm btn-default']) !!}
-                            </div>    
-                        {!! Form::close() !!} 
-                      </div>   
-                      
-                     
-                      <div class="item-info">
-                        <h5 class="category-name">{{ $category->name }} ({{ $category->name_en }})</h5>
-                        <span>创建人: {{ $category->user->name }} </span>
-                        <p style="min-height: 100px" class="small well">{{ $category->description }}</p>
-                      </div>
-                  </div>
-              @endforeach
+              @each('category.parts.list_item',$category_group,'category')
             </div>
           @endforeach
         </div>
