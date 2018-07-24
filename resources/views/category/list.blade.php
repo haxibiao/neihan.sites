@@ -22,11 +22,13 @@
           <basic-search api="/category/list?q="></basic-search>
         </div>
         <div class="panel-body small">
-          @foreach($accurateCategory->chunk(3) as $category_group)
-            <div class="row">
-              @each('category.parts.list_item',$category_group,'category')
-            </div>
-          @endforeach
+          @if(!empty($accurateCategory))
+            @foreach($accurateCategory->chunk(3) as $category_group)
+              <div class="row">
+                @each('category.parts.list_item',$category_group,'category')
+              </div>
+            @endforeach
+          @endif
           @foreach($categories->chunk(3) as $category_group)
             <div class="row">
               @each('category.parts.list_item',$category_group,'category')
