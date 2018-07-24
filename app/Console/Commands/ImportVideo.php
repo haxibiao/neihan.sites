@@ -57,17 +57,25 @@ class ImportVideo extends Command
                 $this->comment("skip cos cdn path : " . $video->path);
                 return;
             }
+
+            //COS对象存储..
             if ($this->option('cos')) {
                 $localPath = public_path($video->getPath());
                 if (!file_exists($localPath)) {
                     $localPath = public_path($video->path);
                 }
                 if ($cdn_url = $this->cosUpload($localPath, $video->id)) {
+                    if($video->article) {
+                        $video->article->video_url = $cdn_url;
+                        $video->article->save();
+                    }
                     $video->path = $cdn_url;
                     $video->save();
                     $this->info("$video->id $video->path");
                 }
             }
+
+            //TODO:: 直接上传到腾讯云点播(cos)
             if ($this->option('vod')) {
                 $vod_url     = $this->vodUpload(public_path($video->getPath()), "ainicheng_" . $video->id . ".mp4");
                 $video->path = $vod_url;
