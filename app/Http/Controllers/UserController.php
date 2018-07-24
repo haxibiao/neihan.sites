@@ -115,6 +115,9 @@ class UserController extends Controller
             ->orderBy('id', 'desc');
         $actions = smartPager($qb, 10);
         foreach ($actions as $action) {
+            if(empty($action->actionable)){
+                continue;
+            }
             switch (get_class($action->actionable)) {
                 case 'App\Article':
                     # code...
@@ -138,7 +141,6 @@ class UserController extends Controller
             }
         }
         $data['actions'] = $actions;
-
         return view('user.show')
             ->withUser($user)
             ->withData($data);

@@ -1,4 +1,4 @@
-@if(get_class($action->actionable) == 'App\Article')
+@if($action->actionable && get_class($action->actionable) == 'App\Article')
 @php
     $item = $action->actionable;
 @endphp
@@ -34,12 +34,13 @@
   </div>
 </li>
 {{-- 评论 --}}
-@elseif(get_class($action->actionable) == 'App\Comment')
+@elseif($action->actionable && get_class($action->actionable) == 'App\Comment')
 @php
     $comment = $action->actionable;
-    $item = $comment->commentable;
+    $item = optional($comment)->commentable;
 @endphp
 @if($item)
+
 <li class="article-item have-img"> 
     <a class="wrap-img" href="{{ $item->content_url() }}" target="_blank">
       <img src="{{ $item->primaryImage() }}" alt="">
@@ -78,7 +79,7 @@
 </li>
 @endif
 {{-- 点赞article --}}
-@elseif(get_class($action->actionable) == 'App\Like')
+@elseif($action->actionable && get_class($action->actionable) == 'App\Like')
 @php
     $like = $action->actionable;
     $item = $like->liked;
@@ -151,7 +152,7 @@
     @endif
     @endif
 {{-- 关注 --}}
-@elseif(get_class($action->actionable) == 'App\Follow')
+@elseif($action->actionable && get_class($action->actionable) == 'App\Follow')
     @php
         $follow = $action->actionable;
         $item = $follow->followed;
