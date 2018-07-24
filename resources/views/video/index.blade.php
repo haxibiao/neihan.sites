@@ -10,7 +10,7 @@
 <div class="container">
      @include('video.parts.top_list')
      @each('video.parts.hot_category_video', $data, "articles")
-     <video-list api="api/getlatestVideo"></video-list>
+     <video-list api="api/getlatestVideo" is-desktop="{{ \Agent::isDeskTop() == 1 }}" ></video-list>
 </div>
 @stop
 

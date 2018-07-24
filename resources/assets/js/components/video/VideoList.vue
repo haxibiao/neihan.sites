@@ -11,11 +11,10 @@
       <div class="box-body">
          <ul class="game-video-list">
             <li v-for="article in articles" class="game-video-item">           
-                <a :href="'/video/'+article.video_id" class="video-info">   
-                    <img class="video-photo" :src="article.image_url">
+                <a :href="'/video/'+article.video_id" class="video-info" :target="isDesktop? '_blank' : '_self'">     <img class="video-photo" :src="article.image_url">
                     <i class="hover-play"> </i>
                 </a>
-                <a :href="'/video/'+article.video_id"  class="video-title">{{ article.title }}</a>
+                <a :href="'/video/'+article.video_id"  class="video-title" :target="isDesktop? '_blank' : '_self'">{{ article.title }}</a>
                 <div class="info">
                     <a class="user" :href="'/user/'+article.user_id">
                         <img :src="article.user.avatar" class="avatar">
@@ -40,7 +39,7 @@
 export default {
   name: "VideoList",
 
-  props: ["api", "startPage"],
+  props: ["api", "startPage","isDesktop"],
 
   watch: {
     api(val) {
