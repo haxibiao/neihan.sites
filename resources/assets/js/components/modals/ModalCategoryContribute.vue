@@ -96,19 +96,17 @@ export default {
       this.fetchData();
     },
     apiUrl() {
-      var api = "/api/categories/admin-check-article-" + this.articleId;
+      var api = "/api/categories/admin-check-article-" + this.articleId + "?page=" + this.page;
       if (this.q) {
-        api = api + "?q=" + this.q;
+        api = api + "&q=" + this.q;
       }
       return window.tokenize(api);
     },
     apiUrl2() {
-      var page2 = this.page2;
-      var api =
-        "/api/categories/recommend-check-article-" +
-        this.articleId +
-        "?page=" +
-        page2;
+      var api = "/api/categories/recommend-check-article-" + this.articleId + "?page=" + this.page2;
+      if (this.q) {
+        api = api + "&q=" + this.q;
+      }
       return window.tokenize(api);
     },
     getBtnClass(status) {
@@ -127,10 +125,13 @@ export default {
       }
       return "btn-base btn-hollow theme-tag btn-sm";
     },
+
     search() {
       this.page = 1;
-      this.fetchManage();
+      this.page2 = 1;
+      this.fetchData();
     },
+
     add(category) {
       var api = window.tokenize(
         "/api/categories/" + this.articleId + "/add-category-" + category.id
@@ -140,6 +141,7 @@ export default {
         category.submited_status = response.data.submited_status;
       });
     },
+
     submit(category) {
       var api = window.tokenize(
         "/api/categories/" + this.articleId + "/submit-category-" + category.id
@@ -149,28 +151,36 @@ export default {
         category.submited_status = response.data.submited_status;
       });
     },
-    fetchManage() {
+
+    fetchAdminCategories() {
       var _this = this;
       window.axios.get(this.apiUrl()).then(function(response) {
         if (_this.page == 1) {
           _this.categoryList = response.data.data;
         } else {
           _this.categoryList = _this.categoryList.concat(response.data.data);
-          _this.page = response.data.currentPage;
-          _this.page_total = response.data.lastPage;
+          _this.page = response.data.current_page;
+          _this.page_total = response.data.last_page;
         }
       });
     },
+
     fetchData() {
+      this.fetchAdminCategories();
+      this.fetchRecommendCategories();
+    },
+
+    fetchRecommendCategories() {
       var _this = this;
-      this.fetchManage();
       window.axios.get(this.apiUrl2()).then(function(response) {
-        _this.recommendCategoryList = _this.recommendCategoryList.concat(
-          response.data.data
-        );
-        // _this.page2 = response.data.currentPage;
-        _this.page2_total = response.data.lastPage;
-        _this.lastPage = response.data.last_page;
+        if(_this.page2 == 1) {
+          _this.recommendCategoryList = response.data.data;          
+        } else { 
+          _this.recommendCategoryList = _this.recommendCategoryList.concat(response.data.data);
+          _this.page2 = response.data.current_page;
+          _this.page2_total = response.data.last_page;
+          _this.lastPage = response.data.last_page;
+        }
       });
     }
   },

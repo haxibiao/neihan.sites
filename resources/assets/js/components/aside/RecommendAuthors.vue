@@ -47,9 +47,11 @@ export default {
   		});
   	},
   	toggleFollow(user) {
+      var _this = this;
       var api_url = window.tokenize('/api/follow/'+ user.id + '/users');
       window.axios.post(api_url).then(function(response){
-          user.is_followed = response.data;
+        user.is_followed = response.data;
+        _this.$set(_this.users, _this.users.indexOf(user), user);
       });
   	}
   },

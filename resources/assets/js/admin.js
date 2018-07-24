@@ -89,6 +89,9 @@ Vue.component("single-list-select", require("./components/SingleListSelect.vue")
 Vue.component("modal-images", require("./components/modals/ModalImages.vue"));
 Vue.component("image-list", require("./components/image/ImageList.vue"));
 
+Vue.component("modal-blacklist", require("./components/modals/ModalBlacklist.vue"));
+Vue.component("modal-report", require("./components/modals/ModalReport.vue"));
+
 //管理用户：　能见到报表
 Vue.component("bar", require("./components/Bar.vue"));
 Vue.component("line-chart", require("./components/Line.vue"));

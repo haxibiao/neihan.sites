@@ -226,7 +226,7 @@ class CategoryController extends Controller
         $user    = $request->user();
         $qb      = $user->adminCategories()->with('user');
         if (request('q')) {
-            $qb = $qb->where('categories.name', 'like', request('q') . '%');
+            $qb = $qb->where('categories.name', 'like', '%' . request('q') . '%');
         }
         $categories = $qb->paginate(12);
         //获取当前文章的投稿状态
@@ -244,9 +244,14 @@ class CategoryController extends Controller
 
     public function recommendCategoriesCheckArticle(Request $request, $aid)
     {
-        $article    = Article::findOrFail($aid);
-        $user       = $request->user();
-        $categories = Category::orderBy('id', 'desc')->whereNotIn('id', $user->adminCategories()->pluck('categories.id'))->paginate(12);
+        $article = Article::findOrFail($aid);
+        $user    = $request->user();
+        $qb      = Category::orderBy('id', 'desc')
+            ->whereNotIn('id', $user->adminCategories()->pluck('categories.id'));
+        if (request('q')) {
+            $qb = $qb->where('categories.name', 'like', '%' . request('q') . '%');
+        }
+        $categories = $qb->paginate(12);
         $categories->map(function ($category) use ($article) {
             $category->submited_status = '';
             $cateWithPivot             = $article->categories()->wherePivot('category_id', $category->id)->first();
@@ -286,11 +291,11 @@ class CategoryController extends Controller
             //自动置顶最新收录的文章到发现，时间由pm来规定 没有就1天
             $stick_articles = collect(get_stick_articles());
             $is_stick       = $stick_articles->search(function ($item, $key) {
-                    if ($item->id == 1374) {
-                        return true;
-                    }
+                if ($item->id == 1374) {
+                    return true;
+                }
             });
-            if ($article->status > 0 &&$is_stick) {
+            if ($article->status > 0 && $is_stick) {
                 $expire = config('seo.article_stick_day') ?: 1;
                 stick_article([
                     'article_id' => $article->id,
