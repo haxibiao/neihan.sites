@@ -410,9 +410,7 @@ class Article extends Model
      */
     public function recordBrowserHistory()
     {
-        //增加点击量
-        $this->hits = $this->hits + 1;
-        $agent      = new \Jenssegers\Agent\Agent();
+        $agent = new \Jenssegers\Agent\Agent();
         if ($agent->isMobile()) {
             $this->hits_mobile = $this->hits_mobile + 1;
         }
@@ -422,19 +420,23 @@ class Article extends Model
         if ($agent->match('micromessenger')) {
             $this->hits_wechat = $this->hits_wechat + 1;
         }
+        //增加点击量
         if ($agent->isRobot()) {
             $this->hits_robot = $this->hits_robot + 1;
-        }
-        //记录浏览历史
-        if (checkUser()) {
-            $user = getUser();
-            //如果重复浏览只更新纪录的时间戳
-            $visit = \App\Visit::firstOrNew([
-                'user_id'      => $user->id,
-                'visited_type' => $this->type,
-                'visited_id'   => $this->id,
-            ]);
-            $visit->save();
+        } else {
+            //非爬虫请求才统计热度
+            $this->hits = $this->hits + 1;
+            //记录浏览历史
+            if (checkUser()) {
+                $user = getUser();
+                //如果重复浏览只更新纪录的时间戳
+                $visit = \App\Visit::firstOrNew([
+                    'user_id'      => $user->id,
+                    'visited_type' => $this->type,
+                    'visited_id'   => $this->id,
+                ]);
+                $visit->save();
+            }
         }
         $this->timestamps = false;
         $this->save();
