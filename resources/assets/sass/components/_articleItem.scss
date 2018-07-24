@@ -1,4 +1,19 @@
 //单行媒体组件：文章列表作者信息、专题管理员列表、专题列表。。。
+
+.administrator {
+  .fold {
+    height: 200px;
+    overflow: hidden;
+  }
+  .unfold {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    .check-more {
+      cursor: pointer;
+      margin-right: 5px;
+    }
+  }
+}
 .author,
 .single-media {
   margin-bottom: 15px;
@@ -76,7 +91,11 @@
       height: 30%;
       color: #fff;
       font-size: $font-size-detail;
-      background-image: linear-gradient(to top, rgba(#000, 0.3) 0%, transparent 100%);
+      background-image: linear-gradient(
+        to top,
+        rgba(#000, 0.3) 0%,
+        transparent 100%
+      );
     }
   }
   .video:hover {

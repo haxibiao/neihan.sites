@@ -37,12 +37,13 @@
 							</div>
 						</div>
 						<div class="tab-header">
-							<ul>
+							<!-- <ul>
 								<li :class="tabActive=='file'?'tab-header-actived':''" @click="tabSwitch('file')">上传图片或者视频</li>
-							</ul>
+							</ul> -->
+							<div class="tab-header-actived">上传图片或者视频</div>
 						</div>
 						<div class="tab-body">
-							<div class="tab-body-item" v-show="tabActive=='file'">
+							<div class="tab-body-item" >
 								<div class="img-upload-field">
 								    <div class="img-upload-btn">
 								    	<i class="iconfont icon-icon20"></i>
@@ -205,9 +206,6 @@ export default {
 				}
 			});
 		},
-		tabSwitch(tab) {
-			this.tabActive = tab;
-		},
 		selectedImgs() {
 			return _.filter(this.imgItems, ["selected", 1]);
 		},
@@ -290,7 +288,6 @@ export default {
 			balance: window.user.balance,
 			query: null,
 			description: "",
-			tabActive: "file",
 			filesCount: 0,
 			top3Imgs: [],
 			videoPath: null,
@@ -338,7 +335,7 @@ export default {
 					line-height: normal;
 				}
 				.input-question {
-					margin-bottom: 5px;
+					margin: 10px 0;
 				}
 				.textarea-box {
 					position: relative;
