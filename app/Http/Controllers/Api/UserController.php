@@ -65,7 +65,7 @@ class UserController extends Controller
     public function editors(Request $request)
     {
         $user = $request->user();
-        $user->followingUsers()
+        $user->followingUsers();
         $users = User::orderBy('id', 'desc')->select('name', 'id')->paginate(100);
         return $users;
     }

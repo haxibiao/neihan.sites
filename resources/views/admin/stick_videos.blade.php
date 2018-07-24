@@ -25,7 +25,7 @@
 
 							<div class="form-group{{ $errors->has('position') ? ' has-error' : '' }}">
 							    {!! Form::label('position', '置顶位置') !!}
-							    {!! Form::select('position', ['视频列表'=>'视频列表'], null, ['id' => 'position', 'class' => 'form-control', 'required' => 'required']) !!}
+							    {!! Form::select('position', ['视频首页'=>'视频首页'], null, ['id' => 'position', 'class' => 'form-control', 'required' => 'required']) !!}
 							    <small class="text-danger">{{ $errors->first('position') }}</small>
 							</div>
 

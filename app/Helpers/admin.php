@@ -279,7 +279,7 @@ function stick_video($data, $auto = false)
     $video   = Video::where('id', $data['video_id'])->whereStatus(1)->first();
     //视频状态是否正常 
     if(empty($video)){
-        dd("该文章已经删除不能上首页");
+        dd("该视频已经删除不能上首页");
     }
 
     if (Storage::exists("stick_videos")) {
