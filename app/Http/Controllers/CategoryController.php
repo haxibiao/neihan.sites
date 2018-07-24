@@ -30,7 +30,7 @@ class CategoryController extends Controller
             $accurateCategory = Category::where('status', '>=', 0)->where('name',$keywords)->orderBy('id', 'desc')->paginate(5);
             //模糊匹配
             $qb   = Category::orderBy('id', 'desc')->where('status', '>=', 0)
-                ->where('name', 'like', "%$keywords%");
+                ->where('name', 'like', "%$keywords%")->where('name','!=',$keywords);
         }
         $type = $request->get('type') ?: 'article';
 

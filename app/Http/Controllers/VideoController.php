@@ -59,7 +59,7 @@ class VideoController extends Controller
         }
         $videos = $videos->paginate(10);
         return view('video.list')
-            ->withVideos($videos);
+            ->withVideos($videos); 
     }
 
     /**
@@ -250,63 +250,16 @@ class VideoController extends Controller
         $article = $video->article;
 
         //软删除 video
-        $video->update(['status' => -1]);
-
+        $video->status = -1;
+        $video->save();
         //软删除 article
-        $article->update(['status' => -1]);
+        $article->update(['status' => -1]); 
 
         //维护分类关系
-        $this->process_category($article); 
+        $this->recountCategory($article);  
 
         //TODO 清除关系 分类关系 冗余的统计信息  评论信息 点赞信息 喜欢的信息 收藏的信息
-        return redirect()->to('/video');
-    }
-
-    /**
-     * @Desc     处理视频与分类的关系
-     * @Author   czg
-     * @DateTime 2018-06-27
-     * @param    [type]     $article article是一篇type为video的文章
-     * @return   [type]            [description]
-     */
-    public function process_category($article)
-    {
-        if (request('categories')) {
-            $old_categories   = $article->categories;
-            $new_categories   = json_decode(request('categories'));
-            $new_category_ids = [];
-            //选取第一个分类做视频的主分类
-            if (!empty($new_categories)) {
-                $article->category_id = $new_categories[0]->id;
-                $article->save();
-                $new_category_ids = array_pluck($new_categories, 'id');
-            }
-            //维护分类关系
-            $parameters = [];
-            foreach ($new_category_ids as $category_id) {
-                $parameters[$category_id] = [
-                    'submit' => '已收录',
-                ];
-            }
-            //同步分类关系,以最后一次选取的为准
-            $article->categories()->sync($parameters);
-
-            //更新分类下的视频数量
-            if (is_array($new_categories)) {
-                foreach ($new_categories as $category) {
-                    //更新新分类文章数
-                    if ($category = Category::find($category->id)) {
-                        $category->count_videos = $category->videoArticles()->count();
-                        $category->save();
-                    }
-                }
-            }
-            //更新旧分类视频数
-            foreach ($old_categories as $category) {
-                $category->count_videos = $category->videoArticles()->count();
-                $category->save();
-            }
-        }
+        return redirect()->to('/video/list');
     }
     /* --------------------------------------------------------------------- */
     /* ------------------------------- 算法策略 ----------------------------- */
@@ -372,5 +325,29 @@ class VideoController extends Controller
             $related_group = $related_group->merge( $related );
         }
         return $related_group;
+    }
+     /**
+     * @Desc     删除视频重新计算视频与分类的关系
+     * @DateTime 2018-06-27
+     * @param    [type]     $article article是一篇type为video的文章
+     * @return   [type]            [description]
+     */
+    public function recountCategory($article)
+    {
+            //更新article表上冗余的主分类
+            $article->category_id = null;
+            $article->save(['timestamps'=>false]);
+            
+            //删除分类关系
+            $categories   = $article->categories;
+            $article->categories()->detach();
+            
+            //更新旧分类视频数
+            foreach ($categories as $category) {
+                $category->count_videos = $category
+                    ->videoArticles()
+                    ->count();
+                $category->save();
+            }
     }
 }
