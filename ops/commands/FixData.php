@@ -91,15 +91,10 @@ class FixData extends Command
 
     public function fix_categories()
     {
-         Category::orderBy('id')->chunk(100, function ($categories) {
-            foreach ($categories as $category) {
-                $count_video = $category->videoArticles()
-                    ->where('status','>',0) 
-                    ->count();
-                $category->count_videos = $count_video;
-                $category->save(['timestamp'=>false]);
-            }
-        });
+         $category = Category::find(22);
+         $category->status = 1;
+         $category->save();
+         $this->cmd->info("$category->name fix success");
     } 
 
     public function fix_videos() 
