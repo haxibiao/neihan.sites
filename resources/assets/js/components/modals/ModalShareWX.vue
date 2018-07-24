@@ -58,6 +58,7 @@ export default {
       .modal-body {
         padding: 20px 60px 30px;
         text-align: center;
+        height: 340px;
         .scan-code {
           svg {
             width: 200px;
