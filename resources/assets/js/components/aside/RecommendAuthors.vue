@@ -5,12 +5,12 @@
     <a target="_blank" href="javascript:;" class="right" @click="fetchData"><i class="iconfont icon-shuaxin" ref="fresh"></i>换一批</a>
   </div>
   <ul>
-    <li v-for="user in users"  class="user-info">
+    <li v-for="(user,index) in users"  class="user-info">
       <a target="_blank" :href="'/user/'+user.id" class="avatar"><img :src="user.avatar" alt=""></a>
       
-      <a v-if="!user.is_followed" href="javascript:;" class="follow" @click="toggleFollow(user)">＋ 关注</a>
+      <a v-if="!user.is_followed" href="javascript:;" class="follow" @click="toggleFollow(user,index)">＋ 关注</a>
 
-      <a v-else href="javascript:;" class="toggle-followed" @click="toggleFollow(user)">
+      <a v-else href="javascript:;" class="toggle-followed" @click="toggleFollow(user,index)">
         <i class="gougou iconfont icon-weibiaoti12"></i>
         <i class="chacha iconfont icon-cha"></i>
       </a>
@@ -46,10 +46,12 @@ export default {
   			$('.recommend_author ul').fadeIn();
   		});
   	},
-  	toggleFollow(user) {
+  	toggleFollow(user,index) {
+      var vm = this;
       var api_url = window.tokenize('/api/follow/'+ user.id + '/users');
       window.axios.post(api_url).then(function(response){
           user.is_followed = response.data;
+          vm.$set(vm.users, index, user)
       });
   	}
   },
