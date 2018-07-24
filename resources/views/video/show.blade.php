@@ -1,7 +1,7 @@
 @extends('layouts.black')
 
 @section('title')
-	视频: {{ $video->article->title }} - @if($video->article && $video->article->category){{ $video->article->category->name }}@endif {{ env('APP_NAME') }}
+	视频: {{ $video->article->title }} - @if($video->article && $category){{ $category->name }}@endif {{ env('APP_NAME') }}
 @stop
 
 @push('seo_og_result') 
@@ -43,32 +43,32 @@
                 </div>
                 <div class="listArea col-sm-4 hidden-xs">
                     <div class="classify">
-                        @if($video->article && $video->article->category)
-                        <div>
-                            <a href="/{{ $video->article->category->name_en }}" class="avatar">
-                                <img src="{{ $video->article->category->logo() }}" alt="{{ $video->article->category->name }}">
-                            </a>
-                            <div class="classify-info">
-                                <div>
-                                    {{-- 分类 --}}
-                                    <a href="/{{ $video->article->category->name_en }}">{{$video->article->category->name}}</a>
-                                </div> 
-                                {{-- 关注数 --}}
-                                <span>{{$video->article->category->count_follows}}人关注</span> 
-                                <span>- {{$video->article->category->count_videos}}个视频</span> 
+                        @if($category)
+                            <div>
+                                <a href="/{{ $category->name_en }}" class="avatar">
+                                    <img src="{{ $category->logo() }}" alt="{{ $category->name }}">
+                                </a>
+                                <div class="classify-info">
+                                    <div>
+                                        {{-- 分类 --}}
+                                        <a href="/{{ $category->name_en }}">{{$category->name}}</a>
+                                    </div> 
+                                    {{-- 关注数 --}}
+                                    <span>{{$category->count_follows}}人关注</span> 
+                                    <span>- {{$category->count_videos}}个视频</span> 
+                                </div>
                             </div>
-                        </div>
-                            
-                        <div class="button-vd clearfix">
-                            <follow  
-                                type="categories" 
-                                id="{{ $video->article->category_id }}"   
-                                user-id="{{ user_id() }}" 
-                                followed="{{ is_follow('categories', $video->article->category_id) }}"
-                                size-class="btn-md"
-                                >
-                            </follow>
-                        </div>
+                                
+                            <div class="button-vd clearfix">
+                                <follow  
+                                    type="categories" 
+                                    id="{{ $category->id }}"   
+                                    user-id="{{ user_id() }}" 
+                                    followed="{{ is_follow('categories', $category->id) }}"
+                                    size-class="btn-md"
+                                    >
+                                </follow>
+                            </div>
                         @endif
                     </div> 
                     <div class="related-video">

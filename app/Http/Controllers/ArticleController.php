@@ -8,7 +8,6 @@ use App\Http\Requests\ArticleRequest;
 use App\Image;
 use App\Jobs\DelayArticle;
 use App\Tag;
-use App\Video;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -17,8 +16,20 @@ class ArticleController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except('show');
-        $this->middleware('auth.editor')->except('index','show');
+        $this->middleware('auth.editor')->except('index','show','storePost');
     }
+
+    /**
+     * @Desc     发布一篇动态
+     * @DateTime 2018-07-20
+     * @param    Request    $request [description]
+     * @return   [type]              [description]
+     */
+    public function storePost(Request $request){
+        $article = new Article();
+        $article->createPost($request->all());
+        return redirect()->to($article->content_url());
+    } 
 
     public function drafts(Request $request)
     {

@@ -22,6 +22,9 @@ Route::get('/app', 'IndexController@app');
 Route::get('/about-us', 'IndexController@aboutUs');
 Route::get('/trending', 'IndexController@trending');
 
+//动态 
+Route::post('/post', 'ArticleController@storePost');
+
 //问答
 Route::resource('/question', 'QuestionController');
 Route::resource('/answer', 'AnswerController');

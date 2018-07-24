@@ -140,46 +140,25 @@ class VideoController extends Controller
             ->with('user')
             ->findOrFail($id);
         $article = $video->article;
-        if ($article->status < 0) {
+        if (empty($article) || $article->status < 0) {
             abort(404);
         }
+        //最后一个分类
+        $categories = $article->categories()
+            ->whereHas('videoArticles', function ($query) {
+                $query->where('count_videos', '>', 0);
+            })->get();
+        $category = $categories->last();
+           
         //记录用户浏览记录
         $article->recordBrowserHistory();
+        //获取关联视频
+        $data['related'] = $this->getRelationVideo($article, 4);
         
-        //关联视频
-        $data['related'] = [];
-        $article_ids = [$id];
-        //优先从主分类中随机选择4个 
-        if ($article->category) {
-            $related_group = $article
-                ->category
-                ->videoArticles()
-                ->where('articles.status', 1)
-                ->where('video_id','<>',$id)
-                ->take(4)
-                ->get();
-
-            if ( !empty($related_group) ) {
-                $article_ids = array_merge(
-                    $related_group->pluck('id')->toArray()
-                );
-                $data['related'] = $related_group;
-            }
-        } 
-        $related_length = count($data['related']);
-        //主专题下文章数不够时候随机填充至4个()
-        if( $related_length < 4 ){
-            $related = Article::where('type', 'video')
-                ->orderBy('id', 'desc')
-                ->whereStatus(1)
-                ->whereNotIn('id',$article_ids)
-                ->take(4-$related_length)  
-                ->get();
-            $data['related'] = $data['related']->merge($related); 
-        }
         return view('video.show')
-            ->withVideo($video)
-            ->withData($data);
+            ->withVideo($video) 
+            ->withData($data)
+            ->withCategory($category);
     }
 
     /**
@@ -328,5 +307,70 @@ class VideoController extends Controller
                 $category->save();
             }
         }
+    }
+    /* --------------------------------------------------------------------- */
+    /* ------------------------------- 算法策略 ----------------------------- */
+    /* --------------------------------------------------------------------- */
+    /**
+     * @Desc     获取相关视频
+     * @DateTime 2018-07-24
+     * @return   [type]     [description]
+     */
+    public function getRelationVideo($article, $need_length){
+        //关联视频
+        $related_group = null;
+        $article_ids = [$article->id];
+        //获取有视频的分类
+        $categories = $article->categories()
+            ->whereHas('videoArticles', function ($query) {
+                $query->where('count_videos', '>', 0);
+            })->get();
+        
+        if ( $categories->isNotEmpty() ) {
+            //优先从最后一个分类中随机选择4个 
+            $category = $categories->pop();
+            $related_group = $category
+                ->videoArticles()
+                ->where('articles.status', 1)
+                ->where('articles.id','<>',$article->id)
+                ->take($need_length)
+                ->get();
+            if ( $related_group->isNotEmpty() ) {
+                $article_ids = array_merge(
+                    $related_group->pluck('id')->toArray(), $article_ids
+                );
+                $related_group = $related_group;
+            }
+        }
+        //视频数据不够时，还填充的视频数
+        $fill_length   = $need_length - count($related_group);
+        //主专题下文章数不够时候随机填充至4个()
+        if( $fill_length > 0 ){
+            //暂时不实现复杂的策略,减少系统Query
+            /*$category_ids   = $categories->pluck('id');
+            $ids = \DB::table('article_category')
+                ->whereIn('category_id',$category_ids)
+                ->where('已收录')
+                ->whereNotIn('article_id',$article_ids)
+                ->pluck('article_id');
+            if( count($ids)>0 ){
+                $articles = Article::whereIn('id', $ids
+                    ->take($fill_length));
+
+                $data['related'] = $data['related']
+                    ->merge($articles);
+            }*/
+
+            $related = Article::where('type', 'video')
+                ->orderBy('id', 'desc')
+                ->whereStatus(1)
+                ->whereNotIn('id',$article_ids)
+                ->orderBy(\DB::raw('RAND()'))
+                ->take(100)   //取最近上传的100个视频随机
+                ->get()
+                ->random($fill_length);
+            $related_group = $related_group->merge( $related );
+        }
+        return $related_group;
     }
 }

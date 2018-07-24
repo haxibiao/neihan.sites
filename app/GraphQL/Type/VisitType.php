@@ -33,22 +33,6 @@ class VisitType extends GraphQLType
                     return $root->visited;
                 },
             ],
-            //video
-            'video'    => [
-                'type'        => GraphQL::type('Video'),
-                'description' => 'The video of the Visit',
-                'resolve'     => function ($root, $args) {
-                    return $root->visited;
-                },
-            ],
-            //文章
-            'article'  => [
-                'type'        => GraphQL::type('Article'),
-                'description' => 'The article of the Visit',
-                'resolve'     => function ($root, $args) {
-                    return $root->visited;
-                },
-            ],
             //浏览时间
             'time_ago' => [
                 'type'        => Type::string(),
