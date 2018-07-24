@@ -105,7 +105,7 @@ class FixData extends Command
                 //评论
                 $article    = Article::find($json->article_id);
                 //如果评论的文章或视频不存在
-                $mag = '';
+                $msg = '';
                 if(empty($article)){
                     $msg = '<a href="/user/' . $json->user_id . '">' . $json->user_name . '</a> 评论了你的文章 <a href="/artice/'.$json->article_id.'">《' . $json->article_title . '》</a>';
                 } else {
@@ -118,12 +118,13 @@ class FixData extends Command
                     }
 
                     $msg = $authorizer->link() . ' 评论了你的' . $type . $article->link();
+                    $json->title    = $msg;
+                    $json->url      = $article->content_url();
+                    \DB::table('notifications')
+                        ->where('id', $notification->id)
+                        ->update(['data' => json_encode($json)]);
                 }
-                $json->title    = $msg;
-                $json->url      = $article->content_url();
-                \DB::table('notifications')
-                    ->where('id', $notification->id)
-                    ->update(['data' => json_encode($json)]);
+                
             }
         });
     }
