@@ -40,8 +40,8 @@
     $item = $comment->commentable;
 @endphp
 @if($item)
-<li class="article-item have-img">
-    <a class="wrap-img" href="/article/{{ $item->id }}" target="_blank">
+<li class="article-item have-img"> 
+    <a class="wrap-img" href="{{ $item->content_url() }}" target="_blank">
       <img src="{{ $item->primaryImage() }}" alt="">
     </a>
     <div class="content">
@@ -55,9 +55,9 @@
                 <span class="time"> 发表了评论 · @timeago($action->created_at)</span>
             </div>
         </div>
-        <div class="comment"><p>{{ $comment->body }}</p></div>
+        <div class="comment"><p>{!! $comment->body !!}</p></div>
         <blockquote>
-            <a class="title" target="_blank" href="/article/{{ $item->id }}"><span>{{ $item->title }}</span></a>
+            <a class="title" target="_blank" href="{{ $item->content_url() }}"><span>{{ $item->title }}</span></a>
             <p class="abstract">
                 {{ $item->description }}
             </p>
