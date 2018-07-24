@@ -23,14 +23,14 @@ export default {
 
   props:['url','aid'],
 
-  mounted(){
+  mounted(){ 
       this.getQcode();
   },
 
   methods:{
         getQcode(){
                var vm=this;
-               var api='/share/weixin/?url='+vm.url+'&article_id='+vm.aid;
+               var api='/share/weixin/?url='+vm.url;
                window.axios.get(api).then(function(response){
                    vm.qrCode_url=response.data;
                });
