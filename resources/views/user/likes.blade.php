@@ -54,7 +54,7 @@
                             @endforeach
                         </ul>
                         <ul role="tabpanel" class="fade in note-list tab-pane {{ ends_with(request()->path(), 'followed-collections') ? 'active' : '' }}" id="collection">
-
+                            
                             @foreach($data['followed_collections'] as $follow)
                             @php
                                 $collection = $follow->followed;
