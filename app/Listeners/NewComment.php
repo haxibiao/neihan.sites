@@ -228,7 +228,7 @@ class NewComment
         Action::create([
             'user_id'         => getUser()->id,
             'actionable_type' => 'comments',
-            'actionable_id'   => $article->id,
+            'actionable_id'   => $comment->id,
         ]);
     }
 }
