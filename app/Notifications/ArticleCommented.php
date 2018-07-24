@@ -66,7 +66,7 @@ class ArticleCommented extends Notification implements ShouldQueue
      *
      * @param  mixed  $notifiable
      * @return array
-     */
+     */ 
     public function toArray($notifiable)
     {
         if( empty($this->body) ){
@@ -82,7 +82,9 @@ class ArticleCommented extends Notification implements ShouldQueue
             'comment_id'    => $this->comment->id,
             'comment'       => $this->comment->body,
             'title'         => $this->title,
-            'body'          => $this->body,
+            'body'          => $this->body, 
+            'url'           => $this->article->content_url(),
+            'lou'           => $this->comment->lou,
         ];
     }
 }

@@ -106,6 +106,7 @@ class FixData extends Command
                 $article    = Article::find($json->article_id);
                 //如果评论的文章或视频不存在
                 $msg = '';
+                $json->lou      = Comment::find($json->comment_id)->lou;
                 if(empty($article)){
                     $msg = '<a href="/user/' . $json->user_id . '">' . $json->user_name . '</a> 评论了你的文章 <a href="/artice/'.$json->article_id.'">《' . $json->article_title . '》</a>';
                 } else {
