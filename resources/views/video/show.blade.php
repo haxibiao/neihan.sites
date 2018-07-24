@@ -75,7 +75,7 @@
                         <ul class="video-list">
                             @foreach($data['related'] as $article) 
                                 <li class="video-item hz">
-                                    <a href="{{$article->content_url()}}" class="clearfix"> 
+                                    <a href="{{$article->content_url()}}" class="clearfix" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}">  
                                         <div class="cover">
                                             <img src="{{ $article->primaryImage() }}" alt="{{ $article->title }}">
                                             {{-- 时长 --}}
