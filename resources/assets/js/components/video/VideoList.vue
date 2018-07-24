@@ -50,11 +50,15 @@ export default {
   },
 
   computed: {
-    apiUrl() {
-      var page = this.page;
-      var api = this.api ? this.api : this.apiDefault;
-      var api_url = api.indexOf("?") !== -1 ? api + "&page=" + page : api + "?page=" + page;
-      return api_url;
+    apiUrl: {
+      get(){
+        var page = this.page;
+        var api = this.api ? this.api : this.apiDefault;
+        var api_url =
+          api.indexOf("?") !== -1 ? api + "&page=" + page : api + "?page=" + page;
+        if(page == 1) api_url +='&stick=true';
+        return api_url;
+      }
     }
   },
 
@@ -71,7 +75,9 @@ export default {
       var m = this;
       $(window).on("scroll", function() {
         var aheadMount = 5;
-        var is_scroll_to_botton = $(this).scrollTop() >= $("body").height() - $(window).height() - aheadMount;
+        var is_scroll_to_botton =
+          $(this).scrollTop() >=
+          $("body").height() - $(window).height() - aheadMount;
         if (is_scroll_to_botton) {
           m.fetchMore();
         }
@@ -87,12 +93,11 @@ export default {
     },
     fetchData() {
       var vm = this;
+      console.log(this.apiUrl);
       window.axios.get(this.apiUrl).then(function(response) {
         vm.articles = vm.articles.concat(response.data.data);
         vm.lastPage = response.data.lastPage;
       });
-      console.log("视频");
-      console.log(vm.articles);
     }
   },
 

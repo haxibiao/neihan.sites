@@ -131,6 +131,71 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
+    public function videoSticks()
+    {
+        $videos = get_stick_videos('', true);
+        return view('admin.stick_videos')->withVideos($videos);
+    }
+
+    public function videoStick()
+    {
+        $data = request()->all();
+        stick_video($data);
+        return redirect()->back();
+    }
+
+    public function deleteStickVideo()
+    {
+        $video_id = request()->get('video_id');
+        $items      = [];
+        if (Storage::exists("stick_videos")) {
+            $json  = Storage::get('stick_videos');
+            $items = json_decode($json, true);
+        }
+        $left_items = [];
+
+        //找到需要删除的元素就跳出,不必要全部递归
+        foreach ($items as $index => $item) {
+            if ($item['video_id'] == $video_id) {
+                array_splice($items, $index, 1);
+                break;
+            }
+        }
+
+        //这里重新装车一遍,否则容易造成全部删除的情况
+        $left_items = $items;
+
+        $json = json_encode($left_items);
+        Storage::put("stick_videos", $json);
+        return redirect()->back();
+    }
+    
+    public function deleteStickVideos()
+    {
+        $video_id = request()->get('video_id');
+        $items      = [];
+        if (Storage::exists("stick_videos")) {
+            $json  = Storage::get('stick_videos');
+            $items = json_decode($json, true);
+        }
+        $left_items = [];
+
+        //找到需要删除的元素就跳出,不必要全部递归
+        foreach ($items as $index => $item) {
+            if ($item['video_id'] == $video_id) {
+                array_splice($items, $index, 1);
+                break;
+            }
+        }
+
+        //这里重新装车一遍,否则容易造成全部删除的情况
+        $left_items = $items;
+
+        $json = json_encode($left_items);
+        Storage::put("stick_videos", $json);
+        return redirect()->back();
+    }
+
     public function deleteStickArticle()
     {
         $article_id = request()->get('article_id');
