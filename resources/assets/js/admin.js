@@ -63,6 +63,10 @@ Vue.component(
 	"follow-user-list",
 	require("./components/follow/FollowUserList.vue")
 );
+Vue.component(
+	"follow-categories-list",
+	require("./components/follow/FollowCategoriesList.vue")
+);
 Vue.component("tags-input", require("./components/TagsInput.vue"));
 Vue.component("image-select", require("./components/image/ImageSelect.vue"));
 Vue.component("user-select", require("./components/UserSelect.vue"));

@@ -215,5 +215,14 @@ class UserController extends Controller
             }
             return $data;
         }
+
+        if (ajaxOrDebug() && $request->get('categories')) {
+            $data = smartPager($user->followingCategories()->orderBy('id', 'desc'), 10);
+            foreach ($data as $category) {
+                $category->followed->logo = $category->followed->logo();
+                $category->followed->is_follow = is_follow('categories', $category->followed->id);
+            }
+            return $data;
+        }
     }
 }
