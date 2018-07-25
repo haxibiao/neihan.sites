@@ -32,13 +32,13 @@
                     <div class="h5-player">
                         <div class="embed-responsive embed-responsive-16by9">
                             <video controls="" poster="{{ $video->article->cover() }}" preload="auto" autoplay="true">
-                                <source src="{{ $video->url() }}" type="video/mp4">
+                                <source src="{{ $video->url() }}" type="video/mp4"> 
                                 </source> 
                             </video>
                         </div> 
                     </div>
-                    <div class="h5-option">
-                       <like id="{{ $video->id }}" type="articles" is-login="{{ Auth::check() }}"></like>
+                    <div class="h5-option"> 
+                       <like id="{{ $video->article->id }}" type="article" is-login="{{ Auth::check() }}"></like> 
                        <div class="share-circle">
                             <a data-action="weixin-share" data-toggle="tooltip" data-toggle="tooltip" data-placement="top" title="分享到微信">
                                  <i class="iconfont icon-weixin1 weixin"></i>
@@ -137,8 +137,8 @@
         <div class="container clearfix">
             <div class="row">
                 <div class="col-sm-8">  
-                    {{-- 评论中心 --}}
-                    <comments type="articles" id="{{ $video->article->id }}" author-id="{{ $video->user_id }}"></comments>
+                    {{-- 评论中心 --}} 
+                    <comments comment-replies={{ $video->article->count_replies }} type="articles" id="{{ $video->article->id }}" author-id="{{ $video->user_id }}"></comments>
                 </div>
                 <div class="guess-like col-sm-4 hidden-xs">
                     <div class="guessVideo">

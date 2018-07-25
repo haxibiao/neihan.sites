@@ -7,6 +7,7 @@ use App\Comment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use App\Notifications\ArticleLiked;
 
 class CommentController extends Controller 
 {
@@ -50,28 +51,61 @@ class CommentController extends Controller
 
         return $comments;
     }
-
+    //TODO 下面这段代码以后有时间过来优化性能
     public function like(Request $request, $id)
     {
         $user           = $request->user();
+        $comment        = Comment::find($id);
+        $like = \App\Like::firstOrNew([
+            'user_id'    => $user->id,
+            'liked_id'   => $id,
+            'liked_type' => 'comments',
+        ]);
+        $liked_from_cache  = $this->sync_cache($request, $id, 'like_comment');
+        if( $like->id ){
+            $like->delete();
+        } else {
+            $like->save();
+            //点赞自己的评论不通知
+            if( $comment->user_id!=$user->id ){
+                $comment->user->notify(new ArticleLiked( $comment->commentable->id, $user->id, $comment)); 
+            }
+            $action = \App\Action::updateOrCreate([ 
+                'user_id'         => $user->id,
+                'actionable_type' => 'likes',
+                'actionable_id'   => $like->id,
+            ]);
+        }
+
+        $comment->likes = $comment->likes()->count(); 
+        $comment->save();
+
+        //返回给前端的状态字段
+        $comment->liked = !$liked_from_cache; 
+        return $comment;
+        /*$user           = $request->user();
         $liked          = $this->sync_cache($request, $id, 'like_comment');
         $comment        = Comment::find($id);
         $comment->likes = $comment->likes + ($liked ? -1 : 1);
         $comment->save();
-        $comment->liked = !$liked;
-
+        $comment->liked = !$liked;  
+        
         $like = \App\Like::create([
             'user_id'    => $user->id,
             'liked_id'   => $id,
             'liked_type' => 'comments',
         ]);
-
+        //点赞自己的评论不通知
+        if( $user->id != $comment->user_id ){
+            $comment->user->notify(new ArticleLiked( $comment->commentable->id, $user->id, $comment));
+        }
+        
         $action = \App\Action::create([
             'user_id'         => $user->id,
             'actionable_type' => 'likes',
             'actionable_id'   => $like->id,
         ]);
-        return $comment;
+        return $comment;*/
     }
 
     public function report(Request $request, $id)

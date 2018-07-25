@@ -502,4 +502,21 @@ class Article extends Model
         }
         return $this;
     }
+    /**
+     * @Desc     资源类型
+     * @DateTime 2018-07-24
+     * @return   [type]     [description]
+     */
+    public function resoureTypeCN(){
+        $type = $this->type;
+        switch ($type) {
+            case 'video':
+                return '视频';
+            case 'post':
+                return '动态';
+            default:
+                break;
+        }
+        return '文章';
+    }
 }

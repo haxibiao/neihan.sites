@@ -8,14 +8,14 @@
 						<img :src="notification.user_avatar" alt=""></a>
 					<div class="title">
 						<a :href="'/user/'+notification.user_id" class="nickname">{{ notification.user_name }}</a>
-						<span>喜欢了你的文章</span>
-						<a :href="'/article/' + notification.article_id " class="headline">《{{ notification.article_title }}》</a>
-					</div>
+						<span>{{ notification.body }}</span>  
+						<a :href=" notification.url " class="headline" v-html="notification.title"></a>
+					</div> 
 					<div class="info">{{ notification.time }}</div>
-				</div>
-			</li>
+				</div> 
+			</li> 
 		</ul>
-		<div v-else class="unMessage">
+		<div v-else class="unMessage"> 
 			<blank-content></blank-content>
 		</div>
 	</div>

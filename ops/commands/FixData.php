@@ -56,76 +56,42 @@ class FixData extends Command
         if ($this->cmd->argument('operation') == "visits") {
             return $this->fix_visits();
         }
+        if ($this->cmd->argument('operation') == "likes") {
+            return $this->fix_likes();
+        }
         
         if($this->cmd->argument('operation') == "article_comments"){
             return $this->fix_article_comments();
         }
     }
 
+    public function fix_likes(){
+
+    }
+
     public function fix_notifications()
     {
         //修复老视频的跳转问题
         $this->cmd->info('fix notifications ...');
-        \DB::table('notifications')->orderBy('id')->where('type','App\Notifications\ArticleCommented')->chunk(100,function($notifications){
+        \DB::table('notifications')->orderBy('id')->where('type','App\Notifications\ArticleLiked')->chunk(100,function($notifications){
             foreach ($notifications as $notification) {
                 $data = $notification->data;
                 $json = json_decode($data);
-                //提取Body中@人的消息
-                $commentBody        = $json->comment;
-                $filtered_users;//需要@的人
-                $pattern = "/@([^\s|\/|:|@]+)/i";
-                preg_match_all($pattern, $commentBody, $matches);
-                $atlist_tmp = end($matches);
-                if( !empty($atlist_tmp) ){
-                    $mentioned_user_name    = array_values($atlist_tmp);
-                    $at_users   = User::whereIn('name',$mentioned_user_name)->get();
-                    if( $at_users->isNotEmpty() ){ 
-                        //格式化消息通知的内容
-                        $user_names = $at_users->pluck('name')->toArray();
-                        $material_name = array_map(function($name){
-                            return '@' . $name;
-                        }, $user_names);
-                        //拼接消息内容
-                        $format_at_users = [];
-                        foreach ($at_users as $user) {
-                            $format_at_users[] = $user->at_link();
-                        }
-                        $commentBody = str_replace( 
-                            $material_name, 
-                            $format_at_users, 
-                            $commentBody
-                        );
-                        //更新评论的内容，替换了超链接
-                        $json->comment  = $commentBody;
-                        $json->body     = $commentBody;
-                    }
-                }
-                //评论的人
-                $authorizer = User::find($json->user_id);
-                //评论
-                $article    = Article::find($json->article_id);
-                //如果评论的文章或视频不存在
-                $msg = '';
-                $json->lou      = Comment::find($json->comment_id)->lou;
-                if(empty($article)){
-                    $msg = '<a href="/user/' . $json->user_id . '">' . $json->user_name . '</a> 评论了你的文章 <a href="/artice/'.$json->article_id.'">《' . $json->article_title . '》</a>';
+                $article_id = $json->article_id;
+                $article    = Article::find($article_id);
+                //之前的老文章可能被删除了,重新组装一个
+                if( empty($article) ){
+                    $json->url = '/article/' . $json->article_id;
+                    $json->body   = '喜欢了你的文章';
+                    $json->title  = '《' . $json->article_title . '》';
                 } else {
-                    //区分评论的"文章"类型
-                    $type = '文章';
-                    if($article->type == 'video'){
-                        $type = '视频';
-                    } else if( $article->type == 'post' ){
-                        $type = '动态';
-                    }
-
-                    $msg = $authorizer->link() . ' 评论了你的' . $type . $article->link();
-                    $json->title    = $msg;
-                    $json->url      = $article->content_url();
-                    \DB::table('notifications')
-                        ->where('id', $notification->id)
-                        ->update(['data' => json_encode($json)]);
+                    $json->url    = $article->content_url();
+                    $json->body   = '喜欢了你的' . $article->resoureTypeCN();
+                    $json->title  = '《' . $article->title . '》';
                 }
-                
+                \DB::table('notifications')
+                    ->where('id',$notification->id)
+                    ->update(['data'=>json_encode($json)]); 
             }
         });
     }

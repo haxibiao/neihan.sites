@@ -5,6 +5,7 @@ use App\Comment;
 use Folklore\GraphQL\Support\Mutation;
 use GraphQL;
 use GraphQL\Type\Definition\Type;
+use App\Notifications\ArticleLiked;
 
 class likeCommentMutation extends Mutation
 {
@@ -32,7 +33,7 @@ class likeCommentMutation extends Mutation
             'comment_id' => ['required'],
         ];
     }
-
+    //TODO 代码需要抽离
     public function resolve($root, $args)
     {
         $user = getUser();
@@ -40,8 +41,6 @@ class likeCommentMutation extends Mutation
         $comment = Comment::findOrFail($args['comment_id']);
         if ((isset($args['undo']) && $args['undo']) || session('liked_comment_' . $args['comment_id'])) {
             session()->put('liked_comment_' . $args['comment_id'], 0);
-            $comment->likes = $comment->likes - 1;
-            $comment->save();
 
             // delete like comment
             $like = \App\Like::where([
@@ -54,8 +53,6 @@ class likeCommentMutation extends Mutation
             }
         } else {
             session()->put('liked_comment_' . $args['comment_id'], 1);
-            $comment->likes = $comment->likes + 1;
-            $comment->save();
 
             // save like comment
             $like = \App\Like::firstOrNew([
@@ -65,6 +62,10 @@ class likeCommentMutation extends Mutation
             ]);
             $like->save();
 
+            //点赞自己的评论不通知
+            if( $user->id != $comment->user_id ){
+                $comment->user->notify(new ArticleLiked( $comment->commentable->id, $user->id, $comment));
+            }
             // record action
             $action = \App\Action::create([
                 'user_id'         => $user->id,
@@ -72,6 +73,9 @@ class likeCommentMutation extends Mutation
                 'actionable_id'   => $like->id,
             ]);
         }
+        $comment->likes = $comment->likes()->count(); 
+        $comment->save();
+
         return $comment;
     }
 }

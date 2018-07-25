@@ -208,8 +208,7 @@ STR;
                 'data' => [
                     "publishArticle"=>[
                         'title'  => $article->title,
-                        'status' => 1,
-                        'body'   => $article->body,
+                        'status' => 1
                     ]
                 ]
             ]);
@@ -253,7 +252,6 @@ STR;
                     "unpublishArticle"=>[
                         'id'     => $article->id,
                         'title'  => $article->title,
-                        'body'   => $article->body,
                         'status' => 0,
                     ]
                 ]
@@ -403,8 +401,7 @@ STR;
                         'id'         => $article->id,
                         'type'       => $article->type,
                         'title'      => $article->title,
-                        'status'     => $article->status,
-                        'body'       => $article->body,
+                        'status'     => $article->status
                     ]
                 ]
             ]);
