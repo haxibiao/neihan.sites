@@ -80,6 +80,9 @@ class ArticleType extends GraphQLType
             'body'            => [
                 'type'        => Type::string(),
                 'description' => 'The body of article',
+                'resolve'     => function ($root, $args) {
+                    return str_replace("\"", "'", $root->body);
+                }, 
             ],
             'status'          => [
                 'type'        => Type::int(),
