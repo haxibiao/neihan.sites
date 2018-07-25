@@ -24,9 +24,9 @@
 
     props: ['users', 'api'],
 
-    computed: {
-    	apiUrl() {
-    		return this.api ? this.api : '/api/user/editors';
+    computed: { 
+    	apiUrl() { 
+    		return window.tokenize(this.api ? this.api : '/api/user/editors');
     	}
     },
 

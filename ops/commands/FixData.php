@@ -71,46 +71,12 @@ class FixData extends Command
 
     public function fix_notifications()
     {
-        //修复老视频的跳转问题
-        $this->cmd->info('fix notifications ...');
-        \DB::table('notifications')->orderBy('id')->where('type','App\Notifications\ArticleLiked')->chunk(100,function($notifications){
-            foreach ($notifications as $notification) {
-                $data = $notification->data;
-                $json = json_decode($data);
-                $article_id = $json->article_id;
-                $article    = Article::find($article_id);
-                //之前的老文章可能被删除了,重新组装一个
-                if( empty($article) ){
-                    $json->url = '/article/' . $json->article_id;
-                    $json->body   = '喜欢了你的文章';
-                    $json->title  = '《' . $json->article_title . '》';
-                } else {
-                    $json->url    = $article->content_url();
-                    $json->body   = '喜欢了你的' . $article->resoureTypeCN();
-                    $json->title  = '《' . $article->title . '》';
-                }
-                \DB::table('notifications')
-                    ->where('id',$notification->id)
-                    ->update(['data'=>json_encode($json)]); 
-            }
-        });
+    
     }
 
     public function fix_users()
     {
-        //修复网站用户名重复问题
-        $this->cmd->info('fix users ...');
-        User::chunk(100,function($users){
-            foreach ($users as $user) {
-                $user_name = $user->name;
-                $has_same  = User::whereName($user_name)->count()>=2;
-                if(!$has_same){
-                    continue;
-                }
-                $user->name = $user->name.'_'.str_random(5);;
-                $user->save(['timestamps'=>false]);
-            }
-        });
+
     }
 
     public function fix_tags()
@@ -124,15 +90,23 @@ class FixData extends Command
 
     public function fix_categories()
     {
-         $category = Category::find(22);
-         $category->status = 1;
-         $category->save();
-         $this->cmd->info("$category->name fix success");
+        \DB::table('category_user')
+            ->where('id',189)
+            ->update(['is_admin'=>0]);
     } 
 
     public function fix_videos() 
     {
-
+        $this->cmd->info('fix data2 videos ...');
+        $category = Category::find(6);
+        $articles = $category->videoArticles;
+        foreach ($articles as $article) {
+           $video = $article->video;
+           if($video && ($video->status>0)){
+                $article->status = 1;
+                $article->save(['timestamps'=>false]);
+           }
+        }
     }
 
     public function fix_images()
@@ -157,16 +131,7 @@ class FixData extends Command
 
     public function fix_articles()
     {
-        $category = Category::where('name', 'dota2')->first();
-        $articles = $category->articles;
-        foreach ($articles as $article) {
-            $body = $article->body;
-            $is_modify = count( \ImageUtils::getImageUrlFromHtml($body) ) >= 2;
-            if( !$is_modify ){
-                $article->status = -1;
-                $article->save(['timestamps'=>false]);
-            }
-        }
+        
     }
     public function fix_collections()
     {

@@ -64,9 +64,17 @@ class UserController extends Controller
 
     public function editors(Request $request)
     {
-        $user = $request->user();
-        $user->followingUsers();
-        $users = User::orderBy('id', 'desc')->select('name', 'id')->paginate(100);
+        $auth_user = $request->user(); 
+        //获取我关注的人
+        $followUserIds = \DB::table('follows')->where('user_id',$auth_user->id)
+            ->where('followed_type','users')
+            ->pluck('followed_id')->toArray();
+        
+        $followUserIds = array_unique($followUserIds);
+        
+        $users = User::whereIn('id',$followUserIds)->select('name', 'id')->paginate(100);
+
+        //$users = User::orderBy('id', 'desc')->select('name', 'id')->paginate(100);
         return $users;
     }
 

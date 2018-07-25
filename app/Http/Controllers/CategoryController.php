@@ -148,18 +148,24 @@ class CategoryController extends Controller
 
     public function saveAdmins($category, $request)
     {
-        $admins = json_decode($request->uids);
-        if (is_array($admins)) {
+        $admins     = json_decode($request->uids, true);
+        //防止重复选人
+        $admin_ids  = array_unique( array_pluck($admins,'id') );
+        $auth_id    = $request->user()->id;
+        if(!in_array( $auth_id, $admin_ids )){
+            array_push($admin_ids, $auth_id);
+        }
+        if (is_array($admin_ids)) {
             $data = [];
-            foreach ($admins as $admin) {
-                $data[$admin->id] = ['is_admin' => 1];
+            foreach ($admin_ids as $id) {
+                $data[$id] = ['is_admin' => 1];
             }
             $category->admins()->sync($data);
         }
         //自己默认还是加成管理
-        $category->admins()->syncWithoutDetaching([
+        /*$category->admins()->syncWithoutDetaching([
             $request->user()->id => ['is_admin' => 1],
-        ]);
+        ]);*/
     }
 
     /**
@@ -277,10 +283,10 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $category = Category::find($id);
-        $category->update($request->all());
+        /*$category->update($request->all());
         //save logo
         $category->saveLogo($request);
-        $category->save();
+        $category->save();*/
         //save admins ...
         $this->saveAdmins($category, $request);
         return redirect()->to('/category');
