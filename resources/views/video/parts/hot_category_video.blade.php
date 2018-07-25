@@ -30,7 +30,7 @@
                         </a>
                         <div class="num">
                             <i class="iconfont icon-liulan"> {{ $article->hits }}</i>
-                            <i class="iconfont icon-svg37"> {{ empty($article->count_likes) ? 0 : $article->count_likes }}</i>
+                            <i class="iconfont icon-svg37"> {{ empty($article->count_comments) ? 0 : $article->count_comments }}</i>
                         </div>
                     </div>          
                 </li>

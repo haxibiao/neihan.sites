@@ -22,7 +22,8 @@
                     </a>
                     <div class="num">
                         <i class="iconfont icon-liulan"> {{ article.hits }}</i>
-                        <i class="iconfont icon-svg37"> {{ article.count_likes }}</i>
+                        <i class="iconfont icon-svg37" v-if="article.count_comments > 0"> {{ article.count_comments }}</i>
+                        <i class="iconfont icon-svg37" v-else> 0</i>
                     </div>
                 </div>
              </li>
