@@ -16,7 +16,7 @@
           </div>
         </div>
         <!-- {{-- 评论 --}} -->
-        <div class="comment-item" v-for="comment in comments" :key="comment.id">
+        <div class="comment-item" v-for="(comment,index) in comments" :key="comment.id">
           <div>
             <div class="user-info info-xs">
               <a :href="'/user/'+comment.user.id" target="_blank" class="avatar"><img :src="comment.user.avatar"></a>
@@ -31,7 +31,7 @@
               <p v-html="comment.body"></p>
               <div class="tool-group">
                 <a :class="['like',comment.liked?'active':'']" @click="like(comment)"><i :class="['iconfont',comment.liked?'icon-dianzan':'icon-fabulous']"></i> <span><b v-show="comment.likes">{{comment.likes+'人'}}</b>赞</span></a>
-                <a class="reply" @click="replyingComment(comment)"><i class="iconfont icon-xinxi"></i> <span>回复</span></a>
+                <a class="reply" @click="toggleReplyComment(comment, index)"><i class="iconfont icon-xinxi"></i> <span>回复</span></a>
                 <a href="javascript:;" class="report" @click="report(comment)"><span>{{ comment.reported ? '已举报':'举报'}}</span></a>
               </div>
             </div>
@@ -40,17 +40,16 @@
                   <p>
                     <a :href="'/user/'+reply.user.id" target="_blank">{{ reply.user.name }}</a>：
                     <span v-html="reply.body">
-                      <!-- <a href="javascript:;" class="maleskine-author" target="_blank">@babysha</a> 唯爱和美食不可辜负。 -->
                     </span>
                   </p>
                   <div class="sub-tool-group">
                     <span>{{ reply.created_at }}</span>
-                    <a class="reply" @click="replyingSubComment(reply, comment)"><i class="iconfont icon-xinxi"></i> <span>回复</span></a>
+                    <a class="reply" @click="toggleReplyComment(comment, index,reply)"><i class="iconfont icon-xinxi"></i> <span>回复</span></a>
                     <a href="javascript:;" class="report" @click="report(reply)"><span>举报</span></a>
                   </div>
                 </div>
                 <div class="more-comment" v-if="comment.reply_comments.length">
-                  <a class="add-comment-btn" @click="toggle(comment)">
+                  <a class="add-comment-btn" @click="toggleReplyComment(comment,index)">
                     <i class="iconfont icon-xie"></i>
                     <span>添加新评论</span>
                   </a>
@@ -60,9 +59,8 @@
                     <a v-else @click="packupReplyComment(comment)">收起</a>
                   </span>
                 </div>           
-                <reply-comment :is-show="comment.replying" @sendReply="sendReply" @toggle-replycomment="toggle(comment)"></reply-comment>
+                <reply-comment :is-show="comment.replying" :body="comment.replyUser?'@'+comment.replyUser+' ':''" @sendReply="(body)=>sendReply(body,comment,index)" @toggle-replycomment="toggleReplyComment(comment,index)"></reply-comment>
               </blockquote>
-              <!-- <reply-comment v-if="comment.replying" :body="replyComment.body" @sendReply="sendReply"></reply-comment> -->
           </div>
         </div>
       </div>
@@ -151,29 +149,6 @@ export default {
     actionApiUrl: function(id, action) {
       return window.tokenize("/api/comment/" + id + "/" + action);
     },
-
-    //回复评论
-    sendReply(body) {
-      this.replyComment.body = body;
-
-      //乐观更新
-      this.commented.reply_comments.push(this.replyComment);
-
-      var _this = this;
-      window.axios
-        .post(this.postApiUrl(), this.replyComment)
-        .then(function(response) {
-          //更新被回复的楼中comments...
-
-          //这里服务器返回数据..
-          _this.commented.reply_comments.pop();
-          _this.commented.reply_comments.push(response.data);
-
-          //发布成功，清空
-          _this.replyComment.body = null;
-        });
-    },
-
     //写新评论
     postComment(body) {
       //乐观更新
@@ -195,22 +170,63 @@ export default {
           _this.comments = _this.comments.concat(response.data);
         });
     },
-    replyingComment: function(comment) {
-      if (this.checkLogin()) {
-        this.replyComment.body = "";
-        comment.replying = !comment.replying;
-        this.commented = comment;
-        this.replyComment.comment_id = comment.id;
-        this.replyComment.user = this.user;
-      }
+    //回复评论
+    sendReply(body,comment,index) {
+      var _this = this;
+      let replyComment = _this.gotReplyComment(body,comment);
+      _this.comments[index].reply_comments.push(replyComment);
+      window.axios
+        .post(this.postApiUrl(), replyComment)
+        .then(function(response) {
+          _this.comments[index].reply_comments.pop();
+          _this.comments[index].reply_comments.push(response.data);
+          _this.toggleReplyComment(comment,index);
+        });
     },
-    replyingSubComment: function(reply, comment) {
+    //获取回复内容
+    gotReplyComment(body,comment) {
+       let replyComment = {};
+       replyComment.comment_id = comment.id;
+       replyComment.commentable_type = this.type;
+       replyComment.commentable_id = this.id;
+       replyComment.user = this.user;
+       replyComment.body = body;
+       replyComment.time = "刚刚",
+       replyComment.is_reply = 1;
+       replyComment.likes = 0;
+       replyComment.reports = 0;
+       return replyComment;
+    },
+     //回复框开关
+     // reply表示回复类型
+     // comment.replying  代表评论框是否开启
+     // comment.replyUser 代表评论框是否带有@用户
+    toggleReplyComment(comment,index,reply) {
       if (this.checkLogin()) {
-        comment.replying = !comment.replying;
-        this.commented = comment;
-        this.replyComment.comment_id = comment.id;
-        this.replyComment.body = "@" + reply.user.name + " ";
-        this.replyComment.user = this.user;
+        if(reply) {
+          if(comment.replying) {
+            if(comment.replyUser) {
+              if(comment.replyUser !== reply.user.name) {
+                comment.replyUser = reply.user.name;
+              }else {
+                comment.replyUser = null;
+                comment.replying = !comment.replying;
+              }
+            }else {
+              comment.replyUser = reply.user.name;
+            }
+          }else {
+            comment.replyUser = reply.user.name;
+            comment.replying = !comment.replying;
+          }
+        }else {
+          if(comment.replyUser) {
+            comment.replyUser = null;
+          }else {
+            comment.replying = !comment.replying;
+          }
+        }
+        this.$set(this.comments,index,comment);
       }
     },
     openReplyComment(comment) {
@@ -228,17 +244,6 @@ export default {
         }
       });
       this.$set(comment, "expanded", false);
-    },
-    toggle(comment) {
-      if (this.checkLogin()) {
-        this.replyComment.body = "";
-        comment.replying = !comment.replying;
-        if (comment.replying) {
-          this.commented = comment;
-          this.replyComment.comment_id = comment.id;
-          this.replyComment.user = this.user;
-        }
-      }
     },
     prevPage() {
       if (this.currentPage > 1) {
@@ -273,6 +278,7 @@ export default {
           .get(this.actionApiUrl(comment.id, "like"))
           .then(function(response) {
             comment.likes = response.data.likes;
+            comment.liked = response.data.liked;
           });
       }
     },
@@ -314,7 +320,6 @@ export default {
       isOnlyAuthor: false,
       commentsAll: [],
       comments: [],
-      commented: null,
       order: "timeAsc",
       newComment: {
         user: {},
@@ -326,25 +331,12 @@ export default {
         likes: 0,
         reports: 0
       },
-      replyComment: {
-        user: {},
-        is_reply: 1,
-        time: "刚刚",
-        body: null,
-        comment_id: null, //回复的评论id
-        commentable_id: this.id,
-        commentable_type: this.type,
-        likes: 0,
-        reports: 0
-      },
-      isSignIn: true,
-      sendBox: false
     };
   }
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #comments {
   padding-top: 20px;
   .normal-comment {
@@ -401,6 +393,9 @@ export default {
           font-size: 16px;
           margin: 10px 0;
           word-break: break-all;
+          a {
+            color: #2b89ca;
+          }
         }
       }
     }

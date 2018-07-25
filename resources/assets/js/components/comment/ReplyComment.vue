@@ -27,7 +27,7 @@ export default {
 
   computed: {
   	show() {
-      this.message = null;
+      	this.message = this.body;
   		return this.isShow;
   	},
   },
@@ -37,8 +37,8 @@ export default {
       if(!this.message) {
         return null
       };
-  		this.$emit('sendReply', this.message);
-  		this.message = null;
+  	  this.$emit('sendReply', this.message);
+  	  this.message = null;
   	},
   	toggle() {
   		this.$emit('toggle-replycomment');
