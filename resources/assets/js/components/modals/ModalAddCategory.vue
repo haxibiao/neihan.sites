@@ -82,9 +82,9 @@ export default {
       var _this = this;
       window.axios.get(this.apiUrl()).then(function(response) {
         if (_this.page == 1) {
-          _this.categoryList = response.data.data;
+          _this.categoryList = response.data.categories.data;
         } else {
-          _this.categoryList = _this.categoryList.concat(response.data.data);
+          _this.categoryList = _this.categoryList.concat(response.data.categories.data);
         }
       });
     }
@@ -94,11 +94,7 @@ export default {
     return {
       q: null,
       page: 1,
-      categoryList: [
-        // {'id':1,'user':{'name':'眸若止水'},'logo':'/images/dissertation_04.jpg','name':'front','status':''},
-        // {'id':2,'user':{'name':'眸若止水'},'logo':'/images/dissertation_05.jpg','name':'铲屎官的自我修养','status':''},
-        // {'id':3,'user':{'name':'眸若止水'},'logo':'/images/dissertation_06.jpg','name':'程序员的自我修养','status':''}
-      ]
+      categoryList: []
     };
   }
 };

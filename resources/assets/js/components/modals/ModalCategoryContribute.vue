@@ -156,7 +156,8 @@ export default {
       var _this = this;
       window.axios.get(this.apiUrl()).then(function(response) {
         if (_this.page == 1) {
-          _this.categoryList = response.data.data;
+          _this.categoryList = response.data.accurateCategory.data;
+          _this.categoryList = _this.categoryList.concat(response.data.categories.data);
         } else {
           _this.categoryList = _this.categoryList.concat(response.data.data);
           _this.page = response.data.current_page;
@@ -174,7 +175,8 @@ export default {
       var _this = this;
       window.axios.get(this.apiUrl2()).then(function(response) {
         if(_this.page2 == 1) {
-          _this.recommendCategoryList = response.data.data;          
+          _this.recommendCategoryList = response.data.accurateCategory.data;
+          _this.recommendCategoryList = _this.recommendCategoryList.concat(response.data.categories.data);     
         } else { 
           _this.recommendCategoryList = _this.recommendCategoryList.concat(response.data.data);
           _this.page2 = response.data.current_page;

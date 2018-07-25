@@ -222,24 +222,28 @@ class CategoryController extends Controller
 
     public function adminCategoriesCheckArticle(Request $request, $aid)
     {
-        $article = Article::findOrFail($aid);
-        $user    = $request->user();
-        $qb      = $user->adminCategories()->with('user');
+        $article                  = Article::findOrFail($aid);
+        $user                     = $request->user();
+        $qb                       = $user->adminCategories()->with('user');
+        $data['accurateCategory'] = $user->adminCategories()->with('user')->where('categories.name', request('q'))->paginate(5);
         if (request('q')) {
-            $qb = $qb->where('categories.name', 'like', '%' . request('q') . '%');
+            $keyWords = request('q');
+            $qb       = $qb->where('categories.name', 'like', "%$keyWords%")->where('categories.name', '!=', "$keyWords");
         }
-        $categories = $qb->paginate(12);
+        $data['categories'] = $qb->paginate(12);
         //获取当前文章的投稿状态
-        foreach ($categories as $category) {
-            $category->submited_status = '';
-            $cateWithPivot             = $article->categories()->wherePivot('category_id', $category->id)->first();
-            if ($cateWithPivot) {
-                $category->submited_status = $cateWithPivot->pivot->submit;
+        foreach ($data as $item) {
+            foreach ($item as $category) {
+                $category->submited_status = '';
+                $cateWithPivot             = $article->categories()->wherePivot('category_id', $category->id)->first();
+                if ($cateWithPivot) {
+                    $category->submited_status = $cateWithPivot->pivot->submit;
+                }
+                $category->submit_status = $category->submited_status == '已收录' ? '移除' : '收录';
+                $category->fillForJs();
             }
-            $category->submit_status = $category->submited_status == '已收录' ? '移除' : '收录';
-            $category->fillForJs();
         }
-        return $categories;
+        return $data;
     }
 
     public function recommendCategoriesCheckArticle(Request $request, $aid)
@@ -248,21 +252,26 @@ class CategoryController extends Controller
         $user    = $request->user();
         $qb      = Category::orderBy('id', 'desc')
             ->whereNotIn('id', $user->adminCategories()->pluck('categories.id'));
+        $data['accurateCategory'] = Category::orderBy('id', 'desc')
+            ->whereNotIn('id', $user->adminCategories()->pluck('categories.id'))->where('categories.name', request('q'))->paginate(5);
         if (request('q')) {
-            $qb = $qb->where('categories.name', 'like', '%' . request('q') . '%');
+            $keyWords = request('q');
+            $qb       = $qb->where('categories.name', 'like', "%$keyWords%")->where('categories.name', '!=', "$keyWords");
         }
-        $categories = $qb->paginate(12);
-        $categories->map(function ($category) use ($article) {
-            $category->submited_status = '';
-            $cateWithPivot             = $article->categories()->wherePivot('category_id', $category->id)->first();
-            if ($cateWithPivot) {
-                $category->submited_status = $cateWithPivot->pivot->submit;
-            }
-            $category->submit_status = $category->submited_status == '已收录' ? '移除' : '投稿';
-            $category->fillForJs();
-            return $category;
-        });
-        return $categories;
+        $data['categories'] = $qb->paginate(12);
+        foreach ($data as $item) {
+            $item->map(function ($category) use ($article) {
+                $category->submited_status = '';
+                $cateWithPivot             = $article->categories()->wherePivot('category_id', $category->id)->first();
+                if ($cateWithPivot) {
+                    $category->submited_status = $cateWithPivot->pivot->submit;
+                }
+                $category->submit_status = $category->submited_status == '已收录' ? '移除' : '投稿';
+                $category->fillForJs();
+                return $category;
+            });
+        }
+        return $data;
     }
 
     public function approveCategory(Request $request, $cid, $aid)
