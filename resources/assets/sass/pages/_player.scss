@@ -17,15 +17,7 @@
 				.h5-option {
 					min-height: 60px;
 					padding: 12px 15px;
-					.like-info {
-						float: left;
-						display: flex;
-						align-items: center;
-						height: 37px;
-					}
 					.likeButton {
-						float: right;
-						margin-left: 20px;
 						.btn-base {
 							padding: 7px 15px;
 						}
@@ -41,7 +33,7 @@
 							vertical-align: middle;
 							display: inline-block;
 							cursor: pointer;
-							margin-bottom: 5px;
+							margin-top: 5px;
 							i {
 								margin-top: 5px;
 								font-size: 24px;

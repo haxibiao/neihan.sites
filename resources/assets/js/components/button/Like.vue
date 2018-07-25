@@ -15,7 +15,7 @@
         </a>      
       </div>
       </a>
-      <div class="modal-wrap" v-if="type=='article'">
+      <div class="modal-wrap" >
         <a data-target=".like-user" data-toggle="modal">{{ likesTotal }}</a>
       </div>
     </div>

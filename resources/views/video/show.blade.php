@@ -38,9 +38,6 @@
                         </div> 
                     </div>
                     <div class="h5-option">
-                       <div class="like-info">
-                            <span>有{{$video->article->count_likes}}人like</span>
-                        </div>
                        <like id="{{ $video->id }}" type="articles" is-login="{{ Auth::check() }}"></like>
                        <div class="share-circle">
                             <a data-action="weixin-share" data-toggle="tooltip" data-toggle="tooltip" data-placement="top" title="分享到微信">
