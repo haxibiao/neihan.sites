@@ -9,20 +9,24 @@
 					</h4>
                 </div>
                 <div class="modal-body">
-    				<form method="post" action="/" ref="questionForm" enctype="multipart/form-data">
+    				<form method="post" action="/post" ref="postForm" enctype="multipart/form-data">
+					<input type="hidden" name="_token" v-model="token">
 					<div class="input-question">
 						<input-matching name="title" placeholder="请输入标题"></input-matching>
 					</div>
 					<div class="textarea-box">
-                		<textarea name="background" placeholder='快来说点什么吧' v-model="description" maxlength='500'></textarea>
+                		<textarea name="body" placeholder='快来说点什么吧' v-model="description" maxlength='500'></textarea>
                 		<span class="word-count">{{ description.length }}/500</span>
 					</div>
+					<div>
+						<category-select placeholder="请选择专题"></category-select>
+					</div>
                     <div class="img-selector">
-                    	<div :class="['ask-img-header',top3Imgs.length>0?'bigger':'']"><span class="desc">（最多9张图片或者1个视频）</span></div>
+                    	<div :class="['ask-img-header',selectedImgs.length > 0 ? 'bigger' : '']"><span class="desc">（最多9张图片或者1个视频）</span></div>
 						<div class="img-preview clearfix">
-							<div class="img-preview-item clearfix" v-for="item in top3Imgs">
-								<img :src="item.img" alt="" class="as-height">
-								<div class="img-del" @click="deleteImg(item)"><i class="iconfont icon-cha"></i></div>
+							<div class="img-preview-item clearfix" v-for="image in selectedImgs">
+								<img :src="image.url" alt="" class="as-height">
+								<div class="img-del" @click="deleteImg(image)"><i class="iconfont icon-cha"></i></div>
 							</div>
 							<div v-if="videoPath">
 								<video class="video" :src="videoPath" controls="" ref="video_ele"></video>
@@ -38,12 +42,12 @@
 						</div>
 						<div class="tab-header">
 							<!-- <ul>
-								<li :class="tabActive=='file'?'tab-header-actived':''" @click="tabSwitch('file')">上传图片或者视频</li>
+								<li class="tab-header-actived">上传几张图片或一个视频</li>
 							</ul> -->
 							<div class="tab-header-actived">上传图片或者视频</div>
 						</div>
 						<div class="tab-body">
-							<div class="tab-body-item" >
+							<div class="tab-body-item">
 								<div class="img-upload-field">
 								    <div class="img-upload-btn">
 								    	<i class="iconfont icon-icon20"></i>
@@ -64,6 +68,10 @@
 							</div>
 						</div>
                     </div>
+
+                    <input type="hidden" name="user_id" :value="user.id">
+			        <input v-for="img in selectedImgs" name="image_urls[]" type="hidden" :value="img.url">
+			        <input v-if="video_id" name="video_id" type="hidden" :value="video_id">
 			        </form>
                 </div>
                 <footer class="clearfix">
@@ -74,13 +82,13 @@
     </div>
 </template>
 
-<script src="/js/jquery.form.js">
-</script>
 <script>
 import Dropzone from "../../plugins/Dropzone";
 
 export default {
 	name: "ModalPost",
+
+	props: [],
 
 	computed: {
 		token() {
@@ -88,17 +96,19 @@ export default {
 		},
 		user() {
 			return window.user;
+		},
+		selectedImgs() {
+			return _.filter(this.imgItems, ["selected", 1]);
 		}
 	},
 
 	mounted() {
 		Dropzone($(".img-upload-field")[0], this.dragDropUpload);
-		this.fetchImages();
 	},
 
 	methods: {
 		submit() {
-			this.$refs.questionForm.submit();
+			this.$refs.postForm.submit();
 		},
 		dragDropUpload(fileObj, params) {
 			if (this.filesCount >= 9) {
@@ -110,8 +120,7 @@ export default {
 		upload(e) {
 			for (var i = 0; i < e.target.files.length; i++) {
 				if (e.target.files[0].type.indexOf("image") != -1) {
-					this.fileFormat =
-						".bmp,.jpg,.png,.tiff,.gif,.pcx,.tga,.exif,.fpx,.svg,.psd,.cdr,.pcd,.dxf,.ufo,.eps,.ai,.raw,.WMF,.webp";
+					this.fileFormat = ".bmp,.jpg,.png,.tiff,.gif,.pcx,.tga,.exif,.fpx,.svg,.psd,.cdr,.pcd,.dxf,.ufo,.eps,.ai,.raw,.WMF,.webp";
 					if (this.filesCount >= 9) {
 						break;
 					}
@@ -121,18 +130,17 @@ export default {
 				} else if (e.target.files[0].type.indexOf("video") != -1) {
 					let _this = this;
 
-					_this.fileFormat =
-						".avi,.wmv,.mpeg,.mp4,.mov,.mkv,.flv,.f4v,.m4v,.rmvb,.rm,.3gp,.dat,.ts,.mts,.vob";
+					_this.fileFormat = ".avi,.wmv,.mpeg,.mp4,.mov,.mkv,.flv,.f4v,.m4v,.rmvb,.rm,.3gp,.dat,.ts,.mts,.vob";
 					_this.videoObj = e.target.files[0];
 					let reader = new FileReader();
 					reader.readAsDataURL(e.target.files[0]);
 					reader.onload = function(e) {
 						_this.videoPath = e.target.result;
 					};
-					_this.video_upload()
 					if (_this.videoObj && _this.videoObj.length >= 1) {
 						break;
 					}
+					_this.video_upload(_this.videoObj);
 				}
 			}
 		},
@@ -162,152 +170,104 @@ export default {
 		},
 		_upload(fileObj) {
 			var api = window.tokenize("/api/image/save");
+			console.log(api);
 			var _this = this;
 			let formdata = new FormData();
-			formdata.append("from", "question");
+			formdata.append("from", "post");
 			formdata.append("photo", fileObj);
 			let config = {
 				headers: {
 					"Content-Type": "multipart/form-data"
 				}
 			};
-			window.axios.post(api, formdata, config).then(function(response) {
+			window.axios.post(api, formdata, config).then(function(res) {
+				var image = res.data;
 				_this.imgItems.push({
-					img: response.data,
+					url: image.url,
+					id: image.id,
 					selected: 1
 				});
-				_this.top3Imgs = _this.selectedImgs();
+				console.log(_this.imgItems);
 			});
 		},
-		video_upload() {
-			var api = window.tokenize("/api/video/save");
-			$(this.$refs.questionForm).ajaxSubmit({
-				type: "post",
-				url: api,
-				dataType: "json",
-				// data: formdata,
-				beforeSend: function() {},
-				uploadProgress: function(
-					event,
-					position,
-					total,
-					percentComplete
-				) {
-					let progress = (event.loaded / event.total) * 100 + "%";
+		video_upload(videoFile) {
+			var _this = this;
+			console.log(videoFile);
+			console.log("start upload to qcvod ...");
+			qcVideo.ugcUploader.start({
+				videoFile: videoFile, //视频，类型为 File
+				getSignature: function(callback) {
+					$.ajax({
+						url: "/sdk/qcvod.php", //获取客户端上传签名的 URL
+						type: "GET",
+						success: function(signature) {
+							//result 是派发签名服务器的回包
+							//假设回包为 { "code": 0, "signature": "xxxx"  }
+							//将签名传入 callback，SDK 则能获取这个上传签名，用于后续的上传视频步骤。
+							callback(signature);
+						}
+					});
+				},
+				error: function(result) {
+					//上传失败时的回调函数
+					//...
+					console.log("上传失败的原因：" + result.msg);
+				},
+				progress: function(result) {
+					// console.log("上传进度：" + result.curr);
+					let progress = result.curr * 100 + "%";
 					$(".progress-bar-success").css("width", progress);
-					console.log("11111");
 				},
-				success: function(data) {
-					console.log(data);
-				},
-				error: function(data) {
-					console.log(data);
-					console.log("error");
+				finish: function(result) {
+					console.log(result);
+					//上传成功时的回调函数
+					console.log("上传结果的fileId：" + result.fileId);
+					console.log("上传结果的视频名称：" + result.videoName);
+					console.log("上传结果的视频地址：" + result.videoUrl);
+
+					//TODO：调用 POST /api/video/ , 写下数据库记录，返回video_id
+					var _vm = _this;
+					$.ajax({
+						url: window.tokenize("/api/video/save?from=qcvod"),
+						type: "POST",
+						data: result,
+						success: function(video) {
+							console.log(video);
+							//TODO: get video_id
+							_vm.video_id = video.id;
+						}
+					});
 				}
 			});
 		},
-		selectedImgs() {
-			return _.filter(this.imgItems, ["selected", 1]);
-		},
-		selectImg(item) {
-			if (!item.selected && this.selectedImgs().length >= 3) {
-				return;
-			}
-			item.selected = item.selected ? 0 : 1;
-			this.top3Imgs = this.selectedImgs();
-			item.selected ? this.filesCount++ : this.filesCount--;
-		},
-		deleteImg(item) {
-			item.selected = 0;
-			this.top3Imgs = this.selectedImgs();
+		deleteImg(image) {
+			image.selected = 0;
+			this.imgItems = this.selectedImgs;
 			this.filesCount--;
-			if (this.top3Imgs.length < 1) {
+			if (this.imgItems.length < 1) {
 				this.fileFormat = true;
 			}
 		},
 		deleteVideo() {
 			this.videoPath = null;
+			this.qcvod_id = null;
 
 			if (!this.videoPath) {
 				this.fileFormat = true;
 			}
-		},
-		searchImages(e) {
-			var _this = this;
-			var api = window.tokenize("/api/image?q=" + this.query);
-			window.axios.get(api).then(function(response) {
-				var images = response.data.data;
-				for (var i in images) {
-					var image = images[i];
-					var imgs = [];
-					imgs.push({
-						img: image.path,
-						title: image.title,
-						selected: 0
-					});
-					_this.imgItems = imgs.concat(_this.imgItems);
-				}
-			});
-
-			e.preventDefault();
-			return false;
-		},
-		fetchImages() {
-			var _this = this;
-			var api = window.tokenize("/api/image");
-			window.axios.get(api).then(function(response) {
-				var images = response.data.data;
-				for (var i in images) {
-					var image = images[i];
-					var imgs = [];
-					imgs.push({
-						img: image.path,
-						title: image.title,
-						selected: 0
-					});
-					_this.imgItems = imgs.concat(_this.imgItems);
-				}
-			});
-		},
-		customMoney() {
-			this.money = "";
-			this.custom = true;
-			var vm = this;
-			setTimeout(function() {
-				vm.$refs.customInput.focus();
-			}, 100);
-		},
-		selectMoney() {
-			this.custom = null;
 		}
 	},
 
 	data() {
 		return {
-			counter: 1,
-			balance: window.user.balance,
-			query: null,
+			video_id: null,
 			description: "",
 			filesCount: 0,
-			top3Imgs: [],
+			qcvod_id: null,
 			videoPath: null,
 			videoObj: null,
 			fileFormat: true,
-			imgItems: [
-				{ img: "/images/article_01.jpg", title: "", selected: 0 },
-				{ img: "/images/article_02.jpg", title: "", selected: 0 },
-				{ img: "/images/article_03.jpg", title: "", selected: 0 },
-				{ img: "/images/article_04.jpg", title: "", selected: 0 },
-				{ img: "/images/article_05.jpg", title: "", selected: 0 },
-				{ img: "/images/article_06.jpg", title: "", selected: 0 },
-				{ img: "/images/article_07.jpg", title: "", selected: 0 },
-				{ img: "/images/article_08.jpg", title: "", selected: 0 },
-				{ img: "/images/article_09.jpg", title: "", selected: 0 }
-			],
-			whetherPay: false,
-			expiration_date: "0",
-			money: 5,
-			custom: null
+			imgItems: []
 		};
 	}
 };
@@ -414,7 +374,7 @@ export default {
 							position: absolute;
 							top: -22px;
 							right: 0;
-							cursor:pointer
+							cursor: pointer;
 						}
 					}
 					.tab-header {

@@ -84,6 +84,7 @@
 
     @stack('scripts')
     @stack('js')
+    <script src="//imgcache.qq.com/open/qcloud/js/vod/sdk/ugcUploader.js"></script>
 
     <div style="display: none">
     {!! get_seo_push() !!}

@@ -16,7 +16,7 @@ class ArticleController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except('show');
-        $this->middleware('auth.editor')->except('index','show','storePost');
+        $this->middleware('auth.editor')->except('index', 'show', 'storePost');
     }
 
     /**
@@ -25,11 +25,13 @@ class ArticleController extends Controller
      * @param    Request    $request [description]
      * @return   [type]              [description]
      */
-    public function storePost(Request $request){
+    public function storePost(Request $request)
+    {
         $article = new Article();
-        $article->createPost($request->all());
+        $article = $article->createPost($request->all());
+        //TODO:: 记录用户动作
         return redirect()->to($article->content_url());
-    } 
+    }
 
     public function drafts(Request $request)
     {
@@ -52,13 +54,12 @@ class ArticleController extends Controller
     {
         $query = Article::orderBy('id', 'desc')->where('status', '>', 0)->whereType('article');
         //Search Articles
-        if($request->get('q'))
-        {
+        if ($request->get('q')) {
             $keywords = $request->get('q');
-            $query = Article::orderBy('id', 'desc')
-            ->where('status', '>', 0)
-            ->whereType('article')
-            ->where('title','like',"%$keywords%");
+            $query    = Article::orderBy('id', 'desc')
+                ->where('status', '>', 0)
+                ->whereType('article')
+                ->where('title', 'like', "%$keywords%");
         }
         if (!Auth::user()->is_admin) {
             $query = $query->where('user_id', Auth::user()->id);
@@ -145,7 +146,7 @@ class ArticleController extends Controller
 
         //记录用户浏览记录
         $article->recordBrowserHistory();
-        
+
         //parse video and image, etc...
         $article->body = $article->parsedBody();
 
@@ -238,7 +239,6 @@ class ArticleController extends Controller
         }
     }
 
-
     public function save_article_tags($article)
     {
         $tag_ids  = [];
@@ -322,7 +322,7 @@ class ArticleController extends Controller
                 'submit' => '已收录',
             ];
         }
-        $article->categories()->sync($parameters);  
+        $article->categories()->sync($parameters);
         // $article->categories()->sync($new_category_ids);
 
         //re-count

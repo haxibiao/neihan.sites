@@ -10,6 +10,7 @@ Route::get('/articles', 'Api\ArticleController@index');
 Route::get('/article/{id}', 'Api\ArticleController@show');
 Route::get('/article/{id}/likes', 'Api\ArticleController@likes');
 
+Route::middleware('auth:api')->post('/article/create-post', 'Api\ArticleController@createPost');
 Route::middleware('auth:api')->post('/article/create', 'Api\ArticleController@store');
 Route::middleware('auth:api')->put('/article/{id}/update', 'Api\ArticleController@update');
 Route::middleware('auth:api')->delete('/article/{id}', 'Api\ArticleController@delete');

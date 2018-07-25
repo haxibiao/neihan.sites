@@ -8,6 +8,7 @@ use App\Http\Requests\VideoRequest;
 use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Collection;
 
 class VideoController extends Controller
 {
@@ -271,7 +272,7 @@ class VideoController extends Controller
      */
     public function getRelationVideo($article, $need_length){
         //关联视频
-        $related_group = null;
+        $related_group = new Collection([]);
         $article_ids = [$article->id];
         //获取有视频的分类
         $categories = $article->categories()

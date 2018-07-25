@@ -39,6 +39,11 @@ class ImageController extends Controller
             return json_encode($json);
         }
 
+        if ($request->from == 'post') {
+            $image->url = $image->url();
+            return $image;
+        }
+
         return $image->url();
     }
 }

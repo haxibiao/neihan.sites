@@ -26,7 +26,6 @@
     @endif
 
     @stack('css')
-
 </head>
 <body>
     <div id="app">
@@ -102,6 +101,7 @@
         });
     </script>
 
+    <script src="//imgcache.qq.com/open/qcloud/js/vod/sdk/ugcUploader.js"></script>
 
     @stack('scripts')
     @stack('js')

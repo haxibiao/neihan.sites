@@ -17,6 +17,7 @@ class Video extends Model
         'duration',
         'hash',
         'adstime',
+        'qcvod_fileid',
     ];
 
     public function user() {

@@ -69,8 +69,3 @@ Route::get('/like/{id}/{type}/guest', 'Api\LikeController@getForGuest');
 //图片
 Route::get('/image', 'Api\ImageController@index');
 Route::middleware('auth:api')->post('/image/save', 'Api\ImageController@store');
-
-//視頻列表
-Route::get('videos', 'Api\VideoController@index');
-Route::get('/video/{id}', 'Api\VideoController@show');
-Route::middleware('auth:api')->post('/video/save', 'Api\VideoController@store');

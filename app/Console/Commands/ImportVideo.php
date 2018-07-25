@@ -2,9 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Video;
 use Illuminate\Console\Command;
 use Vod\VodApi;
+use App\Video;
+use App\Helpers\QcloudUtils;
 
 class ImportVideo extends Command
 {
@@ -30,7 +31,7 @@ class ImportVideo extends Command
     public function __construct()
     {
         parent::__construct();
-        VodApi::initConf("AKIDPbXCbj5C1bz72i7F9oDMHxOaXEgsNX0E", "70e2B4g27wWr1wf9ON8ev1rWzC9rKYXH");
+        VodApi::initConf(config('qcloudcos.secret_id'), config('qcloudcos.secret_key'));
     }
 
     /**
@@ -97,19 +98,19 @@ class ImportVideo extends Command
         }
         $result = VodApi::upload(
             array(
-                'videoPath' => $srcPath, //'/data/www/ainicheng.com/public/storage/video/1.mp4',
+                'videoPath' => $srcPath, //'/data/www/ainicheng.com/public/storage/video/1.mp4', //TODO：很奇怪，这个在ubuntu都提示key 无效，无法上传
             ),
             array(
                 'videoName' => $destFileName, //'ainicheng_3.mp4',
                 'procedure' => 'QCVB_SimpleProcessFile(1, 1, 10)',
             )
         );
-        dd(json_encode($result));
+        // dd($result);
 
-        // $result = VodApi::getFileInfo("ainicheng_1");
+        // $result = QcloudUtils::getVodInfoByFileName("ainicheng_1");
         // echo "get file info result: " . json_encode($result) . "\n";
 
-        // $result = VodApi::deleteFile("5285890780571241337");
+        // $result = QcloudUtils::deleteVodFile("5285890780571241337");
         // echo "delete vod file result: " . json_encode($result) . "\n";
     }
 

@@ -90,7 +90,7 @@
             <div class="col-md-6">
                 <div class="form-group{{ $errors->has('category_ids') ? ' has-error' : '' }}">
                     {!! Form::label('category_ids', '专题') !!}
-                    <category-select categories="{{ json_encode($article->categories->pluck('name','id')) }}"></category-select>
+                    <category-select categories="{{ json_encode($article->categories->pluck('name','id') ) }}"></category-select>
                     <small class="text-danger">{{ $errors->first('category_ids') }}</small>
                 </div>
             </div>

@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\AdminSet::class,
         \App\Console\Commands\ImportVideo::class,
         \App\Console\Commands\TestPerf::class,
+        \App\Console\Commands\VodEvent::class,
     ];
 
     /**

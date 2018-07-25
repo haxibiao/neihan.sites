@@ -5,8 +5,8 @@ namespace App;
 use App\Action;
 use App\Model;
 use App\Tip;
-use App\Video;
 use App\Traits\Playable;
+use App\Video;
 use Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -286,7 +286,7 @@ class Article extends Model
                 $last_img_small_path = $image->path_small();
                 //自动上轮播图，只要图片满足条件
                 if ($image->path_top) {
-                    $this->is_top    = 1;
+                    $this->is_top = 1;
                     if (!$has_primary_top) {
                         if ($image->path == $this->image_url) {
                             $has_primary_top = true;
@@ -455,6 +455,9 @@ class Article extends Model
         if ($this->type == 'video') {
             return sprintf($url_template, $this->type, $this->video_id);
         }
+        if ($this->type == 'post') {
+            return sprintf($url_template, 'article', $this->id);
+        }
         return sprintf($url_template, $this->type, $this->id);
     }
     /**
@@ -463,41 +466,49 @@ class Article extends Model
      * @param    [type]     $input [description]
      * @return   [type]            [description]
      */
-    public function createPost($input){
-        $user  = getUser();  
+    public function createPost($input)
+    {
+        $user  = getUser();
         $body  = $input['body'];
-        $title = $input['title']?:str_limit($body, $limit = 20, $end = '...');
+        $title = $input['title'] ?: str_limit($body, $limit = 20, $end = '...');
         //通过video_id来判断上传的是否是视频
-        if( isset($input['video_id']) ){
-            $video = Video::findOrFail($input['video_id']);
-            $video->title       = $title;
+        if (isset($input['video_id'])) {
+            $video        = Video::findOrFail($input['video_id']);
+            $video->title = $title;
             $video->save();
-            $artcle = $video->article;
-            $artcle->title       = $title;
-            $artcle->description = $title;
-            $artcle->status      = 1;
-            $artcle->save();
-            return $artcle;
+
+            $article = $video->article;
+            if (!$article) {
+                $article = new Article();
+                $article->video_id = $video->id;
+            }
+            $article->user_id = $user->id;;
+            $article->type  = 'video'; 
+            $article->title = $title;
+            $article->body  = $body;
+            // $article->status      = 1; //TODO:: 等视频的截图完成通知回调再处理
+            $article->save();
+            return $article;
         } else {
-            $this->title              = $title;
-            $this->body               = $body; 
-            $this->description        = $title;
-            $this->status      = 1;
-            $this->type        = 'post';//type有三种类型:video,article,post
-            $this->user_id     = $user->id;
+            $this->title = $title;
+            $this->body  = $body;
+            // $this->description = null; //不存冗余，最后显示的时候根据情况截取即可
+            $this->status  = 1;
+            $this->type    = 'post'; 
+            $this->user_id = $user->id;
             $this->save();
 
             //带图动态
-           if( isset($input['image_urls']) && is_array( $input['image_urls'] )){
+            if (isset($input['image_urls']) && is_array($input['image_urls'])) {
                 //由于传图片的API只返回上传完成后的图片路径,如果改动会对其他地方造成影响。
                 //此处将图片路径转换成图片ID
-                $image_ids = array_map(function($url){ 
-                    return intval( pathinfo($url)['filename'] );
+                $image_ids = array_map(function ($url) {
+                    return intval(pathinfo($url)['filename']);
                 }, $input['image_urls']);
                 $this->image_url = $input['image_urls'][0];
-                $this->has_pic = 1;//1代表内容含图
+                $this->has_pic   = 1; //1代表内容含图
                 $this->save();
-                $this->images()->sync( $image_ids );
+                $this->images()->sync($image_ids);
             }
         }
         return $this;
@@ -507,7 +518,8 @@ class Article extends Model
      * @DateTime 2018-07-24
      * @return   [type]     [description]
      */
-    public function resoureTypeCN(){
+    public function resoureTypeCN()
+    {
         $type = $this->type;
         switch ($type) {
             case 'video':

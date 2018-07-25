@@ -40,6 +40,14 @@
           {{-- 内容 --}}
           <div class="show-content">
             <p>@include('article.parts.body')</p>
+
+            {{-- 动态的图片 --}}
+            @if($article->type == "post")
+              @foreach($article->images as $image)
+                <img alt="{{ $image->title }}" src="{{ $image->url() }}"/>
+              @endforeach
+            @endif
+            
           </div>
           {{-- 底部注释 --}}
           @include('article.parts.foot')
