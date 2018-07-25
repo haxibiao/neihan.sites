@@ -205,7 +205,7 @@ class Category extends Model
     }
 
     public function saveLogo($request)
-    {
+    { 
         if ($request->logo) {
             $storage_category = '/storage/category/';
             if (!is_dir(public_path($storage_category))) {
@@ -214,12 +214,10 @@ class Category extends Model
             $id         = $this->id ? $this->id : "c" . (\App\Category::max('id') + 1) . "_" . time();
             $this->logo = $storage_category . $id . '.logo.jpg';
             $img        = \ImageMaker::make($request->logo->path());
-            $img->resize(300, 200);
-            $img->crop(200, 200, 50, 0);
-            $img->resize(180, 180);
-            $img->save(public_path($this->logo));
+            $img->fit(180);
+            $img->save(public_path($this->logo));   
 
-            $img->resize(32, 32);
+            $img->fit(32);
             $small_logo = $storage_category . $this->id . '.logo.small.jpg';
             $img->save(public_path($small_logo));
         }
@@ -231,12 +229,10 @@ class Category extends Model
             }
             $this->logo_app = $storage_category . $this->id . '.logo.app.jpg';
             $img            = \ImageMaker::make($request->logo_app->path());
-            $img->resize(300, 200);
-            $img->crop(200, 200, 50, 0);
-            $img->resize(180, 180);
+            $img->fit(180);
             $img->save(public_path($this->logo_app));
 
-            $img->resize(32, 32);
+            $img->fit(32);
             $small_logo = $storage_category . $this->id . '.logo.small.app.jpg';
             $img->save(public_path($small_logo));
         }
