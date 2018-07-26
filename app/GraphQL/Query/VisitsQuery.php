@@ -14,7 +14,7 @@ class VisitsQuery extends Query
         'description' => 'return a Visit',
     ];
 
-    public function type()
+    public function type() 
     {
         return Type::listOf(GraphQL::type('Visit'));
     }
@@ -27,7 +27,7 @@ class VisitsQuery extends Query
             'filter' => ['name' => 'filter', 'type' => GraphQL::type('VisitFilter')],
             'type'   => ['name' => 'type'  ,  'type'=> GraphQL::type('VisitTypeEnum')] 
         ];
-    }
+    } 
 
     public function rules()
     {
@@ -40,7 +40,7 @@ class VisitsQuery extends Query
     {
         $user  = getUser(); 
 
-        $query = Visit::where('user_id', $user->id);
+        $query = Visit::with('visited')->orderBy('updated_at','desc')->where('user_id', $user->id);
         //浏览资源类型
         $query->when( isset($args['type'] ) , function ($q) use ($args){
             return $q->where('visited_type', $args['type']);
@@ -53,7 +53,7 @@ class VisitsQuery extends Query
             });
             $query->when($args['filter'] == 'EARLY', function ($q) {
                 return $q->whereDate('updated_at', '<', date('Y-m-d'));
-            });
+            }); 
         }
 
         //分页参数
@@ -61,7 +61,7 @@ class VisitsQuery extends Query
         $limit  = isset($args['limit'])? $args['limit']  : 15;//默认15条历史记录
 
         $query = $query->skip($offset)
-            ->take($limit);
+            ->take($limit); 
 
         return $query->get();
     }

@@ -249,6 +249,9 @@ class CategoryController extends Controller
         $related_category = User::find($category->user_id)->adminCategories->take(5);
         $data['related_category'] = $related_category;
 
+        //记录日志
+        $category->recordBrowserHistory();
+
         return view('category.name_en')
             ->withCategory($category)
             ->withData($data);

@@ -15,8 +15,13 @@ class VisitType extends GraphQLType
     ];
 
     public function fields()
-    {
+    { 
+
         return [
+            'id'            => [
+                'type'        => Type::nonNull(Type::int()),
+                'description' => 'The id of the Visit',
+            ],
             //type
             'type'     => [
                 'type'        => Type::string(),

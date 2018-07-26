@@ -239,7 +239,6 @@ class Category extends Model
     }
     /**
      * @Desc     记录用户浏览记录
-     * @Author   czg
      * @DateTime 2018-06-28
      * @return   [type]     [description]
      */
@@ -249,13 +248,11 @@ class Category extends Model
         if (checkUser()) {
             $user = getUser();
             //如果重复浏览只更新纪录的时间戳
-            $visit = \App\Visit::firstOrNew([
+            \App\Visit::updateOrCreate([
                 'user_id'      => $user->id,
                 'visited_type' => 'categories',
                 'visited_id'   => $this->id,
-            ]);
-            $visit->save();
+            ]); 
         }
-        $this->save();
     }
 }

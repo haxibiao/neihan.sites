@@ -207,8 +207,9 @@ return [
                 'deleteQueryLog'        => '\App\GraphQL\Mutation\queryLog\DeleteQueryLogMutation',
                 //创建动态
                 'createPost'            => '\App\GraphQL\Mutation\post\createPostMutation',
+                'deleteVisit'           => '\App\GraphQL\Mutation\visit\DeleteVisitMutation',
             ],
-        ],
+        ], 
     ],
 
     /*
