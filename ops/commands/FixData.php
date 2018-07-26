@@ -90,9 +90,11 @@ class FixData extends Command
 
     public function fix_categories()
     {
-        $category = Category::find(14);
-        $category->new_requests = 0;
-        $category->save(['timestamps'=>false]);
+        \DB::table('article_category')->where('id',13831)->update([
+            'submit'=>'已移除'
+        ]);
+        $category = Category::find(84);
+        $category->decrement('new_requests');
     } 
 
     public function fix_videos() 

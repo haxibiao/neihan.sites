@@ -125,7 +125,7 @@ class CategoryController extends Controller
         }
 
         return $articles;
-    }
+    } 
 
     public function submitCategory(Request $request, $aid, $cid)
     {
@@ -172,7 +172,7 @@ class CategoryController extends Controller
             //TODO::如果后面撤回了，这个标题也留这了
             $category->new_request_title = $article->title;
             //更新单个专题上的新请求数
-            $category->new_requests = $category->articles()->wherePivot('submit', '待审核')->count();
+            $category->new_requests = $category->requestedInMonthArticles()->wherePivot('submit', '待审核')->count();
             $category->save();
         }
 
@@ -342,7 +342,7 @@ class CategoryController extends Controller
         }
 
         //重新统计专题上的未处理投稿数...
-        $category->new_requests = $category->articles()->wherePivot('submit', '待审核')->count();
+        $category->new_requests = $category->requestedInMonthArticles()->wherePivot('submit', '待审核')->count();
         $category->save();
 
         //发送通知给投稿者
