@@ -34,6 +34,7 @@ Vue.component("search-box", require("./components/search/SearchBox.vue"));
 Vue.component("recently", require("./components/search/Recently.vue"));
 
 Vue.component("modal-post", require("./components/modals/ModalPost.vue"));
+Vue.component("loading", require("./components/Loading.vue"));
 
 Vue.component(
   "notification-aside",

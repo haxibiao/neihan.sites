@@ -54,6 +54,7 @@ Vue.component("tags-input", require("./components/TagsInput.vue"));
 Vue.component("image-select", require("./components/image/ImageSelect.vue"));
 Vue.component("user-select", require("./components/UserSelect.vue"));
 Vue.component("modal-post", require("./components/modals/ModalPost.vue"));
+Vue.component("loading", require("./components/Loading.vue"));
 Vue.component("add-videol", require("./components/video/AddVideol.vue"));
 Vue.component("category-select", require("./components/category/CategorySelect.vue"));
 

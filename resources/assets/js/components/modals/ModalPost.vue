@@ -29,14 +29,13 @@
 								<div class="img-del" @click="deleteImg(image)"><i class="iconfont icon-cha"></i></div>
 							</div>
 							<div v-if="videoPath">
-								<video class="video" :src="videoPath" controls="" ref="video_ele"></video>
-					            <div class="progress-box">
-					            	<div>{{conver(videoObj.size)}}</div>
-					            	<div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-						            	<div class="progress-bar progress-bar-success" style="width:0%">
-							            </div>
-							        </div>
-					            </div>
+								<video class="video" :src="videoPath" controls="" ref="video_ele">
+									
+								</video>
+									<div class="progress_box" ref="progress_box">
+										<loading :progress="progress"></loading>
+									</div>
+
 								<div class="video-del" @click="deleteVideo"><i class="iconfont icon-cha"></i></div>
 							</div>
 						</div>
@@ -45,8 +44,10 @@
 								<li class="tab-header-actived">上传几张图片或一个视频</li>
 							</ul> -->
 							<div class="tab-header-actived">上传图片或者视频</div>
+							
+							
 						</div>
-						<div class="tab-body">
+						<div v-if="bool" class="tab-body">
 							<div class="tab-body-item">
 								<div class="img-upload-field">
 								    <div class="img-upload-btn">
@@ -132,6 +133,7 @@ export default {
 
 					_this.fileFormat = ".avi,.wmv,.mpeg,.mp4,.mov,.mkv,.flv,.f4v,.m4v,.rmvb,.rm,.3gp,.dat,.ts,.mts,.vob";
 					_this.videoObj = e.target.files[0];
+					_this.bool=false;
 					let reader = new FileReader();
 					reader.readAsDataURL(e.target.files[0]);
 					reader.onload = function(e) {
@@ -170,7 +172,6 @@ export default {
 		},
 		_upload(fileObj) {
 			var api = window.tokenize("/api/image/save");
-			console.log(api);
 			var _this = this;
 			let formdata = new FormData();
 			formdata.append("from", "post");
@@ -192,6 +193,7 @@ export default {
 		},
 		video_upload(videoFile) {
 			var _this = this;
+			_this.progress = 0;
 			console.log(videoFile);
 			console.log("start upload to qcvod ...");
 			qcVideo.ugcUploader.start({
@@ -215,12 +217,16 @@ export default {
 				},
 				progress: function(result) {
 					// console.log("上传进度：" + result.curr);
-					let progress = result.curr * 100 + "%";
-					$(".progress-bar-success").css("width", progress);
+					let progress = parseInt(result.curr * 100);
+					// $(".progress-bar-success").css("width", progress + "%");
+					_this.progress = progress;
 				},
 				finish: function(result) {
+					$(_this.$refs.upload).val('');
 					console.log(result);
 					//上传成功时的回调函数
+					$(_this.$refs.progress_box).css({"display": "none"});
+					$(_this.$refs.video_ele).css({"opacity": "1"});
 					console.log("上传结果的fileId：" + result.fileId);
 					console.log("上传结果的视频名称：" + result.videoName);
 					console.log("上传结果的视频地址：" + result.videoUrl);
@@ -251,7 +257,7 @@ export default {
 		deleteVideo() {
 			this.videoPath = null;
 			this.qcvod_id = null;
-
+			this.bool=true;
 			if (!this.videoPath) {
 				this.fileFormat = true;
 			}
@@ -261,11 +267,16 @@ export default {
 	data() {
 		return {
 			video_id: null,
+			progress:0,
+			counter: 1,
+			balance: window.user.balance,
+			query: null,
 			description: "",
 			filesCount: 0,
 			qcvod_id: null,
 			videoPath: null,
 			videoObj: null,
+			bool:true,
 			fileFormat: true,
 			imgItems: []
 		};
@@ -358,8 +369,15 @@ export default {
 							}
 						}
 						.video {
-							width: 50%;
+							width: 80%;
+							opacity: 0.2;
 						}
+						.progress_box{
+								position: absolute;
+							    top: 50%;
+							    left: 30%;
+							    transform: translate(-30%, -50%);
+							}
 						.size {
 							vertical-align: top;
 							margin: 0 40px;
