@@ -81,7 +81,7 @@ class Category extends Model
     public function requestedInMonthArticles()
     {
         return $this->belongsToMany('App\Article')
-            ->wherePivot('created_at', '>', \Carbon\Carbon::now()->addDays(-30))
+            ->wherePivot('created_at', '>', \Carbon\Carbon::now()->addDays(-90))
             ->withPivot('submit', 'created_at')
             ->withTimestamps()
             ->orderBy('pivot_created_at', 'desc');
