@@ -137,7 +137,7 @@
             </p>
             <div class="meta">
                 <div class="origin-author">
-                    <a target="_blank" href="/user/{{ $action->user->id }}">{{ $article->user->name }}</a>
+                    <a target="_blank" href="/user/{{ $article->user->id }}">{{ $article->user->name }}</a>
                 </div>
                 <a target="_blank" href="/article/{{ $article->id }}">
             <i class="iconfont icon-liulan"></i> {{ $article->hits }}
@@ -170,7 +170,7 @@
             </div>
             <div class="follow-card">
                 <div class="note-info">
-                    <a class="avatar" href="javascript:;"><img src="{{ $item->avatar() }}" alt=""></a>
+                    <a class="avatar" href="/user/{{ $item->id }}"><img src="{{ $item->avatar() }}" alt=""></a>
                     {{-- <a class="btn-base btn-follow"><span>＋ 关注</span></a> --}}
                     <follow 
                         type="users" 
@@ -179,7 +179,7 @@
                         followed="{{ is_follow('users',$item->id) }}">            
                     </follow>
                     <div class="title">
-                        <a class="name" href="javascript:;">{{ $item->name }}</a>
+                        <a class="name" href="/user/{{ $item->id }}">{{ $item->name }}</a>
                     </div>
                     <div class="info">
                         <p>写了 {{ $item->count_words }} 字，被 {{ $item->count_follows }} 人关注，获得了 {{ $item->count_likes }} 个喜欢</p>
@@ -214,10 +214,10 @@
                     followed="{{ is_follow('categories', $item->id) }}">            
                 </follow>
                 <div class="title">
-                  <a class="name" href="javascript:;">{{ $item->name }}</a>
+                  <a class="name" href="/{{ $item->name_en }}">{{ $item->name }}</a>
                 </div>
                 <div class="info">
-                  <p><a href="/user/{{ $action->user->id }}">{{ $action->user->name }}</a> 编，{{ $item->count }} 篇文章，{{ $item->count_follows }} 人关注</p>
+                  <p><a href="/user/{{ $item->user->id }}">{{ $item->user->name }}</a> 创建，{{ $item->count }} 篇文章，{{ $item->count_follows }} 人关注</p>
                 </div>
             </div>
             <p class="signature">

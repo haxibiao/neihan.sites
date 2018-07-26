@@ -37,12 +37,13 @@ Vue.component(
 );
 
 Vue.component("side-tool", require("./components/SideTool.vue"));
-
 Vue.component("article-list", require("./components/article/ArticleList.vue"));
+Vue.component("action-list", require("./components/action/ActionList.vue"));
 Vue.component(
 	"category-list",
 	require("./components/category/CategoryList.vue")
 );
+
 Vue.component("search-box", require("./components/search/SearchBox.vue"));
 Vue.component("recently", require("./components/search/Recently.vue"));
 Vue.component("hot-search", require("./components/search/Hot.vue"));

@@ -45,7 +45,11 @@
                           <blank-content></blank-content>
                         @else
                             @each('user.parts.action_item', $data['actions'], 'action')
-
+                            @if(Auth::check())
+                                <action-list api="/user/{{ $user->id }}?actions=1" start-page="2" not-empty="{{empty($data['actions'])}}" app-name="{{ config('app.name') }}"/>
+                            @else
+                                <div>{!! $data['actions']->fragment('actions')->links() !!}</div>
+                            @endif
                             {{-- 加入时间 --}}
                             <li class="feed-info distance">
                                 <div class="content">

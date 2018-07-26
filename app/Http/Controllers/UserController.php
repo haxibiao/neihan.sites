@@ -114,6 +114,14 @@ class UserController extends Controller
             ->with('actionable')
             ->orderBy('id', 'desc');
         $actions = smartPager($qb, 10);
+        if (ajaxOrDebug() && request('actions')) {
+            foreach ($actions as $action) {
+                $action->time = diffForHumansCN($action->created_at); 
+                $action = $action->fillForJs();
+            }
+            return $actions;
+        }
+
         foreach ($actions as $action) {
             if(empty($action->actionable)){
                 continue;

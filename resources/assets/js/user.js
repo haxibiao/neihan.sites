@@ -38,8 +38,8 @@ Vue.component(
 );
 
 Vue.component("side-tool", require("./components/SideTool.vue"));
-
 Vue.component("article-list", require("./components/article/ArticleList.vue"));
+Vue.component("action-list", require("./components/action/ActionList.vue"));
 Vue.component("video-list", require("./components/video/VideoList.vue"));
 Vue.component(
 	"category-list",
