@@ -30,8 +30,8 @@
                         </a>
                         <div class="num">
                             <i class="iconfont icon-liulan"> {{ $article->hits }}</i>
-                            <i class="iconfont icon-svg37"> {{ empty($article->count_comments) ? 0 : $article->count_comments }}</i>
-                        </div>
+                            <i class="iconfont icon-svg37"> {{ $article->count_replies }}</i>
+                        </div> 
                     </div>          
                 </li>
             @endforeach
