@@ -149,6 +149,13 @@ class UserController extends Controller
             }
         }
         $data['actions'] = $actions;
+
+        //视频
+        $qb = Article::where('user_id',$user->id)->with('user')->with('video')
+        ->where('type', 'video')->where('status', '>', 0)->orderBy('updated_at', 'desc');
+        $videos = smartPager($qb, 10);
+        $data['videos'] = $videos;
+        
         return view('user.show')
             ->withUser($user)
             ->withData($data);
