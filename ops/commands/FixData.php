@@ -90,23 +90,14 @@ class FixData extends Command
 
     public function fix_categories()
     {
-        \DB::table('category_user')
-            ->where('id',189)
-            ->update(['is_admin'=>0]);
+        $category = Category::find(14);
+        $category->new_requests = 0;
+        $category->save(['timestamps'=>false]);
     } 
 
     public function fix_videos() 
     {
-        $this->cmd->info('fix data2 videos ...');
-        $category = Category::find(6);
-        $articles = $category->videoArticles;
-        foreach ($articles as $article) {
-           $video = $article->video;
-           if($video && ($video->status>0)){
-                $article->status = 1;
-                $article->save(['timestamps'=>false]);
-           }
-        }
+        
     }
 
     public function fix_images()

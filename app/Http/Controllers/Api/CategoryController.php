@@ -132,13 +132,23 @@ class CategoryController extends Controller
         $user     = $request->user();
         $article  = Article::findOrFail($aid);
         $category = Category::findOrFail($cid);
-
         $query = $article->allCategories()->wherePivot('category_id', $cid);
+        //已经投过稿
         if ($query->count()) {
             $pivot         = $query->first()->pivot;
             $pivot->submit = $pivot->submit == '待审核' ? '已撤回' : '待审核';
             $pivot->save();
-            $article->submited_status = $pivot->submit;
+            $article->submited_status = $pivot->submit; 
+
+            //清除缓存
+            foreach ($category->admins as $admin) { 
+                $admin->forgetUnreads();
+            }
+            $category->user->forgetUnreads();
+            //撤销投稿后，分类下新的投稿数需要重新计算
+            $category->new_requests = $category->articles()->wherePivot('submit', '待审核')->count();
+            $category->save();
+
         } else {
             $article->submited_status = '待审核';
             $article->allCategories()->syncWithoutDetaching([
@@ -149,11 +159,11 @@ class CategoryController extends Controller
         }
 
         //给所有管理员延时10分钟发通知，提示有新的投稿请求
-        if ($article->submited_status == '待审核') {
+        if ($article->submited_status == '待审核') { 
             // SendCategoryRequest::dispatch($article, $category)->delay(now()->addMinutes(1));
 
             //给所有专题管理发通知
-            foreach ($category->admins as $admin) {
+            foreach ($category->admins as $admin) { 
                 $admin->forgetUnreads();
             }
             //also send to creator
@@ -276,11 +286,15 @@ class CategoryController extends Controller
 
     public function approveCategory(Request $request, $cid, $aid)
     {
-        $user = $request->user();
-        $user->forgetUnreads();
-
         $category = Category::findOrFail($cid);
         $article  = $category->requestedInMonthArticles()->where('article_id', $aid)->firstOrFail();
+
+        //清除缓存
+        foreach ($category->admins as $admin) { 
+            $admin->forgetUnreads();
+        }
+        $user = $request->user();
+        $user->forgetUnreads();
 
         //更新投稿请求的状态
         $pivot         = $article->pivot;
