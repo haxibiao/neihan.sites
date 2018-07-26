@@ -24,6 +24,9 @@
                     <li role="presentation">
                         <a href="#hot" aria-controls="hot" role="tab" data-toggle="tab"><i class="iconfont icon-huo"></i>热门</a>
                     </li>
+                    <li role="presentation">
+                        <a href="#video" aria-controls="video" role="tab" data-toggle="tab"><i class="iconfont icon-shipin1"></i>视频</a>
+                    </li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="article-list tab-content">
@@ -91,6 +94,13 @@
                                 <div>{!! $data['hot']->fragment('hot')->links() !!}</div>
                             @endif
                         @endif
+                    </ul>
+                     <ul role="tabpanel" class="fade note-list tab-pane" id="video">
+         
+                          <blank-content></blank-content>
+                      
+                           
+                       
                     </ul>
                 </div>
             </div>
