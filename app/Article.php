@@ -471,45 +471,36 @@ class Article extends Model
         $user  = getUser();
         $body  = $input['body'];
         $title = $input['title'] ?: str_limit($body, $limit = 20, $end = '...');
-        //通过video_id来判断上传的是否是视频
+
+        $this->title = $title;
+        $this->body  = $body;
+        // $this->description = null; //不存冗余，最后显示的时候根据情况截取即可
+        $this->status  = 1; //直接发布
+        $this->type    = 'post'; 
+        $this->user_id = $user->id;
+        $this->save();
+
+        //带视频
         if (isset($input['video_id'])) {
+            $this->type  = 'video'; 
             $video        = Video::findOrFail($input['video_id']);
             $video->title = $title;
             $video->save();
-
-            $article = $video->article;
-            if (!$article) {
-                $article = new Article();
-                $article->video_id = $video->id;
-            }
-            $article->user_id = $user->id;;
-            $article->type  = 'video'; 
-            $article->title = $title;
-            $article->body  = $body;
-            // $article->status      = 1; //TODO:: 等视频的截图完成通知回调再处理
-            $article->save();
-            return $article;
-        } else {
-            $this->title = $title;
-            $this->body  = $body;
-            // $this->description = null; //不存冗余，最后显示的时候根据情况截取即可
-            $this->status  = 1;
-            $this->type    = 'post'; 
-            $this->user_id = $user->id;
+            //TODO: 应该有个定时任务，拉取vod上得视频截图结果回来，更新视频cover, article->image_url配图
+            $this->video_id = $video->id; //关联上视频
             $this->save();
-
-            //带图动态
-            if (isset($input['image_urls']) && is_array($input['image_urls'])) {
-                //由于传图片的API只返回上传完成后的图片路径,如果改动会对其他地方造成影响。
-                //此处将图片路径转换成图片ID
-                $image_ids = array_map(function ($url) {
-                    return intval(pathinfo($url)['filename']);
-                }, $input['image_urls']);
-                $this->image_url = $input['image_urls'][0];
-                $this->has_pic   = 1; //1代表内容含图
-                $this->save();
-                $this->images()->sync($image_ids);
-            }
+        }
+        //带图
+        if (isset($input['image_urls']) && is_array($input['image_urls'])) {
+            //由于传图片的API只返回上传完成后的图片路径,如果改动会对其他地方造成影响。
+            //此处将图片路径转换成图片ID
+            $image_ids = array_map(function ($url) {
+                return intval(pathinfo($url)['filename']);
+            }, $input['image_urls']);
+            $this->image_url = $input['image_urls'][0];
+            $this->has_pic   = 1; //1代表内容含图
+            $this->save();
+            $this->images()->sync($image_ids);
         }
         return $this;
     }

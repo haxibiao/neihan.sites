@@ -18,11 +18,11 @@
 				<div class="creation hidden-xs"><a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" class="btn-base btn-theme"><span class="iconfont icon-icon-feixingmanyou"></span>发布</a></div>
 				<ul class="dropdown-menu hover-dropdown-menu">
 				   <li>
-				     <a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}"  href="/write"><i class="iconfont icon-maobi"></i>写文章</a>
+				     <a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}"  href="/write"><i class="iconfont icon-maobi"></i>文章</a>
 				   </li>
 				   <li>
 				     <a data-target=".modal-post" data-toggle="modal">
-				       <i class="iconfont icon-shangchuan"></i><span>上传</span>
+				       <i class="iconfont icon-shangchuan"></i><span>动态</span>
 					 </a>
 				   </li>
 				</ul>

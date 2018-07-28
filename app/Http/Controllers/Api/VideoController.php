@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Article;
+use App\Helpers\QcloudUtils;
 use App\Http\Controllers\Controller;
 use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Helpers\QcloudUtils;
 
 class VideoController extends Controller
 {
@@ -25,11 +25,11 @@ class VideoController extends Controller
         }
         $videos = $query->take(12)->get();
         foreach ($videos as $video) {
-            $extension = pathinfo(public_path($video->video_url), PATHINFO_EXTENSION);
-            $filename  = pathinfo($video->video_url)['basename'];
+            $extension = pathinfo($video->path, PATHINFO_EXTENSION);
+            $filename  = pathinfo($video->path)['basename'];
             $file      = [
-                'url'          => base_uri() . $video->video_url,
-                'thumbnailUrl' => base_uri() . $video->image_url,
+                'url'          => base_uri() . $video->path,
+                'thumbnailUrl' => base_uri() . $video->cover,
                 'name'         => $filename,
                 'id'           => $video->id,
                 "type"         => str_replace("jpg", "jpeg", "video/" . $extension),
@@ -105,7 +105,7 @@ class VideoController extends Controller
             return [
                 'video_id'  => $video->id,
                 'video_url' => $video->url(),
-                'image_url' => 'www.ainicheng.com/images/uploadImage.jpg',
+                'image_url' => url('/images/uploadImage.jpg'),
             ];
         }
 
@@ -114,12 +114,16 @@ class VideoController extends Controller
             $video = Video::firstOrNew([
                 'qcvod_fileid' => $request->fileId,
             ]);
-            $video->path = $request->videoUrl;
-            $video->title = $request->videoName;
+            $video->user_id = getUserId();
+            $video->path    = $request->videoUrl;
+            $video->title   = $request->videoName;
             $video->save();
 
-            //TODO:  调用 vod api , 开始生成截图 ...
-            QcloudUtils::takeVodSnapshots($request->fileId);
+            //调用 vod api , 开始转码，水印，生成截图（非300*200，需要后面UI处理显示效果） ...
+            QcloudUtils::simpleProcessFile($request->fileId);
+
+            //TODO:: 保存主封面 save video->cover, then sync to article->image_url
+            //定时任务，pull_events,还没有根据fileid getVideoInfo直接拉取方便，延迟job还未必可靠，schedule:run是个不错的选择
 
             return $video;
         }
@@ -127,117 +131,10 @@ class VideoController extends Controller
         return "没有腾讯云视频id，也没有真实上传的视频文件";
     }
 
-    public function vodCallback()
-    {
-        // 得到回调，知道截图完成的结果
-        // {
-        //     "version": "4.0",
-        //     "eventType": "CreateSnapshotByTimeOffsetComplete",
-        //     "data": {
-        //         "vodTaskId": "CreateSnapshotByTimeOffset-1edb7eb88a599d05abe451cfc541cfbd",
-        //         "fileId": "14508071098244929440",
-        //         "definition": 10,
-        //         "picInfo": [
-        //             {
-        //                 "status": 0,
-        //                 "timeOffset": 3123213,
-        //                 "url": "http://125xx.vod2.myqcloud.com/vod125xx/14508071098244929440/xx1.png"
-        //             },
-        //             {
-        //                 "status": 0,
-        //                 "timeOffset": 3123123,
-        //                 "url": "http://125xx.vod2.myqcloud.com/vod125xx/14508071098244929440/xx2.png"
-        //             }
-        //         ]
-        //     }
-        // }
-
-        //TODO:: 保存主封面 save video->cover,
-        // solution 1: fast ,then article save , article->image_url = $video->cover.
-        // solution 2: slow, if $video->article exist, sync to => article->image_url
-
-    }
-
     public function show($id)
     {
-        $video                 = Video::with('user')->with('category')->findOrFail($id);
-        $video->path           = get_full_url($video->path);
-        $video->cover          = get_full_url($video->cover);
-        $video->category->logo = get_full_url($video->category->logo);
-        $video->pubtime        = diffForHumansCN($video->created_at);
-        $controller            = new \App\Http\Controllers\VideoController();
-        $video->connected      = $controller->get_json_lists($video);
+        $video = Video::with('user')->with('article')->findOrFail($id);
         return $video;
-    }
-
-    public function saveRelation(Request $request, $id)
-    {
-        $video = Video::findOrFail($id);
-        $data  = json_decode($video->json);
-        if (empty($data)) {
-            $data = [];
-        }
-        $data[]      = $request->all();
-        $video->json = json_encode($data);
-        $video->save();
-
-        return $video;
-    }
-
-    public function getAllRelations(Request $request, $id)
-    {
-        $video     = Video::findOrFail($id);
-        $contoller = new \App\Http\Controllers\VideoController();
-        return $contoller->get_json_lists($video);
-    }
-
-    public function deleteRelation(Request $request, $id, $key)
-    {
-        $video = Video::findOrFail($id);
-        $data  = json_decode($video->json);
-        if (empty($data)) {
-            $data = [];
-        }
-        $data_new = [];
-        foreach ($data as $k => $list) {
-            if ($k == $key) {
-                continue;
-            }
-            $data_new[] = $list;
-        }
-
-        $video->json = json_encode($data_new);
-        $video->save();
-
-        return $data_new;
-    }
-
-    public function getRelation($id, $key)
-    {
-        $video = Video::findOrFail($id);
-        $json  = json_decode($video->json, true);
-        if (array_key_exists($key, $json)) {
-            $data = $json[$key];
-            if (empty($data['type']) || $data['type'] == 'single_list') {
-                $items = [];
-                if (is_array($data['aids'])) {
-                    foreach ($data['aids'] as $aid) {
-                        $video = Video::find($aid);
-                        if ($video) {
-                            $items[] = [
-                                'id'        => $video->id,
-                                'title'     => $video->title,
-                                'image_url' => get_full_url($video->cover),
-                            ];
-                        }
-                    }
-                }
-                $data['items'] = $items;
-            }
-
-            return $data;
-        }
-        return null;
     }
 
     public function getLatestVideo(Request $request)
@@ -253,9 +150,7 @@ class VideoController extends Controller
         }
         $data = $data->paginate(9);
         foreach ($data as $article) {
-            $article->image_url    = $article->primaryImage();
-            $article->user         = $article->user;
-            $article->user->avatar = $article->user->avatar();
+            $article->fillForJs();
         }
         return $data;
     }

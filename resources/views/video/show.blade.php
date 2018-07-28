@@ -106,6 +106,9 @@
             <div class="video-info">
                 <div class="video-title">
                     {{ $video->article->title }}
+                </div>                 
+                <div class="video-description">
+                    {{ $video->article->body }}
                 </div> 
                 <div class="desc">
                     <span class="upload-time hidden-xs">上传于 {{$video->createdAt()}}</span> 

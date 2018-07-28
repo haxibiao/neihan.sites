@@ -205,18 +205,8 @@ class ArticleController extends Controller
     public function show($id)
     {
         $article            = Article::with('user')->with('category')->with('images')->findOrFail($id);
-        $article->image_url = get_full_url($article->image_url);
-        if ($article->category) {
-            $article->category->logo = get_full_url($article->category->logo);
-        }
-
-        $controller         = new \App\Http\Controllers\ArticleController();
-        $article->connected = $controller->get_json_lists($article);
-        $article->similar   = Article::where('category_id', $article->category_id)
-            ->where('id', '<>', $article->id)
-            ->orderBy('id', 'desc')
-            ->take(4)
-            ->get();
+        $article->fillForJs();
+        $article->category->fillForJs();
         $article->pubtime = diffForHumansCN($article->created_at);
         return $article;
     }

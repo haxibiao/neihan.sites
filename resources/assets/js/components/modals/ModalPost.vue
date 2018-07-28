@@ -5,7 +5,7 @@
                 <div class="modal-header">
                     <button class="close" data-dismiss="modal" aria-label="Close">×</button>
                     <h4 class="modal-title">
-				      上传
+				      发布动态
 					</h4>
                 </div>
                 <div class="modal-body">
@@ -43,9 +43,7 @@
 							<!-- <ul>
 								<li class="tab-header-actived">上传几张图片或一个视频</li>
 							</ul> -->
-							<div class="tab-header-actived">上传图片或者视频</div>
-							
-							
+							<div class="tab-header-actived">图片或者视频</div>
 						</div>
 						<div v-if="bool" class="tab-body">
 							<div class="tab-body-item">
@@ -133,7 +131,7 @@ export default {
 
 					_this.fileFormat = ".avi,.wmv,.mpeg,.mp4,.mov,.mkv,.flv,.f4v,.m4v,.rmvb,.rm,.3gp,.dat,.ts,.mts,.vob";
 					_this.videoObj = e.target.files[0];
-					_this.bool=false;
+					_this.bool = false;
 					let reader = new FileReader();
 					reader.readAsDataURL(e.target.files[0]);
 					reader.onload = function(e) {
@@ -222,11 +220,11 @@ export default {
 					_this.progress = progress;
 				},
 				finish: function(result) {
-					$(_this.$refs.upload).val('');
+					$(_this.$refs.upload).val("");
 					console.log(result);
 					//上传成功时的回调函数
-					$(_this.$refs.progress_box).css({"display": "none"});
-					$(_this.$refs.video_ele).css({"opacity": "1"});
+					$(_this.$refs.progress_box).css({ display: "none" });
+					$(_this.$refs.video_ele).css({ opacity: "1" });
 					console.log("上传结果的fileId：" + result.fileId);
 					console.log("上传结果的视频名称：" + result.videoName);
 					console.log("上传结果的视频地址：" + result.videoUrl);
@@ -257,7 +255,7 @@ export default {
 		deleteVideo() {
 			this.videoPath = null;
 			this.qcvod_id = null;
-			this.bool=true;
+			this.bool = true;
 			if (!this.videoPath) {
 				this.fileFormat = true;
 			}
@@ -267,7 +265,7 @@ export default {
 	data() {
 		return {
 			video_id: null,
-			progress:0,
+			progress: 0,
 			counter: 1,
 			balance: window.user.balance,
 			query: null,
@@ -276,7 +274,7 @@ export default {
 			qcvod_id: null,
 			videoPath: null,
 			videoObj: null,
-			bool:true,
+			bool: true,
 			fileFormat: true,
 			imgItems: []
 		};
@@ -372,12 +370,12 @@ export default {
 							width: 80%;
 							opacity: 0.2;
 						}
-						.progress_box{
-								position: absolute;
-							    top: 50%;
-							    left: 30%;
-							    transform: translate(-30%, -50%);
-							}
+						.progress_box {
+							position: absolute;
+							top: 50%;
+							left: 30%;
+							transform: translate(-30%, -50%);
+						}
 						.size {
 							vertical-align: top;
 							margin: 0 40px;

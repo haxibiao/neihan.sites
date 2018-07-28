@@ -33,9 +33,9 @@ class QcloudUtils
             $response = $vod->$apiAction($params);
             if ($response == false) {
                 $error = $vod->getError();
-                echo "$apiAction failed, code: " . $error->getCode() . 
-                    ", message: " . $error->getMessage() . 
-                    "ext: " . var_export($error->getExt(), true) . "\n";
+                echo "$apiAction failed, code: " . $error->getCode() .
+                ", message: " . $error->getMessage() .
+                "ext: " . var_export($error->getExt(), true) . "\n";
                 continue;
             } else {
                 return $response;
@@ -71,6 +71,14 @@ class QcloudUtils
         return self::retryVodApi('DeleteVodFile', $params);
     }
 
+    public static function getVideoInfo($fileId)
+    {
+        $params = [
+            'fileId' => $fileId,
+        ];
+        return self::retryVodApi('GetVideoInfo', $params);
+    }
+
     public static function getVodInfoByFileName($fileName)
     {
         $params = [
@@ -82,18 +90,88 @@ class QcloudUtils
     public static function processVodFile($fileId)
     {
         $params = [
+            'fileId'   => $fileId,
+            'snapshotByTimeOffset.definition' => 10,
+            'snapshotByTimeOffset.timeOffset.1' => 1000,
+            'coverBySnapshot.definition' => 10,
+            'coverBySnapshot.positionType' => 'Time',
+            'coverBySnapshot.position' => 2, // 第2秒
+            // 'sampleSnapshot.definition' => 20043,
+            // 'animatedGraphics.definition' => 20000,
+            // 'animatedGraphics.startTime' => 3,
+            // 'animatedGraphics.endTime' => 5,
+        ];
+        return self::retryVodApi('ProcessFile', $params);
+    }
+
+    public static function makeCoverAndSnapshots($fileId)
+    {
+        $params = [
+            'fileId'   => $fileId,
+            'snapshotByTimeOffset.definition' => 10, //截取9张正常缩放的图片
+            'snapshotByTimeOffset.timeOffset.1' => 1000,
+            'snapshotByTimeOffset.timeOffset.2' => 2000,
+            'snapshotByTimeOffset.timeOffset.3' => 3000,
+            'snapshotByTimeOffset.timeOffset.4' => 4000,
+            'snapshotByTimeOffset.timeOffset.5' => 5000,
+            'snapshotByTimeOffset.timeOffset.6' => 6000,
+            'snapshotByTimeOffset.timeOffset.7' => 7000,
+            'snapshotByTimeOffset.timeOffset.8' => 8000,
+            'snapshotByTimeOffset.timeOffset.9' => 9000,
+            'coverBySnapshot.definition' => 10, //截取封面
+            'coverBySnapshot.positionType' => 'Time',
+            'coverBySnapshot.position' => 2, // 第2秒
+        ];
+        return self::retryVodApi('ProcessFile', $params);
+    }
+
+    public static function makeLanscapeCoverAndSnapshots($fileId)
+    {
+        $params = [
+            'fileId'   => $fileId,
+            'snapshotByTimeOffset.definition' => 20080, //这个模板设置为截图300*200， 手机视频肯定被压扁了
+            'snapshotByTimeOffset.timeOffset.1' => 1000,
+            'snapshotByTimeOffset.timeOffset.2' => 2000,
+            'snapshotByTimeOffset.timeOffset.3' => 3000,
+            'snapshotByTimeOffset.timeOffset.4' => 4000,
+            'snapshotByTimeOffset.timeOffset.5' => 5000,
+            'snapshotByTimeOffset.timeOffset.6' => 6000,
+            'snapshotByTimeOffset.timeOffset.7' => 7000,
+            'snapshotByTimeOffset.timeOffset.8' => 8000,
+            'snapshotByTimeOffset.timeOffset.9' => 9000,
+            'coverBySnapshot.definition' => 10,
+            'coverBySnapshot.positionType' => 'Time',
+            'coverBySnapshot.position' => 2, // 第2秒
+        ];
+        return self::retryVodApi('ProcessFile', $params);
+    }
+
+    public static function genGif($fileId)
+    {
+        $params = [
+            'fileId'   => $fileId,
+            'animatedGraphics.definition.2' => 20000,
+            'animatedGraphics.startTime' => 0,
+            'animatedGraphics.endTime' => 2,
+        ];
+        return self::retryVodApi('ProcessFile', $params);
+    }
+
+    public static function simpleProcessFile($fileId)
+    {
+        $params = [
             'file.id'   => $fileId,
             'inputType' => 'SingleFile',
-            'procedure' => 'QCVB_SimpleProcessFile(1, 1, 10)',
+            'procedure' => 'QCVB_SimpleProcessFile(1, 1, 10, 10)', //这个系统预置流程简单实用，转码，水印，封面，截图
         ];
         return self::retryVodApi('RunProcedure', $params);
     }
 
-    public static function takeVodSnapshots($fileId)
+    public static function takeSnapshotsByTime($fileId)
     {
         $params = [
             'fileId'       => $fileId,
-            'definition'   => 10,
+            'definition'   => 10, //正常比例缩放
             'timeOffset.1' => 1000,
             'timeOffset.2' => 2000,
             'timeOffset.3' => 3000,

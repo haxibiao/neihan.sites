@@ -25,7 +25,7 @@
             <div class="col-md-10 col-md-offset-1">
                 {!! Form::open(['method' => 'PUT', 'route' => ['video.update', $video->id], 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
                 <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-                    {!! Form::label('title', '视频标题(非必填)') !!}
+                    {!! Form::label('title', '标题(非必填)') !!}
 					{!! Form::text('title', $video->article->title, ['class' => 'form-control']) !!}
                     <small class="text-danger">
                         {{ $errors->first('title') }}
@@ -37,17 +37,19 @@
                     <div class="col-md-6">
                         <div class="form-group{{ $errors->has('categories') ? ' has-error' : '' }}">
                             {!! Form::label('categories', '专题') !!}
-                            <category-select categories="{{ json_encode($video->article->categories->pluck('name','id')) }}"></category-select>
+                            <category-select 
+                                categories="{{ json_encode($video->article->categories->pluck('name','id')) }}">        
+                            </category-select>
                             <small class="text-danger">{{ $errors->first('categories') }}</small>
                         </div>
                     </div>
                 </div>
                 
-                <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
-                    {!! Form::label('descri', '视频介绍(必填)') !!}
-					{!! Form::textarea('description', $video->article->description, ['class' => 'form-control', 'required'=>true]) !!}
+                <div class="form-group{{ $errors->has('body') ? ' has-error' : '' }}">
+                    {!! Form::label('descri', '正文(必填)') !!}
+					{!! Form::textarea('body', $video->article->body, ['class' => 'form-control', 'required'=>true]) !!}
                     <small class="text-danger">
-                        {{ $errors->first('description') }}
+                        {{ $errors->first('body') }}
                     </small>
                 </div>
 

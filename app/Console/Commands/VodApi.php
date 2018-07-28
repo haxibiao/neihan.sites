@@ -4,16 +4,15 @@ namespace App\Console\Commands;
 
 use App\Helpers\QcloudUtils;
 use Illuminate\Console\Command;
-use Vod\VodApi;
 
-class VodEvent extends Command
+class VodApi extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'vod:event';
+    protected $signature = 'vod:api {method} {--fileid=}';
 
     /**
      * The console command description.
@@ -30,7 +29,6 @@ class VodEvent extends Command
     public function __construct()
     {
         parent::__construct();
-        VodApi::initConf(config('qcloudcos.secret_id'), config('qcloudcos.secret_key'));
     }
 
     /**
@@ -40,22 +38,23 @@ class VodEvent extends Command
      */
     public function handle()
     {
-        // $res = QcloudUtils::getTaskList();
-        // dd($res);
+        if ($this->argument('method') == 'clearEvents') {
+            return $this->clearEvents();
+        }
 
-        // $res = QcloudUtils::processVodFile("5285890780692143813");
-        // dd($res);
+        if (!in_array($this->argument('method'), ['pullEvents', 'getTaskList']) &&
+            (empty($this->option('fileid')))) {
+            return $this->error('--fileid cannot be empty');
+        }
 
-        // $res = QcloudUtils::takeVodSnapshots("5285890780696151817");
-        // $this->info(json_encode($res));
+        if ($fileAction = $this->argument('method')) {
+            $res = QcloudUtils::$fileAction($this->option('fileid'));
+            dd($res);
+        }
 
-        $res = QcloudUtils::pullEvents();
-        dd($res);
-
-        // $this->confirmEvents();
     }
 
-    public function confirmEvents()
+    public function clearEvents()
     {
         $res        = QcloudUtils::pullEvents();
         $msgHandles = [];
@@ -63,6 +62,7 @@ class VodEvent extends Command
             foreach ($res['eventList'] as $event) {
                 $msgHandles[] = $event['msgHandle'];
             }
+            $this->info("清理掉的事件记录数:" . count($msgHandles));
             $confirm_res = QcloudUtils::confirmEvents($msgHandles);
             dd($confirm_res);
         } else {

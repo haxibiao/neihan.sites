@@ -7,7 +7,6 @@ use App\Category;
 use App\Http\Requests\VideoRequest;
 use App\Video;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Collection;
 
 class VideoController extends Controller
@@ -60,7 +59,7 @@ class VideoController extends Controller
         }
         $videos = $videos->paginate(10);
         return view('video.list')
-            ->withVideos($videos); 
+            ->withVideos($videos);
     }
 
     /**
@@ -150,14 +149,14 @@ class VideoController extends Controller
                 $query->where('count_videos', '>', 0);
             })->get();
         $category = $categories->last();
-           
+
         //记录用户浏览记录
         $article->recordBrowserHistory();
         //获取关联视频
         $data['related'] = $this->getRelationVideo($article, 4);
-        
+
         return view('video.show')
-            ->withVideo($video) 
+            ->withVideo($video)
             ->withData($data)
             ->withCategory($category);
     }
@@ -170,7 +169,10 @@ class VideoController extends Controller
      */
     public function edit($id)
     {
-        $video                    = Video::findOrFail($id);
+        $video = Video::with('article')->findOrFail($id);
+        if (empty($video->article)) {
+            abort(404, '视频对应的文章不见了');
+        }
         $data['video_categories'] = Category::pluck('name', 'id');
         //获取视频截图图片地址,相对地址
         $covers  = [];
@@ -247,17 +249,17 @@ class VideoController extends Controller
      */
     public function destroy($id)
     {
-        $video   = Video::findOrFail($id); 
+        $video   = Video::findOrFail($id);
         $article = $video->article;
 
         //软删除 video
         $video->status = -1;
         $video->save();
         //软删除 article
-        $article->update(['status' => -1]); 
+        $article->update(['status' => -1]);
 
         //维护分类关系
-        $this->recountCategory($article);  
+        $this->recountCategory($article);
 
         //TODO 清除关系 分类关系 冗余的统计信息  评论信息 点赞信息 喜欢的信息 收藏的信息
         return redirect()->to('/video/list');
@@ -270,26 +272,27 @@ class VideoController extends Controller
      * @DateTime 2018-07-24
      * @return   [type]     [description]
      */
-    public function getRelationVideo($article, $need_length){
+    public function getRelationVideo($article, $need_length)
+    {
         //关联视频
         $related_group = new Collection([]);
-        $article_ids = [$article->id];
+        $article_ids   = [$article->id];
         //获取有视频的分类
         $categories = $article->categories()
             ->whereHas('videoArticles', function ($query) {
                 $query->where('count_videos', '>', 0);
             })->get();
-        
-        if ( $categories->isNotEmpty() ) {
-            //优先从最后一个分类中随机选择4个 
-            $category = $categories->pop();
+
+        if ($categories->isNotEmpty()) {
+            //优先从最后一个分类中随机选择4个
+            $category      = $categories->pop();
             $related_group = $category
                 ->videoArticles()
                 ->where('articles.status', 1)
-                ->where('articles.id','<>',$article->id)
+                ->where('articles.id', '<>', $article->id)
                 ->take($need_length)
                 ->get();
-            if ( $related_group->isNotEmpty() ) {
+            if ($related_group->isNotEmpty()) {
                 $article_ids = array_merge(
                     $related_group->pluck('id')->toArray(), $article_ids
                 );
@@ -297,37 +300,37 @@ class VideoController extends Controller
             }
         }
         //视频数据不够时，还填充的视频数
-        $fill_length   = $need_length - count($related_group);
+        $fill_length = $need_length - count($related_group);
         //主专题下文章数不够时候随机填充至4个()
-        if( $fill_length > 0 ){
+        if ($fill_length > 0) {
             //暂时不实现复杂的策略,减少系统Query
             /*$category_ids   = $categories->pluck('id');
             $ids = \DB::table('article_category')
-                ->whereIn('category_id',$category_ids)
-                ->where('已收录')
-                ->whereNotIn('article_id',$article_ids)
-                ->pluck('article_id');
+            ->whereIn('category_id',$category_ids)
+            ->where('已收录')
+            ->whereNotIn('article_id',$article_ids)
+            ->pluck('article_id');
             if( count($ids)>0 ){
-                $articles = Article::whereIn('id', $ids
-                    ->take($fill_length));
+            $articles = Article::whereIn('id', $ids
+            ->take($fill_length));
 
-                $data['related'] = $data['related']
-                    ->merge($articles);
+            $data['related'] = $data['related']
+            ->merge($articles);
             }*/
 
             $related = Article::where('type', 'video')
                 ->orderBy('id', 'desc')
                 ->whereStatus(1)
-                ->whereNotIn('id',$article_ids)
+                ->whereNotIn('id', $article_ids)
                 ->orderBy(\DB::raw('RAND()'))
-                ->take(100)   //取最近上传的100个视频随机
+                ->take(100) //取最近上传的100个视频随机
                 ->get()
                 ->random($fill_length);
-            $related_group = $related_group->merge( $related );
+            $related_group = $related_group->merge($related);
         }
         return $related_group;
     }
-     /**
+    /**
      * @Desc     删除视频重新计算视频与分类的关系
      * @DateTime 2018-06-27
      * @param    [type]     $article article是一篇type为video的文章
@@ -335,20 +338,20 @@ class VideoController extends Controller
      */
     public function recountCategory($article)
     {
-            //更新article表上冗余的主分类
-            $article->category_id = null;
-            $article->save(['timestamps'=>false]);
-            
-            //删除分类关系
-            $categories   = $article->categories;
-            $article->categories()->detach();
-            
-            //更新旧分类视频数
-            foreach ($categories as $category) {
-                $category->count_videos = $category
-                    ->videoArticles()
-                    ->count();
-                $category->save();
-            }
+        //更新article表上冗余的主分类
+        $article->category_id = null;
+        $article->save(['timestamps' => false]);
+
+        //删除分类关系
+        $categories = $article->categories;
+        $article->categories()->detach();
+
+        //更新旧分类视频数
+        foreach ($categories as $category) {
+            $category->count_videos = $category
+                ->videoArticles()
+                ->count();
+            $category->save();
+        }
     }
 }

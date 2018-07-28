@@ -22,7 +22,8 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\AdminSet::class,
         \App\Console\Commands\ImportVideo::class,
         \App\Console\Commands\TestPerf::class,
-        \App\Console\Commands\VodEvent::class,
+        \App\Console\Commands\VodApi::class,
+        \App\Console\Commands\VideoProcess::class,
     ];
 
     /**
@@ -35,6 +36,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('sitemap:refresh')
                  ->daily();
+        $schedule->command('video:process')->everyMinute();
     }
 
     /**
