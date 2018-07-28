@@ -13,18 +13,19 @@ trait Playable
     public function cover()
     {
         $cover_url = "";
-        if (!starts_with($this->image_url, 'http')) {
+        if (!empty($this->image_url) && !starts_with($this->image_url, 'http')) {
             $cover_url = file_exists(public_path($this->image_url)) ? url($this->image_url) : env('APP_URL') . $this->image_url;
-        }
-        else {
+        } else {
             //尝试同步关联视频的远程封面地址
-            if($video = $this->video) {
-                $this->image_url = $video->cover;
-                $this->save();
-                $cover_url = $video->cover;
+            if ($video = $this->video) {
+                if (!empty($video->cover)) {
+                    $this->image_url = $video->cover;
+                    $this->save();
+                    $cover_url = $video->cover;
+                }
             }
         }
-        
+
         $justChanged = $this->updated_at && $this->updated_at->addMinutes(10) > now();
         if ($justChanged) {
             $cover_url = $cover_url . '?t=' . time();
