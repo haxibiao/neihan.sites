@@ -143,12 +143,9 @@ class VideoController extends Controller
         if (empty($article) || $article->status < 0) {
             abort(404);
         }
-        //最后一个分类
-        $categories = $article->categories()
-            ->whereHas('videoArticles', function ($query) {
-                $query->where('count_videos', '>', 0);
-            })->get();
-        $category = $categories->last();
+        
+        //主分类
+        $category = $article->category;
 
         //记录用户浏览记录
         $article->recordBrowserHistory();
