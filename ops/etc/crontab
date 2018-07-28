@@ -14,5 +14,4 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 52 6    1 * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
 
 # ainicheng schedule every minutes
-* * * * * cd /data/www/ainicheng.com && php artisan schedule:run >> /dev/null 2>&1
-
+* * * * * root php /data/www/ainicheng.com/artisan schedule:run >> /data/www/ainicheng.com/storage/logs/cron.log 2>&1
