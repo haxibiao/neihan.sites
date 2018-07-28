@@ -50,8 +50,7 @@
 
             {{-- 登录后才加载更多 --}}
             @if(Auth::check())
-              <article-list api="/" start-page="2" is-desktop="{{ \Agent::isDeskTop() == 1 }}" 
-              video-duration="{{$video->duration}}"/> 
+              <article-list api="/" start-page="2" is-desktop="{{ \Agent::isDeskTop() == 1 }}"/> 
             @else 
               <div>
                 {!! $data->articles->links() !!}
