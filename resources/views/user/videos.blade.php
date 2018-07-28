@@ -43,7 +43,7 @@
                     </a>
                 </div>
                 @endif
-                @include('video.parts.video_item')
+                @include('video.parts.video_item_simple')
             @endforeach   
             <p>
                 {!! $data['videos']->render() !!}

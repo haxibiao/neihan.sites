@@ -98,28 +98,7 @@
                           <blank-content></blank-content>
                         @else 
                           @foreach($data['video_new'] as $article)
-                           <li class="col-xs-6 col-md-4 video">
-                              <div class="video-item vt">
-                                <div class="thumb">
-                                  <a href="{{ $article->content_url() }}" target="_blank">
-                                    <img src="{{ $article->cover() }}" alt="{{ $article->title }}">
-                                    <i class="duration">
-                                      {{-- 持续时间 --}}  
-                                      @sectominute($article->video->duration)
-                                    </i>
-                                  </a>
-                                </div>
-                                <ul class="info-list">
-                                  <li class="video-title">
-                                    <a href="{{ $article->content_url() }}">{{ $article->title }}</a>
-                                  </li>
-                                  <li>
-                                    {{-- 播放量 --}}
-                                    <p class="subtitle single-line">{{ $article->hits }}次播放</p>
-                                  </li>
-                                </ul>
-                              </div>
-                            </li>
+                           @include('video.parts.video_item')
                            @endforeach
                            <div>{!! $data['video_new']->fragment('video_new')->links() !!}</div>
                         @endif
@@ -129,30 +108,9 @@
                           <blank-content></blank-content>
                         @else 
                           @foreach($data['video_hot'] as $article)
-                           <li class="col-xs-6 col-md-4 video">
-                              <div class="video-item vt">
-                                <div class="thumb">
-                                  <a href="{{ $article->content_url() }}" target="_blank">
-                                    <img src="{{ $article->cover() }}" alt="{{ $article->title }}">
-                                    <i class="duration">
-                                      {{-- 持续时间 --}}  
-                                      @sectominute($article->video->duration)
-                                    </i>
-                                  </a>
-                                </div>
-                                <ul class="info-list">
-                                  <li class="video-title">
-                                    <a href="{{ $article->content_url() }}">{{ $article->title }}</a>
-                                  </li>
-                                  <li>
-                                    {{-- 播放量 --}}
-                                    <p class="subtitle single-line">{{ $article->hits }}次播放</p>
-                                  </li>
-                                </ul>
-                              </div>
-                            </li>
-                           @endforeach
-                           <div>{!! $data['video_hot']->fragment('video_hot')->links() !!}</div>
+                           @include('video.parts.video_item')
+                          @endforeach
+                          <div>{!! $data['video_hot']->fragment('video_hot')->links() !!}</div>
                         @endif
                      </ul>
                   </div>

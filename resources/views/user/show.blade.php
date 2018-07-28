@@ -97,10 +97,15 @@
                     </ul>
                      <ul role="tabpanel" class="fade note-list tab-pane" id="video">
          
+                        @if( count($data['videos'])==0)
                           <blank-content></blank-content>
+                        @else 
+                          @foreach($data['videos'] as $article)
+                            @include('video.parts.video_item')
+                          @endforeach
+                          <div>{!! $data['videos']->fragment('videos')->links() !!}</div>
+                        @endif
                       
-                           
-                       
                     </ul>
                 </div>
             </div>
@@ -123,6 +128,9 @@
     }
     if( url.includes("hot") ){
       $("[href='#hot']").click(); 
+    }
+    if( url.includes("video") ){
+      $("[href='#video']").click(); 
     }
   });
 </script>
