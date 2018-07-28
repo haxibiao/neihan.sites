@@ -144,8 +144,8 @@ class Article extends Model
     }
     public function primaryImage()
     {
-        //爬蟲文章的圖片,直接顯示
-        if (str_contains($this->image_url, 'haxibiao.com/')) {
+        //全URL,直接顯示
+        if (starts_with($this->image_url, 'http')) {
             return $this->image_url;
         }
 
