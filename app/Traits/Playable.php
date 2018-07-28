@@ -12,14 +12,22 @@ trait Playable
      */
     public function cover()
     {
-        $cover_url = ""; 
-        if (!empty($this->image_url)) { 
+        $cover_url = "";
+        if (!starts_with($this->image_url, 'http')) {
             $cover_url = file_exists(public_path($this->image_url)) ? url($this->image_url) : env('APP_URL') . $this->image_url;
-            $is_recent_modify = 
-                $this->updated_at&&$this->updated_at->addMinutes(10) > now();
-            if ($is_recent_modify) {
-                $cover_url = $cover_url . '?t=' . time();
+        }
+        else {
+            //尝试同步关联视频的远程封面地址
+            if($video = $this->video) {
+                $this->image_url = $video->cover;
+                $this->save();
+                $cover_url = $video->cover;
             }
+        }
+        
+        $justChanged = $this->updated_at && $this->updated_at->addMinutes(10) > now();
+        if ($justChanged) {
+            $cover_url = $cover_url . '?t=' . time();
         }
         return $cover_url;
     }
@@ -48,7 +56,7 @@ trait Playable
      */
     public function video_source()
     {
-        if(!$this->video) {
+        if (!$this->video) {
             return '';
         }
         return $this->video->url();

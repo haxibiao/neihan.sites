@@ -26,11 +26,14 @@
         </div>
         <div class="panel-body">
             @foreach($videos as $video)
-                @if( !empty($video->article) )
+                @php
+                    $article = $video->article;
+                @endphp
+                @if( !empty($article) )
                     <div class="media">
                         <a class="pull-left" href="/video/{{ $video->id }}">
-                            <img alt="{{ $video->article->title }}" class="img img-thumbnail img-responsive" 
-                                src="{{ $video->article->cover() }}" style="max-width: 300px">
+                            <img alt="{{ $article->title }}" class="img img-thumbnail img-responsive" 
+                                src="{{ $article->cover() }}" style="max-width: 300px">
                             </img>
                         </a>
                         <div class="media-body">
@@ -46,11 +49,11 @@
                             @endif
                             <h4 class="media-heading">
                                 <a href="/video/{{ $video->id }}">
-                                {{ $video->article->title }}
+                                {{ $article->title }}
                                 </a>
                             </h4>
                             <p>
-                                主分类: {{ !empty($video->article->category) ? $video->article->category->name : '暂无(该视频未发布)' }}
+                                主分类: {{ !empty($article->category) ? $article->category->name : '暂无(该视频未发布)' }}
                             </p>
                             @if($video->user)
                             <p>
@@ -61,7 +64,7 @@
                                 最后更新: {{ $video->updatedAt() }}
                             </p>
                             <p>
-                                @if(count($video->article->covers()) == 8)
+                                @if(count($article->covers()) == 8)
                                     <span class="label label-success">截图已完成</span>
                                 @else
                                     <span class="label label-default">截图ing...</span>
