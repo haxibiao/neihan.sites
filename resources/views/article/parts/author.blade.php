@@ -19,6 +19,12 @@
 
         <!-- 自己或者编辑权限以上的才可以有编辑按钮 -->
         @if(checkEditor())
+          {!! Form::open(['method' => 'delete', 'route' => ['article.destroy', $article->id]]) !!}
+            @if($article->status == -1)
+            {!! Form::hidden('restore', 'yes') !!}
+            @endif
+            {!! Form::submit($article->status == -1 ? "恢复文章":"丢入回收站", ['class' => 'btn-base btn-sm btn-light btn-danger']) !!}                
+          {!! Form::close() !!}
           <a class="btn-base btn-light btn-sm" href="/article/{{ $article->id }}/edit">编辑文章</a>
         @elseif($article->isSelf())
           <a class="btn-base btn-light btn-sm" href="/write#/notebooks/{{ $article->collection_id }}/notes/{{ $article->id }}">编辑文章</a>

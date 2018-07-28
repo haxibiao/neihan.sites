@@ -24,16 +24,6 @@
 <div id="detail">
     <div class="main">
         <article>
-          @editor
-          <div class="text-right">
-            @weixin
-              <a href="/article/{{ $article->id }}" class="btn btn-danger">退出微信含微信二维码模式</a>
-            @else
-              <a href="?weixin=1" class="btn btn-success">微信粘贴模式</a>
-            @endweixin
-          </div>
-          @endeditor
-
           <h1>{{ $article->title }}</h1>
           {{-- 作者 --}}
           @include('article.parts.author')

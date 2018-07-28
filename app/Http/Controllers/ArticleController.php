@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Category;
 use App\Http\Requests\ArticleRequest;
-use App\Image;
 use App\Jobs\DelayArticle;
 use App\Tag;
 use Auth;
@@ -221,8 +220,11 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         $article = Article::findOrFail($id);
-        $article->update(['status' => -1]);
-
+        if (request('restore')) {
+            $article->update(['status' => 1]);
+        } else {
+            $article->update(['status' => -1]);
+        }
         return redirect()->back();
     }
 
