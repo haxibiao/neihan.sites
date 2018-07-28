@@ -7,6 +7,7 @@ use App\Model;
 use App\Tip;
 use App\Traits\Playable;
 use App\Video;
+use App\Category;
 use Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -504,6 +505,50 @@ class Article extends Model
         }
         return $this;
     }
+
+    //直接收录到专题的操作
+    public function saveCategories($categories_json)
+    {
+        $article = $this;
+        $old_categories   = $article->categories;
+        $new_categories   = json_decode($categories_json);
+        $new_category_ids = [];
+        //记录选得第一个做文章的主分类，投稿的话，记最后一个专题做主专题
+        if (!empty($new_categories)) {
+            $article->category_id = $new_categories[0]->id;
+            $article->save();
+
+            foreach ($new_categories as $cate) {
+                $new_category_ids[] = $cate->id;
+            }
+        }
+        //sync
+        $params = [];
+        foreach ($new_category_ids as $category_id) {
+            $params[$category_id] = [
+                'submit' => '已收录',
+            ];
+        }
+        $article->categories()->sync($params);
+        // $article->categories()->sync($new_category_ids);
+
+        //re-count
+        if (is_array($new_categories)) {
+            foreach ($new_categories as $category) {
+                //更新新分类文章数
+                if ($category = Category::find($category->id)) {
+                    $category->count = $category->publishedArticles()->count();
+                    $category->save();
+                }
+            }
+        }
+        foreach ($old_categories as $category) {
+            //更新旧分类文章数
+            $category->count = $category->publishedArticles()->count();
+            $category->save();
+        }
+    }
+
     /**
      * @Desc     资源类型
      * @DateTime 2018-07-24

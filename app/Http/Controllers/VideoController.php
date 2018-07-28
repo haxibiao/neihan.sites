@@ -117,7 +117,7 @@ class VideoController extends Controller
             $article->save();
 
             //处理视频与分类的关系
-            $this->process_category($article);
+            $article->saveCategory(request('categories'));
 
             $uploadSuccess = $video->saveFile($file);
         }
@@ -174,14 +174,9 @@ class VideoController extends Controller
             abort(404, '视频对应的文章不见了');
         }
         $data['video_categories'] = Category::pluck('name', 'id');
-        //获取视频截图图片地址,相对地址
-        $covers  = [];
-        $img_url = $video->article->image_url;
-        for ($i = 1; $i <= 8; $i++) {
-            $cover = $img_url . "." . $i . ".jpg";
-            if (file_exists(public_path($cover))) {
-                $covers[] = $cover;
-            }
+        $covers                   = [];
+        if (!empty($video->article->covers())) {
+            $covers = $video->article->covers();
         }
         $data['thumbnails'] = $covers;
 
@@ -202,13 +197,17 @@ class VideoController extends Controller
         $video   = Video::findOrFail($id);
         $article = $video->article;
         //维护分类关系
-        $this->process_category($article);
+        $article->saveCategories(request('categories'));
         //选取封面图
         if (!empty($request->thumbnail)) {
-            $result = copy(
-                public_path($request->thumbnail),
-                public_path($article->image_url)
-            );
+            if (str_contains($request->thumbnail, 'storage/video')) {
+                $result = copy(
+                    public_path($request->thumbnail),
+                    public_path($article->image_url)
+                );
+            } else {
+                $video->setCover($request->thumbnail);
+            }
             $article->status = 1;
             $article->save();
         }
@@ -236,7 +235,7 @@ class VideoController extends Controller
         //防止用户直接访问编辑界面无session导致页面报错
         $refer_url = session('url.intended');
         if (empty($refer_url)) {
-            return redirect()->to('/video');
+            return redirect()->to('/video/list');
         }
         return redirect($refer_url);
     }

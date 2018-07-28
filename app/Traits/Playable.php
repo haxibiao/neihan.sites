@@ -2,8 +2,12 @@
 
 namespace App\Traits;
 
+use App\Traits\Jsonable;
+
 trait Playable
 {
+    use Jsonable;
+
     /**
      * @Desc     获取视频的封面图
      * @Author   czg
@@ -41,12 +45,20 @@ trait Playable
     public function covers()
     {
         $covers = [];
-        for ($i = 1; $i <= 8; $i++) {
-            $cover = $this->image_url . "." . $i . ".jpg";
-            if (file_exists(public_path($cover))) {
-                $covers[] = url($cover);
+        //兼容以前的自己服务器ffmpeg截图的八张图, 这个逻辑就是本地storage目录存了图片
+        if (file_exists(public_path("/storage/video/$this->id.jpg"))) {
+            for ($i = 1; $i <= 8; $i++) {
+                $cover_path = "/storage/video/$this->id.jpg.$i.jpg";
+                if (file_exists(public_path($cover_path))) {
+                    $covers[] = url($cover_path);
+                }
             }
+            return $covers;
         }
+        if ($this->video) {
+            return $this->video->jsonData('covers');
+        }
+
         return $covers;
     }
     /**

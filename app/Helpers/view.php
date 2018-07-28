@@ -2,9 +2,13 @@
 
 use App\Image;
 use App\Video;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
+
+function canEdit($content)
+{
+    return checkEditor() || $content->isSelf();
+}
 
 function smartPager($qb, $pageSize)
 {

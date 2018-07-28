@@ -100,7 +100,7 @@ class ArticleController extends Controller
         $this->process_delay($article);
 
         //categories
-        $this->process_category($article);
+        $article->saveCategories(request('categories'));
 
         //tags
         $this->save_article_tags($article);
@@ -203,7 +203,7 @@ class ArticleController extends Controller
         $this->process_delay($article);
 
         //categories
-        $this->process_category($article);
+        $article->saveCategories(request('categories'));
 
         //tags
         $this->save_article_tags($article);
@@ -259,38 +259,6 @@ class ArticleController extends Controller
         $article->tags()->sync($tag_ids);
     }
 
-    public function get_json_lists($article)
-    {
-        $lists = json_decode($article->json, true);
-        // return $lists;
-        $lists_new = [];
-        if (is_array($lists)) {
-            foreach ($lists as $key => $data) {
-                if (!is_array($data)) {
-                    $data = [];
-                }
-                $items = [];
-                if (!empty($data['aids']) && is_array($data['aids'])) {
-                    foreach ($data['aids'] as $aid) {
-                        $article = Article::find($aid);
-                        if ($article) {
-                            $items[] = [
-                                'id'        => $article->id,
-                                'title'     => $article->title,
-                                'image_url' => $article->image_url,
-                            ];
-                        }
-                    }
-                }
-                if (!empty($items)) {
-                    $data['items']   = $items;
-                    $lists_new[$key] = $data;
-                }
-            }
-        }
-        return $lists_new;
-    }
-
     public function get_primary_image()
     {
         if (request('primary_image')) {
@@ -301,46 +269,5 @@ class ArticleController extends Controller
         $image_url = parse_url($image_url, PHP_URL_PATH);
         // $image_url          = str_replace('.small', '', $image_url);
         return $image_url;
-    }
-
-    public function process_category($article)
-    {
-        $old_categories   = $article->categories;
-        $new_categories   = json_decode(request('categories'));
-        $new_category_ids = [];
-        //记录选得第一个做文章的主分类，投稿的话，记最后一个专题做主专题
-        if (!empty($new_categories)) {
-            $article->category_id = $new_categories[0]->id;
-            $article->save();
-
-            foreach ($new_categories as $cate) {
-                $new_category_ids[] = $cate->id;
-            }
-        }
-        //sync
-        $parameters = [];
-        foreach ($new_category_ids as $category_id) {
-            $parameters[$category_id] = [
-                'submit' => '已收录',
-            ];
-        }
-        $article->categories()->sync($parameters);
-        // $article->categories()->sync($new_category_ids);
-
-        //re-count
-        if (is_array($new_categories)) {
-            foreach ($new_categories as $category) {
-                //更新新分类文章数
-                if ($category = Category::find($category->id)) {
-                    $category->count = $category->publishedArticles()->count();
-                    $category->save();
-                }
-            }
-        }
-        foreach ($old_categories as $category) {
-            //更新旧分类文章数
-            $category->count = $category->publishedArticles()->count();
-            $category->save();
-        }
     }
 }

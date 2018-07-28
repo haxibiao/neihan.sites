@@ -95,7 +95,7 @@ class Video extends Model
                 !empty($res['sampleSnapshotInfo']['sampleSnapshotList'])) {
                 $covers = [];
                 foreach ($res['sampleSnapshotInfo']['sampleSnapshotList'] as $snapInfo) {
-                    // if ($snapInfo['definition'] == 10) 
+                    // if ($snapInfo['definition'] == 10)
                     {
                         foreach ($snapInfo['imageUrls'] as $url) {
                             $covers[] = $url;
@@ -132,9 +132,10 @@ class Video extends Model
         }
     }
 
-    public function setVodCover($cover_url)
+    public function setCover($cover_url)
     {
         $this->cover = $cover_url;
+        $this->status = 1;
         $this->save();
     }
 
@@ -142,18 +143,5 @@ class Video extends Model
     {
         $this->setJsonData('covers', $coverUrls);
         $this->save();
-    }
-
-    public function getCovers()
-    {
-        $covers = [];
-        //兼容以前的自己服务器ffmpeg截图的八张图, 这个逻辑就是本地storage目录存了图片
-        if (file_exists(public_path("/storage/video/$this->id.jpg"))) {
-            for ($i = 1; $i <= 8; $i++) {
-                $covers[] = url("/storage/video/$this->id.jpg.$i.jpg");
-            }
-            return $covers;
-        }
-        return $this->jsonData('covers');
     }
 }

@@ -33,6 +33,16 @@
         </div>
         <div class="panel-body">
             @foreach($data['videos'] as $video)
+                @if(canEdit($video))
+                <div class="pull-right">
+                  {!! Form::open(['method' => 'delete', 'route' => ['video.destroy', $video->id], 'class' => 'form-horizontal pull-left']) !!}
+                    {!! Form::submit('删除', ['class' => 'btn btn-default btn-small']) !!}                
+                  {!! Form::close() !!}
+                    <a class="btn btn-primary btn-small" href="/video/{{ $video->id }}/edit" role="button" style="margin-left: 5px">
+                        编辑
+                    </a>
+                </div>
+                @endif
                 @include('video.parts.video_item')
             @endforeach   
             <p>

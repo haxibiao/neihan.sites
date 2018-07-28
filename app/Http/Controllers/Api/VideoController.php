@@ -133,7 +133,7 @@ class VideoController extends Controller
 
     public function show($id)
     {
-        $video = Video::with('user')->with('article')->findOrFail($id);
+        $video = Video::with('user')->with('article.category')->findOrFail($id);
         return $video;
     }
 

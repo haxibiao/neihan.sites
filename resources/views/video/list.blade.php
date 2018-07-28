@@ -64,7 +64,7 @@
                                 最后更新: {{ $video->updatedAt() }}
                             </p>
                             <p>
-                                @if(count($article->covers()) == 8)
+                                @if(count($article->covers()) >= 8)
                                     <span class="label label-success">截图已完成</span>
                                 @else
                                     <span class="label label-default">截图ing...</span>

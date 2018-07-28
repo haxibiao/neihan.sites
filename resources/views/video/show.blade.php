@@ -132,6 +132,9 @@
                             </span>
                         @endif
                     </span>
+                    <div class="pull-right">
+                        <a class="btn-base btn-light btn-sm" href="/video/{{ $video->id }}/edit">编辑视频</a>
+                    </div>
                 </div>
             </div>
         </div>

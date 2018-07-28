@@ -54,7 +54,7 @@
                 </div>
 
 
-                <div class="form-group{{ $errors->has('video') ? ' has-error' : '' }}">
+                {{-- <div class="form-group{{ $errors->has('video') ? ' has-error' : '' }}">
                     {!! Form::label('video', '视频文件') !!}
                             {!! Form::file('video') !!}
                     <p class="help-block">
@@ -63,7 +63,7 @@
                     <small class="text-danger">
                         {{ $errors->first('video') }}　
                     </small>
-                </div>
+                </div> --}}
 
                 <div class="row">
                     <div class="panel panel-default">

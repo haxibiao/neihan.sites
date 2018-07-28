@@ -11,7 +11,7 @@ trait Jsonable
             $jsonData = [];
         }
         if (!empty($key)) {
-            if (array_key_exists($eky, $jsonData)) {
+            if (array_key_exists($key, $jsonData)) {
                 return $jsonData[$key];
             }
             return null;

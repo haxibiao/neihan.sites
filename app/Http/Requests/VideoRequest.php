@@ -26,8 +26,8 @@ class VideoRequest extends FormRequest
     public function rules()
     {
         return [
-            'categories' => 'required',
-            'description' => 'required|min:10',
+            // 'categories' => 'required',
+            // 'description' => 'required|min:10',
         ];
     }
 }
