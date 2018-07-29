@@ -1,16 +1,13 @@
 <template>
-
-
-	              <div class="progress blue" v-if="progress!==100">
-	                  <span class="progress-left">
-	                      <span class="progress-bar" ref="left_bar"></span>
-	                  </span>
-	                  <span class="progress-right">
-	                      <span class="progress-bar" ref="right_bar"></span>
-	                  </span>
-	                  <div class="progress-value">{{progress+"%"}}</div>
-	              </div>
-
+  <div class="progress blue" v-if="progress!==100">
+      <span class="progress-left">
+          <span class="progress-bar" ref="left_bar"></span>
+      </span>
+      <span class="progress-right">
+          <span class="progress-bar" ref="right_bar"></span>
+      </span>
+      <div class="progress-value">{{progress+"%"}}</div>
+  </div>
 </template>
 <script>
    export default {
@@ -18,10 +15,8 @@
 
     props: ["progress"],
      mounted() {
-        console.log("mounted",this.progress);
     },
     updated(){
-        console.log(this.progress);
         if(this.progress<50){
             $(this.$refs.right_bar).css("transform", `rotate(${this.progress * 3.6}deg)`);
         }else{
@@ -39,8 +34,7 @@
 };
 
 </script>
-<style lang="scss">
-	              
+<style lang="scss">     
 .progress.blue .progress-value{
     color: rgba(217, 106, 95, 1) ;
 } 
@@ -48,9 +42,9 @@
     border-color: rgba(217, 106, 95, 1);
 }
  .progress{
-    width: 150px;
-    height: 150px;
-    line-height: 150px;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
     background: none;
     margin: 0 auto;
     box-shadow: none;
@@ -108,20 +102,18 @@
     border-right: 0;
     -webkit-transform-origin: center right;
     transform-origin: center right;
-    // animation: loading-1 1.8s linear forwards;
-    
     transform: rotate(0deg);
 }
 .progress .progress-value{
-    width: 85%;
-    height: 85%;
+    width: 78%;
+    height: 78%;
     border-radius: 50%;
     border: 2px solid #ebebeb;
-    font-size: 36px;
-    line-height: 125px;
+    font-size: 26px;
+    line-height: 78px;
     text-align: center;
     position: absolute;
-    top: 7.5%;
-    left: 7.5%;
+    top: 11%;
+    left: 11%;
 }
 </style>
