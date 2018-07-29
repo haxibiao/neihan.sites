@@ -1,6 +1,6 @@
 <li class="col-xs-6 col-md-4 video">
   <div class="video-item vt">
-    <div class="thumb">
+    <div class="thumb" style="max-height: 120px; overflow-y: hidden;">
       <a href="{{ $article->content_url() }}" target="_blank">
         <img src="{{ $article->cover() }}" alt="{{ $article->title }}">
         <i class="duration">
@@ -11,7 +11,7 @@
     </div>
     <ul class="info-list">
       <li class="video-title">
-        <a href="{{ $article->content_url() }}">{{ $article->title }}</a>
+        <a href="{{ $article->content_url() }}" target="_blank">{{ $article->title }}</a>
       </li>
       <li>
         {{-- 播放量 --}}

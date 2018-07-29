@@ -14,7 +14,7 @@
             </div>
             <div class="recommend">
                 <div class="title">
-                    <h3>爱你城为你推荐</h3>
+                    <h3>{{ config('app.name') }}为你推荐</h3>
                 </div>
                 <div class="hot-recommend">
                     <span>精彩推荐：</span>

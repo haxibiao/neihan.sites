@@ -29,3 +29,6 @@ sudo /bin/cp -rf /data/www/ainicheng.com/public/assets /data/www/$1.com/public
 
 echo 'sync fonts ...'
 sudo /bin/cp -rf /data/www/ainicheng.com/public/fonts /data/www/$1.com/public
+
+echo 'sync sdk ...'
+sudo /bin/cp -rf /data/www/ainicheng.com/public/sdk /data/www/$1.com/public

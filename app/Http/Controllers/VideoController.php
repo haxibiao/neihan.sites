@@ -143,7 +143,7 @@ class VideoController extends Controller
         if (empty($article) || $article->status < 0) {
             abort(404);
         }
-        
+
         //主分类
         $category = $article->category;
 
@@ -245,17 +245,18 @@ class VideoController extends Controller
      */
     public function destroy($id)
     {
-        $video   = Video::findOrFail($id);
-        $article = $video->article;
+        $video = Video::findOrFail($id);
 
         //软删除 video
         $video->status = -1;
         $video->save();
-        //软删除 article
-        $article->update(['status' => -1]);
 
-        //维护分类关系
-        $this->recountCategory($article);
+        if ($article = $video->article) {
+            //软删除 article
+            $article->update(['status' => -1]);
+            //维护分类关系
+            $this->recountCategory($article);
+        }
 
         //TODO 清除关系 分类关系 冗余的统计信息  评论信息 点赞信息 喜欢的信息 收藏的信息
         return redirect()->to('/video/list');
