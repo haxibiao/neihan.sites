@@ -173,7 +173,7 @@ class VideoController extends Controller
         $data['video_categories'] = Category::pluck('name', 'id');
         
         //如果还没有封面，可以尝试sync一下vod结果了
-        if(empty($video->cover)) {
+        if(empty($video->jsonData('covers'))) {
             $video->syncVodProcessResult();
         }
 
