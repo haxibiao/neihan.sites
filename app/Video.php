@@ -98,7 +98,7 @@ class Video extends Model
                     // if ($snapInfo['definition'] == 10)
                     {
                         foreach ($snapInfo['imageUrls'] as $url) {
-                            $covers[] = $url;
+                            $covers[] = get_secure_url($url);
                         }
                     }
                 }
@@ -109,16 +109,16 @@ class Video extends Model
                 foreach ($res['transcodeInfo']['transcodeList'] as $codeInfo) {
                     if (!empty($codeInfo['templateName'])) {
                         if (str_contains($codeInfo['templateName'], '流畅')) {
-                            $video_urls['流畅'] = $codeInfo['url'];
+                            $video_urls['流畅'] = get_secure_url($codeInfo['url']);
                         }
                         if (str_contains($codeInfo['templateName'], '标清')) {
-                            $video_urls['标清'] = $codeInfo['url'];
+                            $video_urls['标清'] = get_secure_url($codeInfo['url']);
                         }
                         if (str_contains($codeInfo['templateName'], '高清')) {
-                            $video_urls['高清'] = $codeInfo['url'];
+                            $video_urls['高清'] = get_secure_url($codeInfo['url']);
                         }
                         if (str_contains($codeInfo['templateName'], '全高清')) {
-                            $video_urls['全高清'] = $codeInfo['url'];
+                            $video_urls['全高清'] = get_secure_url($codeInfo['url']);
                         }
                     }
                 }
@@ -134,7 +134,7 @@ class Video extends Model
 
     public function setCover($cover_url)
     {
-        $this->cover = $cover_url;
+        $this->cover  = $cover_url;
         $this->status = 1;
         $this->save();
     }

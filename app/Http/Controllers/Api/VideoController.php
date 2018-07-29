@@ -115,7 +115,7 @@ class VideoController extends Controller
                 'qcvod_fileid' => $request->fileId,
             ]);
             $video->user_id = getUserId();
-            $video->path    = $request->videoUrl;
+            $video->path    = get_secure_url($request->videoUrl);
             $video->title   = $request->videoName;
             $video->save();
 

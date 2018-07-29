@@ -171,6 +171,12 @@ class VideoController extends Controller
             abort(404, '视频对应的文章不见了');
         }
         $data['video_categories'] = Category::pluck('name', 'id');
+        
+        //如果还没有封面，可以尝试sync一下vod结果了
+        if(empty($video->cover)) {
+            $video->syncVodProcessResult();
+        }
+
         $covers                   = [];
         if (!empty($video->article->covers())) {
             $covers = $video->article->covers();

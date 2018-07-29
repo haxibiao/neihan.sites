@@ -17,6 +17,17 @@ function get_ip()
     return $ip;
 }
 
+function get_secure_url($url)
+{
+    if (starts_with($url, 'https')) {
+        return $url;
+    }
+    if (!starts_with($url, 'http')) {
+        return secure_url($url);
+    }
+    return str_replace("http", "https", $url);
+}
+
 function get_domain_key()
 {
     return str_replace('.', '_', get_domain());

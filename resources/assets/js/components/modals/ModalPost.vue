@@ -12,14 +12,14 @@
     				<form method="post" action="/post" ref="postForm" enctype="multipart/form-data">
 					<input type="hidden" name="_token" v-model="token">
 					<div class="input-question">
-						<input-matching name="title" placeholder="请输入标题" hide-suggestion></input-matching>
+						<input-matching name="title" placeholder="输入标题" hide-suggestion></input-matching>
 					</div>
 					<div class="textarea-box">
-                		<textarea name="body" placeholder='快来说点什么吧' v-model="description" maxlength='500'></textarea>
+                		<textarea name="body" placeholder='再说点什么...' v-model="description" maxlength='500'></textarea>
                 		<span class="word-count">{{ description.length }}/500</span>
 					</div>
 					<div>
-						<category-select placeholder="请选择专题"></category-select>
+						<category-select placeholder="再选择专题"></category-select>
 					</div>
                     <div class="img-selector">
                     	<div :class="['ask-img-header',selectedImgs.length > 0 ? 'bigger' : '']"><span class="desc">（每次最多上传9张图片或者1个视频）</span></div>

@@ -1,9 +1,9 @@
 <template>
 	<div class='input-matching' ref="input-matching">
-		<input :name="name" :class="['input-style',title&&matchedData.length?'matching':'']" type="text" 
+		<input :name="name" :class="['input-style',title && matchedData.length?'matching':'']" type="text" 
 		:placeholder="placeholder?placeholder:'请输入问题（不超过40字）'" 
 		v-model="title" @input="inputQuestion">
-		<div class="matched-wrap" v-show="title&&matchedData.length">
+		<div class="matched-wrap" v-show="title && matchedData.length">
 			<h5>相似问题</h5>
 			<ul class="matched">
 				<li v-for="question in matchedData" @click="selectQuestion(question)">
@@ -23,7 +23,7 @@ export default {
 
 	methods: {
 		inputQuestion() {
-			if (this.hideSuggestion) {
+			if (this.hideSuggestion !== undefined) {
 				return;
 			}
 			// $('.matched-wrap').show();

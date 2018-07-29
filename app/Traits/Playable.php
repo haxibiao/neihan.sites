@@ -30,6 +30,10 @@ trait Playable
             }
         }
 
+        if(empty($cover_url)) {
+            return url("/images/inprogress.jpg");
+        }
+
         $justChanged = $this->updated_at && $this->updated_at->addMinutes(10) > now();
         if ($justChanged) {
             $cover_url = $cover_url . '?t=' . time();
