@@ -27,7 +27,8 @@ class ArticleController extends Controller
     public function storePost(Request $request)
     {
         $article = new Article();
-        $article = $article->createPost($request->all());
+        $article->createPost($request->all());
+        $article->saveCategories($request->get('categories'));
         //TODO:: 记录用户动作
         return redirect()->to($article->content_url());
     }
