@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class EditVideosAddQcvodId extends Migration
 {
@@ -15,7 +15,10 @@ class EditVideosAddQcvodId extends Migration
     {
         Schema::table('videos', function (Blueprint $table) {
             $table->string('qcvod_fileid')->nullable()->index();
-            $table->string('cover')->nullable();
+            if (!Schema::hasColumn('videos', 'cover')) {
+                $table->string('cover')->nullable();
+            }
+
         });
     }
 

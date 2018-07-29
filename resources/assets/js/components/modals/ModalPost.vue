@@ -12,7 +12,7 @@
     				<form method="post" action="/post" ref="postForm" enctype="multipart/form-data">
 					<input type="hidden" name="_token" v-model="token">
 					<div class="input-question">
-						<input-matching name="title" placeholder="请输入标题"></input-matching>
+						<input-matching name="title" placeholder="请输入标题" hide-suggestion></input-matching>
 					</div>
 					<div class="textarea-box">
                 		<textarea name="body" placeholder='快来说点什么吧' v-model="description" maxlength='500'></textarea>
