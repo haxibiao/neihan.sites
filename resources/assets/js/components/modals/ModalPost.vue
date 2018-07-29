@@ -22,7 +22,7 @@
 						<category-select placeholder="请选择专题"></category-select>
 					</div>
                     <div class="img-selector">
-                    	<div :class="['ask-img-header',selectedImgs.length > 0 ? 'bigger' : '']"><span class="desc">（最多9张图片或者1个视频）</span></div>
+                    	<div :class="['ask-img-header',selectedImgs.length > 0 ? 'bigger' : '']"><span class="desc">（每次最多上传9张图片或者1个视频）</span></div>
 						<div class="img-preview clearfix">
 							<div class="img-preview-item clearfix" v-for="image in selectedImgs">
 								<img :src="image.url" alt="" class="as-height">
@@ -30,19 +30,14 @@
 							</div>
 							<div v-if="videoPath">
 								<video class="video" :src="videoPath" controls="" ref="video_ele">
-									
 								</video>
-									<div class="progress_box" ref="progress_box">
-										<loading :progress="progress"></loading>
-									</div>
-
+								<div class="progress_box" ref="progress_box">
+									<loading :progress="progress"></loading>
+								</div>
 								<div class="video-del" @click="deleteVideo"><i class="iconfont icon-cha"></i></div>
 							</div>
 						</div>
 						<div class="tab-header">
-							<!-- <ul>
-								<li class="tab-header-actived">上传几张图片或一个视频</li>
-							</ul> -->
 							<div class="tab-header-actived">图片或者视频</div>
 						</div>
 						<div v-if="bool" class="tab-body">
@@ -144,30 +139,6 @@ export default {
 				}
 			}
 		},
-		conver(limit) {
-			var size = "";
-			if (limit < 0.1 * 1024) {
-				//如果小于0.1KB转化成B
-				size = limit.toFixed(2) + "B";
-			} else if (limit < 0.1 * 1024 * 1024) {
-				//如果小于0.1MB转化成KB
-				size = (limit / 1024).toFixed(2) + "KB";
-			} else if (limit < 0.1 * 1024 * 1024 * 1024) {
-				//如果小于0.1GB转化成MB
-				size = (limit / (1024 * 1024)).toFixed(2) + "MB";
-			} else {
-				//其他转化成GB
-				size = (limit / (1024 * 1024 * 1024)).toFixed(2) + "GB";
-			}
-			var sizestr = size + "";
-			var len = sizestr.indexOf(".");
-			var dec = sizestr.substr(len + 1, 2);
-			if (dec == "00") {
-				//当小数点后为00时 去掉小数部分
-				return sizestr.substring(0, len) + sizestr.substr(len + 3, 2);
-			}
-			return sizestr;
-		},
 		_upload(fileObj) {
 			var api = window.tokenize("/api/image/save");
 			var _this = this;
@@ -223,7 +194,6 @@ export default {
 					$(_this.$refs.upload).val("");
 					console.log(result);
 					//上传成功时的回调函数
-					$(_this.$refs.progress_box).css({ display: "none" });
 					$(_this.$refs.video_ele).css({ opacity: "1" });
 					console.log("上传结果的fileId：" + result.fileId);
 					console.log("上传结果的视频名称：" + result.videoName);
@@ -308,6 +278,7 @@ export default {
 				}
 				.textarea-box {
 					position: relative;
+					margin-bottom: 20px;
 					textarea {
 						padding-bottom: 25px;
 					}
@@ -367,49 +338,20 @@ export default {
 							}
 						}
 						.video {
-							width: 80%;
+							width: 207px;
 							opacity: 0.2;
 						}
 						.progress_box {
 							position: absolute;
 							top: 50%;
-							left: 30%;
-							transform: translate(-30%, -50%);
-						}
-						.size {
-							vertical-align: top;
-							margin: 0 40px;
-						}
-						.progress-box {
-							vertical-align: top;
-							display: inline-block;
-							width: 90px;
-							margin: 0 65px;
+							left: 15%;
+							transform: translate(-50%, -50%);
 						}
 						.video-del {
 							position: absolute;
 							top: -22px;
 							right: 0;
 							cursor: pointer;
-						}
-					}
-					.tab-header {
-						ul {
-							li {
-								padding-bottom: 6px;
-								height: 20px;
-								line-height: 20px;
-								box-sizing: content-box;
-								display: inline-block;
-								font-size: 14px;
-								color: #212121;
-								margin-right: 30px;
-								cursor: pointer;
-								&.tab-header-actived {
-									border-bottom: solid 2px #d96a5f;
-									font-weight: bold;
-								}
-							}
 						}
 					}
 					.tab-body {
@@ -460,25 +402,6 @@ export default {
 									position: absolute;
 									top: 0;
 									right: 0;
-								}
-							}
-							.img-container {
-								height: 180px;
-								padding: 0 25px 0 40px;
-								overflow-x: auto;
-								.img-container-outer {
-									overflow: hidden;
-									.img-tip {
-										margin: 0 0 20px 0;
-										.img-tip-content {
-											font-size: 13px;
-											color: #969696;
-											line-height: 18px;
-											a {
-												color: #2b89ca;
-											}
-										}
-									}
 								}
 							}
 							.img-upload-field {
