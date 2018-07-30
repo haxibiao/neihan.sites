@@ -36,7 +36,7 @@
                         @else
                             @each('parts.article_item', $data['articles'], 'article')
                             @if(Auth::check())
-                                <article-list api="/user/{{ $user->id }}?articles=1" start-page="2" not-empty="{{empty($data['articles'])}}"/>
+                                <article-list api="/user/{{ $user->id }}?articles=1" start-page="2" not-empty="{{count($data['articles'])>0}}"/>
                             @else
                                 <div>{!! $data['articles']->fragment('article')->links() !!}</div>  
                             @endif
@@ -49,7 +49,7 @@
                         @else
                             @each('user.parts.action_item', $data['actions'], 'action')
                             @if(Auth::check())
-                                <action-list api="/user/{{ $user->id }}?actions=1" start-page="2" not-empty="{{empty($data['actions'])}}" app-name="{{ config('app.name') }}"/>
+                                <action-list api="/user/{{ $user->id }}?actions=1" start-page="2" not-empty="{{count($data['actions'])>0}}" app-name="{{ config('app.name') }}"/>
                             @else
                                 <div>{!! $data['actions']->fragment('actions')->links() !!}</div>
                             @endif
@@ -77,7 +77,7 @@
                         @else
                             @each('parts.article_item', $data['commented'], 'article')
                             @if(Auth::check())
-                                <article-list api="/user/{{ $user->id }}?commented=1" start-page="2" not-empty="{{empty($data['commented'])}}"/>
+                                <article-list api="/user/{{ $user->id }}?commented=1" start-page="2" not-empty="{{count($data['commented'])>0}}"/>
                             @else
                                 <div>{!! $data['commented']->fragment('comment')->links() !!}</div>
                             @endif 
@@ -89,7 +89,7 @@
                         @else
                             @each('parts.article_item', $data['hot'], 'article')
                             @if(Auth::check())
-                                <article-list api="/user/{{ $user->id }}?hot=1" start-page="2" not-empty="{{empty($data['hot'])}}"/>
+                                <article-list api="/user/{{ $user->id }}?hot=1" start-page="2" not-empty="{{count($data['hot'])>0}}"/>
                             @else
                                 <div>{!! $data['hot']->fragment('hot')->links() !!}</div>
                             @endif
