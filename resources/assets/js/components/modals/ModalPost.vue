@@ -29,11 +29,14 @@
 								<div class="img-del" @click="deleteImg(image)"><i class="iconfont icon-cha"></i></div>
 							</div>
 							<div v-if="videoPath">
-								<video class="video" :src="videoPath" controls="" ref="video_ele">
-								</video>
-								<div class="progress_box" ref="progress_box">
-									<loading :progress="progress"></loading>
+								<div class="modal-video-box">
+									<video class="video" :src="videoPath" controls="" ref="video_ele">
+									</video>
+									<div class="progress_box" ref="progress_box">
+										<loading :progress="progress"></loading>
+									</div>
 								</div>
+								
 								<div class="video-del" @click="deleteVideo"><i class="iconfont icon-cha"></i></div>
 							</div>
 						</div>
@@ -258,6 +261,11 @@ export default {
 	position: static !important;
 }
 .modal-post {
+	@media (max-width: 1366px){
+		.video {
+				height: 270px !important;
+			}
+	}
 	.modal-dialog {
 		padding-bottom: 20px;
 		max-width: 720px !important;
@@ -337,15 +345,19 @@ export default {
 								}
 							}
 						}
-						.video {
-							width: 207px;
-							opacity: 0.2;
-						}
-						.progress_box {
-							position: absolute;
-							top: 50%;
-							left: 15%;
-							transform: translate(-50%, -50%);
+						.modal-video-box{
+							position:relative;
+							display: inline-block;
+							.video {
+								height: 300px;
+								opacity: 0.2;
+							}
+							.progress_box {
+								position: absolute;
+								top: 50%;
+								left: 50%;
+								transform: translate(-50%, -50%);
+							}
 						}
 						.video-del {
 							position: absolute;
