@@ -58,7 +58,7 @@ npm run prod
 @task('local_push_ui', ['on' => 'local'])
 hostname
 cd {{ $www }}
-npm run prod
+{{-- npm run prod --}}
 {{ $git_push_to_web }}
 {{ $copy_ui_build }}
 @endtask

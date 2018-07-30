@@ -150,15 +150,18 @@ class VideoController extends Controller
 
         //主分类
         $category = $article->category;
+        $categories = $article->categories;
 
         //记录用户浏览记录
         $article->recordBrowserHistory();
         //获取关联视频
-        $data['related'] = $this->getRelationVideo($article, 4);
+        $data['related']    = $article->relatedVideoPostsQuery()->paginate(4);
+        $data['sameAuthor'] = $video->user->videoPosts()->paginate(2);
 
         return view('video.show')
             ->withVideo($video)
             ->withData($data)
+            ->withCategories($categories)
             ->withCategory($category);
     }
 
@@ -269,6 +272,7 @@ class VideoController extends Controller
         //TODO 清除关系 分类关系 冗余的统计信息  评论信息 点赞信息 喜欢的信息 收藏的信息
         return redirect()->to('/video/list');
     }
+
     /* --------------------------------------------------------------------- */
     /* ------------------------------- 算法策略 ----------------------------- */
     /* --------------------------------------------------------------------- */
@@ -280,8 +284,8 @@ class VideoController extends Controller
     public function getRelationVideo($article, $need_length)
     {
         //关联视频
-        $related_group = new Collection([]);
-        $article_ids   = [$article->id];
+        $related_collection = new Collection([]);
+        $article_ids        = [$article->id];
         //获取有视频的分类
         $categories = $article->categories()
             ->whereHas('videoArticles', function ($query) {
@@ -290,22 +294,22 @@ class VideoController extends Controller
 
         if ($categories->isNotEmpty()) {
             //优先从最后一个分类中随机选择4个
-            $category      = $categories->pop();
-            $related_group = $category
+            $category   = $categories->pop();
+            $related_qb = $category
                 ->videoArticles()
-                ->where('articles.status', 1)
-                ->where('articles.id', '<>', $article->id)
-                ->take($need_length)
-                ->get();
-            if ($related_group->isNotEmpty()) {
+                ->where('articles.id', '<>', $article->id);
+            $count              = $related_qb->count();
+            $need_length        = $count >= $need_length ? $need_length : $count;
+            $related_collection = $related_qb->take($need_length)->get();
+            if ($related_collection->isNotEmpty()) {
                 $article_ids = array_merge(
-                    $related_group->pluck('id')->toArray(), $article_ids
+                    $related_collection->pluck('id')->toArray(), $article_ids
                 );
-                $related_group = $related_group;
+                $related_collection = $related_collection;
             }
         }
         //视频数据不够时，还填充的视频数
-        $fill_length = $need_length - count($related_group);
+        $fill_length = $need_length - count($related_collection);
         //主专题下文章数不够时候随机填充至4个()
         if ($fill_length > 0) {
             //暂时不实现复杂的策略,减少系统Query
@@ -331,9 +335,9 @@ class VideoController extends Controller
                 ->take(100) //取最近上传的100个视频随机
                 ->get()
                 ->random($fill_length);
-            $related_group = $related_group->merge($related);
+            $related_collection = $related_collection->merge($related);
         }
-        return $related_group;
+        return $related_collection;
     }
     /**
      * @Desc     删除视频重新计算视频与分类的关系

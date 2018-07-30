@@ -121,6 +121,11 @@ class Article extends Model
         return $this->morphMany(\App\Tip::class, 'tipable');
     }
 
+    public function relatedVideoPostsQuery()
+    {
+        return Article::with('video')->where('type','video')->whereIn('category_id', $this->categories->pluck('id'));
+    }
+
     /* --------------------------------------------------------------------- */
     /* ------------------------------- service ----------------------------- */
     /* --------------------------------------------------------------------- */
