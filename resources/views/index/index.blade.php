@@ -40,7 +40,7 @@
                 </p>
               </a>
             </div> 
-            @include('index.parts.top_videos', ['videos' => $data->videos])
+            @include('index.parts.video_posts', ['videoPosts' => $data->videoPosts])
           </div>
           {{-- 文章列表 --}}
          <ul class="article-list">              

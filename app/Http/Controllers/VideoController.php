@@ -139,9 +139,13 @@ class VideoController extends Controller
         $video = Video::with('article')
             ->with('user')
             ->findOrFail($id);
+
+        //check article exist and status
         $article = $video->article;
-        if (empty($article) || $article->status < 0) {
-            abort(404);
+        if (empty($article) || $article->status < 1) {
+            if (!canEdit($article)) {
+                abort(404);
+            }
         }
 
         //主分类
@@ -167,21 +171,21 @@ class VideoController extends Controller
     public function edit($id)
     {
         $video = Video::with('article')->findOrFail($id);
+
         if (empty($video->article)) {
             abort(404, '视频对应的文章不见了');
         }
-        $data['video_categories'] = Category::pluck('name', 'id');
-        
+
         //如果还没有封面，可以尝试sync一下vod结果了
-        if(empty($video->jsonData('covers'))) {
+        if (empty($video->jsonData('covers'))) {
             $video->syncVodProcessResult();
         }
 
-        $covers                   = [];
+        $covers = [];
         if (!empty($video->article->covers())) {
             $covers = $video->article->covers();
         }
-        $data['thumbnails'] = $covers;
+        $data['covers'] = $covers;
 
         return view('video.edit')
             ->withVideo($video)
@@ -199,17 +203,19 @@ class VideoController extends Controller
     {
         $video   = Video::findOrFail($id);
         $article = $video->article;
+
         //维护分类关系
         $article->saveCategories(request('categories'));
+
         //选取封面图
-        if (!empty($request->thumbnail)) {
-            if (str_contains($request->thumbnail, 'storage/video')) {
+        if (!empty($request->cover)) {
+            if (str_contains($request->cover, 'storage/video')) {
                 $result = copy(
-                    public_path($request->thumbnail),
+                    public_path($request->cover),
                     public_path($article->image_url)
                 );
             } else {
-                $video->setCover($request->thumbnail);
+                $video->setCover($request->cover);
             }
             $article->status = 1;
             $article->save();
@@ -218,29 +224,25 @@ class VideoController extends Controller
         //save article description ...
         $article->update($request->all());
 
-        //文件发生变动 TODO:注意这里没有删除磁盘上的文件，后面的兄弟注意一下
-        //这里不能使用直接使用$request->video。因为与路由参数重名了
-        $file           = $request->file('video');
-        $file_is_modify = !empty($file)
-        &&
-        md5_file($file->path()) != $video->hash;
+        // //文件发生变动 TODO:注意这里没有删除磁盘上的文件，后面的兄弟注意一下
+        // //这里不能使用直接使用$request->video。因为与路由参数重名了
+        // $file           = $request->file('video');
+        // $file_is_modify = !empty($file)
+        // &&
+        // md5_file($file->path()) != $video->hash;
 
-        if ($file_is_modify) {
-            //视频源发生变动时首页暂时隐藏，因为有截图延迟
-            $video->update(['status' => 0]);
-            $article->update(['status' => 0]);
-            if (!$video->saveFile($request->video)) {
-                //视频上传失败
-                abort(500, '视频上传失败');
-            }
-        }
+        // if ($file_is_modify) {
+        //     //视频源发生变动时首页暂时隐藏，因为有截图延迟
+        //     $video->update(['status' => 0]);
+        //     $article->update(['status' => 0]);
+        //     if (!$video->saveFile($request->video)) {
+        //         //视频上传失败
+        //         abort(500, '视频上传失败');
+        //     }
+        // }
 
         //防止用户直接访问编辑界面无session导致页面报错
-        $refer_url = session('url.intended');
-        if (empty($refer_url)) {
-            return redirect()->to('/video/list');
-        }
-        return redirect($refer_url);
+        return redirect()->back();
     }
 
     /**

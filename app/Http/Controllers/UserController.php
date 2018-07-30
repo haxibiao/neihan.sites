@@ -151,9 +151,7 @@ class UserController extends Controller
         $data['actions'] = $actions;
 
         //视频
-        $qb = Article::where('user_id',$user->id)->with('user')->with('video')
-            ->where('type', 'video')
-            ->where('status', '>', 0)
+        $qb = $user->videoPosts()
             ->orderBy('updated_at', 'desc');
         $videos = smartPager($qb, 10);
         $data['videos'] = $videos;
@@ -249,7 +247,7 @@ class UserController extends Controller
     public function videos($id)
     {
         $user           = User::findOrFail($id);
-        $data['videos'] = Video::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(10);
+        $data['videoPosts'] = $user->allVideoPosts()->orderBy('id', 'desc')->paginate(10);
         return view('user.videos')
             ->withUser($user)
             ->withData($data);

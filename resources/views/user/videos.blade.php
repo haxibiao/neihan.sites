@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ $user->name }}的视频
+    {{ $user->name }}的视频动态
 @stop
 
 @section('content')
@@ -29,14 +29,14 @@
     <div class="panel panel-default">
         <div class="panel-heading">
         <a class="pull-right" href="/user/{{ $user->id }}/videos">更多</a>
-            <h3 class="panel-title" style="line-height: 30px">视频({{ $data['videos']->total() }})</h3>
+            <h3 class="panel-title" style="line-height: 30px">视频动态({{ $data['videoPosts']->total() }})</h3>
         </div>
         <div class="panel-body">
-            @foreach($data['videos'] as $video)
-                @include('video.parts.video_item_can_edit')
+            @foreach($data['videoPosts'] as $post)
+                @include('video.parts.video_post')
             @endforeach   
             <p>
-                {!! $data['videos']->render() !!}
+                {!! $data['videoPosts']->render() !!}
             </p>         
         </div>
     </div>

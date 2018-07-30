@@ -1,12 +1,16 @@
+@php
+    $article = $video->article;
+@endphp
+
 @extends('layouts.black')
 
 @section('title')
-	视频: {{ $video->article->title }} - @if($video->article && $category){{ $category->name }}@endif {{ env('APP_NAME') }}
+	视频动态: {{ $video->article->title }} - @if($video->article && $category){{ $category->name }}@endif {{ env('APP_NAME') }}
 @stop
 
 @push('seo_og_result') 
 @if($video->article)
-<meta property="og:type" content="{{ $video->article->type }}" />
+<meta property="og:type" content="video" />
 <meta property="og:url" content="https://{{ get_domain() }}/video/{{ $video->article->video_id }}" />
 <meta property="og:title" content="{{ $video->article->title }}" />
 <meta property="og:description" content="{{ $video->article->description() }}" />
@@ -133,7 +137,9 @@
                         @endif
                     </span>
                     <div class="pull-right">
-                        <a class="btn-base btn-light btn-sm" href="/video/{{ $video->id }}/edit">编辑视频</a>
+                        @if(canEdit($article))
+                        <a class="btn-base btn-light btn-sm" href="/video/{{ $video->id }}/edit">编辑视频动态</a>
+                        @endif
                     </div>
                 </div>
             </div>

@@ -3,11 +3,11 @@
 namespace App;
 
 use App\Action;
+use App\Category;
 use App\Model;
 use App\Tip;
 use App\Traits\Playable;
 use App\Video;
-use App\Category;
 use Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -178,6 +178,9 @@ class Article extends Model
         $this->image_url     = $this->primaryImage();
         $this->description   = $this->description();
         $this->url           = $this->content_url();
+        if ($this->video) {
+            $this->duration = gmdate('i:s', $this->video->duration);
+        }
     }
 
     public function fillForApp()
@@ -477,13 +480,14 @@ class Article extends Model
         $this->body  = $body;
         // $this->description = null; //不存冗余，最后显示的时候根据情况截取即可
         $this->status  = 1; //直接发布
-        $this->type    = 'post'; 
+        $this->type    = 'post';
         $this->user_id = $user->id;
         $this->save();
 
         //带视频
         if (isset($input['video_id'])) {
-            $this->type  = 'video'; 
+            $this->status = 0; //视频的话，等视频截图转码完成，自动会发布的
+            $this->type   = 'video';
             $video        = Video::findOrFail($input['video_id']);
             $video->title = $title;
             $video->save();
@@ -509,7 +513,7 @@ class Article extends Model
     //直接收录到专题的操作
     public function saveCategories($categories_json)
     {
-        $article = $this;
+        $article          = $this;
         $old_categories   = $article->categories;
         $new_categories   = json_decode($categories_json);
         $new_category_ids = [];

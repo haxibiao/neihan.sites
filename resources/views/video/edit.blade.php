@@ -1,7 +1,11 @@
+@php
+    $article = $video->article;
+@endphp
+
 @extends('layouts.app')
 
 @section('title')
-	编辑视频 - {{ $video->article->title }}
+	编辑视频动态 - {{ $video->article->title }}
 @stop
 @php
     //编辑成功返回之前的页面
@@ -15,15 +19,21 @@
         <li><a href="/video">视频</a></li>
         <li><a href="/video/{{ $video->id }}">{{ $video->title }}</a></li>
       </ol>
-    <div class="panel panel-defau">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                编辑视频
+
+    {!! Form::open(['method' => 'PUT', 'route' => ['video.update', $video->id], 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}  
+    <div class="panel panel-default">
+        <div class="panel-heading">               
+
+            <div class="btn-group pull-right">
+                {!! Form::submit("修改", ['class' => 'btn btn-primary']) !!}
+            </div>
+            <h3 class="panel-title" style="height: 40px">
+                编辑视频动态
             </h3>
         </div>
         <div class="panel-body">
             <div class="col-md-10 col-md-offset-1">
-                {!! Form::open(['method' => 'PUT', 'route' => ['video.update', $video->id], 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
+
                 <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                     {!! Form::label('title', '标题(非必填)') !!}
 					{!! Form::text('title', $video->article->title, ['class' => 'form-control']) !!}
@@ -72,35 +82,45 @@
                         </div>
                         <div class="panel-body">
                             @php   
-                                $thumbIndex = 0; 
+                                $coverIndex = 0; 
                             @endphp
-                            @foreach($data['thumbnails'] as $thumbnail)
+                            @foreach($data['covers'] as $cover)
                             @php
-                                $thumbIndex++;
+                                $coverIndex++;
                             @endphp
-                            <div class="col-xs-6 col-md-3 {{ $errors->has('thumbnail') ? ' has-error' : '' }}">
-                                <label for="thumbnail{{ $thumbIndex }}">
-                                    <img src="{{ $thumbnail }}" class="img img-responsive">
+                            <div class="col-xs-6 col-md-3 {{ $errors->has('cover') ? ' has-error' : '' }}">
+                                <label for="cover{{ $coverIndex }}">
+                                    <img src="{{ $cover }}" class="img img-responsive">
                                 </label>
-
-                                {!! str_replace('>','id="'.'thumbnail'.$thumbIndex.'">', Form::radio('thumbnail', $thumbnail)) !!}
-                                <label for="thumbnail{{ $thumbIndex }}">
+                                
+                                {{-- trick here, need custom replace id="**" attribute to get label for radio work --}}
+                                {!! str_replace('>','id="'.'cover'.$coverIndex.'">', Form::radio('cover', $cover)) !!}
+                                <label for="cover{{ $coverIndex }}">
                                     选取
                                 </label>
-                                <small class="text-danger">{{ $errors->first('thumbnail') }}</small>
+                                <small class="text-danger">{{ $errors->first('cover') }}</small>
                             </div>
                             @endforeach
                         </div>
                     </div>      
-                </div>                 
-
-                <div class="btn-group pull-right">
-			        {!! Form::submit("保存", ['class' => 'btn btn-success']) !!}
                 </div>
-                {!! Form::close() !!}
             </div>
-
+        </div>
+        <div class="panel-footer" style="height: 50px">
+                <div class="radio{{ $errors->has('status') ? ' has-error' : '' }} pull-right">
+                     <label for="status0">
+                         {!! Form::radio('status', 0,  $article->status == 0, ['id' => 'status0']) !!} 下架
+                     </label>
+                     <small class="text-danger">{{ $errors->first('status') }}</small>
+                </div>                
+                <div class="radio{{ $errors->has('status') ? ' has-error' : '' }} pull-right">
+                     <label for="status1">
+                         {!! Form::radio('status', 1,  $article->status == 1, ['id' => 'status1']) !!} 发布
+                     </label>
+                     <small class="text-danger">{{ $errors->first('status') }}</small>
+                </div>
         </div>
     </div>
+    {!! Form::close() !!}
 </div>
 @stop

@@ -160,9 +160,19 @@ class User extends Authenticatable
         return $this->hasMany(\App\Article::class)->where('status', '>=', 0);
     }
 
+    public function allVideoPosts()
+    {
+        return $this->allArticles()->where('type', 'video');
+    }
+
     public function publishedArticles()
     {
         return $this->hasMany(\App\Article::class)->where('status', '>', 0);
+    }
+
+    public function videoPosts()
+    {
+        return $this->publishedArticles()->where('type', 'video');
     }
 
     public function adminCategories()

@@ -130,12 +130,8 @@ class ArticleController extends Controller
         $article = Article::with('user')->with('category')->with('tags')->with('images')->findOrFail($id);
 
         //draft article logic ....
-        if ($article->status <= 0) {
-            $has_permission_view_draf = false;
-            if (checkEditor() || $article->isSelf()) {
-                $has_permission_view_draf = true;
-            }
-            if (!$has_permission_view_draf) {
+        if ($article->status < 1) {
+            if (!canEdit($article)) {
                 return abort(404);
             }
         }

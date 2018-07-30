@@ -104,7 +104,7 @@ class IndexController extends Controller
         $data->carousel = get_top_articles();
         
         //首页推荐视频  TODO  评论时间来排序
-        $data->videos = Video::with('article')
+        $data->videoPosts = Article::with('video')->where('type','video')
                 ->orderBy('id', 'desc')
                 ->where('status', '>', 0)
                 ->paginate(4);  
