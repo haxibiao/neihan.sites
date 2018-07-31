@@ -27,17 +27,28 @@ export default {
       this.fetchData();
     },
     fetchData() {
-      this.page++;
-      if (this.lastPage) {
-        if (this.page >= this.lastPage) {
-          this.page = 1;
+      if(this.is_once){
+        this.api = '/api/recommend-categories?index=true';
+      }else{
+        this.page++;
+        if (this.lastPage) {
+          if (this.page >= this.lastPage) {
+            this.page = 1;
+          }
         }
+        this.api = "/api/recommend-categories?page=" + this.page;
       }
       var _this = this;
-      window.axios.get("/api/recommend-categories?page=" + this.page).then(
+      window.axios.get(this.api).then(
         function(response) {
-          _this.categories = response.data.data;
-          _this.lastPage = response.data.last_page;
+          if(_this.is_once){
+            _this.is_once = false;
+            _this.categories = response.data;
+          }else{
+            _this.categories = response.data.data;
+            _this.lastPage = response.data.last_page;
+          }
+          
         },
         function(error) {
           _this.categories = _this.defaultCategories;
@@ -51,6 +62,8 @@ export default {
       counter: 1,
       page: 0,
       lastPage: null,
+      api:'',
+      is_once:true,
       categories: [],
       defaultCategories: [
         { name: "美食食谱", name_en: "/meishicaipu" },

@@ -54,6 +54,16 @@ class CategoryController extends Controller
     public function page(Request $request)
     {
         $categories = Category::orderBy('updated_at', 'desc')->paginate(7);
+        if ($request->get('index')) {
+            $stick_categories = get_stick_categories();
+            $top_count        = 7 - count($stick_categories);
+            $categories       = Category::orderBy('is_official', 'desc')
+                ->where('count', '>=', 0)
+                ->where('status', '>=', 0)
+                ->orderBy('updated_at', 'desc')
+                ->take($top_count)
+                ->get();
+        }
         foreach ($categories as $category) {
             $category->fillForJs();
         }
@@ -129,23 +139,23 @@ class CategoryController extends Controller
         }
 
         return $articles;
-    } 
+    }
 
     public function submitCategory(Request $request, $aid, $cid)
     {
         $user     = $request->user();
         $article  = Article::findOrFail($aid);
         $category = Category::findOrFail($cid);
-        $query = $article->allCategories()->wherePivot('category_id', $cid);
+        $query    = $article->allCategories()->wherePivot('category_id', $cid);
         //已经投过稿
         if ($query->count()) {
             $pivot         = $query->first()->pivot;
             $pivot->submit = $pivot->submit == '待审核' ? '已撤回' : '待审核';
             $pivot->save();
-            $article->submited_status = $pivot->submit; 
+            $article->submited_status = $pivot->submit;
 
             //清除缓存
-            foreach ($category->admins as $admin) { 
+            foreach ($category->admins as $admin) {
                 $admin->forgetUnreads();
             }
             $category->user->forgetUnreads();
@@ -163,11 +173,11 @@ class CategoryController extends Controller
         }
 
         //给所有管理员延时10分钟发通知，提示有新的投稿请求
-        if ($article->submited_status == '待审核') { 
+        if ($article->submited_status == '待审核') {
             // SendCategoryRequest::dispatch($article, $category)->delay(now()->addMinutes(1));
 
             //给所有专题管理发通知
-            foreach ($category->admins as $admin) { 
+            foreach ($category->admins as $admin) {
                 $admin->forgetUnreads();
             }
             //also send to creator
@@ -294,7 +304,7 @@ class CategoryController extends Controller
         $article  = $category->requestedInMonthArticles()->where('article_id', $aid)->firstOrFail();
 
         //清除缓存
-        foreach ($category->admins as $admin) { 
+        foreach ($category->admins as $admin) {
             $admin->forgetUnreads();
         }
         $user = $request->user();
