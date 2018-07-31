@@ -27,33 +27,23 @@ Vue.component("recycle", require("./components/write/Recycle.vue"));
 Vue.component("editor", require("./components/Editor.vue"));
 Vue.component("scroll-top", require("./components/write/ScrollTop.vue"));
 Vue.component("published", require("./components/write/Published.vue"));
+Vue.component("modal-tips", require("./components/modals/ModalTips.vue"));
 
 //免费图片素材
 Vue.component("modal-images", require("./components/modals/ModalImages.vue"));
 Vue.component("image-list", require("./components/image/ImageList.vue"));
 
 // 文集重命名
-Vue.component(
-	"modification-name",
-	require("./components/write/modificationName.vue")
-);
+Vue.component("modification-name", require("./components/write/modificationName.vue"));
 // 常见问题
-Vue.component(
-	"frequently-asked-questions",
-	require("./components/write/FAQ.vue")
-);
+Vue.component("frequently-asked-questions", require("./components/write/FAQ.vue"));
 // 删除文集
-Vue.component(
-	"delete-notebook",
-	require("./components/write/deleteNotebook.vue")
-);
+Vue.component("delete-notebook", require("./components/write/deleteNotebook.vue"));
+
 // 删除文章
 Vue.component("delete-note", require("./components/write/deleteNote.vue"));
 // 彻底删除
-Vue.component(
-	"thorough-delete",
-	require("./components/write/thoroughDelete.vue")
-);
+Vue.component("thorough-delete", require("./components/write/thoroughDelete.vue"));
 
 const app = new Vue({
 	router,
