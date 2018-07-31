@@ -18,7 +18,6 @@ Route::get('/user/recommend', 'Api\UserController@recommend');
 Route::middleware('auth:api')->post('/user/save-avatar', 'Api\UserController@saveAvatar');
 Route::middleware('auth:api')->post('/user', 'Api\UserController@save');
 Route::middleware('auth:api')->post('/user/{id}/follow', 'Api\UserController@follows');
-Route::any('/user/{id}/relatedVideos','Api\UserController@relatedVideos');
 Route::get('/user/{id}', 'Api\UserController@show'); 
 
 //按用户名搜索用户
@@ -29,3 +28,8 @@ Route::get('/user/{id}/images', 'Api\UserController@images');
 Route::get('/user/{id}/videos', 'Api\UserController@videos');
 //获取用户发布的文章，可以按标题搜索
 Route::get('/user/{id}/articles', 'Api\UserController@articles');
+
+//获取用户上传的视频
+Route::any('/user/{id}/videos/relatedVideos','Api\UserController@relatedVideos');
+//获取相关分类视频
+Route::any('/user/{id}/videos/sameVideos','Api\UserController@sameVideos');
