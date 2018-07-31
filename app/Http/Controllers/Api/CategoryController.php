@@ -79,7 +79,11 @@ class CategoryController extends Controller
     public function newReuqestCategories(Request $request)
     {
         $user = $request->user();
-        return $user->newReuqestCategories;
+        //获取我所有被投过稿的专题
+        return $user->newReuqestCategories()
+            ->whereNotNull('new_request_title')
+            ->get();
+        //return $user->newReuqestCategories;
     }
 
     public function pendingArticles(Request $request)

@@ -90,13 +90,8 @@ class FixData extends Command
 
     public function fix_categories()
     {
-        \DB::table('article_category')->where('id',13831)->update([
-            'submit'=>'已移除'
-        ]);
-        $category = Category::find(84);
-        $category->decrement('new_requests');
-    } 
-
+        \DB::table('category_user')->where('id',189)->delete();
+    }
     public function fix_videos() 
     {
         
