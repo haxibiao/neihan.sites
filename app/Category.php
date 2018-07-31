@@ -213,12 +213,18 @@ class Category extends Model
             }
             $id         = $this->id ? $this->id : "c" . (\App\Category::max('id') + 1) . "_" . time();
             $this->logo = $storage_category . $id . '.logo.jpg';
+            if( file_exists(public_path($this->logo)) ){
+                unlink(public_path($this->logo));
+            }
             $img        = \ImageMaker::make($request->logo->path());
             $img->fit(180);
             $img->save(public_path($this->logo));   
 
             $img->fit(32);
             $small_logo = $storage_category . $this->id . '.logo.small.jpg';
+            if( file_exists(public_path($small_logo)) ){
+                unlink(public_path($small_logo));
+            }
             $img->save(public_path($small_logo));
         }
 
@@ -230,10 +236,16 @@ class Category extends Model
             $this->logo_app = $storage_category . $this->id . '.logo.app.jpg';
             $img            = \ImageMaker::make($request->logo_app->path());
             $img->fit(180);
+            if( file_exists(public_path($this->logo_app)) ){
+                unlink(public_path($this->logo_app));
+            }
             $img->save(public_path($this->logo_app));
 
             $img->fit(32);
             $small_logo = $storage_category . $this->id . '.logo.small.app.jpg';
+            if( file_exists(public_path($this->small_logo)) ){
+                unlink(public_path($this->small_logo));
+            }
             $img->save(public_path($small_logo));
         }
     }
