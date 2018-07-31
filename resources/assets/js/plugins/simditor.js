@@ -6545,6 +6545,7 @@
       if (window.simditor_img_bond === undefined) {
         $("img[simditor]").click(function(e) {
           _selection.restore();
+          $(this).attr("src", $(this).attr("big-url"));
           _selection.insertNode(this.outerHTML);
           // _selection.insertNode("<p>添加图片的说明...</p>");
           console.log("imgpicked");

@@ -62,8 +62,8 @@ class Image extends Model
 
     public function fillForJs()
     {
-        $this->path       = $this->url_prod();
-        $this->path_small = $this->url_small();
+        $this->url       = $this->url();
+        $this->url_small    = $this->url_small();
     }
 
     public function save_file($file)

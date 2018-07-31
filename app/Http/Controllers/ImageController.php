@@ -103,18 +103,18 @@ class ImageController extends Controller
 
     public function jsonStore($request)
     {
-        $user = $request->user();
-        $images      = $request->file('files');
+        $user   = $request->user();
+        $images = $request->file('files');
 
         $images = $request->file('files');
-        $files       = [];
+        $files  = [];
         foreach ($images as $file) {
-            
-            $image = new Image();
+
+            $image          = new Image();
             $image->user_id = $user->id;
             $image->save();
             $image->save_file($file);
-            
+
             //for jquery multiple uplpad plugin...
             $files[] = [
                 'url'          => base_uri() . $image->path,
@@ -127,7 +127,7 @@ class ImageController extends Controller
                 "deleteType"   => "GET",
             ];
         }
-        $data['files'] = $files;        
+        $data['files'] = $files;
         return $data;
     }
 }

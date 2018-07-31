@@ -8,9 +8,9 @@
         </span>
       </div>
     </div>
-    <div v-for="item in list" class="col-xs-4 col-md-3 top5">
-      <img :src="item.path_small" alt="" class="img img-responsive" @click="select_image">
-      <p class="strip_title">{{ item.title }}</p>
+    <div v-for="image in list" class="col-xs-4 col-md-3 top5">
+      <img :src="image.url_small" :alt="image.title" :big-url="image.url" class="img img-responsive" @click="select_image">
+      <p class="strip_title">{{ image.title }}</p>
     </div>
   </div>
 </template>

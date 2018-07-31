@@ -16,7 +16,7 @@ class ImageController extends Controller
         }
         $images = $qb->paginate(24);
         foreach ($images as $image) {
-            $image->path = $image->url_small();
+            $image->fillForJs();
         }
         return $images;
     }

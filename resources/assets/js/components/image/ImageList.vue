@@ -1,7 +1,7 @@
 <template>
   <div class="row img-list">
     <div v-for="image in images" class="img-item">
-        <img :src="image.path" alt="" simditor>
+        <img :src="image.url_small" :alt="image.title" :big-url="image.url" simditor>
     </div>   
   </div>
 </template>
