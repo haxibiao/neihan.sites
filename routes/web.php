@@ -78,7 +78,7 @@ Route::get('/user/{id}/followed-categories', 'UserController@likes');
 Route::get('/user/{id}/followed-collections', 'UserController@likes');
 Route::get('/user/{id}/followings', 'UserController@follows');
 Route::get('/user/{id}/followers', 'UserController@follows');
-Route::get('/wallet', 'UserController@wallet');
+Route::middleware('auth')->get('/wallet', 'UserController@wallet');
 Route::resource('/user', 'UserController');
 
 //dashbord
