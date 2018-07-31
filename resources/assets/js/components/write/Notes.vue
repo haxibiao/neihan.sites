@@ -25,7 +25,7 @@
 				<div class="note-item" v-if="article">
 					<p class="note-status">{{ article.saved ? '已保存' : '未保存' }}</p>
 					<div class="note-content">
-						<editor :value="article.body" @blur="save" @imgpicked="save" @saved="save" @published="publish" @changed="changeBody" write>
+						<editor :value="article.body" @blur="onEditorBlur" @imgpicked="onImgPicked" @saved="save" @published="publish" @changed="changeBody" write>
 							<input type="text" v-model="article.title" class="note-title single-line" @input="changeTitle">
 						</editor>
 					</div>
@@ -170,6 +170,12 @@ export default {
 			//更新ui状态
 			this.article.saved = false;
 			this.$set(this.ui, "updated_at", Date.now());
+		},
+		onImgPicked(e) {
+			//刚插入图库的图片,自动保存会re-render编辑器,会让创作编辑器不能连续成功插入图库的图片
+		},
+		onEditorBlur(e) {
+			//失去光标的时候保存会触发编辑器re-render,刚插入的图片会异常
 		}
 	},
 

@@ -99,7 +99,27 @@ export default {
                 },
                 pasteImage: true,
                 tabIndent: true,
-                cleanPaste: true
+                allowedTags: ['br', 'span', 'a', 'img', 'b', 'strong', 'i', 'strike', 'u', 'font', 'p', 'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'h1', 'h2', 'h3', 'h4', 'hr'],
+                allowedAttributes: {
+                    img: ['src', 'alt', 'width', 'height', 'data-non-image'],
+                    a: ['href', 'target'],
+                    font: ['color'],
+                    code: ['class']
+                },
+                allowedStyles: {
+                    span: ['color'],
+                    b: ['color'],
+                    i: ['color'],
+                    strong: ['color'],
+                    strike: ['color'],
+                    u: ['color'],
+                    p: ['margin-left', 'text-align'],
+                    h1: ['margin-left', 'text-align'],
+                    h2: ['margin-left', 'text-align'],
+                    h3: ['margin-left', 'text-align'],
+                    h4: ['margin-left', 'text-align']
+                },
+                cleanPaste: false
             });
 
             this.editor.on("imageuploaded", function(e, src) {
