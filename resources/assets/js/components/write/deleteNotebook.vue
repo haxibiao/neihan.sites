@@ -28,7 +28,9 @@ export default {
   		if(this.count > 1){
   			return '<p>确认删除文集《'+this.noteName+'》，文章将被移动到回收站。</p>';
   		}
-  		return '<p class="text-center">至少保留1个文集</p>';
+  		return `
+              <i class="iconfont icon-jinggao"></i>
+              <span class="text-center">至少保留1个文集!</span>`;
   	}
   },
 
@@ -53,10 +55,24 @@ export default {
 .delete-notebook {
 	.modal-dialog {
 		.modal-body {
-			p {
-				font-size: 14px;
+      text-align: center;
+      i{
+        color:#d96a5f;
+        font-size: 52px;
+      }
+			span {
+				font-size: 20px;
 			}
 		}
+    .clearfix{
+        text-align: center;
+        .submit{
+          float: none !important;
+          padding:4px 28px !important;
+
+        }
+    }
+    
 	}
 }
 </style>
