@@ -12,8 +12,10 @@ class CollectionController extends Controller
     public function index(Request $request)
     {
         $user        = $request->user();
-        $collections = $user->collections()->with('articles')->orderBy('id', 'desc')->get(); 
-        return $collections; 
+        $collections = $user->collections()->with(['articles' => function ($query) {
+            $query->where('status', '>=', 0);
+        }])->orderBy('id', 'desc')->get();  
+        return $collections;
     }
 
     public function show(Request $request, $id)
