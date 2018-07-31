@@ -4,7 +4,7 @@
 		    <a v-if="article.has_image" :class="article.type =='video' ? 'wrap-img video' : 'wrap-img'" :href="article.url" :target="isDesktop? '_blank' : '_self'">
 		        <img :src="article.primary_image" :alt="article.title">
 		        <i class="hover-play"> </i>
-		        <i  v-if="article.type =='video'" class="duration">{{ article.duration }}</i>  <!--当为视频时,取出视频的时长 -->
+		        <i  v-if="article.type =='video'" class="duration">{{ videotime }}</i>  <!--当为视频时,取出视频的时长 -->
 		    </a>  
 		  <div class="content">
 		    <div class="author">
@@ -112,6 +112,7 @@ export default {
 			lastPage: -1,
 			articles: [],
 			end: false,
+			videotime: "1:30" //TODO:: 视频长度应该从Api为每个item获取，不是在这里
 		};
 	}
 };

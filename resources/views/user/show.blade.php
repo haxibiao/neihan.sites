@@ -13,7 +13,7 @@
                 <!-- Nav tabs -->
                 <ul id="trigger-menu" class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active">
-                        <a href="#article" aria-controls="article" role="tab" data-toggle="tab"><i class="iconfont icon-wenji"></i>文章</a>
+                        <a href="#article" aria-controls="article" role="tab" data-toggle="tab"><i class="iconfont icon-wenji"></i>作品</a>
                     </li>
                     <li role="presentation">
                         <a href="#dynamic" aria-controls="dynamic" role="tab" data-toggle="tab"><i class="iconfont icon-zhongyaogaojing"></i>动态</a>
