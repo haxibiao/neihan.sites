@@ -17,7 +17,7 @@
 		overflow: hidden;
 		margin-right: -5px;
 		text-align: center;
-		@media screen and (max-width:768px) {
+		@media screen and (max-width: 768px) {
 			.category-video-item {
 				width: 50% !important;
 				margin-right: 0px !important;
@@ -137,7 +137,7 @@
 			clear: both;
 			overflow: hidden;
 			width: 100%;
-			@media screen and (max-width:768px) {
+			@media screen and (max-width: 768px) {
 				.game-video-item {
 					margin-left: 20px !important;
 					float: none !important;
@@ -154,6 +154,8 @@
 					width: 100%;
 					margin-bottom: 10px;
 					overflow: hidden;
+					height: 195px;
+					border-radius: 4px;
 					&:hover {
 						img {
 							box-shadow: 0 1px 5px 1px $gray-color3;
@@ -167,8 +169,8 @@
 						}
 					}
 					.video-photo {
-						width: 100%;
-						border-radius: 4px;
+						width: auto;
+						height: 100%;
 					}
 				}
 				.video-title {
