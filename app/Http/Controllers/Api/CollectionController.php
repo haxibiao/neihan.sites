@@ -12,7 +12,7 @@ class CollectionController extends Controller
     public function index(Request $request)
     {
         $user        = $request->user();
-        $collections = $user->collections()->with(['articles' => function ($query) {
+        $collections = $user->collections()->where('status','>=',0)->with(['articles' => function ($query) {
             $query->where('status', '>=', 0);
         }])->orderBy('id', 'desc')->get();  
         return $collections;

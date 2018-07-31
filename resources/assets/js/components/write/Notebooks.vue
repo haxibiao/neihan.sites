@@ -48,7 +48,7 @@
 				<notes @article-added="articleAdded"></notes>
 			</div>
 			<modification-name></modification-name>
-			<delete-notebook></delete-notebook>
+			<delete-notebook :count="this.collections.length"></delete-notebook>
 			<frequently-asked-questions></frequently-asked-questions>
 		</div>
 		<published :show="published"/>
