@@ -25,7 +25,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy('id', 'desc')->paginate(24);
+        $users = User::orderBy('count_articles', 'desc')->paginate(24);
 
         //TODO:: need add debug and ajax ...
 
