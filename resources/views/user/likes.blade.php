@@ -21,7 +21,7 @@
                             <a href="#collection" aria-controls="collection" role="tab" data-toggle="tab">关注的文集 {{ $data['followed_collections']->total() }}</a>
                         </li>
                         <li role="presentation" {!! ends_with(request()->path(), 'likes') ? 'class="active"' : '' !!}>
-                            <a href="#article" aria-controls="article" role="tab" data-toggle="tab">喜欢的文章 {{ $data['liked_articles']->total() }}</a>
+                            <a href="#article" aria-controls="article" role="tab" data-toggle="tab">喜欢的作品 {{ $data['liked_articles']->total() }}</a>
                         </li>
                     </ul>
                     <!-- Tab panes -->
