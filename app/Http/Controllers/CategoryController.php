@@ -11,7 +11,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
-{
+{ 
     public function __construct()
     {
         $this->middleware('auth.admin', ['only' => ['list','edit','store', 'update', 'destroy', 'create']]);
@@ -150,7 +150,10 @@ class CategoryController extends Controller
     {
         $admins     = json_decode($request->uids, true);
         //防止重复选人
-        $admin_ids  = array_unique( array_pluck($admins,'id') );
+        $admin_ids = [];
+        if(!empty($admins)){
+            $admin_ids  = array_unique( array_pluck($admins,'id') );
+        }
         $auth_id    = $request->user()->id;
         if(!in_array( $auth_id, $admin_ids )){
             array_push($admin_ids, $auth_id);
