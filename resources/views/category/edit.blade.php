@@ -20,7 +20,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <div class="avatar-category"><img src="{{ $category->logo ? $category->logo : '/images/dissertation_04.jpg' }}" alt="" id="previewImage"></div>
+                        <div class="avatar-category"><img src="{{ $category->logo() ? : '/images/dissertation_04.jpg' }}" alt="" id="previewImage"></div>
                     </td>
                     <td>
                         <a rel="noreferrer" class="btn-base btn-hollow btn-md btn-file">

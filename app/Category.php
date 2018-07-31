@@ -15,7 +15,7 @@ class Category extends Model
         'parent_id',
         'type',
         'order',
-        'status',
+        'status', 
         'request_status',
         'is_official',
         'is_for_app',
@@ -115,11 +115,14 @@ class Category extends Model
         $this->description = $this->description();
     }
 
-    public function logo()
+    public function logo() 
     {
         $path = empty($this->logo) ? '/images/category.logo.jpg' : $this->logo;
         $url  = file_exists(public_path($path)) ? $path : starts_with($path, 'http') ? $path : env('APP_URL') . $path;
-
+        //如果用户刚更新过，刷新头像图片的浏览器缓存
+        if ($this->updated_at && $this->updated_at->addMinutes(2) > now()) {
+            $url = $url . '?t=' . time(); 
+        }
         //APP 需要返回全Uri
         return starts_with($url, 'http') ? $url : url($url);
     }
@@ -128,7 +131,10 @@ class Category extends Model
     {
         $path = empty($this->logo_app) ? '/images/category.logo.jpg' : $this->logo_app;
         $url  = file_exists(public_path($path)) ? $path : env('APP_URL') . $path;
-
+        //如果用户刚更新过，刷新头像图片的浏览器缓存
+        if ($this->updated_at && $this->updated_at->addMinutes(2) > now()) {
+            $url = $url . '?t=' . time();
+        }
         //APP 需要返回全Uri
         return starts_with($url, 'http') ? $url : url($url);
     }

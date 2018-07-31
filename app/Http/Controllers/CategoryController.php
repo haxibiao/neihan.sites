@@ -292,6 +292,7 @@ class CategoryController extends Controller
         $category->update($request->all());
         //save logo
         $category->saveLogo($request);
+        $category->updated_at = now();
         $category->save();
         //save admins ...
         $this->saveAdmins($category, $request);
