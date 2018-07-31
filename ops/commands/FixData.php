@@ -119,7 +119,44 @@ class FixData extends Command
 
     public function fix_articles()
     {
-        
+        Article::where('source_url', 0)->chunk(100, function ($articles) {
+            foreach ($articles as $article) {
+                $fix   = false;
+                $title = $article->title;
+                $preg  = "/<img.*?src=[\"|\'](.*?)[\"|\'].*?>/";
+                preg_match_all($preg, $article->body, $matches);
+                $image_urls = $matches[1];
+                if (!empty($image_urls)) {
+                    for ($i = 0; $i < count($image_urls); $i++) {
+                        $image_url = $image_urls[$i];
+                        if (str_contains($image_url, $title)) {
+                            $image_tag = $matches[0][$i];
+                            $preg      = "/<img.+height=\"(\d*?)\">/i";
+                            preg_match_all($preg, $image_tag, $image_height);
+                            $image_height = $image_height[1][0];
+                            $preg         = "/<img.+width=\"(\d*?)\".+>/i";
+                            preg_match_all($preg, $image_tag, $image_width);
+                            $image_width  = $image_width[1][0];
+                            $articlImages = $article->images()->get();
+                            $image_path   = '';
+                            foreach ($articlImages as $image) {
+                                if ($image->width == $image_width && $image->height == $image_height) {
+                                    $image_path = $image->url_prod();
+                                }
+                            }
+                            $new_Image     = str_replace($image_url, $image_path, $image_tag);
+                            $body          = $article->body;
+                            $article->body = str_replace($image_tag, $new_Image, $body);
+                            $article->save();
+                            $fix = true;
+                        }
+                    }
+                    if ($fix) {
+                        $this->cmd->info('Article Id: ' . $article->id . ' fix sucess');
+                    }
+                }
+            }
+        });
     }
     public function fix_collections()
     {
