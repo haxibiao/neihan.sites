@@ -83,7 +83,7 @@ class UserController extends Controller
             ->with('user')->with('category')
             ->where('type', 'article')
             ->where('status', '>', 0)
-            ->orderBy('updated_at', 'desc');
+            ->orderBy('commented', 'desc');
         $articles = smartPager($qb, 10);
         if (ajaxOrDebug() && request('commented')) {
             foreach ($articles as $article) {
