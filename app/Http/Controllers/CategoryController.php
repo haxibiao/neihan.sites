@@ -14,8 +14,8 @@ class CategoryController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth.admin', ['only' => ['list']]);
-        $this->middleware('auth', ['only' => ['store', 'update', 'destroy', 'create']]);
+        $this->middleware('auth.admin', ['only' => ['list','edit','store', 'update', 'destroy', 'create']]);
+        //$this->middleware('auth', ['only' => ['store', 'update', 'destroy', 'create']]);
     }
 
     /**
@@ -286,10 +286,10 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $category = Category::find($id);
-        /*$category->update($request->all());
+        $category->update($request->all());
         //save logo
         $category->saveLogo($request);
-        $category->save();*/
+        $category->save();
         //save admins ...
         $this->saveAdmins($category, $request);
         return redirect()->to('/category');
