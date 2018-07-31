@@ -142,7 +142,10 @@ class VideoController extends Controller
 
         //check article exist and status
         $article = $video->article;
-        if (empty($article) || $article->status < 1) {
+        if(empty($article)){
+            abort(404);
+        }
+        if ( $article->status < 1) {
             if (!canEdit($article)) {
                 abort(404);
             }
@@ -156,7 +159,7 @@ class VideoController extends Controller
         $article->recordBrowserHistory();
         //获取关联视频
         $data['related']    = $article->relatedVideoPostsQuery()->paginate(4);
-        $data['sameAuthor'] = $video->user->videoPosts()->paginate(2);
+        $data['sameAuthor'] = $article->user->videoPosts()->paginate(2);
 
         return view('video.show')
             ->withVideo($video)
