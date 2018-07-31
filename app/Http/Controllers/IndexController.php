@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Category;
 use App\User;
-use App\Video;
 use Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
@@ -26,7 +25,6 @@ class IndexController extends Controller
                 $categorie_ids[] = $stick_category->id;
             }
         }
-
         //已登录，优先显示专注的专题的文章
         if (Auth::check()) {
             $user = Auth::user();
@@ -92,8 +90,8 @@ class IndexController extends Controller
         $articles     = $articles->filter(function ($article) use ($sticks) {
             return !in_array($article->id, $sticks->pluck('id')->toArray());
         });
-
-        //移动端，用简单的分页样式 
+        if(request()->page > 1) $data->sticks = [];
+        //移动端，用简单的分页样式
         if (\Agent::isMobile()) {
             $data->articles = new Paginator(new Collection($articles), 10);
             $data->articles->hasMorePagesWhen($total > request('page') * 10);
@@ -102,13 +100,12 @@ class IndexController extends Controller
         }
 
         $data->carousel = get_top_articles();
-        
-        //首页推荐视频  TODO  评论时间来排序
-        $data->videoPosts = Article::with('video')->where('type','video')
-                ->orderBy('id', 'desc')
-                ->where('status', '>', 0)
-                ->paginate(4);  
 
+        //首页推荐视频  TODO  评论时间来排序
+        $data->videoPosts = Article::with('video')->where('type', 'video')
+            ->orderBy('id', 'desc')
+            ->where('status', '>', 0)
+            ->paginate(4);
         return view('index.index')
             ->withData($data);
     }
