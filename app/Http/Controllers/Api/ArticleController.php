@@ -181,13 +181,10 @@ class ArticleController extends Controller
         $article         = Article::findOrFail($id);
         $article->status = 0;
         $article->save();
-
         //如果文集也被删除了，恢复出来
-        foreach ($article->collections as $collection) {
-            if ($collection->status == -1) {
-                $collection->status = 0;
-                $collection->save();
-            }
+        if($article->collection->status  == -1){
+            $article->collection->status = 0;
+            $article->collection->save();
         }
 
         return $article;
