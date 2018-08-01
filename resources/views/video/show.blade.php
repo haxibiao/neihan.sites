@@ -48,29 +48,8 @@
                 </div>
                 <div class="listArea col-sm-4 hidden-xs">
                     @include('video.parts.author')
-                    <div class="related-video">
-                        <h4>作者其他视频</h4>
-                        <ul class="video-list">
-                            @foreach($data['sameAuthor'] as $article) 
-                                <li class="video-item hz">
-                                    <a href="{{$article->content_url()}}" class="clearfix" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}">  
-                                        <div class="cover">
-                                            <img src="{{ $article->primaryImage() }}" alt="{{ $article->title }}">
-                                            {{-- 时长 --}}
-                                            <span class="duration">@sectominute($article->video->duration)</span>
-                                        </div>
-                                        <div class="info">
-                                            <div class="video-title">{{ $article->title }}</div> 
-                                            <span class="amount">
-                                                {{-- 播放量 --}}
-                                                {{ $article->hits }}次播放
-                                            </span>
-                                        </div>
-                                    </a> 
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
+                    {{-- 作者的其他视频 --}}
+                    <authors-video user-id={{ $video->user_id }}></authors-video>
                 </div>
             </div>
             <div class="video-info">
@@ -80,10 +59,10 @@
                 <div class="video-description">
                     {{ $video->article->body }}
                 </div> 
-                <div class="video-categories" style="padding-top: 10px">
-                    <h4>#相关的专题</h4>
+                <div class="video-categories">
+                    <h4>相关的专题</h4>
                 @foreach($categories as $category)
-                    <div class="pull-left" style="padding: 5px">
+                    <div class="pull-left">
                         @include('video.parts.category_item')
                     </div>
                 @endforeach
@@ -99,7 +78,7 @@
                     <comments comment-replies={{ $video->article->count_replies }} type="articles" id="{{ $video->article->id }}" author-id="{{ $video->user_id }}"></comments>
                 </div>
                 <div class="guess-like col-sm-4 hidden-xs">
-                    <div class="guessVideo">
+                    {{-- <div class="guessVideo">
                         <h4>其他推荐</h4>
                         <ul class="video-list"> 
                             <div class="top10">
@@ -109,13 +88,13 @@
                                     <a href="{{$article->content_url()}}" class="clearfix" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}">  
                                         <div class="cover">
                                             <img src="{{ $article->primaryImage() }}" alt="{{ $article->title }}">
-                                            {{-- 时长 --}}
+                                         
                                             <span class="duration">@sectominute($article->video->duration)</span>
                                         </div>
                                         <div class="info">
                                             <div class="video-title">{{ $article->title }}</div> 
                                             <span class="amount">
-                                                {{-- 播放量 --}}
+                                             
                                                 {{ $article->hits }}次播放
                                             </span>
                                         </div>
@@ -125,7 +104,8 @@
                         </ul>
                             </div>
                         </ul>
-                    </div>
+                    </div> --}}
+                    <authors-video category-id={{ $video->id }}></authors-video>
                 </div>
             </div>
         </div>

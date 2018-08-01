@@ -44,6 +44,7 @@ Vue.component("hot-search", require("./components/search/Hot.vue"));
 Vue.component("share", require("./components/Share.vue"));
 
 Vue.component("video-list", require("./components/video/VideoList.vue"));
+Vue.component("authors-video", require("./components/video/AuthorsVideo.vue"));
 
 Vue.component("modal-report", require("./components/modals/ModalReport.vue"));
 //recommend component

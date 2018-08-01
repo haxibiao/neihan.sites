@@ -48,6 +48,7 @@ Vue.component("share", require("./components/Share.vue"));
 Vue.component("captcha", require("./components/logins/Captcha.vue"));
 Vue.component("social-login", require("./components/logins/SocialLogin.vue"));
 Vue.component("signs", require("./components/logins/Signs.vue"));
+Vue.component("authors-video", require("./components/video/AuthorsVideo.vue"));
 
 //登录用户：　可见高级输入框组件...
 Vue.component("follow-user-list", require("./components/follow/FollowUserList.vue"));

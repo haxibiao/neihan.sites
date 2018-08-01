@@ -20,10 +20,7 @@ Vue.prototype.$http = window.axios;
  */
 
 //关注，消息spa页面
-Vue.component(
-  "reply-comment",
-  require("./components/comment/ReplyComment.vue")
-);
+Vue.component("reply-comment", require("./components/comment/ReplyComment.vue"));
 Vue.component("blank-content", require("./components/BlankContent.vue"));
 Vue.component("loading-more", require("./components/pure/LoadingMore.vue"));
 Vue.component("follow", require("./components/button/Follow.vue"));
@@ -36,17 +33,11 @@ Vue.component("recently", require("./components/search/Recently.vue"));
 Vue.component("modal-post", require("./components/modals/ModalPost.vue"));
 Vue.component("loading", require("./components/Loading.vue"));
 
-Vue.component(
-  "notification-aside",
-  require("./components/notification/Aside.vue")
-);
+Vue.component("notification-aside", require("./components/notification/Aside.vue"));
 Vue.component("follow-aside", require("./components/follow/Aside.vue"));
 Vue.component("setting-aside", require("./components/setting/Aside.vue"));
 Vue.component("side-tool", require("./components/SideTool.vue"));
-Vue.component(
-  "modal-contribute",
-  require("./components/modals/ModalContribute.vue")
-);
+Vue.component("modal-contribute", require("./components/modals/ModalContribute.vue"));
 
 const routes = [
   {

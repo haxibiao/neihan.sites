@@ -52,28 +52,6 @@
 				bottom: 0;
 				display: flex;
 				flex-direction: column;
-				.classify {
-					.avatar {
-						float: left;
-						img {
-							border-color: $dark-color1;
-						}
-					}
-					.classify-info {
-						margin-left: 5px;
-						a {
-							font-size: 18px;
-							margin-bottom: 5px;
-							color: $light-color1;
-						}
-						span {
-							font-size: 14px;
-						}
-					}
-					.button-vd {
-						margin: 20px 0;
-					}
-				}
 				.related-video {
 					margin-right: -20px;
 					overflow-x: hidden;
@@ -110,8 +88,24 @@
 			color: $light-color1;
 			.video-title {
 				font-size: 25px;
-				margin-bottom: 15px;
+				margin-bottom: 50px;
 				font-weight: 300;
+			}
+			.video-categories {
+				> h4 {
+					border-left: 3px solid #d96a5f;
+					padding-left: 10px;
+					margin-bottom: 30px;
+				}
+				.category-label {
+					background-color: #3d3d46;
+					border: 1px solid #666;
+					color: #888;
+					margin-right: 35px;
+					&:hover {
+						color: #d96a5f;
+					}
+				}
 			}
 			.desc {
 				line-height: 30px;
