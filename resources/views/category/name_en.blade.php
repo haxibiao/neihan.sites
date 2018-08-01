@@ -13,43 +13,22 @@
             {{-- 内容 --}}
             <div class="article-list tab-content">
               {{-- 视频文章内容--}}
-              <ul id="select-menu" class="nav nav-pills" role="tablist">
-                <li role="presentation" class="active">
-                   <a href="#article" aria-controls="article" role="tab" data-toggle="tab" class="article">文章</a>
-                </li>
-                <li role="presentation" >
-                  <a href="#video-list" aria-controls="video-list" role="tab" data-toggle="tab" class="video">视频</a>
-                </li>
-              </ul>
-              <ul role="tabpanel" class="fade in tab-pane active" id="article">
                 <div class="content"> 
                      <!-- Nav tabs -->
                      <ul id="trigger-menu" class="nav nav-tabs" role="tablist">
                        <li role="presentation" class="active">
-                        <a href="#comment" aria-controls="comment" role="tab" data-toggle="tab"><i class="iconfont icon-svg37"></i>新评论</a>
+                        <a href="#include" aria-controls="include" role="tab" data-toggle="tab"><i class="iconfont icon-wenji"></i>作品</a>
                        </li>
                        <li role="presentation">
-                        <a href="#include" aria-controls="include" role="tab" data-toggle="tab"><i class="iconfont icon-wenji"></i>新收录</a>
-                       </li>
+                        <a href="#comment" aria-controls="comment" role="tab" data-toggle="tab"><i class="iconfont icon-svg37"></i>新评论</a>
+                       </li>                       
                        <li role="presentation">
                         <a href="#hot" aria-controls="hot" role="tab" data-toggle="tab"><i class="iconfont icon-huo"></i>热门</a>
                        </li>
                      </ul>
                      <!-- Tab panes -->
                      <div class="article-list tab-content">
-                       <ul role="tabpanel" class="fade in tab-pane active" id="comment">
-                           @if( count($data['commented'])==0)
-                              <blank-content></blank-content>
-                           @else 
-                            @each('parts.article_item', $data['commented'], 'article')
-                             @if(!Auth::check())
-                             <div>{!! $data['commented']->links() !!}</div>
-                             @else
-                             <article-list api="/{{ $category->name_en }}?commented=1" start-page="2" not-empty="{{count($data['commented'])>0}}"/>
-                            @endif
-                           @endif
-                       </ul>
-                       <ul role="tabpanel" class="fade tab-pane" id="include">
+                      <ul role="tabpanel" class="fade in tab-pane active" id="include">
                            @if( count($data['collected'])==0)
                               <blank-content></blank-content>
                            @else 
@@ -59,6 +38,18 @@
                                @else
                                 <article-list api="/{{ $category->name_en }}?collected=1" start-page="2" not-empty="{{count($data['collected'])>0}}"/>
                                @endif
+                           @endif
+                       </ul>
+                       <ul role="tabpanel" class="fade tab-pane " id="comment">
+                           @if( count($data['commented'])==0)
+                              <blank-content></blank-content>
+                           @else 
+                            @each('parts.article_item', $data['commented'], 'article')
+                             @if(!Auth::check())
+                             <div>{!! $data['commented']->links() !!}</div>
+                             @else
+                             <article-list api="/{{ $category->name_en }}?commented=1" start-page="2" not-empty="{{count($data['commented'])>0}}"/>
+                            @endif
                            @endif
                        </ul>
                        <ul role="tabpanel" class="fade tab-pane" id="hot">
@@ -75,46 +66,6 @@
                        </ul>
                      </div>
                 </div>
-              </ul>
-              <ul role="tabpanel" class="fade tab-pane" id="video-list">
-                <div class="content"> 
-                 <!-- Nav tabs -->
-                  <ul id="trigger-menu" class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active">
-                      <a href="#video_new" aria-controls="comment" role="tab" data-toggle="tab">
-                        <i class="iconfont icon-shipin1"></i>最新
-                      </a>
-                    </li>
-                    <li role="presentation">
-                      <a href="#video_hot" aria-controls="include" role="tab" data-toggle="tab">
-                        <i class="iconfont icon-huo"></i>热门
-                      </a>
-                    </li>
-                  </ul>
-                 <!-- Tab panes -->
-                  <div class="article-list tab-content">
-                     <ul role="tabpanel" class="fade in tab-pane active" id="video_new">
-                        @if( count($data['video_new'])==0)
-                          <blank-content></blank-content>
-                        @else 
-                          @foreach($data['video_new'] as $article)
-                           @include('video.parts.video_item')
-                           @endforeach
-                           <div>{!! $data['video_new']->fragment('video_new')->links() !!}</div>
-                        @endif
-                     </ul>
-                     <ul role="tabpanel" class="fade tab-pane" id="video_hot">  
-                        @if( count($data['video_hot'])==0)
-                          <blank-content></blank-content>
-                        @else 
-                          @foreach($data['video_hot'] as $article)
-                           @include('video.parts.video_item')
-                          @endforeach
-                          <div>{!! $data['video_hot']->fragment('video_hot')->links() !!}</div>
-                        @endif
-                     </ul>
-                  </div>
-              </ul>
             </div>
         </div>
         <div class="aside col-sm-4 col-sm-offset-1">
