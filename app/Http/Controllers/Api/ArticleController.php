@@ -142,6 +142,7 @@ class ArticleController extends Controller
             //统计用户的文章数，字数
             $user->count_articles = $user->articles()->count();
             $user->count_words    = $user->articles()->sum('count_words');
+            $article->recordAction();
             $user->save();
         }
 
@@ -206,7 +207,10 @@ class ArticleController extends Controller
     {
         $article            = Article::with('user')->with('category')->with('images')->findOrFail($id);
         $article->fillForJs();
-        $article->category->fillForJs();
+        if(!empty($article->category_id))
+        {
+            $article->category->fillForJs();
+        }
         $article->pubtime = diffForHumansCN($article->created_at);
         return $article;
     }

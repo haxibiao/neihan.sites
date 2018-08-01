@@ -236,12 +236,11 @@ class Article extends Model
     public function recordAction()
     {
         if ($this->status > 0) {
-            $action = Action::firstOrNew([
+            $action = Action::updateOrCreate([
                 'user_id'         => Auth::id(),
                 'actionable_type' => 'articles',
                 'actionable_id'   => $this->id,
             ]);
-            $action->save();
         }
     }
 
