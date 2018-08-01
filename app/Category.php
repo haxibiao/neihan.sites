@@ -273,4 +273,13 @@ class Category extends Model
             ]); 
         }
     }
+    public function isSelf()
+    {
+        return Auth::check() 
+                && 
+            Auth::user()
+                ->categories()
+                ->where('categories.id',$this->id)
+                ->exists() ;
+    }
 }
