@@ -11,7 +11,13 @@ sudo /bin/cp -rf /data/www/ainicheng.com/config /data/www/$1.com/
 sudo /bin/cp -rf /data/www/ainicheng.com/resources/views /data/www/$1.com/resources/
 sudo /bin/cp -rf /data/www/ainicheng.com/resources/assets/js /data/www/$1.com/resources/assets/
 sudo /bin/cp -rf /data/www/ainicheng.com/routes /data/www/$1.com/
+
+echo "sync fix data"
+sudo /bin/cp -rf /data/www/ainicheng.com/ops/commands/FixData.php /data/www/$1.com/ops/commands/
+
+echo "sync composer, package.json"
 sudo /bin/cp -rf /data/www/ainicheng.com/composer.* /data/www/$1.com/
+sudo /bin/cp -rf /data/www/ainicheng.com/package.* /data/www/$1.com/
 
 echo "sync sass ..."
 sudo /bin/cp -rf /data/www/ainicheng.com/resources/assets/sass /data/www/$1.com/resources/assets/
@@ -32,3 +38,7 @@ sudo /bin/cp -rf /data/www/ainicheng.com/public/fonts /data/www/$1.com/public
 
 echo 'sync sdk ...'
 sudo /bin/cp -rf /data/www/ainicheng.com/public/sdk /data/www/$1.com/public
+
+echo 'sync some images ...'
+sudo /bin/cp -rf /data/www/ainicheng.com/public/images/inprogress.jpg /data/www/$1.com/public/images/
+

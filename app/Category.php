@@ -69,6 +69,11 @@ class Category extends Model
             ->orderBy('pivot_updated_at', 'desc');
     }
 
+    public function videoPosts()
+    {
+        return $this->articles()->where('type', 'video');
+    }
+
     public function newRequestArticles()
     {
         return $this->belongsToMany('App\Article')
@@ -211,7 +216,7 @@ class Category extends Model
     }
 
     public function saveLogo($request)
-    { 
+    {
         if ($request->logo) {
             $storage_category = '/storage/category/';
             if (!is_dir(public_path($storage_category))) {
@@ -224,7 +229,7 @@ class Category extends Model
             }
             $img        = \ImageMaker::make($request->logo->path());
             $img->fit(180);
-            $img->save(public_path($this->logo));   
+            $img->save(public_path($this->logo));
 
             $img->fit(32);
             $small_logo = $storage_category . $this->id . '.logo.small.jpg';
@@ -270,7 +275,7 @@ class Category extends Model
                 'user_id'      => $user->id,
                 'visited_type' => 'categories',
                 'visited_id'   => $this->id,
-            ]); 
+            ]);
         }
     }
     public function isSelf()

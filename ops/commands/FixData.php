@@ -93,8 +93,13 @@ class FixData extends Command
 
     public function fix_categories()
     {
-        \DB::table('category_user')->where('id',189)->delete();
+        $this->cmd->info('fix count_videos ...');
+        foreach(Category::all() as $category) {
+            $category->count_videos = $category->videoPosts()->count();
+            $category->save();
+        }
     }
+
     public function fix_videos() 
     {
         
