@@ -14,8 +14,8 @@ class CategoryController extends Controller
 { 
     public function __construct()
     {
-        $this->middleware('auth.admin', ['only' => ['list','edit','store', 'update', 'destroy', 'create']]);
-        //$this->middleware('auth', ['only' => ['store', 'update', 'destroy', 'create']]);
+        $this->middleware('auth', ['only' => ['store', 'create','update','destroy','edit']]);
+        $this->middleware('auth.admin', ['only' => ['list']]);    
     }
 
     /**
@@ -274,6 +274,9 @@ class CategoryController extends Controller
         }
         $user     = Auth::user();
         $category = Category::with('user')->find($id);
+        if(!canEdit($category)){ 
+            abort(403);
+        }
         // dd(json_encode($category->admins->pluck('name','id')));
         $categories = get_categories(0, $type, 1);
         return view('category.edit')->withUser($user)->withCategory($category)->withCategories($categories);
@@ -288,7 +291,10 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $category = Category::find($id);
+        $category = Category::findOrFail($id);
+        if(!canEdit($category)){ 
+            abort(403);
+        }
         $category->update($request->all());
         //save logo
         $category->saveLogo($request);
@@ -308,6 +314,9 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $category = Category::findOrFail($id);
+        if(!canEdit($category)){ 
+            abort(403);
+        }
         if ($category) {
             $count = \App\Article::where('category_id', $category->id)->where('status', '>', 0)->count();
             if ($count == 0) {
