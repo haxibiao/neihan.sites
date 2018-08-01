@@ -43,27 +43,27 @@ export default {
   		var vm = this;
 
       this.counter++;
+      this.page++;
 
       $(this.$refs.fresh).css('transform',`rotate(${360*this.counter}deg)`);
-      let apiUser = '/api/user/'+this.userId+'/videos/relatedVideos?num=2&page='+this.counter;
-      let apiCategory= '/api/user/'+this.categoryId+'/videos/sameVideos?num=4&page='+this.counter;
+      let apiUser = '/api/user/'+this.userId+'/videos/relatedVideos?num=2&page='+this.page;
+      let apiCategory= '/api/user/'+this.categoryId+'/videos/sameVideos?num=4&page='+this.page;
       if(this.userId){
         window.axios.get(apiUser).then(function(response){
         vm.videos = response.data.data
         vm.last_page=response.data.last_page;
-        console.log(vm.counter);
-        if(vm.counter==vm.last_page){
-            vm.counter=1;
+
+        if(vm.page==vm.last_page){
+            vm.page=0;
           }
         });
-        }
-        else if(this.categoryId){
+        }else if(this.categoryId){
          window.axios.get(apiCategory).then(function(response){
             vm.videos = response.data.data
             vm.last_page=response.data.last_page;
 
-            if(vm.counter==vm.last_page){
-                vm.counter=1;
+            if(vm.page==vm.last_page){
+                vm.page=0;
               }
             });
         }
@@ -75,6 +75,7 @@ export default {
     return {
     	videos:null,
       counter:0,
+      page:0,
       last_page:null,
     }
   }
