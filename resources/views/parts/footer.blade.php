@@ -20,8 +20,8 @@
                 <img src="/images/yyzz.png" alt="">
             </a> 
         </div>
-{{--         <a target="_blank" href="">{{ env('ICPGA') }} / </a>
-        举报电话：028-69514351 / --}}
+        公安备案号:<a target="_blank" href="">{{ env('ICPGA') }} / </a>
+        举报电话：028-69514351
     </div>
     <div>
         友情链接: @include('parts.friend_links') <a target="_blank" href="/">{{ config('app.name') }}</a>
