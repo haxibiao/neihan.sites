@@ -3,7 +3,7 @@
         <div class="title">
             <h4 v-if="userId">作者其他视频</h4>
             <div v-if="categoryId" class="recommend">其他推荐</div>
-            <a target="_blank" href="javascript:;" class="font" @click="fetchData"><i class="iconfont icon-shuaxin" ref="fresh"></i>换一批</a>
+            <a v-if="last_page>1" target="_blank" href="javascript:;" class="font" @click="fetchData"><i class="iconfont icon-shuaxin" ref="fresh"></i>换一批</a>
         </div>
         <ul class="video-list">
               <li class="video-item" v-for="video in videos">
@@ -74,7 +74,7 @@ export default {
   data () {
     return {
     	videos:null,
-      counter:0,
+      counter:-1,
       page:0,
       last_page:null,
     }
