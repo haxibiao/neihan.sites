@@ -108,7 +108,6 @@
     width: 78%;
     height: 78%;
     border-radius: 50%;
-    border: 2px solid #ebebeb;
     font-size: 26px;
     line-height: 78px;
     text-align: center;

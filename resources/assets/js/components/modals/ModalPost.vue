@@ -54,18 +54,10 @@
 								        </div>
 								    	<span class="img-limit">支持图片拖拽上传</span>
 								    </div>
-								    <div class="img-loading" style="display: none;">
-								        <div class="img-progress">
-								        	<span class="img-progress-bar" style="width: 100%;"></span>
-								        	<span class="img-progress-num">图片上传中...</span>
-								        </div>
-								        <i class="iconfont icon-ask_close"></i>
-								    </div>
 								</div>
 							</div>
 						</div>
                     </div>
-
                     <input type="hidden" name="user_id" :value="user.id">
 			        <input v-for="img in selectedImgs" name="image_urls[]" type="hidden" :value="img.url">
 			        <input v-if="video_id" name="video_id" type="hidden" :value="video_id">
@@ -160,7 +152,6 @@ export default {
 					id: image.id,
 					selected: 1
 				});
-				console.log(_this.imgItems);
 			});
 		},
 		video_upload(videoFile) {
@@ -195,7 +186,6 @@ export default {
 				},
 				finish: function(result) {
 					$(_this.$refs.upload).val("");
-					console.log(result);
 					//上传成功时的回调函数
 					$(_this.$refs.video_ele).css({ opacity: "1" });
 					console.log("上传结果的fileId：" + result.fileId);
@@ -263,88 +253,29 @@ export default {
 .modal-post {
 	@media (max-width: 1366px){
 		.video {
-				height: 270px !important;
-			}
+			height: 270px !important;
+		}
 	}
 	.modal-dialog {
 		padding-bottom: 20px;
 		max-width: 720px !important;
 		top: 42%;
 		.modal-content {
-			.modal-header {
-				padding: 10px 20px;
-			}
 			.modal-body {
 				padding: 5px 40px 0px;
 				max-height: 660px;
 				overflow: auto;
-				& > div {
-					line-height: normal;
-				}
 				.input-question {
-					margin: 10px 0;
+				    margin: 10px 0;
 				}
 				.textarea-box {
-					position: relative;
-					margin-bottom: 20px;
-					textarea {
-						padding-bottom: 25px;
-					}
-					.word-count {
-						position: absolute;
-						bottom: 1px;
-						right: 6px;
-						color: #969696;
-						font-size: 14px;
-					}
+				    position: relative;
+				    margin-bottom: 20px;
 				}
-				// 配图
 				.img-selector {
-					margin-top: 11px;
-					position: relative;
-					.ask-img-header {
-						font-size: 14px;
-						padding-bottom: 20px;
-						&.bigger {
-							padding-bottom: 35px;
-						}
-						.desc {
-							color: #969696;
-						}
-					}
 					.img-preview {
 						position: relative;
 						margin-bottom: 10px;
-						.img-preview-item {
-							float: right;
-							border: 1px solid #e8e8e8;
-							margin-left: 4px;
-							width: 60px;
-							height: 60px;
-							position: relative;
-							overflow: hidden;
-							.as-height {
-								height: 100%;
-							}
-							.img-del {
-								width: 18px;
-								height: 18px;
-								position: absolute;
-								z-index: 2;
-								top: 0;
-								right: 0;
-								background-color: rgba(0, 0, 0, 0.5);
-								border-radius: 0 0 0 4px;
-								padding: 1px;
-								cursor: pointer;
-								text-align: center;
-								line-height: 18px;
-								i {
-									font-size: 14px;
-									color: white;
-								}
-							}
-						}
 						.modal-video-box{
 							position:relative;
 							display: inline-block;
@@ -366,103 +297,7 @@ export default {
 							cursor: pointer;
 						}
 					}
-					.tab-body {
-						height: 256px;
-						background-color: #f7f7f7;
-						margin: 0 -40px;
-						padding: 20px 0 0 0;
-						position: relative;
-						.tab-body-item {
-							height: 100%;
-							width: 100%;
-							position: relative;
-							.material-search {
-								position: relative;
-								height: 34px;
-								margin: 0 40px 20px 40px;
-								background-color: #ffffff;
-								border: 1px solid #ececec;
-								border-radius: 2px;
-								overflow: hidden;
-								.search-icon {
-									position: absolute;
-									top: 1px;
-									left: 0;
-									width: 31px;
-									height: 31px;
-									line-height: 31px;
-									text-align: center;
-								}
-								.search-input {
-									height: 100%;
-									padding: 2px 64px 2px 32px;
-									border: none;
-									font-size: 14px;
-									background-color: #fff;
-									display: block;
-									width: 100%;
-								}
-								.search-submit {
-									height: 34px;
-									width: 64px;
-									background-color: #ececec;
-									font-size: 14px;
-									line-height: 14px;
-									color: #515151;
-									letter-spacing: 1px;
-									border: none;
-									position: absolute;
-									top: 0;
-									right: 0;
-								}
-							}
-							.img-upload-field {
-								height: 100%;
-								padding-top: 46px;
-								.img-upload-btn {
-									position: relative;
-									text-align: center;
-									i {
-										font-size: 42px;
-										color: #c4c4c4;
-										line-height: 1;
-									}
-									.img-click-here,
-									.img-limit {
-										font-size: 14px;
-										color: #2b89ca;
-										display: block;
-										margin-top: 16px;
-										line-height: 1;
-									}
-									.img-file {
-										position: absolute;
-										overflow: hidden;
-										left: 50%;
-										top: 0;
-										margin-left: -60px;
-										width: 120px;
-										height: 100px;
-										cursor: pointer;
-										input {
-											width: 100%;
-											height: 100%;
-											opacity: 0;
-											cursor: pointer;
-										}
-									}
-									.img-limit {
-										color: #969696;
-										margin-top: 12px;
-									}
-								}
-							}
-						}
-					}
 				}
-			}
-			footer {
-				padding: 15px 40px;
 			}
 		}
 	}
