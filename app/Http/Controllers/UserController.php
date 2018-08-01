@@ -63,10 +63,9 @@ class UserController extends Controller
     {
         $user              = User::findOrFail($id);
         $user->followUsers = $user->followingUsers()->count();
-        //文章
+        //作品
         $qb = Article::where('user_id', $user->id)
             ->with('user')->with('category')
-            ->where('type', 'article')
             ->where('status', '>', 0)
             ->orderBy('id', 'desc');
         $articles = smartPager($qb, 10);
@@ -81,7 +80,6 @@ class UserController extends Controller
         //最新评论
         $qb = Article::where('user_id', $user->id)
             ->with('user')->with('category')
-            ->where('type', 'article')
             ->where('status', '>', 0)
             ->orderBy('commented', 'desc');
         $articles = smartPager($qb, 10);
@@ -97,7 +95,6 @@ class UserController extends Controller
         $qb = Article::where('user_id', $user->id)
             ->with('user')->with('category')
             ->where('status', '>', 0)
-            ->where('type', 'article')
             ->orderBy('hits', 'desc');
         $articles = smartPager($qb, 10);
         if (ajaxOrDebug() && request('hot')) {

@@ -29,14 +29,14 @@
                      <!-- Tab panes -->
                      <div class="article-list tab-content">
                       <ul role="tabpanel" class="fade in tab-pane active" id="include">
-                           @if( count($data['collected'])==0)
+                           @if( count($data['works'])==0)
                               <blank-content></blank-content>
                            @else 
-                                @each('parts.article_item', $data['collected'], 'article')
+                                @each('parts.article_item', $data['works'], 'article')
                                @if(!Auth::check())
-                                <div>{!! $data['collected']->fragment('include')->links() !!}</div>
+                                <div>{!! $data['works']->fragment('include')->links() !!}</div>
                                @else
-                                <article-list api="/{{ $category->name_en }}?collected=1" start-page="2" not-empty="{{count($data['collected'])>0}}"/>
+                                <article-list api="/{{ $category->name_en }}?works=1" start-page="2" not-empty="{{count($data['works'])>0}}"/>
                                @endif
                            @endif
                        </ul>

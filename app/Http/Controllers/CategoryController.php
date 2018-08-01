@@ -188,7 +188,7 @@ class CategoryController extends Controller
         $category = Category::where('name_en', $name_en)->firstOrFail();
 
         //最新评论
-        $qb = $category->publishedArticles()
+        $qb = $category->publishedWorks()
             ->with('user')->with('category')
             ->orderBy('commented', 'desc');
         $articles = smartPager($qb, 10);
@@ -200,8 +200,8 @@ class CategoryController extends Controller
         }
         $data['commented'] = $articles;
 
-        //最新收录
-        $qb = $category->publishedArticles()
+        //作品
+        $qb = $category->publishedWorks()
             ->with('user')->with('category')
             ->orderBy('pivot_created_at', 'desc');
         $articles = smartPager($qb, 10);
@@ -211,10 +211,10 @@ class CategoryController extends Controller
             }
             return $articles;
         }
-        $data['collected'] = $articles;
+        $data['works'] = $articles;
 
         //热门文章
-        $qb = $category->publishedArticles()
+        $qb = $category->publishedWorks()
             ->with('user')->with('category')
             ->orderBy('hits', 'desc');
         $articles = smartPager($qb, 10);
@@ -225,28 +225,6 @@ class CategoryController extends Controller
             return $articles;
         }
         $data['hot'] = $articles;
-
-        //最新视频
-        $qb     = $category->videoArticles()->whereStatus(1)->orderBy('id', 'desc');
-        $videos = smartPager($qb, 12);
-        if (ajaxOrDebug() && $request->get('video_new')) {
-            foreach ($videos as $video) {
-                $video->fillForJs();
-            }
-            return $videos;
-        }
-        $data['video_new'] = $videos;
-
-        //热门视频
-        $qb     = $category->videoArticles()->whereStatus(1)->orderBy('hits', 'desc');
-        $videos = smartPager($qb, 12);
-        if (ajaxOrDebug() && $request->get('video_hot')) {
-            foreach ($videos as $video) {
-                $video->fillForJs();
-            }
-            return $videos;
-        }
-        $data['video_hot'] = $videos;
 
         //相关专题
         $related_category = User::find($category->user_id)->adminCategories->take(5);
