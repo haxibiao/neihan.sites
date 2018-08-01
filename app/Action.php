@@ -10,6 +10,8 @@ class Action extends Model
         'user_id',
         'actionable_type',
         'actionable_id',
+        'created_at',
+        'updated_at',
     ];
 
     public function user()

@@ -9,6 +9,7 @@ use App\Category;
 use App\Collection;
 use App\User;
 use App\Visit;
+use App\Action;
 use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Console\Command;
 
@@ -59,9 +60,11 @@ class FixData extends Command
         if ($this->cmd->argument('operation') == "likes") {
             return $this->fix_likes();
         }
-        
         if($this->cmd->argument('operation') == "article_comments"){
             return $this->fix_article_comments();
+        }
+        if($this->cmd->argument('operation') == "actions"){
+            return $this->fix_actions();
         }
     }
 
@@ -215,5 +218,28 @@ class FixData extends Command
                 $visit->save(['timestamps'=>false]);
             }
         });
+    }
+
+    public function fix_actions()
+    {
+        $this->cmd->info('fix article action');
+        Article::where('status','1')->chunk(100,function($articles){
+            foreach ($articles as $article) {
+                $article_id = $article->id;
+                $acion_article = Action::where('actionable_type','articles')
+                ->where('actionable_id',$article_id)->get();
+                if(!$acion_article->count()){
+                    $action = Action::updateOrCreate([
+                        'user_id'         => $article->user_id,
+                        'actionable_type' => 'articles',
+                        'actionable_id'   => $article->id,
+                        'created_at'=>$article->created_at,
+                        'updated_at'=>$article->updated_at
+                    ]);
+                    $this->cmd->info('fix Article Id:'.$article->id.' fix success');
+                }
+            }
+        });
+        $this->cmd->info('fix article action success');
     }
 }

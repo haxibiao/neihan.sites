@@ -112,7 +112,7 @@ class UserController extends Controller
         $qb = $user->actions()
             ->with('user')
             ->with('actionable')
-            ->orderBy('id', 'desc');
+            ->orderBy('created_at', 'desc');
         $actions = smartPager($qb, 10);
         if (ajaxOrDebug() && request('actions')) {
             foreach ($actions as $action) {
