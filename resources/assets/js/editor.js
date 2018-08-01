@@ -38,6 +38,7 @@ Vue.component("side-tool", require("./components/SideTool.vue"));
 
 Vue.component("article-list", require("./components/article/ArticleList.vue"));
 Vue.component("video-list", require("./components/video/VideoList.vue"));
+Vue.component("authors-video", require("./components/video/AuthorsVideo.vue"));
 Vue.component("category-list", require("./components/category/CategoryList.vue"));
 Vue.component("search-box", require("./components/search/SearchBox.vue"));
 Vue.component("recently", require("./components/search/Recently.vue"));

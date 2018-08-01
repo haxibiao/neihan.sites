@@ -41,6 +41,9 @@ export default {
   methods: {
   	fetchData() {
   		var vm = this;
+
+      this.counter++;
+
       $(this.$refs.fresh).css('transform',`rotate(${360*this.counter}deg)`);
       let apiUser = '/api/user/'+this.userId+'/videos/relatedVideos?num=2&page='+this.counter;
       let apiCategory= '/api/user/'+this.categoryId+'/videos/sameVideos?num=4&page='+this.counter;
@@ -173,7 +176,7 @@ export default {
             overflow: hidden;
           }
           .amount{
-                white-space: nowrap;
+            white-space: nowrap;
             font-size: 12px;
             color: #969696;
           }

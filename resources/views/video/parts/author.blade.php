@@ -11,7 +11,7 @@
         @if($video->user)
         <a href="/user/{{ $video->user_id }}" class="sub">
             <img src="{{ $video->user->avatar() }}" class="avatar" alt="{{ $video->user->name }}">
-            <span>{{ $video->user->name }}</span>
+            <span class="name">{{ $video->user->name }}</span>
         </a>
         @endif
         @if( $video->user && !$video->user->isSelf() )

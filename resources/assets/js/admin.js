@@ -43,6 +43,7 @@ Vue.component("hot-search", require("./components/search/Hot.vue"));
 
 Vue.component("share", require("./components/Share.vue"));
 Vue.component("video-list", require("./components/video/VideoList.vue"));
+Vue.component("authors-video", require("./components/video/AuthorsVideo.vue"));
 Vue.component("modal-share-wx", require("./components/modals/ModalShareWX.vue"));
 
 Vue.component("captcha", require("./components/logins/Captcha.vue"));

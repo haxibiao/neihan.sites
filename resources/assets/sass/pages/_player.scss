@@ -52,6 +52,18 @@
 				bottom: 0;
 				display: flex;
 				flex-direction: column;
+				.upload-user {
+					.sub {
+						.name {
+							max-width: 95px;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+							display: inline-block;
+						}
+					}
+				}
+
 				.related-video {
 					margin-right: -20px;
 					overflow-x: hidden;
