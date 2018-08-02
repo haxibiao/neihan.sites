@@ -55,7 +55,6 @@ export default {
 .delete-notebook {
 	.modal-dialog {
 		.modal-body {
-      text-align: center;
       i{
         color:#d96a5f;
         font-size: 52px;
@@ -65,14 +64,10 @@ export default {
 			}
 		}
     .clearfix{
-        text-align: center;
         .submit{
-          float: none !important;
-          padding:4px 28px !important;
-
-        }
+        margin-left: 10px;
+      }
     }
-    
 	}
 }
 </style>

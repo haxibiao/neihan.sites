@@ -44,17 +44,17 @@ export function addArticle({ commit, dispatch, state }) {
 	});
 }
 
-export function autoSavePreviewArticle({ commit, dispatch, state }) {
-	let { previewArticle } = state;
-	let article = { id: previewArticle.id, title: previewArticle.title, body: previewArticle.body };
+export function autoSavePreviousArticle({ commit, dispatch, state }) {
+	let { previousArticle } = state;
+	let article = { id: previousArticle.id, title: previousArticle.title, body: previousArticle.body, status: previousArticle.status };
 	writeApi.saveArticle(article, articleResult => {
-		commit(types.SAVED_ARTICLE, articleResult);
+		commit(types.SAVED_PREV_ARTICLE, articleResult);
 	});
 }
 
 export function saveArticle({ commit, dispatch, state }) {
 	let { currentArticle } = state;
-	let article = { id: currentArticle.id, title: currentArticle.title, body: currentArticle.body };
+	let article = { id: currentArticle.id, title: currentArticle.title, body: currentArticle.body, status: currentArticle.status };
 	writeApi.saveArticle(article, articleResult => {
 		commit(types.SAVED_ARTICLE, articleResult);
 	});

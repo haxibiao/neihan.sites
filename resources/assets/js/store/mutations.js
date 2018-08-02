@@ -18,6 +18,14 @@ export default {
     state.currentCollection.articles.unshift(article);
   },
 
+  [types.SAVED_PREV_ARTICLE](state, article) {
+    var { previousArticle } = state;
+    if (previousArticle && previousArticle.id) {
+      previousArticle.status = article.status;
+      previousArticle.saved = true;
+    }
+  },
+
   [types.SAVED_ARTICLE](state, article) {
     //目前只有发布文章后，状态字段status会变化
     var { currentArticle } = state;
@@ -68,7 +76,7 @@ export default {
   [types.GOT_CURRENT_PATH_INFO](state, { collectionId, articleId }) {
     state.currentCollection = state.collections.find(item => item.id == collectionId);
     if (state.currentArticle) {
-      state.previewArticle = state.currentArticle;
+      state.previousArticle = state.currentArticle;
     }
     if (articleId && state.currentCollection && state.currentCollection.articles) {
       state.currentArticle = state.currentCollection.articles.find(item => item.id == articleId);

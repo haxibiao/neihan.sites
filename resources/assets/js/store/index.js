@@ -15,7 +15,7 @@ const state = {
   collectionId: null,
   currentArticle: {},
   articleId: null,
-  previewArticle: {},
+  previousArticle: {},
   trash: [],
   published: false
 };

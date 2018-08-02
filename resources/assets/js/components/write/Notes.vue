@@ -45,13 +45,13 @@ export default {
 	name: "Notes",
 
 	watch: {
-		$route(to, from) {
-			//切换文章的时候，保存前一篇文章
-			var { previewArticle, currentArticle } = this.$store.state;
-			if (previewArticle && previewArticle.id) {
-				this.$store.dispatch("autoSavePreviewArticle");
-			}
-		}
+		// $route(to, from) {
+		// 	//切换文章的时候，保存前一篇文章
+		// 	var { previousArticle, currentArticle } = this.$store.state;
+		// 	if (previousArticle && previousArticle.id) {
+		// 		this.$store.dispatch("autoSavePreviousArticle");
+		// 	}
+		// }
 	},
 
 	updated() {
