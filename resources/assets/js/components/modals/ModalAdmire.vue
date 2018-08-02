@@ -45,7 +45,7 @@
 			            <div v-show="wexinPay" class="wx-qr-code" >
 			                <h3>微信扫码支付</h3>
 			                <div class="qr-code" title="">
-			                    <img alt="Scan me!" src="/images/code.png">
+			                    <img alt="Scan me!" src="/qrcode/ainicheng.com.jpg">
 			                </div>
 			                <div class="pay-amount">赞赏金额:<span>￥{{ money }}</span></div>
 			            </div>
@@ -79,6 +79,7 @@ export default {
 			this.custom = null;
 		},
 		payNow() {
+			if(this.money >= 1){
 			if (this.payMethod == "wx-pay") {
 				this.wexinPay = true;
 			} else {
@@ -91,7 +92,8 @@ export default {
 					window.location.href = payUrl;
 				}
 			}
-		},
+		}
+	},
 		rollBack() {
 			this.wexinPay = null;
 		}
