@@ -1,15 +1,15 @@
-@extends('layouts.app') 
+@extends('layouts.app')
 @section('title')
     {{ $user->name }} - {{ env('APP_NAME') }}
-@stop　
+@stop
 @section('content')
 <div id="user">
     <div id="user_wrp">
         <div class="clearfix">
             <div class="main sm-left">
-                {{-- 用户信息 --}} 
+                {{-- 用户信息 --}}
                 @include('user.parts.information')
-                {{-- 内容 --}} 
+                {{-- 内容 --}}
                 {{-- 内容/关注的专题文集，喜欢的文章 --}}
                 <div class="content">
                     <!-- Nav tabs -->
@@ -42,7 +42,7 @@
                             @endif
                         </ul>
                         <ul role="tabpanel" class="fade in note-list tab-pane {{ ends_with(request()->path(), 'followed-collections') ? 'active' : '' }}" id="collection">
-                            
+
                             @foreach($data['followed_collections'] as $follow)
                             @php
                                 $collection = $follow->followed;
@@ -50,11 +50,11 @@
                             @if($collection)
                             <li class="note-info">
                                 <a class="avatar-category" href="/collection/{{ $collection->id }}"><img src="/images/collection.png" alt=""></a>
-                                
-                                <follow 
-                                    type="collections" 
-                                    id="{{ $collection->id }}" 
-                                    user-id="{{ user_id() }}" 
+
+                                <follow
+                                    type="collections"
+                                    id="{{ $collection->id }}"
+                                    user-id="{{ user_id() }}"
                                     followed="{{ is_follow('collections', $collection->id) }}">
                                   </follow>
 
@@ -70,15 +70,19 @@
                         </ul>
                         <ul role="tabpanel" class="fade in article-list tab-pane  {{ ends_with(request()->path(), 'likes') ? 'active' : '' }}" id="article">
 
-                            @foreach($data['liked_articles'] as $like)                            	
+                            @foreach($data['liked_articles'] as $like)
                             	@include('parts.article_item', ['article' => $like->liked])
                             @endforeach
+                            @if(Auth::check())
+                                <article-list api="/user/{{ $user->id }}/likes" is-desktop="{{ \Agent::isDeskTop() == 1 }}" start-page="2">
+                                </article-list>
+                            @endif
 
                         </ul>
                     </div>
                 </div>
             </div>
-            {{-- 侧栏 --}} 
+            {{-- 侧栏 --}}
             @include('user.parts.aside')
         </div>
     </div>
