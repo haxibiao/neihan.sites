@@ -152,10 +152,13 @@
                         </div>
                         <div class="panel-body admin-section">
                             <a class="btn btn-sm btn-primary" href="/user/{{ Auth::id() }}/videos" role="button">我的视频</a>
+                            @editor
                             <a class="btn btn-sm btn-warning" href="/video/list" role="button">管理视频</a>
+                            @endeditor
                         </div>
                     </div>
                 </div>
+                @editor
                 <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -178,7 +181,7 @@
                         </div>
                     </div>
                 </div>
-                
+                @endeditor
             </div>
 
         </div>
