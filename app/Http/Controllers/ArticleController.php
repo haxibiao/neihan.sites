@@ -129,6 +129,11 @@ class ArticleController extends Controller
     {
         $article = Article::with('user')->with('category')->with('tags')->with('images')->findOrFail($id);
 
+        //type is video redirect
+        if($article->type == 'video'){
+            return redirect('/video/'.$article->video_id);
+        }
+        
         //draft article logic ....
         if ($article->status < 1) {
             if (!canEdit($article)) {
