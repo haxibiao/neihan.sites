@@ -105,7 +105,7 @@
                     </h3>
                 </div>
                 <div class="panel-body">
-                    <img alt="{{ $user->name }}" class="img img-circle" src="{{ $user->avatar() }}">
+                    <img alt="{{ $user->name }}" class="img img-circle avatar_small" src="{{ $user->avatar() }}">
                         <h4>
                             <a href="/user/{{ $user->id }}">{{ $user->name }}</a>
                         </h4>
@@ -144,6 +144,7 @@
                         </div>
                     </div>
                 </div>
+                @endeditor
                 <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -177,7 +178,7 @@
                         </div>
                     </div>
                 </div>
-                @endeditor
+                
             </div>
 
         </div>
