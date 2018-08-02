@@ -105,7 +105,7 @@
                     </h3>
                 </div>
                 <div class="panel-body">
-                    <img alt="{{ $user->name }}" class="img img-circle avatar_small" src="{{ $user->avatar() }}">
+                    <img alt="{{ $user->name }}" width="100px" class="img img-circle" src="{{ $user->avatar() }}">
                         <h4>
                             <a href="/user/{{ $user->id }}">{{ $user->name }}</a>
                         </h4>
