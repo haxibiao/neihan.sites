@@ -210,6 +210,7 @@ class UserController extends Controller
             foreach ($data as $follows) {
                 $follows->user = $follows->followed;
                 $follows->user->avatar = $follows->user->avatar();
+                $follows->user->count_followings = $follows->user->followingUsers()->count();
                 $follows->user->is_follow = is_follow('users', $follows->user->id);
             }
             return $data;
@@ -219,6 +220,7 @@ class UserController extends Controller
             $data = smartPager($user->follows()->orderBy('id', 'desc'), 10);
             foreach ($data as $followUser) {
                 $followUser->user->avatar = $followUser->user->avatar();
+                $followUser->user->count_followings = $followUser->user->followingUsers()->count();
                 $followUser->user->is_follow = is_follow('users', $followUser->user->id);
             }
             return $data;

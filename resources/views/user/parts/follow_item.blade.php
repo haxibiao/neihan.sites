@@ -1,3 +1,6 @@
+@php
+  $user->count_followings = $user->followingUsers()->count();
+@endphp
 <li class="user-info info-md">
     <a class="avatar" href="/user/{{ $user->id }}"><img src="{{ $user->avatar() }}" alt=""></a>        
 	  
