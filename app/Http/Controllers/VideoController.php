@@ -247,6 +247,9 @@ class VideoController extends Controller
         //     }
         // }
 
+        if(str_contains(url()->previous(),'edit')){
+            return redirect('/video/'.$video->id);
+        }
         //防止用户直接访问编辑界面无session导致页面报错
         return redirect()->back();
     }
