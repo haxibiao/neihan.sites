@@ -26,7 +26,7 @@
 		      <a target="_blank" :href="article.url" class="browse_meta">
 		        <i class="iconfont icon-liulan"></i> {{ article.hits }}
 		      </a>        
-		      <a :target="isDesktop? '_blank' : '_self'" :href="article.url" class="comment_meta">
+		      <a :target="isDesktop? '_blank' : '_self'" :href="article.url+'/#comments'" class="comment_meta">
 		        <i class="iconfont icon-svg37"></i> {{ article.count_replies }}
 		      </a>
 		      <a :target="isDesktop? '_blank' : '_self'" :href="article.url"><i class="iconfont icon-03xihuan"></i> {{ article.count_likes }}</a>
