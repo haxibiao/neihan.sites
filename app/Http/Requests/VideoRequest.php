@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Video;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -14,8 +15,14 @@ class VideoRequest extends FormRequest
      * @return bool
      */
     public function authorize()
-    {
-        return Auth::user()->is_editor;
+    {   
+        $video_id = $this->route('video');
+        $user = Auth::user();
+        $post = Video::where('user_id',$user->id)->whereId($video_id)->first();
+        if($user->is_editor || $post){
+            return true;
+        }
+        return false;
     }
 
     /**
