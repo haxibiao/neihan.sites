@@ -1,16 +1,13 @@
 <?php
 namespace ops\commands;
 
-use App\Comment;
-use App\Image;
-use App\Video;
+use App\Action;
 use App\Article;
 use App\Category;
 use App\Collection;
-use App\User;
+use App\Comment;
+use App\Image;
 use App\Visit;
-use App\Action;
-use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Console\Command;
 
 class FixData extends Command
@@ -60,21 +57,22 @@ class FixData extends Command
         if ($this->cmd->argument('operation') == "likes") {
             return $this->fix_likes();
         }
-        if($this->cmd->argument('operation') == "article_comments"){
+        if ($this->cmd->argument('operation') == "article_comments") {
             return $this->fix_article_comments();
         }
-        if($this->cmd->argument('operation') == "actions"){
+        if ($this->cmd->argument('operation') == "actions") {
             return $this->fix_actions();
         }
     }
 
-    public function fix_likes(){
+    public function fix_likes()
+    {
 
     }
 
     public function fix_notifications()
     {
-    
+
     }
 
     public function fix_users()
@@ -88,21 +86,21 @@ class FixData extends Command
 
     public function fix_comments()
     {
- 
+
     }
 
     public function fix_categories()
     {
         $this->cmd->info('fix count_videos ...');
-        foreach(Category::all() as $category) {
+        foreach (Category::all() as $category) {
             $category->count_videos = $category->videoPosts()->count();
             $category->save();
         }
     }
 
-    public function fix_videos() 
+    public function fix_videos()
     {
-        
+
     }
 
     public function fix_images()
@@ -127,60 +125,59 @@ class FixData extends Command
 
     public function fix_articles()
     {
-        Article::where('source_url', 0)->chunk(100, function ($articles) {
-            foreach ($articles as $article) {
-                $fix   = false;
-                $title = $article->title;
-                $preg  = "/<img.*?src=[\"|\'](.*?)[\"|\'].*?>/";
-                preg_match_all($preg, $article->body, $matches);
-                $image_urls = $matches[1];
-                if (!empty($image_urls)) {
-                    for ($i = 0; $i < count($image_urls); $i++) {
-                        $image_url = $image_urls[$i];
-                        if (str_contains($image_url, $title)) {
-                            $image_tag = $matches[0][$i];
-                            $preg      = "/<img.+height=\"(\d*?)\">/i";
-                            preg_match_all($preg, $image_tag, $image_height);
-                            $image_height = $image_height[1][0];
-                            $preg         = "/<img.+width=\"(\d*?)\".+>/i";
-                            preg_match_all($preg, $image_tag, $image_width);
-                            $image_width  = $image_width[1][0];
-                            $articlImages = $article->images()->get();
-                            $image_path   = '';
-                            foreach ($articlImages as $image) {
-                                if ($image->width == $image_width && $image->height == $image_height) {
-                                    $image_path = $image->url_prod();
-                                }
-                            }
-                            $new_Image     = str_replace($image_url, $image_path, $image_tag);
-                            $body          = $article->body;
-                            $article->body = str_replace($image_tag, $new_Image, $body);
-                            $article->save();
-                            $fix = true;
-                        }
-                    }
-                    if ($fix) {
-                        $this->cmd->info('Article Id: ' . $article->id . ' fix sucess');
-                    }
+        $this->cmd->info('fix articles');
+        $articles = Article::where('category_id', 23)->whereStatus(1)->get();
+        foreach ($articles as $article) {
+            $this->fix_content($article);
+        }
+        $article = Article::find(149);
+        $this->fix_content($article);
+        $this->cmd->info('fix articles success');
+    }
+
+    public function fix_content($article)
+    {
+        $body = $article->body;
+        $preg = "/<img.*?src=[\"|\'](.*?)[\"|\'].*?>/";
+        preg_match_all($preg, $body, $matchs);
+        $image_tag = $matchs[0][0];
+        $image_url = $matchs[1][0];
+        $preg      = "/.*?thumbnail_(\d+)/";
+        preg_match_all($preg, $image_url, $matchs);
+        $video_id = $matchs[1][0];
+        if (!empty($image_url)) {
+            $article->body      = str_replace($image_tag, '', $body);
+            $article->status    = -1;
+            $article_categories = $article->categories()->get();
+            $newArticle         = Article::where('video_id', $video_id)->first();
+            if ($newArticle) {
+                foreach ($article_categories as $category) {
+                    $newArticle->categories()->attach([$category->id => [
+                        'created_at' => $category->pivot->created_at,
+                        'updated_at' => $category->pivot->updated_at,
+                        'submit'     => $category->pivot->submit,
+                    ]]);
                 }
             }
-        });
+            $article->save();
+            $this->cmd->info('Article Id:' . $article->id . ' fix success');
+        }
     }
+
     public function fix_collections()
     {
         $this->cmd->info('fix collections ...');
-        Collection::chunk(100,function($collections){
+        Collection::chunk(100, function ($collections) {
             foreach ($collections as $conllection) {
                 $conllection_id = $conllection->id;
-                if(count($conllection->articles()->pluck('article_id')) > 0)
-                {
+                if (count($conllection->articles()->pluck('article_id')) > 0) {
                     $article_id_arr = $conllection->articles()->pluck('article_id');
                     foreach ($article_id_arr as $article_id) {
-                        $article = Article::find($article_id);
+                        $article                = Article::find($article_id);
                         $article->collection_id = $conllection_id;
                         $article->save();
                         $conllection->count_words += $article->count_words;
-                        $this->cmd->info('Artcile:'.$article_id.' corresponding collections:'.$conllection_id);
+                        $this->cmd->info('Artcile:' . $article_id . ' corresponding collections:' . $conllection_id);
                     }
                     $conllection->count = count($article_id_arr);
                     $conllection->save();
@@ -195,18 +192,18 @@ class FixData extends Command
     {
         //修复Article评论数据
         $this->cmd->info('fix article comments...');
-        Comment::whereNull('comment_id','and',true)->chunk(100,function($comments){
+        Comment::whereNull('comment_id', 'and', true)->chunk(100, function ($comments) {
             foreach ($comments as $comment) {
-                if(empty(Comment::find($comment->comment_id))){
+                if (empty(Comment::find($comment->comment_id))) {
                     $article_id = $comment->commentable_id;
                     $comment->delete();
-                    $this->cmd->info('文章： https://l.ainicheng.com/article/'.$article_id);
+                    $this->cmd->info('文章： https://l.ainicheng.com/article/' . $article_id);
                 }
             }
         });
         $this->cmd->info('fix articles count_comments...');
         //修复Article评论统计数据
-        Article::chunk(100,function($articles){
+        Article::chunk(100, function ($articles) {
             foreach ($articles as $article) {
                 $article->count_replies  = $article->comments()->count();
                 $article->count_comments = $article->comments()->max('lou');
@@ -216,11 +213,12 @@ class FixData extends Command
         $this->cmd->info('fix success');
     }
 
-    public function fix_visits(){
-        Visit::chunk(100,function($visits){
+    public function fix_visits()
+    {
+        Visit::chunk(100, function ($visits) {
             foreach ($visits as $visit) {
                 $visit->visited_type = str_plural($visit->visited_type);
-                $visit->save(['timestamps'=>false]);
+                $visit->save(['timestamps' => false]);
             }
         });
     }
@@ -228,20 +226,20 @@ class FixData extends Command
     public function fix_actions()
     {
         $this->cmd->info('fix article action');
-        Article::where('status','1')->chunk(100,function($articles){
+        Article::where('status', '1')->chunk(100, function ($articles) {
             foreach ($articles as $article) {
-                $article_id = $article->id;
-                $acion_article = Action::where('actionable_type','articles')
-                ->where('actionable_id',$article_id)->get();
-                if(!$acion_article->count()){
+                $article_id    = $article->id;
+                $acion_article = Action::where('actionable_type', 'articles')
+                    ->where('actionable_id', $article_id)->get();
+                if (!$acion_article->count()) {
                     $action = Action::updateOrCreate([
                         'user_id'         => $article->user_id,
                         'actionable_type' => 'articles',
                         'actionable_id'   => $article->id,
-                        'created_at'=>$article->created_at,
-                        'updated_at'=>$article->updated_at
+                        'created_at'      => $article->created_at,
+                        'updated_at'      => $article->updated_at,
                     ]);
-                    $this->cmd->info('fix Article Id:'.$article->id.' fix success');
+                    $this->cmd->info('fix Article Id:' . $article->id . ' fix success');
                 }
             }
         });
