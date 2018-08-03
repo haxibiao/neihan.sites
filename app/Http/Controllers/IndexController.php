@@ -11,7 +11,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 
 class IndexController extends Controller {
-	public function index() {
+	public function index() { 
 		$has_follow_articles = false;
 		//get user related categories ..
 		$categorie_ids = [];
@@ -146,4 +146,90 @@ class IndexController extends Controller {
 
 		return view('index.trending')->withArticles($articles);
 	}
+	/* --------------------------------------------------------------------- */
+    /* ------------------------------- service ----------------------------- */
+    /* --------------------------------------------------------------------- */
+    /**
+     * 基与原来逻辑修改的首页显示逻辑
+     * 	TODO 下周一上线,注意修改index模版文件
+     * @return [type] [description]
+     */
+    public function indexRecommendationStrategy(){
+        //首页推荐分类
+        $stick_categories = get_stick_categories();
+        //已登录,只显示关注的专题
+        if (Auth::check()) {
+            $user = Auth::user();
+            //获取所有关注的专题
+            $all_follow_category_ids = \DB::table('follows')->where('user_id',$user->id)
+                ->where('followed_type','categories')
+                ->whereExists(function ($query) {
+                    return $query->from('categories')
+                        ->whereRaw('categories.id = follows.followed_id')
+                        ->where('categories.status','>=','0');
+                })->pluck('followed_id');
+            $categories = Category::whereIn('id',$all_follow_category_ids)
+                ->take(7)
+                ->get();
+        //未登录或者未关注任何专题，随机取官方专题
+        } else {
+            $top_count = 7-count($stick_categories);
+            $categories = Category::where('is_official', 1)
+                ->where('count', '>=', 0)
+                ->where('status', '>=', 0)
+                ->orderBy(\DB::raw('RAND()'))
+                ->take($top_count)
+                ->get();
+        }
+        //首页推荐专题 合并置顶的专题
+        $categories       = get_top_categoires($categories);
+        $data             = (object) [];
+        $data->categories = $categories;
+
+        //首页文章
+        $stick_article_ids = array_column(get_stick_articles('发现'), 'id');
+        $qb = Article::with('user')
+            ->with('category')
+            ->exclude(['body','json'])
+            ->whereIn('id',$stick_article_ids)
+            ->unionAll(
+                Article::from('articles')->with('user')->with('category')
+                    ->exclude(['body','json'])
+                    ->where('status', '>', 0)
+                    ->where('source_url', '=', '0')
+                    ->whereNotIn('id', $stick_article_ids)
+                    ->orderBy('updated_at','desc')->limit( \DB::table('articles')->max('id') )
+            );
+        $total        = count($qb->get());
+        $articles = $qb->offset( (request('page',1) * 10) - 10)
+            ->take(10)
+            ->get();
+        //首页异步加载
+        if (request()->ajax() || request('debug')) {
+            //下面是为了兼容VUE
+            $articles = new LengthAwarePaginator(new Collection($articles), $total, 10);
+            foreach ($articles as $article) {
+                $article->fillForJs();
+            }
+            return $articles;
+        }
+
+        //移动端，用简单的分页样式 
+        if (\Agent::isMobile()) {
+            $data->articles = new Paginator(new Collection($articles), 10);
+            $data->articles->hasMorePagesWhen($total > request('page') * 10);
+        } else {
+            $data->articles = new LengthAwarePaginator(new Collection($articles), $total, 10);
+        }
+        //首页轮播图
+        $data->carousel = get_top_articles();
+        //首页推荐视频
+        $data->videoPosts = Article::with('video')->where('type','video')
+                ->orderBy('id', 'desc')
+                ->where('status', '>', 0)
+                ->paginate(4);  
+
+        return view('index.index')
+            ->withData($data);
+    }
 }
