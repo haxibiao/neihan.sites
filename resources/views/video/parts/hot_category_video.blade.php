@@ -19,7 +19,7 @@
             @foreach($articles as $article)
                 <li class="game-video-item">
                     <a href="/video/{{ $article->video_id }}" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" class="video-info">   
-                        <img class="video-photo" src=" {{ $article->image_url }}">
+                        <img class="video-photo"  id="video-img" src=" {{ $article->image_url }}">
                         <i class="hover-play"> </i>
                     </a>
                     <a href="/video/{{ $article->video_id }}" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}"  class="video-title">{{$article->title}}</a>

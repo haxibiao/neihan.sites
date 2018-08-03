@@ -72,14 +72,14 @@
     top: 50%;
     right: 0;
     width: 22%;
-    height: 110px;
+    max-height: 110px;
     overflow: hidden;
     transform: translateY(-50%);
     border-radius: 4px;
     border: 1px solid $light-color2;
     img {
-      width: auto;
-      height: 100%;
+      width: 100%;
+      height: auto;
     }
     .duration {
       position: absolute;
