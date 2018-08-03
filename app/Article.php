@@ -476,18 +476,17 @@ class Article extends Model
      */
     public function createPost($input)
     {
-        $user  = getUser();
+        $user  = getUser(); 
         $body  = $input['body'];
-        $title = $input['title'] ?: str_limit($body, $limit = 20, $end = '...');
+        $title = isset($input['title']) ? $input['title'] : str_limit($body, $limit = 20, $end = '...');
 
         $this->title = $title;
-        $this->body  = $body;
-        // $this->description = null; //不存冗余，最后显示的时候根据情况截取即可
+        $this->body  = $body;  
+        $this->description = null; //不存冗余，最后显示的时候根据情况截取即可.---为了兼容GraphQL,打开该代码注释
         $this->status  = 1; //直接发布
         $this->type    = 'post';
         $this->user_id = $user->id;
         $this->save();
-
         //带视频
         if (isset($input['video_id'])) {
             $this->status = 0; //视频的话，等视频截图转码完成，自动会发布的
@@ -511,7 +510,7 @@ class Article extends Model
             $this->save();
             $this->images()->sync($image_ids);
         }
-        return $this;
+        return $this; 
     }
 
     //直接收录到专题的操作

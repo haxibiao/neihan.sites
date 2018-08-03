@@ -39,7 +39,7 @@ class VisitedType extends GraphQLType
                     $table_name = $root->getTable();
                     //专题
                     if($table_name == 'categories'){
-                        return $root->logo_app();
+                        return $root->logo();
                     }
                     return $root->primaryImage();
                 }, 

@@ -24,7 +24,7 @@ class createPostMutation extends Mutation
             'body'         => ['name' => 'body', 'type' => Type::string()],
             'video_id'     => ['name' => 'video_id', 'type' => Type::int()],
             'image_urls'   => ['name' => 'image_urls', 'type' => Type::listOf(Type::string())],
-            'category_ids' => ['name' => 'category_ids', 'type' => Type::listOf(Type::int())],
+            'a_cids' => ['name' => 'a_cids', 'type' => Type::listOf(Type::int())],
         ];
     }
 
@@ -49,8 +49,7 @@ class createPostMutation extends Mutation
         //直接关联到专题
         if (!empty($args['category_ids'])) {
             $article->categories()->sync($args['category_ids']);
-        }
-
+        } 
         return $article;
     }
 }
