@@ -81,26 +81,48 @@
                             <h3 class="panel-title">截图</h3>
                         </div>
                         <div class="panel-body">
-                            @php   
-                                $coverIndex = 0; 
-                            @endphp
-                            @foreach($data['covers'] as $cover)
-                            @php
-                                $coverIndex++;
-                            @endphp
-                            <div class="col-xs-6 col-md-3 {{ $errors->has('cover') ? ' has-error' : '' }}">
-                                <label for="cover{{ $coverIndex }}">
-                                    <img src="{{ $cover }}" class="img img-responsive">
-                                </label>
-                                
-                                {{-- trick here, need custom replace id="**" attribute to get label for radio work --}}
-                                {!! str_replace('>','id="'.'cover'.$coverIndex.'">', Form::radio('cover', $cover)) !!}
-                                <label for="cover{{ $coverIndex }}">
-                                    选取
-                                </label>
-                                <small class="text-danger">{{ $errors->first('cover') }}</small>
-                            </div>
-                            @endforeach
+                            @if(count($article->covers()) >= 8)
+                                @php   
+                                    $coverIndex = 0; 
+                                @endphp
+                                @foreach($data['covers'] as $cover)
+                                @php
+                                    $coverIndex++;
+                                @endphp
+                                <div class="col-xs-6 col-md-3 {{ $errors->has('cover') ? ' has-error' : '' }}">
+                                    <label for="cover{{ $coverIndex }}">
+                                        <img src="{{ $cover }}" class="img img-responsive">
+                                    </label>
+                                    
+                                    {{-- trick here, need custom replace id="**" attribute to get label for radio work --}}
+                                    {!! str_replace('>','id="'.'cover'.$coverIndex.'">', Form::radio('cover', $cover)) !!}
+                                    <label for="cover{{ $coverIndex }}">
+                                        选取
+                                    </label>
+                                    <small class="text-danger">{{ $errors->first('cover') }}</small>
+                                </div>
+                                @endforeach
+                            @else
+                            <button type="button" id="loadingButton" class="btn btn-primary disabled" autocomplete="off">
+                                截图正在处理中
+                            </button>
+                            @push('scripts')
+                            <script>
+                                $(document).ready(function(){
+                                    var $btn = $('#loadingButton');
+                                    var second = 1;
+                                    setInterval(function () {
+                                        if(second >= 5){
+                                            window.location.reload();
+                                            return;
+                                        }
+                                        $btn.text($btn.text()+'.');
+                                        second++;
+                                    },1000);
+                                });
+                                </script>
+                            @endpush
+                            @endif
                         </div>
                     </div>      
                 </div>

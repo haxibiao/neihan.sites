@@ -135,7 +135,7 @@ class Video extends Model
                 //关联的视频动态发布出去
                 $article = $this->article;
                 if($article) {
-                    $article->status = 1;
+                    $article->status = 0;
                     $article->save();
                 }
             }
