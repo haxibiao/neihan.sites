@@ -4,16 +4,16 @@
       <img class="avatar-category" src="{{ $category->logo() }}" alt="">
       <h4 class="name single-line">{{ $category->name }}</h4>
       <p class="category-description">{{ $category->description }}</p>
-    </a>    
+    </a>
 
-      <follow 
-        type="categories" 
-        id="{{ $category->id }}" 
-        user-id="{{ user_id() }}" 
+      <follow
+        type="categories"
+        id="{{ $category->id }}"
+        user-id="{{ user_id() }}"
         followed="{{ is_follow('categories', $category->id) }}">
       </follow>
-      
+
     <hr>
-    <div class="count"><a target="_blank" href="/{{ $category->name_en }}">{{ $category->count }}篇文章</a> · {{ $category->count_follows }}人关注</div>
+    <div class="count"><a target="_blank" href="/{{ $category->name_en }}">{{ $category->count + $category->count_videos }}篇作品</a> · {{ $category->count_follows }}人关注</div>
   </div>
 </li>
