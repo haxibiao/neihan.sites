@@ -3,7 +3,7 @@
  	<div class="vd-head">
               <h3 class="vd-title">
                 <span class="title-icon">
-                  <i class="iconfont icon-huo"></i>推荐视频专题
+                  <i class="iconfont icon-huo"></i>推荐专题
                 </span>
               </h3> 
     </div> 
