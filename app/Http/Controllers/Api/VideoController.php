@@ -155,4 +155,24 @@ class VideoController extends Controller
         }
         return $data;
     }
+
+    public function covers($id)
+    {
+        $video = Video::with('article')->findOrFail($id);
+
+        if (empty($video->article)) {
+            abort(404, '视频对应的文章不见了');
+        }
+
+        //如果还没有封面，可以尝试sync一下vod结果了
+        if (empty($video->jsonData('covers'))) {
+            $video->syncVodProcessResult();
+        }
+
+        $covers = [];
+        if (!empty($video->article->covers())) {
+            $covers = $video->article->covers();
+        }
+        return $covers;
+    }
 }

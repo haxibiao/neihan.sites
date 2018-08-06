@@ -103,25 +103,7 @@
                                 </div>
                                 @endforeach
                             @else
-                            <button type="button" id="loadingButton" class="btn btn-primary disabled" autocomplete="off">
-                                截图正在处理中
-                            </button>
-                            @push('scripts')
-                            <script>
-                                $(document).ready(function(){
-                                    var $btn = $('#loadingButton');
-                                    var second = 1;
-                                    setInterval(function () {
-                                        if(second >= 5){
-                                            window.location.reload();
-                                            return;
-                                        }
-                                        $btn.text($btn.text()+'.');
-                                        second++;
-                                    },1000);
-                                });
-                                </script>
-                            @endpush
+                                <request-covers api="/api/{{$video->id}}/covers"></request-covers>
                             @endif
                         </div>
                     </div>      
@@ -137,11 +119,12 @@
                 </div>                
                 <div class="radio{{ $errors->has('status') ? ' has-error' : '' }} pull-right">
                      <label for="status1">
-                         {!! Form::radio('status', 1,  $article->status == 1, ['id' => 'status1']) !!} 发布
+                         {!! Form::radio('status', 1,  $article->status == 1, ['id' => 'status1','checked']) !!} 发布
                      </label>
                      <small class="text-danger">{{ $errors->first('status') }}</small>
                 </div>
         </div>
+        <p id="p1"></p>
     </div>
     {!! Form::close() !!}
 </div>
