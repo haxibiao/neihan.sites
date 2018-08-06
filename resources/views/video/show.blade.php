@@ -43,13 +43,16 @@
                     </div>
                     <div class="h5-option"> 
                        <like id="{{ $video->article->id }}" type="article" is-login="{{ Auth::check() }}"></like> 
+                       @if(canEdit($article))
+                            <a class="btn-base btn-light btn-sm editor-btn" href="/video/{{ $video->id }}/edit">编辑视频动态</a>
+                        @endif 
                        @include('video.parts.share')
                     </div>
                 </div>
                 
             </div>
             <div class="video-info">
-                <div class="video-title" style="margin-bottom:10px">
+                <div class="video-title">
                     {{ $video->article->title }}
                 </div>                 
                 <div class="video-description">

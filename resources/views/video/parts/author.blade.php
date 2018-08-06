@@ -22,9 +22,7 @@
     </p>
     <div>
        <span class="upload-time" style="margin-bottom:10px">上传于 {{$video->createdAt()}}</span> 
-    @if(canEdit($article))
-        <a class="btn-base btn-light btn-sm pull-right" href="/video/{{ $video->id }}/edit">编辑视频动态</a>
-    @endif 
+    
     </div>
      
 </div>

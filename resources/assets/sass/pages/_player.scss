@@ -17,6 +17,20 @@
 				.h5-option {
 					min-height: 60px;
 					padding: 12px 15px;
+					.editor-btn {
+						float: right;
+						margin-top: 10px;
+						background-color: #252525 !important;
+						border-color: #717171 !important;
+						color: #d96a5f !important;
+					}
+					&:hover {
+						.editor-btn {
+							background-color: #d96a5f !important;
+							border-color: #d96a5f !important;
+							color: #fff !important;
+						}
+					}
 					.likeButton {
 						.btn-base {
 							padding: 7px 15px;
@@ -57,7 +71,6 @@
 			}
 			.video-title {
 				font-size: 25px;
-				margin-bottom: 50px;
 				font-weight: 300;
 			}
 			@media (max-width: 767px) {
@@ -152,6 +165,7 @@
 				.video-right {
 					position: static;
 					width: auto;
+					margin-top: 21px;
 					.listArea {
 						padding: 0 !important;
 						.related-video {

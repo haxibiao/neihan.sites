@@ -110,7 +110,7 @@
 
           <div class="bottom-title">
             <span>推荐阅读</span>
-            <a target="_blank" href="javascript:;" class="right">
+            <a target="_blank" href="/" class="right">
              更多精彩内容<i class="iconfont icon-youbian"></i>
            </a>
           </div>
