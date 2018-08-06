@@ -31,7 +31,7 @@
     
     <div class="info">
         <ul class="info-list">
-            <li class="hidden-xs">
+            <li>
                 <div class="meta-block">
                     <a href="/user/{{ $user->id }}/followings">
                         <p>{{ $user->followUsers }}</p>
@@ -41,7 +41,7 @@
                     
                 </div>
             </li>
-            <li class="hidden-xs">
+            <li>
                 <div class="meta-block">
                     <a href="/user/{{ $user->id }}/followers">
                         <p>{{ $user->count_follows }}</p>
@@ -59,7 +59,7 @@
                     </a>
                 </div>
             </li>
-            <li>
+            <li class="hidden-xs">
                 <div class="meta-block">
                         <p>{{ $user->count_words }}</p>
                         字数

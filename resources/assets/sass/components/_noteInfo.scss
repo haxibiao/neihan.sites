@@ -146,7 +146,12 @@
     }
     @media screen and (max-width: 768px) {
       position: relative;
-      padding-bottom: 35px;
+      padding-bottom: 30px;
+      .avatar {
+        width: 60px;
+        height: 60px;
+        margin-top: 10px;
+      }
       .btn-wrap {
         position: absolute;
         left: 90px;
@@ -159,6 +164,9 @@
       .title,
       .info {
         padding: 5px 0 0 0;
+        .name {
+          font-size: 18px;
+        }
       }
     }
   }
