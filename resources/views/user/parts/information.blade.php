@@ -54,7 +54,7 @@
                 <div class="meta-block">
                     <a href="/user/{{ $user->id }}">
                         <p>{{ $user->count_articles }}</p>
-                        文章
+                        作品
                         <i class="iconfont icon-youbian"></i>
                     </a>
                 </div>

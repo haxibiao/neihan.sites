@@ -43,7 +43,7 @@
                         </div>
                         <div class="info">
                             <p class="preview">{{ recommend.description }}</p>
-                            <p class="preview"><span><i class="iconfont icon-quanbu"></i>{{ recommend.count }}篇文章 · {{ recommend.count_follows }}人关注</span></p>
+                            <p class="preview"><span><i class="iconfont icon-quanbu"></i>{{ recommend.count }}篇作品 · {{ recommend.count_follows }}人关注</span></p>
                             <p class="preview"><a :href="'/user/'+recommend.followed_user_id">{{ recommend.followed_user }}</a>关注了该专题</p>
                         </div>
                     </li>
@@ -77,7 +77,7 @@
                     </div>
                     <div class="info">
                         <p class="preview">{{ category.description }}</p>
-                        <p class="preview"><span><i class="iconfont icon-quanbu"></i>{{ category.count }}篇文章 · {{ category.count_follows }}人关注</span></p>
+                        <p class="preview"><span><i class="iconfont icon-quanbu"></i>{{ category.count }}篇作品 · {{ category.count_follows }}人关注</span></p>
                     </div>
                 </li>
             </ul>

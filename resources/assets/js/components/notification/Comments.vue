@@ -11,7 +11,7 @@
 					</div>
 					<div v-else class="title">
 						<a :href="'/user/'+notification.user_id">{{ notification.user_name }}</a>
-						<span>评论了你的文章</span>
+						<span>评论了你的作品</span>
 						<a :href="'/article/'+notification.article_id">《{{ notification.article_title }}》</a>
 					</div>
 

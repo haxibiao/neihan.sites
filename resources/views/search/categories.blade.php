@@ -21,7 +21,7 @@
 					            followed="{{ is_follow('categories', $category->id) }}">  
 					          </follow>
 							<div class="title"><a href="/{{ $category->name_en }}" class="name">{{ $category->name }}</a></div>
-							<div class="info"><p>收录了{{ $category->count }}篇文章，{{ $category->count_follows }}人关注</p></div></li>
+							<div class="info"><p>收录了{{ $category->count }}篇作品，{{ $category->count_follows }}人关注</p></div></li>
 						@endforeach
 					</div>
 					@if(!$data['categories']->total())

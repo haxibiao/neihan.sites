@@ -24,7 +24,7 @@
                         </a>
                         <div class="collection-info">
                           <a :href="'/'+category.name_en" class="collection-name">{{ category.name }}</a>
-                          <div class="meta">{{ category.count }}篇文章·{{ category.follow }}人关注</div>
+                          <div class="meta">{{ category.count }}篇作品·{{ category.follow }}人关注</div>
                            <a :class="['action-btn',getBtnClass(category.submit_status)]" 
                            @click="add(category)">
                             {{ category.submit_status }}
@@ -42,7 +42,7 @@
                         </a>
                         <div class="collection-info">
                           <a :href="'/'+category.name_en" class="collection-name">{{ category.name }}</a>
-                          <div class="meta">{{ category.count }}篇文章·{{ category.follow }}人关注</div>
+                          <div class="meta">{{ category.count }}篇作品·{{ category.follow }}人关注</div>
                           <a :class="['action-btn',getBtn2Class(category.submit_status)]" 
                            @click="submit(category)"  v-if="category.submited_status != '已收录'">
                             {{ category.submit_status }}

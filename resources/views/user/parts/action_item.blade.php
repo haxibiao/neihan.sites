@@ -15,7 +15,7 @@
       <div class="info">
         <a class="nickname" target="_blank" href="/user/{{ $action->user->id }}">{{ $action->user->name }}</a>
         <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
-        <span class="time" data-shared-at="2017-11-06T09:20:28+08:00">发表了文章 @timeago($action->created_at)</span>
+        <span class="time" data-shared-at="2017-11-06T09:20:28+08:00">发表了作品 @timeago($action->created_at)</span>
       </div>
     </div>
     <a class="title" target="_blank" href="/article/{{ $item->id }}"><span>{{ $item->title }}</span></a>
@@ -93,7 +93,7 @@
                     <div class="info">
                         <a class="nickname" target="_blank" href="/user/{{ $action->user->id }}">{{ $action->user->name }}</a>
                         <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
-                        <span class="time"> 喜欢了文章 · @timeago($like->created_at)</span>
+                        <span class="time"> 喜欢了作品 · @timeago($like->created_at)</span>
                     </div>
                 </div>
                 <a class="title" target="_blank" href="/article/{{ $item->id }}"><span>{{ $item->title }}</span></a>
@@ -128,7 +128,7 @@
                     <div class="info">
                         <a class="nickname" target="_blank" href="/user/{{ $action->user->id }}">{{ $action->user->name }}</a>
                         <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
-                        <span class="time"> 喜欢了文章的评论 · @timeago($like->created_at)</span>
+                        <span class="time"> 喜欢了作品的评论 · @timeago($like->created_at)</span>
                     </div>
                 </div>
                 <a class="title" target="_blank" href="/article/{{ $article->id }}"><span>{{ $article->title }}</span></a>
@@ -217,7 +217,7 @@
                   <a class="name" href="/{{ $item->name_en }}">{{ $item->name }}</a>
                 </div>
                 <div class="info">
-                  <p><a href="/user/{{ $item->user->id }}">{{ $item->user->name }}</a> 创建，{{ $item->count }} 篇文章，{{ $item->count_follows }} 人关注</p>
+                  <p><a href="/user/{{ $item->user->id }}">{{ $item->user->name }}</a> 创建，{{ $item->count }} 篇作品，{{ $item->count_follows }} 人关注</p>
                 </div>
             </div>
             <p class="signature">

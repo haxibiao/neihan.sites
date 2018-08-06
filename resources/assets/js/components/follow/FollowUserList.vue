@@ -17,7 +17,7 @@
 			      <div class="meta">
 					      <span>关注 {{ user.user.count_followings }}</span>
 					      <span>粉丝 {{ user.user.count_follows }}</span>
-					      <span>文章 {{ user.user.count_articles }}</span>
+					      <span>作品 {{ user.user.count_articles }}</span>
 				  </div>
 				  <div class="meta">
 			          写了 {{ user.user.count_words }} 字，获得了 {{ user.user.count_likes }} 个喜欢

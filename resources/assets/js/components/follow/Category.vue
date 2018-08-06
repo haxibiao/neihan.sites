@@ -16,7 +16,7 @@
                 <a class="name" :href="'/'+category.name_en">{{ category.name }}</a>
             </div>
             <div class="info">
-                收录了{{ category.count }}篇文章 · {{ category.count_follows }}人关注
+                收录了{{ category.count }}篇作品 · {{ category.count_follows }}人关注
             </div>
         </div>
         <!-- 内容 -->

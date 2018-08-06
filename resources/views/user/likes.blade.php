@@ -10,7 +10,7 @@
                 {{-- 用户信息 --}}
                 @include('user.parts.information')
                 {{-- 内容 --}}
-                {{-- 内容/关注的专题文集，喜欢的文章 --}}
+                {{-- 内容/关注的专题文集，喜欢的作品 --}}
                 <div class="content">
                     <!-- Nav tabs -->
                     <ul id="trigger-menu" class="nav nav-tabs" role="tablist">
@@ -62,7 +62,7 @@
                                     <a href="/collection/{{ $collection->id }}" class="name">{{ $collection->name }}</a>
                                 </div>
                                 <div class="info">
-                                    <p><a href="/collection/{{ $collection->id }}">{{ $collection->name }} </a>收录了{{ $collection->count }}篇文章，{{ $collection->count_follows }}人关注</p>
+                                    <p><a href="/collection/{{ $collection->id }}">{{ $collection->name }} </a>收录了{{ $collection->count }}篇作品，{{ $collection->count_follows }}人关注</p>
                                 </div>
                             </li>
                             @endif

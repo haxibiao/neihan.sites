@@ -8,7 +8,7 @@
 		    							</h4>
 	                </div>
 	                <div class="modal-body">
-	                  <p>该专题目前收录了0篇文章，删除专题操作不可逆，请慎重！</p>
+	                  <p>该专题目前收录了0篇作品，删除专题操作不可逆，请慎重！</p>
 	                  <input type="text" class="input-style" placeholder="确认删除请输入专题名称">
 	                </div>
 	                <footer class="clearfix">

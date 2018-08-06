@@ -28,7 +28,7 @@
                     </div>
                     <div class="info">
                         <p v-if="actionTargetFollowType == 'users'">写了 {{ item.actionable.followed.count_words }} 字，被 {{ item.actionable.followed.count_follows }} 人关注，获得了 {{ item.actionable.followed.count_likes }} 个喜欢</p>
-                        <p v-else><a :href="actionTargetFollowUrl">{{ item.actionable.followed.user.name }}</a> 编辑，{{ item.actionable.followed.count }} 篇文章，{{ item.actionable.followed.count_follows }} 人关注</p>
+                        <p v-else><a :href="actionTargetFollowUrl">{{ item.actionable.followed.user.name }}</a> 编辑，{{ item.actionable.followed.count }} 篇作品，{{ item.actionable.followed.count_follows }} 人关注</p>
                     </div>
                 </div>
                 <p class="signature">

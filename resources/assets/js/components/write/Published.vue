@@ -68,7 +68,7 @@
 								<img class="avatar-category" alt="png" :src="category.logo">
 								<div class="info">
 									<span>{{category.name}}</span>
-									<em>{{ category.count }}篇文章·{{ category.follow }}人关注</em>
+									<em>{{ category.count }}篇作品·{{ category.follow }}人关注</em>
 								</div>
 								<a :class="['action-btn',getBtn2Class(category.submit_status)]" @click="submit(category)">{{category.submit_status}}</a>
 							</li>
