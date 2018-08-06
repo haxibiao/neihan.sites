@@ -1,12 +1,5 @@
 
 <div class="desc">
-
-    <div class="pull-right">
-        @if(canEdit($article))
-        <a class="btn-base btn-light btn-sm" href="/video/{{ $video->id }}/edit">编辑视频动态</a>
-        @endif
-    </div>
-    <p class="upload-time hidden-xs" style="margin-bottom:10px">上传于 {{$video->createdAt()}}</p> 
     <p class="upload-user">
         @if($video->user)
         <a href="/user/{{ $video->user_id }}" class="sub">
@@ -15,7 +8,7 @@
         </a>
         @endif
         @if( $video->user && !$video->user->isSelf() )
-            <span class="button-vd pull-right" style="width:auto">
+            <span class="button-vd" style="width:auto">
                 <follow 
                     type="users" 
                     id="{{ $video->user->id }}" 
@@ -27,4 +20,11 @@
             </span>
         @endif
     </p>
+    <div>
+       <span class="upload-time" style="margin-bottom:10px">上传于 {{$video->createdAt()}}</span> 
+    @if(canEdit($article))
+        <a class="btn-base btn-light btn-sm pull-right" href="/video/{{ $video->id }}/edit">编辑视频动态</a>
+    @endif 
+    </div>
+     
 </div>

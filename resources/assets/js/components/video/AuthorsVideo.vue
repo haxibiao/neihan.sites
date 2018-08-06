@@ -7,14 +7,14 @@
         </div>
         <ul class="video-list">
               <li class="video-item" v-for="video in videos">
-                  <a :href="'/video/'+video.video.id" class="clearfix">  
+                  <a :href="'/video/'+video.video.id" class="link clearfix">  
                       <div class="cover">
                           <img :src="video.image_url" alt=""/>
                           <i class="hover-play"></i>
                           <span class="duration">{{video.duration}}</span>
                       </div>
                       <div class="info">
-                          <div class="video-title">{{video.title}}</div> 
+                          <div class="recommend-video-title">{{video.title}}</div> 
                           <span class="amount">
                           {{video.hits+"次播放"}}
                           </span>
@@ -114,9 +114,9 @@ export default {
       }
     }
     .video-item{
-      >a{
-          display: flex;
-          align-items: center;
+      .link{
+        display: inline-block;
+        width: 100%;
           .cover{
             width: 50%;
             float: left;
@@ -165,11 +165,11 @@ export default {
         float: right;
         display: inline-block;
         &:hover{
-          .video-title{
+          .recommend-video-title{
             color:#d96a5f !important;
           }
         }
-          .video-title{
+          .recommend-video-title{
             color:#969696;
             display: -webkit-box;
             -webkit-box-orient: vertical;

@@ -46,11 +46,7 @@
                        @include('video.parts.share')
                     </div>
                 </div>
-                <div class="listArea col-sm-4 hidden-xs">
-                    @include('video.parts.author')
-                    {{-- 作者的其他视频 --}}
-                    <authors-video user-id={{ $video->user_id }}></authors-video>
-                </div>
+                
             </div>
             <div class="video-info">
                 <div class="video-title" style="margin-bottom:10px">
@@ -58,7 +54,15 @@
                 </div>                 
                 <div class="video-description">
                     {{ $video->article->body }}
-                </div> 
+                </div>
+                <div class="video-right">
+                   @include('video.parts.author')
+                    <div class="listArea">
+                        {{-- 作者的其他视频 --}}
+                        <authors-video user-id={{ $video->user_id }}></authors-video>
+                    </div> 
+                </div>
+                
                 <div class="video-categories" style="margin-top:20px">
                     <h4>相关的专题</h4>
                 @foreach($categories as $category)

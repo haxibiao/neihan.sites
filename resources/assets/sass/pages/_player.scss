@@ -43,27 +43,82 @@
 					}
 				}
 			}
-			// 相关视频
-			.listArea {
+		}
+		// 视频信息
+		.video-info {
+			padding: 25px 0;
+			color: $light-color1;
+			position: relative;
+			.video-right {
 				position: absolute;
-				padding: 20px 20px 0px;
-				right: 0;
-				top: 0;
-				bottom: 0;
-				display: flex;
-				flex-direction: column;
+				top: -400px;
+				right: 7px;
+				width: 32%;
+			}
+			.video-title {
+				font-size: 25px;
+				margin-bottom: 50px;
+				font-weight: 300;
+			}
+			@media (max-width: 767px) {
+				.video-title,
+				.video-description {
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
+			}
+			.video-categories {
+				> h4 {
+					border-left: 3px solid #d96a5f;
+					padding-left: 10px;
+					margin-bottom: 30px;
+				}
+				.category-label {
+					background-color: #3d3d46;
+					border: 1px solid #666;
+					color: #888;
+					margin-right: 35px;
+					&:hover {
+						color: #d96a5f;
+					}
+				}
+			}
+			.desc {
+				line-height: 30px;
+				font-size: 15px;
+				.upload-time {
+					margin-left: 41px;
+				}
 				.upload-user {
 					.sub {
-						.name {
-							max-width: 95px;
-							overflow: hidden;
-							text-overflow: ellipsis;
-							white-space: nowrap;
-							display: inline-block;
+						color: $light-color1;
+						img {
+							width: 30px;
+							height: 30px;
+							border-radius: 50%;
+							margin-right: 10px;
+						}
+					}
+					.button-vd {
+						display: inline-block;
+						margin-left: 10px;
+						a {
+							padding: 0 6px;
+							line-height: 30px;
+							font-size: 13px;
+							i {
+								font-size: 13px;
+							}
 						}
 					}
 				}
-
+			}
+			// 相关视频
+			.listArea {
+				padding: 0px 20px 0 20px;
+				display: flex;
+				flex-direction: column;
 				.related-video {
 					margin-right: -20px;
 					overflow-x: hidden;
@@ -93,57 +148,31 @@
 					}
 				}
 			}
-		}
-		// 视频信息
-		.video-info {
-			padding: 25px 0;
-			color: $light-color1;
-			.video-title {
-				font-size: 25px;
-				margin-bottom: 50px;
-				font-weight: 300;
-			}
-			.video-categories {
-				> h4 {
-					border-left: 3px solid #d96a5f;
-					padding-left: 10px;
-					margin-bottom: 30px;
-				}
-				.category-label {
-					background-color: #3d3d46;
-					border: 1px solid #666;
-					color: #888;
-					margin-right: 35px;
-					&:hover {
-						color: #d96a5f;
-					}
-				}
-			}
-			.desc {
-				line-height: 30px;
-				font-size: 15px;
-				.upload-time {
-					margin-right: 20px;
-				}
-				.upload-user {
-					.sub {
-						color: $light-color1;
-						img {
-							width: 30px;
-							height: 30px;
-							border-radius: 50%;
-							margin-right: 10px;
+			@media (max-width: 767px) {
+				.video-right {
+					position: static;
+					width: auto;
+					.listArea {
+						padding: 0 !important;
+						.related-video {
+							margin-right: 0px;
 						}
-					}
-					.button-vd {
-						display: inline-block;
-						margin-left: 10px;
-						a {
-							padding: 0 6px;
-							line-height: 30px;
-							font-size: 13px;
-							i {
-								font-size: 13px;
+						.video-item {
+							width: 50%;
+							float: left;
+							padding: 5px;
+							margin-bottom: 0;
+							.link {
+								> div {
+									width: 100%;
+									float: none;
+									.recommend-video-title {
+										display: block !important;
+										overflow: hidden;
+										text-overflow: ellipsis;
+										white-space: nowrap;
+									}
+								}
 							}
 						}
 					}
