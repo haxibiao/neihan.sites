@@ -40,7 +40,7 @@ export default {
       this.counter ++;
       $(this.$refs.fresh).css('transform',`rotate(${360*this.counter}deg)`);
 		  $('.recommend_author ul').fadeOut();
-		  var api = '/api/user/recommend';
+		  var api = window.tokenize('/api/user/recommend');
   		window.axios.get(api).then(function(response){
   			vm.users = response.data;
   			$('.recommend_author ul').fadeIn();
