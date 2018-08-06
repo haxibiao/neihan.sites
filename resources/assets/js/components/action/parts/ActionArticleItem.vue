@@ -22,7 +22,7 @@
 	      <a target="_blank" :href="'/article/'+item.actionable.id">
 	        <i class="iconfont icon-liulan"></i> {{ item.actionable.hits }}
 	      </a>        
-	      <a target="_blank" :href="'/article/'+item.actionable.id">
+	      <a target="_blank" :href="'/article/'+item.actionable.id+'/#comments'">
 	        <i class="iconfont icon-svg37"></i> {{ item.actionable.count_replies }}
 	      </a>      
 	      <span><i class="iconfont icon-03xihuan"></i> {{ item.actionable.count_likes }}</span>

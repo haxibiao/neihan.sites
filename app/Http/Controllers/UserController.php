@@ -64,6 +64,7 @@ class UserController extends Controller {
 		if (ajaxOrDebug() && request('articles')) {
 			foreach ($articles as $article) {
 				$article->fillForJs();
+				$article->time_ago = $article->updatedAt();
 			}
 			return $articles;
 		}
@@ -78,6 +79,7 @@ class UserController extends Controller {
 		if (ajaxOrDebug() && request('commented')) {
 			foreach ($articles as $article) {
 				$article->fillForJs();
+				$article->time_ago = $article->updatedAt();
 			}
 			return $articles;
 		}
@@ -92,6 +94,7 @@ class UserController extends Controller {
 		if (ajaxOrDebug() && request('hot')) {
 			foreach ($articles as $article) {
 				$article->fillForJs();
+				$article->time_ago = $article->updatedAt();
 			}
 			return $articles;
 		}

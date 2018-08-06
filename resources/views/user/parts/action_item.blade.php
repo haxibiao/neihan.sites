@@ -11,7 +11,7 @@
     <div class="author">
       <a class="avatar" target="_blank" href="/user/{{ $action->user->id }}">
         <img src="{{ $action->user->avatar() }}" alt="">
-      </a> 
+      </a>
       <div class="info">
         <a class="nickname" target="_blank" href="/user/{{ $action->user->id }}">{{ $action->user->name }}</a>
         <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
@@ -25,10 +25,10 @@
     <div class="meta">
       <a target="_blank" href="/article/{{ $item->id }}">
         <i class="iconfont icon-liulan"></i> {{ $item->hits }}
-      </a>        
-      <a target="_blank" href="/article/{{ $item->id }}">
+      </a>
+      <a target="_blank" href="/article/{{ $item->id }}/#comments">
         <i class="iconfont icon-svg37"></i> {{ $item->count_replies }}
-      </a>      
+      </a>
       <span><i class="iconfont icon-03xihuan"></i> {{ $item->count_likes }}</span>
     </div>
   </div>
@@ -41,7 +41,7 @@
 @endphp
 @if($item)
 
-<li class="article-item have-img"> 
+<li class="article-item have-img">
     <a class="wrap-img" href="{{ $item->content_url() }}" target="_blank">
       <img src="{{ $item->primaryImage() }}" alt="">
     </a>
@@ -69,7 +69,7 @@
                 <a target="_blank" href="/article/{{ $item->id }}">
             <i class="iconfont icon-liulan"></i> {{ $item->hits }}
           </a>
-                <a target="_blank" href="/article/{{ $item->id }}">
+                <a target="_blank" href="/article/{{ $item->id }}/#comments">
             <i class="iconfont icon-svg37"></i> {{ $item->count_replies }}
           </a>
                 <span><i class="iconfont icon-03xihuan"></i> {{ $item->count_likes }}</span>
@@ -107,14 +107,14 @@
                     <a target="_blank" href="/article/{{ $item->id }}">
                 <i class="iconfont icon-liulan"></i> {{ $item->hits }}
               </a>
-                    <a target="_blank" href="/article/{{ $item->id }}">
+                    <a target="_blank" href="/article/{{ $item->id }}/#comments">
                 <i class="iconfont icon-svg37"></i> {{ $item->count_replies }}
               </a>
                     <span><i class="iconfont icon-03xihuan"></i> {{ $item->count_likes }}</span>
                 </div>
             </div>
         </li>
-    @elseif($item && $like->liked_type == "comments") 
+    @elseif($item && $like->liked_type == "comments")
         @php
         $article = $item->commentable;
         @endphp
@@ -142,13 +142,13 @@
                     <a target="_blank" href="/article/{{ $article->id }}">
                 <i class="iconfont icon-liulan"></i> {{ $article->hits }}
               </a>
-                    <a target="_blank" href="/article/{{ $item->id }}">
+                    <a target="_blank" href="/article/{{ $item->id }}/#comments">
                 <i class="iconfont icon-svg37"></i> {{ $article->count_replies }}
               </a>
                     <span><i class="iconfont icon-03xihuan"></i> {{ $article->count_likes }}</span>
                 </div>
             </div>
-        </li> 
+        </li>
         @endif
     @endif
 {{-- 关注 --}}
@@ -172,11 +172,11 @@
                 <div class="note-info">
                     <a class="avatar" href="/user/{{ $item->id }}"><img src="{{ $item->avatar() }}" alt=""></a>
                     {{-- <a class="btn-base btn-follow"><span>＋ 关注</span></a> --}}
-                    <follow 
-                        type="users" 
-                        id="{{ $item->id }}" 
-                        user-id="{{ user_id() }}" 
-                        followed="{{ is_follow('users',$item->id) }}">            
+                    <follow
+                        type="users"
+                        id="{{ $item->id }}"
+                        user-id="{{ user_id() }}"
+                        followed="{{ is_follow('users',$item->id) }}">
                     </follow>
                     <div class="title">
                         <a class="name" href="/user/{{ $item->id }}">{{ $item->name }}</a>
@@ -197,7 +197,7 @@
         <div class="author">
           <a class="avatar" target="_blank" href="/user/{{ $action->user->id }}">
             <img src="{{ $action->user->avatar() }}" alt="">
-          </a> 
+          </a>
           <div class="info">
             <a class="nickname" target="_blank" href="/user/{{ $action->user->id }}">{{ $action->user->name }}</a>
             <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
@@ -207,11 +207,11 @@
         <div class="follow-card">
             <div class="note-info">
                 <a class="avatar" href="/{{ $item->name_en }}"><img src="{{ $item->logo() }}" alt=""></a>
-                <follow 
-                    type="categories" 
-                    id="{{ $item->id }}" 
-                    user-id="{{ user_id() }}" 
-                    followed="{{ is_follow('categories', $item->id) }}">            
+                <follow
+                    type="categories"
+                    id="{{ $item->id }}"
+                    user-id="{{ user_id() }}"
+                    followed="{{ is_follow('categories', $item->id) }}">
                 </follow>
                 <div class="title">
                   <a class="name" href="/{{ $item->name_en }}">{{ $item->name }}</a>
@@ -223,7 +223,7 @@
             <p class="signature">
                 {{ $item->description }}
             </p>
-        </div>  
+        </div>
       </div>
     </li>
     @endif

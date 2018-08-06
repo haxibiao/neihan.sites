@@ -28,7 +28,7 @@
                 <a target="_blank" :href="'/article/'+actionTargetId">
                     <i class="iconfont icon-liulan"></i> {{ actionTargetHits }}
                 </a>
-                <a target="_blank" :href="'/article/'+actionTargetId">
+                <a target="_blank" :href="'/article/'+actionTargetId+'/#comments'">
                     <i class="iconfont icon-svg37"></i> {{ actionTargetReplise }}
                 </a>
                 <span><i class="iconfont icon-03xihuan"></i> {{ actionTargetLikes }}</span>
