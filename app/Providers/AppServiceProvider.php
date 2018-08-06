@@ -61,6 +61,7 @@ class AppServiceProvider extends ServiceProvider
             'articles' => 'App\Article',
             'comments' => 'App\Comment',
             'videos' => 'App\Article',
+            'posts' => 'App\Article',
             'likes' => 'App\Like',
             'favorites' => 'App\Favorite',
             'follows' => 'App\Follow',
