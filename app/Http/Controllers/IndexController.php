@@ -111,6 +111,7 @@ class IndexController extends Controller
                     ->exclude(['body', 'json'])
                     ->where('status', '>', 0)
                     ->where('source_url', '=', '0')
+                    ->whereNotNull('category_id') 
                     ->whereNotIn('id', $stick_article_ids)
                     ->orderBy('updated_at', 'desc')->limit(\DB::table('articles')->max('id'))
             );
