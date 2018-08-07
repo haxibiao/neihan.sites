@@ -51,9 +51,7 @@ Route::get('/tag/{name}', 'TagController@tagname');
 Route::resource('/tag', 'TagController');
 
 //创作
-Route::middleware('auth')->get('/write', function () {
-    return view('write');
-});
+Route::middleware('auth')->get('/write', 'IndexController@write');
 
 
 //片段
@@ -91,10 +89,6 @@ Route::get('/hxb-login-as/{name}', 'HomeController@hxbLoginAs');
 Route::resource('/image', 'ImageController');
 Route::get('/video/list','VideoController@list');
 Route::resource('/video', 'VideoController');
-
-Route::get('video_list_demo', function(){
-	return view('video.video_list_demo');
-});
 
 //后台
 Route::get('/admin', 'AdminController@index');

@@ -4,13 +4,8 @@ use App\User;
 use Illuminate\Http\Request;
 
 //用户设置
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    $user         = $request->user();
-    //让设置页面的头像刷新浏览器缓存
-    $user->avatar = $user->avatar . '?t=' . time();
-    $user->balance = $user->balance();
-    return $user;
-});
+Route::middleware('auth:api')->get('/user', "Api\UserController@getSetting");
+
 //用户
 Route::get('/user/index', 'Api\UserController@index');
 Route::middleware('auth:api')->get('/user/editors', 'Api\UserController@editors');
