@@ -21,7 +21,6 @@
                       </div>
                   </a> 
               </li>
-
         </ul>
     </div>
 </template>
@@ -115,14 +114,17 @@ export default {
     }
     .video-item{
       .link{
-        display: inline-block;
+        display: flex;
+        align-items:center;
         width: 100%;
           .cover{
             width: 50%;
+            height:85px;
             float: left;
             display: inline-block;
             position: relative;
             overflow: hidden;
+            background-color: #000;
           &:hover{
             img{
               transform: scale(1.1);
@@ -145,6 +147,7 @@ export default {
           }
           img{
             width:100%;
+            background-color: #000;
           }
           .duration{
             position: absolute;
@@ -173,7 +176,7 @@ export default {
             color:#969696;
             display: -webkit-box;
             -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 3;
             overflow: hidden;
           }
           .amount{
