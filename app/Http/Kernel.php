@@ -20,14 +20,15 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\Cors::class,
 
-        //page-speed
-        \RenatoMarinho\LaravelPageSpeed\Middleware\InlineCss::class,
-        \RenatoMarinho\LaravelPageSpeed\Middleware\ElideAttributes::class,
-        \RenatoMarinho\LaravelPageSpeed\Middleware\InsertDNSPrefetch::class,
-        \RenatoMarinho\LaravelPageSpeed\Middleware\RemoveComments::class,
-        \RenatoMarinho\LaravelPageSpeed\Middleware\TrimUrls::class,
-        \RenatoMarinho\LaravelPageSpeed\Middleware\RemoveQuotes::class,
-        \RenatoMarinho\LaravelPageSpeed\Middleware\CollapseWhitespace::class,
+        //page-speed 
+        // TODO: 雪晴琼琼发现破坏了很多功能，需要继续测试
+        // \RenatoMarinho\LaravelPageSpeed\Middleware\InlineCss::class,
+        // \RenatoMarinho\LaravelPageSpeed\Middleware\ElideAttributes::class,
+        // \RenatoMarinho\LaravelPageSpeed\Middleware\InsertDNSPrefetch::class,
+        // \RenatoMarinho\LaravelPageSpeed\Middleware\RemoveComments::class,
+        // \RenatoMarinho\LaravelPageSpeed\Middleware\TrimUrls::class,
+        // \RenatoMarinho\LaravelPageSpeed\Middleware\RemoveQuotes::class,
+        // \RenatoMarinho\LaravelPageSpeed\Middleware\CollapseWhitespace::class,
     ];
 
     /**

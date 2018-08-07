@@ -8,6 +8,7 @@
 /public/mix-manifest.json
 /public/*.apk
 /storage/*.key
+/storage
 /vendor
 /.idea
 /.vagrant
