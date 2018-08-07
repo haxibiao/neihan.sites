@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title') {{ $user->name }} -{{ env('APP_NAME') }} @stop
+@section('title') {{ $user->name }} -{{ config('app.name') }}
+ @stop
 
 @section('content')
 <div id="user">
@@ -35,10 +36,10 @@
                             @if(Auth::check())
                                 <article-list api="/user/{{ $user->id }}?articles=1" start-page="2" not-empty="{{count($data['articles'])>0}}"/>
                             @else
-                                <div>{!! $data['articles']->fragment('article')->links() !!}</div>  
+                                <div>{!! $data['articles']->fragment('article')->links() !!}</div>
                             @endif
                         @endif
-                    </ul> 
+                    </ul>
                     {{-- 动态 --}}
                     <ul role="tabpanel" class="fade feed-list tab-pane" id="dynamic">
                         @if( count($data['actions'])==0)
@@ -66,7 +67,7 @@
                                 </div>
                             </li>
                         @endif
-                        
+
                     </ul>
                     <ul role="tabpanel" class="fade note-list tab-pane" id="comment">
                         @if( count($data['commented'])==0)
@@ -77,7 +78,7 @@
                                 <article-list api="/user/{{ $user->id }}?commented=1" start-page="2" not-empty="{{count($data['commented'])>0}}"/>
                             @else
                                 <div>{!! $data['commented']->fragment('comment')->links() !!}</div>
-                            @endif 
+                            @endif
                         @endif
                     </ul>
                     <ul role="tabpanel" class="fade note-list tab-pane" id="hot">
@@ -96,26 +97,26 @@
             </div>
         </div>
         {{-- 侧栏 --}}
-        @include('user.parts.aside') 
+        @include('user.parts.aside')
     </div>
 </div>
 @endsection
 
 @push('scripts')
 <script type="text/javascript">
-  $(function(){  
+  $(function(){
     var url = window.location.href;
     if( url.includes("article") ){
-      $("[href='#article']").click();  
+      $("[href='#article']").click();
     }
     if( url.includes("comment") ){
-      $("[href='#comment']").click(); 
+      $("[href='#comment']").click();
     }
     if( url.includes("hot") ){
-      $("[href='#hot']").click(); 
+      $("[href='#hot']").click();
     }
     if( url.includes("video") ){
-      $("[href='#video']").click(); 
+      $("[href='#video']").click();
     }
   });
 </script>
