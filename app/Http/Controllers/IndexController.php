@@ -124,6 +124,7 @@ class IndexController extends Controller
             $articles = new LengthAwarePaginator(new Collection($articles), $total, 10);
             foreach ($articles as $article) {
                 $article->fillForJs();
+                $article->time_ago = $article->updatedAt();
             }
             return $articles;
         }
