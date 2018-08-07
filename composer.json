@@ -20,6 +20,7 @@
         "overtrue/laravel-wechat": "~3.0",
         "overtrue/pinyin": "~3.0",
         "qcloud/vod-sdk-v5": "v1.2.1",
+        "renatomarinho/laravel-page-speed": "^1.8",
         "roumen/sitemap": "^2.7",
         "simplesoftwareio/simple-qrcode": "^2.0"
     },
