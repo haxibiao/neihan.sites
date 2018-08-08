@@ -10,7 +10,7 @@ use GraphQL\Type\Definition\Type;
 class FollowsQuery extends Query
 {
     protected $attributes = [
-        'name' => 'follows',
+        'name' => 'follows', 
     ];
 
     public function type()
@@ -39,8 +39,10 @@ class FollowsQuery extends Query
         //recommend_for_user_id
         if (isset($args['recommend_for_user_id'])) {
             //不是你关注的，别人关注了的，就是可以推荐给你的
-            $qb = $qb->where('user_id', '<>', $args['recommend_for_user_id'])
-                ->groupBy('followed_type','followed_id'); 
+            //下面写法解决MySQL groupBy在Laravel5.3后的写法差异.对执行效率影响不大
+            $qb = $qb->select('followed_type','followed_id','user_id','id')
+                ->where('user_id', '<>', $args['recommend_for_user_id'])
+                ->groupBy('followed_type','followed_id','id','user_id');
         }
         //filter
         if (isset($args['filter'])) {
