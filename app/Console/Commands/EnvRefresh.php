@@ -11,7 +11,7 @@ class EnvRefresh extends Command
      *
      * @var string
      */
-    protected $signature = 'env:refresh {--prod} {--staging} {--local}';
+    protected $signature = 'env:refresh {--prod} {--staging} {--dev}';
 
     /**
      * The console command description.
@@ -37,6 +37,10 @@ class EnvRefresh extends Command
      */
     public function handle()
     {
+        if ($this->option('dev')) {
+            return $this->refresh_dev();
+        }
+
         if ($this->option('staging')) {
             return $this->refresh_staging();
         }
@@ -52,7 +56,21 @@ class EnvRefresh extends Command
         file_put_contents(base_path('.env'), file_get_contents(base_path('.env.local')));
         $this->info('clear local env BUGSNAG_API_KEY ...');
         $this->updateEnv([
-            'BUGSNAG_API_KEY'   => '',
+            'BUGSNAG_API_KEY' => '',
+        ]);
+    }
+
+    public function refresh_dev()
+    {
+        $this->info('refreshing dev env ...');
+        file_put_contents(base_path('.env'), file_get_contents(base_path('.env.local')));
+        $this->updateWebConfig();
+
+        //fix env config for staging
+        $this->updateEnv([
+            'APP_ENV'   => 'dev',
+            'APP_DEBUG' => 'true',
+            'DB_HOST'   => env('DB_SERVER_DEV'),
         ]);
     }
 
@@ -67,7 +85,6 @@ class EnvRefresh extends Command
             'APP_ENV'   => 'staging',
             'APP_DEBUG' => 'true',
             'DB_HOST'   => env('DB_SERVER_STAGING'),
-            'DB_DATABASE'   => env('DB_DATABASE_STAGING'),
         ]);
     }
 
