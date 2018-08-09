@@ -63,11 +63,13 @@ class Image extends Model
     public function fillForJs()
     {
         $this->url       = $this->url();
-        $this->url_small    = $this->url_small();
+        $this->url_small = $this->url_small();
     }
 
     public function save_file($file)
     {
+        ini_set("memory_limit",-1); //为上传文件处理截图临时允许大内存使用
+
         $extension       = $file->getClientOriginalExtension();
         $this->extension = $extension;
         $filename        = $this->id . '.' . $extension;
@@ -78,7 +80,11 @@ class Image extends Model
             mkdir($local_dir, 0777, 1);
         }
 
-        $img = \ImageMaker::make($file->path());
+        try {
+            $img = \ImageMaker::make($file->path());
+        } catch (\Excetpion $ex) {
+            return $ex;
+        }
         if ($extension != 'gif') {
             $big_width = $img->width() > 900 ? 900 : $img->width();
             $img->resize($big_width, null, function ($constraint) {
@@ -120,5 +126,6 @@ class Image extends Model
         $this->disk = "local";
         $img->save(public_path($this->path_small()));
         $this->save();
+        return null;
     }
 }
