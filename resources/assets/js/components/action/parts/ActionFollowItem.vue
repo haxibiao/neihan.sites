@@ -1,6 +1,6 @@
 <template>
-<li class="feed-info">
-      <div class="content">
+<li class="feed-info" v-if="is_follow">
+    <div class="content">
             <div class="author">
                 <a class="avatar" target="_blank" href="javascript:;">
                     <img :src="item.user.avatar" alt="">
@@ -35,7 +35,7 @@
                     {{ item.actionable.followed.introduction }}
                 </p>
             </div>
-    </div>
+        </div>
 </li>
 </template>
 
@@ -46,6 +46,9 @@ export default {
 	props: ["item","appName"],
 
     computed:{
+        is_follow(){
+            return this.item.actionable !=null && this.item.actionable.hasOwnProperty('followed');
+        },
         actionTargetImage(){
             if(this.item.actionable.followed_type == 'categories'){
                 return this.item.actionable.followed.logo;
@@ -60,8 +63,7 @@ export default {
         },
         actionTargetFollowType(){
             return this.item.actionable.followed_type;
-        },
-        
+        }
     },
 };
 </script>

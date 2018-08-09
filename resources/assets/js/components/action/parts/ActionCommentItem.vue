@@ -1,5 +1,5 @@
 <template>
-	<li class="article-item have-img" v-if="item.actionable"> 
+	<li class="article-item have-img" v-if="is_comment"> 
     <a class="wrap-img" :href="item.actionable.commentable.contentUrl" target="_blank">
       <img :src="item.actionable.commentable.image_url" alt="">
     </a>
@@ -36,7 +36,7 @@
             </div>
         </blockquote>
     </div>
-</li>
+    </li>
 </template>
 
 <script>
@@ -44,6 +44,11 @@ export default {
 	name: "ActionCommentItem",
 
 	props: ["item","appName"],
+    computed:{
+        is_comment(){
+            return this.item.actionable !=null && this.item.actionable.hasOwnProperty('commentable');
+        }
+    }
 };
 </script>
 

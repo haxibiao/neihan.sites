@@ -1,5 +1,5 @@
 <template>
-<li class="article-item have-img">
+<li class="article-item have-img" v-if="is_like">
         <a class="wrap-img"  :href="'/article/'+ actionTargetId" target="_blank">
             <img :src="actionTargetImage" alt="">
         </a>
@@ -44,6 +44,9 @@ export default {
 	props: ["item","appName"],
 
     computed: {
+        is_like(){
+            return this.item.actionable !=null && this.item.actionable.hasOwnProperty('liked');
+        },
         actionTargetId() {
             if(this.item.actionable.liked_type == 'comments') {
                 return this.item.actionable.liked.commentable_id;
