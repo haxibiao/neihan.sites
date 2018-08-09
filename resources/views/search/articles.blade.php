@@ -47,7 +47,7 @@
 										<div class="title">
 											<a href="/{{ $category->name_en }}" class="name">{{ $category->name }}</a>
 										</div>
-										<div class="info">收录了{{ $category->count+$category->count_videos }}篇作品 · {{ $category->count_follows }}人关注</div>
+										<div class="info">收录了{{ $category->publishedWorks()->count() }}篇作品 · {{ $category->count_follows }}人关注</div>
 									</div>
 								</div>
 								@endforeach

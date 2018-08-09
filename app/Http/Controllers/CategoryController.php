@@ -74,7 +74,7 @@ class CategoryController extends Controller {
 		if (ajaxOrDebug() && request('recommend')) {
 			foreach ($categories as $category) {
 				$category->followed = $category->isFollowed();
-				$category->count = $category->count + $category->count_videos;
+				$category->count = $category->publishedWorks()->count();
 			}
 			return $categories;
 		}
