@@ -31,7 +31,7 @@
         <a href="/article/{{ $article->id }}">
           <h4 class="media-heading">{{ $article->title }}</h4>
         </a>
-        <p>{{ $article->description() }}</p>
+        <p>{{ $article->get_description() }}</p>
 
         <div class="pull-right">
           <a class="btn btn-sm btn-primary" href="/article/{{ $article->id }}/edit" role="button" target="_blank">编辑</a> 

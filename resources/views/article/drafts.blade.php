@@ -27,7 +27,7 @@
         <a href="/article/{{ $article->id }}">
           <h4 class="media-heading">{{ $article->title }}</h4>
         </a>
-        <p>{{ $article->description() }}</p>
+        <p>{{ $article->get_description() }}</p>
         @if($article->delay_time)
           <p class="small text-info">已启动定时发布于: {{ $article->delay_time }} ({{ diffForHumansCN($article->delay_time) }})</p>
         @endif

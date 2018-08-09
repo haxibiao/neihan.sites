@@ -33,7 +33,7 @@ class SearchController extends Controller
         //高亮关键词
         foreach ($articles as $article) {
             $article->title       = str_replace($query, '<em>' . $query . '</em>', $article->title);
-            $article->description = str_replace($query, '<em>' . $query . '</em>', $article->description());
+            $article->description = str_replace($query, '<em>' . $query . '</em>', $article->get_description());
         }
 
         //如果标题无结果，搜索标签库
@@ -47,7 +47,7 @@ class SearchController extends Controller
 
             //高亮标签
             foreach ($articles as $article) {
-                $article->description = ' 关键词:' . $article->keywords . '， 简介：' . $article->description();
+                $article->description = ' 关键词:' . $article->keywords . '， 简介：' . $article->get_description();
                 foreach ($matched_tags as $tag) {
                     $article->title       = str_replace($tag, '<em>' . $tag . '</em>', $article->title);
                     $article->description = str_replace($tag, '<em>' . $tag . '</em>', $article->description);

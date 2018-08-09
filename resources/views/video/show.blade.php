@@ -13,7 +13,7 @@
 <meta property="og:type" content="video" />
 <meta property="og:url" content="https://{{ get_domain() }}/video/{{ $video->article->video_id }}" />
 <meta property="og:title" content="{{ $video->article->title }}" />
-<meta property="og:description" content="{{ $video->article->description() }}" />
+<meta property="og:description" content="{{ $video->article->get_description() }}" />
 <meta property="og:image" content="{{ $video->article->cover() }}" />
 <meta name="weibo: article:create_at" content="{{ $video->article->created_at }}" />
 <meta name="weibo: article:update_at" content="{{ $video->article->updated_at }}" />

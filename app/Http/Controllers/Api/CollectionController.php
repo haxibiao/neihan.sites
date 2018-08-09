@@ -29,7 +29,7 @@ class CollectionController extends Controller
         $articles   = $collection->articles()->with('user')->orderBy(request('collected') ? 'created_at' : 'updated_at', 'desc')->paginate(10);
         foreach ($articles as $article) {
             $article->user        = $article->user->fillForJs();
-            $article->description = $article->description();
+            $article->description = $article->get_description();
         }
         return $articles;
     }

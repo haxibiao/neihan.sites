@@ -12,7 +12,7 @@
 	        <span>{{ $article->title }}</span>
 	    </a>
 	    <p class="abstract">
-	      {{ $article->description() }}
+	      {{ $article->get_description() }}
 	    </p>
 	    <div class="meta">
 	      <a target="_blank" href="/article/{{ $article->id }}" class="browse_meta">
@@ -39,7 +39,7 @@
 	        <span>{{ $article->title }}</span>
 	    </a>
 	    <p class="abstract">
-	      {{ $article->description() }}
+	      {{ $article->get_description() }}
 	    </p>
 	    <div class="meta">
 	      <a target="_blank" href="/article/{{ $article->id }}" class="browse_meta">

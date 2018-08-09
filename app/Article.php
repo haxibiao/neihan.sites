@@ -129,10 +129,10 @@ class Article extends Model
     /* --------------------------------------------------------------------- */
     /* ------------------------------- service ----------------------------- */
     /* --------------------------------------------------------------------- */
-    public function description()
+    public function get_description()
     {
         $description = $this->description;
-        if (empty($description)) {
+        if (empty($description) || strlen($description) < 2) {
             $body        = html_entity_decode($this->body);
             $description = str_limit(strip_tags($body), 80);
         }
@@ -183,7 +183,7 @@ class Article extends Model
         $this->has_image     = $this->hasImage();
         $this->primary_image = $this->primaryImage();
         $this->image_url     = $this->primaryImage();
-        $this->description   = $this->description();
+        $this->description   = $this->get_description();
         $this->url           = $this->content_url();
         if ($this->video) {
             $this->duration = gmdate('i:s', $this->video->duration);
@@ -199,7 +199,7 @@ class Article extends Model
         $data->has_image   = $this->hasImage();
         $data->pic         = $this->primaryImage();
         $data->image_url   = $this->primaryImage();
-        $data->description = $this->description();
+        $data->description = $this->get_description();
 
         if ($this->user) {
             $user              = $this->user;
@@ -577,5 +577,11 @@ class Article extends Model
                 break;
         }
         return '文章';
+    }
+
+    public function save(array $options = array())
+    {
+        $this->description = $this->get_description();
+        parent::save($options);
     }
 }

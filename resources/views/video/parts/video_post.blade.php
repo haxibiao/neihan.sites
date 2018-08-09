@@ -29,7 +29,7 @@
 			<h5 class="media-heading">{{ $article->title }}</h5>
 		</a>
 		<p class="small">更新时间:　{{ $article->updatedAt() }}</p>
-		<p title="{{ $article->description() }}">{{ $article->description() }}</p>
+		<p title="{{ $article->get_description() }}">{{ $article->get_description() }}</p>
 		<p>
 			@if($article->status == 0) 
 			<span class="label label-info">已下架</span>

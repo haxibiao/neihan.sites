@@ -2,13 +2,13 @@
 
 @section('title') {{ $article->title }} -{{ config('app.name') }}  @endsection
 @section('keywords') {{ $article->keywords }} @endsection
-@section('description') {{ $article->description() }} @endsection
+@section('description') {{ $article->get_description() }} @endsection
 
 @push('seo_og_result') 
 <meta property="og:type" content="{{ $article->type }}" />
 <meta property="og:url" content="https://{{ get_domain() }}/article/{{ $article->id }}" />
 <meta property="og:title" content="{{ $article->title }}" />
-<meta property="og:description" content="{{ $article->description() }}" />
+<meta property="og:description" content="{{ $article->get_description() }}" />
 <meta property="og:image" content="{{ empty($article->image_url)?'':$article->primaryImage() }}" />
 <meta name="weibo: article:create_at" content="{{ $article->created_at }}" />
 <meta name="weibo: article:update_at" content="{{ $article->updated_at }}" />

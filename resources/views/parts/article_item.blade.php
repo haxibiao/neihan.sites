@@ -25,7 +25,7 @@
         <span>{{ $article->title }}</span>
     </a>
     <a class="abstract" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="{{ $article->content_url() }}">
-      {{ $article->description() }}
+      {{ $article->get_description() }}
     </a>
     <div class="meta">
       @if($article->category)
