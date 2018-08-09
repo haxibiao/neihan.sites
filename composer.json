@@ -30,7 +30,7 @@
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
         "laravelcollective/remote": "^5.4",
-        "phpunit/phpunit": "~6.0"
+        "phpunit/phpunit": "~7.0"
     },
     "autoload": {
         "classmap": ["database", "ops"],
@@ -44,11 +44,22 @@
         }
     },
     "scripts": {
-        "post-root-package-install": ["php -r \"file_exists('.env') || copy('.env.example', '.env');\""],
+        "post-root-package-install": [
+            "php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
         "post-create-project-cmd": ["php artisan key:generate"],
-        "post-install-cmd": ["Illuminate\\Foundation\\ComposerScripts::postInstall", "php artisan optimize"],
-        "post-autoload-dump": ["Illuminate\\Foundation\\ComposerScripts::postAutoloadDump", "@php artisan package:discover"],
-        "post-update-cmd": ["Illuminate\\Foundation\\ComposerScripts::postUpdate", "php artisan optimize"]
+        "post-install-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postInstall",
+            "php artisan optimize"
+        ],
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover"
+        ],
+        "post-update-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "php artisan optimize"
+        ]
     },
     "config": {
         "preferred-install": "dist",

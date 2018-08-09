@@ -20,13 +20,13 @@ class ApiVideoTest extends TestCase
      */
     public function testUploadVideo()
     {
-        $user     = User::inRandomOrder()
-            ->first(); 
+        $user     = User::inRandomOrder()->first(); 
         $video_id = Video::max('id') + 1;
         $response = $this->postJson(
             '/api/video/save?api_token=' . $user->api_token, 
             [ 
-                'video' => new UploadedFile("/test.mp4", "test.mp4", null, null, null, true),
+                'video' => UploadedFile::fake()->create('test.mp4', 1000000)
+                //new UploadedFile("/test.mp4", "test.mp4", null, null, null, true),
             ]); 
         $response->assertStatus(200);
         //get content

@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Feature;
+namespace Tests\Feature\Api;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
@@ -13,7 +13,7 @@ class ApiUserTest extends TestCase
 
         $response = $this->json("POST", "/api/user", [
             'api_token' => $user->api_token,
-            'name'      => 'peng',
+            'name'      => 'peng_'.time(), //现在用户名不能冲突了
         ]);
 
         //这里的响应只有1和0没有修改或修改失败响应的都是0
