@@ -5,7 +5,7 @@
 @extends('layouts.black')
 
 @section('title')
-	视频动态 - {{ env('APP_NAME') }}
+	{{ $video->article->title }} -{{ env('APP_NAME') }}
 @stop
 
 @push('seo_og_result')
