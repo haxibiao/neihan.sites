@@ -1,5 +1,5 @@
 <template>
-	<li class="article-item have-img" v-if="item">
+	<li class="article-item have-img" v-if="item.actionable">
 	  <a class="wrap-img" :href="'/article/'+item.actionable.id" target="_blank">
 	      <img :src="item.actionable.image_url" alt="">
 	  </a>
