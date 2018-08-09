@@ -104,11 +104,11 @@ class IndexController extends Controller
         $stick_article_ids = array_column(get_stick_articles('发现'), 'id');
         $qb                = Article::with('user')
             ->with('category')
-            ->exclude(['body', 'json'])
+            ->exclude(['json'])
             ->whereIn('id', $stick_article_ids)
             ->unionAll(
                 Article::from('articles')->with('user')->with('category')
-                    ->exclude(['body', 'json'])
+                    ->exclude(['json'])
                     ->where('status', '>', 0)
                     ->where('source_url', '=', '0')
                     ->whereNotNull('category_id') 
@@ -137,6 +137,7 @@ class IndexController extends Controller
         } else {
             $data->articles = new LengthAwarePaginator(new Collection($articles), $total, 10);
         }
+        //dd($data->articles);
         //首页轮播图
         $data->carousel = get_top_articles();
         //首页推荐视频
@@ -204,7 +205,7 @@ class IndexController extends Controller
                 ->get();
             $articles = Article::with('user')->with('category')
                 ->where('status', '>', 0)
-                ->where('source_url', '=', '0')
+                ->where('source_url', '=', '0') 
                 ->whereIn('category_id', array_merge($categorie_ids, $categories->pluck('id')->toArray()))
                 ->orderBy('updated_at', 'desc')
                 ->paginate(10);
