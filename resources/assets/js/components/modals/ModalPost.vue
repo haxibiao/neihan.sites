@@ -126,12 +126,12 @@ export default {
 					let _this = this;
 					_this.fileFormat = ".avi,.wmv,.mpeg,.mp4,.mov,.mkv,.flv,.f4v,.m4v,.rmvb,.rm,.3gp,.dat,.ts,.mts,.vob";
 					_this.videoObj = e.target.files[0];
-					_this.videoObjSize = _this.videoObj.size/1024/1024;
-					//not allow 50Mb
-					if(_this.videoObjSize >= 50){
-						$('#myModal').modal('show');
-						return;
-					}
+					// _this.videoObjSize = _this.videoObj.size/1024/1024;
+					// //not allow 50Mb
+					// if(_this.videoObjSize >= 50){
+					// 	$('#myModal').modal('show');
+					// 	return;
+					// }
 					_this.bool = false;
 					let reader = new FileReader();
 					reader.readAsDataURL(e.target.files[0]);
