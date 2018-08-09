@@ -545,6 +545,7 @@ class Article extends Model
                 //更新新分类文章数
                 if ($category = Category::find($category->id)) {
                     $category->count = $category->publishedArticles()->count();
+                    $category->count_videos = $category->videoPosts()->count();
                     $category->save();
                 }
             }
@@ -552,6 +553,7 @@ class Article extends Model
         foreach ($old_categories as $category) {
             //更新旧分类文章数
             $category->count = $category->publishedArticles()->count();
+            $category->count_videos = $category->videoPosts()->count();
             $category->save();
         }
     }
