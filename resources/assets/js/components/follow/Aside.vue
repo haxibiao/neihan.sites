@@ -28,7 +28,7 @@
 					<div class="avatar">
 						<img src="/images/timeline.png" alt="">
 					</div>
-					<div class="name">兴趣圈</div>
+					<div class="name">城友圈</div>
 				</a>
 			</router-link>
 				
@@ -191,7 +191,8 @@ export default {
 				.follow-warp {
 					padding: 10px 0 0 0;
 					text-align: center;
-					.avatar,.avatar-category {
+					.avatar,
+					.avatar-category {
 						display: block;
 						width: auto;
 						height: auto;

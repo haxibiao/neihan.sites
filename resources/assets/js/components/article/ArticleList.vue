@@ -1,29 +1,35 @@
 <template>
 	<div>	
-		<li v-for="article in articles" :class="article.has_image ? 'article-item have-img' : 'article-item'">
-		    <a v-if="article.has_image" :class="article.type =='video' ? 'wrap-img video' : 'wrap-img'" :href="article.url" :target="isDesktop? '_blank' : '_self'">
-		        <img :src="article.primary_image" :alt="article.title">
-		        <i class="hover-play"> </i>
-		        <i  v-if="article.type =='video'" class="duration">{{ videotime }}</i>  <!--当为视频时,取出视频的时长 -->
-		    </a>  
+		<li v-for="article in articles" :class="article.has_image ? 'content-item have-img' : 'content-item'">
+		  <a v-if="article.has_image" class="wrap-img" :href="article.url" :target="isDesktop? '_blank' : '_self'">
+		      <img :src="article.primary_image" :alt="article.title">
+		      <span v-if="article.type =='video'" class="rotate-play">
+		        <i class="iconfont icon-shipin"></i>
+		      </span>
+		      <i  v-if="article.type =='video'" class="duration">{{ videotime }}</i>  <!--当为视频时,取出视频的时长 -->
+		  </a>
 		  <div class="content">
-		    <div class="author">
-		      <a class="avatar" :target="isDesktop? '_blank' : '_self'" :href="'/user/'+article.user.id">
-		        <img :src="article.user.avatar" alt="">
-		      </a> 
-		      <div class="info">
-		        <a class="nickname" :target="isDesktop? '_blank' : '_self'" :href="'/user/'+article.user.id">{{ article.user.name }}</a>
-		        <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者" alt="">
-		        <span class="time">{{ article.time_ago }}</span>
-		      </div>
-		    </div>
-		    <a class="title" :target="isDesktop? '_blank' : '_self'" :href="article.url">
+	    	<div v-if="article.type !=='article'" class="author">
+	    	  <a class="avatar" :target="isDesktop? '_blank' : '_self'" :href="'/user/'+article.user.id">
+	    	    <img :src="article.user.avatar" alt="">
+	    	  </a> 
+	    	  <div class="info">
+	    	    <a class="nickname" :target="isDesktop? '_blank' : '_self'" :href="'/user/'+article.user.id">{{ article.user.name }}</a>
+	    	    <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者" alt="">
+	    	    <span class="time">{{ article.time_ago }}</span>
+	    	  </div>
+	    	</div>
+		    <a v-if="article.type =='article'" class="title" :target="isDesktop? '_blank' : '_self'" :href="article.url">
 		        <span>{{ article.title }}</span>
 		    </a>
-		    <p class="abstract">{{ article.description }}</p>
+		    <p class="abstract">{{ article.description?article.description:article.title }}</p>
 		    <div class="meta">
-		      <a v-if="article.category" class="collection-tag" :target="isDesktop? '_blank' : '_self'" :href="'/' + article.category.name_en">{{ article.category.name }}</a>
-		      <a target="_blank" :href="article.url" class="browse_meta">
+		      <a v-if="article.category" class="category" :target="isDesktop? '_blank' : '_self'" :href="'/' + article.category.name_en">
+        		<i class="iconfont icon-zhuanti1"></i>
+		      	{{ article.category.name }}
+		  	  </a>
+		      <a v-if="article.type =='article'" class="nickname" :target="isDesktop? '_blank' : '_self'" :href="'/user/'+article.user.id">{{ article.user.name }}</a>
+		      <a  class="hidden-xs" target="_blank" :href="article.url">
 		        <i class="iconfont icon-liulan"></i> {{ article.hits }}
 		      </a>        
 		      <a :target="isDesktop? '_blank' : '_self'" :href="article.url+'/#comments'" class="comment_meta">
