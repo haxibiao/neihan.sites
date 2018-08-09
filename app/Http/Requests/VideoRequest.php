@@ -19,10 +19,8 @@ class VideoRequest extends FormRequest
         $video_id = $this->route('video');
         $user = Auth::user();
         $post = Video::where('user_id',$user->id)->whereId($video_id)->first();
-        if($user->is_editor || $post){
-            return true;
-        }
-        return false;
+        
+        return $user->is_editor || $post;
     }
 
     /**
