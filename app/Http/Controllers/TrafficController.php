@@ -148,37 +148,37 @@ class TrafficController extends Controller
 
     public function log()
     {
-        $traffics = Traffic::orderBy('id', 'desc')->paginate(20);
+        $traffics = Traffic::with('article')->orderBy('id', 'desc')->paginate(20);
         return view('traffic.log')->withTraffics($traffics);
     }
 
     public function robot($name)
     {
-        $traffics = Traffic::where('robot', $name)->orderBy('id', 'desc')->paginate(20);
+        $traffics = Traffic::with('article')->where('robot', $name)->orderBy('id', 'desc')->paginate(20);
         return view('traffic.log')->withTraffics($traffics);
     }
 
     public function platform($name)
     {
-        $traffics = Traffic::where('platform', $name)->orderBy('id', 'desc')->paginate(20);
+        $traffics = Traffic::with('article')->where('platform', $name)->orderBy('id', 'desc')->paginate(20);
         return view('traffic.log')->withTraffics($traffics);
     }
 
     public function browser($name)
     {
-        $traffics = Traffic::where('browser', $name)->orderBy('id', 'desc')->paginate(20);
+        $traffics = Traffic::with('article')->where('browser', $name)->orderBy('id', 'desc')->paginate(20);
         return view('traffic.log')->withTraffics($traffics);
     }
 
     public function device($name)
     {
-        $traffics = Traffic::where('device', $name)->orderBy('id', 'desc')->paginate(20);
+        $traffics = Traffic::with('article')->where('device', $name)->orderBy('id', 'desc')->paginate(20);
         return view('traffic.log')->withTraffics($traffics);
     }
 
     public function referer_domain($name)
     {
-        $traffics = Traffic::where('referer_domain', $name)->orderBy('id', 'desc')->paginate(20);
+        $traffics = Traffic::with('article')->where('referer_domain', $name)->orderBy('id', 'desc')->paginate(20);
         return view('traffic.log')->withTraffics($traffics);
     }
 }

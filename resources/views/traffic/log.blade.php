@@ -9,7 +9,7 @@
 			<div class="panel-body">
 				<table class="table table-bordered table-responsive">
 					<tr>
-						<th>id</th>
+						<th>文章</th>
 						<th>时间</th>
 						<th>设备</th>
 						<th>系统</th>
@@ -23,7 +23,9 @@
 					@foreach($traffics as $traffic)
 					<tr>
 						<td>
-							{{ $traffic->id }}
+							@if($traffic->article_id)
+							<a href="/article/{{ $traffic->article_id }}">{{ str_limit($traffic->article->title, 10) }}</a>
+							@endif
 						</td>
 						<td>
 							{{ $traffic->created_at->diffForHumans() }}
