@@ -132,22 +132,26 @@ class User extends Authenticatable
 
     public function chats()
     {
-        return $this->belongsToMany(\App\Chat::class)->withPivot('with_users', 'unreads')->orderBy('updated_at', 'desc');
+        return $this->belongsToMany(\App\Chat::class)
+            ->withPivot('with_users', 'unreads')
+            ->orderBy('updated_at', 'desc');
     }
 
     public function categories()
     {
-        return $this->belongsToMany(\App\Category::class)->where('type', 'article');
-    }
-
-    public function articles()
-    {
-        return $this->hasMany(\App\Article::class)->where('status', '>', 0);
+        return $this->belongsToMany(\App\Category::class);
     }
 
     public function drafts()
     {
         return $this->hasMany(\App\Article::class)->where('status', 0);
+    }
+
+    public function articles()
+    {
+        return $this->hasMany(\App\Article::class)
+            ->where('status', '>', 0)
+            ->exclude(['body', 'json']);
     }
 
     public function removedArticles()
@@ -157,7 +161,8 @@ class User extends Authenticatable
 
     public function allArticles()
     {
-        return $this->hasMany(\App\Article::class)->where('status', '>=', 0);
+        return $this->hasMany(\App\Article::class)
+            ->exclude(['body', 'json']);
     }
 
     public function allVideoPosts()
@@ -167,7 +172,7 @@ class User extends Authenticatable
 
     public function publishedArticles()
     {
-        return $this->hasMany(\App\Article::class)->where('status', '>', 0);
+        return $this->allArticles()->where('status', '>', 0);
     }
 
     public function videoPosts()

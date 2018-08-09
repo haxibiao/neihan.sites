@@ -104,11 +104,11 @@ class IndexController extends Controller
         $stick_article_ids = array_column(get_stick_articles('发现'), 'id');
         $qb                = Article::with('user')
             ->with('category')
-            ->exclude(['json'])
+            ->exclude(['body','json'])
             ->whereIn('id', $stick_article_ids)
             ->unionAll(
                 Article::from('articles')->with('user')->with('category')
-                    ->exclude(['json'])
+                    ->exclude(['body','json'])
                     ->where('status', '>', 0)
                     ->where('source_url', '=', '0')
                     ->whereNotNull('category_id') 

@@ -15,7 +15,7 @@ class Category extends Model
         'parent_id',
         'type',
         'order',
-        'status', 
+        'status',
         'request_status',
         'is_official',
         'is_for_app',
@@ -66,7 +66,8 @@ class Category extends Model
         return $this->belongsToMany('App\Article')
             ->withPivot('submit')
             ->withTimestamps()
-            ->orderBy('pivot_updated_at', 'desc');
+            ->orderBy('pivot_updated_at', 'desc')
+            ->exclude(['body', 'json']);
     }
 
     public function videoPosts()
@@ -76,11 +77,9 @@ class Category extends Model
 
     public function newRequestArticles()
     {
-        return $this->belongsToMany('App\Article')
+        return $this->articles()
             ->wherePivot('submit', '待审核')
-            ->withPivot('submit', 'updated_at')
-            ->withTimestamps()
-            ->orderBy('id', 'desc');
+            ->withPivot('updated_at');
     }
 
     public function requestedInMonthArticles()
@@ -94,12 +93,9 @@ class Category extends Model
 
     public function publishedArticles()
     {
-        return $this->belongsToMany('App\Article')
-            ->where('articles.status', '>', 0) //TODO:: double check fix existing status = 1 articles pivot submit  ...
-            ->whereType('article')
-            ->wherePivot('submit', '已收录')
-            ->withPivot('submit')
-            ->withTimestamps();
+        return $this->articles()
+            ->where('articles.status', '>', 0)
+            ->wherePivot('submit', '已收录');
     }
 
     public function parent()
@@ -120,13 +116,13 @@ class Category extends Model
         $this->description = $this->description();
     }
 
-    public function logo() 
+    public function logo()
     {
         $path = empty($this->logo) ? '/images/category.logo.jpg' : $this->logo;
         $url  = file_exists(public_path($path)) ? $path : starts_with($path, 'http') ? $path : env('APP_URL') . $path;
         //如果用户刚更新过，刷新头像图片的浏览器缓存
         if ($this->updated_at && $this->updated_at->addMinutes(2) > now()) {
-            $url = $url . '?t=' . time(); 
+            $url = $url . '?t=' . time();
         }
         //APP 需要返回全Uri
         return starts_with($url, 'http') ? $url : url($url);
@@ -224,16 +220,16 @@ class Category extends Model
             }
             $id         = $this->id ? $this->id : "c" . (\App\Category::max('id') + 1) . "_" . time();
             $this->logo = $storage_category . $id . '.logo.jpg';
-            if( file_exists(public_path($this->logo)) ){
+            if (file_exists(public_path($this->logo))) {
                 unlink(public_path($this->logo));
             }
-            $img        = \ImageMaker::make($request->logo->path());
+            $img = \ImageMaker::make($request->logo->path());
             $img->fit(180);
             $img->save(public_path($this->logo));
 
             $img->fit(32);
             $small_logo = $storage_category . $this->id . '.logo.small.jpg';
-            if( file_exists(public_path($small_logo)) ){
+            if (file_exists(public_path($small_logo))) {
                 unlink(public_path($small_logo));
             }
             $img->save(public_path($small_logo));
@@ -247,14 +243,14 @@ class Category extends Model
             $this->logo_app = $storage_category . $this->id . '.logo.app.jpg';
             $img            = \ImageMaker::make($request->logo_app->path());
             $img->fit(180);
-            if( file_exists(public_path($this->logo_app)) ){
+            if (file_exists(public_path($this->logo_app))) {
                 unlink(public_path($this->logo_app));
             }
             $img->save(public_path($this->logo_app));
 
             $img->fit(32);
             $small_logo = $storage_category . $this->id . '.logo.small.app.jpg';
-            if( file_exists(public_path($this->small_logo)) ){
+            if (file_exists(public_path($this->small_logo))) {
                 unlink(public_path($this->small_logo));
             }
             $img->save(public_path($small_logo));
@@ -280,12 +276,12 @@ class Category extends Model
     }
     public function isSelf()
     {
-        return Auth::check() 
-                && 
-            Auth::user()
-                ->categories()
-                ->where('categories.id',$this->id)
-                ->exists() ;
+        return Auth::check()
+        &&
+        Auth::user()
+            ->categories()
+            ->where('categories.id', $this->id)
+            ->exists();
     }
 
     public function publishedWorks()

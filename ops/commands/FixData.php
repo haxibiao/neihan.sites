@@ -125,14 +125,18 @@ class FixData extends Command
 
     public function fix_articles()
     {
-        $this->cmd->info('fix articles');
-        $articles = Article::where('category_id', 23)->whereStatus(1)->get();
-        foreach ($articles as $article) {
-            $this->fix_content($article);
-        }
-        $article = Article::find(149);
-        $this->fix_content($article);
-        $this->cmd->info('fix articles success');
+        $qb = Article::orderBy("id");
+        $qb->chunk(100, function ($articles) {
+            foreach ($articles as $article) {
+                if (empty($article->description)) {
+                    $article->description = str_limit(strip_tags($article->body), 200);
+                    $article->save();
+                    $this->cmd->info("fix $article->id $article->title");
+                } else {
+                    $this->cmd->comment("skip $article->id");
+                }
+            }
+        });
     }
 
     public function fix_content($article)

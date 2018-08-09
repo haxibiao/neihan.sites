@@ -123,7 +123,7 @@ class Article extends Model
 
     public function relatedVideoPostsQuery()
     {
-        return Article::with('video')->where('type','video')->whereIn('category_id', $this->categories->pluck('id'));
+        return Article::with('video')->where('type', 'video')->whereIn('category_id', $this->categories->pluck('id'));
     }
 
     /* --------------------------------------------------------------------- */
@@ -131,10 +131,12 @@ class Article extends Model
     /* --------------------------------------------------------------------- */
     public function description()
     {
-        $description = html_entity_decode($this->description);
-        $body        = html_entity_decode($this->body);
-        $description = empty($description) ? str_limit(strip_tags($body), 80) : str_limit($description, 80);
-        return $description;
+        $description = $this->description;
+        if (empty($description)) {
+            $body        = html_entity_decode($this->body);
+            $description = str_limit(strip_tags($body), 80);
+        }
+        return str_limit($description, 80);
     }
 
     public function topImage()
@@ -476,16 +478,16 @@ class Article extends Model
      */
     public function createPost($input)
     {
-        $user  = getUser(); 
+        $user  = getUser();
         $body  = $input['body'];
         $title = isset($input['title']) ? $input['title'] : str_limit($body, $limit = 20, $end = '...');
 
-        $this->title = $title;
-        $this->body  = $body;  
+        $this->title       = $title;
+        $this->body        = $body;
         $this->description = null; //不存冗余，最后显示的时候根据情况截取即可.---为了兼容GraphQL,打开该代码注释
-        $this->status  = 1; //直接发布
-        $this->type    = 'post';
-        $this->user_id = $user->id;
+        $this->status      = 1; //直接发布
+        $this->type        = 'post';
+        $this->user_id     = $user->id;
         $this->save();
         //带视频
         if (isset($input['video_id'])) {
@@ -510,7 +512,7 @@ class Article extends Model
             $this->save();
             $this->images()->sync($image_ids);
         }
-        return $this; 
+        return $this;
     }
 
     //直接收录到专题的操作
@@ -544,7 +546,7 @@ class Article extends Model
             foreach ($new_categories as $category) {
                 //更新新分类文章数
                 if ($category = Category::find($category->id)) {
-                    $category->count = $category->publishedArticles()->count();
+                    $category->count        = $category->publishedArticles()->count();
                     $category->count_videos = $category->videoPosts()->count();
                     $category->save();
                 }
@@ -552,7 +554,7 @@ class Article extends Model
         }
         foreach ($old_categories as $category) {
             //更新旧分类文章数
-            $category->count = $category->publishedArticles()->count();
+            $category->count        = $category->publishedArticles()->count();
             $category->count_videos = $category->videoPosts()->count();
             $category->save();
         }
