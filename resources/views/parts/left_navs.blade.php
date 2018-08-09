@@ -1,4 +1,4 @@
-<ul class="nav navbar-nav">
+{{-- <ul class="nav navbar-nav">
               
   <li class="{{ get_active_css('/') }}"><a style="{{ get_top_nav_color() }}" href="/">首页</a></li>
   @foreach($category_items as $item)
@@ -13,7 +13,6 @@
             <li role="separator" class="divider"></li>
             @foreach($category_items as $item_sub)
               @if($item_sub->parent_id == $item->id)
-                {{-- <li><a href="/{{ $item_sub->name_en }}">{{ $item_sub->name }}</a></li> --}}
                 @if(!$item_sub->has_child)
                   <li class="{{ get_active_css($item_sub->name_en) }}"><a href="/{{ $item_sub->name_en }}">{{ $item_sub->name }}</a></li>
                 @else 
@@ -39,4 +38,4 @@
   @endforeach
   <li class="{{ get_active_css('video') }}"><a style="{{ get_top_nav_color() }}" href="/video">视频</a></li>
 
-</ul>
+</ul> --}}

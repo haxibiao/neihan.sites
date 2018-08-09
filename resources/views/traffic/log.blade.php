@@ -23,12 +23,14 @@
 					@foreach($traffics as $traffic)
 					<tr>
 						<td>
-							@if($traffic->article_id)
+						@if($traffic->article_id)
 							<a href="/article/{{ $traffic->article_id }}">{{ str_limit($traffic->article->title, 10) }}</a>
-							@endif
+						@else 
+							{{ $traffic->path }}
+						@endif
 						</td>
 						<td>
-							{{ $traffic->created_at->diffForHumans() }}
+							{{ $traffic->created_at }}
 						</td>
 						<td>
 							{{ $traffic->device }}

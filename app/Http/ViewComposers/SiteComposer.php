@@ -36,7 +36,7 @@ class SiteComposer
      */
     public function compose(View $view)
     {
-        $categories = Category::where('type', 'article')->get();
-        $view->with('category_items', $categories);
+        // $categories = Category::where('type', 'article')->get();
+        // $view->with('category_items', $categories);
     }
 }

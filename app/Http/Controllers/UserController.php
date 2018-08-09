@@ -56,8 +56,7 @@ class UserController extends Controller {
 		$user = User::findOrFail($id);
 		$user->followUsers = $user->followingUsers()->count();
 		//作品
-		$qb = Article::where('user_id', $user->id)
-			->with('user')->with('category')
+		$qb = $user->articles()->with('category')
 			->where('status', '>', 0)
 			->orderBy('id', 'desc');
 		$articles = smartPager($qb, 10);
@@ -71,8 +70,7 @@ class UserController extends Controller {
 		$data['articles'] = $articles;
 
 		//最新评论
-		$qb = Article::where('user_id', $user->id)
-			->with('user')->with('category')
+		$qb = $user->articles()->with('category')
 			->where('status', '>', 0)
 			->orderBy('commented', 'desc');
 		$articles = smartPager($qb, 10);
@@ -86,8 +84,7 @@ class UserController extends Controller {
 		$data['commented'] = $articles;
 
 		//热门
-		$qb = Article::where('user_id', $user->id)
-			->with('user')->with('category')
+		$qb = $user->articles()->with('category')
 			->where('status', '>', 0)
 			->orderBy('hits', 'desc');
 		$articles = smartPager($qb, 10);
@@ -143,10 +140,10 @@ class UserController extends Controller {
 		$data['actions'] = $actions;
 
 		//视频
-		$qb = $user->videoPosts()
-			->orderBy('updated_at', 'desc');
-		$videos = smartPager($qb, 10);
-		$data['videos'] = $videos;
+		// $qb = $user->videoPosts()
+		// 	->orderBy('updated_at', 'desc');
+		// $videos = smartPager($qb, 10);
+		// $data['videos'] = $videos;
 
 		return view('user.show')
 			->withUser($user)
