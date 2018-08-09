@@ -1,5 +1,5 @@
 <template>
-    <div class="modal fade modal-post">
+    <div class="modal fade modal-post" tabindex="1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -51,6 +51,7 @@
 								    	<span class="img-click-here">点击此处上传图片</span>
 								        <div class="img-file">
 								            <input type="file" @change="upload"  :accept="fileFormat" multiple ref="upload" name="video">
+								            <modal-upload-check></modal-upload-check>
 								        </div>
 								    	<span class="img-limit">支持图片拖拽上传</span>
 								    </div>
@@ -73,11 +74,16 @@
 
 <script>
 import Dropzone from "../../plugins/Dropzone";
+import ModalUploadCheck from "./ModalUploadCheck";
 
 export default {
 	name: "ModalPost",
 
 	props: [],
+
+	components:{
+		'modal-upload-check':ModalUploadCheck,
+	},
 
 	computed: {
 		token() {
@@ -118,9 +124,14 @@ export default {
 					this.filesCount++;
 				} else if (e.target.files[0].type.indexOf("video") != -1) {
 					let _this = this;
-
 					_this.fileFormat = ".avi,.wmv,.mpeg,.mp4,.mov,.mkv,.flv,.f4v,.m4v,.rmvb,.rm,.3gp,.dat,.ts,.mts,.vob";
 					_this.videoObj = e.target.files[0];
+					// _this.videoObjSize = _this.videoObj.size/1024/1024;
+					// //not allow 50Mb
+					// if(_this.videoObjSize >= 50){
+					// 	$('#myModal').modal('show');
+					// 	return;
+					// }
 					_this.bool = false;
 					let reader = new FileReader();
 					reader.readAsDataURL(e.target.files[0]);
