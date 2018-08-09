@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Web;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -21,7 +21,12 @@ class BasicTest extends TestCase
 
     public function testArticleDetailOK()
     {
-        $rand_article_id = \App\Article::orderBy('id', 'desc')->where('status','>',0)->take(10)->get()->random()->id;
+        $rand_article_id = \App\Article::orderBy('id', 'desc')
+        ->where('type','article')
+        ->where('status','>',0)
+        ->take(10)->get()
+        ->random()
+        ->id;
         $response        = $this->get("/article/$rand_article_id");
         $response->assertStatus(200);
     }

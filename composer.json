@@ -19,17 +19,19 @@
         "lokielse/omnipay-alipay": "^2.0",
         "overtrue/laravel-wechat": "~3.0",
         "overtrue/pinyin": "~3.0",
+        "predis/predis": "^1.1",
         "qcloud/vod-sdk-v5": "v1.2.1",
         "renatomarinho/laravel-page-speed": "^1.8",
         "roumen/sitemap": "^2.7",
         "simplesoftwareio/simple-qrcode": "^2.0"
     },
     "require-dev": {
-        "laravel/tinker": "~1.0",
+        "brianium/paratest": "^2.0",
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
-        "mockery/mockery": "0.9.*",
+        "laravel/tinker": "~1.0",
         "laravelcollective/remote": "^5.4",
+        "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~7.0"
     },
     "autoload": {
