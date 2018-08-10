@@ -198,6 +198,7 @@ class CategoryController extends Controller {
 		//作品
 		$qb = $category->publishedWorks()
 			->with('user')->with('category')
+			->distinct('id')
 			->orderBy('pivot_created_at', 'desc');
 		$articles = smartPager($qb, 10);
 		if (ajaxOrDebug() && $request->get('works')) {
@@ -209,6 +210,7 @@ class CategoryController extends Controller {
 			return $articles;
 		}
 		$data['works'] = $articles;
+		// dd($articles);
 
 		//热门文章
 		$qb = $category->publishedWorks()
