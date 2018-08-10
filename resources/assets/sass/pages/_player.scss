@@ -99,9 +99,7 @@
 			.desc {
 				line-height: 30px;
 				font-size: 15px;
-				.upload-time {
-					margin-left: 41px;
-				}
+				padding-left: 20px;
 				.upload-user {
 					.sub {
 						color: $light-color1;
@@ -115,6 +113,7 @@
 					.button-vd {
 						display: inline-block;
 						margin-left: 10px;
+						float: right;
 						a {
 							padding: 0 6px;
 							line-height: 30px;
@@ -165,6 +164,9 @@
 					position: static;
 					width: auto;
 					margin-top: 21px;
+					.desc {
+						padding: 0;
+					}
 					.listArea {
 						padding: 0 !important;
 						.related-video {

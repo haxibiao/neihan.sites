@@ -83,7 +83,7 @@ export default {
 
 <style lang="scss">
     .title{
-      margin: 10px 5px;
+      margin: 10px 0;
       >h4{
         color: #fff;
         display: inline-block;

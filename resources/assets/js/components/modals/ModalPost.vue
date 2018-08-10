@@ -1,5 +1,5 @@
 <template>
-    <div class="modal fade modal-post" tabindex="1">
+    <div class="modal fade modal-post">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -10,54 +10,35 @@
                 </div>
                 <div class="modal-body">
     				<form method="post" action="/post" ref="postForm" enctype="multipart/form-data">
-					<input type="hidden" name="_token" v-model="token">
-					<div class="input-question">
-						<input-matching name="title" placeholder="输入标题" hide-suggestion></input-matching>
-					</div>
 					<div class="textarea-box">
                 		<textarea name="body" placeholder='再说点什么...' v-model="description" maxlength='500'></textarea>
                 		<span class="word-count">{{ description.length }}/500</span>
+								<div class="img-preview-item clearfix" v-for="image in selectedImgs">
+									<img :src="image.url" alt="" class="as-height">
+									<div class="img-del" @click="deleteImg(image)"><i class="iconfont icon-cha"></i></div>
+								</div>
+								<div v-if="videoPath" class="modal-video-box">
+									<div class="video-content">
+										<video class="video" :src="videoPath" controls="" ref="video_ele">
+										</video>
+										<div class="progress_box" ref="progress_box">
+											<loading :progress="progress"></loading>
+										</div>
+									</div>
+									<div class="video-del" @click="deleteVideo"><i class="iconfont icon-cha"></i></div>
+								</div>
+                		 <div class="img-upload-btn">
+					    	<i class="iconfont icon-icon20"></i>
+					        <div class="img-file">
+					            <input type="file" @change="upload"  :accept="fileFormat" multiple ref="upload" name="video">
+					        </div>
+					    </div>
 					</div>
 					<div>
-						<category-select placeholder="再选择专题"></category-select>
+						<category-select placeholder="选择专题"></category-select>
 					</div>
                     <div class="img-selector">
-                    	<div :class="['ask-img-header',selectedImgs.length > 0 ? 'bigger' : '']"><span class="desc">（每次最多上传9张图片或者1个视频）</span></div>
-						<div class="img-preview clearfix">
-							<div class="img-preview-item clearfix" v-for="image in selectedImgs">
-								<img :src="image.url" alt="" class="as-height">
-								<div class="img-del" @click="deleteImg(image)"><i class="iconfont icon-cha"></i></div>
-							</div>
-							<div v-if="videoPath">
-								<div class="modal-video-box">
-									<video class="video" :src="videoPath" controls="" ref="video_ele">
-									</video>
-									<div class="progress_box" ref="progress_box">
-										<loading :progress="progress"></loading>
-									</div>
-								</div>
-								
-								<div class="video-del" @click="deleteVideo"><i class="iconfont icon-cha"></i></div>
-							</div>
-						</div>
-						<div class="tab-header">
-							<div class="tab-header-actived">图片或者视频</div>
-						</div>
-						<div v-if="bool" class="tab-body">
-							<div class="tab-body-item">
-								<div class="img-upload-field">
-								    <div class="img-upload-btn">
-								    	<i class="iconfont icon-icon20"></i>
-								    	<span class="img-click-here">点击此处上传图片</span>
-								        <div class="img-file">
-								            <input type="file" @change="upload"  :accept="fileFormat" multiple ref="upload" name="video">
-								            <modal-upload-check></modal-upload-check>
-								        </div>
-								    	<span class="img-limit">支持图片拖拽上传</span>
-								    </div>
-								</div>
-							</div>
-						</div>
+                    	<div :class="['ask-img-header',selectedImgs.length > 0 ? 'bigger' : '']"><span class="desc">（非必选）</span></div>
                     </div>
                     <input type="hidden" name="user_id" :value="user.id">
 			        <input v-for="img in selectedImgs" name="image_urls[]" type="hidden" :value="img.url">
@@ -74,16 +55,11 @@
 
 <script>
 import Dropzone from "../../plugins/Dropzone";
-import ModalUploadCheck from "./ModalUploadCheck";
 
 export default {
 	name: "ModalPost",
 
 	props: [],
-
-	components:{
-		'modal-upload-check':ModalUploadCheck,
-	},
 
 	computed: {
 		token() {
@@ -124,14 +100,9 @@ export default {
 					this.filesCount++;
 				} else if (e.target.files[0].type.indexOf("video") != -1) {
 					let _this = this;
+
 					_this.fileFormat = ".avi,.wmv,.mpeg,.mp4,.mov,.mkv,.flv,.f4v,.m4v,.rmvb,.rm,.3gp,.dat,.ts,.mts,.vob";
 					_this.videoObj = e.target.files[0];
-					// _this.videoObjSize = _this.videoObj.size/1024/1024;
-					// //not allow 50Mb
-					// if(_this.videoObjSize >= 50){
-					// 	$('#myModal').modal('show');
-					// 	return;
-					// }
 					_this.bool = false;
 					let reader = new FileReader();
 					reader.readAsDataURL(e.target.files[0]);
@@ -273,7 +244,7 @@ export default {
 		top: 42%;
 		.modal-content {
 			.modal-body {
-				padding: 5px 40px 0px;
+				padding: 25px 40px 0px;
 				max-height: 660px;
 				overflow: auto;
 				.input-question {
@@ -282,14 +253,69 @@ export default {
 				.textarea-box {
 				    position: relative;
 				    margin-bottom: 20px;
-				}
-				.img-selector {
-					.img-preview {
-						position: relative;
-						margin-bottom: 10px;
-						.modal-video-box{
-							position:relative;
+				    border: 1px solid #f0f0f0;
+				    padding-bottom:50px;
+				    >textarea{
+				    	height:180px;
+				    	background-color: #fff;
+				    	border:none;
+				    }
+				    textarea::-webkit-scrollbar{
+				    	width:4px;
+				    }
+				    textarea::-webkit-scrollbar-thumb{
+				    	border-radius: 10px;
+				         -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+				        background: rgba(217, 106, 95, 0.9);
+				    }
+						.img-preview-item {
+							border: 1px solid #e8e8e8;
+							margin: 5px;
+							width: 90px;
+							height: 90px;
 							display: inline-block;
+							position: relative;
+							overflow: hidden;
+							vertical-align: middle;
+							.as-height {
+								height: 100%;
+							}
+							.img-del {
+								width: 18px;
+								height: 18px;
+								position: absolute;
+								z-index: 2;
+								top: 0;
+								right: 0;
+								background-color: rgba(0, 0, 0, 0.5);
+								border-radius: 0 0 0 4px;
+								padding: 1px;
+								cursor: pointer;
+								text-align: center;
+								line-height: 18px;
+								i {
+									font-size: 14px;
+									color: white;
+								}
+							}
+						}
+						.modal-video-box{
+							    position: relative;
+							    width: 310px;
+    							height: 174px;
+							    overflow: hidden;
+							    display: inline-block;
+							    vertical-align: middle;
+							    text-align: center;
+							    background: #000;
+							    margin-left: 15px;
+							    .video-content{
+							    	position: absolute;
+								    top: 50%;
+								    left: 50%;
+								    transform: translate(-50%, -50%);
+								    display: inline-block;
+							    }
 							.video {
 								height: 300px;
 								opacity: 0.2;
@@ -300,14 +326,64 @@ export default {
 								left: 50%;
 								transform: translate(-50%, -50%);
 							}
+							.video-del{
+								width: 18px;
+							    height: 18px;
+							    position: absolute;
+							    z-index: 2;
+							    top: 0;
+							    right: 0;
+							    background-color: rgba(0, 0, 0, 0.5);
+							    padding: 1px;
+							    cursor: pointer;
+							    text-align: center;
+							    line-height: 18px;
+							    color: #fff;
+							}
 						}
-						.video-del {
-							position: absolute;
-							top: -22px;
-							right: 0;
-							cursor: pointer;
-						}
-					}
+					
+				    .img-upload-btn {
+									position: relative;
+									text-align: center;
+									width: 90px;
+								    height: 90px;
+								    line-height: 80px;
+								    border: 1px solid #f0f0f0;
+								    display: inline-block;
+								    vertical-align: middle;
+								    margin-left: 15px;
+									i {
+										font-size: 56px;
+										color: #f0f0f0;
+									}
+									.img-click-here,
+									.img-limit {
+										font-size: 14px;
+										color: #2b89ca;
+										display: block;
+										margin-top: 16px;
+										line-height: 1;
+									}
+									.img-file {
+										position: absolute;
+										overflow: hidden;
+										left: 0;
+										top: 0;
+										width: 100%;
+										height: 100%;
+										cursor: pointer;
+										input {
+											width: 100%;
+											height: 100%;
+											opacity: 0;
+											cursor: pointer;
+										}
+									}
+									.img-limit {
+										color: #969696;
+										margin-top: 12px;
+									}
+								}
 				}
 			}
 		}
