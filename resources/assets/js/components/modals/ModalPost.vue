@@ -28,7 +28,7 @@
 									<div class="video-del" @click="deleteVideo"><i class="iconfont icon-cha"></i></div>
 								</div>
                 		 <div class="img-upload-btn">
-					    	<i class="iconfont icon-icon20"></i>
+					    	<i class="iconfont icon-icon20"></i> 
 					        <div class="img-file">
 					            <input type="file" @change="upload"  :accept="fileFormat" multiple ref="upload" name="video">
 					        </div>
@@ -234,9 +234,16 @@ export default {
 }
 .modal-post {
 	@media (max-width: 1366px){
-		.video {
-			height: 270px !important;
+		.modal-dialog{
+				top: 47% !important;
+			.textarea-box {
+				padding-bottom:30px !important;
+			}
+			.ask-img-header{
+				    padding-bottom: 0 !important;
+			}
 		}
+		
 	}
 	.modal-dialog {
 		padding-bottom: 20px;
@@ -259,6 +266,7 @@ export default {
 				    	height:180px;
 				    	background-color: #fff;
 				    	border:none;
+				    	margin-bottom: 15px;
 				    }
 				    textarea::-webkit-scrollbar{
 				    	width:4px;
@@ -308,7 +316,7 @@ export default {
 							    vertical-align: middle;
 							    text-align: center;
 							    background: #000;
-							    margin-left: 15px;
+							    margin-left: 5px;
 							    .video-content{
 							    	position: absolute;
 								    top: 50%;
