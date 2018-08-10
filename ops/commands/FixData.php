@@ -8,6 +8,7 @@ use App\Collection;
 use App\Comment;
 use App\Image;
 use App\Visit;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Command;
 
 class FixData extends Command
@@ -125,18 +126,18 @@ class FixData extends Command
 
     public function fix_articles()
     {
-        $qb = Article::orderBy("id");
-        $qb->chunk(100, function ($articles) {
-            foreach ($articles as $article) {
-                if (empty($article->description)) {
-                    $article->description = str_limit(strip_tags($article->body), 200);
-                    $article->save();
-                    $this->cmd->info("fix $article->id $article->title");
-                } else {
-                    $this->cmd->comment("skip $article->id");
-                }
-            }
-        });
+        $this->cmd->info('fix article_category ...');
+        $articles = DB::table('article_category')->select('category_id','article_id')
+        ->whereSubmit('已收录')->groupBy(['category_id','article_id'])->havingRaw('count(*) > 1')->get();
+        foreach ($articles as $article) {
+            $category_id = $article->category_id;
+            $article_id = $article->article_id;
+            $article_category = DB::table('article_category')->
+                where('category_id',$category_id)->where('article_id',$article_id)->first();
+            $fix_id = $article_category->id;
+            DB::table('article_category')->whereId($fix_id)->delete();
+            $this->cmd->info("$fix_id fix success");
+        }
     }
 
     public function fix_content($article)
