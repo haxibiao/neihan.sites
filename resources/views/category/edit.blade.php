@@ -58,8 +58,16 @@
                 </tr>
                 <tr class="add-manager">
                     <td class="setting-title pull-left">其他管理员</td>
-                    <td>                       
+                    <td>
                         <user-select users="{{ json_encode($category->admins->pluck('name','id')) }}"></user-select>
+                    </td>
+                </tr>
+                <tr class="add-manager">
+                    <td class="setting-title pull-left">直接子专题</td>
+                    <td>
+                        <category-select
+                            categories="{{ json_encode($categories->pluck('name','id') ) }}">
+                    </category-select>
                     </td>
                 </tr>
                 <tr>
@@ -124,7 +132,7 @@
 
 @push('scripts')
   <script>
-   
+
 
     function toggleUploadAppLogo(target) {
         if($(target).val()>0) {
@@ -170,7 +178,7 @@
             $('[name="is_official"]').on('change',function(){
                 toggleUploadAppLogo(this);
             });
-            
+
             $('[name="is_for_app"]').on('change',function(){
                 if($(this).val()>0) {
                     $('#upload_app_logo').fadeIn();

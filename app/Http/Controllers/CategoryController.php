@@ -117,10 +117,6 @@ class CategoryController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function create(Request $request) {
-		$type = 'article';
-		if ($request->get('type')) {
-			$type = $request->get('type');
-		}
 		$user = Auth::user();
 		return view('category.create')->withUser($user);
 	}
@@ -137,7 +133,13 @@ class CategoryController extends Controller {
 		//save logo
 		$category->saveLogo($request);
 		$category->save();
-
+		//子分类
+		if (request()->filled('categories')) {
+			$categories = json_decode($request->categories, true);
+			$category_ids = array_column($categories, 'id');
+			Category::whereIn('id', $category_ids)
+				->update(['parent_id' => $category->id]);
+		}
 		//save admins ...
 		$this->saveAdmins($category, $request);
 		return redirect()->to('/category');
@@ -226,9 +228,20 @@ class CategoryController extends Controller {
 		}
 		$data['hot'] = $articles;
 
-		//相关专题
-		$related_category = User::find($category->user_id)->adminCategories->take(5);
-		$data['related_category'] = $related_category;
+		//相关专题,加入层级关系
+		$level_categories = Category::where('id', '<>', $category->id)
+			->whereStatus(1)
+			->where('parent_id', $category->id)
+			->when($category->parent_id != 0, function ($q) use ($category) {
+				return $q->orWhere('parent_id', $category->id);
+			})->get();
+		if (count($level_categories) == 0) {
+			$data['related_category'] = User::find($category->user_id)
+				->adminCategories
+				->take(5);
+		} else {
+			$data['related_category'] = $level_categories;
+		}
 
 		//记录日志
 		$category->recordBrowserHistory();
@@ -255,8 +268,13 @@ class CategoryController extends Controller {
 			abort(403);
 		}
 		// dd(json_encode($category->admins->pluck('name','id')));
-		$categories = get_categories(0, $type, 1);
-		return view('category.edit')->withUser($user)->withCategory($category)->withCategories($categories);
+		//$categories = get_categories(0, $type, 1);
+		$categories = Category::where('parent_id', $id)
+			->whereStatus(1)
+			->get();
+		return view('category.edit')->withUser($user)
+			->withCategory($category)
+			->withCategories($categories);
 	}
 
 	/**
@@ -276,6 +294,34 @@ class CategoryController extends Controller {
 		$category->saveLogo($request);
 		$category->updated_at = now();
 		$category->save();
+
+		//维护子分类
+		$old_category_ids = Category::where('parent_id', $id)
+			->whereStatus(1)
+			->pluck('id')
+			->toArray();
+		if (request()->filled('categories')) {
+			$categories = json_decode($request->categories, true);
+			$recent_category_ids = array_column($categories, 'id');
+		} else {
+			$recent_category_ids = [];
+		}
+		$exclude_c_ids = array_udiff_assoc($old_category_ids, $recent_category_ids, function ($a, $b) {
+			$b = intval($b);
+			if ($a === $b) {
+				return 0;
+			}
+			return ($a > $b) ? 1 : -1;
+		});
+		if (!empty($exclude_c_ids)) {
+			Category::whereIn('id', $exclude_c_ids)
+				->update(['parent_id' => 0]);
+		}
+		if (!empty($recent_category_ids)) {
+			Category::whereIn('id', $recent_category_ids)
+				->update(['parent_id' => $category->id]);
+		}
+
 		//save admins ...
 		$this->saveAdmins($category, $request);
 		return redirect()->to('/category');
