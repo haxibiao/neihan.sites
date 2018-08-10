@@ -264,7 +264,7 @@ export default {
 				    padding-bottom:50px;
 				    >textarea{
 				    	height:180px;
-				    	background-color: #fff;
+				    	background-color: #fff ;
 				    	border:none;
 				    	margin-bottom: 15px;
 				    }

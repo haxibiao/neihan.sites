@@ -62,8 +62,13 @@
 		            <tr class="add-manager">
 		                <td class="setting-title pull-left">其他管理员</td>
 		                <td>
-		                   
 		                    <user-select></user-select>
+		                </td>
+		            </tr>
+		            <tr class="add-manager">
+		                <td class="setting-title pull-left">直接子专题</td>
+		                <td>
+		                    <category-select></category-select>
 		                </td>
 		            </tr>
 		            <tr>
@@ -126,7 +131,7 @@
 			    @if($errors->any())
 				    <div class="alert alert-danger">
 				        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-				        <strong>出错了！</strong> 
+				        <strong>出错了！</strong>
 				        <ul>
 				            @foreach($errors->all() as $error)
 				            <li>{{ $error }}</li>
