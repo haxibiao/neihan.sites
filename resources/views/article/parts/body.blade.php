@@ -1,8 +1,8 @@
-@if(!empty($article->description))
+{{-- @if(!empty($article->description))
 <p class="lead">
   {{ $article->get_description() }}
 </p>
-@endif
+@endif --}}
 <p>
 	@php	
 		$body = str_replace('div', 'p', $article->body);
