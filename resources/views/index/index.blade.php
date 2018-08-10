@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-   {{ config('app.name') }}-{{ config('seo.'.get_domain_key().'.title') }} 
+   {{ config('app.name') }}-{{ config('seo.'.get_domain_key().'.title') }}
 @stop
 
 @section('keywords'){{ config('seo.'.get_domain_key().'.keywords') }}
@@ -39,37 +39,35 @@
                     <i class="iconfont icon-youbian"></i>
                 </p>
               </a>
-            </div> 
+            </div>
             @include('index.parts.video_posts', ['videoPosts' => $data->videoPosts])
           </div>
           {{-- 文章列表 --}}
-         <ul class="article-list">              
-            {{-- 文章 --}}          
+         <ul class="article-list">
+            {{-- 文章 --}}
             {{--@each('parts.article_item', $data->sticks, 'article') --}}
-            @each('parts.article_item', $data->articles, 'article') 
+            @each('parts.article_item', $data->articles, 'article')
 
             {{-- 登录后才加载更多 --}}
             @if(Auth::check())
-              <article-list api="/" start-page="2" is-desktop="{{ \Agent::isDeskTop() == 1 }}"/> 
-            @else 
+              <article-list api="/" start-page="2" is-desktop="{{ \Agent::isDeskTop() == 1 }}"/>
+            @else
               <div>
                 {!! $data->articles->links() !!}
               </div>
             @endif
-            
+
           </ul>
         </div>
         {{-- 侧栏 --}}
         <div class="aside sm-right hidden-xs">
-            @include('index.parts.trendings') 
+            @include('index.parts.trendings')
             {{-- app --}}
-            @include('index.parts.download_app') 
+            @include('index.parts.download_app')
             {{-- 日报 --}}
             {{-- @include('index.parts.daily') --}}
             {{-- 推荐作者 --}}
-            {{-- @if(Auth::check()) --}}
-            <recommend-authors></recommend-authors>
-            {{-- @endif --}}
+            <recommend-authors is-login="{{ Auth::check() ? true : false }}"></recommend-authors>
         </div>
       </div>
       {{-- 网站底部信息 --}}

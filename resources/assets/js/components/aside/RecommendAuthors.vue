@@ -30,6 +30,9 @@ export default {
 
   name: 'RecommendAuthors',
 
+  props:['isLogin'],
+
+
   mounted() {
   	this.fetchData();
   },
@@ -40,7 +43,10 @@ export default {
       this.counter ++;
       $(this.$refs.fresh).css('transform',`rotate(${360*this.counter}deg)`);
 		  $('.recommend_author ul').fadeOut();
-		  var api = window.tokenize('/api/user/recommend');
+      var api = vm.apiUrl;
+      if(vm.isLogin){
+		    api= window.tokenize(vm.apiUrl);
+      }
   		window.axios.get(api).then(function(response){
   			vm.users = response.data;
   			$('.recommend_author ul').fadeIn();
@@ -48,6 +54,9 @@ export default {
   	},
   	toggleFollow(user) {
       var _this = this;
+      if(!_this.isLogin){
+       location.href = '/login';
+      }
       var api_url = window.tokenize('/api/follow/'+ user.id + '/users');
       window.axios.post(api_url).then(function(response){
         user.is_followed = response.data;
@@ -59,7 +68,8 @@ export default {
   data () {
     return {
     	users:[],
-      counter:1
+      counter:1,
+      apiUrl:'/api/user/recommend'
     }
   }
 }

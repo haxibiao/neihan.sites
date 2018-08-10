@@ -84,7 +84,12 @@ class UserController extends Controller {
 	public function recommend(Request $request) {
 		$page_size = 5;
 		$page = rand(1, ceil(User::count() / $page_size));
-		$users = User::where('id', '<>', Auth::guard('api')->user()->id)->orderBy('id', 'desc')->skip(($page - 1) * $page_size)->take($page_size)->get();
+		if (Auth::guard('api')->check()) {
+			$users = User::where('id', '<>', Auth::guard('api')->user()->id)->orderBy('id', 'desc');
+		} else {
+			$users = User::orderBy('id', 'desc');
+		}
+		$users = $users->skip(($page - 1) * $page_size)->take($page_size)->get();
 		foreach ($users as $user) {
 			$user->fillForJs();
 			if (Auth::guard('api')->check()) {
