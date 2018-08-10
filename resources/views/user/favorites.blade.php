@@ -10,7 +10,7 @@
                     <div class="banner-img collect-note">
                         <div>
                             <i class="iconfont icon-biaoqian"></i>
-                            <span>收藏的文章</span>
+                            <span>收藏的作品</span>
                         </div>
                     </div>
                 </div>
@@ -18,10 +18,7 @@
                     <!-- Nav tabs -->
                     <ul id="trigger-menu" class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active">
-                            <a href="#articles" aria-controls="articles" role="tab" data-toggle="tab">收藏的文章</a>
-                        </li>
-                        <li role="presentation">
-                            <a href="#questions_tab" aria-controls="questions_tab" role="tab" data-toggle="tab">收藏的问题</a>
+                            <a href="#articles" aria-controls="articles" role="tab" data-toggle="tab">收藏的作品</a>
                         </li>
                     </ul>
 
@@ -33,13 +30,6 @@
                                     @include('parts.article_item', ['article' => $fav->faved])
                                 @endforeach
                             </ul>
-                        </div>
-                        <div role="tabpanel" class="fade tab-pane" id="questions_tab">
-                            <div>
-                                @foreach($data['questions'] as $fav)
-                                    @include('question.parts.question_item', ['question' => $fav->faved])
-                                @endforeach
-                            </div>
                         </div>
                     </div>
                 </div>
