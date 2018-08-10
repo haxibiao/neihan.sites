@@ -17,7 +17,7 @@ class Tag extends Model
 
     public function articles()
     {
-        return $this->morphedByMany('App\Article', 'taggable');
+        return $this->morphedByMany('App\Article', 'taggable')->exclude(['body', 'json']);
     }
 
     public function videos()
