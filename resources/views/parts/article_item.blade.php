@@ -10,14 +10,14 @@
         @if( $article->type=='video' )
         <i class="duration">@sectominute($article->video->duration)</i>
         @endif
-    </a> 
-  @endif 
+    </a>
+  @endif
   <div class="content">
     @if( $article->type!=='article' )
     <div class="author">
       <a class="avatar" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/user/{{ $article->user->id }}">
         <img src="{{ $article->user->avatar() }}" alt="">
-      </a> 
+      </a>
       <div class="info">
         <a class="nickname" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/user/{{ $article->user->id }}">{{ $article->user->name }}</a>
         @if($article->user->is_editor)
@@ -32,9 +32,15 @@
         <span>{{ $article->title }}</span>
     </a>
     @endif
+    @if( $article->type=='article' )
     <a class="abstract" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="{{ $article->content_url() }}">
       {{ $article->get_description()?$article->get_description():$article->title }}
     </a>
+    @else
+     <a class="abstract" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="{{ $article->content_url() }}">
+      {{ $article->title?$article->title:$article->get_description()}}
+    </a>
+    @endif
     <div class="meta">
       @if($article->category)
         <a class="category" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/{{ $article->category->name_en }}">

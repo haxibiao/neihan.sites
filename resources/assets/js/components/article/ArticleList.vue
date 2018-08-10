@@ -22,7 +22,8 @@
 		    <a v-if="article.type =='article'" class="title" :target="isDesktop? '_blank' : '_self'" :href="article.url">
 		        <span>{{ article.title }}</span>
 		    </a>
-		    <a class="abstract":href="article.url">{{ article.description?article.description:article.title }}</a>
+		    <a v-if="article.type =='article'" class="abstract":href="article.url">{{ article.description?article.description:article.title }}</a>
+		    <a v-else class="abstract":href="article.url">{{ article.title?article.title:article.description}}</a>
 		    <div class="meta">
 		      <a v-if="article.category" class="category" :target="isDesktop? '_blank' : '_self'" :href="'/' + article.category.name_en">
         		<i class="iconfont icon-zhuanti1"></i>
