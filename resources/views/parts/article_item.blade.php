@@ -1,15 +1,20 @@
-<li class="article-item {{ $article->hasImage() ? 'have-img' : '' }}">
+<li class="content-item {{ $article->hasImage() ? 'have-img' : '' }}">
   @if($article->hasImage())
-    <a class="wrap-img {{ $article->type=='video'? 'video' : '' }}" href="{{ $article->content_url() }}"   target="{{ \Agent::isDeskTop()? '_blank':'_self' }}">
+    <a class="wrap-img" href="{{ $article->content_url() }}"   target="{{ \Agent::isDeskTop()? '_blank':'_self' }}">
         <img src="{{ $article->primaryImage() }}" alt="{{$article->title}}">
-        <i class="hover-play"> </i>
+        @if( $article->type=='video' )
+        <span class="rotate-play">
+          <i class="iconfont icon-shipin"></i>
+        </span>
+        @endif
         @if( $article->type=='video' )
         <i class="duration">@sectominute($article->video->duration)</i>
         @endif
     </a> 
   @endif 
   <div class="content">
-    <div class="author hidden-xs">
+    @if( $article->type!=='article' )
+    <div class="author">
       <a class="avatar" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/user/{{ $article->user->id }}">
         <img src="{{ $article->user->avatar() }}" alt="">
       </a> 
@@ -21,15 +26,24 @@
         <span class="time">{{ $article->updatedAt() }}</span>
       </div>
     </div>
+    @endif
+    @if( $article->type=='article' )
     <a class="title" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="{{ $article->content_url() }}">
         <span>{{ $article->title }}</span>
     </a>
+    @endif
     <a class="abstract" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="{{ $article->content_url() }}">
-      {{ $article->get_description() }}
+      {{ $article->get_description()?$article->get_description():$article->title }}
     </a>
     <div class="meta">
       @if($article->category)
-        <a class="collection-tag" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/{{ $article->category->name_en }}">{{ $article->category->name }}</a>
+        <a class="category" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/{{ $article->category->name_en }}">
+          <i class="iconfont icon-zhuanti1"></i>
+          {{ $article->category->name }}
+        </a>
+      @endif
+      @if( $article->type=='article' )
+        <a class="nickname" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/user/{{ $article->user->id }}">{{ $article->user->name }}</a>
       @endif
       <a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="{{ $article->content_url() }}">
         <i class="iconfont icon-liulan"></i> {{ $article->hits }}
@@ -39,7 +53,7 @@
       </a>
       <span><i class="iconfont icon-03xihuan"></i> {{ $article->count_likes }} </span>
       @if($article->count_tips)
-        <span><i class="iconfont icon-qianqianqian"></i> {{ $article->count_tips }}</span>
+        <span class="hidden-xs" ><i class="iconfont icon-qianqianqian"></i> {{ $article->count_tips }}</span>
       @endif
     </div>
   </div>
