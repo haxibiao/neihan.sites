@@ -1,6 +1,5 @@
 .content-item {
-  margin: 0 0 15px 0;
-  padding: 15px 0;
+  padding: 20px 0;
   width: 100%;
   position: relative;
   display: table;
@@ -9,7 +8,8 @@
   color: $dark-color1;
   border-bottom: 1px solid $light-color2;
   &.have-img {
-    min-height: 140px;
+    transition: all 0.5s linear;
+    min-height: 150px;
     .content {
       padding-right: 150px;
     }
@@ -129,6 +129,8 @@
     span {
       margin-right: 10px;
       color: $gray-color3;
+      display: inline-block;
+      vertical-align: middle;
       i {
         font-size: $font-size-detail;
       }
@@ -150,7 +152,7 @@
     }
   }
   //用户动态的评论样式
-  .activity {
+  .comment {
     line-height: 1.5;
     font-size: $font-size-tip;
     a {
@@ -159,7 +161,7 @@
     p {
       margin-bottom: 10px;
       font-size: $font-size-tip;
-      @include line-Number(5);
+      @include line-Number(4);
     }
   }
   blockquote {
@@ -168,7 +170,14 @@
     border-left: 3px solid $light-color1;
   }
   @media screen and (min-width: 769px) and (max-width: 900px) {
+    .comment {
+      p {
+        -webkit-line-clamp: 3;
+        font-size: 14px;
+      }
+    }
     &.have-img {
+      padding: 15px 0;
       min-height: 130px;
       .wrap-img {
         width: 125px;
@@ -189,9 +198,15 @@
     }
   }
   @media screen and (max-width: 500px) {
-    margin: 0;
-    min-height: 110px;
+    .comment {
+      p {
+        -webkit-line-clamp: 2;
+        font-size: 13px;
+      }
+    }
     &.have-img {
+      padding: 15px 0;
+      min-height: 110px;
       .wrap-img {
         width: 100px;
         height: 80px;
@@ -203,7 +218,7 @@
         }
       }
       .author {
-        margin-bottom: 10px;
+        margin-bottom: 8px;
         .avatar {
           width: 22px;
           height: 22px;
@@ -218,8 +233,12 @@
           font-size: 14px;
         }
         .abstract {
-          @include line-Number(2);
+          -webkit-line-clamp: 2;
           font-size: 12px;
+          line-height: 18px;
+        }
+        .meta {
+          margin: 5px 0 0px;
         }
       }
     }

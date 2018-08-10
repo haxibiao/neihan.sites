@@ -45,7 +45,7 @@
       @if( $article->type=='article' )
         <a class="nickname" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/user/{{ $article->user->id }}">{{ $article->user->name }}</a>
       @endif
-      <a class="hidden-xs" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="{{ $article->content_url() }}">
+      <a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="{{ $article->content_url() }}">
         <i class="iconfont icon-liulan"></i> {{ $article->hits }}
       </a>
       <a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="{{ $article->content_url() }}/#comments">

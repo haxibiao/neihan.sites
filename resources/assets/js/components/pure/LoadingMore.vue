@@ -22,17 +22,14 @@
 
 <script>
 export default {
+	name: "LoadingMore",
 
-  name: 'LoadingMore',
+	props: ["end"],
 
-  props: ["end"],
-
-  data () {
-    return {
-
-    }
-  }
-}
+	data() {
+		return {};
+	}
+};
 </script>
 
 <style lang="scss">
@@ -44,7 +41,7 @@ export default {
 	text-align: center;
 }
 .note-placeholder {
-	margin-bottom: 30px;
+	margin: 15px 0 30px;
 	width: 100%;
 	position: relative;
 	.image {
@@ -59,7 +56,9 @@ export default {
 	.content {
 		width: 100%;
 		padding-right: 25%;
-		.title,.text,.animation-delay {
+		.title,
+		.text,
+		.animation-delay {
 			background-color: #eaeaea;
 		}
 		.title {
@@ -74,8 +73,7 @@ export default {
 			animation: loading 0.5s ease-in-out infinite alternate;
 		}
 		.animation-delay {
-			
-			animation: loading 0.5s ease-in-out -.5s infinite alternate;
+			animation: loading 0.5s ease-in-out -0.5s infinite alternate;
 		}
 		.meta {
 			height: 16px;
@@ -103,7 +101,8 @@ export default {
 @keyframes loading {
 	from {
 		width: 100%;
-	}to {
+	}
+	to {
 		width: 50%;
 	}
 }

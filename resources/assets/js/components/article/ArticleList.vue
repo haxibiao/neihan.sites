@@ -29,14 +29,14 @@
 		      	{{ article.category.name }}
 		  	  </a>
 		      <a v-if="article.type =='article'" class="nickname" :target="isDesktop? '_blank' : '_self'" :href="'/user/'+article.user.id">{{ article.user.name }}</a>
-		      <a  class="hidden-xs" target="_blank" :href="article.url">
+		      <a target="_blank" :href="article.url">
 		        <i class="iconfont icon-liulan"></i> {{ article.hits }}
 		      </a>        
 		      <a :target="isDesktop? '_blank' : '_self'" :href="article.url+'/#comments'" class="comment_meta">
 		        <i class="iconfont icon-svg37"></i> {{ article.count_replies }}
 		      </a>
-		      <a :target="isDesktop? '_blank' : '_self'" :href="article.url"><i class="iconfont icon-03xihuan"></i> {{ article.count_likes }}</a>
-		      <a v-if="article.count_tips" :target="isDesktop? '_blank' : '_self'" :href="article.url"><i class="iconfont icon-qianqianqian"></i> {{ article.count_tips }}</a>
+		      <span><i class="iconfont icon-03xihuan"></i> {{ article.count_likes }}</span>
+		      <span class="hidden-xs" v-if="article.count_tips>0"><i class="iconfont icon-qianqianqian"></i> {{ article.count_tips }}</span>
 		    </div>
 		  </div>
 		</li> 
