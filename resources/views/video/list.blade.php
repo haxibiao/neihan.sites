@@ -32,7 +32,7 @@
                 @if( !empty($article) )
                     <div class="media">
                         <a class="pull-left" href="/video/{{ $video->id }}">
-                            <img alt="{{ $article->title }}" class="img img-thumbnail img-responsive" 
+                            <img alt="{{ $article->title }}" class="img img-thumbnail img-responsive"
                                 src="{{ $article->cover() }}" style="max-width: 300px">
                             </img>
                         </a>
@@ -43,10 +43,10 @@
                                 @if($article->status == 0)
                                 {!! Form::hidden('status', 1) !!}
                                 {!! Form::submit('上架', ['class' => 'btn btn-success btn-small']) !!}
-                                @else 
+                                @else
                                 {!! Form::hidden('status', 0) !!}
                                 {!! Form::submit('下架', ['class' => 'btn btn-default btn-small']) !!}
-                                @endif             
+                                @endif
                               {!! Form::close() !!}
                                 <a class="btn btn-primary btn-small" href="/video/{{ $video->id }}/edit" role="button" style="margin-left: 5px">
                                     编辑
@@ -70,13 +70,13 @@
                                 最后更新: {{ $video->updatedAt() }}
                             </p>
                             <p>
-                                @if(count($article->covers()) >= 8)
+                                @if(!empty($article->covers()) && count($article->covers()) >= 8)
                                     <span class="label label-success">截图已完成</span>
                                 @else
                                     <span class="label label-default">截图ing...</span>
                                 @endif
-                                
-                                @if($article->status == 0) 
+
+                                @if($article->status == 0)
                                 <span class="label label-info">已下架</span>
                                 @endif
                             </p>

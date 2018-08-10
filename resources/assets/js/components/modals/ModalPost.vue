@@ -7,10 +7,11 @@
                     <h4 class="modal-title">
 				      发布动态
 					</h4>
-                </div>
+                </div> 
                 <div class="modal-body">
     				<form method="post" action="/post" ref="postForm" enctype="multipart/form-data">
-					<div class="textarea-box">
+					<div class="textarea-box"> 
+						<input type="hidden" name="_token" v-model="token">
                 		<textarea name="body" placeholder='再说点什么...' v-model="description" maxlength='500'></textarea>
                 		<span class="word-count">{{ description.length }}/500</span>
 								<div class="img-preview-item clearfix" v-for="image in selectedImgs">

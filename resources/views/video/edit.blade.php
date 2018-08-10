@@ -20,9 +20,9 @@
         <li><a href="/video/{{ $video->id }}">{{ $video->title }}</a></li>
       </ol>
 
-    {!! Form::open(['method' => 'PUT', 'route' => ['video.update', $video->id], 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}  
+    {!! Form::open(['method' => 'PUT', 'route' => ['video.update', $video->id], 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data']) !!}
     <div class="panel panel-default">
-        <div class="panel-heading">               
+        <div class="panel-heading">
 
             <div class="btn-group pull-right">
                 {!! Form::submit("修改", ['class' => 'btn btn-primary']) !!}
@@ -41,20 +41,20 @@
                         {{ $errors->first('title') }}
                     </small>
                 </div>
-            
-            
-                <div class="row">    
+
+
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group{{ $errors->has('categories') ? ' has-error' : '' }}">
                             {!! Form::label('categories', '专题') !!}
-                            <category-select 
-                                categories="{{ json_encode($video->article->categories->pluck('name','id')) }}">        
+                            <category-select
+                                categories="{{ json_encode($video->article->categories->pluck('name','id')) }}">
                             </category-select>
                             <small class="text-danger">{{ $errors->first('categories') }}</small>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="form-group{{ $errors->has('body') ? ' has-error' : '' }}">
                     {!! Form::label('descri', '正文(必填)') !!}
 					{!! Form::textarea('body', $video->article->body, ['class' => 'form-control', 'required'=>true]) !!}
@@ -71,7 +71,7 @@
                         (目前只支持mp4格式)
                     </p>
                     <small class="text-danger">
-                        {{ $errors->first('video') }}　
+                        {{ $errors->first('video') }}
                     </small>
                 </div> --}}
 
@@ -81,9 +81,9 @@
                             <h3 class="panel-title">截图</h3>
                         </div>
                         <div class="panel-body">
-                            @if(count($article->covers()) >= 8)
-                                @php   
-                                    $coverIndex = 0; 
+                            @if(!empty($article->covers()) && count($article->covers()) >= 8)
+                                @php
+                                    $coverIndex = 0;
                                 @endphp
                                 @foreach($data['covers'] as $cover)
                                 @php
@@ -93,7 +93,7 @@
                                     <label for="cover{{ $coverIndex }}">
                                         <img src="{{ $cover }}" class="img img-responsive">
                                     </label>
-                                    
+
                                     {{-- trick here, need custom replace id="**" attribute to get label for radio work --}}
                                     {!! str_replace('>','id="'.'cover'.$coverIndex.'">', Form::radio('cover', $cover)) !!}
                                     <label for="cover{{ $coverIndex }}">
@@ -106,7 +106,7 @@
                                 <request-covers api="/api/{{$video->id}}/covers"></request-covers>
                             @endif
                         </div>
-                    </div>      
+                    </div>
                 </div>
             </div>
         </div>
@@ -116,7 +116,7 @@
                          {!! Form::radio('status', 0,  $article->status == 0, ['id' => 'status0']) !!} 下架
                      </label>
                      <small class="text-danger">{{ $errors->first('status') }}</small>
-                </div>                
+                </div>
                 <div class="radio{{ $errors->has('status') ? ' has-error' : '' }} pull-right">
                      <label for="status1">
                          {!! Form::radio('status', 1,  $article->status == 1, ['id' => 'status1','checked']) !!} 发布
