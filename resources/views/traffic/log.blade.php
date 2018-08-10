@@ -26,7 +26,7 @@
 						@if($traffic->article_id)
 							<a href="/article/{{ $traffic->article_id }}">{{ str_limit($traffic->article->title, 10) }}</a>
 						@else 
-							{{ $traffic->path }}
+							{{ urldecode($traffic->path) }}
 						@endif
 						</td>
 						<td>
