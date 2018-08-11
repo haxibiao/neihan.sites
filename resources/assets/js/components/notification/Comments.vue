@@ -38,56 +38,53 @@
 
 <script>
 export default {
+	name: "Comments",
 
-  name: 'Comments',
+	created() {
+		var api_url = window.tokenize("/api/notifications/comment");
+		var vm = this;
+		window.axios.get(api_url).then(function(response) {
+			vm.notifications = response.data;
+		});
+	},
 
-  created() {
-  	var api_url = window.tokenize('/api/notifications/comment');
-  	var vm = this;
-  	window.axios.get(api_url).then(function(response) {
-  		vm.notifications = response.data;
-  	});
+	methods: {
+		postApiUrl() {
+			return window.tokenize("/api/comment");
+		},
+		toggleReplyComment(notification, index) {
+			notification.replying = !notification.replying;
+			this.$set(this.notifications, index, notification);
+		},
+		//回复评论
+		sendReply(body, notification, index) {
+			var _this = this;
+			window.axios.post(this.postApiUrl(), _this.gotReplyComment(body, notification)).then(function(response) {
+				_this.toggleReplyComment(notification, index);
+			});
+		},
+		gotReplyComment(body, notification) {
+			let replyComment = {};
+			replyComment.comment_id = notification.comment_id;
+			replyComment.commentable_id = notification.article_id;
+			replyComment.body = body;
+			replyComment.commentable_type = "articles";
+			replyComment.is_reply = 1;
+			return replyComment;
+		}
+	},
 
-  },
-
-  methods: {
-  	postApiUrl() {
-  	  return window.tokenize("/api/comment");
-  	},
-  	toggleReplyComment(notification,index) {
-  	   notification.replying = !notification.replying;
-	   this.$set(this.notifications,index,notification);
-  	},
-  	//回复评论
-  	sendReply(body,notification,index) {
-  	  var _this = this;
-  	  window.axios
-  	    .post(this.postApiUrl(), _this.gotReplyComment(body,notification))
-  	    .then(function(response) {
-  	      _this.toggleReplyComment(notification,index);
-  	    });
-  	},
-  	gotReplyComment(body,notification) {
-	   let replyComment = {};
-	   replyComment.comment_id = notification.comment_id;
-	   replyComment.commentable_id = notification.article_id;
-	   replyComment.body = body;
-	   replyComment.commentable_type = "articles";
-	   replyComment.is_reply = 1;
-	   return replyComment;
+	data() {
+		return {
+			notifications: []
+		};
 	}
-  },
-
-  data () {
-    return {
-    	notifications: [],
-    }
-  }
-}
+};
 </script>
 
 <style lang="scss" >
 .comment-list {
+	word-break: break-all;
 	li {
 		font-size: 15px;
 		p {
@@ -98,7 +95,7 @@ export default {
 		}
 		.user-info {
 			.title {
-				font-weight: normal;;
+				font-weight: normal;
 			}
 		}
 		.tool-group {
