@@ -27,7 +27,17 @@
           {!! Form::close() !!}
           <a class="btn-base btn-light btn-sm" href="/article/{{ $article->id }}/edit">编辑文章</a>
         @elseif($article->isSelf())
+          @if($article->type == 'Article')
+          {{-- 自己的文章才允许编辑，动态目前只可以删除 --}}
           <a class="btn-base btn-light btn-sm" href="/write#/notebooks/{{ $article->collection_id }}/notes/{{ $article->id }}">编辑文章</a>
+          @else 
+            {!! Form::open(['method' => 'delete', 'route' => ['article.destroy', $article->id]]) !!}              
+              @if($article->status == -1)
+                {!! Form::hidden('restore', 'yes') !!}
+              @endif
+              {!! Form::submit($article->status == -1 ? "恢复动态":"删除动态", ['class' => 'btn-base btn-sm btn-light btn-danger']) !!}
+            {!! Form::close() !!}
+          @endif
         @endif
       </div>
       <!-- 文章数据信息 -->

@@ -15,7 +15,7 @@ class ArticleController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except('show');
-        $this->middleware('auth.editor')->except('index', 'show', 'storePost');
+        $this->middleware('auth.editor')->except('index', 'show', 'storePost', 'edit','destroy'); //编辑自己的文章的时候，无需编辑身份
     }
 
     /**
@@ -30,7 +30,7 @@ class ArticleController extends Controller
         $article->createPost($request->all());
         $article->saveCategories($request->get('categories'));
         //TODO:: 记录用户动作
-        return redirect()->to($article->content_url().'/edit');
+        return redirect()->to($article->content_url());
     }
 
     public function drafts(Request $request)
@@ -130,10 +130,10 @@ class ArticleController extends Controller
         $article = Article::with('user')->with('category')->with('tags')->with('images')->findOrFail($id);
 
         //type is video redirect
-        if($article->type == 'video'){
-            return redirect('/video/'.$article->video_id);
+        if ($article->type == 'video') {
+            return redirect('/video/' . $article->video_id);
         }
-        
+
         //draft article logic ....
         if ($article->status < 1) {
             if (!canEdit($article)) {
