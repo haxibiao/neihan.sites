@@ -109,8 +109,7 @@ git pull
 @endtask
 
 @task('web_sys', ['on' => ['web'], 'parallel' => true])
-{{ $copy_worker_conf }}
-{{ $copy_crontab }}
+{{ $sync_etc_confs }}
 @endtask
 
 @task('web_cmds', ['on' => ['web'], 'parallel' => true])

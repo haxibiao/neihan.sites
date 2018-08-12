@@ -72,14 +72,14 @@ rsync -e ssh -P $www/public/js/* root@$web_server:$staging_www/public/js/
 rsync -e ssh -P $www/public/mix-manifest.json root@$web_server:$staging_www/public/
 EOT;
 
-$copy_worker_conf = <<<EOT
-cp -rf /data/www/$domain/ops/worker/laravel-worker-$domain.conf /etc/supervisor/conf.d/
+$sync_etc_confs = <<<EOT
+cp -rf /data/www/$domain/ops/etc/* /etc/
+
+echo 'supervisor restart ...'
 supervisorctl reread
 supervisorctl update
 supervisorctl start laravel-worker:*
-EOT;
 
-$copy_crontab = <<<EOT
-cp -rf /data/www/$domain/ops/etc/crontab /etc/crontab
+echo 'cron restart ...'
 service cron restart
 EOT;
