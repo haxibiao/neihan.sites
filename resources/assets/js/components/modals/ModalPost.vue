@@ -357,13 +357,13 @@ export default {
 									width: 90px;
 								    height: 90px;
 								    line-height: 80px;
-								    border: 1px solid #f0f0f0;
+								    border: 1px solid #E8E8E8;
 								    display: inline-block;
 								    vertical-align: middle;
 								    margin-left: 15px;
 									i {
 										font-size: 56px;
-										color: #f0f0f0;
+										color: #D8D8D8;
 									}
 									.img-click-here,
 									.img-limit {
