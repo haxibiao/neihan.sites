@@ -49,17 +49,19 @@ class VideoController extends Controller
         return view('video.index')->with('data', $data);
     }
 
-    function list(Request $request) {
+    public function list(Request $request) {
         $videos = Video::with('user')->with('article.category')->orderBy('id', 'desc')->where('status', '>=', 0);
         //Search videos
+        $data['keywords'] = '';
         if ($request->get('q')) {
             $keywords = $request->get('q');
+            $data['keywords'] = $keywords;
             $videos   = Video::with('user')->with('article.category')->orderBy('id', 'desc')->where('status', '>=', 0)
                 ->where('title', 'like', "%$keywords%");
         }
         $videos = $videos->paginate(10);
-        return view('video.list')
-            ->withVideos($videos);
+        $data['videos'] = $videos;
+        return view('video.list')->withData($data);
     }
 
     /**

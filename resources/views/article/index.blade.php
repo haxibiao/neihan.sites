@@ -20,7 +20,7 @@
     </div>
     
   <div class="panel-body">
-    @foreach($articles as $article)
+    @foreach($data['articles'] as $article)
     <div class="media">
       @if($article->hasImage())
       <a class="pull-left" href="/article/{{ $article->id }}">
@@ -47,7 +47,7 @@
     @endforeach
 
     <p>
-      {{ $articles->render() }}
+      {{ $data['articles']->appends(['q'=>$data['keywords']])->render() }}
     </p>
   </div>
 </div>

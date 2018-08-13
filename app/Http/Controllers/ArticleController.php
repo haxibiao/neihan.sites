@@ -54,8 +54,10 @@ class ArticleController extends Controller
     {
         $query = Article::orderBy('id', 'desc')->where('status', '>', 0)->whereType('article');
         //Search Articles
+        $data['keywords'] = '';
         if ($request->get('q')) {
             $keywords = $request->get('q');
+            $data['keywords'] = $keywords;
             $query    = Article::orderBy('id', 'desc')
                 ->where('status', '>', 0)
                 ->whereType('article')
@@ -65,7 +67,8 @@ class ArticleController extends Controller
             $query = $query->where('user_id', Auth::user()->id);
         }
         $articles = $query->paginate(10);
-        return view('article.index')->withArticles($articles);
+        $data['articles'] = $articles;
+        return view('article.index')->withData($data);
     }
 
     /**

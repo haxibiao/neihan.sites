@@ -25,7 +25,7 @@
             </h3>
         </div>
         <div class="panel-body">
-            @foreach($videos as $video)
+            @foreach($data['videos'] as $video)
                 @php
                     $article = $video->article;
                 @endphp
@@ -85,7 +85,7 @@
                 @endif
             @endforeach
             <p>
-                {{ $videos->render() }}
+                {{ $data['videos']->appends(['q'=>$data['keywords']])->render() }}
             </p>
         </div>
     </div>

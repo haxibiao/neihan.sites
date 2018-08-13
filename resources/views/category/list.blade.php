@@ -22,21 +22,21 @@
           <basic-search api="/category/list?q="></basic-search>
         </div>
         <div class="panel-body small">
-          @if(!empty($accurateCategory))
-            @foreach($accurateCategory->chunk(3) as $category_group)
+          @if(!empty($data['accurateCategory']))
+            @foreach($data['accurateCategory']->chunk(3) as $category_group)
               <div class="row">
                 @each('category.parts.list_item',$category_group,'category')
               </div>
             @endforeach
           @endif
-          @foreach($categories->chunk(3) as $category_group)
+          @foreach($data['categories']->chunk(3) as $category_group)
             <div class="row">
               @each('category.parts.list_item',$category_group,'category')
             </div>
           @endforeach
         </div>
         <div class="panel-footer">
-          {!! $categories->links() !!}
+          {!! $data['categories']->appends(['q'=>$data['keywords']])->links() !!}
         </div>
       </div>  
   
