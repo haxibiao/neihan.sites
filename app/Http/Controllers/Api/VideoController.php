@@ -145,7 +145,7 @@ class VideoController extends Controller
         foreach ($videos as $video) {
             $videoIds[] = $video->id;
         }
-        $data = Article::where('type', 'video')->whereNotIn('id',$videoIds)->whereStatus(1)->orderByDesc('updated_at');
+        $data = Article::where('type', 'video')->where('id','!=',$videoIds)->whereStatus(1)->orderByDesc('updated_at');
         if ($request->get('stick')) {
             $data = Article::whereIn('video_id', $videoIds);
         }

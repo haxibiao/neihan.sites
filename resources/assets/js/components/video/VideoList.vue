@@ -56,7 +56,7 @@ export default {
         var api = this.api ? this.api : this.apiDefault;
         var api_url =
           api.indexOf("?") !== -1 ? api + "&page=" + page : api + "?page=" + page;
-          if(page == 1) api_url +='&stick=true';
+          if(page == 0) api_url +='&stick=true';
         return api_url;
       }
     }
@@ -94,7 +94,6 @@ export default {
     },
     fetchData() {
       var vm = this;
-      console.log(this.apiUrl);
       window.axios.get(this.apiUrl).then(function(response) {
         vm.articles = vm.articles.concat(response.data.data);
         vm.lastPage = response.data.lastPage;
@@ -102,7 +101,7 @@ export default {
     },
     loadData(){
       if(this.articles.length<1){
-         ++this.page;
+          ++this.page;
          this.fetchData();
       }
       return;
@@ -112,7 +111,7 @@ export default {
   data() {
     return {
       apiDefault: "",
-      page: this.startPage ? this.startPage : 1,
+      page: this.startPage ? this.startPage : 0,
       lastPage: -1,
       articles: []
     };
