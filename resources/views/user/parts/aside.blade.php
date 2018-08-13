@@ -12,6 +12,11 @@
       <li><a href="/user/{{ $user->id }}/followed-categories"><i class="iconfont icon-duoxuan"></i> <span>{{ $user->ta() }}关注的专题</span></a></li>
       <li><a href="/user/{{ $user->id }}/followed-collections"><i class="iconfont icon-wenji"></i> <span>{{ $user->ta() }}关注的文集</span></a></li>
       <li><a href="/user/{{ $user->id }}/likes"><i class="iconfont icon-xin"></i> <span>{{ $user->ta() }}喜欢的作品</span></a></li>
+      <li>
+        <a href="/user/{{ $user->id }}/videos">
+          <i class="iconfont icon-smile"></i> <span>{{ $user->ta() }}管理的视频</span>
+        </a>
+      </li>
     </ul>
     
     @include('user.aside.managed_categories')
