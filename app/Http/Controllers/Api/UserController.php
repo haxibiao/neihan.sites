@@ -251,7 +251,7 @@ class UserController extends Controller {
 			->findOrFail($id);
 		$article = $video->article;
 		$num = $request->get('num') ? $request->get('num') : 10;
-		$data = $article->relatedVideoPostsQuery()->paginate($num);
+		$data = $article->relatedVideoPostsQuery()->whereStatus(1)->paginate($num);
 		foreach ($data as $article) {
 			$article->image_url = $article->primaryImage();
 			$article->duration = gmdate('i:s', $article->video->duration);
