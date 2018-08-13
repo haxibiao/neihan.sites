@@ -142,6 +142,7 @@ class VideoController extends Controller
     public function getLatestVideo(Request $request)
     {
         $videos = get_stick_videos('', true);
+        $videoIds = [];
         foreach ($videos as $video) {
             $videoIds[] = $video->id;
         }
