@@ -10,7 +10,7 @@
 //     华南  -> gz
 //     华东  -> sh
 //     华北  -> tj
-$location = env('COS_LOCATION');
+$location = env('COS_LOCATION','sh');
 // 版本号
 $version = 'v4.2.3';
 

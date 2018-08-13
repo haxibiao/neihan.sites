@@ -25,108 +25,42 @@ class FixData extends Command
 
     public function handle()
     {
-        if ($this->cmd->argument('operation') == "tags") {
-            return $this->fix_tags();
-        }
-        if ($this->cmd->argument('operation') == "comments") {
-            return $this->fix_tags();
-        }
-        if ($this->cmd->argument('operation') == "articles") {
-            return $this->fix_articles();
-        }
-        if ($this->cmd->argument('operation') == "images") {
-            return $this->fix_images();
-        }
-        if ($this->cmd->argument('operation') == "videos") {
-            return $this->fix_videos();
-        }
-        if ($this->cmd->argument('operation') == "categories") {
-            return $this->fix_categories();
-        }
-        if ($this->cmd->argument('operation') == "users") {
-            return $this->fix_users();
-        }
-        if ($this->cmd->argument('operation') == "collections") {
-            return $this->fix_collections();
-        }
-        if ($this->cmd->argument('operation') == "notifications") {
-            return $this->fix_notifications();
-        }
-        if ($this->cmd->argument('operation') == "visits") {
-            return $this->fix_visits();
-        }
-        if ($this->cmd->argument('operation') == "likes") {
-            return $this->fix_likes();
-        }
-        if ($this->cmd->argument('operation') == "article_comments") {
-            return $this->fix_article_comments();
-        }
-        if ($this->cmd->argument('operation') == "actions") {
-            return $this->fix_actions();
-        }
+        $table = $this->cmd->argument('table');
+        FixData::$table($this->cmd);
     }
 
-    public function fix_likes()
+    public static function categories($cmd)
     {
-
-    }
-
-    public function fix_notifications()
-    {
-
-    }
-
-    public function fix_users()
-    {
-
-    }
-
-    public function fix_tags()
-    {
-    }
-
-    public function fix_comments()
-    {
-
-    }
-
-    public function fix_categories()
-    {
-        $this->cmd->info('fix count_videos ...');
+        $cmd->info('fix count_videos ...');
         foreach (Category::all() as $category) {
             $category->count_videos = $category->videoPosts()->count();
             $category->save();
         }
     }
 
-    public function fix_videos()
+    public static function images($cmd)
     {
-
-    }
-
-    public function fix_images()
-    {
-        $this->cmd->info('fix images ...');
-        Image::orderBy('id')->chunk(100, function ($images) {
+        $cmd->info('fix images ...');
+        Image::orderBy('id')->chunk(100, function ($images) use ($cmd) {
             foreach ($images as $image) {
                 //服务器上图片不在本地的，都设置disk=hxb
                 $image->hash = '';
                 if (file_exists(public_path($image->path))) {
                     $image->hash = md5_file(public_path($image->path));
                     $image->disk = 'local';
-                    $this->cmd->info($image->id . '  ' . $image->extension);
+                    $cmd->info($image->id . '  ' . $image->extension);
                 } else {
                     $image->disk = 'hxb';
-                    $this->cmd->comment($image->id . '  ' . $image->extension);
+                    $cmd->comment($image->id . '  ' . $image->extension);
                 }
                 $image->save();
             }
         });
     }
 
-    public function fix_articles()
+    public static function articles($cmd)
     {
-        $this->cmd->info('fix article_category ...');
+        $cmd->info('fix article_category ...');
         $articles = DB::table('article_category')->select('category_id','article_id')
         ->whereSubmit('已收录')->groupBy(['category_id','article_id'])->havingRaw('count(*) > 1')->get();
         foreach ($articles as $article) {
@@ -134,13 +68,13 @@ class FixData extends Command
             $article_id = $article->article_id;
             $article_category = DB::table('article_category')->
                 where('category_id',$category_id)->where('article_id',$article_id)->first();
-            $fix_id = $article_category->id;
-            DB::table('article_category')->whereId($fix_id)->delete();
-            $this->cmd->info("$fix_id fix success");
+            $id = $article_category->id;
+            DB::table('article_category')->whereId($id)->delete();
+            $cmd->info("$id fix success");
         }
     }
 
-    public function fix_content($article)
+    public function content($article)
     {
         $body = $article->body;
         $preg = "/<img.*?src=[\"|\'](.*?)[\"|\'].*?>/";
@@ -165,13 +99,13 @@ class FixData extends Command
                 }
             }
             $article->save();
-            $this->cmd->info('Article Id:' . $article->id . ' fix success');
+            $cmd->info('Article Id:' . $article->id . ' fix success');
         }
     }
 
-    public function fix_collections()
+    public static function collections($cmd)
     {
-        $this->cmd->info('fix collections ...');
+        $cmd->info('fix collections ...');
         Collection::chunk(100, function ($collections) {
             foreach ($collections as $conllection) {
                 $conllection_id = $conllection->id;
@@ -182,7 +116,7 @@ class FixData extends Command
                         $article->collection_id = $conllection_id;
                         $article->save();
                         $conllection->count_words += $article->count_words;
-                        $this->cmd->info('Artcile:' . $article_id . ' corresponding collections:' . $conllection_id);
+                        $cmd->info('Artcile:' . $article_id . ' corresponding collections:' . $conllection_id);
                     }
                     $conllection->count = count($article_id_arr);
                     $conllection->save();
@@ -190,23 +124,23 @@ class FixData extends Command
                 //
             }
         });
-        $this->cmd->info('fix collections success');
+        $cmd->info('fix collections success');
     }
 
-    public function fix_article_comments()
+    public static function article_comments($cmd)
     {
         //修复Article评论数据
-        $this->cmd->info('fix article comments...');
+        $cmd->info('fix article comments...');
         Comment::whereNull('comment_id', 'and', true)->chunk(100, function ($comments) {
             foreach ($comments as $comment) {
                 if (empty(Comment::find($comment->comment_id))) {
                     $article_id = $comment->commentable_id;
                     $comment->delete();
-                    $this->cmd->info('文章： https://l.ainicheng.com/article/' . $article_id);
+                    $cmd->info('文章： https://l.ainicheng.com/article/' . $article_id);
                 }
             }
         });
-        $this->cmd->info('fix articles count_comments...');
+        $cmd->info('fix articles count_comments...');
         //修复Article评论统计数据
         Article::chunk(100, function ($articles) {
             foreach ($articles as $article) {
@@ -215,10 +149,10 @@ class FixData extends Command
                 $article->save();
             }
         });
-        $this->cmd->info('fix success');
+        $cmd->info('fix success');
     }
 
-    public function fix_visits()
+    public static function visits($cmd)
     {
         Visit::chunk(100, function ($visits) {
             foreach ($visits as $visit) {
@@ -228,9 +162,9 @@ class FixData extends Command
         });
     }
 
-    public function fix_actions()
+    public static function actions($cmd)
     {
-        $this->cmd->info('fix article action');
+        $cmd->info('fix article action');
         Article::where('status', '1')->chunk(100, function ($articles) {
             foreach ($articles as $article) {
                 $article_id    = $article->id;
@@ -244,10 +178,10 @@ class FixData extends Command
                         'created_at'      => $article->created_at,
                         'updated_at'      => $article->updated_at,
                     ]);
-                    $this->cmd->info('fix Article Id:' . $article->id . ' fix success');
+                    $cmd->info('fix Article Id:' . $article->id . ' fix success');
                 }
             }
         });
-        $this->cmd->info('fix article action success');
+        $cmd->info('fix article action success');
     }
 }

@@ -31,7 +31,8 @@ class VideoController extends Controller
         // }
 
         //热门专题，简单规则就按视频数多少来判断专题是否热门视频专题
-        $categories = Category::orderBy('count_videos', 'desc')->take(3)->get();
+        $categories = Category::orderBy('count_videos', 'desc')->take(3)
+            ->get();
         $data       = [];
         foreach ($categories as $category) {
             $articles = $category->containedVideoPosts()
@@ -50,13 +51,20 @@ class VideoController extends Controller
     }
 
     public function list(Request $request) {
-        $videos = Video::with('user')->with('article.category')->orderBy('id', 'desc')->where('status', '>=', 0);
+        $videos = Video::with('user')
+            ->with('article.category')
+            ->orderBy('id', 'desc')
+            ->where('status', '>=', 0);
+
         //Search videos
         $data['keywords'] = '';
         if ($request->get('q')) {
             $keywords = $request->get('q');
             $data['keywords'] = $keywords;
-            $videos   = Video::with('user')->with('article.category')->orderBy('id', 'desc')->where('status', '>=', 0)
+            $videos   = Video::with('user')
+                ->with('article.category')
+                ->orderBy('id', 'desc')
+                ->where('status', '>=', 0)
                 ->where('title', 'like', "%$keywords%");
         }
         $videos = $videos->paginate(10);

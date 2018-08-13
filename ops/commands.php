@@ -13,10 +13,10 @@ use Illuminate\Foundation\Inspiring;
 |
 */
 
-Artisan::command('fix:data {operation} {--force}', function ($operation) {
+Artisan::command('fix:data {table} {--force}', function ($table) {
 	$cmd = new \ops\commands\FixData($this);
     $cmd->handle();
-})->describe('fix data ...');
+})->describe('fix data for each table ...');
 
 
 

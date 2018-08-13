@@ -123,7 +123,9 @@ class Article extends Model
 
     public function relatedVideoPostsQuery()
     {
-        return Article::with('video')->where('type', 'video')->whereIn('category_id', $this->categories->pluck('id'));
+        return Article::with('video')
+        ->where('type', 'video')
+        ->whereIn('category_id', $this->categories->pluck('id'));
     }
 
     /* --------------------------------------------------------------------- */
