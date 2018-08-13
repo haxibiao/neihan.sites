@@ -88,7 +88,7 @@ class Video extends Model
     {
         //简单顾虑，视频地址确实是上传到了vod的
         if (str_contains($this->path, 'vod')) {
-            $res = QcloudUtils::getVideoInfo($this->qcvod_fileid);            
+            $res = QcloudUtils::getVideoInfo($this->qcvod_fileid);
             if (!empty($res['basicInfo']) && !empty($res['basicInfo']['duration'])) {
                 $this->duration = $res['basicInfo']['duration'];
             }
@@ -134,8 +134,8 @@ class Video extends Model
                 $this->save();
                 //关联的视频动态发布出去
                 $article = $this->article;
-                if($article) {
-                    $article->status = 0;
+                if ($article) {
+                    $article->status = 1;
                     $article->save();
                 }
             }

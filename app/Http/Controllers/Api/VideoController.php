@@ -95,7 +95,8 @@ class VideoController extends Controller
             $video->save();
 
             //调用 vod api , 开始转码，水印，生成截图（非300*200，需要后面UI处理显示效果） ...
-            QcloudUtils::simpleProcessFile($request->fileId);
+            //现在无需转码了,只需要完成截图就好
+            QcloudUtils::makeCoverAndSnapshots($request->fileId);
             return $video;
         }
 
