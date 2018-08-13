@@ -51,7 +51,7 @@ class Category extends Model
             ->where('articles.type', 'video');
     }
 
-    public function hasManyVideoArticles()
+    public function containedVideoPosts()
     {
         return $this->hasMany('App\Article')->where('articles.type', 'video');
     }

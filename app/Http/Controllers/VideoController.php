@@ -34,7 +34,7 @@ class VideoController extends Controller
         $categories = Category::orderBy('count_videos', 'desc')->take(3)->get();
         $data       = [];
         foreach ($categories as $category) {
-            $articles = $category->hasManyVideoArticles()
+            $articles = $category->containedVideoPosts()
                 ->where('status', '>', 0)
                 ->orderByDesc('hits')
                 ->take(3)
