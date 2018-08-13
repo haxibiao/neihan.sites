@@ -56,7 +56,7 @@ export default {
         var api = this.api ? this.api : this.apiDefault;
         var api_url =
           api.indexOf("?") !== -1 ? api + "&page=" + page : api + "?page=" + page;
-        if(page == 1) api_url +='&stick=true';
+          if(page == 1) api_url +='&stick=true';
         return api_url;
       }
     }
@@ -65,6 +65,7 @@ export default {
   mounted() {
     this.listenScrollBotton();
     this.fetchData();
+    this.loadData();
   },
 
   methods: {
@@ -98,6 +99,13 @@ export default {
         vm.articles = vm.articles.concat(response.data.data);
         vm.lastPage = response.data.lastPage;
       });
+    },
+    loadData(){
+      if(this.articles.length<1){
+         ++this.page;
+         this.fetchData();
+      }
+      return;
     }
   },
 
