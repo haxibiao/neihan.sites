@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller {
 	public function __construct() {
-		$this->middleware('auth', ['only' => ['store', 'update', 'destroy', 'settings']]);
+		$this->middleware('auth', ['only' => ['store', 'update', 'destroy', 'settings','edit']]);
 	}
 	/**
 	 * Display a listing of the resource.
