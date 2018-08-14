@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTaggableTable extends Migration
+class EditTaggablesDropId extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateTaggableTable extends Migration
      */
     public function up()
     {
-        Schema::create('taggables', function (Blueprint $table) {
-            // $table->increments('id');
-            $table->integer('tag_id')->index();
-            $table->integer('taggable_id')->index();
-            $table->string('taggable_type')->index();
-            // $table->timestamps();
+        Schema::table('taggables', function (Blueprint $table) {
+            $table->dropColumn('id');
+            $table->dropColumn('created_at');
+            $table->dropColumn('updated_at');
         });
     }
 
