@@ -250,8 +250,8 @@ class Category extends Model
 
             $img->fit(32);
             $small_logo = $storage_category . $this->id . '.logo.small.app.jpg';
-            if (file_exists(public_path($this->small_logo))) {
-                unlink(public_path($this->small_logo));
+            if (file_exists(public_path($small_logo))) {
+                unlink(public_path($small_logo));
             }
             $img->save(public_path($small_logo));
         }
