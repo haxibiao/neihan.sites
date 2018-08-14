@@ -4,241 +4,239 @@ namespace App\GraphQL\Type;
 
 use Folklore\GraphQL\Support\Facades\GraphQL;
 use Folklore\GraphQL\Support\Type as GraphQLType;
+use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 
-class CategoryType extends GraphQLType
-{
-    protected $attributes = [
-        'name'        => 'Category',
-        'description' => 'A category',
-    ];
+class CategoryType extends GraphQLType {
+	protected $attributes = [
+		'name' => 'Category',
+		'description' => 'A category',
+	];
 
-    /*
-     * Uncomment following line to make the type input object.
-     * http://graphql.org/learn/schema/#input-types
-     */
-    // protected $inputObject = true;
+	/*
+		     * Uncomment following line to make the type input object.
+		     * http://graphql.org/learn/schema/#input-types
+	*/
+	// protected $inputObject = true;
 
-    public function fields()
-    {
-        return [
-            'id'              => [
-                'type'        => Type::nonNull(Type::int()),
-                'description' => 'The id of the category',
-            ],
-            'user_id'         => [
-                'type'        => Type::int(),
-                'description' => 'category creator user id',
-            ],
-            'name'            => [
-                'type'        => Type::string(),
-                'description' => 'category name',
-            ],
-            'name_en'         => [
-                'type'        => Type::string(),
-                'description' => 'category name_en',
-            ],
-            'description'     => [
-                'type'        => Type::string(),
-                'description' => 'description of category',
-            ],
-            'logo'            => [
-                'type'        => Type::string(),
-                'description' => 'logo url of category',
-            ],
-            'allow_submit'    => [
-                'type'        => Type::boolean(),
-                'description' => 'allow submit',
-                'resolve'     => function ($root, $args) {
-                    return $root->status;
-                },
-            ],
-            'need_approve'    => [
-                'type'        => Type::boolean(),
-                'description' => 'need approve',
-                'resolve'     => function ($root, $args) {
-                    return $root->request_status;
-                },
-            ],
-            'logo_app'        => [
-                'type'        => Type::string(),
-                'description' => 'logo_app url of category',
-            ],
-            'count_follows'   => [
-                'type'        => Type::int(),
-                'description' => 'follows count of category',
-            ],
-            'count_articles'  => [
-                'type'        => Type::int(),
-                'description' => 'follows count of category',
-                'resolve'     => function ($root, $args) {
-                    return $root->count;
-                },
-            ],
-            'count_authors'   => [
-                'type'        => Type::int(),
-                'description' => 'authors count of category',
-            ],
-            'new_requests'    => [
-                'type'        => Type::int(),
-                'description' => 'new requests of category',
-            ],
+	public function fields() {
+		return [
+			'id' => [
+				'type' => Type::nonNull(Type::int()),
+				'description' => 'The id of the category',
+			],
+			'user_id' => [
+				'type' => Type::int(),
+				'description' => 'category creator user id',
+			],
+			'name' => [
+				'type' => Type::string(),
+				'description' => 'category name',
+			],
+			'name_en' => [
+				'type' => Type::string(),
+				'description' => 'category name_en',
+			],
+			'description' => [
+				'type' => Type::string(),
+				'description' => 'description of category',
+			],
+			'logo' => [
+				'type' => Type::string(),
+				'description' => 'logo url of category',
+			],
+			'allow_submit' => [
+				'type' => Type::boolean(),
+				'description' => 'allow submit',
+				'resolve' => function ($root, $args) {
+					return $root->status;
+				},
+			],
+			'need_approve' => [
+				'type' => Type::boolean(),
+				'description' => 'need approve',
+				'resolve' => function ($root, $args) {
+					return $root->request_status;
+				},
+			],
+			'logo_app' => [
+				'type' => Type::string(),
+				'description' => 'logo_app url of category',
+			],
+			'count_follows' => [
+				'type' => Type::int(),
+				'description' => 'follows count of category',
+			],
+			'count_articles' => [
+				'type' => Type::int(),
+				'description' => 'follows count of category',
+				'resolve' => function ($root, $args) {
+					return $root->count;
+				},
+			],
+			'count_authors' => [
+				'type' => Type::int(),
+				'description' => 'authors count of category',
+			],
+			'new_requests' => [
+				'type' => Type::int(),
+				'description' => 'new requests of category',
+			],
 
-            'followed'        => [
-                'type'        => Type::boolean(),
-                'description' => '当前用户是否关注本专题',
-                'resolve'     => function ($root, $args) {
+			'followed' => [
+				'type' => Type::boolean(),
+				'description' => '当前用户是否关注本专题',
+				'resolve' => function ($root, $args) {
 
-                    if ( checkUser() ) {
-                        //使用DB减少join表的次数,使用DB可能不易维护，但是这个地方逻辑应该不会再变动.
-                        $user = getUser();
-                        $category_ids = \DB::table('follows')
-                            ->where('user_id', $user->id)
-                            ->where('followed_type', 'categories')
-                            ->pluck('followed_id')->toArray();
-                        if( in_array($root->id, $category_ids, true) ){ 
-                            return true;
-                        }
-                    }
-                    return false; 
-                },
-            ], 
+					if (checkUser()) {
+						//使用DB减少join表的次数,使用DB可能不易维护，但是这个地方逻辑应该不会再变动.
+						$user = getUser();
+						$category_ids = \DB::table('follows')
+							->where('user_id', $user->id)
+							->where('followed_type', 'categories')
+							->pluck('followed_id')->toArray();
+						if (in_array($root->id, $category_ids, true)) {
+							return true;
+						}
+					}
+					return false;
+				},
+			],
 
-            //computed
-            'articles'        => [
-                'type'        => Type::listOf(GraphQL::type('Article')),
-                'args'        => [
-                    'filter' => ['name' => 'filter', 'type' => GraphQL::type('ArticleFilter')],
-                    'offset' => ['name' => 'offset', 'type' => Type::int()],
-                    'limit'  => ['name' => 'limit', 'type' => Type::int()],
-                ],
-                'description' => 'category related articles, including newly requested ...',
-                'resolve'     => function ($root, $args) {
-                    $qb = $root->articles();
-                    if (isset($args['filter']) && $args['filter'] == 'PENDING') {
-                        $qb = $root->newRequestArticles();
-                    }
-                    if (isset($args['offset'])) {
-                        $qb = $qb->skip($args['offset']);
-                    }
-                    $limit = 10;
-                    if (isset($args['limit'])) {
-                        $limit = $args['limit'];
-                    }
-                    $qb = $qb->take($limit);
-                    return $qb->get();
-                },
-            ],
+			//computed
+			'articles' => [
+				'type' => Type::listOf(GraphQL::type('Article')),
+				'args' => [
+					'filter' => ['name' => 'filter', 'type' => GraphQL::type('ArticleFilter')],
+					'offset' => ['name' => 'offset', 'type' => Type::int()],
+					'limit' => ['name' => 'limit', 'type' => Type::int()],
+				],
+				'description' => 'category related articles, including newly requested ...',
+				'resolve' => function ($root, $args, $context, ResolveInfo $info) {
+					//解决数据库ambiguous column错误
+					$article = new \App\Article();
+					$colomns = array_map(function ($name) {
+						return 'articles.' . $name;
+					}, $article->getTableColumns());
+					$qb = $root->publishedArticles()->select($colomns);
+					if (isset($args['filter']) && $args['filter'] == 'PENDING') {
+						$qb = $root->newRequestArticles()->select($colomns);
+					}
+					if (isset($args['offset'])) {
+						$qb = $qb->skip($args['offset']);
+					}
+					$limit = 10;
+					if (isset($args['limit'])) {
+						$limit = $args['limit'];
+					}
+					$qb = $qb->take($limit);
+					return $qb->get();
+				},
+			],
 
-            //relation ...
-            'user'            => [
-                'type'        => GraphQL::type('User'),
-                'description' => 'creator of category',
-            ],
-            'latestArticle'   => [
-                'type'        => GraphQL::type('Article'),
-                'description' => 'latest article of category',
-                'resolve'     => function ($root, $args) {
-                    return $root->articles()->first();
-                },
-            ],
-            'latest_follower' => [
-                'type'        => GraphQL::type('User'),
-                'description' => 'latest follower of category',
-            ],
-            'authors'         => [
-                'type'        => Type::listOf(GraphQL::type('User')),
-                'description' => 'authors of category',
-                'args'        => [
-                    'offset' => ['name' => 'offset', 'type' => Type::int()],
-                    'limit'  => ['name' => 'limit', 'type' => Type::int()],
-                ],
-                'resolve'     => function ($root, $args) {
-                    $qb = $root->authors();
+			//relation ...
+			'user' => [
+				'type' => GraphQL::type('User'),
+				'description' => 'creator of category',
+			],
+			'latestArticle' => [
+				'type' => GraphQL::type('Article'),
+				'description' => 'latest article of category',
+				'resolve' => function ($root, $args) {
+					return $root->articles()->first();
+				},
+			],
+			'latest_follower' => [
+				'type' => GraphQL::type('User'),
+				'description' => 'latest follower of category',
+			],
+			'authors' => [
+				'type' => Type::listOf(GraphQL::type('User')),
+				'description' => 'authors of category',
+				'args' => [
+					'offset' => ['name' => 'offset', 'type' => Type::int()],
+					'limit' => ['name' => 'limit', 'type' => Type::int()],
+				],
+				'resolve' => function ($root, $args) {
+					$qb = $root->authors();
 
-                    if (isset($args['offset'])) {
-                        $qb = $qb->skip($args['offset']);
-                    }
-                    $limit = 10;
-                    if (isset($args['limit'])) {
-                        $limit = $args['limit'];
-                    }
-                    $qb = $qb->take($limit);
-                    return $qb->get();
-                },
-            ],
-            'admins'          => [
-                'type'        => Type::listOf(GraphQL::type('User')),
-                'description' => 'admins of category',
-                'args'        => [
-                    'offset' => ['name' => 'offset', 'type' => Type::int()],
-                    'limit'  => ['name' => 'limit', 'type' => Type::int()],
-                ],
-            ],
-            'follows'         => [
-                'type'        => Type::listOf(GraphQL::type('Follow')),
-                'description' => 'follows of category',
-                'args'        => [
-                    'offset' => ['name' => 'offset', 'type' => Type::int()],
-                    'limit'  => ['name' => 'limit', 'type' => Type::int()],
-                ],
-            ],
-        ];
-    }
+					if (isset($args['offset'])) {
+						$qb = $qb->skip($args['offset']);
+					}
+					$limit = 10;
+					if (isset($args['limit'])) {
+						$limit = $args['limit'];
+					}
+					$qb = $qb->take($limit);
+					return $qb->get();
+				},
+			],
+			'admins' => [
+				'type' => Type::listOf(GraphQL::type('User')),
+				'description' => 'admins of category',
+				'args' => [
+					'offset' => ['name' => 'offset', 'type' => Type::int()],
+					'limit' => ['name' => 'limit', 'type' => Type::int()],
+				],
+			],
+			'follows' => [
+				'type' => Type::listOf(GraphQL::type('Follow')),
+				'description' => 'follows of category',
+				'args' => [
+					'offset' => ['name' => 'offset', 'type' => Type::int()],
+					'limit' => ['name' => 'limit', 'type' => Type::int()],
+				],
+			],
+		];
+	}
 
-    public function resolveFollowsField($root, $args)
-    {
-        $qb = $root->follows();
+	public function resolveFollowsField($root, $args) {
+		$qb = $root->follows();
 
-        if (isset($args['offset'])) {
-            $qb = $qb->skip($args['offset']);
-        }
-        $limit = 10;
-        if (isset($args['limit'])) {
-            $limit = $args['limit'];
-        }
-        $qb = $qb->take($limit);
-        return $qb->get();
-    }
+		if (isset($args['offset'])) {
+			$qb = $qb->skip($args['offset']);
+		}
+		$limit = 10;
+		if (isset($args['limit'])) {
+			$limit = $args['limit'];
+		}
+		$qb = $qb->take($limit);
+		return $qb->get();
+	}
 
-    public function resolveAdminsField($root, $args)
-    {
-        $qb = $root->admins();
+	public function resolveAdminsField($root, $args) {
+		$qb = $root->admins();
 
-        if (isset($args['offset'])) {
-            $qb = $qb->skip($args['offset']);
-        }
-        $limit = 10;
-        if (isset($args['limit'])) {
-            $limit = $args['limit'];
-        }
-        $qb = $qb->take($limit);
-        return $qb->get();
-    }
+		if (isset($args['offset'])) {
+			$qb = $qb->skip($args['offset']);
+		}
+		$limit = 10;
+		if (isset($args['limit'])) {
+			$limit = $args['limit'];
+		}
+		$qb = $qb->take($limit);
+		return $qb->get();
+	}
 
-    public function resolveUserField($root, $args)
-    {
-        return $root->user;
-    }
+	public function resolveUserField($root, $args) {
+		return $root->user;
+	}
 
-    public function resolveLogoField($root, $args)
-    {
-        return $root->logo();
-    }
+	public function resolveLogoField($root, $args) {
+		return $root->logo();
+	}
 
-    public function resolveLogoAppField($root, $args)
-    {
-        return $root->logo_app();
-    }
+	public function resolveLogoAppField($root, $args) {
+		return $root->logo_app();
+	}
 
-    public function resolveLatestFollowerField($root, $args)
-    {
-        $latest_followers = $root->topFollowers();
-        $user             = null;
-        if (count($latest_followers)) {
-            $user = $latest_followers[0];
-        }
+	public function resolveLatestFollowerField($root, $args) {
+		$latest_followers = $root->topFollowers();
+		$user = null;
+		if (count($latest_followers)) {
+			$user = $latest_followers[0];
+		}
 
-        return $user;
-    }
+		return $user;
+	}
 }
