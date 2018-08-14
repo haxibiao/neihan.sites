@@ -131,6 +131,7 @@ class Video extends Model
             //同步到封面，就发布成功
             if (!empty($this->cover)) {
                 $this->status = 1;
+                $this->recordAction();
                 $this->save();
                 //关联的视频动态发布出去
                 $article = $this->article;
@@ -153,5 +154,16 @@ class Video extends Model
     {
         $this->setJsonData('covers', $coverUrls);
         $this->save();
+    }
+
+    public function recordAction()
+    {
+        if ($this->status > 0) {
+            $action = Action::updateOrCreate([
+                'user_id'         => $this->user_id,
+                'actionable_type' => 'videos',
+                'actionable_id'   => $this->id,
+            ]);
+        }
     }
 }
