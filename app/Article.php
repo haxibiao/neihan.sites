@@ -108,8 +108,10 @@ class Article extends Model {
 	}
 
 	public function relatedVideoPostsQuery() {
-		return Article::with('video')
-			->where('type', 'video')
+		return Article::with(['video'=>function($query){
+			//过滤软删除的video
+			$query->whereStatus(1);
+		}])->where('type', 'video')
 			->whereIn('category_id', $this->categories->pluck('id'));
 	}
 

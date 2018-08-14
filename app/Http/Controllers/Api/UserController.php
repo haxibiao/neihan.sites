@@ -231,8 +231,10 @@ class UserController extends Controller {
 	 */
 	public function relatedVideos(Request $request, $id) {
 		$user = User::findOrFail($id);
+
 		$num = $request->get('num') ? $request->get('num') : 10;
 		$data = $user->videoPosts()->paginate($num);
+		
 		foreach ($data as $article) {
 			$article->image_url = $article->primaryImage();
 			$article->duration = gmdate('i:s', $article->video->duration);
@@ -247,14 +249,12 @@ class UserController extends Controller {
 	 * @param    [video]     $id
 	 */
 	public function sameVideos(Request $request, $id) {
-		$video = Video::with('article')->with('user')
-			->findOrFail($id);
+		$video = Video::with('article')->with('user')->findOrFail($id);
 		$article = $video->article;
 		$num = $request->get('num') ? $request->get('num') : 10;
 		$data = $article->relatedVideoPostsQuery()->whereStatus(1)->where('id','!=',$article->id)->paginate($num);
 		foreach ($data as $article) {
-			$article->image_url = $article->primaryImage();
-			$article->duration = gmdate('i:s', $article->video->duration);
+			$article->fillForJs();
 		}
 		return $data;
 	}
