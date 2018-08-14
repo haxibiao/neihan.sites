@@ -141,16 +141,19 @@ class VideoController extends Controller
 
     public function getLatestVideo(Request $request)
     {
-        $data = Article::where('type', 'video')
-            ->whereStatus(1)
-            ->orderByDesc('updated_at');
-        if ($request->get('stick')) {
-            $videos   = get_stick_videos('', true);
-            $videoIds = [];
-            foreach ($videos as $video) {
-                $videoIds[] = $video->id;
+        $videos   = get_stick_videos('', true);
+        $videoIds = [];
+        foreach ($videos as $video) {
+            $videoIds[] = $video->article->id;
+        }
+        if ($request->get('stick')){
+            $data = Article::whereIn('id', $videoIds);
+        }else{
+            $data = Article::where('type', 'video')->whereStatus(1)->orderByDesc('updated_at');
+            if(!empty($videoIds)){
+                 $data = Article::where('type', 'video')->whereStatus(1)->whereNotIn('id',$videoIds)
+                 ->orderByDesc('updated_at');
             }
-            $data = Article::whereIn('video_id', $videoIds);
         }
         $data = $data->paginate(9);
         foreach ($data as $article) {
