@@ -234,17 +234,16 @@ export default {
 	position: static !important;
 }
 .modal-post {
-	@media (max-width: 1366px){
-		.modal-dialog{
-				top: 47% !important;
+	@media (max-width: 1366px) {
+		.modal-dialog {
+			top: 47% !important;
 			.textarea-box {
-				padding-bottom:30px !important;
+				padding-bottom: 30px !important;
 			}
-			.ask-img-header{
-				    padding-bottom: 0 !important;
+			.ask-img-header {
+				padding-bottom: 0 !important;
 			}
 		}
-		
 	}
 	.modal-dialog {
 		padding-bottom: 20px;
@@ -256,146 +255,149 @@ export default {
 				max-height: 660px;
 				overflow: auto;
 				.input-question {
-				    margin: 10px 0;
+					margin: 10px 0;
 				}
 				.textarea-box {
-				    position: relative;
-				    margin-bottom: 20px;
-				    border: 1px solid #f0f0f0;
-				    padding-bottom:50px;
-				    >textarea{
-				    	height:180px;
-				    	background-color: #fff ;
-				    	border:none;
-				    	margin-bottom: 15px;
-				    }
-				    textarea::-webkit-scrollbar{
-				    	width:4px;
-				    }
-				    textarea::-webkit-scrollbar-thumb{
-				    	border-radius: 10px;
-				         -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-				        background: rgba(217, 106, 95, 0.9);
-				    }
-						.img-preview-item {
-							border: 1px solid #e8e8e8;
-							margin: 5px;
-							width: 90px;
-							height: 90px;
+					position: relative;
+					margin-bottom: 20px;
+					border: 1px solid #f0f0f0;
+					padding-bottom: 50px;
+					> textarea {
+						height: 180px;
+						background-color: #fff;
+						border: none;
+						margin-bottom: 15px;
+					}
+					textarea::-webkit-scrollbar {
+						width: 4px;
+					}
+					textarea::-webkit-scrollbar-thumb {
+						border-radius: 10px;
+						-webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+						background: rgba(217, 106, 95, 0.9);
+					}
+					.img-preview-item {
+						border: 1px solid #e8e8e8;
+						margin: 5px;
+						width: 90px;
+						height: 90px;
+						display: inline-block;
+						position: relative;
+						overflow: hidden;
+						vertical-align: middle;
+						.as-height {
+							height: 100%;
+						}
+						.img-del {
+							width: 18px;
+							height: 18px;
+							position: absolute;
+							z-index: 2;
+							top: 0;
+							right: 0;
+							background-color: rgba(0, 0, 0, 0.5);
+							border-radius: 0 0 0 4px;
+							padding: 1px;
+							cursor: pointer;
+							text-align: center;
+							line-height: 18px;
+							i {
+								font-size: 14px;
+								color: white;
+							}
+						}
+					}
+					.modal-video-box {
+						position: relative;
+						width: 310px;
+						height: 174px;
+						overflow: hidden;
+						display: inline-block;
+						vertical-align: middle;
+						text-align: center;
+						background: #000;
+						margin-left: 5px;
+						.video-content {
+							position: absolute;
+							top: 50%;
+							left: 50%;
+							transform: translate(-50%, -50%);
 							display: inline-block;
-							position: relative;
+						}
+						.video {
+							height: 300px;
+							opacity: 0.2;
+						}
+						.progress_box {
+							position: absolute;
+							top: 50%;
+							left: 50%;
+							transform: translate(-50%, -50%);
+						}
+						.video-del {
+							width: 18px;
+							height: 18px;
+							position: absolute;
+							z-index: 2;
+							top: 0;
+							right: 0;
+							background-color: rgba(0, 0, 0, 0.5);
+							padding: 1px;
+							cursor: pointer;
+							text-align: center;
+							line-height: 18px;
+							color: #fff;
+						}
+					}
+
+					.img-upload-btn {
+						position: relative;
+						text-align: center;
+						width: 90px;
+						height: 90px;
+						line-height: 80px;
+						border: 1px solid #e8e8e8;
+						display: inline-block;
+						vertical-align: middle;
+						margin-left: 15px;
+						i {
+							font-size: 56px;
+							color: #d8d8d8;
+						}
+						.img-click-here,
+						.img-limit {
+							font-size: 14px;
+							color: #2b89ca;
+							display: block;
+							margin-top: 16px;
+							line-height: 1;
+						}
+						.img-file {
+							position: absolute;
 							overflow: hidden;
-							vertical-align: middle;
-							.as-height {
+							left: 0;
+							top: 0;
+							width: 100%;
+							height: 100%;
+							cursor: pointer;
+							input {
+								width: 100%;
 								height: 100%;
-							}
-							.img-del {
-								width: 18px;
-								height: 18px;
-								position: absolute;
-								z-index: 2;
-								top: 0;
-								right: 0;
-								background-color: rgba(0, 0, 0, 0.5);
-								border-radius: 0 0 0 4px;
-								padding: 1px;
+								opacity: 0;
 								cursor: pointer;
-								text-align: center;
-								line-height: 18px;
-								i {
-									font-size: 14px;
-									color: white;
-								}
 							}
 						}
-						.modal-video-box{
-							    position: relative;
-							    width: 310px;
-    							height: 174px;
-							    overflow: hidden;
-							    display: inline-block;
-							    vertical-align: middle;
-							    text-align: center;
-							    background: #000;
-							    margin-left: 5px;
-							    .video-content{
-							    	position: absolute;
-								    top: 50%;
-								    left: 50%;
-								    transform: translate(-50%, -50%);
-								    display: inline-block;
-							    }
-							.video {
-								height: 300px;
-								opacity: 0.2;
-							}
-							.progress_box {
-								position: absolute;
-								top: 50%;
-								left: 50%;
-								transform: translate(-50%, -50%);
-							}
-							.video-del{
-								width: 18px;
-							    height: 18px;
-							    position: absolute;
-							    z-index: 2;
-							    top: 0;
-							    right: 0;
-							    background-color: rgba(0, 0, 0, 0.5);
-							    padding: 1px;
-							    cursor: pointer;
-							    text-align: center;
-							    line-height: 18px;
-							    color: #fff;
-							}
+						.img-limit {
+							color: #969696;
+							margin-top: 12px;
 						}
-					
-				    .img-upload-btn {
-									position: relative;
-									text-align: center;
-									width: 90px;
-								    height: 90px;
-								    line-height: 80px;
-								    border: 1px solid #E8E8E8;
-								    display: inline-block;
-								    vertical-align: middle;
-								    margin-left: 15px;
-									i {
-										font-size: 56px;
-										color: #D8D8D8;
-									}
-									.img-click-here,
-									.img-limit {
-										font-size: 14px;
-										color: #2b89ca;
-										display: block;
-										margin-top: 16px;
-										line-height: 1;
-									}
-									.img-file {
-										position: absolute;
-										overflow: hidden;
-										left: 0;
-										top: 0;
-										width: 100%;
-										height: 100%;
-										cursor: pointer;
-										input {
-											width: 100%;
-											height: 100%;
-											opacity: 0;
-											cursor: pointer;
-										}
-									}
-									.img-limit {
-										color: #969696;
-										margin-top: 12px;
-									}
-								}
+					}
 				}
 			}
 		}
+	}
+	.multiselect__content-wrapper {
+		z-index: 2;
 	}
 }
 </style>

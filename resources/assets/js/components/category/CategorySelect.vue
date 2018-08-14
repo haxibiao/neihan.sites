@@ -73,6 +73,9 @@ export default {
 <style src="vue-multiselect/dist/vue-multiselect.min.css">
 </style>
 <style lang="scss">
+.multiselect--active {
+	z-index: 2;
+}
 .multiselect__tag {
 	background-color: #fff;
 	border: 1px solid #42c02e;

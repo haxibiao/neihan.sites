@@ -26,6 +26,9 @@
                     <div class="tab-content">
                         <div role="tabpanel" class="fade in tab-pane active" id="articles">
                             <ul class="article-list">
+                                @if(count($data['articles'])==0)
+                                   <blank-content></blank-content>
+                                @endif 
                                 @foreach($data['articles'] as $fav)
                                     @include('parts.article_item', ['article' => $fav->faved])
                                 @endforeach

@@ -28,6 +28,9 @@
                         <div class="tab-content">
                             <div role="tabpanel" class="fade in tab-pane active" id="articles">
                                 <ul class="article-list">
+                                    @if(count($data['questions'])==0)
+                                       <blank-content></blank-content>
+                                    @endif 
                                      @foreach($data['questions'] as $question)
                                       <!-- {!! Form::open(['method' => 'delete', 'route' => ['question.destroy', $question->id], 'class' => 'form-horizontal']) !!}
                                         {!! Form::submit('删除', ['class' => 'btn btn-sm btn-danger']) !!}
@@ -38,11 +41,20 @@
                             </div>
                             <div role="tabpanel" class="fade tab-pane" id="questions_tab">
                                   <div>
-                                     @foreach($data['answer_questions'] as $question)
-                                     @if($question&&$question->status>=0) 
-                                       @include('question.parts.question_item', ['question' => $question])   
-                                     @endif
+                                    @php
+                                        $x=0;
+                                    @endphp
+                                    @foreach($data['answer_questions'] as $question)
+                                        @if($question&&$question->status>=0)
+                                            @php
+                                                $x++;
+                                            @endphp
+                                            @include('question.parts.question_item', ['question' => $question])   
+                                        @endif
                                     @endforeach
+                                    @if($x==0)
+                                       <blank-content></blank-content>
+                                    @endif
                                 </div>  
                             </div>
                         </div>
