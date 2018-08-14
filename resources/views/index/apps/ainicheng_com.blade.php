@@ -22,7 +22,7 @@
           </div>
           <div class="download-phone">
             <a href="http://ainicheng-1251052432.file.myqcloud.com/ainicheng.apk"><img src="/images/android_app.png" class="download2" alt="download-andorid"></a>
-            <a href="https://www.pgyer.com/9Khm"><img src="/images/ios_app.png" class="download2" alt="download-ios"></a>
+            <a href="https://www.pgyer.com/ainicheng"><img src="/images/ios_app.png" class="download2" alt="download-ios"></a>
             <img class="background-img" src="/images/appBackground.png" alt="Misc background">
             <h4>点击下载{{ env('APP_NAME') }}App</h4>
           </div>
@@ -81,7 +81,7 @@
         </div>
         <div class="download-phone">
           <a href="http://ainicheng-1251052432.file.myqcloud.com/ainicheng.apk"><img src="/images/android_app.png" class="download2" alt="download-andorid"></a>
-          <a href="https://www.pgyer.com/9Khm"><img src="/images/ios_app.png" class="download2" alt="download-ios"></a>
+          <a href="https://www.pgyer.com/ainicheng"><img src="/images/ios_app.png" class="download2" alt="download-ios"></a>
           <img class="background-img" src="/images/appBackground.png" alt="Misc background">
           <h4>点击下载{{ env('APP_NAME') }}App</h4>
         </div>
