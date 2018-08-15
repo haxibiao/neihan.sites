@@ -10,7 +10,8 @@
                 </div> 
                 <div class="modal-body">
     				<form method="post" action="/post" ref="postForm" enctype="multipart/form-data">
-					<div class="textarea-box"> 
+
+					<div class="textarea-box img-upload-field"> 
 						<input type="hidden" name="_token" v-model="token">
                 		<textarea name="body" placeholder='再说点什么...' v-model="description" maxlength='500'></textarea>
                 		<span class="word-count">{{ description.length }}/500</span>
