@@ -5,7 +5,7 @@
 @extends('layouts.black')
 
 @section('title')
-	{{ $video->article->title }} -{{ env('APP_NAME') }}
+	{{ $video->article->title }} -{{ empty($article->category)?env('APP_NAME'): $article->category->name}}
 @stop
 
 @push('seo_og_result')
