@@ -6,7 +6,7 @@
 		      <span v-if="article.type =='video'" class="rotate-play">
 		        <i class="iconfont icon-shipin"></i>
 		      </span>
-		      <i  v-if="article.type =='video'" class="duration">{{ videotime }}</i>  <!--当为视频时,取出视频的时长 -->
+		      <i  v-if="article.type =='video'" class="duration">{{ article.duration }}</i>  <!--当为视频时,取出视频的时长 -->
 		  </a>
 		  <div class="content">
 	    	<div v-if="article.type !=='article'" class="author">
