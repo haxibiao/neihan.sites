@@ -143,7 +143,11 @@ class CategoryType extends GraphQLType {
 				'type' => GraphQL::type('Article'),
 				'description' => 'latest article of category',
 				'resolve' => function ($root, $args) {
-					return $root->articles()->first();
+					$article = new \App\Article();
+					$colomns = array_map(function ($name) {
+						return 'articles.' . $name;
+					}, $article->getTableColumns());
+					return $root->articles()->select($colomns)->first();
 				},
 			],
 			'latest_follower' => [
