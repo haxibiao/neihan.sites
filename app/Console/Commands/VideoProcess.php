@@ -45,6 +45,7 @@ class VideoProcess extends Command {
 		$video = Video::with('article')->findOrFail($video_id);
 		//covers sync
 		//video_urls 流畅，标清，高清，Full HD, sync
+		//TODO 下架又封面的视频也会执行下面的逻辑，需要设置标志位过滤掉。
 		$video->syncVodProcessResult();
 
 		//同步文章封面
