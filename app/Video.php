@@ -95,13 +95,14 @@ class Video extends Model
             if (!empty($res['basicInfo']) && !empty($res['basicInfo']['coverUrl'])) {
                 $this->cover = $res['basicInfo']['coverUrl'];
             }
-            if (!empty($res['sampleSnapshotInfo']) &&
-                !empty($res['sampleSnapshotInfo']['sampleSnapshotList'])) {
+            if (!empty($res['snapshotByTimeOffsetInfo']) &&
+                !empty($res['snapshotByTimeOffsetInfo']['snapshotByTimeOffsetList'])) {
                 $covers = [];
-                foreach ($res['sampleSnapshotInfo']['sampleSnapshotList'] as $snapInfo) {
-                    // if ($snapInfo['definition'] == 10)
+                foreach ($res['snapshotByTimeOffsetInfo']['snapshotByTimeOffsetList'] as $snapInfo) {
+                    if ($snapInfo['definition'] == 10)
                     {
-                        foreach ($snapInfo['imageUrls'] as $url) {
+                        foreach ($snapInfo['picInfoList'] as $urlArr) {
+                            $url      = $urlArr["url"];
                             $covers[] = get_secure_url($url);
                         }
                     }

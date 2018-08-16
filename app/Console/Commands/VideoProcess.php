@@ -69,7 +69,7 @@ class VideoProcess extends Command {
 	public function processDrafts() {
 		$videos = Video::where('status', 0)->get();
 		foreach ($videos as $video) {
-			if (!str_contains($video->path, 'vod') || empty($video->qcvod_file)) {
+			if (!str_contains($video->path, 'vod') || empty($video->qcvod_fileid)) {
 				//旧的无效视频，进入软删除状态
 				$video->status = -1;
 				$video->save();
