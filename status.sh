@@ -23,3 +23,7 @@ git status
 echo "dianmoge status ..."
 cd ../dianmoge.com
 git status
+
+echo "jucheshe status ..."
+cd ../jucheshe.com
+git status

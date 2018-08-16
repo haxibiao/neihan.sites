@@ -6,3 +6,4 @@ bash codesync.sh dongdianyao
 bash codesync.sh qunyige
 bash codesync.sh youjianqi
 bash codesync.sh dianmoge
+bash codesync.sh jucheshe

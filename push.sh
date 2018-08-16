@@ -19,3 +19,6 @@ run push
 
 cd ../dianmoge.com
 run push
+
+cd ../jucheshe.com
+run push
