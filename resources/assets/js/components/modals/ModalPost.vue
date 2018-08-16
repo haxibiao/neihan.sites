@@ -105,6 +105,13 @@ export default {
 
 					_this.fileFormat = ".avi,.wmv,.mpeg,.mp4,.mov,.mkv,.flv,.f4v,.m4v,.rmvb,.rm,.3gp,.dat,.ts,.mts,.vob";
 					_this.videoObj = e.target.files[0];
+					var regEn = /[`~!@#$%^&*()_+<>?:"{},\/;'[\]]/im,
+					    regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im;
+
+					if(regEn.test(_this.videoObj.name) || regCn.test(_this.videoObj.name)) {
+					    alert("视频名称不能包含特殊字符哟！");
+					    return false;
+					}
 					_this.bool = false;
 					let reader = new FileReader();
 					reader.readAsDataURL(e.target.files[0]);
@@ -142,6 +149,7 @@ export default {
 			var _this = this;
 			_this.progress = 0;
 			console.log(videoFile);
+			
 			console.log("start upload to qcvod ...");
 			qcVideo.ugcUploader.start({
 				videoFile: videoFile, //视频，类型为 File
@@ -361,6 +369,7 @@ export default {
 						display: inline-block;
 						vertical-align: middle;
 						margin-left: 15px;
+						border-radius: 4px;
 						i {
 							font-size: 56px;
 							color: #d8d8d8;
