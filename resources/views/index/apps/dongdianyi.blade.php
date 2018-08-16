@@ -13,17 +13,17 @@
               <div class="slogan">一个专属你的优质社区</div>
             </div>
           </div>
-          <img class="background-img" src="/images/appBackground.png" alt="app background">
-          <img class="phone-img" src="/images/download1.jpg" alt="app phone">
+          <img class="background-img" src="/images/app/appBackground.png" alt="app background">
+          <img class="phone-img" src="/images/app/download1.jpg" alt="app phone">
           <div class="top-qrcode">
             <img src="/qrcode/dongdianyi.com.jpg" alt="Download apps page top qrcode">
             <div class="title">扫码下载{{ env('APP_NAME') }}App</div>
             <div class="introduce">随时随地发现和分享内容</div>
           </div>
           <div class="download-phone">
-            <a href="http://dongdianyi-1251052432.file.myqcloud.com/dongdianyi.apk"><img src="/images/android_app.png" class="download2" alt="download-andorid"></a>
-            <a href="https://www.pgyer.com/dongdianyi"><img src="/images/ios_app.png" class="download2" alt="download-ios"></a>
-            <img class="background-img" src="/images/appBackground.png" alt="Misc background">
+            <a href="http://dongdianyi-1251052432.file.myqcloud.com/dongdianyi.apk"><img src="/images/app/android_app.png" class="download2" alt="download-andorid"></a>
+            <a href="https://www.pgyer.com/dongdianyi"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
+            <img class="background-img" src="/images/app/appBackground.png" alt="Misc background">
             <h4>点击下载{{ env('APP_NAME') }}App</h4>
           </div>
         </div>
@@ -36,17 +36,17 @@
               你是否想分享你的游戏故事成为网红大咖？ 爱你城app一网打尽！你想要的我们都有!</h6>
             </div>
             <div class="col-sm-12 game-imgs">
-              <img src="/images/pubg_old.jpg" alt="Misc pic1" class="game-img" alt="game-logo">
-              <img src="/images/dota2.png" alt="Misc pic1" class="game-img" alt="game-logo">
-              <img src="/images/lol_logo1.jpg" alt="Misc pic1" class="game-img" alt="game-logo">
-              <img src="/images/wangzherongyao_logo.jpg" alt="Misc pic1" class="game-img" alt="game-logo">
-              <img src="/images/nishuihang_logo.png" alt="Misc pic1" class="game-img" alt="game-logo">
+              <img src="/images/app/pubg_old.jpg" alt="Misc pic1" class="game-img" alt="game-logo">
+              <img src="/images/app/dota2.png" alt="Misc pic1" class="game-img" alt="game-logo">
+              <img src="/images/app/lol_logo1.jpg" alt="Misc pic1" class="game-img" alt="game-logo">
+              <img src="/images/app/wangzherongyao_logo.jpg" alt="Misc pic1" class="game-img" alt="game-logo">
+              <img src="/images/app/nishuihang_logo.png" alt="Misc pic1" class="game-img" alt="game-logo">
             </div>
           </div>
         </div>
         <div class="row">
             <div class="container middle-part">
-              <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/download3.jpg" alt="Misc pic2"></div>
+              <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/app/download3.jpg" alt="Misc pic2"></div>
               <div class="col-sm-5 col-sm-offset-1 text-block">
                 <h3>海量短视频、个性化推送</h3>
                 <h6>精彩爆笑的段子，脑洞大开的视频。在这里你可以分享生活趣事、上传游戏精彩瞬间、秀出你的风采、传递开心。</h6>
@@ -59,12 +59,12 @@
               <h3>优质内容、独家创造</h3>
               <h6>在这里你可以创造属于你的特色专题内容。记录你的日常有趣瞬间、与共同爱好的玩家分享快乐，让你不再一个人游戏、给你带来不同寻常的邂逅。</h6>
             </div>
-            <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/download4.jpg" alt="Misc pic3"></div>
+            <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/app/download4.jpg" alt="Misc pic3"></div>
           </div>
         </div>
         <div class="row">
         <div class="container middle-part">
-          <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/download2.jpg" alt="Misc pic4"></div>
+          <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/app/download2.jpg" alt="Misc pic4"></div>
           <div class="col-sm-5 col-sm-offset-1 text-block">
             <h3>热门游戏交流社区</h3>
             <h6>与大神零距离互动，为信仰站队。</br>
@@ -76,13 +76,13 @@
       <div class="container bottom-part">
         <div class="download-web">
           <img class="bottom-qrcode" src="/qrcode/dongdianyi.com.jpg" alt="Download apps page bottom qrcode">
-          <img class="background-img" src="/images/appBackground.png" alt="Misc background">
+          <img class="background-img" src="/images/app/appBackground.png" alt="Misc background">
           <div>扫码下载{{ env('APP_NAME') }}App</div>
         </div>
         <div class="download-phone">
-          <a href="http://dongdianyi-1251052432.file.myqcloud.com/dongdianyi.apk"><img src="/images/android_app.png" class="download2" alt="download-andorid"></a>
-          <a href="https://www.pgyer.com/dongdianyi"><img src="/images/ios_app.png" class="download2" alt="download-ios"></a>
-          <img class="background-img" src="/images/appBackground.png" alt="Misc background">
+          <a href="http://dongdianyi-1251052432.file.myqcloud.com/dongdianyi.apk"><img src="/images/app/android_app.png" class="download2" alt="download-andorid"></a>
+          <a href="https://www.pgyer.com/dongdianyi"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
+          <img class="background-img" src="/images/app/appBackground.png" alt="Misc background">
           <h4>点击下载{{ env('APP_NAME') }}App</h4>
         </div>
         <div class="bottom-logo">
