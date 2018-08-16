@@ -68,6 +68,8 @@ class SearchController extends Controller
             ->paginate($page_size);
         $data['categories'] = Category::where('name', 'like', "%$query%")
             ->where('status', '>=', 0)
+            ->orderBy('parent_id','asc')
+            ->orderBy('count_follows','desc')
             ->paginate($page_size);
 
         if (!empty($query) && $total) {
@@ -124,6 +126,8 @@ class SearchController extends Controller
         $query              = request('q');
         $data['categories'] = Category::where('status', '>=', 0)
             ->where('name', 'like', "%$query%")
+            ->orderBy('parent_id','asc')
+            ->orderBy('count_follows','desc')
             ->paginate($page_size);
         $data['query'] = $query;
         return view('search.categories')->withData($data);

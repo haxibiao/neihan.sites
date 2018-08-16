@@ -76,7 +76,7 @@ class CategoryController extends Controller
         }
 
         //推荐
-        $categories = $qb->orderBy('id', 'desc')->paginate(12);
+        $categories = $qb->where('parent_id', 0)->paginate(12);
         if (ajaxOrDebug() && request('recommend')) {
             foreach ($categories as $category) {
                 $category->followed = $category->isFollowed();
@@ -92,7 +92,9 @@ class CategoryController extends Controller
         $articles   = Article::where('updated_at', '<=', $week_start)
             ->where('status', '>=', 0)->whereNotNull('category_id')->selectRaw('category_id')
             ->groupBy('category_id')->get()->toArray();
-        $categories = Category::whereIn('id', $articles)->paginate(24);
+        $categories = Category::whereIn('id', $articles)
+            ->where('parent_id',0)
+            ->paginate(24);
         if (ajaxOrDebug() && request('hot')) {
             foreach ($categories as $category) {
                 $category->followed = $category->isFollowed();
