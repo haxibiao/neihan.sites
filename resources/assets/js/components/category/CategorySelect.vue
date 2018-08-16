@@ -32,6 +32,7 @@ export default {
 	components: { Multiselect },
 
 	mounted() {
+		console.log(this.categories);
 		if (this.categories) {
 			//加载选择的
 			var data = JSON.parse(this.categories);
@@ -52,6 +53,7 @@ export default {
 		fetchData() {
 			//加载可选择列表
 			var _this = this;
+			console.log(this.apiUrl);
 			window.axios.get(this.apiUrl).then(function(response) {
 				_this.options = response.data;
 			});
