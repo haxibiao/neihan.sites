@@ -36,6 +36,7 @@
 					        </div>
 					    </div>
 					</div>
+					<div v-if="alertInfo" class="alert alert-info alert-dismissible" role="alert">亲,视频名称不能包含特殊字符哟！</div>
 					<div>
 						<category-select placeholder="选择专题"></category-select>
 					</div>
@@ -105,11 +106,12 @@ export default {
 
 					_this.fileFormat = ".avi,.wmv,.mpeg,.mp4,.mov,.mkv,.flv,.f4v,.m4v,.rmvb,.rm,.3gp,.dat,.ts,.mts,.vob";
 					_this.videoObj = e.target.files[0];
-					var regEn = /[`~!@#$%^&*()_+<>?:"{},\/;'[\]]/im,
-					    regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im;
+					var regEn = /[`~!@#$%^&*()+<>?:"{},\/;'[\]]/im,
+					    regCn = /[！#￥（——）：；“”‘，|《。》？【】[\]]/im;
 
 					if(regEn.test(_this.videoObj.name) || regCn.test(_this.videoObj.name)) {
-					    alert("视频名称不能包含特殊字符哟！");
+					    _this.alertInfo=true;
+					    setTimeout(()=>{_this.alertInfo=false},3000);
 					    return false;
 					}
 					_this.bool = false;
@@ -224,6 +226,7 @@ export default {
 			counter: 1,
 			balance: window.user.balance,
 			query: null,
+			alertInfo:false,
 			description: "",
 			filesCount: 0,
 			qcvod_id: null,
