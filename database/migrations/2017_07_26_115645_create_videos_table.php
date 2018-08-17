@@ -25,6 +25,12 @@ class CreateVideosTable extends Migration
             $table->string('adstime')->nullable();
 
             $table->timestamps();
+
+            //TODO：这里日后可以用laravel建议的软删除
+            $table->softDeletes();
+
+            $table->string('qcvod_fileid')->nullable()->index();
+            $table->string('cover')->nullable();
         });
     }
 

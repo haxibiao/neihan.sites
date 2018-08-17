@@ -63,13 +63,18 @@ class CreateArticlesTable extends Migration {
 			$table->unsignedInteger('video_id')
 				->nullable()
 				->index()->comment('视频id');
+
 			$table->string('video_url')
 				->nullable()
 				->comment('视频的url');
+
 			$table->string('type', 10)
 				->index()
 				->default('article')
 				->comment('内容的类型:article:普通文章，video:视频, post:动态');
+
+			//TODO:: ?? 这里还没启用laravel建议的软删除吧...
+			$table->softDeletes();
 		});
 	}
 

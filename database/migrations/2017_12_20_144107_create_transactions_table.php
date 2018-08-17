@@ -21,6 +21,11 @@ class CreateTransactionsTable extends Migration
             $table->decimal('amount');
             $table->string('status')->index();
             $table->decimal('balance')->default(0);
+
+            $table->integer('from_user_id')->nullable();
+            $table->integer('to_user_id')->nullable();
+            $table->integer('relate_id')->nullable();
+            
             $table->timestamps();
         });
     }
