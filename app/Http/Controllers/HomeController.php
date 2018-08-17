@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -123,6 +124,7 @@ class HomeController extends Controller
     {
         $user = User::findOrFail($id);
         Auth::login($user);
+        Cookie::queue('graphql_user', $user->id, 60 * 24); //存一天cookie 给graphiql 测试用
         return redirect()->to('/user/' . $id);
     }
 

@@ -32,10 +32,8 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        if (\App::environment('prod')) {
-            if (app()->bound('sentry') && $this->shouldReport($exception)) {
-                app('sentry')->captureException($exception);
-
+        if (env('APP_ENV') == 'prod') {
+            if ($this->shouldReport($exception)) {
                 //not always report to bugsnag in prod , too many 404 ....
                 \Bugsnag::notifyException($exception);
             }

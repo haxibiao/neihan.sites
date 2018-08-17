@@ -12,6 +12,6 @@ class EncryptCookies extends BaseEncrypter
      * @var array
      */
     protected $except = [
-        //
+        "graphql_user"
     ];
 }

@@ -75,6 +75,8 @@ class CreateArticlesTable extends Migration {
 
 			//TODO:: ?? 这里还没启用laravel建议的软删除吧...
 			$table->softDeletes();
+
+			$table->timestamps();
 		});
 	}
 
