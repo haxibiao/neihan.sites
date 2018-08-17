@@ -8,6 +8,7 @@ use App\Collection;
 use App\Comment;
 use App\Image;
 use App\Visit;
+use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Command;
 
@@ -183,5 +184,14 @@ class FixData extends Command
             }
         });
         $cmd->info('fix article action success');
+    }
+
+    public static function users($cmd)
+    {
+        //修复上次296用户 id变成144 导致一系列网页错误
+        $user = User::find(144);
+        $user->id = 296;
+        $user->save();
+        $cmd->info($user->id.' fix success');
     }
 }
