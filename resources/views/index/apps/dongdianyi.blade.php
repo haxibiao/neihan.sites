@@ -9,12 +9,12 @@
           <div class="top-logo">
             <img class="logo" src="/logo/dongdianyi.com.small.png" alt="app logo">
             <div class="info">
-              <div class="title">最暖心的游戏社交平台</div>
-              <div class="slogan">一个专属你的优质社区</div>
+              <div class="title">懂点医</div>
+              <div class="slogan">做你身边的健康小助手</div>
             </div>
           </div>
           <img class="background-img" src="/images/app/appBackground.png" alt="app background">
-          <img class="phone-img" src="/images/app/download1.jpg" alt="app phone">
+          <img class="phone-img" src="/images/app/{{ $app }}2.png" alt="app phone">
           <div class="top-qrcode">
             <img src="/qrcode/dongdianyi.com.jpg" alt="Download apps page top qrcode">
             <div class="title">扫码下载{{ env('APP_NAME') }}App</div>
@@ -31,25 +31,26 @@
       <div class="row">
           <div class="container middle-part">
             <div class="col-sm-12 col-sm-offset-2 text-block">
-              <h3>赛事新闻、独家资讯、原创攻略、精彩集锦</h3>
-              <h6>你是否想查看电竞圈最新娱乐八卦？你是否想了解最深度的游戏内容评测？</br>
-              你是否想分享你的游戏故事成为网红大咖？ 爱你城app一网打尽！你想要的我们都有!</h6>
+              <h3>居家养生、孕妇膳食、婴儿安全、中医养生</h3>
+              <h6>专业提供优质的医疗健康科普,包括养生,保健,健康科普,妇科,育儿,孕期,减肥</br>
+              急救中医等多方面,全方位为您的健康保驾护航</h6>
             </div>
-            <div class="col-sm-12 game-imgs">
+           {{--  <div class="col-sm-12 game-imgs">
               <img src="/images/app/pubg_old.jpg" alt="Misc pic1" class="game-img" alt="game-logo">
               <img src="/images/app/dota2.png" alt="Misc pic1" class="game-img" alt="game-logo">
               <img src="/images/app/lol_logo1.jpg" alt="Misc pic1" class="game-img" alt="game-logo">
               <img src="/images/app/wangzherongyao_logo.jpg" alt="Misc pic1" class="game-img" alt="game-logo">
               <img src="/images/app/nishuihang_logo.png" alt="Misc pic1" class="game-img" alt="game-logo">
-            </div>
+            </div> --}}
           </div>
         </div>
         <div class="row">
             <div class="container middle-part">
-              <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/app/download3.jpg" alt="Misc pic2"></div>
+              <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/app/{{ $app }}5.png" alt="Misc pic2"></div>
               <div class="col-sm-5 col-sm-offset-1 text-block">
-                <h3>海量短视频、个性化推送</h3>
-                <h6>精彩爆笑的段子，脑洞大开的视频。在这里你可以分享生活趣事、上传游戏精彩瞬间、秀出你的风采、传递开心。</h6>
+                <h3>专业问答平台、为你答疑解惑</h3>
+                <h6>'病急切忌乱投医'，问问大家更靠谱</br>懂点医提供给大家专业问答平台</br>在这里您可以提出问题</br>更有热心的网友为您解答
+               </h6>
               </div>
             </div>
         </div>
@@ -57,18 +58,18 @@
           <div class="container middle-part">
             <div class="col-sm-5 col-sm-offset-1 text-block">
               <h3>优质内容、独家创造</h3>
-              <h6>在这里你可以创造属于你的特色专题内容。记录你的日常有趣瞬间、与共同爱好的玩家分享快乐，让你不再一个人游戏、给你带来不同寻常的邂逅。</h6>
+              <h6>在这里你可以创造属于你的特色专题内容</br>如果您是精通医学知识的大触</br>懂点医欢迎您为大众分享专业健康知识</br>提高大众的健康素养</h6>
             </div>
-            <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/app/download4.jpg" alt="Misc pic3"></div>
+            <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/app/{{ $app }}3.png" alt="Misc pic3"></div>
           </div>
         </div>
         <div class="row">
         <div class="container middle-part">
-          <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/app/download2.jpg" alt="Misc pic4"></div>
+          <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/app/{{ $app }}1.png" alt="Misc pic4"></div>
           <div class="col-sm-5 col-sm-offset-1 text-block">
-            <h3>热门游戏交流社区</h3>
-            <h6>与大神零距离互动，为信仰站队。</br>
-            电竞大神、游戏迷妹的聚集地，创造属于你的游戏世界。</h6>
+            <h3>专业医疗健康知识科普平台</h3>
+            <h6>你还在为搜索健康知识太麻烦而烦恼？</br>你在为网络上健康知识信息真假难辨而纠结？</br>健康知识一抓一大把，该信还是不该信？</br>加入懂点医！</br>满足大众及时了解专业的健康知识的需求</br>专业问答平台获取健康知识</br>降低民众盲目跟从的风险</br>提高大众的健康素养。
+            </h6>
           </div>
         </div>
       </div>
@@ -88,8 +89,8 @@
         <div class="bottom-logo">
           <img src="/logo/dongdianyi.com.small.png" alt="Misc logo">
           <div class="info">
-            <div class="title">最暖心的游戏社交平台</div>
-              <div class="slogan">一个专属你的优质社区</div>
+            <div class="title">懂点医</div>
+              <div class="slogan">做你身边的健康小助手</div>
           </div>
         </div>
       </div>

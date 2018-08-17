@@ -7,7 +7,7 @@
 			bottom: 0;
 			width: 100%;
 			height: 40px;
-			background-image: linear-gradient(0deg,hsla(0,0%,59%,.15),hsla(0,0%,59%,0));
+			background-image: linear-gradient(0deg, hsla(0, 0%, 59%, 0.15), hsla(0, 0%, 59%, 0));
 		}
 		.background-img {
 			width: 80%;
@@ -45,81 +45,83 @@
 			.phone-img {
 				width: 36%;
 			}
+			.no-border {
+				width: 25%;
+			}
 		}
 		.middle-part {
-		    padding: 30px 0;
-		    .text-block {
-		    	margin-top: 8%;
-		    }
-	    	.fix {
+			padding: 30px 0;
+			.text-block {
+				margin-top: 8%;
+			}
+			.fix {
 				margin-top: -17%;
-	    	}
-		    img {
-		    	width: 100%;
-		    }
-		    .game-imgs{
-		    	margin-top: 20px;
-		    	.game-img{
-		    		width: 20%;
-		    		display: block;
-		    		float: right;
-		   		 }
-		    }
-		    h3 {
-		        margin-bottom: 20px;
-		        font-size: 28px;
-		        font-weight: 400;
-		    }
-		    h6 {
-		        font-size: 18px;
-		        font-weight: 300;
-		        line-height: 30px;
-		    }
+			}
+			img {
+				width: 100%;
+			}
+			.game-imgs {
+				margin-top: 20px;
+				.game-img {
+					width: 20%;
+					display: block;
+					float: right;
+				}
+			}
+			h3 {
+				margin-bottom: 20px;
+				font-size: 28px;
+				font-weight: 400;
+			}
+			h6 {
+				font-size: 18px;
+				font-weight: 300;
+				line-height: 30px;
+			}
 		}
 		.bottom-part {
 			margin-top: 50px;
 			margin-bottom: 80px;
-		    text-align: center;
-		    font-size: 24px;
-		    position: relative;
-		    .bottom-qrcode {
-	    	    margin-bottom: 10px;
-	    	    width: 140px;
-		    }
-		    .bottom-logo {
-		        margin-top: 30px;
-		        img {
-		        	width: 56px;
-		        	height: 56px;
-		        }
-		        .info {
-		        	display: inline-block;
-		        	margin-left: 8px;
-		        	text-align: left;
-		        	vertical-align: middle;
-		        	.title {
-		        		font-size: 17px;
-		        	}
-		        	.slogan {
-		        		font-size: 14px;
-		        		font-weight: 300;
-		        	}
-		        }
-		    }
+			text-align: center;
+			font-size: 24px;
+			position: relative;
+			.bottom-qrcode {
+				margin-bottom: 10px;
+				width: 140px;
+			}
+			.bottom-logo {
+				margin-top: 30px;
+				img {
+					width: 56px;
+					height: 56px;
+				}
+				.info {
+					display: inline-block;
+					margin-left: 8px;
+					text-align: left;
+					vertical-align: middle;
+					.title {
+						font-size: 17px;
+					}
+					.slogan {
+						font-size: 14px;
+						font-weight: 300;
+					}
+				}
+			}
 		}
 
 		@media screen and (min-width: 992px) {
 			.container {
-			    width: 960px;
+				width: 960px;
 			}
-			.download-phone{
+			.download-phone {
 				display: none;
-		    }
-		    .top-qrcode {
+			}
+			.top-qrcode {
 				display: inline-block;
-			    margin: 0 0 35px 35px;
-			    vertical-align: bottom;
-			    text-align: left;
+				margin: 0 0 35px 35px;
+				vertical-align: bottom;
 				img {
 					width: 50%;
 				}
@@ -129,12 +131,12 @@
 				}
 				.introduce {
 					margin-top: 4px;
-				    font-size: 16px;
-				    font-weight: 300;
+					font-size: 16px;
+					font-weight: 300;
 				}
 			}
 		}
-		@media screen and (max-width:768px){
+		@media screen and (max-width: 768px) {
 			.top-part {
 				.phone-img {
 					width: 80%;
@@ -145,24 +147,28 @@
 				}
 			}
 			.middle-part {
-		    	.fix {
+				.fix {
 					margin-top: 0;
-		    	}
+				}
+				.no-border {
+					width: 78%;
+					margin-left: 11%;
+				}
 			}
-			.download-phone{
+			.download-phone {
 				display: block;
-				padding:10px 0;
-		    	.download2{
- 					padding-right: 10px;
- 					width: 40%;
-		    	}
-		    }
-		    .download-web{
-		    	display: none;
-		    }
-		    .top-qrcode{
-		    	display: none;
-		    }
+				padding: 10px 0;
+				.download2 {
+					padding-right: 10px;
+					width: 40%;
+				}
+			}
+			.download-web {
+				display: none;
+			}
+			.top-qrcode {
+				display: none;
+			}
 		}
 	}
 }
