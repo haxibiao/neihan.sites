@@ -21,14 +21,14 @@ class CategoryController extends Controller
     /**
     专题管理列表
      */
-    public function list(Request $request) {
+    function list(Request $request) {
         $qb               = Category::where('status', '>=', 0)->orderBy('id', 'desc');
-        $data['keywords']  = '';
+        $data['keywords'] = '';
         if ($request->get('q')) {
-            $keywords = $request->get('q');
+            $keywords         = $request->get('q');
             $data['keywords'] = $keywords;
             //精准匹配
-            $accurateCategory = Category::where('status', '>=', 0)->where('name', $keywords)->orderBy('id', 'desc')->paginate(5);
+            $accurateCategory         = Category::where('status', '>=', 0)->where('name', $keywords)->orderBy('id', 'desc')->paginate(5);
             $data['accurateCategory'] = $accurateCategory;
             //模糊匹配
             $qb = Category::orderBy('id', 'desc')->where('status', '>=', 0)
@@ -50,7 +50,7 @@ class CategoryController extends Controller
                 $qb = $qb->where('count', '>=', 0);
                 break;
         }
-        $categories = $qb->paginate(12);
+        $categories         = $qb->paginate(12);
         $data['categories'] = $categories;
         return view('category.list')->withData($data);
     }
@@ -60,7 +60,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $qb   = Category::where('status', '>=', 0)->orderBy('id', 'desc');
+        $qb   = Category::where('status', '>=', 0)->orderByDesc('count');
         $type = 'article';
         if ($request->get('type')) {
             $type = $request->get('type');
@@ -76,11 +76,16 @@ class CategoryController extends Controller
         }
 
         //推荐
-        $categories = $qb->where('parent_id', 0)->paginate(12);
+        $categories = $qb->where('parent_id', 0)
+            ->paginate(12)
+            ->map(function ($item) {
+                $item->count += $item->subclass()->pluck('count')->sum();
+            return $item;
+        });
         if (ajaxOrDebug() && request('recommend')) {
             foreach ($categories as $category) {
                 $category->followed = $category->isFollowed();
-                $category->count    = $category->publishedWorks()->count();
+                $category->count    = $category->subclass()->pluck('count')->sum();
             }
             return $categories;
         }
@@ -90,15 +95,22 @@ class CategoryController extends Controller
         //获取最近七天发布的Article 按照hits order by desc
         $week_start = Carbon::now()->subWeek()->startOfWeek()->toDateTimeString();
         $articles   = Article::where('updated_at', '<=', $week_start)
-            ->where('status', '>=', 0)->whereNotNull('category_id')->selectRaw('category_id')
-            ->groupBy('category_id')->get()->toArray();
+            ->where('status', '>=', 0)
+            ->whereNotNull('category_id')
+            ->selectRaw('category_id')
+            ->groupBy('category_id')
+            ->get()->toArray();
         $categories = Category::whereIn('id', $articles)
-            ->where('parent_id',0)
-            ->paginate(24);
+            ->where('parent_id', 0)
+            ->paginate(24)
+            ->map(function ($item) {
+                    $item->count += $item->subclass()->pluck('count')->sum();
+                return $item;
+            });
         if (ajaxOrDebug() && request('hot')) {
             foreach ($categories as $category) {
                 $category->followed = $category->isFollowed();
-                $category->count    = $category->count + $category->count_videos;
+                $category->count    = $category->subclass()->pluck('count')->sum();
             }
             return $categories;
         }

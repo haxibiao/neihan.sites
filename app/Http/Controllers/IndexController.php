@@ -82,12 +82,10 @@ class IndexController extends Controller
             $user = Auth::user();
             //获取所有关注的专题
             $all_follow_category_ids = \DB::table('follows')->where('user_id', $user->id)
-                ->where('followed_type', 'categories')
-                ->whereExists(function ($query) {
+                ->where('followed_type', 'categories')->whereExists(function ($query) {
                     return $query->from('categories')
                         ->whereRaw('categories.id = follows.followed_id')
-                        ->where('categories.status', '>=', 0)
-                        ->where('categories.parent_id', 0);
+                        ->where('categories.status', '>=', 0);
                 })->pluck('followed_id');
             $categories = Category::whereIn('id', $all_follow_category_ids)
                 ->take(7)

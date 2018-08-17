@@ -292,4 +292,9 @@ class Category extends Model
             ->withPivot('submit')
             ->withTimestamps();
     }
+
+    public function subclass()
+    {
+        return $this->hasMany('App\Category','parent_id','id');
+    }
 }
