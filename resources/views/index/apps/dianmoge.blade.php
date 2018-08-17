@@ -46,7 +46,7 @@
         </div>
         <div class="row">
             <div class="container middle-part">
-              <div class="col-sm-3 col-sm-offset-2"><img class="no-border" src="/images/app/{{ $app }}3.jpg" alt="Misc pic2"></div>
+              <div class="col-sm-3 col-sm-offset-2"><img class="no-border" src="/images/app/{{ $app }}2.jpg" alt="Misc pic2"></div>
               <div class="col-sm-5 col-sm-offset-1 text-block">
                 <h3>海量短视频、个性化推送</h3>
                 <h6>精彩爆笑的段子，脑洞大开的视频。在这里你可以分享生活趣事、上传游戏精彩瞬间、秀出你的风采、传递开心。</h6>
@@ -59,12 +59,12 @@
               <h3>优质内容、独家创造</h3>
               <h6>在这里你可以创造属于你的特色专题内容。记录你的日常有趣瞬间、与共同爱好的玩家分享快乐，让你不再一个人游戏、给你带来不同寻常的邂逅。</h6>
             </div>
-            <div class="col-sm-3 col-sm-offset-1"><img class="no-border" src="/images/app/{{ $app }}4.jpg" alt="Misc pic3"></div>
+            <div class="col-sm-3 col-sm-offset-1"><img class="no-border" src="/images/app/{{ $app }}3.jpg" alt="Misc pic3"></div>
           </div>
         </div>
         <div class="row">
         <div class="container middle-part">
-          <div class="col-sm-3 col-sm-offset-2"><img class="no-border" src="/images/app/{{ $app }}2.jpg" alt="Misc pic4"></div>
+          <div class="col-sm-3 col-sm-offset-2"><img class="no-border" src="/images/app/{{ $app }}4.jpg" alt="Misc pic4"></div>
           <div class="col-sm-5 col-sm-offset-1 text-block">
             <h3>热门游戏交流社区</h3>
             <h6>与大神零距离互动，为信仰站队。</br>

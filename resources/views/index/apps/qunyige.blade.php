@@ -45,7 +45,7 @@
         </div>
         <div class="row">
             <div class="container middle-part">
-              <div class="col-sm-4 col-sm-offset-1"><img class="no-border" src="/images/app/{{ $app }}3.png" alt="Misc pic2"></div>
+              <div class="col-sm-4 col-sm-offset-1"><img class="no-border" src="/images/app/{{ $app }}2.png" alt="Misc pic2"></div>
               <div class="col-sm-5 col-sm-offset-1 text-block">
                 <h3>精选短视频，发现美的生活</h3>
                 <h6>最全面的流行穿搭</br>美妆小课堂实时更新</br>有时尚达人教你搭配</br>美妆博主真人种草</br>甜美日系风，性感欧美风，清新韩系风</br>随心所欲让你造型百变无压力。</h6>
@@ -64,7 +64,7 @@
         </div>
         <div class="row">
         <div class="container middle-part">
-          <div class="col-sm-4 col-sm-offset-1"><img class="no-border" src="/images/app/{{ $app }}2.png" alt="Misc pic4"></div>
+          <div class="col-sm-4 col-sm-offset-1"><img class="no-border" src="/images/app/{{ $app }}3.png" alt="Misc pic4"></div>
           <div class="col-sm-5 col-sm-offset-1 text-block">
             <h3>优质交流社区，分享你的美</h3>
             <h6>资深时尚达人汇聚地</br>随时随地分享你的穿搭风格</br>show出你的品位</br>分享你的购物心得</br>找到和你品位相投的好友一起分享美好生活。</br></h6>

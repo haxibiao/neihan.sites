@@ -60,12 +60,12 @@
               <h3>优质内容、独家创造</h3>
               <h6>在这里你可以创造属于你的特色专题内容</br>分享你的美食心得，记录你的日常有趣瞬间</br>与共同爱好的用户分享快乐</br>让每一种美食变得有温度。</h6>
             </div>
-            <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/app/{{ $app }}4.png" alt="Misc pic3"></div>
+            <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/app/{{ $app }}3.png" alt="Misc pic3"></div>
           </div>
         </div>
         <div class="row">
         <div class="container middle-part">
-          <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/app/{{ $app }}2.png" alt="Misc pic4"></div>
+          <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/app/{{ $app }}4.png" alt="Misc pic4"></div>
           <div class="col-sm-5 col-sm-offset-1 text-block">
             <h3>美食问答及互动社区</h3>
             <h6>结交来自五湖四海的吃货盟友</br>与厨艺界大神零距离互动</br>
