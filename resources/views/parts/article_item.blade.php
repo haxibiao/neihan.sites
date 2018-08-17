@@ -1,6 +1,6 @@
 <li class="content-item {{ $article->hasImage() ? 'have-img' : '' }}">
   @if($article->hasImage())
-    <a class="wrap-img" href="{{ $article->content_url() }}"   target="{{ \Agent::isDeskTop()? '_blank':'_self' }}">
+    <a class="wrap-img" href="{{ $article->content_url() }}"   target="_blank">
         <img src="{{ $article->primaryImage() }}" alt="{{$article->title}}">
         @if( $article->type=='video' )
         <span class="rotate-play">
@@ -15,11 +15,11 @@
   <div class="content">
     @if( $article->type!=='article' )
     <div class="author">
-      <a class="avatar" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/user/{{ $article->user->id }}">
+      <a class="avatar" target="_blank" href="/user/{{ $article->user->id }}">
         <img src="{{ $article->user->avatar() }}" alt="">
       </a>
       <div class="info">
-        <a class="nickname" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/user/{{ $article->user->id }}">{{ $article->user->name }}</a>
+        <a class="nickname" target="_blank" href="/user/{{ $article->user->id }}">{{ $article->user->name }}</a>
         @if($article->user->is_editor)
           <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
         @endif
@@ -27,34 +27,33 @@
       </div>
     </div>
     @endif
+
+    {{-- 如果是文章，就显示标题 --}}
     @if( $article->type=='article' )
-    <a class="title" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="{{ $article->content_url() }}">
+    <a class="title" target="_blank" href="{{ $article->content_url() }}">
         <span>{{ $article->title }}</span>
     </a>
     @endif
-    @if( $article->type=='article' )
-    <a class="abstract" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="{{ $article->content_url() }}">
-      {{ $article->get_description()?$article->get_description():$article->title }}
+
+    {{-- 然后任何类型，这段简介是一定要显示的 --}}
+    <a class="abstract" target="_blank" href="{{ $article->content_url() }}">
+      {{ $article->get_description() }}
     </a>
-    @else
-     <a class="abstract" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="{{ $article->content_url() }}">
-      {{ $article->title?$article->title:$article->get_description()}}
-    </a>
-    @endif
+
     <div class="meta">
       @if($article->category)
-        <a class="category" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/{{ $article->category->name_en }}">
+        <a class="category" target="_blank" href="/{{ $article->category->name_en }}">
           <i class="iconfont icon-zhuanti1"></i>
           {{ $article->category->name }}
         </a>
       @endif
       @if( $article->type=='article' )
-        <a class="nickname" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/user/{{ $article->user->id }}">{{ $article->user->name }}</a>
+        <a class="nickname" target="_blank" href="/user/{{ $article->user->id }}">{{ $article->user->name }}</a>
       @endif
-      <a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="{{ $article->content_url() }}">
+      <a target="_blank" href="{{ $article->content_url() }}">
         <i class="iconfont icon-liulan"></i> {{ $article->hits }}
       </a>
-      <a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="{{ $article->content_url() }}/#comments">
+      <a target="_blank" href="{{ $article->content_url() }}/#comments">
         <i class="iconfont icon-svg37"></i> {{ $article->count_replies }}
       </a>
       <span><i class="iconfont icon-03xihuan"></i> {{ $article->count_likes }} </span>

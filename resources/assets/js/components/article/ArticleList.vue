@@ -1,7 +1,7 @@
 <template>
 	<div>	
 		<li v-for="article in articles" :class="article.has_image ? 'content-item have-img' : 'content-item'">
-		  <a v-if="article.has_image" class="wrap-img" :href="article.url" :target="isDesktop? '_blank' : '_self'">
+		  <a v-if="article.has_image" class="wrap-img" :href="article.url" :target="_blank">
 		      <img :src="article.primary_image" :alt="article.title">
 		      <span v-if="article.type =='video'" class="rotate-play">
 		        <i class="iconfont icon-shipin"></i>
@@ -10,30 +10,31 @@
 		  </a>
 		  <div class="content">
 	    	<div v-if="article.type !=='article'" class="author">
-	    	  <a class="avatar" :target="isDesktop? '_blank' : '_self'" :href="'/user/'+article.user.id">
+	    	  <a class="avatar" :target="_blank" :href="'/user/'+article.user.id">
 	    	    <img :src="article.user.avatar" alt="">
 	    	  </a> 
 	    	  <div class="info">
-	    	    <a class="nickname" :target="isDesktop? '_blank' : '_self'" :href="'/user/'+article.user.id">{{ article.user.name }}</a>
+	    	    <a class="nickname" :target="_blank" :href="'/user/'+article.user.id">{{ article.user.name }}</a>
 	    	    <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者" alt="">
 	    	    <span class="time">{{ article.time_ago }}</span>
 	    	  </div>
 	    	</div>
-		    <a v-if="article.type =='article'" class="title" :target="isDesktop? '_blank' : '_self'" :href="article.url">
+		    
+		    <a v-if="article.type == 'article'" class="title" :target="_blank" :href="article.url">
 		        <span>{{ article.title }}</span>
 		    </a>
-		    <a v-if="article.type =='article'" class="abstract":href="article.url">{{ article.description?article.description:article.title }}</a>
-		    <a v-else class="abstract":href="article.url">{{ article.title?article.title:article.description}}</a>
+		    <a class="abstract":href="article.url">{{ article.description}}</a>
+		
 		    <div class="meta">
-		      <a v-if="article.category" class="category" :target="isDesktop? '_blank' : '_self'" :href="'/' + article.category.name_en">
+		      <a v-if="article.category" class="category" :target="_blank" :href="'/' + article.category.name_en">
         		<i class="iconfont icon-zhuanti1"></i>
 		      	{{ article.category.name }}
 		  	  </a>
-		      <a v-if="article.type =='article'" class="nickname" :target="isDesktop? '_blank' : '_self'" :href="'/user/'+article.user.id">{{ article.user.name }}</a>
+		      <a v-if="article.type =='article'" class="nickname" :target="_blank" :href="'/user/'+article.user.id">{{ article.user.name }}</a>
 		      <a target="_blank" :href="article.url">
 		        <i class="iconfont icon-liulan"></i> {{ article.hits }}
 		      </a>        
-		      <a :target="isDesktop? '_blank' : '_self'" :href="article.url+'/#comments'" class="comment_meta">
+		      <a :target="_blank" :href="article.url+'/#comments'" class="comment_meta">
 		        <i class="iconfont icon-svg37"></i> {{ article.count_replies }}
 		      </a>
 		      <span><i class="iconfont icon-03xihuan"></i> {{ article.count_likes }}</span>
