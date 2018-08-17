@@ -204,11 +204,11 @@ class ArticleType extends GraphQLType
                     if($root->type == 'video') {
                         return $root->covers();
                     }
-                    $small_urls = [];
+                    $img_urls = [];
                     foreach($root->images as $image){
-                        $small_urls[] = $image->url_small();
+                        $img_urls[] = $image->url();
                     }
-                    return $small_urls;
+                    return $img_urls;
                 },
             ],
 
