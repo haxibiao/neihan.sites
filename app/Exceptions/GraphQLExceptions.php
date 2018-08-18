@@ -25,11 +25,11 @@ class GraphQLExceptions {
 				->getValidatorMessages();
 		} elseif (!($previous && $previous instanceof MessageError)) {
 			if (\App::environment('prod')) {
-				if (app()->bound('sentry') && $this->shouldReport($exception)) {
-					app('sentry')->captureException($exception);
+				if (app()->bound('sentry') && $this->shouldReport($e)) {
+					app('sentry')->captureException($e);
 
 					//not always report to bugsnag in prod , too many 404 ....
-					\Bugsnag::notifyException($exception);
+					\Bugsnag::notifyException($e);
 				}
 			}
 		}
