@@ -1,13 +1,13 @@
 @extends('layouts.app')
 @section('title') 
-  {{ config('app.name') }}移动应用 App - {{ config('app.name') }}   
+  {{ $appname }}移动应用 App - {{ $appname }}   
 @endsection
 @push('section')
   <div class="container-fluid apps">
     <div class="row">
         <div class="container top-part">
           <div class="top-logo">
-            <img class="logo" src="/logo/qunyige.com.small.png" alt="app logo">
+            <img class="logo" src="/logo/{{ $app }}.com.small.png" alt="app logo">
             <div class="info">
               <div class="title">群衣阁</div>
               <div class="slogan">一个专注气质搭配的平台</div>
@@ -16,15 +16,15 @@
           <img class="background-img" src="/images/app/appBackground.png" alt="app background">
           <img class="phone-img no-border" src="/images/app/{{ $app }}1.png" alt="app phone">
           <div class="top-qrcode">
-            <img src="/qrcode/qunyige.com.jpg" alt="Download apps page top qrcode">
-            <div class="title">扫码下载{{ env('APP_NAME') }}App</div>
+            <img src="/qrcode/{{ $app }}.com.jpg" alt="Download apps page top qrcode">
+            <div class="title">扫码下载{{ $appname }}App</div>
             <div class="introduce">随时随地发现和分享内容</div>
           </div>
           <div class="download-phone">
-            <a href="http://qunyige-1251052432.file.myqcloud.com/qunyige.apk"><img src="/images/app/android_app.png" class="download2" alt="download-andorid"></a>
-            <a href="https://www.pgyer.com/qunyige"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
+            <a href="http://{{ $app }}-1251052432.file.myqcloud.com/{{ $app }}.apk"><img src="/images/app/android_app.png" class="download2" alt="download-andorid"></a>
+            <a href="https://www.pgyer.com/{{ $app }}"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
             <img class="background-img" src="/images/app/appBackground.png" alt="Misc background">
-            <h4>点击下载{{ env('APP_NAME') }}App</h4>
+            <h4>点击下载{{ $appname }}App</h4>
           </div>
         </div>
       </div>
@@ -74,18 +74,18 @@
       <div class="row">
       <div class="container bottom-part">
         <div class="download-web">
-          <img class="bottom-qrcode" src="/qrcode/qunyige.com.jpg" alt="Download apps page bottom qrcode">
+          <img class="bottom-qrcode" src="/qrcode/{{ $app }}.com.jpg" alt="Download apps page bottom qrcode">
           <img class="background-img" src="/images/app/appBackground.png" alt="Misc background">
-          <div>扫码下载{{ env('APP_NAME') }}App</div>
+          <div>扫码下载{{ $appname }}App</div>
         </div>
         <div class="download-phone">
-          <a href="http://qunyige-1251052432.file.myqcloud.com/qunyige.apk"><img src="/images/app/android_app.png" class="download2" alt="download-andorid"></a>
-          <a href="https://www.pgyer.com/qunyige"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
+          <a href="http://{{ $app }}-1251052432.file.myqcloud.com/{{ $app }}.apk"><img src="/images/app/android_app.png" class="download2" alt="download-andorid"></a>
+          <a href="https://www.pgyer.com/{{ $app }}"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
           <img class="background-img" src="/images/app/appBackground.png" alt="Misc background">
-          <h4>点击下载{{ env('APP_NAME') }}App</h4>
+          <h4>点击下载{{ $appname }}App</h4>
         </div>
         <div class="bottom-logo">
-          <img src="/logo/qunyige.com.small.png" alt="Misc logo">
+          <img src="/logo/{{ $app }}.com.small.png" alt="Misc logo">
           <div class="info">
             <div class="title">最暖心的游戏社交平台</div>
               <div class="slogan">一个专属你的优质社区</div>
