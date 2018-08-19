@@ -199,16 +199,27 @@ class ArticleType extends GraphQLType
             
             'images'      => [
                 'type'        => Type::listOf(Type::string()),
-                'description' => 'images of article',
+                'description' => 'small image urls of article',
                 'resolve'     => function ($root, $args) {
                     if($root->type == 'video') {
                         return $root->covers();
                     }
-                    $img_urls = [];
+                    $covers = [];
                     foreach($root->images as $image){
-                        $img_urls[] = $image->url();
+                        $covers[] = $image->url_small();
                     }
-                    return $img_urls;
+                    return $covers;
+                },
+            ],
+
+            'pictures'      => [
+                'type'        => Type::listOf(GraphQL::type('image')),
+                'description' => 'pictures(big images) of article',
+                'resolve'     => function ($root, $args) {
+                    if($root->type == 'video') {
+                        return [];
+                    }
+                    return $root->images;
                 },
             ],
 
