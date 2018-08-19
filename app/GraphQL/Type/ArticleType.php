@@ -3,6 +3,7 @@
 namespace App\GraphQL\Type;
 
 use App\Category;
+use App\Image;
 use Folklore\GraphQL\Support\Facades\GraphQL;
 use Folklore\GraphQL\Support\Type as GraphQLType;
 use GraphQL\Type\Definition\Type;
@@ -213,7 +214,7 @@ class ArticleType extends GraphQLType
             ],
 
             'pictures'      => [
-                'type'        => Type::listOf(GraphQL::type('image')),
+                'type'        => Type::listOf(GraphQL::type('Image')),
                 'description' => 'pictures(big images) of article',
                 'resolve'     => function ($root, $args) {
                     if($root->type == 'video') {
