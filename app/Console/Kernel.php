@@ -13,17 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\EnvRefresh::class,
-        \App\Console\Commands\GetSql::class,
-        \App\Console\Commands\ImageResize::class,
-        \App\Console\Commands\ImageTitle::class,
-        \App\Console\Commands\ImageLogo::class,
-        \App\Console\Commands\SitemapRefresh::class,
-        \App\Console\Commands\AdminSet::class,
-        \App\Console\Commands\ImportVideo::class,
-        \App\Console\Commands\TestPerf::class,
-        \App\Console\Commands\VodApi::class,
-        \App\Console\Commands\VideoProcess::class,
+        
     ];
 
     /**
@@ -46,6 +36,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
+        $this->load(__DIR__.'/Commands');
         require base_path('routes/console.php');
         require base_path('ops/commands.php'); //include fix:data etc ...
     }
