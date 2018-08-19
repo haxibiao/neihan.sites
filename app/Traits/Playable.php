@@ -38,7 +38,7 @@ trait Playable
         if ($justChanged) {
             $cover_url = $cover_url . '?t=' . time();
         }
-        return $cover_url;
+        return get_secure_url($cover_url);
     }
     /**
      * @Desc     获取视频所有的截图 全地址
@@ -54,7 +54,7 @@ trait Playable
             for ($i = 1; $i <= 8; $i++) {
                 $cover_path = "/storage/video/$this->id.jpg.$i.jpg";
                 if (file_exists(public_path($cover_path))) {
-                    $covers[] = url($cover_path);
+                    $covers[] = get_secure_url(url($cover_path));
                 }
             }
             return $covers;
