@@ -293,7 +293,7 @@ class Category extends Model
             ->withTimestamps();
     }
 
-    public function subclass()
+    public function subCategory()
     {
         return $this->hasMany('App\Category','parent_id','id');
     }
