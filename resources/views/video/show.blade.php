@@ -64,6 +64,14 @@
                         {{-- 作者的其他视频 --}}
                         <authors-video user-id={{ $video->user_id }}></authors-video>
                     </div>
+                    <div class="admire">
+                        @if(!$video->article->isSelf())
+                          @if($video->article->user->enable_tips)
+                            <a class="btn-base btn-theme" data-target=".modal-admire" data-toggle="modal">赞赏支持</a>
+                            <modal-admire article-id="{{ $video->article->id }}"></modal-admire>
+                          @endif
+                        @endif
+                    </div>
                 </div>
 
                 <div class="video-categories" style="margin-top:20px">
