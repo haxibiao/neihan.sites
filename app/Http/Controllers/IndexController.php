@@ -151,7 +151,7 @@ class IndexController extends Controller
             ->where('type', 'video')
             ->orderBy('id', 'desc')
             ->where('status', '>', 0)
-            ->paginate(4);
+            ->take(4)->get();
 
         return view('index.index')
             ->withData($data);
