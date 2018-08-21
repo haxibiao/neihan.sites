@@ -76,6 +76,9 @@
 				font-size: 25px;
 				font-weight: 300;
 			}
+			.admire-min {
+				display: none;
+			}
 			@media (max-width: 767px) {
 				.video-title,
 				.video-description {
@@ -163,7 +166,7 @@
 					}
 				}
 			}
-			@media (max-width: 767px) {
+			@media (max-width: 768px) {
 				.video-right {
 					position: static;
 					width: auto;
@@ -196,6 +199,13 @@
 							}
 						}
 					}
+					.admire {
+						display: none;
+					}
+				}
+				.admire-min {
+					display: block;
+					float: right;
 				}
 			}
 		}
@@ -213,6 +223,7 @@
 			}
 		}
 	}
+
 	// 评论+推荐视频
 	.sectionBox {
 		background-color: #fff;
@@ -228,6 +239,20 @@
 					color: $dark-color2;
 				}
 			}
+		}
+	}
+	.modal {
+		.option {
+			text-align: center;
+		}
+		.reward-intro {
+			text-align: center;
+			.intro {
+				color: #252525;
+			}
+		}
+		.modal-body {
+			text-align: center;
 		}
 	}
 }

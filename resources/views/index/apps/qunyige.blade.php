@@ -87,8 +87,8 @@
         <div class="bottom-logo">
           <img src="/logo/{{ $app }}.com.small.png" alt="Misc logo">
           <div class="info">
-            <div class="title">最暖心的游戏社交平台</div>
-              <div class="slogan">一个专属你的优质社区</div>
+            <div class="title">群衣阁</div>
+              <div class="slogan">一个专注气质搭配的平台</div>
           </div>
         </div>
       </div>

@@ -81,6 +81,14 @@
                         @include('video.parts.category_item')
                     </div>
                 @endforeach
+                    <div class="admire-min">
+                            @if(!$video->article->isSelf())
+                              @if($video->article->user->enable_tips)
+                                <a class="btn-base btn-theme" data-target=".modal-admire" data-toggle="modal">赞赏支持</a>
+                                <modal-admire article-id="{{ $video->article->id }}"></modal-admire>
+                              @endif
+                            @endif
+                    </div>
                 </div>
             </div>
         </div>
