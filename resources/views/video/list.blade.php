@@ -14,7 +14,7 @@
         <div class="panel-heading">
             @if(checkEditor())
             <div class="pull-right">
-                <a class="btn btn-primary" href="/video/create" role="button">
+                <a class="btn btn-primary" data-target=".modal-post" data-toggle="modal" role="button">
                     添加视频
                 </a>
             </div>
