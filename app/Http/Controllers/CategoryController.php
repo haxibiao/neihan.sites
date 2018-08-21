@@ -80,7 +80,7 @@ class CategoryController extends Controller
         if (ajaxOrDebug() && request('recommend')) {
             foreach ($categories as $category) {
                 $category->followed = $category->isFollowed();
-                $category->count    = $category->subCategory()->pluck('count')->sum();
+                $category->count    += $category->subCategory()->pluck('count')->sum();
             }
             return $categories;
         }
@@ -101,7 +101,7 @@ class CategoryController extends Controller
         if (ajaxOrDebug() && request('hot')) {
             foreach ($categories as $category) {
                 $category->followed = $category->isFollowed();
-                $category->count    = $category->subCategory()->pluck('count')->sum();
+                $category->count    += $category->subCategory()->pluck('count')->sum();
             }
             return $categories;
         }
@@ -110,7 +110,7 @@ class CategoryController extends Controller
         //取子分类总和
         foreach ($data as $categories) {
         	foreach ($categories as $category) {
-        		$category->count = $category->subCategory()->pluck('count')->sum();
+        		$category->count += $category->subCategory()->pluck('count')->sum();
         	}
         }
 
