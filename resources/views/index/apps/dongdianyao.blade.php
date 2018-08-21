@@ -14,7 +14,7 @@
             </div>
           </div>
           <img class="background-img" src="/images/app/appBackground.png" alt="app background">
-          <img class="phone-img no-border" src="/images/app/{{ $app }}1.jpg" alt="app phone">
+          <img class="phone-img no-border" src="/images/app/{{ $app }}1.png" alt="app phone">
           <div class="top-qrcode">
             <img src="/qrcode/{{ $app }}.com.jpg" alt="Download apps page top qrcode">
             <div class="title">扫码下载{{ $appname }}App</div>
@@ -46,7 +46,7 @@
         </div>
         <div class="row">
             <div class="container middle-part">
-              <div class="col-sm-3 col-sm-offset-1"><img class="no-border" src="/images/app/{{ $app }}2.jpg" alt="Misc pic2"></div>
+              <div class="col-sm-3 col-sm-offset-1"><img class="no-border" src="/images/app/{{ $app }}2.png" alt="Misc pic2"></div>
               <div class="col-sm-5 col-sm-offset-1 text-block">
                 <h3>各种药类专题</h3>
                 <h6>懂点药对中西药进行了详细分类，不管你是需要了解驱寒药还是清热药或者养生茶，在这里你能搜到任何你想要的中西药相关知识。</h6>
@@ -61,12 +61,12 @@
 
 </h6>
             </div>
-            <div class="col-sm-3 col-sm-offset-1"><img class="no-border" src="/images/app/{{ $app }}3.jpg" alt="Misc pic3"></div>
+            <div class="col-sm-3 col-sm-offset-1"><img class="no-border" src="/images/app/{{ $app }}3.png" alt="Misc pic3"></div>
           </div>
         </div>
         <div class="row">
         <div class="container middle-part">
-          <div class="col-sm-3 col-sm-offset-1"><img class="no-border" src="/images/app/{{ $app }}4.jpg" alt="Misc pic4"></div>
+          <div class="col-sm-3 col-sm-offset-1"><img class="no-border" src="/images/app/{{ $app }}4.png" alt="Misc pic4"></div>
           <div class="col-sm-5 col-sm-offset-1 text-block">
             <h3>离你最近的健康助手</h3>
             <h6>在懂点药APP里，你能直接与专家进行私聊</br>
