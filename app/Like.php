@@ -6,8 +6,7 @@ use App\Article;
 use App\Model;
 use App\Notifications\ArticleLiked;
 use App\User;
-use Illuminate\Support\Facades\Cache;
-
+use Cache;
 class Like extends Model {
 	protected $fillable = [
 		'user_id',
@@ -31,7 +30,7 @@ class Like extends Model {
 	 * @DateTime 2018-07-24
 	 * @return   [type]     [description]
 	 */
-	public function toggleLike($input) {
+	public function toggleLike($input, $force = false) {
 		//只能简单创建
 		$user = getUser();
 		$article = Article::with('user')
@@ -44,7 +43,7 @@ class Like extends Model {
 			'liked_type' => $input['liked_type'],
 		]);
 		//取消喜欢
-		if ((isset($input['undo']) && $input['undo']) || $like->id) {
+		if ((isset($input['undo']) && $input['undo']) || ($force && $like->id)) {
 			$like->delete();
 			//喜欢
 		} else {
@@ -66,9 +65,9 @@ class Like extends Model {
 		//更新冗余数据
 		$article->count_likes = $article->likes()->count();
 		$article->save();
-
 		$author->count_likes = $author->articles()->sum('count_likes');
 		$author->save();
+		return $article;
 	}
 	/**
 	 * @Desc     获取喜欢的用户

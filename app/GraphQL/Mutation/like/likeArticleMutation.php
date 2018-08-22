@@ -36,16 +36,12 @@ class likeArticleMutation extends Mutation
 
     public function resolve($root, $args)
     {
-        $article = Article::findOrFail($args['article_id']);
-        
         $data = [
             'liked_id'   => $args['article_id'],
             'liked_type' => 'articles',
             'undo'       => isset($args['undo'])? $args['undo']: false
         ];
         $like = new Like();
-        $like->toggleLike($data); 
-
-        return $article;
+        return $like->toggleLike($data);
     }
 }
