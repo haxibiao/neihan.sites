@@ -228,7 +228,7 @@ class FixData extends Command
                     }else if(strpos($title,$msgText2) !== false){
                         $data->title = $user->link() . ' 评论了你的' . $type . $article->link();
                         $is_fix = true;
-                    }else{
+                    }else if(strpos($title,$msgText3)){
                          $data->title = $user->link() . ' 在' . $type . $article->link() . '的评论中提到了你';
                          $is_fix = true;
                     }
