@@ -42,6 +42,7 @@
               <img src="/images/app/wangzherongyao_logo.png" alt="Misc pic1" class="game-img" alt="game-logo">
               <img src="/images/app/nishuihang_logo.png" alt="Misc pic1" class="game-img" alt="game-logo">
             </div>
+            <img src="/images/app/wangzherongyao_logo.png" alt="Misc pic1" class="game" alt="game-logo">
           </div>
         </div>
         <div class="row">

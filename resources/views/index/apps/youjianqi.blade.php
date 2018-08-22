@@ -42,6 +42,7 @@
               <img src="/images/app/yjq04.png" alt="Misc pic1" class="game-img" alt="game-logo">
               <img src="/images/app/yjq05.png" alt="Misc pic1" class="game-img" alt="game-logo">
             </div>
+            <img src="/images/app/yjq01.png" alt="Misc pic1" class="game" alt="game-logo">
           </div>
         </div>
         <div class="row">
