@@ -236,7 +236,8 @@ class Article extends Model
 
     public function link()
     {
-        return '<a href=' . $this->content_url() . '>《' . $this->title . '》</a>';
+        $title = $this->title ? : $this->video->title;
+        return '<a href=' . $this->content_url() . '>《' .$title. '》</a>';
     }
 
     public function recordAction()
