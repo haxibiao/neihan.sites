@@ -232,6 +232,7 @@ class FixData extends Command
                          $data->title = $user->link() . ' 在' . $type . $article->link() . '的评论中提到了你';
                          $is_fix = true;
                     }
+                    $cmd->info($notification->id.' fix ');
 
                     if($is_fix){
                         $new_title = $data->title;
