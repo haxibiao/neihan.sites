@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Auth;
-
+use App\Exceptions\UnregisteredException;
 function getUserId() {
     if(Auth::id()) {
         return Auth::id();
@@ -25,7 +25,7 @@ function getUser()
     $user = session('user');
 
     if (!$user) {
-        throw new \Exception('客户端还没登录...');
+        throw new UnregisteredException('客户端还没登录...');
     }
     return $user;
 }
