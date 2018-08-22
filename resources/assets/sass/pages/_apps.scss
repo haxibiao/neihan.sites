@@ -68,6 +68,9 @@
 					float: right;
 				}
 			}
+			.game {
+				display: none;
+			}
 			h3 {
 				margin-bottom: 20px;
 				font-size: 28px;
@@ -168,6 +171,13 @@
 			}
 			.top-qrcode {
 				display: none;
+			}
+
+			.game-img {
+				display: none !important;
+			}
+			.game {
+				display: block !important;
 			}
 		}
 	}
