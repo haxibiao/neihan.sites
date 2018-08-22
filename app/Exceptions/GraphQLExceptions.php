@@ -5,6 +5,9 @@ use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 use Folklore\GraphQL\Error\ValidationError;
 
 class GraphQLExceptions {
+	//todo 不需要通知的异常放在下面
+	//protected static $dontReport = [
+	//];
 	public static function formatError(\Exception $e) {
 		//错误消息体
 		$error = [
@@ -24,15 +27,19 @@ class GraphQLExceptions {
 			$error['validation'] = $previous
 				->getValidatorMessages();
 		} elseif (!($previous && $previous instanceof MessageError)) {
-			if (\App::environment('prod')) {
-				if (app()->bound('sentry') && $this->shouldReport($e)) {
-					app('sentry')->captureException($e);
-
-					//not always report to bugsnag in prod , too many 404 ....
-					\Bugsnag::notifyException($e);
-				}
+			if (env('APP_ENV') == 'prod') {
+				//if (!self::shouldntReport($e)) {
+				\Bugsnag::notifyException($e);
+				//}
 			}
 		}
 		return $error;
+	}
+
+	protected static function shouldntReport(\Exception $e) {
+		$dontReport = self::dontReport;
+		return !is_null(Arr::first($dontReport, function ($type) use ($e) {
+			return $e instanceof $type;
+		}));
 	}
 }
