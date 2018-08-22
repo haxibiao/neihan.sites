@@ -194,4 +194,59 @@ class FixData extends Command
         $user->save();
         $cmd->info($user->id.' fix success');
     }
+
+    public static function notifications($cmd)
+    {
+        $cmd->info('fix notifications ....');
+        DB::table('notifications')->whereType('App\Notifications\ArticleCommented')->orderByDesc('id')->chunk(100,function($notifications) use($cmd){
+            foreach($notifications as $notification){
+                $data = json_decode($notification->data);
+                if(isset($data->article_id)){
+                    try{
+                        $article = Article::findOrFail($data->article_id);
+                    $type = '文章';
+                    if($article->type == 'video'){
+                        $type = '视频';
+                    } else if( $article->type == 'post' ){
+                        $type = '动态';
+                    }
+                    $user = User::findOrFail($data->user_id);
+                    }
+                    catch(\Exception $e){
+                        continue;
+                    }
+                    $msgText1 = '中写了一条新评论';
+                    $msgText2 = '评论了你的';
+                    $msgText3 = '的评论中提到了你';
+                    $title = $data->title;
+
+                    $is_fix = false;
+
+                    if(strpos($title,$msgText1) !== false){
+                        $data->title = $user->link() . ' 在' . $type . $article->link() . '中写了一条新评论';
+                        $is_fix = true;
+                    }else if(strpos($title,$msgText2) !== false){
+                        $data->title = $user->link() . ' 评论了你的' . $type . $article->link();
+                        $is_fix = true;
+                    }else{
+                         $data->title = $user->link() . ' 在' . $type . $article->link() . '的评论中提到了你';
+                         $is_fix = true;
+                    }
+
+                    if($is_fix){
+                        $new_title = $data->title;
+                        try{
+                            $result = DB::table('notifications')->where('id',$notification->id)->update(['data->title'=>$new_title]);
+                            if($result){
+                                $cmd->info('notification:'.$notifications->id.' fix success');
+                            }
+                        }catch(\Exception $e){
+                            continue;
+                        }
+                    }
+                }
+            }
+        });
+        $cmd->info('fix success');
+    }
 }
