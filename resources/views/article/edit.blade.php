@@ -67,7 +67,10 @@
 
         <div class="article form-group{{ $errors->has('body') ? ' has-error-for-editor' : '' }}">
             {!! Form::label('body', '正文') !!}
-            <editor name="body" value="{{ $article->body }}"　autosave></editor>
+            <div class="hidden" id="hiddenDom">
+                {!! $article->body !!}
+            </div>
+            <editor name="body" value=""　autosave></editor>
             @push('css')
                 <link rel="stylesheet" type="text/css" href="/css/e.css">
             @endpush
@@ -119,4 +122,10 @@
 
 @push('scripts')
    @include('article.parts.js_for_article')
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.simditor-placeholder').remove();
+        $('.simditor-body').html($('#hiddenDom').html());
+    });
+</script>
 @endpush
