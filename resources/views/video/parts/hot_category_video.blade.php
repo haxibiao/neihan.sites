@@ -22,7 +22,7 @@
                         <img class="video-photo"  id="video-img" src=" {{ $article->image_url }}">
                         <i class="hover-play"> </i>
                     </a>
-                    <a href="/video/{{ $article->video_id }}" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}"  class="video-title">{{$article->title}}</a>
+                    <a href="/video/{{ $article->video_id }}" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}"  class="video-title">{{ $article->title ?: $article->get_description() }}</a>
                     <div class="info">
                         <a class="user" href="/user/{{ $article->user_id }}">
                             <img src="{{ $article->user->avatar() }}" class="avatar">

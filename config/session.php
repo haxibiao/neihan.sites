@@ -148,7 +148,7 @@ return [
     |
     */
 
-    'domain' => env('SESSION_DOMAIN', 'ainicheng.com'),
+    'domain' => env('APP_DOMAIN', null),
 
     /*
     |--------------------------------------------------------------------------

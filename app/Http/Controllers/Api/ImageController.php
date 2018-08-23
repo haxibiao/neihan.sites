@@ -27,7 +27,7 @@ class ImageController extends Controller
 
         if ($request->photo) {
             $extension = $request->photo->getClientOriginalExtension();
-            if (!in_array($extension, ['jpg', 'png', 'gif'])) {
+            if (!in_array($extension, ['jpg', 'png', 'gif', 'jpeg'])) {
                 return "图片格式只支持jpg, png, gif";
             }
 
