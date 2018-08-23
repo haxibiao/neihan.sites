@@ -67,6 +67,8 @@
 
         <div class="article form-group{{ $errors->has('body') ? ' has-error-for-editor' : '' }}">
             {!! Form::label('body', '正文') !!}
+
+            {{--考虑直接输出html会影响编辑器 所以先输出在div中,通过js插入dom节点,然后js会移除掉hiddenDom--}}
             <div class="hidden" id="hiddenDom">
                 {!! $article->body !!}
             </div>
@@ -124,8 +126,10 @@
    @include('article.parts.js_for_article')
 <script type="text/javascript">
     $(document).ready(function(){
+        //移除simditor提示信息
         $('.simditor-placeholder').remove();
         $('.simditor-body').html($('#hiddenDom').html());
+        $('#hiddenDom').remove();
     });
 </script>
 @endpush
