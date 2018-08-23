@@ -45,7 +45,7 @@ export default {
       this.page++;
 
       $(this.$refs.fresh).css('transform',`rotate(${360*this.counter}deg)`);
-      let apiUser = '/api/user/'+this.userId+'/videos/relatedVideos?num=2&page='+this.page;
+      let apiUser = '/api/user/'+this.userId+'/videos/relatedVideos?num=4&page='+this.page;
       let apiCategory= '/api/user/'+this.categoryId+'/videos/sameVideos?num=4&page='+this.page;
       if(this.userId){
         window.axios.get(apiUser).then(function(response){
@@ -83,22 +83,27 @@ export default {
 
 <style lang="scss">
     .title{
-      margin: 10px 0;
+
       >h4{
-        color: #fff;
+        color: #d0d0d6;
+        font-size: 17px;
+        font-weight: 300;
         display: inline-block;
+        padding-left:17px;
+        margin:9px 0;
       }
       .recommend{
         font-weight: 300;
-        font-size: 25px;
-        margin: 0 0 20px;
+        font-size: 17px;
+        margin: 10px 0 20px 15px;
         line-height: 25px;
         color: #515151;
         display: inline-block;
       }
       .font{
         float: right;
-        margin-top: 6px;
+        margin-top: 10px;
+        margin-right: 15px;
         color:#969696;
         .icon-shuaxin{
           font-size: 14px;
@@ -112,80 +117,89 @@ export default {
         }
       }
     }
-    .video-item{
-      .link{
-        display: flex;
-        align-items:center;
-        width: 100%;
-          .cover{
-            width: 50%;
-            height:85px;
-            float: left;
+    .video-list{
+      padding:0px 0 0 20px;
+        .video-item{
+          margin: 8px 0 0 0;
+          .link{
+            display: flex;
+            align-items:center;
+            width: 100%;
+              .cover{
+                width:42%;
+                height: 81px;
+                float: left;
+                display: inline-block;
+                position: relative;
+                overflow: hidden;
+                background-color: #000;
+              &:hover{
+                img{
+                  transform: scale(1.1);
+                  transition: all .3s ease-in-out;
+                }
+                .hover-play{
+                    opacity: 1;
+                    transform: scale(.8);
+                    transition: all .3s ease-in-out;
+                }
+              }
+              .hover-play{
+                background: url(https://www.ainicheng.com/images/play-icon.png) no-repeat;
+                font-size: 14px;
+                color: #777;
+                font-weight: 400;
+                position:absolute;
+                top:50%;
+                left:50%;
+              }
+              img{
+                width:100%;
+                background-color: #000;
+              }
+              .duration{
+                position: absolute;
+                left: 4px;
+                bottom: 8px;
+                padding: 0 6px;
+                height: 16px;
+                line-height: 16px;
+                font-size: 12px;
+                color: #fff;
+                background-color: rgba(0,0,0,.4);
+                border-radius: 2px;
+              }
+          }
+          .info{
+            width: 57%;
+            padding: 0 5%;
+            float: right;
             display: inline-block;
-            position: relative;
-            overflow: hidden;
-            background-color: #000;
-          &:hover{
-            img{
-              transform: scale(1.1);
-              transition: all .3s ease-in-out;
+            &:hover{
+              .recommend-video-title{
+                color:#d96a5f !important;
+
+              }
             }
-            .hover-play{
-                opacity: 1;
-                transform: scale(.8);
-                transition: all .3s ease-in-out;
-            }
-          }
-          .hover-play{
-            background: url(https://www.ainicheng.com/images/play-icon.png) no-repeat;
-            font-size: 14px;
-            color: #777;
-            font-weight: 400;
-            position:absolute;
-            top:50%;
-            left:50%;
-          }
-          img{
-            width:100%;
-            background-color: #000;
-          }
-          .duration{
-            position: absolute;
-            left: 4px;
-            bottom: 8px;
-            padding: 0 6px;
-            height: 16px;
-            line-height: 16px;
-            font-size: 12px;
-            color: #fff;
-            background-color: rgba(0,0,0,.4);
-            border-radius: 2px;
-          }
-      }
-      .info{
-        width: 50%;
-        padding: 0 5%;
-        float: right;
-        display: inline-block;
-        &:hover{
-          .recommend-video-title{
-            color:#d96a5f !important;
+              .recommend-video-title{
+                color:#d0d0d6;
+                font-size: 14px;
+                line-height: 20px;
+                max-height: 40px;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
+                text-overflow:ellipsis
+              }
+              .amount{
+                white-space: nowrap;
+                font-size: 12px;
+                color: #969696;
+              }
           }
         }
-          .recommend-video-title{
-            color:#969696;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 3;
-            overflow: hidden;
-          }
-          .amount{
-            white-space: nowrap;
-            font-size: 12px;
-            color: #969696;
-          }
+        
       }
-      }
-      
     }
 </style>

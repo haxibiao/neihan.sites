@@ -31,6 +31,16 @@
 
     <div class="playerBox">
         <div class="container">
+            <div class="video-title">
+                    {{ $video->article->title }}
+            </div>
+            <div class="video-info">
+                <a href="/{{ $category->name_en }}" class="category-name">{{ $article->category->name }}</a>
+                 <i class="iconfont icon-shijian"></i> 
+                   <span>发布于：{{$video->createdAt()}}</span>
+                 <i class="iconfont icon-shipin1"></i>
+                   <span class="hits">{{$article->hits }}次播放</span>
+            </div>
             <div class="player-basic clearfix">
                 <div class="playerArea col-sm-8">
                     <div class="h5-player">
@@ -49,21 +59,16 @@
                        @include('video.parts.share')
                     </div>
                 </div>
-
-            </div>
-            <div class="video-info">
-                <div class="video-title">
-                    {{ $video->article->title }}
-                </div>
-                <div class="video-description">
-                    {{ $video->article->body }}
-                </div>
                 <div class="video-right">
-                   @include('video.parts.author')
                     <div class="listArea">
                         {{-- 作者的其他视频 --}}
                         <authors-video user-id={{ $video->user_id }}></authors-video>
                     </div>
+                </div>
+            </div>
+            <div class="video-relevant">
+                <div class="author-info">
+                    @include('video.parts.author')
                     <div class="admire">
                         @if(!$video->article->isSelf())
                           @if($video->article->user->enable_tips)
@@ -73,22 +78,17 @@
                         @endif
                     </div>
                 </div>
-
+                <div class="video-description">
+                    {{ $video->article->body }}
+                </div>
+                <authors-video user-id={{ $video->user_id }}></authors-video>
                 <div class="video-categories" style="margin-top:20px">
-                    <h4>相关的专题</h4>
+                {{--     <h4>相关的专题</h4>
                 @foreach($categories as $category)
                     <div class="pull-left">
                         @include('video.parts.category_item')
                     </div>
-                @endforeach
-                    <div class="admire-min">
-                            @if(!$video->article->isSelf())
-                              @if($video->article->user->enable_tips)
-                                <a class="btn-base btn-theme" data-target=".modal-admire" data-toggle="modal">赞赏支持</a>
-                                <modal-admire article-id="{{ $video->article->id }}"></modal-admire>
-                              @endif
-                            @endif
-                    </div>
+                @endforeach --}}
                 </div>
             </div>
         </div>
@@ -100,7 +100,7 @@
                     {{-- 评论中心 --}}
                     <comments comment-replies={{ $video->article->count_replies }} type="articles" id="{{ $video->article->id }}" author-id="{{ $video->user_id }}"></comments>
                 </div>
-                <div class="guess-like col-sm-4 hidden-xs">
+                <div class="guess-like  hidden-xs">
                     {{-- 其他推荐的视频 --}}
                     <authors-video category-id={{ $video->id }}></authors-video>
                 </div>

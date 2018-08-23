@@ -20,9 +20,9 @@
             </span>
         @endif
     </p>
-    <div>
+{{--     <div>
        <span class="upload-time" style="margin-bottom:10px">上传于 {{$video->createdAt()}}</span> 
     
-    </div>
+    </div> --}}
      
 </div>
