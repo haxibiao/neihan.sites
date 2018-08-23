@@ -184,6 +184,7 @@ class Article extends Model
         if ($this->category) {
             $this->category->fillForJs();
         }
+        $this->title = $this->title ?: $this->get_description();
         $this->has_image     = $this->hasImage();
         $this->primary_image = $this->primaryImage();
         $this->image_url     = $this->primaryImage();

@@ -236,8 +236,7 @@ class UserController extends Controller {
 		$data = $user->videoPosts()->paginate($num);
 		
 		foreach ($data as $article) {
-			$article->image_url = $article->primaryImage();
-			$article->duration = gmdate('i:s', $article->video->duration);
+			$article->fillForJs();
 		}
 		return $data;
 	}
