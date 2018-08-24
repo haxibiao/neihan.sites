@@ -49,7 +49,7 @@ class VisitsQuery extends Query
         //过滤条件
         if( isset($args['filter']) ){
             $query->when($args['filter'] == 'TODAY', function ($q) {
-                return $q->whereDay('updated_at', date('d'));
+                return $q->whereDate('updated_at', date('Y-m-d'));
             });
             $query->when($args['filter'] == 'EARLY', function ($q) {
                 return $q->whereDate('updated_at', '<', date('Y-m-d'));
