@@ -267,11 +267,13 @@ class Category extends Model
         if (checkUser()) {
             $user = getUser();
             //如果重复浏览只更新纪录的时间戳
-            \App\Visit::updateOrCreate([
+            $visited = \App\Visit::firstOrNew([
                 'user_id'      => $user->id,
                 'visited_type' => 'categories',
                 'visited_id'   => $this->id,
             ]);
+            $visited->updated_at = now();
+            $visited->save();
         }
     }
     public function isSelf()
