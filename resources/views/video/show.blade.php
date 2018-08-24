@@ -35,14 +35,16 @@
                     {{ $video->article->title }}
             </div>
             <div class="video-info">
-                <a href="/{{ $category->name_en }}" class="category-name">{{ $article->category->name }}</a>
+                @if(!empty($category))
+                    <a href="/{{ $category->name_en }}" class="category-name">{{ $article->category->name }}</a>
+                @endif
                  <i class="iconfont icon-shijian"></i> 
                    <span>发布于：{{$video->createdAt()}}</span>
                  <i class="iconfont icon-shipin1"></i>
                    <span class="hits">{{$article->hits }}次播放</span>
             </div>
             <div class="player-basic clearfix">
-                <div class="playerArea col-sm-8">
+                <div class="playerArea col-sm-8"> 
                     <div class="h5-player">
                         <div class="embed-responsive embed-responsive-16by9">
                             <video controls="" poster="{{ $video->article->cover() }}" preload="auto" autoplay="true">
