@@ -57,7 +57,7 @@ class CosApk extends Command
     public function uploadCos($cos, $app)
     {
         $bucket  = $app;
-        $srcPath = "/data/app/$app/android/app/build/outputs/apk/app-release.apk";
+        $srcPath = "/data/app/$app/android/app/build/outputs/apk/release/app-release.apk";
         $dstPath = "/" . $app . ".apk";
         $this->comment('正在上传．．．' . $srcPath);
         $res = $cos::upload($bucket, $srcPath, $dstPath, null, null, "YES");
