@@ -133,6 +133,16 @@ class Article extends Model
     /* --------------------------------------------------------------------- */
     /* ------------------------------- service ----------------------------- */
     /* --------------------------------------------------------------------- */
+
+    public function get_title()
+    {
+        if (!empty($this->title)) {
+            return $this->title;
+        }
+
+        return str_limit($this->body);
+    }
+
     public function get_description()
     {
         $description = $this->description;
@@ -184,7 +194,7 @@ class Article extends Model
         if ($this->category) {
             $this->category->fillForJs();
         }
-        $this->title = $this->title ?: $this->get_description();
+        $this->title         = $this->title ?: $this->get_description();
         $this->has_image     = $this->hasImage();
         $this->primary_image = $this->primaryImage();
         $this->image_url     = $this->primaryImage();
@@ -237,8 +247,8 @@ class Article extends Model
 
     public function link()
     {
-        $title = $this->title ? : $this->video->title;
-        return '<a href=' . $this->content_url() . '>《' .$title. '》</a>';
+        $title = $this->title ?: $this->video->title;
+        return '<a href=' . $this->content_url() . '>《' . $title . '》</a>';
     }
 
     public function recordAction()

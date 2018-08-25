@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') {{ $article->title }} -{{ config('app.name') }}  @endsection
+@section('title') {{ $article->get_title() }} -{{ config('app.name') }}  @endsection
 @section('keywords') {{ $article->keywords }} @endsection
 @section('description') {{ $article->get_description() }} @endsection
 
