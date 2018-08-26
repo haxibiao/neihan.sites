@@ -418,7 +418,8 @@ class Article extends Model
         ];
 
         $tip          = \App\Tip::firstOrNew($data);
-        $tip->amount  = $tip->amount + $amount;
+        //$tip->amount  = $tip->amount + $amount;
+        $tip->amount  = $amount;
         $tip->message = $message; //tips:: 当上多次，总计了总量，留言只保留最后一句，之前的应该通过通知发给用户了
         $tip->save();
 
