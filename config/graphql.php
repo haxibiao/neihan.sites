@@ -144,6 +144,7 @@ return [
 				'transactions' => '\App\GraphQL\Query\TransactionsQuery',
 				'queries' => '\App\GraphQL\Query\QueriesQuery',
 				'queryLogs' => '\App\GraphQL\Query\QueryLogsQuery',
+				'comment' => '\App\GraphQL\Query\CommentQuery',
 			],
 			'mutation' => [
 				//report
