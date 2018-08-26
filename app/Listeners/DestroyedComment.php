@@ -33,7 +33,7 @@ class DestroyedComment
         //更新文章的冗余数据
         $this->updateArticleCount($event);
         //更新作者的冗余信息
-        $this->updateUserCount($event);
+        //$this->updateUserCount($event);
     }
     /**
      * @Desc     删除用户动态

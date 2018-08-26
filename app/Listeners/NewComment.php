@@ -38,7 +38,7 @@ class NewComment
         //更新文章的冗余数据
         $this->updateArticleCount($event);
         //更新文章作者冗余数据
-        $this->updateUserCount($event);
+        //$this->updateUserCount($event);
         //记录操作日志
         $this->log($event);
     }
