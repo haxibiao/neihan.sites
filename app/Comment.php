@@ -61,9 +61,11 @@ class Comment extends Model
         //判断是直接回复文章
         if (isset($input['comment_id']) && !empty($input['comment_id'])) {
             $input['lou'] = 0;
-            //拿到楼中楼的父评论
+            //拿到楼中楼的父评论,顶楼则不变
             $comment  = Comment::findOrFail($input['comment_id']);
-            $input['comment_id'] = $comment->comment_id;
+            if(!empty($comment->comment_id)){//不为空是楼中楼
+                $input['comment_id'] = $comment->comment_id;
+            }
         } else {
             $input['lou'] = Comment::where('commentable_id', $input['commentable_id'])
                 ->where('comment_id', null)
