@@ -12,6 +12,7 @@ class GraphQLExceptions  {
 	//不需要通知的异常放在下面
 	protected static $dontReport = [
 		\App\Exceptions\UnregisteredException::class,//用户未登录异常
+		\App\Exceptions\ValidationExcetion::class,   //自定义校验异常
 	];
 
 	public static function formatError(Exception $e) {
@@ -33,6 +34,10 @@ class GraphQLExceptions  {
 				if (self::shouldReport($previous)) {
 					\Bugsnag::notifyException($e);
 				} 
+			} elseif (env('APP_ENV') == 'local') {
+				if (self::shouldReport($previous)) {
+					render($e);
+				}
 			}
 		} 
 		return $error;

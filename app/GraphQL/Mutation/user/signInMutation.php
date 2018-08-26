@@ -5,6 +5,7 @@ use App\User;
 use Folklore\GraphQL\Support\Mutation;
 use GraphQL;
 use GraphQL\Type\Definition\Type;
+use \App\Exceptions\ValidationExcetion;
 
 class signInMutation extends Mutation
 {
@@ -37,12 +38,12 @@ class signInMutation extends Mutation
     {
         $user = User::where('email', $args['email'])->first();
 
-        if (!$user) {
-            throw new \Exception('邮箱不存在');
-        }
+        // if (!$user) {
+        //     throw new \Exception('邮箱不存在');
+        // }
 
-        if (!password_verify($args['password'], $user->password)) {
-            throw new \Exception('邮箱或密码不正确');
+        if (empty($user) || !password_verify($args['password'], $user->password) ) {
+            throw new ValidationExcetion('邮箱或密码不正确'); 
         }
 
         session()->put('user', $user);
