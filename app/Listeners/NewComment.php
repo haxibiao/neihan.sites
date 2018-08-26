@@ -69,19 +69,19 @@ class NewComment
             $lord       = Comment::find($comment->comment_id)->user;
             $hidden_user_ids['lord'] = $lord->id;
         }
-
+        //注释的原因：格式化link的操作全都放到model中去了
         //区分评论的"文章"类型
-        $type = '文章';
-        if($article->type == 'video'){
-            $type = '视频';
-        } else if( $article->type == 'post' ){
-            $type = '动态';
-        }
+        // $type = '文章';
+        // if($article->type == 'video'){
+        //     $type = '视频';
+        // } else if( $article->type == 'post' ){
+        //     $type = '动态';
+        // }
 
         //消息模板
-        $msg_title_form1 = $authorizer->link() . ' 在' . $type . $article->link() . '中写了一条新评论';
-        $msg_title_form2 = $authorizer->link() . ' 评论了你的' . $type . $article->link();
-        $msg_title_form3 = $authorizer->link() . ' 在' . $type . $article->link() . '的评论中提到了你';
+        $msg_title_form1 = $authorizer->link() . ' 在' . $article->link() . '中写了一条新评论';
+        $msg_title_form2 = $authorizer->link() . ' 评论了你的'  . $article->link();
+        $msg_title_form3 = $authorizer->link() . ' 在' . $article->link() . '的评论中提到了你';
 
         //用户@人的逻辑。
         $filtered_users;//需要@的人

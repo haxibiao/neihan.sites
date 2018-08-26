@@ -36,7 +36,7 @@ class GraphQLExceptions  {
 				} 
 			} elseif (env('APP_ENV') == 'local') {
 				if (self::shouldReport($previous)) {
-					render($e);
+					report($e); 
 				}
 			}
 		} 
