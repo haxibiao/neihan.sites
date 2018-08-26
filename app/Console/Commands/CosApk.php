@@ -11,7 +11,7 @@ class CosApk extends Command
      *
      * @var string
      */
-    protected $signature = 'cos:apk';
+    protected $signature = 'cos:apk {--prod}';
 
     /**
      * The console command description.
@@ -56,9 +56,14 @@ class CosApk extends Command
 
     public function uploadCos($cos, $app)
     {
-        $bucket  = $app;
-        $srcPath = "/data/app/$app/android/app/build/outputs/apk/release/app-release.apk";
+        $platform = "staging";
         $dstPath = "/" . $app . ".apk";
+        if($this->option('prod')) {
+            $platform = "release";
+            $dstPath = "/" . $app . ".release.apk";
+        }
+        $bucket  = $app;
+        $srcPath = "/data/app/$app/android/app/build/outputs/apk/$platform/app-$platform.apk";
         $this->comment('正在上传．．．' . $srcPath);
         $res = $cos::upload($bucket, $srcPath, $dstPath, null, null, "YES");
         $this->comment($res);
