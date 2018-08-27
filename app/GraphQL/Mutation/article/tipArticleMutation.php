@@ -46,8 +46,8 @@ class tipArticleMutation extends Mutation
         $tip = $article->tip($amount, $message);
 
         //balance changed
-        $log_mine   = '向' . $article->user->link() . '的文章' . $article->link() . '打赏' . $amount . '元';
-        $log_theirs = $user->link() . '向您的文章' . $article->link() . '打赏' . $amount . '元';
+        $log_mine   = '向' . $article->user->link() . '的' . $article->link() . '打赏' . $amount . '元';
+        $log_theirs = $user->link() . '向您的' . $article->link() . '打赏' . $amount . '元';
         $user->transfer($amount, $article->user, $log_mine, $log_theirs, $tip->id);
 
        

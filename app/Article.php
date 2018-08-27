@@ -249,12 +249,12 @@ class Article extends Model
     {
         //普通文章
         if( $this->type == 'article' ){
-            return '<a href=' . $this->content_url() . '>《' .$this->title. '》</a>';
+            return $this->resoureTypeCN().'<a href=' . $this->content_url() . '>《' .$this->title. '》</a>';
         }
         //动态
         $title =  str_limit($this->body, $limit = 50, $end = '...');
         if(empty($title)){
-            return '<a href=' . $this->content_url() . '>'. $this->resoureTypeCN() .'</a>';
+            return $this->resoureTypeCN().'<a href=' . $this->content_url() . '>'. $this->resoureTypeCN() .'</a>';
         }
         return $this->resoureTypeCN() . '<a href=' . $this->content_url() . '>《' .$title. '》</a>';
     }

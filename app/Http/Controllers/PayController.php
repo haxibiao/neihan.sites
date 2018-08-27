@@ -17,12 +17,8 @@ class PayController extends Controller
                 $user    = getUser();
                 $article = \App\Article::findOrFail(request('article_id'));
                 $tip     = $article->tip($amount, $message);
-                $postType = '文章';
-                if($article->type == 'video'){
-                    $postType ='视频';
-                }
-                $log_mine   = '向' . $article->user->link() . '的'.$postType . $article->link() . '打赏' . $amount . '元';
-                $log_theirs = $user->link() . '向您的'.$postType . $article->link() . '打赏' . $amount . '元';
+                $log_mine   = '向' . $article->user->link() . '的'. $article->link() . '打赏' . $amount . '元';
+                $log_theirs = $user->link() . '向您的'. $article->link() . '打赏' . $amount . '元';
                 $user->transfer($amount, $article->user, $log_mine, $log_theirs, $tip->id);
 
             }
