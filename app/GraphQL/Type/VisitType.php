@@ -27,7 +27,7 @@ class VisitType extends GraphQLType
                 'type'        => Type::string(),
                 'description' => 'The video of the Visit',
                 'resolve'     => function ($root, $args) {
-                    return $root->visited_type;
+                    return str_singular($root->visited_type);
                 },
             ],
             //visited
