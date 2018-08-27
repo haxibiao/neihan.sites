@@ -62,6 +62,11 @@ class ArticleTiped extends Notification
      */
     public function toArray($notifiable)
     {
+        $article_title = $this->article->title?:$this->article->video->title;
+        // 标题 视频标题都不存在 则取description
+        if(empty($this->article->title)){
+            $article_title = $this->article->get_description();
+        }
         return [
             'type' => 'tip',
             'amount' => $this->tip->amount,
@@ -70,7 +75,7 @@ class ArticleTiped extends Notification
             'user_name' => $this->user->name,
             'user_avatar' => $this->user->avatar,
             'user_id' => $this->user->id,
-            'article_title' => $this->article->title,
+            'article_title' => $article_title,
             'article_id' => $this->article->id,
         ];
     }

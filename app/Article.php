@@ -254,7 +254,7 @@ class Article extends Model
         //动态
         $title =  str_limit($this->body, $limit = 50, $end = '...');
         if(empty($title)){
-            return $this->resoureTypeCN().'<a href=' . $this->content_url() . '>'. $this->resoureTypeCN() .'</a>';
+            return '<a href=' . $this->content_url() . '>'. $this->resoureTypeCN() .'</a>';
         }
         return $this->resoureTypeCN() . '<a href=' . $this->content_url() . '>《' .$title. '》</a>';
     }
