@@ -27,6 +27,7 @@ class SearchController extends Controller
             ->where('status', 1)
             ->whereType('article')
             ->orWhere('keywords', 'like', '%' . $query . '%')
+            ->orWhere('description', 'like', '%' . $query . '%')
             ->orderBy('id', 'desc')
             ->paginate(10);
         $total = $articles->total();
