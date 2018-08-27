@@ -470,7 +470,7 @@ class UserType extends GraphQLType {
 						$unread_notifications->markAsRead();
 						break;
 					}
-					//$root->forgetUnreads();
+					$root->forgetUnreads();
 
 					if (isset($args['offset'])) {
 						$qb = $qb->skip($args['offset']);
