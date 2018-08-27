@@ -9,6 +9,8 @@ use App\Comment;
 use App\Image;
 use App\Visit;
 use App\User;
+use App\Transaction;
+use App\Video;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Command;
 
@@ -249,5 +251,34 @@ class FixData extends Command
             }
         });
         $cmd->info('fix success');
+    }
+
+    public function transactions($cmd)
+    {
+        Transaction::whereType('打赏')->orderByDesc('id')->chunk(100,function($transactions) use($cmd){
+            foreach ($transactions as $transaction) {
+                try{
+                    preg_match_all('#/(\d+)#', $transaction->log, $matches);
+                    $data = end($matches);
+                    $user = User::findOrFail(reset($data));
+                    $video = Video::findOrFail(end($data));
+                }catch(\Exception $e){
+                    continue;
+                } 
+                if(!empty($article = $video->article) && !empty($user)){
+                    if(strpos($transaction->log,'向您的') !== false && strpos($transaction->log,'《》') !== false){
+                        $transaction->log = $user->link() . '向您的' . $article->link() . '打赏' . $amount . '元';
+                        $transaction->timestamps=false;
+                        $transaction->save();
+                        $cmd->info('transaction '.$transaction->id.' fix success');
+                    }else if(strpos($transaction->log,'向<a') !==false && strpos($transaction->log,'《》') !== false){
+                        $transaction->log = '向' . $article->user->link() . '的' . $article->link() . '打赏' . $amount . '元';
+                        $transaction->timestamps=false;
+                        $transaction->save();
+                        $cmd->info('transaction '.$transaction->id.' fix success');
+                    }
+                }
+            }
+        });
     }
 }
