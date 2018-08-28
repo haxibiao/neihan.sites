@@ -34,8 +34,6 @@ class GraphQLExceptions {
 					\Bugsnag::notifyException($e);
 				}
 			}
-			//日志文件记录详细的日志信息
-			\Log::error($e);
 		}
 		return $error;
 	}
