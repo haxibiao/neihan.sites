@@ -20,7 +20,7 @@
                                 <input id="email" type="email"  name="email" value="{{ $email or old('email') }}" required autofocus placeholder="请输入注册或绑定的邮箱">
                                 <i data-v-4bd21782="" class="iconfont icon-youjian"></i>
                                 @if ($errors->has('email'))
-                                    <span class="help-block">
+                                    <span class="help-block email">
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
                                 @endif                           
