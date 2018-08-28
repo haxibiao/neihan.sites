@@ -69,7 +69,7 @@ class ArticleCommented extends Notification {
 			'user_id' => $this->user->id,
 			'user_avatar' => $this->user->avatar,
 			'user_name' => $this->user->name,
-			'article_title' => $this->article->title ?: $this->article->video->title,
+			'article_title' => $this->article->get_title(),
 			'article_id' => $this->article->id,
 			'comment_id' => $this->comment->id,
 			'comment' => $this->comment->body,
