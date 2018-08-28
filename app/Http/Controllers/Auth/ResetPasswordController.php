@@ -34,7 +34,7 @@ class ResetPasswordController extends Controller {
 	public function __construct() {
 		//清除session
 		$this->guard()->logout();
-		$request->session()->invalidate();
+		session()->invalidate();
 
 		$this->middleware('guest');
 	}
