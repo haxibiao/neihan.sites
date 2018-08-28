@@ -18,83 +18,29 @@
                 </div>
                 <div class="hot-recommend">
                     <span>精彩推荐：</span>
-                    <a href="/dota2">dota2</a>
-                    <a href="/nishuihan">逆水寒</a>
-                    <a href="/lushichuanshuo">炉石传说</a>
-                    <a href="/DNF">地下城与勇士</a>
+                    @foreach($data['categories'] as $category)
+                        <a href="{{ url("/$category->name_en") }}">{{ $category->name }}</a>
+                    @endforeach
                 </div>
                 <div class="video">
-                    <div class="col-xs-6 col-md-3 video">
-                        <div class="video-item vt"><div class="thumb">
-                            <a href="/video/424" target="_blank">
-                                <img src="https://ainicheng.com/storage/video/424.jpg" alt="绝地求生之精彩集锦2-爱你城原创出品"> 
-                                <i class="duration">04:07</i> 
-                                <i class="hover-play"></i>
-                            </a>
-                        </div> 
-                            <ul class="info-list">
-                                <li class="video-title"><a target="_blank" href="/video/424">绝地求生之精彩集锦2-爱你城原创出品</a></li>
-                                 <li>
-                                    <p class="subtitle single-line">31次播放</p>
-                                </li>
-                             </ul>
-                        </div>
-                    </div>
-                    <div class="col-xs-6 col-md-3 video">
-                        <div class="video-item vt">
-                            <div class="thumb">
-                                <a href="/video/423" target="_blank">
-                                    <img src="https://ainicheng.com/storage/video/423.jpg" alt="如果CSGO成为角色扮演游戏！"> 
-                                    <i class="duration">  04:00 </i>
+                    @foreach($data['articles'] as $article)
+                        <div class="col-xs-6 col-md-3 video">
+                            <div class="video-item vt"><div class="thumb">
+                                <a href="{{ url("video/$article->video_id") }}" target="_blank">
+                                    <img src="{{ $article->primaryImage() }}" alt="{{ $article->video->title ?: $article->get_description() }}"> 
+                                    <i class="duration">{{ gmdate('i:s', $article->video->duration) }}</i> 
                                     <i class="hover-play"></i>
                                 </a>
-                            </div>
-                             <ul class="info-list">
-                                <li class="video-title"><a target="_blank" href="/video/423">如果CSGO成为角色扮演游戏！</a>
-                                </li> 
-                                <li>
-                                    <p class="subtitle single-line">14次播放</p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xs-6 col-md-3 video">
-                        <div class="video-item vt">
-                            <div class="thumb">
-                                <a href="/video/422" target="_blank">
-                                            <img src="https://ainicheng.com/storage/video/422.jpg" alt="最新《赛博朋克风角色扮演》游戏-4K故事预告片2018"> 
-                                            <i class="duration"> 02:11                     </i> 
-                                   <i class="hover-play"></i>
-                               </a>
                             </div> 
-                            <ul class="info-list">
-                                <li class="video-title">
-                                    <a target="_blank" href="/video/422">最新《赛博朋克风角色扮演》游戏-4K故事预告片2018</a>
-                                </li> 
-                                <li>
-                                    <p class="subtitle single-line">8次播放</p>
-                                </li>
-                            </ul>
+                                <ul class="info-list">
+                                    <li class="video-title"><a target="_blank" href="{{ url("video/$article->video_id") }}">{{ $article->video->title ?: $article->get_description() }}</a></li>
+                                     <li>
+                                        <p class="subtitle single-line">{{ $article->hits }}次播放</p>
+                                    </li>
+                                 </ul>
+                            </div>
                         </div>
-                   </div>
-                    <div class="col-xs-6 col-md-3 video">
-                        <div class="video-item vt">
-                            <div class="thumb">
-                                <a href="/video/421" target="_blank">
-                                    <img src="https://ainicheng.com/storage/video/421.jpg" alt="【这波真滴秀】孤存、A+、17shou新地图萨诺刚枪教学！"> 
-                                    <i class="duration"> 04:58                     </i> 
-                                    <i class="hover-play"></i>
-                                </a>
-                            </div> <ul class="info-list">
-                                <li class="video-title">
-                                    <a target="_blank" href="/video/421">【这波真滴秀】孤存、A+、17shou新地图萨诺刚枪教学！</a>
-                                </li>
-                                <li>
-                                    <p class="subtitle single-line">10次播放</p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

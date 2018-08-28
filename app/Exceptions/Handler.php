@@ -58,6 +58,18 @@ class Handler extends ExceptionHandler
             $exception = new HttpException(500, 'Whoops!');
         }
 
+        //404 异常处理
+        $e = $this->prepareException($exception);
+        if($this->isHttpException($e) && ($e->getStatusCode() == 404)){
+            $data['categories'] = \App\Category::where('parent_id',1)->orderByDesc('updated_at')->take(4)->get();
+            //取最近七天点击量 倒叙
+            $data['articles'] = \App\Article::with('video')->whereType('video')
+                ->whereStatus(1)
+                ->whereRaw('DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(created_at)')
+                ->orderByDesc('hits')->take(4)->get();
+            return response()->view('errors.404',['data'=>$data],404);
+        }
+
         return parent::render($request, $exception);
     }
 
