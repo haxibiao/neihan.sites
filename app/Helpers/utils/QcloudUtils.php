@@ -43,6 +43,14 @@ class QcloudUtils
         }
     }
 
+    public static function getTaskInfo($taskId)
+    {
+        $params = [
+            'vodTaskId' => $taskId,
+        ];
+        return self::retryVodApi('GetTaskInfo', $params);
+    }
+
     public static function getTaskList()
     {
         $params = [
