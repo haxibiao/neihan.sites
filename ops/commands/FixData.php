@@ -32,6 +32,24 @@ class FixData extends Command
         FixData::$table($this->cmd);
     }
 
+    public static function videos($cmd)
+    {
+        $cmd->info('fix videos ...');
+        Video::whereNotNull('qcvod_fileid')->chunk(100, function ($videos) use ($cmd) {
+            foreach ($videos as $video) {
+                sleep(2);
+                $cmd->info('正在处理>>>' . $video->id .'<<<');
+                try {
+                    $video->syncVodProcessResult();
+                } catch (\Exception $e) {
+                    $cmd->error('视频id为>>>' . $video->id .'<<<拉取失败');
+                    continue;
+                }
+            }
+        });
+        $cmd->info('fix videos finished...');
+    }
+
     public static function categories($cmd)
     {
         $cmd->info('fix count_videos ...');

@@ -290,6 +290,8 @@ return [
 		'Feedback' => '\App\GraphQL\Type\FeedbackType',
 		//simple json type
 		'Report' => '\App\GraphQL\Type\ReportType',
+		//自定义的属性
+		'VideoInfo'=>'\App\GraphQL\Type\VideoInfoType',
 
 		//enum
 		'CollectionFilter' => '\App\GraphQL\Enum\CollectionFilterEnum',

@@ -129,6 +129,14 @@ class Video extends Model
                 }
                 $this->setJsonData('video_urls', $video_urls);
             }
+            //视频的宽和高
+            if( !empty($res['metaData']) && !empty($res['metaData']['videoStreamList']) ){
+                $videoStreamList = $res['metaData']['videoStreamList'][0];
+                $height = $videoStreamList['height'];
+                $width  = $videoStreamList['width'];
+                $this->setJsonData('height', $height);
+                $this->setJsonData('width', $width);
+            }
             //同步到封面，就发布成功
             if (!empty($this->cover)) {
                 $this->status = 1;
