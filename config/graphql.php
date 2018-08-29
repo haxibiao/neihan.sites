@@ -209,6 +209,9 @@ return [
 				//创建动态
 				'createPost' => '\App\GraphQL\Mutation\post\createPostMutation',
 				'deleteVisit' => '\App\GraphQL\Mutation\visit\DeleteVisitMutation',
+
+				#意见反馈
+				'createFeedback' => 'App\GraphQL\Mutation\feedback\CreateFeedbackMutation',
 			],
 		],
 	],
@@ -284,7 +287,7 @@ return [
 		'Transaction' => '\App\GraphQL\Type\TransactionType',
 		'DBQuery' => '\App\GraphQL\Type\QueryType', //Model Query与GraphQL中Query冲突了
 		'QueryLog' => '\App\GraphQL\Type\QueryLogType',
-
+		'Feedback' => '\App\GraphQL\Type\FeedbackType',
 		//simple json type
 		'Report' => '\App\GraphQL\Type\ReportType',
 
