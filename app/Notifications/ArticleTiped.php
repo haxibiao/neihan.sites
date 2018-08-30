@@ -64,7 +64,7 @@ class ArticleTiped extends Notification
     {
         $article_title = $this->article->title?:$this->article->video->title;
         // 标题 视频标题都不存在 则取description
-        if(empty($this->article->title)){
+        if(empty($article_title)){
             $article_title = $this->article->get_description();
         }
         return [

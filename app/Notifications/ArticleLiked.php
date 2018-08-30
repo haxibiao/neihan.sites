@@ -81,9 +81,15 @@ class ArticleLiked extends Notification implements ShouldQueue
                 $title  = $comment_body;
             }
         } else {
+            $article_title = $this->article->title?:$this->article->video->title;
+            // 标题 视频标题都不存在 则取description
+            if(empty($article_title)){
+                $article_title = $this->article->get_description();
+            }
+
             $body   = '喜欢了你的' . $this->article->resoureTypeCN();
             $url    = $this->article->content_url();
-            $title  = '《' . $this->article->title . '》';
+            $title  = '《' . $article_title . '》';
         }
         return [
             'type' => 'like',
