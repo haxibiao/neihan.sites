@@ -7,12 +7,12 @@ use App\Category;
 use App\Collection;
 use App\Comment;
 use App\Image;
-use App\Visit;
-use App\User;
 use App\Transaction;
+use App\User;
 use App\Video;
-use Illuminate\Support\Facades\DB;
+use App\Visit;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class FixData extends Command
 {
@@ -38,11 +38,11 @@ class FixData extends Command
         Video::whereNotNull('qcvod_fileid')->chunk(100, function ($videos) use ($cmd) {
             foreach ($videos as $video) {
                 sleep(2);
-                $cmd->info('正在处理>>>' . $video->id .'<<<');
+                $cmd->info('正在处理>>>' . $video->id . '<<<');
                 try {
                     $video->syncVodProcessResult();
                 } catch (\Exception $e) {
-                    $cmd->error('视频id为>>>' . $video->id .'<<<拉取失败');
+                    $cmd->error('视频id为>>>' . $video->id . '<<<拉取失败');
                     continue;
                 }
             }
@@ -82,13 +82,13 @@ class FixData extends Command
     public static function articles($cmd)
     {
         $cmd->info('fix article_category ...');
-        $articles = DB::table('article_category')->select('category_id','article_id')
-        ->whereSubmit('已收录')->groupBy(['category_id','article_id'])->havingRaw('count(*) > 1')->get();
+        $articles = DB::table('article_category')->select('category_id', 'article_id')
+            ->whereSubmit('已收录')->groupBy(['category_id', 'article_id'])->havingRaw('count(*) > 1')->get();
         foreach ($articles as $article) {
-            $category_id = $article->category_id;
-            $article_id = $article->article_id;
+            $category_id      = $article->category_id;
+            $article_id       = $article->article_id;
             $article_category = DB::table('article_category')->
-                where('category_id',$category_id)->where('article_id',$article_id)->first();
+                where('category_id', $category_id)->where('article_id', $article_id)->first();
             $id = $article_category->id;
             DB::table('article_category')->whereId($id)->delete();
             $cmd->info("$id fix success");
@@ -209,61 +209,39 @@ class FixData extends Command
     public static function users($cmd)
     {
         //修复上次296用户 id变成144 导致一系列网页错误
-        $user = User::find(144);
+        $user     = User::find(144);
         $user->id = 296;
         $user->save();
-        $cmd->info($user->id.' fix success');
+        $cmd->info($user->id . ' fix success');
     }
 
     public static function notifications($cmd)
     {
         $cmd->info('fix notifications ....');
-        DB::table('notifications')->whereType('App\Notifications\ArticleCommented')->orderByDesc('id')->chunk(100,function($notifications) use($cmd){
-            foreach($notifications as $notification){
+        DB::table('notifications')->whereType('App\Notifications\ArticleLiked')->orderByDesc('id')->chunk(100, function ($notifications) use ($cmd) {
+            foreach ($notifications as $notification) {
                 $data = json_decode($notification->data);
-                if(isset($data->article_id)){
+                if (strpos($data->body, '视频') !== false && strpos($data->title, '《》') !== false) {
                     try{
-                        $article = Article::findOrFail($data->article_id);
-                    $type = '文章';
-                    if($article->type == 'video'){
-                        $type = '视频';
-                    } else if( $article->type == 'post' ){
-                        $type = '动态';
-                    }
-                    $user = User::findOrFail($data->user_id);
-                    }
-                    catch(\Exception $e){
-                        continue;
-                    }
-                    $msgText1 = '中写了一条新评论';
-                    $msgText2 = '评论了你的';
-                    $msgText3 = '的评论中提到了你';
-                    $title = $data->title;
-
-                    $is_fix = false;
-
-                    if(strpos($title,$msgText1) !== false){
-                        $data->title = $user->link() . ' 在' . $type . $article->link() . '中写了一条新评论';
-                        $is_fix = true;
-                    }else if(strpos($title,$msgText2) !== false){
-                        $data->title = $user->link() . ' 评论了你的' . $type . $article->link();
-                        $is_fix = true;
-                    }else if(strpos($title,$msgText3)){
-                         $data->title = $user->link() . ' 在' . $type . $article->link() . '的评论中提到了你';
-                         $is_fix = true;
-                    }
-                    $cmd->info($notification->id.' fix ');
-
-                    if($is_fix){
-                        $new_title = $data->title;
-                        try{
-                            $result = DB::table('notifications')->where('id',$notification->id)->update(['data->title'=>$new_title]);
-                            if($result){
-                                $cmd->info('notification:'.$notifications->id.' fix success');
-                            }
-                        }catch(\Exception $e){
-                            continue;
+                        $article       = Article::findOrFail($data->article_id);
+                        $article_title = $article->title ?: $article->video->title;
+                        // 标题 视频标题都不存在 则取description
+                        if (empty($article_title)) {
+                            $article_title = $article->get_description();
                         }
+                        $notification->timestamps = false;
+                        $result = DB::table('notifications')->where('id',$notification->id)
+                            ->update(
+                                [
+                                    'data->article_title'=>$article_title,
+                                    'data->title'=>'《' . $article_title . '》'
+                                ]
+                            );
+                        if($result){
+                            $cmd->info('notification ' . $notification->id . ' fix success');
+                        }
+                    }catch(\Exception $e){
+                       continue;
                     }
                 }
             }
@@ -282,7 +260,7 @@ class FixData extends Command
         //             $video = Video::findOrFail(end($data));
         //         }catch(\Exception $e){
         //             continue;
-        //         } 
+        //         }
         //         if(!empty($article = $video->article) && !empty($user)){
         //             if(strpos($transaction->log,'向您的') !== false && strpos($transaction->log,'《》') !== false){
         //                 $transaction->log = $user->link() . '向您的' . $article->link() . '打赏' . $amount . '元';
@@ -298,14 +276,14 @@ class FixData extends Command
         //         }
         //     }
         // });
-        Transaction::whereType('打赏')->orderByDesc('id')->chunk(100,function($transactions) use($cmd){
+        Transaction::whereType('打赏')->orderByDesc('id')->chunk(100, function ($transactions) use ($cmd) {
             foreach ($transactions as $transaction) {
-                if(strpos($transaction->log,'赏元') !== false){
-                    $log = str_replace('赏元', '赏'.intval($transaction->amount).'元', $transaction->log);
-                    $transaction->log = $log;
-                    $transaction->timestamps=false;
+                if (strpos($transaction->log, '赏元') !== false) {
+                    $log                     = str_replace('赏元', '赏' . intval($transaction->amount) . '元', $transaction->log);
+                    $transaction->log        = $log;
+                    $transaction->timestamps = false;
                     $transaction->save();
-                    $cmd->info('transaction '.$transaction->id.' fix success');
+                    $cmd->info('transaction ' . $transaction->id . ' fix success');
                 }
             }
         });

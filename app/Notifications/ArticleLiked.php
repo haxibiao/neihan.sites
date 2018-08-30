@@ -2,19 +2,20 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use App\Article;
 use App\User;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
+
 /**
  * 问答，文章，视频，动态的评论全都由本类负责通知
  */
 class ArticleLiked extends Notification implements ShouldQueue
 {
     use Queueable;
- 
+
     protected $article;
     protected $user;
     protected $comment;
@@ -26,9 +27,9 @@ class ArticleLiked extends Notification implements ShouldQueue
      */
     public function __construct($article_id, $user_id, $comment = null)
     {
-        $this->article  = Article::find($article_id);
-        $this->user     = User::find($user_id);
-        $this->comment  = $comment; 
+        $this->article = Article::find($article_id);
+        $this->user    = User::find($user_id);
+        $this->comment = $comment;
     }
 
     /**
@@ -44,16 +45,16 @@ class ArticleLiked extends Notification implements ShouldQueue
 
     /**
      * Get the mail representation of the notification.
-     * 
+     *
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
 
     /**
@@ -63,44 +64,44 @@ class ArticleLiked extends Notification implements ShouldQueue
      * @return array
      */
     public function toArray($notifiable)
-    { 
-        if( !empty($this->comment) ){
-            $body       = '赞你的评论';
+    {
+        $article_title = $this->article->title ?: $this->article->video->title;
+        // 标题 视频标题都不存在 则取description
+        if (empty($article_title)) {
+            $article_title = $this->article->get_description();
+        }
+
+        if (!empty($this->comment)) {
+            $body = '赞你的评论';
             //评论文章，视频，答案，动态
-            $lou            = $this->comment->lou;
-            $comment_body   = $this->comment->body;
-            $commentable    = $this->comment->commentable;
+            $lou          = $this->comment->lou;
+            $comment_body = $this->comment->body;
+            $commentable  = $this->comment->commentable;
             //评论问答中的答案
-            if($this->comment->commentable_type == 'answers'){
+            if ($this->comment->commentable_type == 'answers') {
                 $question = $commentable->question;
-                $url    = '/question/' . $question->id;   //TODO 锚点信息需要与前端沟通
-                $title  = $comment_body;
-            //其余的都是article的子类型
+                $url      = '/question/' . $question->id; //TODO 锚点信息需要与前端沟通
+                $title    = $comment_body;
+                //其余的都是article的子类型
             } else {
-                $url    = $commentable->content_url() . '#'. $lou;
-                $title  = $comment_body;
+                $url   = $commentable->content_url() . '#' . $lou;
+                $title = $comment_body;
             }
         } else {
-            $article_title = $this->article->title?:$this->article->video->title;
-            // 标题 视频标题都不存在 则取description
-            if(empty($article_title)){
-                $article_title = $this->article->get_description();
-            }
-
-            $body   = '喜欢了你的' . $this->article->resoureTypeCN();
-            $url    = $this->article->content_url();
-            $title  = '《' . $article_title . '》';
+            $body  = '喜欢了你的' . $this->article->resoureTypeCN();
+            $url   = $this->article->content_url();
+            $title = '《' . $article_title . '》';
         }
         return [
-            'type' => 'like',
+            'type'          => 'like',
             'user_avatar'   => $this->user->avatar,
             'user_name'     => $this->user->name,
             'user_id'       => $this->user->id,
-            'article_title' => $this->article->title,
+            'article_title' => $article_title,
             'article_id'    => $this->article->id,
             'url'           => $url,
             'body'          => $body,
-            'title'         => $title 
+            'title'         => $title,
         ];
     }
 }
