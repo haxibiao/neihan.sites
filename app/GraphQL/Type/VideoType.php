@@ -14,8 +14,8 @@ class VideoType extends GraphQLType
     ];
 
     public function fields()
-    {
-        return [
+    { 
+        return [ 
             'id'         => [
                 'type'        => Type::nonNull(Type::int()),
                 'description' => 'The id of the Video',
@@ -34,6 +34,18 @@ class VideoType extends GraphQLType
                 'description' => 'The duration of Video',
                 'resolve'     => function ($root, $args) {
                     return gmdate('i:s', $root->duration);
+                },
+            ],
+            //方便以后扩展
+            'info' => [
+                'type'        =>  GraphQL::type('VideoInfo'),
+                'description' => '视频的属性',
+                'resolve'     => function ($root, $args) {
+                    $info = $root->json;
+                    if(!$info){
+                        return null;
+                    }
+                    return json_decode($info);
                 },
             ],
         ];

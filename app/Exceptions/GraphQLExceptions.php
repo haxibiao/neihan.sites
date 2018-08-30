@@ -5,7 +5,6 @@ use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 use Exception;
 use Folklore\GraphQL\Error\ValidationError;
 use Illuminate\Support\Arr;
-use \App\Exceptions\UnregisteredException;
 
 class GraphQLExceptions {
 	//不需要通知的异常放在下面
@@ -35,8 +34,6 @@ class GraphQLExceptions {
 					\Bugsnag::notifyException($e);
 				}
 			}
-			//日志文件记录详细的日志信息
-			report($e);
 		}
 		return $error;
 	}

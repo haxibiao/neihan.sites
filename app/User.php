@@ -45,7 +45,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
+    public function feedbacks() {
+        return $this->hasMany(\App\Feedback::class);
+    }
     //relations
     public function questions()
     {
