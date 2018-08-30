@@ -75,6 +75,10 @@ EOT;
 $sync_etc_confs = <<<EOT
 cp -rf /data/www/$domain/ops/etc/* /etc/
 
+echo "restart queue worker"
+cd /data/www/$domain/
+php artisan queue:restart
+
 echo 'supervisor restart ...'
 supervisorctl reread
 supervisorctl update
