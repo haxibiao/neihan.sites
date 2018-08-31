@@ -212,7 +212,7 @@ class AdminController extends Controller
                 array_splice($items, $index, 1);
                 break;
             }
-        }
+        } 
 
         //这里重新装车一遍,否则容易造成全部删除的情况
         $left_items = $items;
@@ -329,6 +329,9 @@ class AdminController extends Controller
 
         curl_setopt_array($ch, $options);
         $result = curl_exec($ch);
+        if(str_contains($result, "success")) {
+            return "成功";
+        }
         return $result;
     }
 }

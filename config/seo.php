@@ -8,7 +8,7 @@ return [
         'articlePush'                  => [
             'pandaNumber' => [
                 'appid' => '1585927114272168',
-                'token' => '0T7GLkgH83TrfdXL',
+                'token' => 'sb0L7xS3Wk0taaAo',
             ],
             'baiduNumber' => [
                 'token' => 'llmWAm65s0vZsiuG',
@@ -42,9 +42,9 @@ return [
                 'appid' => 'xxx',
                 'token' => 'xxx',
             ],
-        ],
-        'baiduNumber' => [
-            'token' => '5gXEVRuomHcgZD5g',
+            'baiduNumber' => [
+                'token' => '5gXEVRuomHcgZD5g',
+            ],
         ],
     ],
 
