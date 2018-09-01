@@ -9,13 +9,18 @@
 		font-size: 21px;
 	}
 	.main {
-		margin: 0!important;
+		margin: 0 !important;
 		tr {
-			border-bottom: none!important;
+			border-bottom: none !important;
 		}
 		.avatar-category {
 			width: 100px;
 			height: 100px;
+		}
+		.add-manager {
+			a.btn {
+				color: #42c02e;
+			}
 		}
 	}
 }

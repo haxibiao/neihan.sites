@@ -70,6 +70,14 @@
                     </category-select>
                     </td>
                 </tr>
+                @if($parent_category = $category->parent)
+                <tr class="add-manager">
+                    <td class="setting-title pull-left">父专题</td>
+                    <td>
+                        <a class="btn btn-default" href="/category/{{ $parent_category->id }}" role="button">{{ $parent_category->name }}</a>
+                    </td>
+                </tr>
+                @endif
                 <tr>
                     <td class="setting-title setting-verticle">是否允许投稿</td>
                     <td>
