@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title')
     我的设置 - {{ env('APP_NAME') }}
-@stop　
+@stop
 @section('content')
 	<div id="setting">
 		<section class="left-aside clearfix">
@@ -11,4 +11,4 @@
 			</div>
 		</section>
 	</div>
-@endsection
+@endsection 

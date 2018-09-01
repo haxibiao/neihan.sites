@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('title')
+    页面找不到 - {{ env('APP_NAME') }} 
+@endsection 
 @section('content')
 <div class="container">
     <div class="jumbotron">

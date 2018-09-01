@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('title')
+  热门问答分类 - {{ env('APP_NAME') }}
+@stop
 @section('content')
 <div class="recommend-content">
     <div class="page-banner">

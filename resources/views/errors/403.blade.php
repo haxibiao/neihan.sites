@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    权限不足 - {{ env('APP_NAME') }} 
+@endsection 
+
 @section('content')
 <div class="container">
     <div class="jumbotron">
