@@ -70,37 +70,52 @@ class IndexController extends Controller
     /* --------------------------------------------------------------------- */
     /**
      * 基与原来逻辑修改的首页显示逻辑
-     *     TODO 下周一上线,注意修改index模版文件
+     *     TODO 后面我们考虑加上推荐表。缓解访问量如果变大,算法的执行效率不好。
      * @return [type] [description]
      */
     public function indexRecommendationStrategy()
     {
         //首页推荐分类
         $stick_categories = get_stick_categories();
-        //已登录,只显示关注的专题
+        $stick_categorie_ids = array_pluck($stick_categories,'id');
+        $top_count  = 7 - count($stick_categories);
+        //已登录,专题的获取顺序为：置顶的专题>关注的专题>官方大专题
         if (Auth::check()) {
             $user = Auth::user();
             //获取所有关注的专题
             $all_follow_category_ids = \DB::table('follows')->where('user_id', $user->id)
-                ->where('followed_type', 'categories')->whereExists(function ($query) {
+                ->where('followed_type', 'categories')
+                ->whereNotIn('follows.followed_id',$stick_categorie_ids)
+                ->whereExists(function ($query) {
                     return $query->from('categories')
                         ->whereRaw('categories.id = follows.followed_id')
                         ->where('categories.status', '>=', 0);
-                })->pluck('followed_id');
-            $categories = Category::whereIn('id', $all_follow_category_ids)
-                ->take(7)
-                ->get();
-            //未登录或者未关注任何专题，随机取官方专题
-        } else {
-            $top_count  = 7 - count($stick_categories);
+                })->take($top_count)->pluck('followed_id')->toArray();
+            $category_ids = array_merge($stick_categorie_ids,$all_follow_category_ids);
+            //置顶专题加上关注的专题都不够7个时获取官方大专题
+            if( count($category_ids)!=7 ){
+                $official_category_ids = Category::where('is_official', 1)
+                    ->where('count', '>=', 0)
+                    ->where('status', '>=', 0)
+                    ->where('parent_id', 0) //0代表顶级分类
+                    ->whereNotIn('id',$category_ids)
+                    ->take(7-count($category_ids))
+                    ->pluck('id')->toArray();
+                $category_ids = array_merge($category_ids,$official_category_ids);
+            }
+            $categories = Category::whereIn('id', $category_ids)->get();
+        //未登录，随机取官方专题
+        } else { 
             $categories = Category::where('is_official', 1)
                 ->where('count', '>=', 0)
                 ->where('status', '>=', 0)
                 ->where('parent_id', 0) //0代表顶级分类
+                ->whereNotIn('id',$stick_categorie_ids)
                 ->orderBy(\DB::raw('RAND()'))
                 ->take($top_count)
                 ->get();
         }
+        
         //首页推荐专题 合并置顶的专题
         $categories       = get_top_categoires($categories);
         $data             = (object) [];
@@ -143,7 +158,6 @@ class IndexController extends Controller
         } else {
             $data->articles = new LengthAwarePaginator(new Collection($articles), $total, 10);
         }
-        //dd($data->articles);
         //首页轮播图
         $data->carousel = get_top_articles();
         //首页推荐视频
