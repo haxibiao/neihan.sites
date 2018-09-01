@@ -6,7 +6,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class shareController extends Controller
+class ShareController extends Controller
 {
     public function shareWechat(Request $request)
     {

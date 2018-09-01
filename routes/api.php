@@ -55,7 +55,7 @@ if ($is_testing) {
 Route::get('/test/perf', 'Api\TestController@perf');
 
 //create qrcode
-Route::get('/share/weixin/', 'Api\shareController@shareWechat');
+Route::get('/share/weixin/', 'Api\ShareController@shareWechat');
 
 //收藏
 Route::middleware('auth:api')->post('/favorite/{id}/{type}', 'Api\FavoriteController@toggle');

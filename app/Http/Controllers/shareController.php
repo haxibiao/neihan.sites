@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use QrCode;
 
-class shareController extends Controller
+class ShareController extends Controller
 {
     public function shareWechat(Request $request)
     {
