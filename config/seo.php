@@ -53,8 +53,12 @@ return [
         'keywords'    => '年轻人,激情,游戏,动漫,交流平台',
         'description' => '有年轻人有激情的游戏动漫交流平台',
         'articlePush' => [
+            'pandaNumber' => [
+                'appid' => '1596686231325579',
+                'token' => 'Ms3Er01mSRAMrxvZ',
+            ],
             'baiduNumber' => [
-                'token' => 'SxXZ8jYiIMPY1Vgv',
+                'token' => 'l16CH4S5ZBbU9ecE',
             ],
         ],
     ],

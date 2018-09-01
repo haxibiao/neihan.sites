@@ -32,17 +32,25 @@
 		<!-- Tab panes -->
 		<div class="recommend-list tab-content">
 	   <ul role="tabpanel" class="fade in tab-pane active clearfix" id="recommend">
-			@each('category.parts.category_card', $data['recommend'], 'category')
+			@foreach($data['recommend']->chunk(3) as $category_group)
+		        <div class="row">
+		           @each('category.parts.category_card', $category_group, 'category')
+		        </div>
+	      	@endforeach
 			@if(Auth::check())
-			<category-list api="{{ request()->path() }}?recommend=1" start-page="2"></category-list>
+				<category-list api="{{ request()->path() }}?recommend=1" start-page="2"></category-list>
 			@else
 			<div>{!! $data['recommend']->links() !!}</div>
 			@endif
 	   </ul>
 	   <ul role="tabpanel" class="fade tab-pane clearfix" id="hot">
-			@each('category.parts.category_card', $data['hot'], 'category')
+	   		@foreach($data['hot']->chunk(3) as $category_group)
+		        <div class="row">
+		           @each('category.parts.category_card', $category_group, 'category')
+		        </div>
+	      	@endforeach
 			@if(Auth::check())
-			<category-list api="{{ request()->path() }}?hot=1" start-page="2"></category-list>
+				<category-list api="{{ request()->path() }}?hot=1" start-page="2"></category-list>
 			@else
 			<div>{!! $data['hot']->links() !!}</div>
 			@endif

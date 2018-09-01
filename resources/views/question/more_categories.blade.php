@@ -13,9 +13,12 @@
     </div>
     <div class="recommend-list">
      <ul class="clearfix">
-      @each('question.parts.category_card', $categories, 'category')
-      
-     </ul>
+      @foreach($categories->chunk(3) as $category_group)
+        <div class="row">
+           @each('question.parts.category_card', $categories, 'category')
+        </div>
+      @endforeach
+     </ul> 
      <p>{!! $categories->links() !!}</p>
      {{-- <a class="btn-base btn-more" href="javascript:;">加载更多</a> --}}
     </div>

@@ -19,7 +19,11 @@
     </div>
     <div class="recommend-list">
      <ul class="clearfix">
-      @each('user.parts.author_card', $users, 'user')
+      @foreach($users->chunk(3) as $user_group)
+        <div class="row">
+           @each('user.parts.author_card', $user_group, 'user')
+        </div>
+      @endforeach
      </ul>
      {!! $users->links() !!}
      {{-- <a class="btn-base btn-more" href="javascript:;">加载更多</a>  --}}
