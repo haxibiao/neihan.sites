@@ -91,9 +91,19 @@ class CategoryController extends Controller {
 	public function pendingArticles(Request $request) {
 		$user = $request->user();
 		$articles = [];
+
+		$article = new \App\Article();
+		$colomns = array_map(function ($name) {
+			return 'articles.' . $name;
+		}, $article->getTableColumns());
+
 		foreach ($user->adminCategories as $category) {
-			foreach ($category->newRequestArticles->load('user') as $article) {
-				$articles[] = $article;
+			$new_request_articles = $category->newRequestArticles()
+				->with('user') 
+				->select($colomns)
+				->get();
+			foreach ($new_request_articles as $article) { 
+				$articles[] = $article;  
 			}
 		}
 		return $articles;
