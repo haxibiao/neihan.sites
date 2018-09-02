@@ -23,17 +23,20 @@ class FavoriteController extends Controller
         ]);
         if ($favorite->id) {
             $favorite->delete();
-        } else {
+            Action::where([
+                'user_id'         => $user->id,
+                'actionable_type' => 'favorites',
+                'actionable_id'   => $favorite->id,
+            ])->delete();
+        } else { 
             $favorite->save();
             $result = 1;
-
             //record action
-            $action = Action::firstOrNew([
+            $action = Action::updateOrCreate([
                 'user_id'         => $user->id,
                 'actionable_type' => 'favorites',
                 'actionable_id'   => $favorite->id,
             ]);
-            $action->save();
             
             //发送通知
             $article = $favorite->faved; 

@@ -8,9 +8,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use App\Notifications\ArticleLiked;
-
+use App\Events\LikeWasCreated;
+use App\Events\LikeWasDeleted;
+ 
 class CommentController extends Controller 
-{
+{ 
     /**
      * @Desc     保存评论
      * @Author   czg
@@ -32,80 +34,44 @@ class CommentController extends Controller
 
     public function get(Request $request, $id, $type)
     {
+        $user = $request->user();
         //一起给前端返回 子评论 和 子评论的用户信息
-        $comments = Comment::with('user')->with('commented.user')->with('replyComments.user')
+        $comments = Comment::with(['user'=>function($query){
+                    $query->select('id','name','avatar');
+                }])
+            ->with(['commented.user'=>function($query){
+                    $query->select('id','name','avatar');
+                }])
+            ->with(['replyComments.user'=>function($query){
+                    $query->select('id','name','avatar');
+                }])->with('hasManyLikes') 
             ->orderBy('lou')
             ->where('comment_id', null)
-            ->where('commentable_type', $type)
+            ->where('commentable_type', $type) 
             ->where('commentable_id', $id)
             ->paginate(5);
         foreach ($comments as $comment) {
             $comment->time     = $comment->createdAt();
-            $comment->liked    = $request->user() ? $this->check_cache($request, $comment->id, 'like_comment')   : 0;
-            $comment->reported = $request->user() ? $this->check_cache($request, $comment->id, 'report_comment') : 0;
+            $comment->liked = empty($user)? 0: $comment->hasManyLikes()
+                ->where('user_id',$user->id)
+                ->exists();
+            //TODO 存在BUG-缓存过期状态会消失。目前先不引入report表。
+            $comment->reported = empty($user)?0:$this->check_cache($request, $comment->id, 'report_comment');
+            $comment->replying = 0; 
         }
-
-        foreach ($comments as $comment) {
-            $comment->replying = 0;
-        }
-
         return $comments;
     }
-    //TODO 下面这段代码以后有时间过来优化性能
+    
     public function like(Request $request, $id)
     {
-        $user           = $request->user();
-        $comment        = Comment::find($id);
-        $like = \App\Like::firstOrNew([
-            'user_id'    => $user->id,
-            'liked_id'   => $id,
-            'liked_type' => 'comments',
-        ]);
-        $liked_from_cache  = $this->sync_cache($request, $id, 'like_comment');
-        if( $like->id ){
-            $like->delete();
-        } else {
-            $like->save();
-            //点赞自己的评论不通知
-            if( $comment->user_id!=$user->id ){
-                $comment->user->notify(new ArticleLiked( $comment->commentable->id, $user->id, $comment)); 
-            }
-            $action = \App\Action::updateOrCreate([ 
-                'user_id'         => $user->id,
-                'actionable_type' => 'likes',
-                'actionable_id'   => $like->id,
-            ]);
-        }
-
-        $comment->likes = $comment->likes()->count(); 
-        $comment->save();
-
-        //返回给前端的状态字段
-        $comment->liked = !$liked_from_cache; 
-        return $comment;
-        /*$user           = $request->user();
-        $liked          = $this->sync_cache($request, $id, 'like_comment');
-        $comment        = Comment::find($id);
-        $comment->likes = $comment->likes + ($liked ? -1 : 1);
-        $comment->save();
-        $comment->liked = !$liked;  
-        
-        $like = \App\Like::create([
-            'user_id'    => $user->id,
-            'liked_id'   => $id,
-            'liked_type' => 'comments',
-        ]);
-        //点赞自己的评论不通知
-        if( $user->id != $comment->user_id ){
-            $comment->user->notify(new ArticleLiked( $comment->commentable->id, $user->id, $comment));
-        }
-        
-        $action = \App\Action::create([
-            'user_id'         => $user->id,
-            'actionable_type' => 'likes',
-            'actionable_id'   => $like->id,
-        ]);
-        return $comment;*/
+        $like = new \App\Like();
+        $user = $request->user();
+        $data = [
+            'user_id'   =>  $user->id,
+            'liked_id'  =>  $id,
+            'liked_type'=>  'comments'
+        ];
+        return $like->toggleLike($data);
     }
 
     public function report(Request $request, $id)

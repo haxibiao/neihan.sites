@@ -36,28 +36,25 @@ class FollowController extends Controller {
 			'followed_id' => $id,
 			'followed_type' => get_polymorph_types($type),
 		]);
-		if ($follow->id) {
+		if ($follow->id)  {
 			$follow->delete();
-
 			//delete record action
-			$action = Action::firstOrNew([
+			Action::where([
 				'user_id' => $user->id,
 				'actionable_type' => 'follows',
 				'actionable_id' => $follow->id,
-			]);
-			$action->delete();
+			])->delete();
 
 		} else {
 			$follow->save();
 			$result = 1;
-
+ 
 			//record action
-			$action = Action::firstOrNew([
+			$action = Action::updateOrCreate([
 				'user_id' => $user->id,
 				'actionable_type' => 'follows',
 				'actionable_id' => $follow->id,
 			]);
-			$action->save();
 
 			//notify when user follow
 			if (get_polymorph_types($type) == 'users') {
@@ -70,7 +67,6 @@ class FollowController extends Controller {
 					Cache::put($cacheKey, 1, 60);
 				}
 			}
-
 			//notify when category follow
 			if (get_polymorph_types($type) == 'categories') {
 				//避免短时间内重复提醒

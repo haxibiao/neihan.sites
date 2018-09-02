@@ -22,7 +22,7 @@ class LikeController extends Controller
             'liked_id'  =>  $id,
             'liked_type'=>  str_plural($type)
         ];
-        $like->toggleLike($data ,true);
+        $like->toggleLike($data);
         return $like->likeUsers($data);
     }
 

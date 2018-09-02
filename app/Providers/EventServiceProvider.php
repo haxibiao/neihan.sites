@@ -18,7 +18,28 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\CommentWasDeleted' => [
             'App\Listeners\DestroyedComment',
-        ], 
+        ],
+
+        'App\Events\LikeWasCreated' => [
+            'App\Listeners\NewLike',  
+        ],
+        'App\Events\LikeWasDeleted' => [
+            'App\Listeners\DestroyedLike',
+        ],
+
+        'App\Events\FavoriteWasCreated' => [
+            'App\Listeners\NewFavorite',  
+        ],
+        'App\Events\FavoriteWasDeleted' => [
+            'App\Listeners\DestroyedFavorite',
+        ],
+
+        'App\Events\FollowWasCreated' => [
+            'App\Listeners\NewFollow',  
+        ],
+        'App\Events\FollowWasDeleted' => [
+            'App\Listeners\DestroyedFollow',
+        ],
     ];
     /**
      * 消息订阅者，

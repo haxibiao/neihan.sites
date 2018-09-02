@@ -51,13 +51,11 @@ class CommentType extends GraphQLType
             'likes'          => [
                 'type'        => Type::int(),
                 'description' => 'count likes of comment',
-            ],
+            ], 
+            //这个liked与模型方法名冲突了，使用时注意
             'liked'          => [
                 'type'        => Type::boolean(),
-                'description' => 'user is liked current comment',
-                'resolve'     => function ($root, $args) {
-                    return session('liked_comment_' . $root->id, 0);
-                },
+                'description' => '该评论是否被当前登录用户点赞',
             ],
 
             //relations

@@ -18,12 +18,16 @@ class likeArticleMutation extends Mutation
     {
         return GraphQL::type('Article');
     }
-
+ 
     public function args()
     {
         return [
             'article_id' => ['name' => 'article_id', 'type' => Type::int()],
-            'undo'       => ['name' => 'undo', 'type' => Type::boolean()],
+            'undo'       => [
+                'name' => 'undo', 
+                'type' => Type::boolean(),
+                'defaultValue' => false,
+            ],
         ];
     }
 
@@ -39,7 +43,7 @@ class likeArticleMutation extends Mutation
         $data = [
             'liked_id'   => $args['article_id'],
             'liked_type' => 'articles',
-            'undo'       => isset($args['undo'])? $args['undo']: false
+            'undo'       => $args['undo']
         ];
         $like = new Like();
         return $like->toggleLike($data);
