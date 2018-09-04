@@ -92,15 +92,9 @@ class CategoryController extends Controller {
 		$user = $request->user();
 		$articles = [];
 
-		$article = new \App\Article();
-		$colomns = array_map(function ($name) {
-			return 'articles.' . $name;
-		}, $article->getTableColumns());
-
 		foreach ($user->adminCategories as $category) {
 			$new_request_articles = $category->newRequestArticles()
 				->with('user') 
-				->select($colomns)
 				->get();
 			foreach ($new_request_articles as $article) { 
 				$articles[] = $article;  
@@ -295,13 +289,8 @@ class CategoryController extends Controller {
 
 	public function approveCategory(Request $request, $cid, $aid) {
 		$category = Category::findOrFail($cid);
-		
-		$article = new \App\Article();
-        $colomns = array_map(function ($name) {
-            return 'articles.' . $name;
-        }, $article->getTableColumns());
 
-		$article = $category->articles()->select($colomns)->where('article_id', $aid)->firstOrFail();
+		$article = $category->articles()->where('article_id', $aid)->firstOrFail();
 
 
 		//清除缓存

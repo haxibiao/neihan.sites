@@ -63,11 +63,17 @@ class Category extends Model
 
     public function articles()
     {
+        $article = new \App\Article();
+        $colomns = array_map(function ($name) {
+            return 'articles.' . $name;
+        }, $article->getTableColumns());
+        
         return $this->belongsToMany('App\Article')
             ->withPivot('submit')
             ->withTimestamps()
             ->orderBy('pivot_updated_at', 'desc')
-            ->exclude(['body', 'json']);
+            ->exclude(['body', 'json'])
+            ->select($colomns);
     }
 
     public function videoPosts()
