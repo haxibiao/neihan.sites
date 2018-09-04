@@ -36,6 +36,7 @@ class NewLike {
 			}
 			$liked_obj->likes = $liked_obj->likes()
 				->count();
+			$liked_obj->save();
 			////下面代码注释的原因与DestroyedLike类似
 			//$liked_obj->increment('likes');
 			//动态或文章
@@ -51,9 +52,11 @@ class NewLike {
 			$liked_obj->count_likes = $liked_obj
 				->likes()
 				->count();
+			$liked_obj->save();
 			$target_user->count_likes = $target_user
 				->likes()
 				->count();
+			$target_user->save();
 
 			//下面代码注释的原因与DestroyedLike类似
 			//$liked_obj->increment('count_likes');
