@@ -154,6 +154,13 @@ class UserType extends GraphQLType {
 					return $root->categories()->count();
 				},
 			],
+			'count_production' => [
+				'type' => Type::int(),
+				'description' => '合计作品',
+				'resolve' => function ($root){
+					return $root->articles()->count();;
+				},
+			],
 			'balance' => [
 				'type' => Type::float(),
 				'description' => 'balance of user',

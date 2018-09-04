@@ -53,7 +53,7 @@
             <li>
                 <div class="meta-block">
                     <a href="/user/{{ $user->id }}">
-                        <p>{{ $user->count_articles }}</p>
+                        <p>{{ $user->count_production }}</p>
                         作品
                         <i class="iconfont icon-youbian"></i>
                     </a>

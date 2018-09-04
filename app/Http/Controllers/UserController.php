@@ -59,8 +59,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user              = User::findOrFail($id);
+        $user              = User::with('articles')->findOrFail($id);
         $user->followUsers = $user->followingUsers()->count();
+        $user->count_production = $user->articles()->count();
         //作品
         $qb = $user->articles()->with('category')
             ->where('status', '>', 0)
