@@ -38,6 +38,7 @@ class Article extends Model
         'type',
         'video_url',
         'video_id',
+        'slug',
     ];
 
     protected $touches = ['category', 'collection', 'categories'];
