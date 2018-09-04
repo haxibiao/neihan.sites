@@ -39,8 +39,12 @@ Route::get('/search/video', 'SearchController@searchVideos');
 Route::get('/search/categories', 'SearchController@searchCategories');
 Route::get('/search/collections', 'SearchController@searchCollections');
 
+//文章
 Route::get('/drafts', 'ArticleController@drafts');
+//文章 slug
+// Route::get('/article/{slug}', 'ArticleController@showBySlug')->where('slug','\D+');
 Route::resource('/article', 'ArticleController');
+
 
 //管理专题
 Route::get('/category/list', 'CategoryController@list');

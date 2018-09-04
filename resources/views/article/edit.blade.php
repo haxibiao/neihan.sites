@@ -57,6 +57,10 @@
             <tags-input name="keywords" value="{{ $article->keywords }}"></tags-input>
             <small class="text-danger">{{ $errors->first('keywords') }}</small>
         </div>
+        <div class="form-group">
+            {!! Form::label('slug', 'slug(非必填,不能为纯数字)') !!}
+            <input class="form-control" name="slug" value="{{ $article->slug }}"/>
+        </div>
         @endeditor
 
        {{--  <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">

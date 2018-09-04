@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\Category;
+use Validator;
 use App\Http\Requests\ArticleRequest;
 use App\Jobs\DelayArticle;
 use App\Tag;
@@ -84,6 +85,22 @@ class ArticleController extends Controller {
 	 */
 	public function store(ArticleRequest $request) {
 		$user = $request->user();
+
+
+		if($slug = $request->slug){
+			$validator = Validator::make(
+                	$request->input(),
+                	['slug'=>'unique:articles']
+		        );
+		    if($validator->fails()){
+		        dd('当前slug已被使用');
+		    }
+		    if(is_numeric($slug)){
+		    	dd('slug 不能为纯数字');
+		    }
+			
+		}
+
 		$article = new Article($request->all());
 
 		$article->has_pic = !empty($article->image_url);
@@ -122,7 +139,16 @@ class ArticleController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function show($id) {
-		$article = Article::with('user')->with('category')->with('tags')->with('images')->findOrFail($id);
+		if(is_numeric($id)){
+			$article = Article::with('user')->with('category')->with('tags')->with('images')->findOrFail($id);
+		}else{
+			$slug = $id;
+			$route_array = ['create'];
+			if(in_array($slug, $route_array)){
+				return $this->create();
+			}
+			$article = Article::with('user')->with('category')->with('tags')->with('images')->whereSlug($slug)->firstOrFail();
+		}
 
 		//type is video redirect
 		if ($article->type == 'video') {
@@ -185,6 +211,21 @@ class ArticleController extends Controller {
 	 */
 	public function update(Request $request, $id) {
 		$article = Article::findOrFail($id);
+
+		if($slug = $request->slug){
+			$validator = Validator::make(
+                	$request->input(),
+                	['slug'=>'unique:articles']
+		        );
+		    if($validator->fails()){
+		        dd('当前slug已被使用');
+		    }
+		    if(is_numeric($slug)){
+		    	dd('slug 不能为纯数字');
+		    }
+			
+		}
+
 		$article->update($request->all());
 		$article->image_url = $this->get_primary_image();
 		$article->has_pic = !empty($article->image_url);
@@ -250,6 +291,46 @@ class ArticleController extends Controller {
 			}
 		}
 		$article->tags()->sync($tag_ids);
+	}
+
+	public function showBySlug($slug)
+	{
+		dd($slug);
+		$route_array = ['create'];
+		if(in_array($slug, $route_array)){
+			return $this->create();
+		}
+		$article = Article::whereSlug($slug)->firstOrFail();
+
+		if (($article->status < 1) && (!canEdit($article))) {
+			return abort(404);
+		}
+
+		//type is video redirect
+		if ($article->type == 'video') {
+			return redirect('/video/' . $article->video_id);
+		}
+
+		if ($article->category && $article->category->parent_id) {
+			$data['parent_category'] = $article->category->parent()->first();
+		}
+
+		//记录用户浏览记录
+		$article->recordBrowserHistory();
+
+		//parse video and image, etc...
+		$article->body = $article->parsedBody();
+
+		$data['recommended'] = Article::whereIn('category_id', $article->categories->pluck('id'))
+			->where('id', '<>', $article->id)
+			->where('status', 1)
+			->orderBy('updated_at', 'desc')
+			->take(10)
+			->get();
+
+		return view('article.show')
+			->withArticle($article)
+			->withData($data);
 	}
 
 	public function get_primary_image() {
