@@ -295,7 +295,14 @@ class CategoryController extends Controller {
 
 	public function approveCategory(Request $request, $cid, $aid) {
 		$category = Category::findOrFail($cid);
-		$article = $category->requestedInMonthArticles()->where('article_id', $aid)->firstOrFail();
+		
+		$article = new \App\Article();
+        $colomns = array_map(function ($name) {
+            return 'articles.' . $name;
+        }, $article->getTableColumns());
+
+		$article = $category->articles()->select($colomns)->where('article_id', $aid)->firstOrFail();
+
 
 		//清除缓存
 		foreach ($category->admins as $admin) {
