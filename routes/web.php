@@ -43,7 +43,7 @@ Route::get('/search/collections', 'SearchController@searchCollections');
 Route::get('/drafts', 'ArticleController@drafts');
 //文章 slug
 // Route::get('/article/{slug}', 'ArticleController@showBySlug')->where('slug','\D+');
-Route::resource('/article', 'ArticleController');
+Route::resource('/article', 'ArticleController');  
 
 
 //管理专题

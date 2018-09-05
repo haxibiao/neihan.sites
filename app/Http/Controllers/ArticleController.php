@@ -86,7 +86,6 @@ class ArticleController extends Controller {
 	public function store(ArticleRequest $request) {
 		$user = $request->user();
 
-
 		if($slug = $request->slug){
 			$validator = Validator::make(
                 	$request->input(),
@@ -128,7 +127,9 @@ class ArticleController extends Controller {
 		$user->count_articles = $user->articles()->count();
 		$user->count_words = $user->articles()->sum('count_words');
 		$user->save();
-
+		if(!empty($article->slug)){
+			return redirect()->to('/article/' . $article->slug);
+		}
 		return redirect()->to('/article/' . $article->id);
 	}
 
@@ -139,16 +140,12 @@ class ArticleController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function show($id) {
-		if(is_numeric($id)){
-			$article = Article::with('user')->with('category')->with('tags')->with('images')->findOrFail($id);
-		}else{
-			$slug = $id;
-			$route_array = ['create'];
-			if(in_array($slug, $route_array)){
-				return $this->create();
-			}
-			$article = Article::with('user')->with('category')->with('tags')->with('images')->whereSlug($slug)->firstOrFail();
-		}
+		//此处id为中文代表slug,且$id不会是create.
+		$article = Article::with(['user','category','tags','images'])
+			->where(function ($query) use ($id) {
+				is_numeric($id) ? $query->whereId($id): $query->whereSlug($id);
+            })
+            ->firstOrFail();
 
 		//type is video redirect
 		if ($article->type == 'video') {
@@ -245,6 +242,9 @@ class ArticleController extends Controller {
 		//tags
 		$this->save_article_tags($article);
 
+		if(!empty($article->slug)){
+			return redirect()->to('/article/' . $article->slug);
+		}
 		return redirect()->to('/article/' . $article->id);
 	}
 
@@ -292,46 +292,46 @@ class ArticleController extends Controller {
 		}
 		$article->tags()->sync($tag_ids);
 	}
+	//下面代码目前没用到，肖新明如果觉得不需要就删除吧
+	// public function showBySlug($slug)
+	// {
+	// 	dd($slug);
+	// 	$route_array = ['create'];
+	// 	if(in_array($slug, $route_array)){
+	// 		return $this->create();
+	// 	}
+	// 	$article = Article::whereSlug($slug)->firstOrFail(); 
 
-	public function showBySlug($slug)
-	{
-		dd($slug);
-		$route_array = ['create'];
-		if(in_array($slug, $route_array)){
-			return $this->create();
-		}
-		$article = Article::whereSlug($slug)->firstOrFail();
+	// 	if (($article->status < 1) && (!canEdit($article))) {
+	// 		return abort(404);
+	// 	}
 
-		if (($article->status < 1) && (!canEdit($article))) {
-			return abort(404);
-		}
+	// 	//type is video redirect
+	// 	if ($article->type == 'video') {
+	// 		return redirect('/video/' . $article->video_id);
+	// 	}
 
-		//type is video redirect
-		if ($article->type == 'video') {
-			return redirect('/video/' . $article->video_id);
-		}
+	// 	if ($article->category && $article->category->parent_id) {
+	// 		$data['parent_category'] = $article->category->parent()->first();
+	// 	}
 
-		if ($article->category && $article->category->parent_id) {
-			$data['parent_category'] = $article->category->parent()->first();
-		}
+	// 	//记录用户浏览记录
+	// 	$article->recordBrowserHistory();
 
-		//记录用户浏览记录
-		$article->recordBrowserHistory();
+	// 	//parse video and image, etc...
+	// 	$article->body = $article->parsedBody();
 
-		//parse video and image, etc...
-		$article->body = $article->parsedBody();
+	// 	$data['recommended'] = Article::whereIn('category_id', $article->categories->pluck('id'))
+	// 		->where('id', '<>', $article->id)
+	// 		->where('status', 1)
+	// 		->orderBy('updated_at', 'desc')
+	// 		->take(10)
+	// 		->get();
 
-		$data['recommended'] = Article::whereIn('category_id', $article->categories->pluck('id'))
-			->where('id', '<>', $article->id)
-			->where('status', 1)
-			->orderBy('updated_at', 'desc')
-			->take(10)
-			->get();
-
-		return view('article.show')
-			->withArticle($article)
-			->withData($data);
-	}
+	// 	return view('article.show')
+	// 		->withArticle($article)
+	// 		->withData($data);
+	// }
 
 	public function get_primary_image() {
 		if (request('primary_image')) {
