@@ -55,13 +55,7 @@ class approveArticleMutation extends Mutation {
 		$category = Category::findOrFail($cid);
 		$article = Article::findOrFail($aid);
 
-		//更新投稿请求的状态
-		$colomns = array_map(function ($name) {
-			return 'articles.' . $name;
-		}, $article->getTableColumns());
-
 		$article = $category->newRequestArticles()
-			->select($colomns)
 			->wherePivot('article_id', $article->id)->first();
 		if (!$article) {
 			throw new \Exception('文章没在最新投稿列表了');
