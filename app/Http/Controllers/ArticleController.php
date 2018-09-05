@@ -212,7 +212,7 @@ class ArticleController extends Controller {
 		if($slug = $request->slug){
 			$validator = Validator::make(
                 	$request->input(),
-                	['slug'=>'unique:articles']
+                	['slug'=>'unique:articles,slug,' . $article->id]//校验时忽略当前文章
 		        );
 		    if($validator->fails()){
 		        dd('当前slug已被使用');
@@ -220,7 +220,7 @@ class ArticleController extends Controller {
 		    if(is_numeric($slug)){
 		    	dd('slug 不能为纯数字');
 		    }
-			
+			 
 		}
 
 		$article->update($request->all());
