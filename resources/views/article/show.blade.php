@@ -37,10 +37,15 @@
                 <img alt="{{ $image->title }}" src="{{ $image->url() }}"/>
               @endforeach
             @endif
+
+            @if(!empty($article->source_url))
+            <p class="pull-right small"><a href="{{ $article->source_url }}">原文链接</a></p>
+            @endif
             
           </div>
           {{-- 底部注释 --}}
           @include('article.parts.foot')
+
           {{-- 作者文章翻页 --}}
          {{--  <div class="page-turning">
             <div class="prev">
