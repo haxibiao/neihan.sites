@@ -98,12 +98,12 @@ class QcloudUtils
     public static function processVodFile($fileId)
     {
         $params = [
-            'fileId'   => $fileId,
-            'snapshotByTimeOffset.definition' => 10,
+            'fileId'                            => $fileId,
+            'snapshotByTimeOffset.definition'   => 10,
             'snapshotByTimeOffset.timeOffset.1' => 1000,
-            'coverBySnapshot.definition' => 10,
-            'coverBySnapshot.positionType' => 'Time',
-            'coverBySnapshot.position' => 2, // 第2秒
+            'coverBySnapshot.definition'        => 10,
+            'coverBySnapshot.positionType'      => 'Time',
+            'coverBySnapshot.position'          => 2, // 第2秒
             // 'sampleSnapshot.definition' => 20043,
             // 'animatedGraphics.definition' => 20000,
             // 'animatedGraphics.startTime' => 3,
@@ -112,32 +112,31 @@ class QcloudUtils
         return self::retryVodApi('ProcessFile', $params);
     }
 
-    public static function makeCoverAndSnapshots($fileId)
+    public static function makeCoverAndSnapshots($fileId, $duration = null)
     {
-        $params = [
-            'fileId'   => $fileId,
+        $maxDuration = $duration ?: 9;
+        $timeOffsets = [];
+        for ($d = 1; $d <= $maxDuration; $d++) {
+            $timeOffsets['snapshotByTimeOffset.timeOffset.' . $d] = $d * 1000;
+        }
+        $params = array_merge([
+            'fileId'                          => $fileId,
             'snapshotByTimeOffset.definition' => 10, //截取9张正常缩放的图片
-            'snapshotByTimeOffset.timeOffset.1' => 1000,
-            'snapshotByTimeOffset.timeOffset.2' => 2000,
-            'snapshotByTimeOffset.timeOffset.3' => 3000,
-            'snapshotByTimeOffset.timeOffset.4' => 4000,
-            'snapshotByTimeOffset.timeOffset.5' => 5000,
-            'snapshotByTimeOffset.timeOffset.6' => 6000,
-            'snapshotByTimeOffset.timeOffset.7' => 7000,
-            'snapshotByTimeOffset.timeOffset.8' => 8000,
-            'snapshotByTimeOffset.timeOffset.9' => 9000,
-            'coverBySnapshot.definition' => 10, //截取封面
-            'coverBySnapshot.positionType' => 'Time',
-            'coverBySnapshot.position' => 2, // 第2秒
-        ];
+        ],
+            $timeOffsets,
+            [
+                'coverBySnapshot.definition'   => 10, //截取封面
+                'coverBySnapshot.positionType' => 'Time',
+                'coverBySnapshot.position'     => 2, // 第2秒
+            ]);
         return self::retryVodApi('ProcessFile', $params);
     }
 
     public static function makeLanscapeCoverAndSnapshots($fileId)
     {
         $params = [
-            'fileId'   => $fileId,
-            'snapshotByTimeOffset.definition' => 20080, //这个模板设置为截图300*200， 手机视频肯定被压扁了
+            'fileId'                            => $fileId,
+            'snapshotByTimeOffset.definition'   => 20080, //这个模板设置为截图300*200， 手机视频肯定被压扁了
             'snapshotByTimeOffset.timeOffset.1' => 1000,
             'snapshotByTimeOffset.timeOffset.2' => 2000,
             'snapshotByTimeOffset.timeOffset.3' => 3000,
@@ -147,9 +146,9 @@ class QcloudUtils
             'snapshotByTimeOffset.timeOffset.7' => 7000,
             'snapshotByTimeOffset.timeOffset.8' => 8000,
             'snapshotByTimeOffset.timeOffset.9' => 9000,
-            'coverBySnapshot.definition' => 10,
-            'coverBySnapshot.positionType' => 'Time',
-            'coverBySnapshot.position' => 2, // 第2秒
+            'coverBySnapshot.definition'        => 10,
+            'coverBySnapshot.positionType'      => 'Time',
+            'coverBySnapshot.position'          => 2, // 第2秒
         ];
         return self::retryVodApi('ProcessFile', $params);
     }
@@ -157,10 +156,10 @@ class QcloudUtils
     public static function genGif($fileId)
     {
         $params = [
-            'fileId'   => $fileId,
+            'fileId'                        => $fileId,
             'animatedGraphics.definition.2' => 20000,
-            'animatedGraphics.startTime' => 0,
-            'animatedGraphics.endTime' => 2,
+            'animatedGraphics.startTime'    => 0,
+            'animatedGraphics.endTime'      => 2,
         ];
         return self::retryVodApi('ProcessFile', $params);
     }

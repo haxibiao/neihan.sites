@@ -94,9 +94,13 @@ class VideoController extends Controller
             $video->title   = $request->videoName;
             $video->save();
 
+            //get duration...
+            $video->syncVodProcessResult();
+
+            $duration = $video->duration > 9 ? 9 : $video->duration;
             //调用 vod api , 开始转码，水印，生成截图（非300*200，需要后面UI处理显示效果） ...
             //现在无需转码了,只需要完成截图就好
-            QcloudUtils::makeCoverAndSnapshots($request->fileId);
+            QcloudUtils::makeCoverAndSnapshots($request->fileId, $duration);
             return $video;
         }
 
@@ -146,13 +150,13 @@ class VideoController extends Controller
         foreach ($videos as $video) {
             $videoIds[] = $video->article->id;
         }
-        if ($request->get('stick')){
+        if ($request->get('stick')) {
             $data = Article::whereIn('id', $videoIds);
-        }else{
+        } else {
             $data = Article::where('type', 'video')->whereStatus(1)->orderByDesc('updated_at');
-            if(!empty($videoIds)){
-                 $data = Article::where('type', 'video')->whereStatus(1)->whereNotIn('id',$videoIds)
-                 ->orderByDesc('updated_at');
+            if (!empty($videoIds)) {
+                $data = Article::where('type', 'video')->whereStatus(1)->whereNotIn('id', $videoIds)
+                    ->orderByDesc('updated_at');
             }
         }
         $data = $data->paginate(9);

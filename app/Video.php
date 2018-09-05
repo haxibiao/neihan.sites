@@ -99,8 +99,7 @@ class Video extends Model
                 !empty($res['snapshotByTimeOffsetInfo']['snapshotByTimeOffsetList'])) {
                 $covers = [];
                 foreach ($res['snapshotByTimeOffsetInfo']['snapshotByTimeOffsetList'] as $snapInfo) {
-                    if ($snapInfo['definition'] == 10)
-                    {
+                    if ($snapInfo['definition'] == 10) {
                         foreach ($snapInfo['picInfoList'] as $urlArr) {
                             $url      = $urlArr["url"];
                             $covers[] = get_secure_url($url);
@@ -130,24 +129,35 @@ class Video extends Model
                 $this->setJsonData('video_urls', $video_urls);
             }
             //视频的宽和高
-            if( !empty($res['metaData']) && !empty($res['metaData']['videoStreamList']) ){
-                $videoStreamList = $res['metaData']['videoStreamList'][0];
-                $height = $videoStreamList['height'];
-                $width  = $videoStreamList['width'];
-                $this->setJsonData('height', $height);
-                $this->setJsonData('width', $width);
-            }
-            //同步到封面，就发布成功
-            if (!empty($this->cover)) {
-                $this->status = 1;
-                $this->recordAction();
-                $this->save();
-                //关联的视频动态发布出去
-                $article = $this->article;
-                if ($article) {
-                    $article->status = 1;
-                    $article->save();
+            if (!empty($res['metaData'])) {
+
+                //duration
+                $this->duration = $res['metaData']['duration'];
+
+                if (!empty($res['metaData']['videoStreamList'])) {
+                    $videoStreamList = $res['metaData']['videoStreamList'][0];
+                    $height          = $videoStreamList['height'];
+                    $width           = $videoStreamList['width'];
+                    $this->setJsonData('height', $height);
+                    $this->setJsonData('width', $width);
                 }
+            }
+            $this->save();
+
+            //关联的视频动态发布出去
+            if ($article = $this->article) {
+                //同步封面
+                $article->image_url = $this->cover;
+                $article->status    = 1;
+                $article->save();
+
+                //同步title
+                $this->title  = $article->title;
+                $this->status = 1;
+                $this->save();
+
+                //action
+                $this->recordAction();
             }
         }
     }
