@@ -114,11 +114,7 @@ class CategoryType extends GraphQLType {
 				'description' => 'category related articles, including newly requested ...',
 				'resolve' => function ($root, $args, $context, ResolveInfo $info) {
 					//解决数据库ambiguous column错误
-					$article = new \App\Article();
-					$colomns = array_map(function ($name) {
-						return 'articles.' . $name;
-					}, $article->getTableColumns());
-					$qb = $root->publishedArticles()->select($colomns);
+					$qb = $root->publishedArticles();
 					if (isset($args['filter']) && $args['filter'] == 'PENDING') {
 						$qb = $root->newRequestArticles()->select($colomns);
 					}
@@ -143,11 +139,7 @@ class CategoryType extends GraphQLType {
 				'type' => GraphQL::type('Article'),
 				'description' => 'latest article of category',
 				'resolve' => function ($root, $args) {
-					$article = new \App\Article();
-					$colomns = array_map(function ($name) {
-						return 'articles.' . $name;
-					}, $article->getTableColumns());
-					return $root->articles()->select($colomns)->first();
+					return $root->articles()->first();
 				},
 			],
 			'latest_follower' => [

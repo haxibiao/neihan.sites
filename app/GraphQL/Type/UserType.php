@@ -271,12 +271,8 @@ class UserType extends GraphQLType {
 					if (isset($args['filter']) && $args['filter'] == 'NEW_REQUESTED') {
 						$articles = [];
 
-						$article = new \App\Article();
-						$colomns = array_map(function ($name) {
-							return 'articles.' . $name;
-						}, $article->getTableColumns());
 						foreach ($root->adminCategories as $category) {
-							$result = $category->newRequestArticles()->select($colomns)->get();
+							$result = $category->newRequestArticles()->get();
 							foreach ($result as $article) {
 								$articles[] = $article;
 							}

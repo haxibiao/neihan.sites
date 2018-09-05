@@ -53,11 +53,7 @@ class FollowType extends GraphQLType {
 				'type' => Type::string(),
 				'description' => 'latest create article title',
 				'resolve' => function ($root, $args) {
-					$article = new \App\Article();
-					$colomns = array_map(function ($name) {
-						return 'articles.' . $name;
-					}, $article->getTableColumns());
-					$latest_article = $root->followed->publishedArticles()->select($colomns)->latest()->first();
+					$latest_article = $root->followed->publishedArticles()->latest()->first();
 					if (empty($latest_article)) {
 						return null;
 					}
