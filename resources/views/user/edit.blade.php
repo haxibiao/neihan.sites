@@ -34,6 +34,11 @@
 		        {!! Form::select('is_editor',['0'=>'不是', '1'=>'是'], $user->is_editor, ['id' => 'is_editor', 'class' => 'form-control', 'required' => 'required']) !!}
 		        <small class="text-danger">{{ $errors->first('is_editor') }}</small>
 		    </div>
+		    <div class="form-group{{ $errors->has('is_signed') ? ' has-error' : '' }}">
+		        {!! Form::label('is_signed', '是签约作者?') !!}
+		        {!! Form::select('is_signed',['0'=>'不是', '1'=>'是'], $user->is_signed, ['id' => 'is_signed', 'class' => 'form-control', 'required' => 'required']) !!}
+		        <small class="text-danger">{{ $errors->first('is_signed') }}</small>
+		    </div>
 		    @endif
 		
 		    <div class="btn-group pull-right">

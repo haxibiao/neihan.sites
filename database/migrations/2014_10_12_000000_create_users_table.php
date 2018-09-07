@@ -28,7 +28,8 @@ class CreateUsersTable extends Migration
             $table->integer('status')->default(0)->index();
 
             //seo
-            $table->boolean('is_seoer')->default(0)->index();
+            $table->boolean('is_signed')->default(0)->index();  //是否签约作者
+            // $table->boolean('is_seoer')->default(0)->index();
             $table->text('json')->nullable();
 
             //count

@@ -2,6 +2,12 @@
 
 @section('content')
 	<div class="container">
+        <ol class="breadcrumb">
+            <li>
+                <a href="/admin">后台管理</a>
+            </li>
+            <li class="active">友情链接</li>
+        </ol>
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h3 class="panel-title">友情链接</h3>
