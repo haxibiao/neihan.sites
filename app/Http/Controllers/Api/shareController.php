@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ShareController extends Controller
 {
@@ -31,11 +31,21 @@ class ShareController extends Controller
         // $data['share_file_dir'] = $share_file_dir;
         // return $share_file_dir;
         // 这种方式存在问题
-        if($request->get('url'))
-        {
-            $url = $request->get('url');
+        if ($url = $request->get('url')) {
+            $url = $this->linkUrlDecode($url);
             return QrCode::size(400)->generate($url);
         }
         return QrCode::size(400)->generate('https://www.ainicheng.com/');
+    }
+
+    public function linkUrlDecode($url)
+    {
+        $cs  = unpack('C*', $url);
+        $len = count($cs);
+        $newUrl = '';
+        for ($i = 1; $i <= $len; $i++) {
+            $newUrl .= $cs[$i] > 127 ? '%' . strtoupper(dechex($cs[$i])) : $url{$i - 1};
+        }
+        return $newUrl;
     }
 }

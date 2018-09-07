@@ -22,7 +22,27 @@ class AdminController extends Controller
 
     public function users()
     {
-        $users = User::orderBy('id', 'desc')->paginate(20);
+        $users = User::orderBy('id', 'desc')->paginate(50);
+        return view('admin.users')->withUsers($users);
+    }
+
+    public function usersSearch()
+    {
+        // dd(request()->all());
+        $query = User::orderBy('id', 'desc');
+        if (!empty($name = request('name_email'))) {
+            $query = $query->orWhere('name', 'like', "%$name%")->orWhere('email', 'like', "%$name%");
+        }
+        if (request('is_admin')) {
+            $query = $query->where('is_admin', 1);
+        }
+        if (request('is_editor')) {
+            $query = $query->where('is_editor', 1);
+        }
+        if (request('is_signed')) {
+            $query = $query->where('is_signed', 1);
+        }
+        $users = $query->paginate(50);
         return view('admin.users')->withUsers($users);
     }
 
@@ -147,7 +167,7 @@ class AdminController extends Controller
     public function deleteStickVideo()
     {
         $video_id = request()->get('video_id');
-        $items      = [];
+        $items    = [];
         if (Storage::exists("stick_videos")) {
             $json  = Storage::get('stick_videos');
             $items = json_decode($json, true);
@@ -169,11 +189,11 @@ class AdminController extends Controller
         Storage::put("stick_videos", $json);
         return redirect()->back();
     }
-    
+
     public function deleteStickVideos()
     {
         $video_id = request()->get('video_id');
-        $items      = [];
+        $items    = [];
         if (Storage::exists("stick_videos")) {
             $json  = Storage::get('stick_videos');
             $items = json_decode($json, true);
@@ -212,7 +232,7 @@ class AdminController extends Controller
                 array_splice($items, $index, 1);
                 break;
             }
-        } 
+        }
 
         //这里重新装车一遍,否则容易造成全部删除的情况
         $left_items = $items;
@@ -298,13 +318,13 @@ class AdminController extends Controller
         $type   = $request->type;
 
         switch ($type) {
-            case 'pandaNumber': 
-                $appid = config('seo.'.get_domain_key().'.articlePush.pandaNumber.appid');
-                $token = config('seo.'.get_domain_key().'.articlePush.pandaNumber.token');
+            case 'pandaNumber':
+                $appid = config('seo.' . get_domain_key() . '.articlePush.pandaNumber.appid');
+                $token = config('seo.' . get_domain_key() . '.articlePush.pandaNumber.token');
                 $api   = 'http://data.zz.baidu.com/urls?appid=' . $appid . '&token=' . $token . '&type=realtime';
                 break;
             case 'baiduNumber':
-                $token = config('seo.'.get_domain_key().'.articlePush.baiduNumber.token');
+                $token = config('seo.' . get_domain_key() . '.articlePush.baiduNumber.token');
                 $api   = 'http://data.zz.baidu.com/urls?site=' . env('APP_URL') . '&token=' . $token;
                 break;
             default:
@@ -329,7 +349,7 @@ class AdminController extends Controller
 
         curl_setopt_array($ch, $options);
         $result = curl_exec($ch);
-        if(str_contains($result, "success")) {
+        if (str_contains($result, "success")) {
             return "成功";
         }
         return $result;

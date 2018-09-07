@@ -1,7 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-	<div class="container">      
+	<div class="container">
+		<ol class="breadcrumb">
+			<li>
+				<a href="/admin">后台管理</a>
+			</li>
+			<li class="active">SEO管理</li>
+		</ol>      
 		<div class="col-md-8 col-md-offset-2">
 
 			@if(session('saved'))

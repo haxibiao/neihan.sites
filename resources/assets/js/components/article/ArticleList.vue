@@ -15,7 +15,8 @@
 	    	  </a> 
 	    	  <div class="info">
 	    	    <a class="nickname" :target="_blank" :href="'/user/'+article.user.id">{{ article.user.name }}</a>
-	    	    <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="爱你城签约作者" alt="">
+	    	    <img v-if="article.user.is_signed" class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="签约作者" alt="签约作者">
+	    	    <img v-if="article.user.is_editor" class="badge-icon" src="/images/editor.png" data-toggle="tooltip" data-placement="top" title="小编" alt="小编">
 	    	    <span class="time">{{ article.time_ago }}</span>
 	    	  </div>
 	    	</div>

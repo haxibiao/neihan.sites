@@ -98,6 +98,8 @@ Route::resource('/video', 'VideoController');
 Route::get('/admin', 'AdminController@index');
 //管理用户
 Route::get('/admin/users', 'AdminController@users');
+Route::get('/admin/users-search', 'AdminController@usersSearch')->name('admin.users_search');
+
 //seo config
 Route::get('/admin/seo-config', 'AdminController@seoConfig');
 Route::post('/admin/save-seo-config', 'AdminController@saveSeoConfig')->name('admin.save_seo_config');

@@ -28,7 +28,7 @@ class User extends Authenticatable
         'introduction',
         'website',
         'is_editor',
-        'is_seoer',
+        'is_signed',
         'seo_meta',
         'seo_push',
         'seo_tj',
