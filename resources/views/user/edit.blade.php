@@ -1,7 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-	<div class="container">      
+	<div class="container"> 
+        <ol class="breadcrumb">
+            <li>
+                <a href="/admin">后台管理</a>
+            </li>
+            <li class="active">用户编辑</li>
+        </ol>
+
 		{!! Form::open(['method' => 'put', 'route' => ['user.update', $user->id], 'class' => 'form-horizontal']) !!}
 			
 		    <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
