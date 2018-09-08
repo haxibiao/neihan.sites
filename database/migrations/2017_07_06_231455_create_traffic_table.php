@@ -38,15 +38,15 @@ class CreateTrafficTable extends Migration
             $table->integer('article_id')->nullable();
             $table->string('category')->nullable();
 
-            $table->string('date')->nullable()->index();
-            $table->string('year')->nullable()->index();
-            $table->string('month')->nullable()->index();
-            $table->string('day')->nullable()->index();
-            $table->string('dayOfWeek')->nullable()->index();
-            $table->string('dayOfYear')->nullable()->index();
-            $table->string('daysInMonth')->nullable()->index();
-            $table->string('weekOfMonth')->nullable()->index();
-            $table->string('weekOfYear')->nullable()->index();
+            $table->integer('date')->nullable()->index();
+            $table->integer('year')->nullable()->index();
+            $table->integer('month')->nullable()->index();
+            $table->integer('day')->nullable()->index();
+            $table->integer('dayOfWeek')->nullable()->index();
+            $table->integer('dayOfYear')->nullable()->index();
+            $table->integer('daysInMonth')->nullable()->index();
+            $table->integer('weekOfMonth')->nullable()->index();
+            $table->integer('weekOfYear')->nullable()->index();
             $table->string('path')->nullable();
             $table->string('referer', 2083)->nullable();
             $table->string('referer_domain')->nullable();

@@ -24,8 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('sitemap:refresh')
-                 ->daily();
+        $schedule->command('traffic:clean')->weekly();
+        $schedule->command('sitemap:refresh')->daily();
         $schedule->command('video:process')->everyMinute();
     }
 
