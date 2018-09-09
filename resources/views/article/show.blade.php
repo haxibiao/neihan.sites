@@ -105,7 +105,7 @@
             <a data-target=".modal-category-contribute" data-toggle="modal" class="category-label">
               <span class="name">＋ 收入我的专题</span>
             </a>
-            @foreach($article->categories as $category) 
+            @foreach($article->categories->unique() as $category) 
             <a href="/{{ $category->name_en }}" class="category-label" title="{{ $category->id }}:{{ $category->name }}">
               <img src="{{ $category->smallLogo() }}" alt="{{ $category->id }}:{{ $category->name }}">
               <span class="name">{{ $category->name }}</span>

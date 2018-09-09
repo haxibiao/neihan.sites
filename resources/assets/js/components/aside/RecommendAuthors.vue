@@ -32,6 +32,14 @@ export default {
 
   props:['isLogin'],
 
+  computed:{
+    apiUrl(){
+      var api = '/api/user/recommend';
+      var page = this.page;
+      var api_url = api.indexOf("?") !== -1 ? api + "&page=" + page : api + "?page=" + page;
+      return api_url;
+    }
+  },
 
   mounted() {
   	this.fetchData();
@@ -48,9 +56,13 @@ export default {
 		    api= window.tokenize(vm.apiUrl);
       }
   		window.axios.get(api).then(function(response){
-  			vm.users = response.data;
+  			vm.users = response.data.data
+        if(response.data.last_page == 1){
+          vm.page = 1;
+        }
   			$('.recommend_author ul').fadeIn();
   		});
+      vm.page++;
   	},
   	toggleFollow(user) {
       var _this = this;
@@ -69,7 +81,7 @@ export default {
     return {
     	users:[],
       counter:1,
-      apiUrl:'/api/user/recommend'
+      page:1
     }
   }
 }

@@ -9,6 +9,7 @@ use App\Traffic;
 use App\User;
 use App\Video;
 use Carbon\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -83,13 +84,28 @@ class UserController extends Controller {
 
 	public function recommend(Request $request) {
 		$page_size = 5;
-		$page = rand(1, ceil(User::count() / $page_size));
+		
 		if (Auth::guard('api')->check()) {
-			$users = User::where('id', '<>', Auth::guard('api')->user()->id)->orderBy('id', 'desc');
-		} else {
-			$users = User::orderBy('id', 'desc');
+			$users = User::whereIn('id',function($query){
+				$query->select('id')
+				->where('is_editor',1)->orWhere('is_signed',1);
+			})->where('id','!=',Auth::guard('api')->user()->id);
+		}else{
+			$users = User::where('is_editor',1)->orWhere('is_signed',1);
 		}
-		$users = $users->skip(($page - 1) * $page_size)->take($page_size)->get();
+
+		$users = $users->orderByDesc('count_words')->orderByDesc('count_likes')
+			->paginate($page_size);
+
+		//当编辑和签约作者不足的时候 填充普通用户
+		if($num = $page_size - $users->count()){
+			$page = $request->get('page');
+			$recommendUser = User::orderByDesc('count_words')
+			->orderByDesc('count_likes')->paginate($num);
+			$users = $users->merge($recommendUser);
+			$users = new LengthAwarePaginator($users,$users->count(),$users->count(),$page);
+		}
+
 		foreach ($users as $user) {
 			$user->fillForJs();
 			if (Auth::guard('api')->check()) {
