@@ -99,9 +99,10 @@ class EnvRefresh extends Command
                             ];
                         }
                     }
+                    $this->info("updating env file with $db_host settings ...");
                 }
             } else {
-                $this->error("--db_hos is needed while refresh for environments other like local");
+                $this->error("--db_host and --db_database are must options");
                 return;
             }
             $changes = array_merge($db_changes, [
@@ -147,7 +148,8 @@ class EnvRefresh extends Command
         $newContent = implode('', $newLines);
         $put_size   = @file_put_contents($envFile, $newContent);
         if ($put_size) {
-            $this->info('update env key value success');
+            $changes_count = count($data);
+            $this->info("update env $changes_count value success");
         }
     }
 }
