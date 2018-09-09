@@ -4,18 +4,9 @@ require_once 'commands.php';
 require_once 'settings.php';
 
 $git_push_to_web = 'git push origin master';
-$git_push_to_staging = 'git push staging';
+$git_push_to_staging = 'git push staging staging';
 $www = '/data/www/' . $domain;
 $staging_www = '/data/www/staging.' . $domain;
-$remote = 'root@' . $domain . ':/data/www/' . $domain;
-
-$hk001 = 'root@hk001';
-$gz001 = 'root@gz001';
-$gz002 = 'root@gz002';
-$gz003 = 'root@gz003';
-$gz004 = 'root@gz004';
-$gz005 = 'root@gz005';
-$gz006 = 'root@gz006';
 $web   = 'root@' . $domain;
 
 $git_pull_force = <<<EOT
