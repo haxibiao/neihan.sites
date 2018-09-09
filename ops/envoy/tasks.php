@@ -62,6 +62,7 @@ rsync -e ssh -P $www/public/js/* root@$domain:$staging_www/public/js/
 rsync -e ssh -P $www/public/mix-manifest.json root@$domain:$staging_www/public/
 EOT;
 
+$domain_key = str_replace(".com", "", $domain);
 $sync_etc_confs = <<<EOT
 cp -rf /data/www/$domain/ops/etc/* /etc/
 
@@ -72,7 +73,7 @@ php artisan queue:restart
 echo 'supervisor restart ...'
 supervisorctl reread
 supervisorctl update
-supervisorctl start laravel-worker-ainicheng:*
+supervisorctl start laravel-worker-$domain_key:*
 
 echo 'cron restart ...'
 service cron restart
