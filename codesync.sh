@@ -12,8 +12,8 @@ sudo /bin/cp -rf /data/www/ainicheng.com/resources/views /data/www/$1.com/resour
 sudo /bin/cp -rf /data/www/ainicheng.com/resources/assets/js /data/www/$1.com/resources/assets/
 sudo /bin/cp -rf /data/www/ainicheng.com/routes /data/www/$1.com/
 
-echo "sync fix data"
-sudo /bin/cp -rf /data/www/ainicheng.com/ops/commands/FixData.php /data/www/$1.com/ops/commands/
+echo "sync ops"
+sudo /bin/cp -rf /data/www/ainicheng.com/ops/envoy/tasks.php /data/www/$1.com/ops/envoy/
 
 echo "sync composer, package.json"
 sudo /bin/cp -rf /data/www/ainicheng.com/composer.* /data/www/$1.com/
