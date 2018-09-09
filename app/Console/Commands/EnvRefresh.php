@@ -11,14 +11,14 @@ class EnvRefresh extends Command
      *
      * @var string
      */
-    protected $signature = 'env:refresh {--prod} {--staging} {--dev}';
+    protected $signature = 'env:refresh {--db_host=} {--db_database=} {--env=}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'refresh .env';
+    protected $description = 'refresh .env file, db_host is must to pass';
 
     /**
      * Create a new command instance.
@@ -37,21 +37,13 @@ class EnvRefresh extends Command
      */
     public function handle()
     {
-        if ($this->option('dev')) {
-            return $this->refresh_dev();
+        if ($env = $this->option('env')) {
+            return $this->$env();
         }
-
-        if ($this->option('staging')) {
-            return $this->refresh_staging();
-        }
-
-        if ($this->option('prod')) {
-            return $this->refresh_prod();
-        }
-        return $this->refresh_local();
+        return $this->local();
     }
 
-    public function refresh_local()
+    public function local()
     {
         file_put_contents(base_path('.env'), file_get_contents(base_path('.env.local')));
         $this->info('clear local env BUGSNAG_API_KEY ...');
@@ -60,59 +52,65 @@ class EnvRefresh extends Command
         ]);
     }
 
-    public function refresh_dev()
-    {
-        $this->info('refreshing dev env ...');
-        file_put_contents(base_path('.env'), file_get_contents(base_path('.env.local')));
-        $this->updateWebConfig();
-
-        //fix env config for staging
-        $this->updateEnv([
-            'APP_ENV'   => 'dev',
-            'APP_DEBUG' => 'true',
-            'DB_HOST'   => env('DB_SERVER_DEV'),
-        ]);
-    }
-
-    public function refresh_staging()
+    public function staging()
     {
         $this->info('refreshing staging env ...');
         file_put_contents(base_path('.env'), file_get_contents(base_path('.env.local')));
-        $this->updateWebConfig();
+        $db_host = $this->option('db_host');
+        $this->updateWebConfig($db_host);
 
         //fix env config for staging
         $this->updateEnv([
             'APP_ENV'   => 'staging',
             'APP_DEBUG' => 'true',
-            'DB_HOST'   => env('DB_SERVER_STAGING'),
+            'DB_HOST'   => $db_host,
+            'DB_DATABASE' => $this->option('db_database')
         ]);
     }
 
-    public function refresh_prod()
+    public function prod()
     {
         file_put_contents(base_path('.env'), file_get_contents(base_path('.env.local')));
-        $this->updateWebConfig();
+        $db_host = $this->option('db_host');
+        $this->updateWebConfig($db_host);
 
         //fix env config for prod
         $this->updateEnv([
             'APP_ENV'   => 'prod',
             'APP_DEBUG' => 'false',
-            'DB_HOST'   => env('DB_SERVER'),
+            'DB_HOST'   => $db_host,
+            'DB_DATABASE' => $this->option('db_database')
         ]);
     }
 
-    public function updateWebConfig()
+    public function updateWebConfig($db_host = null)
     {
         $data = @file_get_contents('/etc/webconfig.json');
         if ($data) {
-            $webconfig = json_decode($data);
-            $this->updateEnv([
-                'DB_USERNAME'   => $webconfig->db_user,
-                'DB_PASSWORD'   => $webconfig->db_passwd,
+            $webconfig  = json_decode($data);
+            $db_changes = [];
+            if ($db_host) {
+                if (is_array($webconfig->databases)) {
+                    foreach ($webconfig->databases as $database) {
+                        if ($database->db_host == $db_host) {
+                            $db_changes = [
+                                'DB_USERNAME' => $database->db_user,
+                                'DB_PASSWORD' => $database->db_passwd,
+                            ];
+                        }
+                    }
+                }
+            } else {
+                $this->error("--db_hos is needed while refresh for environments other like local");
+                return;
+            }
+            $changes = array_merge($db_changes, [
                 'MAIL_HOST'     => $webconfig->mail_host,
                 'MAIL_USERNAME' => $webconfig->mail_user,
                 'MAIL_PASSWORD' => $webconfig->mail_passcode,
             ]);
+            $this->updateEnv($changes);
+
         } else {
             $this->error('webconfig not found!');
         }
