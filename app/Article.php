@@ -522,9 +522,11 @@ class Article extends Model
             $video        = Video::findOrFail($input['video_id']);
             $video->title = $title;
             $video->save();
-            //TODO: 应该有个定时任务，拉取vod上得视频截图结果回来，更新视频cover, article->image_url配图
             $this->video_id = $video->id; //关联上视频
             $this->save();
+
+            //20秒后自动检查视频vod上的结果(截图取的是前9秒的九张图，应该在10秒内成功，这步操作是因为crontab好几个服务器不稳定)
+            \App\Jobs\SyncVodResult::dispatch($video)->delay(now()->addSeconds(20)); 
         }
         //带图
         if (isset($input['image_urls']) && is_array($input['image_urls']) && !empty($input['image_urls'])) {

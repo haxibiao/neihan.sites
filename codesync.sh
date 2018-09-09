@@ -14,6 +14,7 @@ sudo /bin/cp -rf /data/www/ainicheng.com/routes /data/www/$1.com/
 
 echo "sync ops"
 sudo /bin/cp -rf /data/www/ainicheng.com/ops/envoy/tasks.php /data/www/$1.com/ops/envoy/
+sudo /bin/cp -rf /data/www/ainicheng.com/Envoy.blade.php /data/www/$1.com/
 
 echo "sync composer, package.json"
 sudo /bin/cp -rf /data/www/ainicheng.com/composer.* /data/www/$1.com/
