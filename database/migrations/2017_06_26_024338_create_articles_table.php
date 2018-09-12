@@ -56,6 +56,8 @@ class CreateArticlesTable extends Migration {
 			$table->integer('count_comments')->nullable(); //comments, not include replies in comments...
 			$table->integer('count_reports')->default(0);
 
+            $table->string('slug')->nullable()->unique();
+
 			$table->text('json')->nullable();
 
 			$table->integer('collection_id')->nullable()->index(); //编辑直接发布录入专题时，可能没归属的文集
