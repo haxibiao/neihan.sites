@@ -57,9 +57,6 @@ export default {
       }
   		window.axios.get(api).then(function(response){
   			vm.users = response.data.data
-        if(response.data.last_page == 1){
-          vm.page = 1;
-        }
   			$('.recommend_author ul').fadeIn();
   		});
       vm.page++;
