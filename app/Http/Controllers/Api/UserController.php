@@ -100,9 +100,17 @@ class UserController extends Controller {
 		//当编辑和签约作者不足的时候 填充普通用户
 		if($num = $page_size - $users->count()){
 			$page = $request->get('page');
-			$recommendUser = User::orderByDesc('count_words')
+
+			$recommendUser = User::whereNotIn('id',$users->pluck('id'))->orderByDesc('count_words')
 			->orderByDesc('count_likes')->paginate($num);
+			
 			$users = $users->merge($recommendUser);
+
+			//当用户不足的时候 随机取用户
+			if($users->count() == 0){
+				$users = User::inRandomOrder()->take($page_size)->get();
+			}
+			
 			$users = new LengthAwarePaginator($users,$users->count(),$users->count(),$page);
 		}
 

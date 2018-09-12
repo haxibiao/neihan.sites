@@ -39,11 +39,11 @@ return [
         'title'       => '专注气质搭配的平台',
         'articlePush' => [
             'pandaNumber' => [
-                'appid' => 'xxx',
-                'token' => 'xxx',
+                'appid' => '1605562537954947',
+                'token' => 'NszEvBnfML8UcsRJ',
             ],
             'baiduNumber' => [
-                'token' => '5gXEVRuomHcgZD5g',
+                'token' => 'igwPj6l7ifHCM4GH',
             ],
         ],
     ],

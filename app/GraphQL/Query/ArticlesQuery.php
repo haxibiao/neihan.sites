@@ -119,7 +119,7 @@ class ArticlesQuery extends Query
         
 
         if (isset($args['in_days'])) {
-            $qb = $qb->where('updated_at', '>', \Carbon\Carbon::now()->addDays(-$args['in_days']));
+            $qb = $qb->where('created_at', '>', \Carbon\Carbon::now()->addDays(-$args['in_days']));
         }
 
         if (isset($args['user_id'])) {
