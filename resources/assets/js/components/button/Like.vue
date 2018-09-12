@@ -19,7 +19,7 @@
         <a data-target=".like-user" data-toggle="modal">{{ likesTotal }}</a>
       </div>
     </div>
-    <modal-like-user :id="id" :type="type" :likes="likes"></modal-like-user>
+    <modal-like-user v-if="isLogin" :id="id" :type="type" :likes="likes"></modal-like-user>
   </div>
 </template>
 

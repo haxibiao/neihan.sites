@@ -190,9 +190,9 @@
 			@media (max-width: 767px) {
 				.video-title,
 				.video-description {
-					overflow: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
+					word-wrap: wrap-word;
+					word-break: break-all;
+					overflow-wrap: break-word;
 					color: #888;
 				}
 			}

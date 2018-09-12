@@ -29,14 +29,23 @@ Vue.component("single-list", require("./components/SingleList.vue"));
 Vue.component("follow", require("./components/button/Follow.vue"));
 Vue.component("favorite", require("./components/button/Favorite.vue"));
 Vue.component("like", require("./components/button/Like.vue"));
-// Vue.component('comment', require('./components/comment/Comment.vue'));
+Vue.component(
+	"modal-like-user",
+	require("./components/modals/ModalLikeUsers.vue")
+);
 Vue.component("comments", require("./components/comment/Comments.vue"));
 Vue.component("new-comment", require("./components/comment/NewComment.vue"));
-Vue.component("reply-comment", require("./components/comment/ReplyComment.vue"));
+Vue.component(
+	"reply-comment",
+	require("./components/comment/ReplyComment.vue")
+);
 
 Vue.component("side-tool", require("./components/SideTool.vue"));
 Vue.component("article-list", require("./components/article/ArticleList.vue"));
-Vue.component("category-list", require("./components/category/CategoryList.vue"));
+Vue.component(
+	"category-list",
+	require("./components/category/CategoryList.vue")
+);
 Vue.component("search-box", require("./components/search/SearchBox.vue"));
 Vue.component("recently", require("./components/search/Recently.vue"));
 Vue.component("hot-search", require("./components/search/Hot.vue"));
@@ -48,11 +57,20 @@ Vue.component("authors-video", require("./components/video/AuthorsVideo.vue"));
 
 Vue.component("modal-report", require("./components/modals/ModalReport.vue"));
 //recommend component
-Vue.component("recommend-category", require("./components/category/RecommendCategory.vue"));
-Vue.component("recommend-authors", require("./components/aside/RecommendAuthors.vue"));
+Vue.component(
+	"recommend-category",
+	require("./components/category/RecommendCategory.vue")
+);
+Vue.component(
+	"recommend-authors",
+	require("./components/aside/RecommendAuthors.vue")
+);
 
 //share-wx
-Vue.component("modal-share-wx", require("./components/modals/ModalShareWX.vue"));
+Vue.component(
+	"modal-share-wx",
+	require("./components/modals/ModalShareWX.vue")
+);
 
 // 支付
 Vue.component("modal-admire", require("./components/modals/ModalAdmire.vue"));
