@@ -22,7 +22,7 @@
           </div>
           <div class="download-phone">
             <a href="http://{{ $app }}-1251052432.cossh.myqcloud.com/{{ $app }}.apk"><img src="/images/app/android_app.png" class="download2" alt="download-andorid"></a>
-            <a href="https://www.pgyer.com/{{ $app }}"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
+            <a href="https://itunes.apple.com/cn/app/%E6%87%82%E7%BE%8E%E5%91%B3/id1433177839?mt=8"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
             <img class="background-img" src="/images/app/appBackground.png" alt="Misc background">
             <h4>点击下载{{ $appname }}App</h4>
           </div>
@@ -82,7 +82,7 @@
         </div>
         <div class="download-phone">
           <a href="http://{{ $app }}-1251052432.cossh.myqcloud.com/{{ $app }}.apk"><img src="/images/app/android_app.png" class="download2" alt="download-andorid"></a>
-          <a href="https://www.pgyer.com/{{ $app }}"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
+          <a href="https://itunes.apple.com/cn/app/%E6%87%82%E7%BE%8E%E5%91%B3/id1433177839?mt=8"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
           <img class="background-img" src="/images/app/appBackground.png" alt="Misc background">
           <h4>点击下载{{ $appname }}App</h4>
         </div>
