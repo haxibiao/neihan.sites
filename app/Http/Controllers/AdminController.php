@@ -337,7 +337,6 @@ class AdminController extends Controller
             ->whereType('article')
             ->take($number)->get();
 
-        dd($articles);
         foreach ($articles as $article) {
             $urls[] = config('app.url') . '/article/' . $article->id;
         }
