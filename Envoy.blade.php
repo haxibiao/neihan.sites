@@ -50,7 +50,11 @@ cd {{ $www }}
 @task('push_ui_staging', ['on' => 'local'])
 hostname
 cd {{ $www }}
-npm run prod
+
+@if ($build)
+	npm run prod
+@endif
+
 {{ $copy_ui_staging }}
 {{ $git_push_to_staging }}
 @endtask
@@ -58,7 +62,11 @@ npm run prod
 @task('push_ui', ['on' => 'local'])
 hostname
 cd {{ $www }}
-npm run prod
+
+@if ($build)
+	npm run prod
+@endif
+
 {{ $git_push_to_web }}
 {{ $copy_ui_prod }}
 @endtask
