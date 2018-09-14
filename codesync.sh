@@ -31,15 +31,15 @@ sudo /bin/cp -rf /data/www/ainicheng.com/database/migrations /data/www/$1.com/da
 echo 'sync webpack.mix.js ...'
 sudo /bin/cp -rf /data/www/ainicheng.com/webpack.mix.js /data/www/$1.com/
 
-echo 'sync assets ...'
-sudo /bin/cp -rf /data/www/ainicheng.com/public/assets /data/www/$1.com/public
+# echo 'sync assets ...'
+# sudo /bin/cp -rf /data/www/ainicheng.com/public/assets /data/www/$1.com/public
 
-echo 'sync fonts ...'
-sudo /bin/cp -rf /data/www/ainicheng.com/public/fonts /data/www/$1.com/public
+# echo 'sync fonts ...'
+# sudo /bin/cp -rf /data/www/ainicheng.com/public/fonts /data/www/$1.com/public
 
-echo 'sync sdk ...'
-sudo /bin/cp -rf /data/www/ainicheng.com/public/sdk /data/www/$1.com/public
+# echo 'sync sdk ...'
+# sudo /bin/cp -rf /data/www/ainicheng.com/public/sdk /data/www/$1.com/public
 
-echo 'sync some images ...'
-sudo /bin/cp -rf /data/www/ainicheng.com/public/images/app /data/www/$1.com/public/images/
+# echo 'sync some images ...'
+# sudo /bin/cp -rf /data/www/ainicheng.com/public/images/app /data/www/$1.com/public/images/
 
