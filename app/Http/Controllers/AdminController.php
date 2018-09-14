@@ -333,7 +333,10 @@ class AdminController extends Controller
         }
 
         $articles = Article::orderBy('id', 'desc')
-            ->where('status', '>', 0)->take($number)->get();
+            ->where('status', '>', 0)
+            ->whereType('article')
+            ->take($number)->get();
+
         foreach ($articles as $article) {
             $urls[] = config('app.url') . '/article/' . $article->id;
         }

@@ -113,10 +113,9 @@ class CategoryType extends GraphQLType {
 				],
 				'description' => 'category related articles, including newly requested ...',
 				'resolve' => function ($root, $args, $context, ResolveInfo $info) {
-					//解决数据库ambiguous column错误
 					$qb = $root->publishedArticles();
 					if (isset($args['filter']) && $args['filter'] == 'PENDING') {
-						$qb = $root->newRequestArticles()->select($colomns);
+						$qb = $root->newRequestArticles();
 					}
 					if (isset($args['offset'])) {
 						$qb = $qb->skip($args['offset']);
