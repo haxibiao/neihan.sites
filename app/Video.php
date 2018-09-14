@@ -133,7 +133,8 @@ class Video extends Model
 
                 //duration
                 $this->duration = $res['metaData']['duration'];
-
+                //旋转率
+                $this->setJsonData('rotate', $res['metaData']['rotate']);
                 if (!empty($res['metaData']['videoStreamList'])) {
                     $videoStreamList = $res['metaData']['videoStreamList'][0];
                     $height          = $videoStreamList['height'];

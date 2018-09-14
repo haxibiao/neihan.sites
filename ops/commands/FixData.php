@@ -40,7 +40,34 @@ class FixData extends Command
                 sleep(2);
                 $cmd->info('正在处理>>>' . $video->id . '<<<');
                 try {
+                    //保存article与video的原始信息，限制影响的范围
+                    $article = $video->article;
+                    if( !empty($article) ){
+                        $status = $article->status;
+                        $cover = $article->image_url;
+                        $updated_at = $article->updated_at;
+                    }
+                    
+                    $video_status = $video->status;
+                    $video_title  = $video->title;
+                    $video_updated_at = $video->updated_at;
+                    
                     $video->syncVodProcessResult();
+                    
+                    if( !empty($article) ){
+                        $article->status = $status;
+                        $article->image_url = $cover;
+                        $article->updated_at = $updated_at;
+                        $article->timestamps = false;
+                        $article->save();
+                    }
+
+                    $video->status = $video_status;
+                    $video->title = $video_title;
+                    $video->updated_at = $video_updated_at;
+                    $video->timestamps = false;
+                    $video->save();
+
                 } catch (\Exception $e) {
                     $cmd->error('视频id为>>>' . $video->id . '<<<拉取失败');
                     continue;
