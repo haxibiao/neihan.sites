@@ -27,3 +27,11 @@ git status
 echo "jucheshe status ..."
 cd ../jucheshe.com
 git status
+
+echo "youwangfa status ..."
+cd ../youwangfa.com
+git status
+
+echo "jinlinle status ..."
+cd ../jinlinle.com
+git status

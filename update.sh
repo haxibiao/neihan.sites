@@ -17,3 +17,12 @@ envoy run update
 
 cd ../dianmoge.com
 envoy run update
+
+cd ../jucheshe.com
+envoy run update
+
+cd ../youwangfa.com
+envoy run update
+
+cd ../jinlinle.com
+envoy run update

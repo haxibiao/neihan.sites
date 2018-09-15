@@ -17,3 +17,12 @@ envoy run seed
 
 cd ../dianmoge.com
 envoy run seed
+
+cd ../jucheshe.com
+envoy run seed
+
+cd ../youwangfa.com
+envoy run seed
+
+cd ../jinlinle.com
+envoy run seed

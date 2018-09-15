@@ -23,3 +23,15 @@ git diff
 cd ../dianmoge.com
 git config core.filemode false 
 git diff
+
+cd ../jucheshe.com
+git config core.filemode false 
+git diff
+
+cd ../youwangfa.com
+git config core.filemode false 
+git diff
+
+cd ../jinlinle.com
+git config core.filemode false 
+git diff

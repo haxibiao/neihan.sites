@@ -22,3 +22,9 @@ run push
 
 cd ../jucheshe.com
 run push
+
+cd ../youwangfa.com
+run push
+
+cd ../jinlinle.com
+run push

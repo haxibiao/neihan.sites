@@ -1,21 +1,69 @@
 #!bin/bash
-
+shopt -s expand_aliases
 source ~/.bash_aliases
 
+echo "前端打包：$1"
+
 cd ../dongmeiwei.com
-run ui
+if [ ! -z $1 ]; then
+	echo "prod ======================"
+	run ui --build=prod
+else 
+	run ui
+fi
 
 cd ../dongdianyao.com
-run ui
+if [ ! -z $1 ]; then
+	run ui --build=prod
+else 
+	run ui
+fi
 
 cd ../dongdianyi.com
-run ui
+if [ ! -z $1 ]; then
+	run ui --build=prod
+else 
+	run ui
+fi
 
 cd ../youjianqi.com
-run ui
+if [ ! -z $1 ]; then
+	run ui --build=prod
+else 
+	run ui
+fi
 
 cd ../qunyige.com
-run ui
+if [ ! -z $1 ]; then
+	run ui --build=prod
+else 
+	run ui
+fi
 
 cd ../dianmoge.com
-run ui
+if [ ! -z $1 ]; then
+	run ui --build=prod
+else 
+	run ui
+fi
+
+cd ../jucheshe.com
+if [ ! -z $1 ]; then
+	run ui --build=prod
+else 
+	run ui
+fi
+
+cd ../youwangfa.com
+if [ ! -z $1 ]; then
+	run ui --build=prod
+else 
+	run ui
+fi
+
+cd ../jinlinle.com
+if [ ! -z $1 ]; then
+	run ui --build=prod
+else 
+	run ui
+fi

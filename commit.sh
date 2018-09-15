@@ -27,3 +27,11 @@ git commit -am """$1"""
 cd ../jucheshe.com
 git add --all 
 git commit -am """$1"""
+
+cd ../youwangfa.com
+git add --all 
+git commit -am """$1"""
+
+cd ../jinlinle.com
+git add --all 
+git commit -am """$1"""

@@ -1,125 +1,130 @@
 @include('ops/envoy/tasks.php')
 
-@servers(['local' => 'localhost','web' => $web])
+@servers(['local' => 'localhost','staging' => $staging,'prod' => $prod])
 
 @macro('push')
-local_push
-web_pull
-@endmacro
-
-@macro('ui')
-push_ui
-@endmacro
-
-@macro('stagingui')
-push_ui_staging
-staging_pull
+@if($env && $env == "staging")
+	staging_push
+	staging_refresh
+@else
+	prod_push
+	prod_refresh
+@endif
 @endmacro
 
 @macro('seed')
-local_push
-web_seed
+@if($env && $env == "staging")
+	staging_push
+	staging_seed
+@else
+	prod_push
+	prod_seed
+@endif
 @endmacro
 
 @macro('update')
-local_push
-web_update
+@if($env && $env == "staging")
+	staging_push
+	staging_update
+@else
+	prod_push
+	prod_update
+@endif
 @endmacro
 
-@macro('staging')
-local_push
-staging_update
+@macro('ui')
+@if($env && $env == "staging")
+	staging_ui
+@else
+	prod_ui
+@endif
 @endmacro
 
 @macro('sys')
-local_push
-web_sys
+prod_push
+prod_sys
 @endmacro
 
 @macro('cmds')
-local_push
-web_cmds
+prod_push
+prod_cmds
 @endmacro
 
-@task('local_push', ['on' => 'local'])
-hostname
+@task('prod_push', ['on' => 'local'])
 cd {{ $www }}
-{{ $git_push_to_web }}
+{{ $git_push_prod }}
 @endtask
 
-@task('push_ui_staging', ['on' => 'local'])
-hostname
+@task('staging_push', ['on' => 'local'])
 cd {{ $www }}
-
-@if ($build)
-	npm run prod
-@endif
-
-{{ $copy_ui_staging }}
-{{ $git_push_to_staging }}
+{{ $git_push_staging }}
 @endtask
 
-@task('push_ui', ['on' => 'local'])
-hostname
+@task('prod_refresh', ['on' => ['prod'], 'parallel' => true])
 cd {{ $www }}
-
-@if ($build)
-	npm run prod
-@endif
-
-{{ $git_push_to_web }}
-{{ $copy_ui_prod }}
+{{ $refresh_env_prod }}
+{{ $cache_clear }}
 @endtask
 
-@task('staging_pull', ['on' => ['web'], 'parallel' => true])
-cd {{ $staging_www }}
-echo {{ $staging_www }}
-git pull
+@task('staging_refresh', ['on' => ['staging'], 'parallel' => true])
+cd {{ $www }}
 {{ $refresh_env_staging }}
 {{ $cache_clear }}
 @endtask
 
-@task('web_pull', ['on' => ['web'], 'parallel' => true])
+@task('prod_seed', ['on' => ['prod'], 'parallel' => true])
 cd {{ $www }}
-echo {{ $www }}
-{{ $refresh_env_prod }}
-{{ $cache_clear }}
-@endtask
-
-@task('web_seed', ['on' => ['web'], 'parallel' => true])
-cd {{ $www }}
-echo {{ $www }}
 {{ $refresh_env_prod }}
 {{ $run_migrate }}
 {{ $cache_clear }}
 @endtask
 
-@task('web_update', ['on' => ['web'], 'parallel' => true])
+@task('staging_seed', ['on' => ['staging'], 'parallel' => true])
 cd {{ $www }}
-echo {{ $www }}
-{{ $clear_bootstrap_cache }}
-{{ $run_composer }}
-{{ $refresh_env_prod }}
-{{ $run_migrate }}
-{{ $cache_clear }}
-@endtask
-
-@task('staging_update', ['on' => ['web'], 'parallel' => true])
-cd {{ $www }}
-echo {{ $www }}
-git pull
-{{ $clear_bootstrap_cache }}
-{{ $run_composer }}
 {{ $refresh_env_staging }}
 {{ $run_migrate }}
 {{ $cache_clear }}
 @endtask
 
-@task('web_sys', ['on' => ['web'], 'parallel' => true])
-{{ $sync_etc_confs }}
+@task('prod_update', ['on' => ['prod'], 'parallel' => true])
+cd {{ $www }}
+{{ $clear_bootstrap_cache }}
+{{ $refresh_env_prod }}
+{{ $run_composer }}
+{{ $run_migrate }}
+{{ $cache_clear }}
 @endtask
 
-@task('web_cmds', ['on' => ['web'], 'parallel' => true])
+@task('staging_update', ['on' => ['staging'], 'parallel' => true])
+cd {{ $www }}
+{{ $clear_bootstrap_cache }}
+{{ $refresh_env_staging }}
+{{ $run_composer }}
+{{ $run_migrate }}
+{{ $cache_clear }}
+@endtask
+
+@task('prod_sys', ['on' => ['prod'], 'parallel' => true])
+{{ sync_etc($domain) }}
+@endtask
+
+@task('prod_cmds', ['on' => ['prod'], 'parallel' => true])
 cd {{ $www }}
 {{ $run_commands }}
+@endtask
+
+@task('prod_ui', ['on' => 'local'])
+cd {{ $www }}
+@if ($build)
+	npm run prod
+@endif
+{{ copy_ui($prod, $domain) }}
+@endtask
+
+@task('staging_ui', ['on' => 'local'])
+cd {{ $www }}
+@if ($build)
+	npm run prod
+@endif
+{{ copy_ui($staging, $domain) }}
 @endtask
