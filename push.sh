@@ -1,30 +1,32 @@
 #!bin/bash
+shopt -s expand_aliases
+source ~/.bash_aliases
 
 source ~/.bash_aliases
 
 cd ../dongmeiwei.com
-run push
+envoy run push
 
 cd ../dongdianyao.com
-run push
+envoy run push
 
 cd ../dongdianyi.com
-run push
+envoy run push
 
 cd ../qunyige.com
-run push
+envoy run push
 
 cd ../youjianqi.com
-run push
+envoy run push
 
 cd ../dianmoge.com
-run push
+envoy run push
 
 cd ../jucheshe.com
-run push
+envoy run push
 
 cd ../youwangfa.com
-run push
+envoy run push
 
 cd ../jinlinle.com
-run push
+envoy run push

@@ -1,4 +1,6 @@
 #!bin/bash
+shopt -s expand_aliases
+source ~/.bash_aliases
 
 cd ../dongmeiwei.com
 envoy run seed

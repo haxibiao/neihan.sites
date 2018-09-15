@@ -5,7 +5,7 @@ require_once 'settings.php';
 
 $www = '/data/www/' . $domain;
 
-$git_push_web     = 'git checkout master && git push origin master';
+$git_push_prod     = 'git checkout master && git push origin master';
 $git_push_staging = 'git push staging master';
 
 $staging = 'root@' . $domain_staging;
