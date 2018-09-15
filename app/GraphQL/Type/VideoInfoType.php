@@ -32,6 +32,10 @@ class VideoInfoType extends BaseType
                 'type'        => Type::listOf(Type::string()),
                 'description' => '视频的所有截图',
             ],
+            'rotate' => [
+                'type'        => Type::int(),
+                'description' => '旋转',
+            ],
         ]; 
     }
 }
