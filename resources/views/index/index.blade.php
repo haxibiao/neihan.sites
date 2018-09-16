@@ -45,13 +45,15 @@
           {{-- 文章列表 --}}
          <ul class="article-list">
             {{-- 置顶文章 --}}
-            @each('parts.article_item', get_stick_articles('发现'), 'article') 
+            @if(request('page') < 2)
+              @each('parts.article_item', get_stick_articles('发现'), 'article') 
+            @endif
             {{-- 文章 --}}
             @each('parts.article_item', $data->articles, 'article')
 
             {{-- 登录后才加载更多 --}}
             @if(Auth::check())
-              <article-list api="/" start-page="2" is-desktop="{{ \Agent::isDeskTop() == 1 }}"/>
+              <article-list api="/api/articles" start-page="2" is-desktop="{{ \Agent::isDeskTop() == 1 }}"/>
             @else
               <div>
                 {!! $data->articles->links() !!}

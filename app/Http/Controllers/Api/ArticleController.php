@@ -14,6 +14,18 @@ use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
+    //首页文章列表的api
+    public function index()
+    {
+        $articles = indexArticles();
+        //下面是为了兼容VUE
+        foreach ($articles as $article) {
+            $article->fillForJs();
+            $article->time_ago = $article->updatedAt();
+        }
+        return $articles;
+    }
+
     public function fakeUsers()
     {
         return User::where('is_editor', 1)->get();
@@ -182,7 +194,7 @@ class ArticleController extends Controller
         $article->status = 0;
         $article->save();
         //如果文集也被删除了，恢复出来
-        if($article->collection->status  == -1){
+        if ($article->collection->status == -1) {
             $article->collection->status = 0;
             $article->collection->save();
         }
@@ -202,10 +214,9 @@ class ArticleController extends Controller
 
     public function show($id)
     {
-        $article            = Article::with('user')->with('category')->with('images')->findOrFail($id);
+        $article = Article::with('user')->with('category')->with('images')->findOrFail($id);
         $article->fillForJs();
-        if(!empty($article->category_id))
-        {
+        if (!empty($article->category_id)) {
             $article->category->fillForJs();
         }
         $article->pubtime = diffForHumansCN($article->created_at);
