@@ -48,8 +48,8 @@ git stash -u
 git pull
 php artisan env:refresh
 
-echo "============ jinlinle.com ============"
-cd ../jinlinle.com
+echo "============ didilinju.com ============"
+cd ../didilinju.com
 git stash -u
 git pull
 php artisan env:refresh

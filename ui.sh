@@ -61,7 +61,7 @@ else
 	run ui
 fi
 
-cd ../jinlinle.com
+cd ../didilinju.com
 if [ ! -z $1 ]; then
 	run ui --build=prod
 else 

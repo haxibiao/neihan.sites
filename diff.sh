@@ -32,6 +32,6 @@ cd ../youwangfa.com
 git config core.filemode false 
 git diff
 
-cd ../jinlinle.com
+cd ../didilinju.com
 git config core.filemode false 
 git diff

@@ -26,5 +26,5 @@ envoy run update
 cd ../youwangfa.com
 envoy run update
 
-cd ../jinlinle.com
+cd ../didilinju.com
 envoy run update

@@ -13,6 +13,8 @@ sudo /bin/cp -rf /data/www/ainicheng.com/resources/assets/js /data/www/$1.com/re
 sudo /bin/cp -rf /data/www/ainicheng.com/routes /data/www/$1.com/
 
 echo "sync 运维脚本(ops)"
+sudo /bin/cp -rf /data/www/ainicheng.com/ops/commands/FixData.php /data/www/$1.com/ops/commands/
+sudo /bin/cp -rf /data/www/ainicheng.com/ops/envoy/commands.php /data/www/$1.com/ops/envoy/
 sudo /bin/cp -rf /data/www/ainicheng.com/ops/envoy/tasks.php /data/www/$1.com/ops/envoy/
 sudo /bin/cp -rf /data/www/ainicheng.com/Envoy.blade.php /data/www/$1.com/
 

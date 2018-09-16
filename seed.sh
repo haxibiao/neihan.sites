@@ -26,5 +26,5 @@ envoy run seed
 cd ../youwangfa.com
 envoy run seed
 
-cd ../jinlinle.com
+cd ../didilinju.com
 envoy run seed

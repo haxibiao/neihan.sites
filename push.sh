@@ -28,5 +28,5 @@ envoy run push
 cd ../youwangfa.com
 envoy run push
 
-cd ../jinlinle.com
+cd ../didilinju.com
 envoy run push
