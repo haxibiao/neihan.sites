@@ -44,8 +44,9 @@
           </div>
           {{-- 文章列表 --}}
          <ul class="article-list">
+            {{-- 置顶文章 --}}
+            @each('parts.article_item', get_stick_articles('发现'), 'article') 
             {{-- 文章 --}}
-            {{--@each('parts.article_item', $data->sticks, 'article') --}}
             @each('parts.article_item', $data->articles, 'article')
 
             {{-- 登录后才加载更多 --}}

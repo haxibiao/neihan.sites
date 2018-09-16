@@ -76,70 +76,70 @@ class IndexController extends Controller
     public function indexRecommendationStrategy()
     {
         //首页推荐分类
-        $stick_categories = get_stick_categories();
-        $stick_categorie_ids = array_pluck($stick_categories,'id');
-        $top_count  = 7 - count($stick_categories);
+        $stick_categories    = get_stick_categories();
+        $stick_categorie_ids = array_pluck($stick_categories, 'id');
+        $top_count           = 7 - count($stick_categories);
         //已登录,专题的获取顺序为：置顶的专题>关注的专题>官方大专题
         if (Auth::check()) {
             $user = Auth::user();
             //获取所有关注的专题
             $all_follow_category_ids = \DB::table('follows')->where('user_id', $user->id)
                 ->where('followed_type', 'categories')
-                ->whereNotIn('follows.followed_id',$stick_categorie_ids)
+                ->whereNotIn('follows.followed_id', $stick_categorie_ids)
                 ->whereExists(function ($query) {
                     return $query->from('categories')
                         ->whereRaw('categories.id = follows.followed_id')
                         ->where('categories.status', '>=', 0);
                 })->take($top_count)->pluck('followed_id')->toArray();
-            $category_ids = array_merge($stick_categorie_ids,$all_follow_category_ids);
+            $category_ids = array_merge($stick_categorie_ids, $all_follow_category_ids);
             //置顶专题加上关注的专题都不够7个时获取官方大专题
-            if( count($category_ids)!=7 ){
+            if (count($category_ids) != 7) {
                 $official_category_ids = Category::where('is_official', 1)
                     ->where('count', '>=', 0)
                     ->where('status', '>=', 0)
                     ->where('parent_id', 0) //0代表顶级分类
-                    ->whereNotIn('id',$category_ids)
-                    ->take(7-count($category_ids))
+                    ->whereNotIn('id', $category_ids)
+                    ->take(7 - count($category_ids))
                     ->pluck('id')->toArray();
-                $category_ids = array_merge($category_ids,$official_category_ids);
+                $category_ids = array_merge($category_ids, $official_category_ids);
             }
             $categories = Category::whereIn('id', $category_ids)->get();
-        //未登录，随机取官方专题
-        } else { 
+            //未登录，随机取官方专题
+        } else {
             $categories = Category::where('is_official', 1)
                 ->where('count', '>=', 0)
                 ->where('status', '>=', 0)
                 ->where('parent_id', 0) //0代表顶级分类
-                ->whereNotIn('id',$stick_categorie_ids)
+                ->whereNotIn('id', $stick_categorie_ids)
                 ->orderBy(\DB::raw('RAND()'))
                 ->take($top_count)
                 ->get();
         }
-        
+
         //首页推荐专题 合并置顶的专题
         $categories       = get_top_categoires($categories);
         $data             = (object) [];
         $data->categories = $categories;
 
         //首页文章
-        $stick_article_ids = array_column(get_stick_articles('发现'), 'id');
-        $qb                = Article::with('user')
-            ->with('category')
+
+        $qb = Article::from('articles')->with('user')->with('category')
             ->exclude(['body', 'json'])
-            ->whereIn('id', $stick_article_ids)
-            ->unionAll(
-                Article::from('articles')->with('user')->with('category')
-                    ->exclude(['body', 'json'])
-                    ->where('status', '>', 0)
-                    ->where('source_url', '=', '0')
-                    ->whereNotNull('category_id')
-                    ->whereNotIn('id', $stick_article_ids)
-                    ->orderBy('updated_at', 'desc')->limit(\DB::table('articles')->max('id'))
-            );
+            ->where('status', '>', 0)
+            ->where('source_url', '=', '0')
+            ->whereNotNull('category_id')
+            ->orderBy('updated_at', 'desc')->limit(\DB::table('articles')->max('id'));
         $total    = count($qb->get());
         $articles = $qb->offset((request('page', 1) * 10) - 10)
             ->take(10)
             ->get();
+
+        //过滤置顶的文章
+        $stick_article_ids = array_column(get_stick_articles('发现'), 'id');
+        $articles = $articles->filter(function ($article, $key) use ($stick_article_ids) {
+            return !in_array($article->id, $stick_article_ids);
+        })->all();
+
         //首页异步加载
         if (request()->ajax() || request('debug')) {
             //下面是为了兼容VUE
@@ -158,6 +158,7 @@ class IndexController extends Controller
         } else {
             $data->articles = new LengthAwarePaginator(new Collection($articles), $total, 10);
         }
+
         //首页轮播图
         $data->carousel = get_top_articles();
         //首页推荐视频
