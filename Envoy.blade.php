@@ -47,8 +47,8 @@ prod_sys
 
 @macro('cmds')
 @if($env && $env == "staging")
-	prod_push
-	prod_cmds
+	staging_push
+	staging_cmds
 @else
 	prod_push
 	prod_cmds
