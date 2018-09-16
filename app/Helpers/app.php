@@ -17,7 +17,7 @@ function indexArticles()
         ->with('user')->with('category')
         ->exclude(['body', 'json'])
         ->where('status', '>', 0)
-        ->where('source_url', '=', '0')
+        ->whereNull('source_url')
         ->whereNotNull('category_id')
         ->orderBy('updated_at', 'desc');
     $total    = count($qb->get());

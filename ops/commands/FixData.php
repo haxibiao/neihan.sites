@@ -108,18 +108,8 @@ class FixData extends Command
 
     public static function articles($cmd)
     {
-        $cmd->info('fix article_category ...');
-        $articles = DB::table('article_category')->select('category_id', 'article_id')
-            ->whereSubmit('已收录')->groupBy(['category_id', 'article_id'])->havingRaw('count(*) > 1')->get();
-        foreach ($articles as $article) {
-            $category_id      = $article->category_id;
-            $article_id       = $article->article_id;
-            $article_category = DB::table('article_category')->
-                where('category_id', $category_id)->where('article_id', $article_id)->first();
-            $id = $article_category->id;
-            DB::table('article_category')->whereId($id)->delete();
-            $cmd->info("$id fix success");
-        }
+        $cmd->info('fix source_url default null ...');
+        DB::statement("update articles set source_url = null where source_url = '0'");
     }
 
     public function content($article)

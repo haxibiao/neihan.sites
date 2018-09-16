@@ -228,6 +228,7 @@ class ArticleController extends Controller {
 		$article->has_pic = !empty($article->image_url);
 		$article->edited_at = \Carbon\Carbon::now();
 		$article->count_words = ceil(strlen(strip_tags($article->body)) / 2);
+		$article->source_url = null; //手动编辑过的文章，都不再是爬虫文章
 		$article->save();
 
 		//images

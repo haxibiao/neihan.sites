@@ -46,8 +46,13 @@ prod_sys
 @endmacro
 
 @macro('cmds')
-prod_push
-prod_cmds
+@if($env && $env == "staging")
+	prod_push
+	prod_cmds
+@else
+	prod_push
+	prod_cmds
+@endif
 @endmacro
 
 @task('prod_push', ['on' => 'local'])
@@ -109,6 +114,11 @@ cd {{ $www }}
 @endtask
 
 @task('prod_cmds', ['on' => ['prod'], 'parallel' => true])
+cd {{ $www }}
+{{ $run_commands }}
+@endtask
+
+@task('staging_cmds', ['on' => ['staging'], 'parallel' => true])
 cd {{ $www }}
 {{ $run_commands }}
 @endtask
