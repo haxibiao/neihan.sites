@@ -27,16 +27,21 @@ function indexArticles()
 
     //过滤置顶的文章
     $stick_article_ids = array_column(get_stick_articles('发现'), 'id');
-    $articles          = $articles->filter(function ($article, $key) use ($stick_article_ids) {
+    $filtered_articles = $articles->filter(function ($article, $key) use ($stick_article_ids) {
         return !in_array($article->id, $stick_article_ids);
     })->all();
 
+    $articles = [];
+    foreach ($filtered_articles as $article) {
+        $articles[] = $article;
+    }
+
     //移动端，用简单的分页样式
     if (\Agent::isMobile()) {
-        $articles = new Paginator(new Collection($articles), 10);
+        $articles = new Paginator($articles, 10);
         $articles->hasMorePagesWhen($total > request('page') * 10);
     } else {
-        $articles = new LengthAwarePaginator(new Collection($articles), $total, 10);
+        $articles = new LengthAwarePaginator($articles, $total, 10);
     }
     return $articles;
 }
