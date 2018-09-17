@@ -7,7 +7,7 @@
                 </a>
                 <div class="info">
                     <a class="nickname" target="_blank" :href="/user/+item.user.id">{{ item.user.name }}</a>
-                    <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" :title="appName+'签约作者'" alt="">
+                    <!-- <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" :title="appName+'签约作者'" alt=""> -->
                     <span class="time" v-if="item.actionable.followed_type == 'users'"> 关注了作者 · {{ item.time }}</span>
                     <span class="time" v-else> 关注了专题 · {{ item.time }}</span>
                 </div>
@@ -41,33 +41,32 @@
 
 <script>
 export default {
-	name: "ActionFollowItem",
+    name: "ActionFollowItem",
 
-	props: ["item","appName"],
+    props: ["item", "appName"],
 
-    computed:{
-        is_follow(){
-            return this.item.actionable !=null && this.item.actionable.hasOwnProperty('followed');
+    computed: {
+        is_follow() {
+            return this.item.actionable != null && this.item.actionable.hasOwnProperty("followed");
         },
-        actionTargetImage(){
-            if(this.item.actionable.followed_type == 'categories'){
+        actionTargetImage() {
+            if (this.item.actionable.followed_type == "categories") {
                 return this.item.actionable.followed.logo;
             }
             return this.item.actionable.followed.avatar;
         },
-        actionTargetFollowUrl(){
-            if(this.item.actionable.followed_type == 'categories'){
-                return '/'+this.item.actionable.followed.name_en;
+        actionTargetFollowUrl() {
+            if (this.item.actionable.followed_type == "categories") {
+                return "/" + this.item.actionable.followed.name_en;
             }
-            return '/user/'+this.item.actionable.followed.id
+            return "/user/" + this.item.actionable.followed.id;
         },
-        actionTargetFollowType(){
+        actionTargetFollowType() {
             return this.item.actionable.followed_type;
         }
-    },
+    }
 };
 </script>
 
 <style lang="css" scoped>
 </style>
-

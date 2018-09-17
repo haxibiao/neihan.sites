@@ -5,7 +5,12 @@
       </a>
       <div class="title">
         <a class="nickname" href="/user/{{ $article->user->id }}">{{ $article->user->name }}</a>
-        <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
+                         @if($article->user->is_signed)
+                                     <img class="badge-icon"  src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
+                                   @endif
+                                   @if($article->user->is_editor)
+                                     <img class="badge-icon"  src="/images/editor.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}小编" alt="">
+                                   @endif
         {{-- <a class="btn-base btn-follow btn-xs"><i class="iconfont icon-jia1"></i>关注</a> --}}
         @if(!$article->isSelf())
           <follow

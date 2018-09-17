@@ -13,8 +13,13 @@
         <img src="{{ $action->user->avatar() }}" alt="">
       </a>
       <div class="info">
+        @if($action->user->is_signed)
+                              <img class="badge-icon"  src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
+                            @endif
+                            @if($action->user->is_editor)
+                              <img class="badge-icon"  src="/images/editor.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}小编" alt="">
+                            @endif
         <a class="nickname" target="_blank" href="/user/{{ $action->user->id }}">{{ $action->user->name }}</a>
-        <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
         <span class="time" data-shared-at="2017-11-06T09:20:28+08:00">发表了作品 @timeago($action->created_at)</span>
       </div>
     </div>
@@ -51,8 +56,13 @@
         <img src="{{ $action->user->avatar() }}" alt="">
       </a>
             <div class="info">
+                @if($action->user->is_signed)
+                              <img class="badge-icon"  src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
+                            @endif
+                            @if($action->user->is_editor)
+                              <img class="badge-icon"  src="/images/editor.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}小编" alt="">
+                            @endif
                 <a class="nickname" target="_blank" href="/user/{{ $action->user->id }}">{{ $action->user->name }}</a>
-                <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
                 <span class="time"> 发表了评论 · @timeago($action->created_at)</span>
             </div>
         </div>
@@ -91,8 +101,13 @@
                 <div class="author">
                     <a class="avatar" target="_blank" href="/user/{{ $action->user->id }}"><img src="{{ $action->user->avatar() }}" alt=""></a>
                     <div class="info">
+                        @if($action->user->is_signed)
+                              <img class="badge-icon"  src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
+                            @endif
+                            @if($action->user->is_editor)
+                              <img class="badge-icon"  src="/images/editor.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}小编" alt="">
+                            @endif
                         <a class="nickname" target="_blank" href="/user/{{ $action->user->id }}">{{ $action->user->name }}</a>
-                        <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
                         <span class="time"> 喜欢了作品 · @timeago($like->created_at)</span>
                     </div>
                 </div>
@@ -126,8 +141,13 @@
                 <div class="author">
                     <a class="avatar" target="_blank" href="/user/{{ $action->user->id }}"><img src="{{ $action->user->avatar() }}" alt=""></a>
                     <div class="info">
+                        @if($action->user->is_signed)
+                              <img class="badge-icon"  src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
+                            @endif
+                            @if($action->user->is_editor)
+                              <img class="badge-icon"  src="/images/editor.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}小编" alt="">
+                            @endif
                         <a class="nickname" target="_blank" href="/user/{{ $action->user->id }}">{{ $action->user->name }}</a>
-                        <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
                         <span class="time"> 喜欢了作品的评论 · @timeago($like->created_at)</span>
                     </div>
                 </div>
@@ -163,8 +183,13 @@
             <div class="author">
                 <a class="avatar" target="_blank" href="javascript:;"><img src="{{ $action->user->avatar() }}" alt=""></a>
                 <div class="info">
+                    @if($action->user->is_signed)
+                              <img class="badge-icon"  src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
+                            @endif
+                            @if($action->user->is_editor)
+                              <img class="badge-icon"  src="/images/editor.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}小编" alt="">
+                            @endif
                     <a class="nickname" target="_blank" href="/user/{{ $action->user->id }}">{{ $action->user->name }}</a>
-                    <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
                     <span class="time"> 关注了作者 · @timeago($action->created_at)</span>
                 </div>
             </div>
@@ -198,9 +223,14 @@
           <a class="avatar" target="_blank" href="/user/{{ $action->user->id }}">
             <img src="{{ $action->user->avatar() }}" alt="">
           </a>
-          <div class="info">
+          <div class="info"> 
+            @if($action->user->is_signed)
+                              <img class="badge-icon"  src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
+                            @endif
+                            @if($action->user->is_editor)
+                              <img class="badge-icon"  src="/images/editor.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}小编" alt="">
+                            @endif
             <a class="nickname" target="_blank" href="/user/{{ $action->user->id }}">{{ $action->user->name }}</a>
-            <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
             <span class="time"> 关注了专题 · @timeago($action->created_at)</span>
           </div>
         </div>

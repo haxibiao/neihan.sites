@@ -1,10 +1,12 @@
 <div class="aside sm-right hidden-xs">
-    @if($user->is_editor)
       <ul class="icon-text-list distance">
+        @if($user->is_signed)
           <li><a href="javascript:;"><img class="badge-icon" src="/images/signed.png" alt=""></i>{{ config('app.name') }}签约作者</a></li>
-          <li><a href="javascript:;"><img class="badge-icon" src="/images/excellence.png" alt=""></i>{{ config('app.name') }}优秀作者</a></li>
+          @endif
+          @if($user->is_editor)
+          <li><a href="javascript:;"><img class="badge-icon" src="/images/editor.png" alt=""></i>{{ config('app.name') }}小编</a></li>    
+           @endif
       </ul>
-    @endif
 
     @include('user.aside.introduction')
 

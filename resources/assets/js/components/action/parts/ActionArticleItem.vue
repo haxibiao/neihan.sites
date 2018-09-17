@@ -10,7 +10,7 @@
 	      </a> 
 	      <div class="info">
 	        <a class="nickname" target="_blank" :href="'/user/'+item.user.id">{{ item.user.name }}</a>
-	        <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" :title="appName+'签约作者'" alt="">
+	        <!-- <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" :title="appName+'签约作者'" alt=""> -->
 	        <span class="time" data-shared-at="2017-11-06T09:20:28+08:00">发表了作品 {{ item.time }}</span>
 	      </div>
 	    </div>
@@ -35,10 +35,9 @@
 export default {
 	name: "ActionArticleItem",
 
-	props: ["item","appName"],
+	props: ["item", "appName"]
 };
 </script>
 
 <style lang="css" scoped>
 </style>
-
