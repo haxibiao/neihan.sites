@@ -106,4 +106,37 @@ return [
             ],
         ],
     ],
+
+    'jucheshe_com' => [
+        'keywords'    => '国产，日产，德系，美系，二手车，SUV，交易，转让',
+        'description' => '专注为年轻人购买二手车和了解汽车的社区',
+        'title'       => '专注为年轻人购买二手车和了解汽车的社区',
+        'articlePush' => [
+            'baiduNumber' => [
+                'token' => 'BPibF84Ysm9jVrIY',
+            ],
+        ],
+    ],
+
+    'youwangfa_com' => [
+        'keywords'    => '法律，王法，普通老百姓知道的法律，刑法，法规，基本法律常识',
+        'description' => '普通老百姓知道的法律，刑法，法规，基本法律常识交流社区',
+        'title'       => '普通老百姓知道的法律，刑法，法规，基本法律常识交流社区',
+        'articlePush' => [
+            'baiduNumber' => [
+                'token' => 'BPibF84Ysm9jVrIY',
+            ],
+        ],
+    ],
+
+    'didilinju_com' => [
+        'keywords'    => '本地服务，二手转让，物品交换，邻居交流，社区服务',
+        'description' => '快速了解您身边的社区，发现邻居，发现快乐',
+        'title'       => '快速了解您身边的社区，发现邻居，发现快乐',
+        'articlePush' => [
+            'baiduNumber' => [
+                'token' => 'BPibF84Ysm9jVrIY',
+            ],
+        ],
+    ],
 ];
