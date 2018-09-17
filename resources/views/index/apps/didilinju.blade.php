@@ -14,15 +14,15 @@
             </div>
           </div>
           <img class="background-img" src="/images/app/appBackground.png" alt="app background">
-          <img class="phone-img" src="/images/app/{{ $app }}1.png" alt="app phone">
+          <img class="phone-img" src="/images/app/dongmeiwei1.png" alt="app phone">
           <div class="top-qrcode">
             <img src="/qrcode/{{ $app }}.com.png" alt="Download apps page top qrcode">
             <div class="title">扫码下载{{ $appname }}App</div>
             <div class="introduce">随时随地发现和分享内容</div>
           </div>
           <div class="download-phone">
-            <a href="http://{{ $app }}-1251052432.cossh.myqcloud.com/{{ $app }}.apk"><img src="/images/app/android_app.png" class="download2" alt="download-andorid"></a>
-            <a href="https://itunes.apple.com/cn/app/%E6%87%82%E7%BE%8E%E5%91%B3/id1433177839?mt=8"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
+            <a href="http://jinlinle-1251052432.cossh.myqcloud.com/jinlinle.apk"><img src="/images/app/android_app.png" class="download2" alt="download-andorid"></a>
+            <a href="https://pgyer.com/jinlinle"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
             <img class="background-img" src="/images/app/appBackground.png" alt="Misc background">
             <h4>点击下载{{ $appname }}App</h4>
           </div>
@@ -40,7 +40,7 @@
         </div>
         <div class="row">
             <div class="container middle-part">
-              <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/app/{{ $app }}2.png" alt="Misc pic2"></div>
+              <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/app/dongmeiwei2.png" alt="Misc pic2"></div>
               <div class="col-sm-5 col-sm-offset-1 text-block">
                 <h3>海量短视频、个性化推送</h3>
                 <h6>视频菜谱、爆笑段子、实事资讯</br>在这里你可以边学习边分享生活趣事</br>上传每一个精彩瞬间</br>秀出你的风采、传递开心。</h6>
@@ -53,12 +53,12 @@
               <h3>优质内容、独家创造</h3>
               <h6>在这里你可以创造属于你的特色专题内容</br>分享你的美食心得，记录你的日常有趣瞬间</br>与共同爱好的用户分享快乐</br>让每一种美食变得有温度。</h6>
             </div>
-            <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/app/{{ $app }}3.png" alt="Misc pic3"></div>
+            <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/app/dongmeiwei3.png" alt="Misc pic3"></div>
           </div>
         </div>
         <div class="row">
         <div class="container middle-part">
-          <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/app/{{ $app }}4.png" alt="Misc pic4"></div>
+          <div class="col-sm-5 col-sm-offset-1"><img class="" src="/images/app/dongmeiwei4.png" alt="Misc pic4"></div>
           <div class="col-sm-5 col-sm-offset-1 text-block">
             <h3>美食问答及互动社区</h3>
             <h6>结交来自五湖四海的吃货盟友</br>与厨艺界大神零距离互动</br>
@@ -74,8 +74,8 @@
           <div>扫码下载{{ $appname }}App</div>
         </div>
         <div class="download-phone">
-          <a href="http://{{ $app }}-1251052432.cossh.myqcloud.com/{{ $app }}.apk"><img src="/images/app/android_app.png" class="download2" alt="download-andorid"></a>
-          <a href="https://itunes.apple.com/cn/app/%E6%87%82%E7%BE%8E%E5%91%B3/id1433177839?mt=8"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
+          <a href="http://jinlinle-1251052432.cossh.myqcloud.com/jinlinle.apk"><img src="/images/app/android_app.png" class="download2" alt="download-andorid"></a>
+          <a href="https://pgyer.com/jinlinle"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
           <img class="background-img" src="/images/app/appBackground.png" alt="Misc background">
           <h4>点击下载{{ $appname }}App</h4>
         </div>
