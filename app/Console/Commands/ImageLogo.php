@@ -11,7 +11,7 @@ class ImageLogo extends Command
      *
      * @var string
      */
-    protected $signature = 'image:logo {--domain=}';
+    protected $signature = 'image:logo {domain}';
 
     /**
      * The console command description.
@@ -37,10 +37,10 @@ class ImageLogo extends Command
      */
     public function handle()
     {
-        if ($this->option('domain')) {
-            $this->makeLogo($this->option('domain'));
+        if ($this->argument('domain')) {
+            $this->makeLogo($this->argument('domain'));
         } else {
-            $this->makeLogo(env('APP_DOMAIN'));
+            $this->error('must provied a domain to process ...');
         }
     }
 
