@@ -52,10 +52,19 @@ class ImageLogo extends Command
         $image->save($logoPath);
         $this->info($logoPath);
 
-        $image->resize(160, 160);
-        $image->save(public_path('logo/' . $domain . '.touch.png'));
+        $image->resize(80, 80);
+        $logoPath = public_path('logo/' . $domain . '.text.png');
+        $image->save($logoPath);
+        $this->info($logoPath);
 
         $image->resize(120, 120);
-        $image->save(public_path('logo/' . $domain . '.web.png'));
+        $logoPath = public_path('logo/' . $domain . '.web.png');
+        $image->save($logoPath);
+        $this->info($logoPath);
+
+        $image->resize(160, 160);
+        $logoPath = public_path('logo/' . $domain . '.touch.png')
+        $image->save($logoPath);
+        $this->info($logoPath);
     }
 }
