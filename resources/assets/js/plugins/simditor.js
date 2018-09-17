@@ -5363,11 +5363,11 @@
       }
       if (inputEl.is(this.widthEl)) {
         width = value;
-        height = this.height * value / this.width;
+        height = (this.height * value) / this.width;
         this.heightEl.val(height);
       } else {
         height = value;
-        width = this.width * value / this.height;
+        width = (this.width * value) / this.height;
         this.widthEl.val(width);
       }
       if (!onlySetVal) {
@@ -5791,8 +5791,8 @@
             deltaX = startRightWidth - minWidth;
             leftWidth = startLeftWidth + deltaX;
           }
-          $leftCol.attr("width", leftWidth / tableWidth * 100 + "%");
-          $rightCol.attr("width", rightWidth / tableWidth * 100 + "%");
+          $leftCol.attr("width", (leftWidth / tableWidth) * 100 + "%");
+          $rightCol.attr("width", (rightWidth / tableWidth) * 100 + "%");
           return $handle.css("left", startHandleLeft + deltaX);
         });
         $(document).one("mouseup.simditor-resize-table", function(e) {
@@ -5975,7 +5975,7 @@
       return $table.find("thead tr th").each(function(i, td) {
         var $col;
         $col = cols.eq(i);
-        return $col.attr("width", $(td).outerWidth() / tableWidth * 100 + "%");
+        return $col.attr("width", ($(td).outerWidth() / tableWidth) * 100 + "%");
       });
     };
 
@@ -6114,7 +6114,7 @@
       $newCol = $("<col/>");
       $col[direction]($newCol);
       tableWidth = $table.width();
-      width = Math.max(parseFloat($col.attr("width")) / 2, 50 / tableWidth * 100);
+      width = Math.max(parseFloat($col.attr("width")) / 2, (50 / tableWidth) * 100);
       $col.attr("width", width + "%");
       $newCol.attr("width", width + "%");
       this.refreshTableWidth($table);
@@ -6455,8 +6455,6 @@
         setTimeout(function() {
           _editor.trigger("promptdraft", { draft: draft });
         }, 500);
-      } else {
-        return this.editor.setValue(val);
       }
     };
 
