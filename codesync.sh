@@ -41,6 +41,6 @@ sudo /bin/cp -rf /data/www/ainicheng.com/webpack.mix.js /data/www/$1.com/
 # echo 'sync sdk ...'
 # sudo /bin/cp -rf /data/www/ainicheng.com/public/sdk /data/www/$1.com/public
 
-# echo 'sync some images ...'
-# sudo /bin/cp -rf /data/www/ainicheng.com/public/images/app /data/www/$1.com/public/images/
-
+echo 'sync some images ...'
+sudo /bin/cp -rf /data/www/ainicheng.com/public/qrcode /data/www/$1.com/public/
+sudo /bin/cp -rf /data/www/ainicheng.com/public/logo /data/www/$1.com/public/

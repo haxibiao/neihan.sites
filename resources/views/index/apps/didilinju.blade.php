@@ -9,7 +9,7 @@
           <div class="top-logo">
             <img class="logo" src="/logo/{{ $app }}.com.small.png" alt="app logo">
             <div class="info">
-              <div class="title">懂美味  每天分享一点菜谱和美食</div>
+              <div class="title">近邻乐  每天分享一点菜谱和美食</div>
               <div class="slogan">懂你的,才是美味</div>
             </div>
           </div>
@@ -34,7 +34,7 @@
               <h3>家常菜谱、合理膳食、美食知识、美食攻略</h3>
               <h6>一款最新潮的美食软件如果您能拥有，您还会有找不到的菜谱吗?</br>
                  拥有海量的优质原创美食菜谱，每篇菜谱都有详细的制作过程图片及文字说明</br>
-                您还会担心有学不会的菜吗? 针对各种人群制作合理饮食，教你 吃出健康。在懂美味，带你吃遍天下</h6>
+                您还会担心有学不会的菜吗? 针对各种人群制作合理饮食，教你 吃出健康。在近邻乐，带你吃遍天下</h6>
             </div>
           </div>
         </div>
@@ -82,7 +82,7 @@
         <div class="bottom-logo">
           <img src="/logo/{{ $app }}.com.small.png" alt="Misc logo">
           <div class="info">
-            <div class="title">懂美味  每天分享一点菜谱和美食</div>
+            <div class="title">近邻乐  每天分享一点菜谱和美食</div>
               <div class="slogan">懂你的,才是美味</div>
           </div>
         </div>
