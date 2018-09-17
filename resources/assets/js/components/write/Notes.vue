@@ -54,6 +54,12 @@ export default {
 		// }
 	},
 
+	mounted() {
+		window.$bus.$on("imageuploaded", value => {
+			this.onImageuploaded(value);
+		});
+	},
+
 	updated() {
 		this.$nextTick(function() {
 			$('[data-toggle="popover"]').popover();
@@ -138,7 +144,6 @@ export default {
 
 			//乐观更新
 			this.article.saved = true;
-			this.$set(this.ui, "updated_at", Date.now());
 
 			this.$store.dispatch("saveArticle");
 		},
@@ -160,16 +165,17 @@ export default {
 
 			//尝试触发保存状态更新为未保存
 			this.article.saved = false;
-			this.$set(this.ui, "updated_at", Date.now());
 		},
 		changeTitle(e) {
 			//改动标题的时候，保存编辑器的改动到store
 			this.article.body = this.body;
 			this.article.title = e.target.value;
 
-			//更新ui状态
+			//更新状态
 			this.article.saved = false;
-			this.$set(this.ui, "updated_at", Date.now());
+		},
+		onImageuploaded(value) {
+			this.article.body = value;
 		},
 		onImgPicked(e) {
 			//刚插入图库的图片,自动保存会re-render编辑器,会让创作编辑器不能连续成功插入图库的图片
@@ -181,7 +187,6 @@ export default {
 
 	data() {
 		return {
-			ui: {},
 			body: ""
 		};
 	}
