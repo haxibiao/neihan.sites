@@ -14,12 +14,9 @@ if [ "$1" != "local" ] && [ "$1" != "refresh" ]; then
 		db=$2
 	fi
 
-	if [ ! -f /data/build/ssh/id_rsa ]; then
-		wget https://haxibiao.com/work/ssh_keys.sh -O ~/ssh_keys.sh && bash ~/ssh_keys.sh
-	fi
-
 echo '服务器上备份数据库...'
 ssh root@$server 2>&1 << eeooff
+	source ~/.bashrc
 	cd /data/sqlfiles
 	sqld $db>$db.sql
 	zip -r $db.sql.zip $db.sql

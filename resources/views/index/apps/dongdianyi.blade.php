@@ -16,7 +16,7 @@
           <img class="background-img" src="/images/app/appBackground.png" alt="app background">
           <img class="phone-img" src="/images/app/{{ $app }}2.png" alt="app phone">
           <div class="top-qrcode">
-            <img src="/qrcode/{{ $app }}.com.jpg" alt="Download apps page top qrcode">
+            <img src="/qrcode/{{ $app }}.com.png" alt="Download apps page top qrcode">
             <div class="title">扫码下载{{ $appname }}App</div>
             <div class="introduce">随时随地发现和分享内容</div>
           </div>
@@ -76,7 +76,7 @@
       <div class="row">
       <div class="container bottom-part">
         <div class="download-web">
-          <img class="bottom-qrcode" src="/qrcode/{{ $app }}.com.jpg" alt="Download apps page bottom qrcode">
+          <img class="bottom-qrcode" src="/qrcode/{{ $app }}.com.png" alt="Download apps page bottom qrcode">
           <img class="background-img" src="/images/app/appBackground.png" alt="Misc background">
           <div>扫码下载{{ $appname }}App</div>
         </div>
