@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<form class="new-comment">
-			<a class="avatar"><img :src="isLogin?user.avatar:'/images/author_03.jpg'"></a>
+			<a class="avatar"><img :src="isLogin?user.avatar:'/images/user.png'"></a>
 			<div v-if="isLogin" >
 				<textarea placeholder="写下你的评论..." @click="showSend" @keyup.ctrl.enter="send" v-model="newComment"></textarea>
 				<transition name="fade">
@@ -27,51 +27,51 @@
 
 <script>
 export default {
+	name: "NewComment",
 
-  name: 'NewComment',
+	computed: {
+		user() {
+			return window.user;
+		},
+		isLogin() {
+			return window.user !== undefined;
+		}
+	},
 
-  computed: {
-  	user() {
-  		return window.user;
-  	},
-  	isLogin() {
-  		return window.user !== undefined;
-  	}
-  },
+	methods: {
+		send() {
+			if (!this.newComment) {
+				return null;
+			}
+			this.$emit("sendComment", this.newComment);
+			this.newComment = null;
+		},
+		showSend: function() {
+			this.showButton = true;
+		},
+		hideSend: function() {
+			this.showButton = false;
+		}
+	},
 
-  methods: {
-  	send() {
-  		if(!this.newComment) {
-  		  return null
-  		};
-  		this.$emit('sendComment', this.newComment);
-  		this.newComment = null;
-  	},
-  	showSend: function(){
-  		this.showButton = true
-  	},
-  	hideSend: function(){
-  		this.showButton = false
-  	}
-  },
-
-  data () {
-    return {
-    	newComment: null,
-    	showButton:false,
-    }
-  },
-}
+	data() {
+		return {
+			newComment: null,
+			showButton: false
+		};
+	}
+};
 </script>
 
 <style lang="scss" scoped>
-	.fade-enter-active {
-	  transition: opacity .3s
-	}
-	.fade-leave-active {
-		transition: opacity .5s
-	}
-	.fade-enter, .fade-leave-to {
-	  opacity: 0
-	}
+.fade-enter-active {
+	transition: opacity 0.3s;
+}
+.fade-leave-active {
+	transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+	opacity: 0;
+}
 </style>

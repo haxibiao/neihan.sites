@@ -2,7 +2,7 @@
 	<div class="banner-img new-list">
 		<div>
 			<i class="iconfont icon-paihangbang"></i>
-			<span>新上榜</span>
+			<span>经典热门</span>
 		</div>
 	</div>
 </div>
