@@ -42,6 +42,7 @@ class CategoriesQuery extends Query
                 return null;
             } 
 
+            $qb = Category::orderBy('name', 'asc');
             $qb = $qb->where('name', 'like', "%$keyword%")
                 ->where('status', 1);
             $results = $qb->count();
