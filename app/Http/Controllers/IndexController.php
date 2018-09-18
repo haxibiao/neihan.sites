@@ -99,13 +99,9 @@ class IndexController extends Controller
         if (request('app')) {
             $app = request('app');
         }
-        if (file_exists(resource_path('views/index/apps/' . $app . '.blade.php'))) {
-            return view('index.apps.' . $app)
+        return view('app')
                 ->withAppname(config('app.name'))
                 ->withApp($app);
-        } else {
-            return "app下载页面正在制作中...";
-        }
     }
 
     public function aboutUs()

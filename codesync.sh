@@ -9,6 +9,7 @@ echo 'sync laravel code ...'
 sudo /bin/cp -rf /data/www/ainicheng.com/app /data/www/$1.com/
 sudo /bin/cp -rf /data/www/ainicheng.com/config /data/www/$1.com/
 sudo /bin/cp -rf /data/www/ainicheng.com/resources/views /data/www/$1.com/resources/
+git checkout resources/views/app.blade.php
 sudo /bin/cp -rf /data/www/ainicheng.com/resources/assets/js /data/www/$1.com/resources/assets/
 sudo /bin/cp -rf /data/www/ainicheng.com/routes /data/www/$1.com/
 
