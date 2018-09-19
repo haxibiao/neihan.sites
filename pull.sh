@@ -1,55 +1,37 @@
 #!bin/bash
 
-echo "============ dongmeiwei.com ============"
-cd ../dongmeiwei.com
-git stash -u
-git pull
-php artisan env:refresh
+function pull() {
+	domain=$1;
+	echo "============ $domain ============"
+	if [ ! -d /data/www/$domain ]; then
+		cd /data/www
+		git clone ssh://root@$domain:/data/www/$domain
+	fi
+	cd /data/www/$domain
+	if [ -z $2 ]; then
+		git stash -u
+	else 
+		echo "刷新.git ..."
+		scp root@$domain:/data/www/$domain/git.zip .
+		rm -rf .git
+		unzip -q git.zip
+		git remote add origin ssh://root@$domain:/data/www/$domain
+	fi 
+	git pull origin master
+	git push origin master -u
+	[ ! -d ./vendor ] && composer install -q
+	[ ! -d ./node_modules ] && npm i 
+	php artisan env:refresh
+}
 
-echo "============ dongdianyao.com ============"
-cd ../dongdianyao.com
-git stash -u
-git pull
-php artisan env:refresh
+pull "dongmeiwei.com" $*
+pull "dongdianyi.com" $*
+pull "dongdianyao.com" $*
 
-echo "============ dongdianyi.com ============"
-cd ../dongdianyi.com
-git stash -u
-git pull
-php artisan env:refresh
+pull "dianmoge.com" $*
+pull "qunyige.com" $*
+pull "youjianqi.com" $*
 
-echo "============ qunyige.com ============"
-cd ../qunyige.com
-git stash -u
-git pull
-php artisan env:refresh
-
-echo "============ youjianqi.com ============"
-cd ../youjianqi.com
-git stash -u
-git pull
-php artisan env:refresh
-
-echo "============ dianmoge.com ============"
-cd ../dianmoge.com
-git stash -u
-git pull
-php artisan env:refresh
-
-echo "============ jucheshe.com ============"
-cd ../jucheshe.com
-git stash -u
-git pull
-php artisan env:refresh
-
-echo "============ youwangfa.com ============"
-cd ../youwangfa.com
-git stash -u
-git pull
-php artisan env:refresh
-
-echo "============ didilinju.com ============"
-cd ../didilinju.com
-git stash -u
-git pull
-php artisan env:refresh
+pull "jucheshe.com" $*
+pull "youwangfa.com" $*
+pull "didilinju.com" $*
