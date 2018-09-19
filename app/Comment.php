@@ -145,4 +145,10 @@ class Comment extends Model
         return $json;
     }
 
+    public function fillFOrJs()
+    {
+        $this->body = html_entity_decode($this->body);
+        return $this;
+    }
+
 }
