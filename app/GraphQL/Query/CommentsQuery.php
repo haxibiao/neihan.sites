@@ -74,6 +74,13 @@ class CommentsQuery extends Query
             $limit = $args['limit'];
         }
         $qb = $qb->take($limit);
-        return $qb->get();
+
+        $comments = $qb->get();
+        foreach ($comments as $comment) {
+            //格式化 因评论采用了htmlentities转码 
+            $comment->fillForJs();
+        }
+
+        return $comments;
     }
 }
