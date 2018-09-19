@@ -20,6 +20,7 @@ function pull() {
 	git pull origin master
 	git push origin master -u
 	[ ! -d ./vendor ] && composer install -q
+	[ ! -d ./node_modules ] && npm i 
 	php artisan env:refresh
 }
 
