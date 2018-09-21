@@ -11,7 +11,7 @@ return [
                 'token' => 'sb0L7xS3Wk0taaAo',
             ],
             'baiduNumber' => [
-                'token' => 'llmWAm65s0vZsiuG',
+                'token' => 'oiIhBEyTEx33BwRW',
             ],
         ],
 
@@ -28,7 +28,7 @@ return [
                 'token' => 'xxx',
             ],
             'baiduNumber' => [
-                'token' => '5gXEVRuomHcgZD5g',
+                'token' => 'oiIhBEyTEx33BwRW',
             ],
         ],
     ],
@@ -73,7 +73,7 @@ return [
                 'token' => 'xxx',
             ],
             'baiduNumber' => [
-                'token' => '5gXEVRuomHcgZD5g',
+                'token' => 'oiIhBEyTEx33BwRW',
             ],
         ],
         'default_import_category_name' => '家常菜菜谱',
@@ -85,7 +85,7 @@ return [
         'keywords'                     => '健康科普,医疗知识,健康资讯,疾病大全,医患问答',
         'articlePush'                  => [
             'baiduNumber' => [
-                'token' => 'BPibF84Ysm9jVrIY',
+                'token' => 'U00078V0LEiRwzNw',
 
             ],
             'pandaNumber' => [
@@ -102,7 +102,7 @@ return [
         'title'       => '专业提供中西药大全中西药保健及用法与问答互动平台',
         'articlePush' => [
             'baiduNumber' => [
-                'token' => 'BPibF84Ysm9jVrIY',
+                'token' => 'U00078V0LEiRwzNw',
             ],
         ],
     ],
