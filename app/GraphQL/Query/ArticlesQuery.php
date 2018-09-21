@@ -20,17 +20,47 @@ class ArticlesQuery extends Query
 
     public function args()
     {
-        return [
-            'user_id'       => ['name' => 'user_id', 'type'         => Type::int()],
-            'category_id'   => ['name' => 'category_id', 'type'     => Type::int()],
-            'collection_id' => ['name' => 'collection_id', 'type'   => Type::int()],
-            'limit'         => ['name' => 'limit', 'type'   => Type::int()],
-            'offset'        => ['name' => 'offset', 'type'  => Type::int()], 
-            'filter'        => ['name' => 'filter', 'type'  => GraphQL::type('ArticleFilter')],
-            'in_days'       => ['name' => 'in_days', 'type' => Type::int()],
-            'order'         => ['name' => 'order',  'type'  => GraphQL::type('ArticleOrder')],
-            'type'          => ['name' => 'type', 'type'    => GraphQL::type('ArticleType')],
-            'keyword'     => ['name' => 'keyword'   , 'type'    => Type::string()],
+        return [ 
+            'user_id'       => [
+                'name' => 'user_id', 
+                'type'         => Type::int()
+            ],
+            'category_id'   => [
+                'name' => 'category_id', 
+                'type'     => Type::int()
+            ],
+            'collection_id' => [
+                'name' => 'collection_id', 
+                'type'   => Type::int()
+            ],
+            'limit'         => [
+                'name' => 'limit', 
+                'type'   => Type::int()
+            ],
+            'offset'        => [
+                'name' => 'offset', 
+                'type'  => Type::int()
+            ], 
+            'filter'        => [
+                'name' => 'filter', 
+                'type'  => GraphQL::type('ArticleFilter')
+            ],
+            'in_days'       => [
+                'name' => 'in_days', 
+                'type' => Type::int()
+            ],
+            'order'         => [
+                'name' => 'order',  
+                'type'  => GraphQL::type('ArticleOrder')
+            ],
+            'type'          => [
+                'name' => 'type', 
+                'type'    => GraphQL::type('ArticleType')
+            ],
+            'keyword'     => [
+                'name' => 'keyword'   , 
+                'type'    => Type::string()
+            ],
         ];
     } 
 
@@ -40,7 +70,6 @@ class ArticlesQuery extends Query
         $qb = Article::whereNull('source_url');
         //下面代码注释掉的原因避免，用户发布一篇新文章在手机duan自己主页的公开文章中查询不到
         /*->where('category_id', '>', 0)*/;
-        
         if (isset($args['keyword'])) {
             $keyword = trim($args['keyword']);
             if( empty( $keyword ) ){
@@ -70,7 +99,7 @@ class ArticlesQuery extends Query
                 $query_log->save();
             }
         }
-
+        //排序
         if (isset($args['order'])) {
             if ($args['order'] == 'COMMENTED') {
                 $qb = $qb->orderBy('updated_at', 'desc'); //TODO:: later update article->commented while commented ...
@@ -105,7 +134,7 @@ class ArticlesQuery extends Query
         if (isset($args['type'])) {
             switch ($args['type']) {
                 case 'VIDEO':
-                    $qb = $qb->where('type','=','video'); 
+                    $qb = $qb->where('type','=','video');  
                     break;
 
                 case 'ARTICLE':
@@ -152,6 +181,16 @@ class ArticlesQuery extends Query
             }
             $user = \App\User::findOrFail($args['user_id']);
             $qb   = $user->likes()->where('liked_type', 'articles');
+        }
+
+        if (isset($args['filter']) && $args['filter'] == 'RECOMMEND') {
+            $user = \App\User::findOrFail($args['user_id']);
+            $following_user_ids = $user->followingUsers()
+                ->pluck('followed_id');
+            if(empty($following_user_ids)){
+                return null;
+            }
+            $qb = Article::whereIn('user_id',$following_user_ids);
         }
 
         if (isset($args['offset'])) {
