@@ -253,7 +253,8 @@ class UserController extends Controller {
 	 * @param    Request    $request
 	 * @param    [user]     $id
 	 */
-	public function relatedVideos(Request $request, $id) {
+	public function relatedVideos(Request $request, $id) 
+	{
 		$user = User::findOrFail($id);
 
 		$num = $request->get('num') ? $request->get('num') : 10;
@@ -271,7 +272,8 @@ class UserController extends Controller {
 	 * @param    Request    $request
 	 * @param    [video]     $id
 	 */
-	public function sameVideos(Request $request, $id) {
+	public function sameVideos(Request $request, $id) 
+	{
 		$video = Video::with('article')->with('user')->findOrFail($id);
 		$article = $video->article;
 		$num = $request->get('num') ? $request->get('num') : 10;
@@ -280,5 +282,30 @@ class UserController extends Controller {
 			$article->fillForJs();
 		}
 		return $data;
+	}
+
+	/**
+	 * @Author      XXM
+	 * @DateTime    2018-09-22
+	 * @description            [返回你关注的和关注你的用户]
+	 * @return      [users]     [description]
+	 */
+	public function relatedUsers()
+	{
+		$user = Auth::guard('api')->user();
+
+		//如果是编辑则返回所有用户
+		if($user->is_editor){
+			return $users = User::select(['id','name'])->orderBy('count_articles','desc')->get()->toArray();
+		}
+
+		$followUsers = $user->followingUsers()->pluck('followed_id')->toArray();
+		$userFans = $user->follows()->pluck('user_id')->toArray();
+
+		$user_ids = array_merge($followUsers,$userFans);
+		$user_ids = array_unique($user_ids);
+
+		$users = User::whereIn('id',$user_ids)->select(['id','name'])->get()->toArray();
+		return $users;
 	}
 }

@@ -53,7 +53,9 @@ mix.scripts(
 		"public/js/_user.js",
 		"public/js/poster.js",
 		"resources/assets/js/plugins/bootstrap-tagsinput.js",
-		"public/js/jquery-form.js"
+		"public/js/jquery-form.js",
+		"resources/assets/js/plugins/at.js",
+		"resources/assets/js/plugins/jquery.caret.js",
 	],
 	"public/js/user.js"
 ).version();
@@ -83,7 +85,9 @@ mix.scripts(
 		"public/js/_admin.js",
 		"public/js/poster.js",
 		"resources/assets/js/plugins/bootstrap-tagsinput.js",
-		"public/js/jquery-form.js"
+		"public/js/jquery-form.js",
+		"resources/assets/js/plugins/at.js",
+		"resources/assets/js/plugins/jquery.caret.js",
 	],
 	"public/js/admin.js"
 ).version();

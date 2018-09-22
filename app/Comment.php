@@ -78,8 +78,8 @@ class Comment extends Model
                 ->where('commentable_type', get_polymorph_types($input['commentable_type']))
                 ->count() + 1;
         }
-        //防止XSS
-        $input['body'] = htmlentities($input['body']);
+        //防止XSS 排除所有标签 除了at标签
+        $input['body'] = strip_tags($input['body'], '<at>');
         $this->fill($input);
         $this->save();
 

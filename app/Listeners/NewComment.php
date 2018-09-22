@@ -85,16 +85,18 @@ class NewComment
 
         //用户@人的逻辑。
         $filtered_users;//需要@的人
-        $pattern = "/@([^\s|\/|:|@]+)/i";
-        preg_match_all($pattern, $comment->body, $matches);
-        $atlist_tmp = end($matches); 
+        //获取需要通知的用户id
+        preg_match_all('/<at[^>]+data-id="(\d+)">[^>]+<\/at>/i', $comment->body, $comment_at_users);
+        $comment_at_ids = end($comment_at_users);
         //该评论内容@了用户,但是用户输入的用户名不一定能对应到我们网站的用户,此处过滤
         $filtered_users = null;
-        if( !empty($atlist_tmp) ){
-            $mentioned_user_name    = array_values($atlist_tmp);
-            //去重:避免@一个人多次，导致多次消息通知
-            $mentioned_user_name    = array_unique($mentioned_user_name);
-            $at_users               = User::whereIn('name',$mentioned_user_name)->get();
+        if( !empty($comment_at_ids) ){
+            //整合 去重:避免@一个人多次，导致多次消息通知
+            $comment_at_ids    = array_values($comment_at_ids);
+            $comment_at_ids    = array_unique($comment_at_ids);
+
+            //需要通知的用户
+            $at_users = User::whereIn('id', $comment_at_ids)->get();
             $at_name_and_ids        = $at_users->pluck('id','name');
             if( $at_users->isNotEmpty() ){ 
                 
@@ -187,6 +189,10 @@ class NewComment
                     $article, $comment, $authorizer, $msg_title_form3, $comment->body 
                 ));
             }
+            //替换掉at标签
+            $commentBody = str_replace(['<at', '</at>'], ['<a', '</a>'], $comment->body);
+            $comment->body      = $commentBody;
+            $comment->save(['timestamps'=>false]);
         }
     }
     /**

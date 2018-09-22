@@ -3,7 +3,8 @@
 			<div v-if="show">
 				<form class="new-comment">
 					<div>
-						<textarea placeholder="写下你的评论..." @keyup.ctrl.enter="send" v-model="message"></textarea>
+						<div placeholder="写下你的评论..." @keyup.ctrl.enter="send" @input="setComment" class="commenTable" contentEditable="true" ref="editContent" v-html="message" v-once>
+						</div>
 						<div class="write-block">
 							<div class="emoji-wrap">
 								<a class="emoji"><i class="iconfont icon-smile"></i></a>
@@ -37,8 +38,18 @@ export default {
       if(!this.message) {
         return null
       };
+
+      //防止XSS 数据格式化 替换成at标签
+      var reg = /<span class="atwho-inserted" data-atwho-at-query="@(.*?)" contenteditable="false"><span data-id="(\d+)">@(.*?)<\/span><\/span>/g;
+      this.message = this.message.replace(reg,'<at href="/user/$2" data-id="$2">@$3</at>');
+      
   	  this.$emit('sendReply', this.message);
+  	  //清空掉评论框内容
+  	  this.$refs.editContent.innerHTML = null;
   	  this.message = null;
+  	},
+  	setComment() {
+  		this.message = this.$refs.editContent.innerHTML;
   	},
   	toggle() {
   		this.$emit('toggle-replycomment');

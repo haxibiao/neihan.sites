@@ -59,7 +59,7 @@
                     <a v-else @click="packupReplyComment(comment)">收起</a>
                   </span>
                 </div>           
-                <reply-comment :is-show="comment.replying" :body="comment.replyUser?'@'+comment.replyUser+' ':''" @sendReply="(body)=>sendReply(body,comment,index)" @toggle-replycomment="toggleReplyComment(comment,index)"></reply-comment>
+                <reply-comment :is-show="comment.replying" :body="commentBody(comment)" @sendReply="(body)=>sendReply(body,comment,index)" @toggle-replycomment="toggleReplyComment(comment,index)"></reply-comment>
               </blockquote>
           </div>
         </div>
@@ -90,7 +90,7 @@ export default {
     },
     isLogin() {
       return window.user !== undefined;
-    }
+    },
   },
 
   methods: {
@@ -201,6 +201,7 @@ export default {
      // reply表示回复类型
      // comment.replying  代表评论框是否开启
      // comment.replyUser 代表评论框是否带有@用户
+     // comment.replyUserId 代表@用户id
     toggleReplyComment(comment,index,reply) {
       if (this.checkLogin()) {
         if(reply) {
@@ -208,24 +209,37 @@ export default {
             if(comment.replyUser) {
               if(comment.replyUser !== reply.user.name) {
                 comment.replyUser = reply.user.name;
+                comment.replyUserId = reply.user.id;
               }else {
                 comment.replyUser = null;
+                comment.replyUserId = null;
                 comment.replying = !comment.replying;
               }
             }else {
               comment.replyUser = reply.user.name;
+              comment.replyUserId = reply.user.id;
             }
           }else {
             comment.replyUser = reply.user.name;
+            comment.replyUserId = reply.user.id;
             comment.replying = !comment.replying;
           }
         }else {
           if(comment.replyUser) {
             comment.replyUser = null;
+            comment.replyUserId = null;
           }else {
             comment.replying = !comment.replying;
           }
         }
+
+        //获取更新后的 DOM 
+        this.$nextTick(() => {
+          $('.commenTable').each(function(){
+            $(this).atwho(at_config);
+          })
+        })
+
         this.$set(this.comments,index,comment);
       }
     },
@@ -309,6 +323,16 @@ export default {
         _this.lastPage = response.data.last_page;
         _this.total = response.data.total;
       });
+    },
+    commentBody: function(comment){
+      var link = '';
+      //插入回复用户Dom
+      if(comment.replyUser && comment.replyUserId)
+      {
+        link = '<span class="atwho-inserted" data-atwho-at-query="@" contenteditable="false"><span data-id="'+comment.replyUserId+'">'+'@'+comment.replyUser+'</span></span>&nbsp;';
+      }
+
+      return link;
     }
   },
 
