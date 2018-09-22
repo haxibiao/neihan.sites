@@ -65,8 +65,9 @@
     <script type="text/javascript">
             window.csrf_token = '{{ csrf_token() }}';
     </script>
-
-    @if(Auth::check() && Auth::user()->checkEditor())
+    @if(Auth::check() && Auth::user()->checkAdmin())
+        <script src="{{ mix('js/admin.js') }}"></script>
+    @elseif(Auth::check() && Auth::user()->checkEditor())
         <script src="{{ mix('js/editor.js') }}"></script>
     @elseif(Auth::check())
         <script src="{{ mix('js/user.js') }}"></script>

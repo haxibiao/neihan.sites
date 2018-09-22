@@ -119,6 +119,18 @@
 
 @push('scripts')
     @include('parts.js_for_app')
+@if(Auth::check())
+<script type="text/javascript">
+    var at_config = {
+      at: "@"  ,{{--这个是触发弹出菜单的按键--}}
+      data: window.tokenize('/api/related-users'),
+      insertTpl: '<span data-id="${id}">@${name}</span>',
+      displayTpl: "<li > ${name} </li>",
+      limit: 200  
+    }
+  $('#editComment').atwho(at_config); // 初始化
+</script>
+@endif
 @endpush
 @push('modals')
   {{-- 分享到微信 --}}
