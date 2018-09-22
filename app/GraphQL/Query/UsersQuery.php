@@ -38,7 +38,7 @@ class UsersQuery extends Query
 
     public function resolve($root, $args)
     {
-        $qb = User::orderBy('id', 'desc');
+        $qb = User::orderByDesc('count_words')->orderByDesc('count_likes');
 
         //用户搜索
         if (isset($args['keyword'])) {
