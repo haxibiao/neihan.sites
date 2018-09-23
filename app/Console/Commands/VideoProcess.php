@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\QcloudUtils;
 use App\Video;
 use Illuminate\Console\Command;
 
@@ -48,6 +49,11 @@ class VideoProcess extends Command
     public function processVideo($video)
     {
         $video->syncVodProcessResult();
+        if(!$video->cover){
+            //如果还没有截图 就重新执行调用截图接口
+            $duration = $video->duration > 9 ? 9 : $video->duration;
+            QcloudUtils::makeCoverAndSnapshots($video->fileId, $duration);
+        }
         $this->info("$video->id $article->title $video->path $video->cover");
     }
 
