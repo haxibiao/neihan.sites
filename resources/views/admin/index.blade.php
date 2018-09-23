@@ -15,6 +15,7 @@
 					<a class="btn btn-default" href="/admin/stick-categorys">置顶专题</a>
 					<a class="btn btn-default" href="/admin/stick-video-categorys">置顶视频专题</a>
 					<a class="btn btn-default" href="/admin/stick-videos">置顶视频</a>
+					<a class="btn btn-default" href="/admin/articles">作品批量管理</a>
 				</p>
 			</div>
 		</div>
