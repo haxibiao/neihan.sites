@@ -183,14 +183,18 @@ class ArticlesQuery extends Query
             $qb   = $user->likes()->where('liked_type', 'articles');
         }
 
-        if (isset($args['filter']) && $args['filter'] == 'RECOMMEND') {
+        if ( isset($args['filter']) && $args['filter'] == 'RECOMMEND') {
+            if( !isset($args['user_id']) ){
+                return null;
+            }
             $user = \App\User::findOrFail($args['user_id']);
             $following_user_ids = $user->followingUsers()
                 ->pluck('followed_id');
             if(empty($following_user_ids)){
                 return null;
             }
-            $qb = Article::whereIn('user_id',$following_user_ids);
+            $qb = Article::orderBy('id', 'desc')
+                ->whereIn('user_id',$following_user_ids);
         }
 
         if (isset($args['offset'])) {
