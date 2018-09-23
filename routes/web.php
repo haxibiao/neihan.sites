@@ -118,6 +118,8 @@ Route::post('/admin/delete-stick-article', 'AdminController@deleteStickArticle')
 Route::get('/admin/stick-videos', 'AdminController@videoSticks');
 Route::post('/admin/stick-videos', 'AdminController@videoStick')->name('admin.stick_video');
 Route::post('/admin/delete-stick-videos', 'AdminController@deleteStickVideos')->name('admin.delete_stick_video');
+//
+Route::any('/admin/articles', 'AdminController@articles');
 
 
 

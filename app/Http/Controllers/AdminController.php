@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Category;
 use App\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Storage;
 
@@ -356,5 +357,49 @@ class AdminController extends Controller
             return "成功";
         }
         return $result;
+    }
+
+    /**
+     * @Author      XXM
+     * @DateTime    2018-09-23
+     * @description            [description]
+     * @return      [type]     [description]
+     */
+    public function articles(Request $request)
+    {
+        if($request->isMethod('post')){
+            $parmas = $request->all();
+            $article_ids = explode(',', $parmas['article_ids']);
+
+            if($parmas['type'] == 'deleteArticles'){
+                DB::table('articles')->whereIn('id',$article_ids)->update(['status'=>-1]);
+            }else if($parmas['type'] == 'sendArctiles'){
+                DB::table('articles')->whereIn('id',$article_ids)->update(['status'=>1]);
+            }else{
+                $category = Category::whereName($parmas['category'])->first();
+                if(!$category){
+                    return '专题不存在';
+                }
+                $category_id = $category->id;
+            }
+
+            if($parmas['type'] == 'changeCategory'){
+                DB::table('articles')->whereIn('id',$article_ids)->update(['category_id'=>$category_id]);
+            }else if($parmas['type'] == 'addCategory'){
+                $articles = Article::whereIn('id',$article_ids)->get();
+                foreach ($articles as $article) {
+                    $article->categories()->attach($category_id,['submit' => '已收录']);
+                }
+
+            }
+
+            return redirect()->back();
+        }
+
+        $articles = Article::orderByDesc('id');
+        $data['articles'] = $articles->paginate(10);
+
+        
+        return view('admin.articles')->withData($data);
     }
 }
