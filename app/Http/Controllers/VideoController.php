@@ -235,6 +235,9 @@ class VideoController extends Controller
             }
             $article->status = 1;
             $article->save();
+        }else{
+            $video->status = 0;
+            $video->save();
         }
 
         //save article description ...
