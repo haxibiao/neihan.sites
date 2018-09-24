@@ -235,7 +235,7 @@ class VideoController extends Controller
             }
             $article->status = 1;
             $article->save();
-        }else{
+        }else if(!$video->cover){
             $video->status = 0;
             $video->save();
         }
