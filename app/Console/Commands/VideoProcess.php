@@ -52,7 +52,7 @@ class VideoProcess extends Command
         if(!$video->cover){
             //如果还没有截图 就重新执行调用截图接口
             $duration = $video->duration > 9 ? 9 : $video->duration;
-            QcloudUtils::makeCoverAndSnapshots($video->fileId, $duration);
+            QcloudUtils::makeCoverAndSnapshots($video->qcvod_fileid, $duration);
         }
         $this->info("$video->id $article->title $video->path $video->cover");
     }
