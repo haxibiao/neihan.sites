@@ -109,7 +109,7 @@ class ArticlesQuery extends Query
                 $qb = $qb->orderBy('id', 'desc');
             }
         } else {
-            $qb = $qb->orderBy('id', 'desc');
+            $qb = $qb->orderBy('updated_at', 'desc');
         }
 
         //TODO关于filter的代码需要重构
