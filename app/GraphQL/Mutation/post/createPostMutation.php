@@ -47,8 +47,19 @@ class createPostMutation extends Mutation
         $article->createPost($args);
 
         //直接关联到专题
-        if (!empty($args['category_ids'])) {
-            $article->categories()->sync($args['category_ids']);
+        if (!empty($args['a_cids'])) {
+            //排除重复专题
+            $category_ids = array_unique($args['a_cids']);
+            $category_id = reset($category_ids);
+            array_shift($category_ids);
+
+            //第一个专题为主专题
+            $article->category_id = $category_id;
+            $article->save();
+
+            if($category_ids){
+                $article->categories()->sync($category_ids);
+            }
         } 
         return $article;
     }
