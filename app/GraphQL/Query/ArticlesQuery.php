@@ -156,7 +156,7 @@ class ArticlesQuery extends Query
         }
 
         if (isset($args['category_id'])) {
-            $qb = $qb->where('category_id', $args['category_id']);
+            $qb = \App\Category::findOrFail($args['category_id'])->articles();
         }
 
         if (isset($args['collection_id'])) {
