@@ -271,9 +271,9 @@ class Article extends Model
         }
     }
 
-    public function parsedBody()
+    public function parsedBody($environment = null)
     {
-        $this->body = parse_image($this->body);
+        $this->body = parse_image($this->body,$environment);
         $pattern    = "/<img alt=\"(.*?)\" ([^>]*?)>/is";
         preg_match_all($pattern, $this->body, $match);
 
