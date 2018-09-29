@@ -91,10 +91,12 @@ function get_article_url($article)
     return $url;
 }
 
-function parse_image($body)
+function parse_image($body,$environment = null)
 {
-    //检测本地没图的时候取线上的
-    if (\App::environment('local')) {
+    //检测本地或GQL没图的时候取线上的
+    $environment = $environment ?: \App::environment('local');
+
+    if ($environment) {
         $pattern_img = '/<img(.*?)src=\"(.*?)\"(.*?)>/';
         preg_match_all($pattern_img, $body, $matches);
         $imgs = $matches[2];
