@@ -83,11 +83,6 @@ class ArticleType extends GraphQLType
                 'description' => 'The body of article',
                 'resolve'     => function ($root, $args) {
                     $body = str_replace("\"", "'", $root->parsedBody('GQL'));
-                    if($root->type == 'post'){
-                        foreach ($root->images as $image) {
-                           $body.="<img alt='".$image->title."' src='".$image->url()."'/>";
-                        }
-                    }
                     return $body;
                 }, 
             ],
