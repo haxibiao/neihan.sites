@@ -82,7 +82,8 @@ class ArticleType extends GraphQLType
                 'type'        => Type::string(),
                 'description' => 'The body of article',
                 'resolve'     => function ($root, $args) {
-                    return str_replace("\"", "'", $root->parsedBody('GQL'));
+                    $body = str_replace("\"", "'", $root->parsedBody('GQL'));
+                    return $body;
                 }, 
             ],
             'status'          => [
