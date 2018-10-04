@@ -89,21 +89,19 @@ class FixData extends Command
     public static function images($cmd)
     {
         $cmd->info('fix images ...');
-        Image::orderBy('id')->chunk(100, function ($images) use ($cmd) {
-            foreach ($images as $image) {
-                //服务器上图片不在本地的，都设置disk=hxb
-                $image->hash = '';
-                if (file_exists(public_path($image->path))) {
-                    $image->hash = md5_file(public_path($image->path));
-                    $image->disk = 'local';
-                    $cmd->info($image->id . '  ' . $image->extension);
-                } else {
-                    $image->disk = 'hxb';
-                    $cmd->comment($image->id . '  ' . $image->extension);
-                }
-                $image->save();
-            }
-        });
+        $images = Image::where('path','like','%.gif')->whereNull('width')
+            ->whereNull('height')->where('status','>',-1)
+            ->get();
+            
+        foreach ($images as $image) {
+            $image_info = getimagesize(public_path($image->path));
+            $image->width = $image_info[0];
+            $image->height = $image_info[1];
+            $image->save(['timestamps'=>false]);
+            $cmd->info('image id:'.$image->id,' fix success');
+        }
+        
+        $cmd->info('fix success');
     }
 
     public static function articles($cmd)
