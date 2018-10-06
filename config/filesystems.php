@@ -54,6 +54,13 @@ return [
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
+        //临时磁盘
+        'opendir' => [
+            'driver' => 'local',
+            'root' => public_path('/'),
+            'url' => env('APP_URL'),
+            'visibility' => 'public',
+        ],
 
         's3' => [
             'driver' => 's3',
