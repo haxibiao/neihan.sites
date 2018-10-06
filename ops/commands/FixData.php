@@ -88,6 +88,7 @@ class FixData extends Command
     //图片迁移第一步：上传静态资源到COS
     public static function images1($cmd)
     {
+        ini_set("memory_limit","-1");//取消PHP内存限制
         $cmd->info('fix images1 ...');
         //dd($images);
         $bucket = env('DB_DATABASE'); 
@@ -100,7 +101,7 @@ class FixData extends Command
         /* 将img与image文件夹下的内容拷贝到COS */
         $disk   = \Storage::disk('opendir');
         $images = array_merge(
-            $disk->allFiles('/storage/avatar'),
+            //$disk->allFiles('/storage/avatar'),
             $disk->allFiles('/storage/img'),
             $disk->allFiles('/storage/image'),
             $disk->allFiles('/storage/category')  
