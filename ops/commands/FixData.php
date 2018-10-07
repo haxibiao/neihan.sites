@@ -100,12 +100,23 @@ class FixData extends Command
         ];
         /* 将img与image文件夹下的内容拷贝到COS */
         $disk   = \Storage::disk('opendir');
+        $images = [];
+        if(env('DB_DATABASE')!='ainicheng'){
+            $images = array_merge(
+                $disk->allFiles('/storage/avatar'),
+                $disk->allFiles('/storage/img'),
+                $disk->allFiles('/storage/image'),
+                $disk->allFiles('/storage/category')  
+            ); 
+        }
+        $videos = $disk->allFiles('/storage/video');
+        $videos = array_filter($videos,function($path){
+            return !str_contains($path, 'mp4');
+        });
         $images = array_merge(
-            //$disk->allFiles('/storage/avatar'),
-            $disk->allFiles('/storage/img'),
-            $disk->allFiles('/storage/image'),
-            $disk->allFiles('/storage/category')  
-        ); 
+            $images,
+            $videos
+        );
         //上传的文件总数
         $sum = count($images);
         $error_count = 0;//记录传输失败的次数
@@ -137,10 +148,54 @@ class FixData extends Command
             sleep(1);
         }
         $cmd->info('共:'. $sum .'个文件,失败:'. $error_count .'个文件');
+        
+    }
+    //处理默认头像与老视频的封面图
+    public static function images10($cmd){
+        ini_set("memory_limit","-1");//取消PHP内存限制
+        $bucket = env('DB_DATABASE'); 
+        $cos    = app('qcloudcos'); 
+        //忽略下列文件
+        $discard_files = [
+            '.DS_Store',
+            '.git',
+        ];
+        /* 将img与image文件夹下的内容拷贝到COS */
+        $disk   = \Storage::disk('opendir');
+        $videos = $disk->allFiles('/storage/video');
+        $images = array_filter($videos,function($path){
+            return !str_contains($path, 'mp4');
+        });
+        $images = array_merge(
+            $images,
+            $disk->allFiles('/img');
+        );
+        foreach (collect($images)->chunk(200) as $chunk) {
+            foreach ($chunk as $name) {
+                $base_name = basename($name);
+                if(str_contains($base_name , $discard_files)){
+                    continue;
+                }
+                $dstFpath  = $name;
+                $srcFpath  = public_path($dstFpath);
+                try {
+                    $result = $cos::upload($bucket, $srcFpath, $dstFpath);
+                    $result_obj = json_decode($result);
+                    if($result_obj->code != 0){ //0:代表上传成功的状态
+                        $cmd->error('Upload Failure:'. $result_obj->message); 
+                    } 
+                } catch (\Exception $e) {
+                    $cmd->error('图片上传至COS失败---->>>' . $e->getMessage());
+                    continue;
+                }
+            }
+            sleep(1);
+        }
+
         //处理上传的默认头像
-        for ($i = 1; $i <= 15 ; $i++) {
-            $srcFpath = public_path('/images/avatar-'.$i.'.jpg');
-            $result = $cos::upload($bucket, $srcFpath, 'storage/avatar');
+        for ($i = 1; $i <= 15 ; $i++) { 
+            $srcFpath = public_path('images/avatar-'.$i.'.jpg');
+            $result = $cos::upload($bucket, $srcFpath, 'storage/avatar/avatar-'.$i.'.jpg'); 
             try {
                 $result_obj = json_decode($result);
                 if($result_obj->code != 0){ //0:代表上传成功的状态
@@ -152,54 +207,97 @@ class FixData extends Command
             }
         }
     }
+    //处理articles表中冗余的image_url image_top
+    public static function images2($cmd){
+        ini_set("memory_limit","-1");//取消PHP内存限制
+        $path_formatter = 'http://cos.' . env('DB_DATABASE') . '.com%s';
+        Article::orderBy('id')->chunk(100,function($articles) use ($cmd,$path_formatter){
+            foreach ($articles as $article) {
+                $img_path = $article->image_url;
+                $cmd->info($img_path);
+                $path_top = $article->image_top;
+                if(empty($img_path)){
+                    continue;
+                }
+                //忽略vod的图片
+                if(str_contains($img_path, ['1251052432.vod2.myqcloud.com'])){
+                    continue;
+                }
+                //非爬虫文章
+                if( !str_contains($img_path, 'haxibiao') ){ 
+                    $replace_path = str_contains($img_path, env('APP_DOMAIN')) ?
+                        str_after($img_path, env('APP_DOMAIN'))
+                            : 
+                        $img_path;
+                    $article->image_url     = sprintf($path_formatter, $replace_path);
+                    if(!empty( $path_top )){ 
+                         $article->image_top = sprintf($path_formatter, $path_top);
+                    }
+                } else {
+                    $replace_path =  str_after($img_path, 'haxibiao.com' );
+                    $article->image_url     = sprintf('http://cos.haxibiao.com%s', $replace_path);
+                    //更新轮播图
+                    if(!empty( $path_top )){ 
+                         $article->image_top = sprintf('http://cos.haxibiao.com%s', $path_top);
+                    }
+                }
+                $article->timestamps = false;
+                $article->save();
+            }
+        });
+    }
 
     //图片迁移第二步：更新数据库记录中的图片路径
-    public static function images2($cmd){
+    public static function images3($cmd){
+        ini_set("memory_limit","-1");//取消PHP内存限制
         $cmd->info('fix images2 ...');
-        
         //修改Image中的path与path_top
-        $path_formatter = 'http://' . env('DB_DATABASE') . '-'. config('qcloudcos.app_id') .'.file.myqcloud.com/storage/image/%s';
-        $hxb_path_formatter = 'http://haxibiao-1251052432.file.myqcloud.com/storage/image/%s';
-        Image::orderBy('id')->chunk(100, function ($images) use ($cmd,$path_formatter,$hxb_path_formatter) {
+        $path_formatter = 'http://cos.' . env('DB_DATABASE') . '.com%s';
+        Image::orderBy('id')->chunk(100, function ($images) use ($cmd,$path_formatter) {
             foreach ($images as $image) {
-                $source_url = $image->source_url;
-                //source_url为空代表爬虫文章
-                if( is_null($source_url) ){
+                $cmd->info($image->path);
+                $disk = $image->disk;
+                //脏数据，不处理
+                if($image->path == '.jpg' || empty($image->path)){
+                    continue;
+                }
+                if( $disk != 'hxb' ){
                     //原图
-                    $image->path     = sprintf($path_formatter, basename($image->path));
+                    $image->path     = sprintf($path_formatter, $image->path);
                     //轮播图
                     $path_top = $image->path_top;
                     if(!empty( $path_top )){
-                         $image->path_top = sprintf($path_formatter, basename($image->path_top));
+                         $image->path_top = sprintf($path_formatter,$image->path_top);
                     }
-                    $image->disk = config('qcloudcos.location'); 
+                    $image->disk = env('DB_DATABASE'); //disk存放图片的bucket
+                //source_url为空代表爬虫文章
                 } else {
-                    $image->path     = sprintf($hxb_path_formatter, basename($image->path));
+                    $replace_path = str_contains($image->path, 'haxibiao.com')  ?
+                        str_after($image->path, 'haxibiao.com' ): $image->path;
+                    $image->path     = sprintf('http://cos.haxibiao.com%s', $replace_path);
                     //更新轮播图
                     $path_top = $image->path_top;
-                    if(!empty( $path_top )){
-                         $image->path_top = sprintf($hxb_path_formatter, basename($image->path_top));
+                    if(!empty( $path_top )){ 
+                         $image->path_top = sprintf('http://cos.haxibiao.com%s', $image->path_top);
                     }
+                    $image->disk = 'haxibiao';
                 }
-                $image->timestamps = false;
+                //$image->timestamps = false;
                 $image->save();
             }
         });
-        
         //修改Category的logo与logo_app的地址
-        $logo_formatter = 'http://' . env('DB_DATABASE') . '-'. config('qcloudcos.app_id') .'.file.myqcloud.com/storage/category/%s';
-        Category::orderBy('id')->chunk(100, function ($categories) use ($cmd,$logo_formatter) {
-            foreach ($categories as $category) {     
+        $logo_formatter = 'http://cos.' . env('DB_DATABASE') .'.com%s';
+        Category::orderBy('id')->chunk(1000, function ($categories) use ($cmd,$logo_formatter) {
+            foreach ($categories as $category) { 
+                $cmd->info($category->logo);
                 $logo           = $category->logo;
-                $category->logo = sprintf($logo_formatter, basename($logo));
+                $category->logo = sprintf($logo_formatter, $logo);
                 $logo_app       = $category->logo_app;
                 if( !empty($logo_app) ){
                     //category中logo_app有部分脏数据
-                    if( str_contains($logo_app, ['/tmp']) ){
-                        $category->logo_app = sprintf(
-                            $logo_formatter, 
-                            $category->id . '.logo.app.jpg'
-                        );
+                    if( !str_contains($logo_app, ['/tmp']) ){
+                        $category->logo_app = sprintf($logo_formatter, $logo_app);
                     }
                 }
                 $category->timestamps = false;
@@ -208,14 +306,15 @@ class FixData extends Command
         });
 
         //修改User的avatar地址
-        $avatar_formatter = 'http://' . env('DB_DATABASE') . '-'. config('qcloudcos.app_id') .'.file.myqcloud.com/storage/avatar/%s';
-        User::chunk(100,function($users) use ($cmd,$avatar_formatter){
+        $avatar_formatter = 'http://cos.' . env('DB_DATABASE') .'.com/storage/avatar/%s';
+        User::chunk(1000,function($users) use ($cmd,$avatar_formatter){
             foreach ($users as $user) {
+                $cmd->info($user->avatar);
                 $avatar = $user->avatar;
                 //统一下各个站点的默认头像
                 if(str_contains($avatar, ['default.jpg','avatar.jpg','editor_'])){
                     $user->avatar = sprintf($avatar_formatter,'avatar-' . rand(1, 15) . '.jpg'); 
-                } else {
+                }  else {
                     $user->avatar = sprintf($avatar_formatter,basename($avatar));
                 }
                 $user->timestamps = false;
@@ -224,15 +323,17 @@ class FixData extends Command
         });
     }
     //图片迁移第三步：替换文章体中的图片
-    public static function images3(){
-        Article::chunk(100,function($articles) use ($cmd){
+    public static function images4($cmd){
+        ini_set("memory_limit","-1");//取消PHP内存限制
+        Article::chunk(1000,function($articles) use ($cmd){
             foreach ($articles as $article) {
+                $cmd->info($article->title); 
                 if( empty($article->body) ){
                     continue;
                 }
                 //匹配正文中所有的图片路径
                 $pattern = "/<img.*?src=['|\"](.*?)['|\"].*?[\/]?>/iu";
-                preg_match_all($pattern, $body_html, $matches);
+                preg_match_all($pattern, $article->body, $matches);
                 $img_urls = end($matches);
                 $body_html = $article->body;
                 foreach ($img_urls as $img_url) {
@@ -244,18 +345,18 @@ class FixData extends Command
                         continue;
                     }
                     //爱你城本地的图片
-                    if( str_contains($img_url, ['https://ainicheng.com/','https://www.ainicheng.com']) ){
-                        $formatter = 'http://' . env('DB_DATABASE') . '-'. config('qcloudcos.app_id') .'.file.myqcloud.com/storage/image/%s';
-                        $cdn_url = sprintf($formatter, $img_name);
+                    if( str_contains($img_url, 'ainicheng.com') ){
+                        $formatter = 'http://cos.' . env('DB_DATABASE') .'.com%s';
+                        $cdn_url = sprintf($formatter, str_after($img_url, 'ainicheng.com') );
                         $body_html = str_replace($img_url, $cdn_url, $body_html);
                     //哈希表的图片
-                    } elseif ( str_contains($img_url, ['https://haxibiao.com/','https://www.haxibiao.com']) ){
-                        $formatter = 'http://haxibiao-'. config('qcloudcos.app_id') .'.file.myqcloud.com/storage/image/%s';
-                        $cdn_url = sprintf($formatter, $img_name);
+                    } elseif ( str_contains($img_url, 'haxibiao.com') ){
+                        $formatter = 'http://cos.haxibiao.com%s'; 
+                        $cdn_url = sprintf($formatter, str_after($img_url, 'haxibiao.com'));
                         $body_html = str_replace($img_url, $cdn_url, $body_html);
                     }
-                    $body_html = str_replace($img_url, $cdn_url, $body_html);
                 }
+                $article->body = $body_html;
                 $article->timestamps = false;
                 $article->save();
             }
