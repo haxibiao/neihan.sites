@@ -159,15 +159,11 @@ class FixData extends Command
         $discard_files = [
             '.DS_Store',
             '.git',
+            '.mp4',
         ];
-        /* 将img与image文件夹下的内容拷贝到COS */
         $disk   = \Storage::disk('opendir');
-        $videos = $disk->allFiles('/storage/video');
-        $images = array_filter($videos,function($path){
-            return !str_contains($path, 'mp4');
-        });
         $images = array_merge(
-            $images,
+            $disk->allFiles('/storage/video'),
             $disk->allFiles('/img')
         );
         foreach (collect($images)->chunk(200) as $chunk) {
@@ -176,6 +172,7 @@ class FixData extends Command
                 if(str_contains($base_name , $discard_files)){
                     continue;
                 }
+                var_dump($name);
                 $dstFpath  = $name;
                 $srcFpath  = public_path($dstFpath);
                 try {
@@ -207,6 +204,7 @@ class FixData extends Command
             }
         }
     }
+
     //处理articles表中冗余的image_url image_top
     public static function images2($cmd){
         ini_set("memory_limit","-1");//取消PHP内存限制
