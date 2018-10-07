@@ -4,7 +4,7 @@
 echo '开始迁移本地资源到cos......'
 cd ../../
 echo '处理默认头像与老视频的封面图'
-php artisan fix:data images10
+#php artisan fix:data images10
 
 echo '处理articles表中冗余的image_url'
 php artisan fix:data images2
