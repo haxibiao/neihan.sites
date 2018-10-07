@@ -168,7 +168,7 @@ class FixData extends Command
         });
         $images = array_merge(
             $images,
-            $disk->allFiles('/img');
+            $disk->allFiles('/img')
         );
         foreach (collect($images)->chunk(200) as $chunk) {
             foreach ($chunk as $name) {
