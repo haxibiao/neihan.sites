@@ -49,16 +49,7 @@ class signUpMutation extends Mutation
         if( $user_existed ) {
             throw new \Exception('该用户名或邮箱已经存在');
         }
-
         $user = new User();
-        $user->email        = $email;
-        $user->name         = $name; 
-        $user->password     = bcrypt($password);
-        $user->avatar       = '/images/avatar-'.rand(1, 15).'.jpg';
-        $user->api_token    = str_random(60);
-        $user->introduction = '';
-        $user->save();
-
-        return $user;
+        return $user->createUser($args);
     }
 }

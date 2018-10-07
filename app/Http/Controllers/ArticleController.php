@@ -167,7 +167,7 @@ class ArticleController extends Controller {
 		$article->recordBrowserHistory();
 
 		//parse video and image, etc...
-		$article->body = $article->parsedBody();
+		//$article->body = $article->parsedBody();
 
 		$data['recommended'] = Article::whereIn('category_id', $article->categories->pluck('id'))
 			->where('id', '<>', $article->id)

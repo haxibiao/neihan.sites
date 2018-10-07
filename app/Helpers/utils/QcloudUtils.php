@@ -200,12 +200,37 @@ class QcloudUtils
 
     public static function confirmEvents($msgHandles = [])
     {
-        $params = [];
-        $i      = 0;
+        $params = []; 
+        $i      = 0; 
         foreach ($msgHandles as $msgHandle) {
             $params['msgHandle.' . $i] = $msgHandle;
             $i++;
         }
         return self::retryVodApi('ConfirmEvent', $params);
+    }
+    /**
+     * 上传文件 TODO:暂时用这个工具类，后面重构成Storage
+     * @param  [type]  $srcPath  本地图片流的地址
+     * @param  [type]  $fileName 
+     * @param  integer $type     用来表示上传的文件类型:1-头像,2-专题,3-普通文章与动态的图片(后面抽取成常量)
+     * @return [type]            [description]
+     */
+    public static function uploadFile($srcPath,$fileName,$type='image'){
+        //判断文件流是否存在
+        if (is_null($srcPath)) {
+            return null;
+        }
+        try {
+            $bucket = env('DB_DATABASE'); 
+            $dstPath = 'storage/'.$type.'/' . $fileName;
+            $cos    = app('qcloudcos');
+            $result = $cos::upload($bucket, $srcPath, $dstPath);
+            $res    = json_decode($result,true);
+            $res['data']['custom_url'] = 'http://cos.' . env('DB_DATABASE') .'.com' . str_after($res['data']['access_url'],'file.myqcloud.com');
+            return $res;
+        } catch (\Exception $e) {
+            report($e);
+            return null;
+        }
     }
 }

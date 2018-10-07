@@ -31,34 +31,9 @@ class UserController extends Controller {
 	}
 
 	public function saveAvatar(Request $request) {
-		$user = $request->user();
-		if (!is_dir(public_path('/storage/avatar'))) {
-			mkdir(public_path('/storage/avatar'), 0777, 1);
-		}
-		$avatar_path = '/storage/avatar/' . $user->id . '.jpg';
-		if (!is_dir(public_path('/storage/avatar/'))) {
-			mkdir(public_path('/storage/avatar/'), 0777, 1);
-		}
-
-		//save avatar
-		$img = \ImageMaker::make($request->avatar->path());
-		if ($img->width() < $img->height()) {
-			$img->resize(100, null, function ($constraint) {
-				$constraint->aspectRatio();
-			});
-		} else {
-			$img->resize(null, 100, function ($constraint) {
-				$constraint->aspectRatio();
-			});
-		}
-		$img->crop(100, 100);
-		$img->save(public_path($avatar_path));
-
-		$user->update([
-			'avatar' => $avatar_path,
-		]);
-
-		return url($user->avatar);
+		$user = $request->user(); 
+		$file = $request->file('avatar');
+		return $user->save_avatar($file);
 	}
 
 	public function save(Request $request) {

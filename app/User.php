@@ -8,6 +8,7 @@ use Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
+use App\Helpers\QcloudUtils;
 
 class User extends Authenticatable
 {
@@ -19,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
+        'name', 
         'email',
         'password',
         'qq',
@@ -226,24 +227,25 @@ class User extends Authenticatable
 
     public function avatar()
     {
+        return $this->avatar;
         //修复没设置默认头像的
-        if (empty($this->avatar)) {
-            $this->avatar = '/images/avatar.jpg';
-            $this->save();
-        }
+        // if (empty($this->avatar)) {
+        //     $this->avatar = '/images/avatar.jpg';
+        //     $this->save();
+        // }
 
-        $avatar_url = $this->avatar;
-        if (\App::environment('local')) {
-            if (!starts_with($this->avatar, env('APP_URL'))) {
-                $avatar_url = file_exists(public_path($this->avatar)) ? $this->avatar : env('APP_URL') . $this->avatar;
-            }
-        }
-        //如果用户刚更新过，刷新头像图片的浏览器缓存
-        if ($this->updated_at && $this->updated_at->addMinutes(2) > now()) {
-            $avatar_url = $avatar_url . '?t=' . time();
-        }
-        //APP 需要返回全Uri
-        return starts_with($avatar_url, 'http') ? $avatar_url : url($avatar_url);
+        // $avatar_url = $this->avatar;
+        // if (\App::environment('local')) {
+        //     if (!starts_with($this->avatar, env('APP_URL'))) {
+        //         $avatar_url = file_exists(public_path($this->avatar)) ? $this->avatar : env('APP_URL') . $this->avatar;
+        //     }
+        // }
+        // //如果用户刚更新过，刷新头像图片的浏览器缓存
+        // if ($this->updated_at && $this->updated_at->addMinutes(2) > now()) {
+        //     $avatar_url = $avatar_url . '?t=' . time();
+        // }
+        // //APP 需要返回全Uri
+        // return starts_with($avatar_url, 'http') ? $avatar_url : url($avatar_url);
     }
 
     public function makeQQAvatar()
@@ -529,5 +531,55 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));
+    }
+    /**
+     * 保存用户头像
+     * @return [type] [description]
+     */
+    public function save_avatar($file){
+        //判断是否为空
+        if(empty($file) || !$file->isValid()){
+            return null; 
+        } 
+        // 获取文档相关信息 
+        $extension = $file->getClientOriginalExtension();
+        $realPath  = $file->getRealPath();   //临时文档的绝对路径
+        $img       = \ImageMaker::make($realPath);
+        $img->fit(100, 100);
+        $img->encode($extension, 60);//头像的图片质量可以稍微低一点
+        $filename = $this->id . '_' .time().'.'.$extension;
+        $tmp_path = '/tmp/' . $filename;
+        $img->save($tmp_path);//保存到临时文件夹
+        $cos_file_info = QcloudUtils::uploadFile($tmp_path, $filename,'avatar');
+        //上传到COS失败
+        if(empty($cos_file_info) || $cos_file_info['code'] != 0){
+            return null;
+        }
+        $this->update([
+            'avatar' =>   $cos_file_info['data']['custom_url'],
+        ]);
+        return $this->avatar;
+    }
+    /**
+     * 创建用户
+     * @param  [type] $input [description]
+     * @return [type]        [description]
+     */
+    public function createUser($input){
+        $this->email        = $input['email'];
+        $this->name         = $input['name']; 
+        $this->password     = bcrypt($input['password']);
+        $avatar_formatter = 'http://cos.' . env('DB_DATABASE') . '/storage/avatar/avatar-%d.jpg';
+        $this->avatar = sprintf($avatar_formatter,rand(1, 15));
+        $this->api_token    = str_random(60);
+        $this->introduction = '';
+        $this->save();
+        //record signUp action
+        $action = \App\Action::create([
+            'user_id'         => $this->id,
+            'actionable_type' => 'users',
+            'actionable_id'   => $this->id,
+        ]);
+        return $this;  
     }
 }
