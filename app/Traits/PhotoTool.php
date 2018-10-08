@@ -176,7 +176,7 @@ trait PhotoTool
         $this->title     = $file->getClientOriginalName();
         $filename        = $this->id . '.' . $extension;
         $local_path            = '/storage/img/' . $filename;
-        $this->path      = $this->webAddress() . $path;
+        $this->path      = $this->webAddress() . $local_path;
         $local_dir = public_path('/storage/img/');
         if (!is_dir($local_dir)) {
             mkdir($local_dir, 0777, 1);
