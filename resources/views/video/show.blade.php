@@ -32,7 +32,7 @@
     <div class="playerBox">
         <div class="container">
             <div class="video-title">
-                    {{ $video->article->title }}
+                    {{ $video->article->get_description() }}
             </div>
             <div class="video-info">
                 @if(!empty($category))
