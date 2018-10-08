@@ -9,6 +9,23 @@ trait PhotoTool
 {
 	private static $small    = 1;//小图
 	private static $top      = 2;//小图
+    
+    /**
+     * 获取当前环境的APP_URL
+     * @return [type] [description]
+     */
+    public function webAddress(){
+        switch (env('APP_ENV')) {
+            case 'prod'://线上环境
+                return env('APP_URL');
+                break;
+            case 'staging':
+                return sprintf('http://%',env('APP_DOMAIN'));
+                break;
+            default:
+                break;
+        }
+    }
 
     public function url()
     {
@@ -158,7 +175,8 @@ trait PhotoTool
         $this->hash      = md5_file($file->path())?:null;
         $this->title     = $file->getClientOriginalName();
         $filename        = $this->id . '.' . $extension;
-        $this->path      = '/storage/img/' . $filename;
+        $path            = '/storage/img/' . $filename;
+        $this->path      = $this->webAddress() . $path;
         $local_dir = public_path('/storage/img/');
         if (!is_dir($local_dir)) {
             mkdir($local_dir, 0777, 1);
@@ -175,7 +193,7 @@ trait PhotoTool
                 $constraint->aspectRatio();
             });
             //save big
-            $img->save(public_path($this->path)); 
+            $img->save(public_path($path)); 
         } else {
             $file->move($local_dir, $filename);
         }
@@ -185,9 +203,10 @@ trait PhotoTool
         if ($extension != 'gif') {
             if ($img->width() >= 760) {
                 $img->crop(760, 327);
-                $this->path_top = '/storage/img/' . $this->id . '.top.' . $extension;
-                $img->save(public_path($this->path_top));
-             }
+                $path_top = '/storage/img/' . $this->id . '.top.' . $extension;
+                $this->path_top = $this->webAddress() . $path_top;
+                $img->save(public_path($path_top));
+             } 
         } else {
             if ($img->width() >= 760) {
                 $this->path_top = $this->path;
@@ -196,7 +215,7 @@ trait PhotoTool
         //save small
         if ($img->width() / $img->height() < 1.5) {
             $img->resize(300, null, function ($constraint) {
-                $constraint->aspectRatio();
+                $constraint->aspectRatio(); 
             });
         } else {
             $img->resize(null, 240, function ($constraint) {

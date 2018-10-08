@@ -99,12 +99,9 @@ class ArticleController extends Controller {
 		    }
 			
 		}
-
 		$article = new Article($request->all());
-
 		$article->has_pic = !empty($article->image_url);
 		$article->date = \Carbon\Carbon::now()->toDateString();
-
 		$article->image_url = $this->get_primary_image();
 		$article->count_words = ceil(strlen(strip_tags($article->body)) / 2);
 		$article->save();
@@ -293,46 +290,6 @@ class ArticleController extends Controller {
 		}
 		$article->tags()->sync($tag_ids);
 	}
-	//下面代码目前没用到，肖新明如果觉得不需要就删除吧
-	// public function showBySlug($slug)
-	// {
-	// 	dd($slug);
-	// 	$route_array = ['create'];
-	// 	if(in_array($slug, $route_array)){
-	// 		return $this->create();
-	// 	}
-	// 	$article = Article::whereSlug($slug)->firstOrFail(); 
-
-	// 	if (($article->status < 1) && (!canEdit($article))) {
-	// 		return abort(404);
-	// 	}
-
-	// 	//type is video redirect
-	// 	if ($article->type == 'video') {
-	// 		return redirect('/video/' . $article->video_id);
-	// 	}
-
-	// 	if ($article->category && $article->category->parent_id) {
-	// 		$data['parent_category'] = $article->category->parent()->first();
-	// 	}
-
-	// 	//记录用户浏览记录
-	// 	$article->recordBrowserHistory();
-
-	// 	//parse video and image, etc...
-	// 	$article->body = $article->parsedBody();
-
-	// 	$data['recommended'] = Article::whereIn('category_id', $article->categories->pluck('id'))
-	// 		->where('id', '<>', $article->id)
-	// 		->where('status', 1)
-	// 		->orderBy('updated_at', 'desc')
-	// 		->take(10)
-	// 		->get();
-
-	// 	return view('article.show')
-	// 		->withArticle($article)
-	// 		->withData($data);
-	// }
 
 	public function get_primary_image() {
 		if (request('primary_image')) {
@@ -340,7 +297,7 @@ class ArticleController extends Controller {
 		} else {
 			$image_url = request('image_url');
 		}
-		$image_url = parse_url($image_url, PHP_URL_PATH);
+		//$image_url = parse_url($image_url, PHP_URL_PATH);
 		// $image_url          = str_replace('.small', '', $image_url);
 		return $image_url;
 	}
