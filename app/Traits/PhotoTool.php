@@ -224,7 +224,8 @@ trait PhotoTool
         }
         $img->crop(300, 240);
         $this->disk = "local";
-        $img->save(public_path($this->path_small()));
+        $path_mall = '/storage/img/' . $this->id . '.small.' . $extension;
+        $img->save(public_path($path_mall));
         $this->save();
         return null; 
     }
