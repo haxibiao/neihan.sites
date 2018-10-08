@@ -20,7 +20,7 @@ trait PhotoTool
                 return env('APP_URL');
                 break;
             case 'staging':
-                return sprintf('http://%',env('APP_DOMAIN'));
+                return sprintf('http://staging.%s',env('APP_DOMAIN'));
                 break;
             default:
                 break;
@@ -175,7 +175,7 @@ trait PhotoTool
         $this->hash      = md5_file($file->path())?:null;
         $this->title     = $file->getClientOriginalName();
         $filename        = $this->id . '.' . $extension;
-        $path            = '/storage/img/' . $filename;
+        $local_path            = '/storage/img/' . $filename;
         $this->path      = $this->webAddress() . $path;
         $local_dir = public_path('/storage/img/');
         if (!is_dir($local_dir)) {
@@ -193,7 +193,7 @@ trait PhotoTool
                 $constraint->aspectRatio();
             });
             //save big
-            $img->save(public_path($path)); 
+            $img->save(public_path($local_path)); 
         } else {
             $file->move($local_dir, $filename);
         }
