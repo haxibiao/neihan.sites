@@ -28,9 +28,6 @@
 				</ul>
 			</div>
 		@endif
-		<a class="download-app" href="/app">
-			<p>下载APP</p>
-		</a>
 		<div class="user" data-hover="dropdown">
 			<a><img class="avatar" src="{{ Auth::user()->avatar() }}" alt=""><i class="iconfont icon-xiangxiajiantou"></i></a>
 			<ul class="dropdown-menu hover-dropdown-menu">
@@ -88,9 +85,6 @@
 			   </li>
 			</ul>
 		</div>
-		<a class="search"> 
-			 <i class="iconfont icon-sousuo"></i>
-		</a>
 		<div class="container">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">

@@ -29,6 +29,12 @@
 				}
 			}
 		}
+		.download-app{
+			display:none;
+		}
+		.search{
+			display:none;
+		}
 		.register,
 		.creation,
 		.ask {
@@ -185,8 +191,40 @@
 					left: -50% !important;
 					width: 160px;
 				}
+				& > a {
+					display: block;
+					margin: 12px 20px;			
+				img {
+					height: 32px;
+					width: 32px;
+				}
+			}
+			}
+			.download-app{
+				float:right;
+				color:#fff;
+				display:block;
+				p{
+					margin: 10px 0;
+				    background-color:$theme-color;
+				    padding: 8px 13px;
+				    border-radius: 30px;
+				}
+			}
+			.search{
+				float:right;
+				color:#fff;
+				display:block;
+				i{
+					font-size:29px;
+					margin:7px 0;
+					display:block;
+				}
 			}
 			.container {
+				.navbar-header{
+					display:none;
+				}
 				.navbar-nav {
 					.tab {
 						margin-right: 0px;

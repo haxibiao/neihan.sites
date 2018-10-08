@@ -29,6 +29,7 @@ Vue.component("single-list", require("./components/SingleList.vue"));
 Vue.component("follow", require("./components/button/Follow.vue"));
 Vue.component("favorite", require("./components/button/Favorite.vue"));
 Vue.component("like", require("./components/button/Like.vue"));
+Vue.component("video-like", require("./components/button/VideoLike.vue"));
 // Vue.component('comment', require('./components/comment/Comment.vue'));
 Vue.component("comments", require("./components/comment/Comments.vue"));
 Vue.component("new-comment", require("./components/comment/NewComment.vue"));

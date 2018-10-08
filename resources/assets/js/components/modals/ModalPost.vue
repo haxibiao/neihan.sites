@@ -36,7 +36,8 @@
                             </div>
                         </div>
                         <div class="tip-text">
-                            <span class="desc">友情提示：视频请压缩至50M以内</span>
+                            <p class="desc">1、上传视频超过100M的视频请耐心等待哦，若上传失败建议压缩至100M以内</p>
+                            <p class="desc">2、当前视频上传仅支持MP4格式</p>
                         </div>
                         <div v-if="alertInfo" class="alert alert-info alert-dismissible" role="alert">亲,视频名称不能包含特殊字符哟！</div>
                         <div>
@@ -406,14 +407,18 @@ export default {
                         }
                     }
                 }
+                .tip-text {
+                    padding-bottom: 10px;
+                    .desc{
+                        font-size:12px;
+                    }
+                }
             }
         }
     }
     .multiselect__content-wrapper {
         z-index: 2;
     }
-    .tip-text {
-        padding-bottom: 10px;
-    }
+
 }
 </style>
