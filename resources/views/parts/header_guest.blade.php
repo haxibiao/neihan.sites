@@ -22,8 +22,8 @@
 					<p>下载APP</p>
 			</a>
 			<a href="/login" class="login btn">登录</a>
-			<a href="/"  class="search"> 
-			 <i class="iconfont icon-sousuo"></i>
+			<a class="search"> 
+				<search-box is-desktop="{{ \Agent::isDeskTop() == 1 }}"></search-box>
 			</a>
 			<div class="container">
 					<!-- Brand and toggle get grouped for better mobile display -->
