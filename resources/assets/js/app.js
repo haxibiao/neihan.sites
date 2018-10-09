@@ -36,6 +36,9 @@ Vue.component("new-comment", require("./components/comment/NewComment.vue"));
 Vue.component("reply-comment", require("./components/comment/ReplyComment.vue"));
 
 Vue.component("side-tool", require("./components/SideTool.vue"));
+Vue.component("to-comment", require("./components/ToComment.vue"));
+Vue.component("share-module", require("./components/ShareModule.vue"));
+Vue.component("close-share", require("./components/CloseShare.vue"));
 Vue.component("article-list", require("./components/article/ArticleList.vue"));
 Vue.component("category-list", require("./components/category/CategoryList.vue"));
 Vue.component("search-box", require("./components/search/SearchBox.vue"));

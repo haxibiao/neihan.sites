@@ -59,13 +59,13 @@
                             <a class="btn-base btn-light btn-sm editor-btn" href="/video/{{ $video->id }}/edit">编辑视频动态</a>
                         @endif --}}
 
-                        <div class="comments">
-                            <i class="iconfont icon-xinxi2"></i>
-                            <p>{{$video->article->count_replies}}</p>
+                        <div class="comments"> 
+                            {{-- <i class="iconfont icon-xinxi2"></i>
+                            <p>{{$video->article->count_replies}}</p> --}}
+                            <to-comment comment-replies={{ $video->article->count_replies }}></to-comment>
                         </div>
                         <div class="share">
-                            <i class="iconfont icon-fenxiang"></i>
-                            <p>分享到</p>
+                            <share-module></share-module>
                         </div>
                         {{--   @include('video.parts.share') --}}
                     </div>
@@ -143,6 +143,14 @@
     </div>
 
 
+</div>
+<div class="share-module">
+    <div class="module-share-h3">分享到....</div>
+    <div>@include('video.parts.share')</div>
+    <close-share></close-share>
+</div>
+<div id="pageLayout">
+    
 </div>
 @stop
 

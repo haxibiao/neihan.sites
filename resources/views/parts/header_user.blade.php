@@ -3,7 +3,7 @@
 		@section('logo')
 			@if( \Agent::isMobile() )
 				<a class="logo" href="/">
-					<img src="/logo/{{ get_domain() }}.small.png" alt="">
+					<img src="/logo/ainicheng.com.web.png" alt="">
 				</a>
 			@else
 			   <a class="logo" href="/">
@@ -89,7 +89,7 @@
 			</ul>
 		</div>
 		<a class="search"> 
-			 <i class="iconfont icon-sousuo"></i>
+			<search-box is-desktop="{{ \Agent::isDeskTop() == 1 }}"></search-box>
 		</a>
 		<div class="container">
 			<!-- Brand and toggle get grouped for better mobile display -->
