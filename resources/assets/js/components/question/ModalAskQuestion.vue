@@ -306,7 +306,7 @@ export default {
 				{ img: "/images/article_08.jpg", title: "", selected: 0 },
 				{ img: "/images/article_09.jpg", title: "", selected: 0 }
 			],
-			whetherPay: false,
+			whetherPay: true,//默认为付费
 			expiration_date: "0",
 			money: 5,
 			custom: null
