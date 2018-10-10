@@ -530,4 +530,9 @@ class User extends Authenticatable
     {
         $this->notify(new ResetPasswordNotification($token));
     }
+
+    public function questionInvites()
+    {
+        return $this->hasMany('App\QuestionInvite', 'user_id', 'id');
+    }
 }
