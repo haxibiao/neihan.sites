@@ -60,7 +60,7 @@ class AppServiceProvider extends ServiceProvider
             'collections' => 'App\Collection',
             'articles' => 'App\Article',
             'comments' => 'App\Comment',
-            'videos' => 'App\Article',
+            'videos' => 'App\Video',
             'posts' => 'App\Article',
             'likes' => 'App\Like',
             'favorites' => 'App\Favorite',

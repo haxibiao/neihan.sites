@@ -32,7 +32,7 @@ class Action extends Model
         }
         switch (get_class($this->actionable)) {
             case 'App\Article':
-                $this->actionable->image_url = $this->actionable->primaryImage();
+                $this->actionable->fillForJs();
                 break;
             case 'App\Comment':
                 $this->load('actionable.commentable.user');
