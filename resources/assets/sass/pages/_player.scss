@@ -463,9 +463,10 @@
 					.h5-option {
 						display: flex;
 						align-items: center;
+						justify-content: flex-end;
 						// display: block;
 						.video-like {
-							width: 33%;
+							width: 10%;
 							display: flex;
 							align-items: center;
 							justify-content: center;
@@ -491,9 +492,10 @@
 							}
 						}
 						.comments {
-							width: 33%;
-							border-right: 1px solid #605f65;
-							border-left: 1px solid #605f65;
+							width: 10%;
+							// border-right: 1px solid #605f65;
+							// border-left: 1px solid #605f65;
+							margin: 0px 15px;
 							a {
 								display: flex;
 								align-items: center;

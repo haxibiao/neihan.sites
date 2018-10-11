@@ -15,9 +15,9 @@
 			@if(starts_with(request()->path(), 'question')) 
 				<div class="ask"><a href="/login" data-toggle="modal" class="btn-base btn-theme"><span class="iconfont icon-maobi hidden-xs"></span>提问</a></div>
 			@else 
-				<div class="creation hidden-xs"><a href="/write" class="btn-base btn-theme"><span class="iconfont icon-maobi"></span>创作</a></div>
+				<div class="creation hidden-xs"><a href="/write" class="btn-base btn-theme"><span class="iconfont icon-maobi"></span>发布</a></div>
 			@endif						
-			{{-- <div class="register"><a href="/register" class="btn-base theme-tag">注册</a></div> --}}
+			<div class="register"><a href="/register" class="btn-base theme-tag">注册</a></div>
 			<a href="/app"  class="download-app"> 
 					<p>下载APP</p>
 			</a>
