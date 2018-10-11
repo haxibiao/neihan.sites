@@ -87,10 +87,11 @@ class FollowsQuery extends Query
             ->take($limit)
             ->get();
             
-        //为了兼容返回值 follow.id 
+        //为了兼容前端返回不一致的 follow.id 
         if(isset($args['recommend_for_user_id'])){
+            $index = 0;
             foreach ($data as $item) {
-                $item->id = 1;
+                $item->id = $index++;
             }
         }
         
