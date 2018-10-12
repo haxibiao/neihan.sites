@@ -29,12 +29,16 @@ Vue.component("single-list", require("./components/SingleList.vue"));
 Vue.component("follow", require("./components/button/Follow.vue"));
 Vue.component("favorite", require("./components/button/Favorite.vue"));
 Vue.component("like", require("./components/button/Like.vue"));
+Vue.component("video-like", require("./components/button/VideoLike.vue"));
 // Vue.component('comment', require('./components/comment/Comment.vue'));
 Vue.component("comments", require("./components/comment/Comments.vue"));
 Vue.component("new-comment", require("./components/comment/NewComment.vue"));
 Vue.component("reply-comment", require("./components/comment/ReplyComment.vue"));
 
 Vue.component("side-tool", require("./components/SideTool.vue"));
+Vue.component("to-comment", require("./components/ToComment.vue"));
+Vue.component("share-module", require("./components/ShareModule.vue"));
+Vue.component("close-share", require("./components/CloseShare.vue"));
 
 Vue.component("article-list", require("./components/article/ArticleList.vue"));
 Vue.component("video-list", require("./components/video/VideoList.vue"));
