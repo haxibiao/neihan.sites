@@ -5,6 +5,10 @@
     }else{
         $item = $action->actionable;
     }
+    //避免脏数据
+    if(empty($item)){
+        return;
+    }
 @endphp
 {{-- 发布 --}}
 <li class="{{ $item->hasImage() ? 'content-item have-img' : 'content-item' }}">
