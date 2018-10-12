@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') 搜索 - {{ env('APP_NAME') }}  @endsection
+@section('title') 搜索 - {{ config("app.name_cn") }}  @endsection
 
 @section('content')
 	<div id="search-content" class="articles">
@@ -75,7 +75,7 @@
 						      </a>
 						      <div class="info">
 						        <a class="nickname" target="_blank" href="/user/{{ $article->user_id }}">{{ $article->user->name }}</a>
-						        
+
 						        @if($article->user->is_signed)
 						        <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
 						        @endif

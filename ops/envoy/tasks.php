@@ -4,12 +4,13 @@ require_once 'commands.php';
 require_once 'settings.php';
 
 $www = '/data/www/' . $domain;
+$www_staging = '/data/staging/' . $domain;
 
-$git_push_prod     = 'git checkout master && git push origin master';
+$git_push_prod = 'git checkout master && git push origin master';
 $git_push_staging = 'git push staging master';
 
 $staging = 'root@' . $domain_staging;
-$prod    = 'root@' . $domain;
+$prod = 'root@' . $domain;
 
 $git_pull_force = <<<EOT
 git stash -u
@@ -46,25 +47,25 @@ php artisan view:clear
 php artisan config:clear
 EOT;
 
-function copy_ui($server, $domain)
-{
-    $copy_ui_sh = <<<EOT
+function copy_ui($server, $domain, $env = "prod") {
+	$webroot = $env == "prod" ? "www" : "staging";
+	$copy_ui_sh = <<<EOT
 echo '上传UI代码到:$server ....'
-rsync -e ssh -P /data/www/$domain/public/css/* $server:/data/www/$domain/public/css/
-rsync -e ssh -P /data/www/$domain/public/js/* $server:/data/www/$domain/public/js/
-rsync -e ssh -P /data/www/$domain/public/mix-manifest.json $server:/data/www/$domain/public/
+rsync -e ssh -P /data/www/$domain/public/css/* $server:/data/$webroot/$domain/public/css/
+rsync -e ssh -P /data/www/$domain/public/js/* $server:/data/$webroot/$domain/public/js/
+rsync -e ssh -P /data/www/$domain/public/mix-manifest.json $server:/data/$webroot/$domain/public/
 EOT;
-    return $copy_ui_sh;
+	return $copy_ui_sh;
 }
 
-function sync_etc($domain)
-{
-    $domain_key     = str_replace(".com", "", $domain);
-    $sync_etc_confs = <<<EOT
-cp -rf /data/www/$domain/ops/etc/* /etc/
+function sync_etc($domain, $env = "prod") {
+	$webroot = $env == "prod" ? "www" : "staging";
+	$domain_key = str_replace(".com", "", $domain);
+	$sync_etc_confs = <<<EOT
+cp -rf /data/$webroot/$domain/ops/etc/* /etc/
 
 echo "restart queue worker"
-cd /data/www/$domain/
+cd /data/$webroot/$domain/
 php artisan queue:restart
 
 echo 'supervisor restart ...'
@@ -75,5 +76,5 @@ supervisorctl start laravel-worker-$domain_key:*
 echo 'cron restart ...'
 service cron restart
 EOT;
-    return $sync_etc_confs;
+	return $sync_etc_confs;
 }

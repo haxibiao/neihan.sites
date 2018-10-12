@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    编辑面板 - {{ env('APP_NAME') }}
+    编辑面板 - {{ config("app.name_cn") }}
 @stop
 @section('content')
 <div class="container-fluid">
@@ -14,14 +14,14 @@
 
                 <div class="panel-body">
                     <div class="row">
- 
+
 
                         <div class="col-md-6 col-lg-4">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">文章:</h3>
                                 </div>
-                                <div class="panel-body"> 
+                                <div class="panel-body">
                                     <line-chart title='文章' chart-data='{{ json_encode($data['article']) }}' chart-labels='{{ json_encode($labels['article']) }}'/>
                                 </div>
                             </div>
@@ -32,8 +32,8 @@
                                 <div class="panel-heading">
                                     <h3 class="panel-title">流量:</h3>
                                 </div>
-                                <div class="panel-body"> 
-                                    <bar title-one='流量' chart-data='{{ json_encode($data['traffic']) }}' chart-labels='{!! json_encode($labels['traffic']) !!}' 
+                                <div class="panel-body">
+                                    <bar title-one='流量' chart-data='{{ json_encode($data['traffic']) }}' chart-labels='{!! json_encode($labels['traffic']) !!}'
                                     color="orange"/>
                                 </div>
                             </div>
@@ -44,8 +44,8 @@
                                 <div class="panel-heading">
                                     <h3 class="panel-title">微信流量:</h3>
                                 </div>
-                                <div class="panel-body"> 
-                                    <bar title-one='微信流量' chart-data='{{ json_encode($data['traffic_wx']) }}' chart-labels='{!! json_encode($labels['traffic_wx']) !!}' 
+                                <div class="panel-body">
+                                    <bar title-one='微信流量' chart-data='{{ json_encode($data['traffic_wx']) }}' chart-labels='{!! json_encode($labels['traffic_wx']) !!}'
                                     color="green"/>
                                 </div>
                             </div>
@@ -65,7 +65,7 @@
                                 <div class="panel-heading">
                                     <h3 class="panel-title">发布的文章数:</h3>
                                 </div>
-                                <div class="panel-body"> 
+                                <div class="panel-body">
                                     <bar title-one='文章' chart-data='{{ json_encode($data['article_editors']) }}' chart-labels='{!! json_encode($labels['article_editors']) !!}'/>
                                 </div>
                             </div>
@@ -76,7 +76,7 @@
                                 <div class="panel-heading">
                                     <h3 class="panel-title">在本站的流量:</h3>
                                 </div>
-                                <div class="panel-body"> 
+                                <div class="panel-body">
                                     <bar title-one='流量' chart-data='{{ json_encode($data['traffic_editors']) }}' chart-labels='{!! json_encode($labels['traffic_editors']) !!}' color="orange"/>
                                 </div>
                             </div>
@@ -87,12 +87,12 @@
                                 <div class="panel-heading">
                                     <h3 class="panel-title">在本站微信流量:</h3>
                                 </div>
-                                <div class="panel-body"> 
+                                <div class="panel-body">
                                     <bar title-one='流量' chart-data='{{ json_encode($data['wxtraffic_editors']) }}' chart-labels='{!! json_encode($labels['traffic_editors']) !!}' color="green"/>
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -131,7 +131,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">

@@ -8,8 +8,8 @@
 	@else
 	   经典热门
 	@endif
-	 - {{ env('APP_NAME') }}
-@stop 
+	 - {{ config("app.name_cn") }}
+@stop
 @section('content')
 	<div id="trending">
 		<div class="clearfix">

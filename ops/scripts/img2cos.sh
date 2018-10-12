@@ -2,7 +2,8 @@
 #主要修复站点的图片
 
 echo '开始迁移本地资源到cos......'
-cd ../../
+cd /data/www/ainicheng.com
+
 echo '处理默认头像与老视频的封面图'
 #php artisan fix:data images10
 

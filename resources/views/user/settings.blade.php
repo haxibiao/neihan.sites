@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    我的设置 - {{ env('APP_NAME') }}
+    我的设置 - {{ config("app.name_cn") }}
 @stop
 @section('content')
 	<div id="setting">
@@ -11,4 +11,4 @@
 			</div>
 		</section>
 	</div>
-@endsection 
+@endsection

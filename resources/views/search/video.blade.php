@@ -1,11 +1,11 @@
 @extends('layouts.app')
-	
-@section('title') 搜索 - {{ env('APP_NAME') }}  @endsection
+
+@section('title') 搜索 - {{ config("app.name_cn") }}  @endsection
 
 @section('content')
 	<div id="search-content" class="articles">
 		<section class="left-aside clearfix">
-			@include('search.aside') 
+			@include('search.aside')
 			<div class="main">
 				<div class="search-content">
 					<div class="plate-title">
@@ -13,18 +13,18 @@
 						<a href="javascript:;" class="right">{{ $data['video']->total() }} 个结果</a>
 					</div>
 					<div class="note-list">
-						@foreach($data['video'] as $article) 
+						@foreach($data['video'] as $article)
 						<li class="article-item {{ $article->hasImage() ? 'have-img' : '' }}">
 					      @if($article->hasImage())
 							  <a class="wrap-img" href="{{ $article->content_url() }}" target="_blank">
 							      <img src="{{ $article->primaryImage() }}" alt="">
 							  </a>
-						  @endif 
+						  @endif
 						  <div class="content">
 						    <div class="author">
 						      <a class="avatar" target="_blank" href="/user/{{ $article->user_id }}">
 						        <img src="{{ $article->user->avatar() }}" alt="">
-						      </a> 
+						      </a>
 						      <div class="info">
 						        <a class="nickname" target="_blank" href="/user/{{ $article->user_id }}">{{ $article->user->name }}</a>
 						       @if($article->user->is_signed)
@@ -34,21 +34,21 @@
 	                             <img class="badge-icon"  src="/images/editor.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}小编" alt="">
 	                           @endif
 						        <span class="time" data-shared-at="{{ $article->created_at }}">{{ $article->timeAgo() }}</span>
-						      </div> 
+						      </div>
 						    </div>
 						    <a class="title" target="_blank" href="{{ $article->content_url() }}">
 						        <span>{!! $article->title !!}</span>
 						    </a>
-						    <p class="abstract"> 
+						    <p class="abstract">
 						      {!! $article->description !!}
 						    </p>
 						    <div class="meta">
 						      <a target="_blank" href="{{ $article->content_url() }}">
 						        <i class="iconfont icon-liulan"></i> {{ $article->hits }}
-						      </a>        
+						      </a>
 						      <a target="_blank" href="{{ $article->content_url() }}">
 						        <i class="iconfont icon-svg37"></i> {{ $article->count_replies }}
-						      </a>      
+						      </a>
 						      <span><i class="iconfont icon-03xihuan"></i> {{ $article->count_likes }}</span>
 						      @if($article->count_tips)
 						      <span><i class="iconfont icon-qianqianqian"></i> {{ $article->count_tips }}</span>
@@ -66,4 +66,4 @@
 			</div>
 		</section>
 	</div>
-@endsection 
+@endsection

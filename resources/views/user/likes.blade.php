@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    {{ $user->name }} - {{ env('APP_NAME') }}
+    {{ $user->name }} - {{ config("app.name_cn") }}
 @stop
 @section('content')
 <div id="user">

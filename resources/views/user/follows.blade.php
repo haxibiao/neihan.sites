@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title'){{ $user->name }}-{{ env('APP_NAME') }}@endsection
+@section('title'){{ $user->name }}-{{ config("app.name_cn") }}@endsection
 
 @section('content')
 	<div id="user">
@@ -27,7 +27,7 @@
 					 <!-- Tab panes -->
 					 <div class="article-list tab-content">
 					   <ul role="tabpanel" class="fade in active  user-list follow-user-list tab-pane" id="following">
-					   		@foreach($data['follows'] as $follow)					   			
+					   		@foreach($data['follows'] as $follow)
 					   			@include('user.parts.follow_item', ['user'=>$follow->followed])
 					   		@endforeach
 					   		@if(Auth::check())
@@ -45,12 +45,12 @@
 					   		@endif
 					   </ul>
 					 </div>
-				</div> 
+				</div>
 			</div>
 			{{-- 侧栏 --}}
-			@include('user.parts.aside') 
+			@include('user.parts.aside')
 		</div>
-	</div> 
+	</div>
 @endsection
 
 @push('scripts')
