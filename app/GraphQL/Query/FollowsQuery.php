@@ -89,7 +89,7 @@ class FollowsQuery extends Query
             
         //为了兼容前端返回不一致的 follow.id 
         if(isset($args['recommend_for_user_id'])){
-            $index = 0;
+            $index = $offset;
             foreach ($data as $item) {
                 $item->id = $index++;
             }
