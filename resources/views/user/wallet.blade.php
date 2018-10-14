@@ -1,15 +1,15 @@
 @extends('layouts.app')
 @section('title')
-    我的钱包 - {{ env('APP_NAME') }}
+    我的钱包 - {{ config("app.name_cn") }}
 @stop
 @section('content')
 <div id="wallet">
     <div class="wallet-top clearfix">
         <div class="col-sm-3 left">
-            <div class="note-info info-lg note-info-wallet">    
+            <div class="note-info info-lg note-info-wallet">
                 <a class="avatar" href="/user/{{ $user->id }}">
                     <img alt="" src="{{ $user->avatar() }}"/>
-                </a>       
+                </a>
                 <div class="title">
                     <a class="name" href="/user/{{ $user->id }}">
                         {{ $user->name }}
@@ -100,6 +100,6 @@
     <div class="pager">
         {!! $transactions->links() !!}
     </div>
-     
+
 </div>
 @stop

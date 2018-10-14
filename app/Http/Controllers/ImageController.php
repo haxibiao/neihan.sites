@@ -105,24 +105,21 @@ class ImageController extends Controller
     {
         $user   = $request->user();
         $images = $request->file('files');
-
-        $images = $request->file('files');
         $files  = [];
         foreach ($images as $file) {
-
             $image          = new Image();
             $image->user_id = $user->id;
             $image->save();
             $image->save_file($file);
-
+ 
             //for jquery multiple uplpad plugin...
             $files[] = [
-                'url'          => base_uri() . $image->path,
-                'thumbnailUrl' => base_uri() . $image->path_small(),
+                'url'          => $image->path(),
+                'thumbnailUrl' => $image->path_small(),
                 'name'         => $image->path,
                 'id'           => $image->id,
                 "type"         => str_replace("jpg", "jpeg", "image/" . $extension),
-                "size"         => filesize(public_path($image->path)),
+                "size"         => 0, //暂时不做，后面可以直接通过cos接口获取
                 'deleteUrl'    => url('/image?d=' . $image->id),
                 "deleteType"   => "GET",
             ];

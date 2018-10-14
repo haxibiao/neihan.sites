@@ -9,10 +9,11 @@ use App\Question;
 use App\User;
 use Auth;
 use Illuminate\Http\Request;
+use App\Helpers\QcloudUtils;
 
 class UserController extends Controller
 {
-    public function __construct()
+    public function __construct() 
     {
         $this->middleware('auth', ['only' => ['store', 'update', 'destroy', 'settings', 'edit']]);
     }
@@ -180,29 +181,11 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->update($request->all());
-
-        //TODO::save avatar url ...
         $file = $request->file('avatar');
-        if ($file) {
-            $local_path = public_path('storage/avatar/');
-            if (!is_dir($local_path)) {
-                mkdir($local_path, 0777, 1);
-            }
-            $filename = $user->id . '.jpg';
-            $file->move($local_path, $filename);
-
-            //resize
-            $full_path = $local_path . $filename;
-            $img       = \ImageMaker::make($full_path);
-            $img->resize(100, null, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-            $img->save($full_path);
-
-            $user->avatar = '/storage/avatar/' . $filename;
+        //判断是否为空
+        if(!empty($file)){
+            $user->save_avatar($file);
         }
-        $user->save();
-
         return redirect()->to('/user/' . $user->id);
     }
 

@@ -156,32 +156,40 @@ class Article extends Model
 
     public function topImage()
     {
+        return $this->image_top;
         //if image not exist locally, go check pord ...
-        $image_top_path = parse_url($this->image_top, PHP_URL_PATH);
-        if (!file_exists(public_path($image_top_path))) {
-            return env('APP_URL') . $image_top_path;
-        }
+        // $image_top_path = parse_url($this->image_top, PHP_URL_PATH);
+        // if (!file_exists(public_path($image_top_path))) {
+        //     return env('APP_URL') . $image_top_path;
+        // }
 
-        return url($image_top_path);
+        // return url($image_top_path);
     }
     public function primaryImage()
     {
         //全URL,直接顯示
-        if (starts_with($this->image_url, 'http')) {
-            return $this->image_url;
-        }
+        // if (starts_with($this->image_url, 'http')) {
+        //     return $this->image_url;
+        // }
 
-        $image_path = parse_url($this->image_url, PHP_URL_PATH);
+        // $image_path = parse_url($this->image_url, PHP_URL_PATH);
 
-        //如果不是小圖地址,就找小圖的url
-        if (str_contains($image_path, '.small.')) {
-            $image_path = str_replace('.small', '', $image_path);
-        }
-        $image = Image::firstOrNew([
-            'path' => $image_path,
-        ]);
+        // //如果不是小圖地址,就找小圖的url
+        // if (str_contains($image_path, '.small.')) {
+        //     $image_path = str_replace('.small', '', $image_path);
+        // }
+        // $image = Image::firstOrNew([
+        //     'path' => $image_path,
+        // ]);
         //all place including APP,  需要返回全Uri
-        return $image->url_small();
+        $path = $this->image_url;
+        if ($this->type=='video' || str_contains($path, '.small.')) {
+            return $path;
+        }
+        $extension  = pathinfo($path,PATHINFO_EXTENSION); 
+        $folder     = pathinfo($path,PATHINFO_DIRNAME);
+        $url_formater =  $folder .'/'. basename($path, '.' . $extension). '%s' .$extension;
+        return sprintf($url_formater, '.small.');
     }
 
     public function hasImage()

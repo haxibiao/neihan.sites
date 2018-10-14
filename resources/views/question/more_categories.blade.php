@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-  热门问答分类 - {{ env('APP_NAME') }}
+  热门问答分类 - {{ config("app.name_cn") }}
 @stop
 @section('content')
 <div class="recommend-content">
@@ -20,7 +20,7 @@
            @each('question.parts.category_card', $categories, 'category')
         </div>
       @endforeach
-     </ul> 
+     </ul>
      <p>{!! $categories->links() !!}</p>
      {{-- <a class="btn-base btn-more" href="javascript:;">加载更多</a> --}}
     </div>

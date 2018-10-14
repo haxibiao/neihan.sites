@@ -5,7 +5,7 @@
 @extends('layouts.black')
 
 @section('title')
-	{{ $article->title ?: $article->get_description() }} -{{ empty($article->category)?env('APP_NAME'): $article->category->name}}
+	{{ $article->title ?: $article->get_description() }} -{{ empty($article->category)?config("app.name_cn"): $article->category->name}}
 @stop
 
 @push('seo_og_result')
@@ -34,7 +34,7 @@
                     @include('video.parts.author')
             </div>
             <div class="player-basic clearfix">
-                <div class="playerArea col-sm-8"> 
+                <div class="playerArea col-sm-8">
                     <div class="h5-player">
                         <div class="embed-responsive embed-responsive-16by9">
                             <video controls="" poster="{{ $video->article->cover() }}" preload="auto" autoplay="true">
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="video-body">
-                         @foreach($article->categories->unique() as $category) 
+                         @foreach($article->categories->unique() as $category)
                             <a href="/{{ $category->name_en }}" class="category-name" title="{{ $category->id }}:{{ $category->name }}">
                               <span class="name">#{{ $category->name }}</span>
                             </a>
@@ -59,7 +59,7 @@
                             <a class="btn-base btn-light btn-sm editor-btn" href="/video/{{ $video->id }}/edit">编辑视频动态</a>
                         @endif --}}
 
-                        <div class="comments"> 
+                        <div class="comments">
                             {{-- <i class="iconfont icon-xinxi2"></i>
                             <p>{{$video->article->count_replies}}</p> --}}
                             <to-comment comment-replies={{ $video->article->count_replies }}></to-comment>
@@ -111,14 +111,14 @@
                     <div class="pull-left">
                         @include('video.parts.category_item')
                     </div>
-                @endforeach 
+                @endforeach
                 </div> --}}
             </div>
            {{--  <div class="video-info">
                 @if(!empty($category))
                     <a href="/{{ $category->name_en }}" class="category-name">{{ $article->category->name }}</a>
                 @endif
-                 <i class="iconfont icon-shijian"></i> 
+                 <i class="iconfont icon-shijian"></i>
                    <span>发布于：{{$video->createdAt()}}</span>
                  <i class="iconfont icon-shipin1"></i>
                    <span class="hits">{{$article->hits }}次播放</span>
@@ -150,7 +150,7 @@
     <close-share></close-share>
 </div>
 <div id="pageLayout">
-    
+
 </div>
 @stop
 
@@ -163,7 +163,7 @@
       data: window.tokenize('/api/related-users'),
       insertTpl: '<span data-id="${id}">@${name}</span>',
       displayTpl: "<li > ${name} </li>",
-      limit: 200  
+      limit: 200
     }
   $('#editComment').atwho(at_config); // 初始化
 </script>

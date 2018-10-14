@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    收藏的文章 - {{ env('APP_NAME') }}
+    收藏的文章 - {{ config("app.name_cn") }}
 @stop
 @section('content')
         <div id="bookmarks">
@@ -28,7 +28,7 @@
                             <ul class="article-list">
                                 @if(count($data['articles'])==0)
                                    <blank-content></blank-content>
-                                @endif 
+                                @endif
                                 @foreach($data['articles'] as $fav)
                                     @include('parts.article_item', ['article' => $fav->faved])
                                 @endforeach

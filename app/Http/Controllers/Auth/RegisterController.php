@@ -62,24 +62,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'api_token' => str_random(60),
-        ]);
-        //默认头像地址 
-        $user->avatar = '/images/avatar-'.rand(1, 15).'.jpg';
-        $user->save();
-        // $user->makeQQAvatar();  //TODO:: 这个抓取QQ头像的可以后面再做，先不耽误注册用户体验
-
-        //record signUp action
-        $action = \App\Action::create([
-            'user_id'         => $user->id,
-            'actionable_type' => 'users',
-            'actionable_id'   => $user->id,
-        ]);
-        return $user;
+        $user = new User()；
+        return $user->createUser($data);
     }
 }

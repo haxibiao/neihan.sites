@@ -317,7 +317,6 @@ class CategoryController extends Controller
         $category->saveLogo($request);
         $category->updated_at = now();
         $category->save();
-
         //维护子分类
         $old_category_ids = Category::where('parent_id', $id)
             ->whereStatus(1)

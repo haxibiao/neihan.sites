@@ -4,6 +4,7 @@ namespace App;
 
 use App\Model;
 use Auth;
+use App\Helpers\QcloudUtils;
 
 class Category extends Model
 {
@@ -118,35 +119,38 @@ class Category extends Model
 
     public function logo()
     {
-        $path = empty($this->logo) ? '/images/category.logo.jpg' : $this->logo;
-        $url  = file_exists(public_path($path)) ? $path : starts_with($path, 'http') ? $path : env('APP_URL') . $path;
-        //如果用户刚更新过，刷新头像图片的浏览器缓存
-        if ($this->updated_at && $this->updated_at->addMinutes(2) > now()) {
-            $url = $url . '?t=' . time();
-        }
-        //APP 需要返回全Uri
-        return starts_with($url, 'http') ? $url : url($url);
+        return $this->logo;
+        // $path = empty($this->logo) ? '/images/category.logo.jpg' : $this->logo;
+        // $url  = file_exists(public_path($path)) ? $path : starts_with($path, 'http') ? $path : env('APP_URL') . $path;
+        // //如果用户刚更新过，刷新头像图片的浏览器缓存
+        // if ($this->updated_at && $this->updated_at->addMinutes(2) > now()) {
+        //     $url = $url . '?t=' . time();
+        // }
+        // //APP 需要返回全Uri
+        // return starts_with($url, 'http') ? $url : url($url);
     }
 
     public function logo_app()
     {
-        $path = empty($this->logo_app) ? '/images/category.logo.jpg' : $this->logo_app;
-        $url  = file_exists(public_path($path)) ? $path : env('APP_URL') . $path;
-        //如果用户刚更新过，刷新头像图片的浏览器缓存
-        if ($this->updated_at && $this->updated_at->addMinutes(2) > now()) {
-            $url = $url . '?t=' . time();
-        }
-        //APP 需要返回全Uri
-        return starts_with($url, 'http') ? $url : url($url);
+        return $this->logo_app;
+        // $path = empty($this->logo_app) ? '/images/category.logo.jpg' : $this->logo_app;
+        // $url  = file_exists(public_path($path)) ? $path : env('APP_URL') . $path;
+        // //如果用户刚更新过，刷新头像图片的浏览器缓存
+        // if ($this->updated_at && $this->updated_at->addMinutes(2) > now()) {
+        //     $url = $url . '?t=' . time();
+        // }
+        // //APP 需要返回全Uri
+        // return starts_with($url, 'http') ? $url : url($url);
     }
 
     public function smallLogo()
     {
-        $path = empty($this->logo) ? '/images/category.logo.small.jpg' : str_replace('.logo.jpg', '.logo.small.jpg', $this->logo);
-        $url  = file_exists(public_path($path)) ? $path : env('APP_URL') . $path;
+        return str_replace('.logo.jpg', '.logo.small.jpg', $this->logo);
+        // $path = empty($this->logo) ? '/images/category.logo.small.jpg' : str_replace('.logo.jpg', '.logo.small.jpg', $this->logo);
+        // $url  = file_exists(public_path($path)) ? $path : env('APP_URL') . $path;
 
-        //APP 需要返回全Uri
-        return starts_with($url, 'http') ? $url : url($url);
+        // //APP 需要返回全Uri
+        // return starts_with($url, 'http') ? $url : url($url);
     }
 
     public function topAdmins()
@@ -210,50 +214,56 @@ class Category extends Model
     {
         return Auth::check() && Auth::user()->isFollow('categories', $this->id);
     }
-
+    //TODO:待重构
     public function saveLogo($request)
-    {
+    { 
+        $name = $this->id . '_' .time();
         if ($request->logo) {
-            $storage_category = '/storage/category/';
-            if (!is_dir(public_path($storage_category))) {
-                mkdir(public_path($storage_category), 0777, 1);
-            }
-            $id         = $this->id ? $this->id : "c" . (\App\Category::max('id') + 1) . "_" . time();
-            $this->logo = $storage_category . $id . '.logo.jpg';
-            if (file_exists(public_path($this->logo))) {
-                unlink(public_path($this->logo));
-            }
-            $img = \ImageMaker::make($request->logo->path());
+            $file = $request->logo; 
+            $extension = $file->getClientOriginalExtension();
+            $file_name_formatter  = $name.'.%s.'. $extension;
+            //save logo 
+            $file_name_big = sprintf($file_name_formatter,'logo');
+            $tmp_big = '/tmp/' . $file_name_big;
+            $img = \ImageMaker::make($file->path());
             $img->fit(180);
-            $img->save(public_path($this->logo));
-
-            $img->fit(32);
-            $small_logo = $storage_category . $this->id . '.logo.small.jpg';
-            if (file_exists(public_path($small_logo))) {
-                unlink(public_path($small_logo));
+            $img->save($tmp_big); 
+            $cos_file_info = QcloudUtils::uploadFile($tmp_big, $file_name_big,'category');  
+            //上传到COS失败
+            if(empty($cos_file_info) || $cos_file_info['code'] != 0){
+                return ;
             }
-            $img->save(public_path($small_logo));
+            //save small logo 
+            $img->fit(32);
+            $file_name_small = sprintf($file_name_formatter,'logo.small');
+            $tmp_small = '/tmp/' . $file_name_small;
+            $img->save($tmp_small);
+            QcloudUtils::uploadFile($tmp_small, $file_name_small,'category');
+            $this->logo = $cos_file_info['data']['custom_url'];  
         }
 
         if ($request->logo_app) {
-            $storage_category = '/storage/category/';
-            if (!is_dir(public_path($storage_category))) {
-                mkdir(public_path($storage_category), 0777, 1);
-            }
-            $this->logo_app = $storage_category . $this->id . '.logo.app.jpg';
-            $img            = \ImageMaker::make($request->logo_app->path());
+            $file = $request->logo_app; 
+            $extension = $file->getClientOriginalExtension();
+            $file_name_formatter  = $name.'.%s.'. $extension;
+            //save logo_app 
+            $file_name_big = sprintf($file_name_formatter,'logo.app');
+            $tmp_big = '/tmp/' . $file_name_big;
+            $img = \ImageMaker::make($file->path());
             $img->fit(180);
-            if (file_exists(public_path($this->logo_app))) {
-                unlink(public_path($this->logo_app));
+            $img->save($tmp_big);   
+            $cos_file_info = QcloudUtils::uploadFile($tmp_big, $file_name_big,'category');  
+            //上传到COS失败
+            if(empty($cos_file_info) || $cos_file_info['code'] != 0){
+                return ;
             }
-            $img->save(public_path($this->logo_app));
-
-            $img->fit(32);
-            $small_logo = $storage_category . $this->id . '.logo.small.app.jpg';
-            if (file_exists(public_path($small_logo))) {
-                unlink(public_path($small_logo));
-            }
-            $img->save(public_path($small_logo));
+            //save small logo_app 
+            $img->fit(32); 
+            $file_name_small = sprintf($file_name_formatter,'logo.small.app');
+            $tmp_small = '/tmp/' . $file_name_small;
+            $img->save($tmp_small);
+            QcloudUtils::uploadFile($tmp_small, $file_name_small,'test');
+            $this->logo_app = $cos_file_info['data']['custom_url'];
         }
     }
     /**
