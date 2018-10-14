@@ -40,13 +40,14 @@ class ArticleType extends GraphQLType
                 'type'        => Type::string(),
                 'description' => 'The image_url of article',
                 'resolve'     => function ($root, $args) {
-                    if($root){
-                       if($root->type=='video'){
-                        return $root->cover();
-                       }
-                       return $root->primaryImage();
-                    }
-                    return null;
+                    // if($root){
+                    //    if($root->type=='video'){
+                    //     return $root->cover();
+                    //    }
+                    //    return $root->primaryImage();
+                    // }
+                    // return null;
+                    return $root->primaryImage();
                 },
             ],
             'image_url'       => [
