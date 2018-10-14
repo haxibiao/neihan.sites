@@ -156,7 +156,17 @@ class ArticlesQuery extends Query
         }
 
         if (isset($args['category_id'])) {
-            $qb = \App\Category::findOrFail($args['category_id'])->articles();
+            $qb = \App\Category::findOrFail($args['category_id'])->publishedWorks();
+            //专题下排序
+            if (isset($args['order'])) {
+                if ($args['order'] == 'HOT') {
+                    $qb = $qb->orderByDesc('articles.hits');
+                }else{
+                    $qb = $qb->orderByDesc('pivot_updated_at');
+                }
+            } else {
+                $qb = $qb->orderByDesc('pivot_updated_at');
+            }
         }
 
         if (isset($args['collection_id'])) {
