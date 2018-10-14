@@ -100,7 +100,7 @@ class IndexController extends Controller
             $app = request('app');
         }
         return view('app')
-                ->withAppname(config('app.name'))
+                ->withAppname(config('app.name_cn'))
                 ->withApp($app);
     }
 
