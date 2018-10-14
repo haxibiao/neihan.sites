@@ -1,6 +1,6 @@
 <div class="dmw_daily">
   <div class="litter_title">
-    {{ config('app.name') }}日报
+    {{ config('app.name_cn') }}日报
     <a target="_blank" href="javascript:;" class="more">查看往期</a>
   </div>
   <a target="_blank" class="note" href="javascript:;">
