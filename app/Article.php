@@ -183,7 +183,7 @@ class Article extends Model
         // ]);
         //all place including APP,  需要返回全Uri
         $path = $this->image_url;
-        if ($this->type=='video' || str_contains($path, '.small.')) {
+        if ($this->type=='video' || str_contains($path, ['.small.','haxibiao'])) {
             return $path;
         }
         $extension  = pathinfo($path,PATHINFO_EXTENSION); 
