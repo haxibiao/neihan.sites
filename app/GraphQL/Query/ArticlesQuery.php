@@ -190,7 +190,11 @@ class ArticlesQuery extends Query
                 throw new \Exception('查看用户收藏的文章必须提供user_id');
             }
             $user = \App\User::findOrFail($args['user_id']);
-            $qb   = $user->likes()->where('liked_type', 'articles');
+            $qb   = $user->likedArticles()->whereExists(function ($query) {
+                    return $query->from('articles')
+                        ->whereRaw('articles.id = likes.liked_id')
+                        ->where('articles.status', '>=', 0);
+                }); 
         }
 
         if ( isset($args['filter']) && $args['filter'] == 'RECOMMEND') {
