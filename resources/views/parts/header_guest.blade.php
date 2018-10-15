@@ -22,9 +22,9 @@
 					<p>下载APP</p>
 			</a>
 			<a href="/login" class="login btn">登录</a>
-			<a class="search"> 
+{{-- 			<a class="search"> 
 				<search-box is-desktop="{{ \Agent::isDeskTop() == 1 }}"></search-box>
-			</a>
+			</a> --}}
 			<div class="container">
 					<!-- Brand and toggle get grouped for better mobile display -->
 					<div class="navbar-header">
@@ -42,8 +42,11 @@
 							<li class="tab {{ get_active_css('video') }}"><a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/video"><i class="iconfont icon-shipin3 hidden-xs hidden-md"></i><span class="hidden-sm">视频</span></a></li>
 							<li class="tab {{ get_active_css('app') }}"><a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/app"><i class="iconfont icon-ordinarymobile hidden-xs hidden-md"></i><span class="hidden-sm">下载App</span></a></li>
 						</ul>
-						<search-box is-desktop="{{ \Agent::isDeskTop() == 1 }}"></search-box>
+		{{-- 				<search-box is-desktop="{{ \Agent::isDeskTop() == 1 }}"></search-box> --}}
 					</div>
+								<a class="search"> 
+				<search-box is-desktop="{{ \Agent::isDeskTop() == 1 }}"></search-box>
+			</a>
 			</div>
 		</div>
 	</nav>

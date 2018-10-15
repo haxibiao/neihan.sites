@@ -32,8 +32,10 @@
 		.download-app{
 			display:none;
 		}
-		.search{
-			display:none;
+		 .search{
+			.navbar-form{
+				margin:10px 0;
+			}
 		}
 		.register,
 		.creation,
@@ -69,6 +71,7 @@
 			font-size: 16px;
 		}
 		.container {
+			display:flex;
 			.navbar-header {
 				.navbar-toggle {
 					float: left;
@@ -220,7 +223,7 @@
 				float:right;
 				color:#fff;
 				display:block;
-				width:37%;
+				// width:37%;
 				i{
 					font-size:28px;
 					margin:7px 11px;
