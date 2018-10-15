@@ -137,11 +137,11 @@
 						</ul>
 					</li>
 				</ul>
+				<a class="search"> 
+					<search-box is-desktop="{{ \Agent::isDeskTop() == 1 }}"></search-box>
+				</a>
 				<modal-post/>	
 			</div>
-			<a class="search"> 
-				<search-box is-desktop="{{ \Agent::isDeskTop() == 1 }}"></search-box>
-			</a>
 		</div>
 	</div>
 </nav>

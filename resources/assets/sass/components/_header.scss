@@ -71,7 +71,7 @@
 			font-size: 16px;
 		}
 		.container {
-			display:flex;
+			// display:flex;
 			.navbar-header {
 				.navbar-toggle {
 					float: left;
@@ -81,6 +81,7 @@
 			}
 			.navbar-collapse {
 				margin-left: -15px;
+				display:block;
 				.navbar-nav {
 					.tab {
 						font-size: 16px;
@@ -223,7 +224,7 @@
 				float:right;
 				color:#fff;
 				display:block;
-				// width:37%;
+				 width:37%;
 				i{
 					font-size:28px;
 					margin:7px 11px;
@@ -236,6 +237,7 @@
 					margin:11px 0;
 					.form-control{
 						height:33px !important;
+						width:100% !important;
 					}
 				}
 			}
@@ -248,6 +250,7 @@
 					display:none;
 				}
 				.navbar-nav {
+					display:none;
 					.tab {
 						margin-right: 0px;
 						border-bottom: 1px solid $light-color2;

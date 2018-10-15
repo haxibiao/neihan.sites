@@ -11,12 +11,12 @@
 					</a>
 				@endif
 			@show    
-			
+{{-- 			
 			@if(starts_with(request()->path(), 'question')) 
 				<div class="ask"><a href="/login" data-toggle="modal" class="btn-base btn-theme"><span class="iconfont icon-maobi hidden-xs"></span>提问</a></div>
 			@else 
 				<div class="creation hidden-xs"><a href="/write" class="btn-base btn-theme"><span class="iconfont icon-maobi"></span>发布</a></div>
-			@endif						
+			@endif	 --}}					
 			<div class="register"><a href="/register" class="btn-base theme-tag">注册</a></div>
 			<a href="/app"  class="download-app"> 
 					<p>下载APP</p>
@@ -42,11 +42,10 @@
 							<li class="tab {{ get_active_css('video') }}"><a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/video"><i class="iconfont icon-shipin3 hidden-xs hidden-md"></i><span class="hidden-sm">视频</span></a></li>
 							<li class="tab {{ get_active_css('app') }}"><a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/app"><i class="iconfont icon-ordinarymobile hidden-xs hidden-md"></i><span class="hidden-sm">下载App</span></a></li>
 						</ul>
-		{{-- 				<search-box is-desktop="{{ \Agent::isDeskTop() == 1 }}"></search-box> --}}
+						<a class="search"> 
+							<search-box is-desktop="{{ \Agent::isDeskTop() == 1 }}"></search-box>
+						</a>
 					</div>
-								<a class="search"> 
-				<search-box is-desktop="{{ \Agent::isDeskTop() == 1 }}"></search-box>
-			</a>
 			</div>
 		</div>
 	</nav>
