@@ -99,8 +99,16 @@ class IndexController extends Controller
         if (request('app')) {
             $app = request('app');
         }
+        $data = [];
+
+        if(\Storage::exists('appDowload_config')){
+            $json  = \Storage::get('appDowload_config');
+            $data = json_decode($json, true);
+        }
+
         return view('app')
                 ->withAppname(config('app.name_cn'))
+                ->withData($data)
                 ->withApp($app);
     }
 

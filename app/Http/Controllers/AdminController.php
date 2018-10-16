@@ -402,4 +402,37 @@ class AdminController extends Controller
         
         return view('admin.articles')->withData($data);
     }
+
+    /**
+     * @Author      XXM
+     * @DateTime    2018-10-15
+     * @description [展示app下载页设置功能]
+     * @return      [type]
+     */
+    public function showAppDownloadConfig()
+    {
+        $data = [];
+
+        if(Storage::exists('appDowload_config')){
+            $json  = Storage::get('appDowload_config');
+            $data = json_decode($json, true);
+        }
+
+        return view('admin.app_download_config')->withData($data);
+    }
+
+    /**
+     * @Author      XXM
+     * @DateTime    2018-10-15
+     * @description [保存app下载页设置]
+     * @return      [type]
+     */
+    public function saveAppDownloadConfig(Request $request)
+    {
+        $json   = json_encode($request->all());
+        //写入缓存
+        Storage::put("appDowload_config", $json);
+
+        return redirect()->back();
+    }
 }
