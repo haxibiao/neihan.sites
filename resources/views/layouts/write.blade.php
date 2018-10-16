@@ -11,10 +11,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title> @yield('title') {{ config('app.name') }} </title>
+    <title> @yield('title') {{ config('app.name_cn') }} </title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="keywords" content=" @yield('keywords'), {{ config('app.name') }} ">
-    <meta name="description" content=" @yield('description'), {{ config('app.name') }} ">
+    <meta name="keywords" content=" @yield('keywords'), {{ config('app.name_cn') }} ">
+    <meta name="description" content=" @yield('description'), {{ config('app.name_cn') }} ">
 
     <!-- Styles -->
     <link href="{{ mix('css/guest.css') }}" rel="stylesheet">
@@ -42,7 +42,7 @@
     <!-- Scripts -->   
     @if(Auth::check())
     <script type="text/javascript">
-        window.appName = '{{ config('app.name') }}';
+        window.appName = '{{ config('app.name_cn') }}';
         window.tokenize =　 function(api_url){
             var api_token = '{{ Auth::user()->api_token }}'
             if(api_url.indexOf('?') === -1) {

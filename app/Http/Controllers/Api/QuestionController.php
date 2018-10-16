@@ -11,6 +11,7 @@ use App\Question;
 use App\QuestionInvite;
 use App\Transaction;
 use App\User;
+use Auth;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -25,16 +26,26 @@ class QuestionController extends Controller
         return $questions;
     }
 
-    //问题可以邀请用户列表
+    //问题可以邀请用户列表,七天内只能邀请一次
     public function questionUninvited(Request $request, $question_id)
     {
-        $top_active_users = User::orderBy('updated_at', 'desc')->take(20)->get();
-        $users            = $top_active_users->count() > 10 ? $top_active_users->random(10) : $top_active_users;
-        foreach ($users as $user) {
-            $user->fillForJs();
-            $user->invited = 0;
-            //TODO:: 应该排除已经邀请过的
+        $user = Auth::guard('api')->user();
+        //获取当前七天前邀请的用户
+        $inviteIds = $user->questionInvites()->where('question_id',$question_id)
+            ->whereRaw('DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(updated_at)')
+            ->pluck('invite_user_id')->toArray();
+        //获取当前关注的用户 并排除七天内邀请过的用户
+        $followUserIds = $user->followingUsers->whereNotIn('followed_id', $inviteIds)->pluck('followed_id')->toArray();
+        
+        $users = [];
+        if($followUserIds){
+            $users = User::whereIn('id',$followUserIds)->get();
+            foreach ($users as $user) {
+                $user->fillForJs();
+                $user->invited = 0;
+            }
         }
+        
         return $users;
     }
 
@@ -52,7 +63,11 @@ class QuestionController extends Controller
             //避免重复发消息
             if (!$invite->id) {
                 $invite_user->notify(new QuestionInvited($user->id, $qid));
+            }else{
+                //手动更新下updated_at
+                $invite->updated_at = $invite->freshTimestamp();
             }
+
             $invite->save();
         }
         return $invite;

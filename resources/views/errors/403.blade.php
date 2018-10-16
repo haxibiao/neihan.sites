@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('title')
-    权限不足 - {{ env('APP_NAME') }} 
-@endsection 
+    权限不足 - {{ config("app.name_cn") }}
+@endsection
 
 @section('content')
 <div class="container">

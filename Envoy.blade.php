@@ -72,7 +72,7 @@ cd {{ $www }}
 @endtask
 
 @task('staging_refresh', ['on' => ['staging'], 'parallel' => true])
-cd {{ $www }}
+cd {{ $www_staging }}
 {{ $refresh_env_staging }}
 {{ $cache_clear }}
 @endtask
@@ -85,7 +85,7 @@ cd {{ $www }}
 @endtask
 
 @task('staging_seed', ['on' => ['staging'], 'parallel' => true])
-cd {{ $www }}
+cd {{ $www_staging }}
 {{ $refresh_env_staging }}
 {{ $run_migrate }}
 {{ $cache_clear }}
@@ -101,7 +101,7 @@ cd {{ $www }}
 @endtask
 
 @task('staging_update', ['on' => ['staging'], 'parallel' => true])
-cd {{ $www }}
+cd {{ $www_staging }}
 {{ $clear_bootstrap_cache }}
 {{ $refresh_env_staging }}
 {{ $run_composer }}
@@ -119,7 +119,7 @@ cd {{ $www }}
 @endtask
 
 @task('staging_cmds', ['on' => ['staging'], 'parallel' => true])
-cd {{ $www }}
+cd {{ $www_staging }}
 {{ $run_commands }}
 @endtask
 
@@ -136,5 +136,5 @@ cd {{ $www }}
 @if ($build)
 	npm run prod
 @endif
-{{ copy_ui($staging, $domain) }}
+{{ copy_ui($staging, $domain, "staging") }}
 @endtask

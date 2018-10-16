@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title')问答 - {{ env('APP_NAME') }} @stop
+@section('title')问答 - {{ config("app.name_cn") }} @stop
 @section('description') {{config('seo.'.get_domain_key().'.description')  }} @stop
 @section('keywords') {{ config('seo.'.get_domain_key().'.keywords') }} @stop
 

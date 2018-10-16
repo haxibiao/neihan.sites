@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    我的问答 - {{ env('APP_NAME') }}
+    我的问答 - {{ config("app.name_cn") }}
 @stop
 @section('content')
         <div id="bookmarks">
@@ -30,7 +30,7 @@
                                 <ul class="article-list">
                                     @if(count($data['questions'])==0)
                                        <blank-content></blank-content>
-                                    @endif 
+                                    @endif
                                      @foreach($data['questions'] as $question)
                                       <!-- {!! Form::open(['method' => 'delete', 'route' => ['question.destroy', $question->id], 'class' => 'form-horizontal']) !!}
                                         {!! Form::submit('删除', ['class' => 'btn btn-sm btn-danger']) !!}
@@ -49,13 +49,13 @@
                                             @php
                                                 $x++;
                                             @endphp
-                                            @include('question.parts.question_item', ['question' => $question])   
+                                            @include('question.parts.question_item', ['question' => $question])
                                         @endif
                                     @endforeach
                                     @if($x==0)
                                        <blank-content></blank-content>
                                     @endif
-                                </div>  
+                                </div>
                             </div>
                         </div>
                     </div>

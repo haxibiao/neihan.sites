@@ -47,7 +47,7 @@
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-谢谢!<br>{{ config('app.name') }}
+谢谢!<br>{{ config('app.name_cn') }}
 @endif
 
 {{-- Subcopy --}}

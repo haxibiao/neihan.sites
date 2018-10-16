@@ -22,12 +22,13 @@ class SearchController extends Controller
         $page_size = 10;
         $page      = request('page') ? request('page') : 1;
         $query     = request('q');
-        $articles  = Article::where('title', 'like', '%' . $query . '%')
-            ->exclude(['body', 'json'])
+        $articles  = Article::where(function($qb) use($query){
+                $qb->where('title', 'like', '%' . $query . '%');
+                $qb->orWhere('keywords', 'like', '%' . $query . '%');
+                $qb->orWhere('description', 'like', '%' . $query . '%');
+            })->exclude(['body', 'json'])
             ->where('status', 1)
             ->whereType('article')
-            ->orWhere('keywords', 'like', '%' . $query . '%')
-            ->orWhere('description', 'like', '%' . $query . '%')
             ->orderBy('id', 'desc')
             ->paginate(10);
         $total = $articles->total();

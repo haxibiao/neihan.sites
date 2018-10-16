@@ -55,10 +55,10 @@
 						<td>{{ $user->name }}</td>
 						<td>
 						@if($user->is_signed)
-					          <img class="badge-icon" style="width:20px" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
+					          <img class="badge-icon" style="width:20px" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name_cn') }}签约作者" alt="">
 					        @endif
 					        @if($user->is_editor)
-					          <img class="badge-icon" style="width:20px" src="/images/editor.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}小编" alt="">
+					          <img class="badge-icon" style="width:20px" src="/images/editor.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name_cn') }}小编" alt="">
 					        @endif
 					    </td>
 						<td>{{ $user->createdAt() }}</td>

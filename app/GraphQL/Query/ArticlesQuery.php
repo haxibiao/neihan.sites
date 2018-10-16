@@ -156,7 +156,17 @@ class ArticlesQuery extends Query
         }
 
         if (isset($args['category_id'])) {
-            $qb = \App\Category::findOrFail($args['category_id'])->articles();
+            $qb = \App\Category::findOrFail($args['category_id'])->publishedWorks();
+            //专题下排序
+            if (isset($args['order'])) {
+                if ($args['order'] == 'HOT') {
+                    $qb = $qb->orderByDesc('articles.hits');
+                }else{
+                    $qb = $qb->orderByDesc('pivot_updated_at');
+                }
+            } else {
+                $qb = $qb->orderByDesc('pivot_updated_at');
+            }
         }
 
         if (isset($args['collection_id'])) {
@@ -180,7 +190,11 @@ class ArticlesQuery extends Query
                 throw new \Exception('查看用户收藏的文章必须提供user_id');
             }
             $user = \App\User::findOrFail($args['user_id']);
-            $qb   = $user->likes()->where('liked_type', 'articles');
+            $qb   = $user->likedArticles()->whereExists(function ($query) {
+                    return $query->from('articles')
+                        ->whereRaw('articles.id = likes.liked_id')
+                        ->where('articles.status', '>=', 0);
+                }); 
         }
 
         if ( isset($args['filter']) && $args['filter'] == 'RECOMMEND') {

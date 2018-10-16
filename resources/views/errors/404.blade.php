@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title')
-    页面找不到 - {{ env('APP_NAME') }} 
-@endsection 
+    页面找不到 - {{ config("app.name_cn") }}
+@endsection
 @section('content')
 <div class="container">
     <div class="jumbotron">
@@ -16,7 +16,7 @@
             </div>
             <div class="recommend">
                 <div class="title">
-                    <h3>{{ config('app.name') }}为你推荐</h3>
+                    <h3>{{ config('app.name_cn') }}为你推荐</h3>
                 </div>
                 <div class="hot-recommend">
                     <span>精彩推荐：</span>
@@ -29,11 +29,11 @@
                         <div class="col-xs-6 col-md-3 video">
                             <div class="video-item vt"><div class="thumb">
                                 <a href="{{ url("video/$article->video_id") }}" target="_blank">
-                                    <img src="{{ $article->primaryImage() }}" alt="{{ $article->video->title ?: $article->get_description() }}"> 
-                                    <i class="duration">{{ gmdate('i:s', $article->video->duration) }}</i> 
+                                    <img src="{{ $article->primaryImage() }}" alt="{{ $article->video->title ?: $article->get_description() }}">
+                                    <i class="duration">{{ gmdate('i:s', $article->video->duration) }}</i>
                                     <i class="hover-play"></i>
                                 </a>
-                            </div> 
+                            </div>
                                 <ul class="info-list">
                                     <li class="video-title"><a target="_blank" href="{{ url("video/$article->video_id") }}">{{ $article->video->title ?: $article->get_description() }}</a></li>
                                      <li>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    搜索 - {{ env('APP_NAME') }} 
+    搜索 - {{ config("app.name_cn") }}
 @endsection
 
 @section('content')

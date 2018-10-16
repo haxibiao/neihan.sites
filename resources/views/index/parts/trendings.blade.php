@@ -19,8 +19,8 @@
   </div>
    <div class="board-list">
     <a class="question" target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/question">
-      <span class="board-title">{{ env("APP_NAME") }}问答<i class="iconfont icon-youbian"></i></span>
-      <i class="iconfont icon-changjianwenti board-right"></i>
+      <span class="board-title">{{ config('app.name_cn') }}问答<i class="iconfont icon-youbian"></i></span>
+      <i class="iconfont icon-changjianwenti board-right"></i> 
     </a>
   </div>
    @if(file_exists(resource_path("/views/index/parts/special/". get_domain_key() .".blade.php")))

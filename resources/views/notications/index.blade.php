@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-	消息 - {{ config('app.name') }}
+	消息 - {{ config('app.name_cn') }}
 @stop
 @section('content')
 	<div id="notification">

@@ -2,30 +2,30 @@
 
 return [
 
-     'debug_blacklist' => [
-        '_ENV' => [
-            'APP_KEY',
-            'DB_HOST',
-            'DB_DATABASE',
-            'DB_PASSWORD',
-            'REDIS_PASSWORD',
-            'MAIL_USERNAME',
-            'MAIL_PASSWORD',
-            'PUSHER_APP_KEY',
-            'PUSHER_APP_SECRET',
-        ],
-        '_SERVER' => [
-            'APP_KEY',
-            'DB_PASSWORD',
-            'REDIS_PASSWORD',
-            'MAIL_PASSWORD',
-            'PUSHER_APP_KEY',
-            'PUSHER_APP_SECRET',
-        ],
-        '_POST' => [
-            'password',
-        ],
-    ],
+	'debug_blacklist' => [
+		'_ENV' => [
+			'APP_KEY',
+			'DB_HOST',
+			'DB_DATABASE',
+			'DB_PASSWORD',
+			'REDIS_PASSWORD',
+			'MAIL_USERNAME',
+			'MAIL_PASSWORD',
+			'PUSHER_APP_KEY',
+			'PUSHER_APP_SECRET',
+		],
+		'_SERVER' => [
+			'APP_KEY',
+			'DB_PASSWORD',
+			'REDIS_PASSWORD',
+			'MAIL_PASSWORD',
+			'PUSHER_APP_KEY',
+			'PUSHER_APP_SECRET',
+		],
+		'_POST' => [
+			'password',
+		],
+	],
 
 	/*
 		    |--------------------------------------------------------------------------
@@ -37,6 +37,7 @@ return [
 		    | any other location as required by the application or its packages.
 	*/
 
+	'name_cn' => env('APP_NAME_CN', 'Laravel'),
 	'name' => env('APP_NAME', 'Laravel'),
 
 	/*
@@ -188,7 +189,6 @@ return [
 		Illuminate\Validation\ValidationServiceProvider::class,
 		Illuminate\View\ViewServiceProvider::class,
 
-
 		/*
 			         * Package Service Providers...
 		*/
@@ -260,15 +260,15 @@ return [
 		'View' => Illuminate\Support\Facades\View::class,
 		'ImageMaker' => Intervention\Image\Facades\Image::class,
 		'Form' => Collective\Html\FormFacade::class,
-      	'Html' => Collective\Html\HtmlFacade::class,
-      	'EasyWeChat' => Overtrue\LaravelWechat\Facade::class,
-      	'Agent' => Jenssegers\Agent\Facades\Agent::class,
-      	'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
-      	//自定义工具类
-      	'ImageUtils'  =>  App\Helpers\ImageUtils::class,
-      	'StringUtils' =>  App\Helpers\StringUtils::class,
-      	'HttpUtils' =>  App\Helpers\HttpUtils::class,
-      	'Bugsnag' => Bugsnag\BugsnagLaravel\Facades\Bugsnag::class,
+		'Html' => Collective\Html\HtmlFacade::class,
+		'EasyWeChat' => Overtrue\LaravelWechat\Facade::class,
+		'Agent' => Jenssegers\Agent\Facades\Agent::class,
+		'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+		//自定义工具类
+		'ImageUtils' => App\Helpers\ImageUtils::class,
+		'StringUtils' => App\Helpers\StringUtils::class,
+		'HttpUtils' => App\Helpers\HttpUtils::class,
+		'Bugsnag' => Bugsnag\BugsnagLaravel\Facades\Bugsnag::class,
 	],
 
 ];

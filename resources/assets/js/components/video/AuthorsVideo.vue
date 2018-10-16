@@ -7,7 +7,7 @@
         </div>
         <ul class="video-list">
               <li class="video-item" v-for="video in videos">
-                  <a :href="'/video/'+video.video.id" class="link clearfix">  
+                  <a :href="'/video/'+video.video.id" class="link">  
                       <div class="cover">
                           <img :src="video.image_url" alt=""/>
                           <i class="hover-play"></i>
@@ -87,10 +87,10 @@ export default {
       >h4{
         color: #d0d0d6;
         font-size: 17px;
-        font-weight: 300;
+        font-weight: 600;
         display: inline-block;
-        padding-left:17px;
-        margin:9px 0;
+        padding-left:20px;
+        margin:15px 0;
       }
       .recommend{
         font-weight: 300;
@@ -118,16 +118,16 @@ export default {
       }
     }
     .video-list{
-      padding:0px 0 0 20px;
+      padding:5px 0 14px 20px;
+      // background-color:#26262b;
         .video-item{
-          margin: 8px 0 0 0;
           .link{
             display: flex;
             align-items:center;
             width: 100%;
               .cover{
                 width:42%;
-                height: 81px;
+                height: 101px;
                 float: left;
                 display: inline-block;
                 position: relative;
@@ -175,6 +175,7 @@ export default {
             padding: 0 5%;
             float: right;
             display: inline-block;
+                        height:101px;
             &:hover{
               .recommend-video-title{
                 color:#d96a5f !important;

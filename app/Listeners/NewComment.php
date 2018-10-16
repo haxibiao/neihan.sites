@@ -82,6 +82,7 @@ class NewComment
         $msg_title_form1 = $authorizer->link() . ' 在' . $article->link() . '中写了一条新评论';
         $msg_title_form2 = $authorizer->link() . ' 评论了你的'  . $article->link();
         $msg_title_form3 = $authorizer->link() . ' 在' . $article->link() . '的评论中提到了你';
+        $msg_title_form4 = $authorizer->link() . '在'.$article->link(). '中回复了您的评论';
 
         //用户@人的逻辑。
         $filtered_users;//需要@的人
@@ -163,7 +164,7 @@ class NewComment
                 $lord ->forgetUnreads();
 
                 $lord->notify(new ArticleCommented(
-                    $article, $comment, $authorizer, $msg_title_form1, $comment->body
+                    $article, $comment, $authorizer, $msg_title_form4, $comment->body
                 ));
                 
             //登录用户,楼主,文章作者是不同的人。楼主与文章作者都收到通知。
@@ -173,7 +174,7 @@ class NewComment
                 $author->forgetUnreads();
 
                 $lord->notify(new ArticleCommented(
-                    $article, $comment, $authorizer, $msg_title_form1, $comment->body
+                    $article, $comment, $authorizer, $msg_title_form4, $comment->body
                 ));
                 $author->notify( new ArticleCommented(
                     $article, $comment, $authorizer, $msg_title_form1, $comment->body

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-	关注 - {{ env('APP_NAME') }}
+	关注 - {{ config("app.name_cn") }}
 @stop
 @section('content')
 	<div id="follow">

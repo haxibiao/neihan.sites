@@ -5,7 +5,7 @@
 @extends('layouts.black')
 
 @section('title')
-	{{ $article->title ?: $article->get_description() }} -{{ empty($article->category)?env('APP_NAME'): $article->category->name}}
+	{{ $article->title ?: $article->get_description() }} -{{ empty($article->category)?config("app.name_cn"): $article->category->name}}
 @stop
 
 @push('seo_og_result')
@@ -30,21 +30,11 @@
 <div class="player-container">
 
     <div class="playerBox">
-        <div class="container">
-            <div class="video-title">
-                    {{ $video->article->title }}
-            </div>
-            <div class="video-info">
-                @if(!empty($category))
-                    <a href="/{{ $category->name_en }}" class="category-name">{{ $article->category->name }}</a>
-                @endif
-                 <i class="iconfont icon-shijian"></i> 
-                   <span>发布于：{{$video->createdAt()}}</span>
-                 <i class="iconfont icon-shipin1"></i>
-                   <span class="hits">{{$article->hits }}次播放</span>
+            <div class="author-info">
+                    @include('video.parts.author')
             </div>
             <div class="player-basic clearfix">
-                <div class="playerArea col-sm-8"> 
+                <div class="playerArea col-sm-8">
                     <div class="h5-player">
                         <div class="embed-responsive embed-responsive-16by9">
                             <video controls="" poster="{{ $video->article->cover() }}" preload="auto" autoplay="true">
@@ -53,9 +43,35 @@
                             </video>
                         </div>
                     </div>
+                    <div class="video-body">
+                         @foreach($article->categories->unique() as $category)
+                            <a href="/{{ $category->name_en }}" class="category-name" title="{{ $category->id }}:{{ $category->name }}">
+                              <span class="name">#{{ $category->name }}</span>
+                            </a>
+                        @endforeach
+                        <span class="content">
+                            {{ $video->article->body }}
+                        </span>
+                    </div>
                     <div class="h5-option">
-                       <like id="{{ $video->article->id }}" type="article" is-login="{{ Auth::check() }}"></like>
-                       @if(canEdit($article))
+                       <video-like id="{{ $video->article->id }}" type="article" is-login="{{ Auth::check() }}"></video-like>
+                      {{--  @if(canEdit($article))
+                            <a class="btn-base btn-light btn-sm editor-btn" href="/video/{{ $video->id }}/edit">编辑视频动态</a>
+                        @endif --}}
+
+                        <div class="comments">
+                            {{-- <i class="iconfont icon-xinxi2"></i>
+                            <p>{{$video->article->count_replies}}</p> --}}
+                            <to-comment comment-replies={{ $video->article->count_replies }}></to-comment>
+                        </div>
+                       {{--  <div class="share">
+                            <share-module></share-module>
+                        </div> --}}
+                        {{--   @include('video.parts.share') --}}
+                    </div>
+                    <div class="pc-option">
+                        <like id="{{ $video->article->id }}" type="article" is-login="{{ Auth::check() }}"></like>
+                         @if(canEdit($article))
                             <a class="btn-base btn-light btn-sm editor-btn" href="/video/{{ $video->id }}/edit">编辑视频动态</a>
                         @endif
                        @include('video.parts.share')
@@ -68,32 +84,45 @@
                     </div>
                 </div>
             </div>
+           <div class="video-title">
+                    {{ $video->article->body }}
+        {{--              <div class="video-info">
+                        @if(!empty($category))
+                            <a href="/{{ $category->name_en }}" class="category-name">{{ $article->category->name }}</a>
+                        @endif
+                     </div> --}}
+            </div>
             <div class="video-relevant">
                 <div class="author-info">
                     @include('video.parts.author')
-                    <div class="admire">
+                   {{--  <div class="admire">
                         @if(!$video->article->isSelf())
                           @if($video->article->user->enable_tips)
                             <a class="btn-base btn-theme" data-target=".modal-admire" data-toggle="modal">赞赏支持</a>
                             <modal-admire article-id="{{ $video->article->id }}"></modal-admire>
                           @endif
                         @endif
-                    </div>
-                </div>
-                <div class="video-description">
-                    {{ $video->article->body }}
+                    </div> --}}
                 </div>
                 <authors-video user-id={{ $video->user_id }}></authors-video>
-                <div class="video-categories" style="margin-top:20px">
-                {{--     <h4>相关的专题</h4>
+               {{--  <div class="video-categories" style="margin-top:20px">
+                   <h4>相关的专题</h4>
                 @foreach($categories as $category)
                     <div class="pull-left">
                         @include('video.parts.category_item')
                     </div>
-                @endforeach --}}
-                </div>
+                @endforeach
+                </div> --}}
             </div>
-        </div>
+           {{--  <div class="video-info">
+                @if(!empty($category))
+                    <a href="/{{ $category->name_en }}" class="category-name">{{ $article->category->name }}</a>
+                @endif
+                 <i class="iconfont icon-shijian"></i>
+                   <span>发布于：{{$video->createdAt()}}</span>
+                 <i class="iconfont icon-shipin1"></i>
+                   <span class="hits">{{$article->hits }}次播放</span>
+            </div> --}}
     </div>
     <div class="sectionBox">
         <div class="container clearfix">
@@ -115,6 +144,14 @@
 
 
 </div>
+<div class="share-module">
+    <div class="module-share-h3">分享到....</div>
+    <div>@include('video.parts.share')</div>
+    <close-share></close-share>
+</div>
+<div id="pageLayout">
+
+</div>
 @stop
 
 @push('scripts')
@@ -126,7 +163,7 @@
       data: window.tokenize('/api/related-users'),
       insertTpl: '<span data-id="${id}">@${name}</span>',
       displayTpl: "<li > ${name} </li>",
-      limit: 200  
+      limit: 200
     }
   $('#editComment').atwho(at_config); // 初始化
 </script>

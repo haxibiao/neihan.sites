@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title')专题首页 - {{ env("APP_NAME") }} @endsection
+@section('title')专题首页 - {{  config('app.name_cn') }} @endsection 
 
 @section('content')
 <div id="categories">
