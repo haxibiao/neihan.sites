@@ -65,7 +65,7 @@ class VisitsQuery extends Query
 
         $visits = $query->get();
 
-        //根据前端需求 visited为null的就无需返回
+        //过滤 根据前端需求 visited为null的就无需返回
         $visits->transform(function ($key){
             if($key->visited != null){
                 return $key;
