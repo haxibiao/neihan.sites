@@ -88,7 +88,7 @@
           <img src="{{ isset($data['logo']) ? $data['logo'] : '' }}" alt="Misc logo">
           <div class="info">
             <div class="title">{!! isset($data['h1_title']) ? $data['h1_title'] : '' !!}</div>
-              <div class="slogan">{!! isset($data['h1_slogan']) ? $data['h1_slogan'] : '' !!}}</div>
+              <div class="slogan">{!! isset($data['h1_slogan']) ? $data['h1_slogan'] : '' !!}</div>
           </div>
         </div>
       </div>

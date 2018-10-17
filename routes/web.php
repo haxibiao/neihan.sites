@@ -119,8 +119,8 @@ Route::post('/admin/delete-stick-videos', 'AdminController@deleteStickVideos')->
 //作品批量管理
 Route::any('/admin/articles', 'AdminController@articles');
 //app下载页配置
-Route::any('/admin/app-download-config', 'AdminController@showAppDownloadConfig');
-Route::any('/admin/app-download-config-save', 'AdminController@saveAppDownloadConfig');
+Route::get('/admin/app-download-config', 'AdminController@showAppDownloadConfig');
+Route::post('/admin/app-download-config-save', 'AdminController@saveAppDownloadConfig');
 
 
 //stickcategory
