@@ -298,21 +298,22 @@ class Article extends Model
     public function saveRelatedImagesFromBody()
     {
         $images           = [];
-        $pattern_img_path = '/src=\"([^\"]*?)(\/storage\/image\/\d+\.(jpg|gif|png|jpeg))\"/';
+        $pattern_img_path = '/src=\"([^\"]*?(\/storage\/image\/\d+\.(jpg|gif|png|jpeg)))\"/';
         if (preg_match_all($pattern_img_path, $this->body, $match)) {
-            $images = $match[2];
+            $images = $match[1];   //考虑目前图片全部在Cos上,存Cos全路径.
         }
         $imgs             = [];
-        $pattern_img_path = '/src=\"([^\"]*?)(\/storage\/img\/\d+\.(jpg|gif|png|jpeg))\"/';
+        $pattern_img_path = '/src=\"([^\"]*?(\/storage\/img\/\d+\.(jpg|gif|png|jpeg)))\"/';
         if (preg_match_all($pattern_img_path, $this->body, $match)) {
-            $imgs = $match[2];
+            $imgs = $match[1];
         }
         $imgs                = array_merge($imgs, $images);
         $image_ids           = [];
         $has_primary_top     = false;
         $last_img_small_path = '';
         foreach ($imgs as $img) {
-            $path      = parse_url($img)['path'];
+            // $path      = parse_url($img)['path'];
+            $path = $img;
             $extension = pathinfo($path, PATHINFO_EXTENSION);
             $path      = str_replace('.small.' . $extension, '', $path);
             if (str_contains($img, 'base64') || str_contains($path, 'storage/video')) {
@@ -320,6 +321,9 @@ class Article extends Model
             }
             $image = Image::firstOrNew([
                 'path' => $path,
+            ]);
+            $image = $image->id ? $image : Image::firstOrNew([
+                'path' => str_replace('/image/', '/img/', $path),
             ]);
             if ($image->id) {
                 $image_ids[]  = $image->id;
@@ -349,7 +353,6 @@ class Article extends Model
             $this->is_top = 0;
         }
         $this->save();
-
         //如果文章图片关系中得图片地址不在文中，清除掉！
         $this->images()->sync($image_ids);
     }
