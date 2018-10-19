@@ -19,6 +19,9 @@
                 </a>
             </div>
             @endif
+            <div class="pull-left header-checkbox">
+                <input type="checkbox" id="checks"/>
+            </div>
             <h3 class="panel-title" style="line-height: 30px">
                 视频列表
                 <basic-search api="/video/list?q="></basic-search>
@@ -31,6 +34,9 @@
                 @endphp
                 @if( !empty($article) )
                     <div class="media">
+                        <div class="text-center pull-left">
+                            <input type="checkbox" value="{{ $video->id }}" class="checkboxs"/>
+                        </div>
                         <a class="pull-left" href="/video/{{ $video->id }}">
                             <img alt="{{ $article->title }}" class="img img-thumbnail img-responsive"
                                 src="{{ $article->cover() }}" style="max-width: 300px">
@@ -54,8 +60,8 @@
                             </div>
                             @endif
                             <h4 class="media-heading">
-                                <a href="/video/{{ $video->id }}">
-                                {{ $article->title }}
+                                <a href="/article/{{ $article->id }}">
+                                {{ $article->get_title() }}
                                 </a>
                             </h4>
                             <p>
@@ -84,10 +90,92 @@
                     </div>
                 @endif
             @endforeach
-            <p>
-                {{ $data['videos']->appends(['q'=>$data['keywords']])->render() }}
-            </p>
+        </div>
+        <div class="btn-group col-md-offset-4">
+            <button type="button" class="btn btn-success" behavior="changeCategory">更改主专题</button>
+            <button type="button" class="btn btn-primary" behavior="addCategory">收录到新专题</button>
+            <button type="button" class="btn btn-danger"  behavior="deleteArticles">软删除</button>
+            <button type="button" class="btn btn-warning" behavior="sendArctiles">恢复</button>
+        </div>
+        <p>
+            {{ $data['videos']->appends(['q'=>$data['keywords']])->render() }}
+        </p>
+    </div>
+    <div class="modal fade" id="modalPost" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">标题</h4>
+                </div>
+                {!! Form::open(['url'=>'/admin/articles','method'=>'post']) !!}
+                <div class="modal-body" style="padding:15px">
+                    <p id="tip-message"></p>
+                    <input type="hidden" name="article_ids">
+                    <input type="text" class="form-control" name="category" placeholder="专题名称">
+                    <input type="hidden" name="type">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">提交</button>
+                </div>
+                {!! Form::close() !!}
+            </div>
         </div>
     </div>
 </div>
 @stop
+
+@push('scripts')
+<script type="text/javascript">
+    $(document).ready(function(){
+        //全选/反选操作
+        var checks = $('#checks');
+        checks.click(function(){
+            var checkBoxs = $('.checkboxs');
+            var checked = true;
+            if(!checks.is(':checked')){
+                checked = false;
+            }
+            checkBoxs.each(function(){
+                $(this).prop('checked',checked);
+            })
+        })
+
+        //唤醒模态框
+        var buttons = $('.btn-group button');
+        buttons.each(function(){
+            $(this).click(function(){
+                var type = $(this).attr('behavior');
+                $("input[name='type']").val(type);
+                //articles id
+                var articles = [];
+                $('.checkboxs').each(function(){
+                    if($(this).is(':checked')){
+                        articles.push($(this).val());
+                    }
+                });
+
+                if(type == 'deleteArticles' || type == 'sendArctiles'){
+                    $('input[name="category"]').hide();
+                    var message = type == 'deleteArticles' ? '删除' : '恢复';
+                    $('#tip-message').text('你将要'+message+articles.length+'篇作品');
+                }else{
+                    $('input[name="category"]').show();
+                    $('#tip-message').text('你选择了'+articles.length+'篇作品');
+                }
+
+                if(articles.length < 1){
+                    return alert('请先选择作品');
+                }
+                //放入隐藏表单域
+                $("input[name='article_ids']").val(articles);
+
+                //modalPost show 
+                $('#modalPost #myModalLabel').text($(this).text());
+                $('#modalPost').modal('show');
+            })
+        })
+    });
+</script>
+@endpush
