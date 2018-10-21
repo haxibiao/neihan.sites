@@ -37,6 +37,9 @@ Vue.component("notification-aside", require("./components/notification/Aside.vue
 Vue.component("follow-aside", require("./components/follow/Aside.vue"));
 Vue.component("setting-aside", require("./components/setting/Aside.vue"));
 Vue.component("side-tool", require("./components/SideTool.vue"));
+Vue.component("to-comment", require("./components/ToComment.vue"));
+Vue.component("share-module", require("./components/ShareModule.vue"));
+Vue.component("close-share", require("./components/CloseShare.vue"));
 Vue.component("modal-contribute", require("./components/modals/ModalContribute.vue"));
 
 const routes = [

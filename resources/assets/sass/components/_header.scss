@@ -29,6 +29,12 @@
 				}
 			}
 		}
+		.download-app{
+			display:none;
+		}
+		.search{
+			display:none;
+		}
 		.register,
 		.creation,
 		.ask {
@@ -185,8 +191,54 @@
 					left: -50% !important;
 					width: 160px;
 				}
+				& > a {
+					display: block;
+					margin: 13px 8px;
+					i{
+						display:none;
+					}			
+				img {
+					height: 30px;
+					width: 30px;
+					margin-left:10px;
+				}
+			}
+			}
+			.download-app{
+				float:right;
+				color:#fff;
+				display:block;
+				p{
+					margin: 12px 0;
+				    background-color:$theme-color;
+				    padding: 6px 11px;
+				    border-radius: 30px;
+				}
+			}
+			.search{
+				float:right;
+				color:#fff;
+				display:block;
+				width:37%;
+				i{
+					font-size:28px;
+					margin:7px 11px;
+					display:block;
+				}
+				.navbar-form{
+					padding:0px;
+					box-shadow:none;
+					border:none;
+					margin:11px 0;
+					.form-control{
+						height:33px !important;
+					}
+				}
 			}
 			.container {
+				.navbar-header{
+					display:none;
+				}
 				.navbar-nav {
 					.tab {
 						margin-right: 0px;

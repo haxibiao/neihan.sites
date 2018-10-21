@@ -17,8 +17,14 @@
 			@else 
 				<div class="creation hidden-xs"><a href="/write" class="btn-base btn-theme"><span class="iconfont icon-maobi"></span>创作</a></div>
 			@endif						
-			<div class="register"><a href="/register" class="btn-base theme-tag">注册</a></div>
+			{{-- <div class="register"><a href="/register" class="btn-base theme-tag">注册</a></div> --}}
+			<a href="/app"  class="download-app"> 
+					<p>下载APP</p>
+			</a>
 			<a href="/login" class="login btn">登录</a>
+			<a class="search"> 
+				<search-box is-desktop="{{ \Agent::isDeskTop() == 1 }}"></search-box>
+			</a>
 			<div class="container">
 					<!-- Brand and toggle get grouped for better mobile display -->
 					<div class="navbar-header">
