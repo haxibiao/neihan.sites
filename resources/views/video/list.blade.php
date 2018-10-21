@@ -35,7 +35,7 @@
                 @if( !empty($article) )
                     <div class="media">
                         <div class="text-center pull-left">
-                            <input type="checkbox" value="{{ $video->id }}" class="checkboxs"/>
+                            <input type="checkbox" value="{{ $article->id }}" class="checkboxs"/>
                         </div>
                         <a class="pull-left" href="/video/{{ $video->id }}">
                             <img alt="{{ $article->title }}" class="img img-thumbnail img-responsive"
@@ -168,6 +168,7 @@
                 if(articles.length < 1){
                     return alert('请先选择作品');
                 }
+                console.log("articles",articles);
                 //放入隐藏表单域
                 $("input[name='article_ids']").val(articles);
 
