@@ -2,7 +2,7 @@
 	@if($article->collection)	
   		<a class="notebook" href="/collection/{{ $article->collection->id }}"><i class="iconfont icon-wenji"></i><span>{{ $article->collection->name }}</span></a>
   	@endif
-	<div class="copyright" data-toggle="tooltip" data-html="true" data-original-title="转载请联系作者获得授权，并标注“{{ config('app.name') }}作者”。">
+	<div class="copyright" data-toggle="tooltip" data-html="true" data-original-title="转载请联系作者获得授权，并标注“{{ config('app.name_cn') }}作者”。">
         © 著作权归作者 {{$article->user->name}} 所有
       </div>
       <div class="report">

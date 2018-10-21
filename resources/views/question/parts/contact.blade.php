@@ -5,12 +5,12 @@
    </span>
   </h3>
   <div class="contact-info">
-      <p> © 2018 {{ config('app.name') }}</p>
+      <p> © 2018 {{ config('app.name_cn') }}</p>
       <p class="cooperate">
-          {{ config('app.name') }}问答合作邮箱：{{ 'wendahz@'.get_domain() }}
+          {{ config('app.name_cn') }}问答合作邮箱：{{ 'wendahz@'.get_domain() }}
       </p>
       <p>
-          {{ config('app.name') }}问答内容举报邮箱：{{ 'jubao@'.get_domain() }}
+          {{ config('app.name_cn') }}问答内容举报邮箱：{{ 'jubao@'.get_domain() }}
       </p>
       <p>
           {{ env('ICPB') }}

@@ -63,6 +63,16 @@ class VisitsQuery extends Query
         $query = $query->skip($offset)
             ->take($limit); 
 
-        return $query->get();
+        $visits = $query->get();
+
+        //过滤 根据前端需求 visited为null的就无需返回
+        $visits->transform(function ($key){
+            if($key->visited != null){
+                return $key;
+            }
+        });
+
+
+        return $visits;
     }
 }

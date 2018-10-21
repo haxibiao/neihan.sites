@@ -7,7 +7,7 @@
 @section('content')
 <div class="container">
       <ol class="breadcrumb">
-        <li><a href="/">{{ config('app.name') }}</a></li>
+        <li><a href="/">{{ config('app.name_cn') }}</a></li>
         <li><a href="/video">视频</a></li>
       </ol>
     <div class="panel panel-default">

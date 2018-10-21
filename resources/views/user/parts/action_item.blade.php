@@ -1,11 +1,25 @@
-@if($action->actionable && get_class($action->actionable) == 'App\Article')
+@if($action->actionable && (get_class($action->actionable) == 'App\Article' || get_class($action->actionable) == 'App\Video'))
 @php
-    $item = $action->actionable;
+    if($action->actionable_type == 'videos'){
+        $item = $action->actionable->article;
+    }else{
+        $item = $action->actionable;
+    }
+    //避免脏数据
+    if(empty($item)){
+        return;
+    }
 @endphp
 {{-- 发布 --}}
-<li class="article-item have-img">
-  <a class="wrap-img" href="/article/{{ $item->id }}" target="_blank">
+<li class="{{ $item->hasImage() ? 'content-item have-img' : 'content-item' }}">
+  <a class="wrap-img" href="{{ $item->type == 'videos' ? '/video/'.$item->video_id : '/article/'.$item->id }}" target="_blank">
       <img src="{{ $item->primaryImage() }}" alt="">
+      @if($item->type == 'video')
+        <span class="rotate-play">
+            <i class="iconfont icon-shipin"></i>
+        </span>
+        <i class="duration">{{ gmdate('i:s', $item->video->duration) }}</i> 
+      @endif
   </a>
   <div class="content">
     <div class="author">

@@ -22,7 +22,7 @@ Route::get('/app', 'IndexController@app');
 Route::get('/about-us', 'IndexController@aboutUs');
 Route::get('/trending', 'IndexController@trending');
 
-//动态 
+//动态
 Route::post('/post', 'ArticleController@storePost');
 
 //问答
@@ -43,8 +43,7 @@ Route::get('/search/collections', 'SearchController@searchCollections');
 Route::get('/drafts', 'ArticleController@drafts');
 //文章 slug
 // Route::get('/article/{slug}', 'ArticleController@showBySlug')->where('slug','\D+');
-Route::resource('/article', 'ArticleController');  
-
+Route::resource('/article', 'ArticleController');
 
 //管理专题
 Route::get('/category/list', 'CategoryController@list');
@@ -56,7 +55,6 @@ Route::resource('/tag', 'TagController');
 
 //创作
 Route::middleware('auth')->get('/write', 'IndexController@write');
-
 
 //片段
 Route::resource('/snippet', 'SnippetController');
@@ -91,7 +89,7 @@ Route::get('/hxb-login-as/{name}', 'HomeController@hxbLoginAs');
 
 //多媒体
 Route::resource('/image', 'ImageController');
-Route::get('/video/list','VideoController@list');
+Route::get('/video/list', 'VideoController@list');
 Route::resource('/video', 'VideoController');
 
 //后台
@@ -118,16 +116,18 @@ Route::post('/admin/delete-stick-article', 'AdminController@deleteStickArticle')
 Route::get('/admin/stick-videos', 'AdminController@videoSticks');
 Route::post('/admin/stick-videos', 'AdminController@videoStick')->name('admin.stick_video');
 Route::post('/admin/delete-stick-videos', 'AdminController@deleteStickVideos')->name('admin.delete_stick_video');
-//
+//作品批量管理
 Route::any('/admin/articles', 'AdminController@articles');
-
+//app下载页配置
+Route::get('/admin/app-download-config', 'AdminController@showAppDownloadConfig');
+Route::post('/admin/app-download-config-save', 'AdminController@saveAppDownloadConfig');
 
 
 //stickcategory
 Route::get('/admin/stick-categorys', 'AdminController@categorySticks');
 Route::post('/admin/stick-category', 'AdminController@categoryStick')->name('admin.stick_category');
 Route::post('/admin/delete-stick-category', 'AdminController@deleteStickCategory')->name('admin.delete_stick_category');
-Route::get('/admin/stick-video-categorys','AdminController@videoCategorySticks');
+Route::get('/admin/stick-video-categorys', 'AdminController@videoCategorySticks');
 Route::post('/admin/stick-video-category', 'AdminController@videoCategoryStick')->name('admin.stick_video_category');
 Route::post('/admin/delete-stick-video-category', 'AdminController@deleteStickVideoCategory')->name('admin.delete_stick_video_category');
 //logs
@@ -146,8 +146,7 @@ Route::get('alipay/wap/return', 'Alipay\WapController@wapReturn');
 Route::get('alipay/wap/notify', 'Alipay\WapController@wapNotify');
 
 //qrcode
-Route::get('/share/weixin/','ShareController@shareWechat');
-
+Route::get('/share/qrcode', 'SharingController@qrcode');
 
 //search_log
 Route::get('/searchQuery', 'SearchController@search_all');

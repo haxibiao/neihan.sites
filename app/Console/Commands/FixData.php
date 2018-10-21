@@ -356,14 +356,19 @@ class FixData extends Command {
 						continue;
 					}
 					//爱你城本地的图片
-					if (str_contains($img_url, 'ainicheng.com')) {
-						$formatter = 'http://cos.' . config("app.name") . '.com%s';
-						$cdn_url = sprintf($formatter, str_after($img_url, 'ainicheng.com'));
+					if (str_contains($img_url, env('APP_DOMAIN'))) {
+						$formatter = 'http://cos.' . env('APP_DOMAIN') . '%s';
+						$cdn_url = sprintf($formatter, str_after($img_url, env('APP_DOMAIN')));
 						$body_html = str_replace($img_url, $cdn_url, $body_html);
 						//哈希表的图片
 					} elseif (str_contains($img_url, 'haxibiao.com')) {
 						$formatter = 'http://cos.haxibiao.com%s';
 						$cdn_url = sprintf($formatter, str_after($img_url, 'haxibiao.com'));
+						$body_html = str_replace($img_url, $cdn_url, $body_html);
+					}  elseif(starts_with($img_url,'/')) {
+						//相对路径
+						$formatter = 'http://cos.' . config("app.name") . '.com%s';
+						$cdn_url = sprintf($formatter, $img_url);
 						$body_html = str_replace($img_url, $cdn_url, $body_html);
 					}
 				}

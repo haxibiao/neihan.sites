@@ -64,9 +64,9 @@
                             <p>{{$video->article->count_replies}}</p> --}}
                             <to-comment comment-replies={{ $video->article->count_replies }}></to-comment>
                         </div>
-                        <div class="share">
+                       {{--  <div class="share">
                             <share-module></share-module>
-                        </div>
+                        </div> --}}
                         {{--   @include('video.parts.share') --}}
                     </div>
                     <div class="pc-option">

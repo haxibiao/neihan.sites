@@ -262,6 +262,7 @@ class UserType extends GraphQLType {
 					'category_id' => ['name' => 'category_id', 'type' => Type::int()],
 					'offset' => ['name' => 'offset', 'type' => Type::int()],
 					'limit' => ['name' => 'limit', 'type' => Type::int()],
+					'order' => ['name' => 'order', 'type' => Type::string()],
 				],
 				'type' => Type::listOf(GraphQL::type('Article')),
 				'description' => 'articles of user',
@@ -293,6 +294,14 @@ class UserType extends GraphQLType {
 					if (isset($args['filter']) && $args['filter'] == 'LIKED') {
 						$qb = $root->likedArticles();
 					}
+
+					//排序
+					if (isset($args['order'])) {
+						$qb->orderByDesc('updated_at');	
+					}else{
+						$qb->orderByDesc('id');	
+					}
+
 
 					if (isset($args['offset'])) {
 						$qb = $qb->skip($args['offset']);

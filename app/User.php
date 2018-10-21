@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 
+
 class User extends Authenticatable {
 	use Notifiable, TimeAgo;
 
@@ -530,4 +531,9 @@ class User extends Authenticatable {
 		]);
 		return $this;
 	}
+
+    public function questionInvites()
+    {
+        return $this->hasMany('App\QuestionInvite', 'user_id', 'id');
+    }
 }

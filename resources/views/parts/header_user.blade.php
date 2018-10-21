@@ -88,9 +88,6 @@
 			   </li>
 			</ul>
 		</div>
-		<a class="search"> 
-			<search-box is-desktop="{{ \Agent::isDeskTop() == 1 }}"></search-box>
-		</a>
 		<div class="container">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
@@ -140,7 +137,9 @@
 						</ul>
 					</li>
 				</ul>
-				<search-box is-desktop="{{ \Agent::isDeskTop() == 1 }}"></search-box>
+				<a class="search"> 
+					<search-box is-desktop="{{ \Agent::isDeskTop() == 1 }}"></search-box>
+				</a>
 				<modal-post/>	
 			</div>
 		</div>

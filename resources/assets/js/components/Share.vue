@@ -18,9 +18,7 @@ export default {
 
   computed: {
     iconClass() {
-      return this.placement == "left"
-        ? "iconfont icon-fenxiang1"
-        : "more iconfont icon-fenxiang1";
+      return this.placement == "left" ? "iconfont icon-fenxiang1" : "more iconfont icon-fenxiang1";
     },
     dataContent() {
       return `<ul class='popover-share-menu'>

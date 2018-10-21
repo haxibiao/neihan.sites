@@ -11,4 +11,9 @@ class QuestionInvite extends Model
     	'question_id',
     	'invite_user_id',
     ];
+
+    public function freshTimestamp() 
+    {
+        return time();
+    }
 }

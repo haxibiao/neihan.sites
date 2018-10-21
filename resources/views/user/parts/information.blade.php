@@ -25,7 +25,7 @@
         @endphp
         <i class="iconfont {{  $gender_icon }}"></i>
         @if($user->is_editor)
-          <img class="badge-icon hidden-md hidden-sm hidden-lg" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
+          <img class="badge-icon hidden-md hidden-sm hidden-lg" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name_cn') }}签约作者" alt="">
         @endif
     </div>
     
@@ -53,7 +53,7 @@
             <li>
                 <div class="meta-block">
                     <a href="/user/{{ $user->id }}">
-                        <p>{{ $user->count_production }}</p>
+                        <p>{{ $user->count_articles }}</p>
                         作品
                         <i class="iconfont icon-youbian"></i>
                     </a>
