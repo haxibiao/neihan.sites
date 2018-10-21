@@ -228,7 +228,17 @@ class ArticlesQuery extends Query
             return $articles;
         }
 
+        //记录到哈希表 非线上环境不记录
+        if(!\App::environment('local')){
+            //没有以下参数,视为访问首页
+            if(!isset($args['user_id'], $args['category_id'], $args['collection_id'], $args['keyword'])){
+                $user_id = checkUser() ? getUser()->id : null;
+                \App\Helpers\HxbUtils::recordTaffic($user_id, 'browseIndex');
+            }
+        }
+
         $articles = $qb->get();
         return $articles;
+        
     }
 }

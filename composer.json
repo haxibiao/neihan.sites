@@ -10,6 +10,7 @@
         "bvanhoekelen/performance": "^2.3",
         "doctrine/dbal": "^2.5",
         "folklore/graphql": "~1.0.0",
+        "guzzlehttp/guzzle": "~6.0",
         "intervention/image": "^2.3",
         "jenssegers/agent": "^2.5",
         "jingling0101/laravel-qcloud-cos": "^1.0",
