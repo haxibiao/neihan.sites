@@ -46,7 +46,7 @@ class HxbUtils
     	//发起请求
     	$client = new Client();
     	try{
-    		$response = $client->post('http://l.haxibiao.com/api/traffic/app/send',$post_data);
+    		$response = $client->post('http://haxibiao.com/api/traffic/app/send',$post_data);
     	}catch(\GuzzleHttp\Exception\ClientException $e){
     		return $e->getResponse()->getStatusCode();
     	}
