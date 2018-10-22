@@ -482,7 +482,7 @@ class Article extends Model
                 $visit = \App\Visit::firstOrNew([
                     'user_id'      => $user->id,
                     'visited_type' => str_plural($this->type),
-                    'visited_id'   => $this->id,
+                    'visited_id'   => $this->type == 'video' ? $this->video_id : $this->id
                 ]);
                 $visit->save();
             }
