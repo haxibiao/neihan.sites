@@ -433,6 +433,6 @@ class AdminController extends Controller
         //写入缓存
         Storage::put("appDowload_config", $json);
 
-        return redirect()->back();
+        return redirect('/app');
     }
 }
