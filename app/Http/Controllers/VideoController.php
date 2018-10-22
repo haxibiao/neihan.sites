@@ -51,10 +51,12 @@ class VideoController extends Controller
     }
 
     public function list(Request $request) {
-        $videos = Video::with('user')
-            ->with('article.category')
+        $videos = Article::with('user')
+            ->with('category')
+            ->with('video')
             ->orderBy('id', 'desc')
-            ->where('status', '>=', 0);
+            ->where('status', '>=', 0)
+            ->where('type', '=', 'video');
 
         //Search videos
         $data['keywords'] = '';
