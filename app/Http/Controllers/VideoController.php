@@ -61,11 +61,15 @@ class VideoController extends Controller
         if ($request->get('q')) {
             $keywords = $request->get('q');
             $data['keywords'] = $keywords;
-            $videos   = Video::with('user')
-                ->with('article.category')
+            $videos   = Article::with('user')
+                ->with('category')
+                ->with('video')
                 ->orderBy('id', 'desc')
                 ->where('status', '>=', 0)
-                ->where('title', 'like', "%$keywords%");
+                ->where(function($query) use($keywords){
+                    $query->where('title', 'like', "%$keywords%")
+                    ->orWhere('description', 'like', "%$keywords%");
+                });
         }
         $videos = $videos->paginate(10);
         $data['videos'] = $videos;
