@@ -491,11 +491,15 @@ class FixData extends Command {
 	}
 
 	function users() {
-		//修复上次296用户 id变成144 导致一系列网页错误
-		$user = User::find(144);
-		$user->id = 296;
-		$user->save();
-		$this->info($user->id . ' fix success');
+		//修复部分用户头像路径错误
+		User::where('avatar','not like','%cos.ainicheng.com%')->chunk(100, function($users){
+			foreach ($users as $user) {
+				$user->avatar = str_replace('http://cos.ainicheng/', 'http://cos.ainicheng.com/', $user->avatar);
+				$user->timestamps = false;
+				$user->save();
+				$this->info('user: '.$user->id.' fix success');
+			}
+		});
 	}
 
 	function notifications() {
