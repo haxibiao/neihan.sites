@@ -492,12 +492,13 @@ class FixData extends Command {
 
 	function users() {
 		//修复部分用户头像路径错误
-		User::where('avatar','not like','%cos.ainicheng.com%')->chunk(100, function($users){
+		$sql = '%cos.'.env('APP_DOMAIN').'%';
+		User::where('avatar','not like',$sql)->chunk(100, function($users){
 			foreach ($users as $user) {
-				$user->avatar = str_replace('http://cos.ainicheng/', 'http://cos.ainicheng.com/', $user->avatar);
+				$user->avatar = str_replace('http://cos.'.config('app.name').'/', 'http://cos.'.env('APP_DOMAIN').'/', $user->avatar);
 				$user->timestamps = false;
 				$user->save();
-				$this->info('user: '.$user->id.' fix success');
+				$this->info(env('APP_DOMAIN').' user: '.$user->id.' fix success');
 			}
 		});
 	}
