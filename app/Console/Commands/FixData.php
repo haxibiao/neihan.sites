@@ -466,27 +466,32 @@ class FixData extends Command {
 		$max_video_id= Video::max('id');
 
 		$index = 0;
+		$success_index = 0;
+		$failed_index = 0;
 		
 		$visits = Visit::where('visited_type', 'videos')->where('visited_id', '>', $max_video_id)->get();
 		foreach ($visits as $visit) {
+			$index++;
 			try{
 				$video_id = Article::findOrFail($visit->visited_id)->video_id;
 			}catch(\Exception $e){
 				//如果这条记录不存在的话 删除掉这条浏览记录
 				$visit_id = $visit->id;
 				$visit->delete();
+				$failed_index++;
 				$this->error('visits ID:'.$visit_id.' delete');
+				continue;
 			}
 
 			$visit->visited_id = $video_id;
 			$visit->timestamps = false;
 			$visit->save();
-			$index++;
+			$success_index++;
 
 			$this->info(env('APP_DOMAIN') . ' visits Id:'.$visit->id . ' fix success');		
 		}
 
-		$this->info('fix success 总共fix:'.$index.'条数据');
+		$this->info('总共fix数据:'.$index.'条,成功:'.$success_index.',失败:'.$failed_index);
 	}
 
 	function actions() {
