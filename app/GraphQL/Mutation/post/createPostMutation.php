@@ -60,7 +60,17 @@ class createPostMutation extends Mutation
             if($category_ids){
                 $article->categories()->sync($category_ids);
             }
-        } 
+        }
+
+        //记录到哈希表 非线上环境不记录
+        if(!\App::environment('local')){
+            $user_id = checkUser() ? getUser()->id : null;
+            $behavior = $article->type == 'video' ? 'createVideo' : 'createPost';
+            $behavior_id = $article->type != 'video' ? $article->id : $article->video_id;
+            $behavior_title = $article->title ?: $article->get_description();
+            \App\Helpers\HxbUtils::recordTaffic($user_id, $behavior,$behavior_id,$behavior_title);
+        }
+
         return $article;
     }
 }
