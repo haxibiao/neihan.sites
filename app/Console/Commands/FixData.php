@@ -6,6 +6,8 @@ use App\Article;
 use App\Category;
 use App\Image;
 use App\User;
+use App\Video;
+use App\Visit;
 use Illuminate\Console\Command;
 
 class FixData extends Command {
@@ -460,12 +462,31 @@ class FixData extends Command {
 	}
 
 	function visits() {
-		Visit::chunk(100, function ($visits) {
-			foreach ($visits as $visit) {
-				$visit->visited_type = str_plural($visit->visited_type);
-				$visit->save(['timestamps' => false]);
+		//获取视频的最大ID
+		$max_video_id= Video::max('id');
+
+		$index = 0;
+		
+		$visits = Visit::where('visited_type', 'videos')->where('visited_id', '>', $max_video_id)->get();
+		foreach ($visits as $visit) {
+			try{
+				$video_id = Article::findOrFail($visit->visited_id)->video_id;
+			}catch(\Exception $e){
+				//如果这条记录不存在的话 删除掉这条浏览记录
+				$visit_id = $visit->id;
+				$visit->delete();
+				$this->error('visits ID:'.$visit_id.' delete');
 			}
-		});
+
+			$visit->visited_id = $video_id;
+			$visit->timestamps = false;
+			$visit->save();
+			$index++;
+
+			$this->info(env('APP_DOMAIN') . ' visits Id:'.$visit->id . ' fix success');		
+		}
+
+		$this->info('fix success 总共fix:'.$index.'条数据');
 	}
 
 	function actions() {
