@@ -50,7 +50,7 @@
                             </a>
                         @endforeach
                         <span class="content">
-                            {{ $video->article->body }}
+                            {{ $video->article->duration }}
                         </span>
                     </div>
                     <div class="h5-option">
@@ -85,7 +85,7 @@
                 </div>
             </div>
            <div class="video-title">
-                    {{ $video->article->body }}
+                    {{ $video->article->duration }}
         {{--              <div class="video-info">
                         @if(!empty($category))
                             <a href="/{{ $category->name_en }}" class="category-name">{{ $article->category->name }}</a>
