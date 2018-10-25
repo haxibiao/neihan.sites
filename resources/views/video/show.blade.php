@@ -80,7 +80,7 @@
                 <div class="video-right">
                     <div class="listArea">
                         {{-- 作者的其他视频 --}}
-                        <authors-video user-id={{ $video->user_id }}></authors-video>
+                        <authors-video user-id={{ $video->user_id }} video-id={{ $video->id }}></authors-video>
                     </div>
                 </div>
             </div>
