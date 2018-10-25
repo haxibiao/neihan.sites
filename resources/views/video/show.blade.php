@@ -85,7 +85,7 @@
                 </div>
             </div>
            <div class="video-title">
-                    {{ $video->article->description }}
+                    {{ $video->title ?: $video->article->get_description() }}
         {{--              <div class="video-info">
                         @if(!empty($category))
                             <a href="/{{ $category->name_en }}" class="category-name">{{ $article->category->name }}</a>

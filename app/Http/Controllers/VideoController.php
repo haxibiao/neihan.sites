@@ -247,7 +247,10 @@ class VideoController extends Controller
         }
 
         //save article description ...
+        $article->description = str_limit($request->body, $limit = 20, $end = '...');
         $article->update($request->all());
+        
+
 
         // //文件发生变动 TODO:注意这里没有删除磁盘上的文件，后面的兄弟注意一下
         // //这里不能使用直接使用$request->video。因为与路由参数重名了
