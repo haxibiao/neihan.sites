@@ -247,7 +247,7 @@ class VideoController extends Controller
         }
 
         //save article description ...
-        $article->description = str_limit($request->body, $limit = 20, $end = '...');
+        $article->description = $request->body;
         $article->update($request->all());
         
 
