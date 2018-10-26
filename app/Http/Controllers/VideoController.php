@@ -227,6 +227,7 @@ class VideoController extends Controller
         $article = $video->article;
 
         //维护分类关系
+        $article->save(['status' => $request->get('status')]);
         $article->saveCategories(request('categories'));
 
         //选取封面图
