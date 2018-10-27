@@ -72,7 +72,7 @@ class BonusAnswers implements ShouldQueue
             DB::commit();  
         }catch(\Exception $e){
             DB::rollBack();//回滚
-            // throw new \Exception($e);
+            throw new \Exception($e);
             
         }
         
