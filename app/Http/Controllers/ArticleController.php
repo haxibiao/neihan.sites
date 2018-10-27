@@ -115,6 +115,9 @@ class ArticleController extends Controller {
 		//tags
 		$this->save_article_tags($article);
 
+		//保存外部图片
+		$article->saveExternalImage();
+
 		//images
 		$article->saveRelatedImagesFromBody();
 
@@ -217,7 +220,6 @@ class ArticleController extends Controller {
 		    if(is_numeric($slug)){
 		    	dd('slug 不能为纯数字');
 		    }
-			 
 		}
 
 		$article->update($request->all());
@@ -228,6 +230,9 @@ class ArticleController extends Controller {
 		$article->source_url = null; //手动编辑过的文章，都不再是爬虫文章
 		$article->save();
 
+
+		//保存外部图片
+		$article->saveExternalImage();
 		//images
 		$article->saveRelatedImagesFromBody();
 
