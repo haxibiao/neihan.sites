@@ -188,6 +188,11 @@ class ArticleController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit($id) {
+		//不是编辑或者admin无法使用编辑面板
+		if(!checkEditor()){
+			abort(404);
+		}
+
 		$article = Article::with('images')->findOrFail($id);
 
 		//fix img relation missing, 同是修复image_url对应的image_top 为主要image_top
