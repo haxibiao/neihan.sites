@@ -81,7 +81,7 @@
                             <h3 class="panel-title">截图</h3>
                         </div>
                         <div class="panel-body">
-                            @if(!empty($article->covers()) && count($article->covers()) >= 8)
+                            @if(!empty($data['covers']) && count($data['covers']) >= 8)
                                 @php
                                     $coverIndex = 0;
                                 @endphp
@@ -93,10 +93,13 @@
                                     <label for="cover{{ $coverIndex }}">
                                         <img src="{{ $cover }}" class="img img-responsive">
                                     </label>
-
                                     {{-- trick here, need custom replace id="**" attribute to get label for radio work --}}
-                                    {!! str_replace('>','id="'.'cover'.$coverIndex.'">', Form::radio('cover', $cover)) !!}
-                                    <label for="cover{{ $coverIndex }}">
+                                    @php
+                                        //表示图片的初始选中状态
+                                        $checked = $article->image_url == $cover;
+                                    @endphp
+                                    {!! Form::radio('cover', $cover, $checked,['id' => $coverIndex]) !!}
+                                    <label for="cover">
                                         选取
                                     </label>
                                     <small class="text-danger">{{ $errors->first('cover') }}</small>

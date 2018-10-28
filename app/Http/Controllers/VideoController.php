@@ -51,21 +51,27 @@ class VideoController extends Controller
     }
 
     public function list(Request $request) {
-        $videos = Video::with('user')
-            ->with('article.category')
+        $videos = Article::with('user')
+            ->with('category')
+            ->with('video')
             ->orderBy('id', 'desc')
-            ->where('status', '>=', 0);
+            ->where('status', '>=', 0)
+            ->where('type', '=', 'video');
 
         //Search videos
         $data['keywords'] = '';
         if ($request->get('q')) {
             $keywords = $request->get('q');
             $data['keywords'] = $keywords;
-            $videos   = Video::with('user')
-                ->with('article.category')
+            $videos   = Article::with('user')
+                ->with('category')
+                ->with('video')
                 ->orderBy('id', 'desc')
                 ->where('status', '>=', 0)
-                ->where('title', 'like', "%$keywords%");
+                ->where(function($query) use($keywords){
+                    $query->where('title', 'like', "%$keywords%")
+                    ->orWhere('description', 'like', "%$keywords%");
+                });
         }
         $videos = $videos->paginate(10);
         $data['videos'] = $videos;
@@ -202,7 +208,6 @@ class VideoController extends Controller
             $covers = $video->article->covers();
         }
         $data['covers'] = $covers;
-
         return view('video.edit')
             ->withVideo($video)
             ->withData($data);
@@ -221,19 +226,21 @@ class VideoController extends Controller
         $article = $video->article;
 
         //维护分类关系
+        $article->save(['status' => $request->get('status')]);
         $article->saveCategories(request('categories'));
 
         //选取封面图
         if (!empty($request->cover)) {
-            if (str_contains($request->cover, 'storage/video')) {
-                $result = copy(
-                    public_path($request->cover),
-                    public_path($article->image_url)
-                );
-            } else {
-                $video->setCover($request->cover);
-            }
+            // if (str_contains($request->cover, 'storage/video')) {
+            //     $result = copy(
+            //         public_path($request->cover),
+            //         public_path($article->image_url)
+            //     );
+            // } else {
+            $video->setCover($request->cover);
+            // }
             $article->status = 1;
+            $article->image_url = $request->cover;
             $article->save();
         }else if(!$video->cover){
             $video->status = 0;
@@ -241,7 +248,10 @@ class VideoController extends Controller
         }
 
         //save article description ...
+        $article->description = $request->body;
         $article->update($request->all());
+        
+
 
         // //文件发生变动 TODO:注意这里没有删除磁盘上的文件，后面的兄弟注意一下
         // //这里不能使用直接使用$request->video。因为与路由参数重名了

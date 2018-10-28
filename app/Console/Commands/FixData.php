@@ -6,6 +6,8 @@ use App\Article;
 use App\Category;
 use App\Image;
 use App\User;
+use App\Video;
+use App\Visit;
 use Illuminate\Console\Command;
 
 class FixData extends Command {
@@ -46,43 +48,17 @@ class FixData extends Command {
 
 	function videos() {
 		$this->info('fix videos ...');
-		Video::whereNotNull('qcvod_fileid')->chunk(100, function ($videos) {
-			foreach ($videos as $video) {
-				sleep(2);
-				$this->info('正在处理>>>' . $video->id . '<<<');
-				try {
-					//保存article与video的原始信息，限制影响的范围
-					$article = $video->article;
-					if (!empty($article)) {
-						$status = $article->status;
-						$cover = $article->image_url;
-						$updated_at = $article->updated_at;
-					}
-
-					$video_status = $video->status;
-					$video_title = $video->title;
-					$video_updated_at = $video->updated_at;
-
-					$video->syncVodProcessResult();
-
-					if (!empty($article)) {
-						$article->status = $status;
-						$article->image_url = $cover;
-						$article->updated_at = $updated_at;
-						$article->timestamps = false;
-						$article->save();
-					}
-
-					$video->status = $video_status;
-					$video->title = $video_title;
-					$video->updated_at = $video_updated_at;
-					$video->timestamps = false;
-					$video->save();
-
-				} catch (\Exception $e) {
-					$this->error('视频id为>>>' . $video->id . '<<<拉取失败');
-					continue;
+		$formatter = 'http://cos.ainicheng.com/storage/video/%d.jpg.%d.jpg';
+		\App\Video::whereNull('qcvod_fileid')->where('status','>',0)->chunk(100, function ($videos) use($formatter) {
+			foreach ($videos as $video) { 
+				$covers = [];
+				for ($i = 1; $i <= 8 ; $i++) {
+					$str = sprintf($formatter, $video->id, $i);
+					$covers[] = $str;
 				}
+				$updated_at = $video->updated_at;
+				$video->timestamps = false;
+				$video->setJsonData('covers', $covers);
 			}
 		});
 		$this->info('fix videos finished...');
@@ -460,12 +436,36 @@ class FixData extends Command {
 	}
 
 	function visits() {
-		Visit::chunk(100, function ($visits) {
-			foreach ($visits as $visit) {
-				$visit->visited_type = str_plural($visit->visited_type);
-				$visit->save(['timestamps' => false]);
+		//获取视频的最大ID
+		$max_video_id= Video::max('id');
+
+		$index = 0;
+		$success_index = 0;
+		$failed_index = 0;
+		
+		$visits = Visit::where('visited_type', 'videos')->where('visited_id', '>', $max_video_id)->get();
+		foreach ($visits as $visit) {
+			$index++;
+			try{
+				$video_id = Article::findOrFail($visit->visited_id)->video_id;
+			}catch(\Exception $e){
+				//如果这条记录不存在的话 删除掉这条浏览记录
+				$visit_id = $visit->id;
+				$visit->delete();
+				$failed_index++;
+				$this->error('visits ID:'.$visit_id.' delete');
+				continue;
 			}
-		});
+
+			$visit->visited_id = $video_id;
+			$visit->timestamps = false;
+			$visit->save();
+			$success_index++;
+
+			$this->info(env('APP_DOMAIN') . ' visits Id:'.$visit->id . ' fix success');		
+		}
+
+		$this->info('总共fix数据:'.$index.'条,成功:'.$success_index.',失败:'.$failed_index);
 	}
 
 	function actions() {
@@ -491,11 +491,16 @@ class FixData extends Command {
 	}
 
 	function users() {
-		//修复上次296用户 id变成144 导致一系列网页错误
-		$user = User::find(144);
-		$user->id = 296;
-		$user->save();
-		$this->info($user->id . ' fix success');
+		//修复部分用户头像路径错误
+		$sql = '%cos.'.env('APP_DOMAIN').'%';
+		User::where('avatar','not like',$sql)->chunk(100, function($users){
+			foreach ($users as $user) {
+				$user->avatar = str_replace('http://cos.'.config('app.name').'/', 'http://cos.'.env('APP_DOMAIN').'/', $user->avatar);
+				$user->timestamps = false;
+				$user->save();
+				$this->info(env('APP_DOMAIN').' user: '.$user->id.' fix success');
+			}
+		});
 	}
 
 	function notifications() {
