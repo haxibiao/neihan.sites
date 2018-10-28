@@ -30,7 +30,7 @@ export default {
 
   name: 'AuthorsVideo',
 
-  props: ["userId","categoryId"],
+  props: ["userId","categoryId","videoId"],
 
   mounted() {
       this.fetchData();
@@ -45,7 +45,7 @@ export default {
       this.page++;
 
       $(this.$refs.fresh).css('transform',`rotate(${360*this.counter}deg)`);
-      let apiUser = '/api/user/'+this.userId+'/videos/relatedVideos?num=4&page='+this.page;
+      let apiUser = '/api/user/'+this.userId+'/videos/relatedVideos?num=4&page='+this.page+'&video_id='+this.videoId;
       let apiCategory= '/api/user/'+this.categoryId+'/videos/sameVideos?num=4&page='+this.page;
       if(this.userId){
         window.axios.get(apiUser).then(function(response){

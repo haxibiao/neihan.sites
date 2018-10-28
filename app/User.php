@@ -518,7 +518,7 @@ class User extends Authenticatable {
 		$this->email = $input['email'];
 		$this->name = $input['name'];
 		$this->password = bcrypt($input['password']);
-		$avatar_formatter = 'http://cos.' . config("app.name") . '/storage/avatar/avatar-%d.jpg';
+		$avatar_formatter = 'http://cos.' . env('APP_DOMAIN') . '/storage/avatar/avatar-%d.jpg';
 		$this->avatar = sprintf($avatar_formatter, rand(1, 15));
 		$this->api_token = str_random(60);
 		$this->introduction = '';

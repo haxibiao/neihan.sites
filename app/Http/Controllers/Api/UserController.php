@@ -231,9 +231,10 @@ class UserController extends Controller {
 	public function relatedVideos(Request $request, $id) 
 	{
 		$user = User::findOrFail($id);
+		$video_id = $request->video_id;
 
 		$num = $request->get('num') ? $request->get('num') : 10;
-		$data = $user->videoPosts()->paginate($num);
+		$data = $user->videoPosts()->where('video_id', '<>', $video_id)->paginate($num);
 		
 		foreach ($data as $article) {
 			$article->fillForJs();

@@ -24,7 +24,7 @@
                         <img src="{{ isset($data['logo']) ? $data['logo'] : '//'.env('APP_DOMAIN').'/logo/'.env('APP_DOMAIN').'.small.png' }}" width="60" height="60" id="previewImage">
                         <input type="file" id="inputLogo">
                         {{$data['logo']}} --}}
-                         <upload-image text-value="{{"logoInfo"}}"  image-value="{{"logoImage"}}" text-name="{{"logo"}}" data-image="{{$data['logo']}}"> </upload-image>
+                         <upload-image text-value="{{"logoInfo"}}"  image-value="{{"logoImage"}}" text-name="{{"logo"}}" data-image="{{isset($data['logo']) ? $data['logo'] : '//'.env('APP_DOMAIN').'/logo/'.env('APP_DOMAIN').'.small.png' }}"> </upload-image>
                     </label>
                 </div>
                 <div class="row">
@@ -42,7 +42,7 @@
                 <div class="row">
                     <label class="form-inline">
                         <div>二维码地址:</div>
-                         <upload-image text-value="{{"qrcodeInfo"}}"  image-value="{{"qrcodeImage"}}" text-name="{{"qrcode"}}" data-image="{{$data['qrcode']}}"> </upload-image>
+                         <upload-image text-value="{{"qrcodeInfo"}}"  image-value="{{"qrcodeImage"}}" text-name="{{"qrcode"}}" data-image="{{isset($data['qrcode']) ? $data['qrcode'] : '//'.env('APP_DOMAIN').'/logo/'.env('APP_DOMAIN').'.small.png' }}"> </upload-image>
                     </label>
                 </div>
                 <div class="row">
@@ -60,7 +60,7 @@
                 <div class="row">
                     <label class="form-inline">
                         <div>主展示图地址:</div>
-                         <upload-image text-value="{{"images1Info"}}"  image-value="{{"images1Image"}}" text-name="{{"show_images1"}}" data-image="{{$data['show_images1']}}"> </upload-image>
+                         <upload-image text-value="{{"images1Info"}}"  image-value="{{"images1Image"}}" text-name="{{"show_images1"}}" data-image="{{ isset($data['show_images1']) ? $data['show_images1'] : '//'.env('APP_DOMAIN').'/logo/'.env('APP_DOMAIN').'.small.png' }}"> </upload-image>
                     </label>
                 </div>
                 <div class="row">
@@ -78,7 +78,7 @@
                 <div class="row">
                     <label class="form-inline">
                         <div>展示图二地址:</div>
-                        <upload-image text-value="{{"images2Info"}}"  image-value="{{"images2Image"}}" text-name="{{"show_images2"}}" data-image="{{$data['show_images2']}}"> </upload-image>
+                        <upload-image text-value="{{"images2Info"}}"  image-value="{{"images2Image"}}" text-name="{{"show_images2"}}" data-image="{{isset($data['show_images2']) ? $data['show_images2']  : '//'.env('APP_DOMAIN').'/logo/'.env('APP_DOMAIN').'.small.png'}}"> </upload-image>
                     </label>
                 </div>
                 <div class="row">
@@ -96,7 +96,7 @@
                 <div class="row">
                     <label class="form-inline">
                         <div>展示图三地址:</div>
-                        <upload-image text-value="{{"images3Info"}}"  image-value="{{"images3Image"}}" text-name="{{"show_images3"}}" data-image="{{$data['show_images3']}}"> </upload-image>
+                        <upload-image text-value="{{"images3Info"}}"  image-value="{{"images3Image"}}" text-name="{{"show_images3"}}" data-image="{{ isset($data['show_images3']) ? $data['show_images2']  : '//'.env('APP_DOMAIN').'/logo/'.env('APP_DOMAIN').'.small.png'}}"> </upload-image>
                     </label>
                 </div>
                 <div class="row">
@@ -114,7 +114,7 @@
                 <div class="row">
                     <label class="form-inline">
                         <div>展示图四地址:</div>
-                        <upload-image text-value="{{"images4Info"}}"  image-value="{{"images4Image"}}" text-name="{{"show_images4"}}" data-image="{{$data['show_images4']}}"> </upload-image>
+                        <upload-image text-value="{{"images4Info"}}"  image-value="{{"images4Image"}}" text-name="{{"show_images4"}}" data-image="{{isset($data['show_images4']) ? $data['show_images4']  : '//'.env('APP_DOMAIN').'/logo/'.env('APP_DOMAIN').'.small.png'}}"> </upload-image>
                     </label>
                 </div>
                 <div class="row">

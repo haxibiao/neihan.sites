@@ -27,11 +27,15 @@ class CategoryController extends Controller
         if ($request->get('q')) {
             $keywords         = $request->get('q');
             $data['keywords'] = $keywords;
+
+            //以下这段很糟糕的写法是因为 order by name asc 无法满足需求
+            //如果使用sortBy() 来回调排序的话 无法使用paginate()
+            //由于是编辑需求 故简单处理 后期优化
             //精准匹配
             $accurateCategory         = Category::where('status', '>=', 0)->where('name', $keywords)->orderBy('id', 'desc')->paginate(5);
             $data['accurateCategory'] = $accurateCategory;
             //模糊匹配
-            $qb = Category::orderBy('id', 'desc')->where('status', '>=', 0)
+            $qb = Category::orderBy('name', 'asc')->where('status', '>=', 0)
                 ->where('name', 'like', "%$keywords%")->where('name', '!=', $keywords);
         }
         $type = $request->get('type') ?: 'article';

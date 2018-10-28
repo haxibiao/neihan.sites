@@ -50,7 +50,7 @@
                             </a>
                         @endforeach
                         <span class="content">
-                            {{ $video->article->body }}
+                            {{ $video->article->description }}
                         </span>
                     </div>
                     <div class="h5-option">
@@ -80,12 +80,12 @@
                 <div class="video-right">
                     <div class="listArea">
                         {{-- 作者的其他视频 --}}
-                        <authors-video user-id={{ $video->user_id }}></authors-video>
+                        <authors-video user-id={{ $video->user_id }} video-id={{ $video->id }}></authors-video>
                     </div>
                 </div>
             </div>
            <div class="video-title">
-                    {{ $video->article->body }}
+                    {{ $video->title ?: $video->article->get_description() }}
         {{--              <div class="video-info">
                         @if(!empty($category))
                             <a href="/{{ $category->name_en }}" class="category-name">{{ $article->category->name }}</a>

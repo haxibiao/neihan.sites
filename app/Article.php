@@ -6,6 +6,7 @@ use App\Action;
 use App\Category;
 use App\Model;
 use App\Tip;
+use App\Image;
 use App\Traits\Playable;
 use App\Video;
 use Auth;
@@ -272,7 +273,7 @@ class Article extends Model
     {
         if ($this->status > 0) {
             $action = Action::updateOrCreate([
-                'user_id'         => Auth::id(),
+                'user_id'         => getUser()->id,
                 'actionable_type' => 'articles',
                 'actionable_id'   => $this->id,
             ]);
@@ -482,7 +483,7 @@ class Article extends Model
                 $visit = \App\Visit::firstOrNew([
                     'user_id'      => $user->id,
                     'visited_type' => str_plural($this->type),
-                    'visited_id'   => $this->id,
+                    'visited_id'   => $this->type == 'video' ? $this->video_id : $this->id
                 ]);
                 $visit->save();
             }
@@ -622,5 +623,58 @@ class Article extends Model
     {
         $this->description = $this->get_description();
         parent::save($options);
+    }
+
+    /**
+     * @Author      XXM
+     * @DateTime    2018-10-27
+     * @description [上传外部链接的图片到Cos]
+     * @return      [type]        [description]
+     */
+    public function saveExternalImage()
+    {
+        //线上环境 使用
+        if (env('APP_ENV') != 'prod') {
+            return null;
+        }
+        $images = [];
+        $image_tags = [];
+        //匹配出所有Image
+        if(preg_match_all('/<img.*?src=[\"|\'](.*?)[\"|\'].*?>/', $this->body, $match)){
+            $image_tags = $match[0];
+            $images = $match[1];
+        }
+        //过滤掉cdn链接
+        $images = array_filter($images,function($url){
+            if(!str_contains($url,env('APP_DOMAIN'))){
+                return $url;
+            }
+        });
+        $image_tags = array_filter($image_tags,function($url){
+            if(!str_contains($url,env('APP_DOMAIN'))){
+                return $url;
+            }
+        });
+
+
+        //保存外部链接图片
+        if($images){
+            foreach ($images as $index => $image) {
+                //匹配URL格式是否正常
+                $regx="/^http(s?):\/\/(?:[A-za-z0-9-]+\.)+[A-za-z]{2,4}(?:[\/\?#][\/=\?%\-&~`@[\]\':+!\.#\w]*)?$/";
+                if(preg_match($regx, $image)){
+                    $image_model = new Image();
+                    $image_model->user_id = getUser()->id;
+                    $image_model->save();
+                    $path = $image_model->save_image($image, $this->title);
+
+                    //替换正文Image 标签 保守办法 只替换Image
+                    $new_image_tag = str_replace($image, $path, $image_tags[$index]);
+                    $this->body = str_replace($image_tags[$index], $new_image_tag, $this->body);
+                    $this->save();
+                }
+            }
+            
+        }
     }
 }

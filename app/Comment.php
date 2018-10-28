@@ -22,7 +22,7 @@ class Comment extends Model
 
     public function commented()
     {
-        return $this->belongsTo(\App\Comment::class);
+        return $this->belongsTo(\App\Comment::class, 'id');
     }
 
     public function replyComments()

@@ -55,7 +55,7 @@ if ($is_testing) {
 Route::get('/test/perf', 'Api\TestController@perf');
 
 //返回URL二维码
-Route::get('/share/qrcode/{url}', 'Api\SharingController@qrcode');
+Route::get('/share/qrcode/{url}', 'SharingController@qrcode');
 
 //收藏
 Route::middleware('auth:api')->post('/favorite/{id}/{type}', 'Api\FavoriteController@toggle');

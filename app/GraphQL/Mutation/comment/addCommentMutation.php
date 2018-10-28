@@ -43,14 +43,10 @@ class addCommentMutation extends Mutation
 
         $comment = $comment->store($args);
 
-        //记录到哈希表 非线上环境不记录
-        if(!\App::environment('local')){
-            $user_id = checkUser() ? getUser()->id : null;
-            $behavior = 'addComment';
-            $behavior_id = $comment->id;
-            $behavior_title = mb_substr($comment->body, 0, 30, 'utf-8');    //截取30个utf8字符
-            \App\Helpers\HxbUtils::recordTaffic($user_id, $behavior,$behavior_id,$behavior_title);
-        }
+        //记录到traffic
+        $user_id = checkUser() ? getUser()->id : null;
+        $path = 'addComment';
+        recordTaffic(request(), $path, $comment->commentable_id, $user_id, true);
 
         return $comment;
     }

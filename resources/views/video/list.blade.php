@@ -28,11 +28,12 @@
             </h3>
         </div>
         <div class="panel-body">
-            @foreach($data['videos'] as $video)
+            @foreach($data['videos'] as $article)
                 @php
-                    $article = $video->article;
+                    $video = $article->video;
+                     
                 @endphp
-                @if( !empty($article) )
+                @if( !empty($video) )
                     <div class="media">
                         <div class="text-center pull-left">
                             <input type="checkbox" value="{{ $article->id }}" class="checkboxs"/>

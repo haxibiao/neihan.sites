@@ -309,4 +309,9 @@ class Category extends Model
     {
         return $this->hasMany('App\Category','parent_id','id');
     }
+
+    public function hasManyArticles()
+    {
+        return $this->hasMany('App\Article', 'category_id', 'id');
+    }
 }
