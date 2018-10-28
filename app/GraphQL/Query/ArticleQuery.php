@@ -36,14 +36,11 @@ class ArticleQuery extends Query
         //记录用户浏览记录
         $article->recordBrowserHistory();
 
-        //记录到哈希表 非线上环境不记录
-        if(!\App::environment('local')){
-            $user_id = checkUser() ? getUser()->id : null;
-            $behavior = $article->type != 'video' ? 'browseArticle' : 'browseVideo';
-            $behavior_id = $article->type != 'video' ? $article->id : $article->video_id;
-            $behavior_title = $article->title ?: $article->get_description();
-            \App\Helpers\HxbUtils::recordTaffic($user_id, $behavior,$behavior_id,$behavior_title);
-        }
+        //记录到traffic
+        $user_id = checkUser() ? getUser()->id : null;
+        $path = $article->type != 'video' ? 'browseArticle' : 'browseVideo';
+        recordTaffic(request(), $path, $article->id, $user_id, true);
+        
 
         return $article;
     }

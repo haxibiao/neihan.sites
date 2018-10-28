@@ -24,10 +24,11 @@
 					<tr>
 						<td>
 						@if($traffic->article_id)
-							<a href="/article/{{ $traffic->article_id }}">{{ str_limit($traffic->article->title, 10) }}</a>
+							<a href="/article/{{ $traffic->article_id }}">{{ str_limit($traffic->article->title ?: $traffic->article->get_description(), 30) }}</a>
 						@else 
-							{{ urldecode($traffic->path) }}
+							{{ urldecode($traffic->path()) }}
 						@endif
+						<span class="label label-primary">{{ $traffic->is_app ? 'APP' : '' }}</span>
 						</td>
 						<td>
 							{{ $traffic->created_at }}

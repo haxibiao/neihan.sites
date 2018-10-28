@@ -66,7 +66,6 @@ class ArticlesQuery extends Query
 
     public function resolve($root, $args)
     {
-
         $qb = Article::whereNull('source_url');
         //下面代码注释掉的原因避免，用户发布一篇新文章在手机duan自己主页的公开文章中查询不到
         /*->where('category_id', '>', 0)*/;
@@ -228,13 +227,10 @@ class ArticlesQuery extends Query
             return $articles;
         }
 
-        //记录到哈希表 非线上环境不记录
-        if(!\App::environment('local')){
-            //没有以下参数,视为访问首页
-            if(!isset($args['user_id'], $args['category_id'], $args['collection_id'], $args['keyword'])){
-                $user_id = checkUser() ? getUser()->id : null;
-                \App\Helpers\HxbUtils::recordTaffic($user_id, 'browseIndex');
-            }
+        //没有以下参数,视为访问首页 记录到traffic
+        if(!isset($args['user_id'], $args['category_id'], $args['collection_id'], $args['keyword'])){
+            $user_id = checkUser() ? getUser()->id : null;
+            recordTaffic(request(), 'browseIndex',null,$user_id,true);
         }
 
         $articles = $qb->get();

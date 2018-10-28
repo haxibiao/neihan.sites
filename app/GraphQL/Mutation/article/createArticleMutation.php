@@ -71,14 +71,10 @@ class createArticleMutation extends Mutation
         }
         $article->save();
 
-        //记录到哈希表 非线上环境不记录
-        if(!\App::environment('local')){
-            $user_id = checkUser() ? getUser()->id : null;
-            $behavior = 'createArticle';
-            $behavior_id = $article->type != 'video' ? $article->id : $article->video_id;
-            $behavior_title = $article->title ?: $article->get_description();
-            \App\Helpers\HxbUtils::recordTaffic($user_id, $behavior,$behavior_id,$behavior_title);
-        }
+        //记录到traffic
+        $user_id = checkUser() ? getUser()->id : null;
+        $path = 'createArticle';
+        recordTaffic(request(), $path, $article->id, $user_id, true);
 
         return $article;
     }
