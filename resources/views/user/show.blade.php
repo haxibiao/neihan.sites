@@ -17,7 +17,7 @@
                         <a href="#article" aria-controls="article" role="tab" data-toggle="tab"><i class="iconfont icon-wenji"></i>作品</a>
                     </li>
                     <li role="presentation">
-                        <a href="#dynamic" aria-controls="dynamic" role="tab" data-toggle="tab"><i class="iconfont icon-zhongyaogaojing"></i>动态</a>
+                        <a href="#actions" aria-controls="actions" role="tab" data-toggle="tab"><i class="iconfont icon-zhongyaogaojing"></i>动态</a>
                     </li>
                     <li role="presentation">
                         <a href="#comment" aria-controls="comment" role="tab" data-toggle="tab"><i class="iconfont icon-svg37"></i>最新评论</a>
@@ -41,7 +41,7 @@
                         @endif
                     </ul>
                     {{-- 动态 --}}
-                    <ul role="tabpanel" class="fade feed-list tab-pane" id="dynamic">
+                    <ul role="tabpanel" class="fade feed-list tab-pane" id="actions">
                         @if( count($data['actions'])==0)
                           <blank-content></blank-content>
                         @else
@@ -115,8 +115,8 @@
     if( url.includes("hot") ){
       $("[href='#hot']").click();
     }
-    if( url.includes("video") ){
-      $("[href='#video']").click();
+    if( url.includes("actions") ){
+      $("[href='#actions']").click();
     }
   });
 </script>
