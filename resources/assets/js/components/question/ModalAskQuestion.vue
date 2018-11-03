@@ -32,7 +32,7 @@
 	                    <div class="pay-group" v-show="whetherPay">
 	                       <div class="pay-tip">
 		                       	<span class="pay-tip-content">
-		                       		使用付费咨询视为您已同意<a href="javascript:;" target="_blank">《问答细则及责任声明》</a>
+		                       		使用付费咨询视为您已同意<a href="/article/question" target="_blank">《问答细则及责任声明》</a>
 		                       	</span>
 	                       </div>
    		                   <div class="money-amount">
@@ -103,7 +103,7 @@
 									<div class="img-container-outer">
 										<div class="img-tip">
 											<span class="img-tip-content">
-												使用图库视为您已同意<a href="javascript:;" target="_blank">《图片许可使用协议》</a>，如不同意，请停止使用图库。
+												使用图库视为您已同意<a href="/article/image-license" target="_blank">《图片许可使用协议》</a>，如不同意，请停止使用图库。
 											</span>
 		
 										</div>
