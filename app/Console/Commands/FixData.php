@@ -355,9 +355,16 @@ class FixData extends Command {
 		});
 	}
 
-	function articles() {
-		$this->info('fix source_url default null ...');
-		DB::statement("update articles set source_url = null where source_url = '0'");
+	function articles() 
+	{
+		$this->info('fix artciles ing ...');
+		//article 与video 作者不符合
+		$article = Article::findOrFail(14609);
+		$article->video_id = null;
+		$article->type = 'article';
+		$article->timestamps = false;
+		$article->save();
+		$this->info('fix success');
 	}
 
 	public function content($article) {
