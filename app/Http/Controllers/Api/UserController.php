@@ -243,24 +243,6 @@ class UserController extends Controller {
 	}
 
 	/**
-	 * @Author   XXM
-	 * @DateTime 2018-07-31
-	 * @param    Request    $request
-	 * @param    [video]     $id
-	 */
-	public function sameVideos(Request $request, $id) 
-	{
-		$video = Video::with('article')->with('user')->findOrFail($id);
-		$article = $video->article;
-		$num = $request->get('num') ? $request->get('num') : 10;
-		$data = $article->relatedVideoPostsQuery()->whereStatus(1)->where('id','!=',$article->id)->paginate($num);
-		foreach ($data as $article) {
-			$article->fillForJs();
-		}
-		return $data;
-	}
-
-	/**
 	 * @Author      XXM
 	 * @DateTime    2018-09-22
 	 * @description            [返回你关注的和关注你的用户]

@@ -31,3 +31,6 @@ Route::middleware('auth:api')->get('/categories/new-requested', 'Api\CategoryCon
 Route::middleware('auth:api')->get('/categories/pending-articles', 'Api\CategoryController@pendingArticles');
 //单个专题的所有投稿请求列表
 Route::middleware('auth:api')->get('/categories/requested-articles-{cid}', 'Api\CategoryController@requestedArticles');
+
+#专题下视频
+Route::any('/category/{category_id}/videos', 'Api\CategoryController@getCategoryVideos');

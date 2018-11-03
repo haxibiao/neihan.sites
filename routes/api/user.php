@@ -29,5 +29,3 @@ Route::get('/user/{id}/articles', 'Api\UserController@articles');
 
 //获取用户上传的视频
 Route::any('/user/{id}/videos/relatedVideos','Api\UserController@relatedVideos');
-//获取相关分类视频
-Route::any('/user/{id}/videos/sameVideos','Api\UserController@sameVideos');

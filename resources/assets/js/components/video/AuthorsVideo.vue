@@ -3,11 +3,11 @@
         <div class="title">
             <h4 v-if="userId">作者其他视频</h4>
             <div v-if="categoryId" class="recommend">其他推荐</div>
-            <a v-if="last_page>1" target="_blank" href="javascript:;" class="font" @click="fetchData"><i class="iconfont icon-shuaxin" ref="fresh"></i>换一批</a>
+            <a v-if="last_page>1" target="_blank" href="javascript:;" class="font" @click="fetchData()"><i class="iconfont icon-shuaxin" ref="fresh"></i>换一批</a>
         </div>
         <ul class="video-list">
               <li class="video-item" v-for="video in videos">
-                  <a :href="'/video/'+video.video.id" class="link">  
+                  <a :href="'/video/'+video.video.id+'?related_page='+page" class="link">  
                       <div class="cover">
                           <img :src="video.image_url" alt=""/>
                           <i class="hover-play"></i>
@@ -30,42 +30,48 @@ export default {
 
   name: 'AuthorsVideo',
 
-  props: ["userId","categoryId","videoId"],
+  props: ["userId","categoryId","videoId","relatedPage"],
 
   mounted() {
-      this.fetchData();
+      this.fetchData(this.relatedPage);
   },
 
 
   methods: {
-  	fetchData() {
+  	fetchData(relatedPage) {
   		var vm = this;
 
       this.counter++;
       this.page++;
+      //PM需求 点击后作者其他视频后 视频往下一页翻,故传入一个relatedPage来控制
+      if(relatedPage){
+        this.page = relatedPage;
+      }
 
       $(this.$refs.fresh).css('transform',`rotate(${360*this.counter}deg)`);
       let apiUser = '/api/user/'+this.userId+'/videos/relatedVideos?num=4&page='+this.page+'&video_id='+this.videoId;
-      let apiCategory= '/api/user/'+this.categoryId+'/videos/sameVideos?num=4&page='+this.page;
+      let apiCategory= '/api/category/'+this.categoryId+'/videos?video_id='+this.videoId+'&num=4&page='+this.page;
       if(this.userId){
         window.axios.get(apiUser).then(function(response){
         vm.videos = response.data.data
         vm.last_page=response.data.last_page;
 
         if(vm.page==vm.last_page){
-            vm.page=0;
+            vm.page=1;
           }
         });
-        }else if(this.categoryId){
+      }else if(this.categoryId){
+        console.log('取专题');
+        console.log(this.categoryId);
          window.axios.get(apiCategory).then(function(response){
             vm.videos = response.data.data
             vm.last_page=response.data.last_page;
 
             if(vm.page==vm.last_page){
-                vm.page=0;
+                vm.page=1;
               }
             });
-        }
+      }
       
   	},
   },

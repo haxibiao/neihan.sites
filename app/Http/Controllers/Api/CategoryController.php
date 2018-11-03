@@ -360,4 +360,29 @@ class CategoryController extends Controller {
 
 		return $article;
 	}
+
+	/**
+	 * @Author      XXM
+	 * @DateTime    2018-11-03
+	 * @description [返回当前专题下相关视频]
+	 * @param       [type]        $category_id
+	 * @return      [Json]                     [Videos]
+	 */
+	public function getCategoryVideos($category_id)
+	{
+		$video_id = request()->get('video_id');
+
+		$num = request()->get('num') ? request()->get('num') : 10;
+
+		$data = Category::findOrFail($category_id)
+			->videoPosts()
+			->whereStatus(1)
+			->where('video_id', '!=', $video_id)
+			->paginate($num);
+		foreach ($data as $article) {
+			$article->fillForJs();
+		}
+
+		return $data;
+	}
 }

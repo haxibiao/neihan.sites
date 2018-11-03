@@ -167,21 +167,13 @@ class VideoController extends Controller
             }
         }
 
-        //主分类
-        $category = $article->category;
-        $categories = $article->categories;
-
+        $data['related_page'] = request()->get('related_page');
         //记录用户浏览记录
         $article->recordBrowserHistory();
-        //获取关联视频
-        $data['related']    = $article->relatedVideoPostsQuery()->paginate(4);
-        $data['sameAuthor'] = $article->user->videoPosts()->paginate(2);
 
         return view('video.show')
             ->withVideo($video)
-            ->withData($data)
-            ->withCategories($categories)
-            ->withCategory($category);
+            ->withData($data);
     }
 
     /**

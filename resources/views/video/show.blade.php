@@ -80,7 +80,7 @@
                 <div class="video-right">
                     <div class="listArea">
                         {{-- 作者的其他视频 --}}
-                        <authors-video user-id={{ $video->user_id }} video-id={{ $video->id }}></authors-video>
+                        <authors-video user-id="{{ $video->user_id }}" video-id="{{ $video->id }}" related-page="{{ $data['related_page'] }}"></authors-video>
                     </div>
                 </div>
             </div>
@@ -104,7 +104,7 @@
                         @endif
                     </div> --}}
                 </div>
-                <authors-video user-id={{ $video->user_id }}></authors-video>
+                <authors-video user-id="{{ $video->user_id }}" video-id="{{ $video->id }}"></authors-video>
                {{--  <div class="video-categories" style="margin-top:20px">
                    <h4>相关的专题</h4>
                 @foreach($categories as $category)
@@ -133,7 +133,7 @@
                 </div>
                 <div class="guess-like  hidden-xs">
                     {{-- 其他推荐的视频 --}}
-                    <authors-video category-id={{ $video->id }}></authors-video>
+                    <authors-video category-id="{{ $video->article->category_id }}" video-id="{{ $video->id }}" related-page="{{ $data['related_page'] }}"></authors-video>
                 </div>
             </div>
         </div>
