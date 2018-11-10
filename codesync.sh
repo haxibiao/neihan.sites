@@ -18,9 +18,12 @@ sudo /bin/cp -rf /data/www/ainicheng.com/ops/envoy/commands.php /data/www/$1.com
 sudo /bin/cp -rf /data/www/ainicheng.com/ops/envoy/tasks.php /data/www/$1.com/ops/envoy/
 sudo /bin/cp -rf /data/www/ainicheng.com/Envoy.blade.php /data/www/$1.com/
 
-echo "sync 前端scss js(vue) ..."
+echo "sync 前端scss js(src) ..."
 sudo /bin/cp -rf /data/www/ainicheng.com/resources/assets/js /data/www/$1.com/resources/assets/
 sudo /bin/cp -rf /data/www/ainicheng.com/resources/assets/sass /data/www/$1.com/resources/assets/
+
+echo "sync 前端js(compiled) ..."
+sudo /bin/cp -rf /data/www/ainicheng.com/public/js /data/www/$1.com/public/
 git checkout resources/assets/sass/_theme.scss
 
 echo 'sync 数据库迁移 ...'
@@ -30,7 +33,7 @@ sudo /bin/cp -rf /data/www/ainicheng.com/database/migrations /data/www/$1.com/da
 echo "sync php js 的包管理依赖"
 sudo /bin/cp -rf /data/www/ainicheng.com/composer.* /data/www/$1.com/
 sudo /bin/cp -rf /data/www/ainicheng.com/package.* /data/www/$1.com/
-sudo /bin/cp -rf /data/www/ainicheng.com/webpack.mix.js /data/www/$1.com/
+# sudo /bin/cp -rf /data/www/ainicheng.com/webpack.mix.js /data/www/$1.com/
 
 # echo 'sync assets ...'
 # sudo /bin/cp -rf /data/www/ainicheng.com/public/assets /data/www/$1.com/public
