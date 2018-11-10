@@ -33,7 +33,7 @@ class VideoController extends Controller
         //热门专题，简单规则就按视频数多少来判断专题是否热门视频专题
         $categories = Category::orderBy('count_videos', 'desc')->take(3)
             ->get();
-        $data       = [];
+        $data = [];
         foreach ($categories as $category) {
             $articles = $category->containedVideoPosts()
                 ->where('status', '>', 0)
@@ -50,7 +50,7 @@ class VideoController extends Controller
         return view('video.index')->with('data', $data);
     }
 
-    public function list(Request $request) {
+    function list(Request $request) {
         $videos = Article::with('user')
             ->with('category')
             ->with('video')
@@ -61,19 +61,19 @@ class VideoController extends Controller
         //Search videos
         $data['keywords'] = '';
         if ($request->get('q')) {
-            $keywords = $request->get('q');
+            $keywords         = $request->get('q');
             $data['keywords'] = $keywords;
-            $videos   = Article::with('user')
+            $videos           = Article::with('user')
                 ->with('category')
                 ->with('video')
                 ->orderBy('id', 'desc')
                 ->where('status', '>=', 0)
-                ->where(function($query) use($keywords){
+                ->where(function ($query) use ($keywords) {
                     $query->where('title', 'like', "%$keywords%")
-                    ->orWhere('description', 'like', "%$keywords%");
+                        ->orWhere('description', 'like', "%$keywords%");
                 });
         }
-        $videos = $videos->paginate(10);
+        $videos         = $videos->paginate(10);
         $data['videos'] = $videos;
         return view('video.list')->withData($data);
     }
@@ -158,10 +158,10 @@ class VideoController extends Controller
 
         //check article exist and status
         $article = $video->article;
-        if(empty($article)){
+        if (empty($article)) {
             abort(404);
         }
-        if ( $article->status < 1) {
+        if ($article->status < 1) {
             if (!canEdit($article)) {
                 abort(404);
             }
@@ -217,53 +217,25 @@ class VideoController extends Controller
         $video   = Video::findOrFail($id);
         $article = $video->article;
 
-        //维护分类关系
-        $article->save(['status' => $request->get('status')]);
+        //更新动态正文，上架下架状态
+        $article->description = $request->body;
+        $article->update($request->all());
+        //维护专题关系
         $article->saveCategories(request('categories'));
 
         //选取封面图
         if (!empty($request->cover)) {
-            // if (str_contains($request->cover, 'storage/video')) {
-            //     $result = copy(
-            //         public_path($request->cover),
-            //         public_path($article->image_url)
-            //     );
-            // } else {
             $video->setCover($request->cover);
-            // }
-            $article->status = 1;
             $article->image_url = $request->cover;
             $article->save();
-        }else if(!$video->cover){
+        } else if (!$video->cover) {
+            //没封面的视频状态不能上架
             $video->status = 0;
             $video->save();
         }
 
-        //save article description ...
-        $article->description = $request->body;
-        $article->update($request->all());
-        
-
-
-        // //文件发生变动 TODO:注意这里没有删除磁盘上的文件，后面的兄弟注意一下
-        // //这里不能使用直接使用$request->video。因为与路由参数重名了
-        // $file           = $request->file('video');
-        // $file_is_modify = !empty($file)
-        // &&
-        // md5_file($file->path()) != $video->hash;
-
-        // if ($file_is_modify) {
-        //     //视频源发生变动时首页暂时隐藏，因为有截图延迟
-        //     $video->update(['status' => 0]);
-        //     $article->update(['status' => 0]);
-        //     if (!$video->saveFile($request->video)) {
-        //         //视频上传失败
-        //         abort(500, '视频上传失败');
-        //     }
-        // }
-
-        if(str_contains(url()->previous(),'edit')){
-            return redirect('/video/'.$video->id);
+        if (str_contains(url()->previous(), 'edit')) {
+            return redirect('/video/' . $video->id);
         }
         //防止用户直接访问编辑界面无session导致页面报错
         return redirect()->back();

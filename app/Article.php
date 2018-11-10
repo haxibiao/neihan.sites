@@ -4,9 +4,9 @@ namespace App;
 
 use App\Action;
 use App\Category;
+use App\Image;
 use App\Model;
 use App\Tip;
-use App\Image;
 use App\Traits\Playable;
 use App\Video;
 use Auth;
@@ -184,12 +184,12 @@ class Article extends Model
         // ]);
         //all place including APP,  需要返回全Uri
         $path = $this->image_url;
-        if ($this->type=='video' || str_contains($path, ['.small.','haxibiao'])) {
+        if ($this->type == 'video' || str_contains($path, ['.small.', 'haxibiao'])) {
             return $path;
         }
-        $extension  = pathinfo($path,PATHINFO_EXTENSION); 
-        $folder     = pathinfo($path,PATHINFO_DIRNAME);
-        $url_formater =  $folder .'/'. basename($path, '.' . $extension). '%s' .$extension;
+        $extension    = pathinfo($path, PATHINFO_EXTENSION);
+        $folder       = pathinfo($path, PATHINFO_DIRNAME);
+        $url_formater = $folder . '/' . basename($path, '.' . $extension) . '%s' . $extension;
         return sprintf($url_formater, '.small.');
     }
 
@@ -258,15 +258,15 @@ class Article extends Model
     public function link()
     {
         //普通文章
-        if( $this->type == 'article' ){
-            return $this->resoureTypeCN().'<a href=' . $this->content_url() . '>《' .$this->title. '》</a>';
+        if ($this->type == 'article') {
+            return $this->resoureTypeCN() . '<a href=' . $this->content_url() . '>《' . $this->title . '》</a>';
         }
         //动态
-        $title =  str_limit($this->body, $limit = 50, $end = '...');
-        if(empty($title)){
-            return '<a href=' . $this->content_url() . '>'. $this->resoureTypeCN() .'</a>';
+        $title = str_limit($this->body, $limit = 50, $end = '...');
+        if (empty($title)) {
+            return '<a href=' . $this->content_url() . '>' . $this->resoureTypeCN() . '</a>';
         }
-        return $this->resoureTypeCN() . '<a href=' . $this->content_url() . '>《' .$title. '》</a>';
+        return $this->resoureTypeCN() . '<a href=' . $this->content_url() . '>《' . $title . '》</a>';
     }
 
     public function recordAction()
@@ -282,7 +282,7 @@ class Article extends Model
 
     public function parsedBody($environment = null)
     {
-        $this->body = parse_image($this->body,$environment);
+        $this->body = parse_image($this->body, $environment);
         $pattern    = "/<img alt=\"(.*?)\" ([^>]*?)>/is";
         preg_match_all($pattern, $this->body, $match);
 
@@ -301,7 +301,7 @@ class Article extends Model
         $images           = [];
         $pattern_img_path = '/src=\"([^\"]*?(\/storage\/image\/\d+\.(jpg|gif|png|jpeg)))\"/';
         if (preg_match_all($pattern_img_path, $this->body, $match)) {
-            $images = $match[1];   //考虑目前图片全部在Cos上,存Cos全路径.
+            $images = $match[1]; //考虑目前图片全部在Cos上,存Cos全路径.
         }
         $imgs             = [];
         $pattern_img_path = '/src=\"([^\"]*?(\/storage\/img\/\d+\.(jpg|gif|png|jpeg)))\"/';
@@ -314,7 +314,7 @@ class Article extends Model
         $last_img_small_path = '';
         foreach ($imgs as $img) {
             // $path      = parse_url($img)['path'];
-            $path = $img;
+            $path      = $img;
             $extension = pathinfo($path, PATHINFO_EXTENSION);
             $path      = str_replace('.small.' . $extension, '', $path);
             if (str_contains($img, 'base64') || str_contains($path, 'storage/video')) {
@@ -430,7 +430,7 @@ class Article extends Model
             'tipable_type' => 'articles',
         ];
 
-        $tip          = \App\Tip::firstOrNew($data);
+        $tip = \App\Tip::firstOrNew($data);
         //$tip->amount  = $tip->amount + $amount;
         $tip->amount  = $amount;
         $tip->message = $message; //tips:: 当上多次，总计了总量，留言只保留最后一句，之前的应该通过通知发给用户了
@@ -483,7 +483,7 @@ class Article extends Model
                 $visit = \App\Visit::firstOrNew([
                     'user_id'      => $user->id,
                     'visited_type' => str_plural($this->type),
-                    'visited_id'   => $this->type == 'video' ? $this->video_id : $this->id
+                    'visited_id'   => $this->type == 'video' ? $this->video_id : $this->id,
                 ]);
                 $visit->save();
             }
@@ -537,8 +537,9 @@ class Article extends Model
             $this->video_id = $video->id; //关联上视频
             $this->save();
 
-            //20秒后自动检查视频vod上的结果(截图取的是前9秒的九张图，应该在10秒内成功，这步操作是因为crontab好几个服务器不稳定)
-            \App\Jobs\SyncVodResult::dispatch($video)->delay(now()->addSeconds(20)); 
+            //5秒后检查视频vod api, QcloudUtils::makeCoverAndSnapshots需要1-3秒而已
+            //有时候先添加视频的，后面还需要时间填写文字
+            \App\Jobs\SyncVodResult::dispatch($video)->delay(now()->addSeconds(5));
         }
         //带图
         if (isset($input['image_urls']) && is_array($input['image_urls']) && !empty($input['image_urls'])) {
@@ -637,44 +638,43 @@ class Article extends Model
         if (env('APP_ENV') != 'prod') {
             return null;
         }
-        $images = [];
+        $images     = [];
         $image_tags = [];
         //匹配出所有Image
-        if(preg_match_all('/<img.*?src=[\"|\'](.*?)[\"|\'].*?>/', $this->body, $match)){
+        if (preg_match_all('/<img.*?src=[\"|\'](.*?)[\"|\'].*?>/', $this->body, $match)) {
             $image_tags = $match[0];
-            $images = $match[1];
+            $images     = $match[1];
         }
         //过滤掉cdn链接
-        $images = array_filter($images,function($url){
-            if(!str_contains($url,env('APP_DOMAIN'))){
+        $images = array_filter($images, function ($url) {
+            if (!str_contains($url, env('APP_DOMAIN'))) {
                 return $url;
             }
         });
-        $image_tags = array_filter($image_tags,function($url){
-            if(!str_contains($url,env('APP_DOMAIN'))){
+        $image_tags = array_filter($image_tags, function ($url) {
+            if (!str_contains($url, env('APP_DOMAIN'))) {
                 return $url;
             }
         });
-
 
         //保存外部链接图片
-        if($images){
+        if ($images) {
             foreach ($images as $index => $image) {
                 //匹配URL格式是否正常
-                $regx="/^http(s?):\/\/(?:[A-za-z0-9-]+\.)+[A-za-z]{2,4}(?:[\/\?#][\/=\?%\-&~`@[\]\':+!\.#\w]*)?$/";
-                if(preg_match($regx, $image)){
-                    $image_model = new Image();
+                $regx = "/^http(s?):\/\/(?:[A-za-z0-9-]+\.)+[A-za-z]{2,4}(?:[\/\?#][\/=\?%\-&~`@[\]\':+!\.#\w]*)?$/";
+                if (preg_match($regx, $image)) {
+                    $image_model          = new Image();
                     $image_model->user_id = getUser()->id;
                     $image_model->save();
                     $path = $image_model->save_image($image, $this->title);
 
                     //替换正文Image 标签 保守办法 只替换Image
                     $new_image_tag = str_replace($image, $path, $image_tags[$index]);
-                    $this->body = str_replace($image_tags[$index], $new_image_tag, $this->body);
+                    $this->body    = str_replace($image_tags[$index], $new_image_tag, $this->body);
                     $this->save();
                 }
             }
-            
+
         }
     }
 }
