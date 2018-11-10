@@ -131,6 +131,12 @@
                 </div>
                 <div class="row">
                     <label class="form-inline">
+                        <div>App Store链接:</div>
+                        <input type="text" name="app_store_link" class="form-control" value="{{ isset($data['app_store_link']) ? $data['app_store_link'] : '' }}">
+                    </label>
+                </div>
+                <div class="row">
+                    <label class="form-inline">
                         <div></div>
                         <button type="submit" class="btn btn-success">保  存</button>
                     </label>

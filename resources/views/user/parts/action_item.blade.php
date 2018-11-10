@@ -2,11 +2,13 @@
 @php
     if($action->actionable_type == 'videos'){
         $item = $action->actionable->article;
+        $status = $item->status;
     }else{
         $item = $action->actionable;
+        $status = $item->status;
     }
     //避免脏数据
-    if(empty($item)){
+    if(empty($item) || $status < 1){
         return;
     }
 @endphp
