@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use PiwikTracker;
+use App\Helpers\matomo\PiwikTracker;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
