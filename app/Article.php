@@ -689,20 +689,28 @@ class Article extends Model
     {
         //改变 发表文章的动态
         $action = $this->morphMany(\App\Action::class,'actionable')->first();
-        $action->status = $this->status;
-        $action->save(['timestamps' => false]);
+        if($action){
+            $action->status = $this->status;
+            $action->save(['timestamps' => false]);
+        }
+        
 
         //改变评论 动态
         $comments = $this->comments;
         foreach ($comments as $comment) {
             $comment_action = $comment->morphMany(\App\Action::class,'actionable')->first();
-            $comment_action->status = $this->status;
-            $comment_action->save(['timestamps' => false]);
+            if($comment_action){
+                $comment_action->status = $this->status;
+                $comment_action->save(['timestamps' => false]);    
+            }
             //改变被喜欢的评论 动态
             foreach ($comment->hasManyLikes as $comment_like) {
                 $comment_like_action = $comment_like->morphMany(\App\Action::class,'actionable')->first();
-                $comment_like_action->status = $this->status;
-                $comment_like_action->save(['timestamps' => false]);
+                if($comment_like_action){
+                    $comment_like_action->status = $this->status;
+                    $comment_like_action->save(['timestamps' => false]);
+                }
+                
             }
         }
 
@@ -710,16 +718,23 @@ class Article extends Model
         $likes = $this->likes;
         foreach ($likes as $like) {
             $like_action = $like->morphMany(\App\Action::class,'actionable')->first();
-            $like_action->status = $this->status;
-            $like_action->save(['timestamps' => false]);
+            if($like_action){
+                $like_action->status = $this->status;
+                $like_action->save(['timestamps' => false]);
+            }
+            
+            
         }
 
         //改变收藏
         $favorites = $this->favorites;
         foreach ($favorites as $favorite) {
             $favorite_action = $favorite->morphMany(\App\Action::class,'actionable')->first();
-            $favorite_action->status = $this->status;
-            $favorite_action->save(['timestamps' => false]);
+            if(favorite_action){
+                $favorite_action->status = $this->status;
+                $favorite_action->save(['timestamps' => false]);
+            }
+            
         }
         
         
