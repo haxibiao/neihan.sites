@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Helpers\matomo\PiwikTracker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -125,6 +126,17 @@ class HomeController extends Controller
         $user = User::findOrFail($id);
         Auth::login($user);
         Cookie::queue('graphql_user', $user->id, 60 * 24); //存一天cookie 给graphiql 测试用
+
+        //记录到matomo
+        if(isset(config('matomo.site')[env('APP_DOMAIN')])){
+            $siteId = config('matomo.site')[env('APP_DOMAIN')];
+            $matomo = config('matomo.matomo');
+            
+            $piwik = new PiwikTracker($siteId,$matomo);
+            $piwik->setUserId($user->id);
+            $piwik->doTrackEvent('visit','login','userLogin');  
+        }
+
         return redirect()->to('/user/' . $id);
     }
 

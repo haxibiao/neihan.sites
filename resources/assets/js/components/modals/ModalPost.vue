@@ -200,6 +200,8 @@ export default {
                             _vm.video_id = video.id;
                         }
                     });
+
+                    alert('视频上传成功');
                 }
             });
         },
