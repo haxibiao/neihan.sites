@@ -476,25 +476,89 @@ class FixData extends Command {
 	}
 
 	function actions() {
-		$this->info('fix article action');
-		Article::where('status', '1')->chunk(100, function ($articles) {
-			foreach ($articles as $article) {
-				$article_id = $article->id;
-				$acion_article = Action::where('actionable_type', 'articles')
-					->where('actionable_id', $article_id)->get();
-				if (!$acion_article->count()) {
-					$action = Action::updateOrCreate([
-						'user_id' => $article->user_id,
-						'actionable_type' => 'articles',
-						'actionable_id' => $article->id,
-						'created_at' => $article->created_at,
-						'updated_at' => $article->updated_at,
-					]);
-					$this->info('fix Article Id:' . $article->id . ' fix success');
+		$this->info('fix action status ....');
+		$fix_count = 0;
+		$delete_count = 0;
+		//给actions表中 增加status 属性 fix数据
+		\App\Action::chunk(100, function($actions) use(&$fix_count, &$delete_count){
+			foreach ($actions as $action) {
+				//获取对应的多态关联关系
+				$actionable = $action->actionable;
+				$action_id = $action->id;
+				//存在的数据fix 不存在的数据直接删除
+				if($actionable){
+					switch ($action->actionable_type) {
+						case 'articles':
+							if($actionable->status == 1){
+								$action->status = 1;
+							}
+							break;
+						
+						case 'comments':
+							if($actionable->commentable_type == 'articles'){
+								if($actionable->article->status ==1){
+									$action->status = 1;
+								}
+							}
+							break;
+
+						case 'favorites':
+							if($actionable->faved_type == 'articles'){
+								if($actionable->article->status ==1){
+									$action->status = 1;
+								}
+							}else if($actionable->faved_type == 'videos'){
+								if($actionable->video->article->status ==1){
+									$action->status = 1;
+								}
+							}
+							break;
+						case 'follows':
+							if($actionable->followed_type == 'categories'){
+								if($actionable->category){
+									$action->status = 1;
+								}
+							}else if($actionable->followed_type == 'collections'){
+								if($actionable->collection->status ==1){
+									$action->status = 1;
+								}
+							}else if($actionable->followed_type == 'users'){
+								if($actionable->user){
+									$action->status = 1;
+								}
+							}
+							break;
+						case 'likes':
+							if($actionable->liked_type == 'articles'){
+								if($actionable->article->status){
+									$action->status = 1;
+								}
+							}else if($actionable->liked_type == 'comments'){
+								$comment = $actionable->comment;
+								if($comment->commentable_type == 'articles'){
+									if($comment->article->status == 1){
+										$action->status = 1;
+									}
+								}
+							}
+							break;
+					}
+					
+					$fix_count++;
+
+					$this->info('action id.'.$action_id.' fix success');
+				}else{
+					$action->status = -1;
+					$delete_count++;
+					$this->error('action id.'.$action_id.' fix failed');
 				}
+				$action->timestamps = false;
+				$action->save();
+				
 			}
 		});
-		$this->info('fix article action success');
+		$this->info('fix action end');
+		
 	}
 
 	function users() {
