@@ -62,6 +62,7 @@ class favoriteArticleMutation extends Mutation
                 'user_id'         => $user->id,
                 'actionable_type' => 'favorites',
                 'actionable_id'   => $favorite->id,
+                'status'          => 1,
             ]);
         }
         //增加文章喜欢数字

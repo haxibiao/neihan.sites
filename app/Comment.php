@@ -50,6 +50,11 @@ class Comment extends Model
         return $this->likes();
     }
 
+    public function article()
+    {
+        return $this->belongsTo(\App\Article::class, 'commentable_id');
+    }
+
     /* --------------------------------------------------------------------- */
     /* ------------------------------- service ----------------------------- */
     /* --------------------------------------------------------------------- */

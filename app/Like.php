@@ -23,6 +23,16 @@ class Like extends Model {
 	public function liked() {
 		return $this->morphTo();
 	}
+
+	public function article()
+	{
+		return $this->belongsTo(\App\Article::class, 'liked_id');
+	}
+
+	public function comment()
+	{
+		return $this->belongsTo(\App\Comment::class, 'liked_id');
+	}
 	/* --------------------------------------------------------------------- */
 	/* ------------------------------- service ----------------------------- */
 	/* --------------------------------------------------------------------- */

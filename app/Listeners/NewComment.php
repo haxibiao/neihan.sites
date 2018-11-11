@@ -236,6 +236,7 @@ class NewComment
             'user_id'         => getUser()->id,
             'actionable_type' => 'comments',
             'actionable_id'   => $comment->id,
+            'status'          => $article->status >= 1 ? 1 : 0
         ]);
     }
 }

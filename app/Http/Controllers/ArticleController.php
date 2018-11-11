@@ -235,6 +235,8 @@ class ArticleController extends Controller {
 		$article->source_url = null; //手动编辑过的文章，都不再是爬虫文章
 		$article->save();
 
+		//改变动态
+		$article->changeAction();
 
 		//保存外部图片
 		$article->saveExternalImage();
@@ -269,6 +271,8 @@ class ArticleController extends Controller {
 		} else {
 			$article->update(['status' => -1]);
 		}
+		//改变动态
+		$article->changeAction();
 		return redirect()->back();
 	}
 

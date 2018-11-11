@@ -222,6 +222,8 @@ class VideoController extends Controller
         $article->update($request->all());
         //维护专题关系
         $article->saveCategories(request('categories'));
+        //改变相关状态
+        $article->changeAction();
 
         //选取封面图
         if (!empty($request->cover)) {

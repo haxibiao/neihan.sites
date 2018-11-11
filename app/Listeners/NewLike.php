@@ -68,5 +68,12 @@ class NewLike {
 			'actionable_type' => 'likes',
 			'actionable_id' => $like->id,
 		]);
+		if($like->liked_type == 'articles'){
+			$action->status = $liked_obj->status >= 1 ? 1 : 0;
+		}else if($like->liked_type == 'comments'){
+			$action->status = $liked_obj->article->status >= 1 ? 1 : 0;
+		}
+		$action->save();
+
 	}
 }

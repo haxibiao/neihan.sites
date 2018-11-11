@@ -22,6 +22,21 @@ class Favorite extends Model
         return $this->morphTo();
     }
 
+    public function article()
+    {
+        return $this->belongsTo(\App\Article::class, 'faved_id');
+    }
+
+    public function video()
+    {
+        return $this->belongsTo(\App\Video::class, 'faved_id');
+    }
+
+    public function user()
+    {
+        $this->belongsTo(\App\User::class, 'faved_id');
+    }
+
     //actionable target
     public function target() {
         return $this->morphTo();

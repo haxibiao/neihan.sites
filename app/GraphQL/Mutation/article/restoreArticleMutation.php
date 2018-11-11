@@ -36,6 +36,7 @@ class restoreArticleMutation extends Mutation
     {
         $article = Article::findOrFail($args['id']);
         $article->update(['status' => 0]);
+        $article->changeAction();
 
         return $article;
     }

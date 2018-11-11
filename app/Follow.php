@@ -21,4 +21,14 @@ class Follow extends Model
     {
         return $this->belongsTo(\App\User::class);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(\App\Category::class, 'followed_id');
+    }
+
+    public function collection()
+    {
+        return $this->belongsTo(\App\Collection::class, 'followed_id');
+    }
 }

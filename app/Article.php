@@ -276,6 +276,7 @@ class Article extends Model
                 'user_id'         => getUser()->id,
                 'actionable_type' => 'articles',
                 'actionable_id'   => $this->id,
+                'status'          => 1,
             ]);
         }
     }
@@ -676,5 +677,51 @@ class Article extends Model
             }
 
         }
+    }
+
+    /**
+     * @Author      XXM
+     * @DateTime    2018-11-11
+     * @description [改变相关的动态 后期将这块放进队列中处理]
+     * @return      [null]
+     */
+    public function changeAction()
+    {
+        //改变 发表文章的动态
+        $action = $this->morphMany(\App\Action::class,'actionable')->first();
+        $action->status = $this->status;
+        $action->save(['timestamps' => false]);
+
+        //改变评论 动态
+        $comments = $this->comments;
+        foreach ($comments as $comment) {
+            $comment_action = $comment->morphMany(\App\Action::class,'actionable')->first();
+            $comment_action->status = $this->status;
+            $comment_action->save(['timestamps' => false]);
+            //改变被喜欢的评论 动态
+            foreach ($comment->hasManyLikes as $comment_like) {
+                $comment_like_action = $comment_like->morphMany(\App\Action::class,'actionable')->first();
+                $comment_like_action->status = $this->status;
+                $comment_like_action->save(['timestamps' => false]);
+            }
+        }
+
+        //改变喜欢 动态
+        $likes = $this->likes;
+        foreach ($likes as $like) {
+            $like_action = $like->morphMany(\App\Action::class,'actionable')->first();
+            $like_action->status = $this->status;
+            $like_action->save(['timestamps' => false]);
+        }
+
+        //改变收藏
+        $favorites = $this->favorites;
+        foreach ($favorites as $favorite) {
+            $favorite_action = $favorite->morphMany(\App\Action::class,'actionable')->first();
+            $favorite_action->status = $this->status;
+            $favorite_action->save(['timestamps' => false]);
+        }
+        
+        
     }
 }

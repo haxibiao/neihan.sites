@@ -54,6 +54,7 @@ class FollowController extends Controller {
 				'user_id' => $user->id,
 				'actionable_type' => 'follows',
 				'actionable_id' => $follow->id,
+				'status'		=> 1
 			]);
 
 			//notify when user follow

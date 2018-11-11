@@ -49,6 +49,13 @@ class followCategoryMutation extends Mutation
             ])->first();
             if ($follow) {
                 $follow->delete();
+
+                //delete record action
+                \App\Action::where([
+                    'user_id' => $user->id,
+                    'actionable_type' => 'follows',
+                    'actionable_id' => $follow->id,
+                ])->delete();
             }
         } else {
             session()->put('followed_category_' . $args['category_id'], 1);
@@ -62,10 +69,11 @@ class followCategoryMutation extends Mutation
             $follow->save();
 
             // record action
-            $action = \App\Action::create([
+            $action = \App\Action::updateOrCreate([
                 'user_id'         => $user->id,
                 'actionable_type' => 'follows',
                 'actionable_id'   => $follow->id,
+                'status'          => 1,
             ]);
         }
         $category->count_follows = $category->follows()->count();

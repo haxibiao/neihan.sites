@@ -56,8 +56,14 @@ class editArticleMutation extends Mutation
         }
         if( isset( $args['is_publish'] ) && $args['is_publish'] ){
             $update_paramters['status'] = 1;//１代表发布状态
+            
+            //改变相关 动态
+            if($update_paramters['status'] != $article->status){
+                $article->changeAction();
+            }
         }
         $article->update( $update_paramters);
+
 
         return $article; 
     }

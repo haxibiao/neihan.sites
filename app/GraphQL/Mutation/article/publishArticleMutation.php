@@ -36,6 +36,7 @@ class publishArticleMutation extends Mutation
     {
         $article = Article::findOrFail($args['id']);
         $article->update(['status' => 1]);
+        $article->changeAction();
 
         return $article;
     }

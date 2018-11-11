@@ -49,6 +49,13 @@ class followCollectionMutation extends Mutation
             ])->first();
             if ($follow) {
                 $follow->delete();
+
+                //delete record action
+                \App\Action::where([
+                    'user_id' => $user->id,
+                    'actionable_type' => 'follows',
+                    'actionable_id' => $follow->id,
+                ])->delete();
             }
         } else {
             session()->put('followed_collection_' . $args['collection_id'], 1);
@@ -62,10 +69,11 @@ class followCollectionMutation extends Mutation
             $follow->save();
 
             // record action
-            $action = \App\Action::create([
+            $action = \App\Action::updateOrCreate([
                 'user_id'         => $user->id,
                 'actionable_type' => 'follows',
                 'actionable_id'   => $follow->id,
+                'status'          => 1,
             ]);
         }
         $collection->count_follows = $collection->follows()->count();

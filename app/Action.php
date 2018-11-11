@@ -10,6 +10,7 @@ class Action extends Model
         'user_id',
         'actionable_type',
         'actionable_id',
+        'status',
         'created_at',
         'updated_at',
     ];
