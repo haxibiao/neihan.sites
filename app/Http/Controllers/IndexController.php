@@ -15,6 +15,7 @@ class IndexController extends Controller
      */
     public function index()
     {
+        //测试提交注释 稍后删除
         $data = (object) [];
 
         //首页轮播图
