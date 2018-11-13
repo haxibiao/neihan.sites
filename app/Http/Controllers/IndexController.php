@@ -26,7 +26,7 @@ class IndexController extends Controller
         //首页推荐视频
         $data->videoPosts = Article::with('video')
             ->where('type', 'video')
-            ->orderBy('id', 'desc')
+            ->orderByDesc('id')
             ->where('status', '>', 0)
             ->take(4)->get();
 
