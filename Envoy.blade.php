@@ -67,18 +67,21 @@ cd {{ $www }}
 
 @task('prod_refresh', ['on' => ['prod'], 'parallel' => true])
 cd {{ $www }}
+git pull origin master
 {{ $refresh_env_prod }}
 {{ $cache_clear }}
 @endtask
 
 @task('staging_refresh', ['on' => ['staging'], 'parallel' => true])
 cd {{ $www_staging }}
+git pull origin staging
 {{ $refresh_env_staging }}
 {{ $cache_clear }}
 @endtask
 
 @task('prod_seed', ['on' => ['prod'], 'parallel' => true])
 cd {{ $www }}
+git pull origin master
 {{ $refresh_env_prod }}
 {{ $run_migrate }}
 {{ $cache_clear }}
@@ -86,6 +89,7 @@ cd {{ $www }}
 
 @task('staging_seed', ['on' => ['staging'], 'parallel' => true])
 cd {{ $www_staging }}
+git pull origin staging
 {{ $refresh_env_staging }}
 {{ $run_migrate }}
 {{ $cache_clear }}
@@ -93,6 +97,7 @@ cd {{ $www_staging }}
 
 @task('prod_update', ['on' => ['prod'], 'parallel' => true])
 cd {{ $www }}
+git pull origin master
 {{ $clear_bootstrap_cache }}
 {{ $refresh_env_prod }}
 {{ $run_composer }}
@@ -102,6 +107,7 @@ cd {{ $www }}
 
 @task('staging_update', ['on' => ['staging'], 'parallel' => true])
 cd {{ $www_staging }}
+git pull origin staging
 {{ $clear_bootstrap_cache }}
 {{ $refresh_env_staging }}
 {{ $run_composer }}
@@ -110,21 +116,26 @@ cd {{ $www_staging }}
 @endtask
 
 @task('prod_sys', ['on' => ['prod'], 'parallel' => true])
+cd {{ $www }}
+git pull origin master
 {{ sync_etc($domain) }}
 @endtask
 
 @task('prod_cmds', ['on' => ['prod'], 'parallel' => true])
 cd {{ $www }}
+git pull origin master
 {{ $run_commands }}
 @endtask
 
 @task('staging_cmds', ['on' => ['staging'], 'parallel' => true])
 cd {{ $www_staging }}
+git pull origin staging
 {{ $run_commands }}
 @endtask
 
 @task('prod_ui', ['on' => 'local'])
 cd {{ $www }}
+git pull origin master
 @if ($build)
 	npm run prod
 @endif
@@ -133,6 +144,7 @@ cd {{ $www }}
 
 @task('staging_ui', ['on' => 'local'])
 cd {{ $www }}
+git pull origin staging
 @if ($build)
 	npm run prod
 @endif
