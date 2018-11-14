@@ -14,9 +14,28 @@ function init_piwik_tracker()
         $siteId = config('matomo.site')[env('APP_DOMAIN')];
         $matomo = config('matomo.matomo');
 
-        $piwik = new PiwikTracker($siteId, $matomo);
-        // $piwik->setUserId(getUniqueUserId());
-        return $piwik;
+        $tracker = new PiwikTracker($siteId, $matomo);
+
+        $tracker->setUserId(getUniqueUserId());
+
+        //如果是APP请求 gql api
+        if (str_contains(request()->path(), 'graphql')) {
+            //设备系统
+            $tracker->setCustomTrackingParameter('dimension2', request()->header('os'));
+            $store_domain = 'unknown';
+            $referrer     = request()->header('referrer');
+            if (!empty($referrer)) {
+                $store_domain = parse_url($referrer, PHP_URL_HOST);
+            }
+            //安装来源
+            $tracker->setCustomTrackingParameter('dimension4', $store_domain);
+            //APP版本
+            $tracker->setCustomTrackingParameter('dimension5', request()->header('version'));
+            //APP build
+            $tracker->setCustomTrackingParameter('dimension6', request()->header('build'));
+        }
+
+        return $tracker;
     }
     return null;
 }
@@ -42,7 +61,7 @@ function app_track_visit_people()
 {
     if ($tracker = init_piwik_tracker()) {
         $tracker->doTrackGoal(1);
-        app_track_user('visit');
+        app_track_user('visit_people');
     }
 }
 
@@ -144,17 +163,19 @@ function getUniqueUserId()
         return request()->user()->id;
     }
     //gql api
-    $token = !empty($request->header('token')) ? $request->header('token') : $request->get('token');
+    $token = !empty(request()->header('token')) ? request()->header('token') : request()->get('token');
     if (!empty($token)) {
-        $user = User::where('api_token', $token)->first();
+        $user = \App\User::where('api_token', $token)->first();
         if ($user) {
             return $user->id;
         }
     }
 
     //web guest
-    if ($session_id = session_id()) {
-        return $session_id;
+    if (!str_contains(request()->path(), 'graphql')) {
+        if ($session_id = session_id()) {
+            return $session_id;
+        }
     }
 
     //app guest

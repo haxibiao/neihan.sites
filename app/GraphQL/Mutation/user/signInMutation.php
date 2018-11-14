@@ -37,17 +37,11 @@ class signInMutation extends Mutation
     public function resolve($root, $args)
     {
         $user = User::where('email', $args['email'])->first();
-
-        // if (!$user) {
-        //     throw new \Exception('邮箱不存在');
-        // }
-
-        if (empty($user) || !password_verify($args['password'], $user->password) ) {
-            throw new ValidationExcetion('邮箱或密码不正确'); 
+        if (empty($user) || !password_verify($args['password'], $user->password)) {
+            throw new ValidationExcetion('邮箱或密码不正确');
         }
-
         session()->put('user', $user);
-
+        app_track_user('login');
         return $user;
     }
 }

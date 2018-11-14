@@ -41,11 +41,9 @@ class LoginController extends Controller
     protected function sendLoginResponse(Request $request)
     {
         $request->session()->regenerate();
-
         $this->clearLoginAttempts($request);
 
-        //track event 到 matomo
-        app_track_event('user', 'login');
+        app_track_user('login');
 
         return $this->authenticated($request, $this->guard()->user())
         ?: redirect()->intended($this->redirectPath());

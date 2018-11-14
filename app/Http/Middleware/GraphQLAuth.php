@@ -21,10 +21,12 @@ class GraphQLAuth
         if (!empty($token)) {
             $user = User::where('api_token', $token)->first();
             if ($user) {
+                //TODO:: 真是APP手机端请求的时候，因为没有Cookie，这个Session也没用
                 $request->session()->put('user', $user);
             }
         }
 
+        //此处为了方便UI组浏览器/login-as/{id}切换登录用户调试 gql api
         if (!empty($request->cookie('graphql_user'))) {
             $user = User::find($request->cookie('graphql_user'));
             if ($user) {
