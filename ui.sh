@@ -61,9 +61,9 @@ else
 	run ui
 fi
 
-cd ../didilinju.com
-if [ ! -z $1 ]; then
-	run ui --build=prod
-else 
-	run ui
-fi
+# cd ../didilinju.com
+# if [ ! -z $1 ]; then
+# 	run ui --build=prod
+# else 
+# 	run ui
+# fi

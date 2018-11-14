@@ -34,4 +34,4 @@ pull "youjianqi.com" $*
 
 pull "jucheshe.com" $*
 pull "youwangfa.com" $*
-pull "didilinju.com" $*
+# pull "didilinju.com" $*

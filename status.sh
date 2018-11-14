@@ -32,6 +32,6 @@ echo "youwangfa status ..."
 cd ../youwangfa.com
 git status
 
-echo "didilinju status ..."
-cd ../didilinju.com
-git status
+# echo "didilinju status ..."
+# cd ../didilinju.com
+# git status
