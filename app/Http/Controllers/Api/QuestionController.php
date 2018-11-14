@@ -31,21 +31,21 @@ class QuestionController extends Controller
     {
         $user = Auth::guard('api')->user();
         //获取当前七天前邀请的用户
-        $inviteIds = $user->questionInvites()->where('question_id',$question_id)
+        $inviteIds = $user->questionInvites()->where('question_id', $question_id)
             ->whereRaw('DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(updated_at)')
             ->pluck('invite_user_id')->toArray();
         //获取当前关注的用户 并排除七天内邀请过的用户
         $followUserIds = $user->followingUsers->whereNotIn('followed_id', $inviteIds)->pluck('followed_id')->toArray();
-        
+
         $users = [];
-        if($followUserIds){
-            $users = User::whereIn('id',$followUserIds)->get();
+        if ($followUserIds) {
+            $users = User::whereIn('id', $followUserIds)->get();
             foreach ($users as $user) {
                 $user->fillForJs();
                 $user->invited = 0;
             }
         }
-        
+
         return $users;
     }
 
@@ -63,7 +63,7 @@ class QuestionController extends Controller
             //避免重复发消息
             if (!$invite->id) {
                 $invite_user->notify(new QuestionInvited($user->id, $qid));
-            }else{
+            } else {
                 //手动更新下updated_at
                 $invite->updated_at = $invite->freshTimestamp();
             }
@@ -80,7 +80,18 @@ class QuestionController extends Controller
 
         //确保采纳了一些答案
         if (is_array($request->answered_ids) && count($request->answered_ids)) {
-            $question->answered_ids = implode($request->answered_ids, ',');
+
+            //fix error, vue send answered_ids as json array
+            $answered_ids = [];
+            foreach ($request->answered_ids as $answered_id) {
+                if (is_numeric($answered_id)) {
+                    $answered_ids[] = $answered_id;
+                } else {
+                    $answered_ids[] = $answered_id['answerId'];
+                }
+            }
+
+            $question->answered_ids = implode($answered_ids, ',');
             $question->closed       = 1;
             $question->save();
 
@@ -242,8 +253,8 @@ class QuestionController extends Controller
     {
         $questions = Question::orderBy('hits', 'desc')->where('image1', '<>', null)->take(3)->get();
 
-        foreach($questions as $question){
-            $question->image1=$question->image1();
+        foreach ($questions as $question) {
+            $question->image1 = $question->image1();
         }
 
         return $questions;
