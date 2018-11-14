@@ -36,7 +36,7 @@ class IndexController extends Controller
         return view('index.index')
             ->withData($data);
     }
-    
+
     /**
      * 首页的专题
      * @return [category] [前几个专题的数组]
@@ -101,15 +101,16 @@ class IndexController extends Controller
         }
         $data = [];
 
-        if(\Storage::exists('appDowload_config')){
-            $json  = \Storage::get('appDowload_config');
+        if (\Storage::exists('appDowload_config')) {
+            $json = \Storage::get('appDowload_config');
             $data = json_decode($json, true);
         }
+        app_track_app_download();
 
         return view('app')
-                ->withAppname(config('app.name_cn'))
-                ->withData($data)
-                ->withApp($app);
+            ->withAppname(config('app.name_cn'))
+            ->withData($data)
+            ->withApp($app);
     }
 
     public function aboutUs()

@@ -19,16 +19,6 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\Cors::class,
-
-        //page-speed 
-        // TODO: 雪晴琼琼发现破坏了很多功能，需要继续测试
-        // \RenatoMarinho\LaravelPageSpeed\Middleware\InlineCss::class,
-        // \RenatoMarinho\LaravelPageSpeed\Middleware\ElideAttributes::class,
-        // \RenatoMarinho\LaravelPageSpeed\Middleware\InsertDNSPrefetch::class,
-        // \RenatoMarinho\LaravelPageSpeed\Middleware\RemoveComments::class,
-        // \RenatoMarinho\LaravelPageSpeed\Middleware\TrimUrls::class,
-        // \RenatoMarinho\LaravelPageSpeed\Middleware\RemoveQuotes::class,
-        // \RenatoMarinho\LaravelPageSpeed\Middleware\CollapseWhitespace::class,
     ];
 
     /**
@@ -46,7 +36,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\CookieChecker::class,
-            \App\Http\Middleware\TrafficMan::class,
+            // \App\Http\Middleware\TrafficMan::class,
             // \App\Http\Middleware\BeianRedirect::class,
         ],
 
@@ -64,14 +54,14 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
-        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'auth.editor' => \App\Http\Middleware\AuthEditor::class,
-        'auth.admin' => \App\Http\Middleware\AuthAdmin::class,
-        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'auth'         => \Illuminate\Auth\Middleware\Authenticate::class,
+        'auth.basic'   => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'auth.editor'  => \App\Http\Middleware\AuthEditor::class,
+        'auth.admin'   => \App\Http\Middleware\AuthAdmin::class,
+        'bindings'     => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'can'          => \Illuminate\Auth\Middleware\Authorize::class,
+        'guest'        => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'throttle'     => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'wechat.oauth' => \Overtrue\LaravelWechat\Middleware\OAuthAuthenticate::class,
     ];
 }

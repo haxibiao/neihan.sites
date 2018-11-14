@@ -2,10 +2,97 @@
 
 use App\Article;
 use App\Exceptions\UnregisteredException;
+use App\Helpers\matomo\PiwikTracker;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+
+function init_piwik_tracker()
+{
+    if (isset(config('matomo.site')[env('APP_DOMAIN')])) {
+        $siteId = config('matomo.site')[env('APP_DOMAIN')];
+        $matomo = config('matomo.matomo');
+
+        $piwik = new PiwikTracker($siteId, $matomo);
+        // $piwik->setUserId(getUniqueUserId());
+        return $piwik;
+    }
+    return null;
+}
+
+function app_track_event($category, $action, $name = false, $value = false)
+{
+    if ($tracker = init_piwik_tracker()) {
+        $tracker->doTrackEvent($category, $action, $name, $value);
+    }
+}
+
+function app_track_user($action, $name = false, $value = false)
+{
+    app_track_event("user", $action, $name, $value);
+}
+
+function app_track_video($action, $name = false, $value = false)
+{
+    app_track_event("video", $action, $name, $value);
+}
+
+function app_track_visit_people()
+{
+    if ($tracker = init_piwik_tracker()) {
+        $tracker->doTrackGoal(1);
+        app_track_user('visit');
+    }
+}
+
+function app_track_like()
+{
+    if ($tracker = init_piwik_tracker()) {
+        $tracker->doTrackGoal(2);
+        app_track_user('like');
+    }
+}
+
+function app_track_post()
+{
+    if ($tracker = init_piwik_tracker()) {
+        $tracker->doTrackGoal(3);
+        app_track_user('post');
+    }
+}
+
+function app_track_comment()
+{
+    if ($tracker = init_piwik_tracker()) {
+        $tracker->doTrackGoal(4);
+        app_track_user('comment');
+    }
+}
+
+function app_track_send_message()
+{
+    if ($tracker = init_piwik_tracker()) {
+        $tracker->doTrackGoal(5);
+        app_track_user('send_message');
+    }
+}
+
+function app_track_launch()
+{
+    if ($tracker = init_piwik_tracker()) {
+        $tracker->doTrackGoal(6);
+        app_track_user('launch');
+    }
+}
+
+function app_track_app_download()
+{
+    if ($tracker = init_piwik_tracker()) {
+        $tracker->doTrackGoal(7);
+        app_track_user('app_download');
+    }
+}
 
 /**
  * 首页的文章列表
@@ -44,6 +131,39 @@ function indexArticles()
         $articles = new LengthAwarePaginator($articles, $total, 10);
     }
     return $articles;
+}
+
+function getUniqueUserId()
+{
+    //web
+    if (Auth::id()) {
+        return Auth::id();
+    }
+    //rest api
+    if (request()->user()) {
+        return request()->user()->id;
+    }
+    //gql api
+    $token = !empty($request->header('token')) ? $request->header('token') : $request->get('token');
+    if (!empty($token)) {
+        $user = User::where('api_token', $token)->first();
+        if ($user) {
+            return $user->id;
+        }
+    }
+
+    //web guest
+    if ($session_id = session_id()) {
+        return $session_id;
+    }
+
+    //app guest
+    return getIp();
+}
+
+function getIp()
+{
+    return !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : false;
 }
 
 function getUserId()

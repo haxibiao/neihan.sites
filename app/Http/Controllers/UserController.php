@@ -9,11 +9,10 @@ use App\Question;
 use App\User;
 use Auth;
 use Illuminate\Http\Request;
-use App\Helpers\QcloudUtils;
 
 class UserController extends Controller
 {
-    public function __construct() 
+    public function __construct()
     {
         $this->middleware('auth', ['only' => ['store', 'update', 'destroy', 'settings', 'edit']]);
     }
@@ -60,8 +59,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user              = User::with('articles')->findOrFail($id);
-        $user->followUsers = $user->followingUsers()->count();
+        $user                   = User::with('articles')->findOrFail($id);
+        $user->followUsers      = $user->followingUsers()->count();
         $user->count_production = $user->articles()->count();
         //作品
         $qb = $user->articles()->with('category')
@@ -109,7 +108,7 @@ class UserController extends Controller
         $qb = $user->actions()
             ->with('user')
             ->with('actionable')
-            ->where('status',1)
+            ->where('status', 1)
             ->orderBy('created_at', 'desc');
         $actions = smartPager($qb, 10);
         if (ajaxOrDebug() && request('actions')) {
@@ -154,6 +153,8 @@ class UserController extends Controller
         // $videos = smartPager($qb, 10);
         // $data['videos'] = $videos;
 
+        app_track_visit_people();
+
         return view('user.show')
             ->withUser($user)
             ->withData($data);
@@ -184,7 +185,7 @@ class UserController extends Controller
         $user->update($request->all());
         $file = $request->file('avatar');
         //判断是否为空
-        if(!empty($file)){
+        if (!empty($file)) {
             $user->save_avatar($file);
         }
         return redirect()->to('/user/' . $user->id);

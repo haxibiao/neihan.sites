@@ -2,7 +2,6 @@
 namespace App\GraphQL\Mutation\chat;
 
 use App\Chat;
-use App\User;
 use App\Message;
 use Folklore\GraphQL\Support\Mutation;
 use GraphQL;
@@ -46,6 +45,7 @@ class sendMessageMutation extends Mutation
             'chat_id' => $chat->id,
             'message' => $args['message'],
         ]);
+        app_track_send_message();
         $chat->last_message_id = $message->id;
         $chat->save();
 

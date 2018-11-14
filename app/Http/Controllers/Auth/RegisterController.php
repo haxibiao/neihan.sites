@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
+use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
@@ -18,7 +18,7 @@ class RegisterController extends Controller
     | validation and creation. By default this controller uses a trait to
     | provide this functionality without requiring any additional code.
     |
-    */
+     */
 
     use RegistersUsers;
 
@@ -48,8 +48,8 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255|unique:users',
-            'email' => 'required|string|email|max:255|unique:users',
+            'name'     => 'required|string|max:255|unique:users',
+            'email'    => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
         ]);
     }
@@ -62,6 +62,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        app_track_event('user', 'register');
         $user = new User();
         return $user->createUser($data);
     }

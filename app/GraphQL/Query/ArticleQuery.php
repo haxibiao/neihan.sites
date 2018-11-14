@@ -3,7 +3,6 @@
 namespace App\GraphQL\Query;
 
 use App\Article;
-use App\Visit;
 use Folklore\GraphQL\Support\Query;
 use GraphQL;
 use GraphQL\Type\Definition\Type;
@@ -36,11 +35,7 @@ class ArticleQuery extends Query
         //记录用户浏览记录
         $article->recordBrowserHistory();
 
-        //记录到traffic
-        $user_id = checkUser() ? getUser()->id : null;
-        $path = $article->type != 'video' ? 'browseArticle' : 'browseVideo';
-        recordTaffic(request(), $path, $article->id, $user_id, true);
-        
+        app_track_launch();
 
         return $article;
     }

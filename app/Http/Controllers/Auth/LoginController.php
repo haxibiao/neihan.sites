@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Helpers\matomo\PiwikTracker;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -18,7 +17,7 @@ class LoginController extends Controller
     | redirecting them to your home screen. The controller uses a trait
     | to conveniently provide its functionality to your applications.
     |
-    */
+     */
 
     use AuthenticatesUsers;
 
@@ -45,18 +44,11 @@ class LoginController extends Controller
 
         $this->clearLoginAttempts($request);
 
-        //记录到matomo
-        if(isset(config('matomo.site')[env('APP_DOMAIN')])){
-            $siteId = config('matomo.site')[env('APP_DOMAIN')];
-            $matomo = config('matomo.matomo');
-            
-            $piwik = new PiwikTracker($siteId,$matomo);
-            $piwik->setUserId($this->guard()->user()->id);
-            $piwik->doTrackEvent('visit','login','userLogin');  
-        }
+        //track event 到 matomo
+        app_track_event('user', 'login');
 
         return $this->authenticated($request, $this->guard()->user())
-                ?: redirect()->intended($this->redirectPath());
+        ?: redirect()->intended($this->redirectPath());
     }
-    
+
 }

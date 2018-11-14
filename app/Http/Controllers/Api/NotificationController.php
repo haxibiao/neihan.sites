@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Category;
 use App\Chat;
 use App\Http\Controllers\Controller;
 use App\Message;
@@ -12,7 +11,7 @@ use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
-    public function chat($id) 
+    public function chat($id)
     {
         $chat              = Chat::findOrFail($id);
         $data['with_user'] = $chat->withUser();
@@ -35,7 +34,7 @@ class NotificationController extends Controller
         return $data;
     }
 
-    public function sendMessage($id) 
+    public function sendMessage($id)
     {
         $chat    = Chat::findOrFail($id);
         $message = Message::create([
@@ -43,7 +42,7 @@ class NotificationController extends Controller
             'chat_id' => $chat->id,
             'message' => request()->get('message'),
         ]);
-
+        app_track_send_message();
         $chat->withUser()->chats()->syncWithoutDetaching($chat->id);
         Auth::user()->chats()->syncWithoutDetaching($chat->id);
 
@@ -78,7 +77,7 @@ class NotificationController extends Controller
             if ($last_message) {
                 $chat->last_message = str_limit($last_message->message);
             }
-            $chat->time    = $chat->updatedAt(); 
+            $chat->time    = $chat->updatedAt();
             $chat->unreads = $chat->pivot->unreads;
         }
         return $chats;
@@ -102,7 +101,7 @@ class NotificationController extends Controller
 
                 //点开就标记已读...
                 $notification->markAsRead();
-                $user->forgetUnreads();                
+                $user->forgetUnreads();
 
                 //fix avatar in local
                 if (\App::environment('local')) {

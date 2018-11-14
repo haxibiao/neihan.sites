@@ -14,7 +14,7 @@ class UserQuery extends Query
 
     public function type()
     {
-        return GraphQL::type('User'); 
+        return GraphQL::type('User');
     }
 
     public function args()
@@ -27,8 +27,9 @@ class UserQuery extends Query
     public function resolve($root, $args)
     {
         if (isset($args['id'])) {
-            $user = \App\User::findOrFail($args['id']);
-            $user->count_followings = $user->followingUsers()->count();;
+            $user                   = \App\User::findOrFail($args['id']);
+            $user->count_followings = $user->followingUsers()->count();
+            app_track_visit_people();
             return $user;
         }
 
