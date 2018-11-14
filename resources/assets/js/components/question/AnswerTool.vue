@@ -57,16 +57,7 @@ export default {
 	name: "AnswerTool",
 
 	//有questionId是问题下的，有answerId是回答下的
-	props: [
-		"questionId",
-		"answerId",
-		"isSelf",
-		"isPayer",
-		"closed",
-		"title",
-		"author",
-		"url"
-	],
+	props: ["questionId", "answerId", "isSelf", "isPayer", "closed", "title", "author", "url"],
 
 	computed: {
 		answered() {
@@ -85,12 +76,8 @@ export default {
 		checkAccept() {
 			if ($bus.state.answer.answerIds.length < 10) {
 				this.isAccept = !this.isAccept;
-				var answer_id = {
-					isAccept: this.isAccept,
-					answerId: this.answerId
-				};
 				if (this.isAccept) {
-					$bus.state.answer.answerIds.push(answer_id);
+					$bus.state.answer.answerIds.push(this.answerId);
 				} else {
 					$bus.state.answer.answerIds = $bus.state.answer.answerIds.filter(
 						item => item.answerId != this.answerId
@@ -102,16 +89,12 @@ export default {
 		favoriteQuestion() {
 			this.question.favorited = !this.question.favorited;
 			this.question.count_favorites += this.question.favorited ? 1 : -1;
-			window.axios.get(
-				window.tokenize("/api/favorite-question-" + this.question.id)
-			);
+			window.axios.get(window.tokenize("/api/favorite-question-" + this.question.id));
 		},
 		reportQuestion() {
 			this.question.reported = !this.question.reported;
 			this.question.count_reports += this.question.reported ? 1 : -1;
-			window.axios.get(
-				window.tokenize("/api/report-question-" + this.question.id)
-			);
+			window.axios.get(window.tokenize("/api/report-question-" + this.question.id));
 		},
 		reportAnswer() {
 			this.answer.reported = !this.answer.reported;
@@ -136,11 +119,7 @@ export default {
 		inviteUser(user) {
 			user.invited = 1;
 			this.uninvited = _.filter(this.users, ["invited", 0]);
-			window.axios.get(
-				window.tokenize(
-					"/api/question-" + this.questionId + "-invite-user-" + user.id
-				)
-			);
+			window.axios.get(window.tokenize("/api/question-" + this.questionId + "-invite-user-" + user.id));
 		},
 		inviteAnswer() {
 			this.showInvite = !this.showInvite;
@@ -153,28 +132,22 @@ export default {
 			if (this.questionId) {
 				//邀请
 				window.axios
-					.get(
-						window.tokenize("/api/question-" + this.questionId + "-uninvited")
-					)
+					.get(window.tokenize("/api/question-" + this.questionId + "-uninvited"))
 					.then(function(response) {
 						_this.users = response.data;
 						_this.uninvited = _this.users;
 					});
 				//问题信息
-				window.axios
-					.get(window.tokenize("/api/question/" + this.questionId))
-					.then(function(response) {
-						_this.question = response.data;
-						_this.loaded = true;
-					});
+				window.axios.get(window.tokenize("/api/question/" + this.questionId)).then(function(response) {
+					_this.question = response.data;
+					_this.loaded = true;
+				});
 			} else if (this.answerId) {
 				//回答信息
-				window.axios
-					.get(window.tokenize("/api/answer/" + this.answerId))
-					.then(function(response) {
-						_this.answer = response.data;
-						_this.loaded = true;
-					});
+				window.axios.get(window.tokenize("/api/answer/" + this.answerId)).then(function(response) {
+					_this.answer = response.data;
+					_this.loaded = true;
+				});
 			}
 		}
 	},
@@ -321,11 +294,13 @@ export default {
 		}
 	}
 }
-.list-enter-active, .list-leave-active {
-  transition: all 1s;
+.list-enter-active,
+.list-leave-active {
+	transition: all 1s;
 }
-.list-enter, .list-leave-to {
-  opacity: 0;
-  transform: translateX(10%);
+.list-enter,
+.list-leave-to {
+	opacity: 0;
+	transform: translateX(10%);
 }
 </style>
