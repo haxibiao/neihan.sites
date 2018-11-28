@@ -55,3 +55,13 @@ function fix_article_body_images($body) {
 
 	return $body;
 }
+
+function processVideo($video)
+{
+	$video->syncVodProcessResult();
+    //如果还没有截图 就重新执行调用截图接口
+    if (!$video->cover && !empty($video->qcvod_fileid)) {
+        $duration = $video->duration > 9 ? 9 : $video->duration;
+        \App\Helpers\QcloudUtils::makeCoverAndSnapshots($video->qcvod_fileid, $duration);
+    }
+}

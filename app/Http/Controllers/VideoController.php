@@ -358,4 +358,15 @@ class VideoController extends Controller
             $category->save();
         }
     }
+
+    public function processVideo($id)
+    {
+        $video = Video::findOrFail($id);
+        if(empty($video->jsonData('covers'))){
+            processVideo($video);
+            dd('请求成功,截图将在1-2分钟内返回,处理视频的速度取决于视频的大小,请勿一直刷新本页面.');
+        }else{
+            return $video->cover;
+        }
+    }
 }
