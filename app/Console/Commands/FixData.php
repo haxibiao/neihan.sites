@@ -48,19 +48,24 @@ class FixData extends Command {
 
 	function videos() {
 		$this->info('fix videos ...');
-		$formatter = 'http://cos.ainicheng.com/storage/video/%d.jpg.%d.jpg';
-		\App\Video::whereNull('qcvod_fileid')->where('status','>',0)->chunk(100, function ($videos) use($formatter) {
-			foreach ($videos as $video) { 
-				$covers = [];
-				for ($i = 1; $i <= 8 ; $i++) {
-					$str = sprintf($formatter, $video->id, $i);
-					$covers[] = $str;
-				}
-				$updated_at = $video->updated_at;
-				$video->timestamps = false;
-				$video->setJsonData('covers', $covers);
-			}
-		});
+		//video 1173 这个视频有问题,始终拿不到截图,手动下架掉;
+		$video = Video::findOrFail(1173);
+		$video->status = -1;
+		$video->save();
+		$this->info('video ID:'.$video->id.' fix success');
+		// $formatter = 'http://cos.ainicheng.com/storage/video/%d.jpg.%d.jpg';
+		// \App\Video::whereNull('qcvod_fileid')->where('status','>',0)->chunk(100, function ($videos) use($formatter) {
+		// 	foreach ($videos as $video) { 
+		// 		$covers = [];
+		// 		for ($i = 1; $i <= 8 ; $i++) {
+		// 			$str = sprintf($formatter, $video->id, $i);
+		// 			$covers[] = $str;
+		// 		}
+		// 		$updated_at = $video->updated_at;
+		// 		$video->timestamps = false;
+		// 		$video->setJsonData('covers', $covers);
+		// 	}
+		// });
 		$this->info('fix videos finished...');
 	}
 
