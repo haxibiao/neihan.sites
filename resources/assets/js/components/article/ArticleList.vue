@@ -24,7 +24,7 @@
 		    <a v-if="article.type == 'article'" class="title"  target="_blank" :href="article.url">
 		        <span>{{ article.title }}</span>
 		    </a>
-		    <a class="abstract":href="article.url">{{ article.description}}</a>
+		    <a class="abstract":href="article.url" target="_blank">{{ article.description}}</a>
 		
 		    <div class="meta">
 		      <a v-if="article.category" class="category"  target="_blank" :href="'/' + article.category.name_en">
