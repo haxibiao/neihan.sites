@@ -48,18 +48,24 @@ class VideoProcess extends Command
 
     public function processVideo($video)
     {
-        // $video->syncVodProcessResult();
+        $res = $video->syncVodProcessResult();
+        //如果res为空说明视频有问题
+        if(empty($res)){
+            $video->status = -1;
+            return $video->save();
+        }
         //如果还没有截图 就重新执行调用截图接口
         if (!$video->cover && !empty($video->qcvod_fileid)) {
             $this->info("$video->id $article->title $video->path");
             $duration = $video->duration > 9 ? 9 : $video->duration;
             QcloudUtils::makeCoverAndSnapshots($video->qcvod_fileid, $duration);
-        }
+        }    
+        
     }
 
     public function processDrafts()
     {
-        $videos = Video::where('status', 0)->get();
+        $videos = Video::whereNotNull('qcvod_fileid')->whereNull('cover')->get();
         foreach ($videos as $video) {
             $this->processVideo($video);
         }

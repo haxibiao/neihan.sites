@@ -87,6 +87,7 @@ class Video extends Model
     public function syncVodProcessResult()
     {
         //简单顾虑，视频地址确实是上传到了vod的
+        $res = [];
         if (str_contains($this->path, 'vod')) {
             $res = QcloudUtils::getVideoInfo($this->qcvod_fileid);
             if (!empty($res['basicInfo']) && !empty($res['basicInfo']['duration'])) {
@@ -161,6 +162,7 @@ class Video extends Model
                 $this->recordAction();
             }
         }
+        return $res;
     }
 
     public function setCover($cover_url)
