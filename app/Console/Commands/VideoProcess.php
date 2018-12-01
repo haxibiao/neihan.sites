@@ -49,11 +49,12 @@ class VideoProcess extends Command
     public function processVideo($video)
     {
         $res = $video->syncVodProcessResult();
-        //如果res为空说明视频有问题
-        if(empty($res)){
+        //如果res为空 或duration = 0 表示该视频有问题
+        if(empty($res) || empty($res['basicInfo']['duration'])){
             $video->status = -1;
             return $video->save();
         }
+        return;
         //如果还没有截图 就重新执行调用截图接口
         if (!$video->cover && !empty($video->qcvod_fileid)) {
             $this->info("$video->id $article->title $video->path");
@@ -65,7 +66,10 @@ class VideoProcess extends Command
 
     public function processDrafts()
     {
-        $videos = Video::whereNotNull('qcvod_fileid')->whereNull('cover')->get();
+        $videos = Video::whereNotNull('qcvod_fileid')
+            ->whereNull('cover')
+            ->where('status', '>', -1)
+            ->get();
         foreach ($videos as $video) {
             $this->processVideo($video);
         }
