@@ -48,11 +48,17 @@ class FixData extends Command {
 
 	function videos() {
 		$this->info('fix videos ...');
-		//video 1173 这个视频有问题,始终拿不到截图,手动下架掉;
-		$video = Video::findOrFail(1173);
-		$video->status = -1;
-		$video->save();
-		$this->info('video ID:'.$video->id.' fix success');
+		//这一批始终无法拿到截图的视频 统一置为-1
+		$videos = Video::whereNotNull('qcvod_fileid')
+            ->whereNull('cover')
+            ->where('status', '>', -1)
+            ->get();
+        foreach ($videos as $video) {
+        	$video->status = -1;
+        	$video->save();
+        	$this->info('Video ID:'.$video->id.' fix success');
+        }
+
 		// $formatter = 'http://cos.ainicheng.com/storage/video/%d.jpg.%d.jpg';
 		// \App\Video::whereNull('qcvod_fileid')->where('status','>',0)->chunk(100, function ($videos) use($formatter) {
 		// 	foreach ($videos as $video) { 
