@@ -33,6 +33,15 @@ class Video extends Model
         return $this->hasOne(\App\Article::class);
     }
 
+    public static function boot()
+    {
+        parent::boot();
+        //同步article status
+        static::updated(function ($model) {
+          $model->article->status = $model->status;
+        });
+    }
+
     public function takeSnapshot($force = false, $flag = true)
     {
         \App\Jobs\TakeScreenshots::dispatch($this, $force, $flag);
