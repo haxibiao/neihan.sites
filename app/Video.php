@@ -38,7 +38,9 @@ class Video extends Model
         parent::boot();
         //同步article status
         static::updated(function ($model) {
-          $model->article->status = $model->status;
+            if($article = $model->article){
+                $article->status = $model->status;
+            }
         });
     }
 
