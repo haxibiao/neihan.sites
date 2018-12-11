@@ -1,6 +1,6 @@
 <template>
   <div class="upload-image">
-      <input type="text" class="form-control" :id="textValue" :name="textName" :value="dataImage">
+      <input type="text" class="form-control" :id="textValue" :name="textName" :value="image_url">
       <img :src="dataImage" :id="imageValue" :alt="textName">
       <input type="file" @change="loadImg" class="file-select">
   </div>
@@ -28,6 +28,7 @@ export default {
             reader.onload = function(event) {
               $("#"+_this.imageValue).attr("src", event.target.result);
               // _this.setState({ logo: event.target.result });
+              // $("#"+_this.textValue).attr("value", event.target.result);
             };
             reader.readAsDataURL(fileObj);
             this._upload(fileObj);
@@ -46,12 +47,6 @@ export default {
             };
             window.axios.post(api, formdata, config).then(function(res) {
                 var image = res.data;
-                // _this.imgItems.push({
-                //     url: image.url,
-                //     id: image.id,
-                //     selected: 1
-                // });
-                 $("#"+_this.textValue).attr("value", image.url);
                 _this.image_url = image.url;
                 console.log("inmag",image.url);
             });
@@ -60,7 +55,7 @@ export default {
 
     data() {
         return {
-          image_url:null
+          image_url:this.dataImage
         };
     }
 };
