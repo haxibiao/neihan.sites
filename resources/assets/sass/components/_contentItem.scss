@@ -57,6 +57,7 @@
         border-radius: 50%;
         background: url(https://www.ainicheng.com/images/rotate_play.png) no-repeat;
         background-size: cover;
+        opacity: 0;
       }
       i {
         position: absolute;
@@ -73,6 +74,7 @@
         background-color: rgba(0, 0, 0, 0);
         &::after {
           animation: rotate 3s infinite linear;
+          opacity: 1;
         }
       }
     }
