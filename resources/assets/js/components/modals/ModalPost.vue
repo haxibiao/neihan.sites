@@ -5,8 +5,8 @@
                 <div class="modal-header">
                     <button class="close" data-dismiss="modal" aria-label="Close">×</button>
                     <h4 class="modal-title">
-				      发布动态
-					</h4>
+                      发布动态
+                    </h4>
                 </div>
                 <div class="modal-body">
                     <form method="post" action="/post" ref="postForm" enctype="multipart/form-data">
@@ -52,21 +52,24 @@
                     </form>
                 </div>
                 <footer class="clearfix">
-                    <button class="btn-base btn-handle btn-md pull-right" @click="submit">提交</button>
+                    <button :disabled="disabled" class="btn-base btn-handle btn-md pull-right" @click="submit" :style="disabled ? 'opacity:0.7' : ''">提交</button>
                 </footer>
             </div>
         </div>
     </div>
 </template>
 <script>
-import Dropzone from "../../plugins/Dropzone";
+import Dropzone from '../../plugins/Dropzone';
 
 export default {
-    name: "ModalPost",
+    name: 'ModalPost',
 
     props: [],
 
     computed: {
+        disabled() {
+            return this.video_id == null;
+        },
         token() {
             return window.csrf_token;
         },
@@ -74,12 +77,12 @@ export default {
             return window.user;
         },
         selectedImgs() {
-            return _.filter(this.imgItems, ["selected", 1]);
+            return _.filter(this.imgItems, ['selected', 1]);
         }
     },
 
     mounted() {
-        Dropzone($(".img-upload-field")[0], this.dragDropUpload);
+        Dropzone($('.img-upload-field')[0], this.dragDropUpload);
     },
 
     methods: {
@@ -95,25 +98,27 @@ export default {
         },
         upload(e) {
             for (var i = 0; i < e.target.files.length; i++) {
-                if (e.target.files[0].type.indexOf("image") != -1) {
-                    this.fileFormat = ".bmp,.jpg,.png,.tiff,.gif,.pcx,.tga,.exif,.fpx,.svg,.psd,.cdr,.pcd,.dxf,.ufo,.eps,.ai,.raw,.WMF,.webp";
+                if (e.target.files[0].type.indexOf('image') != -1) {
+                    this.fileFormat = '.bmp,.jpg,.png,.tiff,.gif,.pcx,.tga,.exif,.fpx,.svg,.psd,.cdr,.pcd,.dxf,.ufo,.eps,.ai,.raw,.WMF,.webp';
                     if (this.filesCount >= 9) {
                         break;
                     }
                     let fileObj = e.target.files[i];
                     this._upload(fileObj);
                     this.filesCount++;
-                } else if (e.target.files[0].type.indexOf("video") != -1) {
+                } else if (e.target.files[0].type.indexOf('video') != -1) {
                     let _this = this;
 
-                    _this.fileFormat = ".avi,.wmv,.mpeg,.mp4,.mov,.mkv,.flv,.f4v,.m4v,.rmvb,.rm,.3gp,.dat,.ts,.mts,.vob";
+                    _this.fileFormat = '.avi,.wmv,.mpeg,.mp4,.mov,.mkv,.flv,.f4v,.m4v,.rmvb,.rm,.3gp,.dat,.ts,.mts,.vob';
                     _this.videoObj = e.target.files[0];
                     var regEn = /[`~!@#$%^&*()+<>?:"{},\/;'[\]]/im,
                         regCn = /[！#￥（——）：；“”‘，|《。》？【】[\]]/im;
 
                     if (regEn.test(_this.videoObj.name) || regCn.test(_this.videoObj.name)) {
                         _this.alertInfo = true;
-                        setTimeout(() => { _this.alertInfo = false }, 3000);
+                        setTimeout(() => {
+                            _this.alertInfo = false;
+                        }, 3000);
                         return false;
                     }
                     _this.bool = false;
@@ -130,14 +135,14 @@ export default {
             }
         },
         _upload(fileObj) {
-            var api = window.tokenize("/api/image/save");
+            var api = window.tokenize('/api/image/save');
             var _this = this;
             let formdata = new FormData();
-            formdata.append("from", "post");
-            formdata.append("photo", fileObj);
+            formdata.append('from', 'post');
+            formdata.append('photo', fileObj);
             let config = {
                 headers: {
-                    "Content-Type": "multipart/form-data"
+                    'Content-Type': 'multipart/form-data'
                 }
             };
             window.axios.post(api, formdata, config).then(function(res) {
@@ -154,13 +159,13 @@ export default {
             _this.progress = 0;
             console.log(videoFile);
 
-            console.log("start upload to qcvod ...");
+            console.log('start upload to qcvod ...');
             qcVideo.ugcUploader.start({
                 videoFile: videoFile, //视频，类型为 File
                 getSignature: function(callback) {
                     $.ajax({
-                        url: "/sdk/qcvod.php", //获取客户端上传签名的 URL
-                        type: "GET",
+                        url: '/sdk/qcvod.php', //获取客户端上传签名的 URL
+                        type: 'GET',
                         success: function(signature) {
                             //result 是派发签名服务器的回包
                             //假设回包为 { "code": 0, "signature": "xxxx"  }
@@ -172,7 +177,7 @@ export default {
                 error: function(result) {
                     //上传失败时的回调函数
                     //...
-                    console.log("上传失败的原因：" + result.msg);
+                    console.log('上传失败的原因：' + result.msg);
                 },
                 progress: function(result) {
                     // console.log("上传进度：" + result.curr);
@@ -181,27 +186,25 @@ export default {
                     _this.progress = progress;
                 },
                 finish: function(result) {
-                    $(_this.$refs.upload).val("");
+                    $(_this.$refs.upload).val('');
                     //上传成功时的回调函数
-                    $(_this.$refs.video_ele).css({ opacity: "1" });
-                    console.log("上传结果的fileId：" + result.fileId);
-                    console.log("上传结果的视频名称：" + result.videoName);
-                    console.log("上传结果的视频地址：" + result.videoUrl);
+                    $(_this.$refs.video_ele).css({ opacity: '1' });
+                    console.log('上传结果的fileId：' + result.fileId);
+                    console.log('上传结果的视频名称：' + result.videoName);
+                    console.log('上传结果的视频地址：' + result.videoUrl);
 
-                    //TODO：调用 POST /api/video/ , 写下数据库记录，返回video_id
+                    //调用 POST /api/video/ , 写下数据库记录，返回video_id
                     var _vm = _this;
                     $.ajax({
-                        url: window.tokenize("/api/video/save?from=qcvod"),
-                        type: "POST",
+                        url: window.tokenize('/api/video?from=qcvod'),
+                        type: 'POST',
                         data: result,
                         success: function(video) {
-                            console.log(video);
-                            //TODO: get video_id
                             _vm.video_id = video.id;
                         }
                     });
 
-                    alert('视频上传成功');
+                    // alert('视频上传成功');
                 }
             });
         },
@@ -231,7 +234,7 @@ export default {
             balance: window.user.balance,
             query: null,
             alertInfo: false,
-            description: "",
+            description: '',
             filesCount: 0,
             qcvod_id: null,
             videoPath: null,
@@ -277,7 +280,7 @@ export default {
                     margin-bottom: 20px;
                     border: 1px solid #f0f0f0;
                     padding-bottom: 50px;
-                    >textarea {
+                    > textarea {
                         height: 180px;
                         background-color: #fff;
                         border: none;
@@ -411,8 +414,8 @@ export default {
                 }
                 .tip-text {
                     padding-bottom: 10px;
-                    .desc{
-                        font-size:12px;
+                    .desc {
+                        font-size: 12px;
                     }
                 }
             }
@@ -421,6 +424,5 @@ export default {
     .multiselect__content-wrapper {
         z-index: 2;
     }
-
 }
 </style>

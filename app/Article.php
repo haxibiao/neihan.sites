@@ -538,9 +538,12 @@ class Article extends Model
             $this->video_id = $video->id; //关联上视频
             $this->save();
 
-            //5秒后检查视频vod api, QcloudUtils::makeCoverAndSnapshots需要1-3秒而已
+            //重复呼叫截图任务
+            \App\Helpers\QcloudUtils::makeCoverAndSnapshots($video->fileId, $video->duration > 9 ? 9 : $video->duration);
+
+            //5秒后检查视频vod api, QcloudUtils::makeCoverAndSnapshots需要1-10秒而已
             //有时候先添加视频的，后面还需要时间填写文字
-            \App\Jobs\SyncVodResult::dispatch($video)->delay(now()->addSeconds(5));
+            \App\Jobs\SyncVodResult::dispatch($video)->delay(now()->addSeconds(10));
         }
         //带图
         if (isset($input['image_urls']) && is_array($input['image_urls']) && !empty($input['image_urls'])) {

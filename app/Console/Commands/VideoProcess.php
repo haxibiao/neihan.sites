@@ -43,7 +43,7 @@ class VideoProcess extends Command
             $video = Video::findOrFail($video_id);
             return $this->processVideo($video);
         }
-        $this->processDrafts();
+        $this->processMissingCoverVideos();
     }
 
     public function processVideo($video)
@@ -63,7 +63,7 @@ class VideoProcess extends Command
 
     }
 
-    public function processDrafts()
+    public function processMissingCoverVideos()
     {
         $videos = Video::whereNotNull('qcvod_fileid')
             ->whereNull('cover')
@@ -71,6 +71,7 @@ class VideoProcess extends Command
             ->get();
         foreach ($videos as $video) {
             $this->processVideo($video);
+            sleep(5);
         }
     }
 }
