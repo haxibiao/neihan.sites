@@ -514,6 +514,12 @@ class Article extends Model
         }
         return sprintf($url_template, $this->type, $this->id);
     }
+
+    public function getPostTitle()
+    {
+        return $this->title ? $this->title : str_limit($this->body, $limit = 20, $end = '...');
+    }
+
     /**
      * @Desc     创建动态
      * @DateTime 2018-07-23
@@ -522,11 +528,10 @@ class Article extends Model
      */
     public function createPost($input)
     {
-        $user  = getUser();
-        $body  = $input['body'];
-        $title = isset($input['title']) ? $input['title'] : str_limit($body, $limit = 20, $end = '...');
+        $user = getUser();
+        $body = $input['body'];
 
-        // $this->title = $title; //暂时不保存多余的title给post
+        // $this->title = $this->getPostTitle(); //暂时不保存多余的title给post
         $this->body        = $body;
         $this->description = str_limit($body, 280); //截取微博那么长的内容存简介
         $this->status      = 1; //直接发布
@@ -537,7 +542,7 @@ class Article extends Model
         if (isset($input['video_id'])) {
 
             $video        = Video::findOrFail($input['video_id']);
-            $video->title = $title; //同步上标题
+            $video->title = $this->getPostTitle(); //同步上标题
             $video->save();
 
             //开始通知腾讯云处理视频
@@ -548,7 +553,7 @@ class Article extends Model
             $this->video_id = $video->id; //关联上视频
         }
         //带图
-        if (isset($input['image_urls']) && is_array($input['image_urls']) && !empty($input['image_urls'])) {
+        if (!empty($input['image_urls']) && is_array($input['image_urls'])) {
             //由于传图片的API只返回上传完成后的图片路径,如果改动会对其他地方造成影响。
             //此处将图片路径转换成图片ID
             $image_ids = array_map(function ($url) {

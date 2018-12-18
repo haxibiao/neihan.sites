@@ -5,7 +5,7 @@
 @extends('layouts.app')
 
 @section('title')
-	编辑视频动态 - {{ $video->article->title }}
+	编辑视频动态 - {{ $video->title }}
 @stop
 @php
     //编辑成功返回之前的页面
@@ -81,7 +81,7 @@
                             <h3 class="panel-title">截图</h3>
                         </div>
                         <div class="panel-body">
-                            @if(!empty($data['covers']) && count($data['covers']) >= 8)
+                            @if(!empty($data['covers']) && count($data['covers']))
                                 @php
                                     $coverIndex = 0;
                                 @endphp
