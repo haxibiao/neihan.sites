@@ -116,8 +116,8 @@ class QcloudUtils
     {
         $maxDuration = $duration > 9 ? 9 : $duration;
         $timeOffsets = [];
-        for ($d = 1; $d <= $maxDuration; $d++) {
-            $timeOffsets['snapshotByTimeOffset.timeOffset.' . $d] = $d * 1000;
+        for ($seconds = 1; $seconds <= $maxDuration; $seconds++) {
+            $timeOffsets['snapshotByTimeOffset.timeOffset.' . $seconds] = $seconds * 1000;
         }
         $params = array_merge([
             'fileId'                          => $fileId,
@@ -127,7 +127,7 @@ class QcloudUtils
             [
                 'coverBySnapshot.definition'   => 10, //截取封面
                 'coverBySnapshot.positionType' => 'Time',
-                'coverBySnapshot.position'     => 2, // 第2秒
+                'coverBySnapshot.position'     => 2, // 第2秒截图做默认封面
             ]);
         return self::retryVodApi('ProcessFile', $params);
     }

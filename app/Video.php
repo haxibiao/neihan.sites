@@ -203,6 +203,9 @@ class Video extends Model
     {
         set_time_limit(600); //queue:work 的timeout 现在是600秒，需要更长要去ops下修改 worker conf..
 
+        //截图前需要先获取到duration
+        $this->syncVodProcessResult();
+
         //截图
         $this->makeCover();
         //转码
@@ -212,7 +215,7 @@ class Video extends Model
 
         //30秒内重复检查截图结果
         for ($i = 0; $i < 3; $i++) {
-            //同步上传后的信息,获得封面，宽高，duration等
+            //同步上传后的信息,获得封面，宽高
             $flag = $this->syncVodProcessResult();
             //有截图就发布
             if ($flag >= 1) {
