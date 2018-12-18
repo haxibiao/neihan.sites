@@ -85,12 +85,12 @@
                 </div>
             </div>
            <div class="video-title">
-                    {{ $video->title ?: $video->article->get_description() }}
-        {{--              <div class="video-info">
+                    {{ $video->article->get_description() }}
+                     <div class="video-info">
                         @if(!empty($category))
-                            <a href="/{{ $category->name_en }}" class="category-name">{{ $article->category->name }}</a>
+                            <a href="/{{ $category->name_en }}" class="category-name">分类: {{ $article->category->name }}</a>
                         @endif
-                     </div> --}}
+                     </div>
             </div>
             <div class="video-relevant">
                 <div class="author-info">
