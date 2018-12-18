@@ -135,12 +135,12 @@ class Video extends Model
                         }
                         if (str_contains($codeInfo['templateName'], '高清')) {
                             $video_urls['高清'] = get_secure_url($codeInfo['url']);
+                            //默认播放url 用1280*
+                            $this->path = get_secure_url($codeInfo['url']);
+                            $flag       = 2;
                         }
                         if (str_contains($codeInfo['templateName'], '全高清')) {
                             $video_urls['全高清'] = get_secure_url($codeInfo['url']);
-                            //默认播放url
-                            $this->path = get_secure_url($codeInfo['url']);
-                            $flag       = 2;
                         }
                     }
                 }
