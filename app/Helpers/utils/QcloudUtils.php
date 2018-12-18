@@ -114,7 +114,7 @@ class QcloudUtils
 
     public static function makeCoverAndSnapshots($fileId, $duration = null)
     {
-        $maxDuration = $duration ?: 9;
+        $maxDuration = $duration > 9 ? 9 : $duration;
         $timeOffsets = [];
         for ($d = 1; $d <= $maxDuration; $d++) {
             $timeOffsets['snapshotByTimeOffset.timeOffset.' . $d] = $d * 1000;
@@ -172,6 +172,16 @@ class QcloudUtils
             'procedure' => 'QCVB_SimpleProcessFile(1, 1, 10, 10)', //这个系统预置流程简单实用，转码，水印，封面，截图
         ];
         return self::retryVodApi('RunProcedure', $params);
+    }
+
+    public static function convertVodFile($fileId)
+    {
+        $params = [
+            'fileId'       => $fileId,
+            'isScreenshot' => 0,
+            'isWatermark'  => 0,
+        ];
+        return self::retryVodApi('ConvertVodFile', $params);
     }
 
     public static function takeSnapshotsByTime($fileId)

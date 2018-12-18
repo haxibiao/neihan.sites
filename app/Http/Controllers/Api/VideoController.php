@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Article;
-use App\Helpers\QcloudUtils;
 use App\Http\Controllers\Controller;
 use App\Video;
 use Illuminate\Http\Request;
@@ -93,14 +92,6 @@ class VideoController extends Controller
             $video->path    = get_secure_url($request->videoUrl); //保存https的video cdn 地址
             $video->title   = $request->videoName;
             $video->save();
-
-            //get duration...
-            $video->syncVodProcessResult();
-
-            $duration = $video->duration > 9 ? 9 : $video->duration;
-            //调用 vod api , 开始转码，水印，生成截图（非300*200，需要后面UI处理显示效果） ...
-            //现在无需转码了,只需要完成截图就好
-            QcloudUtils::makeCoverAndSnapshots($request->fileId, $duration);
             return $video;
         }
 

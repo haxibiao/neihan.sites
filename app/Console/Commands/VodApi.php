@@ -12,7 +12,7 @@ class VodApi extends Command
      *
      * @var string
      */
-    protected $signature = 'vod:api {method} {--fileid=} {--taskid=}';
+    protected $signature = 'vod:api {method} {--fileid=} {--taskid=} {--video_id=}';
 
     /**
      * The console command description.
@@ -47,7 +47,7 @@ class VodApi extends Command
             return;
         }
         if ($this->argument('method') == 'getTaskList') {
-            $res = QcloudUtils::getTaskList();            
+            $res = QcloudUtils::getTaskList();
             dd($res);
             return;
         }
@@ -60,12 +60,18 @@ class VodApi extends Command
             return;
         }
 
-        if (empty($this->option('fileid'))) {
+        $fileid = $this->option('fileid');
+        if ($this->option('video_id')) {
+            $video  = \App\Video::findOrFail($this->option('video_id'));
+            $fileid = $video->qcvod_fileid;
+        }
+
+        if (!$fileid) {
             return $this->error('--fileid cannot be empty');
         }
 
         if ($fileAction = $this->argument('method')) {
-            $res = QcloudUtils::$fileAction($this->option('fileid'));
+            $res = QcloudUtils::$fileAction($fileid);
             dd($res);
         }
 

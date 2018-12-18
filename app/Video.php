@@ -38,7 +38,7 @@ class Video extends Model
         parent::boot();
         //同步article status
         static::updated(function ($model) {
-            if($article = $model->article){
+            if ($article = $model->article) {
                 $article->status = $model->status;
             }
         });
@@ -97,6 +97,7 @@ class Video extends Model
 
     public function syncVodProcessResult()
     {
+        $flag = 0;
         //简单顾虑，视频地址确实是上传到了vod的
         $res = [];
         if (str_contains($this->path, 'vod')) {
@@ -106,6 +107,7 @@ class Video extends Model
             }
             if (!empty($res['basicInfo']) && !empty($res['basicInfo']['coverUrl'])) {
                 $this->cover = $res['basicInfo']['coverUrl'];
+                $flag        = 1;
             }
             if (!empty($res['snapshotByTimeOffsetInfo']) &&
                 !empty($res['snapshotByTimeOffsetInfo']['snapshotByTimeOffsetList'])) {
@@ -123,6 +125,7 @@ class Video extends Model
             if (!empty($res['transcodeInfo']) && !empty($res['transcodeInfo']['transcodeList'])) {
                 $video_urls = [];
                 foreach ($res['transcodeInfo']['transcodeList'] as $codeInfo) {
+                    //同步其他码率的url
                     if (!empty($codeInfo['templateName'])) {
                         if (str_contains($codeInfo['templateName'], '流畅')) {
                             $video_urls['流畅'] = get_secure_url($codeInfo['url']);
@@ -135,6 +138,9 @@ class Video extends Model
                         }
                         if (str_contains($codeInfo['templateName'], '全高清')) {
                             $video_urls['全高清'] = get_secure_url($codeInfo['url']);
+                            //默认播放url
+                            $this->path = get_secure_url($codeInfo['url']);
+                            $flag       = 2;
                         }
                     }
                 }
@@ -142,7 +148,6 @@ class Video extends Model
             }
             //视频的宽和高
             if (!empty($res['metaData'])) {
-
                 //duration
                 $this->duration = $res['metaData']['duration'];
                 //旋转率
@@ -156,16 +161,25 @@ class Video extends Model
                 }
             }
             $this->save();
+        }
+        //如果res为空 或duration = 0 表示该视频有问题
+        if (empty($res) || empty($res['basicInfo']['duration'])) {
+            $flag = -1;
+        }
+        return $flag; //-1:有异常的文件, 0: 还没截图，1：有截图，2：有转码结果
+    }
 
-            //关联的视频动态发布出去
+    public function publishPost()
+    {
+        //获得封面了，关联的视频动态发布出去
+        if (!empty($this->cover)) {
             if ($article = $this->article) {
                 //同步封面
                 $article->image_url = $this->cover;
                 $article->status    = 1;
                 $article->save();
 
-                //同步title
-                $this->title  = $article->title;
+                //视频发布
                 $this->status = 1;
                 $this->save();
 
@@ -173,7 +187,52 @@ class Video extends Model
                 $this->recordAction();
             }
         }
-        return $res;
+    }
+
+    public function makeCover()
+    {
+        QcloudUtils::makeCoverAndSnapshots($this->qcvod_fileid, $this->duration);
+    }
+
+    public function transCode()
+    {
+        QcloudUtils::convertVodFile($this->qcvod_fileid, $this->duration);
+    }
+
+    public function processVod()
+    {
+        set_time_limit(600); //queue:work 的timeout 现在是600秒，需要更长要去ops下修改 worker conf..
+
+        //截图
+        $this->makeCover();
+        //转码
+        $this->transCode();
+
+        sleep(10); //10秒后检查
+
+        //30秒内重复检查截图结果
+        for ($i = 0; $i < 3; $i++) {
+            //同步上传后的信息,获得封面，宽高，duration等
+            $flag = $this->syncVodProcessResult();
+            //有截图就发布
+            if ($flag >= 1) {
+                $this->publishPost();
+                break;
+            }
+            //这里重复提交截图job是因为几秒的短视频截图不稳定
+            $this->makeCover();
+            sleep(10);
+        }
+
+        //10分钟内尝试10次获取转码结果,目前发现1分钟短视频转码时间不到1分钟...
+        for ($i = 0; $i < 10; $i++) {
+            //同步上传后的转码结果
+            $flag = $this->syncVodProcessResult();
+            if ($flag == 2) {
+                break;
+            }
+            sleep(60);
+        }
     }
 
     public function setCover($cover_url)

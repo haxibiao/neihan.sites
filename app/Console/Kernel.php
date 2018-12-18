@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('traffic:clean')->weekly();
         $schedule->command('sitemap:refresh')->daily();
         $schedule->command('video:process')->everyMinute();
+        $schedule->command('video:process --codeinfo')->hourly();
     }
 
     /**

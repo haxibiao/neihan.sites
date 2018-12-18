@@ -52,7 +52,7 @@
                     </form>
                 </div>
                 <footer class="clearfix">
-                    <button :disabled="disabled" class="btn-base btn-handle btn-md pull-right" @click="submit" :style="disabled ? 'opacity:0.7' : ''">提交</button>
+                    <button class="btn-base btn-handle btn-md pull-right" @click="submit">提交</button>
                 </footer>
             </div>
         </div>
