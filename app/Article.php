@@ -52,6 +52,11 @@ class Article extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function video()
+    {
+        return $this->belongsTo('App\Video');
+    }
+
     //主专题
     public function category()
     {
@@ -530,20 +535,17 @@ class Article extends Model
         $this->save();
         //带视频
         if (isset($input['video_id'])) {
-            $this->status = 0; //视频的话，等视频截图转码完成，自动会发布的
-            $this->type   = 'video';
+
             $video        = Video::findOrFail($input['video_id']);
-            $video->title = $title;
+            $video->title = $title; //同步上标题
             $video->save();
+
+            //开始通知腾讯云处理视频
+            \App\Jobs\ProcessVod::dispatch($video);
+
+            $this->status   = 0; //视频的话，等视频截图转码完成，自动会发布动态的
+            $this->type     = 'video';
             $this->video_id = $video->id; //关联上视频
-            $this->save();
-
-            //重复呼叫截图任务
-            \App\Helpers\QcloudUtils::makeCoverAndSnapshots($video->fileId, $video->duration > 9 ? 9 : $video->duration);
-
-            //5秒后检查视频vod api, QcloudUtils::makeCoverAndSnapshots需要1-10秒而已
-            //有时候先添加视频的，后面还需要时间填写文字
-            \App\Jobs\SyncVodResult::dispatch($video)->delay(now()->addSeconds(10));
         }
         //带图
         if (isset($input['image_urls']) && is_array($input['image_urls']) && !empty($input['image_urls'])) {
@@ -554,9 +556,9 @@ class Article extends Model
             }, $input['image_urls']);
             $this->image_url = $input['image_urls'][0];
             $this->has_pic   = 1; //1代表内容含图
-            $this->save();
             $this->images()->sync($image_ids);
         }
+        $this->save();
         app_track_post();
         return $this;
     }

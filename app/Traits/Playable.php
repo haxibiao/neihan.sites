@@ -30,7 +30,7 @@ trait Playable
         //     }
         // }
         $cover_url = $this->image_url;
-        if(empty($cover_url)) {
+        if (empty($cover_url)) {
             return url("/images/inprogress.jpg");
         }
         // $justChanged = $this->updated_at && $this->updated_at->addMinutes(10) > now();
@@ -76,15 +76,5 @@ trait Playable
             return '';
         }
         return $this->video->url();
-    }
-    /**
-     * @Desc     关联用户的详细信息
-     * @Author   czg
-     * @DateTime 2018-06-27
-     * @return   [type]     [description]
-     */
-    public function video()
-    {
-        return $this->belongsTo('App\Video');
     }
 }
