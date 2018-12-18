@@ -11,7 +11,7 @@ return [
                 'token' => 'sb0L7xS3Wk0taaAo',
             ],
             'baiduNumber' => [
-                'token' => 'oiIhBEyTEx33BwRW',
+                'token' => 'igwPj6l7ifHCM4GH',
             ],
         ],
 
