@@ -76,7 +76,8 @@ class VideoProcess extends Command
     {
         $this->info("$video->id $video->title");
         $this->comment("fileid = $video->qcvod_fileid");
-        $flag          = $video->syncVodProcessResult();
+        $flag = $video->syncVodProcessResult();
+        sleep(2); //避免超过vod:api的请求限制数
         $video->status = $flag;
         $video->save();
         if ($flag == 2) {
@@ -97,7 +98,7 @@ class VideoProcess extends Command
         //尝试获取截图
         if (!$video->cover) {
             $flag = $video->syncVodProcessResult();
-
+            sleep(2); //避免超过vod:api的请求限制数
             //$flag -1 表示文件有问题
             if (!$flag) {
                 $video->status = -1;
