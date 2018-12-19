@@ -147,6 +147,9 @@ class Comment extends Model
             return $v != "";
         });
         $json = json_encode(array_values($flag_array),JSON_UNESCAPED_UNICODE);
+        $json = htmlspecialchars_decode($json,ENT_QUOTES);
+        //将字符 转换成空格
+        $json = str_replace(['&nbsp;'], " ", $json);
         return $json;
     }
 

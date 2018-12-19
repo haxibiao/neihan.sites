@@ -38,6 +38,7 @@ class CommentType extends GraphQLType
                 'type'        => Type::string(),
                 'description' => 'body of comment',
                 'resolve'     => function ($root, $args) {
+                    // dd(htmlentities($root->wrapperBodyToMobile()));
                     return $root->wrapperBodyToMobile();
                 },
             ],
