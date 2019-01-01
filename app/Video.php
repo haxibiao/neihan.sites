@@ -109,38 +109,45 @@ class Video extends Model
                 $this->cover = $res['basicInfo']['coverUrl'];
                 $flag        = 1;
             }
+
+            $covers = [];
             if (!empty($res['snapshotByTimeOffsetInfo']) &&
                 !empty($res['snapshotByTimeOffsetInfo']['snapshotByTimeOffsetList'])) {
-                $covers = [];
                 foreach ($res['snapshotByTimeOffsetInfo']['snapshotByTimeOffsetList'] as $snapInfo) {
                     if ($snapInfo['definition'] == 10) {
                         foreach ($snapInfo['picInfoList'] as $urlArr) {
                             $url      = $urlArr["url"];
-                            $covers[] = get_secure_url($url);
+                            $covers[] = ssl_url($url);
                         }
                     }
                 }
-                $this->setJsonData('covers', $covers);
             }
+            if (empty($covers)) {
+                $covers = [$this->cover];
+                //没有封面数据，提交截图任务，下次编辑也许就能选截图了
+                $this->makeCover();
+            }
+            $this->setJsonData('covers', $covers);
+
             if (!empty($res['transcodeInfo']) && !empty($res['transcodeInfo']['transcodeList'])) {
                 $video_urls = [];
                 foreach ($res['transcodeInfo']['transcodeList'] as $codeInfo) {
                     //同步其他码率的url
                     if (!empty($codeInfo['templateName'])) {
                         if (str_contains($codeInfo['templateName'], '流畅')) {
-                            $video_urls['流畅'] = get_secure_url($codeInfo['url']);
+                            $video_urls['流畅'] = ssl_url($codeInfo['url']);
                         }
                         if (str_contains($codeInfo['templateName'], '标清')) {
-                            $video_urls['标清'] = get_secure_url($codeInfo['url']);
+                            $video_urls['标清'] = ssl_url($codeInfo['url']);
                         }
                         if (str_contains($codeInfo['templateName'], '高清')) {
-                            $video_urls['高清'] = get_secure_url($codeInfo['url']);
+                            $video_urls['高清'] = ssl_url($codeInfo['url']);
                             //默认播放url 用1280*
-                            $this->path = get_secure_url($codeInfo['url']);
+                            $this->path = ssl_url($codeInfo['url']);
                             $flag       = 2;
                         }
                         if (str_contains($codeInfo['templateName'], '全高清')) {
-                            $video_urls['全高清'] = get_secure_url($codeInfo['url']);
+                            $video_urls['全高清'] = ssl_url($codeInfo['url']);
                         }
                     }
                 }
@@ -199,10 +206,8 @@ class Video extends Model
         QcloudUtils::convertVodFile($this->qcvod_fileid, $this->duration);
     }
 
-    public function processVod()
+    public function startProcess()
     {
-        set_time_limit(600); //queue:work 的timeout 现在是600秒，需要更长要去ops下修改 worker conf..
-
         //截图前需要先获取到duration
         $this->syncVodProcessResult();
 
@@ -210,6 +215,14 @@ class Video extends Model
         $this->makeCover();
         //转码
         $this->transCode();
+    }
+
+    public function processVod()
+    {
+        set_time_limit(600); //queue:work 的timeout 现在是600秒，需要更长要去ops下修改 worker conf..
+        if (!$this->duration) {
+            $this->startProcess();
+        }
 
         sleep(10); //10秒后检查
 

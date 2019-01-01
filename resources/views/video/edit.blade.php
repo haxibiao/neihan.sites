@@ -81,7 +81,7 @@
                             <h3 class="panel-title">截图</h3>
                         </div>
                         <div class="panel-body">
-                            @if(!empty($data['covers']) && count($data['covers']))
+                            @if(!empty($data['covers']))
                                 @php
                                     $coverIndex = 0;
                                 @endphp

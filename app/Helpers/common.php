@@ -17,7 +17,7 @@ function get_ip()
     return $ip;
 }
 
-function get_secure_url($url)
+function ssl_url($url)
 {
     if (starts_with($url, 'https')) {
         return $url;
@@ -26,6 +26,15 @@ function get_secure_url($url)
         return secure_url($url);
     }
     return str_replace("http", "https", $url);
+}
+
+function trim_https($url)
+{
+    //替换URL协议
+    if (starts_with($url, 'https:')) {
+        return str_replace(['https:'], 'http:', $url);
+    }
+    return $url;
 }
 
 function get_domain_key()
@@ -67,6 +76,7 @@ function processVideo($video)
     $video->syncVodProcessResult();
     //如果还没有截图 就重新执行调用截图接口
     if (!$video->cover && !empty($video->qcvod_fileid)) {
-        \App\Helpers\QcloudUtils::makeCoverAndSnapshots($video->qcvod_fileid, $video->duration);
+        $duration = $video->duration > 9 ? 9 : $video->duration;
+        \App\Helpers\QcloudUtils::makeCoverAndSnapshots($video->qcvod_fileid, $duration);
     }
 }

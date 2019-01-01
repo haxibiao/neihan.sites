@@ -190,12 +190,13 @@ class Article extends Model
         //all place including APP,  需要返回全Uri
         $path = $this->image_url;
         if ($this->type == 'video' || str_contains($path, ['.small.', 'haxibiao'])) {
-            return $path;
+            return trim_https($this->cover());
         }
         $extension    = pathinfo($path, PATHINFO_EXTENSION);
         $folder       = pathinfo($path, PATHINFO_DIRNAME);
         $url_formater = $folder . '/' . basename($path, '.' . $extension) . '%s' . $extension;
-        return sprintf($url_formater, '.small.');
+        $image_url    = sprintf($url_formater, '.small.');
+        return trim_https(ssl_url($image_url));
     }
 
     public function hasImage()
@@ -546,6 +547,9 @@ class Article extends Model
             $video->save();
 
             //开始通知腾讯云处理视频
+            //启动截图，转码，即使jobs挂了，手动事后发布草稿也可以触发上架更新封面和转码地址更新
+            $video->startProcess();
+            //start 是同步操作，异步的是返回结果，异步发布
             \App\Jobs\ProcessVod::dispatch($video);
 
             $this->status   = 0; //视频的话，等视频截图转码完成，自动会发布动态的

@@ -191,13 +191,15 @@ class VideoController extends Controller
         }
 
         //如果还没有封面，可以尝试sync一下vod结果了
+        $covers = [];
+        //封面不够，就尝试检查同步截图结果
         if (empty($video->jsonData('covers'))) {
             $video->syncVodProcessResult();
-        }
-
-        $covers = [];
-        if (!empty($video->article->covers())) {
-            $covers = $video->article->covers();
+            if (!empty($video->jsonData('covers'))) {
+                $covers = $video->jsonData('covers');
+            }
+        } else {
+            $covers = $video->jsonData('covers');
         }
         $data['covers'] = $covers;
         return view('video.edit')
@@ -362,10 +364,10 @@ class VideoController extends Controller
     public function processVideo($id)
     {
         $video = Video::findOrFail($id);
-        if(empty($video->jsonData('covers'))){
+        if (empty($video->jsonData('covers'))) {
             processVideo($video);
             dd('请求成功,截图将在1-2分钟内返回,处理视频的速度取决于视频的大小,请勿一直刷新本页面.');
-        }else{
+        } else {
             return $video->cover;
         }
     }

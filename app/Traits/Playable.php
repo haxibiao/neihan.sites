@@ -53,7 +53,7 @@ trait Playable
         //     for ($i = 1; $i <= 8; $i++) {
         //         $cover_path = "/storage/video/$this->id.jpg.$i.jpg";
         //         if (file_exists(public_path($cover_path))) {
-        //             $covers[] = get_secure_url(url($cover_path));
+        //             $covers[] = ssl_url(url($cover_path));
         //         }
         //     }
         //     return $covers;
