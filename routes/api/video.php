@@ -7,5 +7,6 @@ Route::get('/getlatestVideo', 'Api\VideoController@getLatestVideo');
 Route::get('videos', 'Api\VideoController@index'); //旧的api
 Route::get('/video/{id}', 'Api\VideoController@show');
 Route::middleware('auth:api')->post('/video', 'Api\VideoController@store'); //上传视频接口
+Route::middleware('auth:api')->post('/video/save', 'Api\VideoController@store'); //兼容1.0上传视频接口
 //获取视频截图
 Route::get('/{id}/covers', 'Api\VideoController@covers');

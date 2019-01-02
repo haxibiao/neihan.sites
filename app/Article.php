@@ -546,15 +546,15 @@ class Article extends Model
             $video->title = $this->getPostTitle(); //同步上标题
             $video->save();
 
+            $this->status   = 0; //视频的话，等视频截图转码完成，自动会发布动态的
+            $this->type     = 'video';
+            $this->video_id = $video->id; //关联上视频
+
             //开始通知腾讯云处理视频
             //启动截图，转码，即使jobs挂了，手动事后发布草稿也可以触发上架更新封面和转码地址更新
             $video->startProcess();
             //start 是同步操作，异步的是返回结果，异步发布
             \App\Jobs\ProcessVod::dispatch($video);
-
-            $this->status   = 0; //视频的话，等视频截图转码完成，自动会发布动态的
-            $this->type     = 'video';
-            $this->video_id = $video->id; //关联上视频
         }
         //带图
         if (!empty($input['image_urls']) && is_array($input['image_urls'])) {
