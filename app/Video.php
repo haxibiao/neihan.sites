@@ -221,14 +221,14 @@ class Video extends Model
 
     public function processVod()
     {
-        set_time_limit(600); //queue:work 的timeout 现在是600秒，需要更长要去ops下修改 worker conf..
+        set_time_limit(600); //queue worker 的timeout 最长就这么长了
+
         if (!$this->duration) {
             $this->startProcess();
         }
+        sleep(5); //5秒后检查
 
-        sleep(10); //10秒后检查
-
-        //30秒内重复检查截图结果
+        //15秒内重复检查截图结果
         for ($i = 0; $i < 3; $i++) {
             //同步上传后的信息,获得封面，宽高
             $flag = $this->syncVodProcessResult();
@@ -239,17 +239,17 @@ class Video extends Model
             }
             //这里重复提交截图job是因为几秒的短视频截图不稳定
             $this->makeCover();
-            sleep(10);
+            sleep(5);
         }
 
-        //10分钟内尝试10次获取转码结果,目前发现1分钟短视频转码时间不到1分钟...
-        for ($i = 0; $i < 10; $i++) {
+        //5分钟内尝试30次获取转码结果,目前发现1分钟短视频转码时间不到1分钟...
+        for ($i = 0; $i < 30; $i++) {
             //同步上传后的转码结果
             $flag = $this->syncVodProcessResult();
             if ($flag == 2) {
                 break;
             }
-            sleep(60);
+            sleep(10);
         }
     }
 
