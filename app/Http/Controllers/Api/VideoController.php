@@ -88,7 +88,7 @@ class VideoController extends Controller
             $video = Video::firstOrNew([
                 'qcvod_fileid' => $request->fileId,
             ]);
-            $video->user_id = getUserId();
+            $video->user_id = $request->user()->id;
             $video->path    = ssl_url($request->videoUrl); //保存https的video cdn 地址
             $video->title   = $request->videoName;
             $video->save();

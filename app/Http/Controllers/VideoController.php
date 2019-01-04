@@ -191,15 +191,14 @@ class VideoController extends Controller
         }
 
         //如果还没有封面，可以尝试sync一下vod结果了
-        $covers = [];
+        $covers = $video->jsonData('covers');
         //封面不够，就尝试检查同步截图结果
-        if (empty($video->jsonData('covers'))) {
-            $video->syncVodProcessResult();
-            if (!empty($video->jsonData('covers'))) {
-                $covers = $video->jsonData('covers');
+        if (empty($covers) || count($covers) < 5) {
+            if (!$video->duration) {
+                $video->startProcess();
             }
-        } else {
-            $covers = $video->jsonData('covers');
+
+            $video->syncVodProcessResult();
         }
         $data['covers'] = $covers;
         return view('video.edit')

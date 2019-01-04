@@ -210,11 +210,13 @@ class Video extends Model
     {
         //截图前需要先获取到duration
         $this->syncVodProcessResult();
-
+        sleep(1); //vod:api 请求频率限制
         //截图
         $this->makeCover();
+        sleep(1); //vod:api 请求频率限制
         //转码
         $this->transCode();
+        sleep(1); //vod:api 请求频率限制
     }
 
     public function processVod()
