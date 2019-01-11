@@ -27,8 +27,7 @@
                 <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
                     {!! Form::label('type', '推送类型') !!}
 				    {!! Form::select('type', [
-	                  'baiduNumber'=>'百度推送',
-				      'pandaNumber'=>'熊账号',], null, ['id' => 'type', 'class' => 'form-control', 'required' => 'required']) !!}
+	                  'baiduNumber'=>'百度推送'], null, ['id' => 'type', 'class' => 'form-control', 'required' => 'required']) !!}
                     <small class="text-danger">
                         {{ $errors->first('type') }}
                     </small>

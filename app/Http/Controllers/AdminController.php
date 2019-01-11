@@ -319,11 +319,11 @@ class AdminController extends Controller
         $type   = $request->type;
 
         switch ($type) {
-            case 'pandaNumber':
-                $appid = config('seo.' . get_domain_key() . '.articlePush.pandaNumber.appid');
-                $token = config('seo.' . get_domain_key() . '.articlePush.pandaNumber.token');
-                $api   = 'http://data.zz.baidu.com/urls?appid=' . $appid . '&token=' . $token . '&type=realtime';
-                break;
+            // case 'pandaNumber':
+            //     $appid = config('seo.' . get_domain_key() . '.articlePush.pandaNumber.appid');
+            //     $token = config('seo.' . get_domain_key() . '.articlePush.pandaNumber.token');
+            //     $api   = 'http://data.zz.baidu.com/urls?appid=' . $appid . '&token=' . $token . '&type=realtime';
+            //     break;
             case 'baiduNumber':
                 $token = config('seo.' . get_domain_key() . '.articlePush.baiduNumber.token');
                 $api   = 'http://data.zz.baidu.com/urls?site=' . env('APP_URL') . '&token=' . $token;
