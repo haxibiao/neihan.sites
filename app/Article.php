@@ -699,7 +699,7 @@ class Article extends Model
     /**
      * @Author      XXM
      * @DateTime    2018-11-11
-     * @description [改变相关的动态 后期将这块放进队列中处理]
+     * @description [改变相关的动态]
      * @return      [null]
      */
     public function changeAction()

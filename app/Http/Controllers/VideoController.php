@@ -220,7 +220,6 @@ class VideoController extends Controller
 
         //更新动态正文，上架下架状态
         $article->description = $request->body;
-        $article->update($request->all());
         //维护专题关系
         $article->saveCategories(request('categories'));
         //改变相关状态
@@ -236,6 +235,7 @@ class VideoController extends Controller
             $video->status = 0;
             $video->save();
         }
+        $article->update($request->all());
 
         if (str_contains(url()->previous(), 'edit')) {
             return redirect('/video/' . $video->id);
