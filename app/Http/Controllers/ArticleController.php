@@ -165,6 +165,8 @@ class ArticleController extends Controller {
 
 		//记录用户浏览记录
 		$article->recordBrowserHistory();
+		//兼容APP端发表出来的格式
+		$article->body = str_replace(["\r\n","\n"], '<br/>', $article->body);
 
 		//parse video and image, etc...
 		//$article->body = $article->parsedBody();
@@ -175,6 +177,7 @@ class ArticleController extends Controller {
 			->orderBy('updated_at', 'desc')
 			->take(10)
 			->get();
+
 
 		return view('article.show')
 			->withArticle($article)
