@@ -2,11 +2,10 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use App\User;
+use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class UserFollowed extends Notification
 {
@@ -22,46 +21,37 @@ class UserFollowed extends Notification
     public function __construct(User $user)
     {
         $this->user = $user;
+        $this->delay(now())->subMinute(5); //冷静5分钟后没关注了，就不发消息
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
     public function via($notifiable)
     {
-        return ['database'];
+        if ($this->dontSend($notifiable)) {
+            return [];
+        }
+        return ['mail'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
+    public function dontSend($notifiable)
+    {
+        return !$this->user->isFollow("users", getUserId());
+    }
+
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
     public function toArray($notifiable)
     {
         return [
-            'type' => 'follow',
+            'type'        => 'follow',
             'user_avatar' => $this->user->avatar,
-            'user_name' => $this->user->name,
-            'user_id' => $this->user->id,
+            'user_name'   => $this->user->name,
+            'user_id'     => $this->user->id,
         ];
     }
 }
