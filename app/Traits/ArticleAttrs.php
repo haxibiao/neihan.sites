@@ -46,13 +46,18 @@ trait ArticleAttrs
 
     public function getCoverAttribute()
     {
+        $cover_url = $this->image_url;
+
+        //TODO: 图片在本地？需要修复到cos
+
         if ($this->video()->exists()) {
             if (!is_null($this->video->cover)) {
+                if (str_contains($cover_url, env('COS_DOMAIN'))) {
+                    return $cover_url;
+                }
                 return \Storage::cloud()->url($this->video->cover);
             }
         }
-
-        $cover_url = $this->image_url;
         if (empty($cover_url)) {
             return \Storage::cloud()->url("/images/cover.png");
         }

@@ -77,7 +77,7 @@ class User extends Authenticatable
     const NAME_DEFAULT = '匿名墨友';
 
     // 默认头像
-    const AVATAR_DEFAULT = 'avatar/avatar-1.jpg';
+    const AVATAR_DEFAULT = 'storage/avatar/avatar-1.jpg';
 
     /**
      * The attributes that should be hidden for arrays.
