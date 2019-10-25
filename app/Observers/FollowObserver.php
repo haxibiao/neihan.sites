@@ -16,13 +16,13 @@ class FollowObserver
     public function created(Follow $follow)
     {
         //同步用户关注数
-        $user                   = $follow->user;
-        $user->count_followings = $user->followings()->count();
-        $user->save();
+        $user                            = $follow->user;
+        $user->profile->count_followings = $user->followings()->count();
+        $user->profile->save();
 
         //同步被关注着的粉丝数
         $count = Follow::where('followed_type', $follow->followed_type)->where("followed_id", $follow->followed_id)->count();
-        $follow->followed()->update(['count_follows' => $count]);
+        $follow->followed->profile->update(['count_follows' => $count]);
 
         //如果关注的是用户则发送消息通知给用户 ,只能存在这一条信息
         if ($follow->followed instanceof \App\User) {
@@ -51,13 +51,13 @@ class FollowObserver
     public function deleted(Follow $follow)
     {
         //同步用户关注数
-        $user                   = $follow->user;
-        $user->count_followings = $user->followings()->count();
-        $user->save();
+        $user                            = $follow->user;
+        $user->profile->count_followings = $user->followings()->count();
+        $user->profile->save();
 
         //同步被关注着的粉丝数
         $count = Follow::where('followed_type', $follow->followed_type)->where("followed_id", $follow->followed_id)->count();
-        $follow->followed()->update(['count_follows' => $count]);
+        $follow->followed->profile->update(['count_follows' => $count]);
     }
 
     /**

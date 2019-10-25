@@ -23,8 +23,9 @@ trait CategoryResolvers
     public function resolveCategories($root, array $args, $context)
     {
         $filter = $args['filter'] ?? 'hot';
-        $qb     = \App\Category::whereIn('type', ['video','article']); //视频时代，避开图文老分类 //TODO 紧急兼容其它站点老数据问题
-        $qb     = $qb->whereStatus(1); //需上架
+        //TODO 紧急兼容其它站点老数据问题
+        //$qb     = \App\Category::whereIn('type', ['video','article']); //视频时代，避开图文老分类
+        $qb       = \App\Category::whereStatus(1); //需上架
 
         //确保是近1个月内更新过的专题（旧的老分类适合图文时代，可能很久没人更新内容进入了）
         // $qb = $qb->where('updated_at', '>', now()->addMonth(-1));
