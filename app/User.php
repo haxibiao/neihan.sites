@@ -452,14 +452,6 @@ class User extends Authenticatable
         return '<a href="/user/' . $this->id . '">@' . $this->name . '</a>';
     }
 
-    public function getIntroductionAttribute()
-    {
-        if (!$this->profile || empty($this->profile->introduction)) {
-            return '这个人很懒，一点介绍都没留下...';
-        }
-        return $this->profile->introduction;
-    }
-
     public function getProfileAttribute()
     {
         if ($profile = $this->hasOne(\App\Profile::class)->first()) {

@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Exceptions\GQLException;
+use App\Profile;
 use App\User;
 use Exception;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -193,16 +194,18 @@ trait UserResolvers
             }
             return $user;
         }
-        $avatar_formatter = 'http://cos.' . env('APP_NAME') . '.com/storage/avatar/avatar-%d.jpg';
-        $avatar           = sprintf($avatar_formatter, rand(1, 15));
-        $user             = User::create([
-            'uuid'         => $args['uuid'],
-            'account'      => $args['phone'] ?? $args['uuid'],
-            'name'         => '匿名墨友',
-            'api_token'    => str_random(60),
-            'avatar'       => $avatar,
+        $user = User::create([
+            'uuid'      => $args['uuid'],
+            'account'   => $args['phone'] ?? $args['uuid'],
+            'name'      => '匿名墨友',
+            'api_token' => str_random(60),
+            'avatar'    => User::AVATAR_DEFAULT,
+            'phone'     => $phone,
+        ]);
+
+        Profile::create([
+            'user_id'      => $this->id,
             'introduction' => '这个人暂时没有 freestyle ',
-            'phone'        => $phone,
         ]);
 
         $action = \App\Action::create([

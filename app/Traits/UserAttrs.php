@@ -72,8 +72,25 @@ trait UserAttrs
         return null;
     }
 
-    //unreads
+    public function getQqAttribute()
+    {
+        return $this->profile->qq;
+    }
 
+    public function getJsonAttribute()
+    {
+        return $this->profile->Json;
+    }
+
+    public function getIntroductionAttribute()
+    {
+        if (!$this->profile || empty($this->profile->introduction)) {
+            return '这个人很懒，一点介绍都没留下...';
+        }
+        return $this->profile->introduction;
+    }
+
+    //unreads
     public function getUnreadCommentsAttribute()
     {
         return $this->unreads('comments');
@@ -131,6 +148,35 @@ trait UserAttrs
     public function getCountDraftsAttribute()
     {
         return $this->drafts()->count();
+    }
+
+    public function getCountArticlesAttribute()
+    {
+        return $this->profile->count_articles;
+    }
+
+    public function getCountLikesAttribute()
+    {
+        return $this->profile->count_likes;
+    }
+    public function getCountFollowsAttribute()
+    {
+        return $this->profile->count_follows;
+    }
+
+    public function getCountCollectionsAttribute()
+    {
+        return $this->profile->count_collections;
+    }
+
+    public function getCountFavoritesAttribute()
+    {
+        return $this->profile->count_favorites;
+    }
+
+    public function getGenderAttribute()
+    {
+        return $this->profile->gender;
     }
 
     public function getRewardAttribute()

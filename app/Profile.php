@@ -31,7 +31,7 @@ class Profile extends Model
         'birthday',
         'questions_count',
         'answers_count',
-        'correct_count'
+        'correct_count',
     ];
 
     public function user(): BelongsTo

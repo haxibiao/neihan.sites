@@ -21,7 +21,7 @@
             <div class="introduce">{{ isset($data['qrcode_slogan']) ? $data['qrcode_slogan'] : '' }}</div>
           </div>
           <div class="download-phone">
-            <a href="http://{{ $app }}-1251052432.cosgz.myqcloud.com/{{ $app }}.apk"><img src="/images/app/android_app.png" class="download2" alt="download-andorid"></a>
+            <a href="http://{{ $app }}-1251052432.cos.myqcloud.com/{{ $app }}.release.apk"><img src="/images/app/android_app.png" class="download2" alt="download-andorid"></a>
             <a href="{{ isset($data['app_store_link']) ? $data['app_store_link'] : '' }}"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
             <img class="background-img" src="/images/app/appBackground.png" alt="Misc background">
             <h4>点击下载{{ $appname }}App</h4>
@@ -34,14 +34,6 @@
               <h3>{!! isset($data['center_title']) ? $data['center_title'] : '' !!}</h3>
               <h6>{!! isset($data['center_slogan']) ? $data['center_slogan'] : '' !!}</h6>
             </div>
-            <div class="col-sm-12 game-imgs">
-              <img src="/images/app/pubg_old.png" alt="Misc pic1" class="game-img" alt="game-logo">
-              <img src="/images/app/dota2.png" alt="Misc pic1" class="game-img" alt="game-logo">
-              <img src="/images/app/lol-logo1.png" alt="Misc pic1" class="game-img" alt="game-logo">
-              <img src="/images/app/wangzherongyao_logo.png" alt="Misc pic1" class="game-img" alt="game-logo">
-              <img src="/images/app/nishuihang_logo.png" alt="Misc pic1" class="game-img" alt="game-logo">
-            </div>
-            <img src="/images/app/wangzherongyao_logo.png" alt="Misc pic1" class="game" alt="game-logo">
           </div>
         </div>
         <div class="row">
@@ -79,7 +71,7 @@
           <div>{{ isset($data['qrcode_title']) ? $data['qrcode_title'] : '' }}</div>
         </div>
         <div class="download-phone">
-          <a href="http://{{ $app }}-1251052432.cosgz.myqcloud.com/{{ $app }}.apk"><img src="/images/app/android_app.png" class="download2" alt="download-andorid"></a>
+          <a href="http://{{ $app }}-1251052432.cos.myqcloud.com/{{ $app }}.release.apk"><img src="/images/app/android_app.png" class="download2" alt="download-andorid"></a>
           <a href="{{ isset($data['app_store_link']) ? $data['app_store_link'] : '' }}"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
           <img class="background-img" src="/images/app/appBackground.png" alt="Misc background">
           <h4>点击下载{{ $appname }}App</h4>
@@ -88,7 +80,7 @@
           <img src="{{ isset($data['logo']) ? $data['logo'] : '' }}" alt="Misc logo">
           <div class="info">
             <div class="title">{!! isset($data['h1_title']) ? $data['h1_title'] : '' !!}</div>
-              <div class="slogan">{!! isset($data['h1_slogan']) ? $data['h1_slogan'] : '' !!}</div>
+              <div class="slogan">{!! isset($data['h1_slogan']) ? $data['h1_slogan'] : '' !!}}</div>
           </div>
         </div>
       </div>

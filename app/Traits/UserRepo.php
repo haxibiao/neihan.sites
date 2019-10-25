@@ -2,27 +2,30 @@
 
 namespace App\Traits;
 
+use App\Profile;
+use App\User;
+
 trait UserRepo
 {
 
     public function createUser($name, $account, $password)
     {
-        $this->account      = $account;
-        $this->phone        = $account;
-        $this->name         = $name;
-        $this->password     = bcrypt($password);
-        $avatar_formatter   = 'http://cos.' . env('APP_NAME') . '.com/storage/avatar/avatar-%d.jpg';
-        $this->avatar       = sprintf($avatar_formatter, rand(1, 15));
-        $this->api_token    = str_random(60);
-        $this->introduction = '';
-        $this->save();
-        //record signUp action
-        $action = \App\Action::create([
-            'user_id'         => $this->id,
-            'actionable_type' => 'users',
-            'actionable_id'   => $this->id,
+        $user           = new User();
+        $user->account  = $account;
+        $user->phone    = $account;
+        $user->name     = $name;
+        $user->password = bcrypt($password);
+
+        $user->avatar    = User::AVATAR_DEFAULT;
+        $user->api_token = str_random(60);
+
+        $user->save();
+
+        Profile::create([
+            'user_id' => $user->id,
         ]);
-        return $this;
+
+        return $user;
     }
 
     public function canJoinChat($chatId)
