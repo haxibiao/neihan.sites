@@ -48,28 +48,26 @@ trait ArticleAttrs
     {
         $cover_url = $this->image_url;
 
-        //TODO: 图片在本地？需要修复到cos
+        //有cos地址的直接返回
+        if (str_contains($cover_url, env('COS_DOMAIN'))) {
+            return $cover_url;
+        }
 
+        //兼容vod
+        if (str_contains($cover_url, ['vod2.'])) {
+            return $cover_url;
+        }
+
+        //TODO: 图片在本地？需要修复到cos
         if ($this->video()->exists()) {
             if (!is_null($this->video->cover)) {
-                if (str_contains($cover_url, env('COS_DOMAIN'))) {
-                    return $cover_url;
-                }
                 return \Storage::cloud()->url($this->video->cover);
             }
         }
+
+        //为空返回默认图片
         if (empty($cover_url)) {
             return \Storage::cloud()->url("/images/cover.png");
-        }
-
-        //TODO: 图片在本地？需要修复到cos
-        if (str_contains($cover_url, env('APP_DOMAIN'))) {
-            return $cover_url;
-        }
-
-        //旧的vod上的封面cdn地址　TODO: 需要修复数据
-        if (str_contains($cover_url, ['vod2.'])) {
-            return $cover_url;
         }
 
         //TODO: 剩余的保存fullurl的，需要修复为path, 同步image, video的　disk变化
