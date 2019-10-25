@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Helpers\QcloudUtils;
 use App\Jobs\TakeScreenshots;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
