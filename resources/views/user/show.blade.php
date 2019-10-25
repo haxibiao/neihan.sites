@@ -56,7 +56,7 @@
                                 <div class="content">
                                     <div class="author">
                                         <a class="avatar" href="/user/{{ $user->id }}">
-                                                <img src="{{ $user->avatar() }}" alt="">
+                                                <img src="{{ $user->avatarUrl }}" alt="">
                                                     </a>
                                         <div class="info">
                                             <a class="nickname" target="_blank" href="/user/{{ $user->id }}">{{ $user->name }}</a>

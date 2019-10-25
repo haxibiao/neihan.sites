@@ -1,5 +1,5 @@
 <div class=" category-item top10 col-xs-12 clearfix">
-    <img alt="" class="pull-left" src="{{ $category->logo() }}">
+    <img alt="" class="pull-left" src="{{ $category->logoUrl }}">
         <div class="pull-right">
             {!! Form::open(['method' => 'get', 'route' => ['category.edit', $category->id], 'class' => 'form-horizontal']) !!}
             <div class="btn-group pull-right right10">
@@ -16,7 +16,7 @@
         </div>
         <div class="item-info">
             <h5 class="category-name">
-                {{ $category->name }} ({{ $category->name_en }})
+                {{ $category->name }}
             </h5>
             <span>
                 创建人: {{ $category->user->name }}

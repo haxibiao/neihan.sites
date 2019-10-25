@@ -5,7 +5,7 @@
     	@foreach($category->topFollowers() as $user) 
     	 <li>
 			<a class="avatar" href="/user/{{ $user->id }}" data-toggle="tooltip" data-placement="bottom" title="{{ $user->name }}">
-				<img src="{{ $user->avatar() }}" alt="">
+				<img src="{{ $user->avatarUrl }}" alt="">
 			</a>
 		</li>
     	@endforeach

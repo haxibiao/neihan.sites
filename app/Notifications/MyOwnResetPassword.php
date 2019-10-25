@@ -3,9 +3,8 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class MyOwnResetPassword extends Notification
 {
@@ -49,9 +48,9 @@ class MyOwnResetPassword extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('爱你城重置密码')
+            ->subject(config('app.name_cn') . '重置密码')
             ->line('我们收到您的密码重置请求,请点击下方按钮完成此过程.')
-            ->action('重置密码', url(config('app.url').route('password.reset', $this->token, false)))
+            ->action('重置密码', url(config('app.url') . route('password.reset', $this->token, false)))
             ->line('如果您沒有要求重置密码,您可以忽略本邮件.');
     }
 

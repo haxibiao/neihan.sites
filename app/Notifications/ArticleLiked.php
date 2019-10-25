@@ -80,16 +80,16 @@ class ArticleLiked extends Notification implements ShouldQueue
             //评论问答中的答案
             if ($this->comment->commentable_type == 'answers') {
                 $question = $commentable->question;
-                $url      = '/question/' . $question->id; //TODO 锚点信息需要与前端沟通
+                $url      = '/question/' . $question->id;
                 $title    = $comment_body;
                 //其余的都是article的子类型
             } else {
-                $url   = $commentable->content_url() . '#' . $lou;
+                $url   = $commentable->url . '#' . $lou;
                 $title = $comment_body;
             }
         } else {
             $body  = '喜欢了你的' . $this->article->resoureTypeCN();
-            $url   = $this->article->content_url();
+            $url   = $this->article->url;
             $title = '《' . $article_title . '》';
         }
         return [

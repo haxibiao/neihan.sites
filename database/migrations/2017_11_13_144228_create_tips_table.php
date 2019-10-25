@@ -16,7 +16,8 @@ class CreateTipsTable extends Migration
         Schema::create('tips', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->index();
-            $table->decimal('amount');
+            $table->decimal('amount')->default(0);
+            $table->unsignedInteger('gold')->default(0)->comment('金币');
             $table->text('message')->nullable();
             $table->integer('tipable_id')->index();
             $table->string('tipable_type')->index();

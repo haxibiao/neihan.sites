@@ -8,7 +8,7 @@
 <div class="container">
     <div class="panel panel-default">
         <div class="panel-body">
-            <img alt="" class="img img-circle" src="{{ $user->avatar() }}">
+            <img alt="" class="img img-circle" src="{{ $user->avatarUrl }}">
                 <h4>
                     {{ $user->name }}
                 </h4>

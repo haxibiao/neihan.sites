@@ -102,6 +102,7 @@ git pull origin master
 {{ $refresh_env_prod }}
 {{ $run_composer }}
 {{ $run_migrate }}
+bash ./bash/fix_vendor.sh
 {{ $cache_clear }}
 @endtask
 
@@ -143,8 +144,6 @@ git pull origin master
 @endtask
 
 @task('staging_ui', ['on' => 'local'])
-cd {{ $www }}
-git pull origin staging
 @if ($build)
 	npm run prod
 @endif

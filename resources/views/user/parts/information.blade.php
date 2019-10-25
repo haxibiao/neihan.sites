@@ -1,5 +1,5 @@
  <div class="note-info info-lg">
-    <a class="avatar" href="/user/{{ $user->id }}"><img src="{{ $user->avatar() }}" alt=""></a>
+    <a class="avatar" href="/user/{{ $user->id }}"><img src="{{ $user->avatarUrl }}" alt=""></a>
     @if(!$user->isSelf())
         <div class="btn-wrap">
             <follow 

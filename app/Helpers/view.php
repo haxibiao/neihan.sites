@@ -2,17 +2,48 @@
 
 use App\Image;
 use App\Video;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 
+function isMobile()
+{
+    //TODO: 简单修复 agent 类不require 的错误，日后完善agent检测
+    // return \Agent::isMobile();
+    return true;
+}
+
+function isDeskTop()
+{
+    return 0;
+}
+function isPhone()
+{
+    return true;
+}
+function match($str)
+{
+    return true;
+}
+function isRobot()
+{
+    return false;
+}
 function canEdit($content)
 {
     return checkEditor() || $content->isSelf();
 }
 
+function time_ago($time, $locale = 'zh')
+{
+    $time = $time instanceof Carbon ? $time : Carbon::parse($time);
+    Carbon::setLocale($locale);
+    return $time->diffForHumans();
+}
+
 function smartPager($qb, $pageSize)
 {
-    return \Agent::isMobile() ? $qb->simplePaginate($pageSize) : $qb->paginate($pageSize);
+    return isMobile() ? $qb->simplePaginate($pageSize) : $qb->paginate($pageSize);
 }
 
 function link_source_css($category)
@@ -91,7 +122,7 @@ function get_article_url($article)
     return $url;
 }
 
-function parse_image($body,$environment = null)
+function parse_image($body, $environment = null)
 {
     //检测本地或GQL没图的时候取线上的
     $environment = $environment ?: \App::environment('local');
@@ -103,7 +134,7 @@ function parse_image($body,$environment = null)
         foreach ($imgs as $img) {
             $image = Image::where('path', $img)->first();
             if ($image) {
-                $body = str_replace($img, $image->url_prod(), $body);
+                $body = str_replace($img, $image->url, $body);
             }
         }
     }

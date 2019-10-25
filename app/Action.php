@@ -38,7 +38,7 @@ class Action extends Model
             case 'App\Comment':
                 $this->load('actionable.commentable.user');
                 $this->actionable->commentable->image_url = $this->actionable->commentable->primaryImage();
-                $this->actionable->commentable->contentUrl = $this->actionable->commentable->content_url();
+                $this->actionable->commentable->contentUrl = $this->actionable->commentable->url;
                 break;
             case 'App\Favorite': 
                 $this->load('actionable.faved.user');

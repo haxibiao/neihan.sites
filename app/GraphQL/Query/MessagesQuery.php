@@ -39,16 +39,16 @@ class MessagesQuery extends Query
 
     public function resolve($root, $args)
     {
-        $me = getUser();
+        // $me = getUser();
 
         $chat = Chat::findOrFail($args['chat_id']);
         //clear unreads
-        foreach ($chat->users as $user) {
-            if ($user->id == $me->id) {
-                $user->pivot->unreads = 0;
-                $user->pivot->save();
-            }
-        }
+        // foreach ($chat->users as $user) {
+        //     if ($user->id == $me->id) {
+        //         $user->pivot->unreads = 0;
+        //         $user->pivot->save();
+        //     }
+        // }
 
         $qb = Message::orderBy('id', 'desc');
         $qb = $qb->where('chat_id', $args['chat_id']);

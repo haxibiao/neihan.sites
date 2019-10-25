@@ -1,0 +1,3 @@
+extend type Mutation {
+  addVisit(user_id: Int!, visited_id: Int!, visited_type: String!): Visit @field(resolver: "App\\Visit@create")
+}

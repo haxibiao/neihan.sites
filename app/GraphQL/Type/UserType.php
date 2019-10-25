@@ -10,7 +10,8 @@ use Folklore\GraphQL\Support\Facades\GraphQL;
 use Folklore\GraphQL\Support\Type as GraphQLType;
 use GraphQL\Type\Definition\Type;
 
-class UserType extends GraphQLType {
+class UserType extends GraphQLType
+{
 	protected $attributes = [
 		'name' => 'User',
 		'description' => 'A user',
@@ -22,7 +23,8 @@ class UserType extends GraphQLType {
 	*/
 	// protected $inputObject = true;
 
-	public function fields() {
+	public function fields()
+	{
 		return [
 			'id' => [
 				'type' => Type::nonNull(Type::int()),
@@ -44,7 +46,7 @@ class UserType extends GraphQLType {
 				'type' => Type::string(),
 				'description' => 'avatar url of user',
 				'resolve' => function ($root, $args) {
-					return is_array($root) ? $root['avatar'] : $root->avatar();
+					return is_array($root) ? $root['avatar'] : $root->avatarUrl;
 				},
 			],
 			'token' => [
@@ -59,7 +61,7 @@ class UserType extends GraphQLType {
 				'description' => 'introduction of user',
 				'resolve' => function ($root, $args) {
 
-					return $root->introduction();
+					return $root->introduction;
 				},
 			],
 			'tip_words' => [
@@ -157,7 +159,7 @@ class UserType extends GraphQLType {
 			'count_production' => [
 				'type' => Type::int(),
 				'description' => '合计作品',
-				'resolve' => function ($root){
+				'resolve' => function ($root) {
 					return $root->articles()->count();;
 				},
 			],
@@ -165,7 +167,7 @@ class UserType extends GraphQLType {
 				'type' => Type::float(),
 				'description' => 'balance of user',
 				'resolve' => function ($root, $args) {
-					return $root->balance();
+					return $root->balance;
 				},
 			],
 
@@ -297,9 +299,9 @@ class UserType extends GraphQLType {
 
 					//排序
 					if (isset($args['order'])) {
-						$qb->orderByDesc('updated_at');	
-					}else{
-						$qb->orderByDesc('id');	
+						$qb->orderByDesc('updated_at');
+					} else {
+						$qb->orderByDesc('id');
 					}
 
 
@@ -362,49 +364,49 @@ class UserType extends GraphQLType {
 
 					if (isset($args['filter'])) {
 						switch ($args['filter']) {
-						//我管理的专题
-						case 'ADMIN':
-							return $root->adminCategories()
-								->skip($offset)
-								->take($limit)->get();
-						//我管理的专题中有投稿请求的专题
-						case 'REQUESTED':
-							return $root->adminCategories()->where('new_request_title', '<>', null)
-								->skip($offset)
-								->take($limit)
-								->get();
-						//我关注的专题
-						case 'FOLLOWED':
-							$categories = [];
-							$following_categories = $root->followings()
-								->where('followed_type', 'categories')
-								->skip($offset)
-								->take($limit)
-								->get();
-							foreach ($following_categories as $following) {
-								$categories[] = $following->followed;
-							}
-							return $categories;
-						//我最近投稿的专题
-						case 'LATEST_REQUEST':
-							return $root->categories()
-								->orderBy('created_at', 'desc')
-								->skip($offset)
-								->take($limit)
-								->get();
-						//推荐专题
-						case 'RECOMMEND':
-							$followed_category_ids = \DB::table('follows')
-								->where('user_id', $root->id)
-								->where('followed_type', 'categories')
-								->pluck('followed_id')->toArray();
-							return \App\Category::orderBy('updated_at', 'desc')
-								->whereNotIn('id', $followed_category_ids)
-								->skip($offset)
-								->take($limit)
-								->get();
-						default:
-							break;
+								//我管理的专题
+							case 'ADMIN':
+								return $root->adminCategories()
+									->skip($offset)
+									->take($limit)->get();
+								//我管理的专题中有投稿请求的专题
+							case 'REQUESTED':
+								return $root->adminCategories()->where('new_request_title', '<>', null)
+									->skip($offset)
+									->take($limit)
+									->get();
+								//我关注的专题
+							case 'FOLLOWED':
+								$categories = [];
+								$following_categories = $root->followings()
+									->where('followed_type', 'categories')
+									->skip($offset)
+									->take($limit)
+									->get();
+								foreach ($following_categories as $following) {
+									$categories[] = $following->followed;
+								}
+								return $categories;
+								//我最近投稿的专题
+							case 'LATEST_REQUEST':
+								return $root->categories()
+									->orderBy('created_at', 'desc')
+									->skip($offset)
+									->take($limit)
+									->get();
+								//推荐专题
+							case 'RECOMMEND':
+								$followed_category_ids = \DB::table('follows')
+									->where('user_id', $root->id)
+									->where('followed_type', 'categories')
+									->pluck('followed_id')->toArray();
+								return \App\Category::orderBy('updated_at', 'desc')
+									->whereNotIn('id', $followed_category_ids)
+									->skip($offset)
+									->take($limit)
+									->get();
+							default:
+								break;
 						}
 					}
 					return $root->categories()->skip($offset)->take($limit)->get();
@@ -441,46 +443,46 @@ class UserType extends GraphQLType {
 				'description' => '用户的通知',
 				'resolve' => function ($root, $args) {
 					switch ($args['type']) {
-					case 'GROUP_OTHERS':
+						case 'GROUP_OTHERS':
 
-						$qb = $root->notifications()->orderBy('created_at', 'desc')
-							->whereIn('type', [
-								'App\Notifications\CollectionFollowed',
-								'App\Notifications\CategoryFollowed',
-								'App\Notifications\ArticleApproved',
-								'App\Notifications\ArticleRejected',
-							]);
-						//mark as read
-						$unread_notifications = $root->unreadNotifications()
-							->whereIn('type', [
-								'App\Notifications\CollectionFollowed',
-								'App\Notifications\CategoryFollowed',
-								'App\Notifications\ArticleApproved',
-								'App\Notifications\ArticleRejected',
-							])->get();
-						$unread_notifications->markAsRead();
-						break;
-					case 'GROUP_LIKES':
-						$qb = $root->notifications()->orderBy('created_at', 'desc')
-							->whereIn('type', [
-								'App\Notifications\ArticleLiked',
-								'App\Notifications\CommentLiked',
-							]);
-						//mark as read
-						$unread_notifications = $root->unreadNotifications()
-							->whereIn('type', [
-								'App\Notifications\ArticleLiked',
-								'App\Notifications\CommentLiked',
-							])->get();
-						$unread_notifications->markAsRead();
-						break;
+							$qb = $root->notifications()->orderBy('created_at', 'desc')
+								->whereIn('type', [
+									'App\Notifications\CollectionFollowed',
+									'App\Notifications\CategoryFollowed',
+									'App\Notifications\ArticleApproved',
+									'App\Notifications\ArticleRejected',
+								]);
+							//mark as read
+							$unread_notifications = $root->unreadNotifications()
+								->whereIn('type', [
+									'App\Notifications\CollectionFollowed',
+									'App\Notifications\CategoryFollowed',
+									'App\Notifications\ArticleApproved',
+									'App\Notifications\ArticleRejected',
+								])->get();
+							$unread_notifications->markAsRead();
+							break;
+						case 'GROUP_LIKES':
+							$qb = $root->notifications()->orderBy('created_at', 'desc')
+								->whereIn('type', [
+									'App\Notifications\ArticleLiked',
+									'App\Notifications\CommentLiked',
+								]);
+							//mark as read
+							$unread_notifications = $root->unreadNotifications()
+								->whereIn('type', [
+									'App\Notifications\ArticleLiked',
+									'App\Notifications\CommentLiked',
+								])->get();
+							$unread_notifications->markAsRead();
+							break;
 
-					default:
-						$qb = $root->notifications()->orderBy('created_at', 'desc')->where('type', $args['type']);
-						//mark as read
-						$unread_notifications = $root->unreadNotifications()->where('type', $args['type'])->get();
-						$unread_notifications->markAsRead();
-						break;
+						default:
+							$qb = $root->notifications()->orderBy('created_at', 'desc')->where('type', $args['type']);
+							//mark as read
+							$unread_notifications = $root->unreadNotifications()->where('type', $args['type'])->get();
+							$unread_notifications->markAsRead();
+							break;
 					}
 					$root->forgetUnreads();
 
@@ -718,5 +720,4 @@ class UserType extends GraphQLType {
 			],
 		];
 	}
-
 }

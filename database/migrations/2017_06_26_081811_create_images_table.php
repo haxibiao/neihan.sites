@@ -18,7 +18,7 @@ class CreateImagesTable extends Migration
             $table->integer('user_id')->nullable();
             $table->string('title')->nullable()->index();
             $table->string('source_url')->nullable();
-            $table->string('hash')->nullable(); //TODO:: need add index 
+            $table->string('hash')->nullable()->unique(); //TODO:: need add index
             $table->string('path')->nullable()->index();
             
             $table->string('path_top')->nullable(); // whether for top ...

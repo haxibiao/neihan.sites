@@ -13,24 +13,26 @@
 
 Auth::routes();
 Route::pattern('id', '\d+');
-//流量统计
-require_once 'traffic.php';
 
 Route::get('/', 'IndexController@index');
+
+//隐私政策
+Route::redirect('/pivacy-and-policy', '/article/3098');
+
 //app
 Route::get('/app', 'IndexController@app');
 Route::get('/about-us', 'IndexController@aboutUs');
 Route::get('/trending', 'IndexController@trending');
 
 //动态
-Route::post('/post', 'ArticleController@storePost');
+Route::post('/post/new', 'ArticleController@storePost');
 
 //问答
-Route::resource('/question', 'QuestionController');
-Route::resource('/answer', 'AnswerController');
-Route::get('/categories-for-question', 'QuestionController@categories');
-Route::get('/question-bonused', 'QuestionController@bonused');
-Route::post('/question-add', 'QuestionController@add')->name('question.add');
+Route::resource('/question', 'IssueController');
+Route::resource('/answer', 'ResolutionController');
+Route::get('/categories-for-question', 'IssueController@categories');
+Route::get('/question-bonused', 'IssueController@bonused');
+Route::post('/question-add', 'IssueController@add')->name('question.add');
 
 //搜索
 Route::get('/search', 'SearchController@search');
@@ -44,6 +46,8 @@ Route::get('/drafts', 'ArticleController@drafts');
 //文章 slug
 // Route::get('/article/{slug}', 'ArticleController@showBySlug')->where('slug','\D+');
 Route::resource('/article', 'ArticleController');
+//因为APP二维码分享用了 /post/{id}
+Route::resource('/post', 'ArticleController');
 
 //管理专题
 Route::get('/category/list', 'CategoryController@list');
@@ -123,7 +127,6 @@ Route::any('/admin/articles', 'AdminController@articles');
 Route::get('/admin/app-download-config', 'AdminController@showAppDownloadConfig');
 Route::post('/admin/app-download-config-save', 'AdminController@saveAppDownloadConfig');
 
-
 //stickcategory
 Route::get('/admin/stick-categorys', 'AdminController@categorySticks');
 Route::post('/admin/stick-category', 'AdminController@categoryStick')->name('admin.stick_category');
@@ -131,10 +134,11 @@ Route::post('/admin/delete-stick-category', 'AdminController@deleteStickCategory
 Route::get('/admin/stick-video-categorys', 'AdminController@videoCategorySticks');
 Route::post('/admin/stick-video-category', 'AdminController@videoCategoryStick')->name('admin.stick_video_category');
 Route::post('/admin/delete-stick-video-category', 'AdminController@deleteStickVideoCategory')->name('admin.delete_stick_video_category');
+
 //logs
 Route::get('/logshow', 'LogController@logShow');
 Route::get('/logclear', 'LogController@logClear');
-Route::get('/debug', 'LogController@debug');
+Route::get('/bug', 'LogController@debug');
 
 //weixin
 Route::get('/wechat', 'WechatController@serve');
@@ -155,5 +159,6 @@ Route::get('/searchQuery', 'SearchController@search_all');
 //sitemap
 Route::get('sitemap', 'SitemapController@index');
 
-//last, use category name_en
-Route::get('/{name_en}', 'CategoryController@name_en');
+//last, use category name_en (限制分类英文url5个字母以上，避免 /gql, /gqlp 会被这个路由拦截)
+// $router->pattern('name_en', '\w{5,100}'); //最新测试好像没被拦截了
+Route::get('/{name_en}', 'CategoryController@name_en')->where('name_en', '(?!nova).*');

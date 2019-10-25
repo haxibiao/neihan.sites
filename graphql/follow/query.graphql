@@ -1,0 +1,21 @@
+type Follow {
+  id: Int!
+  user: User!
+  followed_id: Int!
+  followed_type: FollowType!
+  name: String!
+  latest_article_title: String
+  dynamic_msg: String
+  followed_status: Int
+  created_at: DateTime!
+  updated_at: DateTime!
+  category: Category
+  people: User
+  collection: Collection,
+  isFollowed: Boolean
+}
+
+extend type Query @middleware(checks: ["auth:api"]) {
+  follows(user_id: Int! @eq, followed_type: String @eq): [Follow!] @paginate(defaultCount: 10) #我的全部关注, 或我的某个类关注
+  followers(followed_type: String! @eq, followed_id: Int! @eq): [Follow!] @paginate(defaultCount: 10) #用户的粉丝，专题的关注人列表...
+}

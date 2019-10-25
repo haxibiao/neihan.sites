@@ -1,0 +1,10 @@
+extend type Mutation @middleware(checks: ["auth:api"]) {
+    videoPlayReward(input:videoPlayReport):Gold @field(resolver: "App\\Video@videoPlayReward")
+}
+
+input videoPlayReport{
+    video_id:Int
+    play_duration:Float,
+    video_ids:[Int],
+
+}

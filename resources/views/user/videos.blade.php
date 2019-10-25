@@ -12,7 +12,7 @@
       </ol>
     <div class="panel panel-default">
         <div class="panel-body">
-            <img alt="{{ $user->name }}" width="100px" class="img img-circle" src="{{ $user->avatar() }}">
+            <img alt="{{ $user->name }}" width="100px" class="img img-circle" src="{{ $user->avatarUrl }}">
                 <h4>
                     {{ $user->name }}
                 </h4>

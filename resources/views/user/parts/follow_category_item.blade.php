@@ -1,6 +1,6 @@
 <li class="note-info">
-    <a class="avatar-category" href="/{{ $category->name_en }}">
-        <img alt="" src="{{ $category->logo() }}"/>
+    <a class="avatar-category" href="/category/{{ $category->id }}">
+        <img alt="" src="{{ $category->logoUrl }}"/>
     </a>
     <follow 
     followed="{{ is_follow('categories', $category->id) }}" 
@@ -10,13 +10,13 @@
     >
     </follow>
     <div class="title">
-        <a class="name" href="/{{ $category->name_en }}">
+        <a class="name" href="/category/{{ $category->id }}">
             {{ $category->name }}
         </a>
     </div>
     <div class="info">
         <p>
-            <a href="/{{ $category->name_en }}">
+            <a href="/category/{{ $category->id }}">
                 {{ $category->name }}
             </a>
             收录了{{ $category->count }}篇作品，{{ $category->count_follows }}人关注

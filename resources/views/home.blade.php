@@ -10,90 +10,7 @@
                 <div class="panel-heading">
                     <h2 class="panel-title">{{ Auth::user()->name }}，</h2>
                     <p class="small">欢迎进入编辑面板...</p>
-                </div>
-
-                <div class="panel-body">
-                    <div class="row">
-
-
-                        <div class="col-md-6 col-lg-4">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">文章:</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <line-chart title='文章' chart-data='{{ json_encode($data['article']) }}' chart-labels='{{ json_encode($labels['article']) }}'/>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-lg-4">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">流量:</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <bar title-one='流量' chart-data='{{ json_encode($data['traffic']) }}' chart-labels='{!! json_encode($labels['traffic']) !!}'
-                                    color="orange"/>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-lg-4">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">微信流量:</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <bar title-one='微信流量' chart-data='{{ json_encode($data['traffic_wx']) }}' chart-labels='{!! json_encode($labels['traffic_wx']) !!}'
-                                    color="green"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel panel-warning">
-                <div class="panel-heading">
-                    <h3 class="panel-title">昨日其他编辑</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-6 col-lg-4">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">发布的文章数:</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <bar title-one='文章' chart-data='{{ json_encode($data['article_editors']) }}' chart-labels='{!! json_encode($labels['article_editors']) !!}'/>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-lg-4">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">在本站的流量:</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <bar title-one='流量' chart-data='{{ json_encode($data['traffic_editors']) }}' chart-labels='{!! json_encode($labels['traffic_editors']) !!}' color="orange"/>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-lg-4">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">在本站微信流量:</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <bar title-one='流量' chart-data='{{ json_encode($data['wxtraffic_editors']) }}' chart-labels='{!! json_encode($labels['traffic_editors']) !!}' color="green"/>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+                    <p>流量统计报表暂时移除，会放入管理员后台面板</p>
                 </div>
             </div>
         </div>
@@ -105,7 +22,7 @@
                     </h3>
                 </div>
                 <div class="panel-body">
-                    <img alt="{{ $user->name }}" width="100px" class="img img-circle" src="{{ $user->avatar() }}">
+                    <img alt="{{ $user->name }}" width="100px" class="img img-circle" src="{{ $user->avatarUrl }}">
                         <h4>
                             <a href="/user/{{ $user->id }}">{{ $user->name }}</a>
                         </h4>

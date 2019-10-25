@@ -35,8 +35,6 @@ class ArticleQuery extends Query
         //记录用户浏览记录
         $article->recordBrowserHistory();
 
-        app_track_launch();
-
         return $article;
     }
 }

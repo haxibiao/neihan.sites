@@ -74,7 +74,7 @@
                             	@include('parts.article_item', ['article' => $like->liked])
                             @endforeach
                             @if(Auth::check())
-                                <article-list api="/user/{{ $user->id }}/likes" is-desktop="{{ \Agent::isDeskTop() == 1 }}" start-page="2">
+                                <article-list api="/user/{{ $user->id }}/likes" is-desktop="{{ isDeskTop() == 1 }}" start-page="2">
                                 </article-list>
                             @endif
 

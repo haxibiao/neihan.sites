@@ -10,7 +10,7 @@ use GraphQL\Type\Definition\Type;
 class FollowsQuery extends Query
 {
     protected $attributes = [
-        'name' => 'follows', 
+        'name' => 'follows',
     ];
 
     public function type()
@@ -18,7 +18,7 @@ class FollowsQuery extends Query
         return Type::listOf(GraphQL::type('Follow'));
     }
 
-    public function args() 
+    public function args()
     {
         return [
             'user_id'               => ['name' => 'user_id', 'type' => Type::int()],
@@ -42,13 +42,13 @@ class FollowsQuery extends Query
             //下面写法解决MySQL groupBy在Laravel5.3后的写法差异.对执行效率影响不大
 
             //排除当前用户关注的 将其余的关注Group
-            $qb = $qb->select('followed_type','followed_id')
+            $qb = $qb->select('followed_type', 'followed_id')
                 ->where('user_id', '<>', $args['recommend_for_user_id'])
-                ->groupBy('followed_type','followed_id');
+                ->groupBy('followed_type', 'followed_id');
         }
         //filter
         if (isset($args['filter'])) {
-            switch ($args['filter']) { 
+            switch ($args['filter']) {
                 case 'USER':
                     $type = 'users';
                     break;
@@ -67,34 +67,34 @@ class FollowsQuery extends Query
             if (isset($args['recommend_for_user_id'])) {
                 //排除当前用户已关注的
                 $followIds = Follow::select('followed_id')
-                    ->where('user_id',$args['recommend_for_user_id'])
-                    ->where('followed_type',$type)
+                    ->where('user_id', $args['recommend_for_user_id'])
+                    ->where('followed_type', $type)
                     ->pluck('followed_id')->toArray();
 
                 //如果是查找用户的话就排除当前用户
-                if($type == 'users'){
+                if ($type == 'users') {
                     array_push($followIds, $args['recommend_for_user_id']);
                 }
 
-                $qb = $qb->whereNotIn('followed_id',$followIds);
+                $qb = $qb->whereNotIn('followed_id', $followIds);
             }
-            
-        } 
-        $offset = isset($args['offset'])? $args['offset']: 0;
-        $limit  = isset($args['limit'])? $args['limit']  : 10;//默认10条历史记录
+
+        }
+        $offset = isset($args['offset']) ? $args['offset'] : 0;
+        $limit  = isset($args['limit']) ? $args['limit'] : 10; //默认10条历史记录
 
         $data = $qb->skip($offset)
             ->take($limit)
             ->get();
-            
-        //为了兼容前端返回不一致的 follow.id 
-        if(isset($args['recommend_for_user_id'])){
+
+        //为了兼容前端返回不一致的 follow.id
+        if (isset($args['recommend_for_user_id'])) {
             $index = $offset;
             foreach ($data as $item) {
                 $item->id = $index++;
             }
         }
-        
+
         return $data;
     }
 }

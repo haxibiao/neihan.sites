@@ -1,7 +1,7 @@
-<li class="content-item {{ $article->hasImage() ? 'have-img' : '' }}">
-  @if($article->hasImage())
-    <a class="wrap-img" href="{{ $article->content_url() }}"   target="_blank">
-        <img src="{{ $article->primaryImage() }}" alt="{{$article->title}}">
+<li class="content-item {{ $article->cover ? 'have-img' : '' }}">
+  @if($article->cover)
+    <a class="wrap-img" href="{{ $article->url }}"   target="_blank">
+        <img src="{{ $article->cover }}" alt="{{$article->title}}">
         @if( $article->type=='video' )
         <span class="rotate-play">
           <i class="iconfont icon-shipin"></i>
@@ -16,7 +16,7 @@
     @if( $article->type!=='article' )
     <div class="author">
       <a class="avatar" target="_blank" href="/user/{{ $article->user->id }}">
-        <img src="{{ $article->user->avatar() }}" alt="">
+        <img src="{{ $article->user->avatarUrl }}" alt="">
       </a>
       <div class="info">
         <a class="nickname" target="_blank" href="/user/{{ $article->user->id }}">{{ $article->user->name }}</a>
@@ -33,19 +33,19 @@
 
     {{-- 如果是文章，就显示标题 --}}
     @if( $article->type=='article' )
-    <a class="title" target="_blank" href="{{ $article->content_url() }}">
+    <a class="title" target="_blank" href="{{ $article->url }}">
         <span>{{ $article->title }}</span>
     </a>
     @endif
 
     {{-- 然后任何类型，这段简介是一定要显示的 --}}
-    <a class="abstract" target="_blank" href="{{ $article->content_url() }}">
+    <a class="abstract" target="_blank" href="{{ $article->url }}">
       {{ $article->get_description() }}
     </a>
 
     <div class="meta">
       @if($article->category)
-        <a class="category" target="_blank" href="/{{ $article->category->name_en }}">
+        <a class="category" target="_blank" href="/category/{{ $article->category->id }}">
           <i class="iconfont icon-zhuanti1"></i>
           {{ $article->category->name }}
         </a>
@@ -53,10 +53,10 @@
       @if( $article->type=='article' )
         <a class="nickname" target="_blank" href="/user/{{ $article->user->id }}">{{ $article->user->name }}</a>
       @endif
-      <a target="_blank" href="{{ $article->content_url() }}">
+      <a target="_blank" href="{{ $article->url }}">
         <i class="iconfont icon-liulan"></i> {{ $article->hits }}
       </a>
-      <a target="_blank" href="{{ $article->content_url() }}/#comments">
+      <a target="_blank" href="{{ $article->url }}/#comments">
         <i class="iconfont icon-svg37"></i> {{ $article->count_replies }}
       </a>
       <span><i class="iconfont icon-03xihuan"></i> {{ $article->count_likes }} </span>

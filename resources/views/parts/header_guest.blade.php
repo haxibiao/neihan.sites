@@ -1,7 +1,7 @@
 	<nav class="navbar navbar-default  navbar-fixed-top" role="navigation">
 		<div class="width-limit">
 			@section('logo')
-				@if( \Agent::isMobile() )
+				@if( isMobile() )
 					<a class="logo" href="/">
 						<img src="/logo/{{ get_domain() }}.small.png" alt="">
 					</a>
@@ -18,12 +18,12 @@
 				<div class="creation hidden-xs"><a href="/write" class="btn-base btn-theme"><span class="iconfont icon-maobi"></span>发布</a></div>
 			@endif	 --}}					
 			<div class="register"><a href="/register" class="btn-base theme-tag">注册</a></div>
-			<a href="/app"  class="download-app"> 
+			<a target="_blank" href="{{ request()->path() == "app" ? env('APK_URL') : "/app" }}"  class="download-app"> 
 					<p>下载APP</p>
 			</a>
 			<a href="/login" class="login btn">登录</a>
 {{-- 			<a class="search"> 
-				<search-box is-desktop="{{ \Agent::isDeskTop() == 1 }}"></search-box>
+				<search-box is-desktop="{{ isDeskTop() == 1 }}"></search-box>
 			</a> --}}
 			<div class="container">
 					<!-- Brand and toggle get grouped for better mobile display -->
@@ -39,11 +39,11 @@
 					<div class="collapse navbar-collapse navbar-ex1-collapse">
 						<ul class="nav navbar-nav">
 							<li class="tab {{ get_active_css('/') }}"><a href="/"><i class="iconfont icon-faxian hidden-xs hidden-md"></i><span class="hidden-sm">首页</span></a></li>
-							<li class="tab {{ get_active_css('video') }}"><a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/video"><i class="iconfont icon-shipin3 hidden-xs hidden-md"></i><span class="hidden-sm">视频</span></a></li>
-							<li class="tab {{ get_active_css('app') }}"><a target="{{ \Agent::isDeskTop()? '_blank':'_self' }}" href="/app"><i class="iconfont icon-ordinarymobile hidden-xs hidden-md"></i><span class="hidden-sm">下载App</span></a></li>
+							<li class="tab {{ get_active_css('video') }}"><a target="{{ isDeskTop()? '_blank':'_self' }}" href="/video"><i class="iconfont icon-shipin3 hidden-xs hidden-md"></i><span class="hidden-sm">视频</span></a></li>
+							<li class="tab {{ get_active_css('app') }}"><a target="{{ isDeskTop()? '_blank':'_self' }}" href="/app"><i class="iconfont icon-ordinarymobile hidden-xs hidden-md"></i><span class="hidden-sm">下载App</span></a></li>
 						</ul>
 						<a class="search"> 
-							<search-box is-desktop="{{ \Agent::isDeskTop() == 1 }}"></search-box>
+							<search-box is-desktop="{{ isDeskTop() == 1 }}"></search-box>
 						</a>
 					</div>
 			</div>

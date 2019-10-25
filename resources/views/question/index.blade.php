@@ -25,7 +25,7 @@
          </div>
        </div>
        <div class="aside sm-right hidden-xs">
-         {{-- @include('question.parts.carousel') --}}
+         {{-- @include('topic.parts.carousel') --}}
          @include('question.parts.hot_questions')
          @include('question.parts.contact')
        </div>

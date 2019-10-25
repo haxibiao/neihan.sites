@@ -49,7 +49,7 @@ class sendMessageMutation extends Mutation
         $chat->last_message_id = $message->id;
         $chat->save();
 
-        $chat->withUser()->chats()->syncWithoutDetaching($chat->id);
+        $chat->withUser->chats()->syncWithoutDetaching($chat->id);
         $user->chats()->syncWithoutDetaching($chat->id);
 
         //update unreads for chat with users ...

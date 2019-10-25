@@ -5188,9 +5188,7 @@
       tpl =
         '<div class="link-settings">\n  <div class="settings-field">\n    <label>' +
         this._t("imageUrl") +
-        '</label>\n    <input class="image-src" type="text" tabindex="1" />\n    <a class="btn-upload" href="javascript:;"\n      title="' +
-        this._t("uploadImage") +
-        '" tabindex="-1">\n      <span class="simditor-icon simditor-icon-upload"></span>\n    </a>\n  </div>\n  <div class=\'settings-field\'>\n    <label>' +
+        '</label>\n    <input class="image-src" type="text" tabindex="1" />\n  </div>\n  <div class=\'settings-field\'>\n    <label>' +
         this._t("imageAlt") +
         '</label>\n    <input class="image-alt" id="image-alt" type="text" tabindex="1" />\n  </div>\n  <div class="settings-field">\n  </div>\n</div>';
       this.el.addClass("image-popover").append(tpl);

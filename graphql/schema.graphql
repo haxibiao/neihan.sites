@@ -1,0 +1,12 @@
+#import scalar.graphql
+#import inputs.graphql
+
+type Query {
+  me: User @auth(guard: "api")
+}
+
+type Mutation {
+  signUp(account: String, email: String!, password: String!, name: String): User! @field(resolver: "App\\User@signUp")
+}
+
+#import */*.graphql

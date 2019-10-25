@@ -1,0 +1,10 @@
+type QueryLog {
+  id: Int!
+  query: String
+  hits: Int
+  user: User!
+}
+
+extend type Query {
+  queryLogs(user_id: Int! @eq): QueryLog @paginate(defaultCount: 10)
+}

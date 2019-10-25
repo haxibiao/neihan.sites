@@ -8,6 +8,58 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
+function is_staging_env()
+{
+    return config('app.env') == 'staging';
+}
+
+function is_local_env()
+{
+    return config('app.env') == 'local';
+}
+
+function is_dev_env()
+{
+    return config('app.env') == 'dev';
+}
+
+function is_prod_env()
+{
+    $environment = ['prod', 'production', 'hotfix'];
+
+    return in_array(config('app.env'), $environment);
+}
+
+function is_night()
+{
+    return date('H') >= 21 || date('H') <= 8;
+}
+
+function is_prod()
+{
+    return env('APP_ENV') == 'prod';
+}
+
+function formatBytes($byteSize)
+{
+    $units = array(' B', ' KB', ' MB', ' GB', ' TB');
+    for ($i = 0; $byteSize >= 1024 && $i < 4; $i++) {
+        $byteSize /= 1024;
+    }
+
+    return round($byteSize, 2) . $units[$i];
+}
+
+function cdnurl($path)
+{
+    if (!is_prod() && file_exists(public_path($path))) {
+        return url($path);
+    }
+    $path = "/" . $path;
+    $path = str_replace('//', '/', $path);
+    return "http://" . env('COS_DOMAIN') . $path;
+}
+
 function init_piwik_tracker()
 {
     if (isset(config('matomo.site')[env('APP_DOMAIN')])) {
@@ -73,6 +125,12 @@ function app_track_post()
     app_track_user('post');
 }
 
+function app_track_issue()
+{
+    app_track_goal(3);
+    app_track_user('issue');
+}
+
 function app_track_comment()
 {
     app_track_goal(4);
@@ -127,7 +185,7 @@ function indexArticles()
     }
 
     //移动端，用简单的分页样式
-    if (\Agent::isMobile()) {
+    if (isMobile()) {
         $articles = new Paginator($articles, 10);
         $articles->hasMorePagesWhen($total > request('page') * 10);
     } else {
@@ -174,26 +232,46 @@ function getUserId()
     if (Auth::id()) {
         return Auth::id();
     }
-    if (request()->user()) {
-        return request()->user()->id;
+    if ($user = request()->user()) {
+        return $user->id;
     }
     return 0;
 }
 
 function checkUser()
 {
-    return Auth::check() || session('user') || request()->user();
+    try {
+        $user = getUser();
+    } catch (\Exception $ex) {
+        return null;
+    }
+
+    return $user;
 }
 
-function getUser()
+function getUser($throw = true)
 {
     if (Auth::check()) {
         return Auth::user();
     }
 
-    $user = session('user');
+    if (auth('api')->user()) {
+        return auth('api')->user();
+    }
 
+    $user = session('user');
     if (!$user) {
+        if ($user = request()->user()) {
+            return $user;
+        }
+        //兼容新版的lighthouse
+        $token = request()->header('api_token') ?: request()->bearerToken();
+        if ($token) {
+            return \App\User::where('api_token', $token)->first();
+        }
+    }
+
+    if (!$user && $throw) {
         throw new UnregisteredException('客户端还没登录...');
     }
     return $user;

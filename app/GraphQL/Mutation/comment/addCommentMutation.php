@@ -14,7 +14,7 @@ class addCommentMutation extends Mutation
         'description' => 'create a Comment ',
     ];
 
-    public function type() 
+    public function type()
     {
         return GraphQL::type('Comment');
     }
@@ -38,15 +38,12 @@ class addCommentMutation extends Mutation
 
     public function resolve($root, $args)
     {
-        $comment = new Comment();
+        $comment                  = new Comment();
         $args['commentable_type'] = 'articles';
 
         $comment = $comment->store($args);
 
-        //记录到traffic
-        $user_id = checkUser() ? getUser()->id : null;
-        $path = 'addComment';
-        recordTaffic(request(), $path, $comment->commentable_id, $user_id, true);
+        //matomo:记录action 发表评论, 在model层 已记录
 
         return $comment;
     }

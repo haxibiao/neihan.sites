@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
+use Auth;
+use Blade;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Blade;
-use Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,8 +18,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->alias('bugsnag.multi', \Illuminate\Contracts\Logging\Log::class);
-        $this->app->alias('bugsnag.multi', \Psr\Log\LoggerInterface::class);
+
+        // 升级laravel 5.8 注释
+        // $this->app->alias('bugsnag.multi', \Illuminate\Contracts\Logging\Log::class);
+        // $this->app->alias('bugsnag.multi', \Psr\Log\LoggerInterface::class);
 
         Schema::defaultStringLength(191);
 
@@ -55,19 +57,20 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         Relation::morphMap([
-            'users' => 'App\User',
-            'categories' => 'App\Category',
+            'users'       => 'App\User',
+            'categories'  => 'App\Category',
             'collections' => 'App\Collection',
-            'articles' => 'App\Article',
-            'comments' => 'App\Comment',
-            'videos' => 'App\Video',
-            'posts' => 'App\Article',
-            'likes' => 'App\Like',
-            'favorites' => 'App\Favorite',
-            'follows' => 'App\Follow',
-            'tips' => 'App\Tip',
-            'questions' => 'App\Question',
-            'answers' => 'App\Answer',
+            'articles'    => 'App\Article',
+            'comments'    => 'App\Comment',
+            'videos'      => 'App\Video',
+            'posts'       => 'App\Article',
+            'likes'       => 'App\Like',
+            'favorites'   => 'App\Favorite',
+            'follows'     => 'App\Follow',
+            'tips'        => 'App\Tip',
+            'questions'   => 'App\Issue',
+            'answers'     => 'App\Resolution',
+            'feedbacks'   => 'App\Feedback',
         ]);
 
         foreach (glob(app_path() . '/Helpers/*.php') as $filename) {

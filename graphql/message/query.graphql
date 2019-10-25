@@ -1,0 +1,13 @@
+type Message {
+  id: Int!
+  time_ago: String
+  message: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  user: User!
+  chat: Chat!
+}
+
+extend type Query {
+  messages(chat_id: Int!): [Message!] @paginate(defaultCount: 10, builder: "App\\Chat@resolveMessages")
+}

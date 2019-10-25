@@ -5,7 +5,7 @@
 @extends('layouts.app')
 
 @section('title')
-	编辑视频动态 - {{ $video->title }}
+	编辑视频动态 - {{ $video->id }}
 @stop
 @php
     //编辑成功返回之前的页面
@@ -98,7 +98,7 @@
                                         //表示图片的初始选中状态
                                         $checked = $article->image_url == $cover;
                                     @endphp
-                                    {!! Form::radio('cover', $cover, $checked,['id' => $coverIndex]) !!}
+                                    {!! Form::radio('cover', $cover, $checked, ['id' => $coverIndex]) !!}
                                     <label for="cover">
                                         选取
                                     </label>

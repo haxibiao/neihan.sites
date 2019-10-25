@@ -13,7 +13,7 @@
 					<div class="note-list">
 						@foreach($data['collections'] as $collection) 
 						<li class="note-info"><a href="/collection/{{ $collection->id }}" class="avatar-category">
-							<img src="{{ $collection->logo() }}" alt=""></a>
+							<img src="{{ $collection->logoUrl }}" alt=""></a>
 							<follow></follow>
 							<div class="title"><a href="/collection/{{ $collection->id }}" class="name">{{ $collection->name }}</a></div>
 							<div class="info"><p>{{ $collection->count }}篇文章，{{ $collection->count_follows }}人关注</p></div></li>

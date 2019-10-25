@@ -6,12 +6,12 @@
 </div>
 <div class="description distance">
 	<p class="cont" id="introduction_text">
-		{{ $user->introduction() }}
+		{{ $user->introduction }}
 	</p>
 
 	@if($user->isSelf())
 		<form class="profile-edit intro-form" action="#" method="post">
-		    <textarea name="introduction" id="user_intro">{{ $user->introduction() }}</textarea>
+		    <textarea name="introduction" id="user_intro">{{ $user->introduction }}</textarea>
 		    <input type="button" name="commit" value="保存" class="btn-base btn-hollow btn-md">
 		    <a href="javascript:void(null);">取消</a>
 		</form>

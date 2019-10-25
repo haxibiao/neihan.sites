@@ -21,7 +21,7 @@
                 <div class="hot-recommend">
                     <span>精彩推荐：</span>
                     @foreach($data['categories'] as $category)
-                        <a href="{{ url("/$category->name_en") }}">{{ $category->name }}</a>
+                        <a href="{{ url("/category/$category->id") }}">{{ $category->name }}</a>
                     @endforeach
                 </div>
                 <div class="video">

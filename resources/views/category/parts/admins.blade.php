@@ -4,7 +4,7 @@
 	    @foreach($category->topAdmins() as $admin) 
 	    	<li class="author">
 				<a href="/user/{{ $admin->id }}" class="avatar">
-					<img src="{{ $admin->avatar() }}" alt=""></a>
+					<img src="{{ $admin->avatarUrl }}" alt=""></a>
 				<a href="/user/{{ $admin->id }}" class="info">{{ $admin->name }}</a>
 				@if($admin->isCreator)
 					<span class="extrude">创建者</span>

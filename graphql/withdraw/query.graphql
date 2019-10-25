@@ -1,0 +1,15 @@
+type Withdraw {
+  id: ID
+  status: Int
+  amount: Float!
+  remark: String
+  trade_no: String
+  to_account: String!
+  to_platform: String
+  created_at: DateTime!
+}
+
+extend type Query @middleware(checks: ["auth:api"]) {
+  withdraw(id: Int @eq): Withdraw! @find
+  withdraws(wallet_id: Int! @eq, orderBy: [OrderByClause!] @orderBy): [Withdraw]! @paginate(defaultCount: 10)
+}

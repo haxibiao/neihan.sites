@@ -1,7 +1,7 @@
 <div class="follow-card">
   <div class="note-info">
       <a class="avatar" href="/user/{{ $article->user->id }}">
-        <img src="{{ $article->user->avatar() }}" alt="">
+        <img src="{{ $article->user->avatarUrl }}" alt="">
       </a>
 
       @weixin
@@ -30,6 +30,6 @@
       </div>
     </div>
     <p class="signature">
-      {{ $article->user->introduction() }}
+      {{ $article->user->introduction }}
     </p>
 </div>

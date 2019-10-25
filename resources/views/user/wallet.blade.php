@@ -8,7 +8,7 @@
         <div class="col-sm-3 left">
             <div class="note-info info-lg note-info-wallet">
                 <a class="avatar" href="/user/{{ $user->id }}">
-                    <img alt="" src="{{ $user->avatar() }}"/>
+                    <img alt="" src="{{ $user->avatarUrl }}"/>
                 </a>
                 <div class="title">
                     <a class="name" href="/user/{{ $user->id }}">
@@ -26,11 +26,11 @@
                     账户余额
                 </span>
                 <span class="main-money">
-                    {{ floor($user->balance()) }}
+                    {{ floor($user->cash) }}
                 </span>
                 <span class="money-sub">
                     @php
-                		$weishu = floor(($user->balance() - floor($user->balance())) * 100);
+                		$weishu = floor(($user->cash - floor($user->cash)) * 100);
                 	@endphp
                     .{{ $weishu < 10 ? '0'.$weishu : $weishu }}元
                 </span>

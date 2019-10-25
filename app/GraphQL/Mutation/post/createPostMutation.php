@@ -21,10 +21,10 @@ class createPostMutation extends Mutation
     public function args()
     {
         return [
-            'body'         => ['name' => 'body', 'type' => Type::string()],
-            'video_id'     => ['name' => 'video_id', 'type' => Type::int()],
-            'image_urls'   => ['name' => 'image_urls', 'type' => Type::listOf(Type::string())],
-            'a_cids' => ['name' => 'a_cids', 'type' => Type::listOf(Type::int())],
+            'body'       => ['name' => 'body', 'type' => Type::string()],
+            'video_id'   => ['name' => 'video_id', 'type' => Type::int()],
+            'image_urls' => ['name' => 'image_urls', 'type' => Type::listOf(Type::string())],
+            'a_cids'     => ['name' => 'a_cids', 'type' => Type::listOf(Type::int())],
         ];
     }
 
@@ -50,22 +50,17 @@ class createPostMutation extends Mutation
         if (!empty($args['a_cids'])) {
             //排除重复专题
             $category_ids = array_unique($args['a_cids']);
-            $category_id = reset($category_ids);
+            $category_id  = reset($category_ids);
             array_shift($category_ids);
 
             //第一个专题为主专题
             $article->category_id = $category_id;
             $article->save();
 
-            if($category_ids){
+            if ($category_ids) {
                 $article->categories()->sync($category_ids);
             }
         }
-
-        //记录到traffic
-        $user_id = checkUser() ? getUser()->id : null;
-        $path = $article->type == 'video' ? 'createVideo' : 'createPost';
-        recordTaffic(request(), $path, $article->id, $user_id, true);
 
         return $article;
     }

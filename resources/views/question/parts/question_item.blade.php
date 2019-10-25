@@ -23,7 +23,7 @@
           <span class="time">{{ $question->createdAt() }}</span>
         @else
         <a class="avatar" target="_blank" href="/user/{{ $question->latestAnswer->user_id }}">
-          <img src="{{ $question->latestAnswer->user->avatar() }}" alt="">
+          <img src="{{ $question->latestAnswer->user->avatarUrl }}" alt="">
         </a> 
         <div class="info">
           <a class="nickname" target="_blank" href="/user/{{ $question->latestAnswer->user_id }}">{{ $question->latestAnswer->user->name }}</a>

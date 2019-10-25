@@ -1,0 +1,11 @@
+extend type Mutation @middleware(checks: ["auth:api"]) {
+  follow(user_id: Int!, followed_type: FollowType!, followed_id: Int!): Follow! @create
+  unfollow(id: Int!): Follow @delete
+  toggleFollow(followed_type: FollowType!, followed_id: Int!): Follow! @field(resolver: "App\\Http\\GraphQL\\Mutations\\FollowMutators@toggleFollow")
+}
+
+enum FollowType {
+  users
+  categories
+  collections
+}

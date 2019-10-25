@@ -6,7 +6,7 @@
      <div class="video-item vt">
        <div class="thumb">
          <a href="/video/{{$video->id}}" target="_blank">
-           <img src="{{ $article->cover() }}" alt="{{ $article->title ?: $article->get_description() }}">  
+           <img src="{{ $article->cover }}" alt="{{ $article->title ?: $article->get_description() }}">  
            <i class="duration"> 
              @sectominute($video->duration)
            </i>

@@ -1,7 +1,7 @@
 {{-- 自己的信息 --}}
 <div class="information">
   <a class="avatar" href="/user/{{ $user->id }}">
-    <img src="{{ $user->avatar() }}" alt="">
+    <img src="{{ $user->avatarUrl }}" alt="">
 	</a>        
   <div class="title">
     <a class="name" href="/user/{{ $user->id }}">{{ $user->name }}</a>

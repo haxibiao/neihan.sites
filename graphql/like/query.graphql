@@ -1,0 +1,22 @@
+type Like {
+  id: Int!
+  user: User!
+  liked_id: Int!
+  liked_type: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  article: Article
+  question: Question
+  comment: Comment
+  isLiked: Boolean
+}
+extend type Query {
+  likes(user_id: Int! @eq, liked_type: String!, orderBy: [OrderByClause!] @orderBy): Like
+    @paginate(defaultCount: 10, builder: "App\\Like@resolveLikeArticle")
+}
+
+enum LikeType {
+  VIDEO @enum(value: "articles")
+  ARTICLE @enum(value: "articles")
+  COMMENT @enum(value: "comments")
+}

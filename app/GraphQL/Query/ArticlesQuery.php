@@ -14,55 +14,55 @@ class ArticlesQuery extends Query
     ];
 
     public function type()
-    { 
+    {
         return Type::listOf(GraphQL::type('Article'));
     }
 
     public function args()
     {
-        return [ 
+        return [
             'user_id'       => [
-                'name' => 'user_id', 
-                'type'         => Type::int()
+                'name' => 'user_id',
+                'type' => Type::int(),
             ],
             'category_id'   => [
-                'name' => 'category_id', 
-                'type'     => Type::int()
+                'name' => 'category_id',
+                'type' => Type::int(),
             ],
             'collection_id' => [
-                'name' => 'collection_id', 
-                'type'   => Type::int()
+                'name' => 'collection_id',
+                'type' => Type::int(),
             ],
             'limit'         => [
-                'name' => 'limit', 
-                'type'   => Type::int()
+                'name' => 'limit',
+                'type' => Type::int(),
             ],
             'offset'        => [
-                'name' => 'offset', 
-                'type'  => Type::int()
-            ], 
+                'name' => 'offset',
+                'type' => Type::int(),
+            ],
             'filter'        => [
-                'name' => 'filter', 
-                'type'  => GraphQL::type('ArticleFilter')
+                'name' => 'filter',
+                'type' => GraphQL::type('ArticleFilter'),
             ],
             'in_days'       => [
-                'name' => 'in_days', 
-                'type' => Type::int()
+                'name' => 'in_days',
+                'type' => Type::int(),
             ],
             'order'         => [
-                'name' => 'order',  
-                'type'  => GraphQL::type('ArticleOrder')
+                'name' => 'order',
+                'type' => GraphQL::type('ArticleOrder'),
             ],
             'type'          => [
-                'name' => 'type', 
-                'type'    => GraphQL::type('ArticleType')
+                'name' => 'type',
+                'type' => GraphQL::type('ArticleType'),
             ],
-            'keyword'     => [
-                'name' => 'keyword'   , 
-                'type'    => Type::string()
+            'keyword'       => [
+                'name' => 'keyword',
+                'type' => Type::string(),
             ],
         ];
-    } 
+    }
 
     public function resolve($root, $args)
     {
@@ -71,17 +71,16 @@ class ArticlesQuery extends Query
         /*->where('category_id', '>', 0)*/;
         if (isset($args['keyword'])) {
             $keyword = trim($args['keyword']);
-            if( empty( $keyword ) ){
+            if (empty($keyword)) {
                 return null;
-            } 
-            $qb = $qb->where('status', 1)
-                ->where(function($query) use($keyword){
-                    $query->where('title', 'like', '%' . $keyword . '%')
-                        ->orWhere('keywords', 'like', '%' . $keyword . '%');
-                  });
+            }
+            $qb = $qb->where(function ($query) use ($keyword) {
+                $query->where('title', 'like', '%' . $keyword . '%')
+                    ->orWhere('keywords', 'like', '%' . $keyword . '%');
+            });
             $results = $qb->count();
             //记录用户搜索日志
-            if ( $results ) { 
+            if ($results) {
                 //保存全局搜索
                 $query_item = \App\Query::firstOrNew([
                     'query' => $keyword,
@@ -104,18 +103,18 @@ class ArticlesQuery extends Query
                 $qb = $qb->orderBy('updated_at', 'desc'); //TODO:: later update article->commented while commented ...
             } else if ($args['order'] == 'HOT') {
                 $qb = $qb->orderBy('hits', 'desc');
-            } else{
+            } else {
                 $qb = $qb->orderBy('id', 'desc');
             }
         } else {
-            $qb = $qb->orderBy('updated_at', 'desc');
+            $qb = $qb->orderBy('id', 'desc');
         }
 
-        //TODO关于filter的代码需要重构
+        //TODO：关于filter的代码需要重构
         if (isset($args['filter'])) {
             switch ($args['filter']) {
                 case 'DRAFTS':
-                    $qb = $qb->where('status', '=', 0);
+                    $qb = $qb->where('status', 0);
                     break;
 
                 case 'DELETED':
@@ -127,24 +126,20 @@ class ArticlesQuery extends Query
                     break;
             }
         } else {
-            $qb = $qb->where('status', '>', 0);
+            $qb = $qb->where('status', 1);
         }
+
         //文章的类型，目前主要有视频与普通文章
         if (isset($args['type'])) {
             switch ($args['type']) {
                 case 'VIDEO':
-                    $qb = $qb->where('type','=','video');  
+                    $qb = $qb->where('type', 'video');
                     break;
-
                 case 'ARTICLE':
-                    $qb = $qb->where('type','=','article');
-                    break;
-
-                default:
+                    $qb = $qb->where('type', 'article');
                     break;
             }
         }
-        
 
         if (isset($args['in_days'])) {
             $qb = $qb->where('created_at', '>', \Carbon\Carbon::now()->addDays(-$args['in_days']));
@@ -155,17 +150,17 @@ class ArticlesQuery extends Query
         }
 
         if (isset($args['category_id'])) {
-            $qb = \App\Category::findOrFail($args['category_id'])->publishedWorks();
-            //专题下排序
-            if (isset($args['order'])) {
-                if ($args['order'] == 'HOT') {
-                    $qb = $qb->orderByDesc('articles.hits');
-                }else{
-                    $qb = $qb->orderByDesc('pivot_updated_at');
-                }
-            } else {
-                $qb = $qb->orderByDesc('pivot_updated_at');
-            }
+            $qb = $qb->where('category_id', $args['category_id']);
+            //TODO: 专题下排序,应该按收录时间？因为要修复type 过滤的效果，暂时不考虑
+            // if (isset($args['order'])) {
+            //     if ($args['order'] == 'HOT') {
+            //         $qb = $qb->orderByDesc('hits');
+            //     } else {
+            //         $qb = $qb->orderByDesc('updated_at');
+            //     }
+            // } else {
+            //     $qb = $qb->orderByDesc('updated_at');
+            // }
         }
 
         if (isset($args['collection_id'])) {
@@ -190,24 +185,35 @@ class ArticlesQuery extends Query
             }
             $user = \App\User::findOrFail($args['user_id']);
             $qb   = $user->likedArticles()->whereExists(function ($query) {
-                    return $query->from('articles')
-                        ->whereRaw('articles.id = likes.liked_id')
-                        ->where('articles.status', '>=', 0);
-                }); 
+                return $query->from('articles')
+                    ->whereRaw('articles.id = likes.liked_id')
+                    ->where('articles.status', '>=', 0);
+            });
         }
 
-        if ( isset($args['filter']) && $args['filter'] == 'RECOMMEND') {
-            if( !isset($args['user_id']) ){
+        if (isset($args['filter']) && $args['filter'] == 'RECOMMEND') {
+            if (!isset($args['user_id'])) {
                 return null;
             }
-            $user = \App\User::findOrFail($args['user_id']);
+            $user               = \App\User::findOrFail($args['user_id']);
             $following_user_ids = $user->followingUsers()
                 ->pluck('followed_id');
-            if(empty($following_user_ids)){
+            if (empty($following_user_ids)) {
                 return null;
             }
             $qb = Article::orderBy('id', 'desc')
-                ->whereIn('user_id',$following_user_ids);
+                ->whereIn('user_id', $following_user_ids);
+            //修复type不作用
+            if (isset($args['type'])) {
+                switch ($args['type']) {
+                    case 'VIDEO':
+                        $qb = $qb->where('type', 'video');
+                        break;
+                    case 'ARTICLE':
+                        $qb = $qb->where('type', 'article');
+                        break;
+                }
+            }
         }
 
         if (isset($args['offset'])) {
@@ -227,14 +233,12 @@ class ArticlesQuery extends Query
             return $articles;
         }
 
-        //没有以下参数,视为访问首页 记录到traffic
-        if(!isset($args['user_id'], $args['category_id'], $args['collection_id'], $args['keyword'])){
-            $user_id = checkUser() ? getUser()->id : null;
-            recordTaffic(request(), 'browseIndex',null,$user_id,true);
-        }
-
         $articles = $qb->get();
+
+        //记录APP日活
+        app_track_launch();
+
         return $articles;
-        
+
     }
 }

@@ -89,7 +89,7 @@
         @php
            $img_urls = [];
            foreach($article->images as $image) {
-            $img_urls[] = $image->url();
+            $img_urls[] = $image->url;
            }
         @endphp
         <image-select :img-urls="{{ json_encode($img_urls) }}"></image-select>

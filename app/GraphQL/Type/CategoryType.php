@@ -7,7 +7,8 @@ use Folklore\GraphQL\Support\Type as GraphQLType;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 
-class CategoryType extends GraphQLType {
+class CategoryType extends GraphQLType
+{
 	protected $attributes = [
 		'name' => 'Category',
 		'description' => 'A category',
@@ -19,7 +20,8 @@ class CategoryType extends GraphQLType {
 	*/
 	// protected $inputObject = true;
 
-	public function fields() {
+	public function fields()
+	{
 		return [
 			'id' => [
 				'type' => Type::nonNull(Type::int()),
@@ -185,7 +187,8 @@ class CategoryType extends GraphQLType {
 		];
 	}
 
-	public function resolveFollowsField($root, $args) {
+	public function resolveFollowsField($root, $args)
+	{
 		$qb = $root->follows();
 
 		if (isset($args['offset'])) {
@@ -199,7 +202,8 @@ class CategoryType extends GraphQLType {
 		return $qb->get();
 	}
 
-	public function resolveAdminsField($root, $args) {
+	public function resolveAdminsField($root, $args)
+	{
 		$qb = $root->admins();
 
 		if (isset($args['offset'])) {
@@ -213,19 +217,23 @@ class CategoryType extends GraphQLType {
 		return $qb->get();
 	}
 
-	public function resolveUserField($root, $args) {
+	public function resolveUserField($root, $args)
+	{
 		return $root->user;
 	}
 
-	public function resolveLogoField($root, $args) {
-		return $root->logo();
+	public function resolveLogoField($root, $args)
+	{
+		return $root->logoUrl;
 	}
 
-	public function resolveLogoAppField($root, $args) {
+	public function resolveLogoAppField($root, $args)
+	{
 		return $root->logo_app();
 	}
 
-	public function resolveLatestFollowerField($root, $args) {
+	public function resolveLatestFollowerField($root, $args)
+	{
 		$latest_followers = $root->topFollowers();
 		$user = null;
 		if (count($latest_followers)) {

@@ -1,0 +1,9 @@
+extend type Mutation {
+  createFeedback(content: String!, contact: String, images: [String]): Feedback!
+    @field(resolver: "App\\Feedback@resolveCreateFeedback")
+  # createFeedback(input: CreateFeedbackInput! @spread): Feedback! @create
+}
+
+input ConnectImageRelation {
+  sync: [Int!]
+}

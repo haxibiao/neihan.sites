@@ -14,7 +14,7 @@ class VisitedType extends GraphQLType
     ];
 
     public function fields()
-    {  
+    {
         return [
             'id'         => [
                 'type'        => Type::nonNull(Type::int()),
@@ -26,52 +26,52 @@ class VisitedType extends GraphQLType
                 'resolve'     => function ($root, $args) {
                     $table_name = $root->getTable();
                     //专题
-                    if($table_name == 'categories'){
+                    if ($table_name == 'categories') {
                         return $root->name;
                     }
                     return $root->title;
-                }, 
+                },
             ],
-            'logo'   => [ 
+            'logo'   => [
                 'type'        => Type::string(),
                 'description' => 'The logo of Visited',
                 'resolve'     => function ($root, $args) {
                     $table_name = $root->getTable();
                     //专题
-                    if($table_name == 'categories'){
-                        return $root->logo();
+                    if ($table_name == 'categories') {
+                        return $root->logoUrl;
                     }
                     return $root->primaryImage();
-                }, 
+                },
             ],
             'description' => [
                 'type'        => Type::string(),
                 'description' => 'The description of Visited',
             ],
             //最近更新信息
-            'dynamic_msg'        => [ 
+            'dynamic_msg'        => [
                 'type'        => Type::string(),
                 'description' => '动态信息，只有category有该属性',
                 'resolve'     => function ($root, $args) {
                     $table_name = $root->getTable();
-                    if($table_name == 'categories'){
-                        
+                    if ($table_name == 'categories') {
+
                         $visit = \DB::table('visits')->where('user_id', getUser()->id)
                             ->where('visited_id', $root->id)
                             ->where('visited_type', 'categories')
                             ->select('updated_at')
                             ->first();
-                        if( empty($visit) ){
+                        if (empty($visit)) {
                             return null;
                         }
-                        $dynamicCount = $root->publishedArticles()->where('articles.created_at', '>',$visit->updated_at)->count(); 
-                        if( $dynamicCount==0 ){  
+                        $dynamicCount = $root->publishedArticles()->where('articles.created_at', '>', $visit->updated_at)->count();
+                        if ($dynamicCount == 0) {
                             //没有动态
                             return null;
-                        } else if( $dynamicCount>99 ) {
+                        } else if ($dynamicCount > 99) {
                             //超过99条
-                            return '99+'; 
-                        } else {    
+                            return '99+';
+                        } else {
                             //未超过99条
                             return $dynamicCount;
                         }

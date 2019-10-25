@@ -10,7 +10,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    {!! get_seo_meta() !!}
+    {{--{!! get_seo_meta() !!}--}}
 
     <title> @yield('title') </title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -57,23 +57,15 @@
             window.user = {
                 id: {{ Auth::user()->id }},
                 name: '{{ Auth::user()->name }}',
-                avatar: '{{ Auth::user()->avatar() }}',
-                balance: {{ Auth::user()->balance() }}
+                avatar: '{{ Auth::user()->avatarUrl }}',
+                balance: {{ Auth::user()->balance }}
             }
     </script>
     @endif
     <script type="text/javascript">
             window.csrf_token = '{{ csrf_token() }}';
     </script>
-    @if(Auth::check() && Auth::user()->checkAdmin())
-        <script src="{{ mix('js/admin.js') }}"></script>
-    @elseif(Auth::check() && Auth::user()->checkEditor())
-        <script src="{{ mix('js/editor.js') }}"></script>
-    @elseif(Auth::check())
-        <script src="{{ mix('js/user.js') }}"></script>
-    @else
-    <script src="{{ mix('js/guest.js') }}"></script>
-    @endif
+    <script src="{{ mix('js/app.js') }}"></script>
 
     <script type="text/javascript">
         $.ajaxSetup({

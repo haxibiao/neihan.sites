@@ -2,11 +2,10 @@
 
 namespace App\Notifications;
 
+use App\Issue;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Question;
 use App\User;
 
 class QuestionBonused extends Notification
@@ -14,17 +13,17 @@ class QuestionBonused extends Notification
     use Queueable;
 
     protected $user;
-    protected $question;
+    protected $issue;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(User $user, Question $question)
+    public function __construct(User $user, Issue $issue)
     {
         $this->user = $user;
-        $this->question = $question;
+        $this->issue = $issue;
     }
 
     /**
@@ -63,8 +62,8 @@ class QuestionBonused extends Notification
         return [
             'type'    => 'other',
             'subtype' => 'question_bonused',
-            'question_id' => $this->question->id,
-            'message' => $this->user->link() . '奖励了您回答的问题' . $this->question->link(),
+            'question_id' => $this->issue->id,
+            'message' => $this->user->link() . '奖励了您回答的问题' . $this->issue->link(),
         ];
     }
 }

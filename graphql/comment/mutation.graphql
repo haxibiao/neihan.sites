@@ -1,0 +1,15 @@
+extend type Mutation @middleware(checks: ["auth:api"]) {
+  addComment(commentable_id: Int!, commentable_type: commentType!, body: String!): Comment!
+    @field(resolver: "App\\Http\\GraphQL\\Mutations\\CommentMutators@create")
+
+  acceptComments(comment_ids: [Int]!): [Comment]!
+    @field(resolver: "App\\Http\\GraphQL\\Mutations\\CommentMutators@accept")
+
+  deleteComment(id: Int!): Comment! @delete
+}
+enum commentType {
+  articles
+  # 保障数据完整，commentable_type 不能为空
+  comments
+  feedbacks
+}

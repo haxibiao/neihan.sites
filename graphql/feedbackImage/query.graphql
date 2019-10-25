@@ -1,0 +1,6 @@
+type feedbackImage {
+  id: Int!
+  feedback: Feedback!
+  created_at: DateTime!
+  updated_at: DateTime!
+}

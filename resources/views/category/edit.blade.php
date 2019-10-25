@@ -20,7 +20,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <div class="avatar-category"><img src="{{ $category->logo() ? : '/images/dissertation_04.jpg' }}" alt="" id="previewImage"></div>
+                        <div class="avatar-category"><img src="{{ $category->logoUrl ? : '/images/dissertation_04.jpg' }}" alt="" id="previewImage"></div>
                     </td>
                     <td>
                         <a rel="noreferrer" class="btn-base btn-hollow btn-md btn-file">
@@ -47,7 +47,7 @@
                 <tr>
                     <td class="setting-title">英文名称</td>
                     <td>
-                        <input type="text" class="input-style" name="name_en" placeholder="填写英文名称，建议用中文全拼，英语单词建议用-隔开" value="{{ $category->name_en }}">
+                        <input type="text" class="input-style" name="name_en" minlength="5" placeholder="填写英文名称(5字母以上)，建议用中文全拼，英语单词建议用-隔开" value="{{ $category->name_en }}">
                     </td>
                 </tr>
                 <tr>

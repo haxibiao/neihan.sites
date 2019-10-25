@@ -1,7 +1,7 @@
 <li class="col-sm-4 recommend-card">
   <div>
-    <a target="_blank" href="/{{ $category->name_en }}">
-      <img class="avatar-category" src="{{ $category->logo() }}" alt="">
+    <a target="_blank" href="/category/{{ $category->id }}">
+      <img class="avatar-category" src="{{ $category->logoUrl }}" alt="">
       <h4 class="name single-line">{{ $category->name }}</h4>
       <p class="category-description">{{ $category->description }}</p>
     </a>
@@ -14,6 +14,6 @@
       </follow>
 
     <hr>
-    <div class="count"><a target="_blank" href="/{{ $category->name_en }}">{{ $category->count }}篇作品</a> · {{ $category->count_follows }}人关注</div>
+    <div class="count"><a target="_blank" href="/category/{{ $category->id }}">{{ $category->count }}篇作品</a> · {{ $category->count_follows }}人关注</div>
   </div>
 </li>

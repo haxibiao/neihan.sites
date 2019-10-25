@@ -1,0 +1,7 @@
+type WalletTransaction {
+  wallet: Wallet
+  amount: Float
+  balance: Float
+  remark: String
+  created_at: DateTime
+}

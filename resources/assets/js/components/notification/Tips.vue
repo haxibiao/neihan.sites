@@ -10,7 +10,7 @@
 						<a :href="'/user/'+notification.user_id" class="nickname">{{ notification.user_name }}</a>
 						<span>向你的作品</span>
 						<a :href="'/article/' + notification.article_id " class="headline">{{ notification.article_title }}</a>
-						<span>赞赏 <i class="money">¥ {{ notification.amount }}.00</i></span>
+						<span>赞赏 <i class="money">¥ {{ notification.amount }}</i></span>
 					</div>
 					<div class="info">{{ notification.time }}</div>
 				</div>

@@ -1,0 +1,22 @@
+type Visit {
+  id: Int!
+  user: User!
+  visited_id: Int!
+  visited_type: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  article: Article
+  category: Category
+  time_ago: String!
+  type: String!
+}
+
+extend type Query {
+  visits(user_id: Int! @eq, visited_type: String! @eq, filter: VisitFilter!): Visit
+    @paginate(defaultCount: 10, builder: "App\\Visit@getByDate")
+}
+
+enum VisitFilter {
+  TODAY
+  EARLY
+}

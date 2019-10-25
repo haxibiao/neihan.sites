@@ -1,0 +1,6 @@
+extend type Mutation  @middleware(checks: ["auth:api"]){
+  like(user_id: Int!, liked_id: Int!, liked_type: String!): Like! @field(resolver: "App\\Like@create")
+  unlike(id: Int! @eq): Like @delete
+  toggleLike(liked_id: Int!, liked_type: LikeType!): Like! @field(resolver: "App\\Like@toggleTheLike")
+}
+

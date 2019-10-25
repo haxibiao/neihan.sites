@@ -6,7 +6,7 @@
     <ul class="list-people">
         @foreach($article->tips()->with('user')->take(8)->get() as $tip)
         <li>
-            <a target="_blank" href="/user/{{ $tip->user->id }}" class="avatar"><img src="{{ $tip->user->avatar() }}"></a>
+            <a target="_blank" href="/user/{{ $tip->user->id }}" class="avatar"><img src="{{ $tip->user->avatarUrl }}"></a>
         </li>
         @endforeach
     </ul>

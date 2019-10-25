@@ -4,7 +4,7 @@
 	<ul class="admin-category">
 		@foreach($user->adminCategories()->orderBy('id','desc')->get() as $category)
 
-		<li class="single-media"><a href="/{{ $category->name_en }}" class="avatar-category"><img src="{{ $category->logo() }}" alt="{{ $category->name }}"></a><a href="/{{ $category->name_en }}" class="info">{{ $category->name }}</a></li>	
+		<li class="single-media"><a href="/category/{{ $category->id }}" class="avatar-category"><img src="{{ $category->logoUrl }}" alt="{{ $category->name }}"></a><a href="/category/{{ $category->id }}" class="info">{{ $category->name }}</a></li>	
 		@endforeach	
 	</ul>
 	<div class="unfold"><a class="check-more">展开更多</a><i class="iconfont icon-xia"></i><i class="iconfont icon-shangjiantou"></i> <!----></div>

@@ -1,0 +1,29 @@
+extend type Query {
+  comments(
+    commentable_id: Int! @eq
+    commentable_type: String! @eq
+    user_id: Int @eq
+    orderBy: [OrderByClause!] @orderBy @deprecated(reason: "已经废弃")
+  ): [Comment!] @paginate(defaultCount: 5, builder: "App\\Http\\GraphQL\\Queries\\CommentQueries@comments")
+
+  comment(id: Int! @eq): Comment @find
+
+  replies(comment_id: Int! @eq, orderBy: [OrderByClause!] @orderBy): [Comment!] @paginate(defaultCount: 5)
+}
+
+type Comment {
+  id: Int!
+  user: User
+  body: String!
+  likes: Int
+  liked: Boolean
+  count_replies: Int
+  commentable_id: Int!
+  replies: [Comment!]
+  comments: [Comment!] @paginate(defaultCount: 5, builder: "App\\Comment@resolveComments")
+  lou: Int
+  time_ago: String!
+  created_at: DateTime!
+  is_accept: Boolean
+  article: Article
+}

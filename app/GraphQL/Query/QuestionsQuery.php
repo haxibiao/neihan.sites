@@ -2,7 +2,6 @@
 
 namespace App\GraphQL\Query;
 
-use App\Question;
 use Folklore\GraphQL\Support\Query;
 use GraphQL;
 use GraphQL\Type\Definition\Type;
@@ -30,7 +29,7 @@ class QuestionsQuery extends Query
 
     public function resolve($root, $args)
     {
-        $qb = Question::orderBy('id', 'desc');
+        $qb = Topic::orderBy('id', 'desc');
 
         if (isset($args['user_id'])) {
             $qb = $qb->where('user_id', $args['user_id']);

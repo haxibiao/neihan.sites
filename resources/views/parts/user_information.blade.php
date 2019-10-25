@@ -1,7 +1,7 @@
 {{-- 用户信息 --}}
 <div class="information">
   <a class="avatar" href="/user/{{ $user->id }}">
-    <img src="{{ $user->avatar() }}" alt="">
+    <img src="{{ $user->avatarUrl }}" alt="">
   </a>        
   
   <a class="button btn_followed"><span><i class="gougou iconfont icon-weibiaoti12"></i><i class="chacha iconfont icon-cha"></i></span></a>

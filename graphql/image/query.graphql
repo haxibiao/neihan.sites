@@ -1,0 +1,8 @@
+type Image {
+  id: Int!
+  width: Int
+  height: Int
+  url: String!
+  thumbnail: String!
+  user: User! @belongsTo
+}

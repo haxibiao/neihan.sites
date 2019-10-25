@@ -5,7 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use \Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -33,12 +33,10 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        if (env('APP_ENV') == 'prod') {
-            if ($this->shouldReport($exception)) {
-                //not always report to bugsnag in prod , too many 404 ....
-                \Bugsnag::notifyException($exception);
-            }
-        }
+        // if (is_prod()) {
+        //     if ($this->shouldReport($exception)) {
+        //     }
+        // }
 
         parent::report($exception);
     }
@@ -61,14 +59,14 @@ class Handler extends ExceptionHandler
 
         //404 异常处理
         $e = $this->prepareException($exception);
-        if($this->isHttpException($e) && ($e->getStatusCode() == 404)){
-            $data['categories'] = \App\Category::where('parent_id',1)->orderByDesc('updated_at')->take(4)->get();
+        if ($this->isHttpException($e) && ($e->getStatusCode() == 404)) {
+            $data['categories'] = \App\Category::where('parent_id', 1)->orderByDesc('updated_at')->take(4)->get();
             //取最近七天点击量 倒叙
             $data['articles'] = \App\Article::with('video')->whereType('video')
                 ->whereStatus(1)
                 ->whereRaw('DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(created_at)')
                 ->orderByDesc('hits')->take(4)->get();
-            return response()->view('errors.404',['data'=>$data],404);
+            return response()->view('errors.404', ['data' => $data], 404);
         }
 
         return parent::render($request, $exception);

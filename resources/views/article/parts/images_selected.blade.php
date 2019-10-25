@@ -16,10 +16,10 @@
         @if(!str_contains($image->path_small(), 'storage/video'))
             <div class="col-xs-3">
                 <p class="text-center">
-                    <img src="{{ $image->url_small() }}" alt="" class="img img-responsive">
+                    <img src="{{ $image->thumbnail }}" alt="" class="img img-responsive">
                     
                     <label class="radio text-center">
-                      <input type="radio" name="primary_image" value="{{ $image->url_small() }}" {{ $image->url_small() == $article->image_url ? 'checked':'' }}>
+                      <input type="radio" name="primary_image" value="{{ $image->thumbnail }}" {{ $image->thumbnail == $article->image_url ? 'checked':'' }}>
                       设为主要图
                     </label>
                     

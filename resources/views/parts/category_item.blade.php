@@ -1,3 +1,3 @@
 <li>
-	<a href="/{{ $category->name_en }}" class="avatar"><img src="{{ $category->smallLogo() }}" alt="{{ $category->name }}"></a><a href="/{{ $category->name_en }}" class="name">{{ $category->name }}</a>
+	<a href="/category/{{ $category->id }}" class="avatar"><img src="{{ $category->iconUrl }}" alt="{{ $category->name }}"></a><a href="/category/{{ $category->id }}" class="name">{{ $category->name }}</a>
 </li>

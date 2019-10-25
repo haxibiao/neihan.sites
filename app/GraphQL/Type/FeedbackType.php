@@ -55,7 +55,7 @@ class FeedbackType extends BaseType
 				'resolve' => function ($root, $args) {
 					$urls = [];
 					foreach ($root->images as $image) {
-						$urls[] = $image->url();
+						$urls[] = $image->url;
 					}
 					return $urls;
 				},

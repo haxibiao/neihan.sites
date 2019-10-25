@@ -1,0 +1,23 @@
+extend type Mutation @group(namespace: "App") {
+  signIn(account: String, email: String, password: String!): User! @field(resolver: "User@signIn")
+  signOut(user_id: ID!): User @field(resolver: "User@signOut")
+  autoSignIn(uuid: String!, phone: String): User @field(resolver: "User@autoSignIn")
+}
+
+# test
+extend type Mutation {
+  blockUser(user_id: Int!): blockInfo @field(resolver: "App\\User@removeBlockUser")
+  updateUserInfo(id: Int @eq, input: updateUserInfo! @spread): User! @field(resolver: "App\\User@updateUserInfo")
+}
+
+input updateUserInfo {
+  name: String
+  age: Int
+  gender: String
+  email: String
+  phone: String
+  introduction: String
+  password: String @bcrypt
+  avatar: String
+  birthday: String
+}

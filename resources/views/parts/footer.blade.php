@@ -1,11 +1,11 @@
 <!-- 网站底部 -->
 <footer id="footer">
     <div>
-        <a target="_blank" href="/article/guanyuwomen">关于{{ config('app.name_cn') }}</a><em> · </em>
-        <a target="_blank" href="/article/lianxiwomen">联系我们</a><em> · </em>
+        <a target="_blank" href="/blog">{{ config('app.name_cn') }}官方博客</a><em> · </em>
+        <a target="_blank" href="/pivacy-and-policy">隐私政策</a><em> · </em>
         <a target="_blank" href="">{{ config('app.name_cn') }}出版</a><em> · </em>
         <a target="_blank" href="/sitemap" title="站点地图">站点地图</a><em> · </em>
-        <a target="_blank" href="/article/bangzhuzhongxin">帮助中心</a><em> · </em>
+        {{-- <a target="_blank" href="/help">帮助中心</a><em> · </em> --}}
         <a target="_blank" href="/user">全部作者</a>
         
     </div>

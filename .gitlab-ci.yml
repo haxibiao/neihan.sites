@@ -1,0 +1,28 @@
+go_production:
+  stage: deploy
+  script:
+    - whoami
+    - pwd
+    - bash ops/bash/ui.sh
+    - ssh root@gz005 "cd /data/www/ainicheng.com && git reset --hard && git checkout master && git pull origin master -f"
+    - ssh root@gz005 "cd /data/www/ainicheng.com && composer install"
+    - ssh root@gz005 "cd /data/www/ainicheng.com && php artisan env:refresh --env=prod --db_host=gz002 --db_database=ainicheng"
+    - ssh root@gz005 "cd /data/www/ainicheng.com && bash ops/bash/worker.sh"
+    - ssh root@gz005 "cd /data/www/ainicheng.com && php artisan migrate"
+    - ssh root@gz005 "cd /data/www/ainicheng.com && bash ops/bash/data.sh && exit"
+  only:
+    - master
+go_develop:
+  stage: deploy
+  script:
+    - whoami
+    - pwd
+    - bash ops/bash/ui.sh
+    - ssh root@gz005 "cd /data/develop/ainicheng.com && git reset --hard && git checkout develop && git pull origin develop -f"
+    - ssh root@gz005 "cd /data/develop/ainicheng.com && composer install"
+    - ssh root@gz005 "cd /data/develop/ainicheng.com && php artisan env:refresh --env=develop --db_host=gz005 --db_database=ainicheng_dev"
+    - ssh root@gz005 "cd /data/develop/ainicheng.com && bash ops/bash/worker.sh"
+    - ssh root@gz005 "cd /data/develop/ainicheng.com && php artisan migrate"
+    - ssh root@gz005 "cd /data/develop/ainicheng.com && bash ops/bash/data.sh && exit"
+  only:
+    - develop

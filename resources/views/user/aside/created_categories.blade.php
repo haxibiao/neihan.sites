@@ -7,7 +7,7 @@
 	</p>	
 	<ul>
 		@foreach($user->hasManyCategories()->orderBy('id','desc')->take(5)->get() as $category)
-		<li class="single-media"><a href="/{{ $category->name_en }}" class="avatar-category"><img src="{{ $category->logo() }}" alt="{{ $category->name }}"></a><a href="/{{ $category->name_en }}" class="info">{{ $category->name }}</a></li>	
+		<li class="single-media"><a href="/category/{{ $category->id }}" class="avatar-category"><img src="{{ $category->logoUrl }}" alt="{{ $category->name }}"></a><a href="/category/{{ $category->id }}" class="info">{{ $category->name }}</a></li>	
 		@endforeach
 	</ul>
 </div>

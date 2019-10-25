@@ -2,13 +2,14 @@
 
 namespace App;
 
-use App\Model;
-use App\Traits\PhotoTool;
 use App\Helpers\QcloudUtils;
+use App\Model;
+use App\Traits\ImageAttrs;
+use Illuminate\Support\Facades\Storage;
 
 class Image extends Model
-{ 
-    use PhotoTool;
+{
+    use ImageAttrs;
 
     protected $fillable = [
         'path',
@@ -25,29 +26,26 @@ class Image extends Model
     {
         return $this->belongsTo(\App\User::class);
     }
+
     /* --------------------------------------------------------------------- */
-    /* ------------------------------- service ----------------------------- */
+    /* ------------------------------- repo ----------------------------- */
     /* --------------------------------------------------------------------- */
+
     public function fillForJs()
     {
-        $this->url       = $this->url();
-        $this->url_small = $this->url_small();
+        $this->url = $this->url;
+        $this->url_small = $this->thumbnail;
     }
 
-    /**
-     * @Author      XXM
-     * @DateTime    2018-10-25
-     * @description [保存外部图片到Cos]
-     * @return      [String]        [Image path]
-     */
+    // TODO: move out
     public function save_image($image_url, $clientName = null)
     {
         ini_set("memory_limit", -1); //为上传文件处理截图临时允许大内存使用
-        try{
+        try {
             $image = \ImageMaker::make($image_url);
 
             //获取image extension
-            $image_mime_arr = explode("/",$image->mime());
+            $image_mime_arr = explode("/", $image->mime());
             $extension = end($image_mime_arr);
             $this->extension = $extension;
             $this->title = $clientName;
@@ -118,12 +116,85 @@ class Image extends Model
 
             $this->disk = config("app.name");
             $this->save();
-
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
 
         return $this->path;
     }
 
+    public static function saveImage($source)
+    {
+        ini_set('memory_limit', -1); //上传时允许最大内存
+
+        if ($base64 = self::matachBase64($source)) {
+            $source = $base64;
+        }
+        $imageMaker = \ImageMaker::make($source);
+        $mime = explode('/', $imageMaker->mime());
+        $extension = end($mime);
+        if (empty($extension)) {
+            throw new \UserException('上传失败');
+        }
+        //随机文件名
+        $imageName = uniqid();
+
+        //保存原始图片
+        $image = \ImageMaker::make($source);
+        if ($extension != 'gif') {
+            $big_width = $image->width() > 900 ? 900 : $image->width();
+            $image->resize($big_width, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+        }
+        $image->encode($extension, 100);
+        Storage::cloud()->put('images/' . $imageName . '.' . $extension, $image->__toString());
+
+        //保存缩略图
+        $thumbnail = \ImageMaker::make($source);
+        if ($thumbnail->width() / $thumbnail->height() < 1.5) {
+            $thumbnail->resize(300, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+        } else {
+            $thumbnail->resize(null, 240, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+        }
+        $thumbnail->crop(300, 240);
+        $thumbnail->encode($extension, 100);
+        Storage::cloud()->put('images/' . $imageName . '.small.' . $extension, $thumbnail->__toString());
+
+        //使用原图hash
+        $hash = hash_file('md5', Storage::cloud()->url('images/' . $imageName . '.' . $extension));
+
+        //hash值匹配直接返回当前image对象
+        $image = self::firstOrNew([
+            'hash' => $hash,
+        ]);
+        if (!empty($image->id)) {
+            return $image;
+        }
+
+        //写入一条新记录
+        $image->extension = $extension;
+        $image->user_id = getUserId();
+        $image->width = $imageMaker->width();
+        $image->height = $imageMaker->height();
+        $image->path = 'images/' . $imageName . '.' . $extension;
+        $image->disk = config('filesystems.cloud');
+        $image->save();
+
+        return $image;
+    }
+    public static function matachBase64($source)
+    {
+        //匹配base64
+        if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $source, $res)) {
+            // $extension = $res[2];
+            //替换base64头部信息
+            $base64_string = str_replace($res[1], '', $source);
+            return base64_decode($base64_string);
+        }
+    }
 }

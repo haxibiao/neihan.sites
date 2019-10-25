@@ -50,7 +50,7 @@
 		            <tr>
 		                <td class="setting-title">英文名称</td>
 		                <td>
-		                    <input class="input-style" type="text" name="name_en" placeholder="填写英文名称，建议用中文全拼，英语单词建议用-隔开">
+		                    <input class="input-style" type="text"  name="name_en" minlength="5" placeholder="填写英文名称(5字母以上)，建议用中文全拼，英语单词建议用-隔开">
 		                </td>
 		            </tr>
 		            <tr>

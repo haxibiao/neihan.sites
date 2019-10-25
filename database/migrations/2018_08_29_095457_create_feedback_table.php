@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateFeedbackTable extends Migration
 {
@@ -27,10 +27,11 @@ class CreateFeedbackTable extends Migration
                 ->nullable()
                 ->comment('联系方式');
 
-
             $table->string('contact_type')
                 ->nullable()
                 ->comment('联系方式: phone:手机 email:邮箱 ');
+
+            $table->unsignedInteger('status')->default(0)->comment('0-待处理 1-已驳回 2-已处理');
 
             $table->timestamps();
 

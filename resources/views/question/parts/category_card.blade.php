@@ -1,7 +1,7 @@
 <li class="col-sm-4 recommend-card">
   <div>
     <a target="_blank" href="/question?cid={{ $category->id }}">
-      	<img class="avatar-category" src="{{ $category->logo() }}" alt="">
+      	<img class="avatar-category" src="{{ $category->logoUrl }}" alt="">
       <h4 class="name single-line">{{ $category->name }}</h4>
       <p class="category-description">
         {{ $category->description }} 

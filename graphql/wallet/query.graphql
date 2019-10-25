@@ -1,0 +1,13 @@
+type Wallet {
+  id: Int!
+  user: User!
+  type: String
+  pay_account: String
+  real_name: String
+  pay_infos: String
+  withdraws: [Withdraw!] @hasMany(type: "paginator", defaultCount: 10)
+  balance: Float
+  total_withdraw_amount: Float
+  today_withdraw_left: Float
+  available_balance: Float
+}

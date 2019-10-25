@@ -2,136 +2,114 @@
 
 namespace App;
 
-use App\Image;
-use App\Model;
+use App\Traits\QuestionResolvers;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Question extends Model
 {
-    public $fillable = [
+    use QuestionResolvers;
+
+    protected $fillable = [
+        'description',
+        'selections',
+        'answer',
+        'gold',
+        'ticket',
+        'image_id',
+        'category_id',
+        'type',
+        'correct_count',
+        'wrong_count',
         'user_id',
-        'title',
-        'background',
-        'is_anonymous',
-        'bonus',
-        'deadline',
-        'image1',
-        'image2',
-        'image3',
+        'submit',
+        'video_id',
+        'rank',
+        'count_comments',
+        'count_likes',
+        'answers_count',
     ];
 
-    public function user()
+    public static function boot()
     {
-        return $this->belongsTo(\App\User::class);
+        parent::boot();
+        static::saving(function ($question) {
+            $question->syncType();
+        });
     }
 
-    public function categories()
+
+    //最大回答次数
+    const MAX_ANSWERS_COUNT = 3;
+
+    //默认奖励
+    const DEFAULT_GOLD   = 3;
+    const DEFAULT_TICKET = 1;
+
+    //提交状态
+    const DELETED_SUBMIT   = -4; //已删除
+    const CANCELLED_SUBMIT = -3; //草稿箱（暂存，已撤回）
+    const REFUSED_SUBMIT   = -2; //已拒绝
+    const REMOVED_SUBMIT   = -1; //已移除
+    const REVIEW_SUBMIT    = 0; //待审核
+    const SUBMITTED_SUBMIT = 1; //已收录
+
+    //问题类型
+    const IMAGE_TYPE = 1;
+    const VIDEO_TYPE = 2;
+    const TEXT_TYPE  = 0;
+
+    public function likes(): MorphMany
     {
-        return $this->belongsToMany(\App\Category::class);
+        return $this->morphMany(\App\Like::class, 'likable');
     }
 
-    public function answers()
+    public function comments(): MorphMany
     {
-        return $this->hasMany(\App\Answer::class)->orderBy('id', 'desc')->where('status', '>=', 0);
+        return $this->morphMany(\App\Comment::class, 'commentable');
     }
 
-    public function latestAnswer()
+    public function video(): BelongsTo
     {
-        return $this->belongsTo(\App\Answer::class, 'latest_answer_id')->where('status','>=',0);
+        return $this->belongsTo(\App\Video::class, 'video_id', 'id');
     }
 
-    public function bestAnswer()
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(\App\Answer::class, 'best_answer_id');
+        return $this->belongsTo(\App\User::class, 'user_id');
     }
 
-    public function isPay()
+    public function category(): BelongsTo
     {
-        return $this->bonus > 0;
+        return $this->belongsTo(\App\Category::class, 'category_id');
     }
 
-    public function leftHours()
+    public function syncType()
     {
-        $left = 48;
-        $left = $this->created_at->addDays($this->deadline)->diffInHours(now());
-        return $left;
-    }
+        $type = self::TEXT_TYPE;
 
-    public function isAnswered()
-    {
-        return !empty($this->selectedAnswers());
-    }
-
-    public function selectedAnswers()
-    {
-        $answers = [];
-        if (!empty($this->answered_ids)) {
-            $answered_ids = explode(',', $this->answered_ids);
-            $answers    = $this->answers()->whereIn('id', $answered_ids)->get();
+        if (!is_null($this->image_id)) {
+            $type = self::IMAGE_TYPE;
         }
-        return $answers;
-    }
 
-    public function relateImage()
-    {
-        //有最新回答，先用回答里的图片
-        if ($this->latestAnswer && !empty($this->latestAnswer->image_url)) {
-            $image_url = $this->latestAnswer->image_url;
-            $image     = Image::where('path', $image_url)->first();
-            if ($image) {
-                $image_url = $image->url_small();
-            }
-            return $image_url;
+        if (!is_null($this->video_id)) {
+            $type = self::VIDEO_TYPE;
         }
-        //没有，只好用问题里的图片
-        if (!empty($this->image1)) {
-            //多用於列表，都用小圖
-            $image_url = $this->image1;
-            $image     = Image::where('path', $image_url)->first();
-            if ($image) {
-                $image_url = $image->url_small();
-            }
-            return $image_url;
-        }
-        return null;
+
+        $this->type = $type;
     }
 
-    public function image1()
+    public function getSelectionsAttribute($value)
     {
-        if (\App::environment('local')) {
-            if ($image = Image::where('path', $this->image1)->first()) {
-                return $image->url_prod();
-            }
-        }
-        return $this->image1;
+        $value = trim($value, '"');
+        $value = str_replace('\\', '', $value);
+        return json_decode($value, true);
     }
 
-    public function image2()
+    public function checkAnswer($answer)
     {
-        if (\App::environment('local')) {
-            if ($image = Image::where('path', $this->image2)->first()) {
-                return $image->url_prod();
-            }
-        }
-        return $this->image2;
+        $answer = trim($answer);
+        return strtoupper($this->answer) == strtoupper($answer);
     }
-
-    public function image3()
-    {
-        if (\App::environment('local')) {
-            if ($image = Image::where('path', $this->image3)->first()) {
-                return $image->url_prod();
-            }
-        }
-        return $this->image3;
-    }
-
-    public function link()
-    {
-        return '<a href="/question/' . $this->id . '">' . $this->title . '</a>';
-    }
-    public function result()
-    {
-        return $this->answered_ids ? '已经结账' : '无人回答已经退回余额';
-    }
-
 }

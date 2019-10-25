@@ -51,15 +51,13 @@ class createArticleMutation extends Mutation
         $article->count_words = ceil(strlen(strip_tags($article->body)) / 2);
         $article->save();
         //统计article相关信息
-        if($article->status == 1){
+        if ($article->status == 1) {
             //统计用户的文章数，字数
             $user->count_articles = $user->articles()->count();
             $user->count_words    = $user->articles()->sum('count_words');
             $article->recordAction();
             $user->save();
         }
-
-
 
         if (isset($args['collection_id'])) {
             $article->collection_id = $args['collection_id'];
@@ -71,10 +69,7 @@ class createArticleMutation extends Mutation
         }
         $article->save();
 
-        //记录到traffic
-        $user_id = checkUser() ? getUser()->id : null;
-        $path = 'createArticle';
-        recordTaffic(request(), $path, $article->id, $user_id, true);
+        //TODO:: matomo记录action: 发布文章
 
         return $article;
     }

@@ -1,0 +1,42 @@
+type Category {
+	id: Int!
+	name: String!
+	type: String
+	status: Int
+	avatar: String @rename(attribute: "logo")
+	logo: String
+	description: String
+	count_follows: Int
+	count_articles: Int @rename(attribute: "count")
+	count_authors: Int
+	follow_id: Int
+	followed: Int
+	followed_status: Int @rename(attribute: "followed")
+	need_approve: Int
+	created_at: DateTime!
+	updated_at: DateTime!
+	user: User!
+	topAuthors: [User!]
+	topAdmins: [User!]
+	new_requests: Int
+	latestArticle: Article
+}
+
+extend type Query {
+	category(id: Int! @eq): Category @find
+	categoryAdmins(category_id: Int!): [User!] @paginate(defaultCount: 10, builder: "App\\Category@resolveAdmins")
+	categoryAuthors(category_id: Int!): [User!] @paginate(defaultCount: 10, builder: "App\\Category@resolveAuthors")
+	categories(filter: CategoryFilter): [Category!]
+		@paginate(defaultCount: 10, builder: "App\\Category@resolveCategories")
+}
+extend type Query @middleware(checks: ["auth:api"]) {
+	requestedCategories: Category! @paginate(defaultCount: 10, builder: "App\\Category@resolveRequested")
+}
+enum CategoryStatus {
+	public @enum(value: 1)
+	draft @enum(value: 0)
+}
+enum CategoryFilter {
+	hot
+	other
+}

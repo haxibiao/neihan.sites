@@ -1,0 +1,14 @@
+type Favorite {
+  id: Int!
+  user: User!
+  faved_id: Int!
+  faved_type: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  article: Article
+  question: Question
+  user: User
+}
+extend type Query {
+  favorites(faved_type: String! @eq, user_id: Int! @eq): [Favorite] @paginate(defaultCount: 10)
+}

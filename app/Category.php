@@ -2,12 +2,18 @@
 
 namespace App;
 
-use App\Model;
-use Auth;
 use App\Helpers\QcloudUtils;
+use App\Model;
+use App\Traits\CategoryAttrs;
+use App\Traits\CategoryResolvers;
+use Auth;
+use Illuminate\Support\Facades\DB;
 
 class Category extends Model
 {
+    use CategoryResolvers;
+    use CategoryAttrs;
+
     protected $fillable = [
         'name',
         'name_en',
@@ -22,7 +28,6 @@ class Category extends Model
         'is_for_app',
         'logo_app',
     ];
-
     public function user()
     {
         return $this->belongsTo(\App\User::class);
@@ -57,9 +62,9 @@ class Category extends Model
         return $this->hasMany('App\Article')->where('articles.type', 'video');
     }
 
-    public function questions()
-    { 
-        return $this->belongsToMany('App\Question');
+    public function issues()
+    {
+        return $this->belongsToMany('App\Issue');
     }
 
     public function articles()
@@ -113,44 +118,13 @@ class Category extends Model
 
     public function fillForJs()
     {
-        $this->logo        = $this->logo();
+        $this->logo = $this->logoUrl;
         $this->description = $this->description();
-    }
-
-    public function logo()
-    {
-        return $this->logo;
-        // $path = empty($this->logo) ? '/images/category.logo.jpg' : $this->logo;
-        // $url  = file_exists(public_path($path)) ? $path : starts_with($path, 'http') ? $path : env('APP_URL') . $path;
-        // //如果用户刚更新过，刷新头像图片的浏览器缓存
-        // if ($this->updated_at && $this->updated_at->addMinutes(2) > now()) {
-        //     $url = $url . '?t=' . time();
-        // }
-        // //APP 需要返回全Uri
-        // return starts_with($url, 'http') ? $url : url($url);
     }
 
     public function logo_app()
     {
-        return $this->logo_app;
-        // $path = empty($this->logo_app) ? '/images/category.logo.jpg' : $this->logo_app;
-        // $url  = file_exists(public_path($path)) ? $path : env('APP_URL') . $path;
-        // //如果用户刚更新过，刷新头像图片的浏览器缓存
-        // if ($this->updated_at && $this->updated_at->addMinutes(2) > now()) {
-        //     $url = $url . '?t=' . time();
-        // }
-        // //APP 需要返回全Uri
-        // return starts_with($url, 'http') ? $url : url($url);
-    }
-
-    public function smallLogo()
-    {
-        return str_replace('.logo.jpg', '.logo.small.jpg', $this->logo);
-        // $path = empty($this->logo) ? '/images/category.logo.small.jpg' : str_replace('.logo.jpg', '.logo.small.jpg', $this->logo);
-        // $url  = file_exists(public_path($path)) ? $path : env('APP_URL') . $path;
-
-        // //APP 需要返回全Uri
-        // return starts_with($url, 'http') ? $url : url($url);
+        return cdnurl($this->logo_app);
     }
 
     public function topAdmins()
@@ -183,7 +157,7 @@ class Category extends Model
 
     public function topFollowers()
     {
-        $topFollows   = $this->follows()->orderBy('id', 'desc')->take(8)->get();
+        $topFollows = $this->follows()->orderBy('id', 'desc')->take(8)->get();
         $topFollowers = [];
         foreach ($topFollows as $follow) {
             $topFollowers[] = $follow->user;
@@ -198,7 +172,7 @@ class Category extends Model
 
     public function link()
     {
-        return '<a href="/' . $this->name_en . '">' . $this->name . '</a>';
+        return '<a href="/category/' . $this->id . '">' . $this->name . '</a>';
     }
 
     public function canAdmin()
@@ -214,63 +188,60 @@ class Category extends Model
     {
         return Auth::check() && Auth::user()->isFollow('categories', $this->id);
     }
-    //TODO:待重构
+
+    //TODO:待重构repo
     public function saveLogo($request)
-    { 
-        $name = $this->id . '_' .time();
+    {
+        $name = $this->id . '_' . time();
         if ($request->logo) {
-            $file = $request->logo; 
+            $file = $request->logo;
             $extension = $file->getClientOriginalExtension();
-            $file_name_formatter  = $name.'.%s.'. $extension;
-            //save logo 
-            $file_name_big = sprintf($file_name_formatter,'logo');
+            $file_name_formatter = $name . '.%s.' . $extension;
+            //save logo
+            $file_name_big = sprintf($file_name_formatter, 'logo');
             $tmp_big = '/tmp/' . $file_name_big;
             $img = \ImageMaker::make($file->path());
             $img->fit(180);
-            $img->save($tmp_big); 
-            $cos_file_info = QcloudUtils::uploadFile($tmp_big, $file_name_big,'category');  
+            $img->save($tmp_big);
+            $cos_file_info = QcloudUtils::uploadFile($tmp_big, $file_name_big, 'category');
             //上传到COS失败
-            if(empty($cos_file_info) || $cos_file_info['code'] != 0){
-                return ;
+            if (empty($cos_file_info) || $cos_file_info['code'] != 0) {
+                return;
             }
-            //save small logo 
+            //save small logo
             $img->fit(32);
-            $file_name_small = sprintf($file_name_formatter,'logo.small');
+            $file_name_small = sprintf($file_name_formatter, 'logo.small');
             $tmp_small = '/tmp/' . $file_name_small;
             $img->save($tmp_small);
-            QcloudUtils::uploadFile($tmp_small, $file_name_small,'category');
-            $this->logo = $cos_file_info['data']['custom_url'];  
+            QcloudUtils::uploadFile($tmp_small, $file_name_small, 'category');
+            $this->logo = $cos_file_info['data']['custom_url'];
         }
 
         if ($request->logo_app) {
-            $file = $request->logo_app; 
+            $file = $request->logo_app;
             $extension = $file->getClientOriginalExtension();
-            $file_name_formatter  = $name.'.%s.'. $extension;
-            //save logo_app 
-            $file_name_big = sprintf($file_name_formatter,'logo.app');
+            $file_name_formatter = $name . '.%s.' . $extension;
+            //save logo_app
+            $file_name_big = sprintf($file_name_formatter, 'logo.app');
             $tmp_big = '/tmp/' . $file_name_big;
             $img = \ImageMaker::make($file->path());
             $img->fit(180);
-            $img->save($tmp_big);   
-            $cos_file_info = QcloudUtils::uploadFile($tmp_big, $file_name_big,'category');  
+            $img->save($tmp_big);
+            $cos_file_info = QcloudUtils::uploadFile($tmp_big, $file_name_big, 'category');
             //上传到COS失败
-            if(empty($cos_file_info) || $cos_file_info['code'] != 0){
-                return ;
+            if (empty($cos_file_info) || $cos_file_info['code'] != 0) {
+                return;
             }
-            //save small logo_app 
-            $img->fit(32); 
-            $file_name_small = sprintf($file_name_formatter,'logo.small.app');
+            //save small logo_app
+            $img->fit(32);
+            $file_name_small = sprintf($file_name_formatter, 'logo.small.app');
             $tmp_small = '/tmp/' . $file_name_small;
             $img->save($tmp_small);
-            QcloudUtils::uploadFile($tmp_small, $file_name_small,'test');
+            QcloudUtils::uploadFile($tmp_small, $file_name_small, 'test');
             $this->logo_app = $cos_file_info['data']['custom_url'];
         }
     }
-    /**
-     * @Desc     记录用户浏览记录
-     * @DateTime 2018-06-28
-     * @return   [type]     [description]
-     */
+
     public function recordBrowserHistory()
     {
         //记录浏览历史
@@ -278,14 +249,16 @@ class Category extends Model
             $user = getUser();
             //如果重复浏览只更新纪录的时间戳
             $visited = \App\Visit::firstOrNew([
-                'user_id'      => $user->id,
+                'user_id' => $user->id,
                 'visited_type' => 'categories',
-                'visited_id'   => $this->id,
+                'visited_id' => $this->id,
             ]);
             $visited->updated_at = now();
             $visited->save();
         }
     }
+
+    //TODO: attrs
     public function isSelf()
     {
         return Auth::check()
@@ -307,11 +280,50 @@ class Category extends Model
 
     public function subCategory()
     {
-        return $this->hasMany('App\Category','parent_id','id');
+        return $this->hasMany('App\Category', 'parent_id', 'id');
     }
 
     public function hasManyArticles()
     {
         return $this->hasMany('App\Article', 'category_id', 'id');
+    }
+
+    public static function getTopCategory($number = 5)
+    {
+        $data = [];
+        $ten_top_category = Category::select(DB::raw('count(*) as categoryCount,category_id'))
+            ->from('articles')
+            ->where('type', 'video')
+            ->whereNotNull('category_id')
+            ->groupBy('category_id')
+            ->orderBy('categoryCount', 'desc')
+            ->take($number)->get()->toArray();
+
+        foreach ($ten_top_category as $top_category) {
+            $cate = Category::find($top_category["category_id"]);
+            $data['name'][] = $cate ? $cate->name : '空';
+            $data['data'][] = $top_category["categoryCount"];
+        }
+        return $data;
+    }
+
+    public static function getTopLikeCategory($number = 5)
+    {
+        $data = [];
+
+        $ten_top_category = Category::select(DB::raw('sum(count_likes) as categoryCount,category_id'))
+            ->from('articles')
+            ->where('type', 'video')
+            ->whereNotNull('category_id')
+            ->groupBy('category_id')
+            ->orderBy('categoryCount', 'desc')
+            ->take($number)->get()->toArray();
+
+        foreach ($ten_top_category as $top_category) {
+            $cate = Category::find($top_category["category_id"]);
+            $data['options'][] = $cate ? $cate->name : '空';
+            $data['value'][] = $top_category["categoryCount"];
+        }
+        return $data;
     }
 }

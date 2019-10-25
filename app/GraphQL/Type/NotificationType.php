@@ -51,19 +51,19 @@ class NotificationType extends GraphQLType
                 'resolve'     => function ($root, $args) {
                     switch ($root->type) {
                         case "App\\Notifications\\ArticleApproved":
-                            return "收录了文章";
+                            return "收录了动态";
                         case "App\\Notifications\\ArticleRejected":
-                            return "拒绝了文章";
+                            return "拒绝了动态";
                         case "App\\Notifications\\ArticleCommented":
-                            return "评论了文章";
+                            return "评论了动态";
                         case "App\\Notifications\\ArticleFavorited":
-                            return "收藏了文章";
+                            return "收藏了动态";
                         case "App\\Notifications\\ArticleLiked":
-                            return "喜欢了文章";
+                            return "喜欢了动态";
                         case "App\\Notifications\\CommentLiked":
                             return "赞了评论";
                         case "App\\Notifications\\ArticleTiped":
-                            return "打赏了文章";
+                            return "打赏了动态";
                         case "App\\Notifications\\CategoryFollowed":
                             return "关注了专题";
                         case "App\\Notifications\\CategoryRequested":
@@ -104,7 +104,7 @@ class NotificationType extends GraphQLType
                 'description' => 'question of Notification',
                 'resolve'     => function ($root, $args) {
                     if (isset(($root->data['question_id']))) {
-                        $question = \App\Question::find($root->data['question_id']);
+                        $question = \App\Topic::find($root->data['question_id']);
                         return $question;
                     }
                 },

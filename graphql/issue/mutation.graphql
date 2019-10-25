@@ -1,0 +1,3 @@
+extend type Mutation @middleware(checks: ["auth:api"]) {
+  createWithdraw(amount:Float! @spread):Withdraw  @field(resolver: "App\\Withdraw@createWithdraw") 
+}

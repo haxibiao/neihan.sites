@@ -12,7 +12,7 @@ class CreateVideosTable extends Migration
      * @return void
      */
     public function up()
-    { 
+    {
         Schema::create('videos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title')->nullable();
@@ -22,7 +22,8 @@ class CreateVideosTable extends Migration
             $table->integer('status')->default(0)->index();
             $table->string('hash')->nullable()->index();
             $table->text('json')->nullable();
-            $table->string('adstime')->nullable();
+            // $table->string('adstime')->nullable(); //无地方用，rename为 disk 用来标记视频成功存储位置
+            $table->string('disk')->nullable();
 
             $table->timestamps();
 

@@ -10,7 +10,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    {!! get_seo_meta() !!}
+    {{--{!! get_seo_meta() !!}--}}
 
     <title> @yield('title') {{ config('app.name_cn') }} </title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -60,7 +60,7 @@
         ]))
         <script src="{{ mix('js/spa.js') }}"></script>
     @endif
-    <script src="{{ mix('js/guest.js') }}"></script>
+    <script src="{{ mix('js/app.js') }}"></script>
 
     <script type="text/javascript">
         $.ajaxSetup({

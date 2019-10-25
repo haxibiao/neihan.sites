@@ -5,7 +5,7 @@
 @extends('layouts.black')
 
 @section('title')
-	{{ $article->title ?: $article->get_description() }} -{{ empty($article->category)?config("app.name_cn"): $article->category->name}}
+  {{ $article->title ?: $article->get_description() }} -{{ empty($article->category)?config("app.name_cn"): $article->category->name}}
 @stop
 
 @push('seo_og_result')
@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://{{ get_domain() }}/video/{{ $video->article->video_id }}" />
 <meta property="og:title" content="{{ $video->article->title }}" />
 <meta property="og:description" content="{{ $video->article->get_description() }}" />
-<meta property="og:image" content="{{ $video->article->cover() }}" />
+<meta property="og:image" content="{{ $video->cover }}" />
 <meta name="weibo: article:create_at" content="{{ $video->article->created_at }}" />
 <meta name="weibo: article:update_at" content="{{ $video->article->updated_at }}" />
 @endif
@@ -37,15 +37,15 @@
                 <div class="playerArea col-sm-8">
                     <div class="h5-player">
                         <div class="embed-responsive embed-responsive-16by9">
-                            <video controls="" poster="{{ $video->article->cover() }}" preload="auto" autoplay="true">
-                                <source src="{{ $video->url() }}" type="video/mp4">
+                            <video controls="" poster="{{ $video->cover }}" preload="auto" autoplay="true">
+                                <source src="{{ $video->url }}" type="video/mp4">
                                 </source>
                             </video>
                         </div>
                     </div>
                     <div class="video-body">
                          @foreach($article->categories->unique() as $category)
-                            <a href="/{{ $category->name_en }}" class="category-name" title="{{ $category->id }}:{{ $category->name }}">
+                            <a href="/category/{{ $category->id }}" class="category-name" title="{{ $category->id }}:{{ $category->name }}">
                               <span class="name">#{{ $category->name }}</span>
                             </a>
                         @endforeach
@@ -70,6 +70,12 @@
                         {{--   @include('video.parts.share') --}}
                     </div>
                     <div class="pc-option">
+                        @if(!$video->article->isSelf())
+                            @if($video->article->user->enable_tips)
+                                <a class="btn btn-warning" data-target=".modal-admire" data-toggle="modal">赞赏支持</a>
+                                <modal-admire article-id="{{ $video->article->id }}"></modal-admire>
+                            @endif
+                        @endif
                         <like id="{{ $video->article->id }}" type="article" is-login="{{ Auth::check() }}"></like>
                          @if(canEdit($article))
                             <a class="btn-base btn-light btn-sm editor-btn" href="/video/{{ $video->id }}/edit">编辑视频动态</a>
@@ -85,10 +91,10 @@
                 </div>
             </div>
            <div class="video-title">
-                    {{ $video->article->get_description() }}
+                    {{ $video->article->body }}
                      <div class="video-info">
                         @if(!empty($category))
-                            <a href="/{{ $category->name_en }}" class="category-name">分类: {{ $article->category->name }}</a>
+                            <a href="/category/{{ $category->id }}" class="category-name">分类: {{ $article->category->name }}</a>
                         @endif
                      </div>
             </div>
@@ -116,7 +122,7 @@
             </div>
            {{--  <div class="video-info">
                 @if(!empty($category))
-                    <a href="/{{ $category->name_en }}" class="category-name">{{ $article->category->name }}</a>
+                    <a href="/category/{{ $category->id }}" class="category-name">{{ $article->category->name }}</a>
                 @endif
                  <i class="iconfont icon-shijian"></i>
                    <span>发布于：{{$video->createdAt()}}</span>

@@ -2,7 +2,7 @@
     <div class="answer-user">
         <div class="note-info">
             <a href="/user/{{ $answer->user->id }}" class="avatar">
-                <img src="{{ $answer->user->avatar() }}" alt=""></a>
+                <img src="{{ $answer->user->avatarUrl }}" alt=""></a>
 
             @if(!$answer->isSelf())
               <follow

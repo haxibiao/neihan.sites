@@ -1,0 +1,26 @@
+
+
+type Question{
+    id:Int!
+    answer:String!
+    gold:Int!
+    ticket:Int!
+    selections:JsonType
+    image:Image
+    category:Category
+    type:Int!
+    correct_count:Int
+    wrong_count:Int
+    user:User
+    submit:Int
+    video:Video
+    rank:Int
+    count_comments:Int
+    count_likes:Int
+    answers_count:Int
+}
+
+type Query{
+    questions(count:Int):[Question] @field(resolver: "App\\Question@resolveQuestions")
+    question(id:Int @eq): Question @find
+}

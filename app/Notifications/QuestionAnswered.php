@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Question;
+use App\Issue;
 use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -13,20 +13,20 @@ class QuestionAnswered extends Notification
     use Queueable;
 
     protected $user;
-    protected $question;
+    protected $issue;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user_id, $question_id)
+    public function __construct($user_id, $issue_id)
     {
         $this->user     = User::find($user_id);
-        $this->question = Question::find($question_id);
+        $this->issue = Issue::find($issue_id);
     }
 
-    /**
+    /**$issue
      * Get the notification's delivery channels.
      *
      * @param  mixed  $notifiable
@@ -62,8 +62,8 @@ class QuestionAnswered extends Notification
         return [
             'type'    => 'other',
             'subtype' => 'question_answered',
-            'question_id' => $this->question->id,
-            'message' => $this->user->link() . '回答了您的问题' . $this->question->link(),
+            'question_id' => $this->issue->id,
+            'message' => $this->user->link() . '回答了您的问题' . $this->issue->link(),
         ];
     }
 }

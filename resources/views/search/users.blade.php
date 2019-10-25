@@ -14,7 +14,7 @@
 						@foreach($data['users'] as $user) 
 						<li class="user-info info-md">
 						    <a class="avatar" href="/user/{{ $user->id }}">
-						      <img src="{{ $user->avatar() }}" alt="">
+						      <img src="{{ $user->avatarUrl }}" alt="">
 						      </a>        
 						      <follow
 								type="users"

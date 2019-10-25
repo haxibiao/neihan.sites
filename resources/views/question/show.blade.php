@@ -40,7 +40,7 @@
        <div class="inquisitorial">
          <div class="author">
           @if(!$question->is_anonymous)
-          <a target="_blank" href="/user/{{ $question->user->id }}" class="avatar"><img src="{{ $question->user->avatar() }}" alt=""></a>
+          <a target="_blank" href="/user/{{ $question->user->id }}" class="avatar"><img src="{{ $question->user->avatarUrl }}" alt=""></a>
           @endif
           <div class="info">
             @if($question->is_anonymous)
@@ -77,7 +77,7 @@
         author="{{ $question->user->name }}"
         title="{{ $question->title }}"></answer-tool>
 
-      {!! Form::open(['method' => 'POST', 'route' => $question->isSelf() ? 'question.add':'answer.store', 'class' => 'form-horizontal']) !!}
+       {!! Form::open(['method' => 'POST', 'route' => $question->isSelf() ? 'question.add':'answer.store', 'class' => 'form-horizontal']) !!}
 
         @if(!$question->isSelf())
           @editor
@@ -103,13 +103,13 @@
          </div>
         </div>
 
-         {!! Form::hidden('question_id', $question->id) !!}
+         {!! Form::hidden('issue_id', $question->id) !!}
          {!! Form::hidden('user_id', Auth::id()) !!}
       {!! Form::close() !!}
 
       @endif
 
-  	   <h3 class="plate-title underline"><span>{{ $question->answers()->count() }}个回答</span></h3>
+  	   <h3 class="plate-title underline"><span>{{ $question->resolutions()->count() }}个回答</span></h3>
   	   <div class="all-answers">
            <div class="answer-items">
             @foreach($answers as $answer)
@@ -122,7 +122,7 @@
   	   </div>
      </div>
      <div class="aside sm-right hidden-xs">
-       {{-- @include('question.parts.carousel') --}}
+       {{-- @include('topic.parts.carousel') --}}
        <div class="qrcode-sidebar">
 	       <h3 class="plate-title underline">
 	        <span>

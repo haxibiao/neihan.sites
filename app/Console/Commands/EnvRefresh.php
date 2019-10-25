@@ -45,10 +45,35 @@ class EnvRefresh extends Command
 
     public function local()
     {
+        $this->info('refreshing local env ...');
         file_put_contents(base_path('.env'), file_get_contents(base_path('.env.local')));
-        $this->info('clear local env BUGSNAG_API_KEY ...');
+
+        $this->updateWebConfig();
+
         $this->updateEnv([
-            'BUGSNAG_API_KEY' => '',
+            'APP_ENV'          => 'local',
+            'APP_DEBUG'        => 'true',
+            'FILESYSTEM_CLOUD' => 'public',
+            'DB_HOST'          => 'localhost',
+            'DB_DATABASE'      => env('APP_NAME'),
+        ]);
+
+    }
+
+    public function develop()
+    {
+        $this->info('refreshing develop env ...');
+        file_put_contents(base_path('.env'), file_get_contents(base_path('.env.local')));
+        $db_host = $this->option('db_host');
+        $this->updateWebConfig($db_host);
+
+        $this->updateEnv([
+            'APP_ENV'          => 'develop',
+            'APP_DEBUG'        => 'true',
+            'FILESYSTEM_CLOUD' => 'public',
+            'LOCAL_APP_URL'    => 'http://develop.'.env('APP_NAME').'.com',
+            'DB_HOST'          => $db_host,
+            'DB_DATABASE'      => $this->option('db_database'),
         ]);
     }
 
@@ -59,12 +84,12 @@ class EnvRefresh extends Command
         $db_host = $this->option('db_host');
         $this->updateWebConfig($db_host);
 
-        //fix env config for staging
         $this->updateEnv([
-            'APP_ENV'   => 'staging',
-            'APP_DEBUG' => 'true',
-            'DB_HOST'   => $db_host,
-            'DB_DATABASE' => $this->option('db_database')
+            'APP_ENV'          => 'staging',
+            'APP_DEBUG'        => 'true',
+            'FILESYSTEM_CLOUD' => 'public',
+            'DB_HOST'          => $db_host,
+            'DB_DATABASE'      => $this->option('db_database'),
         ]);
     }
 
@@ -76,10 +101,11 @@ class EnvRefresh extends Command
 
         //fix env config for prod
         $this->updateEnv([
-            'APP_ENV'   => 'prod',
-            'APP_DEBUG' => 'false',
-            'DB_HOST'   => $db_host,
-            'DB_DATABASE' => $this->option('db_database')
+            'APP_ENV'          => 'prod',
+            'APP_DEBUG'        => 'false',
+            'DB_HOST'          => $db_host,
+            'FILESYSTEM_CLOUD' => 'cosv5',
+            'DB_DATABASE'      => $this->option('db_database'),
         ]);
     }
 
@@ -89,6 +115,18 @@ class EnvRefresh extends Command
         if ($data) {
             $webconfig  = json_decode($data);
             $db_changes = [];
+            if (isset($webconfig->db_host)) {
+                //支持线上服务器使用默认本地数据库的情况
+                if (\is_prod_env()) {
+                    if (empty($db_host) || $webconfig->db_host == $db_host) {
+                        $db_changes = [
+                            'DB_PASSWORD' => $webconfig->db_passwd,
+                        ];
+                    }
+                }
+            }
+
+            // db
             if ($db_host) {
                 if (is_array($webconfig->databases)) {
                     foreach ($webconfig->databases as $database) {
@@ -101,15 +139,34 @@ class EnvRefresh extends Command
                     }
                     $this->info("updating env file with $db_host settings ...");
                 }
-            } else {
-                $this->error("--db_host and --db_database are must options");
-                return;
             }
-            $changes = array_merge($db_changes, [
-                'MAIL_HOST'     => $webconfig->mail_host,
-                'MAIL_USERNAME' => $webconfig->mail_user,
-                'MAIL_PASSWORD' => $webconfig->mail_passcode,
+
+            //cos
+            $cos_changes = [];
+            if (is_array($webconfig->coses)) {
+                foreach ($webconfig->coses as $cos) {
+                    if ($cos->bucket == env('APP_NAME')) {
+                        $cos_changes = [
+                            'COS_APP_ID'     => $cos->appid,
+                            'COS_REGION'     => $cos->region,
+                            'COS_LOCATION'   => $cos->location,
+                            'COS_SECRET_ID'  => $cos->cos_secret_id,
+                            'COS_SECRET_KEY' => $cos->cos_secret_key,
+                        ];
+                    }
+                }
+                $this->info("updating env file with $db_host settings ...");
+            }
+
+            //mail sms ...
+            $changes = array_merge($cos_changes, $db_changes, [
+                'MAIL_HOST'                    => $webconfig->mail_host,
+                'MAIL_USERNAME'                => $webconfig->mail_username,
+                'MAIL_PASSWORD'                => $webconfig->mail_password,
+                'QCLOUD_SMS_ACCESS_KEY_ID'     => $webconfig->qcloud_sms_key_id,
+                'QCLOUD_SMS_ACCESS_KEY_SECRET' => $webconfig->qcloud_sms_key_secret,
             ]);
+
             $this->updateEnv($changes);
 
         } else {

@@ -3,12 +3,16 @@
 namespace App;
 
 use App\Model;
-use App\Comment;
+use App\Traits\CommentAttrs;
 use App\User;
-use App\Events\CommentWasCreated;
+use GraphQL\Type\Definition\ResolveInfo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 class Comment extends Model
 {
+    use SoftDeletes, CommentAttrs;
+
     protected $touches = ['commentable'];
 
     public $fillable = [
@@ -17,7 +21,8 @@ class Comment extends Model
         'comment_id',
         'commentable_id',
         'commentable_type',
-        'lou'
+        'lou',
+        'status',
     ];
 
     public function commented()
@@ -27,7 +32,7 @@ class Comment extends Model
 
     public function replyComments()
     {
-        return $this->hasMany(\App\Comment::class);
+        return $this->morphMany(\App\Comment::class, 'commentable');
     }
 
     public function user()
@@ -40,13 +45,37 @@ class Comment extends Model
         return $this->morphTo();
     }
 
-    public function likes(){ 
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function getCountRepliesAttribute()
+    {
+        return $this->comments()->count();
+    }
+
+    public function resolveComments($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+        $comment = self::findOrFail($rootValue->id);
+        return $comment->comments();
+    }
+
+    public function likes()
+    {
         return $this->morphMany(\App\Like::class, 'liked');
     }
 
+    public function getLikesAttribute()
+    {
+        return $this->likes()
+            ->count();
+    }
+
     //上面的likes模型方法与comments数据库字段重名了，导致vue数据访问错误。
-    //现增加下面的方法用于区分
-    public function hasManyLikes(){ 
+    //现增加下面的方法用于区分  TODO: likes字段应该重命名为 count_likes
+    public function hasManyLikes()
+    {
         return $this->likes();
     }
 
@@ -56,25 +85,20 @@ class Comment extends Model
     }
 
     /* --------------------------------------------------------------------- */
-    /* ------------------------------- service ----------------------------- */
+    /* ------------------------------- repo ----------------------------- */
     /* --------------------------------------------------------------------- */
-     /**
-     * @Desc     保存评论
-     * @Author   czg
-     * @DateTime 2018-07-11
-     * @param    [type]     $input [description]
-     * @return   [type]            [description]
-     */
-    public function store( $input )
+
+    public function store($input)
     {
         $input['user_id'] = getUser()->id;
-        
+
         //判断是直接回复文章
         if (isset($input['comment_id']) && !empty($input['comment_id'])) {
             $input['lou'] = 0;
             //拿到楼中楼的父评论,顶楼则不变
-            $comment  = Comment::findOrFail($input['comment_id']);
-            if(!empty($comment->comment_id)){//不为空是楼中楼
+            $comment = Comment::findOrFail($input['comment_id']);
+            if (!empty($comment->comment_id)) {
+                //不为空是楼中楼
                 $input['comment_id'] = $comment->comment_id;
             }
         } else {
@@ -88,8 +112,6 @@ class Comment extends Model
         $this->fill($input);
         $this->save();
 
-        event(new CommentWasCreated($this)); 
-
         //新评论，一起给前端返回 空的子评论 和 子评论的用户信息结构，方便前端直接回复刚发布的新评论
         $this->load('user', 'replyComments.user');
 
@@ -101,55 +123,53 @@ class Comment extends Model
      * @DateTime 2018-07-10
      * @return   [type]     [description]
      */
-    public function wrapperBodyToMobile(){
+    public function wrapperBodyToMobile()
+    {
         //以后可能#专题,先占个坑，方便以后扩展
         $commentBody = $this->body;
-        $pattern = "/<a.*?href=['|\"].*?\/(.*?)\/(.*?)['|\"].*?>@(.*?)<\/a>/ui"; 
+        $pattern = "/<a.*?href=['|\"].*?\/(.*?)\/(.*?)['|\"].*?>@(.*?)<\/a>/ui";
         preg_match_all($pattern, $commentBody, $matches);
         //记录了通知的对象
         $notify_objs = [];
-        for ($i=0; $i < count(end($matches)); $i++) {
+        for ($i = 0; $i < count(end($matches)); $i++) {
             $type = [];
-            $type['type']  = $matches[1][$i];
-            $type['id']    = $matches[2][$i];
-            $type['name']  = $matches[3][$i];
+            $type['type'] = $matches[1][$i];
+            $type['id'] = $matches[2][$i];
+            $type['name'] = $matches[3][$i];
             $notify_objs[] = $type;
         }
-        
-        $commentBody = str_replace( 
-            head($matches), 
-            "<flag></flag>", 
+
+        $commentBody = str_replace(
+            head($matches),
+            "<flag></flag>",
             $commentBody
         );
-        $flag_array = explode("<flag>",$commentBody);
+        $flag_array = explode("<flag>", $commentBody);
         $positions;
-        for ($i=0; $i < count($flag_array); $i++) { 
-            if( str_contains($flag_array[$i], "</flag>") ){
+        for ($i = 0; $i < count($flag_array); $i++) {
+            if (str_contains($flag_array[$i], "</flag>")) {
                 $text = substr($flag_array[$i], 7);
-                if(!is_null($text)){
-                    $flag_array[$i] = ['</flag>',$text];
+                if (!is_null($text)) {
+                    $flag_array[$i] = ['</flag>', $text];
                 }
             }
         }
         $flag_array = array_flatten($flag_array);
-        for ($i=0; $i < count($flag_array); $i++) { 
-            if( $flag_array[$i] == "</flag>" ){
+        for ($i = 0; $i < count($flag_array); $i++) {
+            if ($flag_array[$i] == "</flag>") {
                 $positions[] = $i;
             }
         }
-        if(!empty($positions)){
-            for($i=0; $i < count($positions); $i++){
+        if (!empty($positions)) {
+            for ($i = 0; $i < count($positions); $i++) {
                 $position = $positions[$i];
                 $flag_array[$position] = $notify_objs[$i];
             }
         }
-        $flag_array = array_filter($flag_array, function($v){
+        $flag_array = array_filter($flag_array, function ($v) {
             return $v != "";
         });
-        $json = json_encode(array_values($flag_array),JSON_UNESCAPED_UNICODE);
-        $json = htmlspecialchars_decode($json,ENT_QUOTES);
-        //将字符 转换成空格
-        $json = str_replace(['&nbsp;'], " ", $json);
+        $json = json_encode(array_values($flag_array), JSON_UNESCAPED_UNICODE);
         return $json;
     }
 
@@ -159,4 +179,20 @@ class Comment extends Model
         return $this;
     }
 
+    // attrs
+
+    public function getRepliesAttribute()
+    {
+        return $this->replyComments()->latest('id')->take(20)->get();
+    }
+
+    public function getContent()
+    {
+        return str_limit(strip_tags($this->body), 5) . '..';
+    }
+
+    public function getArticleAttribute()
+    {
+        return $this->article()->first();
+    }
 }

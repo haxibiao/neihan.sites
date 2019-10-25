@@ -26,7 +26,7 @@
   <div class="content">
     <div class="author">
       <a class="avatar" target="_blank" href="/user/{{ $action->user->id }}">
-        <img src="{{ $action->user->avatar() }}" alt="">
+        <img src="{{ $action->user->avatarUrl }}" alt="">
       </a>
       <div class="info">
         @if($action->user->is_signed)
@@ -63,13 +63,13 @@
 @if($item)
 
 <li class="article-item have-img">
-    <a class="wrap-img" href="{{ $item->content_url() }}" target="_blank">
+    <a class="wrap-img" href="{{ $item->url }}" target="_blank">
       <img src="{{ $item->primaryImage() }}" alt="">
     </a>
     <div class="content">
         <div class="author">
             <a class="avatar" target="_blank" href="/user/{{ $action->user->id }}">
-        <img src="{{ $action->user->avatar() }}" alt="">
+        <img src="{{ $action->user->avatarUrl }}" alt="">
       </a>
             <div class="info">
                 @if($action->user->is_signed)
@@ -84,7 +84,7 @@
         </div>
         <div class="comment"><p>{!! $comment->body !!}</p></div>
         <blockquote>
-            <a class="title" target="_blank" href="{{ $item->content_url() }}"><span>{{ $item->title }}</span></a>
+            <a class="title" target="_blank" href="{{ $item->url }}"><span>{{ $item->title }}</span></a>
             <p class="abstract">
                 {{ $item->description }}
             </p>
@@ -115,7 +115,7 @@
             <a class="wrap-img" href="/article/{{ $item->id }}" target="_blank"><img src="{{ $item->primaryImage() }}" alt=""></a>
             <div class="content">
                 <div class="author">
-                    <a class="avatar" target="_blank" href="/user/{{ $action->user->id }}"><img src="{{ $action->user->avatar() }}" alt=""></a>
+                    <a class="avatar" target="_blank" href="/user/{{ $action->user->id }}"><img src="{{ $action->user->avatarUrl }}" alt=""></a>
                     <div class="info">
                         @if($action->user->is_signed)
                               <img class="badge-icon"  src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
@@ -155,7 +155,7 @@
             <a class="wrap-img" href="/article/{{ $article->id }}" target="_blank"><img src="{{ $article->primaryImage() }}" alt=""></a>
             <div class="content">
                 <div class="author">
-                    <a class="avatar" target="_blank" href="/user/{{ $action->user->id }}"><img src="{{ $action->user->avatar() }}" alt=""></a>
+                    <a class="avatar" target="_blank" href="/user/{{ $action->user->id }}"><img src="{{ $action->user->avatarUrl }}" alt=""></a>
                     <div class="info">
                         @if($action->user->is_signed)
                               <img class="badge-icon"  src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
@@ -197,7 +197,7 @@
     <li class="feed-info">
       <div class="content">
             <div class="author">
-                <a class="avatar" target="_blank" href="javascript:;"><img src="{{ $action->user->avatar() }}" alt=""></a>
+                <a class="avatar" target="_blank" href="javascript:;"><img src="{{ $action->user->avatarUrl }}" alt=""></a>
                 <div class="info">
                     @if($action->user->is_signed)
                               <img class="badge-icon"  src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
@@ -211,7 +211,7 @@
             </div>
             <div class="follow-card">
                 <div class="note-info">
-                    <a class="avatar" href="/user/{{ $item->id }}"><img src="{{ $item->avatar() }}" alt=""></a>
+                    <a class="avatar" href="/user/{{ $item->id }}"><img src="{{ $item->avatarUrl }}" alt=""></a>
                     {{-- <a class="btn-base btn-follow"><span>＋ 关注</span></a> --}}
                     <follow
                         type="users"
@@ -237,7 +237,7 @@
       <div class="content">
         <div class="author">
           <a class="avatar" target="_blank" href="/user/{{ $action->user->id }}">
-            <img src="{{ $action->user->avatar() }}" alt="">
+            <img src="{{ $action->user->avatarUrl }}" alt="">
           </a>
           <div class="info"> 
             @if($action->user->is_signed)
@@ -252,7 +252,7 @@
         </div>
         <div class="follow-card">
             <div class="note-info">
-                <a class="avatar" href="/{{ $item->name_en }}"><img src="{{ $item->logo() }}" alt=""></a>
+                <a class="avatar" href="/category/{{ $item->id }}"><img src="{{ $item->logoUrl }}" alt=""></a>
                 <follow
                     type="categories"
                     id="{{ $item->id }}"
@@ -260,7 +260,7 @@
                     followed="{{ is_follow('categories', $item->id) }}">
                 </follow>
                 <div class="title">
-                  <a class="name" href="/{{ $item->name_en }}">{{ $item->name }}</a>
+                  <a class="name" href="/category/{{ $item->id }}">{{ $item->name }}</a>
                 </div>
                 <div class="info">
                   <p><a href="/user/{{ $item->user->id }}">{{ $item->user->name }}</a> 创建，{{ $item->count }} 篇作品，{{ $item->count_follows }} 人关注</p>

@@ -9,7 +9,7 @@
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="/post" ref="postForm" enctype="multipart/form-data">
+                    <form method="post" action="/post/new" ref="postForm" enctype="multipart/form-data">
                         <div class="textarea-box img-upload-field">
                             <input type="hidden" name="_token" v-model="token">
                             <textarea name="body" placeholder='再说点什么...' v-model="description" maxlength='500'></textarea>
@@ -67,9 +67,6 @@ export default {
     props: [],
 
     computed: {
-        disabled() {
-            return this.video_id == null;
-        },
         token() {
             return window.csrf_token;
         },
@@ -193,13 +190,15 @@ export default {
                     console.log('上传结果的视频名称：' + result.videoName);
                     console.log('上传结果的视频地址：' + result.videoUrl);
 
-                    //调用 POST /api/video/ , 写下数据库记录，返回video_id
+                    //TODO：调用 POST /api/video/ , 写下数据库记录，返回video_id
                     var _vm = _this;
                     $.ajax({
                         url: window.tokenize('/api/video?from=qcvod'),
                         type: 'POST',
                         data: result,
                         success: function(video) {
+                            console.log(video);
+                            //TODO: get video_id
                             _vm.video_id = video.id;
                         }
                     });

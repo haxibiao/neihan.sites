@@ -10,7 +10,7 @@
 
   @foreach($categories as $category)
   <a href="/question?cid={{ $category->id }}" class="question-label {{ request('cid') == $category->id ? 'active' : '' }}">
-    <img src="{{ $category->smallLogo() }}" alt="">
+    <img src="{{ $category->iconUrl }}" alt="">
     <span class="name">{{ $category->name }}</span>
   </a>
   @endforeach

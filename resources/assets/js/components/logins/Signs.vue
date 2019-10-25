@@ -4,68 +4,76 @@
       <div class="normal-title">
         <a href="javascript:;" @click="toggle('login')" :class="tab == 'login' ? 'active' : ''">登录</a>
         <b>·</b>
-        <a href="javascript:;" @click="toggle('register')" :class="tab == 'register' ? 'active' : ''">注册</a>
+        <a
+          href="javascript:;"
+          @click="toggle('register')"
+          :class="tab == 'register' ? 'active' : ''"
+        >注册</a>
       </div>
     </h4>
     <div class="signs-container" v-if="isLogin">
-        <form id="loginForm" action="/login" accept-charset="UTF-8" method="post">
-            <input type="hidden" name="_token" v-model="token">
-            <div class="input-prepend restyle">
-                <input placeholder="邮箱" type="text" name="email"  required="required">
-                <i class="iconfont icon-yonghu01"></i>
-            </div>
-            <div class="input-prepend">
-                <input placeholder="密码" type="password" name="password" required="required">
-                <i class="iconfont icon-suo2"></i>
-            </div>
-            <!-- <captcha></captcha> -->
-            <div class="remember-btn">
-                <input type="checkbox" value="true" checked="checked" name="remember_me"><span>记住我</span>
-            </div>
-            <div class="forget-btn">
-                <a class="javascript:;" data-toggle="dropdown" href="javascript:;">登录遇到问题?</a>
-                <ul class="dropdown-menu">
-                    <!-- <li><a class="link" href="javascript:;">用手机号重置密码</a></li> -->
-                    <li><a class="link" href="/password/reset">用邮箱重置密码</a></li>
-                    <!-- <li><a class="link" target="_blank" href="javascript:;">无法用海外手机号登录</a></li>
-                    <li><a class="link" target="_blank" href="javascript:;">无法用 Google 帐号登录</a></li> -->
-                </ul>
-            </div>
-            <input type="submit" name="commit" value="登录" class="btn-base btn-login">
-        </form>
-        <!-- 更多登录方式 -->
-        <!--    <div class="more-sign">
+      <form id="loginForm" action="/login" accept-charset="UTF-8" method="post">
+        <input type="hidden" name="_token" v-model="token" />
+        <div class="input-prepend restyle">
+          <input placeholder="邮箱" type="text" name="email" required="required" />
+          <i class="iconfont icon-yonghu01"></i>
+        </div>
+        <div class="input-prepend">
+          <input placeholder="密码" type="password" name="password" required="required" />
+          <i class="iconfont icon-suo2"></i>
+        </div>
+        <!-- <captcha></captcha> -->
+        <div class="remember-btn">
+          <input type="checkbox" value="true" checked="checked" name="remember_me" />
+          <span>记住我</span>
+        </div>
+        <div class="forget-btn">
+          <a class="javascript:;" data-toggle="dropdown" href="javascript:;">登录遇到问题?</a>
+          <ul class="dropdown-menu">
+            <!-- <li><a class="link" href="javascript:;">用手机号重置密码</a></li> -->
+            <li>
+              <a class="link" href="/password/reset">用邮箱重置密码</a>
+            </li>
+            <!-- <li><a class="link" target="_blank" href="javascript:;">无法用海外手机号登录</a></li>
+            <li><a class="link" target="_blank" href="javascript:;">无法用 Google 帐号登录</a></li>-->
+          </ul>
+        </div>
+        <input type="submit" name="commit" value="登录" class="btn-base btn-login" />
+      </form>
+      <!-- 更多登录方式 -->
+      <!--    <div class="more-sign">
             <h6>社交帐号登录</h6>
             <social-login></social-login>
-        </div> -->
+      </div>-->
     </div>
     <div class="signs-container" v-else>
-        <form id="registerForm" action="/register" accept-charset="UTF-8" method="post">
-            <input type="hidden" name="_token" v-model="token">
-            <div class="input-prepend restyle">
-                <input placeholder="你的昵称" type="text" name="name" required="required">
-                <i class="iconfont icon-yonghu01"></i>
-            </div>
-            <div class="input-prepend restyle no-radius">
-                <input placeholder="邮箱" type="email" name="email" required="required">
-                <i class="iconfont icon-ordinarymobile"></i>
-            </div>
-            <div class="input-prepend">
-                <input placeholder="设置密码" type="password" name="password" required="required">
-                <i class="iconfont icon-suo2"></i>
-            </div>
-            <input type="submit" name="commit" value="注册" class="btn-base btn-handle">
-            <p class="sign-up-msg">
-              点击 “注册” 即表示您同意并愿意遵守爱你城<br>
-              <a target="_blank" href="https://ainicheng.com/article/12422">用户协议</a> 和 
-              <a target="_blank" href="https://ainicheng.com/article/12423">隐私政策</a> 。
-            </p>
-        </form>
-        <!-- 更多登录方式 -->
-        <!--  <div class="more-sign">
+      <form id="registerForm" action="/register" accept-charset="UTF-8" method="post">
+        <input type="hidden" name="_token" v-model="token" />
+        <div class="input-prepend restyle">
+          <input placeholder="你的昵称" type="text" name="name" required="required" />
+          <i class="iconfont icon-yonghu01"></i>
+        </div>
+        <div class="input-prepend restyle no-radius">
+          <input placeholder="邮箱" type="email" name="email" required="required" />
+          <i class="iconfont icon-ordinarymobile"></i>
+        </div>
+        <div class="input-prepend">
+          <input placeholder="设置密码" type="password" name="password" required="required" />
+          <i class="iconfont icon-suo2"></i>
+        </div>
+        <input type="submit" name="commit" value="注册" class="btn-base btn-handle" />
+        <p class="sign-up-msg">
+          点击 “注册” 即表示您同意并愿意遵守我们的
+          <br />
+          <a target="_blank" href="https://ainicheng.com/article/12422">用户协议</a> 和
+          <a target="_blank" href="https://ainicheng.com/article/12423">隐私政策</a> 。
+        </p>
+      </form>
+      <!-- 更多登录方式 -->
+      <!--  <div class="more-sign">
             <h6>社交帐号直接注册</h6>
             <social-login></social-login>
-        </div> -->
+      </div>-->
     </div>
   </div>
 </template>

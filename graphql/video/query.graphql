@@ -1,0 +1,17 @@
+type Video {
+  id: Int!
+  url: String
+  duration: Int
+  info: VideoInfo
+  status: Int!
+  cover_url: String
+  article: Article!
+}
+
+type VideoInfo {
+  width: Int
+  weight: Int
+  height: Int
+  covers: [String!]
+  rotate: Int
+}

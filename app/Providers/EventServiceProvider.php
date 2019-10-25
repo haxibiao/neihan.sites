@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -13,32 +13,17 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\CommentWasCreated' => [
-            'App\Listeners\NewComment',  
+        'App\Events\NewLike'    => [
+            'App\Listeners\SendNewLikeNotification',
         ],
-        'App\Events\CommentWasDeleted' => [
-            'App\Listeners\DestroyedComment',
+        'App\Events\NewFollow'  => [
+            'App\Listeners\SendNewFollowNotification',
         ],
-
-        'App\Events\LikeWasCreated' => [
-            'App\Listeners\NewLike',  
+        'App\Events\NewComment' => [
+            'App\Listeners\SendNewCommentNotification',
         ],
-        'App\Events\LikeWasDeleted' => [
-            'App\Listeners\DestroyedLike',
-        ],
-
-        'App\Events\FavoriteWasCreated' => [
-            'App\Listeners\NewFavorite',  
-        ],
-        'App\Events\FavoriteWasDeleted' => [
-            'App\Listeners\DestroyedFavorite',
-        ],
-
-        'App\Events\FollowWasCreated' => [
-            'App\Listeners\NewFollow',  
-        ],
-        'App\Events\FollowWasDeleted' => [
-            'App\Listeners\DestroyedFollow',
+        'App\Events\NewMessage' => [
+            'App\Listeners\SendNewMessageNotification',
         ],
     ];
     /**
@@ -58,6 +43,10 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        //
+        \App\Message::observe(\App\Observers\MessageObserver::class);
+        \App\Comment::observe(\App\Observers\CommentObserver::class);
+        \App\Like::observe(\App\Observers\LikeObserver::class);
+        \App\Article::observe(\App\Observers\ArticleObserver::class);
+        \App\Follow::observe(\App\Observers\FollowObserver::class);
     }
 }

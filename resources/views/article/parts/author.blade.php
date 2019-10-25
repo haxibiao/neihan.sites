@@ -1,7 +1,7 @@
   <div class="article-author">
     <div class="user-info">
       <a class="avatar" href="/user/{{ $article->user->id }}">
-        <img src="{{ $article->user->avatar() }}" alt="">
+        <img src="{{ $article->user->avatarUrl }}" alt="">
       </a>
       <div class="title">
         <a class="nickname" href="/user/{{ $article->user->id }}">{{ $article->user->name }}</a>

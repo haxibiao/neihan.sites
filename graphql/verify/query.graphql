@@ -1,0 +1,9 @@
+type Verify {
+  id: Int!
+  account: String!
+  code: String!
+  action: String!
+  channel: String!
+  user: User! @belongsTo
+  created_at: DateTime!
+}

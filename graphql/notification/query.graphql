@@ -1,0 +1,37 @@
+type Notification {
+  id: ID!
+  body: String
+  type: String @rename(attribute: "TypeName")
+  time_ago: String
+  article: Article
+  comment: Comment
+  reply: Comment @deprecated(reason: "已经废弃,请使用comment")
+  user: User
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+extend type Query @middleware(checks: ["auth:api"]) {
+  notifications(type: NotificationType!): [Notification!]
+    @paginate(defaultCount: 10, builder: "App\\User@resolveNotifications")
+}
+
+enum NotificationType {
+  GROUP_LIKES
+  GROUP_OTHERS
+  GROUP_COMMENT
+  ARTICLE_APPROVED @enum(value: "App\\Notifications\\ArticleApproved")
+  ARTICLE_REJECTED @enum(value: "App\\Notifications\\ArticleRejected")
+  ARTICLE_COMMENTED @enum(value: "App\\Notifications\\ArticleCommented")
+  ARTICLE_FAVORITED @enum(value: "App\\Notifications\\ArticleFavorited")
+  ARTICLE_LIKED @enum(value: "App\\\\Notifications\\\\ArticleLiked")
+  COMMENT_LIKED @enum(value: "App\\\\Notifications\\\\CommentLiked")
+  ARTICLE_TIPED @enum(value: "App\\Notifications\\ArticleTiped")
+  CATEGORY_FOLLOWED @enum(value: "App\\Notifications\\CategoryFollowed")
+  CATEGORY_REQUESTED @enum(value: "App\\Notifications\\CategoryRequested")
+  COLLECTION_FOLLOWED @enum(value: "App\\Notifications\\CollectionFollowed")
+  USER_FOLLOWED @enum(value: "App\\Notifications\\UserFollowed")
+  UNPROCESSED_REQUESTS @enum(value: "UNPROCESSED_REQUESTS")
+  COMMENT_ACCEPTED @enum(value: "App\\Notifications\\CommentAccepted")
+  RECEIVE_AWARD @enum(value: "App\\Notifications\\ReceiveAward")
+}

@@ -38,14 +38,14 @@ class ImageType extends GraphQLType
                 'type'        => Type::string(),
                 'description' => 'url of Image',
                 'resolve'     => function ($root, $args) {
-                    return $root->url();
+                    return $root->url;
                 },
             ],
             'url_small' => [
                 'type'        => Type::string(),
                 'description' => 'url_small of Image',
                 'resolve'     => function ($root, $args) {
-                    return $root->url_small();
+                    return $root->thumbnail;
                 },
             ],
             'time_ago'  => \App\GraphQL\Field\TimeField::class,
@@ -60,5 +60,4 @@ class ImageType extends GraphQLType
             ],
         ];
     }
-
 }

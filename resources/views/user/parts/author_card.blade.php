@@ -1,7 +1,7 @@
 <li class="col-sm-4 recommend-card">
   <div>
     <a target="_blank" href="/user/{{ $user->id }}">
-	    <img class="avatar" src="{{ $user->avatar() }}" alt="">
+	    <img class="avatar" src="{{ $user->avatarUrl }}" alt="">
       <h4 class="name single-line">{{ $user->name }}</h4>
       <p class="author-description">{{ $user->introduction }}</p>
 		</a>    

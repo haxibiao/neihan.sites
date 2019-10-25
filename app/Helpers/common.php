@@ -32,7 +32,7 @@ function trim_https($url)
 {
     //替换URL协议
     if (starts_with($url, 'https:')) {
-        return str_replace(['https:'], 'http:', $url);
+        return  str_replace(['https:'], 'http:', $url);
     }
     return $url;
 }

@@ -22,7 +22,7 @@
 @endif
 <div class="media">
 	<a class="{{ empty($is_side) ? 'pull-left' : ''}}" href="/video/{{ $video->id }}">
-		<img class="media-object" src="{{ $article->cover() }}" alt="{{ $article->title }}" style="height: 150px; width: 200px">
+		<img class="media-object" src="{{ $article->cover }}" alt="{{ $article->title }}" style="height: 150px; width: 200px">
 	</a>
 	<div class="media-body　strip_title">
 		<a href="/video/{{ $video->id }}">

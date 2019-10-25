@@ -1,5 +1,5 @@
 <li class="user-info info-md">
-    <a class="avatar" href="/user/{{ $user->id }}"><img src="{{ $user->avatar() }}" alt=""></a>        
+    <a class="avatar" href="/user/{{ $user->id }}"><img src="{{ $user->avatarUrl }}" alt=""></a>        
 	  
     <follow 
       type="users" 

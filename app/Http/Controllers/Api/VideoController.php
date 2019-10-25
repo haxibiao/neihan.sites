@@ -18,7 +18,8 @@ class VideoController extends Controller
             ->orderBy('id', 'desc')
             ->where([
                 ['status', '>', 0],
-                ['type', '=', 'video']]);
+                ['type', '=', 'video'],
+            ]);
         if (Auth::check()) {
             $query = $query->where('user_id', Auth::user()->id);
         }
@@ -61,18 +62,10 @@ class VideoController extends Controller
         }
         $video->delete();
         $article->delete();
-        //TODO 清除关系 分类关系 冗余的统计信息  评论信息 点赞信息 喜欢的信息 收藏的信息
 
         return 1;
     }
 
-    /**
-     * @Desc     上传视频的接口
-     * @Author   czg
-     * @DateTime 2018-06-28
-     * @param    Request    $request [description]
-     * @return   [type]              [description]
-     */
     public function store(Request $request)
     {
         ini_set('memory_limit', '256M');
@@ -80,20 +73,21 @@ class VideoController extends Controller
         //如果是通过表单上传文件
         $file = $request->video;
         if ($file) {
+            //TODO 限制视频大小超过10M
             return $this->storeWithFile($file);
         }
 
-        //腾讯云 视频云 web /native sdk 上传成功后的回调
-        if ($request->from == 'qcvod') {
-            $video = Video::firstOrNew([
-                'qcvod_fileid' => $request->fileId,
-            ]);
-            $video->user_id = $request->user()->id;
-            $video->path    = ssl_url($request->videoUrl); //保存https的video cdn 地址
-            $video->title   = $request->videoName;
-            $video->save();
-            return $video;
-        }
+        //腾讯云 视频云 qcvod 回调接口，目前已弃用
+        // if ($request->from == 'qcvod') {
+        //     $video = Video::firstOrNew([
+        //         'qcvod_fileid' => $request->fileId,
+        //     ]);
+        //     $video->user_id = $request->user()->id;
+        //     $video->path    = ssl_url($request->videoUrl); //保存https的video cdn 地址
+        //     $video->title   = $request->videoName;
+        //     $video->save();
+        //     return $video;
+        // }
 
         return "没有腾讯云视频id，也没有真实上传的视频文件";
     }
@@ -105,26 +99,34 @@ class VideoController extends Controller
             'hash' => $hash,
         ]);
         if ($video->id) {
-            // abort(505,"相同视频已存在");
+            return [
+                'video_id'  => $video->id,
+                'video_url' => $video->url,
+                'image_url' => $video->cover, //TODO: 检查 video cover 属性
+            ];
         }
         $video->title = $file->getClientOriginalName();
         $video->save();
-        //虽然是简单的上传文件但是文章关系还是存了下来
-        $article            = new Article();
-        $article->user_id   = getUserId();
-        $article->video_url = $video->getPath();
-        $article->type      = 'video';
-        $article->image_url = '/images/uploadImage.jpg'; //默认图
-        $article->video_id  = $video->id;
-        $article->title     = $file->getClientOriginalName(); //新上传的文件直接使用文件的原始名称
-        $article->save();
 
         //保存视频,简单保存视频不需要更新文章的发布状态
         $video->saveFile($file, false);
+
+        if ($video->path) {
+            //简单的上传文件成功后，保存个草稿文章对应，方便后续重新发布此草稿
+            $article            = new Article();
+            $article->video_id  = $video->id;
+            $article->status    = 0; //草稿
+            $article->user_id   = getUserId();
+            $article->type      = 'video';
+            $article->image_url = null; //默认封面， //TODO: 字段应该改名为 cover
+            $article->title     = "正在输入...";
+            $article->save();
+        }
+
         return [
             'video_id'  => $video->id,
-            'video_url' => $video->url(),
-            'image_url' => url('/images/uploadImage.jpg'),
+            'video_url' => $video->url,
+            'image_url' => $video->cover,
         ];
     }
 
@@ -169,11 +171,6 @@ class VideoController extends Controller
         if (empty($video->jsonData('covers'))) {
             $video->syncVodProcessResult();
         }
-
-        $covers = [];
-        if (!empty($video->article->covers())) {
-            $covers = $video->article->covers();
-        }
-        return $covers;
+        return $video->covers;
     }
 }

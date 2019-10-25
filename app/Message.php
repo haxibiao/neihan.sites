@@ -7,10 +7,10 @@ use App\Model;
 class Message extends Model
 {
     protected $touches = ['chat'];
-    
-    public $fillable   = [
-        'chat_id',
+
+    public $fillable = [
         'user_id',
+        'chat_id',
         'message',
     ];
 

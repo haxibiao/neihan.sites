@@ -1,0 +1,21 @@
+type Chat {
+  id: Int!
+  unreads: Int
+  last_message_id: Int
+  time_ago: String
+  created_at: DateTime!
+  updated_at: DateTime!
+  lastMessage: Message
+  messages: [Message!] @hasMany
+  withUser: User
+  clear_unread: Boolean
+}
+
+extend type Query {
+  chat(id: Int! @eq): Chat @find
+  chats(user_id: Int!): [Chat!] @paginate(defaultCount: 10, builder: "App\\Chat@resolveUserChats")
+}
+
+extend type Query @middleware(checks: ["auth:api"]) {
+  queryChat(with_user_id: Int!): Chat! @field(resolver: "App\\Chat@resolveCreateChat")
+}

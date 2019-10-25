@@ -1,0 +1,3 @@
+extend type Mutation {
+  sendMessage(user_id: Int!, chat_id: Int!, message: String!): Message @create
+}

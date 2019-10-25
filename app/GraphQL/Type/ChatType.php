@@ -47,7 +47,7 @@ class ChatType extends GraphQLType
                 'type'        => GraphQL::type('User'),
                 'description' => 'The with user of Chat',
                 'resolve'     => function ($root, $args) {
-                    return $root->withUser();
+                    return $root->withUser;
                 },
             ],
             'messages'    => [

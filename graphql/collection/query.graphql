@@ -1,0 +1,13 @@
+type Collection {
+  id: Int!
+  name: String!
+  logo: String
+  count_articles: Int
+  count_follows: Int
+  followed: Int
+  user: User!
+}
+
+extend type Query {
+  collections(user_id: Int! @eq): [Collection!] @paginate(defaultCount: 10)
+}

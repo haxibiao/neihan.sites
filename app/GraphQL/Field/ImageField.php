@@ -30,7 +30,7 @@ class ImageField extends Field
 
     protected function resolve($root, $args)
     {
-        $size = isset($args['size']) ? 　 $args['size'] : 'SMALL';
+        $size = isset($args['size']) ? $args['size'] : 'SMALL';
         return $size == 'SMALL' ? $root->path_small() : $root->path();
     }
 

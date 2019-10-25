@@ -1,0 +1,7 @@
+type Issue {
+  id: ID
+  bonus: Int
+  user:User
+  gold:Int
+  closed:Boolean
+}

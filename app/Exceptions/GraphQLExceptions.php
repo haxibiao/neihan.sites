@@ -2,7 +2,7 @@
 namespace App\Exceptions;
 
 use App\Exceptions\MessageError;
-use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
+// use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 use Exception;
 use Folklore\GraphQL\Error\ValidationError;
 use Illuminate\Support\Arr;
@@ -33,14 +33,13 @@ class GraphQLExceptions
             $error['validation'] = $previous
                 ->getValidatorMessages();
         } elseif (!($previous && $previous instanceof MessageError)) {
-            if (env('APP_ENV') == 'prod') {
+            if (is_prod()) {
                 if (self::shouldReport($previous)) {
-                    \Bugsnag::notifyException($e);
+                    // \Bugsnag::notifyException($e);
                 }
             }
         }
-
-        Log::debug('gql error:', json_encode($error));
+        Log::debug('gql error: ' . json_encode($error));
         return $error;
     }
 

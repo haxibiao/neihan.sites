@@ -2,24 +2,23 @@
 
 namespace App\Notifications;
 
+use App\Issue;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Question;
 
 class QuestionDelete extends Notification
 {
     use Queueable;
-    protected $question;
+    protected $issue;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Question $question)
+    public function __construct(Issue $issue)
     {
-        $this->question=$question;
+        $this->issue=$issue;
     }
 
     /**
@@ -58,8 +57,8 @@ class QuestionDelete extends Notification
         return [
             'type'    => 'other',
             'subtype' => 'question_answered',
-            'question_id' => $this->question->id,
-            'message' => '您的付费问题' .  $this->question->title . $this->question->result(),
+            'question_id' => $this->issue->id,
+            'message' => '您的付费问题' .  $this->issue->title . $this->issue->result(),
         ];
     }
 }

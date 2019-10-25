@@ -1,0 +1,14 @@
+extend type Mutation @middleware(checks: ["auth:api"]) {
+    tip(
+        tipable_id: Int!
+        tipable_type:TipType = POST,
+        gold:Int!,
+        message:String
+    ):Tip! @field(resolver: "App\\Http\\GraphQL\\Mutations\\TipMutators@create")
+}
+
+enum TipType {
+    POST @enum(value: "articles")
+    ISSUE @enum(value: "articles")
+    COMMENT @enum(value: "commemnt")
+}

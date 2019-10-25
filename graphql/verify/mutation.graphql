@@ -1,0 +1,12 @@
+extend type Mutation {
+  sendVerifyCode(phone: String!, action: verifyType!): Verify @field(resolver: "App\\Verify@sendVerifyCode")
+  checkVerifyCode(code: String!, phone: String!, action: verifyType!): Verify
+    @field(resolver: "App\\Verify@checkVerifyCode")
+  retrievePassword(code: String!, phone: String, action: verifyType = RESET_PASSWORD, newPassword: String!): User
+    @field(resolver: "App\\Verify@retrievePassword")
+}
+
+enum verifyType {
+  RESET_PASSWORD
+  USER_INFO_CHANGE
+}

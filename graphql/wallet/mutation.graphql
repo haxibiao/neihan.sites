@@ -1,0 +1,8 @@
+extend type Mutation @middleware(checks: ["auth:api"]) {
+  setWalletPaymentInfo(input:walletInput @spread):Wallet @field(resolver: "App\\Wallet@setWalletPayment")
+}
+
+input walletInput{
+    pay_account:String
+    real_name:String
+}
