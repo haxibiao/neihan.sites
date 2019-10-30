@@ -2,14 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\Action;
 use App\Article;
 use App\Category;
+use App\Comment;
 use App\Image;
 use App\User;
 use App\Video;
 use App\Visit;
-use App\Action;
-use App\Comment;
 use Illuminate\Console\Command;
 
 class FixData extends Command
@@ -53,33 +53,52 @@ class FixData extends Command
 
     public function videos()
     {
-        $this->info('fix videos ...');
-        //这一批始终无法拿到截图的视频 统一置为-1
-        $videos = Video::whereNotNull('qcvod_fileid')
-            ->whereNull('cover')
-            ->where('status', '>', -1)
-            ->get();
-        foreach ($videos as $video) {
-            $video->status = -1;
-            $video->save();
-            $this->info('Video ID:' . $video->id . ' fix success');
-        }
+        // $this->info('fix videos ...');
+        // //这一批始终无法拿到截图的视频 统一置为-1
+        // $videos = Video::whereNotNull('qcvod_fileid')
+        //     ->whereNull('cover')
+        //     ->where('status', '>', -1)
+        //     ->get();
+        // foreach ($videos as $video) {
+        //     $video->status = -1;
+        //     $video->save();
+        //     $this->info('Video ID:' . $video->id . ' fix success');
+        // }
+        // $this->info('fix videos finished...');
 
-        // $formatter = 'http://cos.ainicheng.com/storage/video/%d.jpg.%d.jpg';
-        // \App\Video::whereNull('qcvod_fileid')->where('status','>',0)->chunk(100, function ($videos) use($formatter) {
-        //     foreach ($videos as $video) {
-        //         $covers = [];
-        //         for ($i = 1; $i <= 8 ; $i++) {
-        //             $str = sprintf($formatter, $video->id, $i);
-        //             $covers[] = $str;
-        //         }
-        //         $updated_at = $video->updated_at;
-        //         $video->timestamps = false;
-        //         $video->setJsonData('covers', $covers);
-        //     }
-        // });
-        $this->info('fix videos finished...');
+        $this->info('fix videos ...');
+        $videos = Video::where('status', '!=', -1);
+
+        ini_set('memory_limit', -1);
+        $videos->chunk(100, function ($videos) {
+            foreach ($videos as $video) {
+                $video_url = $video->url;
+                if (\str_contains($video_url, ['vod2.'])) {
+                    $cosPath     = 'video/' . $video->id . '.mp4';
+                    $video->disk = 'local'; //先标记为成功保存到本地
+                    $video->save();
+                    \Storage::disk('public')->put($cosPath, file_get_contents($video_url));
+                    $cosDisk = \Storage::cloud();
+                    $cosDisk->put($cosPath, \Storage::disk('public')->get($cosPath));
+                    $video->path       = $cosPath;
+                    $video->disk       = 'cos';
+                    $video->timestamps = false;
+                    $video->save();
+                    $this->info($video->id . '视频的地址', $video->url);
+                }
+            }
+        });
     }
+
+    // public function articleVieoCover()
+    // {
+    //     Article::chunk(100, function ($articles) {
+    //         $articles_cover = $articles->cover;
+    //         if (\str_contains($articles_cover, ['vod2.'])) {
+
+    //         }
+    //     });
+    // }
 
     public function categories()
     {
@@ -679,19 +698,19 @@ class FixData extends Command
 
     public function comments()
     {
-    	//删除uid:535用户发的广告信息
-    	//删除动态
-    	$actions = Action::where('user_id',535)->get();
-    	foreach ($actions as $action) {
-    		if($action->actionable_type == 'comments'){
-    			$action->delete();
-    			$this->info('Action ID:'.$action->id.' delete success');	
-    		}
-    	}
-    	$comments = Comment::where('user_id',535)->get();
-    	foreach ($comments as $comment) {
-    		$comment->delete();
-    		$this->info('Comment ID'.$comment->id.' delete success');
-    	}
+        //删除uid:535用户发的广告信息
+        //删除动态
+        $actions = Action::where('user_id', 535)->get();
+        foreach ($actions as $action) {
+            if ($action->actionable_type == 'comments') {
+                $action->delete();
+                $this->info('Action ID:' . $action->id . ' delete success');
+            }
+        }
+        $comments = Comment::where('user_id', 535)->get();
+        foreach ($comments as $comment) {
+            $comment->delete();
+            $this->info('Comment ID' . $comment->id . ' delete success');
+        }
     }
 }
