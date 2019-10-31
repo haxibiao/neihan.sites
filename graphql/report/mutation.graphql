@@ -1,0 +1,9 @@
+extend type Mutation @middleware(checks: ["auth:api"]) {
+    createReport(id:Int, reason:String ,type:ReportType = articles):Report!
+        @field(resolver: "App\\Report@store")
+}
+
+enum ReportType {
+    articles @enum(value: "articles")
+    comments @enum(value: "comments")
+}

@@ -1,0 +1,7 @@
+type Report {
+  id: Int!
+  user: User
+  reason:String
+  created_at: DateTime!
+  updated_at: DateTime!
+}

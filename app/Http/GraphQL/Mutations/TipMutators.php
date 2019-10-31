@@ -16,19 +16,19 @@ class TipMutators
 {
     public function create($root, array $args, $context)
     {
-        //TODO: move to repo methods
+        //TODO: move to TipRepo
         $user = getUser();
         DB::beginTransaction();
 
         try {
             $gold = Arr::get($args, 'gold', 0);
-            $tip = new Tip();
+            $tip  = new Tip();
             //打赏(金币)
             if ($gold > 0) {
-                $tip->user_id = $user->id;
-                $tip->gold = $gold;
-                $tip->message = Arr::get($args, 'message');
-                $tip->tipable_id = Arr::get($args, 'tipable_id');
+                $tip->user_id      = $user->id;
+                $tip->gold         = $gold;
+                $tip->message      = Arr::get($args, 'message');
+                $tip->tipable_id   = Arr::get($args, 'tipable_id');
                 $tip->tipable_type = Arr::get($args, 'tipable_type');
                 $tip->save();
 

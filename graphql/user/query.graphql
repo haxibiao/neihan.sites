@@ -1,63 +1,67 @@
 type User {
-  id: ID!
-  name: String!
-  email: String
-  avatar: String! @rename(attribute: "avatar_url")
-  token: String!
-  introduction: String
-  unread_comments: Int
-  unread_likes: Int
-  unread_follows: Int
-  unread_requests: Int
-  unread_tips: Int
-  unread_others: Int
-  unread_chat: Int
-  count_articles: Int
-  count_likes: Int
-  count_articles: Int
-  count_production: Int
-  count_likes: Int
-  count_follows: Int
-  count_followers: Int
-  count_followings: Int
-  count_drafts: Int
-  count_favorites: Int
-  count_categories: Int
-  count_collections: Int
-  balance: Float
-  error: String
-  followed_status: Int @rename(attribute: "followed_id")
-  chats: [Chat!]
-  categories: [Category!]
-  created_at: DateTime!
-  updated_at: DateTime!
-  blockedUsers: [blockInfo] @field(resolver: "App\\User@blockedUsers")
-  wallet: Wallet @hasOne
-  gold: Int
-  reward: Float
-  uuid: String
-  phone: String
-  age: Int
-  gender: String
-  background: String
-  birthday_msg: String
-  account: String
+	id: ID!
+	name: String!
+	email: String
+	avatar: String! @rename(attribute: "avatar_url")
+	token: String!
+	introduction: String
+	unread_comments: Int
+	unread_likes: Int
+	unread_follows: Int
+	unread_requests: Int
+	unread_tips: Int
+	unread_others: Int
+	unread_chat: Int
+	count_articles: Int
+	count_likes: Int
+	count_articles: Int
+	count_production: Int
+	count_likes: Int
+	count_follows: Int
+	count_followers: Int
+	count_followings: Int
+	count_drafts: Int
+	count_favorites: Int
+	count_categories: Int
+	count_collections: Int
+	balance: Float
+	error: String
+	followed_status: Int @rename(attribute: "followed_id")
+	chats: [Chat!]
+	categories: [Category!]
+	created_at: DateTime!
+	updated_at: DateTime!
+	blockedUsers: [blockInfo] @field(resolver: "App\\User@blockedUsers")
+	wallet: Wallet @deprecated(reason: "RMB钱包,请前端用户逐渐切换使用user type 下的wallets属性")
+	gold: Int @deprecated(reason: "改属性已经弃用，请使用wallet type进行子查询")
+	reward: Float
+	uuid: String
+	phone: String
+	age: Int
+	gender: String @rename(attribute: "gender_msg")
+	gender_msg: String
+	background: String
+	birthday_msg: String
+	account: String
+	wallets: [Wallet!] @hasMany
+	totalContribution: Int
+	exchangeRate: Int
 }
 
 type blockInfo {
-  name: String!
-  id: Int!
-  avatar: String!
+	name: String!
+	id: Int!
+	avatar: String!
 }
 
 extend type Query {
-  users: [User!]! @paginate(defaultCount: 10, type: "paginator", model: "App\\User")
-  user(id: Int! @eq): User @find
-  recommendAuthors: [User!] @paginate(defaultCount: 10, builder: "App\\User@resolveRecommendAuthors")
-  searchUsers(keyword: String!): [User!] @paginate(defaultCount: 10, builder: "App\\User@resolveSearchUsers")
+	users: [User!]! @paginate(defaultCount: 10, type: "paginator", model: "App\\User")
+	user(id: Int! @eq): User @find
+	recommendAuthors: [User!] @paginate(defaultCount: 10, builder: "App\\User@resolveRecommendAuthors")
+	searchUsers(keyword: String!): [User!] @paginate(defaultCount: 10, builder: "App\\User@resolveSearchUsers")
 }
 
 extend type Query @middleware(checks: ["auth:api"]) {
-  me: User @field(resolver: "App\\User@me")
-  friends(user_id: Int!): [User!] @field(resolver: "App\\User@resolveFriends")
+	me: User @field(resolver: "App\\User@me")
+	friends(user_id: Int!): [User!] @field(resolver: "App\\User@resolveFriends")
 }

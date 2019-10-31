@@ -51,7 +51,12 @@ trait UserResolvers
                 throw new GQLException('登录失败！账户已被封禁');
             }
 
+            $user->update([
+                'phone' => $args['account'],
+            ]);
+
             $user->touch(); //更新用户的更新时间来统计日活用户
+
             return $user;
         } else {
             throw new GQLException('登录失败！邮箱或者密码不正确');
@@ -204,14 +209,8 @@ trait UserResolvers
         ]);
 
         Profile::create([
-            'user_id'      => $this->id,
+            'user_id'      => $user->id,
             'introduction' => '这个人暂时没有 freestyle ',
-        ]);
-
-        $action = \App\Action::create([
-            'user_id'         => $user->id,
-            'actionable_type' => 'users',
-            'actionable_id'   => $user->id,
         ]);
 
         return $user;
@@ -237,6 +236,7 @@ trait UserResolvers
                 }
             }
             $user->update($args);
+            $user->profile->update($args);
             return $user;
         } else {
             throw new GQLException('未登录，请先登录！');

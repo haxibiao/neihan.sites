@@ -28,7 +28,7 @@ class ReplyComment extends Notification
         $comment = $this->reply->commentable;
         return [
             'user_id'       => $user->id,
-            'user_avatar'   => $user->avatar,
+            'user_avatar'   => $user->avatarUrl,
             'user_name'     => $user->name,
             'reply_content' => $this->reply->getContent(),
             'reply_id'      => $this->reply->id,

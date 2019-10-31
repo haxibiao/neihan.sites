@@ -15,10 +15,10 @@ class CreateChatsTable extends Migration
     {
         Schema::create('chats', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('last_message_id')->nullable();
-            $table->string('uids')->nullable(); //store json_encode((array)$member_uids)
-            $table->string('subject')->nullable();
-            $table->string('introduction')->nullable();
+            $table->integer('last_message_id')->nullable()->comment('最后一条消息id');
+            $table->string('uids')->nullable()->comment('json_encode所有在组内的用户id');
+            $table->string('subject')->nullable()->comment('群聊组名');
+            $table->string('introduction')->nullable()->comment('群介绍');
             $table->timestamps();
         });
     }

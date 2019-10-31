@@ -30,7 +30,8 @@ class Collection extends Model
         return $this->hasMany(\App\Article::class)->where('status', '>=', '0');
     }
 
-    public function publishedArticles(){
+    public function publishedArticles()
+    {
         return $this->hasMany(\App\Article::class)->where('status', '>=', '0');
     }
 
@@ -47,8 +48,4 @@ class Collection extends Model
         }
         return env('APP_URL') . $path;
     }
-    //下面的方法废弃了
-    /*public function allArticles(){ 
-        return $this->belongsToMany(\App\Article::class)->where('articles.status', '>=', 0);
-    }*/
 }

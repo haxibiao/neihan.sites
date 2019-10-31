@@ -152,7 +152,7 @@ function parse_video($body)
 
             $video = Video::find($video_id);
             if ($video) {
-                $video_html = '<div class="row"><div class="col-md-6"><div class="embed-responsive embed-responsive-4by3"><video class="embed-responsive-item" controls poster="' . $video->cover . '"><source src="' . $video->path . '" type="video/mp4"></video></div></div></div>';
+                $video_html = '<div class="row"><div class="col-md-6"><div class="embed-responsive embed-responsive-4by3"><video class="embed-responsive-item" controls poster="' . $video->coverUrl . '"><source src="' . $video->url . '" type="video/mp4"></video></div></div></div>';
                 $body       = str_replace($img_html, $video_html, $body);
             }
         }

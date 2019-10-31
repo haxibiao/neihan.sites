@@ -15,9 +15,9 @@ class CreateVisitsTable extends Migration
     {
         Schema::create('visits', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id')->index()
-                ->comment('用户id');
-            $table->unsignedInteger('visited_id')->index();
+            $table->unsignedInteger('user_id')->index();
+
+            $table->unsignedInteger('visited_id')->index(); //TODO: rename morphs('visitable')
             $table->string('visited_type', 20)->index()
                 ->default('articles')
                 ->comment('浏览类型,默认浏览文章');

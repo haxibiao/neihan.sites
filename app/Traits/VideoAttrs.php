@@ -9,12 +9,25 @@ trait VideoAttrs
         return $this->jsonData('covers');
     }
 
+    public function getCoverUrlAttribute()
+    {
+        //TODO: 修复数据，数据库统一存path
+        $coverPath = parse_url($this->cover, PHP_URL_PATH);
+        return cdnurl($coverPath);
+    }
+
     public function getInfoAttribute()
     {
-        if($this->json){
-            return null;
-        }
-        return json_decode($this->json);
+        $json = json_decode($this->json, true);
+
+        // 相对路径 转 绝对路径
+        $data = [
+            'cover'  => \Storage::cloud()->url($json['cover'] ?? '/images/cover.png'),
+            'width'  => $json['width'],
+            'height' => $json['height'],
+        ];
+
+        return $data;
     }
 
     public function getUrlAttribute()

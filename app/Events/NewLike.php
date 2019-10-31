@@ -52,7 +52,7 @@ class NewLike implements ShouldBroadcast
                     'like_id'      => $this->like->id,
                     'likeable_id'  => $this->likable->id,
                     'user_id'      => $this->like->user->id,
-                    'user_avatar'  => $this->like->user->avatar,
+                    'user_avatar'  => $this->like->user->avatarUrl,
                     'user_name'    => $this->like->user->name,
                 ];
             }

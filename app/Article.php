@@ -27,13 +27,12 @@ class Article extends Model
         'description',
         'author',
         'author_id',
-        'user_name',
         'user_id',
         'category_id',
         'collection_id',
         'body',
         'count_words',
-        'image_url',
+        'cover',
         'is_top',
         'status',
         'source_url',
@@ -41,10 +40,10 @@ class Article extends Model
         'count_likes',
         'count_comments',
         'type',
-        'video_url',
         'video_id',
         'slug',
         'submit',
+        'cover_path',
     ];
 
     protected static function boot()
@@ -137,11 +136,6 @@ class Article extends Model
         return $this->morphMany(\App\Like::class, 'liked');
     }
 
-    public function tags1()
-    {
-        return $this->belongsToMany('App\Tag');
-    }
-
     public function tags()
     {
         return $this->morphToMany('App\Tag', 'taggable');
@@ -168,7 +162,7 @@ class Article extends Model
 
     public function save(array $options = array())
     {
-        $this->description = $this->get_description();
+        $this->description = $this->summary;
         parent::save($options);
     }
 

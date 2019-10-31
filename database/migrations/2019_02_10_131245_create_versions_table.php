@@ -13,6 +13,9 @@ class CreateVersionsTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('versions')) {
+            return;
+        }
         Schema::create('versions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->comment('版本名称');

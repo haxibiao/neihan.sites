@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateWalletTransactionsTable extends Migration
 {
@@ -13,9 +13,10 @@ class CreateWalletTransactionsTable extends Migration
      */
     public function up()
     {
-        if(Schema::hasTable('wallet_transactions')){
+        if (Schema::hasTable('wallet_transactions')) {
             return;
         }
+        //TODO: 这个表的职能，应该借助exchange表和withdraws表抗下，drop掉
         Schema::create('wallet_transactions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('wallet_id')->index()->comment('钱包ID');

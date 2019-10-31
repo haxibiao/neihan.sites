@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateAnswerTable extends Migration
 {
@@ -13,14 +13,13 @@ class CreateAnswerTable extends Migration
      */
     public function up()
     {
-        if(Schema::hasTable('answer')){
+        if (Schema::hasTable('answer')) {
             return;
         }
+        //TODO: 这个表应该叫 answers
         Schema::create('answer', function (Blueprint $table) {
             $table->bigIncrements('id');
-            //关联users表
             $table->unsignedInteger('user_id')->index()->comment('用户ID');
-            //关联questions表
             $table->unsignedInteger('question_id')->index()->comment('题库ID');
 
             $table->integer('answered_count')->default(0)->comment('回答次数');

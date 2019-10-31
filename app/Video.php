@@ -4,14 +4,14 @@ namespace App;
 
 use App\Model;
 use App\Traits\VideoAttrs;
-use App\Traits\VideoMutator;
 use App\Traits\VideoRepo;
+use App\Traits\VideoResolvers;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Video extends Model
 {
     use SoftDeletes;
-    use VideoMutator;
+    use VideoResolvers;
     use VideoAttrs;
     use VideoRepo;
 
@@ -40,19 +40,23 @@ class Video extends Model
     public static function boot()
     {
         parent::boot();
-        //同步article status
-        static::updated(function ($model) {
-            if ($article = $model->article) {
-                $article->status = $model->status;
-            }
-        });
-    }
 
-    public function getPath()
-    {
-        //TODO: save this->extension, 但是目前基本都是mp4格式
-        $extension = 'mp4';
-        return '/storage/video/' . $this->id . '.' . $extension;
+        /**
+         * 注释原因：在保存视频时，视频对象还没有封面
+         */
+
+        // //自动通过封面获得视频宽高
+        // static::created(function ($video) {
+        //     $coverPath = parse_url($video->cover, PHP_URL_PATH);
+        //     $video->saveWidthHeight(public_path($coverPath));
+        // });
+
+        //FIXME:视频截图成功，同步发布文章上线? 现在这个需要审核了
+        // static::updated(function ($model) {
+        //     if ($article = $model->article) {
+        //         $article->status = $model->status;
+        //     }
+        // });
     }
 
 }

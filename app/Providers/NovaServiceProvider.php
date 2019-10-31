@@ -101,6 +101,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             // new \PhpJunior\NovaLogViewer\Tool(), //因为每日生产的log有权限问题，暂时不用这个
             // new \Llaski\NovaScheduledJobs\NovaScheduledJobsTool,
             // new \KABBOUCHI\LogsTool\LogsTool,
+            new \Acme\PriceTracker\PriceTracker(),
         ];
     }
 

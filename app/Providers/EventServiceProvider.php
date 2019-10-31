@@ -13,6 +13,9 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
+        'App\Events\NewReport'  => [
+            'App\Listeners\SendNewReportNotification',
+        ],
         'App\Events\NewLike'    => [
             'App\Listeners\SendNewLikeNotification',
         ],
@@ -43,10 +46,13 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
+        \App\Video::observe(\App\Observers\VideoObserver::class);
         \App\Message::observe(\App\Observers\MessageObserver::class);
         \App\Comment::observe(\App\Observers\CommentObserver::class);
         \App\Like::observe(\App\Observers\LikeObserver::class);
         \App\Article::observe(\App\Observers\ArticleObserver::class);
         \App\Follow::observe(\App\Observers\FollowObserver::class);
+        \App\Report::observe(\App\Observers\ReportObserver::class);
+
     }
 }

@@ -24,7 +24,7 @@ class Tip extends Model
         return $this->morphTo();
     }
 
-    //actionable target
+    //actionable target, 动态 - 打赏了 - 文章
     public function target()
     {
         return $this->morphTo();

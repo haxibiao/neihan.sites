@@ -3,17 +3,12 @@
 namespace App;
 
 use App\Feedback;
-use App\Notifications\MyOwnResetPassword as ResetPasswordNotification;
 use App\Traits\UserAttrs;
 use App\Traits\UserRepo;
 use App\Traits\UserResolvers;
-use Auth;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -29,36 +24,16 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'uuid',
+        'phone',
+        'account',
         'email',
-        'password',
-        'qq',
-        'gender',
         'avatar',
-        'introduction',
-        'website',
-        'is_editor',
-        'is_signed',
-        'seo_meta',
-        'seo_push',
-        'seo_tj',
-        'api_token',
-        'enable_tips',
-        'tip_words',
-        'count_follows',
-        'app',
-        'dz_id',
         'password',
+        'api_token',
         'remember_token',
         'created_at',
         'updated_at',
-        'api_token',
-        'gold',
-        'account',
-        'uuid',
-        'phone',
-        'age',
-        'background',
-        'birthday',
     ];
 
     /**
@@ -87,6 +62,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function contributes()
+    {
+        return $this->hasMany(\App\Contribute::class);
+    }
 
     //TODO 临时过渡
     public function getCashAttribute()
@@ -209,7 +189,7 @@ class User extends Authenticatable
     public function chats()
     {
         return $this->belongsToMany(\App\Chat::class, 'chat_user')
-            ->withPivot('with_users', 'unreads')
+            ->withPivot('unreads')
             ->orderBy('updated_at', 'desc');
     }
 
@@ -276,9 +256,9 @@ class User extends Authenticatable
         return $this->hasMany(\App\Category::class, 'user_id', 'id')->where('type', 'article');
     }
 
-    public function wallet(): HasOne
+    public function wallets(): HasMany
     {
-        return $this->hasOne(\App\Wallet::class);
+        return $this->hasMany(\App\Wallet::class);
     }
 
     public function visits()
@@ -286,382 +266,15 @@ class User extends Authenticatable
         return $this->hasMany(Visit::class);
     }
 
-    //computed props methods ................................................................................
-
-    public function checkAdmin()
-    {
-        return $this->is_admin;
-    }
-
-    public function checkEditor()
-    {
-        return $this->is_editor || $this->is_admin;
-    }
-
-    public function isFollow($type, $id)
-    {
-        return $this->followings()->where('followed_type', get_polymorph_types($type))->where('followed_id', $id)->count() ? true : false;
-    }
-
-    public function isLiked($type, $id)
-    {
-        return $this->likes()->where('liked_type', get_polymorph_types($type))->where('liked_id', $id)->count() ? true : false;
-    }
-
-    //TODO: move out attrs
-
-    public function avatar()
-    {
-        return $this->avatar;
-        //修复没设置默认头像的
-        // if (empty($this->avatar)) {
-        //     $this->avatar = '/images/avatar.jpg';
-        //     $this->save();
-        // }
-
-        // $avatar_url = $this->avatar;
-        // if (\App::environment('local')) {
-        //     if (!starts_with($this->avatar, env('APP_URL'))) {
-        //         $avatar_url = file_exists(public_path($this->avatar)) ? $this->avatar : env('APP_URL') . $this->avatar;
-        //     }
-        // }
-        // //如果用户刚更新过，刷新头像图片的浏览器缓存
-        // if ($this->updated_at && $this->updated_at->addMinutes(2) > now()) {
-        //     $avatar_url = $avatar_url . '?t=' . time();
-        // }
-        // //APP 需要返回全Uri
-        // return starts_with($avatar_url, 'http') ? $avatar_url : url($avatar_url);
-    }
-
-    public function makeQQAvatar()
-    {
-        //尝试读取qq头像
-        if (empty($this->email)) {
-            $qq = $this->qq;
-            if (empty($qq)) {
-                $pattern = '/(\d+)\@qq\.com/';
-                if (preg_match($pattern, strtolower($this->email), $matches)) {
-                    $qq = $matches[1];
-                }
-            }
-            if (!empty($qq)) {
-                $avatar_path = '/storage/avatar/' . $this->id . '.qq.jpg';
-                $qq_pic      = get_qq_pic($qq);
-                $qq_img_data = @file_get_contents($qq_pic);
-                if ($qq_img_data) {
-                    file_put_contents(public_path($avatar_path), $qq_img_data);
-                    $hash = md5_file(public_path($avatar_path));
-                    if ($hash != md5_file(public_path('/images/qq_default.png')) && $hash != md5_file(public_path('/images/qq_tim_default.png'))) {
-                        $this->avatar = $avatar_path;
-                    }
-                }
-            }
-        }
-        $this->save();
-
-        return $this->avatar;
-    }
-
-    public function unreads($type = null, $num = null)
-    {
-        //缓存未命中
-        $unreadNotifications = \App\Notification::where([
-            'read_at'       => null,
-            'notifiable_id' => $this->id,
-        ])->get();
-        $unreads = [
-            'comments' => null,
-            'likes'    => null,
-            'follows'  => null,
-            'tips'     => null,
-            'others'   => null,
-            'chat'     => null,
-        ];
-        //下列通知类型是进入了notification表的
-        $unreadNotifications->each(function ($item) use (&$unreads) {
-            switch ($item->type) {
-                //评论文章通知
-                case 'App\Notifications\ArticleCommented':
-                    $unreads['comments']++;
-                    break;
-                case 'App\Notifications\ReplyComment':
-                    $unreads['comments']++;
-                    break;
-                //喜欢文章通知
-                case 'App\Notifications\ArticleLiked':
-                    $unreads['likes']++;
-                    break;
-                //关注用户通知
-                case 'App\Notifications\UserFollowed':
-                    $unreads['follows']++;
-                    break;
-                //打赏文章通知
-                case 'App\Notifications\ArticleTiped':
-                    $unreads['tips']++;
-                    break;
-                //打赏文章通知
-                case 'App\Notifications\ChatNewMessage':
-                    $unreads['chat']++;
-                    break;
-                //其他类型的通知
-                default:
-                    $unreads['others'];
-                    break;
-            }
-        });
-
-        //聊天消息数
-        $unreads['chats'] = $this->chats->sum(function ($item) {
-            return $item->pivot->unreads;
-        });
-        //投稿请求数
-        $unreads['requests'] = $this->adminCategories()->sum('new_requests');
-
-        //write cache
-        Cache::put('unreads_' . $this->id, $unreads, 60);
-
-        if ($num) {
-            $unreads[$type] = $num;
-            //write cache
-            Cache::put('unreads_' . $this->id, $unreads, 60);
-        }
-        if ($type) {
-            return $unreads[$type] ? $unreads[$type] : null;
-        }
-
-        return $unreads;
-    }
-
-    public function forgetUnreads()
-    {
-        Cache::forget('unreads_' . $this->id);
-    }
-
     public function newReuqestCategories()
     {
         return $this->adminCategories()->orderBy('new_requests', 'desc')->orderBy('updated_at', 'desc');
-    }
-
-    public function link()
-    {
-        return '<a href="/user/' . $this->id . '">' . $this->name . '</a>';
-    }
-
-    public function at_link()
-    {
-        return '<a href="/user/' . $this->id . '">@' . $this->name . '</a>';
-    }
-
-    public function getProfileAttribute()
-    {
-        if ($profile = $this->hasOne(\App\Profile::class)->first()) {
-            return $profile;
-        }
-        //确保profile数据完整
-        $profile          = new \App\Profile();
-        $profile->user_id = $this->id;
-        $profile->save();
-        return $profile;
-    }
-
-    public function ta()
-    {
-        return $this->isSelf() ? '我' : '他';
-    }
-
-    public function isSelf()
-    {
-        return Auth::check() && Auth::id() == $this->id;
-    }
-
-    public function fillForJs()
-    {
-        $this->introduction = $this->introduction;
-        $this->avatar       = $this->avatarUrl;
-    }
-
-    public function blockedUsers()
-    {
-        $json = json_decode($this->json, true);
-        if (empty($json)) {
-            $json = [];
-        }
-
-        $blocked = [];
-        if (isset($json['blocked'])) {
-            $blocked = $json['blocked'];
-        }
-        return $blocked;
-    }
-
-    public function blockUser($user_id)
-    {
-        $user = User::findOrFail($user_id);
-        $json = json_decode($this->json, true);
-        if (empty($json)) {
-            $json = [];
-        }
-
-        $blocked = [];
-        if (isset($json['blocked']) && is_array($json['blocked'])) {
-            $blocked = $json['blocked'];
-        }
-
-        $blocked = new \Illuminate\Support\Collection($blocked);
-
-        if ($blocked->contains('id', $user_id)) {
-            //unbloock
-            $blocked = $blocked->filter(function ($value, $key) use ($user_id) {
-                return $value['id'] != $user_id;
-            });
-        } else {
-            $blocked[] = [
-                'id'     => $user->id,
-                'name'   => $user->name,
-                'avatar' => $user->avatarUrl,
-            ];
-        }
-
-        $json['blocked'] = $blocked;
-        $this->json      = json_encode($json, JSON_UNESCAPED_UNICODE);
-        $this->save();
-    }
-
-    public function report($type, $reason, $comment_id = null)
-    {
-        $this->count_reports = $this->count_reports + 1;
-
-        $json = json_decode($this->json);
-        if (!$json) {
-            $json = (object) [];
-        }
-
-        $user    = getUser();
-        $reports = [];
-        if (isset($json->reports)) {
-            $reports = $json->reports;
-        }
-
-        $report_data = [
-            'type'   => $type,
-            'reason' => $reason,
-        ];
-        if ($comment_id) {
-            $report_data['comment_id'] = $comment_id;
-        }
-        $reports[] = [
-            $user->id => $report_data,
-        ];
-
-        $json->reports = $reports;
-        $this->json    = json_encode($json, JSON_UNESCAPED_UNICODE);
-        $this->save();
-    }
-
-    public function reports()
-    {
-        $json = json_decode($this->json, true);
-        if (empty($json)) {
-            $json = [];
-        }
-        $reports = [];
-        if (isset($json['reports'])) {
-            $reports = $json['reports'];
-        }
-        return $reports;
-    }
-
-    public function transfer($amount, $to_user, $log_mine = '转账', $log_theirs = '转账', $relate_id = null, $type = "打赏")
-    {
-        if ($this->balance < $amount) {
-            return false;
-        }
-
-        \DB::beginTransaction();
-
-        try {
-            \App\Transaction::create([
-                'user_id'      => $this->id,
-                'relate_id'    => $relate_id,
-                'from_user_id' => $this->id,
-                'to_user_id'   => $to_user->id,
-                'type'         => $type,
-                'log'          => $log_mine,
-                'amount'       => $amount,
-                'status'       => '已到账',
-                'balance'      => $this->balance - $amount,
-            ]);
-            \App\Transaction::create([
-                'user_id'      => $to_user->id,
-                'relate_id'    => $relate_id,
-                'from_user_id' => $this->id,
-                'to_user_id'   => $to_user->id,
-                'type'         => $type,
-                'log'          => $log_theirs,
-                'amount'       => $amount,
-                'status'       => '已到账',
-                'balance'      => $to_user->balance + $amount,
-            ]);
-        } catch (\Exception $ex) {
-            \DB::rollBack();
-            return false;
-        }
-
-        \DB::commit();
-        return true;
     }
 
     public function videoArticles()
     {
         return $this->hasMany('App\Article')
             ->where('articles.type', 'video');
-    }
-
-    //重写用户的重置密码邮件通知
-    public function sendPasswordResetNotification($token)
-    {
-        $this->notify(new ResetPasswordNotification($token));
-    }
-    /**
-     * 保存用户头像
-     * @return [type] [description]
-     */
-    public function save_avatar($file)
-    {
-        //判断是否为空
-        if (empty($file) || !$file->isValid()) {
-            return null;
-        }
-        // 获取文档相关信息
-        $extension = $file->getClientOriginalExtension();
-        $realPath  = $file->getRealPath(); //临时文档的绝对路径
-        $filename  = 'avatar/' . $this->id . '_' . time() . '.' . $extension;
-        Storage::cloud()->put($filename, file_get_contents($realPath));
-        //上传到COS失败
-        $url          = Storage::cloud()->url($filename);
-        $this->avatar = $url;
-        $this->save();
-        return $this->avatar;
-    }
-
-    public function save_background($file)
-    {
-        //判断是否为空
-        if (empty($file) || !$file->isValid()) {
-            return null;
-        }
-
-        $extension = $file->getClientOriginalExtension();
-        $realPath  = $file->getRealPath(); //临时文档的绝对路径
-
-        $filename = 'background/' . $this->id . '_' . time() . '.' . $extension;
-        Storage::cloud()->put($filename, file_get_contents($realPath));
-        //上传到COS失败
-        $url              = Storage::cloud()->url($filename);
-        $this->background = $url;
-        $this->save();
-
-        return $this->background;
     }
 
     public function issueInvites()

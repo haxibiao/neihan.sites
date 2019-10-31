@@ -1,6 +1,37 @@
 <?php
 
 return [
+
+    'dianmoge_com'    => [
+        'title'       => '随时分享你的快乐瞬间',
+        'keywords'    => '幽默，搞笑，段子，笑话大全，开心一刻，冷笑话',
+        'description' => '点默阁-专注段子和知识搜索的社交平台',
+        'articlePush' => [
+            'pandaNumber' => [
+                'appid' => 'xxx',
+                'token' => 'xxx',
+            ],
+            'baiduNumber' => [
+                'token' => 'oiIhBEyTEx33BwRW',
+            ],
+        ],
+    ],
+
+    'haxibiao_com'    => [
+        'title'       => '专注互联网创业的短视频社区',
+        'keywords'    => '区块链，短视频，哈希表，哈希坊',
+        'description' => '哈希表-专注互联网创业的短视频社区',
+        'articlePush' => [
+            'pandaNumber' => [
+                'appid' => 'xxx',
+                'token' => 'xxx',
+            ],
+            'baiduNumber' => [
+                'token' => 'oiIhBEyTEx33BwRW',
+            ],
+        ],
+    ],
+
     'ainicheng_com'   => [
         'keywords'                     => '恋爱游戏,电子竞技,卡牌,角色扮演,游戏视频,热门资讯,社交攻略,交友聊天必备',
         'description'                  => '最暖心的游戏社交网站, 用户在这里分享和提问，涵盖了恋爱游戏,电子竞技,卡牌,角色扮演,游戏视频,热门资讯,社交攻略,交友聊天必备',
@@ -16,21 +47,6 @@ return [
         ],
 
         'default_import_category_name' => '',
-    ],
-
-    'dianmoge_com'    => [
-        'title'       => '随时分享你的快乐瞬间',
-        'keywords'    => '幽默，搞笑，段子，笑话大全，开心一刻，冷笑话',
-        'description' => '点默阁-专注段子和知识搜索的社交平台',
-        'articlePush' => [
-            'pandaNumber' => [
-                'appid' => 'xxx',
-                'token' => 'xxx',
-            ],
-            'baiduNumber' => [
-                'token' => 'oiIhBEyTEx33BwRW',
-            ],
-        ],
     ],
 
     'qunyige_com'     => [
@@ -107,7 +123,7 @@ return [
         ],
     ],
 
-    'jucheshe_com' => [
+    'jucheshe_com'    => [
         'keywords'    => '国产，日产，德系，美系，二手车，SUV，交易，转让',
         'description' => '专注为年轻人购买二手车和了解汽车的社区',
         'title'       => '专注为年轻人购买二手车和了解汽车的社区',
@@ -118,7 +134,7 @@ return [
         ],
     ],
 
-    'youwangfa_com' => [
+    'youwangfa_com'   => [
         'keywords'    => '法律，王法，普通老百姓知道的法律，刑法，法规，基本法律常识',
         'description' => '普通老百姓知道的法律，刑法，法规，基本法律常识交流社区',
         'title'       => '普通老百姓知道的法律，刑法，法规，基本法律常识交流社区',
@@ -129,7 +145,7 @@ return [
         ],
     ],
 
-    'didilinju_com' => [
+    'didilinju_com'   => [
         'keywords'    => '本地服务，二手转让，物品交换，邻居交流，社区服务',
         'description' => '快速了解您身边的社区，发现邻居，发现快乐',
         'title'       => '快速了解您身边的社区，发现邻居，发现快乐',

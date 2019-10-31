@@ -51,8 +51,7 @@ class Feedback extends Model
         return $this->morphMany(Visit::class, 'visited');
     }
 
-    //attrs TODO: move out
-
+    //attrs
     public function getStatusMsgAttribute()
     {
         switch ($this->status) {
@@ -72,9 +71,9 @@ class Feedback extends Model
     {
         if ($user = getUser(false)) {
             Visit::firstOrCreate([
-                'user_id' => $user->id,
+                'user_id'      => $user->id,
                 'visited_type' => 'feedbacks',
-                'visited_id' => $this->id,
+                'visited_id'   => $this->id,
             ]);
         }
         $comment = $this->comments()->count();

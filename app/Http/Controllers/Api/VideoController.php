@@ -29,7 +29,7 @@ class VideoController extends Controller
             $filename  = pathinfo($video->path)['basename'];
             $file      = [
                 'url'          => base_uri() . $video->path,
-                'thumbnailUrl' => base_uri() . $video->cover,
+                'thumbnailUrl' => base_uri() . $video->coverUrl,
                 'name'         => $filename,
                 'id'           => $video->id,
                 "type"         => str_replace("jpg", "jpeg", "video/" . $extension),
@@ -102,7 +102,7 @@ class VideoController extends Controller
             return [
                 'video_id'  => $video->id,
                 'video_url' => $video->url,
-                'image_url' => $video->cover, //TODO: 检查 video cover 属性
+                'image_url' => $video->coverUrl,
             ];
         }
         $video->title = $file->getClientOriginalName();
@@ -113,20 +113,19 @@ class VideoController extends Controller
 
         if ($video->path) {
             //简单的上传文件成功后，保存个草稿文章对应，方便后续重新发布此草稿
-            $article            = new Article();
-            $article->video_id  = $video->id;
-            $article->status    = 0; //草稿
-            $article->user_id   = getUserId();
-            $article->type      = 'video';
-            $article->image_url = null; //默认封面， //TODO: 字段应该改名为 cover
-            $article->title     = "正在输入...";
+            $article           = new Article();
+            $article->video_id = $video->id;
+            $article->status   = 0; //草稿
+            $article->user_id  = getUserId();
+            $article->type     = 'video';
+            $article->title    = "正在输入...";
             $article->save();
         }
 
         return [
             'video_id'  => $video->id,
             'video_url' => $video->url,
-            'image_url' => $video->cover,
+            'image_url' => $video->coverUrl,
         ];
     }
 

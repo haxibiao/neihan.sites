@@ -22,7 +22,7 @@ class CommentObserver
 
         if ($comment->commentable instanceof \App\Article) {
             $article                 = $comment->commentable;
-            $article->count_replies  = $article->comments()->count(); //FIXME: when comments go big ...
+            $article->count_replies  = $article->count_replies + 1;
             $article->count_comments = $article->comments()->whereNull('comment_id')->count();
             $article->save();
             $comment->lou = $article->count_comments;

@@ -2,16 +2,117 @@
 
 namespace App\Traits;
 
+use App\Exchange;
 use App\Follow;
+use App\Profile;
 use App\User;
+use App\Wallet;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 trait UserAttrs
 {
+    public function getGoldAttribute()
+    {
+        return $this->goldWallet->goldBalance;
+    }
+
+    //rmb钱包，默认钱包
+    public function getWalletAttribute()
+    {
+        if ($wallet = $this->wallets()->whereType(0)->first()) {
+            return $wallet;
+        }
+        return Wallet::rmbWalletOf($this);
+    }
+
+    //金币钱包
+    public function getGoldWalletAttribute()
+    {
+        if ($wallet = $this->wallets()->whereType(1)->first()) {
+            return $wallet;
+        }
+        return Wallet::goldWalletOf($this);
+    }
+
+    //TODO 临时过渡
+    public function getCashAttribute()
+    {
+        $tansaction = $this->transactions()
+            ->latest()->first();
+        if (!$tansaction) {
+            return 0;
+        }
+        return $tansaction->balance;
+    }
+
+    public function checkAdmin()
+    {
+        return $this->is_admin;
+    }
+
+    public function checkEditor()
+    {
+        return $this->is_editor || $this->is_admin;
+    }
+
+    public function isFollow($type, $id)
+    {
+        return $this->followings()->where('followed_type', get_polymorph_types($type))->where('followed_id', $id)->count() ? true : false;
+    }
+
+    public function isLiked($type, $id)
+    {
+        return $this->likes()->where('liked_type', get_polymorph_types($type))->where('liked_id', $id)->count() ? true : false;
+    }
+
+    public function link()
+    {
+        return '<a href="/user/' . $this->id . '">' . $this->name . '</a>';
+    }
+
+    public function at_link()
+    {
+        return '<a href="/user/' . $this->id . '">@' . $this->name . '</a>';
+    }
+
+    public function getProfileAttribute()
+    {
+        if ($profile = $this->hasOne(Profile::class)->first()) {
+            return $profile;
+        }
+        //确保profile数据完整
+        $profile          = new Profile();
+        $profile->user_id = $this->id;
+        $profile->save();
+        return $profile;
+    }
+
+    public function ta()
+    {
+        return $this->isSelf() ? '我' : '他';
+    }
+
+    public function isSelf()
+    {
+        return Auth::check() && Auth::id() == $this->id;
+    }
+
+    public function getExchangeRateAttribute()
+    {
+        return Exchange::RATE;
+    }
+
+    public function getTotalContributionAttribute()
+    {
+        return $this->contributes()->sum('amount');
+    }
+
     public function getIsFollowedAttribute()
     {
-        //TODO: fixme
+        //FIXME: fixme
         return false;
     }
 
@@ -72,23 +173,23 @@ trait UserAttrs
         return null;
     }
 
-    public function getQqAttribute()
-    {
-        return $this->profile->qq;
-    }
+    // public function getQqAttribute()
+    // {
+    //     return $this->profile->qq;
+    // }
 
-    public function getJsonAttribute()
-    {
-        return $this->profile->Json;
-    }
+    // public function getJsonAttribute()
+    // {
+    //     return $this->profile->Json;
+    // }
 
-    public function getIntroductionAttribute()
-    {
-        if (!$this->profile || empty($this->profile->introduction)) {
-            return '这个人很懒，一点介绍都没留下...';
-        }
-        return $this->profile->introduction;
-    }
+    // public function getIntroductionAttribute()
+    // {
+    //     if (!$this->profile || empty($this->profile->introduction)) {
+    //         return '这个人很懒，一点介绍都没留下...';
+    //     }
+    //     return $this->profile->introduction;
+    // }
 
     //unreads
     public function getUnreadCommentsAttribute()
@@ -150,6 +251,18 @@ trait UserAttrs
         return $this->drafts()->count();
     }
 
+    public function getRewardAttribute()
+    {
+        return $this->getBalanceAttribute();
+        //临时过渡使用
+        //        $gold = $this->gold;
+        //        if($gold<600){
+        //            return 0;
+        //        }
+        //        return intval($gold/600);
+    }
+
+    //TODO: 这些可以后面淘汰，前端直接访问 user->profile->atts 即可
     public function getCountArticlesAttribute()
     {
         return $this->profile->count_articles;
@@ -179,15 +292,18 @@ trait UserAttrs
         return $this->profile->gender;
     }
 
-    public function getRewardAttribute()
+    public function getGenderMsgAttribute()
     {
-        return $this->getBalanceAttribute();
-        //临时过渡使用
-        //        $gold = $this->gold;
-        //        if($gold<600){
-        //            return 0;
-        //        }
-        //        return intval($gold/600);
+        switch ($this->profile->gender) {
+            case self::MALE_GENDER:
+                return '男';
+                break;
+            case self::FEMALE_GENDER:
+                return '女';
+                break;
+            default:
+                return "女";
+        }
     }
 
     public function getAgeAttribute()
@@ -199,5 +315,10 @@ trait UserAttrs
     public function getBirthdayMsgAttribute()
     {
         return date('Y-m-d', strtotime($this->birthday));
+    }
+
+    public function getBirthdayAttribute()
+    {
+        return $this->profile->birthday;
     }
 }

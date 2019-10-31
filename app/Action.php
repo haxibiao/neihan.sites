@@ -25,7 +25,7 @@ class Action extends Model
         return $this->morphTo();
     }
 
-    public function fillForJs() 
+    public function fillForJs()
     {
         $this->user->fillForJs();
         if (empty($this->actionable)) {
@@ -37,32 +37,23 @@ class Action extends Model
                 break;
             case 'App\Comment':
                 $this->load('actionable.commentable.user');
-                $this->actionable->commentable->image_url = $this->actionable->commentable->primaryImage();
                 $this->actionable->commentable->contentUrl = $this->actionable->commentable->url;
                 break;
-            case 'App\Favorite': 
+            case 'App\Favorite':
                 $this->load('actionable.faved.user');
                 break;
             case 'App\Like':
                 $this->load('actionable.liked.user');
-                if(get_class($this->actionable->liked) == 'App\Article'){
-                    $article = $this->actionable->liked;
-                    $article->image_url = $article->primaryImage();
-                }else if(get_class($this->actionable->liked) == 'App\Comment'){
-                    $comment = $this->actionable->liked;
-                    $article = $comment->commentable;
-                    $article->image_url = $article->primaryImage();
-                }
                 break;
             case 'App\Follow':
                 if (get_class($this->actionable->followed) == 'App\Category') {
                     $this->load('actionable.followed.user');
-                    $catgory = $this->actionable->followed;
+                    $catgory                     = $this->actionable->followed;
                     $this->actionable->is_follow = is_follow('categories', $catgory->id);
-                }else{
+                } else {
                     $this->load('actionable.followed');
-                    $user = $this->actionable->followed;
-                    $this->actionable->is_follow = is_follow('users',$user->id);
+                    $user                        = $this->actionable->followed;
+                    $this->actionable->is_follow = is_follow('users', $user->id);
                 }
                 $this->actionable->followed->fillForJs();
                 break;
