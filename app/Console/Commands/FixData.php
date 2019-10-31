@@ -671,14 +671,53 @@ class FixData extends Command
 
     public function users()
     {
-        //修复部分用户头像路径错误
-        $sql = '%cos.' . env('APP_DOMAIN') . '%';
-        User::where('avatar', 'not like', $sql)->chunk(100, function ($users) {
+        User::chunk(100, function ($users) {
             foreach ($users as $user) {
-                $user->avatar     = str_replace('http://cos.' . config('app.name') . '/', 'http://cos.' . env('APP_DOMAIN') . '/', $user->avatar);
-                $user->timestamps = false;
-                $user->save();
-                $this->info(env('APP_DOMAIN') . ' user: ' . $user->id . ' fix success');
+                $profile = $user->profile;
+
+                if (empty($profile)) {
+                    $profile          = new Profile();
+                    $profile->user_id = $user->id;
+                }
+
+                $profile->qq           = $user->qq;
+                $profile->json         = $user->json;
+                $profile->introduction = $user->introduction ?? '这个人暂时没有 freestyle';
+                $gender                = isset($user->gender) ? ($user->gender == '男' ? 0 : ($user->gender == '女' ? 1 : -1)) : -1;
+                $profile->gender       = $gender;
+                $profile->tip_words    = $user->tip_words;
+                $profile->website      = $user->website;
+                $profile->qrcode       = $user->qrcode;
+                if ($profile->count_articles == 0) {
+                    $profile->count_articles = $user->count_articles ?? 0;
+                }
+
+                if ($profile->count_follows == 0) {
+                    $profile->count_follows = $user->count_follows ?? 0;
+                }
+                if ($profile->count_followings == 0) {
+                    $profile->count_followings = $user->count_followings ?? 0;
+                }
+                if ($profile->count_words == 0) {
+                    $profile->count_words = $user->count_words ?? 0;
+                }
+                if ($profile->count_collections == 0) {
+                    $profile->count_collections = $user->count_collections ?? 0;
+                }
+                if ($profile->count_favorites == 0) {
+                    $profile->count_favorites = $user->count_favorites ?? 0;
+                }
+                if ($profile->count_actions == 0) {
+                    $profile->count_actions = $user->count_actions ?? 0;
+                }
+                if ($profile->count_reports == 0) {
+                    $profile->count_reports = $user->count_reports ?? 0;
+                }
+                $profile->timestamps = false;
+                $profile->save();
+
+                $this->info($user->gender . '和' . $user->profile->gender);
+                $this->info($user->introduction . '和' . $user->profile->introduction);
             }
         });
     }
