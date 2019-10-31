@@ -551,4 +551,15 @@ trait ArticleRepo
         }
         throw new Exception('分享失败，请检查您的分享信息是否正确!');
     }
+
+    public function get_description()
+    {
+        return str_limit($this->description, 10);
+    }
+
+    public function get_title()
+    {
+        return str_limit($this->title, 10);
+    }
+
 }
