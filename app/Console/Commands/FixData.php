@@ -100,13 +100,6 @@ class FixData extends Command
 
     public function articleVieoCover()
     {
-        // Article::chunk(100, function ($articles) {
-        //     $articles_cover = $articles->cover;
-        //     if (\str_contains($articles_cover, ['vod2.'])) {
-
-        //     }
-        // });
-
         $this->info('fix videos ...');
         $videos = Video::where('status', '!=', -1);
 
@@ -157,7 +150,10 @@ class FixData extends Command
                     $video->setJsonData('covers', $cosCovers);
                     $video->timestamps = false;
                     $video->save();
-                    $this->info($video->id . '视频的地址' . $video->cover);
+                    $article            = $video->article;
+                    $article->image_url = $video->cover;
+                    $article->save();
+                    $this->info($video->id . '视频的地址' . $video->cover . '文章的封面' . $article->image_url);
                 }
             }
 
