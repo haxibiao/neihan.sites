@@ -67,7 +67,7 @@ class FixData extends Command
         // $this->info('fix videos finished...');
 
         $this->info('fix videos ...');
-        $videos = Video::where('status', '!=', -1);
+        $videos = Video::whereNotIn('status', '!=', -1);
 
         ini_set('memory_limit', -1);
         $videos->chunk(100, function ($videos) {
@@ -83,22 +83,87 @@ class FixData extends Command
                     $video->path       = $cosPath;
                     $video->disk       = 'cos';
                     $video->timestamps = false;
+
+                    $video_urls = $video->JsonData('video_urls');
+                    foreach ($video_urls as $index => $video_url) {
+                        $video_urls[$index] = ssl_url(\Storage::cloud()->url($cosPath));
+                    }
+                    $video->setJsonData('video_urls', $video_urls);
                     $video->save();
                     $this->info($video->id . '视频的地址', $video->url);
+
                 }
+
             }
         });
     }
 
-    // public function articleVieoCover()
-    // {
-    //     Article::chunk(100, function ($articles) {
-    //         $articles_cover = $articles->cover;
-    //         if (\str_contains($articles_cover, ['vod2.'])) {
+    public function articleVieoCover()
+    {
+        // Article::chunk(100, function ($articles) {
+        //     $articles_cover = $articles->cover;
+        //     if (\str_contains($articles_cover, ['vod2.'])) {
 
-    //         }
-    //     });
-    // }
+        //     }
+        // });
+
+        $this->info('fix videos ...');
+        $videos = Video::where('status', '!=', -1);
+
+        $videos->chunk(100, function ($videos) {
+            foreach ($videos as $video) {
+                $cover = $video->cover;
+                if (\str_contains($cover, ['vod2.'])) {
+                    $covers = $video->JsonData('covers');
+
+                    $cosCovers = [];
+                    $cosCover  = [];
+                    foreach ($covers as $index => $cover) {
+                        //有些地址会超时,此函数有问题
+                        $url_status     = @get_headers($cover, 1);
+                        $http_ok_status = false;
+                        //地址获取是否有问题
+                        if ($url_status) {
+                            //判断是否是200状态吗
+                            if (str_contains($url_status[0], "200")) {
+                                $http_ok_status = true;
+                            } else if (str_contains($url_status[0], "301")) {
+                                //判断是否是重定向
+                                if (str_contains($url_status[1], "200")) {
+                                    $http_ok_status = true;
+                                } else {
+                                    $this->error("错误状态" . $url_status[0]);
+                                }
+                            }
+                        }
+
+                        if ($http_ok_status && \str_contains($cover, ['vod2.'])) {
+                            $sub_cover_str          = $video->id . '.' . $index;
+                            $localImagePathTemplate = storage_path('app/public/video/' . '%s.jpg');
+                            $localCoverPath         = sprintf($localImagePathTemplate, $sub_cover_str);
+
+                            \Storage::disk('public')->put($localCoverPath, file_get_contents($cover));
+                            $local_cover = \Storage::disk('public')->get($localCoverPath);
+                            $cosDisk     = \Storage::cloud();
+
+                            $cos_storage_cover = '/storage/video/' . $sub_cover_str . '.jpg';
+                            $cosDisk->put($cos_storage_cover, $local_cover);
+                            $cosCover[]  = $cos_storage_cover;
+                            $cosCovers[] = \Storage::cloud()->url($cos_storage_cover);
+                        }
+                    }
+
+                    $video->cover = (!empty($cosCover)) ? $cosCover[0] : null;
+                    $video->setJsonData('covers', $cosCovers);
+                    $video->timestamps = false;
+                    $video->save();
+                    $this->info($video->id . '视频的地址' . $video->cover);
+                }
+            }
+
+        });
+
+    }
 
     public function categories()
     {
