@@ -4,12 +4,11 @@ namespace App\Jobs;
 
 use App\Gold;
 use App\Issue;
-use App\Resolution;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -38,55 +37,56 @@ class AwardResolution implements ShouldQueue
     public function handle()
     {
 
-        $issue = $this->issue;
+        $issue   = $this->issue;
         $article = $issue->article;
 
-        if(!$article){
+        if (!$article) {
             return;
         }
 
-        if($issue->gold <= 0){
+        if ($issue->gold <= 0) {
             return;
         }
 
         //该问答已经下架
-        if($issue->trashed() || $article->status < 1){
+        if ($issue->trashed() || $article->status < 1) {
             return;
         }
 
         //问题已经被解决
-        if($issue->closed){
+        if ($issue->closed) {
             return;
         }
 
         //选择不同用户前三条为解决方案&跳过自己的回答
         $comments = $article->comments()
-            ->where('user_id','<>',$issue->user_id)
-            ->groupBy('user_id','id')
-            ->orderBy('id','desc')
+            ->where('user_id', '<>', $issue->user_id)
+            ->groupBy('user_id', 'id')
+            ->orderBy('id', 'desc')
             ->limit(3);
 
         //期限内没有人评论该回答
-        if(!$comments){
+        if (!$comments) {
             //金币原路退回
             $user = $issue->user;
-            Gold::makeIncome($user, $issue->gold, '问答过期金币退回');
+            // Gold::makeIncome($user, $issue->gold, '问答过期金币退回');
+            $user->goldWallet->changeGold($issue->gold, '问答过期金币退回');
             return;
         }
 
         DB::beginTransaction();
         try {
-            $gold = $issue->gold;
-            $individual     = $gold/count($comments);
+            $gold       = $issue->gold;
+            $individual = $gold / count($comments);
 
-            foreach ($comments as $comment){
+            foreach ($comments as $comment) {
                 //注释的原因：与PM沟通后系统自动采纳评论不放入问题的解决方案
-//                $resolution = new Resolution();
-//                $resolution->answer   = $comment->body;
-//                $resolution->user_id  = $comment->user_id;
-//                $resolution->issue_id = $article->issue_id;
-//                $resolution->gold = $individual;
-//                $resolution->save();
+                //                $resolution = new Resolution();
+                //                $resolution->answer   = $comment->body;
+                //                $resolution->user_id  = $comment->user_id;
+                //                $resolution->issue_id = $article->issue_id;
+                //                $resolution->gold = $individual;
+                //                $resolution->save();
 
                 //评论被采纳
                 $comment->is_accept = true;
@@ -94,10 +94,11 @@ class AwardResolution implements ShouldQueue
 
                 $user = $comment->user;
 
-                Gold::makeIncome($user, $individual, '答案被采纳奖励');
+                // Gold::makeIncome($user, $individual, '答案被采纳奖励');
+                $user->goldWallet->changeGold($individual, '答案被采纳奖励');
 
                 //评论被采纳
-                $user->notify(new \App\Notifications\CommentAccepted($comment,$issue->user));
+                $user->notify(new \App\Notifications\CommentAccepted($comment, $issue->user));
             }
             DB::commit();
         } catch (\Exception $ex) {

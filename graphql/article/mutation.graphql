@@ -12,6 +12,8 @@ extend type Mutation @middleware(checks: ["auth:api"]) {
   ): Article! @field(resolver: "App\\Http\\GraphQL\\Mutations\\ArticleMutators@createContent")
   restoreArticle(id: Int!): Article @field(resolver: "App\\Article@restoreArticle")
   deleteArticle(id: Int!): Article @field(resolver: "App\\Article@deleteArticle")
+
+  resolveDouyinVideo(share_link: String!): Article @field(resolver: "App\\Article@resolveDouyinVideo")
 }
 
 enum ContenType {

@@ -10,11 +10,11 @@ class ArticleQueries
     public function articles($root, array $args, $context)
     {
 
-        //TODO 重构并迁移到Model中
+        //TODO 重构并迁移到 ArticleRepo 中
 
         $query = Article::withoutGlobalScope(ArticleSubmitScope::class)
             ->whereIn('type', ['video', 'post', 'issue'])
-            ->whereNotNull('image_url')
+            ->whereNotNull('cover_path')
             ->orderBy('id', 'desc');
         if ($args['submit'] != 10) {
             $query->where('submit', $args['submit']);

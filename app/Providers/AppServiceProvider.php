@@ -47,6 +47,8 @@ class AppServiceProvider extends ServiceProvider
         Blade::if('weixin', function () {
             return request('weixin');
         });
+
+        $this->registerSingleObject();
     }
 
     /**
@@ -82,5 +84,12 @@ class AppServiceProvider extends ServiceProvider
         foreach (glob(app_path() . '/../ops/helpers/*.php') as $filename) {
             require_once $filename;
         }
+    }
+
+    public function registerSingleObject()
+    {
+        $this->app->singleton('DouyinSpider', function ($app) {
+            return new \App\Helpers\DouyinSpider();
+        });
     }
 }

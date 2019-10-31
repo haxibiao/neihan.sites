@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateTipsTable extends Migration
 {
@@ -16,8 +16,8 @@ class CreateTipsTable extends Migration
         Schema::create('tips', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->index();
-            $table->decimal('amount')->default(0);
-            $table->unsignedInteger('gold')->default(0)->comment('金币');
+            $table->decimal('amount')->default(0)->comment('余额打赏数');
+            $table->unsignedInteger('gold')->default(0)->comment('金币打赏数');
             $table->text('message')->nullable();
             $table->integer('tipable_id')->index();
             $table->string('tipable_type')->index();

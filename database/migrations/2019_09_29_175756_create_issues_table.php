@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateIssuesTable extends Migration
 {
@@ -13,6 +13,7 @@ class CreateIssuesTable extends Migration
      */
     public function up()
     {
+        //web专用付费问答
         Schema::create('issues', function (Blueprint $table) {
             $table->bigIncrements('id');
 
@@ -29,7 +30,6 @@ class CreateIssuesTable extends Migration
             $table->boolean('is_anonymous')->default(false)->comment('是否匿名问答');
             $table->decimal('bonus')->nullable()->commit('赏金');
             $table->smallInteger('deadline')->nullable()->commit('悬赏时间');
-
 
             $table->unsignedInteger('hits')->default(0);
             $table->unsignedInteger('count_answers')->default(0);

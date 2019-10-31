@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+//FIXME:  肖新民临时为了上线效率，避开原来旧web系统里的transactions表破坏，需要合并如 transactions 表
 class WalletTransaction extends Model
 {
     protected $fillable = [
@@ -21,6 +22,7 @@ class WalletTransaction extends Model
         return $this->belongsTo(\App\Wallet::class);
     }
 
+    //repo
     public static function makeIncome($wallet, $amount, $remark = '智慧点兑换'): WalletTransaction
     {
         $balance = $wallet->balance + $amount;

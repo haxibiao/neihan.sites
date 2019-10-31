@@ -2,13 +2,14 @@
 
 namespace App;
 
-use App\Traits\WithdrawMutator;
+use App\Traits\WithdrawRepo;
+use App\Traits\WithdrawResolvers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Withdraw extends Model
 {
-    use WithdrawMutator;
+    use WithdrawResolvers,WithdrawRepo;
 
     protected $fillable = [
         'wallet_id',
@@ -35,7 +36,7 @@ class Withdraw extends Model
         return $this->belongsTo(\App\Wallet::class);
     }
 
-    // methods
+    // attrs
 
     public function isSuccessWithdraw()
     {
@@ -51,8 +52,6 @@ class Withdraw extends Model
     {
         return $this->status == self::FAILURE_WITHDRAW;
     }
-
-    //attributes
 
     public function getBizNoAttribute()
     {

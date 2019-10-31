@@ -30,22 +30,19 @@ class CreateArticlesTable extends Migration
             $table->integer('user_id');
             $table->integer('category_id')->nullable()->index();
 
-            $table->string('image_url')->nullable()->index(); //TODO: 改名cover
+            $table->string('cover_path')->nullable()->index()->comment('文章的封面，图片或者视频的截图');
             $table->integer('status')->default(0)->index();
             $table->boolean('is_top')->default(0)->index();
             $table->string('source_url')->nullable()->index();
-            $table->boolean('has_pic')->default(0)->index(); //TODO: drop, 用属性代替
 
-            $table->string('date')->nullable()->index(); //TODO:drop,以前traffic统计用
-            $table->string('user_name')->nullable(); //TODO:drop
-            $table->timestamp('edited_at')->nullable();
+            $table->timestamp('edited_at')->nullable()->comment('最后编辑时间');
 
             $table->integer('hits_mobile')->default(0);
             $table->integer('hits_phone')->default(0);
             $table->integer('hits_wechat')->default(0);
             $table->integer('hits_robot')->default(0);
 
-            $table->string('image_top')->nullable(); //TODO: 删除荣誉，用当前文章的置顶属性，关联图片和图片地址出来
+            $table->string('image_top')->nullable(); //影响旧web太多功能，暂时不动
 
             $table->integer('hits')->default(0);
 
@@ -68,16 +65,14 @@ class CreateArticlesTable extends Migration
                 ->nullable()
                 ->index()->comment('视频id');
 
-            $table->string('video_url') //TODO: 应该删除该冗余字段
-                ->nullable()
-                ->comment('视频的url');
-
             $table->string('type', 10)
                 ->index()
                 ->default('article')
                 ->comment('内容的类型:article:普通文章，video:视频, post:动态');
 
-            $table->tinyInteger('submit')->default(1)->index()->comment('审核状态: -1 已拒绝, 0 审核中, 1 已收录');
+            //FIXME: 这个和status字段功能重复
+            $table->tinyInteger('submit')->default(1)->index()
+                ->comment('审核状态: -1 已拒绝, 0 审核中, 1 已收录');
             $table->string('remark')->nullable()->comment('备注');
 
             $table->softDeletes();

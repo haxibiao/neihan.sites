@@ -11,6 +11,7 @@ class Gold extends Model
     protected $fillable = [
         'user_id',
         'gold',
+        'wallet_id',
         'balance',
         'remark',
         'created_at',
@@ -22,11 +23,14 @@ class Gold extends Model
         return $this->belongsTo(\App\User::class);
     }
 
+    //repo
     public static function makeOutcome($user, $gold, $remark)
     {
+
         $goldBalance = $user->gold - $gold;
         $gold        = Gold::create([
-            'user_id' => $user->id,
+            'user_id'   => $user->id,
+            'wallet_id' => $user->goldWallet->id,
             'gold'    => -$gold,
             'balance' => $goldBalance,
             'remark'  => $remark,
@@ -42,6 +46,7 @@ class Gold extends Model
         $goldBalance = $user->gold + $gold;
         $gold        = Gold::create([
             'user_id' => $user->id,
+            'wallet_id' => $user->goldWallet->id,
             'gold'    => $gold,
             'balance' => $goldBalance,
             'remark'  => $remark,

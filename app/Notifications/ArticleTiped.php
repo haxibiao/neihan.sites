@@ -2,13 +2,12 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
-use App\User;
 use App\Article;
 use App\Tip;
+use App\User;
+use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class ArticleTiped extends Notification
 {
@@ -25,8 +24,8 @@ class ArticleTiped extends Notification
     public function __construct(Article $article, User $user, Tip $tip)
     {
         $this->article = $article;
-        $this->user = $user;
-        $this->tip = $tip;
+        $this->user    = $user;
+        $this->tip     = $tip;
     }
 
     /**
@@ -49,9 +48,9 @@ class ArticleTiped extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
 
     /**
@@ -62,21 +61,21 @@ class ArticleTiped extends Notification
      */
     public function toArray($notifiable)
     {
-        $article_title = $this->article->title?:$this->article->video->title;
+        $article_title = $this->article->title ?: $this->article->video->title;
         // 标题 视频标题都不存在 则取description
-        if(empty($article_title)){
-            $article_title = $this->article->get_description();
+        if (empty($article_title)) {
+            $article_title = $this->article->summary;
         }
         return [
-            'type' => 'tip',
-            'amount' => $this->tip->amount,
-            'tip_id' => $this->tip->id,
-            'message' => $this->tip->message,
-            'user_name' => $this->user->name,
-            'user_avatar' => $this->user->avatar,
-            'user_id' => $this->user->id,
+            'type'          => 'tip',
+            'amount'        => $this->tip->amount,
+            'tip_id'        => $this->tip->id,
+            'message'       => $this->tip->message,
+            'user_name'     => $this->user->name,
+            'user_avatar'   => $this->user->avatarUrl,
+            'user_id'       => $this->user->id,
             'article_title' => $article_title,
-            'article_id' => $this->article->id,
+            'article_id'    => $this->article->id,
         ];
     }
 }

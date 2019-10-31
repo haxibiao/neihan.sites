@@ -13,7 +13,7 @@ class CreateResolutionsTable extends Migration
      */
     public function up()
     {
-        //TODO: 重命名为 solutions
+        //TODO: 应该重命名为 solutions，也可暂时保留这样
         Schema::create('resolutions', function (Blueprint $table) {
             $table->bigIncrements('id');
 

@@ -88,7 +88,7 @@ function get_stick_video_categories($all = false, $index = false)
                 $category->reason     = !empty($item['reason']) ? $item['reason'] : null;
                 $category->expire     = $item['expire'];
                 $category->stick_time = diffForHumansCN(Carbon::createFromTimestamp($item['timestamp']));
-                $video_categories[]         = $category;
+                $video_categories[]   = $category;
             }
         }
     }
@@ -148,18 +148,18 @@ function stick_video_category($data, $auto = false)
 }
 
 function stick_article($data, $auto = false)
-{ 
+{
     $items = [];
 
-    $article   = Article::where('id', $data['article_id'])->whereStatus(1)->first();
-    //文章状态是否正常 
-    if(empty($article)){
+    $article = Article::where('id', $data['article_id'])->whereStatus(1)->first();
+    //文章状态是否正常
+    if (empty($article)) {
         dd("该文章已经删除不能上首页");
     }
     //检查该文章的主配图能否上首页
-    if ($data['position'] =='轮播图') {
-        $image_url = str_replace('.small', '', $article->image_url);
-        $image     = Image::where('path', $image_url)->first();
+    if ($data['position'] == '轮播图') {
+        $cover = str_replace('.small', '', $article->cover);
+        $image = Image::where('path', $cover)->first();
         if (empty($image) || $image->width < 760) {
             dd("该文章的主配图达不到上首页的标准");
         }
@@ -189,10 +189,10 @@ function stick_article($data, $auto = false)
 
 function get_top_articles()
 {
-    $articles        = [];
-    $stick_articles  = get_stick_articles('轮播图');
+    $articles       = [];
+    $stick_articles = get_stick_articles('轮播图');
 
-     $stick_article_ids = array_column( $stick_articles, 'id' );
+    $stick_article_ids = array_column($stick_articles, 'id');
 
     $leftCount       = 8 - count($stick_articles);
     $topped_articles = Article::where('is_top', 1)
@@ -200,12 +200,12 @@ function get_top_articles()
         ->where('status', '>', '0')
         ->whereNotIn('id', $stick_article_ids)
         ->orderBy('id', 'desc')
-        ->take($leftCount)->get();  
-    
+        ->take($leftCount)->get();
+
     foreach ($topped_articles as $item) {
         $articles[] = $item;
     }
-    
+
     $articles = array_merge($stick_articles, $articles);
     return $articles;
 }
@@ -273,12 +273,12 @@ function get_stick_videos($position = '', $all = false)
 }
 
 function stick_video($data, $auto = false)
-{ 
+{
     $items = [];
 
-    $video   = Video::where('id', $data['video_id'])->whereStatus(1)->first();
-    //视频状态是否正常 
-    if(empty($video)){
+    $video = Video::where('id', $data['video_id'])->whereStatus(1)->first();
+    //视频状态是否正常
+    if (empty($video)) {
         dd("该视频已经删除不能上首页");
     }
 

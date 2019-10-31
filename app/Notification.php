@@ -50,7 +50,6 @@ class Notification extends DatabaseNotification
     public function getTypeNameAttribute()
     {
         //回复了你的评论、在评论中提到了你...等等通知类型
-        //
         switch ($this->type) {
             case "App\\Notifications\\ArticleApproved":
                 return "收录了动态";

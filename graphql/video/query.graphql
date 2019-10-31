@@ -13,5 +13,6 @@ type VideoInfo {
   weight: Int
   height: Int
   covers: [String!]
+  cover: String
   rotate: Int
 }

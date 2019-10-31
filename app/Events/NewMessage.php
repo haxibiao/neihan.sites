@@ -35,7 +35,7 @@ class NewMessage implements ShouldBroadcast
         $data = [
             'title'              => '新消息提醒',
             'user_id'            => $user->id,
-            'user_avatar'        => $user->avatar,
+            'user_avatar'        => $user->avatarUrl,
             'user_name'          => $user->name,
             'message_content'    => $content,
             'message_created_at' => time_ago($this->message->created_at),

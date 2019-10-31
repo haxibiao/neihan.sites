@@ -3,15 +3,19 @@
 namespace App;
 
 use App\Exceptions\GQLException;
-use App\Traits\WalletMutator;
-use App\WalletTransaction;
+use App\Traits\WalletAttrs;
+use App\Traits\WalletRepo;
+use App\Traits\WalletResolvers;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Wallet extends Model
 {
-    use WalletMutator;
+    use WalletResolvers;
+    use WalletAttrs;
+    use WalletRepo;
 
     protected $fillable = [
         'user_id',
@@ -31,6 +35,10 @@ class Wallet extends Model
     //提现资料更改上限
     const PAY_INFO_CHANGE_MAX = 3;
 
+    //钱包类型
+    const RMB_WALLET    = 0;//RMB钱包
+    const GOLD_WALLET   = 1;//金币钱包
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(\App\User::class);
@@ -43,42 +51,26 @@ class Wallet extends Model
 
     public function transactions()
     {
-        return $this->hasMany(\App\WalletTransaction::class);
+        return $this->hasMany(\App\Transaction::class);
     }
 
-    public function getBalanceAttribute()
+    //repo
+    public static function rmbWalletOf(User $user): Wallet
     {
-        $lastTransaction = $this->transactions()->latest('id')->select('balance')->first();
-        return $lastTransaction->balance ?? 0;
+        $wallet = self::firstOrCreate([
+            'user_id' => $user->id,
+            'type'    => 0,
+        ]);
+        return $wallet;
     }
 
-    public function getAvailableBalanceAttribute()
+    public static function goldWalletOf(User $user): Wallet
     {
-        $availableBalance = $this->balance - $this->withdraws()
-            ->where('status', \App\Withdraw::WAITING_WITHDRAW)
-            ->sum('amount');
-
-        return $availableBalance;
-    }
-
-    public function getSuccessWithdrawSumAmountAttribute()
-    {
-        return $this->withdraws()->where('status', Withdraw::SUCCESS_WITHDRAW)->sum('amount');
-    }
-
-    public function getTodayWithdrawAttribute()
-    {
-        return $this->withdraws()->where('created_at', '>=', today())->first();
-    }
-
-    public function getTodayWithdrawLeftAttribute()
-    {
-        $count = 10;
-        // if (!is_null($this->todayWithdraw)) {
-        //     $count = 0;
-        // }
-
-        return $count;
+        $wallet = self::firstOrCreate([
+            'user_id' => $user->id,
+            'type'    => 1,
+        ]);
+        return $wallet;
     }
 
     public function createWithdraw($amount)
@@ -94,4 +86,14 @@ class Wallet extends Model
         ]);
         return $withdraw;
     }
+
+    public function golds()
+    {
+        //FIXME: 修复之前user_id对应的golds流水未对应的钱包的
+        return $this->hasMany(\App\Gold::class);
+    }
+    //FIXME: rmb钱包对象负责： 充值，提现
+
+    //FIXME: 金币钱包对象负责： 兑换，提现，转账(仅限打赏，付费问答时)
+
 }

@@ -32,13 +32,15 @@ class SendNewCommentNotification implements ShouldQueue
         if ($comment->commentable instanceof \App\Article) {
             $article = $comment->commentable;
             // 发送通知，如果是作者本人就不发
-            if ($comment->user->id != $article->user->id) {
+            if ($comment->user && $article->user && $comment->user->id != $article->user->id) {
                 //TODO: 即时发送每个通知，需要改为汇总到 Listener里去决策
                 $article->user->notify(new ArticleCommented($comment));
             }
         } else if ($comment->commentable instanceof \App\Comment) {
             //TODO: 即时发送每个通知，需要改为汇总到 Listener里去决策
-            $comment->commentable->user->notify(new ReplyComment($comment));
+            if ($comment->commentable->user) {
+                $comment->commentable->user->notify(new ReplyComment($comment));
+            }
         }
 
     }

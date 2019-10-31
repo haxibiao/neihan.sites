@@ -4,7 +4,6 @@ namespace App;
 
 use App\Exceptions\GQLException;
 use App\Gold;
-use App\WalletTransaction;
 use App\Exceptions\UserException;
 use Illuminate\Database\Eloquent\Model;
 
@@ -71,14 +70,16 @@ class Exchange extends Model
     {
         $amount = self::computeAmount($gold);
         if ($amount < self::MIN_RMB) {
-            throw new GQLException('兑换失败,最低替换1元起!');
+            throw new GQLException('兑换失败,最低兑换1元起!');
         }
+
+        //添加兑换记录
+        Exchange::exchangeOut($user, $gold);
 
         //扣除智慧点
         Gold::makeOutcome($user, $gold, '兑换余额');
-        //添加兑换记录
-        Exchange::exchangeOut($user, $gold);
-        //添加流水记录 
-        WalletTransaction::makeIncome($wallet, $amount);
+
+        //添加流水记录
+        Transaction::makeIncome($wallet, $amount);
     }
 }

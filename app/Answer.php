@@ -2,13 +2,13 @@
 
 namespace App;
 
-use App\Traits\AnswerMutator;
+use App\Traits\AnswerResolvers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Answer extends Model
 {
-    use AnswerMutator;
+    use AnswerResolvers;
 
     protected $table = 'answer';
 

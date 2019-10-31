@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Events\NewLike;
 use App\Like;
 use App\Notifications\ArticleLiked;
 
@@ -15,17 +16,19 @@ class LikeObserver
      */
     public function created(Like $like)
     {
+        event(new NewLike($like));
+
         if ($like->liked instanceof \App\Article) {
             $article = $like->liked;
             $article->count_likes += 1;
             $article->save();
-            if ($article->user->id != $like->user->id) {
+            if ($like->user && $article->user && $article->user->id != $like->user->id) {
                 //TODO: 即时发送每个通知，需要改为汇总到 Listener里去决策
                 $article->user->notify(new ArticleLiked($article->id, $like->user->id));
             }
         } else if ($like->liked instanceof \App\Comment) {
             $comment = $like->liked;
-            $comment->likes += 1;
+            $comment->count_likes += 1;
             $comment->save();
             //TODO: 评论被点赞的通知，暂时不发
         } else if ($like->liked instanceof \App\User) {
@@ -33,7 +36,7 @@ class LikeObserver
             $user->count_likes += 1;
             $user->save();
         }
-        // event(new NewLike($like)); //统一只在observer到的created event 触发event
+
     }
 
     /**
@@ -61,7 +64,7 @@ class LikeObserver
             $article->save();
         } else if ($like->liked instanceof \App\Comment) {
             $comment = $like->liked;
-            $comment->likes -= 1;
+            $comment->count_likes -= 1;
             $comment->save();
         } else if ($like->liked instanceof \App\User) {
             $user = $like->liked;

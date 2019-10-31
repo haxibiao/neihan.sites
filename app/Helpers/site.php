@@ -52,7 +52,7 @@ function get_carousel_items($category_id = 0)
             'id'          => $article->id,
             'title'       => $article->title,
             'description' => $article->description,
-            'image_url'   => $article->image_url,
+            'image_url'   => $article->cover,
             'image_top'   => $article->image_top,
         ];
         $carousel_items[] = $item;

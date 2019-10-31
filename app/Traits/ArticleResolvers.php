@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Article;
 use App\Category;
+use App\Exceptions\GQLException;
 use App\User;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
@@ -53,7 +54,7 @@ trait ArticleResolvers
         //FIXME: 日后真的按当前登录用户改进推荐算法...
         $qb = \App\Article::whereStatus(1)
             ->whereNotNull('title')
-            ->whereNotNull('image_url');
+            ->whereNotNull('cover_path');
         return $qb->latest('id');
     }
 
@@ -211,4 +212,40 @@ trait ArticleResolvers
         }
         return $results;
     }
+
+    /**
+     * 根据 抖音上的分享链接，爬取信息，转存到我们库中
+     *
+     * @return void 返回 article对象 时，没有cover 和 video info，需要等待队列执行完成后，信息才会更新
+     * @author zengdawei
+     */
+    public function resolveDouyinVideo($rootValue, array $args, $context, $resolveInfo)
+    {
+        // 过滤文本，留下 url
+        $link = $args['share_link'];
+        $link = filterText($link)[0];
+
+        // 不允许重复视频
+        if (Article::where('source_url', $link)->exists()) {
+            throw new GQLException('视频已经存在，请换一个视频噢');
+        }
+
+        // 爬取关键信息
+        $spider = app('DouyinSpider');
+        $data   = json_decode($spider->parse($link), true);
+
+        // 去除 “抖音” 关键字, TODO :做一个大些的关键词库，封装重复操作
+        $data['0']['desc'] = str_replace('@抖音小助手', '', $data['0']['desc']);
+        $data['0']['desc'] = str_replace('抖音', '', $data['0']['desc']);
+
+        // 保存并 更新原链接
+        $article = new Article();
+        $article = $article->parseDouyinLink($data);
+        $article->update([
+            'source_url' => $link,
+        ]);
+
+        return $article;
+    }
+
 }

@@ -3,13 +3,18 @@
 namespace App\Traits;
 
 use App\Action;
+use App\Article;
 use App\Category;
 use App\Image;
 use App\Jobs\ProcessVod;
+use App\Jobs\TakeScreenshots;
 use App\Tip;
 use App\Video;
 use App\Visit;
+use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 trait ArticleRepo
 {
@@ -32,138 +37,24 @@ trait ArticleRepo
         return $video->id;
     }
 
-    public function get_title()
-    {
-        if (!empty($this->title)) {
-            return $this->title;
-        }
-
-        return str_limit($this->body);
-    }
-
-    public function get_description()
-    {
-        $description = $this->description;
-        if (empty($description) || strlen($description) < 2) {
-            $body        = html_entity_decode($this->body);
-            $description = str_limit(strip_tags($body), 130);
-        }
-        return str_limit($description, 130);
-    }
-
-    public function topImage()
-    {
-        return $this->image_top;
-        //if image not exist locally, go check pord ...
-        // $image_top_path = parse_url($this->image_top, PHP_URL_PATH);
-        // if (!file_exists(public_path($image_top_path))) {
-        //     return env('APP_URL') . $image_top_path;
-        // }
-
-        // return url($image_top_path);
-    }
-    public function primaryImage()
-    {
-        //全URL,直接顯示
-        // if (starts_with($this->image_url, 'http')) {
-        //     return $this->image_url;
-        // }
-
-        // $image_path = parse_url($this->image_url, PHP_URL_PATH);
-
-        // //如果不是小圖地址,就找小圖的url
-        // if (str_contains($image_path, '.small.')) {
-        //     $image_path = str_replace('.small', '', $image_path);
-        // }
-        // $image = Image::firstOrNew([
-        //     'path' => $image_path,
-        // ]);
-        //all place including APP,  需要返回全Uri
-        $path = $this->image_url;
-        if ($this->type == 'video' || str_contains($path, ['.small.', 'haxibiao'])) {
-            return trim_https($this->cover);
-        }
-        $extension    = pathinfo($path, PATHINFO_EXTENSION);
-        $folder       = pathinfo($path, PATHINFO_DIRNAME);
-        $url_formater = $folder . '/' . basename($path, '.' . $extension) . '%s' . $extension;
-        $image_url    = sprintf($url_formater, '.small.');
-        return trim_https(ssl_url($image_url));
-    }
-
-    public function hasImage()
-    {
-        return !empty($this->image_url);
-    }
-
     public function fillForJs()
     {
         $this->user->fillForJs();
+
         if ($this->category) {
             $this->category->fillForJs();
         }
-        $this->title         = $this->title ?: $this->get_description();
-        $this->has_image     = $this->hasImage();
-        $this->primary_image = $this->primaryImage();
-        $this->image_url     = $this->primaryImage();
-        $this->description   = $this->get_description();
+
+        $this->title         = $this->title;
+        $this->description   = $this->summary;
         $this->url           = $this->url;
+        $this->image_url     = $this->cover;
+        $this->has_image     = $this->has_image;
+        $this->primary_image = $this->primary_image;
+
         if ($this->video) {
             $this->duration = gmdate('i:s', $this->video->duration);
         }
-    }
-
-    public function fillForApp()
-    {
-        $data              = (object) [];
-        $data->id          = $this->id;
-        $data->title       = $this->title;
-        $data->time_ago    = $this->timeAgo();
-        $data->has_image   = $this->hasImage();
-        $data->pic         = $this->primaryImage();
-        $data->image_url   = $this->primaryImage();
-        $data->description = $this->get_description();
-
-        if ($this->user) {
-            $user              = $this->user;
-            $userForJs         = (object) [];
-            $userForJs->avatar = $user->avatarUrl;
-            $userForJs->name   = $user->name;
-            $userForJs->id     = $user->id;
-            $userForJs->time   = $user->updatedAt();
-            $data->user        = $userForJs;
-        }
-
-        if ($this->category) {
-            $category            = $this->category;
-            $categoryForJs       = (object) [];
-            $categoryForJs->id   = $category->id;
-            $categoryForJs->name = $category->name;
-            $categoryForJs->logo = $category->iconUrl;
-            $data->category      = $categoryForJs;
-        }
-
-        //for app api
-        $meta       = [];
-        $meta[]     = '阅读' . $this->hits;
-        $meta[]     = '评论' . $this->count_replies;
-        $meta[]     = '喜欢' . $this->count_likes;
-        $meta[]     = '赞赏' . $this->count_tips;
-        $data->meta = $meta;
-        return $data;
-    }
-
-    public function link()
-    {
-        //普通文章
-        if ($this->type == 'article') {
-            return $this->resoureTypeCN() . '<a href=' . $this->url . '>《' . $this->title . '》</a>';
-        }
-        //动态
-        $title = str_limit($this->body, $limit = 50, $end = '...');
-        if (empty($title)) {
-            return '<a href=' . $this->url . '>' . $this->resoureTypeCN() . '</a>';
-        }
-        return $this->resoureTypeCN() . '<a href=' . $this->url . '>《' . $title . '》</a>';
     }
 
     public function recordAction()
@@ -234,17 +125,13 @@ trait ArticleRepo
                 if ($image->path_top) {
                     $this->is_top = 1;
                     if (!$has_primary_top) {
-                        if ($image->path == $this->image_url) {
+                        if ($image->path == $this->cover) {
                             $has_primary_top = true;
                         }
                         $this->image_top = $image->path_top;
                     }
                 }
             }
-        }
-        //fix primary image url if not
-        if (empty($this->image_url)) {
-            $this->image_url = $last_img_small_path;
         }
 
         //沒有可以上首頁的圖片，上首頁失敗
@@ -310,7 +197,7 @@ trait ArticleRepo
             return false;
         }
         $loginUser = getUser();
-        return \DB::table('favorites')
+        return DB::table('favorites')
             ->where('user_id', $loginUser->id)
             ->where('faved_id', $this->id)
             ->where('faved_type', 'articles')
@@ -528,8 +415,6 @@ trait ArticleRepo
             $image_ids = array_map(function ($url) {
                 return intval(pathinfo($url)['filename']);
             }, $input['image_urls']);
-            $this->image_url = $input['image_urls'][0];
-            $this->has_pic   = 1; //1代表内容含图
             $this->images()->sync($image_ids);
             $this->save();
         }
@@ -599,5 +484,71 @@ trait ArticleRepo
                 break;
         }
         return '文章';
+    }
+
+    /**
+     * 根据抖音视频信息 转存到 公司的cos
+     * FIXME  待 article 与 video 模块重构后，这也需要变化
+     * @param array $info
+     * @return void
+     * @author zengdawei
+     */
+    public function parseDouyinLink(array $info)
+    {
+
+        $status = array_get($info, 'code');
+        // 判断 爬取 信息是否成功
+        if ($status == 1) {
+
+            // 爬取出来的信息
+            $info = $info['0'];
+            $url  = $info['play_url'];
+
+            // 填充模型
+            $hash           = md5_file($url);
+            $video          = new Video();
+            $video->title   = $info['aweme_id'];
+            $video->hash    = $hash;
+            $video->user_id = getUserId();
+            $video->save();
+
+            $cosPath = 'video/' . $video->id . '.mp4';
+
+            try {
+                //本地存一份用于截图
+                \Storage::disk('public')->put($cosPath, file_get_contents($url));
+                $video->disk = 'local'; //先标记为成功保存到本地
+
+                $video->path = $cosPath;
+                $video->save();
+
+                //同步上传到cos
+                $cosDisk = \Storage::cloud();
+                $cosDisk->put($cosPath, \Storage::disk('public')->get($cosPath));
+                $video->disk = 'cos';
+                $video->save();
+
+                // sync 爬取信息
+                $this->video_id    = $video->id;
+                $this->title       = $info['desc'];
+                $this->description = $info['desc'];
+                $this->body        = $info['desc'];
+
+                $this->user_id = checkUser()->id;
+                $this->type    = 'video';
+                $this->save();
+
+                //启动截取图片job
+                TakeScreenshots::dispatch($video->id);
+
+                // 防止 gql 属性找不到
+                return Article::find($this->id);
+
+            } catch (\Exception $ex) {
+                \Log::error("video save exception" . $ex->getMessage());
+            }
+
+        }
+        throw new Exception('分享失败，请检查您的分享信息是否正确!');
     }
 }

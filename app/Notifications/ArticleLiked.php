@@ -65,10 +65,10 @@ class ArticleLiked extends Notification implements ShouldQueue
      */
     public function toArray($notifiable)
     {
-        $article_title = $this->article->title ?: $this->article->video->title;
-        // 标题 视频标题都不存在 则取description
+        $article_title = $this->article->title;
+        // 标题不存在 则取description
         if (empty($article_title)) {
-            $article_title = $this->article->get_description();
+            $article_title = $this->article->summary;
         }
 
         if (!empty($this->comment)) {
@@ -94,7 +94,7 @@ class ArticleLiked extends Notification implements ShouldQueue
         }
         return [
             'type'          => 'like',
-            'user_avatar'   => $this->user->avatar,
+            'user_avatar'   => $this->user->avatarUrl,
             'user_name'     => $this->user->name,
             'user_id'       => $this->user->id,
             'article_title' => $article_title,

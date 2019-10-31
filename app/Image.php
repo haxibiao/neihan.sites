@@ -27,17 +27,13 @@ class Image extends Model
         return $this->belongsTo(\App\User::class);
     }
 
-    /* --------------------------------------------------------------------- */
-    /* ------------------------------- repo ----------------------------- */
-    /* --------------------------------------------------------------------- */
-
+    //repo TODO: 待重构
     public function fillForJs()
     {
-        $this->url = $this->url;
+        $this->url       = $this->url;
         $this->url_small = $this->thumbnail;
     }
 
-    // TODO: move out
     public function save_image($image_url, $clientName = null)
     {
         ini_set("memory_limit", -1); //为上传文件处理截图临时允许大内存使用
@@ -45,11 +41,11 @@ class Image extends Model
             $image = \ImageMaker::make($image_url);
 
             //获取image extension
-            $image_mime_arr = explode("/", $image->mime());
-            $extension = end($image_mime_arr);
+            $image_mime_arr  = explode("/", $image->mime());
+            $extension       = end($image_mime_arr);
             $this->extension = $extension;
-            $this->title = $clientName;
-            $filename = $this->id . '.' . $extension;
+            $this->title     = $clientName;
+            $filename        = $this->id . '.' . $extension;
 
             //保存原始图片(宽度被处理:最大900)
             if ($extension != 'gif') {
@@ -71,8 +67,8 @@ class Image extends Model
                 }
             }
 
-            $this->path = $cos_file_info['data']['custom_url']; //custom_url为CDN的地址
-            $this->width = $image->width();
+            $this->path   = $cos_file_info['data']['custom_url']; //custom_url为CDN的地址
+            $this->width  = $image->width();
             $this->height = $image->height();
 
             //保存轮播图
@@ -80,7 +76,7 @@ class Image extends Model
                 if ($extension != 'gif') {
                     $image->crop(760, 327);
                     $top_filename = $this->id . '.top.' . $extension;
-                    $tmp_path = '/tmp/' . $top_filename;
+                    $tmp_path     = '/tmp/' . $top_filename;
                     $image->save($tmp_path);
                     $cos_file_info = QcloudUtils::uploadFile($tmp_path, $top_filename);
                     if (empty($cos_file_info) || $cos_file_info['code'] != 0) {
@@ -131,8 +127,8 @@ class Image extends Model
             $source = $base64;
         }
         $imageMaker = \ImageMaker::make($source);
-        $mime = explode('/', $imageMaker->mime());
-        $extension = end($mime);
+        $mime       = explode('/', $imageMaker->mime());
+        $extension  = end($mime);
         if (empty($extension)) {
             throw new \UserException('上传失败');
         }
@@ -178,15 +174,16 @@ class Image extends Model
 
         //写入一条新记录
         $image->extension = $extension;
-        $image->user_id = getUserId();
-        $image->width = $imageMaker->width();
-        $image->height = $imageMaker->height();
-        $image->path = 'images/' . $imageName . '.' . $extension;
-        $image->disk = config('filesystems.cloud');
+        $image->user_id   = getUserId();
+        $image->width     = $imageMaker->width();
+        $image->height    = $imageMaker->height();
+        $image->path      = 'images/' . $imageName . '.' . $extension;
+        $image->disk      = config('filesystems.cloud');
         $image->save();
 
         return $image;
     }
+
     public static function matachBase64($source)
     {
         //匹配base64

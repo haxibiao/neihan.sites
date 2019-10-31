@@ -17,11 +17,12 @@ class CreateFeedbackTable extends Migration
             $table->increments('id');
             $table->text('content')
                 ->nullable()
-                ->comment('反馈的内容');
+                ->comment('留言');
 
             $table->unsignedInteger('user_id')
                 ->nullable()
-                ->comment('反馈的用户');
+                ->index()
+                ->comment('用户');
 
             $table->string('contact')
                 ->nullable()
@@ -29,13 +30,10 @@ class CreateFeedbackTable extends Migration
 
             $table->string('contact_type')
                 ->nullable()
-                ->comment('联系方式: phone:手机 email:邮箱 ');
+                ->comment('手机,邮箱');
 
-            $table->unsignedInteger('status')->default(0)->comment('0-待处理 1-已驳回 2-已处理');
-
+            $table->unsignedInteger('status')->default(0)->comment('0待处理 1已驳回 2已处理');
             $table->timestamps();
-
-            $table->index('user_id');
         });
     }
 

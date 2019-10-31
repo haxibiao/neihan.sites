@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateChatUserTable extends Migration
 {
@@ -17,8 +17,7 @@ class CreateChatUserTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->index();
             $table->integer('chat_id')->index();
-            $table->text('with_users')->nullable();  //store chat with users [{ id, name, avatar}]  in json
-            $table->integer('unreads')->default(0);
+            $table->integer('unreads')->default(0)->comment('会话相对用户的未读数');
             $table->timestamps();
         });
     }

@@ -57,15 +57,15 @@ class ArticleMutators
 
             //带视频动态
             if ($inputs['video_id']) {
-                $video             = Video::findOrFail($inputs['video_id']);
-                $article           = $video->article;
-                $article->type     = 'post';
-                $article->status    = 1;
-                $article->submit   = Article::REVIEW_SUBMIT;
-                $article->title     = Str::limit($inputs['body'], 50);
-                $article->description     = Str::limit($inputs['body'], 280);
-                $article->body     = $inputs['body'];
-                $article->video_id = $video->id; //关联上视频
+                $video                = Video::findOrFail($inputs['video_id']);
+                $article              = $video->article;
+                $article->type        = 'post';
+                $article->status      = 1;
+                $article->submit      = Article::REVIEW_SUBMIT;
+                $article->title       = Str::limit($inputs['body'], 50);
+                $article->description = Str::limit($inputs['body'], 280);
+                $article->body        = $inputs['body'];
+                $article->video_id    = $video->id; //关联上视频
                 $article->save();
 
                 //存文字动态或图片动态
@@ -74,7 +74,7 @@ class ArticleMutators
                 $user                 = getUser();
                 $body                 = $inputs['body'];
                 $article->body        = $body;
-                $article->status    = 1;
+                $article->status      = 1;
                 $article->description = Str::limit($body, 280); //截取微博那么长的内容存简介
                 $article->submit      = Article::SUBMITTED_SUBMIT; //直接发布
                 $article->type        = 'post';
@@ -86,8 +86,6 @@ class ArticleMutators
                         $image = Image::saveImage($image);
                         $article->images()->attach($image->id);
                     }
-                    $article->image_url = ($article->images()->first())->path;
-                    $article->has_pic   = 1; //1代表内容含图
                     $article->save();
                 }
 
@@ -96,9 +94,7 @@ class ArticleMutators
                     $image_ids = array_map(function ($url) {
                         return intval(pathinfo($url)['filename']);
                     }, $inputs['image_urls']);
-                    $article->image_url = $inputs['image_urls'][0];
-                    $article->has_pic   = 1; //1代表内容含图
-                    $article->status    = 1;
+                    $article->status = 1;
                     $article->images()->sync($image_ids);
                     $article->save();
                 }
@@ -202,8 +198,6 @@ class ArticleMutators
                     $image = Image::saveImage($image);
                     $article->images()->attach($image->id);
                 }
-                $article->image_url = ($article->images()->first())->path;
-                $article->has_pic   = 1; //1代表内容含图
                 $article->save();
             }
             //付费问答(金币)
@@ -212,12 +206,13 @@ class ArticleMutators
                     throw new UserException('您的金币不足!');
                 }
                 //扣除金币
-                Gold::makeOutcome($user, $inputs['gold'], '悬赏问答支付');
+                // Gold::makeOutcome($user, $inputs['gold'], '悬赏问答支付');
+                $user->goldWallet->changeGold(-$inputs['gold'], '悬赏问答支付');
                 $issue->gold = $inputs['gold'];
                 $issue->save();
 
                 //带图问答不用审核，直接触发奖励
-                if ($article->type = 'issue' && is_null($article->video_id)) {
+                if ($article->type == 'issue' && is_null($article->video_id)) {
                     AwardResolution::dispatch($issue)
                         ->delay(now()->addDays(7));
                 }

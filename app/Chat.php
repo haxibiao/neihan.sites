@@ -3,6 +3,8 @@
 namespace App;
 
 use App\Model;
+use App\Traits\ChatAttrs;
+use App\Traits\ChatResolvers;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,6 +12,9 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 class Chat extends Model
 {
+    use ChatAttrs;
+    use ChatResolvers;
+
     public $fillable = [
         'uids',
         'last_message_id',
@@ -25,8 +30,7 @@ class Chat extends Model
         return $this->belongsToMany(\App\User::class)->withPivot('unreads');
     }
 
-    //resolvers TODO: move out
-
+    //resolvers
     public function resolveCreateChat($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $user = getUser();
@@ -47,7 +51,6 @@ class Chat extends Model
 
     public function resolveUserChats($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        //TODO: matomo log 用户访问聊天面板的次数等用户行为chat
         $user = $args['user_id'] ? \App\User::find($args['user_id']) : getUser();
         if ($user) {
             return $user->chats();
@@ -59,44 +62,5 @@ class Chat extends Model
     {
         $chat = \App\Chat::findOrFail($args['chat_id']);
         return $chat->messages()->latest('id');
-    }
-
-    //attrs TODO: move out
-    public function getUnreadsAttribute()
-    {
-        return $this->pivot->unreads;
-    }
-
-    public function getWithUserAttribute()
-    {
-        if ($user = getUser()) {
-            $uids = json_decode($this->uids);
-            $current_uid = $user->id;
-            $with_id = array_sum($uids) - $current_uid;
-            return User::find($with_id);
-        }
-        return null;
-    }
-
-    public function getLastMessageAttribute()
-    {
-        return $this->messages()->latest('id')->first();
-    }
-
-    public function getClearUnreadAttribute()
-    {
-        if ($user = checkUser()) {
-            $unread_notifications = \App\Notification::where([
-                'type' => 'App\Notifications\ChatNewMessage',
-                'notifiable_id' => $user->id,
-                'read_at' => null,
-            ])->get();
-            foreach ($unread_notifications as $notify) {
-                $notify->read_at = now();
-                $notify->save();
-            }
-            return true;
-        }
-        return false;
     }
 }

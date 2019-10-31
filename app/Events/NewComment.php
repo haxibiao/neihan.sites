@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Article;
 use App\Comment;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -36,24 +35,22 @@ class NewComment implements ShouldBroadcast
 
         $user = $this->comment->user;
 
-        if ($this->commentable instanceof Article) {
+        $modelType = '动态';
+        $content   = str_limit(strip_tags($this->comment->body), 3);
 
-            $moudle  = '动态';
-            $content = str_limit(strip_tags($this->comment->body), 3);
-
-        } else if ($this->commentable instanceof Comment) {
-            $moudle  = '评论';
-            $content = str_limit(strip_tags($this->comment->body), 3);
+        if ($this->commentable instanceof Comment) {
+            $modelType = '评论';
+            $content   = str_limit(strip_tags($this->comment->body), 3);
         }
 
-        $content = sprintf('%s 刚刚评论了你的%s《%s》', $this->comment->user->name, $moudle, $content);
+        $content = sprintf('%s 刚刚评论了你的%s《%s》', $this->comment->user->name, $modelType, $content);
         $data    = [
             'title'           => '新评论提醒',
             'comment_content' => $content,
             'comment_id'      => $this->comment->id,
             'commentable_id'  => $this->commentable->id,
             'user_id'         => $user->id,
-            'user_avatar'     => $user->avatar,
+            'user_avatar'     => $user->avatarUrl,
             'user_name'       => $user->name,
         ];
 
