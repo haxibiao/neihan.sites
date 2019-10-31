@@ -307,6 +307,20 @@ trait UserAttrs
         }
     }
 
+    public static function getGenderNumber($gender)
+    {
+        switch ($gender) {
+            case '男':
+                return self::MALE_GENDER;
+                break;
+            case '女':
+                return self::FEMALE_GENDER;
+                break;
+            default:
+                return self::FEMALE_GENDER;
+        }
+    }
+
     public function getAgeAttribute()
     {
         $birthday = Carbon::parse($this->birthday);

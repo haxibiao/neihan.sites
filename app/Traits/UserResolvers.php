@@ -235,8 +235,28 @@ trait UserResolvers
                     throw new GQLException('该手机号已被绑定，请检查是否输入正确');
                 }
             }
-            $user->update($args);
-            $user->profile->update($args);
+
+            //TODO:暂时不牵涉前端的gql,后期需要修改掉的gql,有关用户信息修改的
+            $args_profile_infos = ["age", "gender", "introduction", "birthday"];
+            $profile_infos      = [];
+            foreach ($args_profile_infos as $profile_info) {
+                foreach ($args as $index => $value) {
+                    if ($index == $profile_info) {
+                        $profile_infos[$index] = $args[$index];
+                        if ($index == "gender") {
+                            $profile_infos[$index] = User::getGenderNumber($args[$index]);
+                        }
+                    }
+
+                }
+            }
+            $user->update(array_diff($args, $profile_infos));
+            if (!empty($profile_infos)) {
+                $profile = $user->profile;
+
+                $profile->update($profile_infos);
+            }
+
             return $user;
         } else {
             throw new GQLException('未登录，请先登录！');
