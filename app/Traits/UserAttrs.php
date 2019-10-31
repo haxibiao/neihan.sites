@@ -263,35 +263,35 @@ trait UserAttrs
     }
 
     //TODO: 这些可以后面淘汰，前端直接访问 user->profile->atts 即可
-    
-    // public function getCountArticlesAttribute()
-    // {
-    //     return $this->profile->count_articles;
-    // }
 
-    // public function getCountLikesAttribute()
-    // {
-    //     return $this->profile->count_likes;
-    // }
-    // public function getCountFollowsAttribute()
-    // {
-    //     return $this->profile->count_follows;
-    // }
+    public function getCountArticlesAttribute()
+    {
+        return $this->profile->count_articles;
+    }
 
-    // public function getCountCollectionsAttribute()
-    // {
-    //     return $this->profile->count_collections;
-    // }
+    public function getCountLikesAttribute()
+    {
+        return $this->profile->count_likes;
+    }
+    public function getCountFollowsAttribute()
+    {
+        return $this->profile->count_follows;
+    }
 
-    // public function getCountFavoritesAttribute()
-    // {
-    //     return $this->profile->count_favorites;
-    // }
+    public function getCountCollectionsAttribute()
+    {
+        return $this->profile->count_collections;
+    }
 
-    // public function getGenderAttribute()
-    // {
-    //     return $this->profile->gender;
-    // }
+    public function getCountFavoritesAttribute()
+    {
+        return $this->profile->count_favorites;
+    }
+
+    public function getGenderAttribute()
+    {
+        return $this->profile->gender;
+    }
 
     public function getGenderMsgAttribute()
     {
