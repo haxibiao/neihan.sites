@@ -11,6 +11,7 @@ use App\Image;
 use App\Like;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -220,6 +221,50 @@ class ArticleController extends Controller
             $article->category->fillForJs();
         }
         $article->pubtime = diffForHumansCN($article->created_at);
+        return $article;
+    }
+
+    public function resolverDouyinVideo(Request $request)
+    {
+        if (isset($request->all()['params']['share_link'])) {
+            $data = $request->all()['params'];
+        } else {
+            return response('请检查输入的信息是否正确完整噢');
+        }
+
+        // 效验登录
+        $user_id = $data['user_id'];
+        if (empty($user_id) || is_null($user_id)) {
+            return response('当前未登录，请登录后再尝试哦');
+        }
+
+        // 登录
+        Auth::loginUsingId($user_id);
+
+        // 过滤文本，留下 url
+        $link = $data['share_link'];
+        $link = filterText($link)[0];
+
+        // 不允许重复视频
+        if (Article::where('source_url', $link)->exists()) {
+            return response('视频已经存在，请换一个视频噢');
+        }
+
+        // 爬取关键信息
+        $spider = app('DouyinSpider');
+        $data   = json_decode($spider->parse($link), true);
+
+        // 去除 “抖音” 关键字, TODO :做一个大些的关键词库，封装重复操作
+        $data['0']['desc'] = str_replace('@抖音小助手', '', $data['0']['desc']);
+        $data['0']['desc'] = str_replace('抖音', '', $data['0']['desc']);
+
+        // 保存并 更新原链接
+        $article = new Article();
+        $article = $article->parseDouyinLink($data);
+        $article->update([
+            'source_url' => $link,
+        ]);
+
         return $article;
     }
 }
