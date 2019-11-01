@@ -135,12 +135,12 @@ class FixData extends Command
                             $localImagePathTemplate = storage_path('app/public/video/' . '%s.jpg');
                             $localCoverPath         = sprintf($localImagePathTemplate, $sub_cover_str);
 
-                            \Storage::disk('public')->put($localCoverPath, file_get_contents($cover));
-                            $local_cover = \Storage::disk('public')->get($localCoverPath);
-                            $cosDisk     = \Storage::cloud();
+                            // \Storage::disk('public')->put($localCoverPath, file_get_contents($cover));
+                            // $local_cover = \Storage::disk('public')->get($localCoverPath);
+                            // $cosDisk     = \Storage::cloud();
 
                             $cos_storage_cover = '/storage/video/' . $sub_cover_str . '.jpg';
-                            $cosDisk->put($cos_storage_cover, $local_cover);
+                            // $cosDisk->put($cos_storage_cover, $local_cover);
                             $cosCover[]  = $cos_storage_cover;
                             $cosCovers[] = \Storage::cloud()->url($cos_storage_cover);
                         }
