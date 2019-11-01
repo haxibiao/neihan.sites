@@ -67,7 +67,7 @@ class FixData extends Command
         // $this->info('fix videos finished...');
 
         $this->info('fix videos ...');
-        $videos = Video::whereNotIn('status', '!=', -1);
+        $videos = Video::where('status', '!=', -1);
 
         ini_set('memory_limit', -1);
         $videos->chunk(100, function ($videos) {
@@ -77,9 +77,9 @@ class FixData extends Command
                     $cosPath     = 'video/' . $video->id . '.mp4';
                     $video->disk = 'local'; //先标记为成功保存到本地
                     $video->save();
-                    \Storage::disk('public')->put($cosPath, file_get_contents($video_url));
-                    $cosDisk = \Storage::cloud();
-                    $cosDisk->put($cosPath, \Storage::disk('public')->get($cosPath));
+                    // \Storage::disk('public')->put($cosPath, file_get_contents($video_url));
+                    // $cosDisk = \Storage::cloud();
+                    // $cosDisk->put($cosPath, \Storage::disk('public')->get($cosPath));
                     $video->path       = $cosPath;
                     $video->disk       = 'cos';
                     $video->timestamps = false;
@@ -87,11 +87,11 @@ class FixData extends Command
                     $video_urls = $video->JsonData('video_urls');
                     foreach ($video_urls as $index => $video_url) {
                         $video_urls[$index] = ssl_url(\Storage::cloud()->url($cosPath));
+                        $this->info($video->id . 'cos视频的地址' . $video_urls[$index]);
                     }
                     $video->setJsonData('video_urls', $video_urls);
                     $video->save();
-                    $this->info($video->id . '视频的地址', $video->url);
-
+                    $this->info($video->id . '视频的地址' . $video->url);
                 }
 
             }
@@ -150,10 +150,19 @@ class FixData extends Command
                     $video->setJsonData('covers', $cosCovers);
                     $video->timestamps = false;
                     $video->save();
-                    $article             = $video->article;
-                    $article->cover_path = $video->cover;
-                    $article->save();
-                    $this->info($video->id . '视频的地址' . $video->cover . '文章的封面' . $article->cover_path);
+                    $article = $video->article;
+                    if (!empty($article)) {
+                        if (empty($video->cover)) {
+                            $article->status = -1;
+                        } else {
+                            $article->cover_path = $video->cover;
+                        }
+
+                        $article->timestamps = false;
+                        $article->save();
+                        $this->info($video->id . '视频的地址' . $video->cover . '文章的封面' . $article->cover_path);
+                    }
+
                 }
             }
 
