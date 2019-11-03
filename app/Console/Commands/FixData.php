@@ -11,6 +11,7 @@ use App\User;
 use App\Video;
 use App\Visit;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 
 class FixData extends Command
 {
@@ -53,49 +54,25 @@ class FixData extends Command
 
     public function videos()
     {
-        // $this->info('fix videos ...');
-        // //这一批始终无法拿到截图的视频 统一置为-1
-        // $videos = Video::whereNotNull('qcvod_fileid')
-        //     ->whereNull('cover')
-        //     ->where('status', '>', -1)
-        //     ->get();
-        // foreach ($videos as $video) {
-        //     $video->status = -1;
-        //     $video->save();
-        //     $this->info('Video ID:' . $video->id . ' fix success');
-        // }
-        // $this->info('fix videos finished...');
-
-        $this->info('fix videos ...');
-        $videos = Video::where('status', '!=', -1);
-
-        ini_set('memory_limit', -1);
-        $videos->chunk(100, function ($videos) {
+        dd(Article::whereNotNull('video_id')->count());
+        $this->info('fix videos start  ...');
+        Video::chunk(100, function ($videos) {
             foreach ($videos as $video) {
-                $video_url = $video->url;
-                if (\str_contains($video_url, ['vod2.'])) {
-                    $cosPath     = 'video/' . $video->id . '.mp4';
-                    $video->disk = 'local'; //先标记为成功保存到本地
-                    $video->save();
-                    // \Storage::disk('public')->put($cosPath, file_get_contents($video_url));
-                    // $cosDisk = \Storage::cloud();
-                    // $cosDisk->put($cosPath, \Storage::disk('public')->get($cosPath));
-                    $video->path       = $cosPath;
-                    $video->disk       = 'cos';
-                    $video->timestamps = false;
-
-                    $video_urls = $video->JsonData('video_urls');
-                    foreach ($video_urls as $index => $video_url) {
-                        $video_urls[$index] = ssl_url(\Storage::cloud()->url($cosPath));
-                        $this->info($video->id . 'cos视频的地址' . $video_urls[$index]);
-                    }
-                    $video->setJsonData('video_urls', $video_urls);
-                    $video->save();
-                    $this->info($video->id . '视频的地址' . $video->url);
+                $path = $video->path;
+                $hasHttp = Str::contains($path,'http');
+                if(!$hasHttp) {
+                    continue;
                 }
-
+                $article = $video->article;
+                if($article){
+                    $article->status = -1;
+                    $article->save(['timestamps'=>false]);
+                }
+                $video->status = -1;
+                $video->save(['timestamps'=>false]);
             }
         });
+        $this->info('fix videos end...');
     }
 
     public function articleVieoCover()
