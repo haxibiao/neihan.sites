@@ -1,0 +1,6 @@
+mutation favoriteArticleMutation($article_id: Int!, $undo: Boolean) {
+  favoriteArticle(article_id: $article_id, undo: $undo) {
+    id
+    favorited
+  }
+}

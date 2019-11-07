@@ -1,0 +1,57 @@
+mutation createPostMutation(
+  $body: String!
+  $images: [String!]
+  $video_id: Int
+  $category_ids: [Int!]
+  $type: ContenType!
+  $issueInput: IssueInfo
+) {
+  createContent(
+    body: $body
+    images: $images
+    video_id: $video_id
+    category_ids: $category_ids
+    type: $type
+    issueInput: $issueInput
+  ) {
+    id
+    type
+    title
+    description
+    time_ago
+    cover
+    count_likes
+    count_replies
+    liked
+    answered_status
+    question_reward
+    user {
+      avatar
+      name
+      id
+    }
+    category {
+      id
+      name
+      logo
+    }
+    images {
+      id
+      url
+      width
+      height
+    }
+    video {
+      id
+      url
+      duration
+      info {
+        width
+        height
+        rotate
+        covers
+      }
+      cover_url
+    }
+  }
+}

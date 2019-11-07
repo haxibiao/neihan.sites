@@ -1,0 +1,10 @@
+query categoriesQuery($filter: CategoryFilter, $count: Int, $page: Int) {
+    categories(filter: $filter, count: $count, page: $page) {
+        data {
+            id
+            logo
+            name
+            count_articles
+        }
+    }
+}

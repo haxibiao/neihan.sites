@@ -1,0 +1,51 @@
+query userArticlesQuery($user_id: Int, $page: Int) {
+  articles(page: $page, user_id: $user_id, status: public, orderBy: [{ field: "id", order: DESC }]) {
+    paginatorInfo {
+      hasMorePages
+      currentPage
+    }
+    data {
+      id
+      type
+      body
+      description
+      time_ago
+      cover
+      hits
+      count_likes
+      count_replies
+      count_tips
+      liked
+      answered_status
+      question_reward
+      user {
+        avatar
+        name
+        id
+      }
+      category {
+        id
+        name
+        logo
+      }
+      images {
+        id
+        url
+        width
+        height
+      }
+      video {
+        id
+        url
+        duration
+        info {
+          width
+          height
+          rotate
+          covers
+        }
+        cover_url
+      }
+    }
+  }
+}

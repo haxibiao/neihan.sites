@@ -1,0 +1,12 @@
+query withdrawDetailQuery($id: Int!) {
+    withdraw(id: $id) {
+        id
+        status
+        amount
+        remark
+        trade_no
+        to_account
+        to_platform
+        created_at
+    }
+}

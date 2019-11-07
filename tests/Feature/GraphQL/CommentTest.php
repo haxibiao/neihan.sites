@@ -4,214 +4,116 @@ namespace Tests\Feature\GraphQL;
 
 use App\Article;
 use App\Comment;
+use App\Feedback;
 use App\User;
+use Tests\Feature\GraphQL\TestCase;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-/**
- * 该测试用例最后的更新时间为2018年7月17日19时
- */
 class CommentTest extends TestCase
 {
-    use DatabaseTransactions;
-    
-    /**
-     * @Desc     查询评论
-     * @Author   czg
-     * @DateTime 2018-07-17
-     * @return   [type]     [description]
-     */
-    public function testCommentsQuery(){
-    	
-    	$article = Article::where([
-    		['status',1],
-    		['count_replies','>',0]
-    	])->inRandomOrder()
-          ->first();
-        $comment_id = null;
-        $comments = $article->comments;
-        if($comments->isNotEmpty()){
-        	$comment_id = $comments->first()->id;
-        }
+    protected $user;
 
-        $filter = array_random([null,'ALL','ONLY_AUTHOR']);
-        $order  = array_random(['LIKED_MOST','LATEST_FIRST','OLD_FIRST']); 
-
-        $query = <<<STR
-        query commentsQuery(\$article_id: Int, \$comment_id: Int, \$offset: Int, \$filter: CommentFilter, \$order: CommentOrder) {
-    		  comments(article_id: \$article_id, comment_id: \$comment_id, offset: \$offset, filter: \$filter, order: \$order) {
-    		    id
-    		    body
-    		    likes
-    		    liked
-    		    time_ago
-    		    commentable_id
-    		    lou
-    		    user {
-    		      id
-    		      name
-    		      avatar
-    		    }
-    		    replyComments {
-    		      id
-    		      body
-    		      user {
-    		        id
-    		        name
-    		      }
-    		      time_ago
-    		    }
-    		  }
-    		}
-STR;
-        $variables = <<<STR
-        {
-          "article_id"	: $article->id,
-          "comment_id"	: $comment_id,
-          "filter"		: $filter,
-          "order" 		: $order
-        }
-STR;
-        $response = $this->json("POST", "/graphql", [
-                'query'         => $query,  
-                'variables'     => $variables,
-            ]);
-        $response->assertStatus(200)
-            ->assertJsonMissing([
-                'errors'
-            ]);
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->user = factory(User::class)->create([
+            'api_token' => str_random(60),
+        ]);
     }
-    /**
-     * @Desc     查询评论回复
-     * @Author   czg
-     * @DateTime 2018-07-17
-     * @return   [type]     [description]
-     */
-    public function testReplyCommentsQuery(){
-    	
-    	$comment = Comment::inRandomOrder()->first();
 
-        $query = <<<STR
-        query replyCommentsQuery(\$comment_id: Int!) {
-		  comments(comment_id: \$comment_id) {
-		    id
-		    body
-		    time_ago
-		    user {
-		      id
-		      name
-		      avatar
-		    }
-		  }
-		}
-STR;
-        $variables = <<<STR
-        {
-          "comment_id"	: $comment->id
-        }
-STR;
-        $response = $this->json("POST", "/graphql", [
-                'query'         => $query,  
-                'variables'     => $variables,
-            ]);
-        $response->assertStatus(200)
-            ->assertJsonMissing([
-                'errors'
-            ]);
+    /* --------------------------------------------------------------------- */
+    /* ------------------------------- Mutation ----------------------------- */
+    /* --------------------------------------------------------------------- */
+    // public function testAcceptCommentMutation()
+    // {
+    //     //TODO 需要填充假数据
+    // }
+
+    public function testAddCommentMutation()
+    {
+        $token   = $this->user->api_token;
+        $query   = file_get_contents(__DIR__ . '/Comment/Mutation/addCommentMutation.gql');
+        $headers = [
+            'Authorization' => 'Bearer ' . $token,
+            'Accept'        => 'application/json',
+        ];
+        //情形一:评论动态
+        $comment = Article::where('type', 'post')->inRandomOrder()->first();
+
+        $variables = [
+            'commentable_type' => 'articles', //这个还是文章类型
+            'commentable_id'   => $comment->id,
+            'body'             => '评论动态',
+        ];
+
+        $this->startGraphQL($query, $variables, $headers);
+
+        //情形二:评论评论
+        $comment   = Comment::inRandomOrder()->first();
+        $variables = [
+            'commentable_type' => 'comments',
+            'commentable_id'   => $comment->id,
+            'body'             => '评论评论',
+        ];
+
+        $this->startGraphQL($query, $variables, $headers);
+
+        //情形二:评论评论
+        $comment   = Feedback::inRandomOrder()->first();
+        $variables = [
+            'commentable_type' => 'feedbacks',
+            'commentable_id'   => $comment->id,
+            'body'             => '评论评论',
+        ];
+        $this->startGraphQL($query, $variables, $headers);
     }
-    /**
-     * @Desc     添加新评论
-     * @Author   czg
-     * @DateTime 2018-07-17
-     * @return   [type]     [description]
-     */
-    public function testAddCommentMutation(){
-    	
-    	$article = Article::inRandomOrder()->first();
-    	
-    	$comment_id = null;
-    	$comments = $article->comments;
-    	if( $comments->isNotEmpty() ){
-    		$comment_id = $comments->random()->id;
-    	}
-    	$body = array_random(['纯文本的评论','@江湖小郎中 带了艾特人的评论']);
-    	$visitor = User::inRandomOrder()->first();
 
-        $query = <<<STR
-		mutation addCommentMutation(\$commentable_id: Int!, \$body: String!,  \$comment_id: Int) {
-		  addComment(commentable_id: \$commentable_id, body: \$body, comment_id: \$comment_id) {
-		    id
-		    body
-		    user {
-		      id
-		      name
-		      avatar
-		    }
-		    time_ago
-		  }
-		}
-STR;
-        
-		if( is_null($comment_id) ){
-    		$variables = <<<STR
-	        {
-	          "commentable_id"	: $article->id,
-	          "body"   			: "$body"
-	        }
-STR;
-    	} else {
-			$variables = <<<STR
-	        {
-	          "commentable_id"	: $article->id,
-	          "body"   			: "$body",
-	          "comment_id"      : $comment_id
-	        }
-STR;
-    	}
+    public function testDeleteCommentMutation()
+    {
+        $token   = $this->user->api_token;
+        $query   = file_get_contents(__DIR__ . '/Comment/Mutation/deleteCommentMutation.gql');
+        $headers = [
+            'Authorization' => 'Bearer ' . $token,
+            'Accept'        => 'application/json',
+        ];
+        $comment = Comment::inRandomOrder()->first();
 
-        $response = $this->actingAs($visitor)
-        	->json("POST", "/graphql", [
-                'query'         => $query,  
-                'variables'     => $variables,
-            ]);
-        $response->assertStatus(200)
-            ->assertJsonMissing([
-                'errors'
-            ]);
+        $variables = [
+            'id' => $comment->id,
+        ];
+
+        $this->startGraphQL($query, $variables, $headers);
     }
-    /**
-     * @Desc     评论点赞
-     * @Author   czg
-     * @DateTime 2018-07-17
-     * @return   [type]     [description]
-     */
-    public function testLikeCommentMutation(){
-   		
-   		$comment = Comment::inRandomOrder()->first();
-    	$visitor = User::inRandomOrder()->first();
 
-        $query = <<<STR
-		mutation likeCommentMutation(\$comment_id: Int!) {
-		  likeComment(comment_id: \$comment_id) {
-		    id
-		    likes
-		  }
-		}
-STR;
-		$variables = <<<STR
-        {
-          "comment_id"      : $comment->id
-        }
-STR;
+    /* --------------------------------------------------------------------- */
+    /* ------------------------------- Query ----------------------------- */
+    /* --------------------------------------------------------------------- */
+    public function testCommentRepliesQuery()
+    {
+        $query     = file_get_contents(__DIR__ . '/Comment/Query/commentRepliesQuery.gql');
+        $comment   = Comment::where('commentable_type', 'comments')->first();
+        $variables = [
+            'id' => $comment->commentable_id,
+        ];
+        $this->startGraphQL($query, $variables);
+    }
 
-        $response = $this->actingAs($visitor)
-        	->json("POST", "/graphql", [
-                'query'         => $query,  
-                'variables'     => $variables,
-            ]);
-        $response->assertStatus(200)
-            ->assertJsonMissing([
-                'errors'
-            ]);
+    public function testCommentsQuery()
+    {
+        $query = file_get_contents(__DIR__ . '/Comment/Query/commentsQuery.gql');
+
+        $comment = Comment::where('commentable_type', 'articles')->first();
+
+        $variables = [
+            'commentable_id'   => $comment->commentable_id,
+            'commentable_type' => 'articles',
+        ];
+        $this->startGraphQL($query, $variables);
+    }
+
+    protected function tearDown(): void
+    {
+        $this->user->forceDelete();
+
+        parent::tearDown();
     }
 }

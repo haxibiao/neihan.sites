@@ -1,0 +1,37 @@
+query commentNotificationQuery($page: Int) {
+    notifications(type: ARTICLE_COMMENTED, page: $page) {
+        paginatorInfo {
+            currentPage
+            hasMorePages
+        }
+        data {
+            id
+            type
+            time_ago
+            created_at
+            article {
+                id
+                type
+                title
+                description
+                time_ago
+            }
+            comment {
+                id
+                body
+                lou
+                time_ago
+                user {
+                    id
+                    avatar
+                    name
+                }
+            }
+            user {
+                id
+                name
+                avatar
+            }
+        }
+    }
+}

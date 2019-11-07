@@ -1,0 +1,5 @@
+mutation createFeedbackMutation($content: String!, $images: [String], $contact: String) {
+    createFeedback(content: $content, images: $images, contact: $contact) {
+        id
+    }
+}

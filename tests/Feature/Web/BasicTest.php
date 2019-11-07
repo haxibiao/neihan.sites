@@ -3,16 +3,13 @@
 namespace Tests\Feature\Web;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+
+/**
+ * 基本网页访问测试，游客|爬虫模式
+ */
 
 class BasicTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
     public function testHomePageOK()
     {
         $response = $this->get('/');
@@ -21,27 +18,22 @@ class BasicTest extends TestCase
 
     public function testArticleDetailOK()
     {
-        $rand_article_id = \App\Article::orderBy('id', 'desc')
-        ->where('type','article')
-        ->where('status','>',0)
-        ->take(10)->get()
-        ->random()
-        ->id;
-        $response        = $this->get("/article/$rand_article_id");
-        $response->assertStatus(200);
+        $article  = \App\Article::orderBy('id', 'desc')->where('status', '>', 0)->take(10)->get()->random();
+        $response = $this->get("/article/{$article->id}");
+        $response->assertStatus($article->type == 'video' ? 302 : 200);
     }
 
     public function testCategoryPageOK()
     {
-        $name_en  = \App\Category::orderBy('id', 'desc')->take(10)->get()->random()->name_en;
-        $response = $this->get("/$name_en");
+        $cate_id  = \App\Category::orderBy('id', 'desc')->take(10)->get()->random()->id;
+        $response = $this->get("/category/$cate_id");
         $response->assertStatus(200);
     }
 
     public function testUserPageOK()
     {
-        $rand_user_id = \App\User::orderBy('id', 'desc')->take(10)->get()->random()->id;
-        $response     = $this->get("/user/$rand_user_id");
+        $user     = \App\User::orderBy('id', 'desc')->take(10)->get()->random();
+        $response = $this->get("/user/{$user->id}");
         $response->assertStatus(200);
     }
 
@@ -54,5 +46,4 @@ class BasicTest extends TestCase
 
         $response->assertStatus(302);
     }
-
 }

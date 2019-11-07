@@ -1,0 +1,12 @@
+mutation setWalletPaymentInfoMutation($input: walletInput!) {
+  setWalletPaymentInfo(input: $input) {
+    id
+    type
+    balance
+    pay_account
+    real_name
+    total_withdraw_amount
+    available_balance
+    today_withdraw_left
+  }
+}

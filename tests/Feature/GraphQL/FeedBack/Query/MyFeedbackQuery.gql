@@ -1,0 +1,33 @@
+query MyFeedbackQuery($id: Int!, $count: Int, $page: Int) {
+    feedback(user_id: $id, page: $page, count: $count) {
+        paginatorInfo {
+            count
+            currentPage
+            hasMorePages
+        }
+        data {
+            id
+            user {
+                name
+                avatar
+                gender
+            }
+            images {
+                id
+                width
+                height
+                url
+                thumbnail
+            }
+            content
+            contact
+            status_msg
+            created_at
+            hot
+            comments {
+                id
+                body
+            }
+        }
+    }
+}

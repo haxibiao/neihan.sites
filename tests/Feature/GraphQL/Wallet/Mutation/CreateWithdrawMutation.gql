@@ -1,0 +1,6 @@
+mutation CreateWithdrawMutation($amount: Float!) {
+  createWithdraw(amount: $amount) {
+    id
+    created_at
+  }
+}

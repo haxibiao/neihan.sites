@@ -1,0 +1,30 @@
+query userProfileQuery($id: Int!) {
+    user(id: $id) {
+        id
+        name
+        avatar
+        balance
+        gold
+        phone
+        birthday_msg
+        gender
+        age
+        introduction
+        count_articles
+        count_likes
+        count_followers
+        count_followings
+        count_favorites
+        reward
+        wallet {
+            id
+            type
+            balance
+            # pay_account
+            # real_name   部分用户出现赃数据报错暂时注释
+            total_withdraw_amount
+            available_balance
+            today_withdraw_left
+        }
+    }
+}

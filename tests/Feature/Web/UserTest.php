@@ -3,18 +3,16 @@
 namespace Tests\Feature\Web;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class DatabaseTest extends TestCase
+/**
+ * 基本已登录访问测试
+ */
+
+class UserTest extends TestCase
 {
 
     public function testUserRegister()
     {
-        // $response=$this->get('/');
-
-        // $response->assertStatus(200);
         $response = $this->post('/register', [
             'name'     => 'wangxin',
             'email'    => time() . 'test@haxibiao.com',
@@ -24,9 +22,9 @@ class DatabaseTest extends TestCase
         $response->assertStatus(302);
     }
 
-     public function testEditorCanVisitArticleCreatePage()
+    public function testEditorCanVisitArticleCreatePage()
     {
-        $editor   = \App\User::where('is_editor', 1)->take(10)->get()->random();
+        $editor   = \App\User::where('role_id', 1)->take(10)->get()->random();
         $response = $this->actingAs($editor)->get('/article/create');
 
         $response->assertSuccessful();
@@ -35,7 +33,7 @@ class DatabaseTest extends TestCase
     public function testEditorCanPostArticle()
     {
         $rand_category_id = \App\Category::take(10)->get()->random()->id;
-        $editor           = \App\User::where('is_editor', 1)->take(10)->get()->random();
+        $editor           = \App\User::where('role_id', 1)->take(10)->get()->random();
         $response         = $this->actingAs($editor)->post('/article', [
             'title'        => 'test article can post by editor ....',
             'author'       => $editor->name,

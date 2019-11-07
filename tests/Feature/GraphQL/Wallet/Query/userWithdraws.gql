@@ -1,0 +1,18 @@
+query userWithdraws($wallet_id: Int!, $page: Int) {
+    withdraws(wallet_id: $wallet_id, page: $page, count: 10, orderBy: { field: "id", order: DESC }) {
+        paginatorInfo {
+            currentPage
+            hasMorePages
+        }
+        data {
+            id
+            status
+            amount
+            remark
+            trade_no
+            to_account
+            to_platform
+            created_at
+        }
+    }
+}

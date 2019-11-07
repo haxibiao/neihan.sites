@@ -7,7 +7,6 @@ use Tests\TestCase;
 //这个类下所有的方法都会真正的修改数据库,绝对不能在线上环境跑,只能在本地运行.
 class ApiCommentTest extends TestCase
 {
-
     public function testComment()
     {
         $user    = \App\User::orderBy('id', 'desc')->take(5)->get()->random();
@@ -26,7 +25,7 @@ class ApiCommentTest extends TestCase
             'time'              => time(),
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
         $content = $response->getOriginalContent();
         $response->assertJson([
             'body' => 'test',

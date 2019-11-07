@@ -1,0 +1,17 @@
+query userQuery($id: Int!) {
+    user(id: $id) {
+        id
+        name
+        avatar
+        introduction
+        count_articles
+        count_likes
+        count_followers
+        count_followings
+        count_favorites
+        followed_status
+        age
+        gender
+        background
+    }
+}

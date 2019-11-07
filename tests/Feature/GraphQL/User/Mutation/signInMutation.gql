@@ -1,0 +1,27 @@
+mutation signInMutation($account: String!, $password: String!) {
+    signIn(account: $account, password: $password) {
+        id
+        name
+        avatar
+        token
+        balance
+        gold
+        wallet {
+            id
+            pay_account
+            real_name
+        }
+        birthday_msg
+        gender
+        phone
+        introduction
+        count_articles
+        count_production
+        count_likes
+        count_follows
+        count_followers
+        count_followings
+        count_favorites
+        reward
+    }
+}
