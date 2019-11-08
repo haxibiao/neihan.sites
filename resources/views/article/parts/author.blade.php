@@ -1,3 +1,4 @@
+  @if($article->user)
   <div class="article-author">
     <div class="user-info">
       <a class="avatar" href="/user/{{ $article->user->id }}">
@@ -58,3 +59,4 @@
       </div>
     </div>
   </div>
+  @endif

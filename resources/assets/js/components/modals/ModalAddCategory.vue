@@ -47,7 +47,7 @@ export default {
   mounted() {
     this.fetchData();
 
-    //TODO:: bind ScrollToBottom, load more ..
+    //OPTIMIZE:: bind ScrollToBottom, load more ..
   },
 
   methods: {

@@ -22,14 +22,14 @@
 @endif
 <div class="media">
 	<a class="{{ empty($is_side) ? 'pull-left' : ''}}" href="/video/{{ $video->id }}">
-		<img class="media-object" src="{{ $article->cover }}" alt="{{ $article->title }}" style="height: 150px; width: 200px">
+		<img class="media-object" src="{{ $article->cover }}" alt="{{ $article->subject }}" style="height: 150px; width: 200px">
 	</a>
 	<div class="media-body　strip_title">
 		<a href="/video/{{ $video->id }}">
-			<h5 class="media-heading">{{ $article->title }}</h5>
+			<h5 class="media-heading">{{ $article->subject }}</h5>
 		</a>
 		<p class="small">更新时间:　{{ $article->updatedAt() }}</p>
-		<p title="{{ $article->get_description() }}">{{ $article->get_description() }}</p>
+		<p title="{{ $article->summary }}">{{ $article->summary }}</p>
 		<p>
 			@if($article->status == 0) 
 			<span class="label label-info">已下架</span>

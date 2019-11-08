@@ -86,18 +86,21 @@ class ArticleMutators
                         $image = Image::saveImage($image);
                         $article->images()->attach($image->id);
                     }
+
+                    $article->cover_path = $article->images()->first()->path;
                     $article->save();
+
                 }
 
                 //带图
-                if (!empty($inputs['image_urls']) && is_array($inputs['image_urls'])) {
-                    $image_ids = array_map(function ($url) {
-                        return intval(pathinfo($url)['filename']);
-                    }, $inputs['image_urls']);
-                    $article->status = 1;
-                    $article->images()->sync($image_ids);
-                    $article->save();
-                }
+                // if (!empty($inputs['image_urls']) && is_array($inputs['image_urls'])) {
+                //     $image_ids = array_map(function ($url) {
+                //         return intval(pathinfo($url)['filename']);
+                //     }, $inputs['image_urls']);
+                //     $article->status = 1;
+                //     $article->images()->sync($image_ids);
+                //     $article->save();
+                // }
             };
 
             //直接关联到专题

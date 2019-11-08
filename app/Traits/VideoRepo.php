@@ -2,12 +2,25 @@
 
 namespace App\Traits;
 
-use App\Jobs\TakeScreenshots;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 trait VideoRepo
 {
+    public function fillForJs()
+    {
+        $video        = $this;
+        $video->url   = $video->url;
+        $video->cover = $video->cover; //返回full uri
+
+        //兼容旧接口
+        $video->video_id  = $this->id;
+        $video->video_url = $this->url;
+        $video->image_url = $this->cover;
+
+        return $video;
+    }
     public function getPath()
     {
         //TODO: save this->extension, 但是目前基本都是mp4格式
@@ -15,59 +28,50 @@ trait VideoRepo
         return '/storage/video/' . $this->id . '.' . $extension;
     }
 
-    public function takeSnapshot($force = false, $flag = true)
+    public function saveFile(UploadedFile $file)
     {
-        \App\Jobs\TakeScreenshots::dispatch($this, $force, $flag);
-    }
+        $this->user_id = getUserId();
+        $this->save(); //拿到video->id
 
-    public function saveFile($file)
-    {
-        if ($file) {
-            $this->user_id = getUserId();
+        $cosPath     = 'video/' . $this->id . '.mp4';
+        $this->path  = $cosPath;
+        $this->hash  = md5_file($file->path());
+        $this->title = $file->getClientOriginalName();
+        $this->save();
+
+        try {
+            //本地存一份用于截图
+            $file->storeAs(
+                'video', $this->id . '.mp4'
+            );
+            $this->disk = 'local'; //先标记为成功保存到本地
             $this->save();
 
-            $cosPath = 'video/' . $this->id . '.mp4';
+            //同步上传到cos
+            $cosDisk = \Storage::cloud();
+            $cosDisk->put($cosPath, \Storage::disk('public')->get('video/' . $this->id . '.mp4'));
+            $this->disk = 'cos';
+            $this->save();
 
-            //保存视频地址
-            $hash       = md5_file($file->path());
-            $this->path = $cosPath;
-            $this->hash = $hash;
-            try {
-                //本地存一份用于截图
-                $file->storeAs(
-                    'video', $this->id . '.mp4'
-                );
-                $this->disk = 'local'; //先标记为成功保存到本地
-                $this->save();
+            return true;
 
-                //同步上传到cos
-                $cosDisk = \Storage::cloud();
-                $cosDisk->put($cosPath, \Storage::disk('public')->get('video/' . $this->id . '.mp4'));
-                $this->disk = 'cos';
-                $this->save();
-
-                //启动截取图片job
-                TakeScreenshots::dispatch($this->id);
-
-                return true;
-
-            } catch (\Exception $ex) {
-                \Log::error("video save exception" . $ex->getMessage());
-            }
-
-            //注释的原因：hashvod目前偶尔不稳定，留到下一版上线
-            //如果不是线上环境则存储在本地
-            //            $this->save_video_local($file);
-            //
-            //            $content = HashVod::upload(public_path($this->getPath()));
-            //            $data    = json_decode($content, true);
-            //
-            //            if ($data['code'] != 200) {
-            //                return false;
-            //            }
-            //            return false;
+        } catch (\Exception $ex) {
+            \Log::error("video save exception" . $ex->getMessage());
         }
         return false;
+
+        //注释的原因：hashvod目前偶尔不稳定，留到下一版上线
+        //如果不是线上环境则存储在本地
+        // $this->save_video_local($file);
+
+        // $content = HashVod::upload(public_path($this->getPath()));
+        // $data    = json_decode($content, true);
+
+        // if ($data['code'] != 200) {
+        //     return false;
+        // }
+        // return false;
+
     }
 
     public function saveWidthHeight($path)

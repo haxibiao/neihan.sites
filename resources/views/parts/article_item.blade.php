@@ -1,19 +1,19 @@
 <li class="content-item {{ $article->cover ? 'have-img' : '' }}">
   @if($article->cover)
     <a class="wrap-img" href="{{ $article->url }}"   target="_blank">
-        <img src="{{ $article->cover }}" alt="{{$article->title}}">
+        <img src="{{ $article->cover }}" alt="{{$article->subject}}">
         @if( $article->type=='video' )
         <span class="rotate-play">
           <i class="iconfont icon-shipin"></i>
         </span>
         @endif
-        @if( $article->type=='video' )
+        @if( $article->type=='video' && $article->video )
         <i class="duration">@sectominute($article->video->duration)</i>
         @endif
     </a>
   @endif
   <div class="content">
-    @if( $article->type!=='article' )
+    @if( $article->user && $article->type!=='article' )
     <div class="author">
       <a class="avatar" target="_blank" href="/user/{{ $article->user->id }}">
         <img src="{{ $article->user->avatarUrl }}" alt="">
@@ -34,13 +34,13 @@
     {{-- 如果是文章，就显示标题 --}}
     @if( $article->type=='article' )
     <a class="title" target="_blank" href="{{ $article->url }}">
-        <span>{{ $article->title }}</span>
+        <span>{{ $article->subject }}</span>
     </a>
     @endif
 
     {{-- 然后任何类型，这段简介是一定要显示的 --}}
     <a class="abstract" target="_blank" href="{{ $article->url }}">
-      {{ $article->get_description() }}
+      {{ $article->summary }}
     </a>
 
     <div class="meta">

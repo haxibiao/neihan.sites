@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('title')
-   {{ config('app.name_cn') }}-{{ config('seo.'.get_domain_key().'.title') }}
+   {{ config('app.name_cn') }}-{{ get_seo_title() }}
 @stop
 
-@section('keywords'){{ config('seo.'.get_domain_key().'.keywords') }}
+@section('keywords'){{ get_seo_keywords() }}
 @stop
 
-@section('description'){{ config('seo.'.get_domain_key().'.description') }}
+@section('description'){{ get_seo_description() }}
 @stop
 
 @section('content')

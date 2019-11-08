@@ -4,7 +4,6 @@ namespace App\Observers;
 
 use App\Events\NewFollow;
 use App\Follow;
-use App\Notifications\UserFollowed;
 
 class FollowObserver
 {
@@ -17,7 +16,6 @@ class FollowObserver
     public function created(Follow $follow)
     {
         event(new NewFollow($follow));
-
         //同步用户关注数
         $user                            = $follow->user;
         $user->profile->count_followings = $user->followings()->count();
@@ -29,12 +27,6 @@ class FollowObserver
             $follow->followed->profile->update(['count_follows' => $count]);
         } else {
             $follow->followed->update(['count_follows' => $count]);
-        }
-
-        //如果关注的是用户则发送消息通知给用户 ,只能存在这一条信息
-        if ($follow->followed instanceof \App\User) {
-            //TODO: 即时发送每个通知，需要改为汇总到 Listener里去决策 然后发送通知（job）
-            $follow->followed->notify(new UserFollowed($user));
         }
     }
 
@@ -64,7 +56,11 @@ class FollowObserver
 
         //同步被关注着的粉丝数
         $count = Follow::where('followed_type', $follow->followed_type)->where("followed_id", $follow->followed_id)->count();
-        $follow->followed->profile->update(['count_follows' => $count]);
+        if ($follow->followed_type == 'users') {
+            $follow->followed->profile->update(['count_follows' => $count]);
+        } else {
+            $follow->followed->update(['count_follows' => $count]);
+        }
     }
 
     /**

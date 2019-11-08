@@ -2,12 +2,14 @@
 
 namespace App\Jobs;
 
+use App\Video;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
+//NOTE: 基本淘汰了
 class ProcessVod implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -20,7 +22,7 @@ class ProcessVod implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(\App\Video $video)
+    public function __construct(Video $video)
     {
         $this->video = $video;
     }

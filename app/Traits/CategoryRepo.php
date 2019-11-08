@@ -113,7 +113,7 @@ trait CategoryRepo
         $data             = [];
         $ten_top_category = Category::select(DB::raw('count(*) as categoryCount,category_id'))
             ->from('articles')
-            ->where('type', 'video')
+            ->whereNotNull('video_id')
             ->whereNotNull('category_id')
             ->groupBy('category_id')
             ->orderBy('categoryCount', 'desc')
@@ -133,7 +133,7 @@ trait CategoryRepo
 
         $ten_top_category = Category::select(DB::raw('sum(count_likes) as categoryCount,category_id'))
             ->from('articles')
-            ->where('type', 'video')
+            ->whereNotNull('video_id')
             ->whereNotNull('category_id')
             ->groupBy('category_id')
             ->orderBy('categoryCount', 'desc')

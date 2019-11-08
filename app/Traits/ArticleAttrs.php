@@ -84,22 +84,14 @@ trait ArticleAttrs
         $cover_url = $this->cover_path;
 
         //有cos地址的直接返回
-        if (str_contains($cover_url, env('COS_DOMAIN'))) {
-            return $cover_url;
-        }
-
-        //TODO: 兼容vod还没更新到cos的情况
-        if (str_contains($cover_url, 'vod')) {
+        if (str_contains($cover_url, 'cos')) {
             return $cover_url;
         }
 
         //TODO: 图片在本地？需要修复到cos
         if ($this->video) {
             if (!is_null($this->video->cover)) {
-                //TODO: 需要fixdata清理所有video vod的封面到cos上，统一存path
-                if (str_contains($this->video->cover, 'vod')) {
-                    return $this->video->cover;
-                }
+
                 $video_cover_path = parse_url($this->video->cover, PHP_URL_PATH);
                 return \Storage::cloud()->url($video_cover_path);
             }

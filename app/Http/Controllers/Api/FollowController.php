@@ -12,8 +12,10 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
-class FollowController extends Controller {
-	public function touch(Request $request, $id, $type) {
+class FollowController extends Controller
+{
+	public function touch(Request $request, $id, $type)
+	{
 		$user = $request->user();
 		$result = 0;
 		$follow = Follow::firstOrNew([
@@ -28,7 +30,8 @@ class FollowController extends Controller {
 		return 0;
 	}
 
-	public function toggle(Request $request, $id, $type) {
+	public function toggle(Request $request, $id, $type)
+	{
 		$user = $request->user();
 		$result = 0;
 		$follow = Follow::firstOrNew([
@@ -36,7 +39,7 @@ class FollowController extends Controller {
 			'followed_id' => $id,
 			'followed_type' => get_polymorph_types($type),
 		]);
-		if ($follow->id)  {
+		if ($follow->id) {
 			$follow->delete();
 			//delete record action
 			Action::where([
@@ -44,11 +47,10 @@ class FollowController extends Controller {
 				'actionable_type' => 'follows',
 				'actionable_id' => $follow->id,
 			])->delete();
-
 		} else {
 			$follow->save();
 			$result = 1;
- 
+
 			//record action
 			$action = Action::updateOrCreate([
 				'user_id' => $user->id,
@@ -90,7 +92,8 @@ class FollowController extends Controller {
 		return $result;
 	}
 
-	public function follows(Request $request) {
+	public function follows(Request $request)
+	{
 		$user = $request->user();
 		$follows = [];
 		foreach ($user->followings as $item) {
@@ -100,7 +103,7 @@ class FollowController extends Controller {
 
 			//用户才取avatar, 文集，专题都取logo
 			$follow['img'] = $item->followed_type == 'users' ?
-			$item->followed->avatar() : $item->followed->logo();
+				$item->followed->avatarUrl : $item->followed->logoUrl;
 
 			$updates = $item->followed->articles()->where('articles.type', 'article')->where('articles.created_at', '>', $item->updated_at)->count();
 			$follow['updates'] = $updates ? $updates : '';
@@ -110,7 +113,8 @@ class FollowController extends Controller {
 		return $follows;
 	}
 
-	public function recommends(Request $request) {
+	public function recommends(Request $request)
+	{
 		//TODO::  推荐应该排除已关注的那些
 		$user = $request->user();
 		$data['user'] = $user;

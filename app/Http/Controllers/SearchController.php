@@ -22,11 +22,11 @@ class SearchController extends Controller
         $page_size = 10;
         $page      = request('page') ? request('page') : 1;
         $query     = request('q');
-        $articles  = Article::where(function($qb) use($query){
-                $qb->where('title', 'like', '%' . $query . '%');
-                $qb->orWhere('keywords', 'like', '%' . $query . '%');
-                $qb->orWhere('description', 'like', '%' . $query . '%');
-            })->exclude(['body', 'json'])
+        $articles  = Article::where(function ($qb) use ($query) {
+            $qb->where('title', 'like', '%' . $query . '%');
+            $qb->orWhere('keywords', 'like', '%' . $query . '%');
+            $qb->orWhere('description', 'like', '%' . $query . '%');
+        })->exclude(['body', 'json'])
             ->where('status', 1)
             ->whereType('article')
             ->orderBy('id', 'desc')
@@ -36,7 +36,7 @@ class SearchController extends Controller
         //高亮关键词
         foreach ($articles as $article) {
             $article->title       = str_replace($query, '<em>' . $query . '</em>', $article->title);
-            $article->description = str_replace($query, '<em>' . $query . '</em>', $article->get_description());
+            $article->description = str_replace($query, '<em>' . $query . '</em>', $article->summary);
         }
 
         //如果标题无结果，搜索标签库
@@ -50,7 +50,7 @@ class SearchController extends Controller
 
             //高亮标签
             foreach ($articles as $article) {
-                $article->description = ' 关键词:' . $article->keywords . '， 简介：' . $article->get_description();
+                $article->description = ' 关键词:' . $article->keywords . '， 简介：' . $article->summary;
                 foreach ($matched_tags as $tag) {
                     $article->title       = str_replace($tag, '<em>' . $tag . '</em>', $article->title);
                     $article->description = str_replace($tag, '<em>' . $tag . '</em>', $article->description);
@@ -58,7 +58,7 @@ class SearchController extends Controller
             }
         }
 
-        //TODO:: 暂时不关联搜索哈希表里的文章了，后面优化下文章结构后再同步搜索
+        //TODO:: 关联搜索整个哈希表旗下产品里的文章了，后期专注做搜索才处理
         // if (!$total) {
         //     $articles_hxb = $this->search_hxb($query);
         //     $total = count($articles_hxb);
@@ -70,8 +70,8 @@ class SearchController extends Controller
             ->paginate($page_size);
         $data['categories'] = Category::where('name', 'like', "%$query%")
             ->where('status', '>=', 0)
-            ->orderBy('parent_id','asc')
-            ->orderBy('count_follows','desc')
+            ->orderBy('parent_id', 'asc')
+            ->orderBy('count_follows', 'desc')
             ->paginate($page_size);
 
         if (!empty($query) && $total) {
@@ -128,8 +128,8 @@ class SearchController extends Controller
         $query              = request('q');
         $data['categories'] = Category::where('status', '>=', 0)
             ->where('name', 'like', "%$query%")
-            ->orderBy('parent_id','asc')
-            ->orderBy('count_follows','desc')
+            ->orderBy('parent_id', 'asc')
+            ->orderBy('count_follows', 'desc')
             ->paginate($page_size);
         $data['query'] = $query;
         return view('search.categories')->withData($data);
@@ -183,7 +183,6 @@ class SearchController extends Controller
             $article->created_at  = \Carbon\Carbon::parse($article->created_at);
             $article->updated_at  = \Carbon\Carbon::parse($article->updated_at);
             $article->description = str_limit(strip_tags($article->body), 250);
-            $article->image_url   = get_full_url($article->image_url);
             $article->target_url  = "http://haxibiao.com/article/" . $article->id;
         }
         return $articles_hxb;

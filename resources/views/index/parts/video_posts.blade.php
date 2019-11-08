@@ -6,7 +6,9 @@
      <div class="video-item vt">
        <div class="thumb">
          <a href="/video/{{$video->id}}" target="_blank">
-           <img src="{{ $article->cover }}" alt="{{ $article->title ?: $article->get_description() }}">  
+          @if(!empty($article->cover))
+           <img src="{{ $article->cover }}" alt="{{ $article->subject ?: $article->summary }}">  
+          @endif
            <i class="duration"> 
              @sectominute($video->duration)
            </i>
@@ -15,7 +17,7 @@
        </div>
        <ul class="info-list">
          <li class="video-title">
-           <a target="_blank" href="/video/{{$video->id}}">{{ $article->title ?: $article->get_description() }}</a>
+           <a target="_blank" href="/video/{{$video->id}}">{{ $article->subject ?: $article->summary }}</a>
          </li>
          <li>
            <p class="subtitle single-line">{{ $article->hits }}次播放</p>

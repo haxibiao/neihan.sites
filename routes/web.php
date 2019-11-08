@@ -14,6 +14,10 @@
 Auth::routes();
 Route::pattern('id', '\d+');
 
+Route::get('/debug-sentry', function () {
+    throw new Exception('测试sentry是配置是否正常');
+});
+
 Route::get('/', 'IndexController@index');
 
 //隐私政策
@@ -96,44 +100,6 @@ Route::resource('/image', 'ImageController');
 Route::get('/video/list', 'VideoController@list');
 Route::get('/video/{id}/process', 'VideoController@processVideo');
 Route::resource('/video', 'VideoController');
-
-//后台
-Route::get('/admin', 'AdminController@index');
-//管理用户
-Route::get('/admin/users', 'AdminController@users');
-Route::get('/admin/users-search', 'AdminController@usersSearch')->name('admin.users_search');
-
-//seo config
-Route::get('/admin/seo-config', 'AdminController@seoConfig');
-Route::post('/admin/save-seo-config', 'AdminController@saveSeoConfig')->name('admin.save_seo_config');
-//友情链接
-Route::get('/admin/friend-links', 'AdminController@friendLinks');
-Route::post('/admin/add-friend-links', 'AdminController@addFriendLink')->name('admin.add_friend_link');
-Route::post('/admin/delete-friend-link', 'AdminController@deleteFriendLink')->name('admin.delete_friend_link');
-//文章推送
-Route::get('/admin/article-push', 'AdminController@article_push');
-Route::post('/admin/push-article', 'AdminController@push_article')->name('admin.push_article');
-//stick文章
-Route::get('/admin/stick-articles', 'AdminController@articleSticks');
-Route::post('/admin/stick-article', 'AdminController@articleStick')->name('admin.stick_article');
-Route::post('/admin/delete-stick-article', 'AdminController@deleteStickArticle')->name('admin.delete_stick_article');
-//stick视频
-Route::get('/admin/stick-videos', 'AdminController@videoSticks');
-Route::post('/admin/stick-videos', 'AdminController@videoStick')->name('admin.stick_video');
-Route::post('/admin/delete-stick-videos', 'AdminController@deleteStickVideos')->name('admin.delete_stick_video');
-//作品批量管理
-Route::any('/admin/articles', 'AdminController@articles');
-//app下载页配置
-Route::get('/admin/app-download-config', 'AdminController@showAppDownloadConfig');
-Route::post('/admin/app-download-config-save', 'AdminController@saveAppDownloadConfig');
-
-//stickcategory
-Route::get('/admin/stick-categorys', 'AdminController@categorySticks');
-Route::post('/admin/stick-category', 'AdminController@categoryStick')->name('admin.stick_category');
-Route::post('/admin/delete-stick-category', 'AdminController@deleteStickCategory')->name('admin.delete_stick_category');
-Route::get('/admin/stick-video-categorys', 'AdminController@videoCategorySticks');
-Route::post('/admin/stick-video-category', 'AdminController@videoCategoryStick')->name('admin.stick_video_category');
-Route::post('/admin/delete-stick-video-category', 'AdminController@deleteStickVideoCategory')->name('admin.delete_stick_video_category');
 
 //logs
 Route::get('/logshow', 'LogController@logShow');

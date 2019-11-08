@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Resource;
 
@@ -26,7 +27,7 @@ class Video extends Resource
         return '视频';
     }
 
-    public static $group = '基础内容';
+    public static $group = '内容管理';
 
     public function fields(Request $request)
     {
@@ -34,11 +35,20 @@ class Video extends Resource
             ID::make()->sortable(),
             HasOne::make('出处', 'article', Article::class),
             BelongsTo::make('作者', 'user', User::class),
-            // FIXME: 这里下次修改，本次作为初始化 nova
+            Image::make('封面', 'cover')
+                ->thumbnail(function () {
+                    return $this->cover;
+                })->preview(function () {
+                return $this->cover;
+            })->disableDownload(),
+            Text::make('status', 'status')->onlyOnDetail(),
+            Text::make('path', 'path')->onlyOnDetail(),
+            Text::make('disk', 'disk')->onlyOnDetail(),
+            Text::make('hash', 'hash')->hideFromIndex(),
+            Text::make('标题', 'title')->onlyOnForms(),
             Text::make('视频链接', function () {
                 return '<a href="' . $this->url . '" class="no-underline dim text-primary font-bold">
-                ' . $this->title . '
-                </a>';
+                ' . '视频链接' . '</a>';
             })->asHtml(),
         ];
     }

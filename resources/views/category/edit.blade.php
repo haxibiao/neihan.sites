@@ -20,7 +20,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <div class="avatar-category"><img src="{{ $category->logoUrl ? : '/images/dissertation_04.jpg' }}" alt="" id="previewImage"></div>
+                        <div class="avatar-category"><img src="{{ $category->logoUrl ? : '/images/dissertation_01.jpg' }}" alt="" id="previewImage"></div>
                     </td>
                     <td>
                         <a rel="noreferrer" class="btn-base btn-hollow btn-md btn-file">
@@ -30,7 +30,7 @@
                 </tr>
                  <tr style="display: none;" id="upload_app_logo">
                         <td>
-                            <div class="avatar-category"><img src="{{ $category->logo_app ? $category->logo_app : '/images/dissertation_04.jpg' }}" alt="" id="preview_app_ogo"></div>
+                            <div class="avatar-category"><img src="{{ $category->logo_app ? $category->logo_app : '/images/dissertation_01.jpg' }}" alt="" id="preview_app_ogo"></div>
                         </td>
                         <td>
                             <a rel="noreferrer" class="btn-base btn-hollow btn-md btn-file">

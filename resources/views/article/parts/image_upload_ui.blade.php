@@ -78,13 +78,13 @@
                 });
 
                 //默认最后选的图做主配图
-                var image_url_el = $('input[name="image_url"]');
-                image_url_el.val(img_url);
+                var cover_el = $('input[name="cover"]');
+                cover_el.val(img_url);
 
                 if(!is_video){
-                    $('<input type="hidden" name="images[]" value="' + img_url + '">').insertBefore(image_url_el);
+                    $('<input type="hidden" name="images[]" value="' + img_url + '">').insertBefore(cover_el);
                 } else {
-                    $('<input type="hidden" name="videos[]" value="' + video_id + '">').insertBefore(image_url_el);
+                    $('<input type="hidden" name="videos[]" value="' + video_id + '">').insertBefore(cover_el);
                 }
 
                 //更新已选配图区,视频不算配图

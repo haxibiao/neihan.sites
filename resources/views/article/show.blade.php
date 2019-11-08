@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title') {{ $article->get_title() }} -{{ config('app.name_cn') }}  @endsection
+@section('title') {{ $article->subject }} -{{ config('app.name_cn') }}  @endsection
 @section('keywords') {{ $article->keywords }} @endsection
-@section('description') {{ $article->get_description() }} @endsection
+@section('description') {{ $article->summary }} @endsection
 
 @push('seo_og_result') 
 <meta property="og:type" content="{{ $article->type }}" />
 <meta property="og:url" content="https://{{ get_domain() }}/article/{{ $article->id }}" />
-<meta property="og:title" content="{{ $article->title }}" />
-<meta property="og:description" content="{{ $article->get_description() }}" />
-<meta property="og:image" content="{{ empty($article->image_url)?'':$article->cover }}" />
+<meta property="og:title" content="{{ $article->subject }}" />
+<meta property="og:description" content="{{ $article->summary }}" />
+<meta property="og:image" content="{{ $article->cover }}" />
 <meta name="weibo: article:create_at" content="{{ $article->created_at }}" />
 <meta name="weibo: article:update_at" content="{{ $article->updated_at }}" />
 @endpush  
@@ -24,7 +24,7 @@
 <div id="detail">
     <div class="main">
         <article>
-          <h1>{{ $article->title }}</h1>
+          <h1>{{ $article->subject }}</h1>
           {{-- 作者 --}}
           @include('article.parts.author')
           {{-- 内容 --}}
@@ -49,10 +49,10 @@
           {{-- 作者文章翻页 --}}
          {{--  <div class="page-turning">
             <div class="prev">
-              <a href="/article/{{ $article->id }}">上一篇:《{{ $article->title }}》</a>
+              <a href="/article/{{ $article->id }}">上一篇:《{{ $article->subject }}》</a>
             </div>
             <div class="next">
-              <a href="/article/{{ $article->id }}">下一篇:《{{ $article->title }}》</a>
+              <a href="/article/{{ $article->id }}">下一篇:《{{ $article->subject }}》</a>
             </div>
           </div> --}}
           {{-- 底部作者信息 --}}
@@ -81,7 +81,7 @@
 
             <div class="share-circle">
               <a data-action="weixin-share" data-toggle="tooltip" data-toggle="tooltip" data-placement="top" title="分享到微信"><i class="iconfont icon-weixin1 weixin"></i></a>
-              <a href="javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f='http://v.t.sina.com.cn/share/share.php?appkey=1881139527',u=z||d.location,p=['&amp;url=',e(u),'&amp;title=',e(t||d.title),'&amp;source=',e(r),'&amp;sourceUrl=',e(l),'&amp;content=',c||'gb2312','&amp;pic=',e(p||'')].join('');function%20a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,'','','', '推荐 @ {{$article->user->name}} 的文章《{{$article->title}}》（ 分享自 {{ config('app.name_cn') }} ）','{{ url('/article/'.$article->id) }}?source=weibo','页面编码gb2312|utf-8默认gb2312'));" data-toggle="tooltip" data-placement="top" title="分享到微博"><i class="iconfont icon-sina weibo"></i></a>
+              <a href="javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f='http://v.t.sina.com.cn/share/share.php?appkey=1881139527',u=z||d.location,p=['&amp;url=',e(u),'&amp;title=',e(t||d.title),'&amp;source=',e(r),'&amp;sourceUrl=',e(l),'&amp;content=',c||'gb2312','&amp;pic=',e(p||'')].join('');function%20a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,'','','', '推荐 @ {{$article->user->name}} 的文章《{{$article->subject}}》（ 分享自 {{ config('app.name_cn') }} ）','{{ url('/article/'.$article->id) }}?source=weibo','页面编码gb2312|utf-8默认gb2312'));" data-toggle="tooltip" data-placement="top" title="分享到微博"><i class="iconfont icon-sina weibo"></i></a>
               {{-- <a data-toggle="tooltip" data-placement="top" title="下载微博长图片"><i class="iconfont icon-zhaopian other"></i></a> --}}
             </div>
           </div>
@@ -141,7 +141,7 @@
       url="{{ url('/article/'.$article->id) }}"
       article_id="{{ $article->id }}"
       author="{{ $article->user->name }}"
-      title="{{ $article->title }}"></share>
+      title="{{ $article->subject }}"></share>
   </side-tool>
 @endpush
 

@@ -27,7 +27,7 @@ trait ChatAttrs
     public function getLastMessageAttribute()
     {
         $messageModel = $this->messages()->latest('id')->first();
-        return $messageModel ? $messageModel->message : '';
+        return $messageModel ? $messageModel : null;
     }
 
     public function getClearUnreadAttribute()

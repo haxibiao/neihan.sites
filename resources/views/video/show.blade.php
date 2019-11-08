@@ -5,16 +5,16 @@
 @extends('layouts.black')
 
 @section('title')
-  {{ $article->title ?: $article->get_description() }} -{{ empty($article->category)?config("app.name_cn"): $article->category->name}}
+  {{ $article->subject ?: $article->summary }} -{{ empty($article->category)?config("app.name_cn"): $article->category->name}}
 @stop
 
 @push('seo_og_result')
 @if($video->article)
 <meta property="og:type" content="video" />
 <meta property="og:url" content="https://{{ get_domain() }}/video/{{ $video->article->video_id }}" />
-<meta property="og:title" content="{{ $video->article->title }}" />
-<meta property="og:description" content="{{ $video->article->get_description() }}" />
-<meta property="og:image" content="{{ $video->cover }}" />
+<meta property="og:title" content="{{ $video->article->subject }}" />
+<meta property="og:description" content="{{ $video->article->summary }}" />
+<meta property="og:image" content="{{ $video->coverUrl }}" />
 <meta name="weibo: article:create_at" content="{{ $video->article->created_at }}" />
 <meta name="weibo: article:update_at" content="{{ $video->article->updated_at }}" />
 @endif
@@ -37,7 +37,7 @@
                 <div class="playerArea col-sm-8">
                     <div class="h5-player">
                         <div class="embed-responsive embed-responsive-16by9">
-                            <video controls="" poster="{{ $video->cover }}" preload="auto" autoplay="true">
+                            <video controls="" poster="{{ $video->coverUrl }}" preload="auto" autoplay="true">
                                 <source src="{{ $video->url }}" type="video/mp4">
                                 </source>
                             </video>

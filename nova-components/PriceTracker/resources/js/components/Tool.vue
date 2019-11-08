@@ -26,10 +26,13 @@
 </template>
 
 <script>
+var dy = require("./douyin");
 export default {
   data() {
     return {
-      link: ""
+      link: "",
+      user_id: "75984155221",
+      _signature: ""
     };
   },
   methods: {
@@ -60,6 +63,13 @@ export default {
             "发布视频失败，联系 zengdawei@haxibiao.com 或者向其他的小哥求助"
           );
         });
+    },
+    init() {
+      var m = dy.__M.require(
+        "douyin_falcon:node_modules/byted-acrawler/dist/runtime"
+      );
+
+      this._signature = m.sign(this.user_id);
     }
   }
 };

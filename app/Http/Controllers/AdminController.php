@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Category;
 use App\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Storage;
 
+//TODO: 整个 /admin 功能转移进入nova
 class AdminController extends Controller
 {
     public function __construct()
@@ -29,19 +30,18 @@ class AdminController extends Controller
 
     public function usersSearch()
     {
-        // dd(request()->all());
         $query = User::orderBy('id', 'desc');
         if (!empty($name = request('name_email'))) {
             $query = $query->orWhere('name', 'like', "%$name%")->orWhere('email', 'like', "%$name%");
         }
         if (request('is_admin')) {
-            $query = $query->where('is_admin', 1);
+            $query = $query->where('role_id', 2);
         }
         if (request('is_editor')) {
-            $query = $query->where('is_editor', 1);
+            $query = $query->where('role_id', 1);
         }
         if (request('is_signed')) {
-            $query = $query->where('is_signed', 1);
+            $query = $query->where('role_id', 1);
         }
         $users = $query->paginate(50);
         return view('admin.users')->withUsers($users);
@@ -245,6 +245,7 @@ class AdminController extends Controller
 
     public function seoConfig()
     {
+        //TODO: 改为写SEO表的方式，通过nova统一管理
         $config           = (object) [];
         $config->seo_meta = '';
         $config->seo_push = '';
@@ -314,16 +315,17 @@ class AdminController extends Controller
 
     public function push_article(Request $request)
     {
+        //TODO: 这个做个job，文章添加event observered 后自动推送
         $urls   = [];
         $number = $request->number;
         $type   = $request->type;
 
         switch ($type) {
-            // case 'pandaNumber':
-            //     $appid = config('seo.' . get_domain_key() . '.articlePush.pandaNumber.appid');
-            //     $token = config('seo.' . get_domain_key() . '.articlePush.pandaNumber.token');
-            //     $api   = 'http://data.zz.baidu.com/urls?appid=' . $appid . '&token=' . $token . '&type=realtime';
-            //     break;
+            case 'pandaNumber':
+                $appid = config('seo.' . get_domain_key() . '.articlePush.pandaNumber.appid');
+                $token = config('seo.' . get_domain_key() . '.articlePush.pandaNumber.token');
+                $api   = 'http://data.zz.baidu.com/urls?appid=' . $appid . '&token=' . $token . '&type=realtime';
+                break;
             case 'baiduNumber':
                 $token = config('seo.' . get_domain_key() . '.articlePush.baiduNumber.token');
                 $api   = 'http://data.zz.baidu.com/urls?site=' . env('APP_URL') . '&token=' . $token;
@@ -367,28 +369,28 @@ class AdminController extends Controller
      */
     public function articles(Request $request)
     {
-        if($request->isMethod('post')){
-            $parmas = $request->all();
+        if ($request->isMethod('post')) {
+            $parmas      = $request->all();
             $article_ids = explode(',', $parmas['article_ids']);
 
-            if($parmas['type'] == 'deleteArticles'){
-                DB::table('articles')->whereIn('id',$article_ids)->update(['status'=>-1]);
-            }else if($parmas['type'] == 'sendArctiles'){
-                DB::table('articles')->whereIn('id',$article_ids)->update(['status'=>1]);
-            }else{
+            if ($parmas['type'] == 'deleteArticles') {
+                DB::table('articles')->whereIn('id', $article_ids)->update(['status' => -1]);
+            } else if ($parmas['type'] == 'sendArctiles') {
+                DB::table('articles')->whereIn('id', $article_ids)->update(['status' => 1]);
+            } else {
                 $category = Category::whereName($parmas['category'])->first();
-                if(!$category){
+                if (!$category) {
                     return '专题不存在';
                 }
                 $category_id = $category->id;
             }
 
-            if($parmas['type'] == 'changeCategory'){
-                DB::table('articles')->whereIn('id',$article_ids)->update(['category_id'=>$category_id]);
-            }else if($parmas['type'] == 'addCategory'){
-                $articles = Article::whereIn('id',$article_ids)->get();
+            if ($parmas['type'] == 'changeCategory') {
+                DB::table('articles')->whereIn('id', $article_ids)->update(['category_id' => $category_id]);
+            } else if ($parmas['type'] == 'addCategory') {
+                $articles = Article::whereIn('id', $article_ids)->get();
                 foreach ($articles as $article) {
-                    $article->categories()->attach($category_id,['submit' => '已收录']);
+                    $article->categories()->attach($category_id, ['submit' => '已收录']);
                 }
 
             }
@@ -396,10 +398,9 @@ class AdminController extends Controller
             return redirect()->back();
         }
 
-        $articles = Article::orderByDesc('id');
+        $articles         = Article::orderByDesc('id');
         $data['articles'] = $articles->paginate(10);
 
-        
         return view('admin.articles')->withData($data);
     }
 
@@ -413,8 +414,8 @@ class AdminController extends Controller
     {
         $data = [];
 
-        if(Storage::exists('appDowload_config')){
-            $json  = Storage::get('appDowload_config');
+        if (Storage::exists('appDowload_config')) {
+            $json = Storage::get('appDowload_config');
             $data = json_decode($json, true);
         }
 
@@ -429,7 +430,8 @@ class AdminController extends Controller
      */
     public function saveAppDownloadConfig(Request $request)
     {
-        $json   = json_encode($request->all());
+        //TODO: 改为写Aso 表的方式，避免web server json丢失了这个数据
+        $json = json_encode($request->all());
         //写入缓存
         Storage::put("appDowload_config", $json);
 

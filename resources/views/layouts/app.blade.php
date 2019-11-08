@@ -10,7 +10,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    {{--{!! get_seo_meta() !!}--}}
+    {!! get_seo_meta() !!}
 
     <title> @yield('title') </title>
     

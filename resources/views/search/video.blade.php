@@ -14,10 +14,10 @@
 					</div>
 					<div class="note-list">
 						@foreach($data['video'] as $article)
-						<li class="article-item {{ $article->hasImage() ? 'have-img' : '' }}">
-					      @if($article->hasImage())
+						<li class="article-item {{ $article->cover ? 'have-img' : '' }}">
+					      @if($article->cover)
 							  <a class="wrap-img" href="{{ $article->url }}" target="_blank">
-							      <img src="{{ $article->primaryImage() }}" alt="">
+							      <img src="{{ $article->cover }}" alt="">
 							  </a>
 						  @endif
 						  <div class="content">
@@ -37,7 +37,7 @@
 						      </div>
 						    </div>
 						    <a class="title" target="_blank" href="{{ $article->url }}">
-						        <span>{!! $article->title !!}</span>
+						        <span>{!! $article->subject !!}</span>
 						    </a>
 						    <p class="abstract">
 						      {!! $article->description !!}

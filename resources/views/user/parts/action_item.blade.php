@@ -13,9 +13,9 @@
     }
 @endphp
 {{-- 发布 --}}
-<li class="{{ $item->hasImage() ? 'content-item have-img' : 'content-item' }}">
+<li class="{{ $item->cover ? 'content-item have-img' : 'content-item' }}">
   <a class="wrap-img" href="{{ $item->type == 'videos' ? '/video/'.$item->video_id : '/article/'.$item->id }}" target="_blank">
-      <img src="{{ $item->primaryImage() }}" alt="">
+      <img src="{{ $item->cover }}" alt="">
       @if($item->type == 'video')
         <span class="rotate-play">
             <i class="iconfont icon-shipin"></i>
@@ -64,7 +64,7 @@
 
 <li class="article-item have-img">
     <a class="wrap-img" href="{{ $item->url }}" target="_blank">
-      <img src="{{ $item->primaryImage() }}" alt="">
+      <img src="{{ $item->cover }}" alt="">
     </a>
     <div class="content">
         <div class="author">
@@ -112,7 +112,7 @@
 @endphp
     @if($item && $like->liked_type == "articles")
         <li class="article-item have-img">
-            <a class="wrap-img" href="/article/{{ $item->id }}" target="_blank"><img src="{{ $item->primaryImage() }}" alt=""></a>
+            <a class="wrap-img" href="/article/{{ $item->id }}" target="_blank"><img src="{{ $item->cover }}" alt=""></a>
             <div class="content">
                 <div class="author">
                     <a class="avatar" target="_blank" href="/user/{{ $action->user->id }}"><img src="{{ $action->user->avatarUrl }}" alt=""></a>
@@ -152,7 +152,7 @@
         @if($article)
         {{-- 点赞comment --}}
         <li class="article-item have-img">
-            <a class="wrap-img" href="/article/{{ $article->id }}" target="_blank"><img src="{{ $article->primaryImage() }}" alt=""></a>
+            <a class="wrap-img" href="/article/{{ $article->id }}" target="_blank"><img src="{{ $article->cover }}" alt=""></a>
             <div class="content">
                 <div class="author">
                     <a class="avatar" target="_blank" href="/user/{{ $action->user->id }}"><img src="{{ $action->user->avatarUrl }}" alt=""></a>
@@ -167,7 +167,7 @@
                         <span class="time"> 喜欢了作品的评论 · @timeago($like->created_at)</span>
                     </div>
                 </div>
-                <a class="title" target="_blank" href="/article/{{ $article->id }}"><span>{{ $article->title }}</span></a>
+                <a class="title" target="_blank" href="/article/{{ $article->id }}"><span>{{ $article->subject }}</span></a>
                 <p class="abstract">
                     {{ $item->body }}
                 </p>

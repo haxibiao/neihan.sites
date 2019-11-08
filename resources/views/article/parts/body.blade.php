@@ -1,6 +1,6 @@
 {{-- @if(!empty($article->description))
 <p class="lead">
-  {{ $article->get_description() }}
+  {{ $article->summary }}
 </p>
 @endif --}}
 <p>

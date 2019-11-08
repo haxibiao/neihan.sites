@@ -19,7 +19,7 @@
     <div class="meta">最近更新</div>
     <div class="recent-update">
        @foreach($user->articles()->orderBy('id','desc')->take(3)->get() as $article)
-        <a class="new single-line" target="_blank" href="/article/{{ $article->id }}">{{ $article->title }}</a>
+        <a class="new single-line" target="_blank" href="/article/{{ $article->id }}">{{ $article->subject }}</a>
         @endforeach
     </div>
   </div>

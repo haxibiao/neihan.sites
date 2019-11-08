@@ -9,7 +9,7 @@
           <div class="top-logo">
             <img class="logo" src="/logo/{{ $app }}.com.small.png" alt="app logo">
             <div class="info">
-              <div class="title">点墨阁</div>
+            <div class="title">{{env('APP_NAME_CN')}}</div>
               <div class="slogan">随时分享你的快乐瞬间</div>
             </div>
           </div>
@@ -33,7 +33,7 @@
             <div class="col-sm-12 col-sm-offset-2 text-block">
               <h3>实时热搜、搞笑视频、内涵段子、原创文学</h3>
               <h6>你是否想了解最新的热门搜索内容？你是否想观看最搞笑的段子和视频？</br>
-              你是否想分享你的原创文学成为作者大大？点墨阁 app一网打尽！你想要我们都有!</h6>
+              你是否想分享你的原创文学成为作者大大？{{env('APP_NAME_CN')}} app一网打尽！你想要我们都有!</h6>
             </div>
           {{--   <div class="col-sm-12 game-imgs">
               <img src="/images/app/pubg_old.jpg" alt="Misc pic1" class="game-img" alt="game-logo">
@@ -88,7 +88,7 @@
         <div class="bottom-logo">
           <img src="/logo/{{ $app }}.com.small.png" alt="Misc logo">
           <div class="info">
-            <div class="title">点墨阁</div>
+          <div class="title">{{env('APP_NAME_CN')}}</div>
               <div class="slogan">随时分享你的快乐瞬间</div>
           </div>
         </div>

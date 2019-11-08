@@ -18,16 +18,16 @@
   <div class="panel-body">
     @foreach($articles as $article)
     <div class="media">
-      @if(!empty($article->hasImage()))
+      @if(!empty($article->cover))
       <a class="pull-left" href="/article/{{ $article->id }}">
-        <img class="media-object" src="{{ $article->primaryImage() }}" alt="{{ $article->title }}" style="max-width: 200px">
+        <img class="media-object" src="{{ $article->cover }}" alt="{{ $article->subject }}" style="max-width: 200px">
       </a>
       @endif
       <div class="media-body">
         <a href="/article/{{ $article->id }}">
-          <h4 class="media-heading">{{ $article->title }}</h4>
+          <h4 class="media-heading">{{ $article->subject }}</h4>
         </a>
-        <p>{{ $article->get_description() }}</p>
+        <p>{{ $article->summary }}</p>
         @if($article->delay_time)
           <p class="small text-info">已启动定时发布于: {{ $article->delay_time }} ({{ diffForHumansCN($article->delay_time) }})</p>
         @endif

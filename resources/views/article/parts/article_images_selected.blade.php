@@ -3,10 +3,10 @@
     <div class="row" id="article_images">
         <div class="col-xs-4 hide" id="article_image_template">
             <p class="text-center">
-                <img src="/img/1.jpg" alt="" class="img img-responsive">
+                <img src="/images/1.jpg" alt="" class="img img-responsive">
                 
                 <label class="radio text-center">
-                  <input type="radio" name="primary_image" value="/img/1.jpg">
+                  <input type="radio" name="primary_image" value="/images/1.jpg">
                   设为主要图
                 </label>
                 
@@ -18,7 +18,7 @@
                     <img src="{{ $image->path_small() }}" alt="" class="img img-responsive">
                     
                     <label class="radio text-center">
-                      <input type="radio" name="primary_image" value="{{ $image->path_small() }}" {{ $image->path_small() == $article->image_url ? 'checked':'' }}>
+                      <input type="radio" name="primary_image" value="{{ $image->path_small() }}" {{ $image->path_small() == $article->cover ? 'checked':'' }}>
                       设为主要图
                     </label>
                     

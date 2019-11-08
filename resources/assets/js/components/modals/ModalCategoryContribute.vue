@@ -70,7 +70,7 @@ export default {
   mounted() {
     this.fetchData();
     this.listenScrollBottom();
-    //TODO:: bind ScrollToBottom, load more ..
+    //OPTIMIZE:: bind ScrollToBottom, load more ..
   },
 
   methods: {
@@ -90,7 +90,7 @@ export default {
     fetchMore() {
       ++this.page2;
       if (this.lastPage > 0 && this.page2 > this.lastPage) {
-        //TODO: ui 提示  ...
+        //OPTIMIZE: ui 提示  ...
         return;
       }
       this.fetchData();

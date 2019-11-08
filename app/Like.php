@@ -8,11 +8,13 @@ use App\Model;
 use App\Traits\LikeRepo;
 use App\Traits\LikeResolvers;
 use App\User;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Like extends Model
 {
     use LikeResolvers;
     use LikeRepo;
+    use SoftDeletes;
 
     protected $fillable = [
         'user_id',

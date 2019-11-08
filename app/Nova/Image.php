@@ -31,6 +31,18 @@ class Image extends Resource
         'id',
     ];
 
+    public static $group = '内容管理';
+
+    public static function label()
+    {
+        return '图片';
+    }
+
+    public static function singularLabel()
+    {
+        return '图片资源';
+    }
+
     /**
      * Get the fields displayed by the resource.
      *

@@ -146,17 +146,6 @@
 
 @push('scripts')
 	<script>
-		// var route_path = location.search.replace('?','');
-		// switch(route_path) {
-		// 	case 'new':
-		// 		$('#category-editor h3').text('新建专题');
-		// 		$('#category-editor .avatar-category img').attr('src','/images/new-category.png');
-		// 		break;
-		// 	default:
-		// 			$('#category-editor h3').text('编辑专题');
-		// 			$('#category-editor .avatar-category img').attr('src','/images/dissertation_04.jpg');
-		// 		break;
-		// };
 
 		//选择图片后预览图片
 		function preview(input,target) {

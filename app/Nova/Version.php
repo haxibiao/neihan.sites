@@ -50,7 +50,7 @@ class Version extends Resource
         return '版本';
     }
 
-    public static $group = 'App管理';
+    public static $group = '系统管理';
 
     public static $parent = null;
 

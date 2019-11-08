@@ -36,7 +36,7 @@
 
                 <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                     {!! Form::label('title', '标题(非必填)') !!}
-					{!! Form::text('title', $video->article->title, ['class' => 'form-control']) !!}
+					{!! Form::text('title', $video->article->subject, ['class' => 'form-control']) !!}
                     <small class="text-danger">
                         {{ $errors->first('title') }}
                     </small>
@@ -96,7 +96,7 @@
                                     {{-- trick here, need custom replace id="**" attribute to get label for radio work --}}
                                     @php
                                         //表示图片的初始选中状态
-                                        $checked = $article->image_url == $cover;
+                                        $checked = $article->cover == $cover;
                                     @endphp
                                     {!! Form::radio('cover', $cover, $checked, ['id' => $coverIndex]) !!}
                                     <label for="cover">

@@ -1,18 +1,18 @@
 {{-- 阅读更多  详细版 --}}
 <div class="read-more">
 	<h4 class="plate-title underline"><span>继续阅读</span></h4>
-	<div class="article-item {{ $article->hasImage() ? 'have-img' : '' }}">
-	  @if($article->hasImage())
+	<div class="article-item {{ $article->cover ? 'have-img' : '' }}">
+	  @if($article->cover)
 	    <a class="wrap-img" href="/article/{{ $article->id }}" target="_blank">
-	        <img src="{{ $article->primaryImage() }}" alt="{{$article->title}}">
+	        <img src="{{ $article->cover }}" alt="{{$article->subject}}">
 	    </a>
 	  @endif
 	  <div class="content">
 	    <a class="title" target="_blank" href="/article/{{ $article->id }}">
-	        <span>{{ $article->title }}</span>
+	        <span>{{ $article->subject }}</span>
 	    </a>
 	    <p class="abstract">
-	      {{ $article->get_description() }}
+	      {{ $article->summary }}
 	    </p>
 	    <div class="meta">
 	      <a target="_blank" href="/article/{{ $article->id }}" class="browse_meta">
@@ -28,18 +28,18 @@
 	    </div>
 	  </div>
 	</div>
-	<div class="article-item {{ $article->hasImage() ? 'have-img' : '' }}">
-	  @if($article->hasImage())
+	<div class="article-item {{ $article->cover ? 'have-img' : '' }}">
+	  @if($article->cover)
 	    <a class="wrap-img" href="/article/{{ $article->id }}" target="_blank">
-	        <img src="{{ $article->primaryImage() }}" alt="{{$article->title}}">
+	        <img src="{{ $article->cover }}" alt="{{$article->subject}}">
 	    </a>
 	  @endif
 	  <div class="content">
 	    <a class="title" target="_blank" href="/article/{{ $article->id }}">
-	        <span>{{ $article->title }}</span>
+	        <span>{{ $article->subject }}</span>
 	    </a>
 	    <p class="abstract">
-	      {{ $article->get_description() }}
+	      {{ $article->summary }}
 	    </p>
 	    <div class="meta">
 	      <a target="_blank" href="/article/{{ $article->id }}" class="browse_meta">

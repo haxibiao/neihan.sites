@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('title'){{ $question->title }}-{{ config("app.name_cn") }}问答@stop
-@section('description') {{config('seo.'.get_domain_key().'.description')  }} @stop
-@section('keywords') {{ config('seo.'.get_domain_key().'.keywords') }} @stop
+@section('description') {{ get_seo_description()  }} @stop
+@section('keywords') {{ get_seo_keywords() }} @stop
 
 @push('seo_metatags')
 <meta property="og:title" content="{{ $question->title }}" />

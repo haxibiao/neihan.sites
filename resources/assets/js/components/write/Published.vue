@@ -183,7 +183,7 @@ export default {
 		fetchMore() {
 			++this.page2;
 			if (this.lastPage > 0 && this.page2 > this.lastPage) {
-				//TODO: ui 提示  ...
+				//OPTIMIZE: ui 提示  ...
 				return;
 			}
 			this.fetchRecomand();

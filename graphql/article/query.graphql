@@ -1,83 +1,84 @@
 type Article {
-	id: Int!
-	type: String!
-	title: String
-	description: String
-	body: String
-	video_url: String
-	favorited: Int
-	time_ago: String!
-	liked: Boolean
-	liked_id: Int
-	cover: String
-	submit:Int,
-	hits: Int!
-	count_words: Int
-	count_likes: Int
-	count_replies: Int
-	count_comments: Int
-	count_tips: Int!
-	pivot_time_ago: String
-	pivot_status: String
-	pivot_category: Category
-	user: User!
-	video: Video
-	images: [Image!]
-	artilceImages: [Image!]
-	category: Category
-	categories: [Category!]
-	collection: Collection
-	tips: [Tip!]
-	comments: [Comment]!
-	created_at: DateTime!
-	updated_at: DateTime!
-	isAdPosition: Boolean
-	answered_status: Int
-	question_reward: Int
-	issue: Issue
-	remark:String
+  id: Int!
+  type: String!
+  title: String @rename(attribute: "subject")
+  subject: String
+  description: String
+  body: String
+  video_url: String
+  favorited: Int
+  time_ago: String!
+  liked: Boolean
+  liked_id: Int
+  cover: String
+  submit: Int
+  hits: Int!
+  count_words: Int
+  count_likes: Int
+  count_replies: Int
+  count_comments: Int
+  count_tips: Int!
+  pivot_time_ago: String
+  pivot_status: String
+  pivot_category: Category
+  user: User!
+  video: Video
+  images: [Image!]
+  artilceImages: [Image!]
+  category: Category
+  categories: [Category!]
+  collection: Collection
+  tips: [Tip!]
+  comments: [Comment]!
+  created_at: DateTime!
+  updated_at: DateTime!
+  isAdPosition: Boolean
+  answered_status: Int
+  question_reward: Int
+  issue: Issue
+  remark: String
 }
 
 type ArticlePaginator {
-	data: [Article!]!
-	paginatorInfo: PaginatorInfo!
+  data: [Article!]!
+  paginatorInfo: PaginatorInfo!
 }
 
 extend type Query @middleware(checks: ["auth:api"]) {
-	followedArticles(user_id: Int!): [Article!]
-		@paginate(defaultCount: 10, builder: "App\\Article@resolveFollowedArticles")
+  followedArticles(user_id: Int!): [Article!]
+    @paginate(defaultCount: 10, builder: "App\\Article@resolveFollowedArticles")
 
-	pendingArticles(category_id: Int): [Article!] @field(resolver: "App\\Article@resolvePendingArticles")
+  pendingArticles(category_id: Int): [Article!] @field(resolver: "App\\Article@resolvePendingArticles")
 
-	trashArticles: [Article!] @paginate(defaultCount: 10, builder: "App\\Article@resolveTrashArticles")
+  trashArticles: [Article!] @paginate(defaultCount: 10, builder: "App\\Article@resolveTrashArticles")
 }
 
 extend type Query {
-	recommendVideos(count: Int = 5, page: Int = 1): ArticlePaginator
-		@field(resolver: "App\\Article@resolveRecommendVideos")
-	RecommendVideos(count: Int = 5, page: Int = 1): ArticlePaginator
-		@field(resolver: "App\\Article@resolveRecommendVideos")
+  recommendVideos(count: Int = 5, page: Int = 1): ArticlePaginator
+    @field(resolver: "App\\Article@resolveRecommendVideos")
+  RecommendVideos(count: Int = 5, page: Int = 1): ArticlePaginator
+    @field(resolver: "App\\Article@resolveRecommendVideos")
 
-	article(id: Int! @eq): Article @find
-	recommendArticles: [Article!] @paginate(defaultCount: 10, builder: "App\\Article@resolveRecommendArticles")
+  article(id: Int! @eq): Article @find
+  recommendArticles: [Article!] @paginate(defaultCount: 10, builder: "App\\Article@resolveRecommendArticles")
 
-	articles(
-		status: ArticleStatus = public
-		user_id: Int
-		category_id: Int,
-		submit:ArticleSubmitStatus = SUBMITTED_SUBMIT
-		orderBy: [OrderByClause!] @orderBy
-	): [Article!] @paginate(defaultCount: 10, builder: "App\\Http\\GraphQL\\Queries\\ArticleQueries@articles")
+  articles(
+    status: ArticleStatus = public
+    user_id: Int
+    category_id: Int
+    submit: ArticleSubmitStatus = SUBMITTED_SUBMIT
+    orderBy: [OrderByClause!] @orderBy
+  ): [Article!] @paginate(defaultCount: 10, builder: "App\\Http\\GraphQL\\Queries\\ArticleQueries@articles")
 }
 
 enum ArticleStatus {
-	public @enum(value: 1)
-	draft @enum(value: 0)
+  public @enum(value: 1)
+  draft @enum(value: 0)
 }
 
-enum ArticleSubmitStatus{
-	REFUSED_SUBMIT @enum(value: -1)
-	REVIEW_SUBMIT @enum(value: 0)
-	SUBMITTED_SUBMIT @enum(value: 1)
-	ALL @enum(value: 10)
+enum ArticleSubmitStatus {
+  REFUSED_SUBMIT @enum(value: -1)
+  REVIEW_SUBMIT @enum(value: 0)
+  SUBMITTED_SUBMIT @enum(value: 1)
+  ALL @enum(value: 10)
 }

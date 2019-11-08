@@ -2,14 +2,13 @@
 
 namespace App\Nova;
 
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
-use Illuminate\Http\Request;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Report extends Resource
 {
@@ -36,11 +35,13 @@ class Report extends Resource
         'id',
     ];
 
+    public static $group = '用户管理';
+
     public static $with = ['user', 'reportable'];
 
     public static function label()
     {
-        return '举报列表';
+        return '举报';
     }
 
     public static function singularLabel()

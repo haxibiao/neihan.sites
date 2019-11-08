@@ -306,33 +306,52 @@ function stick_video($data, $auto = false)
 
 function get_seo_meta()
 {
-    $meta = '';
-    if (Storage::exists("seo_config")) {
-        $json   = Storage::get('seo_config');
-        $config = json_decode($json);
-        $meta   = $config->seo_meta;
-    }
-    return $meta;
+    // $meta = '';
+    // if (Storage::exists("seo_config")) {
+    //     $json   = Storage::get('seo_config');
+    //     $config = json_decode($json);
+    //     $meta   = $config->seo_meta;
+    // }
+    // return $meta;
+    return \App\Seo::getValue('百度', 'meta');
+
 }
 
 function get_seo_push()
 {
-    $push = '';
-    if (Storage::exists("seo_config")) {
-        $json   = Storage::get('seo_config');
-        $config = json_decode($json);
-        $push   = $config->seo_push;
-    }
-    return $push;
+    // $push = '';
+    // if (Storage::exists("seo_config")) {
+    //     $json   = Storage::get('seo_config');
+    //     $config = json_decode($json);
+    //     $push   = $config->seo_push;
+    // }
+    // return $push;
+    return \App\Seo::getValue('百度', 'push');
 }
 
 function get_seo_tj()
 {
-    $tj = '';
-    if (Storage::exists("seo_config")) {
-        $json   = Storage::get('seo_config');
-        $config = json_decode($json);
-        $tj     = $config->seo_tj;
-    }
-    return $tj;
+    // $tj = '';
+    // if (Storage::exists("seo_config")) {
+    //     $json   = Storage::get('seo_config');
+    //     $config = json_decode($json);
+    //     $tj     = $config->seo_tj;
+    // }
+    // return $tj;
+    return \App\Seo::getValue('统计', 'matomo');
+}
+
+function get_seo_title()
+{
+    return \App\Seo::getValue('TKD', 'title');
+}
+
+function get_seo_keywords()
+{
+    return \App\Seo::getValue('TKD', 'keywords');
+}
+
+function get_seo_description()
+{
+    return \App\Seo::getValue('TKD', 'description');
 }

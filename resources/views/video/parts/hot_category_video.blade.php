@@ -19,10 +19,10 @@
             @foreach($articles as $article)
                 <li class="game-video-item">
                     <a href="/video/{{ $article->video_id }}" target="{{ isDeskTop()? '_blank':'_self' }}" class="video-info">   
-                        <img class="video-photo"  id="video-img" src=" {{ $article->image_url }}">
+                        <img class="video-photo"  id="video-img" src=" {{ $article->cover }}">
                         <i class="hover-play"> </i>
                     </a>
-                    <a href="/video/{{ $article->video_id }}" target="{{ isDeskTop()? '_blank':'_self' }}"  class="video-title">{{ $article->title ?: $article->get_description() }}</a>
+                    <a href="/video/{{ $article->video_id }}" target="{{ isDeskTop()? '_blank':'_self' }}"  class="video-title">{{ $article->subject ?: $article->summary }}</a>
                     <div class="info">
                         <a class="user" href="/user/{{ $article->user_id }}">
                             <img src="{{ $article->user->avatarUrl }}" class="avatar">

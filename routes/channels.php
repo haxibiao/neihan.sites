@@ -19,7 +19,7 @@ Broadcast::channel('chat.{chatId}', function ($user, $chatId) {
     if ($user->canJoinChat($chatId)) {
         return [
             'id'     => $user->id,
-            'avatar' => $user->avatar, //Avatar 应该返回full url
+            'avatar' => $user->avatarUrl,
             'name'   => $user->name,
         ];
     }

@@ -14,6 +14,9 @@ class SendNewCommentNotification implements ShouldQueue
      *
      * @return void
      */
+
+    public $delay = 60;
+
     public function __construct()
     {
         //

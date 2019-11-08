@@ -29,6 +29,10 @@ trait WithdrawRepo
         }
 
         $transferResult = $this->makingAlipayTransfer();
+
+        // 本地调试 模拟提现
+        // $transferResult = ['order_id' => rand(10000000000, 100000000000), 'sub_msg' => '本地调试提现成功'];
+
         //账户余额不足 || 未知异常
         if (array_get($transferResult, 'sub_code') == 'PAYER_BALANCE_NOT_ENOUGH' || empty($transferResult)) {
             return null;
@@ -54,9 +58,9 @@ trait WithdrawRepo
      */
     private function makingAlipayTransfer()
     {
-        $outBizNo = $this->biz_no;//第三方交易流水
+        $outBizNo = $this->biz_no; //第三方交易流水
         $account  = $this->wallet->pay_account; //转账用户
-        $realName = $this->wallet->real_name;   //用户真实姓名
+        $realName = $this->wallet->real_name; //用户真实姓名
         $remark   = sprintf('【%s】%s', config('app.name_cn'), '提现');
         $amount   = $this->amount;
 

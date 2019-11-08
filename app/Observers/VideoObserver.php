@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Jobs\MakeVideoCovers;
 use App\Video;
 
 class VideoObserver
@@ -14,7 +15,9 @@ class VideoObserver
      */
     public function created(Video $video)
     {
-        //
+        //启动截取图片job
+        MakeVideoCovers::dispatch($video);
+
     }
 
     /**
@@ -25,29 +28,8 @@ class VideoObserver
      */
     public function updated(Video $video)
     {
-        //当视频被软删除 FIXME: 应该用下面的deleted事件，结合softDeletes
-        if ($video->status == -1) {
-            if ($article = $video->article) {
-
-                //下面的是旧代码，Video作为资源表，无需触发太多逻辑
-
-                // //软删除 article
-                // $article->status = -1;
-                // //更新article表上冗余的主分类
-                // $article->category_id = null;
-                // $article->save(['timestamps' => false]);
-
-                // //删除分类关系
-                // $categories = $article->categories;
-                // $article->categories()->detach();
-
-                // //减分类视频数
-                // foreach ($categories as $category) {
-                //     $category->count_videos = $category->count_videos - 1;
-                //     $category->save();
-                // }
-            }
-        }
+        //也截图，改动视频，多半动视频文件，统一后，不会忘记在其他repo 方法里 截图
+        MakeVideoCovers::dispatch($video);
     }
 
     /**

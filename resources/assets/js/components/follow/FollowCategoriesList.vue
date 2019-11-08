@@ -72,14 +72,14 @@ export default {
 		fetchMore() {
 			++this.page;
 			if (this.lastPage > 0 && this.page > this.lastPage) {
-				//TODO: ui 提示  ...
+				//OPTIMIZE: ui 提示  ...
 				return;
 			}
 			this.fetchData();
 		},
 		fetchData() {
 			var m = this;
-			//TODO:: loading ....
+			//OPTIMIZE:: loading ....
 			window.axios
 				.post(window.tokenize(this.apiUrl))
 				.then(function(response) {

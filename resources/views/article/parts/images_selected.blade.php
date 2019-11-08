@@ -19,7 +19,7 @@
                     <img src="{{ $image->thumbnail }}" alt="" class="img img-responsive">
                     
                     <label class="radio text-center">
-                      <input type="radio" name="primary_image" value="{{ $image->thumbnail }}" {{ $image->thumbnail == $article->image_url ? 'checked':'' }}>
+                      <input type="radio" name="primary_image" value="{{ $image->thumbnail }}" {{ $image->id == $article->image_id ? 'checked':'' }}>
                       设为主要图
                     </label>
                     

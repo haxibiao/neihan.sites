@@ -15,7 +15,7 @@ class AppConfig extends Resource
 
     public static $title = 'id';
 
-    public static $group = 'App管理';
+    public static $group = '系统管理';
 
     public static $search = [
         'id', 'name', 'group',

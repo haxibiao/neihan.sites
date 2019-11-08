@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Image;
 use App\Like;
 use App\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,7 +30,7 @@ class ArticleController extends Controller
 
     public function fakeUsers()
     {
-        return User::where('is_editor', 1)->get();
+        return User::where('role_id', 1)->get();
     }
 
     //TODO:: 爬虫往本站导入文章的接口，还需要慢慢review ...
@@ -101,12 +102,6 @@ class ArticleController extends Controller
         ]);
         $article->save(['timestamps' => false]);
 
-        //user
-        $user                 = User::findOrFail($user_id);
-        $user->count_articles = $user->articles()->count();
-        $user->count_words    = $user->articles()->sum('count_words');
-        $user->save();
-
         //category
         $category->count = $category->publishedArticles()->count();
         $category->save();
@@ -143,22 +138,6 @@ class ArticleController extends Controller
         //images
         $article->saveRelatedImagesFromBody();
 
-        if ($request->status == 1) {
-            //可能是发布了文章，需要统计文集的文章数，字数
-            $collections = $article->collection->get();
-            foreach ($collections as $collection) {
-                $collection->count       = $collection->articles()->count();
-                $collection->count_words = $collection->articles()->sum('count_words');
-                $collection->save();
-            }
-
-            //统计用户的文章数，字数
-            $user->count_articles = $user->articles()->count();
-            $user->count_words    = $user->articles()->sum('count_words');
-            $article->recordAction();
-            $user->save();
-        }
-
         return $article;
     }
 
@@ -167,11 +146,11 @@ class ArticleController extends Controller
         \DB::beginTransaction();
         try
         {
-            $comments = Comment::where('comment_id', '=', $id)->where('commentable_type', '=', 'articles')->delete();
-            $likes    = Like::where('liked_id', '=', $id)->where('liked_type', '=', 'articles')->delete();
-            $favorite = Favorite::where('faved_id', '=', $id)->where('faved_type', '=', 'articles')->delete();
-            $user     = \Auth::User();
-            $user->decrement('count_articles');
+            //彻底删除文章，删除相关数据
+            Comment::where('comment_id', '=', $id)->where('commentable_type', '=', 'articles')->delete();
+            Like::where('liked_id', '=', $id)->where('liked_type', '=', 'articles')->delete();
+            Favorite::where('faved_id', '=', $id)->where('faved_type', '=', 'articles')->delete();
+
             $result = Article::destroy($id);
             \DB::commit();
             return $result;

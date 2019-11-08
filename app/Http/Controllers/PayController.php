@@ -12,7 +12,7 @@ class PayController extends Controller
     {
         $amount  = request('amount');
         $message = urldecode(request('message'));
-        if (Auth::check() && Auth::user()->balance() > $amount) {
+        if (Auth::check() && Auth::user()->balance > $amount) {
             if (request('article_id')) {
                 $user    = getUser();
                 $article = \App\Article::findOrFail(request('article_id'));

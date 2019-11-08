@@ -48,11 +48,10 @@ class User extends Authenticatable
     // 冻结状态
     const STATUS_OFFLINE = 1;
 
-    // 默认用户名
-    const NAME_DEFAULT = '匿名墨友';
-
     // 默认头像
     const AVATAR_DEFAULT = 'storage/avatar/avatar-1.jpg';
+
+    const DEFAULT_NAME = '匿名用户';
 
     /**
      * The attributes that should be hidden for arrays.

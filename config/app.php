@@ -174,7 +174,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
 
         // Jenssegers\Agent\AgentServiceProvider::class,
-        // SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         // Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class,
         YueCode\Cos\QCloudCosServiceProvider::class,
         // Overtrue\LaravelPinyin\ServiceProvider::class,
@@ -230,6 +230,7 @@ return [
         'Form'         => Collective\Html\FormFacade::class,
         'Html'         => Collective\Html\HtmlFacade::class,
         'Pinyin'       => Overtrue\LaravelPinyin\Facades\Pinyin::class,
+        'QrCode'       => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         //自定义工具类
         'ImageUtils'   => App\Helpers\ImageUtils::class,
         'StringUtils'  => App\Helpers\StringUtils::class,

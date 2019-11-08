@@ -40,7 +40,7 @@ class User extends Resource
         return "用户";
     }
 
-    public static $group = '用户模块';
+    public static $group = '用户管理';
 
     /**
      * Get the fields displayed by the resource.
@@ -56,6 +56,18 @@ class User extends Resource
             Text::make('名字', 'name')
                 ->sortable()
                 ->rules('required', 'max:255'),
+
+            Text::make('性别', 'gender'),
+
+            Text::make('年龄', 'age'),
+
+            Text::make('发布内容数', function () {
+                return $this->allArticles()->count();
+            }),
+
+            Text::make('智慧点', 'glod'),
+
+            hasMany::make('钱包', 'wallets', Wallet::class),
 
             Text::make('邮件地址', 'email')
                 ->sortable()

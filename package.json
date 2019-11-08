@@ -14,7 +14,9 @@
         "build-CategoryCount": "cd nova-components/CategoryCount && npm run dev",
         "build-CategoryCount-prod": "cd nova-components/CategoryCount && npm run prod",
         "build-CategoryLikeCount": "cd nova-components/CategoryLikeCount && npm run dev",
-        "build-CategoryLikeCount-prod": "cd nova-components/CategoryLikeCount && npm run prod"
+        "build-CategoryLikeCount-prod": "cd nova-components/CategoryLikeCount && npm run prod",
+        "build-price-tracker": "cd nova-components/PriceTracker && npm run dev",
+        "build-price-tracker-prod": "cd nova-components/PriceTracker && npm run prod"
     },
     "devDependencies": {
         "axios": "^0.15.3",

@@ -20,14 +20,12 @@ class WapController extends Controller
         $gateway = Omnipay::create('Alipay_AopWap');
         $gateway->setSignType('RSA2'); // RSA/RSA2/MD5
 
-        $gateway->setAppId(config('pay')['alipay']['app_id']);
-        $gateway->setPrivateKey(config('pay')['alipay']['private_key']);
-        $gateway->setAlipayPublicKey(config('pay')['alipay']['public_key']);
+        $gateway->setAppId(config('pay')['hxb_alipay']['app_id']);
+        $gateway->setPrivateKey(config('pay')['hxb_alipay']['private_key']);
+        $gateway->setAlipayPublicKey(config('pay')['hxb_alipay']['public_key']);
 
-        $dev = App::environment('local') ? 'l.' : '';
-
-        $gateway->setReturnUrl('http://' . $dev . get_domain() . '/alipay/wap/return');
-        $gateway->setNotifyUrl('https://' . get_domain() . '/alipay/wap/notify');
+        $gateway->setReturnUrl('http://' . config('app.url') . '/alipay/wap/return');
+        $gateway->setNotifyUrl('https://' . config('app.url') . '/alipay/wap/notify');
         return $gateway;
     }
 
@@ -62,7 +60,7 @@ class WapController extends Controller
                         'log'          => '向' . $article->user->link() . '的文章' . $article->link() . '打赏' . $amount . '元',
                         'amount'       => $amount,
                         'status'       => '未支付',
-                        'balance'      => $user->balance(),
+                        'balance'      => $user->balance,
                     ]);
                     $tran_id1 = $transaction->id;
                     //对方账户准备个交易记录
@@ -74,7 +72,7 @@ class WapController extends Controller
                         'log'          => $user->link() . '向您的文章' . $article->link() . '打赏' . $amount . '元',
                         'amount'       => $amount,
                         'status'       => '未支付',
-                        'balance'      => $article->user->balance(),
+                        'balance'      => $article->user->balance,
                     ]);
                     $tran_id2 = $transaction->id;
 
@@ -89,7 +87,7 @@ class WapController extends Controller
                     'log'     => '充值',
                     'amount'  => $amount,
                     'status'  => '未支付',
-                    'balance' => $user->balance(),
+                    'balance' => $user->balance,
                 ]);
                 $tran_id1     = $transaction->id;
                 $out_trade_no = $this->encodeOutTradeNo($type, '.' . $tran_id1);
@@ -215,7 +213,7 @@ class WapController extends Controller
                 'log'     => $user_link . $article->link(),
                 'amount'  => $amount,
                 'status'  => '已到账',
-                'balance' => $article->user->balance() + $amount,
+                'balance' => $article->user->balance + $amount,
             ]);
         }
         return false;
@@ -263,7 +261,7 @@ class WapController extends Controller
                     $tran1->relate_id = $tip->id;
                     //更新这笔账户状态
                     $tran1->status = '已到账';
-                    $tran1->log    = $tran1->log . '(支付宝)';
+                    $tran1->remark = $tran1->remark . '(支付宝)';
                     //这是直接充钱的，不扣现有账户余额...
                     // $tran1->balance = $tran1->balance - $tran1->amount;
                     $tran1->save();

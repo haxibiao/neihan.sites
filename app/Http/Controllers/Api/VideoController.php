@@ -71,10 +71,19 @@ class VideoController extends Controller
         ini_set('memory_limit', '256M');
 
         //如果是通过表单上传文件
-        $file = $request->video;
-        if ($file) {
+        if ($file = $request->video) {
             //TODO 限制视频大小超过10M
-            return $this->storeWithFile($file);
+            $hash  = md5_file($file->path());
+            $video = Video::firstOrNew([
+                'hash' => $hash,
+            ]);
+            if ($video->id) {
+                //TODO: 后面需要跳过重复上传，暂时为了测试方便
+                // return $video->fillForJs();
+            }
+            $video->saveFile($file);
+
+            return $video->fillForJs();
         }
 
         //腾讯云 视频云 qcvod 回调接口，目前已弃用
@@ -90,43 +99,6 @@ class VideoController extends Controller
         // }
 
         return "没有腾讯云视频id，也没有真实上传的视频文件";
-    }
-
-    public function storeWithFile($file)
-    {
-        $hash  = md5_file($file->path());
-        $video = Video::firstOrNew([
-            'hash' => $hash,
-        ]);
-        if ($video->id) {
-            return [
-                'video_id'  => $video->id,
-                'video_url' => $video->url,
-                'image_url' => $video->coverUrl,
-            ];
-        }
-        $video->title = $file->getClientOriginalName();
-        $video->save();
-
-        //保存视频,简单保存视频不需要更新文章的发布状态
-        $video->saveFile($file, false);
-
-        if ($video->path) {
-            //简单的上传文件成功后，保存个草稿文章对应，方便后续重新发布此草稿
-            $article           = new Article();
-            $article->video_id = $video->id;
-            $article->status   = 0; //草稿
-            $article->user_id  = getUserId();
-            $article->type     = 'video';
-            $article->title    = "正在输入...";
-            $article->save();
-        }
-
-        return [
-            'video_id'  => $video->id,
-            'video_url' => $video->url,
-            'image_url' => $video->coverUrl,
-        ];
     }
 
     public function show($id)

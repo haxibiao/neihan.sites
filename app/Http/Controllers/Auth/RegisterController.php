@@ -64,6 +64,6 @@ class RegisterController extends Controller
     {
         app_track_event('user', 'register');
         $user = new User();
-        return $user->createUser($data);
+        return $user->createUser($data['name'], $data['email'], $data['password']);
     }
 }

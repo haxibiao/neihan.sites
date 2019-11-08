@@ -2,7 +2,7 @@
   <div class="video-item vt">
     <div class="thumb" style="max-height: 120px; overflow-y: hidden;">
       <a href="{{ $article->url }}" target="_blank">
-        <img src="{{ $article->cover }}" alt="{{ $article->title }}">
+        <img src="{{ $article->cover }}" alt="{{ $article->subject }}">
         <i class="duration">
           {{-- 持续时间 --}}  
           @sectominute($article->video->duration)
@@ -11,7 +11,7 @@
     </div>
     <ul class="info-list">
       <li class="video-title">
-        <a href="{{ $article->url }}" target="_blank">{{ $article->title }}</a>
+        <a href="{{ $article->url }}" target="_blank">{{ $article->subject }}</a>
       </li>
       <li>
         {{-- 播放量 --}}

@@ -60,7 +60,7 @@ export default {
     fetchMore() {
       ++this.page;
       if (this.lastPage > 0 && this.page > this.lastPage) {
-        //TODO: ui 提示  ...
+        //OPTIMIZE: ui 提示  ...
         return;
       }
       this.fetchData();
@@ -68,12 +68,12 @@ export default {
 
     fetchData() {
       var _this = this;
-      //TODO:: loading ....
+      //OPTIMIZE:: loading ....
       window.axios.get(this.apiUrl).then(function(response) {
         _this.categories = _this.categories.concat(response.data.data);
         _this.lastPage = response.data.last_page;
 
-        //TODO:: loading done !!!
+        //OPTIMIZE:: loading done !!!
       });
     }
   },

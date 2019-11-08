@@ -14,7 +14,7 @@
 
         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
             {!! Form::label('title', '标题') !!}
-            {!! Form::text('title',$article->title, ['class' => 'form-control', 'required' => 'required']) !!}
+            {!! Form::text('title',$article->subject, ['class' => 'form-control', 'required' => 'required']) !!}
             <small class="text-danger">{{ $errors->first('title') }}</small>
         </div>
 
@@ -110,7 +110,7 @@
 
         <div class="btn-group-lg pull-right">
             {{-- <input type="hidden" name="user_id" value="{{ Auth::user()->id }}"> --}}
-            <input type="hidden" name="image_url" value="{{ $article->image_url }}">
+            <input type="hidden" name="cover" value="{{ $article->cover }}">
             <input type="hidden" name="status" id="hidden_status" value="1">
             {!! Form::button("存稿", ['class' => 'btn btn-warning btn-draft', 'id'=>'draftBtn']) !!}
             {!! Form::submit("发布", ['class' => 'btn btn-success']) !!}

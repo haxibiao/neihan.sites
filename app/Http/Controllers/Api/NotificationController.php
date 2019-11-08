@@ -14,7 +14,7 @@ class NotificationController extends Controller
     public function chat($id)
     {
         $chat              = Chat::findOrFail($id);
-        $data['with_user'] = $chat->withUser();
+        $data['with_user'] = $chat->withUser;
         $messages          = $chat->messages()->with('user')->orderBy('id', 'desc')->paginate(10);
 
         foreach ($messages as $message) {
@@ -43,7 +43,7 @@ class NotificationController extends Controller
             'message' => request()->get('message'),
         ]);
         app_track_send_message();
-        $chat->withUser()->chats()->syncWithoutDetaching($chat->id);
+        $chat->withUser->chats()->syncWithoutDetaching($chat->id);
         Auth::user()->chats()->syncWithoutDetaching($chat->id);
 
         foreach ($chat->users as $user) {
@@ -65,11 +65,11 @@ class NotificationController extends Controller
         $user  = $request->user();
         $chats = $user->chats()->orderBy('id', 'desc')->paginate(10);
         foreach ($chats as $chat) {
-            $with_user = $chat->withUser();
+            $with_user = $chat->withUser;
             if ($with_user) {
                 $chat->with_id     = $with_user->id;
                 $chat->with_name   = $with_user->name;
-                $chat->with_avatar = $with_user->avatar();
+                $chat->with_avatar = $with_user->avatarUrl;
             }
 
             $last_message       = $chat->messages()->orderBy('id', 'desc')->first();
@@ -90,7 +90,7 @@ class NotificationController extends Controller
         foreach ($user->notifications as $notification) {
             $data = $notification->data;
             //每个通知里都有个group的 type值，方便组合通知列表
-            if ($data['type'] == $type) {
+            if (isset($data['type']) && $data['type'] == $type) {
                 $data['time'] = $notification->created_at->toDateTimeString();
 
                 //follow
@@ -107,7 +107,7 @@ class NotificationController extends Controller
                 if (\App::environment('local')) {
                     if (!empty($data['user_avatar']) && !empty($data['user_id'])) {
                         if ($user = User::find($data['user_id'])) {
-                            $data['user_avatar'] = $user->avatar();
+                            $data['user_avatar'] = $user->avatarUrl;
                         }
                     }
                 }

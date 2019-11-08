@@ -8,6 +8,42 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
+function seo_value($group, $name)
+{
+    return \App\Seo::getValue($group, $name);
+}
+
+function aso_value($group, $name)
+{
+    return \App\Aso::getValue($group, $name);
+}
+
+function qrcode_url()
+{
+    $appName = env('APP_NAME');
+    $apkUrl  = "http://{$appName}-1251052432.cos.ap-shanghai.myqcloud.com/{$appName}-release.apk";
+
+    $logo   = "logo/{$appName}.com.small.png";
+    $qrcode = QrCode::format('png')->size(250)->encoding('UTF-8');
+
+    if (file_exists(public_path($logo))) {
+        $qrcode->merge(public_path($logo), .1, true);
+    }
+
+    $qrcode = $qrcode->generate($apkUrl);
+
+    $path = base64_encode($qrcode);
+
+    return $path;
+
+}
+
+function small_logo()
+{
+    return '//' . env('APP_DOMAIN') . '/logo/' . env('APP_DOMAIN') . '.small.png';
+}
 
 function is_staging_env()
 {

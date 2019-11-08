@@ -6,8 +6,6 @@ use App\Action;
 use App\Article;
 use App\Category;
 use App\Image;
-use App\Jobs\ProcessVod;
-use App\Jobs\TakeScreenshots;
 use App\Tip;
 use App\Video;
 use App\Visit;
@@ -39,8 +37,10 @@ trait ArticleRepo
 
     public function fillForJs()
     {
-        $this->user->fillForJs();
-
+        //TODO: 这个错误需要放出来，应该有脏数据
+        if ($this->user) {
+            $this->user->fillForJs();
+        }
         if ($this->category) {
             $this->category->fillForJs();
         }
@@ -405,8 +405,6 @@ trait ArticleRepo
             $this->type     = 'video';
             $this->video_id = $video->id; //关联上视频
             $this->save();
-
-            ProcessVod::dispatch($video);
         }
         //带图
         if (!empty($input['image_urls']) && is_array($input['image_urls'])) {
@@ -538,9 +536,6 @@ trait ArticleRepo
                 $this->type    = 'video';
                 $this->save();
 
-                //启动截取图片job
-                TakeScreenshots::dispatch($video->id);
-
                 // 防止 gql 属性找不到
                 return Article::find($this->id);
 
@@ -561,5 +556,4 @@ trait ArticleRepo
     {
         return str_limit($this->title, 10);
     }
-
 }

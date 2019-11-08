@@ -95,22 +95,8 @@ class IndexController extends Controller
 
     public function app()
     {
-        $app = str_replace("_com", "", get_domain_key());
-        if (request('app')) {
-            $app = request('app');
-        }
-        $data = [];
-
-        if (\Storage::exists('appDowload_config')) {
-            $json = \Storage::get('appDowload_config');
-            $data = json_decode($json, true);
-        }
         app_track_app_download();
-
-        return view('app')
-            ->withAppname(config('app.name_cn'))
-            ->withData($data)
-            ->withApp($app);
+        return view('app');
     }
 
     public function aboutUs()

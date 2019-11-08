@@ -3,15 +3,15 @@
 namespace App\Listeners;
 
 use App\Events\NewLike;
+use App\Like;
+use App\Notifications\ArticleLiked;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SendNewLikeNotification implements ShouldQueue
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
+
+    public $delay = 60 * 10;
+
     public function __construct()
     {
         //
@@ -26,7 +26,21 @@ class SendNewLikeNotification implements ShouldQueue
      */
     public function handle(NewLike $event)
     {
-        //TODO: 简单统计更新可以转移到 observer ，监听这里用来汇总一些复杂逻辑的汇总事件通知算法
 
+        $like = $event->like;
+
+        //排除重复点赞发送通知
+        $is_deLike = Like::onlyTrashed()->where([
+            'user_id'    => $like->user_id,
+            'liked_type' => $like->liked_type,
+            'liked_id'   => $like->liked_id,
+        ])->exists();
+
+        if ($like->liked instanceof \App\Article) {
+            $article = $like->liked;
+            if (!$is_deLike && $like->user && $article->user && $article->user->id != $like->user->id) {
+                $article->user->notify(new ArticleLiked($article->id, $like->user->id));
+            }
+        }
     }
 }

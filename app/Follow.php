@@ -4,11 +4,15 @@ namespace App;
 
 use App\Model;
 use App\Traits\FollowAttrs;
+use App\Traits\FollowResolvers;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Follow extends Model
 {
     use FollowAttrs;
+    use FollowResolvers;
+    use SoftDeletes;
 
     public $fillable = [
         'user_id',

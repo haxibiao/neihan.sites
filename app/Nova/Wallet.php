@@ -5,6 +5,7 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 
 class Wallet extends Resource
@@ -50,6 +51,10 @@ class Wallet extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make('用户', 'user', User::class),
+            Select::make('类型', 'type')->options([
+                0 => 'RMB钱包',
+                1 => '金币钱包',
+            ])->displayUsingLabels(),
             Text::make('余额', 'balance'),
             Text::make('提现账号', 'pay_account'),
             Text::make('真实姓名', 'real_name'),

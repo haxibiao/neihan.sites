@@ -27,7 +27,7 @@ class Feedback extends Resource
      */
     public static $title = 'content';
 
-    public static $group = '用户内容';
+    public static $group = '用户管理';
 
     /**
      * The columns that should be searched.

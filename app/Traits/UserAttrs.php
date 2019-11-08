@@ -25,7 +25,19 @@ trait UserAttrs
         if ($wallet = $this->wallets()->whereType(0)->first()) {
             return $wallet;
         }
+
         return Wallet::rmbWalletOf($this);
+    }
+
+    //兼容前端:下一版去掉
+    public function getIsWalletAttribute()
+    {
+        $wallet = $this->wallets()->whereType(0)->first();
+        if ($wallet->pay_account) {
+            return $wallet;
+        } else {
+            return null;
+        }
     }
 
     //金币钱包
@@ -263,7 +275,6 @@ trait UserAttrs
     }
 
     //TODO: 这些可以后面淘汰，前端直接访问 user->profile->atts 即可
-
     public function getCountArticlesAttribute()
     {
         return $this->profile->count_articles;

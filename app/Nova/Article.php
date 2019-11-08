@@ -24,7 +24,7 @@ class Article extends Resource
 
     public static $title = 'title';
 
-    public static $group = '基础内容';
+    public static $group = '内容管理';
 
     public static $search = [
         'id', 'title',

@@ -42,9 +42,6 @@ class VideoController extends Controller
                 ->get();
             if (!$articles->isEmpty()) {
                 $data[$category->name] = $articles;
-                foreach ($articles as $article) {
-                    $article->image_url = $article->primaryImage();
-                }
             }
         }
         return view('video.index')->with('data', $data);
@@ -116,16 +113,14 @@ class VideoController extends Controller
                 $title = str_limit($description, $limit = 20, $end = '...');
             }
             $video->title = $title;
-
             $video->save();
 
             //save article
-            $article             = new Article();
-            $article->user_id    = getUserId();
-            $params['video_url'] = $video->getPath();
-            $params['type']      = 'video';
-            $params['image_url'] = '/images/uploadImage.jpg'; //默认图
-            $params['video_id']  = $video->id;
+            $article            = new Article();
+            $article->user_id   = getUserId();
+            $params['type']     = 'video';
+            $params['cover']    = '/images/uploadImage.jpg'; //默认图
+            $params['video_id'] = $video->id;
             $article->fill($params);
             //文章title
             $article->title       = $title;
@@ -134,7 +129,6 @@ class VideoController extends Controller
 
             //处理视频与分类的关系
             $article->saveCategory(request('categories'));
-
             $uploadSuccess = $video->saveFile($file);
         }
         if (!$uploadSuccess) {
@@ -220,6 +214,7 @@ class VideoController extends Controller
 
         //更新动态正文，上架下架状态
         $article->description = $request->body;
+        $article->update($request->all());
         //维护专题关系
         $article->saveCategories(request('categories'));
         //改变相关状态
@@ -227,15 +222,16 @@ class VideoController extends Controller
 
         //选取封面图
         if (!empty($request->cover)) {
-            $video->setCover($request->cover);
-            $article->image_url = $request->cover;
+            $video->cover  = $request->cover;
+            $video->status = 1;
+            $video->save();
+            $article->cover = $request->cover;
             $article->save();
         } else if (!$video->cover) {
             //没封面的视频状态不能上架
             $video->status = 0;
             $video->save();
         }
-        $article->update($request->all());
 
         if (str_contains(url()->previous(), 'edit')) {
             return redirect('/video/' . $video->id);
@@ -257,15 +253,6 @@ class VideoController extends Controller
         //软删除 video
         $video->status = -1;
         $video->save();
-
-        if ($article = $video->article) {
-            //软删除 article
-            $article->update(['status' => -1]);
-            //维护分类关系
-            $this->recountCategory($article);
-        }
-
-        //TODO 清除关系 分类关系 冗余的统计信息  评论信息 点赞信息 喜欢的信息 收藏的信息
         return redirect()->to('/video/list');
     }
 
@@ -334,30 +321,6 @@ class VideoController extends Controller
             $related_collection = $related_collection->merge($related);
         }
         return $related_collection;
-    }
-    /**
-     * @Desc     删除视频重新计算视频与分类的关系
-     * @DateTime 2018-06-27
-     * @param    [type]     $article article是一篇type为video的文章
-     * @return   [type]            [description]
-     */
-    public function recountCategory($article)
-    {
-        //更新article表上冗余的主分类
-        $article->category_id = null;
-        $article->save(['timestamps' => false]);
-
-        //删除分类关系
-        $categories = $article->categories;
-        $article->categories()->detach();
-
-        //更新旧分类视频数
-        foreach ($categories as $category) {
-            $category->count_videos = $category
-                ->videoArticles()
-                ->count();
-            $category->save();
-        }
     }
 
     public function processVideo($id)

@@ -84,7 +84,7 @@ class CategoryController extends Controller
         if (ajaxOrDebug() && request('recommend')) {
             foreach ($categories as $category) {
                 $category->followed = $category->isFollowed();
-                $category->count    += $category->subCategory()->pluck('count')->sum();
+                $category->count += $category->subCategory()->pluck('count')->sum();
             }
             return $categories;
         }
@@ -105,7 +105,7 @@ class CategoryController extends Controller
         if (ajaxOrDebug() && request('hot')) {
             foreach ($categories as $category) {
                 $category->followed = $category->isFollowed();
-                $category->count    += $category->subCategory()->pluck('count')->sum();
+                $category->count += $category->subCategory()->pluck('count')->sum();
             }
             return $categories;
         }
@@ -113,12 +113,12 @@ class CategoryController extends Controller
 
         //取子分类总和
         foreach ($data as $categories) {
-        	foreach ($categories as $category) {
-        		$category->count += $category->subCategory()->pluck('count')->sum();
-        	}
+            foreach ($categories as $category) {
+                $category->count += $category->subCategory()->pluck('count')->sum();
+            }
         }
 
-        //TODO::  how to filter city categories ? ...
+        //TODO:: 后期根据地理位置获得城市，多关联一个城市的分类，方便用户看附近的内容
         //城市
         // $categories = $qb->paginate(24);
         // if (ajaxOrDebug() && request('city')) {
@@ -194,22 +194,20 @@ class CategoryController extends Controller
      */
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $category = Category::findOrFail($id);
-        return redirect()->to('/' . $category->name_en);
-    }
-
     public function name_en(Request $request, $name_en)
     {
         $category = Category::where('name_en', $name_en)->firstOrFail();
+        return $this->showCate($request, $category);
+    }
 
+    public function show(Request $request, $id)
+    {
+        $category = Category::findOrFail($id);
+        return $this->showCate($request, $category);
+    }
+
+    public function showCate($request, $category)
+    {
         //最新评论
         $qb = $category->publishedWorks()
             ->with('user')->with('category')
@@ -233,7 +231,6 @@ class CategoryController extends Controller
             foreach ($articles as $article) {
                 $article->fillForJs();
                 $article->time_ago = $article->updatedAt();
-
             }
             return $articles;
         }
@@ -271,7 +268,7 @@ class CategoryController extends Controller
         //记录日志
         $category->recordBrowserHistory();
 
-        return view('category.name_en')
+        return view('category.show')
             ->withCategory($category)
             ->withData($data);
     }

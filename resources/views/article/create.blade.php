@@ -108,7 +108,7 @@
             <input type="hidden" name="author_id" value="{{ Auth::user()->id }}">
             <input type="hidden" name="user_name" value="{{ Auth::user()->name }}">
             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-            <input type="hidden" name="image_url">
+            <input type="hidden" name="cover">
             <input type="hidden" name="status" id="hidden_status" value="1">
             {!! Form::button("存稿", ['class' => 'btn btn-warning btn-draft', 'id'=>'draftBtn']) !!}
             {!! Form::submit("发布", ['class' => 'btn btn-success']) !!}

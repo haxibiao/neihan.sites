@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Favorite;
 use App\Follow;
-use App\Question;
 use App\User;
-use Auth;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -23,10 +21,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy('count_articles', 'desc')->paginate(24);
-
-        //TODO:: need add debug and ajax ...
-
+        $users = User::orderBy('updated_at', 'desc')->paginate(24);
         return view('user.index')->withUsers($users);
     }
 
@@ -265,11 +260,11 @@ class UserController extends Controller
     {
         $user              = Auth::user();
         $questions[]       = null;
-        $data['questions'] = Question::where('user_id', $user->id)->where('status', '>=', 0)->orderBy('id', 'desc')->paginate(10);
+        $data['questions'] = Topic::where('user_id', $user->id)->where('status', '>=', 0)->orderBy('id', 'desc')->paginate(10);
 
         $ans = $user->answers;
         foreach ($ans as $answer) {
-            $question = $answer->question;
+            $question = $answer->topic;
             if ($question->status >= 0) {
                 $questions[] = $question;
             }

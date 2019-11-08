@@ -29,13 +29,13 @@
                         <div class="col-xs-6 col-md-3 video">
                             <div class="video-item vt"><div class="thumb">
                                 <a href="{{ url("video/$article->video_id") }}" target="_blank">
-                                    <img src="{{ $article->primaryImage() }}" alt="{{ $article->video->title ?: $article->get_description() }}">
+                                    <img src="{{ $article->cover }}" alt="{{ $article->video->title ?: $article->summary }}">
                                     <i class="duration">{{ gmdate('i:s', $article->video->duration) }}</i>
                                     <i class="hover-play"></i>
                                 </a>
                             </div>
                                 <ul class="info-list">
-                                    <li class="video-title"><a target="_blank" href="{{ url("video/$article->video_id") }}">{{ $article->video->title ?: $article->get_description() }}</a></li>
+                                    <li class="video-title"><a target="_blank" href="{{ url("video/$article->video_id") }}">{{ $article->video->title ?: $article->summary }}</a></li>
                                      <li>
                                         <p class="subtitle single-line">{{ $article->hits }}次播放</p>
                                     </li>

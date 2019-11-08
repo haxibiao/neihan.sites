@@ -93,7 +93,7 @@ export default {
 		fetchMore() {
 			++this.page;
 			if (this.lastPage > 0 && this.page > this.lastPage) {
-				//TODO: ui 提示  ...
+				//OPTIMIZE: ui 提示  ...
 				return;
 			}
 			this.fetchData();
@@ -101,7 +101,7 @@ export default {
 
 		fetchData() {
 			var m = this;
-			//TODO:: ui show loading ....
+			//OPTIMIZE:: ui show loading ....
 			window.axios.get(this.apiUrl).then(function(response) {
 				m.articles = m.articles.concat(response.data.data);
 				m.lastPage = response.data.last_page;
@@ -109,7 +109,7 @@ export default {
 				if (m.page >= m.lastPage) {
 					m.end = true;
 				}
-				//TODO:: ui show loading done !!!
+				//OPTIMIZE:: ui show loading done !!!
 			});
 		}
 	},
@@ -121,7 +121,7 @@ export default {
 			lastPage: -1,
 			articles: [],
 			end: false,
-			videotime: "1:30" //TODO:: 视频长度应该从Api为每个item获取，不是在这里
+			videotime: "1:30" //OPTIMIZE:: 视频长度应该从Api为每个item获取，不是在这里
 		};
 	}
 };

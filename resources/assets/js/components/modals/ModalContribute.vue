@@ -54,7 +54,7 @@ export default {
         if(this.get_cate_id()) {
             this.fetchData();
         }
-        //TODO: scroll to bottom, this.loadMore() ...
+        //OPTIMIZE: scroll to bottom, this.loadMore() ...
     },
 
     methods: {

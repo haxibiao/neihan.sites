@@ -41,7 +41,8 @@ trait UserResolvers
     public function signIn($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $account = $args['account'] ?? $args['email'];
-        $qb      = User::where('phone', $account)->orWhere('email', $account)->orWhere('account', $account);
+
+        $qb = User::where('phone', $account)->orWhere('email', $account)->orWhere('account', $account);
         if ($qb->exists()) {
             $user = $qb->first();
             if (!password_verify($args['password'], $user->password)) {
@@ -69,11 +70,23 @@ trait UserResolvers
         if (isset($args['account'])) {
 
             $account = $args['account'];
-            $exists  = User::where('phone', $account)->orWhere('account', $account)->exists();
+
+            $exists = User::where('phone', $account)->orWhere('account', $account)->exists();
+            //手机号格式验证
+            $flag = preg_match('/^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/', $account);
+            if (!$flag) {
+                throw new GQLException('修改失败，手机号格式不正确，请检查是否输入正确');
+            }
+
+            if (preg_match("/([\x81-\xfe][\x40-\xfe])/", $args['password'])) {
+                throw GQLException('密码中不能包含中文');
+            }
+
             if ($exists) {
                 throw new GQLException('该账号已经存在');
             }
-            return self::createUser(User::NAME_DEFAULT, $account, $args['password']);
+            $name = $args['name'] ?? User::DEFAULT_NAME;
+            return self::createUser($name, $account, $args['password']);
         }
 
         $email  = $args['email'];
@@ -83,7 +96,7 @@ trait UserResolvers
             throw new GQLException('该邮箱已经存在');
         }
 
-        $user        = self::createUser(User::NAME_DEFAULT, $email, $args['password']);
+        $user        = self::createUser(User::DEFAULT_NAME, $email, $args['password']);
         $user->phone = null;
         $user->email = $email;
         $user->save();
@@ -202,7 +215,7 @@ trait UserResolvers
         $user = User::create([
             'uuid'      => $args['uuid'],
             'account'   => $args['phone'] ?? $args['uuid'],
-            'name'      => '匿名墨友',
+            'name'      => User::DEFAULT_NAME,
             'api_token' => str_random(60),
             'avatar'    => User::AVATAR_DEFAULT,
             'phone'     => $phone,

@@ -23,10 +23,11 @@ class ImageController extends Controller
 
     public function store(Request $request)
     {
-        $user = $request->user();
+        $user        = $request->user();
         $image_files = $request->photo;
+
         //向前兼容，有些页面还是使用单图上传逻辑
-        if(!is_array($image_files)){
+        if (!is_array($image_files)) {
             if ($request->photo) {
                 $extension = $request->photo->getClientOriginalExtension();
                 if (!in_array($extension, ['jpg', 'png', 'gif', 'jpeg'])) {
@@ -45,14 +46,14 @@ class ImageController extends Controller
                         $json            = (object) [];
                         $json->success   = true;
                         $json->msg       = '图片上传成功';
-                        $json->file_path = $image->url();
+                        $json->file_path = $image->url;
                         return json_encode($json);
                     }
                     if ($request->from == 'post') {
-                        $image->url = $image->url();
+                        $image->url = $image->url;
                         return $image;
                     }
-                    return $image->url();
+                    return request('feedback') ? $image : $image->url;
                 }
             }
             return "没有发现上传的图片photo";
@@ -69,7 +70,7 @@ class ImageController extends Controller
             }
             $image = new Image();
             //eg.反馈不要求用户登录
-            if(!empty($user)){
+            if (!empty($user)) {
                 $image->user_id = $user->id;
             }
             $image->save();
@@ -77,10 +78,10 @@ class ImageController extends Controller
             if ($error) {
                 $result[] = $error;
             } else {
-                $result[] = $image->url();
+                $result[] = request('feedback') ? $image : $image->url;
             }
         }
         return $result;
-        
+
     }
 }

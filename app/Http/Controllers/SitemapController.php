@@ -43,7 +43,7 @@ class SitemapController extends Controller
                     $sitemapCounter++;
                 }
                 // add product to items array
-                $sitemap->add($article->content_url(), $article->updated_at, 1.0, 'daily');
+                $sitemap->add($article->url, $article->updated_at, 1.0, 'daily');
                 // count number of elements
                 $counter++;
             }

@@ -16,7 +16,9 @@ class RenameCountLikesReportsToCommentsTable extends Migration
         Schema::table('comments', function (Blueprint $table) {
 
             if (Schema::hasColumn('comments', 'likes')) {
-                $table->renameColumn('likes', 'count_likes');
+                if (!Schema::hasColumn('comments', 'count_likes')) {
+                    $table->renameColumn('likes', 'count_likes');
+                }
             }
             if (Schema::hasColumn('comments', 'reports')) {
                 $table->renameColumn('reports', 'count_reports');

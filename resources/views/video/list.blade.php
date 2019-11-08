@@ -39,7 +39,7 @@
                             <input type="checkbox" value="{{ $article->id }}" class="checkboxs"/>
                         </div>
                         <a class="pull-left" href="/video/{{ $video->id }}">
-                            <img alt="{{ $article->title }}" class="img img-thumbnail img-responsive"
+                            <img alt="{{ $article->subject }}" class="img img-thumbnail img-responsive"
                                 src="{{ $article->cover }}" style="max-width: 300px">
                             </img>
                         </a>
@@ -62,7 +62,7 @@
                             @endif
                             <h4 class="media-heading">
                                 <a href="/article/{{ $article->id }}">
-                                {{ $article->get_title() }}
+                                {{ $article->subject }}
                                 </a>
                             </h4>
                             <p>

@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Follow;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -13,14 +14,11 @@ class NewFollow implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public $follow;
+    public function __construct(Follow $follow)
     {
         //
+        $this->follow = $follow;
     }
 
     /**
