@@ -4,9 +4,19 @@ namespace App\Traits;
 
 use App\Article;
 use App\Category;
+use App\Config;
+use App\Contribute;
 use App\Exceptions\GQLException;
+use App\Exceptions\UserException;
+use App\Gold;
+use App\Notifications\ReceiveAward;
 use App\User;
+use App\Video;
 use GraphQL\Type\Definition\ResolveInfo;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 trait ArticleResolvers
@@ -221,31 +231,121 @@ trait ArticleResolvers
      */
     public function resolveDouyinVideo($rootValue, array $args, $context, $resolveInfo)
     {
-        // 过滤文本，留下 url
-        $link = $args['share_link'];
-        $link = filterText($link)[0];
+        $user = getUser();
+        try{
+            // 过滤文本，留下 url
+            $shareMsg = $args['share_link'];
+            $link = filterText($shareMsg)[0];
 
-        // 不允许重复视频
-        if (Article::where('source_url', $link)->exists()) {
-            throw new GQLException('视频已经存在，请换一个视频噢');
+            // 不允许重复视频
+            if (Article::where('source_url', $link)->exists()) {
+                throw new GQLException('视频已经存在，请换一个视频噢');
+            }
+            //轮训爬虫服务器
+            $prossserServicer = [
+                'gz01.haxibiao.com',
+                'gz02.haxibiao.com',
+                'gz03.haxibiao.com',
+                'gz04.haxibiao.com',
+                'gz05.haxibiao.com',
+                'gz06.haxibiao.com',
+                'gz07.haxibiao.com',
+                'gz08.haxibiao.com',
+            ];
+
+            $endPoint = Arr::random($prossserServicer);
+
+            //轮训Job
+            $getApi = 'http://' . $endPoint . '/simple-spider/index.php?url=' . $link ;
+            $data = file_get_contents($getApi);
+            $json   = json_decode($data, true);
+
+
+            $content = $json['data'];
+            if($json['code'] != 200){
+                //TODO 记录重试机制
+                throw new GQLException('视频上传失败!');
+            }
+            //保存视频信息
+            $url= $content['video'];
+            $raw= $content['raw'];
+
+            $description = Str::replaceFirst('#在抖音，记录美好生活#','',$shareMsg);
+            if(Str::contains($description,'#')){
+                $description = Str::before($description,'#');
+            } else {
+                $description = Str::before($description,'http');
+            }
+
+            $dispatcher = Video::getEventDispatcher();
+            Video::unsetEventDispatcher();
+
+            $hash  = md5_file($url);
+            $video = Video::firstOrNew([
+                'hash' => $hash,
+            ]);
+            $video->setJsonData('metaInfo', $raw);
+            $video->setJsonData('server'  , $url);
+            $video->user_id = $user->id;
+            $video->title = $description;
+            $video->unsetEventDispatcher();//临时禁用模型事件
+            $video->save();
+
+            //本地存一份用于截图
+            $cosPath     = 'video/' . $video->id . '.mp4';
+            $video->path  = $cosPath;
+            Storage::disk('public')->put($cosPath, @file_get_contents($url));
+            $video->disk = 'local'; //先标记为成功保存到本地
+            $video->save();
+
+            Video::setEventDispatcher($dispatcher);
+
+            //TODO 抖音爬虫不用走视屏处理逻辑了,抖音接口信息很完整
+            //将视频上传到cos
+            $cosDisk = Storage::cloud();
+            $cosDisk->put($cosPath, Storage::disk('public')->get($cosPath));
+            $video->disk = 'cos';
+            $video->save();
+
+            $category = Category::firstOrNew([
+                'name' => '抖音合集'
+            ]);
+            if(!$category->id){
+                $category->name_en  = 'douyin';
+                $category->status   = 1;
+                $category->user_id  = 1;
+                $category->save();
+            }
+            //避免与Observer处理存在时间差导致重复创建
+            $article = \App\Article::firstOrNew([
+                'video_id' => $video->id,
+            ]);
+            //FIXME 重构描述抖音信息，直接通过接口获取视频信息
+            $article->body        = $description;
+            $article->title       = Str::limit($description, 150); //截取微博那么长的内容存简介;
+            $article->description = Str::limit($description, 280); //截取微博那么长的内容存简介
+            $article->source_url  = $link;
+            $article->status      = 1;//FIXME 合并submit与status字段
+            $article->submit      = Article::SUBMITTED_SUBMIT; //待审核状态
+            $article->type        = 'post';
+            $article->user_id     = $user->id;
+            $article->category_id = $category->id;
+            $article->save();
+
+            //奖励用户
+            $user->notify(new ReceiveAward('发布视频动态奖励', 10, $user, $article->id));
+            Gold::makeIncome($user, 10, '发布视频动态奖励');
+            Contribute::rewardUserVideoPost($user,$article);
+
+            return $article;
+        } catch (\Exception $e){
+
+            if ($e->getCode() == 0) {
+                Log::error($e->getMessage());
+                throw new GQLException('视频上传失败!');
+            }
+            throw new GQLException($e->getMessage());
         }
-
-        // 爬取关键信息
-        $spider = app('DouyinSpider');
-        $data   = json_decode($spider->parse($link), true);
-
-        // 去除 “抖音” 关键字, TODO :做一个大些的关键词库，封装重复操作
-        $data['0']['desc'] = str_replace('@抖音小助手', '', $data['0']['desc']);
-        $data['0']['desc'] = str_replace('抖音', '', $data['0']['desc']);
-
-        // 保存并 更新原链接
-        $article = new Article();
-        $article = $article->parseDouyinLink($data);
-        $article->update([
-            'source_url' => $link,
-        ]);
-
-        return $article;
     }
 
 }
