@@ -9,3 +9,4 @@ supervisorctl update
 echo "重启队列 ... (TODO: 未包含提现队列，可能需要单独手动处理)"
 # php artisan queue:restart # 重启所有队列
 supervisorctl restart laravel-worker-ainicheng:*
+supervisorctl restart laravel-worker-ainicheng-queue-spider:*
