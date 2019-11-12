@@ -14,8 +14,9 @@ class AddSoftdeleteToLikesTable extends Migration
     public function up()
     {
         Schema::table('likes', function (Blueprint $table) {
-            //
-            $table->softDeletes();
+            if (!Schema::hasColumn('likes', 'deleted_at')) {
+                $table->softDeletes();
+            }
         });
     }
 

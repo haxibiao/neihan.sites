@@ -156,6 +156,11 @@ trait VideoRepo
                 $article->body        = $this->title;
             }
             $article->save();
+
+            //释放服务器资源
+            if(!is_local_env()){
+                Storage::disk('public')->delete($video->path);
+            }
         }
     }
 

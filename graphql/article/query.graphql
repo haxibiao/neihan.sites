@@ -63,17 +63,18 @@ extend type Query {
   recommendArticles: [Article!] @paginate(defaultCount: 10, builder: "App\\Article@resolveRecommendArticles")
 
   articles(
-    status: ArticleStatus = public
+    status: ArticleStatus = all
     user_id: Int
     category_id: Int
-    submit: ArticleSubmitStatus = SUBMITTED_SUBMIT
+    submit: ArticleSubmitStatus = ALL
     orderBy: [OrderByClause!] @orderBy
   ): [Article!] @paginate(defaultCount: 10, builder: "App\\Http\\GraphQL\\Queries\\ArticleQueries@articles")
 }
 
 enum ArticleStatus {
   public @enum(value: 1)
-  draft @enum(value: 0)
+  draft  @enum(value: 0)
+  all    @enum(value: 10)
 }
 
 enum ArticleSubmitStatus {

@@ -14,7 +14,9 @@ class AddWalletIdToTransactionsTable extends Migration
     public function up()
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->unsignedInteger('wallet_id')->nullable()->index();
+            if (!Schema::hasColumn('transactions', 'wallet_id')) {
+                $table->unsignedInteger('wallet_id')->nullable()->index();
+            }
         });
     }
 

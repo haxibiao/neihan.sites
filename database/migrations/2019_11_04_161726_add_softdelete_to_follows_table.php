@@ -14,8 +14,9 @@ class AddSoftdeleteToFollowsTable extends Migration
     public function up()
     {
         Schema::table('follows', function (Blueprint $table) {
-            //
-            $table->softDeletes();
+            if (!Schema::hasColumn('follows', 'deleted_at')) {
+                $table->softDeletes();
+            }
         });
     }
 

@@ -8,6 +8,7 @@ class Tag extends Model
 {
     protected $fillable = [
         'name',
+        'user_id'
     ];
 
     public function creator()

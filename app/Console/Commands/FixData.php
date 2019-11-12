@@ -2,48 +2,31 @@
 
 namespace App\Console\Commands;
 
-use App\Action;
 use App\Article;
 use App\Category;
-use App\Comment;
-use App\Image;
+use App\Gold;
+use App\Transaction;
 use App\User;
 use App\Video;
 use App\Visit;
+use App\WalletTransaction;
+use App\Withdraw;
 use Illuminate\Console\Command;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class FixData extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
+
     protected $signature = 'fix:data {table}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'fix dirty data by table';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
         if ($table = $this->argument('table')) {
@@ -52,94 +35,281 @@ class FixData extends Command
         return $this->error("必须提供你要修复数据的table");
     }
 
-    public function videos()
+    public function video()
     {
-        dd(Article::whereNotNull('video_id')->count());
-        $this->info('fix videos start  ...');
-        Video::chunk(100, function ($videos) {
-            foreach ($videos as $video) {
-                $path = $video->path;
-                $hasHttp = Str::contains($path,'http');
-                if(!$hasHttp) {
-                    continue;
+
+        //保存黑屏视频
+        if (Storage::cloud()->exists('video/1.mp4')) {
+            Storage::cloud()->move('video/1.mp4', 'video/1_old.mp4');
+        }
+        Storage::cloud()->put('video/1.mp4', @file_get_contents('http://cos.dianmoge.com/video/1.mp4'));
+        Storage::cloud()->put('video/1.mp4.0_0.p0.jpg', @file_get_contents('http://cos.dianmoge.com/video/1.mp4.0_0.p0.jpg '));
+
+        //下架Video_id的Article
+        $video = Video::find(1);
+        //黑屏视频与图片处理 video id处理
+        if ($video) {
+            $article         = $video->article;
+            $article->status = -1;
+            $article->sunmit = -1;
+            $article->save();
+
+            $video->user_id  = 1;
+            $video->title    = '黑屏视频';
+            $video->path     = 'video/1.mp4';
+            $video->cover    = 'video/12.98.jpg';
+            $video->duration = 15;
+            $video->hash     = '4073b0265f5d794b5fd5653e2cf18dae';
+            $video->setJsonData('covers', ["video/1.mp4.0_0.p0.jpg"]);
+            $video->setJsonData('cover', 'video/1.mp4.0_0.p0.jpg');
+            $video->save();
+        } else {
+            $video           = new Video();
+            $video->user_id  = 1;
+            $video->title    = '黑屏视频';
+            $video->path     = 'video/1.mp4';
+            $video->cover    = 'video/12.98.jpg';
+            $video->duration = 15;
+            $video->hash     = '4073b0265f5d794b5fd5653e2cf18dae';
+            $video->setJsonData('covers', ["video/1.mp4.0_0.p0.jpg"]);
+            $video->setJsonData('cover', 'video/1.mp4.0_0.p0.jpg');
+            $video->setJsonData('width', 576);
+            $video->setJsonData('height', 1024);
+            $video->save();
+        }
+    }
+
+    public function withdraws()
+    {
+        \DB::beginTransaction();
+        try
+        {
+            //此区间的数据由于没有重启线上的提现队列导致信息丢失
+            $withdraws = Withdraw::whereBetween('id', [597, 647])
+                ->where('status', 1)->orderBy('id', 'asc')->get();
+            foreach ($withdraws as $withdraw) {
+                $wallet = $withdraw->wallet;
+
+                $transaction            = new Transaction();
+                $transaction->wallet_id = $withdraw->wallet_id;
+                $transaction->type      = '兑换';
+                $transaction->remark    = '提现';
+                $transaction->status    = '已支付';
+                $transaction->amount    = -1 * ($withdraw->amount);
+
+                $latestTransaction = $wallet->transactions()
+                    ->orderBy('id', 'desc')->first();
+
+                $transaction->balance = $latestTransaction->balance - $withdraw->amount;
+
+                $transaction->created_at = $withdraw->created_at;
+                $transaction->save();
+                $withdraw->transaction_id = $transaction->id;
+                $withdraw->save(['timestamps' => false]);
+            }
+
+            \DB::commit();
+        } catch (\Exception $e) {
+            dd($e);
+            \DB::rollBack();
+        }
+    }
+
+    //合并WalletTransaction与Transaction表
+    public function mergeWalletTransactionToTransaction()
+    {
+
+        $this->info('merge WalletTransaction To Transaction start...');
+
+        //合并失败的WalletTransaction IDs
+        $failIds = [];
+
+        WalletTransaction::orderBy('id', 'asc')->chunk(100, function ($walletTransactions) use (&$failIds) {
+            foreach ($walletTransactions as $walletTransaction) {
+                \DB::beginTransaction();
+                $id = $walletTransaction->id;
+                try
+                {
+                    //TODO 幂等操作
+
+                    $newTran             = new Transaction();
+                    $newTran->wallet_id  = $walletTransaction->wallet_id;
+                    $newTran->amount     = $walletTransaction->amount;
+                    $newTran->balance    = $walletTransaction->balance;
+                    $newTran->remark     = $walletTransaction->remark;
+                    $newTran->created_at = $walletTransaction->created_at;
+                    $newTran->updated_at = $walletTransaction->updated_at;
+                    $newTran->type       = '兑换';
+                    if ($walletTransaction->remark == '智慧点兑换') {
+                        $newTran->status = '已兑换';
+                    } else {
+                        $newTran->status = '已支付';
+                    }
+                    $newTran->save(['timestamps' => false]);
+
+                    if ($walletTransaction->remark != '智慧点兑换') {
+                        //兼容withdraw中的transaction_id变动
+                        $withdraw                 = Withdraw::where('transaction_id', $id)->firstOrFail();
+                        $withdraw->transaction_id = $newTran->id;
+                        $withdraw->save(['timestamps' => false]);
+                    }
+
+                    \DB::commit();
+                } catch (\Exception $e) {
+                    $failIds[] = $id;
+                    \DB::rollBack();
                 }
-                $article = $video->article;
-                if($article){
-                    $article->status = -1;
-                    $article->save(['timestamps'=>false]);
-                }
-                $video->status = -1;
-                $video->save(['timestamps'=>false]);
             }
         });
-        $this->info('fix videos end...');
+        $this->info('合并失败数:' . count($failIds));
+        $this->info('merge WalletTransaction To Transaction finished...');
+
+    }
+
+    public function golds()
+    {
+        Gold::chunk(100, function ($golds) {
+            foreach ($golds as $gold) {
+                $user            = $gold->user;
+                $goldWallet      = $user->goldWallet;
+                $gold->wallet_id = $goldWallet->id;
+                $gold->save(['timestamps' => false]);
+            }
+        });
+        $this->info('fix golds finished...');
+    }
+
+    public function videoCover()
+    {
+        $articles = Article::whereBetween('id', [4337, 4360])->get();
+        foreach ($articles as $article) {
+            if (!$article->video_id) {
+                continue;
+            }
+            $article->image_url = 'http://cos.dianmoge.com/video/' . $article->video_id . '.mp4.0_0.p0.jpg';
+            $article->save(['timestamps' => false]);
+        }
+    }
+
+    public function videos()
+    {
+        $count = 0;
+        Article::orderBy('id', 'desc')->where('type', 'video')->whereStatus(1)->chunk(100, function ($articles) use (&$count) {
+
+            foreach ($articles as $article) {
+                $video = $article->video;
+
+                if (!$video) {
+                    continue;
+                }
+                if ($video->duration > 60) {
+                    $count++;
+                    $article->status = 0;
+                    $article->save(['timestamps' => false]);
+                    $this->info('video_id:' . $video->id);
+                }
+
+                // $url      = $video->path;
+                // if(Str::startsWith($url,['video','/video','videos','/videos'])){
+                //     $url = \Storage::cloud()->url($video->path);
+                // }
+                // $res      = get_headers($url, true);
+                // $filesize = round($res['Content-Length'] / 1024 / 1024, 2); //四舍五入获取文件大小，单位M
+                // $this->info($filesize);
+                // //下架视频大家超过3M的视频
+                // if ($filesize > 2) {
+                //     $article->status = 0;
+                //     $article->save(['timestamps' => false]);
+                //     $this->info($video->id);
+                // }
+            }
+        });
+        $this->info($count);
+        $this->info('fix videos finished...');
     }
 
     public function articleVieoCover()
     {
         $this->info('fix videos ...');
-        $videos = Video::where('status', '!=', -1);
+        // $videos = Video::where('status', '!=', -1);
+        $articles = Article::where('status', '!=', -1);
 
-        $videos->chunk(100, function ($videos) {
-            foreach ($videos as $video) {
-                $cover = $video->cover;
-                if (\str_contains($cover, ['vod2.'])) {
-                    $covers = $video->JsonData('covers');
+        $articles->chunk(100, function ($articles) {
+            foreach ($articles as $article) {
+                $video = $article->video;
 
-                    $cosCovers = [];
-                    $cosCover  = [];
-                    foreach ($covers as $index => $cover) {
-                        //有些地址会超时,此函数有问题
-                        $url_status     = @get_headers($cover, 1);
-                        $http_ok_status = false;
-                        //地址获取是否有问题
-                        if ($url_status) {
-                            //判断是否是200状态吗
-                            if (str_contains($url_status[0], "200")) {
-                                $http_ok_status = true;
-                            } else if (str_contains($url_status[0], "301")) {
-                                //判断是否是重定向
-                                if (str_contains($url_status[1], "200")) {
+                if (!empty($video) && $video->status != -1) {
+                    $cover = $video->cover;
+                    if (\str_contains($cover, ['vod2.'])) {
+                        $covers = $video->JsonData('covers');
+
+                        $cosCovers = [];
+                        $cosCover  = [];
+
+                        if (empty($covers)) {
+                            $video->setJsonData('covers', [$cover]);
+                            $covers = $video->JsonData('covers');
+                        }
+
+                        foreach ($covers as $index => $cover) {
+                            //有些地址会超时,此函数有问题
+                            $url_status     = @get_headers($cover, 1);
+                            $http_ok_status = false;
+                            //地址获取是否有问题
+                            if ($url_status) {
+                                //判断是否是200状态吗
+                                if (str_contains($url_status[0], "200")) {
                                     $http_ok_status = true;
-                                } else {
-                                    $this->error("错误状态" . $url_status[0]);
+                                } else if (str_contains($url_status[0], "301")) {
+                                    //判断是否是重定向
+                                    if (str_contains($url_status[1], "200")) {
+                                        $http_ok_status = true;
+                                    } else {
+                                        $this->error("错误状态" . $url_status[0]);
+                                    }
                                 }
+                            }
+
+                            if ($http_ok_status && \str_contains($cover, ['vod2.'])) {
+                                $sub_cover_str          = $video->id . '.' . $index;
+                                $localImagePathTemplate = storage_path('app/public/video/' . '%s.jpg');
+                                $localCoverPath         = sprintf($localImagePathTemplate, $sub_cover_str);
+
+                                // \Storage::disk('public')->put($localCoverPath, file_get_contents($cover));
+                                // $local_cover = \Storage::disk('public')->get($localCoverPath);
+                                // $cosDisk     = \Storage::cloud();
+
+                                $cos_storage_cover = '/storage/video/' . $sub_cover_str . '.jpg';
+                                // $cosDisk->put($cos_storage_cover, $local_cover);
+                                $cosCover[] = $cos_storage_cover;
+                                // $cosCovers[] = \Storage::cloud()->url($cos_storage_cover);
                             }
                         }
 
-                        if ($http_ok_status && \str_contains($cover, ['vod2.'])) {
-                            $sub_cover_str          = $video->id . '.' . $index;
-                            $localImagePathTemplate = storage_path('app/public/video/' . '%s.jpg');
-                            $localCoverPath         = sprintf($localImagePathTemplate, $sub_cover_str);
+                        $video->cover = (!empty($cosCover)) ? $cosCover[0] : null;
+                        $video->setJsonData('covers', $cosCovers);
+                        $video->timestamps = false;
+                        $video->save();
+                        $article = $video->article;
+                        if (!empty($article)) {
+                            if (empty($video->cover)) {
+                                $article->status = -1;
+                            } else {
+                                $article->cover_path = $video->cover;
+                            }
 
-                            // \Storage::disk('public')->put($localCoverPath, file_get_contents($cover));
-                            // $local_cover = \Storage::disk('public')->get($localCoverPath);
-                            // $cosDisk     = \Storage::cloud();
-
-                            $cos_storage_cover = '/storage/video/' . $sub_cover_str . '.jpg';
-                            // $cosDisk->put($cos_storage_cover, $local_cover);
-                            $cosCover[]  = $cos_storage_cover;
-                            $cosCovers[] = \Storage::cloud()->url($cos_storage_cover);
-                        }
-                    }
-
-                    $video->cover = (!empty($cosCover)) ? $cosCover[0] : null;
-                    $video->setJsonData('covers', $cosCovers);
-                    $video->timestamps = false;
-                    $video->save();
-                    $article = $video->article;
-                    if (!empty($article)) {
-                        if (empty($video->cover)) {
-                            $article->status = -1;
-                        } else {
-                            $article->cover_path = $video->cover;
+                            $article->timestamps = false;
+                            $article->save();
+                            $this->info($video->id . '视频的封面' . $video->cover . '文章' . $article->id . '的封面' . $article->cover_path);
                         }
 
-                        $article->timestamps = false;
-                        $article->save();
-                        $this->info($video->id . '视频的地址' . $video->cover . '文章的封面' . $article->cover_path);
                     }
 
+                } else {
+                    $article->status     = -1;
+                    $article->timestamps = false;
+                    $article->save();
+                    $this->info('文章' . $article->id . '的状态' . $article->status);
                 }
             }
 
@@ -149,311 +319,75 @@ class FixData extends Command
 
     public function categories()
     {
-        $this->info('fix count_videos ...');
-        foreach (Category::all() as $category) {
-            $category->count_videos = $category->videoPosts()->count();
-            $category->save();
-        }
-    }
+        // Article
 
-    //图片迁移第一步：上传静态资源到COS
-    public function images1()
-    {
-        ini_set("memory_limit", "-1"); //取消PHP内存限制
-        $this->info('fix images1 ...');
-        //dd($images);
-        $bucket = config("app.name");
-        $cos    = app('qcloudcos');
-        //忽略下列文件
-        $discard_files = [
-            '.DS_Store',
-            '.git',
-        ];
-        /* 将img与image文件夹下的内容拷贝到COS */
-        $disk   = \Storage::disk('opendir');
-        $images = [];
-        if (config("app.name") != 'ainicheng') {
-            $images = array_merge(
-                $disk->allFiles('/storage/avatar'),
-                $disk->allFiles('/storage/img'),
-                $disk->allFiles('/storage/image'),
-                $disk->allFiles('/storage/category')
-            );
-        }
-        $videos = $disk->allFiles('/storage/video');
-        $videos = array_filter($videos, function ($path) {
-            return !str_contains($path, 'mp4');
-        });
-        $images = array_merge(
-            $images,
-            $videos
-        );
-        //上传的文件总数
-        $sum         = count($images);
-        $error_count = 0; //记录传输失败的次数
-        foreach (collect($images)->chunk(200) as $chunk) {
-            foreach ($chunk as $name) {
-                $time = $sum / 30 + $sum / 10;
-                var_dump($name . '<<>>' . '剩余:' . $sum . '个文件,预计剩余时间:' . intval($time) . '秒');
-                $base_name = basename($name);
-                if (str_contains($base_name, $discard_files)) {
-                    continue;
-                }
-                $dstFpath = $name;
-                $srcFpath = public_path($dstFpath);
+        $articles = Article::whereIn('type', ['video', 'post'])->whereNotNull('category_id');
 
-                try {
-                    $result     = $cos::upload($bucket, $srcFpath, $dstFpath);
-                    $result_obj = json_decode($result);
-                    if ($result_obj->code != 0) {
-                        //0:代表上传成功的状态
-                        $this->error('Upload Failure:' . $result_obj->message);
-                        $error_count++;
-                    }
-                } catch (\Exception $e) {
-                    $error_count++;
-                    $this->error('图片上传至COS失败---->>>' . $e->getMessage());
-                    continue;
-                }
-                $sum--;
-            }
-            sleep(1);
-        }
-        $this->info('共:' . $sum . '个文件,失败:' . $error_count . '个文件');
-
-    }
-    //处理默认头像与老视频的封面图
-    public function images10()
-    {
-        ini_set("memory_limit", "-1"); //取消PHP内存限制
-        $bucket = config("app.name");
-        $cos    = app('qcloudcos');
-        //忽略下列文件
-        $discard_files = [
-            '.DS_Store',
-            '.git',
-            '.mp4',
-        ];
-        $disk   = \Storage::disk('opendir');
-        $images = array_merge(
-            $disk->allFiles('/storage/video'),
-            $disk->allFiles('/img')
-        );
-        foreach (collect($images)->chunk(200) as $chunk) {
-            foreach ($chunk as $name) {
-                $base_name = basename($name);
-                if (str_contains($base_name, $discard_files)) {
-                    continue;
-                }
-                var_dump($name);
-                $dstFpath = $name;
-                $srcFpath = public_path($dstFpath);
-                try {
-                    $result     = $cos::upload($bucket, $srcFpath, $dstFpath);
-                    $result_obj = json_decode($result);
-                    if ($result_obj->code != 0) {
-                        //0:代表上传成功的状态
-                        $this->error('Upload Failure:' . $result_obj->message);
-                    }
-                } catch (\Exception $e) {
-                    $this->error('图片上传至COS失败---->>>' . $e->getMessage());
-                    continue;
-                }
-            }
-            sleep(1);
-        }
-
-        //处理上传的默认头像
-        for ($i = 1; $i <= 15; $i++) {
-            $srcFpath = public_path('images/avatar-' . $i . '.jpg');
-            $result   = $cos::upload($bucket, $srcFpath, 'storage/avatar/avatar-' . $i . '.jpg');
-            try {
-                $result_obj = json_decode($result);
-                if ($result_obj->code != 0) {
-                    //0:代表上传成功的状态
-                    $this->error('Upload Failure:' . $result_obj->message);
-                }
-            } catch (\Exception $e) {
-                $this->error('头像上传至COS失败---->>>' . $e->getMessage());
-                continue;
-            }
-        }
-    }
-
-    //处理articles表中冗余的image_url image_top
-    public function images2()
-    {
-        ini_set("memory_limit", "-1"); //取消PHP内存限制
-        $path_formatter = 'http://cos.' . config("app.name") . '.com%s';
-        Article::orderBy('id')->chunk(100, function ($articles) use ($path_formatter) {
+        $articles->chunk(100, function ($articles) {
             foreach ($articles as $article) {
-                $img_path = $article->image_url;
-                $this->info($img_path);
-                $path_top = $article->image_top;
-                if (empty($img_path)) {
-                    continue;
-                }
-                //忽略vod的图片
-                if (str_contains($img_path, ['1251052432.vod2.myqcloud.com'])) {
-                    continue;
-                }
-                //非爬虫文章
-                if (!str_contains($img_path, 'haxibiao')) {
-                    $replace_path = str_contains($img_path, env('APP_DOMAIN')) ?
-                    str_after($img_path, env('APP_DOMAIN'))
-                    :
-                    $img_path;
-                    $article->image_url = sprintf($path_formatter, $replace_path);
-                    if (!empty($path_top)) {
-                        $article->image_top = sprintf($path_formatter, $path_top);
+                $categories = $article->hasCategories()->pluck('category_id')->toArray();
+                $category   = $article->category;
+                if (!in_array($category->id, $categories)) {
+                    array_push($categories, $category->id);
+                    $category_ids = array_unique($categories);
+
+                    $result = [];
+                    foreach ($category_ids as $categoryId) {
+                        $result[intval($categoryId)] = [
+                            'submit' => '已收录',
+                        ];
                     }
-                } else {
-                    $replace_path       = str_after($img_path, 'haxibiao.com');
-                    $article->image_url = sprintf('http://cos.haxibiao.com%s', $replace_path);
-                    //更新轮播图
-                    if (!empty($path_top)) {
-                        $article->image_top = sprintf('http://cos.haxibiao.com%s', $path_top);
-                    }
+                    $article->hasCategories()->sync($result);
                 }
-                $article->timestamps = false;
-                $article->save();
+
+                foreach ($article->categories as $category) {
+                    $this->info($article->id . '号文章的' . $category->id . 'id以及name' . $category->name);
+                }
             }
         });
     }
 
-    //图片迁移第二步：更新数据库记录中的图片路径
-    public function images3()
+    public function follows()
     {
-        ini_set("memory_limit", "-1"); //取消PHP内存限制
-        $this->info('fix images2 ...');
-        //修改Image中的path与path_top
-        $path_formatter = 'http://cos.' . config("app.name") . '.com%s';
-        Image::orderBy('id')->chunk(100, function ($images) use ($path_formatter) {
-            foreach ($images as $image) {
-                $this->info($image->path);
-                $disk = $image->disk;
-                //脏数据，不处理
-                if ($image->path == '.jpg' || empty($image->path)) {
-                    continue;
-                }
-                if ($disk != 'hxb') {
-                    //原图
-                    $image->path = sprintf($path_formatter, $image->path);
-                    //轮播图
-                    $path_top = $image->path_top;
-                    if (!empty($path_top)) {
-                        $image->path_top = sprintf($path_formatter, $image->path_top);
-                    }
-                    $image->disk = config("app.name"); //disk存放图片的bucket
-                    //source_url为空代表爬虫文章
-                } else {
-                    $replace_path = str_contains($image->path, 'haxibiao.com') ?
-                    str_after($image->path, 'haxibiao.com') : $image->path;
-                    $image->path = sprintf('http://cos.haxibiao.com%s', $replace_path);
-                    //更新轮播图
-                    $path_top = $image->path_top;
-                    if (!empty($path_top)) {
-                        $image->path_top = sprintf('http://cos.haxibiao.com%s', $image->path_top);
-                    }
-                    $image->disk = 'haxibiao';
-                }
-                //$image->timestamps = false;
-                $image->save();
-            }
-        });
-        //修改Category的logo与logo_app的地址
-        $logo_formatter = 'http://cos.' . config("app.name") . '.com%s';
-        Category::orderBy('id')->chunk(1000, function ($categories) use ($logo_formatter) {
-            foreach ($categories as $category) {
-                $this->info($category->logo);
-                $logo           = $category->logo;
-                $category->logo = sprintf($logo_formatter, $logo);
-                $logo_app       = $category->logo_app;
-                if (!empty($logo_app)) {
-                    //category中logo_app有部分脏数据
-                    if (!str_contains($logo_app, ['/tmp'])) {
-                        $category->logo_app = sprintf($logo_formatter, $logo_app);
-                    }
-                }
-                $category->timestamps = false;
-                $category->save();
-            }
-        });
-
-        //修改User的avatar地址
-        $avatar_formatter = 'http://cos.' . config("app.name") . '.com/storage/avatar/%s';
-        User::chunk(1000, function ($users) use ($avatar_formatter) {
+        $builder = User::where('status', User::STATUS_ONLINE);
+        $builder->chunkById(100, function ($users) {
             foreach ($users as $user) {
-                $this->info($user->avatar);
-                $avatar = $user->avatar;
-                //统一下各个站点的默认头像
-                if (str_contains($avatar, ['default.jpg', 'avatar.jpg', 'editor_'])) {
-                    $user->avatar = sprintf($avatar_formatter, 'avatar-' . rand(1, 15) . '.jpg');
-                } else {
-                    $user->avatar = sprintf($avatar_formatter, basename($avatar));
-                }
-                $user->timestamps = false;
+                $this->info($user->id . '修复前，粉丝数：' . $user->count_follows);
+                $this->info($user->id . '修复前，关注数：' . $user->count_followings);
+
+                $user->count_followings = $user->followings()->where('followed_type', 'users')->count();
+                $user->count_follows    = $user->follows()->where('followed_type', 'users')->count();
                 $user->save();
-            }
-        });
-    }
-    //图片迁移第三步：替换文章体中的图片
-    public function images4()
-    {
-        ini_set("memory_limit", "-1"); //取消PHP内存限制
-        Article::chunk(1000, function ($articles) {
-            foreach ($articles as $article) {
-                $this->info($article->title);
-                if (empty($article->body)) {
-                    continue;
-                }
-                //匹配正文中所有的图片路径
-                $pattern = "/<img.*?src=['|\"](.*?)['|\"].*?[\/]?>/iu";
-                preg_match_all($pattern, $article->body, $matches);
-                $img_urls  = end($matches);
-                $body_html = $article->body;
-                foreach ($img_urls as $img_url) {
-                    if (empty($img_url)) {
-                        continue;
-                    }
-                    $img_name = basename($img_url);
-                    if (empty($img_name)) {
-                        continue;
-                    }
-                    //爱你城本地的图片
-                    if (str_contains($img_url, env('APP_DOMAIN'))) {
-                        $formatter = 'http://cos.' . env('APP_DOMAIN') . '%s';
-                        $cdn_url   = sprintf($formatter, str_after($img_url, env('APP_DOMAIN')));
-                        $body_html = str_replace($img_url, $cdn_url, $body_html);
-                        //哈希表的图片
-                    } elseif (str_contains($img_url, 'haxibiao.com')) {
-                        $formatter = 'http://cos.haxibiao.com%s';
-                        $cdn_url   = sprintf($formatter, str_after($img_url, 'haxibiao.com'));
-                        $body_html = str_replace($img_url, $cdn_url, $body_html);
-                    } elseif (starts_with($img_url, '/')) {
-                        //相对路径
-                        $formatter = 'http://cos.' . config("app.name") . '.com%s';
-                        $cdn_url   = sprintf($formatter, $img_url);
-                        $body_html = str_replace($img_url, $cdn_url, $body_html);
-                    }
-                }
-                $article->body       = $body_html;
-                $article->timestamps = false;
-                $article->save();
+
+                $this->info('修复后，粉丝数：' . $user->count_follows);
+                $this->info('修复后，关注数：' . $user->count_followings);
             }
         });
     }
 
     public function articles()
     {
-        $this->info('fix artciles ing ...');
-        //article 与video 作者不符合
-        $article             = Article::findOrFail(14609);
-        $article->video_id   = null;
-        $article->type       = 'article';
-        $article->timestamps = false;
-        $article->save();
-        $this->info('fix success');
+        $qb = Article::where('status', 1)->whereNotNull('cover_path')->where('cover', '<>', '');
+        $this->warn("本次预计修复数据 {$qb->count()} 行");
+        $qb->chunkById(100, function ($articles) {
+            foreach ($articles as $article) {
+                $this->info("{$article->id} 修复前 cover = {$article->cover}");
+
+                if (str_contains($article->cover, 'image')) {
+
+                    $fixed_url      = strstr($article->cover, 'image');
+                    $article->cover = $fixed_url;
+                    $article->save();
+
+                } else if (str_contains($article->cover, 'video')) {
+                    $fixed_url      = strstr($article->cover, 'video');
+                    $article->cover = $fixed_url;
+                    $article->save();
+                }
+
+                $this->info("{$article->id} 修复后 cover = {$article->cover}");
+            }
+        });
     }
 
     public function content($article)
@@ -582,7 +516,7 @@ class FixData extends Command
                 //存在的数据fix 不存在的数据直接删除
                 if ($actionable) {
                     switch ($action->actionable_type) {
-                        case 'articles' :
+                        case 'articles':
                             if ($actionable->status == 1) {
                                 $action->status = 1;
                             }
@@ -657,55 +591,15 @@ class FixData extends Command
 
     public function users()
     {
-        User::chunk(100, function ($users) {
-            foreach ($users as $user) {
-                $profile = $user->profile;
+        $this->info('修复 静默注册的手机号和原账号的手机号 相同');
 
-                if (empty($profile)) {
-                    $profile          = new Profile();
-                    $profile->user_id = $user->id;
-                }
+        $user = User::find('2050');
+        $this->warn('修复前，手机号为：' . $user->phone);
+        $user->phone   = null;
+        $user->account = 13327347555;
+        $user->save();
 
-                $profile->qq           = $user->qq;
-                $profile->json         = $user->json;
-                $profile->introduction = $user->introduction ?? '这个人暂时没有 freestyle';
-                $gender                = isset($user->gender) ? ($user->gender == '男' ? 0 : ($user->gender == '女' ? 1 : -1)) : -1;
-                $profile->gender       = $gender;
-                $profile->tip_words    = $user->tip_words;
-                $profile->website      = $user->website;
-                $profile->qrcode       = $user->qrcode;
-                if ($profile->count_articles == 0) {
-                    $profile->count_articles = $user->count_articles ?? 0;
-                }
-
-                if ($profile->count_follows == 0) {
-                    $profile->count_follows = $user->count_follows ?? 0;
-                }
-                if ($profile->count_followings == 0) {
-                    $profile->count_followings = $user->count_followings ?? 0;
-                }
-                if ($profile->count_words == 0) {
-                    $profile->count_words = $user->count_words ?? 0;
-                }
-                if ($profile->count_collections == 0) {
-                    $profile->count_collections = $user->count_collections ?? 0;
-                }
-                if ($profile->count_favorites == 0) {
-                    $profile->count_favorites = $user->count_favorites ?? 0;
-                }
-                if ($profile->count_actions == 0) {
-                    $profile->count_actions = $user->count_actions ?? 0;
-                }
-                if ($profile->count_reports == 0) {
-                    $profile->count_reports = $user->count_reports ?? 0;
-                }
-                $profile->timestamps = false;
-                $profile->save();
-
-                $this->info($user->gender . '和' . $user->profile->gender);
-                $this->info($user->introduction . '和' . $user->profile->introduction);
-            }
-        });
+        $this->warn('修复后，手机号为：' . $user->phone ?? '空');
     }
 
     public function notifications()
@@ -720,7 +614,7 @@ class FixData extends Command
                         $article_title = $article->title ?: $article->video->title;
                         // 标题 视频标题都不存在 则取description
                         if (empty($article_title)) {
-                            $article_title = $article->get_description();
+                            $article_title = $article->summary;
                         }
                         $notification->timestamps = false;
                         $result                   = DB::table('notifications')->where('id', $notification->id)
@@ -744,59 +638,16 @@ class FixData extends Command
 
     public function transactions()
     {
-        // Transaction::whereType('打赏')->orderByDesc('id')->chunk(100,function($transactions) use(){
-        //     foreach ($transactions as $transaction) {
-        //         try{
-        //             preg_match_all('#/(\d+)#', $transaction->log, $matches);
-        //             $data = end($matches);
-        //             $user = User::findOrFail(reset($data));
-        //             $video = Video::findOrFail(end($data));
-        //         }catch(\Exception $e){
-        //             continue;
-        //         }
-        //         if(!empty($article = $video->article) && !empty($user)){
-        //             if(strpos($transaction->log,'向您的') !== false && strpos($transaction->log,'《》') !== false){
-        //                 $transaction->log = $user->link() . '向您的' . $article->link() . '打赏' . $amount . '元';
-        //                 $transaction->timestamps=false;
-        //                 $transaction->save();
-        //                 $this->info('transaction '.$transaction->id.' fix success');
-        //             }else if(strpos($transaction->log,'向<a') !==false && strpos($transaction->log,'《》') !== false){
-        //                 $transaction->log = '向' . $article->user->link() . '的' . $article->link() . '打赏' . $amount . '元';
-        //                 $transaction->timestamps=false;
-        //                 $transaction->save();
-        //                 $this->info('transaction '.$transaction->id.' fix success');
-        //             }
-        //         }
-        //     }
-        // });
         Transaction::whereType('打赏')->orderByDesc('id')->chunk(100, function ($transactions) {
             foreach ($transactions as $transaction) {
-                if (strpos($transaction->log, '赏元') !== false) {
-                    $log                     = str_replace('赏元', '赏' . intval($transaction->amount) . '元', $transaction->log);
-                    $transaction->log        = $log;
+                if (strpos($transaction->remark, '赏元') !== false) {
+                    $remark                  = str_replace('赏元', '赏' . intval($transaction->amount) . '元', $transaction->remark);
+                    $transaction->remark     = $remark;
                     $transaction->timestamps = false;
                     $transaction->save();
                     $this->info('transaction ' . $transaction->id . ' fix success');
                 }
             }
         });
-    }
-
-    public function comments()
-    {
-        //删除uid:535用户发的广告信息
-        //删除动态
-        $actions = Action::where('user_id', 535)->get();
-        foreach ($actions as $action) {
-            if ($action->actionable_type == 'comments') {
-                $action->delete();
-                $this->info('Action ID:' . $action->id . ' delete success');
-            }
-        }
-        $comments = Comment::where('user_id', 535)->get();
-        foreach ($comments as $comment) {
-            $comment->delete();
-            $this->info('Comment ID' . $comment->id . ' delete success');
-        }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 
@@ -36,6 +37,13 @@ class Aso extends Resource
             Text::make('组', 'group'),
             Text::make('名称', 'name'),
             Text::make('值', 'value'),
+
+            File::make('图片1', 'value')->store(
+                function (Request $request, $model) {
+                    $file = $request->file('value');
+
+                    return $model->saveDownloadImage($file, $this->name);
+                })->disableDownload(),
         ];
     }
 

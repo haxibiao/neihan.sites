@@ -14,7 +14,9 @@ class AddWalletIdToGoldTable extends Migration
     public function up()
     {
         Schema::table('gold', function (Blueprint $table) {
-            $table->unsignedInteger('wallet_id')->nullable()->index();
+            if (!Schema::hasColumn('gold', 'wallet_id')) {
+                $table->unsignedInteger('wallet_id')->nullable()->index();
+            }
         });
     }
 

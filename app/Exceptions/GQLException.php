@@ -19,11 +19,12 @@ class GQLException extends Exception implements RendersErrorsExtensions
      * @param  string  $reason
      * @return void
      */
-    public function __construct(string $message, string $reason = "")
+    public function __construct(string $message,int $code= 1 ,string $reason = "")
     {
         parent::__construct($message);
 
-        $this->reason = $reason;
+        $this->reason   = $reason;
+        $this->code     = $code;
     }
 
     /**

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class EditTransactionUserIdNullable extends Migration
 {
@@ -14,7 +14,9 @@ class EditTransactionUserIdNullable extends Migration
     public function up()
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->integer('user_id')->nullable()->change();
+            if (!Schema::hasColumn('transactions', 'user_id')) {
+                $table->integer('user_id')->nullable()->change();
+            }
         });
     }
 
