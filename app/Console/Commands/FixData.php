@@ -114,6 +114,7 @@ class FixData extends Command
         }
         Storage::cloud()->put('video/1.mp4', @file_get_contents('http://cos.dianmoge.com/video/1.mp4'));
         Storage::cloud()->put('video/1.mp4.0_0.p0.jpg', @file_get_contents('http://cos.dianmoge.com/video/1.mp4.0_0.p0.jpg '));
+        Storage::cloud()->put('video/black.jpg', @file_get_contents('http://cos.dianmoge.com/video/1.mp4.0_0.p0.jpg '));
 
         //下架Video_id的Article
         $video = Video::find(1);
@@ -127,7 +128,7 @@ class FixData extends Command
             $video->user_id  = 1;
             $video->title    = '黑屏视频';
             $video->path     = 'video/1.mp4';
-            $video->cover    = 'video/12.98.jpg';
+            $video->cover    = 'video/1.mp4.0_0.p0.jpg';
             $video->duration = 15;
             $video->hash     = '4073b0265f5d794b5fd5653e2cf18dae';
             $video->setJsonData('covers', ["video/1.mp4.0_0.p0.jpg"]);
@@ -138,7 +139,7 @@ class FixData extends Command
             $video->user_id  = 1;
             $video->title    = '黑屏视频';
             $video->path     = 'video/1.mp4';
-            $video->cover    = 'video/12.98.jpg';
+            $video->cover    = 'video/1.mp4.0_0.p0.jpg';
             $video->duration = 15;
             $video->hash     = '4073b0265f5d794b5fd5653e2cf18dae';
             $video->setJsonData('covers', ["video/1.mp4.0_0.p0.jpg"]);
