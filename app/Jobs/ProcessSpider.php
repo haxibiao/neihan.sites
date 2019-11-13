@@ -12,10 +12,10 @@ use App\Tag;
 use App\Video;
 use Exception;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -37,11 +37,11 @@ class ProcessSpider implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Article $article,String $shareMsg)
+    public function __construct(Article $article, String $shareMsg)
     {
-        $this->article      = $article;
-        $this->shareMsg     = $shareMsg;
-        $this->user         = $article->user;
+        $this->article  = $article;
+        $this->shareMsg = $shareMsg;
+        $this->user     = $article->user;
     }
 
     /**
@@ -51,9 +51,9 @@ class ProcessSpider implements ShouldQueue
     public function handle()
     {
         $shareMsg = $this->shareMsg;
-        $link = filterText($shareMsg)[0];
-        $user = $this->article->user;
-        $article = $this->article;
+        $link     = filterText($shareMsg)[0];
+        $user     = $this->article->user;
+        $article  = $this->article;
 
         //轮训爬虫服务器
         $prossserServices = [
@@ -70,48 +70,40 @@ class ProcessSpider implements ShouldQueue
         $endPoint = Arr::random($prossserServices);
 
         //轮训Job
-        $getApi = 'http://' . $endPoint . '/simple-spider/index.php?url=' . $link ;
-        $data = file_get_contents($getApi);
+        $getApi = 'http://' . $endPoint . '/simple-spider/index.php?url=' . $link;
+        $data   = file_get_contents($getApi);
         $json   = json_decode($data, true);
 
-        $description = Arr::get($json,'data.raw.item_list.0.desc','');
+        $description = Arr::get($json, 'data.raw.item_list.0.desc', '');
+        $description = preg_replace('/@([\w]+)/u', '', $description);
+        preg_match_all('/#([\w]+)/u', $description, $topicArr);
+        $description = preg_replace('/#([\w]+)/u', '', $description);
+        $description = trim($description);
 
         $content = $json['data'];
-        if($json['code'] != 200){
+        if ($json['code'] != 200) {
+            //删除该视频
+
             throw new Exception('视频上传失败!');
         }
         //保存视频信息
-        $url= $content['video'];
-        $raw= $content['raw'];
+        $url = $content['video'];
+        $raw = $content['raw'];
 
-        //去除@便签
-        if(Str::contains($description,'@')){
-            $description = Str::before($description,'@');
-        }
-
-        //抖音的分类信息维护到标签
-        if(Str::contains($description,'#')){
-            $desc = $description;
-            $description = Str::before($desc,'#');
-
-            //保存标签
-            $tagStr = Str::after($desc,'#');
-            if($tagStr){
-                $tagStrs = explode('#',$tagStr);
-                $tags = [];
-                foreach ($tagStrs as $tagStr){
-                    if(!$tagStr){
-                        continue;
-                    }
-                    $tag = Tag::firstOrCreate([
-                        'name' => $tagStr
-                    ],[
-                        'user_id' => 1
-                    ]);
-                    $tags[] = $tag->id;
+        if ($topicArr[1]) {
+            $tags = [];
+            foreach ($topicArr[1] as $topic) {
+                if (Str::contains($topic, '抖音')) {
+                    continue;
                 }
-                $article->tags()->sync($tags);
+                $tag = Tag::firstOrCreate([
+                    'name' => $topic,
+                ], [
+                    'user_id' => 1,
+                ]);
+                $tags[] = $tag->id;
             }
+            $article->tags()->sync($tags);
         }
 
         $dispatcher = Video::getEventDispatcher();
@@ -122,15 +114,15 @@ class ProcessSpider implements ShouldQueue
             'hash' => $hash,
         ]);
         $video->setJsonData('metaInfo', $raw);
-        $video->setJsonData('server'  , $url);
+        $video->setJsonData('server', $url);
         $video->user_id = $user->id;
-        $video->title = $description;
-        $video->unsetEventDispatcher();//临时禁用模型事件
+        $video->title   = $description;
         $video->save();
 
         //本地存一份用于截图
         $cosPath     = 'video/' . $video->id . '.mp4';
-        $video->path  = $cosPath;
+        $video->path = $cosPath;
+        $stream      = @file_get_contents($url);
         Storage::disk('public')->put($cosPath, @file_get_contents($url));
         $video->disk = 'local'; //先标记为成功保存到本地
         $video->save();
@@ -139,35 +131,37 @@ class ProcessSpider implements ShouldQueue
 
         //将视频上传到cos
         $cosDisk = Storage::cloud();
-        $cosDisk->put($cosPath, Storage::disk('public')->get($cosPath));
+        $cosDisk->put($cosPath, $stream);
         $video->disk = 'cos';
         $video->save();
 
         $category = Category::firstOrNew([
-            'name' => '我要上热门'
+            'name' => '我要上热门',
         ]);
-        if(!$category->id){
-            $category->name_en  = 'woyaoshangremeng';
-            $category->status   = 1;
-            $category->user_id  = 1;
+        if (!$category->id) {
+            $category->name_en = 'woyaoshangremeng';
+            $category->status  = 1;
+            $category->user_id = 1;
             $category->save();
         }
         //避免与Observer处理存在时间差导致重复创建
-        $article = $this->article;
+        $article              = $this->article;
         $article->video_id    = $video->id;
         $article->body        = $description;
         $article->title       = Str::limit($description, 150); //截取微博那么长的内容存简介;
         $article->description = Str::limit($description, 280); //截取微博那么长的内容存简介
-        $article->status      = 1;//FIXME 合并submit与status字段
+        $article->status      = 1; //FIXME 合并submit与status字段
         $article->submit      = Article::SUBMITTED_SUBMIT; //直接上架状态
         $article->user_id     = $user->id;
         $article->category_id = $category->id;
         $article->save();
 
+        $article->categories()->sync([$category->id]);
+
         //奖励用户
         $user->notify(new ReceiveAward('发布视频动态奖励', 10, $user, $article->id));
         Gold::makeIncome($user, 10, '发布视频动态奖励');
-        Contribute::rewardUserVideoPost($user,$article);
+        Contribute::rewardUserVideoPost($user, $article);
 
     }
 }

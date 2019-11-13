@@ -238,11 +238,10 @@ trait ArticleResolvers
                 $shareMsg = $args['share_link'];
                 $link = filterText($shareMsg)[0];
                 $description = Str::replaceFirst('#在抖音，记录美好生活#','',$shareMsg);
-                if(Str::contains($description,'#')){
-                    $description = Str::before($description,'#');
-                } else {
-                    $description = Str::before($description,'http');
-                }
+                $description = Str::before($description,'http');
+                $description = preg_replace('/@([\w]+)/u','',$description);
+                $description = preg_replace('/#([\w]+)/u','',$description);
+                $description = trim($description);
 
                 // 不允许重复视频
                 $article = Article::firstOrNew([

@@ -23,8 +23,8 @@ trait VideoAttrs
         // 相对路径 转 绝对路径
         $data = [
             'cover'  => \Storage::cloud()->url($json['cover'] ?? '/images/cover.png'),
-            'width'  => $json['width'],
-            'height' => $json['height'],
+            'width'  => $json['width']?? null,
+            'height' => $json['height']?? null,
         ];
 
         return $data;

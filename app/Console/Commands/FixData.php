@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Article;
 use App\Category;
 use App\Gold;
+use App\Tag;
 use App\Transaction;
 use App\User;
 use App\Video;
@@ -12,8 +13,10 @@ use App\Visit;
 use App\WalletTransaction;
 use App\Withdraw;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class FixData extends Command
 {
@@ -33,6 +36,73 @@ class FixData extends Command
             return $this->$table();
         }
         return $this->error("必须提供你要修复数据的table");
+    }
+    public function articles(){
+
+//        //修复抖音视频分类
+//        $categoryDouyin = Category::whereName('抖音合集')->first();
+//        $categoryHot    = Category::whereName('我要上热门')->first();
+//        if($categoryDouyin){
+//            Article::where('category_id',$categoryDouyin->id)->chunk(100,function($articles) use ($categoryDouyin,$categoryHot){
+//                foreach ($articles as $article){
+//                    $article->category_id = $categoryHot->id;
+//                    $article->save(['timestamps' => false]);
+//                    $article->categories()->sync([$categoryHot->id]);
+//                }
+//            });
+//        }
+//        if($categoryHot){
+//            Article::where('category_id',$categoryHot->id)->chunk(100,function($articles) use ($categoryHot){
+//                foreach ($articles as $article){
+//                    $article->categories()->sync([$categoryHot->id]);
+//                }
+//            });
+//        }
+
+        //修复抖音视频title, body，description, tags
+        Article::where('source_url','like','https://v.douyin.com/%')->chunk(100,function($articles){
+            foreach ($articles as $article){
+                $video = $article->video;
+                if(!$video){
+                    continue;
+                }
+                $json = $video->json;
+                if(!$json){
+                    continue;
+                }
+                $json = json_decode($json,true);
+                $desc  = Arr::get($json,'metaInfo.item_list.0.desc','');
+                $this->warn($desc);
+                //去除抖音@标签
+                $desc = preg_replace('/@([\w]+)/u','',$desc);
+                preg_match_all('/#([\w]+)/u',$desc,$topicArr);
+                $desc = preg_replace('/#([\w]+)/u','',$desc);
+                $desc = trim($desc);
+
+                $article->title         = $desc;
+                $article->body          = $desc;
+                $article->description   = $desc;
+                $article->save(['timestamps' => false]);
+
+                if($topicArr[1]){
+                    $tags = [];
+                    foreach ($topicArr[1] as $topic){
+                        if(Str::contains($topic,'抖音')){
+                            continue;
+                        }
+                        $tag = Tag::firstOrCreate([
+                            'name' => $topic
+                        ],[
+                            'user_id' => 1
+                        ]);
+                        $tags[] = $tag->id;
+                    }
+                    $article->tags()->sync($tags);
+                }
+                $this->info($desc);
+            }
+        });
+
     }
 
     public function video()
