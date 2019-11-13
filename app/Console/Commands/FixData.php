@@ -117,13 +117,17 @@ class FixData extends Command
         Storage::cloud()->put('video/black.jpg', @file_get_contents('http://cos.dianmoge.com/video/1.mp4.0_0.p0.jpg '));
 
         //下架Video_id的Article
+        Video::find(1)->restore();
         $video = Video::find(1);
         //黑屏视频与图片处理 video id处理
         if ($video) {
-            $article         = $video->article;
-            $article->status = -1;
-            $article->sunmit = -1;
-            $article->save();
+            $article     = $video->article;
+            if($article){
+                $article->status = -1;
+                $article->sunmit = -1;
+                $article->save();
+            }
+
 
             $video->user_id  = 1;
             $video->title    = '黑屏视频';
