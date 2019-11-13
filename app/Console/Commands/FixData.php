@@ -435,30 +435,6 @@ class FixData extends Command
         });
     }
 
-    public function articles()
-    {
-        $qb = Article::where('status', 1)->whereNotNull('cover_path')->where('cover', '<>', '');
-        $this->warn("本次预计修复数据 {$qb->count()} 行");
-        $qb->chunkById(100, function ($articles) {
-            foreach ($articles as $article) {
-                $this->info("{$article->id} 修复前 cover = {$article->cover}");
-
-                if (str_contains($article->cover, 'image')) {
-
-                    $fixed_url      = strstr($article->cover, 'image');
-                    $article->cover = $fixed_url;
-                    $article->save();
-
-                } else if (str_contains($article->cover, 'video')) {
-                    $fixed_url      = strstr($article->cover, 'video');
-                    $article->cover = $fixed_url;
-                    $article->save();
-                }
-
-                $this->info("{$article->id} 修复后 cover = {$article->cover}");
-            }
-        });
-    }
 
     public function content($article)
     {
