@@ -34,7 +34,9 @@ type User {
   blockedUsers: [blockInfo] @field(resolver: "App\\User@blockedUsers")
   wallet: Wallet
     @rename(attribute: "is_wallet")
-    @deprecated(reason: "RMB钱包,请前端用户逐渐切换使用user type 下的wallets属性")
+    @deprecated(
+      reason: "RMB钱包,请前端用户逐渐切换使用user type 下的wallets属性"
+    )
   is_wallet: Wallet
   gold: Int @deprecated(reason: "改属性已经弃用，请使用wallet type进行子查询")
   reward: Float
@@ -58,10 +60,13 @@ type blockInfo {
 }
 
 extend type Query {
-  users: [User!]! @paginate(defaultCount: 10, type: "paginator", model: "App\\User")
+  users: [User!]!
+    @paginate(defaultCount: 10, type: "paginator", model: "App\\User")
   user(id: Int! @eq): User @find
-  recommendAuthors: [User!] @paginate(defaultCount: 10, builder: "App\\User@resolveRecommendAuthors")
-  searchUsers(keyword: String!): [User!] @paginate(defaultCount: 10, builder: "App\\User@resolveSearchUsers")
+  recommendAuthors: [User!]
+    @paginate(defaultCount: 10, builder: "App\\User@resolveRecommendAuthors")
+  searchUsers(keyword: String!): [User!]
+    @paginate(defaultCount: 10, builder: "App\\User@resolveSearchUsers")
 }
 
 extend type Query @middleware(checks: ["auth:api"]) {

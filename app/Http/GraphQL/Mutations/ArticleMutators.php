@@ -163,9 +163,14 @@ class ArticleMutators
                 }
 
                 $video = Video::findOrFail($inputs['video_id']);
-                if ($video->duration <= 5) {
-                    throw new UserException('发布的视频不得低于5秒!');
-                }
+                /**
+                 * 判断视频时长放到队列中处理，如果不满足条件则发布失败，时长不够
+                 * 目前这样在队列处理不过来的时候，会误判 duration = 0
+                 */
+
+                // if ($video->duration <= 5) {
+                //     throw new UserException('发布的视频不得低于5秒!');
+                // }
 
                 //不能发布同一个视频（一模一样的视频）
                 $videoToArticle = Article::where('user_id', $user->id)

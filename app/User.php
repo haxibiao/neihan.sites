@@ -62,6 +62,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function exchanges()
+    {
+        return $this->hasMany(\App\Exchange::class);
+    }
+
     public function contributes()
     {
         return $this->hasMany(\App\Contribute::class);

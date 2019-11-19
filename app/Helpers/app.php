@@ -42,7 +42,7 @@ function qrcode_url()
 
 function small_logo()
 {
-    return '//' . env('APP_DOMAIN') . '/logo/' . env('APP_DOMAIN') . '.small.png';
+    return '/logo/' . env('APP_DOMAIN') . '.small.png';
 }
 
 function is_staging_env()

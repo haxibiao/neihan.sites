@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use App\Exchange;
 use App\Profile;
 use App\User;
 use Illuminate\Support\Facades\Cache;
@@ -10,15 +9,6 @@ use Illuminate\Support\Facades\Storage;
 
 trait UserRepo
 {
-    public function isExchangeToday()
-    {
-        $exchange = Exchange::where('user_id', $this->id)->latest('id')->first();
-        if (is_null($exchange) || now()->diffInDays($exchange->created_at) > 0) {
-            return false;
-        }
-
-        return true;
-    }
     public function createUser($name, $account, $password)
     {
         $user           = new User();

@@ -13,5 +13,5 @@ return [
         'youjianqi.com'   => 6,
         'dongdianyao.com' => 7,
     ],
-    'matomo' => 'https://haxibiao.com/matomo',
+    'matomo' => 'http://matomo.haxibiao.com',
 ];

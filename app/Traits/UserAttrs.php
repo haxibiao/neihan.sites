@@ -29,6 +29,11 @@ trait UserAttrs
         return Wallet::rmbWalletOf($this);
     }
 
+    public function getIsExchangeTodayAttribute()
+    {
+        return $this->exchanges()->whereDate('created_at', \Carbon\Carbon::today())->count() > 0;
+    }
+
     //兼容前端:下一版去掉
     public function getIsWalletAttribute()
     {
@@ -195,13 +200,13 @@ trait UserAttrs
     //     return $this->profile->Json;
     // }
 
-    // public function getIntroductionAttribute()
-    // {
-    //     if (!$this->profile || empty($this->profile->introduction)) {
-    //         return '这个人很懒，一点介绍都没留下...';
-    //     }
-    //     return $this->profile->introduction;
-    // }
+    public function getIntroductionAttribute()
+    {
+        if (!$this->profile || empty($this->profile->introduction)) {
+            return '这个人很懒，一点介绍都没留下...';
+        }
+        return $this->profile->introduction;
+    }
 
     //unreads
     public function getUnreadCommentsAttribute()

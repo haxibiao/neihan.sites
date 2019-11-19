@@ -3,7 +3,8 @@ type Article {
   type: String!
   title: String @rename(attribute: "subject")
   subject: String
-  description: String
+  description: String @rename(attribute: "subjectDescription")
+  subjectDescription:String
   body: String
   video_url: String
   favorited: Int
