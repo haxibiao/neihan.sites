@@ -2,15 +2,12 @@
 
 namespace App\Nova\Actions\Report;
 
-use App\Article;
-use App\Comment;
 use App\Report;
 use Illuminate\Bus\Queueable;
-use Laravel\Nova\Actions\Action;
-use Illuminate\Support\Collection;
-use Laravel\Nova\Fields\ActionFields;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Collection;
+use Laravel\Nova\Actions\Action;
+use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Nova;
 
@@ -47,15 +44,7 @@ class AuditReport extends Action
             $model->save();
 
             if ($status == Report::SUCCESS_STATUS) {
-                //举报文章
-                if ($reportable instanceof Article) {
-                    $reportable->status = 0;
-                    $reportable->save();
-                }
-                //举报评论
-                if ($reportable instanceof Comment) {
-                    $reportable->delete();
-                }
+                $model->reportSuccess();
             }
         }
 

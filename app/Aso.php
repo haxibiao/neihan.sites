@@ -18,20 +18,18 @@ class Aso extends Model
     {
 
         if ($file) {
-            $hash     = md5_file($file->path());
             $aso      = Aso::where('name', $name)->first();
             $aso_path = $aso->value;
-
-            $old_file = public_path($aso_path);
-
-            $old_hash = md5_file($old_file);
-            if ($old_hash == $hash) {
-                abort(500, '重复图片');
+            
+            
+            if(\str_contains($aso_path, env('COS_DOMAIN'))){
+                $aso_path = \str_after($aso_path,env('COS_DOMAIN'));
             }
-
-            copy($file->path(), $old_file);
-
-            return $aso_path;
+            
+            $cosDisk     = \Storage::cloud();
+            $cosDisk->put($aso_path, \file_get_contents($file->path()));
+            
+            return $cosDisk->url($aso_path);
         }
     }
 }

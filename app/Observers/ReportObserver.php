@@ -25,7 +25,7 @@ class ReportObserver
             $comment->save();
         } else if ($report->reportable instanceof \App\User) {
             $user = $report->reportable;
-            $user->count_reports += 1;
+            $user->profile->count_reports += 1;
             $user->save();
         }
 

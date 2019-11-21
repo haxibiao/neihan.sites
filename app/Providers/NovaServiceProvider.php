@@ -59,8 +59,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function gate()
     {
         \Gate::define('viewNova', function ($user) {
-            return $user->is_admin || ends_with($user->email, '@haxibiao.com') || ends_with($user->account, '@haxibiao.com');
-            ;
+            return $user->isAdmin();
         });
     }
 
@@ -73,6 +72,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         return [
             new \App\Nova\Metrics\NewUsers,
+            new \App\Nova\Metrics\ArticleSpider,
             new \App\Nova\Metrics\UsersPerDay,
             new \App\Nova\Metrics\NewWithdraw,
             new \App\Nova\Metrics\UserGender,

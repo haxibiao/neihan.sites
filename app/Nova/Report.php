@@ -60,11 +60,11 @@ class Report extends Resource
         return [
             ID::make()->sortable(),
 
-            ID::make()->sortable(),
             BelongsTo::make('发起用户', 'user', User::class)->exceptOnForms(),
             MorphTo::make('举报对象', 'reportable')->types([
                 Article::class,
                 Comment::class,
+                User::class,
             ]),
             Textarea::make('理由', 'reason')->exceptOnForms(),
             Select::make('状态', 'status')->options($this::getStatuses())->displayUsingLabels(),

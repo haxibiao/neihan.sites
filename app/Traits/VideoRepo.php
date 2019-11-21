@@ -94,12 +94,9 @@ trait VideoRepo
         $cmd_get_duration = 'ffprobe -i ' . $videoPath . ' -show_entries format=duration -v quiet -of csv="p=0" 2>&1';
         $duration         = `$cmd_get_duration`;
 
-        //等比例截取4张图片 20%，40%, 60%, 80%，
+        //等比例截取1张图片 20%
         $timeCodes = [
             bcmul(sprintf('%.2f', $duration), 0.2, 2),
-            bcmul(sprintf('%.2f', $duration), 0.4, 2),
-            bcmul(sprintf('%.2f', $duration), 0.6, 2),
-            bcmul(sprintf('%.2f', $duration), 0.8, 2),
         ];
 
         $duration        = intval($duration);
@@ -115,11 +112,10 @@ trait VideoRepo
             $coverName = $video->id . $second;
             //视频封面输出地址
             $localCoverPath = sprintf($localImagePathTemplate, $coverName);
-
+            info($localCoverPath);
             $cmd = "ffmpeg -ss $second -i $videoPath -an -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $localCoverPath 2>&1";
 
             $exit_code = exec($cmd);
-            \Log::info($exit_code);
 
             $coverPath = 'video/' . $coverName . '.jpg';
 
@@ -158,7 +154,7 @@ trait VideoRepo
             $article->save();
 
             //释放服务器资源
-            if(!is_local_env()){
+            if (!is_local_env()) {
                 Storage::disk('public')->delete($video->path);
             }
         }

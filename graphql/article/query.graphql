@@ -4,7 +4,7 @@ type Article {
   title: String @rename(attribute: "subject")
   subject: String
   description: String @rename(attribute: "subjectDescription")
-  subjectDescription:String
+  subjectDescription: String
   body: String
   video_url: String
   favorited: Int
@@ -49,9 +49,11 @@ extend type Query @middleware(checks: ["auth:api"]) {
   followedArticles(user_id: Int!): [Article!]
     @paginate(defaultCount: 10, builder: "App\\Article@resolveFollowedArticles")
 
-  pendingArticles(category_id: Int): [Article!] @field(resolver: "App\\Article@resolvePendingArticles")
+  pendingArticles(category_id: Int): [Article!]
+    @field(resolver: "App\\Article@resolvePendingArticles")
 
-  trashArticles: [Article!] @paginate(defaultCount: 10, builder: "App\\Article@resolveTrashArticles")
+  trashArticles: [Article!]
+    @paginate(defaultCount: 10, builder: "App\\Article@resolveTrashArticles")
 }
 
 extend type Query {
@@ -61,7 +63,11 @@ extend type Query {
     @field(resolver: "App\\Article@resolveRecommendVideos")
 
   article(id: Int! @eq): Article @find
-  recommendArticles: [Article!] @paginate(defaultCount: 10, builder: "App\\Article@resolveRecommendArticles")
+  recommendArticles: [Article!]
+    @paginate(
+      defaultCount: 10
+      builder: "App\\Article@resolveRecommendArticles"
+    )
 
   articles(
     status: ArticleStatus = all
@@ -69,13 +75,17 @@ extend type Query {
     category_id: Int
     submit: ArticleSubmitStatus = ALL
     orderBy: [OrderByClause!] @orderBy
-  ): [Article!] @paginate(defaultCount: 10, builder: "App\\Http\\GraphQL\\Queries\\ArticleQueries@articles")
+  ): [Article!]
+    @paginate(
+      defaultCount: 10
+      builder: "App\\Http\\GraphQL\\Queries\\ArticleQueries@articles"
+    )
 }
 
 enum ArticleStatus {
   public @enum(value: 1)
-  draft  @enum(value: 0)
-  all    @enum(value: 10)
+  draft @enum(value: 0)
+  all @enum(value: 10)
 }
 
 enum ArticleSubmitStatus {

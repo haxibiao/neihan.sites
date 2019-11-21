@@ -29,7 +29,7 @@ class WithdrawsPerDay extends Trend
             $data[$curation->daily] = $curation->count;
         });
 
-        $value           =  end($data);
+        $value = end($data);
         return (new TrendResult($value))->trend($data);
     }
     /**

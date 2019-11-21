@@ -12,6 +12,8 @@ return [
         'qunyige.com'     => 5,
         'youjianqi.com'   => 6,
         'dongdianyao.com' => 7,
+        'youwangfa.com'   => 8,
+        'jucheshe.com'    => 9,
     ],
     'matomo' => 'http://matomo.haxibiao.com',
 ];

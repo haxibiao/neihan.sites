@@ -68,8 +68,6 @@ trait WithdrawRepo
 
         $alipayTransferResponse = AlipayService::transfer($outBizNo, $account, $realName, $amount, $remark);
 
-        info($alipayTransferResponse);
-
         return $alipayTransferResponse['alipay_fund_trans_toaccount_transfer_response'] ?? null;
     }
 
@@ -104,7 +102,6 @@ trait WithdrawRepo
 
             DB::commit(); //事务提交
         } catch (\Exception $ex) {
-            Log::error($ex);
             DB::rollback(); //数据回滚
         }
     }

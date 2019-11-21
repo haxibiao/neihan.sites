@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
@@ -50,6 +51,26 @@ class Report extends Model
         $report->reportable_id   = Arr::get($args, 'id');
         $report->reportable_type = Arr::get($args, 'type');
         $report->save();
+
+        // 内部不需要审核
+        if ($user->isAdmin()) {
+            $report->reportSuccess();
+        }
+
         return $report;
+    }
+
+    public function reportSuccess()
+    {
+        $reportable = $this->reportable;
+        // 处理举报
+        if ($reportable instanceof Article) {
+            $reportable->status = 0;
+            $reportable->save();
+        } elseif ($reportable instanceof Comment) {
+            $reportable->delete();
+        } elseif ($reportable instanceof User) {
+            $reportable->bannedAccount();
+        }
     }
 }

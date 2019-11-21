@@ -20,7 +20,7 @@ class ArticleQueries
             $query->where('submit', $args['submit']);
         }
 
-        if( $args['status'] != 10 ){
+        if ($args['status'] != 10) {
             return $query->where('status', $args['status']);
         }
         $query->when(isset($args['user_id']), function ($q) use ($args) {

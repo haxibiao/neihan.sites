@@ -25,6 +25,7 @@ class NewUsers extends Value
                 date('Y-m-d', strtotime("+1 day")),
             ];
         }
+
         //自定义设置
         if (isset($date)) {
             $valueResult = $this->result($this->getCustomDateUserCount($date));

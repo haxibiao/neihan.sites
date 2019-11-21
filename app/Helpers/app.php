@@ -42,7 +42,15 @@ function qrcode_url()
 
 function small_logo()
 {
-    return '/logo/' . env('APP_DOMAIN') . '.small.png';
+    $logo = \App\Aso::getValue('下载页', 'logo');
+    
+    
+    if(empty($logo)){
+        return '/logo/' . env('APP_DOMAIN') . '.small.png';
+    }else{
+        return $logo;
+    }
+    
 }
 
 function is_staging_env()

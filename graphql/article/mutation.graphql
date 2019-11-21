@@ -1,6 +1,10 @@
 extend type Mutation @middleware(checks: ["auth:api"]) {
-  createPost(body: String!, image_urls: [String!], video_id: Int, category_ids: [Int!]): Article!
-    @field(resolver: "App\\Article@resolveCreatePost")
+  createPost(
+    body: String!
+    image_urls: [String!]
+    video_id: Int
+    category_ids: [Int!]
+  ): Article! @field(resolver: "App\\Article@resolveCreatePost")
   createContent(
     body: String!
     image_urls: [String!]
@@ -9,11 +13,17 @@ extend type Mutation @middleware(checks: ["auth:api"]) {
     images: [String!]
     type: ContenType!
     issueInput: IssueInfo
-  ): Article! @field(resolver: "App\\Http\\GraphQL\\Mutations\\ArticleMutators@createContent")
-  restoreArticle(id: Int!): Article @field(resolver: "App\\Article@restoreArticle")
-  deleteArticle(id: Int!): Article @field(resolver: "App\\Article@deleteArticle")
+  ): Article!
+    @field(
+      resolver: "App\\Http\\GraphQL\\Mutations\\ArticleMutators@createContent"
+    )
+  restoreArticle(id: Int!): Article
+    @field(resolver: "App\\Article@restoreArticle")
+  deleteArticle(id: Int!): Article
+    @field(resolver: "App\\Article@deleteArticle")
 
-  resolveDouyinVideo(share_link: String!): Article @field(resolver: "App\\Article@resolveDouyinVideo")
+  resolveDouyinVideo(share_link: String!): Article
+    @field(resolver: "App\\Article@resolveDouyinVideo")
 }
 
 enum ContenType {

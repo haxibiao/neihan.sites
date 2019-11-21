@@ -335,4 +335,18 @@ trait UserRepo
     {
         Cache::forget('unreads_' . $this->id);
     }
+
+    public function bannedAccount()
+    {
+        $this->status = self::STATUS_OFFLINE;
+        $this->save();
+    }
+
+    public function isAdmin()
+    {
+        if ($this->is_admin || ends_with($this->email, '@haxibiao.com') || ends_with($this->account, '@haxibiao.com')) {
+            return true;
+        }
+        return false;
+    }
 }

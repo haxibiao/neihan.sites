@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Nova\Actions\Article\AuditVideoPostSubmitStatus;
+use App\Nova\Filters\ArticleSource;
 use App\Nova\Filters\Article\ArticleSubmitFilter;
 use App\Scopes\ArticleSubmitScope;
 use Halimtuhu\ArrayImages\ArrayImages;
@@ -127,6 +128,7 @@ class Article extends Resource
         return [
             new Filters\Article\ArticleType,
             new Filters\Article\ArticleStatusType,
+            new ArticleSource,
             new ArticleSubmitFilter,
         ];
     }
