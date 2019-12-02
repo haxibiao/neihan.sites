@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="/logo/{{ get_domain() }}.small.png" sizes="60*60">
-    <link rel="icon" type="image/png" href="/logo/{{ get_domain() }}.web.png" sizes="120*120">
+    <link rel="icon" type="image/png" href="{{ small_logo() }}" sizes="60*60">
+    <link rel="icon" type="image/png" href="{{ small_logo() }}" sizes="120*120">
     <link rel="apple-touch-icon" href="/logo/{{ get_domain() }}.touch.png">
 
     <!-- CSRF Token -->

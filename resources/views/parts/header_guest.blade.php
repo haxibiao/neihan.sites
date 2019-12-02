@@ -3,11 +3,11 @@
 			@section('logo')
 				@if( isMobile() )
 					<a class="logo" href="/">
-						<img src="/logo/{{ get_domain() }}.small.png" alt="">
+						<img src="{{ small_logo() }}" alt="">
 					</a>
 				@else
 				   <a class="logo" href="/">
-						<img src="/logo/{{ get_domain() }}.web.png" alt="">
+						<img src="{{ small_logo() }}" alt="">
 					</a>
 				@endif
 			@show    

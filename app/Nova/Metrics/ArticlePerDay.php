@@ -10,7 +10,7 @@ use Laravel\Nova\Metrics\TrendResult;
 class ArticlePerDay extends Trend
 {
 
-    public $name = "每日新增文章数";
+    public $name = "每日新增视频趋势(个)";
 
     /**
      * Calculate the value of the metric.
@@ -23,9 +23,15 @@ class ArticlePerDay extends Trend
         $range = $request->range;
         $data  = [];
 
-        $post = Article::selectRaw(" distinct(date_format(created_at,'%Y-%m-%d')) as daily,count(*) as count ")
-            ->where('created_at', '>=', now()->subDay($range - 1)->toDateString())
-            ->whereIn('type',['issue','post'])
+        //没有数据的日期默认值为0
+        for($j=$range-1;$j>=0;$j--){
+            $intervalDate = date('Y-m-d',strtotime(now().'-'.$j.'day'));
+            $data[$intervalDate] = 0;
+        }
+        
+        $post  = Article::selectRaw("distinct(date_format(created_at,'%Y-%m-%d')) as daily,count(*) as count")
+            ->whereDate('created_at', '>=', now()->subDay($range - 1)->toDateString())
+            ->whereNotNull('video_id')
             ->groupBy('daily')->get();
 
         $post->each(function ($post) use (&$data) {
@@ -35,7 +41,6 @@ class ArticlePerDay extends Trend
         if (count($data) < $range) {
             $data[now()->toDateString()] = 0;
         }
-
         return (new TrendResult(end($data)))->trend($data);
     }
 
@@ -47,9 +52,10 @@ class ArticlePerDay extends Trend
     public function ranges()
     {
         return [
-            7  => '7天之内',
-            30 => '30 天之内',
-            60 => '60 天之内',
+            7  => '过去7天内',
+            30 => '过去30天内',
+            60 => '过去60天内',
+            90 => '过去90天内',
         ];
     }
 

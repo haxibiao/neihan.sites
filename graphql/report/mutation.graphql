@@ -7,4 +7,5 @@ enum ReportType {
   articles
   comments
   users
+  user @deprecated(reason: "请使用 `users` field!")
 }

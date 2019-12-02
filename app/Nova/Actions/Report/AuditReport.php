@@ -2,6 +2,7 @@
 
 namespace App\Nova\Actions\Report;
 
+use App\BlackList;
 use App\Report;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -31,9 +32,10 @@ class AuditReport extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        $status = $fields->status;
+        $status   = $fields->status;
+        $is_black = $fields->is_black;
 
-        if ($status == '') {
+        if ($status == '' || empty($is_black)) {
             return Action::danger('操作失败,请先选中状态!');
         }
 
@@ -45,6 +47,14 @@ class AuditReport extends Action
 
             if ($status == Report::SUCCESS_STATUS) {
                 $model->reportSuccess();
+            }
+
+            if ($is_black) {
+                BlackList::firstOrCreate([
+                    'user_id'   => $model->user_id,
+                    'device_id' => $model->user->uuid,
+                    'comment'   => $model->reason,
+                ]);
             }
         }
 
@@ -60,6 +70,10 @@ class AuditReport extends Action
     {
         return [
             Select::make('状态', 'status')->options(Report::getStatuses()),
+            Select::make('是否加入黑名单', 'is_black')->options([
+                1 => '是',
+                0 => '否',
+            ]),
         ];
     }
 }

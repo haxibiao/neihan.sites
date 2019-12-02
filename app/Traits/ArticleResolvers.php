@@ -4,20 +4,14 @@ namespace App\Traits;
 
 use App\Article;
 use App\Category;
-use App\Config;
-use App\Contribute;
 use App\Exceptions\GQLException;
-use App\Exceptions\UserException;
-use App\Gold;
+use App\Helpers\BadWord\BadWordUtils;
 use App\Jobs\ProcessSpider;
-use App\Notifications\ReceiveAward;
 use App\User;
 use App\Video;
 use Exception;
 use GraphQL\Type\Definition\ResolveInfo;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
@@ -234,42 +228,48 @@ trait ArticleResolvers
     public function resolveDouyinVideo($rootValue, array $args, $context, $resolveInfo)
     {
         $user = getUser();
-            try{
-                $shareMsg = $args['share_link'];
-                $link = filterText($shareMsg)[0];
-                $description = Str::replaceFirst('#在抖音，记录美好生活#','',$shareMsg);
-                $description = Str::before($description,'http');
-                $description = preg_replace('/@([\w]+)/u','',$description);
-                $description = preg_replace('/#([\w]+)/u','',$description);
-                $description = trim($description);
+        if ($user->isBlack()) {
+            throw new GQLException('发布失败,你以被禁言');
+        }
 
-                // 不允许重复视频
-                $article = Article::firstOrNew([
-                    'source_url' => $link,
-                ],[
-                    'user_id' => $user->id,
-                    'type'    => 'post',
-                    'submit'  => Article::REVIEW_SUBMIT,
-                    'description' => $description,
-                    'title'       => $description,
-                    'body'        => $description,
-                    'cover_path'  => 'video/black.jpg',
-                    'video_id'    => 1
-                ]);
-                if($article->id){
-                    if($article->submit == Article::SUBMITTED_SUBMIT){
-                        throw new GQLException('视频已经存在，请换一个视频噢~');
-                    } else {
-                        throw new GQLException('该视频正在审核中，请稍等噢~');
-                    }
+        try {
+            $shareMsg    = $args['share_link'];
+            $link        = filterText($shareMsg)[0];
+            $description = Str::replaceFirst('#在抖音，记录美好生活#', '', $shareMsg);
+            $description = Str::before($description, 'http');
+            $description = preg_replace('/@([\w]+)/u', '', $description);
+            $description = preg_replace('/#([\w]+)/u', '', $description);
+            $description = trim($description);
+            if (BadWordUtils::check($description)) {
+                throw new GQLException('发布的评论中含有包含非法内容,请删除后再试!');
+            }
+            // 不允许重复视频
+            $article = Article::firstOrNew([
+                'source_url' => $link,
+            ], [
+                'user_id'     => $user->id,
+                'type'        => 'post',
+                'submit'      => Article::REVIEW_SUBMIT,
+                'description' => $description,
+                'title'       => $description,
+                'body'        => $description,
+                'cover_path'  => 'video/black.jpg',
+                'video_id'    => 1,
+            ]);
+            if ($article->id) {
+                if ($article->submit == Article::SUBMITTED_SUBMIT) {
+                    throw new GQLException('视频已经存在，请换一个视频噢~');
+                } else {
+                    throw new GQLException('该视频正在审核中，请稍等噢~');
                 }
-                $article->save();
+            }
+            $article->save();
 
-                //队列开始处理爬虫视频
-                ProcessSpider::dispatch($article,$shareMsg)->onQueue('spider');
+            //队列开始处理爬虫视频
+            ProcessSpider::dispatch($article, $shareMsg)->onQueue('spider');
 
-                return $article;
-            } catch (\Exception $e){
+            return $article;
+        } catch (\Exception $e) {
 
             if ($e->getCode() == 0) {
                 Log::error($e->getMessage());

@@ -71,22 +71,18 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function cards()
     {
         return [
-            new \App\Nova\Metrics\NewUsers,
-            new \App\Nova\Metrics\ArticleSpider,
             new \App\Nova\Metrics\UsersPerDay,
-            new \App\Nova\Metrics\NewWithdraw,
-            new \App\Nova\Metrics\UserGender,
-            new \App\Nova\Metrics\ArticlePerDay,
             new \App\Nova\Metrics\ActiveUsersPerDay,
             new \App\Nova\Metrics\WithdrawsPerDay,
+            new \App\Nova\Metrics\ArticlePerDay,
+            new \App\Nova\Metrics\ArticleSpiderPerDay,
+            new \App\Nova\Metrics\UserGender,
             new \App\Nova\Metrics\UserRetentionRate,
+            new \App\Nova\Metrics\ArticleCount,
+            new \App\Nova\Metrics\UserCount,
             (new \Hxb\CategoryLikeCount\CategoryLikeCount)
                 ->withName("受欢迎的分类前十个统计(视频点赞数)")
                 ->withData(\App\Category::getTopLikeCategory(10)),
-            // (new \Hxb\CategoryCount\CategoryCount)
-            //     ->withName("分类下的视频数量前十个统计")
-            //     ->withData(\App\Category::getTopCategory(10)),
-            // new \Llaski\NovaScheduledJobs\NovaScheduledJobsCard,
         ];
     }
 

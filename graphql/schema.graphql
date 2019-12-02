@@ -6,7 +6,12 @@ type Query {
 }
 
 type Mutation {
-  signUp(account: String, email: String!, password: String!, name: String): User! @field(resolver: "App\\User@signUp")
+  signUp(
+    account: String
+    email: String!
+    password: String!
+    name: String
+  ): User! @field(resolver: "App\\User@signUp")
 }
 
 #import */*.graphql

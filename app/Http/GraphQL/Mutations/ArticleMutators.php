@@ -2,11 +2,15 @@
 
 namespace App\Http\GraphQL\Mutations;
 
+use App\Action;
 use App\Article;
+use App\Contribute;
 use App\Exceptions\GQLException;
 use App\Exceptions\UserException;
 use App\Gold;
+use App\Helpers\BadWord\BadWordUtils;
 use App\Image;
+use App\Ip;
 use App\Issue;
 use App\Jobs\AwardResolution;
 use App\Video;
@@ -21,6 +25,10 @@ class ArticleMutators
 
     public function createContent($root, array $args, $context)
     {
+        if (BadWordUtils::check(Arr::get($args, 'body'))) {
+            throw new GQLException('发布的内容中含有包含非法内容,请删除后再试!');
+        }
+
         //参数格式化
         $inputs = [
             'body'         => Arr::get($args, 'body'),
@@ -54,11 +62,17 @@ class ArticleMutators
         DB::beginTransaction();
 
         try {
-
+            $user = getUser();
+            if ($user->isBlack()) {
+                throw new GQLException('发布失败,你以被禁言');
+            }
             //带视频动态
             if ($inputs['video_id']) {
-                $video                = Video::findOrFail($inputs['video_id']);
-                $article              = $video->article;
+                $video   = Video::findOrFail($inputs['video_id']);
+                $article = $video->article;
+                if (!$article) {
+                    $article = new Article();
+                }
                 $article->type        = 'post';
                 $article->status      = 1;
                 $article->submit      = Article::REVIEW_SUBMIT;
@@ -71,7 +85,6 @@ class ArticleMutators
                 //存文字动态或图片动态
             } else {
                 $article              = new Article();
-                $user                 = getUser();
                 $body                 = $inputs['body'];
                 $article->body        = $body;
                 $article->status      = 1;
@@ -116,12 +129,19 @@ class ArticleMutators
                     $article->hasCategories()->sync($category_ids);
                 }
             }
+            // 奖励共享点
+            if (isset($article->video_id)) {
+                Contribute::rewardUserVideoPost($user, $article);
+            }
+
+            // 记录用户操作
+            Action::createAction('articles', $article->id, $article->user->id);
+            Ip::createIpRecord('articles', $article->id, $article->user->id);
 
             DB::commit();
             app_track_post();
             return $article;
         } catch (\Exception $ex) {
-            DB::rollBack();
             if ($ex->getCode() == 0) {
                 Log::error($ex->getMessage());
                 throw new GQLException('程序小哥正在加紧修复中!');
@@ -144,7 +164,10 @@ class ArticleMutators
         DB::beginTransaction();
 
         try {
-            $user           = getUser();
+            $user = getUser();
+            if ($user->isBlack()) {
+                throw new GQLException('发布失败,你以被禁言');
+            }
             $issue          = new Issue();
             $issue->user_id = $user->id;
             $body           = $inputs['body'];
@@ -210,19 +233,39 @@ class ArticleMutators
             }
             //付费问答(金币)
             if ($inputs['gold'] > 0) {
+
                 if ($user->gold < $inputs['gold']) {
                     throw new UserException('您的金币不足!');
                 }
+
                 //扣除金币
                 // Gold::makeOutcome($user, $inputs['gold'], '悬赏问答支付');
                 $user->goldWallet->changeGold(-$inputs['gold'], '悬赏问答支付');
                 $issue->gold = $inputs['gold'];
                 $issue->save();
 
-                //带图问答不用审核，直接触发奖励
-                if ($article->type == 'issue' && is_null($article->video_id)) {
-                    AwardResolution::dispatch($issue)
-                        ->delay(now()->addDays(7));
+                // 发布悬赏问答奖励贡献点
+                $amount = Contribute::getAmount($inputs['gold']);
+                Contribute::rewardUserIssuePost($user, $issue, $amount);
+
+                if (!empty($article)) {
+                    //带图问答不用审核，直接触发奖励
+                    if ($article->type == 'issue' && is_null($article->video_id)) {
+                        AwardResolution::dispatch($issue)
+                            ->delay(now()->addDays(7));
+                    }
+                } else {
+                    $article = new Article([
+                        'title'       => Str::limit($inputs['body'], 50),
+                        'description' => Str::limit($inputs['body'], 280),
+                        'body'        => $inputs['body'],
+                        'type'        => 'issue',
+                        'issue_id'    => $issue->id,
+                        'user_id'     => $user->id,
+                        'status'      => Article::SUBMITTED_SUBMIT,
+                        'submit'      => Article::SUBMITTED_SUBMIT,
+                    ]);
+                    $article->save();
                 }
             }
             //直接关联到专题
@@ -238,12 +281,12 @@ class ArticleMutators
                     $article->hasCategories()->sync($category_ids);
                 }
             }
-
             DB::commit();
             app_track_issue();
             return $article;
         } catch (\Exception $ex) {
             DB::rollBack();
+            throw new GQLException($ex->getMessage());
             if ($ex->getCode() == 0) {
                 Log::error($ex->getMessage());
                 throw new GQLException('程序小哥正在加紧修复中!');

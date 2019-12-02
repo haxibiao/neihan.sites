@@ -60,4 +60,13 @@ class Action extends Model
         }
         return $this;
     }
+
+    public static function createAction($type, $id, $userId)
+    {
+        return Action::create([
+            'actionable_type' => $type,
+            'actionable_id'   => $id,
+            'user_id'         => $userId,
+        ]);
+    }
 }

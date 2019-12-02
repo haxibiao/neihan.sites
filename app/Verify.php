@@ -39,7 +39,7 @@ class Verify extends Model
             ],
             self::USER_INFO_CHANGE => [
                 'value'       => self::USER_INFO_CHANGE,
-                'description' => '修改密码',
+                'description' => '修改信息',
             ],
         ];
     }
@@ -53,7 +53,7 @@ class Verify extends Model
             ],
             self::USER_INFO_CHANGE => [
                 'sms'  => self::USER_INFO_CHANGE,
-                'mail' => '修改密码',
+                'mail' => '修改信息',
             ],
         ];
     }

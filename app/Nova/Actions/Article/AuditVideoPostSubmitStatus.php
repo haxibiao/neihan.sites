@@ -7,12 +7,11 @@ use App\Gold;
 use App\Jobs\AwardResolution;
 use App\Notifications\ReceiveAward;
 use Illuminate\Bus\Queueable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\Action;
-use Illuminate\Support\Collection;
 use Laravel\Nova\Fields\ActionFields;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Nova;
@@ -21,8 +20,7 @@ class AuditVideoPostSubmitStatus extends Action
 {
     use InteractsWithQueue, Queueable;
 
-
-    const REWARD_GOLD       = 10;
+    const REWARD_GOLD = 10;
 
     const AUDIT_TEMPLATE = [
         1 => '涉及广告',
@@ -50,7 +48,7 @@ class AuditVideoPostSubmitStatus extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         $submit = $fields->submit;
-        $remark        = null;
+        $remark = null;
         if ($fields->reason_text) {
             $remark = $fields->reason_text;
         } else if ($fields->reason_select) {
@@ -60,11 +58,11 @@ class AuditVideoPostSubmitStatus extends Action
         try {
             foreach ($models as $model) {
                 //跳过
-                if(!in_array($model->type,['post','issue']) ){
+                if (!in_array($model->type, ['post', 'issue'])) {
                     continue;
                 }
                 //跳过已经审核成功的视频动态
-                if($model->submit == \App\Article::SUBMITTED_SUBMIT){
+                if ($model->submit == \App\Article::SUBMITTED_SUBMIT) {
                     continue;
                 }
                 $model->remark = $remark;
@@ -75,13 +73,13 @@ class AuditVideoPostSubmitStatus extends Action
                     $user = $model->user;
                     $user->notify(new ReceiveAward('发布视频动态奖励', self::REWARD_GOLD, $user, $model->id));
                     Gold::makeIncome($user, self::REWARD_GOLD, '发布视频动态奖励');
-                    Contribute::rewardUserVideoPost($user,$model);
+                    Contribute::rewardUserVideoPost($user, $model);
 
                     $model->submit = \App\Article::SUBMITTED_SUBMIT;
-                    $model->save(['timestamps'=>false]);
+                    $model->save(['timestamps' => false]);
 
                     //付费问答奖励平分
-                    if($model->type == 'issue'){
+                    if ($model->type == 'issue') {
                         //平分奖励
                         AwardResolution::dispatch($model->issue)
                             ->delay(now()->addDays(7));
@@ -90,11 +88,11 @@ class AuditVideoPostSubmitStatus extends Action
                     Action::message('审批结果:' . '已通过,奖励通知已执行');
                 } else {
                     $model->submit = \App\Article::REFUSED_SUBMIT;
-                    $model->save(['timestamps'=>false]);
+                    $model->save(['timestamps' => false]);
                     //问答审核
-                    if($model->type == 'issue'){
+                    if ($model->type == 'issue') {
                         $issue = $model->issue;
-                        $user = $issue->user;
+                        $user  = $issue->user;
                         Gold::makeIncome($user, $issue->gold, '问答审核不通过,金币退回!');
                     }
                     Action::danger('审批结果:' . '已拒绝问答');

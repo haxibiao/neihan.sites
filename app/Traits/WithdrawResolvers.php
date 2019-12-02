@@ -1,14 +1,12 @@
 <?php
 namespace App\Traits;
 
+use App\Contribute;
 use App\Exceptions\GQLException;
 use App\Exchange;
-use App\Jobs\ProcessWithdraw;
 use App\Withdraw;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 trait WithdrawResolvers
@@ -28,6 +26,9 @@ trait WithdrawResolvers
         if (is_null($wallet->pay_account)) {
             throw new GQLException('提现失败, 请先完善提现资料!');
         }
+        if ($user->isWithDrawTodayByReadName()) {
+            throw new GQLException('您今日已经提现过了哦 ~，明天再来吧 ~');
+        }
 
         //限制每日日提现上限
         $todayWithDrawAmout = $wallet->withdraws()
@@ -46,6 +47,19 @@ trait WithdrawResolvers
         //是否超支
         if ($wallet->available_balance < $amount) {
             throw new GQLException('提现失败, 余额不足');
+        }
+
+        // 新用户不做限制
+        $isWithdrawBefore = $user->isWithdrawBefore();
+        if ($isWithdrawBefore) {
+            $contribute      = $user->profile->count_contributes;
+            $need_contribute = $amount * Contribute::WITHDRAW_DATE;
+            $diffContributes = $need_contribute - $contribute;
+            if ($contribute < $need_contribute) {
+                throw new GQLException('您还需' . $diffContributes . '点贡献值就可以提现成功啦~，快多尝试发布优质原创视频吧~');
+            }
+            // 消耗贡献值
+            $user->consumeContributeToWithdraw($amount);
         }
 
         //开启兑换事务,替换到钱包 创建提现订单

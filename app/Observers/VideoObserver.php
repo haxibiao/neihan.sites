@@ -29,7 +29,7 @@ class VideoObserver
     public function updated(Video $video)
     {
         //也截图，改动视频，多半动视频文件，统一后，不会忘记在其他repo 方法里 截图
-        MakeVideoCovers::dispatch($video);
+
     }
 
     /**

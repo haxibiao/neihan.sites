@@ -1,0 +1,3 @@
+extend type Mutation @middleware(checks: ["auth:api"]) {
+  clickAD: Contribute! @field(resolver: "App\\Contribute@clickAD")
+}

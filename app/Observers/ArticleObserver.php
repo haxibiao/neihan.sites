@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\article;
+use App\Article;
 
 class ArticleObserver
 {
@@ -25,7 +25,14 @@ class ArticleObserver
 
     public function created(Article $article)
     {
-        $article->recordAction();
+        //黑名单用户禁言处理
+        if ($article->user->isBlack()) {
+            // $article->delete();
+            $article->status = -1;
+            $article->save();
+            // throw new GQLException('发布失败,你以被禁言');
+
+        }
 
         if ($profile = $article->user->profile) {
             $profile->count_articles = $article->user->publishedArticles()->count();

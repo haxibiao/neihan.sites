@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Contribute;
 use App\Events\NewLike;
 use App\Like;
 
@@ -19,11 +20,11 @@ class LikeObserver
             $article              = $like->liked;
             $article->count_likes = $article->likes()->count();
             $article->save();
-
         } else if ($like->liked instanceof \App\Comment) {
             $comment              = $like->liked;
             $comment->count_likes = $comment->likes()->count();
             $comment->save();
+
             //TODO: 评论被点赞的通知，暂时不发
         }
 
@@ -31,6 +32,8 @@ class LikeObserver
         $profile              = $user->profile;
         $profile->count_likes = $user->likes()->count();
         $profile->save();
+
+        $like->liked->user->profile->increment('count_contributes', Contribute::LIKED_AMOUNT);
         event(new NewLike($like));
 
     }

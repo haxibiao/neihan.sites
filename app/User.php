@@ -6,11 +6,12 @@ use App\Feedback;
 use App\Traits\UserAttrs;
 use App\Traits\UserRepo;
 use App\Traits\UserResolvers;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
     use UserAttrs;
@@ -48,10 +49,15 @@ class User extends Authenticatable
     // 冻结状态
     const STATUS_OFFLINE = 1;
 
+    // 注销状态
+    const STATUS_DESTORY = 1;
+
     // 默认头像
     const AVATAR_DEFAULT = 'storage/avatar/avatar-1.jpg';
 
     const DEFAULT_NAME = '匿名用户';
+
+    //
 
     /**
      * The attributes that should be hidden for arrays.
@@ -86,6 +92,13 @@ class User extends Authenticatable
     public function feedbacks()
     {
         return $this->hasMany(\App\Feedback::class);
+    }
+
+    public function tasks()
+    {
+        return $this->belongsToMany(\App\Task::class, 'user_task')
+            ->withPivot(['status', 'content', 'id'])
+            ->withTimestamps();
     }
 
     //问答

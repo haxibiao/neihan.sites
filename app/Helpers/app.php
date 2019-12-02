@@ -3,7 +3,6 @@
 use App\Article;
 use App\Exceptions\GQLException;
 use App\Exceptions\UnregisteredException;
-use App\Helpers\matomo\PiwikTracker;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
@@ -23,7 +22,7 @@ function aso_value($group, $name)
 function qrcode_url()
 {
     $appName = env('APP_NAME');
-    $apkUrl  = "http://{$appName}-1251052432.cos.ap-shanghai.myqcloud.com/{$appName}-release.apk";
+    $apkUrl  = \App\Aso::getValue('下载页', '安卓地址');
 
     $logo   = "logo/{$appName}.com.small.png";
     $qrcode = QrCode::format('png')->size(250)->encoding('UTF-8');
@@ -43,14 +42,13 @@ function qrcode_url()
 function small_logo()
 {
     $logo = \App\Aso::getValue('下载页', 'logo');
-    
-    
-    if(empty($logo)){
+
+    if (empty($logo)) {
         return '/logo/' . env('APP_DOMAIN') . '.small.png';
-    }else{
+    } else {
         return $logo;
     }
-    
+
 }
 
 function is_staging_env()
@@ -105,101 +103,6 @@ function cdnurl($path)
     return "http://" . env('COS_DOMAIN') . $path;
 }
 
-function init_piwik_tracker()
-{
-    if (isset(config('matomo.site')[env('APP_DOMAIN')])) {
-        $siteId = config('matomo.site')[env('APP_DOMAIN')];
-        $matomo = config('matomo.matomo');
-
-        $piwik = new PiwikTracker($siteId, $matomo);
-        // $piwik->setUserId(getUniqueUserId());
-        return $piwik;
-    }
-    return null;
-}
-
-function app_track_event($category, $action, $name = false, $value = false)
-{
-    if ($tracker = init_piwik_tracker()) {
-        try
-        {
-            $tracker->doTrackEvent($category, $action, $name, $value);
-        } catch (\Exception $ex) {
-            Log::debug("app_track_event:" . $ex->getMessage());
-        }
-    }
-}
-
-function app_track_goal($goal_id)
-{
-    if ($tracker = init_piwik_tracker()) {
-        try
-        {
-            $tracker->doTrackGoal($goal_id);
-        } catch (\Exception $ex) {
-            Log::debug("app_track_goal:" . $ex->getMessage());
-        }
-    }
-}
-
-function app_track_user($action, $name = false, $value = false)
-{
-    app_track_event("user", $action, $name, $value);
-}
-
-function app_track_video($action, $name = false, $value = false)
-{
-    app_track_event("video", $action, $name, $value);
-}
-
-function app_track_visit_people()
-{
-    app_track_goal(1);
-    app_track_user('visit');
-}
-
-function app_track_like()
-{
-    app_track_goal(2);
-    app_track_user('like');
-}
-
-function app_track_post()
-{
-    app_track_goal(3);
-    app_track_user('post');
-}
-
-function app_track_issue()
-{
-    app_track_goal(3);
-    app_track_user('issue');
-}
-
-function app_track_comment()
-{
-    app_track_goal(4);
-    app_track_user('comment');
-}
-
-function app_track_send_message()
-{
-    app_track_goal(5);
-    app_track_user('send_message');
-}
-
-function app_track_launch()
-{
-    app_track_goal(6);
-    app_track_user('launch');
-}
-
-function app_track_app_download()
-{
-    app_track_goal(7);
-    app_track_user('app_download');
-}
-
 /**
  * 首页的文章列表
  * @return collection([article]) 包含分页信息和移动ＶＵＥ等优化的文章列表
@@ -250,7 +153,7 @@ function getUniqueUserId()
         return request()->user()->id;
     }
     //gql api
-    $token = !empty($request->header('token')) ? $request->header('token') : $request->get('token');
+    $token = !empty(request()->header('token')) ? request()->header('token') : request()->get('token');
     if (!empty($token)) {
         $user = User::where('api_token', $token)->first();
         if ($user) {
@@ -265,11 +168,6 @@ function getUniqueUserId()
 
     //app guest
     return getIp();
-}
-
-function getIp()
-{
-    return !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : false;
 }
 
 function getUserId()
@@ -326,6 +224,10 @@ function ajaxOrDebug()
 {
     return request()->ajax() || request('debug');
 }
+function is_phone_number($value)
+{
+    return preg_match('/^1\d{10}$/', $value);
+}
 /**
  * 过滤多余文字，只留下 链接
  *
@@ -347,4 +249,18 @@ function filterText($str)
         throw new GQLException('分享链接失效了，请检查是否有误噢');
     }
 
+}
+
+//获取访客IP
+function getIp()
+{
+    $ip = null;
+    if (getenv('HTTP_CLIENT_IP')) {
+        $ip = getenv('HTTP_CLIENT_IP');
+    } else if (getenv('HTTP_X_FORWARDED_FOR')) {
+        $ip = getenv('HTTP_X_FORWARDED_FOR');
+    } else if (getenv('REMOTE_ADDR')) {
+        $ip = getenv('REMOTE_ADDR');
+    }
+    return $ip;
 }

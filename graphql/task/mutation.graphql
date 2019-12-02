@@ -1,0 +1,3 @@
+extend type Mutation @middleware(checks: ["auth:api"]) {
+  DrinkWater(task_id: Int!): Task @field(resolver: "App\\Task@resolveDrinkWaterCheck")
+}

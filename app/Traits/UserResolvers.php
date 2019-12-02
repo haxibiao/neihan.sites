@@ -3,9 +3,9 @@
 namespace App\Traits;
 
 use App\Exceptions\GQLException;
+use App\Ip;
 use App\Profile;
 use App\User;
-use Exception;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Support\Facades\Cache;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
@@ -48,8 +48,11 @@ trait UserResolvers
             if (!password_verify($args['password'], $user->password)) {
                 throw new GQLException('登录失败！账号或者密码不正确');
             }
-            if ($user->status != User::STATUS_ONLINE) {
+
+            if ($user->status == User::STATUS_OFFLINE) {
                 throw new GQLException('登录失败！账户已被封禁');
+            } elseif ($user->status == User::STATUS_DESTORY) {
+                throw new GQLException('登录失败！账户已被注销');
             }
 
             $user->update([
@@ -100,7 +103,7 @@ trait UserResolvers
         $user->phone = null;
         $user->email = $email;
         $user->save();
-
+        Ip::createIpRecord('users', $user->id, $user->id);
         return $user;
     }
 
@@ -204,8 +207,10 @@ trait UserResolvers
         // 不是首次登录
         if ($qb->exists()) {
             $user = $qb->first();
-            if ($user->status != User::STATUS_ONLINE) {
-                throw new Exception('登录失败！账户已被封禁');
+            if ($user->status == User::STATUS_OFFLINE) {
+                throw new GQLException('登录失败！账户已被封禁');
+            } elseif ($user->status == User::STATUS_DESTORY) {
+                throw new GQLException('登录失败！账户已被注销');
             }
             if (!is_null($phone)) {
                 $user->update(['phone' => $phone]);
@@ -226,6 +231,7 @@ trait UserResolvers
             'introduction' => '这个人暂时没有 freestyle ',
         ]);
 
+        Ip::createIpRecord('users', $user->id, $user->id);
         return $user;
     }
 
@@ -274,5 +280,14 @@ trait UserResolvers
         } else {
             throw new GQLException('未登录，请先登录！');
         }
+    }
+
+    public function destoryUserByToken($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+        if ($user = checkUser()) {
+            $user->destoryUser();
+            return true;
+        }
+        throw_if(!isset($user->id) || is_null($user), GQLException::class, '请登录后再尝试哦~');
     }
 }

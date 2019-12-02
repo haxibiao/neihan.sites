@@ -36,8 +36,6 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\CookieChecker::class,
-            // \App\Http\Middleware\TrafficMan::class,
-            // \App\Http\Middleware\BeianRedirect::class,
         ],
 
         'api' => [
@@ -63,5 +61,7 @@ class Kernel extends HttpKernel
         'guest'        => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle'     => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'wechat.oauth' => \Overtrue\LaravelWechat\Middleware\OAuthAuthenticate::class,
+        'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
+        'verified'     => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
 }

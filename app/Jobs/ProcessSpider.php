@@ -106,9 +106,6 @@ class ProcessSpider implements ShouldQueue
             $article->tags()->sync($tags);
         }
 
-        $dispatcher = Video::getEventDispatcher();
-        Video::unsetEventDispatcher();
-
         $hash  = md5_file($url);
         $video = Video::firstOrNew([
             'hash' => $hash,
@@ -127,7 +124,7 @@ class ProcessSpider implements ShouldQueue
         $video->disk = 'local'; //先标记为成功保存到本地
         $video->save();
 
-        Video::setEventDispatcher($dispatcher);
+        MakeVideoCovers::dispatch($video);
 
         //将视频上传到cos
         $cosDisk = Storage::cloud();

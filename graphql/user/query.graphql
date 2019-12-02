@@ -3,7 +3,7 @@ type User {
   name: String!
   email: String
   avatar: String! @rename(attribute: "avatar_url")
-  token: String!
+  token: String
   introduction: String
   unread_comments: Int
   unread_likes: Int

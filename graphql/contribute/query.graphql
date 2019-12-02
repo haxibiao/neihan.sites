@@ -1,0 +1,7 @@
+type Contribute {
+  id: ID!
+  user: User!
+  amount: Int!
+  created_at: DateTime!
+  updated_at: DateTime!
+}

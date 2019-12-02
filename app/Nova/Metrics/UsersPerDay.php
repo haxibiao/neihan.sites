@@ -10,7 +10,7 @@ use Laravel\Nova\Metrics\TrendResult;
 class UsersPerDay extends Trend
 {
 
-    public $name = '每日新增用户趋势';
+    public $name = '每日新增用户趋势(位)';
     /**
      * Calculate the value of the metric.
      *
@@ -21,9 +21,15 @@ class UsersPerDay extends Trend
     {
         $range = $request->range;
         $data  = [];
+        
+        //没有数据的日期默认值为0
+        for($j=$range-1;$j>=0;$j--){
+                    $intervalDate = date('Y-m-d',strtotime(now().'-'.$j.'day'));
+                    $data[$intervalDate] = 0;
+                }
 
         $users = User::selectRaw(" distinct(date_format(created_at,'%Y-%m-%d')) as daily,count(*) as count ")
-            ->where('created_at', '>=', now()->subDay($range - 1)->toDateString())
+            ->whereDate('created_at', '>=', now()->subDay($range - 1))
             ->groupBy('daily')->get();
 
         $users->each(function ($user) use (&$data) {
@@ -33,6 +39,7 @@ class UsersPerDay extends Trend
         if (count($data) < $range) {
             $data[now()->toDateString()] = 0;
         }
+
         return (new TrendResult(end($data)))->trend($data);
     }
 
@@ -44,10 +51,10 @@ class UsersPerDay extends Trend
     public function ranges()
     {
         return [
-            7  => '7天之内',
-            30 => '30 天之内',
-            60 => '60 天之内',
-            90 => '90 天之内',
+            7   => '过去7天内',
+            30  => '过去30天内',
+            60  => '过去60天内',
+            90  => '过去90天内',
         ];
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Jobs\MakeVideoCovers;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -38,6 +39,7 @@ trait VideoRepo
         $this->hash  = md5_file($file->path());
         $this->title = $file->getClientOriginalName();
         $this->save();
+        MakeVideoCovers::dispatch($this);
 
         try {
             //本地存一份用于截图
@@ -59,19 +61,6 @@ trait VideoRepo
             \Log::error("video save exception" . $ex->getMessage());
         }
         return false;
-
-        //注释的原因：hashvod目前偶尔不稳定，留到下一版上线
-        //如果不是线上环境则存储在本地
-        // $this->save_video_local($file);
-
-        // $content = HashVod::upload(public_path($this->getPath()));
-        // $data    = json_decode($content, true);
-
-        // if ($data['code'] != 200) {
-        //     return false;
-        // }
-        // return false;
-
     }
 
     public function saveWidthHeight($path)
@@ -156,6 +145,11 @@ trait VideoRepo
             //释放服务器资源
             if (!is_local_env()) {
                 Storage::disk('public')->delete($video->path);
+
+                foreach ($cosCovers as $cover) {
+                    Storage::disk('public')->delete($cover);
+                }
+
             }
         }
     }

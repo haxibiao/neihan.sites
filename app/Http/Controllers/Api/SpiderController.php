@@ -58,7 +58,7 @@ class SpiderController extends Controller
 
             //TODO 分类关系
             $category = Category::firstOrNew([
-                'name' => '抖音合集'
+                'name' => '我要上热门'
             ]);
             if(!$category->id){
                 $category->name_en  = 'douyin';
@@ -74,6 +74,7 @@ class SpiderController extends Controller
             $article->submit      = Article::SUBMITTED_SUBMIT; //直接发布
             $article->type        = 'post';
             $article->user_id     = $user->id;
+            $article->video_id    = $video->id;
             $article->category_id = $category->id;
             $article->save();
 

@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\UpdateUser;
 use App\User as AppUser;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\DateTime;
@@ -129,6 +130,8 @@ class User extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            new UpdateUser,
+        ];
     }
 }

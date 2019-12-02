@@ -18,7 +18,7 @@ class AsoSeeder extends Seeder
             'group' => '下载页',
             'name'  => '安卓地址',
         ]);
-        $item->value = 'https://ainicheng-1251052432.cossh.myqcloud.com/ainicheng-release.apk';
+        $item->value = 'https://dianmoge-1251052432.cossh.myqcloud.com/dianmoge-release.apk';
         $item->save();
 
         $item = Aso::firstOrCreate([
@@ -106,5 +106,14 @@ class AsoSeeder extends Seeder
         ]);
         $item->value = '与大神零距离互动，为信仰站队。</br>电竞大神、游戏迷妹的聚集地，创造属于你的游戏世界。';
         $item->save();
+
+        $item = Aso::firstOrCreate([
+            'group' => '下载页',
+            'name'  => 'logo',
+        ]);
+        $item->value = '';
+
+        $item->save();
+
     }
 }

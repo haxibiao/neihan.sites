@@ -5,6 +5,8 @@ namespace App\Traits;
 use App\Action;
 use App\Article;
 use App\Category;
+use App\Exceptions\GQLException;
+use App\Helpers\BadWord\BadWordUtils;
 use App\Image;
 use App\Tip;
 use App\Video;
@@ -384,9 +386,16 @@ trait ArticleRepo
 
     public function createPost($input)
     {
-        $user = getUser();
-        $body = $input['body'];
 
+        $user = getUser();
+        if ($user->isBlack()) {
+            throw new GQLException('发布失败,你以被禁言');
+        }
+
+        $body = $input['body'];
+        if (BadWordUtils::check($body)) {
+            throw new GQLException('发布的内容中含有包含非法内容,请删除后再试!');
+        }
         // $this->title = $this->getPostTitle(); //暂时不保存多余的title给post
         $this->body        = $body;
         $this->description = str_limit($body, 280); //截取微博那么长的内容存简介

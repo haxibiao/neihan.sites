@@ -21,6 +21,7 @@ class Profile extends Model
         'count_favorites',
         'count_actions',
         'count_reports',
+        'count_contributes',
         'enable_tips',
         'tip_words',
         'gender',

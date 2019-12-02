@@ -2,6 +2,7 @@
 
 namespace App\Nova\Actions\Article;
 
+use App\Category;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -31,8 +32,8 @@ class UpdateArticle extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        if (!isset($fields->type) and !isset($fields->status)) {
-            return Action::danger('状态或者类型不能为空');
+        if (!isset($fields->type) and !isset($fields->status) and !isset($fields->category)) {
+            return Action::danger('状态或者类型或者分类不能为空！');
         }
 
         \DB::beginTransaction();
@@ -51,6 +52,31 @@ class UpdateArticle extends Action
                 }
                 if (isset($fields->type)) {
                     $model->type = $fields->type;
+                }
+                if (isset($fields->category)) {
+                    //model存在类别
+                    if ($category = $model->category) {
+                        //更新多对多的关系
+                        $model->hasCategories()->updateExistingPivot($model->category->id,['category_id'=>$fields->category]);
+
+                        $model->category_id= $fields->category;
+                        $model->save();
+                        //旧类别数量变更
+                        $category->count = $category->articles()->count();
+                        $category->save();
+                    }else{
+                        //model不存在类别
+                         //新增多对多的关系
+                         $model->hasCategories()->syncWithoutDetaching($fields->category);
+                         
+                         $model->category_id= $fields->category;
+                         $model->save();
+                    }
+
+                     //新类别数量变更
+                     $filedCategory= Category::find($fields->category); 
+                     $filedCategory->count= $filedCategory->articles()->count();
+                     $filedCategory->save();
                 }
                 // $model->timestamp = true;
                 $model->save();
@@ -86,6 +112,16 @@ class UpdateArticle extends Action
                     'article' => '文章',
                     'post'    => '动态',
                 ]
+            ),
+            Select::make('分类', 'category')->options(
+                function(){
+                        $datas = \App\Category::query()->orderBy('count','DESC')->get(['id','name'])->toArray();
+                        $category = []; $j=0;
+                        foreach($datas as $data){
+                            $category[$data['id']] = $data['name'];
+                        }
+                        return $category;
+                }
             ),
         ];
     }

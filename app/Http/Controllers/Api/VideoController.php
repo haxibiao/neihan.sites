@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class VideoController extends Controller
 {
@@ -143,5 +145,48 @@ class VideoController extends Controller
             $video->syncVodProcessResult();
         }
         return $video->covers;
+    }
+
+    public function cosHookVideo(Request $request)
+    {
+        $inputs = $request->input();
+
+        $playUrl  = array_get($inputs, 'playurl');
+        $cosAppId = env('COS_APP_ID');
+        $bucket   = env('COS_BUCKET');
+
+        Log::info($inputs);
+
+        $bucketPrefix = sprintf('/%s/%s/', $cosAppId, $bucket);
+
+        if ($playUrl) {
+                //高清视频
+                if( Str::endsWith($playUrl,'f30.mp4') ){
+                    $videoPath    = str_replace([$bucketPrefix, '.f30.mp4'], '', $playUrl);
+                    $video = Video::where('path','like', $videoPath . '%')->first();
+                    $path = str_replace($bucketPrefix, '', $playUrl);
+                    if($video){
+                        $video->setJsonData('transcode_hd_mp4',$path);
+                        $video->path = $path;//默认展示高清视频
+                        $video->save();
+                    }
+                //标清视频
+                } else if( Str::endsWith($playUrl,'f20.mp4') ){
+                    $videoPath    = str_replace([$bucketPrefix, '.f20.mp4'], '', $playUrl);
+                    $video = Video::where('path', 'like', $videoPath . '%')->first();
+                    if($video){
+                        $path = str_replace($bucketPrefix, '', $playUrl);
+                        $video->setJsonData('transcode_sd_mp4',$path);
+                    }
+                //低清视频
+                } else if( Str::endsWith($playUrl,'f10.mp4') ){
+                    $videoPath    = str_replace([$bucketPrefix, '.f10.mp4'], '', $playUrl);
+                    $video = Video::where('path', 'like', $videoPath . '%')->first();
+                    if($video){
+                        $path = str_replace($bucketPrefix, '', $playUrl);
+                        $video->setJsonData('transcode_ld_mp4',$path);
+                    }
+                }
+            }
     }
 }

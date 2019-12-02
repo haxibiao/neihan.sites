@@ -1,5 +1,9 @@
 extend type Mutation @middleware(checks: ["auth:api"]) {
-  addComment(commentable_id: Int!, commentable_type: commentType!, body: String!): Comment!
+  addComment(
+    commentable_id: Int!
+    commentable_type: commentType!
+    body: String!
+  ): Comment!
     @field(resolver: "App\\Http\\GraphQL\\Mutations\\CommentMutators@create")
 
   acceptComments(comment_ids: [Int]!): [Comment]!

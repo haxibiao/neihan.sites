@@ -13,10 +13,7 @@
 
 Auth::routes();
 Route::pattern('id', '\d+');
-
-Route::get('/debug-sentry', function () {
-    throw new Exception('测试sentry是配置是否正常');
-});
+Auth::routes(['verify' => true]);
 
 Route::get('/', 'IndexController@index');
 

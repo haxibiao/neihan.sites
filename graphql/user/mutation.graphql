@@ -1,13 +1,18 @@
 extend type Mutation @group(namespace: "App") {
-  signIn(account: String, email: String, password: String!): User! @field(resolver: "User@signIn")
+  signIn(account: String, email: String, password: String!): User!
+    @field(resolver: "User@signIn")
   signOut(user_id: ID!): User @field(resolver: "User@signOut")
-  autoSignIn(uuid: String!, phone: String): User @field(resolver: "User@autoSignIn")
+  autoSignIn(uuid: String!, phone: String): User
+    @field(resolver: "User@autoSignIn")
+  destoryUser: Boolean @field(resolver: "User@destoryUserByToken")
 }
 
 # test
 extend type Mutation {
-  blockUser(user_id: Int!): blockInfo @field(resolver: "App\\User@removeBlockUser")
-  updateUserInfo(id: Int @eq, input: updateUserInfo! @spread): User! @field(resolver: "App\\User@updateUserInfo")
+  blockUser(user_id: Int!): blockInfo
+    @field(resolver: "App\\User@removeBlockUser")
+  updateUserInfo(id: Int @eq, input: updateUserInfo! @spread): User!
+    @field(resolver: "App\\User@updateUserInfo")
 }
 
 input updateUserInfo {

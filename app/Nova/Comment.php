@@ -24,7 +24,7 @@ class Comment extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'body';
 
     public static $group = '用户管理';
 
@@ -34,7 +34,7 @@ class Comment extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id', 'body',
     ];
 
     public static function label()

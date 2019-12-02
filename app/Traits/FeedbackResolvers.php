@@ -16,8 +16,11 @@ trait FeedbackResolvers
 
     public function resolveCreateFeedback($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $user     = getUser();
-        $contact  = array_get($args, "contact");
+        $user    = getUser();
+        $contact = array_get($args, "contact");
+        if (BadWordUtils::check($args['content'])) {
+            throw new GQLException('发布的反馈中含有包含非法内容,请删除后再试!');
+        }
         $feedback = Feedback::firstOrCreate([
             'user_id' => $user->id,
             'content' => $args['content'],

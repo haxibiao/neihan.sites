@@ -5,6 +5,7 @@ namespace App;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class Report extends Model
 {
@@ -49,7 +50,7 @@ class Report extends Model
         $report->reason          = Arr::get($args, 'reason', '');
         $report->user_id         = $user->id;
         $report->reportable_id   = Arr::get($args, 'id');
-        $report->reportable_type = Arr::get($args, 'type');
+        $report->reportable_type = Str::plural(Arr::get($args, 'type'));
         $report->save();
 
         // 内部不需要审核

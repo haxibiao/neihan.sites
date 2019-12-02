@@ -2,8 +2,11 @@
 
 namespace App\Traits;
 
+use App\Contribute;
 use App\Profile;
 use App\User;
+use App\Wallet;
+use App\Withdraw;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,8 +14,14 @@ trait UserRepo
 {
     public function createUser($name, $account, $password)
     {
-        $user           = new User();
-        $user->account  = $account;
+        $user = new User();
+
+        if (filter_var($account, FILTER_VALIDATE_EMAIL)) {
+            $user->email = $account;
+        }
+
+        $user->account = $account;
+
         $user->phone    = $account;
         $user->name     = $name;
         $user->password = bcrypt($password);
@@ -344,9 +353,62 @@ trait UserRepo
 
     public function isAdmin()
     {
+        // if ($this->is_admin || $this->hasVerifiedEmail()) {
+        //     return true;
+        // }
+
         if ($this->is_admin || ends_with($this->email, '@haxibiao.com') || ends_with($this->account, '@haxibiao.com')) {
             return true;
         }
         return false;
+    }
+
+    public function isWithdrawBefore()
+    {
+        $wallet_id = $this->wallet->id;
+        return Withdraw::where('wallet_id', $wallet_id)->exists();
+    }
+
+    public function checkWithdraw($amount)
+    {
+        $contribute      = $this->profile->count_contributes;
+        $need_contribute = $amount * 10;
+        if ($contribute >= $need_contribute) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 消耗贡献值提现
+     * @return void
+     * @author zengdawei
+     */
+    public function consumeContributeToWithdraw($amount)
+    {
+        Profile::where('user_id', $this->id)->decrement('count_contributes', $amount * Contribute::WITHDRAW_DATE);
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new \App\Notifications\VerifyEmail);
+    }
+
+    public function isWithDrawTodayByReadName(): bool
+    {
+        $realName = $this->wallet->real_name;
+        if (is_null($realName) || empty($realName)) {
+            return false;
+        }
+        $wallet_ids = Wallet::where('pay_infos', 'like', "%{$realName}%")->select('id')->get()->pluck('id')->toArray();
+        $exists     = Withdraw::whereIn('wallet_id', $wallet_ids)->whereDate('created_at', now()->toDateString())->exists();
+        return $exists;
+    }
+
+    public function destoryUser()
+    {
+        $this->status = self::STATUS_DESTORY;
+        $this->save();
     }
 }

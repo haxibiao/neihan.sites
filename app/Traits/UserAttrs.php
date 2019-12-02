@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\BlackList;
 use App\Exchange;
 use App\Follow;
 use App\Profile;
@@ -83,6 +84,14 @@ trait UserAttrs
     public function isLiked($type, $id)
     {
         return $this->likes()->where('liked_type', get_polymorph_types($type))->where('liked_id', $id)->count() ? true : false;
+    }
+
+    public function isBlack()
+    {
+
+        $black    = BlackList::where('user_id', $this->id);
+        $is_black = $black->exists();
+        return $is_black;
     }
 
     public function link()
