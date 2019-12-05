@@ -32,8 +32,10 @@ class LikeObserver
         $profile              = $user->profile;
         $profile->count_likes = $user->likes()->count();
         $profile->save();
+        if ($user->id != $like->liked->user->id) {
+            $like->liked->user->profile->increment('count_contributes', Contribute::LIKED_AMOUNT);
+        }
 
-        $like->liked->user->profile->increment('count_contributes', Contribute::LIKED_AMOUNT);
         event(new NewLike($like));
 
     }

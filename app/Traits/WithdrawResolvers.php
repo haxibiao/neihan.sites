@@ -18,7 +18,7 @@ trait WithdrawResolvers
 
         //禁止3元以上用户提现
         if ($amount > Withdraw::WITHDRAW_MAX) {
-            throw new GQLException('提现失败，今日业务繁忙，限制' . Withdraw::WITHDRAW_MAX . '元以上提现');
+            throw new GQLException('等级和勋章不够哦~，请等待版本更新，增加更多玩法吧~');
         }
 
         //钱包提现信息是否存在
@@ -26,7 +26,7 @@ trait WithdrawResolvers
         if (is_null($wallet->pay_account)) {
             throw new GQLException('提现失败, 请先完善提现资料!');
         }
-        if ($user->isWithDrawTodayByReadName()) {
+        if ($user->isWithDrawTodayByPayAccount()) {
             throw new GQLException('您今日已经提现过了哦 ~，明天再来吧 ~');
         }
 

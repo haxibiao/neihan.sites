@@ -73,6 +73,7 @@ class AppServiceProvider extends ServiceProvider
             'questions'   => 'App\Issue',
             'answers'     => 'App\Resolution',
             'feedbacks'   => 'App\Feedback',
+            'usertasks'   => 'App\UserTask',
         ]);
 
         foreach (glob(app_path() . '/Helpers/*.php') as $filename) {

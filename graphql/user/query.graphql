@@ -51,6 +51,7 @@ type User {
   wallets: [Wallet!] @hasMany
   totalContribution: Int
   exchangeRate: Int
+  contribute: Int
 }
 
 type blockInfo {

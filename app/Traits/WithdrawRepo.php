@@ -17,10 +17,14 @@ trait WithdrawRepo
     public function process()
     {
         $wallet = $this->wallet;
-
+        $user   = $this->wallet->user;
         //提现是否等待中
         if (!$this->isWaitingWithdraw()) {
             return;
+        }
+
+        if (!$user->isWithDrawTodayByPayAccount()) {
+            return $this->illegalWithdraw('当前支付宝账号已经提现过了噢 ~，请勿重复提现~~');
         }
 
         //判断余额

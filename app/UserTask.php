@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Task;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class UserTask extends Pivot
@@ -38,4 +40,47 @@ class UserTask extends Pivot
         return $this->belongsTo(\App\Task::class);
     }
 
+    public function getStatus()
+    {
+        $status     = $this->status;
+        $task       = $this->task;
+        $type       = $task->type;
+        $start_time = $task->getDailyStartTime();
+        $end_time   = $task->getDailyEndTime();
+        $now        = Carbon::now();
+        if ($type == Task::DAILY_TASK) {
+            if ($this->status != UserTask::TASK_DONE) {
+                $status = 0;
+                if ($now->greaterThan($start_time) && $now->lessThan($end_time)) {
+                    //任务进行中
+                    $status = UserTask::TASK_REVIEW;
+                } else if ($now->greaterThan($end_time)) {
+                    //大于结束时间为打卡失败
+                    $status = UserTask::TASK_FAILED;
+                } else if ($now->lessThan($start_time)) {
+                    //小于开始时间为打卡未完成
+                    $status = UserTask::TASK_UNDONE;
+                }
+            }
+        }
+
+        return $status;
+    }
+
+    public function processReward($reward)
+    {
+        $task = $this->task;
+        $user = $this->user;
+        if (array_get($reward, "gold")) {
+            $remark     = sprintf('%s任务奖励', $task->details);
+            $rewardGold = $reward["gold"];
+            $user->goldWallet->changeGold($rewardGold, $remark);
+        }
+
+        if (array_get($reward, "contribute")) {
+            $remark     = sprintf('%s任务奖励', $task->details);
+            $rewardGold = $reward['contribute'];
+            Contribute::rewardUserContribute($user->id, $this->id, $rewardGold, "usertasks");
+        }
+    }
 }

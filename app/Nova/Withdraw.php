@@ -80,7 +80,13 @@ class Withdraw extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            (new \Hxb\CategoryCount\CategoryCount)
+                ->withName("提现排行前十个用户统计")
+                ->withLegend("提现金额")
+                ->withColor("#E6E61A")
+                ->withData(\App\User::getTopWithDraw(10)),
+        ];
     }
 
     /**

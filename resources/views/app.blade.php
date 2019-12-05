@@ -3,7 +3,16 @@
   {{ config('app.name_cn') }}移动应用 App - {{ config('app.name_cn') }}   
 @endsection
 @push('section')
-  <div class="container-fluid apps">
+
+  <div id="mask" style="position:fixed; z-index:999999999999; top: 0; width: 100%; height: 100%; background: rgba(102, 102, 102, 0.5); display: none;">
+    <div style="position:absolute; width: 100%; height: 100%;">        
+        <img src="/images/app/big-mask.jpg" style="width :100%; position:absolute;" alt="请通过浏览器打开">
+        <span style="color: #FFFFFF; width:70%; font-size: 15px; margin: 5% 30% 0 5%; position: relative; top: 30px; left:10%;">点击右上角按钮，然后在弹出的菜单中<br/>点击 "用浏览器打开" 后再下载安装。</span>
+    </div>
+    </div>
+    <div id = "tancen" style="position:relative; top:600px;"></div>
+
+  <div class="container-fluid apps"> 
     <div class="row">
         <div class="container top-part">
           <div class="top-logo">
@@ -14,13 +23,21 @@
             </div>
           </div>
           <img class="background-img" src="/images/app/appBackground.png" alt="app background">
-          <img class="phone-img" src="{{ aso_value('下载页','功能介绍1图') }}" alt="app phone">
+          <img id = "tancen" class="phone-img" src="{{ aso_value('下载页','功能介绍1图') }}" alt="app phone">
           <div class="top-qrcode">
             <img src=data:image/png;base64,{{ qrcode_url() }} alt="Download apps page top qrcode">
             <div class="title">扫码下载{{ config('app.name_cn') }}</div>
           </div>
           <div class="download-phone">
-            <a href="{{ aso_value('下载页','安卓地址') }}"><img src="/images/app/android_app.png" class="download2" alt="download-andorid"></a>
+
+
+
+            <!-- <input  class="download2" type="button"  onclick="download_btn()" style="background:url('/images/app/android_app.png') no-repeat;" />
+            <a href="{{ aso_value('下载页','安卓地址') }}"><img src="/images/app/android_app.png" class="download2" alt="download-andorid"></a> -->
+            <img src="/images/app/android_app.png"  onclick="download_btn()" class="download2" alt="download-andorid">
+
+
+
             <a href="{{ aso_value('下载页','苹果地址') }}"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
             <img class="background-img" src="/images/app/appBackground.png" alt="Misc background">
             <h4>点击下载{{ config('app.name_cn') }}App</h4>
@@ -70,7 +87,7 @@
           <div>扫码下载{{ config('app.name_cn') }}</div>
         </div>
         <div class="download-phone">
-          <a href="{{ aso_value('下载页','安卓地址') }}"><img src="/images/app/android_app.png" class="download2" alt="download-andorid"></a>
+          <img src="/images/app/android_app.png"  onclick="download_btn()" class="download2" alt="download-andorid">
           <a href="{{ aso_value('下载页','苹果地址') }}"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
           <img class="background-img" src="/images/app/appBackground.png" alt="Misc background">
           <h4>点击下载{{ config('app.name_cn') }}App</h4>
@@ -86,3 +103,61 @@
     </div>
   </div>
 @endpush
+@push('scripts')
+<script type="text/javascript">
+    function download_btn(){
+        
+        var ua = navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger\/[0-9]/i )||ua.match(/QQ\/[0-9]/i) ){
+            
+            document.getElementById("mask").style.display="inline";
+
+        } else {			
+            window.location.href="{{ env('APK_URL') }}";
+        }
+    }
+
+</script>
+@endpush
+
+
+
+
+
+
+
+<!-- <script type="text/javascript">
+    function download_btn(){
+        
+        var ua = navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger\/[0-9]/i )||ua.match(/QQ\/[0-9]/i) ){
+            
+            document.getElementById("mask").style.display="inline";
+
+        } else {			
+			
+            window.location.href="{{ env('APK_URL') }}";
+        }
+    }
+
+
+	function download2_btn(){
+        
+        var ua = navigator.userAgent.toLowerCase();
+        if(request()->path() == "app"){
+			if(ua.match(/MicroMessenger\/[0-9]/i )||ua.match(/QQ\/[0-9]/i) ){
+                
+                document.getElementById("mask").style.display="inline";
+    
+                } else {			
+    
+                   window.location.href="{{ env('APK_URL')}}";
+                }
+
+          window.location.href="{{ "/app" }}";
+        }else{
+			window.location.href="{{ "/app" }}";
+        }
+    }
+
+</script> -->

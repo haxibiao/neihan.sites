@@ -5,9 +5,9 @@
  */
 return [
     'site'   => [
-        'ainicheng.com'   => 27,
+        'ainicheng.com'   => 1,
         'dianmoge.com'    => 2,
-        'dongmeiwei.com'  => 28,
+        'dongmeiwei.com'  => 3,
         'dongdianyi.com'  => 4,
         'qunyige.com'     => 5,
         'youjianqi.com'   => 6,

@@ -43,13 +43,34 @@ trait TaskAttrs
         if ($type == self::DAILY_TASK) {
             if (!str_contains($this->name, 'All')) {
                 $task_all = Task::where('name', $this->name . 'All')->first();
-                if ($task_all) {
-                    $id = $task_all->id;
-                }
+                return $task_all->getUserTask($user->id)->progress;
             }
         }
 
-        return UserTask::where(['task_id' => $id, 'user_id' => $user->id])->whereDate('created_at', Carbon::today())->first()->progress;
+        return $this->getUserTask($user->id)->progress;
+    }
+
+    public function getRewardInfoAttribute()
+    {
+        $json = $this->reward;
+
+        $gold       = array_get($json, "gold");
+        $contribute = array_get($json, "contribute");
+
+        if (empty($gold)) {
+            $goldmin = array_get($json, "mingold");
+            $goldmax = array_get($json, "maxgold");
+
+            if (!empty($goldmin) && !empty($goldmax)) {
+                $gold = random_int($goldmin, $goldmax);
+            }
+        }
+        $data = [
+            'gold'       => $gold ?? null,
+            'contribute' => $contribute,
+        ];
+
+        return $data;
     }
 
     public function getStartTimeAttribute()
@@ -61,4 +82,5 @@ trait TaskAttrs
     {
         return date("H:i", strtotime($this->end_at));
     }
+
 }

@@ -33,4 +33,15 @@ class CategoryCount extends Card
     {
         return $this->withMeta(['data' => $data]);
     }
+
+    //legend图例
+    public function withLegend($legend)
+    {
+        return $this->withMeta(['legend' => $legend]);
+    }
+
+    public function withColor($color)
+    {
+        return $this->withMeta(['color' => $color]);
+    }
 }

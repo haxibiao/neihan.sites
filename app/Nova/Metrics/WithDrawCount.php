@@ -2,14 +2,13 @@
 
 namespace App\Nova\Metrics;
 
-use App\Article;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Value;
 
-class ArticleCount extends Value
+class WithDrawCount extends Value
 {
 
-    public $name = '视频动态总数(个)';
+    public $name = '提现金额总数(元)';
     /**
      * Calculate the value of the metric.
      *
@@ -19,10 +18,9 @@ class ArticleCount extends Value
     public function calculate(Request $request)
     {
         if($request->range=='0'){
-            return $this->result(\App\Article::whereNotNull('video_id')->whereIn('type',['post','video'])->count());    
-
+            return $this->result(\App\Wallet::where('type',0)->sum('total_withdraw_amount'));    
         }else{
-            return $this->count($request, \App\Article::whereNotNull('video_id')->whereIn('type',['post','video']));
+            return 0;
         }
     }
 
@@ -57,6 +55,6 @@ class ArticleCount extends Value
      */
     public function uriKey()
     {
-        return 'article-count';
+        return 'withDraw-count';
     }
 }
