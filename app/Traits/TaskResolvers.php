@@ -52,16 +52,12 @@ trait TaskResolvers
         //更新完成时间
         $task_all_completed_at = null;
         if (!$not_complete) {
-            $completed_usertasks = $usertaskBuilder->orderBy('completed_at', 'desc')->first();
-
+            $completed_usertasks   = $usertaskBuilder->orderBy('completed_at', 'desc')->first();
             $task_all_completed_at = $completed_usertasks->completed_at;
         }
 
         $task_all     = Task::where('name', 'DrinkWaterAll')->first();
-        $usertask_all = UserTask::where([
-            'user_id' => $user->id,
-            'task_id' => $task_all->id,
-        ])->whereDate('created_at', Carbon::today())->first();
+        $usertask_all = $task_all->getUserTask($user->id);
 
         $content      = '未完成';
         $status       = 0;
@@ -87,49 +83,17 @@ trait TaskResolvers
         $tasks = Task::Where('name', "DrinkWater")->get();
 
         foreach ($tasks as $task) {
-            $start_time = $task->getDailyStartTime();
-            //结束时间
-            $end_time = $task->getDailyEndTime();
+            $usertask = UserTask::createUserTask($task->id, $user->id, Carbon::now());
+            //laravel的bug上面的$usertask获取不到真正的对象
+            $usertask = $task->getUserTask($user->id);
 
-            ///时间处理
-            $usertask = UserTask::where('user_id', $user->id)
-                ->where('task_id', $task->id)
-                ->whereDate('created_at', Carbon::today())->first();
-
-            if (!$usertask) {
-
-                $usertask = UserTask::firstOrCreate([
-                    'task_id'    => $task->id,
-                    'user_id'    => $user->id,
-                    'created_at' => Carbon::now(),
-                ]);
-
-                //laravel的bug上面的$usertask获取不到真正的对象
-                $usertask = UserTask::where('user_id', $user->id)
-                    ->where('task_id', $task->id)
-                    ->whereDate('created_at', Carbon::today())->first();
-            }
             //如果任务未完成
             $usertask->status = $usertask->getStatus();
             $usertask->save();
-
         }
-
-        //创建总任务对象   创建重构
+        //创建总任务对象
         $task_all = Task::where('name', 'DrinkWaterAll')->first();
-
-        $usertask_all = UserTask::where('user_id', $user->id)
-            ->where('task_id', $task_all->id)
-            ->whereDate('created_at', Carbon::today())->exists();
-
-        if (!$usertask_all) {
-            UserTask::firstOrCreate([
-                'task_id'    => $task_all->id,
-                'user_id'    => $user->id,
-                'created_at' => Carbon::now(),
-            ]);
-        }
-
+        UserTask::createUserTask($task_all->id, $user->id, Carbon::now());
         return $tasks;
     }
 
@@ -160,31 +124,32 @@ trait TaskResolvers
         return $user_task;
     }
 
-    public function resolveSleepCheck($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    public function resolveSleepTask($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $task_id   = $args['task_id'];
-        $user      = getUser();
-        $task      = Task::where('id', $task_id)->first();
-        $user_task = $task->getUserTask($user->id);
 
-        if (!$user_task) {
-            $user_task = UserTask::firstOrCreate([
-                'task_id'    => $task_id,
-                'user_id'    => $user->id,
-                'created_at' => Carbon::now(),
-            ]);
-            $user_task = UserTask::find($user_task->id);
+        $user = getUser();
+
+        $now   = now();
+        $today = today()->startOfDay()->addHours(12);
+        $name  = 'SleepMorning';
+        if ($now->greaterThan($today)) {
+            $name = 'SleepNight';
+        } else {
+            $name = 'SleepMorning';
         }
 
-        $status = $user_task->getStatus();
+        $task      = Task::where('name', $name)->first();
+        $user_task = UserTask::createUserTask($task->id, $user->id, now());
+        $user_task = UserTask::find($user_task->id);
+        $status    = $user_task->getStatus();
         //若未打晚上的卡，早晨的卡则不能打
         if ($task->name == "SleepMorning") {
             $sleep_night_task = Task::where('name', "SleepNight")->first()->getUserTask($user->id, Carbon::yesterday());
             if (!$sleep_night_task) {
                 $status = -1;
             }
-            $user_task->status = $status;
         }
+        $user_task->status = $status;
         $user_task->save();
         return $task;
     }
@@ -212,37 +177,44 @@ trait TaskResolvers
         $reward = $task->reward_info;
         // 处理早晨的奖励变更
         if ($task->name == "SleepMorning") {
-
             $sleep_night_task = Task::where('name', "SleepNight")->first()->getUserTask($user->id, Carbon::yesterday());
 
             if (!$sleep_night_task) {
                 $user_task->processReward($task->reward_info);
             }
         }
-
         return $user_task;
     }
 
     public function resolveTasks($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $type      = $args['type'];
-        $taskQuery = Task::query();
-        switch ($type) {
-            case 'Sleep':
-                $taskQuery = $taskQuery->whereIn('name', [
-                    "SleepMorning",
-                    "SleepNight",
-                ]);
-                break;
-            case 'All':
-                //去掉喝水赚钱任务，不同于其他任务
-                $taskQuery = $taskQuery->whereNotIn('name', [
-                    'DrinkWater',
-                    'DrinkWaterAll',
-                ]);
-                break;
+        $taskQuery = Task::where('status', Task::ENABLE)->where('type', '!=', Task::TIME_TASK);
+        if ($type != 'All') {
+            $taskQuery = $taskQuery->where('type', $type);
         }
 
         return $taskQuery->get();
     }
+
+    public function receiveTaskResolver($root, array $args, $context, $info)
+    {
+
+        $task = Task::where('status', self::ENABLE)->where('id', $args['id'])->first();
+
+        $user = getUser();
+        if ($task->receiveTask($user, $task)) {
+            return $task;
+        }
+    }
+
+    public function getReWardResolver($root, array $args, $context, $info)
+    {
+        $task = Task::findOrFail($args['id']);
+        $user = checkUser();
+        $this->rewardTask($task, $user);
+        $task->increment('count');
+        return $task;
+    }
+
 }

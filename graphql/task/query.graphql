@@ -6,9 +6,14 @@ type Task {
   type: Int
   status: Int
   task_progress: Float
+  progress_details: String
   task_status: Int
+  submit_name: String
+  task_class: String
+  sleep_status:Boolean
+  check_functions: String
   reward_info: RewardInfo
-  success_reward: SuccessRewardInfo
+  taskInfo: TaskInfo!
   start_at: DateTime
   end_at: DateTime
   start_time: String
@@ -22,18 +27,20 @@ type RewardInfo {
   contribute: Int
 }
 
-type SuccessRewardInfo {
-  gold: Gold
+type TaskInfo {
+  method: String
+  router: String
 }
 
 extend type Query @middleware(checks: ["auth:api"]) {
   DrinkWaterTasks: [Task!] @field(resolver: "App\\Task@resolveDrinkWaterTasks")
+  SleepTask: Task @field(resolver: "App\\Task@resolveSleepTask")
   tasks(type: TaskType!): [Task!] @field(resolver: "App\\Task@resolveTasks")
-
-  # tasks(type: TaskType): [Task!]
 }
 
 enum TaskType {
-  Sleep @enum(value: "Sleep")
+  NEW_USER_TASK @enum(value: "0")
+  DAILY_TASK @enum(value: "1")
+  CUSTOM_TASK @enum(value: "2")
   All @enum(value: "All")
 }

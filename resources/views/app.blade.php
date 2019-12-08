@@ -113,7 +113,7 @@
             document.getElementById("mask").style.display="inline";
 
         } else {			
-            window.location.href="{{ env('APK_URL') }}";
+          window.location.href="{{ getDownloadUrl() }}";
         }
     }
 

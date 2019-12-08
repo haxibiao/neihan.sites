@@ -28,7 +28,7 @@
 				</ul>
 			</div>
 		@endif
-		<a class="download-app" href="{{ request()->path() == "app" ? env('APK_URL') : "/app" }}" target="_blank">
+		<a class="download-app" href="{{  request()->path() == "app" ? "#tancen" : "/app" }}" >
 			<p>下载APP</p>
 		</a>
 		<div class="user" data-hover="dropdown">

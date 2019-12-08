@@ -2,11 +2,18 @@
 
 namespace App\Traits;
 
+use App\Action;
+use App\Task;
+use App\User;
 use App\UserTask;
 use Carbon\Carbon;
 
 trait TaskRepo
 {
+    public function isDailyTask()
+    {
+        return $this->type == self::DAILY_TASK;
+    }
 
     public function getDailyStartTime()
     {
@@ -62,7 +69,7 @@ trait TaskRepo
             $default_date = $date;
         }
 
-        if ($this->type == self::DAILY_TASK) {
+        if ($this->type == self::TIME_TASK) {
             $userTaskBuild = $this->getDateUserTask($userTaskBuild, $default_date);
         }
 
@@ -72,5 +79,83 @@ trait TaskRepo
     public function getDateUserTask($userTaskBuild, $date)
     {
         return $userTaskBuild->whereDate('created_at', $date);
+    }
+
+    /**
+     * 接受任务
+     * @param User $user
+     * @param Task $task
+     * @return bool
+     */
+    public function receiveTask(User $user, Task $task)
+    {
+
+        $taskExisted = $user->tasks()->wherePivot('task_id', $task->id)->exists();
+
+        if (!$taskExisted) {
+
+            $user->tasks()->attach($task->id, ['status' => UserTask::TASK_UNDONE]);
+            Action::createAction('tasks', $task->id, $user->id);
+        }
+        return true;
+    }
+
+    /**
+     * 重置状态与修改状态
+     * @param User $user
+     * @return int
+     */
+    public function checkTaskStatus($user)
+    {
+        $piovt = UserTask::firstOrNew([
+            "task_id" => $this->id,
+            "user_id" => $user->id,
+        ]);
+
+        if ($this->isDailyTask()) {
+            if ($piovt->updated_at < today()) {
+                $piovt->status = UserTask::TASK_UNDONE;
+            }
+        }
+
+        if ($this->type != self::CUSTOM_TASK) {
+            if ($piovt->status < UserTask::TASK_REACH) {
+                $method = $this->resolve['method'] ?? null;
+                if (!is_null($method) && method_exists($this, $method)) {
+                    $args = $this->resolve['args'] ?? [];
+                    try {
+                        $taskDone = $this->$method(...$args);
+                    } catch (Exception $e) {
+                        \info($e->getMessage());
+                    }
+                    if ($taskDone) {
+                        $piovt->fill(['status' => UserTask::TASK_REACH])->save();
+                    }
+                }
+            }
+
+        }
+
+        return $piovt->status;
+    }
+
+    public function rewardTask(Task $task, User $user)
+    {
+        $pivot = \App\UserTask::firstOrNew([
+            'user_id' => $user->id,
+            'task_id' => $task->id,
+        ]);
+        if ($pivot->id) {
+            if ($pivot->status == UserTask::TASK_REACH) {
+                $process_reward = $pivot->processReward($task->reward_info);
+                if ($process_reward) {
+                    $pivot->status  = UserTask::TASK_DONE;
+                    $pivot->content = sprintf('%s完成。奖励:', $task->details) . $task->getTaskContent();
+                    $pivot->save();
+                    $task->increment('count');
+                    $task->save();
+                }
+            }
+        }
     }
 }

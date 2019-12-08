@@ -18,7 +18,10 @@
 				<div class="creation hidden-xs"><a href="/write" class="btn-base btn-theme"><span class="iconfont icon-maobi"></span>发布</a></div>
 			@endif	 --}}					
 			<div class="register"><a href="/register" class="btn-base theme-tag">注册</a></div>
-			<a target="_blank" href="{{ request()->path() == "app" ? env('APK_URL') : "/app" }}"  class="download-app"> 
+			<!-- <a target="_blank" href="{{ request()->path() == "app" ? env('APK_URL') : "/app" }}"  class="download-app"> 
+					<p>下载APP</p>
+			</a>-->
+			<a  href="{{  request()->path() == "app" ? "#tancen" : "/app" }}"  class="download-app"> 
 					<p>下载APP</p>
 			</a>
 			<a href="/login" class="login btn">登录</a>

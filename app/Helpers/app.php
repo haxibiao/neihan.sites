@@ -39,6 +39,15 @@ function qrcode_url()
 
 }
 
+function getDownloadUrl()
+{
+    $apkUrl = \App\Aso::getValue('下载页', '安卓地址');
+    if (is_null($apkUrl) || empty($apkUrl)) {
+        return null;
+    }
+    return $apkUrl;
+}
+
 function small_logo()
 {
     $logo = \App\Aso::getValue('下载页', 'logo');
