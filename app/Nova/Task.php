@@ -61,10 +61,11 @@ class Task extends Resource
             Code::make('奖励', 'reward')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
             // Number::make('统计', count),
             // check_functions
+            // Text::make('解析函数', 'check_functions'),
             Code::make('解析', 'resolve')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
             DateTime::make('开始时间', 'start_at'),
             DateTime::make('截止时间', 'end_at'),
-            DateTime::make('创建时间', 'created_at'),
+            DateTime::make('创建时间', 'created_at')->exceptOnForms(),
             // DateTime::make('截止时间', 'updated_at'),
         ];
     }

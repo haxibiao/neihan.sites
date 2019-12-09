@@ -39,7 +39,9 @@ class CommentObserver
         }
         $profile = $comment->commentable->user->profile;
         // 奖励贡献值
-        $profile->increment('count_contributes', Contribute::COMMENTED_AMOUNT);
+        if ($comment->user->id != $comment->commentable->user->id) {
+            $profile->increment('count_contributes', Contribute::COMMENTED_AMOUNT);
+        }
         Action::createAction('comments', $comment->id, $comment->user->id);
         Ip::createIpRecord('comments', $comment->id, $comment->user->id);
     }

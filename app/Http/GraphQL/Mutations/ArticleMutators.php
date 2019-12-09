@@ -63,6 +63,15 @@ class ArticleMutators
 
         try {
             $user = getUser();
+
+            $todayPublishVideoNum = $user->articles()
+                ->whereIn('type', ['post', 'issue'])
+                ->whereNotNull('video_id')
+                ->whereDate('created_at', Carbon::now())->count();
+            if ($todayPublishVideoNum == 10) {
+                throw new GQLException('每天只能发布10个视频动态!');
+            }
+
             if ($user->isBlack()) {
                 throw new GQLException('发布失败,你以被禁言');
             }

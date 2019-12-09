@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Withdraw extends Model
 {
-    use WithdrawResolvers,WithdrawRepo;
+    use WithdrawResolvers, WithdrawRepo;
 
     protected $fillable = [
         'wallet_id',
@@ -29,7 +29,7 @@ class Withdraw extends Model
     const FAILURE_WITHDRAW = -1;
     const WAITING_WITHDRAW = 0;
 
-    const WITHDRAW_MAX = 3;
+    const WITHDRAW_MAX = 1;
 
     public function wallet(): BelongsTo
     {

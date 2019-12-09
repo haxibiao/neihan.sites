@@ -1,3 +1,7 @@
 extend type Mutation @middleware(checks: ["auth:api"]) {
-  DrinkWater(task_id: Int!): Task @field(resolver: "App\\Task@resolveDrinkWaterCheck")
+  DrinkWater(task_id: Int!): [Task!] @field(resolver: "App\\Task@resolveDrinkWaterCheck")
+  DrinkWaterReward: UserTask @field(resolver: "App\\Task@resolveDrinkWaterReward")
+  SleepReward(task_id: Int!): UserTask @field(resolver: "App\\Task@resolveSleepReward")
+  receiveTask(id: ID!): Task @field(resolver: "App\\Task@receiveTaskResolver")
+  rewardTask(id: ID!): Task @field(resolver: "App\\Task@getReWardResolver")
 }

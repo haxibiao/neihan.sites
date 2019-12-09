@@ -8,7 +8,7 @@ use Laravel\Nova\Metrics\Value;
 class UserCount extends Value
 {
 
-    public $name = '用户总数';
+    public $name = '用户总数(位)';
     /**
      * Calculate the value of the metric.
      *

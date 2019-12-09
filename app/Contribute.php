@@ -117,6 +117,21 @@ class Contribute extends Model
         return $contribute;
     }
 
+    public static function rewardUserContribute($user_id, $id, $amount, $type)
+    {
+        $contribute = self::firstOrNew(
+            [
+                'user_id'          => $user_id,
+                'contributed_id'   => $id,
+                'contributed_type' => $type,
+            ]
+        );
+        $contribute->amount = $amount;
+        $contribute->recountUserContribute();
+        $contribute->save();
+        return $contribute;
+    }
+
     public function recountUserContribute()
     {
         $user = $this->user;

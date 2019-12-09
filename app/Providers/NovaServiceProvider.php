@@ -80,6 +80,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             new \App\Nova\Metrics\UserRetentionRate,
             new \App\Nova\Metrics\ArticleCount,
             new \App\Nova\Metrics\UserCount,
+            new \App\Nova\Metrics\WithDrawCount,
             (new \Hxb\CategoryLikeCount\CategoryLikeCount)
                 ->withName("受欢迎的分类前十个统计(视频点赞数)")
                 ->withData(\App\Category::getTopLikeCategory(10)),

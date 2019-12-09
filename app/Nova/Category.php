@@ -55,6 +55,7 @@ class Category extends Resource
             Text::make('类型', 'type'),
             Text::make('分类名称', 'name'),
             Text::make('分类英文名', 'name_en'),
+            Select::make('官方专题','is_official')->options([1 =>'是',0=>'否'])->onlyOnForms(),
             Select::make('状态', 'status')->options([
                 1 => '上架',
                 0 => '隐藏',
@@ -81,6 +82,8 @@ class Category extends Resource
         return [
             (new \Hxb\CategoryCount\CategoryCount)
                 ->withName("分类下的视频数量前十个统计")
+                ->withLegend("视频数量")
+                ->withColor("#FF00FF")
                 ->withData(AppCategory::getTopCategory(10)),
         ];
     }

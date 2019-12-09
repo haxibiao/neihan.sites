@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Article;
 use App\Jobs\MakeVideoCovers;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
@@ -140,6 +141,8 @@ trait VideoRepo
                 $article->description = $this->title;
                 $article->body        = $this->title;
             }
+            $article->status = Article::SUBMITTED_SUBMIT; //FIXME 合并submit与status字段
+            $article->submit = Article::SUBMITTED_SUBMIT; //直接上架状态
             $article->save();
 
             //释放服务器资源

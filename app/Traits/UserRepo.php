@@ -395,13 +395,13 @@ trait UserRepo
         $this->notify(new \App\Notifications\VerifyEmail);
     }
 
-    public function isWithDrawTodayByReadName(): bool
+    public function isWithDrawTodayByPayAccount(): bool
     {
-        $realName = $this->wallet->real_name;
-        if (is_null($realName) || empty($realName)) {
+        $payAccount = $this->wallet->pay_account;
+        if (is_null($payAccount) || empty($payAccount)) {
             return false;
         }
-        $wallet_ids = Wallet::where('pay_infos', 'like', "%{$realName}%")->select('id')->get()->pluck('id')->toArray();
+        $wallet_ids = Wallet::where('pay_account', $payAccount)->select('id')->get()->pluck('id')->toArray();
         $exists     = Withdraw::whereIn('wallet_id', $wallet_ids)->whereDate('created_at', now()->toDateString())->exists();
         return $exists;
     }
@@ -410,5 +410,24 @@ trait UserRepo
     {
         $this->status = self::STATUS_DESTORY;
         $this->save();
+    }
+
+    //nova后台提现金额排行前十的用户
+    public static function getTopWithDraw($number = 5)
+    {
+        $data = [];
+        $ten_top_users= \App\Wallet::select(\DB::raw('total_withdraw_amount,real_name,user_id'))
+            ->where('type',0)
+            ->orderBy('total_withdraw_amount', 'desc')
+            ->take($number)->get()->toArray();
+
+        foreach ($ten_top_users as $top_user) {
+            $user  =  User::find($top_user["user_id"]);
+            //显示真实名字
+            //$data['name'][] = $user ? $user->name : '空';
+            $data['name'][] = $top_user["real_name"];
+            $data['data'][] = $top_user["total_withdraw_amount"];
+        }
+        return $data;
     }
 }

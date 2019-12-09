@@ -141,14 +141,15 @@ class ProcessSpider implements ShouldQueue
             $category->user_id = 1;
             $category->save();
         }
+
         //避免与Observer处理存在时间差导致重复创建
         $article              = $this->article;
         $article->video_id    = $video->id;
         $article->body        = $description;
         $article->title       = Str::limit($description, 150); //截取微博那么长的内容存简介;
         $article->description = Str::limit($description, 280); //截取微博那么长的内容存简介
-        $article->status      = 1; //FIXME 合并submit与status字段
-        $article->submit      = Article::SUBMITTED_SUBMIT; //直接上架状态
+        $article->status      = Article::REVIEW_SUBMIT; //FIXME 合并submit与status字段
+        $article->submit      = Article::REVIEW_SUBMIT; //不直接上架
         $article->user_id     = $user->id;
         $article->category_id = $category->id;
         $article->save();

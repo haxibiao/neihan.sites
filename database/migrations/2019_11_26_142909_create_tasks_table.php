@@ -18,7 +18,7 @@ class CreateTasksTable extends Migration
                 $table->increments('id');
                 $table->string('name')->comment('任务名称');
                 $table->text('details')->nullable()->comment('描述');
-                $table->integer('type')->nullable()->comment('类型：0:新人任务 1:每日任务 2:自定义任务');
+                $table->integer('type')->nullable()->comment('类型：0:新人任务 1:每日任务 2:自定义任务 3:实时任务');
                 $table->json('reward')->nullable()->comment('奖励');
                 $table->unsignedInteger('count')->default(0)->comment('统计');
                 $table->string('check_functions')->nullable()->comment('解析函数');

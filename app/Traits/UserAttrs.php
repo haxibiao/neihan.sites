@@ -361,4 +361,9 @@ trait UserAttrs
     {
         return $this->profile->birthday;
     }
+
+    public function getContributeAttribute()
+    {
+        return $this->profile->count_contributes;
+    }
 }

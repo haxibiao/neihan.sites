@@ -1,0 +1,10 @@
+type UserTask {
+  id: Int!
+  user: User
+  task: Task
+  content: String
+  status: Int
+  progress: Float
+  created_at: DateTime
+  updated_at: DateTime
+}

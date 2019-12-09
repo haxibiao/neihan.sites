@@ -17109,7 +17109,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   data: function data() {
     return {
       chartLabels: [],
-      chartData: []
+      chartData: [],
+      chartLegend:[],
+      chartColor:[],
     };
   },
 
@@ -17120,8 +17122,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     initView: function initView() {
       this.chartLabels = this.card.data.name;
       this.chartData = this.card.data.data;
-      console.log("测试data" + this.card.data.data);
-      console.log("测试name" + this.card.data.name);
+      this.chartLegend = this.card.legend;
+      this.chartColor = this.card.color;
+      //console.log("测试color" + this.chartColor);
+      //console.log("测试legend" + this.chartLegend);
     }
   },
   created: function created() {
@@ -17140,16 +17144,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   extends: __WEBPACK_IMPORTED_MODULE_0_vue_chartjs__["a" /* Bar */],
   props: {
     chartLabels: null,
-    chartData: null
+    chartData: null,
+    chartLegend:null,
+    chartColor:null
   },
   mounted: function mounted() {
-    console.log('barchat测试name' + this.chartLabels);
-    console.log('barchat测试name' + this.chartData);
+    // console.log('barchat测试legend' + this.chartLegend);
+    // console.log('barchat测试color' + this.chartColor);
     this.renderChart({
       labels: this.chartLabels,
       datasets: [{
-        label: '视频数量',
-        backgroundColor: '#f87979',
+        label: this.chartLegend,
+        backgroundColor: this.chartColor,
         data: this.chartData
       }]
     }, {
@@ -32375,16 +32381,18 @@ webpackContext.id = 139;
   extends: __WEBPACK_IMPORTED_MODULE_0_vue_chartjs__["a" /* Bar */],
   props: {
     chartLabels: null,
-    chartData: null
+    chartData: null,
+    chartLegend:null,
+    chartColor:null
   },
   mounted: function mounted() {
-    console.log('barchat测试name' + this.chartLabels);
-    console.log('barchat测试name' + this.chartData);
+    // console.log('barchat测试name' + this.chartLabels);
+    // console.log('barchat测试name' + this.chartColor);
     this.renderChart({
       labels: this.chartLabels,
       datasets: [{
-        label: '视频数量',
-        backgroundColor: '#f87979',
+        label: this.chartLegend,
+        backgroundColor: this.chartColor,
         data: this.chartData
       }]
     }, {
@@ -32415,11 +32423,11 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("bar-charts", {
-            attrs: { chartLabels: _vm.chartLabels, "chart-data": _vm.chartData }
+            attrs: { chartLabels: _vm.chartLabels, "chart-data": _vm.chartData,chartLegend:_vm.chartLegend,chartColor:_vm.chartColor }
           }),
           _vm._v(" "),
           _c("two-charts", {
-            attrs: { chartLabels: _vm.chartLabels, "chart-data": _vm.chartData }
+            attrs: { chartLabels: _vm.chartLabels, "chart-data": _vm.chartData,chartLegend:_vm.chartLegend,chartColor:_vm.chartColor  }
           })
         ],
         1
