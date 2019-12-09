@@ -30,7 +30,7 @@ class Transaction extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id','name'
     ];
 
 
@@ -52,7 +52,7 @@ class Transaction extends Resource
             ID::make()->sortable(),
             BelongsTo::make('用户', 'user',User::class),
             Text::make('类型','type'),
-            Text::make('记录','log')->asHtml(),
+            Text::make('记录','remark')->asHtml(),
             Text::make('状态','status')
         ];
     }
@@ -76,7 +76,10 @@ class Transaction extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new  \App\Nova\Filters\Transaction\TransactionStatusType,
+            new  \App\Nova\Filters\Transaction\TransactionType,
+        ];
     }
 
     /**

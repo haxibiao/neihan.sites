@@ -108,7 +108,9 @@ class User extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new \App\Nova\Filters\User\UserStatusType,
+        ];
     }
 
     /**

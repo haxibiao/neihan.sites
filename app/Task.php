@@ -63,7 +63,7 @@ class Task extends Model
     public static function getStatuses()
     {
         return [
-            self::ENABLE  => '以展示',
+            self::ENABLE  => '已展示',
             self::DISABLE => '未展示',
         ];
     }

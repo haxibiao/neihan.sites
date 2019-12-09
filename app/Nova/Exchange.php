@@ -52,9 +52,9 @@ class Exchange extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make('用户', 'user', User::class),
-            Number::make('医宝', 'gold'),
+            Number::make('智慧点', 'gold'),
             Text::make('兑换比率', 'exchange_rate'),
-            Text::make('医宝余额', 'gold_balance'),
+            Text::make('智慧点余额', 'gold_balance'),
             DateTime::make('创建时间', 'created_at'),
             DateTime::make('更新时间', 'updated_at'),
         ];

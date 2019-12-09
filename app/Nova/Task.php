@@ -31,7 +31,7 @@ class Task extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id','name','details'
     ];
 
     public static function label()
@@ -89,7 +89,10 @@ class Task extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new \App\Nova\Filters\Other\TaskType,
+            new \App\Nova\Filters\Other\TaskStatusType,
+        ];
     }
 
     /**

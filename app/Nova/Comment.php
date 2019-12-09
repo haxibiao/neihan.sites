@@ -58,12 +58,12 @@ class Comment extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make('作者', 'user', User::class)->hideWhenCreating(),
-            Text::make('内容', function () {
+            Text::make('评论内容', function () {
                 $text = $this->title ?? str_limit($this->body);
                 return $text;
             })->onlyOnIndex(),
             Textarea::make('内容', 'body')->rules('required')->hideFromIndex(),
-            MorphTo::make('评论类型', 'commentable')->types([
+            MorphTo::make('评论对象', 'commentable')->types([
                 Article::class,
                 Video::class,
                 Feedback::class,

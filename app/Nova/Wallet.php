@@ -31,7 +31,7 @@ class Wallet extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id','real_name','pay_account'
     ];
 
     public static function label()
@@ -81,7 +81,9 @@ class Wallet extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new  \App\Nova\Filters\Transaction\WalletType,
+        ];
     }
 
     /**

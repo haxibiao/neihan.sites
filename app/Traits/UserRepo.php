@@ -425,7 +425,7 @@ trait UserRepo
             $user  =  User::find($top_user["user_id"]);
             //显示真实名字
             //$data['name'][] = $user ? $user->name : '空';
-            $data['name'][] = $top_user["real_name"];
+            $data['name'][] = $top_user["real_name"]?$top_user["real_name"]:'空';
             $data['data'][] = $top_user["total_withdraw_amount"];
         }
         return $data;
