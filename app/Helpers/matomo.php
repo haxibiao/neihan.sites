@@ -2,9 +2,12 @@
 
 function init_piwik_tracker()
 {
+
     if (isset(config('matomo.site')[env('APP_DOMAIN')])) {
         $siteId = config('matomo.site')[env('APP_DOMAIN')];
         $matomo = config('matomo.matomo');
+        // $siteId = env('MATOMO_SITE_ID');
+        // $matomo = env('MATOMO_URL');
 
         $piwik = new PiwikTracker($siteId, $matomo);
         $piwik->setUserId(getUniqueUserId());
