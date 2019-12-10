@@ -14,6 +14,7 @@ class UserTask extends Pivot
     protected $table = 'user_task';
 
     protected $fillable = [
+        'id',
         'task_id',
         'user_id',
         'content',
@@ -101,12 +102,10 @@ class UserTask extends Pivot
         $usertask = $task->getUserTask($user_id);
 
         if (!$usertask) {
-            $usertask = UserTask::firstOrCreate([
-                'task_id'    => $task_id,
-                'user_id'    => $user_id,
-                'created_at' => $date,
-            ]);
-
+            $usertask = UserTask::firstOrCreate(
+                ['task_id' => $task_id],
+                ['user_id' => $user_id],
+                ['created_at' => $date]);
         }
         return $usertask;
     }

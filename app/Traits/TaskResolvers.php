@@ -140,7 +140,6 @@ trait TaskResolvers
 
         $task      = Task::where('name', $name)->first();
         $user_task = UserTask::createUserTask($task->id, $user->id, now());
-        $user_task = UserTask::find($user_task->id);
         $status    = $user_task->getStatus();
         //若未打晚上的卡，早晨的卡则不能打
         if ($task->name == "SleepMorning") {
@@ -181,6 +180,8 @@ trait TaskResolvers
 
             if (!$sleep_night_task) {
                 $user_task->processReward($task->reward_info);
+            } else {
+                throw new GQLException('昨晚睡觉卡未打');
             }
         }
         return $user_task;

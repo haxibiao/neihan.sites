@@ -41,8 +41,12 @@ trait ArticleResolvers
         return $article;
     }
 
-    public function resolvePendingArticles($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {
+    public function resolvePendingArticles(
+        $rootValue,
+        array $args,
+        GraphQLContext $context,
+        ResolveInfo $resolveInfo
+    ) {
         $user       = getUser();
         $articles   = [];
         $categories = isset($args['category_id']) ? [\App\Category::find($args['category_id'])] : $user->adminCategories;
@@ -56,8 +60,12 @@ trait ArticleResolvers
         return $articles;
     }
 
-    public function resolveRecommendArticles($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {
+    public function resolveRecommendArticles(
+        $rootValue,
+        array $args,
+        GraphQLContext $context,
+        ResolveInfo $resolveInfo
+    ) {
         //FIXME: 日后真的按当前登录用户改进推荐算法...
         $qb = \App\Article::whereStatus(1)
             ->whereNotNull('title')
@@ -65,8 +73,12 @@ trait ArticleResolvers
         return $qb->latest('id');
     }
 
-    public function resolveFollowedArticles($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {
+    public function resolveFollowedArticles(
+        $rootValue,
+        array $args,
+        GraphQLContext $context,
+        ResolveInfo $resolveInfo
+    ) {
         //TODO: 关注的文集，人的文章还没加入...
         $user     = \App\User::findOrFail($args['user_id']);
         $cate_ids = $user->followingCategories()->pluck('followed_id');
@@ -98,18 +110,25 @@ trait ArticleResolvers
         return $article;
     }
 
-    public function resolveRecommendVideos($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {
-        $user                   = checkUser();
-        $pageCount              = $args['count'];
-        $limit                  = $pageCount >= 10 ? 8 : 4;
+    public function resolveRecommendVideos(
+        $rootValue,
+        array $args,
+        GraphQLContext $context,
+        ResolveInfo $resolveInfo
+    ) {
+        $user      = checkUser();
+        $pageCount = $args['count'];
+        $limit     = $pageCount >= 10 ? 8 : 4;
 
-        $qb = Article::with(['video', 'user'])->whereNotNull('video_id')->whereNotIn('user_id',function ($query) use ($user){
-            $query->select('user_block_id')->from('user_blocks')->where("user_id",$user->id);
-        })->publish()
-        ->orderByDesc('review_id');
+        $qb = Article::with(['video', 'user'])->whereNotNull('video_id')->publish()->orderByDesc('review_id');
+        if ($user) {
+            $qb->whereNotIn('user_id', function ($query) use ($user) {
+                $query->select('user_block_id')->from('user_blocks')->where("user_id", $user->id);
+            });
+        }
+
         $total = $qb->count();
-        $qb = $qb->take($limit);
+        $qb    = $qb->take($limit);
 
         if ($user) {
             $visitVideoIds = Visit::ofType('articles')->ofUserId($user->id)->get()->pluck('visited_id');
@@ -117,7 +136,7 @@ trait ArticleResolvers
                 $qb = $qb->whereNotIn('id', $visitVideoIds);
             }
         } else {
-            $offset = mt_rand(0, 50) ;
+            $offset = mt_rand(0, 50);
             $qb     = $qb->skip($offset);
         }
         $articles = $qb->get();
@@ -133,13 +152,13 @@ trait ArticleResolvers
             $index++;
             $mixPosts[] = $article;
             if ($index % 4 == 0) {
-                $article        = clone $article;
-                $article->id    = random_str(7);
+                $article               = clone $article;
+                $article->id           = random_str(7);
                 $article->isAdPosition = true;
-                $mixPosts[]    = $article;
+                $mixPosts[]            = $article;
             }
         }
-        $result = new \Illuminate\Pagination\LengthAwarePaginator($mixPosts,$total,$pageCount,$pageCount);
+        $result = new \Illuminate\Pagination\LengthAwarePaginator($mixPosts, $total, $pageCount, $pageCount);
         return $result;
     }
 
