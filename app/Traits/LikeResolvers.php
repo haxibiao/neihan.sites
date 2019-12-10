@@ -35,6 +35,7 @@ trait LikeResolvers
             $like->delete();
             $like->isLiked = false;
         } else {
+            app_track_user("点赞", 'like_' . $like->likable_type, $like->likable_id);
             $like->save();
             $like->isLiked = true;
         }

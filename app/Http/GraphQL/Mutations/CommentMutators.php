@@ -61,6 +61,7 @@ class CommentMutators
         $comment->commentable_id   = $args['commentable_id'];
         $comment->body             = $args['body'];
         $comment->save();
+        app_track_user('评论', 'comment', $comment->id);
         return $comment;
     }
 

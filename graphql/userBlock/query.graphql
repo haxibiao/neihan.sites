@@ -1,0 +1,5 @@
+type UserBlock {
+  id: Int!
+  user: User!
+  userblock:User!
+}

@@ -1,0 +1,3 @@
+extend type Mutation {
+  addUserBlock(id: Int!): UserBlock! @field(resolver: "App\\UserBlock@addUserBlock")
+}

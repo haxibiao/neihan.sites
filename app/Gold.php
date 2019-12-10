@@ -56,4 +56,9 @@ class Gold extends Model
 
         return $gold;
     }
+
+    public function resolveGolds($rootValue, array $args, $context, $resolveInfo){
+        app_track_user("查看账单", 'list_golds', getUserId());
+        return Gold::orderBy('id', 'desc')->where('user_id',$args['user_id']);
+    }
 }

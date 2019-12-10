@@ -29,4 +29,31 @@ class Visit extends Model
         return $this->morphTo();
     }
 
+    public function scopeOfType($query, $value)
+    {
+        return $query->where('visited_type', $value);
+    }
+
+    public function scopeOfUserId($query, $value)
+    {
+        return $query->where('user_id', $value);
+    }
+
+    public static function saveVisits($user, $visits, $visitedType)
+    {
+        $visitsObj = [];
+
+        foreach ($visits as $visit) {
+            $visited = [
+                'visited_type' => $visitedType,
+                'visited_id'   => $visit->id,
+                'user_id'      => $user->id,
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ];
+            array_push($visitsObj, $visited);
+        }
+
+        return Visit::insert($visitsObj);
+    }
 }

@@ -152,6 +152,7 @@ class ProcessSpider implements ShouldQueue
         $article->submit      = Article::REVIEW_SUBMIT; //不直接上架
         $article->user_id     = $user->id;
         $article->category_id = $category->id;
+        $article->review_id   = Article::makeNewReviewId();
         $article->save();
 
         $article->categories()->sync([$category->id]);

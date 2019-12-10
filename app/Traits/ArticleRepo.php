@@ -425,7 +425,7 @@ trait ArticleRepo
             $this->images()->sync($image_ids);
             $this->save();
         }
-        app_track_post();
+        app_track_user('发布动态','post');
         return $this;
     }
 
@@ -564,5 +564,13 @@ trait ArticleRepo
     public function get_title()
     {
         return str_limit($this->title, 10);
+    }
+
+    public static function makeNewReviewId($prefixNum = null)
+    {
+        $maxNum = 100000;
+        $prefixNum = is_null($prefixNum) ? today()->format('Ymd') : $prefixNum;
+        $reviewId  = intval($prefixNum) * $maxNum + mt_rand(1, $maxNum - 1);
+        return $reviewId;
     }
 }

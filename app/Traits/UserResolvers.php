@@ -60,7 +60,7 @@ trait UserResolvers
             ]);
 
             $user->touch(); //更新用户的更新时间来统计日活用户
-
+            // app_track_user("用户登录", 'login');
             return $user;
         } else {
             throw new GQLException('登录失败！邮箱或者密码不正确');
@@ -103,6 +103,9 @@ trait UserResolvers
         $user->phone = null;
         $user->email = $email;
         $user->save();
+
+        // app_track_user("用户注册", 'register');
+
         Ip::createIpRecord('users', $user->id, $user->id);
         return $user;
     }
@@ -215,6 +218,7 @@ trait UserResolvers
             if (!is_null($phone)) {
                 $user->update(['phone' => $phone]);
             }
+            // app_track_user("用户登录", 'login');
             return $user;
         }
         $user = User::create([
@@ -232,6 +236,7 @@ trait UserResolvers
         ]);
 
         Ip::createIpRecord('users', $user->id, $user->id);
+        // app_track_user("用户注册", 'register');
         return $user;
     }
 

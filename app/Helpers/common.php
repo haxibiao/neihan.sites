@@ -17,6 +17,11 @@ function get_ip()
     return $ip;
 }
 
+function random_str($length)
+{
+    return str_pad(mt_rand(0, 999999), $length, "0", STR_PAD_BOTH);
+}
+
 function ssl_url($url)
 {
     if (starts_with($url, 'https')) {

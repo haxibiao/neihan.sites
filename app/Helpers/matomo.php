@@ -2,18 +2,9 @@
 
 function init_piwik_tracker()
 {
-
-    if (isset(config('matomo.site')[env('APP_DOMAIN')])) {
-        $siteId = config('matomo.site')[env('APP_DOMAIN')];
-        $matomo = config('matomo.matomo');
-        // $siteId = env('MATOMO_SITE_ID');
-        // $matomo = env('MATOMO_URL');
-
-        $piwik = new PiwikTracker($siteId, $matomo);
-        $piwik->setUserId(getUniqueUserId());
-        return $piwik;
-    }
-    return null;
+    $piwik = app('piwik');
+    $piwik->setUserId(getUniqueUserId());
+    return $piwik;
 }
 
 function app_track_event($category, $action, $name = false, $value = false)
@@ -42,58 +33,35 @@ function app_track_goal($goal_id)
 
 function app_track_user($action, $name = false, $value = false)
 {
-    app_track_event("user", $action, $name, $value);
-}
-
-function app_track_video($action, $name = false, $value = false)
-{
-    app_track_event("video", $action, $name, $value);
-}
-
-function app_track_visit_people()
-{
-    app_track_goal(1);
-    app_track_user('visit');
-}
-
-function app_track_like()
-{
-    app_track_goal(2);
-    app_track_user('like');
+    app_track_event("用户行为", $action, $name, $value);
 }
 
 function app_track_post()
 {
-    app_track_goal(3);
-    app_track_user('post');
+    app_track_user('发布动态');
 }
 
 function app_track_issue()
 {
-    app_track_goal(3);
-    app_track_user('issue');
+    app_track_user('发布视频问答','post');
 }
 
 function app_track_comment()
 {
-    app_track_goal(4);
     app_track_user('comment');
 }
 
 function app_track_send_message()
 {
-    app_track_goal(5);
     app_track_user('send_message');
 }
 
 function app_track_launch()
 {
-    app_track_goal(6);
     app_track_user('launch');
 }
 
 function app_track_app_download()
 {
-    app_track_goal(7);
-    app_track_user('app_download');
+    app_track_user('App下载','app_download');
 }

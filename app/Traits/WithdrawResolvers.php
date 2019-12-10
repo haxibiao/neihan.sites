@@ -70,4 +70,15 @@ trait WithdrawResolvers
 
         return $withdraw;
     }
+
+    public function resolveWithdraws($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo){
+        app_track_user("提现列表", 'list_withdraws', getUserId());
+        return Withdraw::orderBy('id', 'desc')->where('wallet_id',$args['wallet_id']);
+    }
+
+    public function resolveWithdraw($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo){
+        app_track_user("提现详情", 'show_withdraw', $args['id']);
+        return Withdraw::find($args['id']);
+    }
+
 }

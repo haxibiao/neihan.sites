@@ -21,6 +21,7 @@ class FollowMutators
             $follow->delete();
             $follow->isFollowed = false;
         } else {
+            app_track_user('关注', 'follow', $follow->id);
             $follow->save();
             $follow->isFollowed = true;
         }

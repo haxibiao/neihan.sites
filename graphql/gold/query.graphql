@@ -8,5 +8,5 @@ type Gold {
 }
 
 extend type Query @middleware(checks: ["auth:api"]) {
-  golds(user_id: Int! @eq, orderBy: [OrderByClause!] @orderBy): [Gold]! @paginate(defaultCount: 10, builer: "App\\Gold")
+  golds(user_id: Int! @eq, orderBy: [OrderByClause!] @orderBy): [Gold]! @paginate(defaultCount: 10, builder: "App\\Gold@resolveGolds")
 }

@@ -11,5 +11,6 @@ type Withdraw {
 
 extend type Query @middleware(checks: ["auth:api"]) {
   withdraw(id: Int @eq): Withdraw! @find
-  withdraws(wallet_id: Int! @eq, orderBy: [OrderByClause!] @orderBy): [Withdraw]! @paginate(defaultCount: 10)
+  withdraws(wallet_id: Int! @eq, orderBy: [OrderByClause!] @orderBy): [Withdraw]! @paginate(defaultCount: 10, builder: "App\\Withdraw@resolveWithdraws")
 }
+

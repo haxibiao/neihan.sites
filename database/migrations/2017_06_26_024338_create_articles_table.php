@@ -75,6 +75,8 @@ class CreateArticlesTable extends Migration
                 ->comment('审核状态: -1 已拒绝, 0 审核中, 1 已收录');
             $table->string('remark')->nullable()->comment('备注');
 
+            $table->unsignedBigInteger('review_id')->index()->nullable();
+
             $table->softDeletes();
 
             $table->timestamps();

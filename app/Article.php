@@ -166,6 +166,11 @@ class Article extends Model
         parent::save($options);
     }
 
+    public function scopePublish($query)
+    {
+        return $query->where('status', 1);
+    }
+
     public static function getSubmitStatus()
     {
         return [

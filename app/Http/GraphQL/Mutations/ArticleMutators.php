@@ -88,6 +88,7 @@ class ArticleMutators
                 $article->title       = Str::limit($inputs['body'], 50);
                 $article->description = Str::limit($inputs['body'], 280);
                 $article->body        = $inputs['body'];
+                $article->review_id   = Article::makeNewReviewId();
                 $article->video_id    = $video->id; //关联上视频
                 $article->save();
 
@@ -148,7 +149,7 @@ class ArticleMutators
             Ip::createIpRecord('articles', $article->id, $article->user->id);
 
             DB::commit();
-            app_track_post();
+            app_track_user('发布动态','post');
             return $article;
         } catch (\Exception $ex) {
             if ($ex->getCode() == 0) {
@@ -221,6 +222,7 @@ class ArticleMutators
                 //新创建的视频动态需要审核
                 $article->submit   = Article::REVIEW_SUBMIT;
                 $article->issue_id = $issue->id;
+                $article->review_id   = Article::makeNewReviewId();
                 $article->type     = 'issue';
                 $article->save();
             } else if ($inputs['images']) {
@@ -291,7 +293,7 @@ class ArticleMutators
                 }
             }
             DB::commit();
-            app_track_issue();
+            app_track_user('发布问答','issue');
             return $article;
         } catch (\Exception $ex) {
             DB::rollBack();
