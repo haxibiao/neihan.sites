@@ -4,12 +4,12 @@ go_production:
     - whoami
     - pwd
     - bash ops/bash/ui.sh
-    - ssh root@gz008 "cd /data/www/ainicheng.com && git reset --hard && git checkout master && git pull origin master -f"
-    - ssh root@gz008 "cd /data/www/ainicheng.com && composer install"
-    - ssh root@gz008 "cd /data/www/ainicheng.com && php artisan env:refresh --env=prod --db_host=gz006 --db_database=ainicheng"
-    - ssh root@gz008 "cd /data/www/ainicheng.com && bash ops/bash/worker.sh"
-    - ssh root@gz008 "cd /data/www/ainicheng.com && php artisan migrate"
-    - ssh root@gz008 "cd /data/www/ainicheng.com && bash ops/bash/data.sh && exit"
+    - ssh root@gz01 "cd /data/www/ainicheng.com && git reset --hard && git checkout master && git pull origin master -f"
+    - ssh root@gz01 "cd /data/www/ainicheng.com && composer install"
+    - ssh root@gz01 "cd /data/www/ainicheng.com && php artisan env:refresh --env=prod --db_host=gz006 --db_database=ainicheng"
+    - ssh root@gz01 "cd /data/www/ainicheng.com && bash ops/bash/worker.sh"
+    - ssh root@gz01 "cd /data/www/ainicheng.com && php artisan migrate"
+    - ssh root@gz01 "cd /data/www/ainicheng.com && bash ops/bash/data.sh && exit"
   only:
     - master
 go_develop:
