@@ -76,6 +76,7 @@ class CreateArticlesTable extends Migration
             $table->string('remark')->nullable()->comment('备注');
 
             $table->unsignedBigInteger('review_id')->index()->nullable();
+            $table->boolean('is_hot')->index()->default(false);
 
             $table->softDeletes();
 

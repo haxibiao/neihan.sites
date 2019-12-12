@@ -12,28 +12,30 @@ use App\Tip;
 use App\Video;
 use App\Visit;
 use Exception;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 trait ArticleRepo
 {
-    public function savevideoFile($file)
-    {
-        if ($file) {
-            $hash  = md5_file($file->path());
-            $video = Video::firstOrNew([
-                'hash' => $hash,
-            ]);
+    /**
+     * @param UploadedFile $file
+     * @return int|mixed
+     * @throws \Throwable
+     */
+    public function saveVideoFile(UploadedFile $file){
+        $hash = md5_file($file->getRealPath());
+        $video = \App\Video::firstOrNew([
+            'hash' => $hash
+        ]);
+//        秒传
+        if(isset($video->id)){
+            return $video->id;
+        }
 
-            $video->title = $file->getClientOriginalName();
-            $video->save();
-        }
         $uploadSuccess = $video->saveFile($file);
-        if (!$uploadSuccess) {
-            //视频上传失败
-            abort(500, '视频上传失败');
-        }
+        throw_if(!$uploadSuccess,Exception::class,'视频上传失败，请联系管理员小哥');
         return $video->id;
     }
 

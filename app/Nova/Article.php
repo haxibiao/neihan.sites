@@ -88,14 +88,14 @@ class Article extends Resource
             // Number::make('总评论数', 'count_comments')->exceptOnForms()->sortable(),
             File::make('上传视频', 'video_id')->onlyOnForms()->store(
                 function (Request $request, $model) {
-                    $file      = $request->file('video_id');
+                    $file = $request->file('video_id');
                     $validator = Validator::make($request->all(), [
                         'video' => 'mimetypes:video/avi,video/mp4,video/mpeg,video/quicktime',
                     ]);
                     if ($validator->fails()) {
                         return '视频格式有问题';
                     }
-                    return $model->savevideoFile($file);
+                    return $model->saveVideoFile($file);
                 }),
             BelongsTo::make('视频', 'video', Video::class)->exceptOnForms(),
             ArrayImages::make('图片', function () {

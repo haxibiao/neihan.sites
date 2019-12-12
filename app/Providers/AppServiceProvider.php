@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Auth;
 use Blade;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
@@ -23,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
         // 升级laravel 5.8 注释
         // $this->app->alias('bugsnag.multi', \Illuminate\Contracts\Logging\Log::class);
         // $this->app->alias('bugsnag.multi', \Psr\Log\LoggerInterface::class);
-
+        Carbon::setLocale('zh');
         Schema::defaultStringLength(191);
 
         View::composer(
@@ -99,12 +100,42 @@ class AppServiceProvider extends ServiceProvider
         foreach (glob(app_path() . '/../ops/helpers/*.php') as $filename) {
             require_once $filename;
         }
+        if ($this->app->environment() !== 'production') {
+            $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+        }
+
     }
 
     public function registerSingleObject()
     {
         $this->app->singleton('DouyinSpider', function ($app) {
             return new \App\Helpers\DouyinSpider();
+        });
+        $this->app->singleton('ffmpeg', function ($app) {
+            return \FFMpeg\FFMpeg::create([
+                'ffmpeg.binaries'  => [
+                    '/usr/local/bin/ffmpeg',
+                    '/usr/local/ffmpeg/bin/ffmpeg',
+                    '/usr/bin/ffmpeg',
+                    exec('which ffmpeg'),
+                ],
+                'ffprobe.binaries' => [
+                    '/usr/local/bin/ffprobe',
+                    '/usr/local/ffmpeg/bin/ffprobe',
+                    '/usr/bin/ffprobe',
+                    exec('which ffprobe'),
+                ],
+            ]);
+        });
+        $this->app->singleton('ffprobe', function ($app) {
+            return \FFMpeg\FFProbe::create([
+                'ffprobe.binaries' => [
+                    '/usr/local/bin/ffprobe',
+                    '/usr/local/ffmpeg/bin/ffprobe',
+                    '/usr/bin/ffprobe',
+                    exec('which ffprobe'),
+                ],
+            ]);
         });
     }
 }

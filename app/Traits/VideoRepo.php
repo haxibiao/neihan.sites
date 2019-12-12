@@ -7,6 +7,11 @@ use App\Jobs\MakeVideoCovers;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use TencentCloud\Common\Credential;
+use TencentCloud\Common\Profile\ClientProfile;
+use TencentCloud\Common\Profile\HttpProfile;
+use TencentCloud\Vod\V20180717\Models\PushUrlCacheRequest;
+use TencentCloud\Vod\V20180717\VodClient;
 
 trait VideoRepo
 {
@@ -40,7 +45,6 @@ trait VideoRepo
         $this->hash  = md5_file($file->path());
         $this->title = $file->getClientOriginalName();
         $this->save();
-        MakeVideoCovers::dispatch($this);
 
         try {
             //本地存一份用于截图
@@ -56,6 +60,7 @@ trait VideoRepo
             $this->disk = 'cos';
             $this->save();
 
+            dispatch((new MakeVideoCovers($this)))->delay(now()->addMinute(1));
             return true;
 
         } catch (\Exception $ex) {
@@ -75,88 +80,6 @@ trait VideoRepo
         $this->save();
     }
 
-    public function makeCovers()
-    {
-        $video = $this;
-
-        /* ===视频时长=== */
-        $videoPath        = storage_path('app/public/video/' . $this->id . '.mp4');
-        $cmd_get_duration = 'ffprobe -i ' . $videoPath . ' -show_entries format=duration -v quiet -of csv="p=0" 2>&1';
-        $duration         = `$cmd_get_duration`;
-
-        //等比例截取1张图片 20%
-        $timeCodes = [
-            bcmul(sprintf('%.2f', $duration), 0.2, 2),
-        ];
-
-        $duration        = intval($duration);
-        $video->duration = $duration;
-        $video->save();
-
-        /* ===视频封面=== */
-        $localImagePathTemplate = storage_path('app/public/video/' . '%s.jpg');
-        $covers                 = [];
-        $cosCovers              = [];
-        foreach ($timeCodes as $second) {
-
-            $coverName = $video->id . $second;
-            //视频封面输出地址
-            $localCoverPath = sprintf($localImagePathTemplate, $coverName);
-            info($localCoverPath);
-            $cmd = "ffmpeg -ss $second -i $videoPath -an -t 00:00:01 -r 1 -y -vcodec mjpeg -f mjpeg $localCoverPath 2>&1";
-
-            $exit_code = exec($cmd);
-
-            $coverPath = 'video/' . $coverName . '.jpg';
-
-            Storage::cloud()->put($coverPath, file_get_contents($localCoverPath));
-            $covers[] = $coverPath;
-
-            // 为了解决 FILESYSTEM_CLOUD = public 时，访问不到本地的图片，这里不存 storage
-            $cosCovers[] = 'video/' . $coverName . '.jpg';
-        }
-        if (count($covers)) {
-            $video->timestamps = false;
-            $video->disk       = 'cos';
-            $video->status     = 1; //1代表文章可用，0代表草稿
-            $video->cover      = $covers[0]; //TODO: 数据库还是存path，不存cos全地址，需要fixData统一
-
-            $this->setJsonData('covers', $cosCovers);
-            $this->setJsonData('cover', $cosCovers[0]);
-
-            $this->saveWidthHeight(\Storage::cloud()->url($cosCovers[0]));
-
-            $video->save();
-
-            //更新文章的状态
-            $article = \App\Article::firstOrNew([
-                'video_id' => $video->id,
-            ]);
-
-            $article->user_id    = $this->user_id;
-            $article->cover_path = $cosCovers[0];
-
-            if (!$article->type) {
-                $article->type        = 'video';
-                $article->description = $this->title;
-                $article->body        = $this->title;
-            }
-            $article->status = Article::SUBMITTED_SUBMIT; //FIXME 合并submit与status字段
-            $article->submit = Article::SUBMITTED_SUBMIT; //直接上架状态
-            $article->save();
-
-            //释放服务器资源
-            if (!is_local_env()) {
-                Storage::disk('public')->delete($video->path);
-
-                foreach ($cosCovers as $cover) {
-                    Storage::disk('public')->delete($cover);
-                }
-
-            }
-        }
-    }
-
     public function recordAction()
     {
         if ($this->status > 0) {
@@ -166,5 +89,23 @@ trait VideoRepo
                 'actionable_id'   => $this->id,
             ]);
         }
+    }
+
+    public function pushUrlCacheRequest($url){
+        //VOD预热
+        $cred = new Credential(env('VOD_SECRET_ID'), env('VOD_SECRET_KEY'));
+        $httpProfile = new HttpProfile();
+        $httpProfile->setEndpoint("vod.tencentcloudapi.com");
+
+        $clientProfile = new ClientProfile();
+        $clientProfile->setHttpProfile($httpProfile);
+
+        $client = new VodClient($cred, "ap-guangzhou", $clientProfile);
+        $req = new PushUrlCacheRequest();
+        $params = '{"Urls":["'.$url.'"]}';
+
+        $req->fromJsonString($params);
+        $resp = $client->PushUrlCache($req);
+        print_r($resp->toJsonString());
     }
 }

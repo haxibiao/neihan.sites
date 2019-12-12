@@ -34,10 +34,15 @@ trait TaskMethod
 
     public function checkUserIsUpdateAvatar(): bool
     {
-        $user = $this->getCurrentUser();
-        if (str_contains($user->avatar, User::AVATAR_DEFAULT)) {
-            return false;
+
+        $user             = $this->getCurrentUser();
+        $avatar_formatter = 'storage/avatar/avatar-%d.jpg';
+        for ($i = 1; $i <= 15; $i++) {
+            if (str_contains($user->avatar, sprintf($avatar_formatter, $i))) {
+                return false;
+            }
         }
+
         return true;
     }
 

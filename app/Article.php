@@ -59,6 +59,10 @@ class Article extends Model
     const REVIEW_SUBMIT    = 0; //待审核
     const SUBMITTED_SUBMIT = 1; //已收录
 
+//  动态状态
+    const STATUS_REFUSED = -1;
+    const STATUS_REVIEW = 0;
+    const STATUS_ONLINE = 1;
     protected $touches = ['category', 'collection', 'categories'];
 
     protected $dates = ['edited_at', 'delay_time', 'commented'];

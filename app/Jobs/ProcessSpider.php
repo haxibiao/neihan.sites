@@ -19,6 +19,8 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Vod\Model\VodUploadRequest;
+use Vod\VodUploadClient;
 
 class ProcessSpider implements ShouldQueue
 {
@@ -119,18 +121,28 @@ class ProcessSpider implements ShouldQueue
         //本地存一份用于截图
         $cosPath     = 'video/' . $video->id . '.mp4';
         $video->path = $cosPath;
-        $stream      = @file_get_contents($url);
         Storage::disk('public')->put($cosPath, @file_get_contents($url));
         $video->disk = 'local'; //先标记为成功保存到本地
         $video->save();
 
-        MakeVideoCovers::dispatch($video);
+        //将视频上传到VOD
+        $client = new VodUploadClient(env('VOD_SECRET_ID'), env('VOD_SECRET_KEY'));
+        $client->setLogPath(storage_path('/logs/vod_upload.log'));
+        $req = new VodUploadRequest();
+        $req->MediaFilePath = storage_path('app/public/' . $cosPath);
+        $req->ClassId       = intval(env('VOD_CLASS_ID'));
+        try {
+            $rsp = $client->upload("ap-guangzhou", $req);
+            $video->disk = 'vod';
+            $video->qcvod_fileid = $rsp->FileId;
+            $video->path = $rsp->MediaUrl;
+            $video->save(['timestamps'=>false]);
+        } catch (\Exception $e) {
+            // 处理上传异常
+            \Log::error($e);
+        }
 
-        //将视频上传到cos
-        $cosDisk = Storage::cloud();
-        $cosDisk->put($cosPath, $stream);
-        $video->disk = 'cos';
-        $video->save();
+        MakeVideoCovers::dispatch($video);
 
         $category = Category::firstOrNew([
             'name' => '我要上热门',

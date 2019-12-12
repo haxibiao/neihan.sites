@@ -3,6 +3,8 @@
 namespace App\Traits;
 
 use App\Action;
+use App\Exceptions\GQLException;
+use App\Jobs\DelayRewaredTask;
 use App\Task;
 use App\User;
 use App\UserTask;
@@ -157,5 +159,25 @@ trait TaskRepo
                 }
             }
         }
+    }
+
+
+    /**
+     * @param User $user
+     * @param Task $task
+     * @param string $content
+     * @return bool
+     */
+    public function highPraise(User $user, Task $task ,string $content){
+        $userTask = UserTask::where([
+            'task_id' => $task->id,
+            'user_id' => $user->id,
+        ])->first();
+        $userTask->content = $content;
+        $userTask->status  = UserTask::TASK_REVIEW;
+        $saveStatus        = $userTask->save();
+//        无需审核，1分钟后任务自动完成
+        dispatch(new DelayRewaredTask($userTask->id))->delay(now()->addMinute(1));
+        return $saveStatus;
     }
 }

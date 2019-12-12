@@ -9,10 +9,12 @@ use App\Exceptions\GQLException;
 use App\Exceptions\UserException;
 use App\Gold;
 use App\Helpers\BadWord\BadWordUtils;
+use App\Helpers\QcloudUtils;
 use App\Image;
 use App\Ip;
 use App\Issue;
 use App\Jobs\AwardResolution;
+use App\Jobs\MakeVideoCovers;
 use App\Video;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
@@ -28,7 +30,6 @@ class ArticleMutators
         if (BadWordUtils::check(Arr::get($args, 'body'))) {
             throw new GQLException('发布的内容中含有包含非法内容,请删除后再试!');
         }
-
         //参数格式化
         $inputs = [
             'body'         => Arr::get($args, 'body'),
@@ -36,6 +37,7 @@ class ArticleMutators
             'category_ids' => Arr::get($args, 'category_ids', null),
             'images'       => Arr::get($args, 'images', null),
             'video_id'     => Arr::get($args, 'video_id', null),
+            'qcvod_fileid' => Arr::get($args, 'qcvod_fileid', null),
         ];
         switch ($args['type']) {
             case 'issue':
@@ -76,30 +78,59 @@ class ArticleMutators
                 throw new GQLException('发布失败,你以被禁言');
             }
             //带视频动态
-            if ($inputs['video_id']) {
-                $video   = Video::findOrFail($inputs['video_id']);
-                $article = $video->article;
-                if (!$article) {
-                    $article = new Article();
+            if ($inputs['video_id'] || $inputs['qcvod_fileid'] ) {
+                if($inputs['video_id']){
+                    $video   = Video::findOrFail($inputs['video_id']);
+                    $article = $video->article;
+                    if (!$article) {
+                        $article = new Article();
+                    }
+                    $article->type        = 'post';
+                    $article->title       = Str::limit($inputs['body'], 50);
+                    $article->description = Str::limit($inputs['body'], 280);
+                    $article->body        = $inputs['body'];
+                    $article->review_id   = Article::makeNewReviewId();
+                    $article->video_id    = $video->id; //关联上视频
+                    $article->save();
+                } else {
+                    $qcvod_fileid = $inputs['qcvod_fileid'];
+                    $video = Video::firstOrNew([
+                        'qcvod_fileid' => $qcvod_fileid,
+                    ]);
+                    $videoInfo = QcloudUtils::getVideoInfo($qcvod_fileid);
+                    $duration  = Arr::get($videoInfo,'basicInfo.duration');
+                    $sourceVideoUrl  = Arr::get($videoInfo,'basicInfo.sourceVideoUrl');
+                    $video->user_id = $user->id;
+                    $video->title   = Str::limit($inputs['body'], 50);
+                    $video->path    = $sourceVideoUrl;
+                    $video->disk    = 'vod';
+                    $video->duration= $duration;
+                    $video->hash    = hash_file('md5',$sourceVideoUrl);
+                    $video->save();
+
+                    //创建article
+                    $article              = new Article();
+                    $article->status      = 0;
+                    $article->submit      = Article::REVIEW_SUBMIT;
+                    $article->title       = Str::limit($inputs['body'], 50);
+                    $article->description = Str::limit($inputs['body'], 280);
+                    $article->body        = $inputs['body'];
+                    $article->type        = 'post';
+                    $article->review_id   = Article::makeNewReviewId();
+                    $article->video_id    = $video->id;
+                    $article->cover_path  = 'video/black.jpg';
+                    $article->save();
+
+                    //触发截图操作
+                    dispatch((new MakeVideoCovers($video)))->delay(now()->addMinute(1));
                 }
-                $article->type        = 'post';
-                $article->status      = 1;
-                $article->submit      = Article::REVIEW_SUBMIT;
-                $article->title       = Str::limit($inputs['body'], 50);
-                $article->description = Str::limit($inputs['body'], 280);
-                $article->body        = $inputs['body'];
-                $article->review_id   = Article::makeNewReviewId();
-                $article->video_id    = $video->id; //关联上视频
-                $article->save();
 
                 //存文字动态或图片动态
             } else {
                 $article              = new Article();
                 $body                 = $inputs['body'];
                 $article->body        = $body;
-                $article->status      = 1;
                 $article->description = Str::limit($body, 280); //截取微博那么长的内容存简介
-                $article->submit      = Article::SUBMITTED_SUBMIT; //直接发布
                 $article->type        = 'post';
                 $article->user_id     = $user->id;
                 $article->save();
@@ -114,16 +145,6 @@ class ArticleMutators
                     $article->save();
 
                 }
-
-                //带图
-                // if (!empty($inputs['image_urls']) && is_array($inputs['image_urls'])) {
-                //     $image_ids = array_map(function ($url) {
-                //         return intval(pathinfo($url)['filename']);
-                //     }, $inputs['image_urls']);
-                //     $article->status = 1;
-                //     $article->images()->sync($image_ids);
-                //     $article->save();
-                // }
             };
 
             //直接关联到专题
@@ -139,6 +160,10 @@ class ArticleMutators
                     $article->hasCategories()->sync($category_ids);
                 }
             }
+
+//            截图完成后状态改为发布
+            $article->status      = Article::STATUS_REVIEW;
+            $article->submit      = Article::REVIEW_SUBMIT;
             // 奖励共享点
             if (isset($article->video_id)) {
                 Contribute::rewardUserVideoPost($user, $article);
@@ -184,8 +209,7 @@ class ArticleMutators
             $issue->title   = $body;
             $issue->save();
             //视频问答
-            if ($inputs['video_id']) {
-
+            if ($inputs['video_id'] || $inputs['qcvod_fileId']) {
                 $user                 = getUser();
                 $todayPublishVideoNum = $user->articles()
                     ->whereIn('type', ['post', 'issue'])
@@ -195,36 +219,69 @@ class ArticleMutators
                     throw new UserException('每天只能发布10个视频动态!');
                 }
 
-                $video = Video::findOrFail($inputs['video_id']);
-                /**
-                 * 判断视频时长放到队列中处理，如果不满足条件则发布失败，时长不够
-                 * 目前这样在队列处理不过来的时候，会误判 duration = 0
-                 */
+                if( $inputs['video_id'] ){
+                    $video = Video::findOrFail($inputs['video_id']);
+                    /**
+                     * 判断视频时长放到队列中处理，如果不满足条件则发布失败，时长不够
+                     * 目前这样在队列处理不过来的时候，会误判 duration = 0
+                     */
 
-                // if ($video->duration <= 5) {
-                //     throw new UserException('发布的视频不得低于5秒!');
-                // }
+                    // if ($video->duration <= 5) {
+                    //     throw new UserException('发布的视频不得低于5秒!');
+                    // }
 
-                //不能发布同一个视频（一模一样的视频）
-                $videoToArticle = Article::where('user_id', $user->id)
-                    ->where('video_id', $video->id)
-                    ->whereIn('type', ['post', 'issue'])
-                    ->count();
-                if ($videoToArticle) {
-                    throw new UserException('不能发布同一个视频');
+                    //不能发布同一个视频（一模一样的视频）
+                    $videoToArticle = Article::where('user_id', $user->id)
+                        ->where('video_id', $video->id)
+                        ->whereIn('type', ['post', 'issue'])
+                        ->count();
+                    if ($videoToArticle) {
+                        throw new UserException('不能发布同一个视频');
+                    }
+
+                    $article              = $video->article;
+                    $article->body        = $body;
+                    $article->status      = 1;
+                    $article->description = $body;
+                    $article->title       = $body;
+                    //新创建的视频动态需要审核
+                    $article->submit   = Article::REVIEW_SUBMIT;
+                    $article->issue_id = $issue->id;
+                    $article->review_id   = Article::makeNewReviewId();
+                    $article->type     = 'issue';
+                    $article->save();
+                } else {
+                    $qcvod_fileid = $inputs['qcvod_fileid'];
+                    $video = Video::firstOrNew([
+                        'qcvod_fileid' => $qcvod_fileid,
+                    ]);
+                    $videoInfo = QcloudUtils::getVideoInfo($qcvod_fileid);
+                    $duration  = Arr::get($videoInfo,'basicInfo.duration');
+                    $sourceVideoUrl  = Arr::get($videoInfo,'basicInfo.sourceVideoUrl');
+
+                    $video->user_id = $user->id;
+                    $video->title   = Str::limit($inputs['body'], 50);
+                    $video->path    = $sourceVideoUrl;
+                    $video->duration= $duration;
+                    $video->hash    = hash_file('md5',$sourceVideoUrl);
+                    $video->save();
+
+                    //触发截图操作
+                    dispatch((new MakeVideoCovers($video)))->delay(now()->addMinute(1));
+
+                    //创建article
+                    $article              = new Article();
+                    $article->status      = 0;
+                    $article->submit      = Article::REVIEW_SUBMIT;
+                    $article->title       = Str::limit($inputs['body'], 50);
+                    $article->description = Str::limit($inputs['body'], 280);
+                    $article->body        = $inputs['body'];
+                    $article->type        = 'issue';
+                    $article->review_id   = Article::makeNewReviewId();
+                    $article->cover_path  = 'video/black.jpg';
+                    $article->video_id    = $video->id;
+                    $article->save();
                 }
-
-                $article              = $video->article;
-                $article->body        = $body;
-                $article->status      = 1;
-                $article->description = $body;
-                $article->title       = $body;
-                //新创建的视频动态需要审核
-                $article->submit   = Article::REVIEW_SUBMIT;
-                $article->issue_id = $issue->id;
-                $article->review_id   = Article::makeNewReviewId();
-                $article->type     = 'issue';
-                $article->save();
             } else if ($inputs['images']) {
 
                 $article              = new Article();
@@ -297,11 +354,6 @@ class ArticleMutators
             return $article;
         } catch (\Exception $ex) {
             DB::rollBack();
-            throw new GQLException($ex->getMessage());
-            if ($ex->getCode() == 0) {
-                Log::error($ex->getMessage());
-                throw new GQLException('程序小哥正在加紧修复中!');
-            }
             throw new GQLException($ex->getMessage());
         }
     }

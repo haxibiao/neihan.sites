@@ -8,7 +8,8 @@ extend type Mutation @middleware(checks: ["auth:api"]) {
   createContent(
     body: String!
     image_urls: [String!]
-    video_id: Int
+    video_id: Int,
+    qcvod_fileid: String,
     category_ids: [Int!]
     images: [String!]
     type: ContenType!

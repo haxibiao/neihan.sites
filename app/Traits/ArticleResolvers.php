@@ -7,6 +7,7 @@ use App\Category;
 use App\Exceptions\GQLException;
 use App\Helpers\BadWord\BadWordUtils;
 use App\Jobs\ProcessSpider;
+use App\Tag;
 use App\User;
 use App\Video;
 use App\Visit;
@@ -118,27 +119,42 @@ trait ArticleResolvers
     ) {
         $user      = checkUser();
         $pageCount = $args['count'];
-        $limit     = $pageCount >= 10 ? 8 : 4;
 
-        $qb = Article::with(['video', 'user'])->whereNotNull('video_id')->publish()->orderByDesc('review_id');
-        if ($user) {
-            $qb->whereNotIn('user_id', function ($query) use ($user) {
-                $query->select('user_block_id')->from('user_blocks')->where("user_id", $user->id);
-            });
-        }
-
-        $total = $qb->count();
-        $qb    = $qb->take($limit);
+        $qb =  Article::with(['video', 'user','categories'])->whereNotNull('video_id')->publish()->orderByDesc('review_id');
 
         if ($user) {
             $visitVideoIds = Visit::ofType('articles')->ofUserId($user->id)->get()->pluck('visited_id');
             if (!is_null($visitVideoIds)) {
                 $qb = $qb->whereNotIn('id', $visitVideoIds);
             }
-        } else {
+            $qb->whereNotIn('user_id', function ($query) use ($user) {
+                $query->select('user_block_id')->from('user_blocks')->where("user_id", $user->id);
+            });
+        }
+
+        $total = $qb->count();
+
+        //50%概率获取热门视频
+        $seed = random_int(1,2);
+        $dataFromHot = $seed % 2 == 1;
+        if( $dataFromHot ){
+            $newQb = clone $qb;
+            $isHotRecommand = $newQb->where('is_hot',true)->count() > 4;
+            if( $isHotRecommand ){
+                //获取热门标签
+                $qb = $qb->where('is_hot',true);
+            }
+        }
+
+        //分页角标
+        if(!$user && !$dataFromHot){
             $offset = mt_rand(0, 50);
             $qb     = $qb->skip($offset);
         }
+
+        $limit     = $pageCount >= 10 ? 8 : 4;
+        $qb    = $qb->take($limit);
+
         $articles = $qb->get();
 
         if ($user) {
@@ -164,8 +180,14 @@ trait ArticleResolvers
 
     /**
      * 根据 抖音上的分享链接，爬取信息，转存到我们库中
-     *
-     * @return void 返回 article对象 时，没有cover 和 video info，需要等待队列执行完成后，信息才会更新
+     * 返回 article对象 时，没有cover 和 video info，需要等待队列执行完成后，信息才会更新
+     * @param $rootValue
+     * @param array $args
+     * @param $context
+     * @param $resolveInfo
+     * @return void
+     * @throws GQLException
+     * @throws \App\Exceptions\UnregisteredException
      * @author zengdawei
      */
     public function resolveDouyinVideo($rootValue, array $args, $context, $resolveInfo)
@@ -186,6 +208,14 @@ trait ArticleResolvers
             if (BadWordUtils::check($description)) {
                 throw new GQLException('发布的评论中含有包含非法内容,请删除后再试!');
             }
+
+            $todayUserUploadVideoCount = $user->articles()->whereNotNUll('source_url')
+                ->whereDate('created_at',now())
+                ->count();
+            if($todayUserUploadVideoCount >= 30){
+                throw new GQLException('感谢您的分享，今日分享次数已达30条，休息一会儿明天再来哦~');
+            }
+
             // 不允许重复视频
             $article = Article::firstOrNew([
                 'source_url' => $link,

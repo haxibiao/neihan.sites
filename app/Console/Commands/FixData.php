@@ -20,6 +20,7 @@ use Illuminate\Support\Str;
 use TencentCloud\Common\Credential;
 use TencentCloud\Common\Profile\ClientProfile;
 use TencentCloud\Common\Profile\HttpProfile;
+use TencentCloud\Vod\V20180717\Models\PushUrlCacheRequest;
 use TencentCloud\Vod\V20180717\VodClient;
 use Vod\Model\VodUploadRequest;
 use Vod\VodUploadClient;
@@ -149,7 +150,7 @@ class FixData extends Command
      */
     public function pushUrlCache()
     {
-        Video::where('disk', 'vod')->chunk(20, function ($videos) {
+        Video::on('new_ainicheng')->where('disk', 'vod')->chunk(20, function ($videos) {
             $videoUrl = [];
             foreach ($videos as $video) {
                 $videoUrl[] = $video->url;

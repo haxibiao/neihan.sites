@@ -103,9 +103,9 @@ class UserTask extends Pivot
 
         if (!$usertask) {
             $usertask = UserTask::firstOrCreate(
-                ['task_id' => $task_id],
-                ['user_id' => $user_id],
-                ['created_at' => $date]);
+                ['task_id'   => $task_id,
+                    'user_id'    => $user_id,
+                    'created_at' => $date]);
         }
         return $usertask;
     }

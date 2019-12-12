@@ -33,13 +33,13 @@ return [
 
     'connections' => [
 
-        'sqlite'        => [
+        'sqlite'       => [
             'driver'   => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix'   => '',
         ],
 
-        'mysql'         => [
+        'mysql'        => [
             'driver'      => 'mysql',
             'host'        => env('DB_HOST', '127.0.0.1'),
             'port'        => env('DB_PORT', '3306'),
@@ -54,11 +54,11 @@ return [
             'engine'      => null,
         ],
 
-        'new_ainicheng' => [
+        'dianmoge_vod'        => [
             'driver'      => 'mysql',
             'host'        => env('DB_HOST', '127.0.0.1'),
             'port'        => env('DB_PORT', '3306'),
-            'database'    => 'new_ainicheng',
+            'database'    => 'dianmoge_vod',
             'username'    => env('DB_USERNAME', 'forge'),
             'password'    => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
@@ -69,7 +69,7 @@ return [
             'engine'      => null,
         ],
 
-        'datizhuanian'  => [
+        'datizhuanian' => [
             'driver'         => 'mysql',
             'url'            => env('DM_DATABASE_URL'),
             'host'           => env('DTZQ_DB_HOST', '127.0.0.1'),
@@ -89,7 +89,7 @@ return [
             ]) : [],
         ],
 
-        'local_dtzq'    => [
+        'local_dtzq'   => [
             'driver'      => 'mysql',
             'host'        => env('DB_HOST', '127.0.0.1'),
             'port'        => env('DB_PORT', '3306'),
@@ -104,7 +104,7 @@ return [
             'engine'      => null,
         ],
 
-        'pgsql'         => [
+        'pgsql'        => [
             'driver'   => 'pgsql',
             'host'     => env('DB_HOST', '127.0.0.1'),
             'port'     => env('DB_PORT', '5432'),
@@ -117,7 +117,7 @@ return [
             'sslmode'  => 'prefer',
         ],
 
-        'sqlsrv'        => [
+        'sqlsrv'       => [
             'driver'   => 'sqlsrv',
             'host'     => env('DB_HOST', 'localhost'),
             'port'     => env('DB_PORT', '1433'),

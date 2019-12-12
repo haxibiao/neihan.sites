@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Model;
+use App\Traits\MakeCovers;
 use App\Traits\VideoAttrs;
 use App\Traits\VideoRepo;
 use App\Traits\VideoResolvers;
@@ -14,6 +15,7 @@ class Video extends Model
     use VideoResolvers;
     use VideoAttrs;
     use VideoRepo;
+    use MakeCovers;
 
     protected $fillable = [
         'title',

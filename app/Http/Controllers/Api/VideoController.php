@@ -75,32 +75,17 @@ class VideoController extends Controller
         //如果是通过表单上传文件
         if ($file = $request->video) {
             //TODO 限制视频大小超过10M
-            $hash  = md5_file($file->path());
+            $hash = md5_file($file->path());
             $video = Video::firstOrNew([
                 'hash' => $hash,
             ]);
             if ($video->id) {
-                //TODO: 后面需要跳过重复上传，暂时为了测试方便
-                // return $video->fillForJs();
+                return $video->fillForJs();
             }
             $video->saveFile($file);
-
             return $video->fillForJs();
         }
-
-        //腾讯云 视频云 qcvod 回调接口，目前已弃用
-        // if ($request->from == 'qcvod') {
-        //     $video = Video::firstOrNew([
-        //         'qcvod_fileid' => $request->fileId,
-        //     ]);
-        //     $video->user_id = $request->user()->id;
-        //     $video->path    = ssl_url($request->videoUrl); //保存https的video cdn 地址
-        //     $video->title   = $request->videoName;
-        //     $video->save();
-        //     return $video;
-        // }
-
-        return "没有腾讯云视频id，也没有真实上传的视频文件";
+        throw new \Exception('上传失败，未找到上传文件~');
     }
 
     public function show($id)

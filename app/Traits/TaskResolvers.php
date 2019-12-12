@@ -84,9 +84,7 @@ trait TaskResolvers
 
         foreach ($tasks as $task) {
             $usertask = UserTask::createUserTask($task->id, $user->id, Carbon::now());
-            //laravel的bug上面的$usertask获取不到真正的对象
-            $usertask = $task->getUserTask($user->id);
-
+            $usertask = UserTask::createUserTask($task->id, $user->id, Carbon::now());
             //如果任务未完成
             $usertask->status = $usertask->getStatus();
             $usertask->save();
@@ -139,6 +137,7 @@ trait TaskResolvers
         }
 
         $task      = Task::where('name', $name)->first();
+        $user_task = UserTask::createUserTask($task->id, $user->id, now());
         $user_task = UserTask::createUserTask($task->id, $user->id, now());
         $status    = $user_task->getStatus();
         //若未打晚上的卡，早晨的卡则不能打
@@ -218,4 +217,12 @@ trait TaskResolvers
         return $task;
     }
 
+
+    public function highPraiseTaskResolver($root, array $args, $context, $info){
+        $task = Task::find($args['id']);
+        throw_if(is_null($task),GQLException::class,'任务不存在哦~,请稍后再试');
+        throw_if(empty(trim($args['content'])),GQLException::class,'账号不能为空哦~');
+        $user = checkUser();
+        return $this->highPraise($user,$task,$args['content']);
+    }
 }

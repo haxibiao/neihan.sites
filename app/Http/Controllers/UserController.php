@@ -148,7 +148,7 @@ class UserController extends Controller
         // $videos = smartPager($qb, 10);
         // $data['videos'] = $videos;
 
-        app_track_visit_people();
+        app_track_user('访问他人主页', "check_user_page", $user->id);
 
         return view('user.show')
             ->withUser($user)

@@ -100,6 +100,10 @@ trait TaskAttrs
     public function getSubmitNameAttribute()
     {
         if ($this->type == self::CUSTOM_TASK) {
+                // $submit_name = $this->resolve['submit_name'] ?? null;
+                // if (is_null($submit_name)) {
+                //     return $this->resolve['submit_name'];
+                // }
             return '进入';
         }
 
@@ -134,17 +138,18 @@ trait TaskAttrs
         }
     }
 
-    public function getSleepStatusAttribute(){
+    public function getSleepStatusAttribute()
+    {
         switch ($this->name) {
             case "SleepMorning":
                 return true;
-            break;
+                break;
             case "SleepNight":
                 return false;
-            break;
+                break;
         }
     }
-    
+
     public function getStartTimeAttribute()
     {
         return date("H:i", strtotime($this->start_at));

@@ -16,8 +16,8 @@ class QcloudUtils
     private static function initVod()
     {
         $config = [
-            'SecretId'      => config('qcloudcos.secret_id'),
-            'SecretKey'     => config('qcloudcos.secret_key'),
+            'SecretId'      => env('VOD_SECRET_ID'),
+            'SecretKey'     => env('VOD_SECRET_KEY'),
             'RequestMethod' => 'POST',
         ];
         return QcloudApi::load(QcloudApi::MODULE_VOD, $config);

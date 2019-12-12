@@ -20,9 +20,7 @@ trait UserRepo
             $user->email = $account;
         }
 
-        $user->account = $account;
-
-        $user->phone    = $account;
+        $user->account  = $account;
         $user->name     = $name;
         $user->password = bcrypt($password);
 
@@ -415,17 +413,17 @@ trait UserRepo
     //nova后台提现金额排行前十的用户
     public static function getTopWithDraw($number = 5)
     {
-        $data = [];
-        $ten_top_users= \App\Wallet::select(\DB::raw('total_withdraw_amount,real_name,user_id'))
-            ->where('type',0)
+        $data          = [];
+        $ten_top_users = \App\Wallet::select(\DB::raw('total_withdraw_amount,real_name,user_id'))
+            ->where('type', 0)
             ->orderBy('total_withdraw_amount', 'desc')
             ->take($number)->get()->toArray();
 
         foreach ($ten_top_users as $top_user) {
-            $user  =  User::find($top_user["user_id"]);
+            $user = User::find($top_user["user_id"]);
             //显示真实名字
             //$data['name'][] = $user ? $user->name : '空';
-            $data['name'][] = $top_user["real_name"]?$top_user["real_name"]:'空';
+            $data['name'][] = $top_user["real_name"] ? $top_user["real_name"] : '空';
             $data['data'][] = $top_user["total_withdraw_amount"];
         }
         return $data;

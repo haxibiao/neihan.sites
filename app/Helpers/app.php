@@ -226,6 +226,9 @@ function getUser($throw = true)
     if (!$user && $throw) {
         throw new UnregisteredException('客户端还没登录...');
     }
+    if(!is_null($user)){
+        \Auth::login($user);
+    }
     return $user;
 }
 

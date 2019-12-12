@@ -177,7 +177,7 @@ return [
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         // Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class,
         YueCode\Cos\QCloudCosServiceProvider::class,
-        // Overtrue\LaravelPinyin\ServiceProvider::class,
+        // Overtrue\LaravelPinyin\ServiceProvider::class,app.
     ],
 
     /*

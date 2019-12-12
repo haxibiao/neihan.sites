@@ -103,6 +103,10 @@ Route::get('/logshow', 'LogController@logShow');
 Route::get('/logclear', 'LogController@logClear');
 Route::get('/bug', 'LogController@debug');
 
+Route::get('/debug-sentry', function () {
+    throw new \Exception('My first Sentry error!');
+});
+
 //weixin
 Route::get('/wechat', 'WechatController@serve');
 

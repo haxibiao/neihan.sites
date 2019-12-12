@@ -13,7 +13,7 @@ type Task {
   sleep_status:Boolean
   check_functions: String
   reward_info: RewardInfo
-  taskInfo: TaskInfo!
+  taskInfo: TaskInfo
   start_at: DateTime
   end_at: DateTime
   start_time: String
