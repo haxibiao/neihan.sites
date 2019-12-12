@@ -46,7 +46,7 @@ class FixData extends Command
 
     public function old_database()
     {
-        Video::on('new_ainicheng')->chunk(100, function ($videos) {
+        Video::on('new_ainicheng')->where('disk', 'vod')->chunk(100, function ($videos) {
             foreach ($videos as $video) {
                 $new_video               = Video::where('id', $video->id)->first();
                 $new_video->disk         = 'vod';
