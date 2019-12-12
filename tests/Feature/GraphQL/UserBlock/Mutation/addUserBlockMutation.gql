@@ -1,0 +1,12 @@
+mutation addUserBlockMutation($id:Int!){
+     addUserBlock(id:$id){
+         user{
+             id,
+             name
+        },
+        userblock{
+          id,
+          name
+        }
+     }
+}
