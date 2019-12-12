@@ -17,6 +17,12 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use TencentCloud\Common\Credential;
+use TencentCloud\Common\Profile\ClientProfile;
+use TencentCloud\Common\Profile\HttpProfile;
+use TencentCloud\Vod\V20180717\VodClient;
+use Vod\Model\VodUploadRequest;
+use Vod\VodUploadClient;
 
 class FixData extends Command
 {
@@ -37,63 +43,215 @@ class FixData extends Command
         }
         return $this->error("必须提供你要修复数据的table");
     }
-    public function articles(){
+
+    public function old_database()
+    {
+        Video::on('new_ainicheng')->chunk(100, function ($videos) {
+            foreach ($videos as $video) {
+                $new_video               = Video::where('id', $video->id)->first();
+                $new_video->disk         = 'vod';
+                $new_video->qcvod_fileid = $video->qcvod_fileid;
+                $new_video->path         = $video->path;
+                $new_video->save(['timestamps' => false]);
+                $this->info($new_video->id . '号视频的path,' . $new_video->path);
+            }
+        });
+    }
+
+    public function uploadVod()
+    {
+
+        $vodClassIds = [
+            'dianmoge'     => 621049,
+            'dongdianyao'  => 621585,
+            'ainicheng'    => 621586,
+            'dongdianfa'   => 621587,
+            'youjianqi'    => 621588,
+            'dongmeiwei'   => 621589,
+            'dongdaima'    => 621590,
+            'dongqizhi'    => 621591,
+            'tongjiuxiu'   => 621592,
+            'dongdianmei'  => 621593,
+            'haxibiao'     => null,
+            'qunyige'      => 621594,
+            'dongdianyi'   => 621595,
+            'caohan'       => 621596,
+            'gba-port'     => 621597,
+            'gba-life'     => 621598,
+            'dongwaiyu'    => 621599,
+            'dongyundong'  => 621600,
+            'dongwuli'     => 621601,
+            'jucheshe'     => 621602,
+            'dongshouji'   => 621607,
+            'dongdiancai'  => 621608,
+            'dongshengyin' => 621609,
+            'diudie'       => 621610,
+            'dongdezhuan'  => 621611,
+            'dongmiaomu'   => 619195,
+        ];
+        ini_set('memory_limit', '-1');
+        Article::whereNotNull('video_id')->where('status', 1)->where('submit', 1)->chunk(100, function ($articles) use ($vodClassIds) {
+            foreach ($articles as $article) {
+                $video = $article->video;
+
+                if (!$video) {
+                    continue;
+                }
+                //                之前修过的数据和之前就在VOD上的不修复了
+                if (Str::contains($video->path, 'vod')) {
+                    continue;
+                }
+
+                $client = new VodUploadClient("AKIDKZeYH6uMdqyxkxKyhFuQ0W5ThliVtWlq", "61nNlyzqWxLbgaIpBMPM8lCWfeSAkEaq");
+                $client->setLogPath(storage_path('/logs/vod_upload.log'));
+                $req = new VodUploadRequest();
+
+                try {
+                    if (str_contains($video->path, 'cos')) {
+                        \Storage::put($video->path, file_get_contents($video->url));
+                    } else {
+                        \Storage::put($video->path, file_get_contents(\Storage::disk('cosv5')->url($video->path)));
+                    }
+
+                    if (Str::contains($article->cover_path, 'vod') || Str::contains($article->cover_path, 'cos')) {
+                        $coverPath = $article->cover_path;
+                    } else {
+                        $coverPath = \Storage::disk('cosv5')->url($article->cover_path);
+                    }
+
+                    \Storage::put($article->cover_path, file_get_contents($coverPath));
+
+                    $req->MediaFilePath = storage_path('app/public/' . $video->path);
+                    //!!! 注意替换这个分类ID
+                    $req->ClassId       = $vodClassIds[env('APP_NAME')];
+                    $req->CoverFilePath = storage_path('app/public/' . $article->cover_path);
+                    $req->CoverType     = 'jpg';
+
+                    $rsp = $client->upload("ap-guangzhou", $req);
+                    echo "MediaUrl -> " . $rsp->MediaUrl . "\n";
+                    $this->info($video->id);
+                    $video->disk         = 'vod';
+                    $video->qcvod_fileid = $rsp->FileId;
+                    $video->path         = $rsp->MediaUrl;
+                    $video->save(['timestamps' => false]);
+                } catch (\Exception $e) {
+                    // 处理上传异常
+                    $this->error($video->id);
+                    echo $e;
+                    continue;
+                }
+            }
+        });
+    }
+
+    /**
+     * 2.VOD视频预热
+     */
+    public function pushUrlCache()
+    {
+        Video::where('disk', 'vod')->chunk(20, function ($videos) {
+            $videoUrl = [];
+            foreach ($videos as $video) {
+                $videoUrl[] = $video->url;
+            }
+            if ($videoUrl) {
+                try {
+                    $cred        = new Credential("AKIDKZeYH6uMdqyxkxKyhFuQ0W5ThliVtWlq", "61nNlyzqWxLbgaIpBMPM8lCWfeSAkEaq");
+                    $httpProfile = new HttpProfile();
+                    $httpProfile->setEndpoint("vod.tencentcloudapi.com");
+
+                    $clientProfile = new ClientProfile();
+                    $clientProfile->setHttpProfile($httpProfile);
+                    $client = new VodClient($cred, "ap-guangzhou", $clientProfile);
+
+                    $req = new PushUrlCacheRequest();
+
+                    $params = '{"Urls":["' . implode('","', $videoUrl) . '"]}';
+                    $req->fromJsonString($params);
+
+                    $resp = $client->PushUrlCache($req);
+
+                    print_r($resp->toJsonString());
+                } catch (TencentCloudSDKException $e) {
+                    echo $e;
+                }
+                sleep(1);
+            }
+        });
+    }
+
+    public function importVideo()
+    {
+        $videos = DB::connection('dianmoge_vod')->table('videos')->get();
+        foreach ($videos as $video) {
+            if (Str::contains($video->path, '1254284941')) {
+                $oldVideo               = Video::find($video->id);
+                $oldVideo->path         = $video->path;
+                $oldVideo->qcvod_fileid = $video->qcvod_fileid;
+                $oldVideo->save(['timestamps' => false]);
+                $this->info($video->id);
+            }
+        }
+    }
+
+    public function articles()
+    {
 
 //        //修复抖音视频分类
-//        $categoryDouyin = Category::whereName('抖音合集')->first();
-//        $categoryHot    = Category::whereName('我要上热门')->first();
-//        if($categoryDouyin){
-//            Article::where('category_id',$categoryDouyin->id)->chunk(100,function($articles) use ($categoryDouyin,$categoryHot){
-//                foreach ($articles as $article){
-//                    $article->category_id = $categoryHot->id;
-//                    $article->save(['timestamps' => false]);
-//                    $article->categories()->sync([$categoryHot->id]);
-//                }
-//            });
-//        }
-//        if($categoryHot){
-//            Article::where('category_id',$categoryHot->id)->chunk(100,function($articles) use ($categoryHot){
-//                foreach ($articles as $article){
-//                    $article->categories()->sync([$categoryHot->id]);
-//                }
-//            });
-//        }
+        //        $categoryDouyin = Category::whereName('抖音合集')->first();
+        //        $categoryHot    = Category::whereName('我要上热门')->first();
+        //        if($categoryDouyin){
+        //            Article::where('category_id',$categoryDouyin->id)->chunk(100,function($articles) use ($categoryDouyin,$categoryHot){
+        //                foreach ($articles as $article){
+        //                    $article->category_id = $categoryHot->id;
+        //                    $article->save(['timestamps' => false]);
+        //                    $article->categories()->sync([$categoryHot->id]);
+        //                }
+        //            });
+        //        }
+        //        if($categoryHot){
+        //            Article::where('category_id',$categoryHot->id)->chunk(100,function($articles) use ($categoryHot){
+        //                foreach ($articles as $article){
+        //                    $article->categories()->sync([$categoryHot->id]);
+        //                }
+        //            });
+        //        }
 
         //修复抖音视频title, body，description, tags
-        Article::where('source_url','like','https://v.douyin.com/%')->chunk(100,function($articles){
-            foreach ($articles as $article){
+        Article::where('source_url', 'like', 'https://v.douyin.com/%')->chunk(100, function ($articles) {
+            foreach ($articles as $article) {
                 $video = $article->video;
-                if(!$video){
+                if (!$video) {
                     continue;
                 }
                 $json = $video->json;
-                if(!$json){
+                if (!$json) {
                     continue;
                 }
-                $json = json_decode($json,true);
-                $desc  = Arr::get($json,'metaInfo.item_list.0.desc','');
+                $json = json_decode($json, true);
+                $desc = Arr::get($json, 'metaInfo.item_list.0.desc', '');
                 $this->warn($desc);
                 //去除抖音@标签
-                $desc = preg_replace('/@([\w]+)/u','',$desc);
-                preg_match_all('/#([\w]+)/u',$desc,$topicArr);
-                $desc = preg_replace('/#([\w]+)/u','',$desc);
+                $desc = preg_replace('/@([\w]+)/u', '', $desc);
+                preg_match_all('/#([\w]+)/u', $desc, $topicArr);
+                $desc = preg_replace('/#([\w]+)/u', '', $desc);
                 $desc = trim($desc);
 
-                $article->title         = $desc;
-                $article->body          = $desc;
-                $article->description   = $desc;
+                $article->title       = $desc;
+                $article->body        = $desc;
+                $article->description = $desc;
                 $article->save(['timestamps' => false]);
 
-                if($topicArr[1]){
+                if ($topicArr[1]) {
                     $tags = [];
-                    foreach ($topicArr[1] as $topic){
-                        if(Str::contains($topic,'抖音')){
+                    foreach ($topicArr[1] as $topic) {
+                        if (Str::contains($topic, '抖音')) {
                             continue;
                         }
                         $tag = Tag::firstOrCreate([
-                            'name' => $topic
-                        ],[
-                            'user_id' => 1
+                            'name' => $topic,
+                        ], [
+                            'user_id' => 1,
                         ]);
                         $tags[] = $tag->id;
                     }
@@ -120,13 +278,12 @@ class FixData extends Command
         $video = Video::find(1);
         //黑屏视频与图片处理 video id处理
         if ($video) {
-            $article     = $video->article;
-            if($article){
+            $article = $video->article;
+            if ($article) {
                 $article->status = -1;
                 $article->sunmit = -1;
                 $article->save();
             }
-
 
             $video->user_id  = 1;
             $video->title    = '黑屏视频';
@@ -438,7 +595,6 @@ class FixData extends Command
             }
         });
     }
-
 
     public function content($article)
     {
