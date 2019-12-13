@@ -23,7 +23,7 @@ trait WithdrawRepo
             return;
         }
 
-        if (!$user->isWithDrawTodayByPayAccount()) {
+        if (!$user->isWithDrawTodayByPayAccount($this->created_at)) {
             return $this->illegalWithdraw('当前支付宝账号已经提现过了噢 ~，请勿重复提现~~');
         }
 
@@ -80,6 +80,7 @@ trait WithdrawRepo
      *
      * @param string $orderId
      * @return void
+     * @throws \Exception
      */
     protected function processingSucceededWithdraw($orderId)
     {
@@ -115,6 +116,7 @@ trait WithdrawRepo
      *
      * @param string $remark
      * @return void
+     * @throws \Exception
      */
     protected function processingFailedWithdraw($remark = "")
     {

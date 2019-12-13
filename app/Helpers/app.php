@@ -19,6 +19,13 @@ function aso_value($group, $name)
     return \App\Aso::getValue($group, $name);
 }
 
+function getVodConfig(string $key)
+{
+    $appName = env('APP_NAME');
+    $name = sprintf('tencentvod.%s.%s',$appName,$key);
+    return config($name);
+}
+
 function qrcode_url()
 {
     $appName = env('APP_NAME');
@@ -226,7 +233,7 @@ function getUser($throw = true)
     if (!$user && $throw) {
         throw new UnregisteredException('客户端还没登录...');
     }
-    if(!is_null($user)){
+    if (!is_null($user)) {
         \Auth::login($user);
     }
     return $user;

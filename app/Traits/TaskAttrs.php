@@ -18,7 +18,9 @@ trait TaskAttrs
             'user_id' => $user->id,
         ]);
         $status = empty($usertask->first()) ? null : $usertask->first()->status;
+
         $status = $this->checkTaskStatus($user);
+
 
         if ($type == self::TIME_TASK) {
             $date_user_task = $usertask->whereDate('created_at', Carbon::today())->first();
@@ -100,15 +102,15 @@ trait TaskAttrs
     public function getSubmitNameAttribute()
     {
         if ($this->type == self::CUSTOM_TASK) {
-                // $submit_name = $this->resolve['submit_name'] ?? null;
-                // if (is_null($submit_name)) {
-                //     return $this->resolve['submit_name'];
-                // }
+            // $submit_name = $this->resolve['submit_name'] ?? null;
+            // if (is_null($submit_name)) {
+            //     return $this->resolve['submit_name'];
+            // }
             return '进入';
         }
 
         if (is_null($this->task_status)) {
-            return '领取任务';
+            return '领取';
         }
 
         switch ($this->task_status) {
@@ -116,7 +118,7 @@ trait TaskAttrs
                 return '未完成';
                 break;
             case UserTask::TASK_REACH:
-                return '领取奖励';
+                return '领奖';
                 break;
             case UserTask::TASK_DONE:
                 return '完成';

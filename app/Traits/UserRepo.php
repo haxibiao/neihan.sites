@@ -7,6 +7,7 @@ use App\Profile;
 use App\User;
 use App\Wallet;
 use App\Withdraw;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
@@ -393,14 +394,14 @@ trait UserRepo
         $this->notify(new \App\Notifications\VerifyEmail);
     }
 
-    public function isWithDrawTodayByPayAccount(): bool
+    public function isWithDrawTodayByPayAccount(\Illuminate\Support\Carbon $time): bool
     {
         $payAccount = $this->wallet->pay_account;
         if (is_null($payAccount) || empty($payAccount)) {
             return false;
         }
         $wallet_ids = Wallet::where('pay_account', $payAccount)->select('id')->get()->pluck('id')->toArray();
-        $exists     = Withdraw::whereIn('wallet_id', $wallet_ids)->whereDate('created_at', now()->toDateString())->exists();
+        $exists     = Withdraw::whereIn('wallet_id', $wallet_ids)->whereDate('created_at', $time->toDateString())->exists();
         return $exists;
     }
 

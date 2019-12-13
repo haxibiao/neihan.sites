@@ -3,13 +3,14 @@
 namespace App;
 
 use App\Profile;
+use App\Traits\ContributeRepo;
 use App\Traits\ContributeResolvers;
 use Illuminate\Database\Eloquent\Model;
 
 class Contribute extends Model
 {
 
-    use ContributeResolvers;
+    use ContributeResolvers,ContributeRepo;
 
     // 发布有奖问答奖励贡献点汇率
     const ISSUE_CONVERSION_RATE = 10;
@@ -23,18 +24,31 @@ class Contribute extends Model
     // 发布视频动态奖励贡献点
     const REWARD_VIDEO_POST_AMOUNT = 2;
 
-    // 广告 morph 值
+    // DRAW 广告 morph 值
     const AD_CONTRIBUTED_ID   = 1;
     const AD_CONTRIBUTED_TYPE = 'AD';
 
+    // 激励视频 广告 morph 值
+    const VIDEO_CONTRIBUTED_ID   = 2;
+    const VIDEO_CONTRIBUTED_TYPE = 'AD_VIDEO';
+
     // 点广告奖励值
     const AD_AMOUNT = 3;
+
+    // 看激励视频奖励值
+    const AD_VIDEO_AMOUNT = 3;
 
     // 点赞奖励值
     const LIKED_AMOUNT = 1;
 
     // 评论奖励值
     const COMMENTED_AMOUNT = 1;
+
+//    视频刷点击广告奖励贡献值
+    const REWARD_DRAW_AMOUNT = 1;
+//    激励视频贡献值
+    const REWARD_VIDEO_AMOUNT = 3;
+
 
     protected $guarded  = [];
     protected $fillable = [
@@ -117,20 +131,7 @@ class Contribute extends Model
         return $contribute;
     }
 
-    public static function rewardUserContribute($user_id, $id, $amount, $type)
-    {
-        $contribute = self::firstOrNew(
-            [
-                'user_id'          => $user_id,
-                'contributed_id'   => $id,
-                'contributed_type' => $type,
-            ]
-        );
-        $contribute->amount = $amount;
-        $contribute->recountUserContribute();
-        $contribute->save();
-        return $contribute;
-    }
+
 
     public function recountUserContribute()
     {

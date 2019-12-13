@@ -8,9 +8,9 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 trait VisitResolvers
 {
-    public function getByType($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    public function getVisits($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        return Visit::where('visited_type', $args['visited_type']);
+        return Visit::latest('id');
     }
 
     public function getByDate($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)

@@ -127,16 +127,16 @@ class ProcessSpider implements ShouldQueue
 
         //将视频上传到VOD
         $client = new VodUploadClient(env('VOD_SECRET_ID'), env('VOD_SECRET_KEY'));
-        $client->setLogPath(storage_path('/logs/vod_upload.log'));
-        $req = new VodUploadRequest();
+        // $client->setLogPath(storage_path('/logs/vod_upload.log'));
+        $req                = new VodUploadRequest();
         $req->MediaFilePath = storage_path('app/public/' . $cosPath);
-        $req->ClassId       = intval(env('VOD_CLASS_ID'));
+        $req->ClassId       = intval(getVodConfig('class_id'));
         try {
-            $rsp = $client->upload("ap-guangzhou", $req);
-            $video->disk = 'vod';
+            $rsp                 = $client->upload("ap-guangzhou", $req);
+            $video->disk         = 'vod';
             $video->qcvod_fileid = $rsp->FileId;
-            $video->path = $rsp->MediaUrl;
-            $video->save(['timestamps'=>false]);
+            $video->path         = $rsp->MediaUrl;
+            $video->save(['timestamps' => false]);
         } catch (\Exception $e) {
             // 处理上传异常
             \Log::error($e);

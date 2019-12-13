@@ -26,6 +26,7 @@ $config = [
     'diudie'       => 'http://6d68e6e1e70345188389aa0c244f622e@sentry.haxibiao.cn:9000/30',
     'dongdezhuan'  => 'http://a43d8109fdf7458db81aad0d02e0bb16@sentry.haxibiao.cn:9000/31',
     'dongmiaomu'   => 'http://6ecda6a96ef8471ba33fb58d750b29a5@sentry.haxibiao.cn:9000/32',
+    'dongwaiyu'    => 'http://441f41dbe87442eeb6c0fbc30e6fd66c@sentry.haxibiao.cn:9000/33',
 ];
 return [
 

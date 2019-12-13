@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 
@@ -70,6 +71,9 @@ class User extends Resource
 
             hasMany::make('钱包', 'wallets', Wallet::class),
 
+            Number::make('智慧点', 'gold')->exceptOnForms(),
+            Number::make('精力点', 'ticket')->min(0),
+
             Text::make('邮件地址', 'email')
                 ->sortable()
                 ->rules('required', 'email', 'max:254')
@@ -84,7 +88,10 @@ class User extends Resource
                 AppUser::STATUS_OFFLINE => '下线',
             ])->displayUsingLabels(),
 
+            HasMany::make('智慧点明细', 'golds', Gold::class)->onlyOnDetail(),
+            HasMany::make('贡献记录', 'contributes', Contribute::class),
             HasMany::make('用户文章', 'videoArticles', Article::class),
+
 
         ];
     }

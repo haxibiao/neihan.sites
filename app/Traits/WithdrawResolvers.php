@@ -26,7 +26,7 @@ trait WithdrawResolvers
         if (is_null($wallet->pay_account)) {
             throw new GQLException('提现失败, 请先完善提现资料!');
         }
-        if ($user->isWithDrawTodayByPayAccount()) {
+        if ($user->isWithDrawTodayByPayAccount(now())) {
             throw new GQLException('您今日已经提现过了哦 ~，明天再来吧 ~');
         }
 
@@ -81,4 +81,15 @@ trait WithdrawResolvers
         return Withdraw::find($args['id']);
     }
 
+    public function CanWithdrawals($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo){
+        $user = checkUser();
+        $amount = $args['amount'];
+        $contribute      = $user->profile->count_contributes;
+        $need_contribute = $amount * Contribute::WITHDRAW_DATE;
+        $diffContributes = $need_contribute - $contribute;
+        if($diffContributes <= 0){
+            return 0;
+        }
+        return $diffContributes;
+    }
 }

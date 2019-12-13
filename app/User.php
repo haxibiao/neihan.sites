@@ -56,7 +56,6 @@ class User extends Authenticatable implements MustVerifyEmail
     const AVATAR_DEFAULT = 'storage/avatar/avatar-1.jpg';
 
     const DEFAULT_NAME = '匿名用户';
-
     //
 
     /**

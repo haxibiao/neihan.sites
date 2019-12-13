@@ -11,10 +11,9 @@ trait TaskMethod
     //检查发布数
     public function publicArticleTask(): bool
     {
-        $user = getUser();
+        $user = checkUser();
         //包含软删除
         $count_article = $user->articles()->withTrashed()->whereDate('created_at', Carbon::today())->count();
-
         if ($count_article >= $this->resolve['limit']) {
             return true;
         }
