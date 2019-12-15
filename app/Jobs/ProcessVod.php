@@ -9,12 +9,11 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-//NOTE: 基本淘汰了
 class ProcessVod implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $tries = 5;
+    public $tries = 2;
     protected $video;
 
     /**

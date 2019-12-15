@@ -16,8 +16,8 @@ class QcloudUtils
     private static function initVod()
     {
         $config = [
-            'SecretId'      => env('VOD_SECRET_ID'),
-            'SecretKey'     => env('VOD_SECRET_KEY'),
+            'SecretId'      => config('tencentvod.'.config('app.name').'.secret_id'),
+            'SecretKey'     => config('tencentvod.'.config('app.name').'.secret_key'),
             'RequestMethod' => 'POST',
         ];
         return QcloudApi::load(QcloudApi::MODULE_VOD, $config);

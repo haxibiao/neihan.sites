@@ -3,8 +3,10 @@
 namespace App\Traits;
 
 use App\Article;
+use App\Helpers\QcloudUtils;
 use App\Jobs\MakeVideoCovers;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use TencentCloud\Common\Credential;
@@ -105,7 +107,20 @@ trait VideoRepo
         $params = '{"Urls":["'.$url.'"]}';
 
         $req->fromJsonString($params);
-        $resp = $client->PushUrlCache($req);
-        print_r($resp->toJsonString());
+        $client->PushUrlCache($req);
+    }
+
+    public function processVod(){
+
+        $videoInfo = QcloudUtils::getVideoInfo($this->qcvod_fileid);
+        $duration  = Arr::get($videoInfo,'basicInfo.duration');
+        $sourceVideoUrl  = Arr::get($videoInfo,'basicInfo.sourceVideoUrl');
+        $this->path    = $sourceVideoUrl;
+        $this->duration= $duration;
+        $this->disk    = 'vod';
+        $this->hash    = hash_file('md5',$sourceVideoUrl);
+        $this->save();
+        //触发截图操作
+        MakeVideoCovers::dispatchNow($this);
     }
 }

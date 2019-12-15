@@ -47,8 +47,6 @@ class MakeVideoCovers implements ShouldQueue
         if(Str::contains($video->path,'vod')){
             $videoPath = $video->path;
             $video->makeCovers($videoPath);
-            //CDN预热
-            $this->pushUrlCacheRequest($video->path);
         }else{
             $videoPath = \Storage::cloud()->url($video->path);
             $video->makeCovers($videoPath,'cos');
@@ -72,11 +70,16 @@ class MakeVideoCovers implements ShouldQueue
         $article->submit = Article::SUBMITTED_SUBMIT;
 
         $article->save();
+
+        if(Str::contains($video->path,'vod')){
+            //CDN预热
+            $this->pushUrlCacheRequest($video->path);
+        }
     }
 
     public function pushUrlCacheRequest($url){
         //VOD预热
-        $cred = new Credential(env('VOD_SECRET_ID'), env('VOD_SECRET_KEY'));
+        $cred = new Credential(config('tencentvod.'.config('app.name').'.secret_id'), config('tencentvod.'.config('app.name').'.secret_key'));
         $httpProfile = new HttpProfile();
         $httpProfile->setEndpoint("vod.tencentcloudapi.com");
 
@@ -88,7 +91,6 @@ class MakeVideoCovers implements ShouldQueue
         $params = '{"Urls":["'.$url.'"]}';
 
         $req->fromJsonString($params);
-        $resp = $client->PushUrlCache($req);
-        print_r($resp->toJsonString());
+        $client->PushUrlCache($req);
     }
 }

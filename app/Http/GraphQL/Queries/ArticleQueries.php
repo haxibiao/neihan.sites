@@ -19,7 +19,6 @@ class ArticleQueries
 
         $query = Article::withoutGlobalScope(ArticleSubmitScope::class)
             ->whereIn('type', ['video', 'post', 'issue'])
-            ->whereNotNull('cover_path')
             ->orderBy('id', 'desc');
 
         if ($userBlockId) {
@@ -27,11 +26,11 @@ class ArticleQueries
         }
 
         if ($args['submit'] != 10) {
-            $query->where('submit', $args['submit']);
+            $query->where('submit', $args['submit'])->whereNotNull('cover_path');
         }
 
         if ($args['status'] != 10) {
-            return $query->where('status', $args['status']);
+            return $query->where('status', $args['status'])->whereNotNull('cover_path');
         }
         $query->when(isset($args['user_id']), function ($q) use ($args) {
             return $q->where('user_id', $args['user_id']);

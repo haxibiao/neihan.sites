@@ -15,6 +15,7 @@ use App\Ip;
 use App\Issue;
 use App\Jobs\AwardResolution;
 use App\Jobs\MakeVideoCovers;
+use App\Jobs\ProcessVod;
 use App\Video;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
@@ -97,17 +98,10 @@ class ArticleMutators
                     $video = Video::firstOrNew([
                         'qcvod_fileid' => $qcvod_fileid,
                     ]);
-                    $videoInfo = QcloudUtils::getVideoInfo($qcvod_fileid);
-                    $duration  = Arr::get($videoInfo,'basicInfo.duration');
-                    $sourceVideoUrl  = Arr::get($videoInfo,'basicInfo.sourceVideoUrl');
                     $video->user_id = $user->id;
+                    $video->path    = 'http://1254284941.vod2.myqcloud.com/e591a6cavodcq1254284941/74190ea85285890794946578829/f0.mp4';
                     $video->title   = Str::limit($inputs['body'], 50);
-                    $video->path    = $sourceVideoUrl;
-                    $video->disk    = 'vod';
-                    $video->duration= $duration;
-                    $video->hash    = hash_file('md5',$sourceVideoUrl);
                     $video->save();
-
                     //创建article
                     $article              = new Article();
                     $article->status      = 0;
@@ -121,8 +115,7 @@ class ArticleMutators
                     $article->cover_path  = 'video/black.jpg';
                     $article->save();
 
-                    //触发截图操作
-                    dispatch((new MakeVideoCovers($video)))->delay(now()->addMinute(1));
+                    ProcessVod::dispatch($video);
                 }
 
                 //存文字动态或图片动态
@@ -143,7 +136,6 @@ class ArticleMutators
 
                     $article->cover_path = $article->images()->first()->path;
                     $article->save();
-
                 }
             };
 
@@ -159,14 +151,6 @@ class ArticleMutators
                 if ($category_ids) {
                     $article->hasCategories()->sync($category_ids);
                 }
-            }
-
-//            截图完成后状态改为发布
-            $article->status      = Article::STATUS_REVIEW;
-            $article->submit      = Article::REVIEW_SUBMIT;
-            // 奖励共享点
-            if (isset($article->video_id)) {
-                Contribute::rewardUserVideoPost($user, $article);
             }
 
             // 记录用户操作
@@ -255,19 +239,11 @@ class ArticleMutators
                     $video = Video::firstOrNew([
                         'qcvod_fileid' => $qcvod_fileid,
                     ]);
-                    $videoInfo = QcloudUtils::getVideoInfo($qcvod_fileid);
-                    $duration  = Arr::get($videoInfo,'basicInfo.duration');
-                    $sourceVideoUrl  = Arr::get($videoInfo,'basicInfo.sourceVideoUrl');
-
+                    //这个地方需要做成异步
                     $video->user_id = $user->id;
+                    $video->path    = 'http://1254284941.vod2.myqcloud.com/e591a6cavodcq1254284941/74190ea85285890794946578829/f0.mp4';
                     $video->title   = Str::limit($inputs['body'], 50);
-                    $video->path    = $sourceVideoUrl;
-                    $video->duration= $duration;
-                    $video->hash    = hash_file('md5',$sourceVideoUrl);
                     $video->save();
-
-                    //触发截图操作
-                    dispatch((new MakeVideoCovers($video)))->delay(now()->addMinute(1));
 
                     //创建article
                     $article              = new Article();
@@ -278,9 +254,11 @@ class ArticleMutators
                     $article->body        = $inputs['body'];
                     $article->type        = 'issue';
                     $article->review_id   = Article::makeNewReviewId();
-                    $article->cover_path  = 'video/black.jpg';
                     $article->video_id    = $video->id;
+                    $article->cover_path  = 'video/black.jpg';
                     $article->save();
+
+                    ProcessVod::dispatch($video);
                 }
             } else if ($inputs['images']) {
 
@@ -312,9 +290,6 @@ class ArticleMutators
                 $issue->gold = $inputs['gold'];
                 $issue->save();
 
-                // 发布悬赏问答奖励贡献点
-                $amount = Contribute::getAmount($inputs['gold']);
-                Contribute::rewardUserIssuePost($user, $issue, $amount);
 
                 if (!empty($article)) {
                     //带图问答不用审核，直接触发奖励

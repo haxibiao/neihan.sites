@@ -32,7 +32,6 @@ class Article extends Model
         'collection_id',
         'body',
         'count_words',
-        'cover',
         'is_top',
         'status',
         'source_url',
@@ -164,11 +163,11 @@ class Article extends Model
             ->whereIn('category_id', $this->categories->pluck('id'));
     }
 
-    public function save(array $options = array())
-    {
-        $this->description = $this->summary;
-        parent::save($options);
-    }
+//    public function save(array $options = array())
+//    {
+//        $this->description = $this->summary;
+//        parent::save($options);
+//    }
 
     public function scopePublish($query)
     {

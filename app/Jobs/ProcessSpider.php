@@ -142,7 +142,7 @@ class ProcessSpider implements ShouldQueue
             \Log::error($e);
         }
 
-        MakeVideoCovers::dispatch($video);
+        MakeVideoCovers::dispatchNow($video);
 
         $category = Category::firstOrNew([
             'name' => '我要上热门',
