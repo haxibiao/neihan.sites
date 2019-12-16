@@ -24,11 +24,17 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //$schedule->command('traffic:clean')->weekly();
         //$schedule->command('sitemap:refresh')->daily();
         //$schedule->command('video:process')->everyMinute();
         //$schedule->command('video:process --codeinfo')->hourly();
+
+        // 凌晨将金币转为钱包余额
         $schedule->command('change:towallet')->daily();
+        //每天凌晨3点标记一次热门分类
+        $schedule->command('mark:hotpost')->dailyAt('3:00');
+
+        // 凌晨将 处理 提现等待过久的
+        // $schedule->command('withdraw:process')->daily();
     }
 
     /**

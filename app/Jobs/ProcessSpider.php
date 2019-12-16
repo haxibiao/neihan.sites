@@ -125,9 +125,12 @@ class ProcessSpider implements ShouldQueue
         $video->disk = 'local'; //先标记为成功保存到本地
         $video->save();
 
+        $article->video_id = $video->id;
+        $article->save();
+
         //将视频上传到VOD
-        $client = new VodUploadClient(env('VOD_SECRET_ID'), env('VOD_SECRET_KEY'));
-        // $client->setLogPath(storage_path('/logs/vod_upload.log'));
+        $client = new VodUploadClient(config('tencentvod.'.config('app.name').'.secret_id'), config('tencentvod.'.config('app.name').'.secret_key'));
+        $client->setLogPath(storage_path('/logs/vod_upload.log'));
         $req                = new VodUploadRequest();
         $req->MediaFilePath = storage_path('app/public/' . $cosPath);
         $req->ClassId       = intval(getVodConfig('class_id'));
@@ -141,6 +144,7 @@ class ProcessSpider implements ShouldQueue
             // 处理上传异常
             \Log::error($e);
         }
+
 
         MakeVideoCovers::dispatchNow($video);
 
