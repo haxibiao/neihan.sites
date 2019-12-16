@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 trait TaskMethod
 {
@@ -35,11 +36,8 @@ trait TaskMethod
     {
 
         $user             = $this->getCurrentUser();
-        $avatar_formatter = 'storage/avatar/avatar-%d.jpg';
-        for ($i = 1; $i <= 15; $i++) {
-            if (str_contains($user->avatar, sprintf($avatar_formatter, $i))) {
-                return false;
-            }
+        if(Str::contains($user->avatar,'storage/avatar/avatar')){
+            return false;
         }
 
         return true;
@@ -49,8 +47,7 @@ trait TaskMethod
     {
         $user = $this->getCurrentUser();
 
-        if (is_null($user->phone) || empty($user->phone)) {
-
+        if (is_null($user->phone) && is_null($user->password)) {
             return false;
         }
         return true;
@@ -60,7 +57,7 @@ trait TaskMethod
     {
         $user    = $this->getCurrentUser();
         $profile = $user->profile;
-        if ($profile->gender == -1 || is_null($profile->birthday)) {
+        if (is_null($profile->gender) || is_null($profile->birthday)) {
             return false;
         }
         return true;

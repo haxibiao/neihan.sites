@@ -205,7 +205,7 @@
             Article::whereNotNull('video_id')->chunkById(1000, function ($articles) {
                 foreach ($articles as $article) {
                     $video = $article->video;
-                    if (Str::contains($article->cover, 'http://cos-dongyundong.dianmoge.com/video/1.mp4.0_0.p0.jpg')) {
+                    if (Str::contains($article->cover, '1.mp4.0_0.p0.jpg')) {
                         $article->status = Article::STATUS_REVIEW;
                         $article->submit = Article::REVIEW_SUBMIT;
                         $article->save();
