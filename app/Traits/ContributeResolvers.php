@@ -12,7 +12,6 @@
             $user = checkUser();
 //        兼容App老版本
             $contribute = Contribute::rewardUserContribute($user->id,self::AD_CONTRIBUTED_ID,self::AD_AMOUNT,self::AD_CONTRIBUTED_TYPE);
-            $contribute->recountUserContribute();
             return $contribute;
         }
 

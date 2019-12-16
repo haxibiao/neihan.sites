@@ -18,7 +18,6 @@
                 ]
             );
             $contribute->recountUserContribute();
-            $contribute->save();
             return $contribute;
         }
 

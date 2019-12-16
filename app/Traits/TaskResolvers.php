@@ -176,13 +176,15 @@ trait TaskResolvers
         // 处理早晨的奖励变更
         if ($task->name == "SleepMorning") {
             $sleep_night_task = Task::where('name', "SleepNight")->first()->getUserTask($user->id, Carbon::yesterday());
-
-            if (!$sleep_night_task) {
-                $user_task->processReward($task->reward_info);
+            if ($sleep_night_task) {
+                if ($sleep_night_task->task_status != UserTask::TASK_DONE) {
+                    throw new GQLException('昨晚睡觉卡未打');
+                }
             } else {
                 throw new GQLException('昨晚睡觉卡未打');
             }
         }
+        $user_task->processReward($task->reward_info);
         return $user_task;
     }
 
@@ -217,12 +219,12 @@ trait TaskResolvers
         return $task;
     }
 
-
-    public function highPraiseTaskResolver($root, array $args, $context, $info){
+    public function highPraiseTaskResolver($root, array $args, $context, $info)
+    {
         $task = Task::find($args['id']);
-        throw_if(is_null($task),GQLException::class,'任务不存在哦~,请稍后再试');
-        throw_if(empty(trim($args['content'])),GQLException::class,'账号不能为空哦~');
+        throw_if(is_null($task), GQLException::class, '任务不存在哦~,请稍后再试');
+        throw_if(empty(trim($args['content'])), GQLException::class, '账号不能为空哦~');
         $user = checkUser();
-        return $this->highPraise($user,$task,$args['content']);
+        return $this->highPraise($user, $task, $args['content']);
     }
 }

@@ -160,8 +160,8 @@ class ProcessSpider implements ShouldQueue
         $article->body        = $description;
         $article->title       = Str::limit($description, 150); //截取微博那么长的内容存简介;
         $article->description = Str::limit($description, 280); //截取微博那么长的内容存简介
-        $article->status      = Article::REVIEW_SUBMIT; //FIXME 合并submit与status字段
-        $article->submit      = Article::REVIEW_SUBMIT; //不直接上架
+        $article->status      = Article::STATUS_ONLINE; //FIXME 合并submit与status字段
+        $article->submit      = Article::SUBMITTED_SUBMIT; //不直接上架
         $article->user_id     = $user->id;
         $article->category_id = $category->id;
         $article->review_id   = Article::makeNewReviewId();
