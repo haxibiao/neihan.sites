@@ -384,8 +384,15 @@ trait UserRepo
      * @return void
      * @author zengdawei
      */
-    public function consumeContributeToWithdraw($amount)
+    public function consumeContributeToWithdraw($amount, $type, $id)
     {
+        Contribute::firstOrCreate([
+            'user_id'          => $this->id,
+            'amount'           => -($amount * Contribute::WITHDRAW_DATE),
+            'remark'           => '提现兑换',
+            'contributed_id'   => $id,
+            'contributed_type' => $type,
+        ]);
         Profile::where('user_id', $this->id)->decrement('count_contributes', $amount * Contribute::WITHDRAW_DATE);
     }
 

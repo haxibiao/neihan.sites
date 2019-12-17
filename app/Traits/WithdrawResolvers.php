@@ -58,36 +58,41 @@ trait WithdrawResolvers
             if ($contribute < $need_contribute) {
                 throw new GQLException('您还需' . $diffContributes . '点贡献值就可以提现成功啦~，快多尝试发布优质原创视频吧~');
             }
-            // 消耗贡献值
-            $user->consumeContributeToWithdraw($amount);
         }
 
         //开启兑换事务,替换到钱包 创建提现订单
         $withdraw = $wallet->withdraw($amount);
+
         if (!$withdraw) {
             throw new GQLException('兑换失败,请稍后再试!');
         }
 
+        // 消耗贡献值
+        $user->consumeContributeToWithdraw($amount, "withdraws", $withdraw->id);
+
         return $withdraw;
     }
 
-    public function resolveWithdraws($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo){
+    public function resolveWithdraws($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
         app_track_user("提现列表", 'list_withdraws', getUserId());
-        return Withdraw::orderBy('id', 'desc')->where('wallet_id',$args['wallet_id']);
+        return Withdraw::orderBy('id', 'desc')->where('wallet_id', $args['wallet_id']);
     }
 
-    public function resolveWithdraw($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo){
+    public function resolveWithdraw($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
         app_track_user("提现详情", 'show_withdraw', $args['id']);
         return Withdraw::find($args['id']);
     }
 
-    public function CanWithdrawals($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo){
-        $user = checkUser();
-        $amount = $args['amount'];
+    public function CanWithdrawals($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+        $user            = checkUser();
+        $amount          = $args['amount'];
         $contribute      = $user->profile->count_contributes;
         $need_contribute = $amount * Contribute::WITHDRAW_DATE;
         $diffContributes = $need_contribute - $contribute;
-        if($diffContributes <= 0){
+        if ($diffContributes <= 0) {
             return 0;
         }
         return $diffContributes;

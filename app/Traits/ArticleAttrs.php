@@ -157,15 +157,6 @@ trait ArticleAttrs
         }
         return ($this->issue)->gold;
     }
-    public function getCategoryAttribute()
-    {
-        return $this->category()->first();
-    }
-
-    public function getCategoriesAttribute()
-    {
-        return $this->hasCategories()->get();
-    }
 
     public function getScreenshotsAttribute()
     {

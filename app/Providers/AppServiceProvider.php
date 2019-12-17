@@ -61,17 +61,17 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
 //        if (isset(config('matomo.site')[env('APP_DOMAIN')])) {
-//            $siteId = env('MATOMO_SITEID');
-//            $matomo = '';
-//
-//            $piwik = new PiwikTracker($siteId, $matomo);
-//            $piwik->setUserId(getUniqueUserId());
-//            return $piwik;
-//        }
-//        return null;
+        //            $siteId = env('MATOMO_SITEID');
+        //            $matomo = '';
+        //
+        //            $piwik = new PiwikTracker($siteId, $matomo);
+        //            $piwik->setUserId(getUniqueUserId());
+        //            return $piwik;
+        //        }
+        //        return null;
 
         $this->app->singleton('piwik', function ($app) {
-            return new PiwikTracker(env('MATOMO_SITE_ID'),env('MATOMO_URL'));
+            return new PiwikTracker(env('MATOMO_SITE_ID'), env('MATOMO_URL'));
         });
         Relation::morphMap([
             'users'       => 'App\User',
@@ -89,6 +89,7 @@ class AppServiceProvider extends ServiceProvider
             'answers'     => 'App\Resolution',
             'feedbacks'   => 'App\Feedback',
             'usertasks'   => 'App\UserTask',
+            'withdraws'   => 'App\Withdraw',
         ]);
 
         foreach (glob(app_path() . '/Helpers/*.php') as $filename) {

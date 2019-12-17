@@ -44,6 +44,12 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if (config('database.debug')) {
+            $this->listen['Illuminate\Database\Events\QueryExecuted'] = [
+                'App\Listeners\QueryListener',
+            ];
+        }
+
         parent::boot();
 
         \App\Video::observe(\App\Observers\VideoObserver::class);

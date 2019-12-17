@@ -130,7 +130,7 @@ class CommentMutators
                     Gold::makeIncome($toUser, $individual, '答案被采纳奖励');
 
                     // 奖励贡献点
-                    Contribute::rewardUserResolution($user, $resolution, Contribute::REWARD_RESOLUTION_AMOUNT);
+                    Contribute::rewardUserResolution($user, $resolution, Contribute::REWARD_RESOLUTION_AMOUNT, "答案被采纳奖励");
 
                     //评论被采纳
                     $toUser->notify(new \App\Notifications\CommentAccepted($comment, $user));

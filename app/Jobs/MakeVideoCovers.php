@@ -47,7 +47,6 @@ class MakeVideoCovers implements ShouldQueue
         if(Str::contains($video->path,'vod')){
             $videoPath = $video->path;
             $video->makeCovers($videoPath);
-
         }else{
             $videoPath = \Storage::cloud()->url($video->path);
             $video->makeCovers($videoPath,'cos');

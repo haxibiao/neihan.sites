@@ -2,6 +2,13 @@ type Contribute {
   id: ID!
   user: User!
   amount: Int!
+  remark: String
   created_at: DateTime!
+  time_ago: String
   updated_at: DateTime!
+}
+
+extend type Query @middleware(checks: ["auth:api"]) {
+  contributes(user_id: Int! @eq, orderBy: [OrderByClause!] @orderBy): [Contribute]
+    @paginate(defaultCount: 10, builder: "App\\Contribute@resolveContributes")
 }

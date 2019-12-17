@@ -84,7 +84,7 @@ class UserTask extends Pivot
             if (array_get($reward, "contribute")) {
                 $remark     = sprintf('%s任务奖励', $task->details);
                 $rewardGold = $reward['contribute'];
-                Contribute::rewardUserContribute($user->id, $this->id, $rewardGold, "usertasks");
+                Contribute::rewardUserContribute($user->id, $this->id, $rewardGold, "usertasks", $remark);
             }
 
             DB::commit(); //事务提交

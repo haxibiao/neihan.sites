@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Feedback;
+use App\Helpers\BadWord\BadWordUtils;
 use App\Image;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;

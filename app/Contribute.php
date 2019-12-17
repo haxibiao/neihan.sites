@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Contribute extends Model
 {
 
-    use ContributeResolvers,ContributeRepo;
+    use ContributeResolvers, ContributeRepo;
 
     // 发布有奖问答奖励贡献点汇率
     const ISSUE_CONVERSION_RATE = 10;
@@ -49,10 +49,10 @@ class Contribute extends Model
 //    激励视频贡献值
     const REWARD_VIDEO_AMOUNT = 3;
 
-
     protected $guarded  = [];
     protected $fillable = [
         'user_id',
+        'remark',
         'amount',
         'contributed_id',
         'contributed_type',
@@ -78,12 +78,13 @@ class Contribute extends Model
         return $this->belongsTo(Article::class, 'contributed_id');
     }
 
-    public static function rewardUserVideoPost($user, $article)
+    public static function rewardUserVideoPost($user, $article, $remark)
     {
         //发布视频动态奖励＋3贡献
         $contribute = self::firstOrNew(
             [
                 'user_id'          => $user->id,
+                'remark'           => $remark,
                 'contributed_id'   => $article->id,
                 'contributed_type' => 'articles',
             ]
@@ -99,11 +100,12 @@ class Contribute extends Model
         return $gold / self::ISSUE_CONVERSION_RATE;
     }
 
-    public static function rewardUserIssuePost($user, $issue, $amount)
+    public static function rewardUserIssuePost($user, $issue, $amount, $remark)
     {
         $contribute = self::firstOrNew(
             [
                 'user_id'          => $user->id,
+                'remark'           => $remark,
                 'contributed_id'   => $issue->id,
                 'contributed_type' => 'issues',
             ]
@@ -116,11 +118,12 @@ class Contribute extends Model
         return $contribute;
     }
 
-    public static function rewardUserResolution($user, $resolution, $amount)
+    public static function rewardUserResolution($user, $resolution, $amount, $remark)
     {
         $contribute = self::firstOrNew(
             [
                 'user_id'          => $user->id,
+                'remark'           => $remark,
                 'contributed_id'   => $resolution->id,
                 'contributed_type' => 'resolutions',
             ]
@@ -131,12 +134,15 @@ class Contribute extends Model
         return $contribute;
     }
 
-
-
     public function recountUserContribute()
     {
         $user = $this->user;
         Profile::where('user_id', $user->id)->increment('count_contributes', $this->amount);
+    }
+
+    public function getTimeAgoAttribute()
+    {
+        return time_ago($this->created_at);
     }
 
 }

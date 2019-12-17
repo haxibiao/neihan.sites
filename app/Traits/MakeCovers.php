@@ -5,6 +5,7 @@
     use App\Article;
     use App\Helpers\FFMpeg\FFMpegUtils;
     use App\Video;
+    use Illuminate\Support\Facades\Storage;
 
     trait MakeCovers
     {
@@ -43,8 +44,12 @@
             $video->save();
 //            6.释放服务器资源
             if (!is_local_env()) {
-                \Storage::disk('public')->delete($video->path);
-                \Storage::disk('public')->delete($video->cover);
+                $relativePath  = 'video/' . $video->id . '.mp4';
+                //删除视频
+                if(Storage::disk('public')->exists($relativePath)){
+                    Storage::disk('public')->delete($relativePath);
+                }
+                Storage::disk('public')->delete($video->cover);
             }
         }
 

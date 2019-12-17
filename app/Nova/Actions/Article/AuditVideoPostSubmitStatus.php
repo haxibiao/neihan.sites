@@ -73,7 +73,7 @@ class AuditVideoPostSubmitStatus extends Action
                     $user = $model->user;
                     $user->notify(new ReceiveAward('发布视频动态奖励', self::REWARD_GOLD, $user, $model->id));
                     Gold::makeIncome($user, self::REWARD_GOLD, '发布视频动态奖励');
-                    Contribute::rewardUserVideoPost($user, $model);
+                    Contribute::rewardUserVideoPost($user, $model, '发布视频动态奖励');
 
                     $model->submit = \App\Article::SUBMITTED_SUBMIT;
                     $model->save(['timestamps' => false]);

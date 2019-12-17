@@ -13,6 +13,7 @@ use App\Video;
 use App\Visit;
 use Exception;
 use GraphQL\Type\Definition\ResolveInfo;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
@@ -122,11 +123,15 @@ trait ArticleResolvers
 
         $qb =  Article::with(['video', 'user','categories'])->whereNotNull('video_id')->publish()->orderByDesc('review_id');
 
+
         if ($user) {
-            $visitVideoIds = Visit::ofType('articles')->ofUserId($user->id)->get()->pluck('visited_id');
-            if (!is_null($visitVideoIds)) {
-                $qb = $qb->whereNotIn('id', $visitVideoIds);
-            }
+
+            $qb->whereNotIn('id', function ($query) use($user){
+                $query->select('visited_id')->from('visits')
+                    ->where('visits.visited_type','articles')
+                    ->where('visits.user_id', $user->id);
+            });
+
             $qb->whereNotIn('user_id', function ($query) use ($user) {
                 $query->select('user_block_id')->from('user_blocks')->where("user_id", $user->id);
             });
@@ -251,5 +256,4 @@ trait ArticleResolvers
             throw new GQLException($e->getMessage());
         }
     }
-
 }

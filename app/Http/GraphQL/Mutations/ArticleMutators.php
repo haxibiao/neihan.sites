@@ -193,7 +193,7 @@ class ArticleMutators
             $issue->title   = $body;
             $issue->save();
             //视频问答
-            if ($inputs['video_id'] || $inputs['qcvod_fileId']) {
+            if ($inputs['video_id'] || $inputs['qcvod_fileid']) {
                 $user                 = getUser();
                 $todayPublishVideoNum = $user->articles()
                     ->whereIn('type', ['post', 'issue'])
@@ -202,8 +202,7 @@ class ArticleMutators
                 if ($todayPublishVideoNum == 10) {
                     throw new UserException('每天只能发布10个视频动态!');
                 }
-
-                if( $inputs['video_id'] ){
+                if($inputs['video_id'] != null){
                     $video = Video::findOrFail($inputs['video_id']);
                     /**
                      * 判断视频时长放到队列中处理，如果不满足条件则发布失败，时长不够
@@ -234,7 +233,7 @@ class ArticleMutators
                     $article->review_id   = Article::makeNewReviewId();
                     $article->type     = 'issue';
                     $article->save();
-                } else {
+                } else if($inputs['qcvod_fileid'] != null){
                     $qcvod_fileid = $inputs['qcvod_fileid'];
                     $video = Video::firstOrNew([
                         'qcvod_fileid' => $qcvod_fileid,
@@ -257,7 +256,6 @@ class ArticleMutators
                     $article->video_id    = $video->id;
                     $article->cover_path  = 'video/black.jpg';
                     $article->save();
-
                     ProcessVod::dispatch($video);
                 }
             } else if ($inputs['images']) {
@@ -325,7 +323,7 @@ class ArticleMutators
                 }
             }
             DB::commit();
-            app_track_user('发布问答','issue');
+//            app_track_user('发布问答','issue');
             return $article;
         } catch (\Exception $ex) {
             DB::rollBack();
