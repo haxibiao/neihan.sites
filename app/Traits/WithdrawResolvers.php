@@ -68,8 +68,9 @@ trait WithdrawResolvers
         }
 
         // 消耗贡献值
-        $user->consumeContributeToWithdraw($amount, "withdraws", $withdraw->id);
-
+        if ($isWithdrawBefore) {
+            $user->consumeContributeToWithdraw($amount, "withdraws", $withdraw->id);
+        }
         return $withdraw;
     }
 

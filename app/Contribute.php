@@ -145,4 +145,10 @@ class Contribute extends Model
         return time_ago($this->created_at);
     }
 
+    public function getBalanceAttribute()
+    {
+
+        return Contribute::where('id', '<', $this->id)->where('user_id', $this->user_id)->sum('amount');
+    }
+
 }

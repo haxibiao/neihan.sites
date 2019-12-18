@@ -67,6 +67,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'password', 'remember_token',
     ];
 
+    public function retentions()
+    {
+        return $this->hasMany(\App\UserRetention::class);
+    }
+
     public function exchanges()
     {
         return $this->hasMany(\App\Exchange::class);

@@ -3,6 +3,7 @@ type Contribute {
   user: User!
   amount: Int!
   remark: String
+  balance: Int!
   created_at: DateTime!
   time_ago: String
   updated_at: DateTime!

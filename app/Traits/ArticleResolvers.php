@@ -256,4 +256,13 @@ trait ArticleResolvers
             throw new GQLException($e->getMessage());
         }
     }
+
+    public function getShareLink($rootValue, array $args, $context, $resolveInfo){
+        $article = Article::find($args['id']);
+        throw_if(is_null($article),GQLException::class,'该动态不存在哦~,请稍后再试');
+        if ($article->type !== 'post' && $article->type !== 'video'){
+            throw new GQLException('目前只能分享视频动态哦~');
+        }
+        return sprintf('#%s/share/post/%d#, #%s#,打开【%s】,直接观看视频,玩视频就能赚钱~,',config('app.url'),$article->id,$article->description,config('app.name_cn'));
+    }
 }

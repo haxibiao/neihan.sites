@@ -58,7 +58,7 @@ return [
     |
      */
 
-    'url'             => env('APP_URL', 'http://dongdianyi.com'),
+    'url'             => env('APP_URL', 'https://dianmoge.com'),
 
     /*
     |--------------------------------------------------------------------------

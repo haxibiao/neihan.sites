@@ -34,7 +34,7 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email',
+        'id', 'name', 'email', 'account', 'phone',
     ];
 
     public static function label()
@@ -59,7 +59,10 @@ class User extends Resource
                 ->sortable()
                 ->rules('required', 'max:255'),
 
-            Text::make('性别', 'gender'),
+            Select::make('性别', 'gender')->options([
+                AppUser::MALE_GENDER   => '男',
+                AppUser::FEMALE_GENDER => '女',
+            ])->displayUsingLabels(),
 
             Text::make('年龄', 'age'),
 
@@ -67,13 +70,11 @@ class User extends Resource
                 return $this->allArticles()->count();
             }),
 
-            Text::make('智慧点', 'glod'),
-
             hasMany::make('钱包', 'wallets', Wallet::class),
 
             Number::make('智慧点', 'gold')->exceptOnForms(),
-            Number::make('精力点', 'ticket')->min(0),
-
+            Text::make('账户', 'account'),
+            Text::make('手机号', 'phone'),
             Text::make('邮件地址', 'email')
                 ->sortable()
                 ->rules('required', 'email', 'max:254')
@@ -91,7 +92,6 @@ class User extends Resource
             HasMany::make('智慧点明细', 'golds', Gold::class)->onlyOnDetail(),
             HasMany::make('贡献记录', 'contributes', Contribute::class),
             HasMany::make('用户文章', 'videoArticles', Article::class),
-
 
         ];
     }
