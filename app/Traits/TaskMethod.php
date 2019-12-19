@@ -63,6 +63,7 @@ trait TaskMethod
         return true;
     }
 
+
     public function getCurrentUser(): User
     {
 //            避免重复查询数据库

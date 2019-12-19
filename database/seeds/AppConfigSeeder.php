@@ -55,11 +55,12 @@ class AppConfigSeeder extends Seeder
 //                'state' => 1,
 //            ]
 //        );
-        \App\AppConfig::firstOrCreate(
+        \App\AppConfig::updateOrCreate(
             [
                 'group' => 'record',
                 'name'  => 'web',
-                'state' => 0,
+            ],[
+                'state' => \App\AppConfig::STATUS_ON,
             ]
         );
     }
