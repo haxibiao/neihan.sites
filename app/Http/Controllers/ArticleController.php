@@ -305,4 +305,14 @@ class ArticleController extends Controller
         $article->tags()->sync($tag_ids);
     }
 
+
+    public function shareVideo($id){
+        $article = Article::findOrFail($id);
+
+        return view('share.shareVideo',[
+            'article' => $article,
+            'video' => $article->video,
+            'user' => $article->user,
+        ]);
+    }
 }

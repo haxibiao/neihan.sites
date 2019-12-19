@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class BeianRedirect
+class GQLGuard
 {
     /**
      * Handle an incoming request.
@@ -15,9 +15,7 @@ class BeianRedirect
      */
     public function handle($request, Closure $next)
     {
-        if (starts_with($request->path(), 'article/')) {
-            return redirect()->to('http://dongdianyi.haxibiao.com/' . $request->path());
-        }
+        // \info("GQL request:", $request->all());
         return $next($request);
     }
 }

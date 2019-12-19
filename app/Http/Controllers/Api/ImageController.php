@@ -36,25 +36,23 @@ class ImageController extends Controller
                 $image          = new Image();
                 $image->user_id = $user->id;
                 $image->save();
-                $error = $image->save_file($request->photo);
-                if ($error) {
-                    return $error;
-                } else {
-                    //给simditor编辑器返回上传图片结果...
-                    if ($request->get('from') == 'simditor') {
-                        // $json = "{ success: true, msg:'图片上传成功', file_path: '" . $path_big . "' }";
-                        $json            = (object) [];
-                        $json->success   = true;
-                        $json->msg       = '图片上传成功';
-                        $json->file_path = $image->url;
-                        return json_encode($json);
-                    }
-                    if ($request->from == 'post') {
-                        $image->url = $image->url;
-                        return $image;
-                    }
-                    return request('feedback') ? $image : $image->url;
+                $image = $image->saveImage($request->photo);
+
+                //给simditor编辑器返回上传图片结果...
+                if ($request->get('from') == 'simditor') {
+                    // $json = "{ success: true, msg:'图片上传成功', file_path: '" . $path_big . "' }";
+                    $json            = (object) [];
+                    $json->success   = true;
+                    $json->msg       = '图片上传成功';
+                    $json->file_path = $image->url;
+                    return json_encode($json);
                 }
+                if ($request->from == 'post') {
+                    $image->url = $image->url;
+                    return $image;
+                }
+                return request('feedback') ? $image : $image->url;
+
             }
             return "没有发现上传的图片photo";
         }
@@ -62,7 +60,6 @@ class ImageController extends Controller
             return "没有发现上传的图片photo";
         }
         $result = [];
-        //TODO 后面有时间优化for循环中的SQL操作批处理化。
         foreach ($image_files as $image_file) {
             $extension = $image_file->getClientOriginalExtension();
             if (!in_array($extension, ['jpg', 'png', 'gif'])) {
@@ -74,12 +71,8 @@ class ImageController extends Controller
                 $image->user_id = $user->id;
             }
             $image->save();
-            $error = $image->save_file($image_file);
-            if ($error) {
-                $result[] = $error;
-            } else {
-                $result[] = request('feedback') ? $image : $image->url;
-            }
+            $image = $image->saveImage($request->photo);
+            $result[] = request('feedback') ? $image : $image->url;
         }
         return $result;
 

@@ -11,11 +11,18 @@ class IndexController extends Controller
 {
     /**
      * 首页数据的全部逻辑
-     * @return　(object)[]　所有首页需要的数据合并到一个对象
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
+
+        if (isRecording()){
+            return view('app');
+        }
+
         $data = (object) [];
+
+
 
         //首页轮播图
         $data->carousel = get_top_articles();
