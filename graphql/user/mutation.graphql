@@ -5,6 +5,12 @@ extend type Mutation @group(namespace: "App") {
   autoSignIn(uuid: String!, phone: String): User
     @field(resolver: "User@autoSignIn")
   destoryUser: Boolean @field(resolver: "User@destoryUserByToken")
+  newUserReword(type:RewardType!): Int @field(resolver: "User@newUserReword")
+}
+
+enum RewardType{
+  DOUYIN@enum(value:"douyinVideo")
+  VIDEO@enum(value:"newUserVideo")
 }
 
 # test

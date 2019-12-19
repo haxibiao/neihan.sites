@@ -11,10 +11,12 @@ class ArticleQueries
     {
 
         //TODO 重构并迁移到 ArticleRepo 中
-        //排除用户拉黑（屏蔽）的用户发布的视频
+        //排除用户拉黑（屏蔽）的用户发布的视频,排除拉黑（不感兴趣）的动态
         $userBlockId = [];
+        $articleBlockId = [];  
         if ($user = checkUser()) {
-            $userBlockId = \App\UserBlock::select('user_block_id')->where('user_id', $user->id)->get();
+            $userBlockId = \App\UserBlock::select('user_block_id')->whereNotNull('user_block_id')->where('user_id', $user->id)->get();
+            $articleBlockId = \App\UserBlock::select('article_block_id')->whereNotNull('article_block_id')->where('user_id', $user->id)->get();
         }
 
         $query = Article::withoutGlobalScope(ArticleSubmitScope::class)
@@ -23,6 +25,9 @@ class ArticleQueries
 
         if ($userBlockId) {
             $query->whereNotIn('user_id', $userBlockId);
+        }
+        if ($articleBlockId) {
+            $query->whereNotIn('id', $articleBlockId);
         }
 
         if ($args['submit'] != 10) {

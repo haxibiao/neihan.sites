@@ -59,6 +59,9 @@ Route::get('/share/qrcode/{url}', 'SharingController@qrcode');
 Route::middleware('auth:api')->post('/favorite/{id}/{type}', 'Api\FavoriteController@toggle');
 Route::middleware('auth:api')->get('/favorite/{id}/{type}', 'Api\FavoriteController@get');
 
+//获取VOD上传签名
+Route::get('/signature/vod-{site}', 'Api\VodController@signature');
+
 //like赞
 Route::middleware('auth:api')->post('/like/{id}/{type}', 'Api\LikeController@toggle');
 Route::middleware('auth:api')->get('/like/{id}/{type}', 'Api\LikeController@get');

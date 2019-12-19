@@ -436,4 +436,19 @@ trait UserRepo
         }
         return $data;
     }
+
+    public function isEditorRole()
+    {
+        return $this->role_id == self::EDITOR_STATUS;
+    }
+
+    public function isAdminRole()
+    {
+        return $this->role_id == self::ADMIN_STATUS;
+    }
+
+    public function isHighRole()
+    {
+        return $this->role_id >= self::EDITOR_STATUS;
+    }
 }

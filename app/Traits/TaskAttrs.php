@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Task;
+use App\User;
 use App\UserTask;
 use Carbon\Carbon;
 
@@ -102,10 +103,17 @@ trait TaskAttrs
     public function getSubmitNameAttribute()
     {
         if ($this->type == self::CUSTOM_TASK) {
-            // $submit_name = $this->resolve['submit_name'] ?? null;
-            // if (is_null($submit_name)) {
-            //     return $this->resolve['submit_name'];
-            // }
+            switch ($this->task_status) {
+                case UserTask::TASK_REVIEW:
+                    return '正在审核中';
+                    break;
+                case UserTask::TASK_REACH:
+                    return '领奖';
+                    break;
+                case UserTask::TASK_DONE:
+                    return '完成';
+                    break;
+            }
             return '进入';
         }
 

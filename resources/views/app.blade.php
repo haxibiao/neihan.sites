@@ -100,6 +100,7 @@
           </div>
         </div>
       </div>
+        @include('parts.footer')
     </div>
   </div>
 @endpush

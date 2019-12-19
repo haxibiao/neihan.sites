@@ -283,3 +283,54 @@ function getIp()
     }
     return $ip;
 }
+
+//是否处于备案状态
+function isRecording(){
+    $config = \App\AppConfig::where([
+        'group' => 'record',
+        'name' => 'web',
+    ])->first();
+    if($config === null){
+        return true;
+    }
+    if($config->state === \App\AppConfig::STATUS_ON){
+        return true;
+    }
+
+    return false;
+}
+
+    /**
+     * 获取文件大小信息
+     * @param $bytes
+     * @return string
+     */
+    function formatSizeUnits($bytes)
+    {
+        if ($bytes >= 1073741824)
+        {
+            $bytes = number_format($bytes / 1073741824, 2) . ' GB';
+        }
+        elseif ($bytes >= 1048576)
+        {
+            $bytes = number_format($bytes / 1048576, 2) . ' MB';
+        }
+        elseif ($bytes >= 1024)
+        {
+            $bytes = number_format($bytes / 1024, 2) . ' KB';
+        }
+        elseif ($bytes > 1)
+        {
+            $bytes = $bytes . ' bytes';
+        }
+        elseif ($bytes == 1)
+        {
+            $bytes = $bytes . ' byte';
+        }
+        else
+        {
+            $bytes = '0 bytes';
+        }
+
+        return $bytes;
+    }

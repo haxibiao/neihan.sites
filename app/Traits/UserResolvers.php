@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Exceptions\GQLException;
+use App\Gold;
 use App\Ip;
 use App\Profile;
 use App\User;
@@ -294,5 +295,18 @@ trait UserResolvers
             return true;
         }
         throw_if(!isset($user->id) || is_null($user), GQLException::class, '请登录后再尝试哦~');
+    }
+
+    public function newUserReword($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo){
+        $user = checkUser();
+        $type = $args['type'];
+        if ($type === 'douyinVideo') {
+            return Gold::makeIncome($user,150,'新手引导-观看采集视频教程金币奖励')->gold;
+        }
+
+        if ($type === 'newUserVideo') {
+            return Gold::makeIncome($user,150,'新手引导-观看新手视频教程金币奖励')->gold;
+        }
+        return -1;
     }
 }

@@ -22,7 +22,7 @@ trait WalletAttrs
     }
 
     public function getGoldBalanceAttribute()
-    {
+    {     
         $lastTransaction = $this->golds()->latest('id')->select('balance')->first();
         return $lastTransaction->balance ?? 0;
     }

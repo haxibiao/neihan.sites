@@ -100,6 +100,7 @@
 			</div>
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
+
 				<ul class="nav navbar-nav">
 					<li class="tab {{ get_active_css('/') }}"><a href="/"><i class="iconfont icon-faxian hidden-xs hidden-md"></i><span class="hidden-sm">发现</span></a></li>
 					<li class="tab {{ get_active_css('video') }}"><a target="{{ isDeskTop()? '_blank':'_self' }}" href="/video"><i class="iconfont icon-shipin3 hidden-xs hidden-md"></i><span class="hidden-sm">视频</span></a></li>

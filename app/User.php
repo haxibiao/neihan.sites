@@ -59,6 +59,13 @@ class User extends Authenticatable implements MustVerifyEmail
     //
 
     /**
+     * 编辑身份
+     */
+    const USER_STATUS   = 0;
+    const EDITOR_STATUS = 1;
+    const ADMIN_STATUS  = 2;
+
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
@@ -144,11 +151,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(\App\Like::class)->where('liked_type', 'articles');
     }
-    
-    public function userBlock(){
+
+    public function userBlock()
+    {
         return $this->hasMany(\App\UserBlock::class);
     }
-    
+
     #trick!! 这里其实是关注这个用户的粉丝
     public function follows()
     {

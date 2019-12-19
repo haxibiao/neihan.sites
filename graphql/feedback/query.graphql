@@ -20,5 +20,5 @@ extend type Query {
 }
 
 extend type Query @middleware(checks: ["auth:api"]) {
-  feedback(user_id: Int! @eq): [Feedback!] @paginate(defaultCount: 10)
+  feedback(user_id: Int! @eq, orderBy: [OrderByClause!] @orderBy): [Feedback!] @paginate(defaultCount: 10)
 }

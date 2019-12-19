@@ -1,5 +1,7 @@
 type UserBlock {
   id: Int!
   user: User!
-  userblock:User!
+  userBlock:User!
+  articleBlock:Article!
+  articleReport:Article!
 }

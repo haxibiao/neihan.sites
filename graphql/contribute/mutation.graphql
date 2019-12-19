@@ -1,6 +1,7 @@
 extend type Mutation @middleware(checks: ["auth:api"]) {
   clickAD: Contribute! @field(resolver: "App\\Contribute@clickAD")
   playADVideo(is_click:Boolean!):ADVideo @field(resolver: "App\\Contribute@playADVideo")
+  clickFeedAD: Int! @field(resolver: "App\\Contribute@clickFeedAD")
 }
 
 type ADVideo{

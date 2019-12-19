@@ -7,13 +7,11 @@ use App\Category;
 use App\Exceptions\GQLException;
 use App\Helpers\BadWord\BadWordUtils;
 use App\Jobs\ProcessSpider;
-use App\Tag;
 use App\User;
 use App\Video;
 use App\Visit;
 use Exception;
 use GraphQL\Type\Definition\ResolveInfo;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
@@ -121,43 +119,47 @@ trait ArticleResolvers
         $user      = checkUser();
         $pageCount = $args['count'];
 
-        $qb =  Article::with(['video', 'user','categories'])->whereNotNull('video_id')->publish()->orderByDesc('review_id');
-
+        $qb = Article::with(['video', 'user', 'categories'])->whereNotNull('video_id')->publish()->orderByDesc('review_id');
 
         if ($user) {
 
-            $qb->whereNotIn('id', function ($query) use($user){
+            $qb->whereNotIn('id', function ($query) use ($user) {
                 $query->select('visited_id')->from('visits')
-                    ->where('visits.visited_type','articles')
+                    ->where('visits.visited_type', 'articles')
                     ->where('visits.user_id', $user->id);
             });
-
+           
+            //过滤拉黑的用户的动态
             $qb->whereNotIn('user_id', function ($query) use ($user) {
-                $query->select('user_block_id')->from('user_blocks')->where("user_id", $user->id);
+                $query->select('user_block_id')->from('user_blocks')->whereNotNull('user_block_id')->where('user_id', $user->id);
             });
-        }
 
+            //过滤不感兴趣的动态
+            // $qb->whereNotIn('id', function ($query) use ($user){
+            //     $query->select('article_block_id')->from('user_blocks')->whereNotNull('article_block_id')->where("user_id", $user->id);
+            // });
+        }
         $total = $qb->count();
 
         //50%概率获取热门视频
-        $seed = random_int(1,2);
+        $seed        = random_int(1, 2);
         $dataFromHot = $seed % 2 == 1;
-        if( $dataFromHot ){
-            $newQb = clone $qb;
-            $isHotRecommand = $newQb->where('is_hot',true)->count() > 4;
-            if( $isHotRecommand ){
+        if ($dataFromHot) {
+            $newQb          = clone $qb;
+            $isHotRecommand = $newQb->where('is_hot', true)->count() > 4;
+            if ($isHotRecommand) {
                 //获取热门标签
-                $qb = $qb->where('is_hot',true);
+                $qb = $qb->where('is_hot', true);
             }
         }
 
         //分页角标
-        if(!$user && !$dataFromHot){
+        if (!$user && !$dataFromHot) {
             $offset = mt_rand(0, 50);
             $qb     = $qb->skip($offset);
         }
 
-        $limit     = $pageCount >= 10 ? 8 : 4;
+        $limit = $pageCount >= 10 ? 8 : 4;
         $qb    = $qb->take($limit);
 
         $articles = $qb->get();
@@ -211,13 +213,20 @@ trait ArticleResolvers
             $description = preg_replace('/#([\w]+)/u', '', $description);
             $description = trim($description);
             if (BadWordUtils::check($description)) {
-                throw new GQLException('发布的评论中含有包含非法内容,请删除后再试!');
+                throw new GQLException('您的分享文本中包含非法内容,请删除后再试!');
+            }
+
+            //校验视频链接
+            $isVerificated = Str::contains($link, 'https://v.douyin.com/');
+            if (!$isVerificated) {
+                throw new GQLException('您的分享链接有误哦~');
             }
 
             $todayUserUploadVideoCount = $user->articles()->whereNotNUll('source_url')
-                ->whereDate('created_at',now())
+                ->whereDate('created_at', now())
                 ->count();
-            if($todayUserUploadVideoCount >= 30){
+
+            if (!$user->isHighRole() && $todayUserUploadVideoCount >= 30) {
                 throw new GQLException('感谢您的分享，今日分享次数已达30条，休息一会儿明天再来哦~');
             }
 
@@ -257,12 +266,13 @@ trait ArticleResolvers
         }
     }
 
-    public function getShareLink($rootValue, array $args, $context, $resolveInfo){
+    public function getShareLink($rootValue, array $args, $context, $resolveInfo)
+    {
         $article = Article::find($args['id']);
-        throw_if(is_null($article),GQLException::class,'该动态不存在哦~,请稍后再试');
-        if ($article->type !== 'post' && $article->type !== 'video'){
+        throw_if(is_null($article), GQLException::class, '该动态不存在哦~,请稍后再试');
+        if ($article->type !== 'post' && $article->type !== 'video') {
             throw new GQLException('目前只能分享视频动态哦~');
         }
-        return sprintf('#%s/share/post/%d#, #%s#,打开【%s】,直接观看视频,玩视频就能赚钱~,',config('app.url'),$article->id,$article->description,config('app.name_cn'));
+        return sprintf('#%s/share/post/%d#, #%s#,打开【%s】,直接观看视频,玩视频就能赚钱~,', config('app.url'), $article->id, $article->description, config('app.name_cn'));
     }
 }

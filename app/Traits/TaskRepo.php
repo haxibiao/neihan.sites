@@ -167,12 +167,24 @@ trait TaskRepo
      * @param Task $task
      * @param string $content
      * @return bool
+     * @throws GQLException
      */
-    public function highPraise(User $user, Task $task ,string $content){
-        $userTask = UserTask::where([
+    public function highPraise(User $user, Task $task ,string $content): bool
+    {
+        $qb = UserTask::where([
             'task_id' => $task->id,
             'user_id' => $user->id,
-        ])->first();
+        ]);
+
+        if ($qb->doesntExist()){
+            $user->tasks()->attach($task->id, ['status' => UserTask::TASK_UNDONE]);
+        }
+        $userTask = $qb->first();
+
+        if ($userTask->status > UserTask::TASK_UNDONE){
+            throw new GQLException('好评任务已经做过了哦~');
+        }
+
         $userTask->content = $content;
         $userTask->status  = UserTask::TASK_REVIEW;
         $saveStatus        = $userTask->save();

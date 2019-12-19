@@ -25,7 +25,6 @@ extend type Mutation @middleware(checks: ["auth:api"]) {
 
   resolveDouyinVideo(share_link: String!): Article
     @field(resolver: "App\\Article@resolveDouyinVideo")
-  sharePost(id:ID!):String @field(resolver: "App\\Article@getShareLink")
 }
 
 enum ContenType {

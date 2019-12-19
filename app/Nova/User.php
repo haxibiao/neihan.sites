@@ -64,6 +64,11 @@ class User extends Resource
                 AppUser::FEMALE_GENDER => '女',
             ])->displayUsingLabels(),
 
+            Select::make('权限', 'role_id')->options([
+                AppUser::USER_STATUS   => '平民玩家',
+                AppUser::EDITOR_STATUS => '普通管理员',
+            ])->displayUsingLabels()->onlyOnForms(),
+
             Text::make('年龄', 'age'),
 
             Text::make('发布内容数', function () {

@@ -54,6 +54,7 @@ extend type Query @middleware(checks: ["auth:api"]) {
 
   trashArticles: [Article!]
     @paginate(defaultCount: 10, builder: "App\\Article@resolveTrashArticles")
+
 }
 
 extend type Query {
@@ -68,7 +69,7 @@ extend type Query {
       defaultCount: 10
       builder: "App\\Article@resolveRecommendArticles"
     )
-
+  sharePost(id:ID!):String @field(resolver: "App\\Article@getShareLink")
   articles(
     status: ArticleStatus = all
     user_id: Int
