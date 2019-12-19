@@ -105,7 +105,7 @@ trait TaskAttrs
         if ($this->type == self::CUSTOM_TASK) {
             switch ($this->task_status) {
                 case UserTask::TASK_REVIEW:
-                    return '正在审核中';
+                    return '审核中';
                     break;
                 case UserTask::TASK_REACH:
                     return '领奖';
