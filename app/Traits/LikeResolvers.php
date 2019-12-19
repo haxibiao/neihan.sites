@@ -53,9 +53,9 @@ trait LikeResolvers
         $articles_id      = Article::whereIn('id', $like_articles_id)->whereNotNull('video_id')->pluck('id');
 
         if ($liked_type == 'videos') {
-            return $like_builder->where('liked_type', "articles")->whereIn('liked_id', $articles_id)->orderBy('id', 'desc');
+            return $like_builder->where('liked_type', "articles")->whereIn('liked_id', $articles_id)->groupBy("liked_id")->orderBy('id', 'desc');
         } else {
-            return $like_builder->where('liked_type', $liked_type)->orderBy('id', 'desc');
+            return $like_builder->where('liked_type', $liked_type)->groupBy("liked_id")->orderBy('id', 'desc');
         }
     }
 }

@@ -175,7 +175,5 @@ class ProcessSpider implements ShouldQueue
         //奖励用户
         $user->notify(new ReceiveAward('发布视频动态奖励', 10, $user, $article->id));
         Gold::makeIncome($user, 10, '发布视频动态奖励');
-        Contribute::rewardUserVideoPost($user, $article, "发布视频动态奖励");
-
     }
 }

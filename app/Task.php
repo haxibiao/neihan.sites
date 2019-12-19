@@ -7,6 +7,7 @@ use App\Traits\TaskMethod;
 use App\Traits\TaskRepo;
 use App\Traits\TaskResolvers;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Task extends Model
 {
@@ -19,6 +20,7 @@ class Task extends Model
         'id',
         'name',
         'details',
+        'logo',
         'type',
         'count',
         'check_functions',
@@ -66,5 +68,24 @@ class Task extends Model
             self::ENABLE  => '已展示',
             self::DISABLE => '未展示',
         ];
+    }
+
+    public function saveDownloadImage($file)
+    {
+        if ($file) {
+            $task_logo = 'task/task' . $this->id . '.png';
+            $cosDisk   = \Storage::cloud();
+            $cosDisk->put($task_logo, \file_get_contents($file->path()));
+
+            return $task_logo;
+        }
+    }
+
+    public function getIconAttribute()
+    {
+        $logo = $this->getOriginal('icon');
+        if (!empty($logo)) {
+            return Storage::cloud()->url($logo);
+        }
     }
 }

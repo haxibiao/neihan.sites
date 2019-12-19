@@ -35,6 +35,14 @@ class DelayRewaredTask implements ShouldQueue
         if (!is_null($this->userTask)) {
             $this->userTask->status = UserTask::TASK_REACH;
             $this->userTask->save();
+
+            $task = $this->userTask->task;
+            $user = $this->userTask->user;
+
+            $task->rewardTask($task, $user);
+            $task->increment('count');
+
+
         }
     }
 }

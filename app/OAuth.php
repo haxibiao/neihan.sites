@@ -32,7 +32,7 @@ class OAuth extends Model
     {
         $oAuth = OAuth::where('oauth_type', 'wechat')->where('oauth_id', $unionId)->first();
 
-        if (!is_null($oAuth)) {
+        if ($oAuth !== null) {
             return $oAuth->user;
         }
     }
@@ -47,6 +47,10 @@ class OAuth extends Model
                 'value'       => 'tiktok',
                 'description' => '抖音',
             ],
+            'DONGDEZHUAN' => [
+                'value'       => 'dongdezhuan',
+                'description' => '懂得赚',
+            ]
         ];
     }
 
@@ -61,7 +65,17 @@ class OAuth extends Model
             'wechat' => '微信',
             'alipay' => '支付宝',
             'tiktok' => '抖音',
+            'dongdezhuan' => '懂得赚',
         ];
         return Arr::get($types, $type, '授权');
+    }
+
+    public static function createRelation($user_id,$oauth_type,$oauth_id,$data = null){
+        return OAuth::firstOrCreate([
+            'user_id' => $user_id,
+            'oauth_type' => $oauth_type,
+            'oauth_id' => $oauth_id,
+            'data' => $data
+        ]);
     }
 }

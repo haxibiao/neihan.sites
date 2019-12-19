@@ -200,5 +200,21 @@
                 'reward' => array ("gold" => "7"),
                 'resolve' => array ('method' => '','router' => 'MotivationalVideo'),
             ]);
+
+            Task::firstOrCreate([
+                'name' => 'douyin',
+                'details' => '观看采集视频教程',
+                'type' => Task::NEW_USER_TASK,
+                'status' => Task::ENABLE,
+                'reward' => array ("gold" => "150"),
+            ]);
+
+            Task::firstOrCreate([
+                'name' => 'newUser',
+                'details' => '观看新手视频教程',
+                'type' => Task::NEW_USER_TASK,
+                'status' => Task::ENABLE,
+                'reward' => array ("gold" => "150"),
+            ]);
         }
     }

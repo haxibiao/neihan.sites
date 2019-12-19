@@ -322,4 +322,10 @@ class User extends Authenticatable implements MustVerifyEmail
             self::FEMALE_GENDER => '女',
         ];
     }
+
+    public function oauth():HasMany
+    {
+        return $this->hasMany(OAuth::class);
+    }
+
 }

@@ -5,7 +5,9 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 
@@ -31,7 +33,7 @@ class Task extends Resource
      * @var array
      */
     public static $search = [
-        'id','name','details'
+        'id', 'name', 'details',
     ];
 
     public static function label()
@@ -59,14 +61,19 @@ class Task extends Resource
             Select::make('类型', 'type')->options(\App\Task::getTypes())->displayUsingLabels(),
             Select::make('状态', 'status')->options(\App\Task::getStatuses())->displayUsingLabels(),
             Code::make('奖励', 'reward')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
-            // Number::make('统计', count),
-            // check_functions
-            // Text::make('解析函数', 'check_functions'),
             Code::make('解析', 'resolve')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
             DateTime::make('开始时间', 'start_at'),
             DateTime::make('截止时间', 'end_at'),
             DateTime::make('创建时间', 'created_at')->exceptOnForms(),
-            // DateTime::make('截止时间', 'updated_at'),
+            Image::make('任务图标', 'icon')->store(
+                function (Request $request, $model) {
+                    $file = $request->file('icon');
+                    return $model->saveDownloadImage($file);
+                })->thumbnail(function () {
+                return $this->icon;
+            })->preview(function () {
+                return $this->icon;
+            })->disableDownload(),
         ];
     }
 

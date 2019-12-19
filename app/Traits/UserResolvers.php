@@ -5,9 +5,12 @@ namespace App\Traits;
 use App\Exceptions\GQLException;
 use App\Gold;
 use App\Ip;
+use App\OAuth;
 use App\Profile;
 use App\User;
+use App\UserTask;
 use GraphQL\Type\Definition\ResolveInfo;
+use Guzzle\Http\Client;
 use Illuminate\Support\Facades\Cache;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
@@ -297,16 +300,42 @@ trait UserResolvers
         throw_if(!isset($user->id) || is_null($user), GQLException::class, '请登录后再尝试哦~');
     }
 
+    //观看新手教程或采集视频教程任务状态变更
     public function newUserReword($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo){
         $user = checkUser();
         $type = $args['type'];
-        if ($type === 'douyinVideo') {
-            return Gold::makeIncome($user,150,'新手引导-观看采集视频教程金币奖励')->gold;
-        }
-
-        if ($type === 'newUserVideo') {
-            return Gold::makeIncome($user,150,'新手引导-观看新手视频教程金币奖励')->gold;
+        if ($type === 'douyin'||$type === 'newUser') {
+            $task = \App\Task::where("name",$type)->first();
+            $userTask = \App\UserTask::where("task_id",$task->id)->where("user_id",$user->id)->first();
+            $userTask->status = \App\UserTask::TASK_REACH;
+            $userTask->save();
+            return 1;
         }
         return -1;
+    }
+
+    public function bindDongdezhuan($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo){
+        $user = checkUser();
+
+        if ($user->checkUserIsBindDongdezhuan()){
+            return new GQLException('您已经绑定过了哦~');
+        }
+
+        $client = app('GuzzleClient');
+        $response = $client->request('POST', 'l.dongdezhuan.com/api/user/auth', [
+            'form_params' => [
+                'account' => $args['account'],
+                'password' => $args['password'],
+            ]
+        ]);
+
+        $result = json_decode($response->getBody(),true);
+        if (isset($result['message'])){
+            return new GQLException('绑定懂得赚失败~,'.$result['message']);
+        }
+
+        OAuth::createRelation($user->id,'dongdezhuan',$result['user']['id'],$result['user']);
+
+        return true;
     }
 }

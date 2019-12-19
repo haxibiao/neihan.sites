@@ -6,11 +6,12 @@ extend type Mutation @group(namespace: "App") {
     @field(resolver: "User@autoSignIn")
   destoryUser: Boolean @field(resolver: "User@destoryUserByToken")
   newUserReword(type:RewardType!): Int @field(resolver: "User@newUserReword")
+  bindDongdezhuan(account:String!,password:String!):Boolean @field(resolver: "User@bindDongdezhuan")
 }
 
 enum RewardType{
-  DOUYIN@enum(value:"douyinVideo")
-  VIDEO@enum(value:"newUserVideo")
+  DOUYIN@enum(value:"douyin")
+  VIDEO@enum(value:"newUser")
 }
 
 # test

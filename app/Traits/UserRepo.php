@@ -451,4 +451,9 @@ trait UserRepo
     {
         return $this->role_id >= self::EDITOR_STATUS;
     }
+
+    public function checkUserIsBindDongdezhuan():bool
+    {
+        return $this->oauth()->where('oauth_type','dongdezhuan')->exists();
+    }
 }

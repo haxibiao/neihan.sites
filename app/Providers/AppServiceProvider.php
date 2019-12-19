@@ -112,6 +112,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('DouyinSpider', function ($app) {
             return new \App\Helpers\DouyinSpider();
         });
+        $this->app->singleton('GuzzleClient', function ($app) {
+            return new \GuzzleHttp\Client();
+        });
         $this->app->singleton('ffmpeg', function ($app) {
             return \FFMpeg\FFMpeg::create([
                 'ffmpeg.binaries'  => [
