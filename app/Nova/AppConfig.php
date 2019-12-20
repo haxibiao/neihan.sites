@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\AppConfig as AppAppConfig;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -41,6 +42,7 @@ class AppConfig extends Resource
                 AppAppConfig::STATUS_ON  => '开启',
                 AppAppConfig::STATUS_OFF => '关闭',
             ])->displayUsingLabels(),
+            Code::make('App信息（没有就不填写，有的话请开发人员填写）', 'data')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
         ];
     }
 

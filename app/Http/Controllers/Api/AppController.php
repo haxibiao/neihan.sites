@@ -15,9 +15,17 @@
             $group = request('name') ?? $request->header('name');
             $array = [];
             $configs = AppConfig::whereGroup($group)->get();
+
             foreach ($configs as $config) {
                 $array[$config->name] = $config->status;
             }
+
+            $data = AppConfig::whereGroup('AD')->first();
+
+            if ($data !== null && $data->data !== null){
+                $array = array_merge($array,$data->data);
+            }
+
             $result = json_encode($array);
             return $result;
         }

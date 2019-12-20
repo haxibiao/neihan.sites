@@ -12,7 +12,7 @@
  */
 $is_testing = false;
 try {
-    $phpunit    = simplexml_load_file('phpunit.xml');
+    $phpunit    = simplexml_load_string(file_get_contents('../phpunit.xml'));
     $is_testing = $phpunit->php->xpath('env[@name="APP_ENV"]')[0]['value'] != 'prod';
 } catch (Exception $ex) {
 

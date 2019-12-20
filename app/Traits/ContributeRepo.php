@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Contribute;
 use App\User;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 trait ContributeRepo
 {
@@ -27,6 +28,6 @@ trait ContributeRepo
         return Contribute::where([
             'contributed_type' => $type,
             'user_id'          => $user->id,
-        ])->count();
+        ])->whereRaw("created_at  >= curdate()")->count();
     }
 }

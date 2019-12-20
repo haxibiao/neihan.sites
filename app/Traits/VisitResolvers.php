@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use App\Article;
+use App\User;
 use App\Visit;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
@@ -10,7 +12,11 @@ trait VisitResolvers
 {
     public function getVisits($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        return Visit::latest('id');
+        $articles = Article::whereNull('video_id')->pluck('id');
+        $user     = User::find($args['user_id']);
+        return Visit::where('user_id', $args['user_id'])->whereIn('visited_type', ['articles'])->whereNotIn(
+            'visited_id', $articles
+        )->latest('id');
     }
 
     public function getByDate($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)

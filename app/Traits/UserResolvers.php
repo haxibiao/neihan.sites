@@ -322,7 +322,7 @@ trait UserResolvers
         }
 
         $client = app('GuzzleClient');
-        $response = $client->request('POST', 'l.dongdezhuan.com/api/user/auth', [
+        $response = $client->request('POST', 'https://dongdezhuan.com/api/user/auth', [
             'form_params' => [
                 'account' => $args['account'],
                 'password' => $args['password'],
@@ -331,7 +331,7 @@ trait UserResolvers
 
         $result = json_decode($response->getBody(),true);
         if (isset($result['message'])){
-            return new GQLException('绑定懂得赚失败~,'.$result['message']);
+            return new GQLException('绑定懂得赚账号失败~,'.$result['message']);
         }
 
         OAuth::createRelation($user->id,'dongdezhuan',$result['user']['id'],$result['user']);

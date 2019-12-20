@@ -15,11 +15,4 @@ trait VisitRepo
         ]
         );
     }
-
-    public static function saveListedVideos($user, $videoArticles)
-    {
-        foreach ($videoArticles as $article) {
-            self::createVisit($user->id, $article->video_id, 'videos');
-        }
-    }
 }

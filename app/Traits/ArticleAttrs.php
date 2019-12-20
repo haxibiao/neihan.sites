@@ -16,11 +16,12 @@ trait ArticleAttrs
         return str_limit($this->body);
     }
 
-    public function getSubjectDescriptionAttribute(){
+    public function getSubjectDescriptionAttribute()
+    {
         if (!empty($this->description)) {
             return $this->description;
         }
-    
+
         return $this->subject;
     }
 

@@ -15,8 +15,8 @@ class ArticleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('show');
-        $this->middleware('auth.editor')->except('index', 'show', 'storePost', 'edit', 'destroy'); //编辑自己的文章的时候，无需编辑身份
+        $this->middleware('auth')->except('show','shareVideo');
+        $this->middleware('auth.editor')->except('index', 'show', 'storePost', 'edit', 'destroy','shareVideo'); //编辑自己的文章的时候，无需编辑身份
     }
 
     /**
@@ -147,7 +147,7 @@ class ArticleController extends Controller
             ->firstOrFail();
 
         //type is video redirect
-        if ($article->type == 'video') {
+        if ($article->video_id) {
             return redirect('/video/' . $article->video_id);
         }
 

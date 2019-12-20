@@ -16,6 +16,10 @@ trait WithdrawResolvers
         $user   = getUser();
         $amount = $args['amount'];
 
+        if (stopwithdraw()) {
+            throw new GQLException('提现系统维护中,望请谅解');
+        }
+
         //禁止3元以上用户提现
         if ($amount > Withdraw::WITHDRAW_MAX) {
             throw new GQLException('等级和勋章不够哦~，请等待版本更新，增加更多玩法吧~');

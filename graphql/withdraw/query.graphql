@@ -3,6 +3,7 @@ type Withdraw {
   status: Int
   amount: Float!
   remark: String
+  biz_no:String
   trade_no: String
   to_account: String!
   to_platform: String

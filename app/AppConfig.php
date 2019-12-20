@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class AppConfig extends Model
 {
     protected $fillable = [
-        'group', 'state', 'name',
+        'group', 'state', 'name', 'data'
+    ];
+
+    protected $casts = [
+        'data' => 'array'
     ];
 
     // 开启
@@ -27,4 +31,5 @@ class AppConfig extends Model
                 return "on";
         }
     }
+
 }

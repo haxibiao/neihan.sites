@@ -22,7 +22,7 @@ function aso_value($group, $name)
 function getVodConfig(string $key)
 {
     $appName = env('APP_NAME');
-    $name = sprintf('tencentvod.%s.%s',$appName,$key);
+    $name    = sprintf('tencentvod.%s.%s', $appName, $key);
     return config($name);
 }
 
@@ -43,6 +43,13 @@ function qrcode_url()
     $path = base64_encode($qrcode);
 
     return $path;
+
+}
+
+//暂时停掉一下项目的提现
+function stopwithdraw()
+{
+    return str_contains(env('APP_NAME'), ["dongqizhi", "dongshouji", "dongwaiyu", "tongjiuxiu", "dongwuli", "dongdaima", "caohan", "donghuamu", "dongmiaomu"]);
 
 }
 
@@ -285,52 +292,42 @@ function getIp()
 }
 
 //是否处于备案状态
-function isRecording(){
+function isRecording()
+{
     $config = \App\AppConfig::where([
         'group' => 'record',
-        'name' => 'web',
+        'name'  => 'web',
     ])->first();
-    if($config === null){
+    if ($config === null) {
         return true;
     }
-    if($config->state === \App\AppConfig::STATUS_ON){
+    if ($config->state === \App\AppConfig::STATUS_ON) {
         return true;
     }
 
     return false;
 }
 
-    /**
-     * 获取文件大小信息
-     * @param $bytes
-     * @return string
-     */
-    function formatSizeUnits($bytes)
-    {
-        if ($bytes >= 1073741824)
-        {
-            $bytes = number_format($bytes / 1073741824, 2) . ' GB';
-        }
-        elseif ($bytes >= 1048576)
-        {
-            $bytes = number_format($bytes / 1048576, 2) . ' MB';
-        }
-        elseif ($bytes >= 1024)
-        {
-            $bytes = number_format($bytes / 1024, 2) . ' KB';
-        }
-        elseif ($bytes > 1)
-        {
-            $bytes = $bytes . ' bytes';
-        }
-        elseif ($bytes == 1)
-        {
-            $bytes = $bytes . ' byte';
-        }
-        else
-        {
-            $bytes = '0 bytes';
-        }
-
-        return $bytes;
+/**
+ * 获取文件大小信息
+ * @param $bytes
+ * @return string
+ */
+function formatSizeUnits($bytes)
+{
+    if ($bytes >= 1073741824) {
+        $bytes = number_format($bytes / 1073741824, 2) . ' GB';
+    } elseif ($bytes >= 1048576) {
+        $bytes = number_format($bytes / 1048576, 2) . ' MB';
+    } elseif ($bytes >= 1024) {
+        $bytes = number_format($bytes / 1024, 2) . ' KB';
+    } elseif ($bytes > 1) {
+        $bytes = $bytes . ' bytes';
+    } elseif ($bytes == 1) {
+        $bytes = $bytes . ' byte';
+    } else {
+        $bytes = '0 bytes';
     }
+
+    return $bytes;
+}
