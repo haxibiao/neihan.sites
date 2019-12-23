@@ -322,10 +322,11 @@ trait UserResolvers
         }
 
         $client = app('GuzzleClient');
-        $response = $client->request('POST', 'https://dongdezhuan.com/api/user/auth', [
+        $response = $client->request('POST', 'http://l.dongdezhuan.com/api/user/auth', [
             'form_params' => [
-                'account' => $args['account'],
+                'account'  => $args['account'],
                 'password' => $args['password'],
+                'app'      => config('app.name_cn')
             ]
         ]);
 

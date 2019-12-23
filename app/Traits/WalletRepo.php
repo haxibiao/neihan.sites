@@ -27,7 +27,7 @@ trait WalletRepo
         ]);
     }
 
-    public function withdraw($amount): Withdraw
+    public function withdraw($amount,$to_account = null): Withdraw
     {
         if ($this->available_balance < $amount) {
             throw new GQLException('余额不足');
@@ -36,7 +36,7 @@ trait WalletRepo
         $withdraw = Withdraw::create([
             'wallet_id'  => $this->id,
             'amount'     => $amount,
-            'to_account' => $this->pay_account,
+            'to_account' => $to_account ?? $this->pay_account,
         ]);
         //交给提现队列
         dispatch(new ProcessWithdraw($withdraw->id))->onQueue('withdraws');

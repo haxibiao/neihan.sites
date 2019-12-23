@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\Category;
+use App\OAuth;
 use App\User;
 use Auth;
 
@@ -15,7 +16,6 @@ class IndexController extends Controller
      */
     public function index()
     {
-
         if (isRecording()){
             return view('app');
         }

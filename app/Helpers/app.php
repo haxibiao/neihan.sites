@@ -47,10 +47,9 @@ function qrcode_url()
 }
 
 //暂时停掉一下项目的提现
-function stopwithdraw()
+function stopfunction($name)
 {
-    return str_contains(env('APP_NAME'), ["dongqizhi", "dongshouji", "dongwaiyu", "tongjiuxiu", "dongwuli", "dongdaima", "caohan", "donghuamu", "dongmiaomu"]);
-
+    \App\FunctionSwitch::close_function($name);
 }
 
 function getDownloadUrl()
@@ -322,7 +321,7 @@ function formatSizeUnits($bytes)
     } elseif ($bytes >= 1024) {
         $bytes = number_format($bytes / 1024, 2) . ' KB';
     } elseif ($bytes > 1) {
-        $bytes = $bytes . ' bytes';
+        $bytes = $bytes . ' MB';
     } elseif ($bytes == 1) {
         $bytes = $bytes . ' byte';
     } else {

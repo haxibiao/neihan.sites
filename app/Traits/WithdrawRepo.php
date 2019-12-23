@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Helpers\Pay\Alipay\AlipayService;
 use App\Transaction;
+use App\User;
 use App\Withdraw;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -55,6 +56,36 @@ trait WithdrawRepo
         $this->writeWithdrawLog();
     }
 
+    public function processDongdezhuan(){
+        $wallet = $this->wallet;
+        $user   = $this->wallet->user;
+
+        //提现是否等待中
+        if (!$this->isWaitingWithdraw()) {
+            return ;
+        }
+
+        if (!$user->isWithDrawTodayByPayAccount($this->created_at)) {
+            return $this->illegalWithdraw('当前懂得赚账号已经提现过了噢 ~，请勿重复提现~~');
+        }
+
+        //判断余额
+        if ($wallet->balance < $this->amount) {
+            return $this->illegalWithdraw('余额不足,非法订单！');
+        }
+
+        $result = $this->makingDongdezhuanTransfer($user);
+        info($result);
+        if (isset($result['receipt'])){
+            //转账成功
+            $this->processingSucceededWithdraw($result['receipt'],'dongdezhuan','转账到懂得赚成功');
+        }else{
+            //转账失败
+            $remark = $result['message'] ?? '系统错误,提现失败,请重新尝试！';
+            $this->processingFailedWithdraw($remark);
+        }
+    }
+
     /**
      * 支付宝转账
      *
@@ -75,14 +106,35 @@ trait WithdrawRepo
         return $alipayTransferResponse['alipay_fund_trans_toaccount_transfer_response'] ?? null;
     }
 
+    private function makingDongdezhuanTransfer(User $user){
+        return $this->transferToDongdezhuan($this->amount,$user->oauth()->where('oauth_type','dongdezhuan')->first()->oauth_id,$user->id);
+    }
+
+
+    protected function transferToDongdezhuan(string $amount,int $user_id,int $app_user_id){
+        $client = app('GuzzleClient');
+        $response = $client->request('POST', 'http://l.dongdezhuan.com/api/order/createOrder', [
+            'form_params' => [
+                'amount'  => $amount,
+                'user_id' => $user_id,
+                'app'     => config('app.name_cn'),
+                'app_user_id' => $app_user_id,
+            ]
+        ]);
+        $result = json_decode($response->getBody(),true);
+        return $result;
+    }
+
     /**
      * 处理成功提现
      *
      * @param string $orderId
+     * @param string $to_platform
+     * @param string $remark
      * @return void
      * @throws \Exception
      */
-    protected function processingSucceededWithdraw($orderId)
+    protected function processingSucceededWithdraw($orderId,$to_platform='Alipay',$remark='提现成功')
     {
         //重新查询锁住该记录更新
         $withdraw = Withdraw::lockForUpdate()->find($this->id);
@@ -93,8 +145,8 @@ trait WithdrawRepo
             //1.更改提现记录
             $withdraw->status      = Withdraw::SUCCESS_WITHDRAW;
             $withdraw->trade_no    = $orderId;
-            $withdraw->to_platform = 'Alipay';
-            $withdraw->remark      = '提现成功';
+            $withdraw->to_platform = $to_platform;
+            $withdraw->remark      = $remark;
 
             //2.创建流水记录
             $transaction              = Transaction::makeOutcome($wallet, $withdraw->amount, '提现');
@@ -132,21 +184,21 @@ trait WithdrawRepo
             $withdraw->remark = $remark;
             $withdraw->save();
 
-            //金额兑换智慧点
-            // $amount = $withdraw->amount;
-            // $gold   = Exchange::computeGold($amount);
-
-            // //2.创建退款流水记录
-            // if (!is_null($wallet)) {
-            //     $transaction = WalletTransaction::makeOutcome($wallet, $amount, '提现失败');
-            // }
-
-            // // 3.退回智慧点 创建兑换记录
-            // if (!is_null($user)) {
-            //     Gold::makeIncome($user, $gold, '提现失败退款');
-            //     $user->refresh();
-            //     Exchange::exhangeIn($user, $gold);
-            // }
+//            // 金额兑换智慧点
+//             $amount = $withdraw->amount;
+//             $gold   = Exchange::computeGold($amount);
+//
+//             //2.创建退款流水记录
+//             if (!is_null($wallet)) {
+//                 $transaction = WalletTransaction::makeOutcome($wallet, $amount, '提现失败');
+//             }
+//
+//             // 3.退回智慧点 创建兑换记录
+//             if (!is_null($user)) {
+//                 Gold::makeIncome($user, $gold, '提现失败退款');
+//                 $user->refresh();
+//                 Exchange::exhangeIn($user, $gold);
+//             }
 
             //事务提交
             DB::commit();

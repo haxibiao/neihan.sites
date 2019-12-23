@@ -108,6 +108,9 @@ trait ArticleAttrs
 
         //为空返回默认图片
         if (empty($cover_url)) {
+            if($this->type == 'article'){
+                return null;
+            }
             return url("/images/cover.png");
         }
 

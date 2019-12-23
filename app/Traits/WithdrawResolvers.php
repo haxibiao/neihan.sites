@@ -16,9 +16,8 @@ trait WithdrawResolvers
         $user   = getUser();
         $amount = $args['amount'];
 
-        if (stopwithdraw()) {
-            throw new GQLException('提现系统维护中,望请谅解');
-        }
+        //可控制提现关闭
+        stopfunction("提现");
 
         //禁止3元以上用户提现
         if ($amount > Withdraw::WITHDRAW_MAX) {
@@ -65,7 +64,12 @@ trait WithdrawResolvers
         }
 
         //开启兑换事务,替换到钱包 创建提现订单
-        $withdraw = $wallet->withdraw($amount);
+        $qb = $user->oauth()->where('oauth_type', 'dongdezhuan');
+        if ($qb->exists()) {
+            $withdraw = $wallet->withdraw($amount, $qb->first()->data['account']);
+        } else {
+            $withdraw = $wallet->withdraw($amount);
+        }
 
         if (!$withdraw) {
             throw new GQLException('兑换失败,请稍后再试!');

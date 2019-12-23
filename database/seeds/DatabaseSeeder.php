@@ -14,8 +14,10 @@ class DatabaseSeeder extends Seeder
 //         $this->call(AsoSeeder::class);
         // $this->call(SeoSeeder::class);
         // $this->call(TaskSeeder::class);
-//        $this->call(ContributeSeeder::class);
-        $this->call(AppConfigSeeder::class);
+        //        $this->call(ContributeSeeder::class);
+        // $this->call(AppConfigSeeder::class);
+        $this->call(AdConfigSeeder::class);
+
 //        $this->call(UserSeeder::class);
     }
 }

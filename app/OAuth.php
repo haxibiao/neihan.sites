@@ -78,4 +78,12 @@ class OAuth extends Model
             'data' => $data
         ]);
     }
+
+    public static function isExists($type,$id): bool
+    {
+        return self::where([
+            'oauth_type' => $type,
+            'oauth_id' => $id,
+        ])->exists();
+    }
 }

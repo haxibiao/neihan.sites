@@ -456,4 +456,9 @@ trait UserRepo
     {
         return $this->oauth()->where('oauth_type','dongdezhuan')->exists();
     }
+
+    public function getDongdezhuanUserId():int
+    {
+        return $this->oauth()->where('oauth_type','dongdezhuan')->oauth_id;
+    }
 }
