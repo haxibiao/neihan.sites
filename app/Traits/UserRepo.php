@@ -3,6 +3,8 @@
 namespace App\Traits;
 
 use App\Contribute;
+use App\Exceptions\GQLException;
+use App\OAuth;
 use App\Profile;
 use App\User;
 use App\Wallet;
@@ -460,5 +462,37 @@ trait UserRepo
     public function getDongdezhuanUserId():int
     {
         return $this->oauth()->where('oauth_type','dongdezhuan')->oauth_id;
+    }
+
+
+    /**
+     * @param string $uuid
+     * @param User $user
+     * @return array
+     */
+    public static function bindDongdezhuanByUUID(string $uuid, User $user)
+    {
+//        1.检查是否绑定过
+        if ($user->checkUserIsBindDongdezhuan()) {
+            return ['error' => '已经绑定过了'];
+        }
+
+//        2.执行绑定
+        $client = app('GuzzleClient');
+        $response = $client->request('POST', 'https://dongdezhuan.com/api/user/auth', [
+            'form_params' => [
+                'uuid' => $uuid,
+                'app' => config('app.name_cn')
+            ]
+        ]);
+
+        $result = json_decode($response->getBody(), true);
+        if (isset($result['message'])) {
+            return ['error' => '绑定懂得赚账号失败~,' . $result['message']];
+        }
+//        3. 记录账号与懂得赚账号
+        OAuth::createRelation($user->id, 'dongdezhuan', $result['user']['id'], $result['user']);
+
+        return ['success' => true];
     }
 }

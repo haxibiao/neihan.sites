@@ -204,6 +204,7 @@ trait UserResolvers
      */
     public function autoSignIn($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+
         $qb = User::where('uuid', $args['uuid']);
 
         $phone = null;
@@ -222,6 +223,7 @@ trait UserResolvers
             if (!is_null($phone)) {
                 $user->update(['phone' => $phone]);
             }
+            self::bindDongdezhuanByUUID($user->uuid,$user);
             // app_track_user("用户登录", 'login');
             return $user;
         }
@@ -240,7 +242,9 @@ trait UserResolvers
         ]);
 
         Ip::createIpRecord('users', $user->id, $user->id);
-        // app_track_user("用户注册", 'register');
+
+        self::bindDongdezhuanByUUID($user->uuid,$user);
+
         return $user;
     }
 
@@ -314,29 +318,15 @@ trait UserResolvers
         return -1;
     }
 
+
     public function bindDongdezhuan($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo){
-        $user = checkUser();
-
-        if ($user->checkUserIsBindDongdezhuan()){
-            return new GQLException('您已经绑定过了哦~');
+        if ($user = checkUser()){
+            $result = self::bindDongdezhuanByUUID($args['uuid'],$user);
+            if (isset($result['error'])){
+                throw new GQLException($result['error']);
+            }
+            return true;
         }
-
-        $client = app('GuzzleClient');
-        $response = $client->request('POST', 'http://l.dongdezhuan.com/api/user/auth', [
-            'form_params' => [
-                'account'  => $args['account'],
-                'password' => $args['password'],
-                'app'      => config('app.name_cn')
-            ]
-        ]);
-
-        $result = json_decode($response->getBody(),true);
-        if (isset($result['message'])){
-            return new GQLException('绑定懂得赚账号失败~,'.$result['message']);
-        }
-
-        OAuth::createRelation($user->id,'dongdezhuan',$result['user']['id'],$result['user']);
-
-        return true;
     }
+
 }

@@ -113,7 +113,7 @@ trait WithdrawRepo
 
     protected function transferToDongdezhuan(string $amount,int $user_id,int $app_user_id){
         $client = app('GuzzleClient');
-        $response = $client->request('POST', 'http://l.dongdezhuan.com/api/order/createOrder', [
+        $response = $client->request('POST', 'https://dongdezhuan.com/api/order/createOrder', [
             'form_params' => [
                 'amount'  => $amount,
                 'user_id' => $user_id,
