@@ -62,14 +62,14 @@ class User extends Resource
             Select::make('性别', 'gender')->options([
                 AppUser::MALE_GENDER   => '男',
                 AppUser::FEMALE_GENDER => '女',
-            ])->displayUsingLabels(),
+            ])->displayUsingLabels()->hideWhenUpdating(),
 
             Select::make('权限', 'role_id')->options([
                 AppUser::USER_STATUS   => '平民玩家',
                 AppUser::EDITOR_STATUS => '普通管理员',
             ])->displayUsingLabels()->onlyOnForms(),
 
-            Text::make('年龄', 'age'),
+            Text::make('年龄', 'age')->hideWhenUpdating(),
 
             Text::make('发布内容数', function () {
                 return $this->allArticles()->count();
