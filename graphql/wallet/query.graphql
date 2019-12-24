@@ -10,5 +10,6 @@ type Wallet {
   total_withdraw_amount: Float
   today_withdraw_left: Float
   available_balance: Float
-  gold_balance: Int
+  gold_balance: Float
+  dongdezhuan_available_balance:Float
 }

@@ -201,15 +201,15 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function collections()
     {
-        //默认给个文集...
-        if (!Collection::where('user_id', $this->id)->count()) {
-            $collection = Collection::firstOrNew([
-                'user_id' => $this->id,
-                'name'    => '日记本',
-            ]);
-            $collection->save();
-            $this->count_collections = 1;
-        }
+//        //默认给个文集...
+//        if (!Collection::where('user_id', $this->id)->count()) {
+//            $collection = Collection::firstOrNew([
+//                'user_id' => $this->id,
+//                'name'    => '日记本',
+//            ]);
+//            $collection->save();
+//            $this->count_collections = 1;
+//        }
 
         return $this->hasMany(\App\Collection::class);
     }

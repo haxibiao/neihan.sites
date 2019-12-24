@@ -56,13 +56,29 @@ return [
             'engine'      => null,
         ],
 
+//        FIXME: 先这样写，以后实现到 env:refresh
+        'dongdezhuan'        => [
+            'driver'      => 'mysql',
+            'host'        => env('DDZ_DB_HOST', 'gz006'),
+            'port'        => env('DDZ_DB_PORT', '3306'),
+            'database'    => env('DDZ_DB_DATABASE', 'dongdezhuan'),
+            'username'    => env('DDZ_DB_USERNAME', 'root'),
+            'password'    => env('DDZ_DB_PASSWORD', 'yp1qaz@WSX'),
+            'unix_socket' => env('DDZ_DB_SOCKET', ''),
+            'charset'     => 'utf8mb4',
+            'collation'   => 'utf8mb4_unicode_ci',
+            'prefix'      => '',
+            'strict'      => false,
+            'engine'      => null,
+        ],
+
         'dianmoge_vod'        => [
             'driver'      => 'mysql',
             'host'        => env('DB_HOST', '127.0.0.1'),
             'port'        => env('DB_PORT', '3306'),
             'database'    => 'dianmoge_vod',
-            'username'    => env('DB_USERNAME', 'forge'),
-            'password'    => env('DB_PASSWORD', ''),
+            'username'    => env('DB_USERNAME', 'root'),
+            'password'    => env('DB_PASSWORD', 'localdb001'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset'     => 'utf8mb4',
             'collation'   => 'utf8mb4_unicode_ci',
