@@ -1,6 +1,5 @@
 <?php
 
-use FunctionSwitchSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
