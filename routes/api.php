@@ -72,13 +72,7 @@ Route::get('/image', 'Api\ImageController@index');
 Route::middleware('auth:api')->post('/image', 'Api\ImageController@store');
 Route::middleware('auth:api')->post('/image/save', 'Api\ImageController@store'); //兼容1.0 or vue上传视频接口
 
-//app功能开关
-Route::get('/app-config', 'Api\AppController@index');
-//app版本管理
-Route::any('/app-version', 'Api\AppController@version');
-
 Route::post('/article/resolverDouyin', 'Api\ArticleController@resolverDouyinVideo');
-
 Route::post('/media/import', 'Api\SpiderController@importDouyinSpider');
 
 Route::namespace ('Api')->middleware('auth:api')->group(function () {

@@ -11,63 +11,56 @@ class AppConfigSeeder extends Seeder
      */
     public function run()
     {
-//        \App\AppConfig::firstOrCreate(
-//            [
-//                'group' => 'huawei',
-//                'name'  => 'ad',
-//                'state' => 1,
-//            ]
-//        );
-//        \App\AppConfig::firstOrCreate(
-//            [
-//                'group' => 'huawei',
-//                'name'  => 'wallet',
-//                'state' => 1,
-//            ]
-//        );
-//
-//        \App\AppConfig::firstOrCreate(
-//            [
-//                'group' => 'android',
-//                'name'  => 'ad',
-//                'state' => 1,
-//            ]
-//        );
-//        \App\AppConfig::firstOrCreate(
-//            [
-//                'group' => 'android',
-//                'name'  => 'wallet',
-//                'state' => 1,
-//            ]
-//        );
-//
-//        \App\AppConfig::firstOrCreate(
-//            [
-//                'group' => 'ios',
-//                'name'  => 'ad',
-//                'state' => 1,
-//            ]
-//        );
-//        \App\AppConfig::firstOrCreate(
-//            [
-//                'group' => 'ios',
-//                'name'  => 'wallet',
-//                'state' => 1,
-//            ]
-//        );
-//        \App\AppConfig::updateOrCreate(
-//            [
-//                'group' => 'record',
-//                'name'  => 'web',
-//            ],[
-//                'state' => \App\AppConfig::STATUS_ON,
-//            ]
-//        );
-            \App\AppConfig::firstOrCreate(
+        \App\AppConfig::firstOrCreate(
             [
-                'group' => 'AD',
-                'name'  => 'CodeId',
+                'group' => 'huawei',
+                'name'  => 'ad',
                 'state' => 1,
+            ]
+        );
+        \App\AppConfig::firstOrCreate(
+            [
+                'group' => 'huawei',
+                'name'  => 'wallet',
+                'state' => 1,
+            ]
+        );
+
+        \App\AppConfig::firstOrCreate(
+            [
+                'group' => 'android',
+                'name'  => 'ad',
+                'state' => 1,
+            ]
+        );
+        \App\AppConfig::firstOrCreate(
+            [
+                'group' => 'android',
+                'name'  => 'wallet',
+                'state' => 1,
+            ]
+        );
+
+        \App\AppConfig::firstOrCreate(
+            [
+                'group' => 'ios',
+                'name'  => 'ad',
+                'state' => 1,
+            ]
+        );
+        \App\AppConfig::firstOrCreate(
+            [
+                'group' => 'ios',
+                'name'  => 'wallet',
+                'state' => 1,
+            ]
+        );
+        \App\AppConfig::updateOrCreate(
+            [
+                'group' => 'record',
+                'name'  => 'web',
+            ], [
+                'state' => \App\AppConfig::STATUS_ON,
             ]
         );
     }
