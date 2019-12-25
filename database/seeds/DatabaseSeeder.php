@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         //develop上测试开关和adconfig
         // $this->call(AppConfigSeeder::class);
-        // $this->call(AdConfigSeeder::class);
-        $this->call(FunctionSwitchSeeder::class);
+        $this->call(AdConfigSeeder::class);
+        // $this->call(FunctionSwitchSeeder::class);
     }
 }
