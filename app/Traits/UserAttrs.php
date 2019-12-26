@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\BlackList;
+use App\Contribute;
 use App\Exchange;
 use App\Follow;
 use App\Profile;
@@ -39,11 +40,8 @@ trait UserAttrs
     public function getIsWalletAttribute()
     {
         $wallet = $this->wallets()->whereType(0)->first();
-        if ($wallet->pay_account) {
-            return $wallet;
-        } else {
-            return null;
-        }
+
+        return $wallet;
     }
 
     //金币钱包
@@ -367,7 +365,17 @@ trait UserAttrs
         return $this->profile->count_contributes;
     }
 
-    public function getIsBindDongdezhuanAttribute(){
+    public function getTodayContributeAttribute()
+    {
+        $amount = Contribute::where('user_id', $this->id)->whereDate('created_at', today())->sum('amount');
+        if ($amount <= 0) {
+            return 0;
+        }
+        return $amount;
+    }
+
+    public function getIsBindDongdezhuanAttribute()
+    {
         return $this->checkUserIsBindDongdezhuan();
     }
 }

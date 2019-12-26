@@ -1,4 +1,7 @@
 <?php
+
+use Illuminate\Support\Arr;
+
 $config = [
     'dianmoge'     => 'http://82e2cdcae0a842e189b7fb60f2d6f423@sentry.haxibiao.cn:9000/7',
     'dongdianyao'  => 'http://ab80ece502b343688669c137666fc356@sentry.haxibiao.cn:9000/8',
@@ -32,7 +35,7 @@ return [
 
 //    'dsn' => env('SENTRY_LARAVEL_DSN', env('SENTRY_DSN')),
 
-    'dsn'         => $config[env('APP_NAME')],
+    'dsn'         => Arr::get($config, env('APP_NAME'), null),
     // capture release as git sha
     // 'release' => trim(exec('git --git-dir ' . base_path('.git') . ' log --pretty="%h" -n1 HEAD')),
 

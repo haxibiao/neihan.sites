@@ -60,6 +60,7 @@ class EventServiceProvider extends ServiceProvider
         \App\Follow::observe(\App\Observers\FollowObserver::class);
         \App\Report::observe(\App\Observers\ReportObserver::class);
         \App\BadWord::observe(\App\Observers\BadWordObserver::class);
+        \App\Notice::observe(\App\Observers\NoticeObserver::class);
 
     }
 }

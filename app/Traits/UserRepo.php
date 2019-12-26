@@ -460,6 +460,10 @@ trait UserRepo
         return $this->oauth()->where('oauth_type','dongdezhuan')->exists();
     }
 
+    public function getDongdezhuanUser(){
+        return \App\Dongdezhuan\User::find($this->oauth()->where('oauth_type','dongdezhuan')->first()->oauth_id);
+    }
+
     public function getDongdezhuanUserId():int
     {
         return $this->oauth()->where('oauth_type','dongdezhuan')->first()->oauth_id;

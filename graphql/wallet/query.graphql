@@ -12,4 +12,11 @@ type Wallet {
   available_balance: Float
   gold_balance: Float
   dongdezhuan_available_balance:Float
+  platforms:PayPlatForm,
+  bind_platforms:PayPlatForm
+}
+
+type PayPlatForm {
+  alipay:String
+  wechat:String
 }

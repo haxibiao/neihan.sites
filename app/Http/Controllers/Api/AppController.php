@@ -26,7 +26,7 @@ class AppController extends Controller
             $group = 'huawei';
         }
 
-        $array = [];
+        $array   = [];
         $configs = AppConfig::whereGroup($group)->get();
         foreach ($configs as $config) {
             $array[$config->name] = $config->status;
@@ -48,10 +48,10 @@ class AppController extends Controller
         if ($adData['splash_prodiver'] == '混合') {
             if (rand(1, 9) <= 3) {
                 $adData['splash_prodiver'] = '腾讯';
-                $adData['codeid_splash'] = $adData['codeid_splash_tencent'];
+                $adData['codeid_splash']   = $adData['codeid_splash_tencent'];
             } else if (rand(1, 9) <= 6) {
                 $adData['splash_prodiver'] = '百度';
-                $adData['codeid_splash'] = $adData['codeid_splash_baidu'];
+                $adData['codeid_splash']   = $adData['codeid_splash_baidu'];
             } else {
                 $adData['splash_prodiver'] = '头条';
             }
@@ -69,10 +69,10 @@ class AppController extends Controller
         if ($adData['feed_prodiver'] == '混合') {
             if (rand(1, 9) <= 3) {
                 $adData['feed_prodiver'] = '腾讯';
-                $adData['codeid_feed'] = $adData['codeid_feed_tencent'];
+                $adData['codeid_feed']   = $adData['codeid_feed_tencent'];
             } else if (rand(1, 9) <= 6) {
                 $adData['feed_prodiver'] = '百度';
-                $adData['codeid_feed'] = $adData['codeid_feed_baidu'];
+                $adData['codeid_feed']   = $adData['codeid_feed_baidu'];
             } else {
                 $adData['feed_prodiver'] = '头条';
             }
@@ -90,14 +90,14 @@ class AppController extends Controller
         if ($adData['reward_video_prodiver'] == '混合') {
             if (rand(1, 10) > 5) {
                 $adData['reward_video_prodiver'] = '腾讯';
-                $adData['codeid_reward_video'] = $adData['codeid_reward_video_tencent'];
+                $adData['codeid_reward_video']   = $adData['codeid_reward_video2'];
             } else {
                 $adData['reward_video_prodiver'] = '头条';
             }
         }
         //选择腾讯
         if ($adData['reward_video_prodiver'] == '腾讯') {
-            $adData['codeid_reward_video'] = $adData['codeid_reward_video_tencent'];
+            $adData['codeid_reward_video'] = $adData['codeid_reward_video2'];
         }
         //默认是头条的codeid
         return $adData;
@@ -127,12 +127,12 @@ class AppController extends Controller
         $array = $version->toArray();
         return array_map(static function ($item) {
             return array(
-                'version' => $item['name'],
-                'apk' => $item['url'],
-                'is_force' => $item['is_force'],
+                'version'     => $item['name'],
+                'apk'         => $item['url'],
+                'is_force'    => $item['is_force'],
                 'description' => $item['description'],
-                'size' => formatSizeUnits($item['size']),
-                'package' => $item['package'],
+                'size'        => formatSizeUnits($item['size']),
+                'package'     => $item['package'],
             );
         }, $array);
     }

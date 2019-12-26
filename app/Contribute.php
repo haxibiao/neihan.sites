@@ -28,6 +28,10 @@ class Contribute extends Model
     const AD_CONTRIBUTED_ID   = 1;
     const AD_CONTRIBUTED_TYPE = 'AD';
 
+//    FEED 广告 morph 值
+    const AD_FEED_CONTRIBUTED_ID   = 3;
+    const AD_FEED_CONTRIBUTED_TYPE = 'AD_FEED';
+
     // 激励视频 广告 morph 值
     const VIDEO_CONTRIBUTED_ID   = 2;
     const VIDEO_CONTRIBUTED_TYPE = 'AD_VIDEO';
@@ -147,8 +151,8 @@ class Contribute extends Model
 
     public function getBalanceAttribute()
     {
-
         return Contribute::where('id', '<', $this->id)->where('user_id', $this->user_id)->sum('amount');
     }
+
 
 }

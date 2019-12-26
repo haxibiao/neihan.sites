@@ -53,6 +53,7 @@ type User {
   exchangeRate: Int
   contribute: Int
   is_bind_dongdezhuan:Boolean
+  today_contribute:Int
 }
 
 type blockInfo {

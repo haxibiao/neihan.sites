@@ -12,6 +12,7 @@
     "Hxb/CategoryCount": "*",
     "Hxb/CategoryLikeCount": "*",
     "acme/price-tracker": "*",
+    "anerg2046/sns_auth": "^2.0",
     "coderello/laravel-nova-lang": "^1.3",
     "doctrine/dbal": "^2.9",
     "fideloper/proxy": "^4.0",
@@ -40,7 +41,8 @@
     "sentry/sentry-laravel": "1.0.1",
     "simplesoftwareio/simple-qrcode": "^2.0",
     "tencentcloud/tencentcloud-sdk-php": "3.0.94",
-    "torann/geoip": "^1.0"
+    "torann/geoip": "^1.0",
+    "yansongda/pay": "^2.8"
   },
   "require-dev": {
     "beyondcode/laravel-dump-server": "^1.0",

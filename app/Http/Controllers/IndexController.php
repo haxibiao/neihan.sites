@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\Category;
-use App\OAuth;
 use App\User;
 use Auth;
 
@@ -16,13 +15,11 @@ class IndexController extends Controller
      */
     public function index()
     {
-        if (isRecording()){
+        if (isRecording()) {
             return view('app');
         }
 
         $data = (object) [];
-
-
 
         //首页轮播图
         $data->carousel = get_top_articles();

@@ -24,6 +24,10 @@ class Withdraw extends Model
         'updated_at',
     ];
 
+    //提现平台
+    const ALIPAY_PLATFORM = 'Alipay';
+    const WECHAT_PLATFORM = 'Wechat';
+
     //状态:提现成功 提现失败 待处理提现
     const SUCCESS_WITHDRAW = 1;
     const FAILURE_WITHDRAW = -1;
@@ -58,5 +62,5 @@ class Withdraw extends Model
         //拼接格式 年月日时分秒 + 提现订单号
         return $this->created_at->format('YmdHis') . $this->id;
     }
-    
+
 }

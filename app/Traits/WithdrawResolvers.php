@@ -64,13 +64,16 @@ trait WithdrawResolvers
         }
 
         //开启兑换事务,替换到钱包 创建提现订单
-        $oauth = $user->oauth()->where('oauth_type', 'dongdezhuan')->first();
-        if ($oauth !== null) {
-            $ddzUser = \App\Dongdezhuan\User::find($oauth->oauth_id);
-            $withdraw = $wallet->withdraw($amount,$ddzUser->account);
-        } else {
-            $withdraw = $wallet->withdraw($amount);
+        if ($args['platform'] === 'dongdezhuan') {
+            if ($user->checkUserIsBindDongdezhuan()) {
+                $ddzUser  = $user->getDongdezhuanUser();
+                $withdraw = $wallet->withdraw($amount, $ddzUser->account, 'dongdezhuan');
+            } else {
+                throw new GQLException('您还没有绑定懂得赚账户哦~');
+            }
         }
+
+        $withdraw = $wallet->withdraw($amount, $wallet->getPayId($args['platform']), $args['platform']);
 
         if (!$withdraw) {
             throw new GQLException('兑换失败,请稍后再试!');

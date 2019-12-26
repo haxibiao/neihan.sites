@@ -7,7 +7,9 @@ type Video {
   cover_url: String
   article: Article!
 }
-
+extend type Query {
+  queryDetail:String! @field(resolver: "App\\Video@queryDetail")
+}
 type VideoInfo {
   width: Int
   weight: Int

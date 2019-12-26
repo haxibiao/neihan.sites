@@ -1,12 +1,13 @@
 type Contribute {
-  id: ID!
-  user: User!
-  amount: Int!
+  id: ID
+  user: User
+  amount: Int
   remark: String
-  balance: Int!
-  created_at: DateTime!
+  balance: Int
+  created_at: DateTime
   time_ago: String
-  updated_at: DateTime!
+  updated_at: DateTime
+  message:String
 }
 
 extend type Query @middleware(checks: ["auth:api"]) {

@@ -312,6 +312,20 @@ function isRecording()
     return false;
 }
 
+function adIsOpened()
+{
+    $os     = request()->header('os', 'android');
+    $config = \App\AppConfig::where([
+        'group' => $os,
+        'name'  => 'ad',
+    ])->first();
+    if ($config->state === \App\AppConfig::STATUS_ON) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 /**
  * 获取文件大小信息
  * @param $bytes
@@ -334,4 +348,9 @@ function formatSizeUnits($bytes)
     }
 
     return $bytes;
+}
+
+function is_email($email)
+{
+    return filter_var($email, FILTER_VALIDATE_EMAIL);
 }

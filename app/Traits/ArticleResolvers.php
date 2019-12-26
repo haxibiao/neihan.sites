@@ -168,19 +168,24 @@ trait ArticleResolvers
             Visit::saveVisits($user, $articles, 'articles');
         }
 
-        $mixPosts = [];
-        $index    = 0;
+        $mixPosts = $articles;
+        //广告开关判断
+        if(adIsOpened()){
+            $mixPosts = [];
+            $index    = 0;
+            foreach ($articles as $article) {
+                $index++;
+                $mixPosts[] = $article;
 
-        foreach ($articles as $article) {
-            $index++;
-            $mixPosts[] = $article;
-            if ($index % 4 == 0) {
-                $article               = clone $article;
-                $article->id           = random_str(7);
-                $article->isAdPosition = true;
-                $mixPosts[]            = $article;
+                if ($index % 4 == 0) {
+                    $article               = clone $article;
+                    $article->id           = random_str(7);
+                    $article->isAdPosition = true;
+                    $mixPosts[]            = $article;
+                }
             }
         }
+
         $result = new \Illuminate\Pagination\LengthAwarePaginator($mixPosts, $total, $pageCount, $pageCount);
         return $result;
     }

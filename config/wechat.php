@@ -6,7 +6,7 @@ return [
      *
      * 当值为 false 时，所有的日志都不会记录
      */
-    'debug'  => true,
+    'debug'             => true,
 
     /*
      * 使用 Laravel 的缓存系统
@@ -16,10 +16,10 @@ return [
     /*
      * 账号基本信息，请从微信公众平台/开放平台获取
      */
-    'app_id'  => env('WECHAT_APPID', 'wx659d2f82c6ac4981'),         // AppID
-    'secret'  => env('WECHAT_SECRET', 'bb3852359ae82709ab0f30f05bca8560'),     // AppSecret
-    'token'   => env('WECHAT_TOKEN', 'dongdianyiapp'),          // Token
-    'aes_key' => env('WECHAT_AES_KEY', '3dZF0qF9FfbYutRs8tIuBGawrN72VzVaFNbRfALUPl4'),                    // EncodingAESKey
+    'app_id'            => env('WECHAT_APPID', 'wx659d2f82c6ac4981'), // AppID
+    'secret'            => env('WECHAT_SECRET', 'bb3852359ae82709ab0f30f05bca8560'), // AppSecret
+    'token'             => env('WECHAT_TOKEN', 'dongdianyiapp'), // Token
+    'aes_key'           => env('WECHAT_AES_KEY', '3dZF0qF9FfbYutRs8tIuBGawrN72VzVaFNbRfALUPl4'), // EncodingAESKey
 
     /**
      * 开放平台第三方平台配置信息
@@ -44,12 +44,12 @@ return [
     /**
      * 路由配置
      */
-    'route' => [
-        'enabled' => false,         // 是否开启路由
-        'attributes' => [           // 路由 group 参数
-            'prefix' => null,
+    'route'             => [
+        'enabled'                 => false, // 是否开启路由
+        'attributes'              => [ // 路由 group 参数
+            'prefix'     => null,
             'middleware' => null,
-            'as' => 'easywechat::',
+            'as'         => 'easywechat::',
         ],
         'open_platform_serve_url' => 'open-platform-serve', // 开放平台服务URL
     ],
@@ -61,7 +61,7 @@ return [
      *                 debug/info/notice/warning/error/critical/alert/emergency
      * file：日志文件位置(绝对路径!!!)，要求可写权限
      */
-    'log' => [
+    'log'               => [
         'level' => env('WECHAT_LOG_LEVEL', 'debug'),
         'file'  => env('WECHAT_LOG_FILE', storage_path('logs/wechat.log')),
     ],
@@ -98,15 +98,28 @@ return [
      *
      * 当 enable_mock 为 true 则会启用模拟微信授权，用于开发时使用，开发完成请删除或者改为 false 即可
      */
-    'enable_mock' => env('WECHAT_ENABLE_MOCK', false),
-    'mock_user' => [
-        'openid' => 'odh7zsgI75iT8FRh0fGlSojc9PWM',
+    'enable_mock'       => env('WECHAT_ENABLE_MOCK', false),
+    'mock_user'         => [
+        'openid'     => 'odh7zsgI75iT8FRh0fGlSojc9PWM',
         // 以下字段为 scope 为 snsapi_userinfo 时需要
-        'nickname' => 'overtrue',
-        'sex' => '1',
-        'province' => '北京',
-        'city' => '北京',
-        'country' => '中国',
+        'nickname'   => 'overtrue',
+        'sex'        => '1',
+        'province'   => '北京',
+        'city'       => '北京',
+        'country'    => '中国',
         'headimgurl' => 'http://wx.qlogo.cn/mmopen/C2rEUskXQiblFYMUl9O0G05Q6pKibg7V1WpHX6CIQaic824apriabJw4r6EWxziaSt5BATrlbx1GVzwW2qjUCqtYpDvIJLjKgP1ug/0',
     ],
+
+    /**
+     * 微信小程序 && 微信资源中心APP配置
+     */
+    'wechat_mg'         => [
+        'appid'  => env('WECHAT_MG_APPID'),
+        'secret' => env('WECHAT_MG_SECRET'),
+    ],
+    'wechat_app'        => [
+        'appid'  => env('WECHAT_APPID'),
+        'secret' => env('WECHAT_SECRET'),
+    ],
+    'time_out'          => 5,
 ];

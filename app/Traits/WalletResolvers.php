@@ -39,4 +39,16 @@ trait WalletResolvers
 
         return $wallet;
     }
+
+    public function setWalletInfo($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+        $user   = getUser();
+        $wallet = $user->wallet;
+        if (isset($args['real_name'])) {
+            $wallet->real_name = $args['real_name'];
+        }
+        $wallet->save();
+
+        return $wallet;
+    }
 }

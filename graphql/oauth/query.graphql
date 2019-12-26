@@ -1,0 +1,11 @@
+type OAuth{
+    user:User
+    oauth_type:OAuthType!
+    oauth_id:String!
+    created_at: DateTime!
+}
+
+enum OAuthType{
+    WECHAT @enum(value:wechat)
+    ALIPAY @enum(value:alipay)
+}

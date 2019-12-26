@@ -34,4 +34,5 @@ enum NotificationType {
   UNPROCESSED_REQUESTS @enum(value: "UNPROCESSED_REQUESTS")
   COMMENT_ACCEPTED @enum(value: "App\\Notifications\\CommentAccepted")
   RECEIVE_AWARD @enum(value: "App\\Notifications\\ReceiveAward")
+  SYSTEM_NOTICE @enum(value: "App\\Notifications\\SystemNotice")
 }

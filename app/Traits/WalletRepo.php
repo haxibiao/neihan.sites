@@ -27,16 +27,17 @@ trait WalletRepo
         ]);
     }
 
-    public function withdraw($amount,$to_account = null): Withdraw
+    public function withdraw($amount, $to_account = null, $to_platform = Withdraw::ALIPAY_PLATFORM): Withdraw
     {
         if ($this->available_balance < $amount) {
             throw new GQLException('余额不足');
         }
 
         $withdraw = Withdraw::create([
-            'wallet_id'  => $this->id,
-            'amount'     => $amount,
-            'to_account' => $to_account ?? $this->pay_account,
+            'wallet_id'   => $this->id,
+            'amount'      => $amount,
+            'to_account'  => $to_account ?? $this->getOpenId($to_platform),
+            'to_platform' => $to_platform,
         ]);
         //交给提现队列
         dispatch(new ProcessWithdraw($withdraw->id))->onQueue('withdraws');
@@ -92,6 +93,18 @@ trait WalletRepo
             'type'    => 1,
         ]);
         return $wallet;
+    }
+
+    public function setPayId($openId, $platform = Withdraw::ALIPAY_PLATFORM)
+    {
+        $field        = $platform == Withdraw::ALIPAY_PLATFORM ? 'pay_account' : 'wechat_account';
+        $this->$field = $openId;
+    }
+
+    public function getPayId($platform = Withdraw::ALIPAY_PLATFORM)
+    {
+        $field = $platform == Withdraw::ALIPAY_PLATFORM ? 'pay_account' : 'wechat_account';
+        return $this->$field;
     }
 
 }

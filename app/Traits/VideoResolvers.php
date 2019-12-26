@@ -83,4 +83,13 @@ trait VideoResolvers
 
         return $gold;
     }
+
+
+    public function queryDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo){
+        return '贡献值获取方式：
+1.完成早晚两次睡觉打卡可获得2点贡献奖励
+2.完成看视频任务并下载可获得3点贡献值奖励
+3.在首页刷视频时点击广告可以获得1点贡献值奖励
+4.在动态广场看到广告时点击可获得1点贡献值奖励';
+    }
 }

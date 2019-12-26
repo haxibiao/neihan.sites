@@ -25,6 +25,7 @@ class Wallet extends Model
         'pay_infos',
         'pay_info_change_count',
         'total_withdraw_amount',
+        'wechat_account',
     ];
 
     protected $casts = [

@@ -1,0 +1,8 @@
+extend type Mutation @middleware(checks: ["auth:api"]){
+    bindOAuth(input:bindOAuthInput @spread): OAuth! @field(resolver: "App\\OAuth@bindOAuth")
+}
+
+input bindOAuthInput{
+    code:String!
+    oauth_type:OAuthType
+}

@@ -37,7 +37,12 @@ class ProcessWithdraw implements ShouldQueue
      */
     public function handle()
     {
-        $this->withdraw->process();
-//        $this->withdraw->processDongdezhuan();
+
+        if ($this->withdraw->to_platform === 'dongdezhuan') {
+            $this->withdraw->processDongdezhuan();
+        } else {
+            $this->withdraw->process();
+        }
+
     }
 }
