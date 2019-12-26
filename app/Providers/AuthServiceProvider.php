@@ -12,8 +12,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\AdConfig'  => 'App\Policies\AdConfigPolicy',
-        'App\AppConfig' => 'App\Policies\AppConfigPolicy',
+        // 暂时关闭，明天早上同步
+        // 'App\AdConfig'  => 'App\Policies\AdConfigPolicy',
+        // 'App\AppConfig' => 'App\Policies\AppConfigPolicy',
     ];
 
     /**
