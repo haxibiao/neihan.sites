@@ -90,7 +90,14 @@ class AppController extends Controller
         if ($adData['reward_video_prodiver'] == '混合') {
             if (rand(1, 10) > 5) {
                 $adData['reward_video_prodiver'] = '腾讯';
-                $adData['codeid_reward_video']   = $adData['codeid_reward_video2'];
+
+                // 兼容 video_tencent
+                if (isset($adData['codeid_reward_video2'])) {
+                    $adData['codeid_reward_video'] = $adData['codeid_reward_video2'];
+                } else {
+                    $adData['codeid_reward_video'] = $adData['codeid_reward_video_tencent'];
+                }
+
             } else {
                 $adData['reward_video_prodiver'] = '头条';
             }
