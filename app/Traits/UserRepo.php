@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Contribute;
+use App\Dongdezhuan\UserApp;
 use App\Exceptions\GQLException;
 use App\OAuth;
 use App\Profile;
@@ -468,31 +469,17 @@ trait UserRepo
     /**
      * @param string $uuid
      * @param User $user
-     * @return array
      */
-    public static function bindDongdezhuanByUUID(string $uuid, User $user)
+    public function bindDongdezhuanByUUID(string $uuid, User $user): void
     {
-//        1.检查是否绑定过
-        if ($user->checkUserIsBindDongdezhuan()) {
-            return ['error' => '已经绑定过了'];
+        if (!$user->checkUserIsBindDongdezhuan()) {
+            $ddzUser = \App\Dongdezhuan\User::whereUuid($uuid)->first();
+            if ($ddzUser !== null) {
+                \DB::transaction(static function () use ($user, $ddzUser) {
+                    OAuth::createRelation($user->id, 'dongdezhuan', $ddzUser->id);
+                    UserApp::bind($ddzUser->id);
+                });
+            }
         }
-
-//        2.执行绑定
-        $client = app('GuzzleClient');
-        $response = $client->request('POST', 'https://dongdezhuan.com/api/user/auth', [
-            'form_params' => [
-                'uuid' => $uuid,
-                'app' => config('app.name_cn')
-            ]
-        ]);
-
-        $result = json_decode($response->getBody(), true);
-        if (isset($result['message'])) {
-            return ['error' => '绑定懂得赚账号失败~,' . $result['message']];
-        }
-//        3. 记录账号与懂得赚账号
-        OAuth::createRelation($user->id, 'dongdezhuan', $result['user']['id']);
-
-        return ['success' => true];
     }
 }

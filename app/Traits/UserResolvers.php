@@ -224,7 +224,8 @@ trait UserResolvers
             if (!is_null($phone)) {
                 $user->update(['phone' => $phone]);
             }
-            self::bindDongdezhuanByUUID($user->uuid,$user);
+
+            $this->bindDongdezhuanByUUID($args['uuid'], $user);
             // app_track_user("用户登录", 'login');
             return $user;
         }
@@ -244,7 +245,7 @@ trait UserResolvers
 
         Ip::createIpRecord('users', $user->id, $user->id);
 
-        self::bindDongdezhuanByUUID($user->uuid,$user);
+        $this->bindDongdezhuanByUUID($args['uuid'], $user);
 
         return $user;
     }
@@ -322,13 +323,22 @@ trait UserResolvers
 
     public function bindDongdezhuan($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo){
         if ($user = checkUser()){
-            if ($user->checkUserIsBindDongdezhuan() || UserApp::checkIsBind($user->id)){
+
+//            App工厂效验是否绑定过
+            if ($user->checkUserIsBindDongdezhuan()){
                 throw new GQLException('您已经绑定过了哦~');
             }
 
+//            检查用户是否存在
             $ddzUser = \App\Dongdezhuan\User::whereAccount($args['account'])->first();
             throw_if($ddzUser === null,GQLException::class,'绑定失败~懂得赚账号或密码输入错误~');
 
+//            懂得赚效验是否绑定过
+            if (UserApp::checkIsBind($ddzUser->id)){
+                throw new GQLException('您已经绑定过了哦~');
+            }
+
+//            检查账号密码
             if (!password_verify($args['password'], $ddzUser->password)) {
                 throw new GQLException('绑定失败~懂得赚账号或密码输入错误~');
             }
@@ -340,5 +350,6 @@ trait UserResolvers
             return true;
         }
     }
+
 
 }

@@ -366,4 +366,8 @@ trait UserAttrs
     {
         return $this->profile->count_contributes;
     }
+
+    public function getIsBindDongdezhuanAttribute(){
+        return $this->checkUserIsBindDongdezhuan();
+    }
 }
