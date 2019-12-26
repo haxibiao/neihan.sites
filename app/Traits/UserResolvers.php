@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Dongdezhuan\UserApp;
 use App\Exceptions\GQLException;
 use App\Gold;
 use App\Ip;
@@ -321,10 +322,21 @@ trait UserResolvers
 
     public function bindDongdezhuan($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo){
         if ($user = checkUser()){
-            $result = self::bindDongdezhuanByUUID($args['uuid'],$user);
-            if (isset($result['error'])){
-                throw new GQLException($result['error']);
+            if ($user->checkUserIsBindDongdezhuan() || UserApp::checkIsBind($user->id)){
+                throw new GQLException('您已经绑定过了哦~');
             }
+
+            $ddzUser = \App\Dongdezhuan\User::whereAccount($args['account'])->first();
+            throw_if($ddzUser === null,GQLException::class,'绑定失败~懂得赚账号或密码输入错误~');
+
+            if (!password_verify($args['password'], $ddzUser->password)) {
+                throw new GQLException('绑定失败~懂得赚账号或密码输入错误~');
+            }
+
+            \DB::transaction(static function () use ($user,$ddzUser){
+                OAuth::createRelation($user->id,'dongdezhuan',$ddzUser->id);
+                UserApp::bind($ddzUser->id);
+            });
             return true;
         }
     }

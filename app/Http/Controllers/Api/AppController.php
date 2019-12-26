@@ -26,7 +26,7 @@ class AppController extends Controller
             $group = 'huawei';
         }
 
-        $array   = [];
+        $array = [];
         $configs = AppConfig::whereGroup($group)->get();
         foreach ($configs as $config) {
             $array[$config->name] = $config->status;
@@ -43,11 +43,63 @@ class AppController extends Controller
         foreach (AdConfig::all() as $adconfig) {
             $adData[$adconfig->name] = $adconfig->value;
         }
-        //激励视频轮换，50%轮换为备用的激励视频 （注意nova需要配置备用的和默认的一样）
-        if (rand(1, 10) > 5) {
-            $adData['reward_video_prodiver'] = $adData['reward_video_prodiver2'];
-            $adData['codeid_reward_video']   = $adData['codeid_reward_video2'];
+
+        //开屏混合 ----------------------------
+        if ($adData['splash_prodiver'] == '混合') {
+            if (rand(1, 9) <= 3) {
+                $adData['splash_prodiver'] = '腾讯';
+                $adData['codeid_splash'] = $adData['codeid_splash_tencent'];
+            } else if (rand(1, 9) <= 6) {
+                $adData['splash_prodiver'] = '百度';
+                $adData['codeid_splash'] = $adData['codeid_splash_baidu'];
+            } else {
+                $adData['splash_prodiver'] = '头条';
+            }
         }
+        //选择腾讯
+        if ($adData['splash_prodiver'] == '腾讯') {
+            $adData['codeid_splash'] = $adData['codeid_splash_tencent'];
+        }
+        //选择百度
+        if ($adData['splash_prodiver'] == '百度') {
+            $adData['codeid_splash'] = $adData['codeid_splash_baidu'];
+        }
+
+        //信息流混合 ----------------------------
+        if ($adData['feed_prodiver'] == '混合') {
+            if (rand(1, 9) <= 3) {
+                $adData['feed_prodiver'] = '腾讯';
+                $adData['codeid_feed'] = $adData['codeid_feed_tencent'];
+            } else if (rand(1, 9) <= 6) {
+                $adData['feed_prodiver'] = '百度';
+                $adData['codeid_feed'] = $adData['codeid_feed_baidu'];
+            } else {
+                $adData['feed_prodiver'] = '头条';
+            }
+        }
+        //选择腾讯
+        if ($adData['feed_prodiver'] == '腾讯') {
+            $adData['codeid_feed'] = $adData['codeid_feed_tencent'];
+        }
+        //选择百度
+        if ($adData['feed_prodiver'] == '百度') {
+            $adData['codeid_feed'] = $adData['codeid_feed_baidu'];
+        }
+
+        //激励视频混合 ----------------------------
+        if ($adData['reward_video_prodiver'] == '混合') {
+            if (rand(1, 10) > 5) {
+                $adData['reward_video_prodiver'] = '腾讯';
+                $adData['codeid_reward_video'] = $adData['codeid_reward_video_tencent'];
+            } else {
+                $adData['reward_video_prodiver'] = '头条';
+            }
+        }
+        //选择腾讯
+        if ($adData['reward_video_prodiver'] == '腾讯') {
+            $adData['codeid_reward_video'] = $adData['codeid_reward_video_tencent'];
+        }
+        //默认是头条的codeid
         return $adData;
     }
 
@@ -75,12 +127,12 @@ class AppController extends Controller
         $array = $version->toArray();
         return array_map(static function ($item) {
             return array(
-                'version'     => $item['name'],
-                'apk'         => $item['url'],
-                'is_force'    => $item['is_force'],
+                'version' => $item['name'],
+                'apk' => $item['url'],
+                'is_force' => $item['is_force'],
                 'description' => $item['description'],
-                'size'        => formatSizeUnits($item['size']),
-                'package'     => $item['package'],
+                'size' => formatSizeUnits($item['size']),
+                'package' => $item['package'],
             );
         }, $array);
     }

@@ -64,9 +64,10 @@ trait WithdrawResolvers
         }
 
         //开启兑换事务,替换到钱包 创建提现订单
-        $qb = $user->oauth()->where('oauth_type', 'dongdezhuan');
-        if ($qb->exists()) {
-            $withdraw = $wallet->withdraw($amount, $qb->first()->data['account']);
+        $oauth = $user->oauth()->where('oauth_type', 'dongdezhuan')->first();
+        if ($oauth !== null) {
+            $ddzUser = \App\Dongdezhuan\User::find($oauth->oauth_id);
+            $withdraw = $wallet->withdraw($amount,$ddzUser->account);
         } else {
             $withdraw = $wallet->withdraw($amount);
         }

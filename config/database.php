@@ -59,11 +59,11 @@ return [
 //        FIXME: 先这样写，以后实现到 env:refresh
         'dongdezhuan'        => [
             'driver'      => 'mysql',
-            'host'        => env('DDZ_DB_HOST', 'gz006'),
+            'host'        => env('APP_ENV') === 'prod' ? 'gz03':'127.0.01',
             'port'        => env('DDZ_DB_PORT', '3306'),
             'database'    => env('DDZ_DB_DATABASE', 'dongdezhuan'),
             'username'    => env('DDZ_DB_USERNAME', 'root'),
-            'password'    => env('DDZ_DB_PASSWORD', 'yp1qaz@WSX'),
+            'password'    => env('APP_ENV') === 'prod' ? 'yp1qaz@WSX':'localdb001',
             'unix_socket' => env('DDZ_DB_SOCKET', ''),
             'charset'     => 'utf8mb4',
             'collation'   => 'utf8mb4_unicode_ci',

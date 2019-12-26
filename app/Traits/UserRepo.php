@@ -388,7 +388,7 @@ trait UserRepo
      */
     public function consumeContributeToWithdraw($amount, $type, $id)
     {
-        Contribute::firstOrCreate([
+        Contribute::create([
             'user_id'          => $this->id,
             'amount'           => -($amount * Contribute::WITHDRAW_DATE),
             'remark'           => '提现兑换',
@@ -461,7 +461,7 @@ trait UserRepo
 
     public function getDongdezhuanUserId():int
     {
-        return $this->oauth()->where('oauth_type','dongdezhuan')->oauth_id;
+        return $this->oauth()->where('oauth_type','dongdezhuan')->first()->oauth_id;
     }
 
 
@@ -491,7 +491,7 @@ trait UserRepo
             return ['error' => '绑定懂得赚账号失败~,' . $result['message']];
         }
 //        3. 记录账号与懂得赚账号
-        OAuth::createRelation($user->id, 'dongdezhuan', $result['user']['id'], $result['user']);
+        OAuth::createRelation($user->id, 'dongdezhuan', $result['user']['id']);
 
         return ['success' => true];
     }

@@ -5,6 +5,7 @@ namespace App\Nova;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class AdConfig extends Resource
@@ -49,7 +50,13 @@ class AdConfig extends Resource
         return [
             ID::make()->sortable(),
             Text::make('键','name'),
-            Text::make('值','value'),
+            // Text::make('值','value'),
+            Select::make('值', 'value')->options([
+                '头条' => '头条',
+                '腾讯' => '腾讯',
+                '百度' => '百度',
+                '混合' => '混合',
+            ])->displayUsingLabels(),
         ];
     }
 
