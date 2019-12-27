@@ -71,9 +71,10 @@ trait WithdrawResolvers
             } else {
                 throw new GQLException('您还没有绑定懂得赚账户哦~');
             }
-        }
+        }else{
 
-        $withdraw = $wallet->withdraw($amount, $wallet->getPayId($args['platform']), $args['platform']);
+            $withdraw = $wallet->withdraw($amount, $wallet->getPayId($args['platform']), $args['platform']);
+        }
 
         if (!$withdraw) {
             throw new GQLException('兑换失败,请稍后再试!');

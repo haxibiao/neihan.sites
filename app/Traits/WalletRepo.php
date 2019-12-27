@@ -40,7 +40,7 @@ trait WalletRepo
             'to_platform' => $to_platform,
         ]);
         //交给提现队列
-//        dispatch(new ProcessWithdraw($withdraw->id))->onQueue('withdraws');
+        dispatch(new ProcessWithdraw($withdraw->id))->onQueue('withdraws');
         return $withdraw;
     }
 

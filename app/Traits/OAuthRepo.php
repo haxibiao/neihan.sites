@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use App\User;
 use App\OAuth;
+use App\User;
 use Illuminate\Support\Arr;
 
 trait OAuthRepo
