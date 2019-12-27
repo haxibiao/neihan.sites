@@ -1,5 +1,5 @@
 #!/bin/bash
-scope=seed
+scope=no
 
 seeder="seed"
 
