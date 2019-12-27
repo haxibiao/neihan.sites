@@ -139,8 +139,12 @@ trait TaskResolvers
         $task      = Task::where('name', $name)->first();
         $user_task = UserTask::createUserTask($task->id, $user->id, now());
         $user_task = UserTask::createUserTask($task->id, $user->id, now());
-        $status    = UserTask::TASK_REVIEW;
+        $status    = 3;
 
+        $minutes = $task->resolve['minutes'] ?? 15;
+        if (Carbon::parse($user_task->completed_at)->diffInMinutes() > $minutes) {
+            $status = 1;
+        }
         //若未打晚上的卡，早晨的卡则不能打
         // if ($task->name == "SleepMorning") {
         //     $sleep_night_task = Task::where('name', "SleepNight")->first()->getUserTask($user->id, Carbon::yesterday());
@@ -178,11 +182,10 @@ trait TaskResolvers
                     throw new GQLException('已经睡过了,请' . $diffminutes . '分钟后来');
                 }
             }
-
         }
 
         $task                    = $user_task->task;
-        $user_task->status       = 1;
+        $user_task->status       = 3;
         $user_task->completed_at = now();
         $user_task->content      = sprintf('%s完成。奖励:', $task->details) . $task->getTaskContent();
         $user_task->timestamps   = false;
