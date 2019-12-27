@@ -24,6 +24,11 @@ trait WithdrawResolvers
             throw new GQLException('等级和勋章不够哦~，请等待版本更新，增加更多玩法吧~');
         }
 
+//        目前点墨阁被微信授权
+        if ($args['platform'] === 'Wechat' && config('app.name_cn') !== '点墨阁'){
+            throw new GQLException('微信提现正在开发,点墨阁可以体验微信提现哦~');
+        }
+
         //钱包提现信息是否存在
         $wallet = $user->wallet;
         if (is_null($wallet->pay_account)) {
@@ -63,6 +68,14 @@ trait WithdrawResolvers
             }
         }
 
+        $payId = $wallet->getPayId($args['platform']);
+        $platform = $args['platform'];
+        if(empty($payId)){
+            throw_if($platform == Withdraw::ALIPAY_PLATFORM, GQLException::class, '提现失败,支付宝提现信息未绑定!');
+            throw_if($platform == Withdraw::WECHAT_PLATFORM, GQLException::class, '提现失败,微信提现信息未绑定!');
+        }
+
+
         //开启兑换事务,替换到钱包 创建提现订单
         if ($args['platform'] === 'dongdezhuan') {
             if ($user->checkUserIsBindDongdezhuan()) {
@@ -73,7 +86,7 @@ trait WithdrawResolvers
             }
         }else{
 
-            $withdraw = $wallet->withdraw($amount, $wallet->getPayId($args['platform']), $args['platform']);
+            $withdraw = $wallet->withdraw($amount, $payId, $args['platform']);
         }
 
         if (!$withdraw) {

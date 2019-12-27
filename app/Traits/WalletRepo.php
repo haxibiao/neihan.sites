@@ -36,7 +36,7 @@ trait WalletRepo
         $withdraw = Withdraw::create([
             'wallet_id'   => $this->id,
             'amount'      => $amount,
-            'to_account'  => $to_account ?? $this->getOpenId($to_platform),
+            'to_account'  => $to_account ?? $this->getPayId($to_platform),
             'to_platform' => $to_platform,
         ]);
         //交给提现队列
