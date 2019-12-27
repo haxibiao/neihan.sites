@@ -980,8 +980,8 @@ class FixData extends Command
     public function withdrawJobs()
     {
         $count = 0;
-        $row   = DB::table('jobs')->where('queue', 'withdraws')->delete();
-        $this->info('提现队列JOB清理成功,清理数:' . $row);
+        // $row   = DB::table('jobs')->where('queue', 'withdraws')->delete();
+        // $this->info('提现队列JOB清理成功,清理数:' . $row);
 
         Withdraw::where('status', Withdraw::WAITING_WITHDRAW)->chunk(1000, function ($withdraws) use (&$count) {
             foreach ($withdraws as $withdraw) {
