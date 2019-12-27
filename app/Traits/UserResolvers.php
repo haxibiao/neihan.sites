@@ -335,7 +335,8 @@ trait UserResolvers
 
 //            懂得赚效验是否绑定过
             if (UserApp::checkIsBind($ddzUser->id)){
-                throw new GQLException('您已经绑定过了哦~');
+                $message = sprintf('该懂得赚账号在%s被绑定过了哦~,请检查您的信息是否正确~!',config('app.name_cn'));
+                throw new GQLException('' . $message . '');
             }
 
 //            检查账号密码
