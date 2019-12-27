@@ -14,7 +14,9 @@ class EditArticleAddReviewId extends Migration
     public function up()
     {
         Schema::table('articles', function (Blueprint $table) {
+            if (!Schema::hasColumn('articles', 'review_id')) {
             $table->unsignedBigInteger('review_id')->index()->nullable();
+            }
         });
     }
 

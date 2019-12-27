@@ -7,6 +7,7 @@ use App\BadWord;
 use App\Contribute;
 use App\Gold;
 use App\Jobs\ProcessSpider;
+use App\OAuth;
 use App\Transaction;
 use App\User;
 use App\UserRetention;
@@ -16,6 +17,7 @@ use App\WalletTransaction;
 use App\Withdraw;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -47,6 +49,21 @@ class FixData extends Command
             return $this->$table();
         }
         return $this->error("必须提供你要修复数据的table");
+    }
+
+    public function userActivities()
+    {
+        //最近90天的日活统计信息(不包含今天)
+        $endOfDay = Carbon::yesterday();
+        $cacheKey = 'nova_user_activity_num_of_%s';
+        for ($i = 0; $i <= 90; $i++) {
+            $count = Visit::whereDate('created_at', $endOfDay)->distinct()->count('user_id');
+            $key   = sprintf($cacheKey, $endOfDay->toDateString());
+            $this->info($endOfDay->toDateString());
+            $this->info($count);
+            cache()->store('database')->forever($key, $count);
+            $endOfDay = $endOfDay->subDay(1);
+        }
     }
 
     public function articles()
@@ -997,5 +1014,23 @@ class FixData extends Command
     public function payTest()
     {
         dump(class_exists('Yansongda\Pay\Pay'));
+    }
+
+    public function oAuths()
+    {
+        OAuth::where('oauth_type', 'wechat')->with('user')->chunk(1000, function ($oauths) {
+            foreach ($oauths as $oauth) {
+                $user   = $oauth->user;
+                $wallet = $user->wallet;
+
+                $payAccount = $wallet->pay_account;
+
+                if (!is_email($payAccount) && !is_phone_number($payAccount)) {
+                    $wallet->pay_account = null;
+                    $wallet->save();
+                }
+
+            }
+        });
     }
 }

@@ -3,7 +3,10 @@
 namespace App\Nova\Metrics;
 
 use App\User;
+use App\Visit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Laravel\Nova\Metrics\Trend;
 use Laravel\Nova\Metrics\TrendResult;
 
@@ -21,26 +24,20 @@ class ActiveUsersPerDay extends Trend
     {
         $range = $request->range;
         $data  = [];
-
-        //没有数据的日期默认值为0
-        for($j=$range-1;$j>=0;$j--){
-            $intervalDate = date('Y-m-d',strtotime(now().'-'.$j.'day'));
-            $data[$intervalDate] = 0;
+        $cacheKey = 'nova_user_activity_num_of_%s';
+        $endOfDay = Carbon::yesterday();
+        for ( $i = 0; $i<$range-1; $i++ ){
+            $key   = sprintf($cacheKey,$endOfDay->toDateString());
+            $cacheValue = cache()->store('database')->get($key,0);
+            $data[$endOfDay->toDateString()] = $cacheValue;
+            $endOfDay = $endOfDay->subDay(1);
         }
+        //实时获取今日的用户活跃数
+        $count  = Visit::whereDate('created_at',today())->distinct()->count('user_id');
+        $data = array_reverse($data);
+        $data = array_merge($data,[today()->toDateString() => $count]);
 
-        $post = User::selectRaw(" distinct(date_format(updated_at,'%Y-%m-%d')) as daily,count(*) as count ")
-            ->whereDate('updated_at', '>=', now()->subDay($range - 1))
-            ->groupBy('daily')->get();
-
-        $post->each(function ($post) use (&$data) {
-            $data[$post->daily] = $post->count;
-        });
-
-        if (count($data) < $range) {
-            $data[now()->toDateString()] = 0;
-        }
-
-        return (new TrendResult(end($data)))->trend($data);
+        return (new TrendResult(Arr::last($data)))->trend($data);
     }
 
     /**
@@ -65,7 +62,7 @@ class ActiveUsersPerDay extends Trend
      */
     public function cacheFor()
     {
-        // return now()->addMinutes(5);
+        return now()->addMinutes(5);
     }
 
     /**

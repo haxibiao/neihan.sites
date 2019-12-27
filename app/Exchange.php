@@ -68,10 +68,12 @@ class Exchange extends Model
 
     public static function changeToWallet($user, $gold, $wallet)
     {
-        $amount = self::computeAmount($gold);
-        if ($amount < self::MIN_RMB) {
-            throw new GQLException('兑换失败,最低兑换1元起!');
+        if($gold <= 0){
+            throw new \Exception('兑换失败，当前账户没有智慧点');
         }
+
+        $amount = self::computeAmount($gold);
+
 
         //添加兑换记录
         Exchange::exchangeOut($user, $gold);

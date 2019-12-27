@@ -5,7 +5,7 @@ type Withdraw {
   remark: String
   biz_no:String
   trade_no: String
-  to_account: String!
+  to_account: String
   to_platform: String
   created_at: DateTime!
 }

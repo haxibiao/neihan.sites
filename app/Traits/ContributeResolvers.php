@@ -47,8 +47,8 @@
                         2, self::VIDEO_CONTRIBUTED_TYPE, "观看激励视频奖励");
                 }
             } else {
-//            超出10次限制，奖励双倍金币
-                $goldAmount = Gold::DRAW_VIDEO_AMOUNT * 2;
+//            超出30次限制，奖励双倍金币
+                $goldAmount = Gold::REWARD_VIDEO_AMOUNT * 2;
                 $remark = '看激励视频获取双倍智慧点奖励';
                 $gold = Gold::makeIncome($user, $goldAmount, $remark);
             }

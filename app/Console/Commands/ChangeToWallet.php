@@ -25,7 +25,10 @@ class ChangeToWallet extends Command
     {
         User::where('status', 0)->chunk(1000, function ($users) {
             foreach ($users as $user) {
-                $this->exchangeToWallet($user);
+                if ($user->gold > 50){
+                    $this->exchangeToWallet($user);
+                    $this->info($user->id.'：'.$user->wallet->balance);
+                }
             }
         });
     }
@@ -37,7 +40,7 @@ class ChangeToWallet extends Command
         $amount = (float) number_format($amount, 2);
 
         //账户余额小于0 或者已经转换过的用户跳出
-        if ($amount <= 0 || $user->isExchangeToday) {
+        if ($user->isExchangeToday) {
             return null;
         }
 

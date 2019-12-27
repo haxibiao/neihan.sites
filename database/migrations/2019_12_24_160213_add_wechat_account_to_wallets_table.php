@@ -14,7 +14,9 @@ class AddWechatAccountToWalletsTable extends Migration
     public function up()
     {
         Schema::table('wallets', function (Blueprint $table) {
-            $table->string('wechat_account')->default("")->comment('微信OPENID');
+            if (!Schema::hasColumn('wallets', 'wechat_account')) {
+                $table->string('wechat_account')->default("")->comment('微信OPENID');
+            }
         });
     }
 

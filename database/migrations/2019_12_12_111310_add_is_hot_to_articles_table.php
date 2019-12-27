@@ -14,7 +14,9 @@ class AddIsHotToArticlesTable extends Migration
     public function up()
     {
         Schema::table('articles', function (Blueprint $table) {
+            if (!Schema::hasColumn('articles', 'is_hot')) {
             $table->boolean('is_hot')->index()->default(false);
+            }
         });
     }
 

@@ -8,7 +8,9 @@ seeder="seed"
 if [ $scope = $seeder ];
 then
 echo "修复数据..."
-#art queue:restart
-#art fix:data payTest
+art queue:restart
+art fix:data payTest
 #art fix:data withdrawJobs
 fi
+
+supervisorctl restart laravel-worker-youjianqi-queue-withdraws:*

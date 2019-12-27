@@ -4,7 +4,6 @@ namespace App\Traits;
 
 use App\Contribute;
 use App\Dongdezhuan\UserApp;
-use App\Exceptions\GQLException;
 use App\OAuth;
 use App\Profile;
 use App\User;
@@ -406,13 +405,14 @@ trait UserRepo
 
     public function isWithDrawTodayByPayAccount(\Illuminate\Support\Carbon $time): bool
     {
-        $payAccount = $this->wallet->pay_account;
-        if (is_null($payAccount) || empty($payAccount)) {
-            return false;
+        $bool       = false;
+        $payAccount = $this->wallet->getPayId(Withdraw::ALIPAY_PLATFORM);
+        if (!empty($payAccount)) {
+            $wallet_ids = Wallet::where('pay_account', $payAccount)->select('id')->get()->pluck('id')->toArray();
+            $bool       = Withdraw::whereIn('wallet_id', $wallet_ids)->whereDate('created_at', $time->toDateString())->exists();
         }
-        $wallet_ids = Wallet::where('pay_account', $payAccount)->select('id')->get()->pluck('id')->toArray();
-        $exists     = Withdraw::whereIn('wallet_id', $wallet_ids)->whereDate('created_at', $time->toDateString())->exists();
-        return $exists;
+
+        return $bool;
     }
 
     public function destoryUser()
@@ -455,20 +455,20 @@ trait UserRepo
         return $this->role_id >= self::EDITOR_STATUS;
     }
 
-    public function checkUserIsBindDongdezhuan():bool
+    public function checkUserIsBindDongdezhuan(): bool
     {
-        return $this->oauth()->where('oauth_type','dongdezhuan')->exists();
+        return $this->oauth()->where('oauth_type', 'dongdezhuan')->exists();
     }
 
-    public function getDongdezhuanUser(){
-        return \App\Dongdezhuan\User::find($this->oauth()->where('oauth_type','dongdezhuan')->first()->oauth_id);
-    }
-
-    public function getDongdezhuanUserId():int
+    public function getDongdezhuanUser()
     {
-        return $this->oauth()->where('oauth_type','dongdezhuan')->first()->oauth_id;
+        return \App\Dongdezhuan\User::find($this->oauth()->where('oauth_type', 'dongdezhuan')->first()->oauth_id);
     }
 
+    public function getDongdezhuanUserId(): int
+    {
+        return $this->oauth()->where('oauth_type', 'dongdezhuan')->first()->oauth_id;
+    }
 
     /**
      * @param string $uuid

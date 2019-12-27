@@ -13,9 +13,9 @@ trait WithdrawResolvers
 {
     public function createWithdraw($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $user   = getUser();
-        $amount = $args['amount'];
-
+        $user     = getUser();
+        $amount   = $args['amount'];
+        $platform = $args['platform'];
         //可控制提现关闭
         stopfunction("提现");
 
@@ -25,13 +25,13 @@ trait WithdrawResolvers
         }
 
 //        目前点墨阁被微信授权
-        if ($args['platform'] === 'Wechat' && config('app.name_cn') !== '点墨阁'){
+        if ($platform === 'Wechat' && config('app.name_cn') !== '点墨阁') {
             throw new GQLException('微信提现正在开发,点墨阁可以体验微信提现哦~');
         }
 
         //钱包提现信息是否存在
         $wallet = $user->wallet;
-        if (is_null($wallet->pay_account)) {
+        if (is_null($wallet)) {
             throw new GQLException('提现失败, 请先完善提现资料!');
         }
         if ($user->isWithDrawTodayByPayAccount(now())) {
@@ -43,6 +43,7 @@ trait WithdrawResolvers
             ->where('status', '>', \App\Withdraw::FAILURE_WITHDRAW)
             ->whereDate('created_at', Carbon::today())
             ->sum('amount');
+
         if ($todayWithDrawAmout >= Withdraw::WITHDRAW_MAX) {
             throw new GQLException('今日提现额度已达上限,明日再来哦~');
         }
@@ -60,7 +61,7 @@ trait WithdrawResolvers
         // 新用户不做限制
         $isWithdrawBefore = $user->isWithdrawBefore();
         if ($isWithdrawBefore) {
-            $contribute      = $user->profile->count_contributes;
+            $contribute      = $user->contribute;
             $need_contribute = $amount * Contribute::WITHDRAW_DATE;
             $diffContributes = $need_contribute - $contribute;
             if ($contribute < $need_contribute) {
@@ -68,25 +69,25 @@ trait WithdrawResolvers
             }
         }
 
-        $payId = $wallet->getPayId($args['platform']);
-        $platform = $args['platform'];
-        if(empty($payId)){
-            throw_if($platform == Withdraw::ALIPAY_PLATFORM, GQLException::class, '提现失败,支付宝提现信息未绑定!');
-            throw_if($platform == Withdraw::WECHAT_PLATFORM, GQLException::class, '提现失败,微信提现信息未绑定!');
+        if ($platform !== 'dongdezhuan'){
+            $payId = $wallet->getPayId($platform);
+            if (empty($payId)) {
+                throw_if($platform == Withdraw::ALIPAY_PLATFORM, GQLException::class, '提现失败,支付宝提现信息未绑定!');
+                throw_if($platform == Withdraw::WECHAT_PLATFORM, GQLException::class, '提现失败,微信提现信息未绑定!');
+            }
         }
 
 
         //开启兑换事务,替换到钱包 创建提现订单
-        if ($args['platform'] === 'dongdezhuan') {
+        if ($platform === 'dongdezhuan') {
             if ($user->checkUserIsBindDongdezhuan()) {
                 $ddzUser  = $user->getDongdezhuanUser();
                 $withdraw = $wallet->withdraw($amount, $ddzUser->account, 'dongdezhuan');
             } else {
                 throw new GQLException('您还没有绑定懂得赚账户哦~');
             }
-        }else{
-
-            $withdraw = $wallet->withdraw($amount, $payId, $args['platform']);
+        } else {
+            $withdraw = $wallet->withdraw($amount, $payId, $platform);
         }
 
         if (!$withdraw) {
@@ -116,12 +117,13 @@ trait WithdrawResolvers
     {
         $user            = checkUser();
         $amount          = $args['amount'];
-        $contribute      = $user->profile->count_contributes;
+        $contribute      = $user->contribute;
         $need_contribute = $amount * Contribute::WITHDRAW_DATE;
         $diffContributes = $need_contribute - $contribute;
         if ($diffContributes <= 0) {
             return 0;
         }
+
         return $diffContributes;
     }
 }

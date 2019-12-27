@@ -330,7 +330,7 @@ trait UserResolvers
             }
 
 //            检查用户是否存在
-            $ddzUser = \App\Dongdezhuan\User::whereAccount($args['account'])->first();
+            $ddzUser = \App\Dongdezhuan\User::whereAccount($args['account'])->orWhere('phone',$args['account'])->first();
             throw_if($ddzUser === null,GQLException::class,'绑定失败~懂得赚账号或密码输入错误~');
 
 //            懂得赚效验是否绑定过

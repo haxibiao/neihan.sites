@@ -27,7 +27,7 @@ trait OAuthResolvers
 
     public function bind(User $user, $code, $type)
     {
-        throw_if(OAuth::getUserOauth($user, $type), GQLException::class, '您已绑定成功,请直接登录!');
+        // throw_if(OAuth::getUserOauth($user, $type), GQLException::class, '您已绑定成功,请直接登录!');
         throw_if(!method_exists($this, $type), GQLException::class, '绑定失败,该授权方式不存在!');
         $oauth = $this->$type($user, $code);
 
@@ -43,10 +43,24 @@ trait OAuthResolvers
         throw_if(!Arr::has($accessTokens, ['unionid', 'openid']), GQLException::class, '授权失败,请稍后再试!');
 
         //建立oauth关联
-        $oAuth = OAuth::firstOrNew(['oauth_type' => 'wechat', 'oauth_id' => $accessTokens['unionid']]);
+        $oAuth  = OAuth::firstOrNew(['oauth_type' => 'wechat', 'oauth_id' => $accessTokens['unionid']]);
+        $openId = Arr::get($accessTokens, 'openid');
         if (isset($oAuth->id)) {
             $oAuthData = $oAuth->data;
-            throw_if(isset($oAuthData['openid']), GQLException::class, '绑定失败,该微信已绑定其他账户!');
+            //存在open_id
+            if (isset($oAuthData['openid'])) {
+                $openId = Arr::get($oAuthData, 'openid');
+                $wallet = $user->wallet;
+                $payId  = $wallet->getPayId(Withdraw::WECHAT_PLATFORM);
+                if (empty($payId)) {
+                    $wallet->setPayId($openId, Withdraw::WECHAT_PLATFORM);
+                    $wallet->save();
+
+                    return $oAuth;
+                } else {
+                    throw new GQLException('您已授权成功,请勿重复授权!');
+                }
+            }
         }
         $oAuth->user_id = $user->id;
         $oAuth->data    = Arr::only($accessTokens, ['openid', 'refresh_token']);
@@ -54,7 +68,7 @@ trait OAuthResolvers
 
         //同步钱包配置
         $wallet = $user->wallet;
-        $wallet->setPayId($accessTokens['openid'], Withdraw::ALIPAY_PLATFORM);
+        $wallet->setPayId($openId, Withdraw::WECHAT_PLATFORM);
         $wallet->save();
 
         return $oAuth;
@@ -62,6 +76,8 @@ trait OAuthResolvers
 
     public function alipay(User $user, $code)
     {
+        throw_if(true, GQLException::class, '支付宝暂未开放,请稍后再试!');
+
         $userInfo = AlipayUtils::userInfo($code);
         $openId   = Arr::get($userInfo, 'user_id');
         throw_if(empty($openId), GQLException::class, '授权失败,请稍后再试!');
@@ -76,7 +92,7 @@ trait OAuthResolvers
 
         //更新钱包OPENID
         $wallet = $user->wallet;
-        $wallet->setPayId($openId, Withdraw::WECHAT_PLATFORM);
+        $wallet->setPayId($openId, Withdraw::ALIPAY_PLATFORM);
         $wallet->save();
 
         return $oauth;
