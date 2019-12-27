@@ -170,6 +170,7 @@ trait TaskResolvers
         if (empty($user_task->completed_at)) {
             $user_task->completed_at = now();
         } else {
+
             $diffmi = Carbon::parse($user_task->completed_at)->diffInMinutes();
             $diffse = Carbon::parse($user_task->completed_at)->diffInSeconds(now());
 
@@ -192,18 +193,6 @@ trait TaskResolvers
         $user_task->save();
 
         $reward = $task->reward_info;
-
-        // 处理早晨的奖励变更
-        // if ($task->name == "SleepMorning") {
-        //     $sleep_night_task = Task::where('name', "SleepNight")->first()->getUserTask($user->id, Carbon::yesterday());
-        //     if ($sleep_night_task) {
-        //         if ($sleep_night_task->task_status != UserTask::TASK_DONE) {
-        //             throw new GQLException('昨晚睡觉卡未打');
-        //         }
-        //     } else {
-        //         throw new GQLException('昨晚睡觉卡未打');
-        //     }
-        // }
 
         $user_task->processReward($task->reward_info);
         return $user_task;
