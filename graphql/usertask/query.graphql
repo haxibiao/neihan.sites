@@ -5,6 +5,7 @@ type UserTask {
   content: String
   status: Int
   progress: Float
+  completed_at: DateTime
   created_at: DateTime
   updated_at: DateTime
 }

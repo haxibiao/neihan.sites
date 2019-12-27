@@ -103,20 +103,22 @@ class TaskSeeder extends Seeder
         Task::firstOrCreate([
             'name'     => 'SleepMorning',
             'status'   => Task::ENABLE,
-            'details'  => '早上6点到9点可打卡 。昨晚睡觉卡未打，则不能在打',
+            'details'  => '起床卡凌晨0点到12点,每15分钟可以打次卡',
             'type'     => Task::TIME_TASK,
-            'reward'   => array("gold" => "50", 'contribute' => '2'),
-            'start_at' => '2019-12-03 06:00:00',
-            'end_at'   => '2019-12-03 09:00:00',
+            'reward'   => array("gold" => "50", 'contribute' => '1'),
+            'resolve'  => array('minutes' => '15'),
+            'start_at' => '2019-12-03 00:00:00',
+            'end_at'   => '2019-12-03 11:59:59',
         ]);
 
         Task::firstOrCreate([
             'name'     => 'SleepNight',
             'status'   => Task::ENABLE,
-            'details'  => '睡觉打卡',
+            'details'  => '起床卡12点到24点可打卡,每15分钟可以打次卡',
             'type'     => Task::TIME_TASK,
-            'reward'   => array("gold" => "50"),
-            'start_at' => '2019-12-03 20:00:00',
+            'reward'   => array("gold" => "15"),
+            'resolve'  => array('minutes' => '15'),
+            'start_at' => '2019-12-03 12:00:00',
             'end_at'   => '2019-12-03 23:59:59',
         ]);
 
