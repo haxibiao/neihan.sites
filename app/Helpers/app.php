@@ -319,7 +319,7 @@ function adIsOpened()
         'group' => $os,
         'name'  => 'ad',
     ])->first();
-    if ($config->state === \App\AppConfig::STATUS_ON) {
+    if ($config && $config->state === \App\AppConfig::STATUS_ON) {
         return true;
     } else {
         return false;
