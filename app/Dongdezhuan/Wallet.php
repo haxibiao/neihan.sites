@@ -44,7 +44,7 @@ class Wallet extends Model
         return $this->hasMany(\App\Dongdezhuan\Withdraw::class);
     }
 
-    public function transactions()
+    public function transactions():HasMany
     {
         return $this->hasMany(\App\Dongdezhuan\Transaction::class);
     }
