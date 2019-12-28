@@ -139,7 +139,19 @@ trait TaskResolvers
         $task      = Task::where('name', $name)->first();
         $user_task = UserTask::createUserTask($task->id, $user->id, now());
         $user_task = UserTask::createUserTask($task->id, $user->id, now());
-        $status    = 1;
+        $status    = 3;
+
+        $minutes = $task->resolve['minutes'] ?? 15;
+        if (Carbon::parse($user_task->completed_at)->diffInMinutes() > $minutes) {
+            $status = 1;
+        }
+        //若未打晚上的卡，早晨的卡则不能打
+        // if ($task->name == "SleepMorning") {
+        //     $sleep_night_task = Task::where('name', "SleepNight")->first()->getUserTask($user->id, Carbon::yesterday());
+        //     if (!$sleep_night_task) {
+        //         $status = -1;
+        //     }
+        // }
 
         $user_task->status = $status;
         $user_task->save();

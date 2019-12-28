@@ -98,6 +98,8 @@ Route::get('/video/list', 'VideoController@list');
 Route::get('/video/{id}/process', 'VideoController@processVideo');
 Route::resource('/video', 'VideoController');
 
+Route::any('/share/post/{id}','ArticleController@shareVideo');
+
 //logs
 Route::get('/logshow', 'LogController@logShow');
 Route::get('/logclear', 'LogController@logClear');

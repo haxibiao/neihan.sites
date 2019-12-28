@@ -1,0 +1,157 @@
+body{
+	background: #000000;
+}
+header{
+	width: 3.6rem;
+	height: .652rem;
+	background: #000000;
+	position: fixed;
+	left: 0;
+	top: 0;
+}
+.head-left{
+	width: .6rem;
+	height: 1.8rem;
+}
+.logo{
+	width:.6rem ;
+	height: .6rem;
+	margin: .02rem;
+}
+.head-left>p{
+	color: #fff;
+	font-size: .26rem;
+	position: absolute;
+	left: .7rem;
+	bottom: .05rem;
+}
+.head-right{
+	width: .75rem;
+	height: .26rem;
+	position: absolute;
+	background: #FE2C55;
+	top: .2rem;
+	right: .3rem;
+	border-radius: .04rem;
+	text-align: center;
+}
+.head-right>a{
+	font-size: .12rem;
+	color: seashell;
+	display: block;
+	margin-top: .035rem;
+}
+#tancen{
+	width: 3.6rem;
+	height: 6.4rem;
+	background: rgb(23, 23, 23);
+	opacity:0.7;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	display: none;
+	z-index: 99;
+
+}
+#xiazaiimg{
+	width: 2.3rem;
+	height: 2.5rem;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top:0;
+	margin: auto;
+	z-index: 999;
+	display: none;
+}
+#close{
+	height: .2rem;
+	width: .2rem;
+	text-align: center;
+	line-height: .2rem;
+	border-radius: 50%;
+	position: absolute;
+	right: 0;
+	top:0;
+}
+#xiazaiimg>a{
+	width: 100%;
+	height: 100%;
+}
+#xiazaiimg>a>img{
+	width: 100%;
+	height: 100%;
+}
+#theVideo{
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top:0;
+	margin: auto;
+}
+#videoInfo{
+	width:100%;
+	height: 2.8rem;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background-image: linear-gradient(to top, rgb(23, 23, 23), rgba(82, 82, 82, 0));
+}
+
+.info-right{
+	height: 2.3rem;
+	width: .48rem;
+	position: absolute;
+	top: 0;
+	right: .1rem;
+	display: flex;
+	flex-direction:column;
+	justify-content: space-between;
+	align-items: center;
+}
+.info-text{
+	width:2.42rem;
+	height: .6rem;
+	position: absolute;
+	bottom: .3rem;
+	left: .2rem;
+}
+.info-like{
+	text-align: center;
+}
+
+.icon{
+	height: .319rem;
+	width: .336rem;
+}
+.img-avator{
+	height: .44rem;
+	width: .44rem;
+	border-radius: 50%;
+	border:2px #ffffff;
+}
+.img-follow{
+	height: .23rem;
+	width: .23rem;
+	position: absolute;
+	top: .33rem;
+	left: .11rem;
+}
+
+
+#video_btn {
+	background-image: url(http://static.kaiba315.com/video_bg_grey.png);
+	background-color: transparent;
+	background-size: 100%;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 50px;
+	height: 50px;
+	margin-left: -25px;
+	margin-top: -25px;
+	z-index: 3;
+	border: none;
+}

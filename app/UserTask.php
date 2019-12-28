@@ -73,23 +73,16 @@ class UserTask extends Pivot
     {
         $task = $this->task;
         $user = $this->user;
-
-
-        $name = $task->name;
-
-        if($name=="SleepMorning" || $name=="SleepNight"){
-            $name= "睡觉任务";
-        }
         try {
             DB::beginTransaction(); //开启数据库事务
             if (array_get($reward, "gold")) {
-                $remark     = sprintf('%s奖励', $name);
+                $remark     = sprintf('%s任务奖励', $task->details);
                 $rewardGold = $reward["gold"];
                 $user->goldWallet->changeGold($rewardGold, $remark);
             }
 
             if (array_get($reward, "contribute")) {
-                $remark     = sprintf('%s奖励', $name);
+                $remark     = sprintf('%s任务奖励', $task->details);
                 $rewardGold = $reward['contribute'];
                 Contribute::rewardUserContribute($user->id, $this->id, $rewardGold, "usertasks", $remark);
             }
