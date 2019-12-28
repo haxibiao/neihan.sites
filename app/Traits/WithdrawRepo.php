@@ -26,9 +26,9 @@ trait WithdrawRepo
             return;
         }
 
-        if ($user->isWithDrawTodayByPayAccount($this->created_at)) {
-            return $this->illegalWithdraw('当前支付宝账号已经提现过了噢 ~，请勿重复提现~~');
-        }
+//        if ($user->isWithDrawTodayByPayAccount($this->created_at)) {
+//            return $this->illegalWithdraw('当前支付宝账号已经提现过了噢 ~，请勿重复提现~~');
+//        }
 
         //判断余额
         if ($wallet->balance < $this->amount) {
