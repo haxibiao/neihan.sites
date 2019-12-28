@@ -7,6 +7,7 @@ use App\Contribute;
 use App\Exchange;
 use App\Follow;
 use App\Profile;
+use App\RewardCounter;
 use App\User;
 use App\Wallet;
 use Illuminate\Support\Carbon;
@@ -16,6 +17,18 @@ use Illuminate\Support\Str;
 
 trait UserAttrs
 {
+    //用户激励视频的计数器
+    public function getRewardCounterAttribute()
+    {
+        $counter = $this->hasOne(RewardCounter::class)->first();
+        if (!$counter) {
+            $counter = RewardCounter::firstOrCreate([
+                'user_id' => $this->id,
+            ]);
+        }
+        return $counter;
+    }
+
     public function getGoldAttribute()
     {
         return $this->goldWallet->goldBalance;

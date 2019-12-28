@@ -46,10 +46,10 @@ class AppController extends Controller
 
         //开屏混合 ----------------------------
         if ($adData['splash_prodiver'] == '混合') {
-            if (rand(1, 9) <= 3) {
+            if (rand(1, 100) % 3 == 0) {
                 $adData['splash_prodiver'] = '腾讯';
                 $adData['codeid_splash']   = $adData['codeid_splash_tencent'];
-            } else if (rand(1, 9) <= 6) {
+            } else if (rand(1, 100) % 3 == 1) {
                 $adData['splash_prodiver'] = '百度';
                 $adData['codeid_splash']   = $adData['codeid_splash_baidu'];
             } else {
@@ -67,10 +67,10 @@ class AppController extends Controller
 
         //信息流混合 ----------------------------
         if ($adData['feed_prodiver'] == '混合') {
-            if (rand(1, 9) <= 3) {
+            if (rand(1, 100) % 3 == 0) {
                 $adData['feed_prodiver'] = '腾讯';
                 $adData['codeid_feed']   = $adData['codeid_feed_tencent'];
-            } else if (rand(1, 9) <= 6) {
+            } else if (rand(1, 100) % 3 == 1) {
                 $adData['feed_prodiver'] = '百度';
                 $adData['codeid_feed']   = $adData['codeid_feed_baidu'];
             } else {
@@ -88,30 +88,48 @@ class AppController extends Controller
 
         //激励视频混合 ----------------------------
         if ($adData['reward_video_prodiver'] == '混合') {
-            if (rand(1, 10) > 5) {
-                $adData['reward_video_prodiver'] = '腾讯';
-
-                // 兼容 video_tencent
-                if (isset($adData['codeid_reward_video2'])) {
-                    $adData['codeid_reward_video'] = $adData['codeid_reward_video2'];
+            if ($user = getUser(false)) {
+                //统计激励次数，并强制每次轮换平台
+                $counter = $user->rewardCounter;
+                if ($counter->last_provider == "头条") {
+                    $adData['reward_video_prodiver'] = '腾讯';
+                    $adData['codeid_reward_video']   = $adData['codeid_reward_video_tencent'];
+                    $counter->count_tencent          = $counter->count_tencent + 1;
+                    $counter->last_provider          = "腾讯";
                 } else {
-                    $adData['codeid_reward_video'] = $adData['codeid_reward_video_tencent'];
+                    $adData['reward_video_prodiver'] = '头条';
+                    $counter->count_toutiao          = $counter->count_toutiao + 1;
+                    $counter->last_provider          = "头条";
                 }
+                $counter->count = $counter->count + 1;
+                $counter->save();
+            } else {
+                //没用户信息时，简单随机
+                if (rand(1, 100) % 2 == 0) {
+                    $adData['reward_video_prodiver'] = '腾讯';
+                    $adData['codeid_reward_video']   = $adData['codeid_reward_video_tencent'];
+                } else {
+                    $adData['reward_video_prodiver'] = '头条';
+                }
+            }
+        } else if ($adData['reward_video_prodiver'] == '腾讯') {
+            $adData['codeid_reward_video'] = $adData['codeid_reward_video_tencent'];
+            if ($user = getUser(false)) {
+                $counter                = $user->rewardCounter;
+                $counter->count         = $counter->count + 1;
+                $counter->count_tencent = $counter->count_tencent + 1;
+                $counter->save();
+            }
+        } else {
+            //默认是头条的codeid
+            if ($user = getUser(false)) {
+                $counter                = $user->rewardCounter;
+                $counter->count         = $counter->count + 1;
+                $counter->count_toutiao = $counter->count_toutiao + 1;
+                $counter->save();
+            }
+        }
 
-            } else {
-                $adData['reward_video_prodiver'] = '头条';
-            }
-        }
-        //选择腾讯
-        if ($adData['reward_video_prodiver'] == '腾讯') {
-            // 兼容 video_tencent
-            if (isset($adData['codeid_reward_video2'])) {
-                $adData['codeid_reward_video'] = $adData['codeid_reward_video2'];
-            } else {
-                $adData['codeid_reward_video'] = $adData['codeid_reward_video_tencent'];
-            }
-        }
-        //默认是头条的codeid
         return $adData;
     }
 
