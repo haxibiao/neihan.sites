@@ -12,6 +12,20 @@ go_production:
     - ssh root@gz08 "cd /data/www/ainicheng.com && bash ops/bash/data.sh && exit"
   only:
     - master
+
+fix_data:
+  stage: deploy
+  script:
+    - whoami
+    - pwd
+    - ssh root@gz08 "cd /data/www/ainicheng.com && git reset --hard && git checkout master && git pull origin master -f"
+    - ssh root@gz08 "cd /data/www/ainicheng.com && composer install"
+    - ssh root@gz08 "cd /data/www/ainicheng.com && bash ops/bash/env.sh"
+    - ssh root@gz08 "cd /data/www/ainicheng.com && php artisan migrate --seed"
+    - ssh root@gz08 "cd /data/www/ainicheng.com && bash ops/bash/data.sh && exit"
+  only:
+    - tags
+
 go_develop:
   stage: deploy
   script:

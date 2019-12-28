@@ -11,9 +11,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        //develop上测试开关和adconfig
-        // $this->call(AppConfigSeeder::class);
-        $this->call(TaskSeeder::class);
+        $this->call(AdConfigSeeder::class);
+        // $this->call(TaskSeeder::class);
         // $this->call(FunctionSwitchSeeder::class);
     }
 }

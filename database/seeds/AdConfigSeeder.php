@@ -12,6 +12,8 @@ class AdConfigSeeder extends Seeder
      */
     public function run()
     {
+        AdConfig::truncate();
+
         $config = AdConfig::firstOrCreate([
             'name' => 'tt_appid',
         ]);
@@ -92,6 +94,13 @@ class AdConfigSeeder extends Seeder
         $config->value = '933409481';
         $config->save();
 
+        //full视频
+        $config = AdConfig::firstOrCreate([
+            'name' => 'codeid_full_video',
+        ]);
+        $config->value = '943671835';
+        $config->save();
+
         //激励视频
         $config = AdConfig::firstOrCreate([
             'name' => 'codeid_reward_video',
@@ -103,6 +112,5 @@ class AdConfigSeeder extends Seeder
         ]);
         $config->value = '7090090503382538';
         $config->save();
-
     }
 }
