@@ -34,19 +34,19 @@ class AdConfigSeeder extends Seeder
 
         //provider
         $config = AdConfig::firstOrCreate([
-            'name' => 'splash_prodiver',
+            'name' => 'splash_provider',
         ]);
         $config->value = '头条';
         $config->save();
 
         $config = AdConfig::firstOrCreate([
-            'name' => 'feed_prodiver',
+            'name' => 'feed_provider',
         ]);
         $config->value = '头条';
         $config->save();
 
         $config = AdConfig::firstOrCreate([
-            'name' => 'reward_video_prodiver',
+            'name' => 'reward_video_provider',
         ]);
         $config->value = '混合';
         $config->save();
