@@ -30,6 +30,16 @@ $config = [
     'dongdezhuan'  => 'http://a43d8109fdf7458db81aad0d02e0bb16@sentry.haxibiao.cn:9000/31',
     'dongmiaomu'   => 'http://6ecda6a96ef8471ba33fb58d750b29a5@sentry.haxibiao.cn:9000/32',
     'dongwaiyu'    => 'http://441f41dbe87442eeb6c0fbc30e6fd66c@sentry.haxibiao.cn:9000/33',
+    'dongyinyue' => 'http://fda58baee50045f38a5c3deee18dacde@sentry.haxibiao.cn:9000/42',
+    'dongtianqi' => 'http://8b369b7ed75a479b9ce8e1b39a4bdab1@sentry.haxibiao.cn:9000/43',
+    'dongyunqi' => 'http://3a444a8494504241a9f552900d28d07a@sentry.haxibiao.cn:9000/45',
+    'dongdili' => 'http://a032eb2de26e4518822c3a76df095415@sentry.haxibiao.cn:9000/46',
+    'dongshengwu' => 'http://2e09d31de213458cb86cc637ee2adaa6@sentry.haxibiao.cn:9000/47',
+    'donghuaxue' => 'http://2cf763baaf14402a89c539122a60f08f@sentry.haxibiao.cn:9000/48',
+    'dongyuwen' => 'http://58634a236c9e4a54bb38784a2d6395bc@sentry.haxibiao.cn:9000/49',
+    'dongshuxue' => 'http://da41f0a2ff76467fbf36f2959fb1c607@sentry.haxibiao.cn:9000/50',
+    'donglishi' => 'http://de1acd5f1dd2449b901a649be373dc62@sentry.haxibiao.cn:9000/51',
+    'dongzhengzhi' => 'http://cbb6f1d0e4d240d199b3c0657a21cfda@sentry.haxibiao.cn:9000/52',
 ];
 return [
 

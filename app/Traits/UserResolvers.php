@@ -83,7 +83,7 @@ trait UserResolvers
             //手机号格式验证
             $flag = preg_match('/^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/', $account);
             if (!$flag) {
-                throw new GQLException('修改失败，手机号格式不正确，请检查是否输入正确');
+                throw new GQLException('注册失败，手机号格式不正确，请检查是否输入正确');
             }
 
             if (preg_match("/([\x81-\xfe][\x40-\xfe])/", $args['password'])) {
@@ -264,7 +264,8 @@ trait UserResolvers
                 }
 
                 // 查询是否已经存在
-                $flag = User::where('phone', $args['phone'])->exists();
+                $flag = User::where('phone', $args['phone'])
+                    ->orWhere('account', $args['phone'])->exists();
                 if ($flag) {
                     throw new GQLException('该手机号已被绑定，请检查是否输入正确');
                 }

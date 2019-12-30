@@ -83,13 +83,13 @@ class CommentMutators
             throw new GQLException('发布失败,你以被禁言');
         }
 
-        if (BadWordUtils::check($args['body'])) {
-            throw new GQLException('发布的评论中含有包含非法内容,请删除后再试!');
-        }
         try {
             $comment_ids = Arr::get($args, 'comment_ids');
             $comments    = Comment::find($comment_ids);
             $comment     = $comments->first();
+            if (BadWordUtils::check($comment->body)) {
+                throw new GQLException('发布的评论中含有包含非法内容,请删除后再试!');
+            }
             $commentable = $comment->commentable;
             $issue       = $commentable->issue;
             $gold        = $issue->gold;

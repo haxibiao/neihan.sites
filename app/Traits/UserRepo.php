@@ -22,7 +22,9 @@ trait UserRepo
         if (filter_var($account, FILTER_VALIDATE_EMAIL)) {
             $user->email = $account;
         }
-
+        if(is_phone_number($account)){
+            $user->phone  = $account;
+        }
         $user->account  = $account;
         $user->name     = $name;
         $user->password = bcrypt($password);
