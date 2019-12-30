@@ -4,6 +4,8 @@
 /public/img*
 /public/*.apk
 /public/sitemap*
+/public/css
+/public/js
 /storage/*.key
 /vendor
 /.idea

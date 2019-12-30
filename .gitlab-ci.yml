@@ -8,8 +8,7 @@ go_production:
     - ssh root@gz08 "cd /data/www/ainicheng.com && composer install"
     - ssh root@gz08 "cd /data/www/ainicheng.com && php artisan env:refresh --env=prod --db_host=nwgz03 --db_database=ainicheng"
     - ssh root@gz08 "cd /data/www/ainicheng.com && bash ops/bash/worker.sh"
-    - ssh root@gz08 "cd /data/www/ainicheng.com && php artisan migrate"
-    - ssh root@gz08 "cd /data/www/ainicheng.com && bash ops/bash/data.sh && exit"
+    - ssh root@gz08 "cd /data/www/ainicheng.com && php artisan migrate && exit"
   only:
     - master
 
