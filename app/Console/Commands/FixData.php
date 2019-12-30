@@ -13,6 +13,7 @@ use App\User;
 use App\UserRetention;
 use App\Video;
 use App\Visit;
+use App\Wallet;
 use App\WalletTransaction;
 use App\Withdraw;
 use Illuminate\Console\Command;
@@ -1032,5 +1033,27 @@ class FixData extends Command
 
             }
         });
+    }
+
+    public function wallets()
+    {
+        $data = Wallet::selectRaw('wechat_account,count(*) as bind_count')
+            ->where('wechat_account', '!=', '')
+            ->groupBy('wechat_account')
+            ->having('bind_count', '>', 1)
+            ->get();
+
+        foreach ($data as $item) {
+            $wechatAccount = $item->wechat_account;
+            $wallets       = Wallet::where('wechat_account', $wechatAccount)->get();
+            foreach ($wallets as $wallet) {
+                $oauth = OAuth::where('user_id', $wallet->user_id)->where('oauth_type', 'wechat')->first();
+                if (is_null($oauth)) {
+                    $wallet->wechat_account = '';
+                    $wallet->save();
+                    $this->info('成功修复 Wallet Id:' . $wallet->id . ' 姓名:' . $wallet->real_name);
+                }
+            }
+        }
     }
 }

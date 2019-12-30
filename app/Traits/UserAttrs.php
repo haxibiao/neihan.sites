@@ -391,4 +391,12 @@ trait UserAttrs
     {
         return $this->checkUserIsBindDongdezhuan();
     }
+
+    public function getDongdezhuanUserAttribute(){
+//        如果绑定过了
+        if ($this->checkUserIsBindDongdezhuan()){
+            return $this->getDongdezhuanUser();
+        }
+        return null;
+    }
 }

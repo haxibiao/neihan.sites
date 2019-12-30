@@ -46,6 +46,7 @@ trait OAuthResolvers
         $oAuth  = OAuth::firstOrNew(['oauth_type' => 'wechat', 'oauth_id' => $accessTokens['unionid']]);
         $openId = Arr::get($accessTokens, 'openid');
         if (isset($oAuth->id)) {
+            throw_if($oAuth->user_id != $user->id, GQLException::class, '授权失败,该微信已绑定其他账户');
             $oAuthData = $oAuth->data;
             //存在open_id
             if (isset($oAuthData['openid'])) {

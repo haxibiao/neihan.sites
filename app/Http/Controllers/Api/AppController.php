@@ -45,59 +45,38 @@ class AppController extends Controller
         }
 
         //开屏混合 ----------------------------
-        if ($adData['splash_prodiver'] == '混合') {
+        if ($adData['splash_provider'] == '混合') {
             if (rand(1, 100) % 3 == 0) {
-                $adData['splash_prodiver'] = '腾讯';
-                $adData['codeid_splash']   = $adData['codeid_splash_tencent'];
+                $adData['splash_provider'] = '腾讯';
             } else if (rand(1, 100) % 3 == 1) {
-                $adData['splash_prodiver'] = '百度';
-                $adData['codeid_splash']   = $adData['codeid_splash_baidu'];
+                $adData['splash_provider'] = '百度';
             } else {
-                $adData['splash_prodiver'] = '头条';
+                $adData['splash_provider'] = '头条';
             }
-        }
-        //选择腾讯
-        if ($adData['splash_prodiver'] == '腾讯') {
-            $adData['codeid_splash'] = $adData['codeid_splash_tencent'];
-        }
-        //选择百度
-        if ($adData['splash_prodiver'] == '百度') {
-            $adData['codeid_splash'] = $adData['codeid_splash_baidu'];
         }
 
         //信息流混合 ----------------------------
-        if ($adData['feed_prodiver'] == '混合') {
+        if ($adData['feed_provider'] == '混合') {
             if (rand(1, 100) % 3 == 0) {
-                $adData['feed_prodiver'] = '腾讯';
-                $adData['codeid_feed']   = $adData['codeid_feed_tencent'];
+                $adData['feed_provider'] = '腾讯';
             } else if (rand(1, 100) % 3 == 1) {
-                $adData['feed_prodiver'] = '百度';
-                $adData['codeid_feed']   = $adData['codeid_feed_baidu'];
+                $adData['feed_provider'] = '百度';
             } else {
-                $adData['feed_prodiver'] = '头条';
+                $adData['feed_provider'] = '头条';
             }
-        }
-        //选择腾讯
-        if ($adData['feed_prodiver'] == '腾讯') {
-            $adData['codeid_feed'] = $adData['codeid_feed_tencent'];
-        }
-        //选择百度
-        if ($adData['feed_prodiver'] == '百度') {
-            $adData['codeid_feed'] = $adData['codeid_feed_baidu'];
         }
 
         //激励视频混合 ----------------------------
-        if ($adData['reward_video_prodiver'] == '混合') {
+        if ($adData['reward_video_provider'] == '混合') {
             if ($user = getUser(false)) {
                 //统计激励次数，并强制每次轮换平台
                 $counter = $user->rewardCounter;
                 if ($counter->last_provider == "头条") {
-                    $adData['reward_video_prodiver'] = '腾讯';
-                    $adData['codeid_reward_video']   = $adData['codeid_reward_video_tencent'];
+                    $adData['reward_video_provider'] = '腾讯';
                     $counter->count_tencent          = $counter->count_tencent + 1;
                     $counter->last_provider          = "腾讯";
                 } else {
-                    $adData['reward_video_prodiver'] = '头条';
+                    $adData['reward_video_provider'] = '头条';
                     $counter->count_toutiao          = $counter->count_toutiao + 1;
                     $counter->last_provider          = "头条";
                 }
@@ -106,27 +85,10 @@ class AppController extends Controller
             } else {
                 //没用户信息时，简单随机
                 if (rand(1, 100) % 2 == 0) {
-                    $adData['reward_video_prodiver'] = '腾讯';
-                    $adData['codeid_reward_video']   = $adData['codeid_reward_video_tencent'];
+                    $adData['reward_video_provider'] = '腾讯';
                 } else {
-                    $adData['reward_video_prodiver'] = '头条';
+                    $adData['reward_video_provider'] = '头条';
                 }
-            }
-        } else if ($adData['reward_video_prodiver'] == '腾讯') {
-            $adData['codeid_reward_video'] = $adData['codeid_reward_video_tencent'];
-            if ($user = getUser(false)) {
-                $counter                = $user->rewardCounter;
-                $counter->count         = $counter->count + 1;
-                $counter->count_tencent = $counter->count_tencent + 1;
-                $counter->save();
-            }
-        } else {
-            //默认是头条的codeid
-            if ($user = getUser(false)) {
-                $counter                = $user->rewardCounter;
-                $counter->count         = $counter->count + 1;
-                $counter->count_toutiao = $counter->count_toutiao + 1;
-                $counter->save();
             }
         }
 

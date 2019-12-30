@@ -1,0 +1,11 @@
+type dongdezhuanUser{
+    id:ID!
+    name:String
+    uuid:String
+    phone:String
+    account:String
+    email:String
+    avatar:String
+    api_token:String
+    created_at:String
+}
