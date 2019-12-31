@@ -159,10 +159,10 @@ trait WithdrawResolvers
 
 //        TODO: 不影响线上使用,此处不修改 Contribute::WITHDRAW_DATE
         $contribute = 60;
-        $successWithdrawAmount = $user->getUserSuccessWithdrawAmount();
+        $isWithdrawBefore = $user->isWithdrawBefore();
 
         //            判断是否提现过
-        if ($user->isWithdrawBefore()){
+        if ($isWithdrawBefore){
             $minAmount = 1;
         }else{
             $minAmount = 0.3;
@@ -208,7 +208,7 @@ trait WithdrawResolvers
 
 //        去掉头或尾部数据
         if (count($withdrawInfo) > 4) {
-            if ($successWithdrawAmount > 1) {
+            if ($isWithdrawBefore) {
                 array_shift($withdrawInfo);
             } else {
                 array_pop($withdrawInfo);
