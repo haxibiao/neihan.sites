@@ -8,6 +8,7 @@ use App\Traits\TaskRepo;
 use App\Traits\TaskResolvers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Task extends Model
 {
@@ -84,8 +85,9 @@ class Task extends Model
     public function getIconAttribute()
     {
         $logo = $this->getOriginal('icon');
-        if (!empty($logo)) {
+        if (!empty($logo) && !Str::contains($logo,'http')) {
             return Storage::cloud()->url($logo);
         }
+        return $logo;
     }
 }

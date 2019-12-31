@@ -7,5 +7,6 @@
 # php artisan queue:restart
 # php artisan fix:data payTest
 # php artisan fix:data withdrawJobs
-php artisan fix:data fixDescription
+#php artisan fix:data fixDescription
 
+php artisan db:seed --class=TaskSeeder
