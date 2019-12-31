@@ -40,6 +40,7 @@ $config = [
     'dongshuxue'   => 'http://da41f0a2ff76467fbf36f2959fb1c607@sentry.haxibiao.cn:9000/50',
     'donglishi'    => 'http://de1acd5f1dd2449b901a649be373dc62@sentry.haxibiao.cn:9000/51',
     'dongzhengzhi' => 'http://cbb6f1d0e4d240d199b3c0657a21cfda@sentry.haxibiao.cn:9000/52',
+    'dongdianhai'  => 'http://b3dde8fcfa714355aab35aa565559482@sentry.haxibiao.cn:9000/60',
 ];
 return [
 

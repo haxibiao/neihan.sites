@@ -127,14 +127,18 @@ trait WithdrawResolvers
     {
         $user            = checkUser();
         $amount          = $args['amount'];
-        $contribute      = $user->contribute;
-        $need_contribute = $amount * Contribute::WITHDRAW_DATE;
-        $diffContributes = $need_contribute - $contribute;
-        if ($diffContributes <= 0) {
-            return 0;
-        }
+        $isWithdrawBefore = $user->isWithdrawBefore();
 
-        return $diffContributes;
+        if ($isWithdrawBefore){
+            $contribute      = $user->contribute;
+            $need_contribute = $amount * Contribute::WITHDRAW_DATE;
+            $diffContributes = $need_contribute - $contribute;
+            if ($diffContributes <= 0) {
+                return 0;
+            }
+            return $diffContributes;
+        }
+        return 0;
     }
 
     /**
