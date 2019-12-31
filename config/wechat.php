@@ -154,7 +154,7 @@ $config = [
     'dongdianmei'       => [
         'wechat_app' => [
             'appid'  => 'wxffd3abf9db7d3aa1',
-            'secret' => '4c5194e522ee25105eed8c571134185可能是电话号码，是否拨号?a',
+            'secret' => '4c5194e522ee25105eed8c571134185a',
         ],
     ],
     'dongdiancai'       => [
