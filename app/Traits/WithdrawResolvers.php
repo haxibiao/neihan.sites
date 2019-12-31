@@ -25,15 +25,15 @@ trait WithdrawResolvers
             throw new GQLException('等级和勋章不够哦~，请等待版本更新，增加更多玩法吧~');
         }
 
-        $allowWechatApps = [
-            'dianmoge',
-            'ainicheng',
-            'qunyige',
-        ];
-        //3. 目前只有allow wechat app被微信授权提现
-        if ($platform === 'Wechat' && !in_array(config('app.name'), $allowWechatApps)) {
-            throw new GQLException('微信提现正在开发中,暂未开放哦!~');
-        }
+        // $allowWechatApps = [
+        //     'dianmoge',
+        //     'ainicheng',
+        //     'qunyige',
+        // ];
+        // //3. 目前只有allow wechat app被微信授权提现
+        // if ($platform === 'Wechat' && !in_array(config('app.name'), $allowWechatApps)) {
+        //     throw new GQLException('微信提现正在开发中,暂未开放哦!~');
+        // }
 
         //4. 用户钱包效验
         $wallet = $user->wallet;

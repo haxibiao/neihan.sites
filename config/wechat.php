@@ -217,6 +217,12 @@ $config = [
             'secret' => '9f7cf2e012e29204d02ecdcaa420f577',
         ],
     ],
+    'dongdianyi'        => [
+        'wechat_app' => [
+            'appid'  => 'wx4a953352ba5e5aee',
+            'secret' => '11a1edd61129196ead561bf08f9a1040',
+        ],
+    ],
 ];
 
 $config['wechat_app'] = Arr::get($config, config('app.name') . '.wechat_app');
