@@ -380,7 +380,7 @@ trait UserAttrs
 
     public function getTodayContributeAttribute()
     {
-        $amount = Contribute::where('user_id', $this->id)->whereDate('created_at', today())->sum('amount');
+        $amount = Contribute::where('user_id', $this->id)->where('amount','>',0)->whereDate('created_at', today())->sum('amount');
         if ($amount <= 0) {
             return 0;
         }

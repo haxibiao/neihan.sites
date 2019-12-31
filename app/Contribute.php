@@ -16,7 +16,7 @@ class Contribute extends Model
     const ISSUE_CONVERSION_RATE = 10;
 
     // 提现金额与贡献值的汇率
-    const WITHDRAW_DATE = 30;
+    const WITHDRAW_DATE = 60;
 
     // 采纳问答奖励贡献点
     const REWARD_RESOLUTION_AMOUNT = 1;
