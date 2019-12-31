@@ -176,8 +176,13 @@ trait TaskResolvers
         $task                    = $user_task->task;
         $user_task->status       = 3;
         $user_task->completed_at = now();
-        $user_task->content      = sprintf('%s完成。奖励:', $task->details) . $task->getTaskContent();
-        $user_task->timestamps   = false;
+        $name                    = "睡觉卡";
+        if ($task->name == "SleepMorning") {
+            $name = "起床卡";
+        }
+        $user_task->content = sprintf('%s完成。奖励:', $name) . $task->getTaskContent();
+
+        $user_task->timestamps = false;
         $user_task->save();
 
         $reward = $task->reward_info;

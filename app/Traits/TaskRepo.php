@@ -48,15 +48,16 @@ trait TaskRepo
         // $content         = sprintf('<%s>以完成。任务奖励:', $usertask_all->details);
         $usertask_reward = $this->reward_info;
         if (empty($usertask_reward)) {
-            $reward_content = '无';
+            return '无';
         }
-
+        $reward_content = '';
         if (array_get($usertask_reward, "gold")) {
             $reward_content = sprintf(" 金币+%s", array_get($usertask_reward, "gold"));
+
         }
 
         if (array_get($usertask_reward, "contribute")) {
-            $reward_content = sprintf(" 贡献值+%s", array_get($usertask_reward, "gold"));
+            $reward_content = $reward_content . sprintf(" 贡献值+%s", array_get($usertask_reward, "contribute"));
         }
 
         return $reward_content;
@@ -161,7 +162,6 @@ trait TaskRepo
         }
     }
 
-
     /**
      * @param User $user
      * @param Task $task
@@ -169,19 +169,19 @@ trait TaskRepo
      * @return bool
      * @throws GQLException
      */
-    public function highPraise(User $user, Task $task ,string $content): bool
+    public function highPraise(User $user, Task $task, string $content): bool
     {
         $qb = UserTask::where([
             'task_id' => $task->id,
             'user_id' => $user->id,
         ]);
 
-        if ($qb->doesntExist()){
+        if ($qb->doesntExist()) {
             $user->tasks()->attach($task->id, ['status' => UserTask::TASK_UNDONE]);
         }
         $userTask = $qb->first();
 
-        if ($userTask->status > UserTask::TASK_UNDONE){
+        if ($userTask->status > UserTask::TASK_UNDONE) {
             throw new GQLException('好评任务已经做过了哦~');
         }
 

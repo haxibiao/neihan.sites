@@ -35,41 +35,43 @@ class UserBlock extends Model
     //添加用户黑名单（屏蔽用户）
     public function addUserBlock($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $user = getUser();
-        //跳过已经屏蔽过的用户
-        $existUser = \App\UserBlock ::where("user_block_id",$args['id'])->get(); 
-        if($existUser->count()){
-            throw new GQLException('屏蔽失败，您已经屏蔽过该用户');
-        }    
-        $userBlock  = User::find($args['id']);  
-        if(!$userBlock->count()){
-            throw new GQLException('屏蔽失败，不存在该用户');
+        if($user = checkUser()){
+                $userBlock  = User::find($args['id']);  
+                if(!$userBlock->count()){
+                    throw new GQLException('屏蔽失败，不存在该用户');
+                }
+               //跳过已经屏蔽过的用户
+                $existUser = \App\UserBlock ::where("user_id",$user->id)->where("user_block_id",$args['id'])->get(); 
+                if($existUser->count()){
+                    throw new GQLException('屏蔽失败，您已经屏蔽过该用户');
+                }    
+                $ub = new UserBlock();
+                $ub->user_id =  $user->id;
+                $ub->user_block_id = $userBlock->id;
+                $ub->save();
+                return $ub;
         }
-        $ub = new UserBlock();
-        $ub->user_id =  $user->id;
-        $ub->user_block_id = $userBlock->id;
-        $ub->save();
-        return $ub;
     }
 
      //添加用户对动态的不感兴趣
      public function addArticleBlock($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
      {
-         $user = getUser();
-         //跳过已经屏蔽过的用户
-         $existUser = \App\UserBlock ::where("article_block_id",$args['id'])->get(); 
-         if($existUser->count()){
-             throw new GQLException('添加\'不感兴趣\'失败，您已经对该动态标记过\'不感兴趣\'');
-         }    
-         $articleBlock  = Article::find($args['id']);  
-         if(empty($articleBlock)){
-             throw new GQLException('添加\'不感兴趣\'失败，不存在该动态');
+         if($user = checkUser()){
+                $articleBlock  = Article::find($args['id']);  
+                if(empty($articleBlock)){
+                    throw new GQLException('添加\'不感兴趣\'失败，不存在该动态');
+                }
+                //跳过已经屏蔽过的用户
+                $existUser = \App\UserBlock ::where("user_id",$user->id)->where("article_block_id",$args['id'])->get(); 
+                if($existUser->count()){
+                    throw new GQLException('添加\'不感兴趣\'失败，您已经对该动态标记过\'不感兴趣\'');
+                }    
+                $ub = new UserBlock();
+                $ub->user_id =  $user->id;
+                $ub->article_block_id = $articleBlock->id;
+                $ub->save();
+                return $ub;
          }
-         $ub = new UserBlock();
-         $ub->user_id =  $user->id;
-         $ub->article_block_id = $articleBlock->id;
-         $ub->save();
-         return $ub;
      }
 
        //举报Article,达到两个举报就下架

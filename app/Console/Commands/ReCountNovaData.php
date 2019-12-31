@@ -111,8 +111,9 @@ class ReCountNovaData extends Command
         });
 
         //统计昨日用户活跃数
-        $cacheKey = 'nova_user_activity_num_of_' . Carbon::yesterday()->toDateString();
+        $cacheKey = 'nova_user_activity_num_of_%s';
+        $key   = sprintf($cacheKey, Carbon::yesterday()->toDateString());
         $count  = Visit::whereDate('created_at',Carbon::yesterday())->distinct()->count('user_id');
-        cache()->store('database')->forever($cacheKey, $count);
+        cache()->store('database')->forever($key, $count);
     }
 }
