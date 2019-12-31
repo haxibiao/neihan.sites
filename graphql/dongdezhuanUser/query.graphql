@@ -5,7 +5,7 @@ type dongdezhuanUser{
     phone:String
     account:String
     email:String
-    avatar:String
+    avatar:String @rename(attribute:"avatar_url")
     api_token:String
     created_at:String
 }

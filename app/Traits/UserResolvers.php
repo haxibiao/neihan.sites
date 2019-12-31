@@ -311,8 +311,14 @@ trait UserResolvers
     public function newUserReword($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo){
         $user = checkUser();
         $type = $args['type'];
-        if ($type === 'douyin'||$type === 'newUser') {
-            $task = \App\Task::where("name",$type)->first();
+        if ($type === 'newUser') {
+            $task = \App\Task::where("name","观看新手视频教程")->first();
+            $userTask = \App\UserTask::where("task_id",$task->id)->where("user_id",$user->id)->first();
+            $userTask->status = \App\UserTask::TASK_REACH;
+            $userTask->save();
+            return 1;
+        }else if($type === 'douyin'){
+            $task = \App\Task::where("name","观看采集视频教程")->first();
             $userTask = \App\UserTask::where("task_id",$task->id)->where("user_id",$user->id)->first();
             $userTask->status = \App\UserTask::TASK_REACH;
             $userTask->save();

@@ -4,21 +4,21 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class AdminSet extends Command
+class ImportCategory extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'admin:set {uid}';
+    protected $signature = 'import:category {db}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'set admin user';
+    protected $description = '导入其他系统的分类，比如:damei';
 
     /**
      * Create a new command instance.
@@ -37,13 +37,12 @@ class AdminSet extends Command
      */
     public function handle()
     {
-        if (!$this->argument('uid')) {
-            dd('need uid...');
-        } else {
-            $user           = \App\User::findOrFail($this->argument('uid'));
-            $user->role_id = $user->role_id == 2 ? 0 : 2;
-            $user->save();
-            $this->info("结果: $user->name 现在" . ($user->is_admin ? "是" : "不是") . "　管理员");
+        if($db = $this->argument('db')) {
+            $this->$db();
         }
+    }
+
+    function damei() {
+        
     }
 }

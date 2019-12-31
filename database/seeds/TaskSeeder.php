@@ -202,7 +202,7 @@ class TaskSeeder extends Seeder
         ]);
 
         Task::firstOrCreate([
-            'name'    => 'douyin',
+            'name'    => '观看采集视频教程',
             'details' => '观看采集视频教程',
             'type'    => Task::NEW_USER_TASK,
             'status'  => Task::ENABLE,
@@ -210,7 +210,7 @@ class TaskSeeder extends Seeder
         ]);
 
         Task::firstOrCreate([
-            'name'    => 'newUser',
+            'name'    => '观看新手视频教程',
             'details' => '观看新手视频教程',
             'type'    => Task::NEW_USER_TASK,
             'status'  => Task::ENABLE,

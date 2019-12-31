@@ -32,6 +32,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('change:towallet')->daily();
         //每天凌晨3点标记一次热门分类
         $schedule->command('mark:hotpost')->dailyAt('3:00');
+        $schedule->command('recount:novadata')->dailyAt('3:00');
 
         // 凌晨将 处理 提现等待过久的
         // $schedule->command('withdraw:process')->daily();

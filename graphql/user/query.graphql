@@ -54,7 +54,8 @@ type User {
   contribute: Int
   is_bind_dongdezhuan:Boolean
   today_contribute:Int
-  dongdehuanUser:User @rename(attribute:"dongdezhuan_user")
+  force_alert:Boolean
+  dongdezhuanUser:User @rename(attribute:"dongdezhuan_user")
 }
 
 type blockInfo {

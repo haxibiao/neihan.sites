@@ -16,3 +16,14 @@ extend type Query @middleware(checks: ["auth:api"]) {
   canWithdrawals(amount:Float!):Int @field(resolver: "App\\Withdraw@CanWithdrawals")
 }
 
+extend type Query {
+  getWithdrawAmountList:[WithdrawInfo]! @field(resolver: "App\\Withdraw@getWithdrawAmountList")
+}
+
+type WithdrawInfo{
+  amount:Float
+  description:String
+  tips:String
+  fontColor:String
+  bgColor:String
+}

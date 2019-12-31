@@ -464,17 +464,21 @@ trait UserRepo
 
     public function getDongdezhuanUser()
     {
-        return \App\Dongdezhuan\User::find($this->oauth()->where('oauth_type', 'dongdezhuan')->first()->oauth_id);
+        return \App\Dongdezhuan\User::find($this->getDongdezhuanUserId());
     }
 
     public function getDongdezhuanUserId(): int
     {
-        return $this->oauth()->where('oauth_type', 'dongdezhuan')->first()->oauth_id;
+        return $this->oauth()->where('oauth_type', 'dongdezhuan')->select('oauth_id')->first()->oauth_id;
     }
 
+    public function getUserSuccessWithdrawAmount(){
+        return $this->wallet->total_withdraw_amount;
+    }
     /**
      * @param string $uuid
      * @param User $user
+     * @throws \Throwable
      */
     public function bindDongdezhuanByUUID(string $uuid, User $user): void
     {

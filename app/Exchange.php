@@ -21,7 +21,7 @@ class Exchange extends Model
 
     const RATE = 600;
 
-    const MIN_RMB = 1;
+    const MIN_RMB = 0.3;
 
     public function user()
     {
