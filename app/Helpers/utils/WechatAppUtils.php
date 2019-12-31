@@ -13,9 +13,7 @@ class WechatAppUtils
     public function __construct()
     {
         $this->config = config('wechat');
-        $this->client = new Client([
-            'time_out' => $this->config['time_out'],
-        ]);
+        $this->client = new Client(['time_out' => 5]);
     }
 
     /**

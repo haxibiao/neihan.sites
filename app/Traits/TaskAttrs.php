@@ -54,22 +54,25 @@ trait TaskAttrs
 
     public function getProgressDetailsAttribute()
     {
-        $taskCount      = null;
-        $method         = $this->resolve['method'] ?? null;
-        $progressMethod = !empty($method) ? $this->resolve['method'] . 'Count' : null;
-        if (!is_null($progressMethod) && method_exists($this, $progressMethod)) {
-            $argsMethod = $progressMethod . 'Args';
-            $args       = (!is_null($argsMethod) && method_exists($this, $argsMethod)) ? $this->$argsMethod() : [];
-            try {
-                $taskCount = $this->$progressMethod(...$args);
-            } catch (Exception $e) {
-                \info($e->getMessage());
+        if ($this->type === 1){
+            $taskCount      = null;
+            $method         = $this->resolve['method'] ?? null;
+            $progressMethod = !empty($method) ? $this->resolve['method'] . 'Count' : null;
+            if (!is_null($progressMethod) && method_exists($this, $progressMethod)) {
+                $argsMethod = $progressMethod . 'Args';
+                $args       = (!is_null($argsMethod) && method_exists($this, $argsMethod)) ? $this->$argsMethod() : [];
+                try {
+                    $taskCount = $this->$progressMethod(...$args);
+                } catch (Exception $e) {
+                    \info($e->getMessage());
+                }
             }
-        }
-        $limit           = $this->resolve['limit'] ?? null;
-        $progress_detail = (!empty($progressMethod) && !empty($limit)) ? sprintf('%d / %d', $taskCount, $limit) : $this->submit_name;
+            $limit           = $this->resolve['limit'] ?? null;
+            $progress_detail = (!empty($progressMethod) && !empty($limit)) ? sprintf('%d / %d', $taskCount, $limit) : $this->submit_name;
 
-        return $progress_detail;
+            return $progress_detail;
+        }
+        return null;
     }
 
     public function getTaskInfoAttribute()

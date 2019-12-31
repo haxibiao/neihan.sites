@@ -52,6 +52,34 @@ class FixData extends Command
         return $this->error("必须提供你要修复数据的table");
     }
 
+    /**
+     * 修复抖音抓取视频的描述信息
+     */
+    public function fixDescription(){
+        Article::whereNotNull('source_url')->where('video_id','<>',1)->chunk(1000,function($articles){
+            foreach($articles as $article){
+                $video = $article->video;
+                if(!$video){
+                    continue;
+                }
+                if(!$video->json){
+                    continue;
+                }
+                $json = json_decode($video->json,true);
+                $desc = Arr::get($json,'metaInfo.item_list.0.desc',null);
+                if(is_null($desc)){
+                    continue;
+                }
+                $desc = str_replace(['#在抖音，记录美好生活#', '@抖音小助手', '抖音','dou','Dou','DOU','抖音助手'], '', $desc);
+                $this->info($desc);
+                $article->description = $desc;
+                $article->title       = $desc;
+                $article->body        = $desc;
+                $article->save(['timestamps' => false]);
+            }
+        });
+    }
+
     public function contribute(){
         Contribute::chunk(100,
             function ($contributes){

@@ -1,6 +1,8 @@
 <?php
 
-return [
+use Illuminate\Support\Arr;
+
+$config = [
     /*
      * Debug 模式，bool 值：true/false
      *
@@ -111,15 +113,112 @@ return [
     ],
 
     /**
-     * 微信小程序 && 微信资源中心APP配置
+     * 工厂APP 微信配置
      */
-    'wechat_mg'         => [
-        'appid'  => env('WECHAT_MG_APPID'),
-        'secret' => env('WECHAT_MG_SECRET'),
+    'dianmoge'          => [
+        'wechat_app' => [
+            'appid'  => 'wxf79f886d16c1e588',
+            'secret' => '659c1c4198e7d8f479734751ea9114a1',
+        ],
     ],
-    'wechat_app'        => [
-        'appid'  => env('WECHAT_APPID'),
-        'secret' => env('WECHAT_SECRET'),
+    'qunyige'           => [
+        'wechat_app' => [
+            'appid'  => 'wx5f9e2198ddf38e26',
+            'secret' => '1e8b517eab1f9f088b24c01ee382030b',
+        ],
     ],
-    'time_out'          => 5,
+    'dongmeiwei'        => [
+        'wechat_app' => [
+            'appid'  => 'wx43118ce787bad78b',
+            'secret' => '361c58504ab7609da69e1884de381bd9',
+        ],
+    ],
+    'ainicheng'         => [
+        'wechat_app' => [
+            'appid'  => 'wx9a4d4a672f1d6dae',
+            'secret' => '37085e747d45c1408686c34b740ce396',
+        ],
+    ],
+    'youjianqi'         => [
+        'wechat_app' => [
+            'appid'  => 'wx81584853abab53bd',
+            'secret' => 'a71b9dc2c1adb983c89aedc3e9878f3a',
+        ],
+    ],
+    'dongdianyao'       => [
+        'wechat_app' => [
+            'appid'  => 'wxa5474243940d3811',
+            'secret' => '8e41d661519e4013321532c987ebabd8',
+        ],
+    ],
+    'dongdianmei'       => [
+        'wechat_app' => [
+            'appid'  => 'wxffd3abf9db7d3aa1',
+            'secret' => '4c5194e522ee25105eed8c571134185可能是电话号码，是否拨号?a',
+        ],
+    ],
+    'dongdiancai'       => [
+        'wechat_app' => [
+            'appid'  => 'wx1933dcd753fa3efe',
+            'secret' => '58299b884c05298213ebdccd6b30b56a',
+        ],
+    ],
+    'diudie'            => [
+        'wechat_app' => [
+            'appid'  => 'wxdcb59c0ab381bd70',
+            'secret' => '9321cb107b3e76e1403167dd039b771b',
+        ],
+    ],
+    'jucheshe'          => [
+        'wechat_app' => [
+            'appid'  => 'wx28b309f9423b331e',
+            'secret' => 'f16e8b73547a5f9a67a6f7b7786a0163',
+        ],
+    ],
+    'dongdianfa'        => [
+        'wechat_app' => [
+            'appid'  => 'wx66848b0e6c205c44',
+            'secret' => '876308ff999015838f81533df362eac9',
+        ],
+    ],
+    'dongshengyin'      => [
+        'wechat_app' => [
+            'appid'  => 'wx2ac38732d2913073',
+            'secret' => 'd25be0a1e129f4591e8844e0c396861a',
+        ],
+    ],
+    'dongwaiyu'         => [
+        'wechat_app' => [
+            'appid'  => 'wx71bfccf04b1bdfac',
+            'secret' => 'b84b6887e0a63e5b284c187eb0fb2f05',
+        ],
+    ],
+    'donghuamu'         => [
+        'wechat_app' => [
+            'appid'  => 'wxca5adfff8c348af2',
+            'secret' => '6e79411155e8aa7a6ce3cc20a15e8262',
+        ],
+    ],
+    'dongmiaomu'        => [
+        'wechat_app' => [
+            'appid'  => 'wxd44a736986f610cb',
+            'secret' => 'cb9df7fbf5af14e5928b301a1bf6c740',
+        ],
+    ],
+    'dongwuli'          => [
+        'wechat_app' => [
+            'appid'  => 'wxe2bef5c9bc2edeb0',
+            'secret' => '09c5460758b5a1667e348c87ac2cb407',
+        ],
+    ],
+    'dongqizhi'         => [
+        'wechat_app' => [
+            'appid'  => 'wx8ed3bfd7e7a06134',
+            'secret' => '9f7cf2e012e29204d02ecdcaa420f577',
+        ],
+    ],
 ];
+
+$config['wechat_app'] = Arr::get($config, config('app.name') . '.wechat_app');
+
+return $config;

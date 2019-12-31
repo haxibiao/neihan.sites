@@ -7,5 +7,5 @@
 # php artisan queue:restart
 # php artisan fix:data payTest
 # php artisan fix:data withdrawJobs
-php artisan fix:data userActivities
+#php artisan queue:restart
 

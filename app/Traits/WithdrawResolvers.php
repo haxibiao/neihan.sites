@@ -157,7 +157,8 @@ trait WithdrawResolvers
 
         $user = checkUser();
 
-        $contribute = Contribute::WITHDRAW_DATE;
+//        TODO: 不影响线上使用,此处不修改 Contribute::WITHDRAW_DATE
+        $contribute = 60;
         $successWithdrawAmount = $user->getUserSuccessWithdrawAmount();
 
         //            判断是否提现过

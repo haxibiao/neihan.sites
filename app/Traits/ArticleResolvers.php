@@ -214,8 +214,9 @@ trait ArticleResolvers
             $link        = filterText($shareMsg)[0];
             $description = Str::replaceFirst('#在抖音，记录美好生活#', '', $shareMsg);
             $description = Str::before($description, 'http');
-            $description = preg_replace('/@([\w]+)/u', '', $description);
-            $description = preg_replace('/#([\w]+)/u', '', $description);
+//            $description = preg_replace('/@([\w]+)/u', '', $description);
+//            $description = preg_replace('/#([\w]+)/u', '', $description);
+            $description = str_replace(['#在抖音，记录美好生活#', '@抖音小助手', '#抖音小助手','抖音','dou','Dou','DOU','抖音助手'], '', $description);
             $description = trim($description);
             if (BadWordUtils::check($description)) {
                 throw new GQLException('您的分享文本中包含非法内容,请删除后再试!');

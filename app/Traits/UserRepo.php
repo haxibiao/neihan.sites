@@ -81,7 +81,7 @@ trait UserRepo
             //FIXME:上传COS失败？？
         }
 
-        return $this->avatar;
+        return $this->avatar_url;
     }
 
     public function save_background($file)

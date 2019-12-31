@@ -79,8 +79,8 @@ class ProcessSpider implements ShouldQueue
         $description = Arr::get($json, 'data.raw.item_list.0.desc', '');
         $description = preg_replace('/@([\w]+)/u', '', $description);
         preg_match_all('/#([\w]+)/u', $description, $topicArr);
-        $description = preg_replace('/#([\w]+)/u', '', $description);
-        $description = trim($description);
+        //$description = preg_replace('/#([\w]+)/u', '', $description);
+        //$description = trim($description);
 
         $content = $json['data'];
         if ($json['code'] != 200) {
@@ -115,7 +115,7 @@ class ProcessSpider implements ShouldQueue
         $video->setJsonData('metaInfo', $raw);
         $video->setJsonData('server', $url);
         $video->user_id = $user->id;
-        $video->title   = $description;
+        //$video->title   = $description;
         $video->save();
 
         //本地存一份用于截图
