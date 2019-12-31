@@ -26,9 +26,14 @@ class PayUtils
         if (!in_array($platform, self::PLATFORMS)) {
             throw new Exception('支付方式不存在!');
         }
+        $config = config('pay.' . $platform);
+        //微信提现配置替换appid
+        if ($platform == 'wechat') {
+            $config['appid'] = config('wechat.wechat_app.appid');
+        }
 
         $this->platform = $platform;
-        $this->instance = Pay::$platform(config('pay.' . $platform));
+        $this->instance = Pay::$platform($config);
     }
 
     public function transfer(string $outBizNo, string $payId, $realName, $amount, $remark = null)

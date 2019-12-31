@@ -32,13 +32,14 @@ class GraphQLExceptions
         if ($previous && $previous instanceof ValidationError) {
             $error['validation'] = $previous
                 ->getValidatorMessages();
-        } elseif (!($previous && $previous instanceof MessageError)) {
-            if (is_prod()) {
-                if (self::shouldReport($previous)) {
-                    // \Bugsnag::notifyException($e);
-                }
-            }
         }
+//        elseif (!($previous && $previous instanceof MessageError)) {
+//            if (is_prod()) {
+//                if (self::shouldReport($previous)) {
+//                    // \Bugsnag::notifyException($e);
+//                }
+//            }
+//        }
         Log::debug('gql error: ' . json_encode($error));
         return $error;
     }

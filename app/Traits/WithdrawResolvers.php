@@ -25,9 +25,14 @@ trait WithdrawResolvers
             throw new GQLException('等级和勋章不够哦~，请等待版本更新，增加更多玩法吧~');
         }
 
-        //3. 目前只有点墨阁被微信授权提现
-        if ($platform === 'Wechat' && config('app.name_cn') !== '点墨阁') {
-            throw new GQLException('微信提现正在开发,点墨阁可以体验微信提现哦~');
+        $allowWechatApps = [
+            'dianmoge',
+            'ainicheng',
+            'qunyige',
+        ];
+        //3. 目前只有allow wechat app被微信授权提现
+        if ($platform === 'Wechat' && !in_array(config('app.name'), $allowWechatApps)) {
+            throw new GQLException('微信提现正在开发中,暂未开放哦!~');
         }
 
         //4. 用户钱包效验
@@ -39,12 +44,11 @@ trait WithdrawResolvers
             throw new GQLException('您今日已经提现过了哦 ~，明天再来吧 ~');
         }
 
-
         // 非首次提现,只许提现到懂得赚
         $isWithdrawBefore = $user->isWithdrawBefore();
-//        if ($isWithdrawBefore && $platform !== 'dongdezhuan'){
-//            throw new GQLException('温馨提示:提现系统全面升级,下载懂得赚:高收益秒提现不限时');
-//        }
+        if ($isWithdrawBefore && $platform !== 'dongdezhuan'){
+            throw new GQLException('温馨提示:提现系统全面升级,请下载懂得赚提现哦~,不仅高收益秒提现还不限时');
+        }
 
         //5. 限制每日日提现上限
         $todayWithDrawAmout = $wallet->withdraws()
@@ -58,7 +62,7 @@ trait WithdrawResolvers
 
         //6. 最低提现额度
         if ($amount < Exchange::MIN_RMB) {
-            throw new GQLException('提现失败,最低'.Exchange::MIN_RMB.'元起提现！');
+            throw new GQLException('提现失败,最低' . Exchange::MIN_RMB . '元起提现！');
         }
 
         //7. 是否超支
@@ -69,23 +73,22 @@ trait WithdrawResolvers
         //8. 新用户不做限制
 
         if ($isWithdrawBefore) {
-            $contribute      = $user->contribute;
+            $contribute      = $user->getTodayContributeAttribute();
             $need_contribute = $amount * Contribute::WITHDRAW_DATE;
             $diffContributes = $need_contribute - $contribute;
             if ($contribute < $need_contribute) {
-                throw new GQLException('您还需' . $diffContributes . '点贡献值就可以提现成功啦~，快多尝试发布优质原创视频吧~');
+                throw new GQLException('今日贡献不足,您还需' . $diffContributes . '点日贡献值就可以提现成功啦~');
             }
         }
 
-//      9. 懂得赚提现单独操作
-        if ($platform !== 'dongdezhuan'){
+        //9. 懂得赚提现单独操作
+        if ($platform !== 'dongdezhuan') {
             $payId = $wallet->getPayId($platform);
             if (empty($payId)) {
                 throw_if($platform == Withdraw::ALIPAY_PLATFORM, GQLException::class, '提现失败,支付宝提现信息未绑定!');
                 throw_if($platform == Withdraw::WECHAT_PLATFORM, GQLException::class, '提现失败,微信提现信息未绑定!');
             }
         }
-
 
         //10. 开启兑换事务,替换到钱包 创建提现订单
         if ($platform === 'dongdezhuan') {
@@ -110,7 +113,6 @@ trait WithdrawResolvers
         return $withdraw;
     }
 
-
     public function resolveWithdraws($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         app_track_user("提现列表", 'list_withdraws', getUserId());
@@ -125,11 +127,11 @@ trait WithdrawResolvers
 
     public function CanWithdrawals($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $user            = checkUser();
-        $amount          = $args['amount'];
+        $user             = checkUser();
+        $amount           = $args['amount'];
         $isWithdrawBefore = $user->isWithdrawBefore();
 
-        if ($isWithdrawBefore){
+        if ($isWithdrawBefore) {
             $contribute      = $user->contribute;
             $need_contribute = $amount * Contribute::WITHDRAW_DATE;
             $diffContributes = $need_contribute - $contribute;
@@ -144,7 +146,7 @@ trait WithdrawResolvers
     /**
      *
      * 1.新人首次提现0.3元：
-     * 前端：新人未提现前展示0.3/1/3/5，提现1次后展示1/3/5/10 
+     * 前端：新人未提现前展示0.3/1/3/5，提现1次后展示1/3/5/10
      * 2.用户第二次提现引导下载懂得赚：
      * 后端：用户首次可提现0.3（无门槛），第二次触发提现，强制下载懂得赚，并到懂得赚上才能提现（配合前端弹窗）。
      * @param $rootValue
@@ -153,18 +155,19 @@ trait WithdrawResolvers
      * @param ResolveInfo $resolveInfo
      * @return array
      */
-    public function getWithdrawAmountList($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo){
+    public function getWithdrawAmountList($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
 
         $user = checkUser();
 
 //        TODO: 不影响线上使用,此处不修改 Contribute::WITHDRAW_DATE
-        $contribute = 60;
+        $contribute       = 60;
         $isWithdrawBefore = $user->isWithdrawBefore();
 
         //            判断是否提现过
-        if ($isWithdrawBefore){
+        if ($isWithdrawBefore) {
             $minAmount = 1;
-        }else{
+        } else {
             $minAmount = 0.3;
         }
 
