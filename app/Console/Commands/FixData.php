@@ -52,6 +52,36 @@ class FixData extends Command
         return $this->error("必须提供你要修复数据的table");
     }
 
+    public function contribute(){
+        Contribute::chunk(100,
+            function ($contributes){
+                foreach ($contributes as $contribute) {
+                    $contributed = $contribute->contributed_type;
+
+                    if ($contributed == "articles") {
+                        $contribute->remark = '发布视频奖励';
+                    }
+                    if ($contributed == "AD") {
+                        $contribute->remark = '观看广告奖励';
+                    }
+        
+                    if ($contributed == "AD_VIDEO") {
+                        $contribute->remark = '观看激励视频奖励';
+                    }
+                    if ($contributed == "issues") {
+                        $contribute->remark = '悬赏奖励';
+                    }
+                    if ($contributed == "usertasks") {
+                        $contribute->remark = '任务奖励';
+                    }
+        
+                    $contribute->timestamps = false;
+                    $this->info('id' . $contribute->id.'remark'.$contribute->remark);
+                    $contribute->save();
+                }
+            });
+    }
+
     public function userActivities()
     {
         //最近90天的日活统计信息(不包含今天)

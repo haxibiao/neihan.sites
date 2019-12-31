@@ -103,7 +103,7 @@ class TaskSeeder extends Seeder
         Task::firstOrCreate([
             'name'     => 'SleepMorning',
             'status'   => Task::ENABLE,
-            'details'  => '起床卡凌晨0点到12点,每15分钟可以打次卡',
+            'details'  => '起床卡凌晨0点到12点',
             'type'     => Task::TIME_TASK,
             'reward'   => array("gold" => "50", 'contribute' => '1'),
             'resolve'  => array('minutes' => '15'),
@@ -114,7 +114,7 @@ class TaskSeeder extends Seeder
         Task::firstOrCreate([
             'name'     => 'SleepNight',
             'status'   => Task::ENABLE,
-            'details'  => '起床卡12点到24点可打卡,每15分钟可以打次卡',
+            'details'  => '睡觉卡12点到24点',
             'type'     => Task::TIME_TASK,
             'reward'   => array("gold" => "15"),
             'resolve'  => array('minutes' => '15'),
@@ -136,7 +136,7 @@ class TaskSeeder extends Seeder
             'status'  => Task::ENABLE,
             'details' => '睡觉赚钱',
             'type'    => Task::CUSTOM_TASK,
-            'reward'  => array("gold" => "50", 'contribute' => '2'),
+            'reward'  => array("gold" => "50", 'contribute' => '1'),
             'resolve' => array('method' => 'sleep', 'router' => 'GoSleep'),
         ]);
 
