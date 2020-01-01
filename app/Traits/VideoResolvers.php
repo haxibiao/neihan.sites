@@ -85,7 +85,7 @@ trait VideoResolvers
 
     public function queryDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        return '增加日贡献的场景：
+        return '增加贡献的场景：
 1.每小时看完睡觉和起床视频(+2贡献)
 2.看视频任务(每日限30次)(+2或3贡献)
 3.刷视频时，查看视频广告(+1贡献)

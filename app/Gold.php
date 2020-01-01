@@ -19,10 +19,10 @@ class Gold extends Model
     ];
 
 //    点击 DRAW 广告的金币额度,
-//    const DRAW_GOLD_AMOUNT = 0;
+    //    const DRAW_GOLD_AMOUNT = 0;
 
     //    点击 激励视频 广告的金币额度
-    const REWARD_VIDEO_AMOUNT = 7;
+    const REWARD_VIDEO_GOLD = 7;
 
     const REWARD_GOLD = 10;
 
@@ -39,9 +39,9 @@ class Gold extends Model
         $gold        = Gold::create([
             'user_id'   => $user->id,
             'wallet_id' => $user->goldWallet->id,
-            'gold'    => -$gold,
-            'balance' => $goldBalance,
-            'remark'  => $remark,
+            'gold'      => -$gold,
+            'balance'   => $goldBalance,
+            'remark'    => $remark,
         ]);
         //更新user表上的冗余字段
         User::where('id', $user->id)->update(['gold' => $goldBalance]);
@@ -53,11 +53,11 @@ class Gold extends Model
     {
         $goldBalance = $user->gold + $gold;
         $gold        = Gold::create([
-            'user_id' => $user->id,
+            'user_id'   => $user->id,
             'wallet_id' => $user->goldWallet->id,
-            'gold'    => $gold,
-            'balance' => $goldBalance,
-            'remark'  => $remark,
+            'gold'      => $gold,
+            'balance'   => $goldBalance,
+            'remark'    => $remark,
         ]);
         //更新user表上的冗余字段
         User::where('id', $user->id)->update(['gold' => $goldBalance]);
@@ -65,8 +65,9 @@ class Gold extends Model
         return $gold;
     }
 
-    public function resolveGolds($rootValue, array $args, $context, $resolveInfo){
+    public function resolveGolds($rootValue, array $args, $context, $resolveInfo)
+    {
         app_track_user("查看账单", 'list_golds', getUserId());
-        return Gold::orderBy('id', 'desc')->where('user_id',$args['user_id']);
+        return Gold::orderBy('id', 'desc')->where('user_id', $args['user_id']);
     }
 }

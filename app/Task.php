@@ -88,6 +88,5 @@ class Task extends Model
         if (!empty($logo) && !Str::contains($logo,'http')) {
             return Storage::cloud()->url($logo);
         }
-        return $logo;
     }
 }

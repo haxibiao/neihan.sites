@@ -28,7 +28,7 @@ class Contribute extends Model
     const AD_CONTRIBUTED_ID   = 1;
     const AD_CONTRIBUTED_TYPE = 'AD';
 
-//    FEED 广告 morph 值
+    // FEED 广告 morph 值
     const AD_FEED_CONTRIBUTED_ID   = 3;
     const AD_FEED_CONTRIBUTED_TYPE = 'AD_FEED';
 
@@ -40,7 +40,7 @@ class Contribute extends Model
     const AD_AMOUNT = 1;
 
     // 看激励视频奖励值
-    const AD_VIDEO_AMOUNT = 3;
+    const AD_VIDEO_AMOUNT = 4;
 
     // 点赞奖励值
     const LIKED_AMOUNT = 1;
@@ -48,10 +48,11 @@ class Contribute extends Model
     // 评论奖励值
     const COMMENTED_AMOUNT = 1;
 
-//    视频刷点击广告奖励贡献值
-    const REWARD_DRAW_AMOUNT = 1;
-//    激励视频贡献值
-    const REWARD_VIDEO_AMOUNT = 3;
+    // 视频刷点击广告奖励贡献值
+    const REWARD_DRAW_AMOUNT = 2;
+
+    //最大点击刷的广告奖励贡献次数
+    const MAX_REWARD_CLICK_TIMES = 30;
 
     protected $guarded  = [];
     protected $fillable = [
@@ -153,6 +154,5 @@ class Contribute extends Model
     {
         return Contribute::where('id', '<', $this->id)->where('user_id', $this->user_id)->sum('amount');
     }
-
 
 }
