@@ -485,11 +485,20 @@ trait UserRepo
         if (!$user->checkUserIsBindDongdezhuan()) {
             $ddzUser = \App\Dongdezhuan\User::whereUuid($uuid)->first();
             if ($ddzUser !== null) {
-                \DB::transaction(static function () use ($user, $ddzUser) {
-                    OAuth::createRelation($user->id, 'dongdezhuan', $ddzUser->id);
-                    UserApp::bind($ddzUser->id);
-                });
+                $this->bindDongdezhuanUser($user, $ddzUser);
             }
         }
+    }
+
+    /**
+     * @param User $user
+     * @param $ddzUser
+     */
+    public function bindDongdezhuanUser(User $user, $ddzUser): void
+    {
+        \DB::transaction(static function () use ($user, $ddzUser) {
+            OAuth::createRelation($user->id, 'dongdezhuan', $ddzUser->id);
+            UserApp::bind($ddzUser->id);
+        });
     }
 }

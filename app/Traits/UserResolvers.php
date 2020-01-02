@@ -225,8 +225,7 @@ trait UserResolvers
                 $user->update(['phone' => $phone]);
             }
 
-//            $this->bindDongdezhuanByUUID($args['uuid'], $user);
-            // app_track_user("用户登录", 'login');
+            $this->bindDongdezhuanByUUID($args['uuid'], $user);
             return $user;
         }
         $user = User::create([
@@ -245,7 +244,7 @@ trait UserResolvers
 
         Ip::createIpRecord('users', $user->id, $user->id);
 
-//        $this->bindDongdezhuanByUUID($args['uuid'], $user);
+        $this->bindDongdezhuanByUUID($args['uuid'], $user);
 
         return $user;
     }

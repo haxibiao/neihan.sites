@@ -3,6 +3,7 @@
 namespace App\Dongdezhuan;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Psy\Util\Str;
 
@@ -40,6 +41,13 @@ class User extends Model
     public function wallets(): HasMany
     {
         return $this->hasMany(\App\Dongdezhuan\Wallet::class);
+    }
+
+    public function apps(): BelongsToMany
+    {
+        return $this->belongsToMany(\App\Dongdezhuan\App::class, 'user_apps')
+            ->withPivot(['user_id', 'app_id', 'data'])
+            ->withTimestamps();
     }
 
     public static function getGenders():array

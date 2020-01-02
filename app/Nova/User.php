@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\BindDongdezhuanAccount;
 use App\Nova\Actions\UpdateUser;
 use App\User as AppUser;
 use Illuminate\Http\Request;
@@ -142,6 +143,7 @@ class User extends Resource
     {
         return [
             new UpdateUser,
+            new BindDongdezhuanAccount,
         ];
     }
 }

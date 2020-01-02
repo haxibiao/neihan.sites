@@ -238,8 +238,9 @@ class UserController extends Controller
     /**
      * @Author   XXM
      * @DateTime 2018-07-31
-     * @param    Request    $request
+     * @param Request $request
      * @param    [user]     $id
+     * @return
      */
     public function relatedVideos(Request $request, $id)
     {

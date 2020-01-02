@@ -18,7 +18,6 @@ class UserApp extends Pivot
         'user_id',
         'app_id',
         'data',
-        'deleted_at',
         'created_at',
         'updated_at',
     ];
