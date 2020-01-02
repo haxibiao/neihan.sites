@@ -4,6 +4,7 @@ namespace App\Dongdezhuan;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Psy\Util\Str;
 
 class User extends Model
 {
@@ -77,5 +78,13 @@ class User extends Model
         }
 
         return Wallet::rmbWalletOf($this);
+    }
+
+    public function getAvatarUrlAttribute(){
+        if (\Illuminate\Support\Str::contains($this->avatar,'http')){
+            return $this->avatar;
+        }
+//        懂得赚 filesystem cdn url
+        return 'http://cos-dongdezhuan.dianmoge.com/'.$this->avatar;
     }
 }

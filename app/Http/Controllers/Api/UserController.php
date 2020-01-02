@@ -3,11 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Article;
-use App\Dongdezhuan\App;
-use App\Exceptions\GQLException;
 use App\Http\Controllers\Controller;
 use App\Image;
-use App\OAuth;
 use App\User;
 use App\Video;
 use Illuminate\Http\Request;
@@ -260,7 +257,7 @@ class UserController extends Controller
 
     /**
      * @Author      XXM
-     * @DateTime    2018-09-22A
+     * @DateTime    2018-09-22
      * @description            [返回你关注的和关注你的用户]
      * @return      [users]     [description]
      */
@@ -281,44 +278,5 @@ class UserController extends Controller
 
         $users = User::whereIn('id', $user_ids)->select(['id', 'name'])->get()->toArray();
         return $users;
-    }
-
-    public function bindAccountToDongdezhuan(Request $request){
-//        1.效验
-        $data = $request->all();
-
-        $user = User::where('phone',$data['phone'])->first();
-        if ($user === null){
-            return response(config('app.name_cn').'内,此手机号不存在,请检查是否输入正确');
-        }
-
-        if (!password_verify($data['password'], $user->password)) {
-            return response(config('app.name_cn').'账号或者密码不正确');
-        }
-
-        $ddzUser = \App\Dongdezhuan\User::where('phone',$data['ddz_phone'])->first();
-        if ($ddzUser === null){
-            return response('懂得赚内此手机号不存在,请检查是否输入正确');
-        }
-
-        if (!password_verify($data['ddz_password'], $ddzUser->password)) {
-            return response('懂得赚账号或者密码不正确');
-        }
-
-//        2.解绑
-        try {
-            \DB::beginTransaction();
-
-            if ($user->checkUserIsBindDongdezhuan()){
-                $app = App::whereName(config('app.name_cn'))->first();
-                \App\Dongdezhuan\UserApp::whereUserId($ddzUser->id)->where('app_id',$app->id)->delete();
-                OAuth::whereUserId($user->id)->where('oauth_type','dongdezhuan')->delete();
-            }
-
-            \DB::commit();
-        }catch (\Exception $exception){
-            \DB::rollBack();
-            return response($exception->getMessage());
-        }
     }
 }

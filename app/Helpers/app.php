@@ -49,11 +49,6 @@ function qrcode_url()
 //暂时停掉一下项目的提现
 function stopfunction($name)
 {
-
-    if (str_contains(env('APP_NAME'), ["dongqizhi", "dongshouji", "dongwaiyu", "dongyundong", "tongjiuxiu", "dongwuli", "dongdaima", "caohan", "donghuamu", "dongmiaomu", "gba-port", "gba-port"])) {
-        throw new GQLException("提现正在维护中，望请谅解");
-    }
-
     \App\FunctionSwitch::close_function($name);
 }
 

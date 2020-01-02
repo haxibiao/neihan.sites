@@ -18,7 +18,7 @@ trait WithdrawResolvers
         $platform = $args['platform'];
 
         //1. 可控制提现关闭
-        // stopfunction("提现");
+        stopfunction("提现");
 
         //2. 禁止3元以上用户提现
         if ($amount > Withdraw::WITHDRAW_MAX) {
