@@ -18,7 +18,7 @@ trait WithdrawResolvers
         $platform = $args['platform'];
 
         //1. 可控制提现关闭
-        stopfunction("提现");
+        // stopfunction("提现");
 
         //2. 禁止3元以上用户提现
         if ($amount > Withdraw::WITHDRAW_MAX) {
@@ -46,7 +46,7 @@ trait WithdrawResolvers
 
         // 非首次提现,只许提现到懂得赚
         $isWithdrawBefore = $user->isWithdrawBefore();
-        if ($isWithdrawBefore && $platform !== 'dongdezhuan'){
+        if ($isWithdrawBefore && $platform !== 'dongdezhuan') {
             throw new GQLException('温馨提示:提现系统全面升级,请下载懂得赚提现哦~,不仅高收益秒提现还不限时');
         }
 
@@ -71,7 +71,6 @@ trait WithdrawResolvers
         }
 
         //8. 新用户不做限制
-
         if ($isWithdrawBefore) {
             $contribute      = $user->getTodayContributeAttribute();
             $need_contribute = $amount * Contribute::WITHDRAW_DATE;
@@ -140,6 +139,7 @@ trait WithdrawResolvers
             }
             return $diffContributes;
         }
+
         return 0;
     }
 
@@ -160,7 +160,6 @@ trait WithdrawResolvers
 
         $user = checkUser();
 
-//        TODO: 不影响线上使用,此处不修改 Contribute::WITHDRAW_DATE
         $contribute       = Contribute::WITHDRAW_DATE;
         $isWithdrawBefore = $user->isWithdrawBefore();
 

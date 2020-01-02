@@ -9,4 +9,4 @@
 # php artisan fix:data withdrawJobs
 #php artisan fix:data fixDescription
 
-# php artisan db:seed --class=TaskSeeder
+php artisan db:seed --class=TaskSeeder

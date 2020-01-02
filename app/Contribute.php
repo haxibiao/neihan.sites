@@ -85,7 +85,7 @@ class Contribute extends Model
 
     public static function rewardUserVideoPost($user, $article, $remark)
     {
-        //发布视频动态奖励＋3贡献
+        //发布视频动态奖励+贡献
         $contribute = self::firstOrNew(
             [
                 'user_id'          => $user->id,
