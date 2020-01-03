@@ -44,6 +44,7 @@ return [
         'prefix'     => '',
         'middleware' => [
             \Nuwave\Lighthouse\Support\Http\Middleware\AcceptJson::class,
+            \App\Http\Middleware\GQLGuard::class,
         ],
     ],
 

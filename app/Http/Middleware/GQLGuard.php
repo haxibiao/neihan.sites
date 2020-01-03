@@ -15,7 +15,12 @@ class GQLGuard
      */
     public function handle($request, Closure $next)
     {
-        // \info("GQL request:", $request->all());
+        $user = checkUser();
+        if($user){
+            $profile = $user->profile;
+            $profile->app_version  = request()->header('version', null);
+            $profile->save(['timestamps' => false]);
+        }
         return $next($request);
     }
 }

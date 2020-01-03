@@ -226,6 +226,10 @@ trait UserResolvers
             }
 
             $this->bindDongdezhuanByUUID($args['uuid'], $user);
+
+            $profile = $user->profile;
+            $profile->app_version = request()->header('version', null);
+            $profile->save();
             return $user;
         }
         
@@ -241,6 +245,7 @@ trait UserResolvers
         Profile::create([
             'user_id'      => $user->id,
             'introduction' => '这个人暂时没有 freestyle ',
+            'app_version'  => request()->header('version', null),
         ]);
 
         Ip::createIpRecord('users', $user->id, $user->id);

@@ -37,6 +37,7 @@ trait UserRepo
 
         Profile::create([
             'user_id' => $user->id,
+            'app_version'  => request()->header('version', null),
         ]);
 
         return $user;

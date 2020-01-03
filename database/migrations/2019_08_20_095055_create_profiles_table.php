@@ -49,6 +49,7 @@ class CreateProfilesTable extends Migration
             $table->unsignedInteger('age')->default(0)->comments('年龄,如果设置了生日，自动更新年龄');
             $table->string('source', 30)->index()->default('unknown')->comment('来源');
             $table->timestamp('birthday')->nullable()->comment('生日');
+            $table->string('app_version')->nullable()->comment('用户最后活跃时的App版本号');
 
             //答题
             $table->unsignedInteger('questions_count')->index()->default(0)->comment('出题总数');
