@@ -10,3 +10,4 @@
 #php artisan fix:data fixDescription
 
 # php artisan db:seed --class=TaskSeeder
+php artisan fix:data fixDescription

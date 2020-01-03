@@ -1,5 +1,5 @@
 extend type Mutation @group(namespace: "App") {
-  signIn(account: String, email: String, password: String!): User!
+  signIn(account: String, email: String, password: String!,uuid:String): User!
     @field(resolver: "User@signIn")
   signOut(user_id: ID!): User @field(resolver: "User@signOut")
   autoSignIn(uuid: String!, phone: String): User

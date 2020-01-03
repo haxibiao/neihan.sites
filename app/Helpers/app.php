@@ -28,14 +28,15 @@ function getVodConfig(string $key)
 
 function qrcode_url()
 {
-    $appName = env('APP_NAME');
-    $apkUrl  = \App\Aso::getValue('下载页', '安卓地址');
-
-    $logo   = "logo/{$appName}.com.small.png";
+    $apkUrl = \App\Aso::getValue('下载页', '安卓地址');
+    $logo   = small_logo();
     $qrcode = QrCode::format('png')->size(250)->encoding('UTF-8');
-
-    if (file_exists(public_path($logo))) {
-        $qrcode->merge(public_path($logo), .1, true);
+    if (str_contains($logo, env('COS_DOMAIN'))) {
+        $qrcode->merge($logo, .1, true);
+    } else {
+        if (file_exists(public_path($logo))) {
+            $qrcode->merge(public_path($logo), .1, true);
+        }
     }
 
     $qrcode = $qrcode->generate($apkUrl);

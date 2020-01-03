@@ -160,9 +160,9 @@ class ProcessSpider implements ShouldQueue
         //避免与Observer处理存在时间差导致重复创建
         $article              = $this->article;
         $article->video_id    = $video->id;
-        $article->body        = $description;
-        $article->title       = Str::limit($description, 150); //截取微博那么长的内容存简介;
-        $article->description = Str::limit($description, 280); //截取微博那么长的内容存简介
+//        $article->body        = $description;
+//        $article->title       = Str::limit($description, 150); //截取微博那么长的内容存简介;
+//        $article->description = Str::limit($description, 280); //截取微博那么长的内容存简介
         $article->status      = Article::STATUS_ONLINE; //FIXME 合并submit与status字段
         $article->submit      = Article::SUBMITTED_SUBMIT; //不直接上架
         $article->user_id     = $user->id;

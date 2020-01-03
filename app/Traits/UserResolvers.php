@@ -228,6 +228,7 @@ trait UserResolvers
             $this->bindDongdezhuanByUUID($args['uuid'], $user);
             return $user;
         }
+        
         $user = User::create([
             'uuid'      => $args['uuid'],
             'account'   => $args['phone'] ?? $args['uuid'],

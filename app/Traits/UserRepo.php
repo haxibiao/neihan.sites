@@ -12,6 +12,7 @@ use App\Withdraw;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 trait UserRepo
 {
@@ -484,15 +485,26 @@ trait UserRepo
     {
         if (!$user->checkUserIsBindDongdezhuan()) {
             $ddzUser = \App\Dongdezhuan\User::whereUuid($uuid)->first();
-            if ($ddzUser !== null) {
-                $this->bindDongdezhuanUser($user, $ddzUser);
+            if ($ddzUser === null) {
+                $ddzUser = \App\Dongdezhuan\User::create([
+                    'uuid'      =>$uuid,
+                    'name'      => \App\Dongdezhuan\User::DEFAULT_NAME,
+                    'api_token' => Str::random(60),
+                    'avatar'    => \App\Dongdezhuan\User::AVATAR_DEFAULT,
+                ]);
+                Profile::create([
+                    'user_id'      => $ddzUser->id,
+                    'introduction' => sprintf('我是从%s来的小白,望多多指教!~',config('app.name_cn')),
+                ]);
             }
+            $this->bindDongdezhuanUser($user, $ddzUser);
         }
     }
 
     /**
      * @param User $user
      * @param $ddzUser
+     * @throws \Throwable
      */
     public function bindDongdezhuanUser(User $user, $ddzUser): void
     {

@@ -11,6 +11,7 @@ type Mutation {
     email: String!
     password: String!
     name: String
+    uuid:String
   ): User! @field(resolver: "App\\User@signUp")
 }
 
