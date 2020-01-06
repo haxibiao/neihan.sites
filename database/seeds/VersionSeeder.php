@@ -16,7 +16,7 @@ class VersionSeeder extends Seeder
         Version::truncate();
 
         Version::firstOrCreate([
-            'name'        => '2.8.2',
+            'name'        => '2.82',
             'url'         => 'http://' . env('COS_DOMAIN') . '/' . env('APP_NAME') . '-release.apk',
             'is_force'    => 1,
             'os'          => 'Android',
