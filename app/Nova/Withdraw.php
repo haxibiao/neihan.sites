@@ -50,6 +50,7 @@ class Withdraw extends Resource
     {
         return [
             ID::make()->sortable(),
+            Text::make('钱包ID','wallet_id'),
             Select::make('状态', 'status')->options([
                 1  => '提现成功',
                 0  => '待处理',

@@ -2,11 +2,15 @@
 
 namespace App\Nova;
 
+use App\Nova\Wallet;
+use App\Nova\Resource;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Transaction extends Resource
 {
@@ -50,7 +54,7 @@ class Transaction extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('用户', 'user',User::class),
+            belongsTo::make('钱包ID', 'wallet',Wallet::class),
             Text::make('类型','type'),
             Text::make('记录','remark')->asHtml(),
             Text::make('状态','status')

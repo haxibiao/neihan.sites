@@ -33,6 +33,7 @@ class Profile extends Model
         'questions_count',
         'answers_count',
         'correct_count',
+        'app_version'
     ];
 
     public function user(): BelongsTo

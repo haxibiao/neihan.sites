@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Nova\Metrics\UserAppVersionPartition;
 use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
@@ -81,6 +82,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             new \App\Nova\Metrics\ArticleCount,
             new \App\Nova\Metrics\UserCount,
             new \App\Nova\Metrics\WithDrawCount,
+            new UserAppVersionPartition,
+            new \App\Nova\Metrics\TodayAdData,
+            new \App\Nova\Metrics\YesterdayAdData,
             (new \Hxb\CategoryLikeCount\CategoryLikeCount)
                 ->withName("受欢迎的分类前十个统计(视频点赞数)")
                 ->withData(\App\Category::getTopLikeCategory(10)),

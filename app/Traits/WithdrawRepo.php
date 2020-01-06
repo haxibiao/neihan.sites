@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Contribute;
 use App\Dongdezhuan\UserApp;
 use App\Helpers\Pay\PayUtils;
 use App\Transaction;
@@ -66,11 +67,6 @@ trait WithdrawRepo
         if (!$this->isWaitingWithdraw()) {
             return;
         }
-
-//
-//        if (!$user->isWithDrawTodayByPayAccount($this->created_at)) {
-//            return $this->illegalWithdraw('当前懂得赚账号已经提现过了噢 ~，请勿重复提现~~');
-//        }
 
         //判断余额
         if ($wallet->balance < $this->amount) {
@@ -254,8 +250,8 @@ trait WithdrawRepo
     {
         //重新查询锁住该记录更新
         $withdraw = Withdraw::lockForUpdate()->find($this->id);
-        $user     = $this->user;
-        $wallet   = $this->wallet;
+        $wallet   = $withdraw->wallet;
+        $user     = $wallet->user;
 
         DB::beginTransaction(); //开启事务
         try {
@@ -264,21 +260,15 @@ trait WithdrawRepo
             $withdraw->remark = $remark;
             $withdraw->save();
 
-//            // 金额兑换智慧点
-            //             $amount = $withdraw->amount;
-            //             $gold   = Exchange::computeGold($amount);
-            //
-            //             //2.创建退款流水记录
-            //             if (!is_null($wallet)) {
-            //                 $transaction = WalletTransaction::makeOutcome($wallet, $amount, '提现失败');
-            //             }
-            //
-            //             // 3.退回智慧点 创建兑换记录
-            //             if (!is_null($user)) {
-            //                 Gold::makeIncome($user, $gold, '提现失败退款');
-            //                 $user->refresh();
-            //                 Exchange::exhangeIn($user, $gold);
-            //             }
+            // 2.退回提现贡献点
+            $contribute = $withdraw->amount * Contribute::WITHDRAW_DATE;
+            Contribute::create([
+                'user_id' => $user->id,
+                'remark'  => '提现失败返回贡献值',
+                'amount'  => $contribute,
+                'contributed_id' => $withdraw->id,
+                'contributed_type' => 'withdraws',
+            ]);
 
             //事务提交
             DB::commit();

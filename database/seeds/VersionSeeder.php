@@ -1,5 +1,6 @@
 <?php
 
+use App\Version;
 use Illuminate\Database\Seeder;
 
 class VersionSeeder extends Seeder
@@ -11,11 +12,20 @@ class VersionSeeder extends Seeder
      */
     public function run()
     {
-        \App\Version::firstOrCreate([
-            'name'        => '2.1',
-            'url'         => 'http: //dianmoge-1251052432.cos.ap-shanghai.myqcloud.com/dianmoge-release.apk',
+        //返回过多的旧版本信息无意义...
+        Version::truncate();
+
+        Version::firstOrCreate([
+            'name'        => '2.8.2',
+            'url'         => 'http://' . env('COS_DOMAIN') . '/' . env('APP_NAME') . '-release.apk',
             'is_force'    => 1,
-            'description' => '完全重构并优化了短视频社交基本功能，增加悬赏问答玩法',
+            'os'          => 'Android',
+            'type'        => 1, //正式
+            'size'        => '35554432', //大约35M,不需要太精准
+            'package'     => 'com.' . env('APP_NAME'),
+            'status'      => Version::RUNNING,
+            'description' => "1.添加看激励视频时间\n2.间隔修复睡觉打卡判断机制问题\n3.修复Android9.0的Http网络阻断图片加载不了问题",
         ]);
+
     }
 }

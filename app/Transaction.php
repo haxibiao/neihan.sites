@@ -26,6 +26,12 @@ class Transaction extends Model
         return $this->belongsTo(\App\User::class);
     }
 
+    public function wallet()
+    {
+        //dd("bbbb");
+        return $this->belongsTo(\App\Wallet::class,'wallet_id');
+    }
+
     public function toUser()
     {
         return $this->belongsTo(\App\User::class, 'to_user_id');

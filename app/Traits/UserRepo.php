@@ -368,11 +368,24 @@ trait UserRepo
         return false;
     }
 
-    public function isWithdrawBefore()
+    public function isWithdrawBefore(): bool
     {
         $wallet_id = $this->wallet->id;
         return Withdraw::where('wallet_id', $wallet_id)->exists();
     }
+
+    public function hasWithdrawOnDDZ(): bool
+    {
+        if ($this->checkUserIsBindDongdezhuan()){
+            $ddzUser = $this->getDongdezhuanUser();
+            $wallet = $ddzUser->getWalletAttribute();
+            if ($wallet->withdraws()->exists()){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public function checkWithdraw($amount)
     {
@@ -413,7 +426,7 @@ trait UserRepo
         $payAccount = $this->wallet->getPayId(Withdraw::ALIPAY_PLATFORM);
         if (!empty($payAccount)) {
             $wallet_ids = Wallet::where('pay_account', $payAccount)->select('id')->get()->pluck('id')->toArray();
-            $bool       = Withdraw::whereIn('wallet_id', $wallet_ids)->whereDate('created_at', $time->toDateString())->exists();
+            $bool       = Withdraw::whereIn('wallet_id', $wallet_ids)->where('status','>',Withdraw::FAILURE_WITHDRAW)->whereDate('created_at', $time->toDateString())->exists();
         }
 
         return $bool;
@@ -493,7 +506,7 @@ trait UserRepo
                     'api_token' => Str::random(60),
                     'avatar'    => \App\Dongdezhuan\User::AVATAR_DEFAULT,
                 ]);
-                Profile::create([
+                \App\Dongdezhuan\Profile::create([
                     'user_id'      => $ddzUser->id,
                     'introduction' => sprintf('我是从%s来的小白,望多多指教!~',config('app.name_cn')),
                 ]);

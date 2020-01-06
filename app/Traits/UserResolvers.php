@@ -60,12 +60,7 @@ trait UserResolvers
                 throw new GQLException('登录失败！账户已被注销');
             }
 
-            $user->update([
-                'phone' => $args['account'],
-            ]);
-
             $user->touch(); //更新用户的更新时间来统计日活用户
-            // app_track_user("用户登录", 'login');
             return $user;
         } else {
             throw new GQLException('登录失败！邮箱或者密码不正确');
@@ -216,42 +211,30 @@ trait UserResolvers
         // 不是首次登录
         if ($qb->exists()) {
             $user = $qb->first();
-            if ($user->status == User::STATUS_OFFLINE) {
+            if ($user->status === User::STATUS_OFFLINE) {
                 throw new GQLException('登录失败！账户已被封禁');
-            } elseif ($user->status == User::STATUS_DESTORY) {
+            } else if ($user->status === User::STATUS_DESTORY) {
                 throw new GQLException('登录失败！账户已被注销');
             }
-            if (!is_null($phone)) {
-                $user->update(['phone' => $phone]);
-            }
+        }else{
+            $user = User::create([
+                'uuid'      => $args['uuid'],
+                'account'   => $args['phone'] ?? $args['uuid'],
+                'name'      => User::DEFAULT_NAME,
+                'api_token' => str_random(60),
+                'avatar'    => User::AVATAR_DEFAULT,
+                'phone'     => $phone,
+            ]);
+            Profile::create([
+                'user_id'      => $user->id,
+                'introduction' => '这个人暂时没有 freestyle ',
+                'app_version'  => request()->header('version', null),
+            ]);
 
-            $this->bindDongdezhuanByUUID($args['uuid'], $user);
-
-            $profile = $user->profile;
-            $profile->app_version = request()->header('version', null);
-            $profile->save();
-            return $user;
+            Ip::createIpRecord('users', $user->id, $user->id);
         }
-        
-        $user = User::create([
-            'uuid'      => $args['uuid'],
-            'account'   => $args['phone'] ?? $args['uuid'],
-            'name'      => User::DEFAULT_NAME,
-            'api_token' => str_random(60),
-            'avatar'    => User::AVATAR_DEFAULT,
-            'phone'     => $phone,
-        ]);
-
-        Profile::create([
-            'user_id'      => $user->id,
-            'introduction' => '这个人暂时没有 freestyle ',
-            'app_version'  => request()->header('version', null),
-        ]);
-
-        Ip::createIpRecord('users', $user->id, $user->id);
-
         $this->bindDongdezhuanByUUID($args['uuid'], $user);
-
+        $this->updateProfileAppVersion($user);
         return $user;
     }
 
@@ -364,5 +347,15 @@ trait UserResolvers
         }
     }
 
-
+    /**
+     * @param $user
+     */
+    public function updateProfileAppVersion(User $user): void
+    {
+        if ($version = request()->header('version', null)) {
+            $user->getProfileAttribute()->update([
+                'app_version' => $version,
+            ]);
+        }
+    }
 }

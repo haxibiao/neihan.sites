@@ -4,9 +4,11 @@ namespace App\Traits;
 use App\Contribute;
 use App\Exceptions\GQLException;
 use App\Exchange;
+use App\Version;
 use App\Withdraw;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 trait WithdrawResolvers
@@ -14,11 +16,20 @@ trait WithdrawResolvers
     public function createWithdraw($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $user     = getUser();
+        $profile  = $user->profile;
         $amount   = $args['amount'];
         $platform = $args['platform'];
 
         //1. 可控制提现关闭
         stopfunction("提现");
+
+
+//        截图版本号前3位作为当前使用版本参考
+        $version = substr($profile->app_version,0,3);
+        $latestVersion = Version::latest('name')->first();
+        if ($profile->app_version === null || !Str::contains($latestVersion->name,$version)){
+            throw new GQLException('当前版本过低,请更新后再尝试提现,详情咨询QQ群:808982693');
+        }
 
         //2. 禁止3元以上用户提现
         if ($amount > Withdraw::WITHDRAW_MAX) {
@@ -44,7 +55,7 @@ trait WithdrawResolvers
             throw new GQLException('您今日已经提现过了哦 ~，明天再来吧 ~');
         }
 
-        // 非首次提现,只许提现到懂得赚
+        // 非首次提现,只许提现到懂得赚U
         $isWithdrawBefore = $user->isWithdrawBefore();
         if ($isWithdrawBefore && $platform !== 'dongdezhuan') {
             throw new GQLException('温馨提示:提现系统全面升级,请下载懂得赚提现哦~,不仅高收益秒提现还不限时');
@@ -162,9 +173,9 @@ trait WithdrawResolvers
 
         $contribute       = Contribute::WITHDRAW_DATE;
         $isWithdrawBefore = $user->isWithdrawBefore();
-
-        //            判断是否提现过
-        if ($isWithdrawBefore) {
+        $hasWithdrawOnDDZ = $user->hasWithdrawOnDDZ();
+        //  工厂内是否提现 || 懂得赚上是否提现
+        if ($isWithdrawBefore || $hasWithdrawOnDDZ) {
             $minAmount = 1;
         } else {
             $minAmount = 0.3;
