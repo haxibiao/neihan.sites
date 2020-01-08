@@ -3,7 +3,7 @@
 namespace App\Traits;
 
 use App\Contribute;
-use App\Dongdezhuan\UserApp;
+use App\DDZ\UserApp;
 use App\OAuth;
 use App\Profile;
 use App\User;
@@ -376,8 +376,7 @@ trait UserRepo
 
     public function hasWithdrawOnDDZ(): bool
     {
-        if ($this->checkUserIsBindDongdezhuan()){
-            $ddzUser = $this->getDongdezhuanUser();
+        if ($ddzUser = $this->getDongdezhuanUser()){
             $wallet = $ddzUser->getWalletAttribute();
             if ($wallet->withdraws()->exists()){
                 return true;
@@ -474,17 +473,29 @@ trait UserRepo
 
     public function checkUserIsBindDongdezhuan(): bool
     {
-        return $this->oauth()->where('oauth_type', 'dongdezhuan')->exists();
+        return $this->getDongdezhuanUserId() > 0;
     }
 
-    public function getDongdezhuanUser()
+    public function getDongdezhuanUser(): \App\DDZ\User
     {
-        return \App\Dongdezhuan\User::find($this->getDongdezhuanUserId());
+        $ddzUserId = $this->getDongdezhuanUserId();
+        if(!$ddzUserId) {
+            return $this->createDDZUser($this->uuid);
+        }
+        $ddzUser =  \App\DDZ\User::find($ddzUserId);
+        if(!$ddzUser) {
+            throw new \RuntimeException('糟糕，DDZ账户获取失败');
+        }
+        return $ddzUser;
     }
 
     public function getDongdezhuanUserId(): int
     {
-        return $this->oauth()->where('oauth_type', 'dongdezhuan')->select('oauth_id')->first()->oauth_id;
+        $qb = $this->oauth()->where('oauth_type', 'dongdezhuan')->select('oauth_id');
+        if ($qb->count()){
+            return $qb->first()->oauth_id;
+        }
+        return 0;
     }
 
     public function getUserSuccessWithdrawAmount(){
@@ -495,36 +506,22 @@ trait UserRepo
      * @param User $user
      * @throws \Throwable
      */
-    public function bindDongdezhuanByUUID(string $uuid, User $user): void
+    public function bingDDZ(): void
     {
-        if (!$user->checkUserIsBindDongdezhuan()) {
-            $ddzUser = \App\Dongdezhuan\User::whereUuid($uuid)->first();
-            if ($ddzUser === null) {
-                $ddzUser = \App\Dongdezhuan\User::create([
-                    'uuid'      =>$uuid,
-                    'name'      => \App\Dongdezhuan\User::DEFAULT_NAME,
-                    'api_token' => Str::random(60),
-                    'avatar'    => \App\Dongdezhuan\User::AVATAR_DEFAULT,
-                ]);
-                \App\Dongdezhuan\Profile::create([
-                    'user_id'      => $ddzUser->id,
-                    'introduction' => sprintf('我是从%s来的小白,望多多指教!~',config('app.name_cn')),
-                ]);
-            }
-            $this->bindDongdezhuanUser($user, $ddzUser);
+        if(empty($this->uuid)) {
+            throw new \Exception('uuid为空，不能绑定ddz');
         }
+        $this->createDDZUser($this->uuid);
     }
 
     /**
-     * @param User $user
-     * @param $ddzUser
-     * @throws \Throwable
+     * @param string $uuid
+     * @return mixed
      */
-    public function bindDongdezhuanUser(User $user, $ddzUser): void
+    public function createDDZUser(string $uuid): \App\DDZ\User
     {
-        \DB::transaction(static function () use ($user, $ddzUser) {
-            OAuth::createRelation($user->id, 'dongdezhuan', $ddzUser->id);
-            UserApp::bind($ddzUser->id);
-        });
+        $ddzUser = \App\DDZ\User::makeNewUser($this->uuid);
+        OAuth::createRelation($this->id, 'dongdezhuan', $ddzUser->id);
+        return $ddzUser;
     }
 }

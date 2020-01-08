@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dongdezhuan;
+namespace App\DDZ;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,13 +26,13 @@ class Order extends Model
 
     public function user():BelongsTo
     {
-        return $this->belongsTo(\App\Dongdezhuan\User::class);
+        return $this->belongsTo(\App\DDZ\User::class);
     }
 
 
     public function app():BelongsTo
     {
-        return $this->belongsTo(\App\Dongdezhuan\App::class);
+        return $this->belongsTo(\App\DDZ\App::class);
     }
 
     public static function getStatus():array

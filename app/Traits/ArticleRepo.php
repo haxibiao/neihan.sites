@@ -6,16 +6,22 @@ use App\Action;
 use App\Article;
 use App\Category;
 use App\Exceptions\GQLException;
+use App\Gold;
 use App\Helpers\BadWord\BadWordUtils;
 use App\Image;
+use App\Notifications\ReceiveAward;
+use App\Tag;
 use App\Tip;
 use App\Video;
 use App\Visit;
 use Exception;
+use GuzzleHttp\Client;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 trait ArticleRepo
 {
@@ -24,18 +30,19 @@ trait ArticleRepo
      * @return int|mixed
      * @throws \Throwable
      */
-    public function saveVideoFile(UploadedFile $file){
-        $hash = md5_file($file->getRealPath());
+    public function saveVideoFile(UploadedFile $file)
+    {
+        $hash  = md5_file($file->getRealPath());
         $video = \App\Video::firstOrNew([
-            'hash' => $hash
+            'hash' => $hash,
         ]);
 //        秒传
-        if(isset($video->id)){
+        if (isset($video->id)) {
             return $video->id;
         }
 
         $uploadSuccess = $video->saveFile($file);
-        throw_if(!$uploadSuccess,Exception::class,'视频上传失败，请联系管理员小哥');
+        throw_if(!$uploadSuccess, Exception::class, '视频上传失败，请联系管理员小哥');
         return $video->id;
     }
 
@@ -427,7 +434,7 @@ trait ArticleRepo
             $this->images()->sync($image_ids);
             $this->save();
         }
-        app_track_user('发布动态','post');
+        app_track_user('发布动态', 'post');
         return $this;
     }
 
@@ -570,9 +577,153 @@ trait ArticleRepo
 
     public static function makeNewReviewId($prefixNum = null)
     {
-        $maxNum = 100000;
+        $maxNum    = 100000;
         $prefixNum = is_null($prefixNum) ? today()->format('Ymd') : $prefixNum;
         $reviewId  = intval($prefixNum) * $maxNum + mt_rand(1, $maxNum - 1);
         return $reviewId;
+    }
+
+    public function processSpider(array $data)
+    {
+        //同步爬虫标签
+        $this->syncSpiderTags(Arr::get($data, 'raw.item_list.0.desc', ''));
+        //同步爬虫视频
+        $video = $this->syncSpiderVideo(Arr::get($data, 'video'));
+        //创建热门分类
+        $category = $this->createHotCategory();
+
+        //发布article
+        $this->type     = 'video';
+        $this->video_id = data_get($video, 'id');
+        $this->setStatus(Article::STATUS_ONLINE);
+        $this->category_id = data_get($category, 'id');
+        $this->review_id   = Article::makeNewReviewId();
+        $this->save();
+        $this->categories()->sync([$category->id]);
+
+        //奖励用户
+        $user = $this->user;
+        if (!is_null($user)) {
+            $user->notify(new ReceiveAward('发布视频动态奖励', 10, $user, $this->id));
+            Gold::makeIncome($user, 10, '发布视频动态奖励');
+        }
+    }
+
+    public function syncSpiderTags($description)
+    {
+        $description = preg_replace('/@([\w]+)/u', '', $description);
+        preg_match_all('/#([\w]+)/u', $description, $topicArr);
+
+        if ($topicArr[1]) {
+            $tags = [];
+            foreach ($topicArr[1] as $topic) {
+                if (Str::contains($topic, '抖音')) {
+                    continue;
+                }
+                $tag = Tag::firstOrCreate([
+                    'name' => $topic,
+                ], [
+                    'user_id' => 1,
+                ]);
+                $tags[] = $tag->id;
+            }
+            $this->tags()->sync($tags);
+        }
+    }
+
+    public function syncSpiderVideo($data)
+    {
+        $hash     = Arr::get($data, 'hash');
+        $json     = Arr::get($data, 'json');
+        $mediaUrl = Arr::get($data, 'url');
+        $coverUrl = Arr::get($data, 'cover');
+        if (!empty($hash)) {
+            $video = Video::firstOrNew(['hash' => $hash]);
+            //同步视频信息
+            $video->setJsonData('metaInfo', $json);
+            $video->setJsonData('server', $mediaUrl);
+            $video->user_id = $this->user_id;
+
+            //更改VOD地址
+            $video->disk         = 'vod';
+            $video->qcvod_fileid = Arr::get($json, 'vod.FileId');
+            $video->path         = $mediaUrl;
+            $video->save();
+
+            //保存视频截图 && 同步填充信息
+            $video->status   = 1;
+            $video->cover    = $coverUrl;
+            $video->duration = Arr::get($data, 'duration');
+            $video->setJsonData('cover', $coverUrl);
+            $video->setJsonData('width', Arr::get($data, 'width'));
+            $video->setJsonData('height', Arr::get($data, 'height'));
+            $video->save();
+
+            return $video;
+        }
+    }
+
+    public function createHotCategory()
+    {
+        $category = Category::firstOrNew([
+            'name' => '我要上热门',
+        ]);
+        if (!$category->id) {
+            $category->name_en = 'woyaoshangremeng';
+            $category->status  = 1;
+            $category->user_id = 1;
+            $category->save();
+        }
+
+        return $category;
+    }
+
+    public function setStatus($status)
+    {
+        $this->submit = $this->status = $status;
+    }
+
+    public function isSpider()
+    {
+        return Str::contains($this->source_url, 'v.douyin.com');
+    }
+
+    public function isReviewing()
+    {
+        return $this->status == Article::STATUS_REVIEW;
+    }
+
+    public function spiderParse($url)
+    {
+        $hookUrl  = url('api/media/hook');
+        $data     = [];
+        $client   = new Client();
+        $response = $client->request('GET', 'http://media.haxibiao.com/api/v1/spider/store', [
+            'http_errors' => false,
+            'query'       => [
+                'source_url' => trim($url),
+                'hook_url'   => $hookUrl,
+            ],
+        ]);
+        throw_if($response->getStatusCode() == 404, GQLException::class, '您分享的链接不存在,请稍后再试!');
+        $contents = $response->getBody()->getContents();
+        if (!empty($contents)) {
+            $contents = json_decode($contents, true);
+            $data     = Arr::get($contents, 'data');
+        }
+
+        return $data;
+    }
+
+    public function startSpider()
+    {
+        if ($this->isReviewing() && $this->isSpider()) {
+            $data  = $this->spiderParse($this->source_url);
+            $video = Arr::get($data, 'video');
+            if (is_array($video)) {
+                $this->processSpider($data);
+            }
+            $this->save();
+        }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dongdezhuan;
+namespace App\DDZ;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -32,7 +32,7 @@ class Withdraw extends Model
 
     public function wallet(): BelongsTo
     {
-        return $this->belongsTo(\App\Dongdezhuan\Wallet::class);
+        return $this->belongsTo(\App\DDZ\Wallet::class);
     }
 
     public function isSuccessWithdraw(): bool

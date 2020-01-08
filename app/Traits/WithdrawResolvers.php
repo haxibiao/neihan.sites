@@ -102,12 +102,8 @@ trait WithdrawResolvers
 
         //10. 开启兑换事务,替换到钱包 创建提现订单
         if ($platform === 'dongdezhuan') {
-            if ($user->checkUserIsBindDongdezhuan()) {
-                $ddzUser  = $user->getDongdezhuanUser();
-                $withdraw = $wallet->withdraw($amount, $ddzUser->account, 'dongdezhuan');
-            } else {
-                throw new GQLException('您还没有绑定懂得赚账户哦~');
-            }
+            $ddzUser  = $user->getDongdezhuanUser();
+            $withdraw = $wallet->withdraw($amount, $ddzUser->account, 'dongdezhuan');
         } else {
             $withdraw = $wallet->withdraw($amount, $payId, $platform);
         }
@@ -221,7 +217,7 @@ trait WithdrawResolvers
 
 //        去掉头或尾部数据
         if (count($withdrawInfo) > 4) {
-            if ($isWithdrawBefore) {
+            if ($isWithdrawBefore || $hasWithdrawOnDDZ) {
                 array_shift($withdrawInfo);
             } else {
                 array_pop($withdrawInfo);

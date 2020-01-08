@@ -61,7 +61,7 @@ trait WalletAttrs
         if ($user = checkUser()) {
             $oauth = $user->oauth()->where('oauth_type', 'dongdezhuan')->first();
             if ($oauth !== null) {
-                $ddzUser = \App\Dongdezhuan\User::findOrFail($oauth->oauth_id);
+                $ddzUser = \App\DDZ\User::findOrFail($oauth->oauth_id);
                 return $ddzUser->wallet->available_balance;
             }
         }

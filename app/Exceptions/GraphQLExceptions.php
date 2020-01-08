@@ -40,7 +40,7 @@ class GraphQLExceptions
 //                }
 //            }
 //        }
-        Log::debug('gql error: ' . json_encode($error));
+        //Log::debug('gql error: ' . json_encode($error));
         return $error;
     }
 

@@ -3,7 +3,7 @@
 namespace App\Traits;
 
 use App\Contribute;
-use App\Dongdezhuan\UserApp;
+use App\DDZ\UserApp;
 use App\Helpers\Pay\PayUtils;
 use App\Transaction;
 use App\User;
@@ -144,7 +144,7 @@ trait WithdrawRepo
             return $result;
         }
 
-        $app     = $appId     = \App\Dongdezhuan\App::find($appId);
+        $app     = $appId     = \App\DDZ\App::find($appId);
         $ddzUser = $user->getDongdezhuanUser();
 
         $remark = '从' . $app->name . '提现到懂得赚' . $this->amount . '元';
@@ -155,7 +155,7 @@ trait WithdrawRepo
             \DB::beginTransaction();
 
 //            2.生成转账订单
-            $order = \App\Dongdezhuan\Order::create([
+            $order = \App\DDZ\Order::create([
                 'user_id'     => $ddzUser->id,
                 'app_id'      => $app->id,
                 'app_user_id' => $user->id,
@@ -165,7 +165,7 @@ trait WithdrawRepo
             ]);
 
 //            3.写入懂得赚转账流水记录
-            \App\Dongdezhuan\Transaction::create([
+            \App\DDZ\Transaction::create([
                 'wallet_id' => $ddzUser->wallet->id,
                 'type'      => '转账',
                 'status'    => '已支付',
@@ -175,7 +175,7 @@ trait WithdrawRepo
             ]);
 
 //            4.转账
-            $order->status = \App\Dongdezhuan\Order::STATUS_SUCCESS;
+            $order->status = \App\DDZ\Order::STATUS_SUCCESS;
             $order->save();
 
             \DB::commit();

@@ -59,7 +59,7 @@ class User extends Resource
             Text::make('名字', 'name')
                 ->sortable()
                 ->rules('required', 'max:255'),
-            Text::make('最近使用版本','profile.app_version')->sortable(),
+            Text::make('最近使用版本', 'profile.app_version')->sortable(),
             Select::make('性别', 'gender')->options([
                 AppUser::MALE_GENDER   => '男',
                 AppUser::FEMALE_GENDER => '女',
@@ -80,6 +80,8 @@ class User extends Resource
 
             Number::make('智慧点', 'gold')->exceptOnForms(),
             Text::make('账户', 'account'),
+            Text::make('uuid', 'uuid')->hideFromIndex(),
+            Text::make('api_token', 'api_token')->hideFromIndex(),
             Text::make('手机号', 'phone'),
             Text::make('邮件地址', 'email'),
 

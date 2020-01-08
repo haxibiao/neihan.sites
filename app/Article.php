@@ -60,8 +60,9 @@ class Article extends Model
 
 //  动态状态
     const STATUS_REFUSED = -1;
-    const STATUS_REVIEW = 0;
-    const STATUS_ONLINE = 1;
+    const STATUS_REVIEW  = 0;
+    const STATUS_ONLINE  = 1;
+    
     protected $touches = ['category', 'collection', 'categories'];
 
     protected $dates = ['edited_at', 'delay_time', 'commented'];
@@ -164,10 +165,10 @@ class Article extends Model
     }
 
 //    public function save(array $options = array())
-//    {
-//        $this->description = $this->summary;
-//        parent::save($options);
-//    }
+    //    {
+    //        $this->description = $this->summary;
+    //        parent::save($options);
+    //    }
 
     public function scopePublish($query)
     {

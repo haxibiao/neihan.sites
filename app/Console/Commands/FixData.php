@@ -55,22 +55,23 @@ class FixData extends Command
     /**
      * 修复抖音抓取视频的描述信息
      */
-    public function fixDescription(){
-        Article::whereNotNull('source_url')->where('video_id','<>',1)->chunk(1000,function($articles){
-            foreach($articles as $article){
+    public function fixDescription()
+    {
+        Article::whereNotNull('source_url')->where('video_id', '<>', 1)->chunk(1000, function ($articles) {
+            foreach ($articles as $article) {
                 $video = $article->video;
-                if(!$video){
+                if (!$video) {
                     continue;
                 }
-                if(!$video->json){
+                if (!$video->json) {
                     continue;
                 }
-                $json = json_decode($video->json,true);
-                $desc = Arr::get($json,'metaInfo.item_list.0.desc',null);
-                if(is_null($desc)){
+                $json = json_decode($video->json, true);
+                $desc = Arr::get($json, 'metaInfo.item_list.0.desc', null);
+                if (is_null($desc)) {
                     continue;
                 }
-                $desc = str_replace(['#在抖音，记录美好生活#', '@抖音小助手', '抖音','dou','Dou','DOU','抖音助手'], '', $desc);
+                $desc = str_replace(['#在抖音，记录美好生活#', '@抖音小助手', '抖音', 'dou', 'Dou', 'DOU', '抖音助手'], '', $desc);
                 $this->info($desc);
                 $article->description = $desc;
                 $article->title       = $desc;
@@ -80,9 +81,10 @@ class FixData extends Command
         });
     }
 
-    public function contribute(){
+    public function contribute()
+    {
         Contribute::chunk(100,
-            function ($contributes){
+            function ($contributes) {
                 foreach ($contributes as $contribute) {
                     $contributed = $contribute->contributed_type;
 
@@ -92,7 +94,7 @@ class FixData extends Command
                     if ($contributed == "AD") {
                         $contribute->remark = '观看广告奖励';
                     }
-        
+
                     if ($contributed == "AD_VIDEO") {
                         $contribute->remark = '观看激励视频奖励';
                     }
@@ -102,9 +104,9 @@ class FixData extends Command
                     if ($contributed == "usertasks") {
                         $contribute->remark = '任务奖励';
                     }
-        
+
                     $contribute->timestamps = false;
-                    $this->info('id' . $contribute->id.'remark'.$contribute->remark);
+                    $this->info('id' . $contribute->id . 'remark' . $contribute->remark);
                     $contribute->save();
                 }
             });
@@ -992,15 +994,47 @@ class FixData extends Command
 
     public function users()
     {
-        $this->info('修复 静默注册的手机号和原账号的手机号 相同');
+        // 修复逻辑： 3小时内创建的账户（缩小影响范围 ），uuid有旧的存在：
+        $users = User::where('created_at', '>', now()->addHours(-3))->get();
+        $this->info('3小时内新用户数:' . $users->count());
+        foreach ($users as $user) {
+            $uuid = $user->uuid ? $user->uuid : $user->account;
+            $this->info("uuid:" . $uuid);
 
-        $user = User::find('1111');
-        $this->warn('修复前，手机号为：' . $user->phone);
-        $user->phone   = 13467784211;
-        $user->account = 13467784211;
-        $user->save();
+            $qb = User::whereAccount($uuid);
+            if ($qb->count() > 1) {
+                $oldUser = $qb->orderBy('id')->first();
+                if ($oldUser) {
+                    $this->info("old users count:" . $qb->count());
+                    $this->comment("找到旧用户 $oldUser->id $oldUser->uuid $oldUser->name account:$oldUser->account");
 
-        $this->warn('修复后，手机号为：' . $user->phone ?? '空');
+                    $user->uuid   = null;
+                    $user->status = -1;
+                    $user->save();
+
+                    $oldUser->uuid = $uuid;
+                    $oldUser->save();
+
+                    $token           = $user->api_token;
+                    $user->api_token = str_random(60);
+                    $user->save();
+
+                    $oldUser->api_token = $token;
+                    $oldUser->save();
+
+                }
+
+            }
+
+        }
+        // -  清空uuid (account 已存)
+        // -  账户停用
+
+        // 下次启动... 新的token...  新的User ...   还得 me 查询里给切换回去...
+        // -  找的uuid的 旧User, 更新uuid
+        // -  新的停用账户换个token
+        // -  覆盖token, 新的token 覆盖旧的token...
+
     }
 
     public function notifications()
@@ -1113,5 +1147,22 @@ class FixData extends Command
                 }
             }
         }
+    }
+
+    public function spiders()
+    {
+        $count    = 0;
+        $articles = \App\Article::where('source_url', 'like', '%v.douyin.com%')
+            ->where('status', \App\Article::REVIEW_SUBMIT)
+            ->chunk(1000, function ($artilces) use (&$count) {
+                foreach ($artilces as $article) {
+                    $article->startSpider();
+                    $this->info('Article Id:' . $article->id . ' spider start');
+                    $count++;
+                }
+            });
+
+        $this->info('本次成功修复待处理爬虫:' . $count);
+
     }
 }

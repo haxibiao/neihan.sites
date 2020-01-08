@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dongdezhuan;
+namespace App\DDZ;
 
 use App\Exceptions\GQLException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,12 +30,12 @@ class UserApp extends Pivot
 
     public function user():BelongsTo
     {
-        return $this->belongsTo(\App\Dongdezhuan\User::class);
+        return $this->belongsTo(\App\DDZ\User::class);
     }
 
     public function App():BelongsTo
     {
-        return $this->belongsTo(\App\Dongdezhuan\App::class);
+        return $this->belongsTo(\App\DDZ\App::class);
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dongdezhuan;
+namespace App\DDZ;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,17 +25,17 @@ class Transaction extends Model
 
     public function user():BelongsTo
     {
-        return $this->belongsTo(\App\Dongdezhuan\User::class);
+        return $this->belongsTo(\App\DDZ\User::class);
     }
 
     public function toUser():BelongsTo
     {
-        return $this->belongsTo(\App\Dongdezhuan\User::class, 'to_user_id');
+        return $this->belongsTo(\App\DDZ\User::class, 'to_user_id');
     }
 
     public function fromUser():BelongsTo
     {
-        return $this->belongsTo(\App\Dongdezhuan\User::class, 'from_user_id');
+        return $this->belongsTo(\App\DDZ\User::class, 'from_user_id');
     }
 
 }

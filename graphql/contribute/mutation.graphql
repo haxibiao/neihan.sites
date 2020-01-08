@@ -1,6 +1,6 @@
 extend type Mutation @middleware(checks: ["auth:api"]) {
-  clickAD: Contribute @field(resolver: "App\\Contribute@clickAD")
-  playADVideo(is_click:Boolean!):ADVideo @field(resolver: "App\\Contribute@playADVideo")
+  clickAD: Contribute @field(resolver: "App\\Contribute@clickDraw")
+  playADVideo(is_click:Boolean!):RewardVideo @field(resolver: "App\\Contribute@clickRewardVideo")
 #  兼容旧版本,TODO: 待移除
   clickFeedAD: Int @field(resolver: "App\\Contribute@clickFeedAD")
 
@@ -8,9 +8,8 @@ extend type Mutation @middleware(checks: ["auth:api"]) {
   clickFeedAD2: Contribute @field(resolver: "App\\Contribute@clickFeedAD2")
 }
 
-type ADVideo{
+type RewardVideo{
   message:String
   gold:Int
   contribute:Int
 }
-

@@ -56,6 +56,7 @@ type User {
   today_contribute:Int
   force_alert:Boolean
   dongdezhuanUser:User @rename(attribute:"dongdezhuan_user")
+  title_phone:String
 }
 
 type blockInfo {

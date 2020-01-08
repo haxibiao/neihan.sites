@@ -2,25 +2,40 @@
 
 namespace App\Traits;
 
-use App\Dongdezhuan\UserApp;
+use App\DDZ\UserApp;
 use App\Exceptions\GQLException;
-use App\Gold;
 use App\Ip;
 use App\OAuth;
 use App\Profile;
 use App\User;
 use App\UserTask;
 use GraphQL\Type\Definition\ResolveInfo;
-use Guzzle\Http\Client;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 trait UserResolvers
 {
     public function me($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        return getUser();
+        if ($user = getUser()) {
+
+            //注意，前端headers 传的是 deviceHeaders.uniqueId = DeviceInfo.getUniqueID();
+            $uuid = request()->header('uniqueId', null);
+            if (!empty($uuid)) {
+                // 修复旧版本无uuid
+                if (empty($user->uuid)) {
+                    $user->update(['uuid' => $uuid]);
+                }
+                // 手机系统升级UUID变更
+                if (!empty($user->uuid) && $user->uuid !== $uuid) {
+                    $user->update(['uuid' => $uuid]);
+                }
+            }
+            return $user;
+        }
     }
+
     public function resolveFriends($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $user    = \App\User::findOrFail($args['user_id']);
@@ -46,17 +61,16 @@ trait UserResolvers
     public function signIn($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $account = $args['account'] ?? $args['email'];
-
-        $qb = User::where('phone', $account)->orWhere('email', $account)->orWhere('account', $account);
+        $qb      = User::where('phone', $account)->orWhere('email', $account)->orWhere('account', $account);
         if ($qb->exists()) {
             $user = $qb->first();
             if (!password_verify($args['password'], $user->password)) {
                 throw new GQLException('登录失败！账号或者密码不正确');
             }
 
-            if ($user->status == User::STATUS_OFFLINE) {
+            if ($user->status === User::STATUS_OFFLINE) {
                 throw new GQLException('登录失败！账户已被封禁');
-            } elseif ($user->status == User::STATUS_DESTORY) {
+            } else if ($user->status === User::STATUS_DESTORY) {
                 throw new GQLException('登录失败！账户已被注销');
             }
 
@@ -203,11 +217,6 @@ trait UserResolvers
 
         $qb = User::where('uuid', $args['uuid']);
 
-        $phone = null;
-        if (isset($args['phone']) && $args['phone'] != '') {
-            $phone = $args['phone'];
-        }
-
         // 不是首次登录
         if ($qb->exists()) {
             $user = $qb->first();
@@ -216,14 +225,13 @@ trait UserResolvers
             } else if ($user->status === User::STATUS_DESTORY) {
                 throw new GQLException('登录失败！账户已被注销');
             }
-        }else{
+        } else {
             $user = User::create([
                 'uuid'      => $args['uuid'],
                 'account'   => $args['phone'] ?? $args['uuid'],
                 'name'      => User::DEFAULT_NAME,
-                'api_token' => str_random(60),
+                'api_token' => Str::random(60),
                 'avatar'    => User::AVATAR_DEFAULT,
-                'phone'     => $phone,
             ]);
             Profile::create([
                 'user_id'      => $user->id,
@@ -233,8 +241,8 @@ trait UserResolvers
 
             Ip::createIpRecord('users', $user->id, $user->id);
         }
-        $this->bindDongdezhuanByUUID($args['uuid'], $user);
-        $this->updateProfileAppVersion($user);
+//        $user->bingDDZ();
+        $user->updateProfileAppVersion($user);
         return $user;
     }
 
@@ -296,18 +304,19 @@ trait UserResolvers
     }
 
     //观看新手教程或采集视频教程任务状态变更
-    public function newUserReword($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo){
+    public function newUserReword($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
         $user = checkUser();
         $type = $args['type'];
         if ($type === 'newUser') {
-            $task = \App\Task::where("name","观看新手视频教程")->first();
-            $userTask = \App\UserTask::where("task_id",$task->id)->where("user_id",$user->id)->first();
+            $task             = \App\Task::where("name", "观看新手视频教程")->first();
+            $userTask         = \App\UserTask::where("task_id", $task->id)->where("user_id", $user->id)->first();
             $userTask->status = \App\UserTask::TASK_REACH;
             $userTask->save();
             return 1;
-        }else if($type === 'douyin'){
-            $task = \App\Task::where("name","观看采集视频教程")->first();
-            $userTask = \App\UserTask::where("task_id",$task->id)->where("user_id",$user->id)->first();
+        } else if ($type === 'douyin') {
+            $task             = \App\Task::where("name", "观看采集视频教程")->first();
+            $userTask         = \App\UserTask::where("task_id", $task->id)->where("user_id", $user->id)->first();
             $userTask->status = \App\UserTask::TASK_REACH;
             $userTask->save();
             return 1;
@@ -315,22 +324,22 @@ trait UserResolvers
         return -1;
     }
 
-
-    public function bindDongdezhuan($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo){
-        if ($user = checkUser()){
+    public function bindDongdezhuan($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+        if ($user = checkUser()) {
 
 //            App工厂效验
-            if ($user->checkUserIsBindDongdezhuan()){
+            if ($user->checkUserIsBindDongdezhuan()) {
                 throw new GQLException('您已经绑定过了哦~');
             }
 
 //            检查用户身份
-            $ddzUser = \App\Dongdezhuan\User::whereAccount($args['account'])->orWhere('phone',$args['account'])->first();
-            throw_if($ddzUser === null,GQLException::class,'绑定失败~懂得赚账号或密码输入错误~');
+            $ddzUser = \App\DDZ\User::whereAccount($args['account'])->orWhere('phone', $args['account'])->first();
+            throw_if($ddzUser === null, GQLException::class, '绑定失败~懂得赚账号或密码输入错误~');
 
 //            懂得赚端效验
-            if (UserApp::checkIsBind($ddzUser->id)){
-                $message = sprintf('该懂得赚账号在%s被绑定过了哦~,请检查您的信息是否正确~!',config('app.name_cn'));
+            if (UserApp::checkIsBind($ddzUser->id)) {
+                $message = sprintf('该懂得赚账号在%s被绑定过了哦~,请检查您的信息是否正确~!', config('app.name_cn'));
                 throw new GQLException('' . $message . '');
             }
 
@@ -339,8 +348,8 @@ trait UserResolvers
                 throw new GQLException('绑定失败~懂得赚账号或密码输入错误~');
             }
 
-            \DB::transaction(static function () use ($user,$ddzUser){
-                OAuth::createRelation($user->id,'dongdezhuan',$ddzUser->id);
+            \DB::transaction(static function () use ($user, $ddzUser) {
+                OAuth::createRelation($user->id, 'dongdezhuan', $ddzUser->id);
                 UserApp::bind($ddzUser->id);
             });
             return true;

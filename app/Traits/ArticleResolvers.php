@@ -6,12 +6,12 @@ use App\Article;
 use App\Category;
 use App\Exceptions\GQLException;
 use App\Helpers\BadWord\BadWordUtils;
-use App\Jobs\ProcessSpider;
 use App\User;
 use App\Video;
 use App\Visit;
 use Exception;
 use GraphQL\Type\Definition\ResolveInfo;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
@@ -128,7 +128,7 @@ trait ArticleResolvers
                     ->where('visits.visited_type', 'articles')
                     ->where('visits.user_id', $user->id);
             });
-           
+
             //过滤拉黑的用户的动态
             $qb->whereNotIn('user_id', function ($query) use ($user) {
                 $query->select('user_block_id')->from('user_blocks')->whereNotNull('user_block_id')->where('user_id', $user->id);
@@ -170,7 +170,7 @@ trait ArticleResolvers
 
         $mixPosts = $articles;
         //广告开关判断
-        if(adIsOpened()){
+        if (adIsOpened()) {
             $mixPosts = [];
             $index    = 0;
             foreach ($articles as $article) {
@@ -205,38 +205,24 @@ trait ArticleResolvers
     public function resolveDouyinVideo($rootValue, array $args, $context, $resolveInfo)
     {
         $user = getUser();
-        if ($user->isBlack()) {
-            throw new GQLException('发布失败,你以被禁言');
-        }
+        throw_if($user->isBlack(), GQLException::class, '发布失败,你以被禁言');
 
         try {
-            $shareMsg    = $args['share_link'];
-            $link        = filterText($shareMsg)[0];
-            $description = Str::replaceFirst('#在抖音，记录美好生活#', '', $shareMsg);
-            $description = Str::before($description, 'http');
-//            $description = preg_replace('/@([\w]+)/u', '', $description);
-//            $description = preg_replace('/#([\w]+)/u', '', $description);
-            $description = str_replace(['#在抖音，记录美好生活#', '@抖音小助手', '#抖音小助手','抖音','dou','Dou','DOU','抖音助手'], '', $description);
-            $description = trim($description);
-            if (BadWordUtils::check($description)) {
-                throw new GQLException('您的分享文本中包含非法内容,请删除后再试!');
-            }
+            $shareMsg = $args['share_link'];
+            $link     = filterText($shareMsg)[0];
+            //删除分享信息中违禁词
+            $description = $this->deleteBadWord($shareMsg);
 
             //校验视频链接
-            $isVerificated = Str::contains($link, 'https://v.douyin.com/');
-            if (!$isVerificated) {
-                throw new GQLException('您的分享链接有误哦~');
-            }
+            throw_if(!Str::contains($link, 'https://v.douyin.com'), GQLException::class, '您的分享链接有误哦~');
 
-            $todayUserUploadVideoCount = $user->articles()->whereNotNUll('source_url')
-                ->whereDate('created_at', now())
-                ->count();
+            //检查用户今日分享爬虫数量
+            $this->checkTodaySpiderCount($user);
 
-            if (!$user->isHighRole() && $todayUserUploadVideoCount >= 30) {
-                throw new GQLException('感谢您的分享，今日分享次数已达30条，休息一会儿明天再来哦~');
-            }
+            //请求爬虫解析
+            $data = $this->spiderParse($link);
 
-            // 不允许重复视频
+            // 不允许重复视频 && 生成article数据
             $article = Article::firstOrNew([
                 'source_url' => $link,
             ], [
@@ -256,14 +242,15 @@ trait ArticleResolvers
                     throw new GQLException('该视频正在审核中，请稍等噢~');
                 }
             }
+            //已经被处理过
+            $video = Arr::get($data, 'video');
+            if (is_array($video)) {
+                $article->processSpider($data);
+            }
             $article->save();
-
-            //队列开始处理爬虫视频
-            ProcessSpider::dispatch($article, $shareMsg)->onQueue('spider');
 
             return $article;
         } catch (\Exception $e) {
-
             if ($e->getCode() == 0) {
                 Log::error($e->getMessage());
                 throw new GQLException('视频上传失败,程序小哥正在处理中!');
@@ -280,5 +267,31 @@ trait ArticleResolvers
             throw new GQLException('目前只能分享视频动态哦~');
         }
         return sprintf('#%s/share/post/%d#, #%s#,打开【%s】,直接观看视频,玩视频就能赚钱~,', config('app.url'), $article->id, $article->description, config('app.name_cn'));
+    }
+
+    public function deleteBadWord($description)
+    {
+        $description = Str::replaceFirst('#在抖音，记录美好生活#', '', $description);
+        $description = Str::before($description, 'http');
+        // $description = preg_replace('/@([\w]+)/u', '', $description);
+        // $description = preg_replace('/#([\w]+)/u', '', $description);
+        $description = str_replace(['#在抖音，记录美好生活#', '@抖音小助手', '#抖音小助手', '抖音', 'dou', 'Dou', 'DOU', '抖音助手'], '', $description);
+        $description = trim($description);
+        if (BadWordUtils::check($description)) {
+            throw new GQLException('您的分享文本中包含非法内容,请删除后再试!');
+        }
+
+        return $description;
+    }
+
+    public function checkTodaySpiderCount($user)
+    {
+        $todayUserUploadVideoCount = $user->articles()->whereNotNUll('source_url')
+            ->whereDate('created_at', now())
+            ->count();
+
+        if (!$user->isHighRole() && $todayUserUploadVideoCount >= 30) {
+            throw new GQLException('感谢您的分享，今日分享次数已达30条，休息一会儿明天再来哦~');
+        }
     }
 }

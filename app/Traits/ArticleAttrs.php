@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Category;
+use Illuminate\Support\Str;
 
 trait ArticleAttrs
 {
@@ -93,7 +94,7 @@ trait ArticleAttrs
         $cover_url = $this->cover_path;
 
         //有cos地址的直接返回
-        if (str_contains($cover_url, 'cos')) {
+        if (Str::contains($cover_url, 'cos') || Str::contains($cover_url, 'http')) {
             return $cover_url;
         }
 

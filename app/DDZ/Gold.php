@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dongdezhuan;
+namespace App\DDZ;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,6 +22,6 @@ class Gold extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(\App\Dongdezhuan\User::class);
+        return $this->belongsTo(\App\DDZ\User::class);
     }
 }

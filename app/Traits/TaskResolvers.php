@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\DDZ\AppTask;
 use App\Exceptions\GQLException;
 use App\Task;
 use App\UserTask;
@@ -11,75 +12,78 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 trait TaskResolvers
 {
-
-    public function resolveDrinkWaterCheck($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    //喝水任务上报打卡接口 drinkWater,单次喝水成功后调用...
+    public function resolveDrinkWater($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-
         $task_id = $args['task_id'];
-
         $task = Task::find($task_id);
+        $drink_water_tasks = [];
 
         if ($user = getUser()) {
             $usertask = UserTask::where([
                 'user_id' => $user->id,
                 'task_id' => $args['task_id'],
             ])->whereDate('created_at', Carbon::today())->first();
-            $usertask->status   = 3;
+            $usertask->status = 3;
             $usertask->progress = 1;
-            $usertask->content  = $task->details . '以完成';
+            $usertask->content = $task->details . '已完成';
             if (empty($usertask->completed_at)) {
                 $usertask->completed_at = Carbon::now();
             }
-
             $usertask->save();
+
+            //更新总任务状态与进度
+            $drink_water_tasks = Task::where('name', "DrinkWater")->get();
+            $tasks_ids = $drink_water_tasks->pluck('id')->toArray();
+
+            $usertaskBuilder = UserTask::whereIn('task_id', $tasks_ids)
+                ->where('user_id', $user->id)
+                ->whereDate('created_at', Carbon::today());
+            //处理最后完成时间
+            $not_complete = $usertaskBuilder->whereNull('completed_at')->count();
+
+            $usertaskBuilder = UserTask::whereIn('task_id', $tasks_ids)
+                ->where('user_id', $user->id)
+                ->whereDate('created_at', Carbon::today());
+
+            //更新完成时间
+            $task_all_completed_at = null;
+            if (!$not_complete) {
+                $completed_usertasks = $usertaskBuilder->orderBy('completed_at', 'desc')->first();
+                $task_all_completed_at = $completed_usertasks->completed_at;
+            }
+
+            $task_all = Task::where('name', 'DrinkWaterAll')->first();
+            $usertask_all = $task_all->getUserTask($user->id);
+
+            $content = '未完成';
+            $status = 0;
+            $avg_progress = $usertaskBuilder->avg('progress');
+            if ($avg_progress == 1) {
+                $status = 2;
+                $content = sprintf('%s已完成。未领取任务奖励', $usertask_all->details);
+            }
+
+            $usertask_all->update([
+                'content' => $content,
+                'status' => $status,
+                'progress' => $avg_progress,
+                'completed_at' => $task_all_completed_at,
+            ]);
+
+            $doneCount = 8 - $not_complete; //完成的次数
+
+            //TODO: 单次喝水打卡或者补卡成功, 更新次数到工厂
+            AppTask::countHeshuiTaskDone($user, $doneCount);
         }
-
-        //更新总任务状态与进度
-        $drink_water_tasks = Task::where('name', "DrinkWater")->get();
-
-        $tasks_ids = $drink_water_tasks->pluck('id')->toArray();
-
-        $usertaskBuilder = UserTask::whereIn('task_id', $tasks_ids)
-            ->where('user_id', $user->id)
-            ->whereDate('created_at', Carbon::today());
-        //处理最后完成时间
-        $not_complete = $usertaskBuilder->whereNull('completed_at')->count();
-
-        $usertaskBuilder = UserTask::whereIn('task_id', $tasks_ids)
-            ->where('user_id', $user->id)
-            ->whereDate('created_at', Carbon::today());
-
-        //更新完成时间
-        $task_all_completed_at = null;
-        if (!$not_complete) {
-            $completed_usertasks   = $usertaskBuilder->orderBy('completed_at', 'desc')->first();
-            $task_all_completed_at = $completed_usertasks->completed_at;
-        }
-
-        $task_all     = Task::where('name', 'DrinkWaterAll')->first();
-        $usertask_all = $task_all->getUserTask($user->id);
-
-        $content      = '未完成';
-        $status       = 0;
-        $avg_progress = $usertaskBuilder->avg('progress');
-        if ($avg_progress == 1) {
-            $status  = 2;
-            $content = sprintf('%s以完成。未领取任务奖励', $usertask_all->details);
-        }
-
-        $usertask_all->update([
-            'content'      => $content,
-            'status'       => $status,
-            'progress'     => $avg_progress,
-            'completed_at' => $task_all_completed_at,
-        ]);
 
         return $drink_water_tasks;
     }
 
+    //获取喝水打开任务列表
     public function resolveDrinkWaterTasks($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $user  = getUser();
+        $user = getUser();
         $tasks = Task::Where('name', "DrinkWater")->get();
 
         foreach ($tasks as $task) {
@@ -95,26 +99,31 @@ trait TaskResolvers
         return $tasks;
     }
 
+    //所有喝水完成后的奖励
     public function resolveDrinkWaterReward($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $task      = Task::where('name', 'DrinkWaterAll')->first();
-        $user      = getUser();
-        $user_task = $task->getUserTask($user->id);
+        //总喝水任务卡
+        $taskDrinkAll = Task::where('name', 'DrinkWaterAll')->first();
+        $user = getUser();
+        $user_task = $taskDrinkAll->getUserTask($user->id);
 
-        if ($task->task_status == UserTask::TASK_DONE) {
+        if ($taskDrinkAll->task_status == UserTask::TASK_DONE) {
             throw new GQLException('奖励已经领取');
         }
 
-        if ($task->task_status == UserTask::TASK_REACH) {
+        if ($taskDrinkAll->task_status == UserTask::TASK_REACH) {
             //更新任务状态
-            $user_task->status  = 3;
-            $user_task->content = sprintf('%s完成。奖励:', $task->details) . $task->getTaskContent();
+            $user_task->status = 3;
+            $user_task->content = sprintf('%s完成。奖励:', $taskDrinkAll->details) . $taskDrinkAll->getTaskContent();
             $user_task->save();
 
             //金币奖励
-            $remark     = sprintf('%s任务奖励', $task->details);
-            $rewardGold = $task->reward["gold"];
+            $remark = sprintf('%s任务奖励', $taskDrinkAll->details);
+            $rewardGold = $taskDrinkAll->reward["gold"];
             $user->goldWallet->changeGold($rewardGold, $remark);
+
+            //TODO: 需要奖励8*2=16贡献
+
         } else {
             throw new GQLException('任务还未完成');
         }
@@ -127,19 +136,19 @@ trait TaskResolvers
 
         $user = getUser();
 
-        $now   = now();
+        $now = now();
         $today = today()->startOfDay()->addHours(12);
-        $name  = 'SleepMorning';
+        $name = 'SleepMorning';
         if ($now->greaterThan($today)) {
             $name = 'SleepNight';
         } else {
             $name = 'SleepMorning';
         }
 
-        $task      = Task::where('name', $name)->first();
+        $task = Task::where('name', $name)->first();
         $user_task = UserTask::createUserTask($task->id, $user->id, now());
         $user_task = UserTask::createUserTask($task->id, $user->id, now());
-        $status    = 1;
+        $status = 1;
 
         $user_task->status = $status;
         $user_task->save();
@@ -148,12 +157,12 @@ trait TaskResolvers
 
     public function resolveSleepReward($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $task_id   = $args['task_id'];
-        $user      = getUser();
-        $task      = Task::where('id', $task_id)->first();
+        $task_id = $args['task_id'];
+        $user = getUser();
+        $task = Task::where('id', $task_id)->first();
         $user_task = $task->getUserTask($user->id);
-        $minutes   = $task->resolve['minutes'] ?? 15;
-        $seconds   = $minutes * 60;
+        $minutes = $task->resolve['minutes'] ?? 15;
+        $seconds = $minutes * 60;
 
         if (empty($user_task->completed_at)) {
             $user_task->completed_at = now();
@@ -173,10 +182,10 @@ trait TaskResolvers
             }
         }
 
-        $task                    = $user_task->task;
-        $user_task->status       = 3;
+        $task = $user_task->task;
+        $user_task->status = 3;
         $user_task->completed_at = now();
-        $name                    = "睡觉卡";
+        $name = "睡觉卡";
         if ($task->name == "SleepMorning") {
             $name = "起床卡";
         }
@@ -188,12 +197,17 @@ trait TaskResolvers
         $reward = $task->reward_info;
 
         $user_task->processReward($task->reward_info);
+
+        //TODO: 更新睡觉次数到工厂里
+        $countOfSleep = rand(1, 2); // TODO: 是睡叫还是起床  1or 2 ? 以后重构了再说吧...
+        AppTask::countShuijiaoTaskDone($user, $countOfSleep);
+
         return $user_task;
     }
 
     public function resolveTasks($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $type      = $args['type'];
+        $type = $args['type'];
         $taskQuery = Task::where('status', Task::ENABLE)->where('type', '!=', Task::TIME_TASK);
         if ($type != 'All') {
             $taskQuery = $taskQuery->where('type', $type);

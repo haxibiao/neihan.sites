@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dongdezhuan;
+namespace App\DDZ;
 
 use App\Exceptions\GQLException;
 use Illuminate\Database\Eloquent\Model;
@@ -36,27 +36,27 @@ class Wallet extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(\App\Dongdezhuan\User::class);
+        return $this->belongsTo(\App\DDZ\User::class);
     }
 
     public function withdraws(): HasMany
     {
-        return $this->hasMany(\App\Dongdezhuan\Withdraw::class);
+        return $this->hasMany(\App\DDZ\Withdraw::class);
     }
 
     public function transactions():HasMany
     {
-        return $this->hasMany(\App\Dongdezhuan\Transaction::class);
+        return $this->hasMany(\App\DDZ\Transaction::class);
     }
 
     public function golds():HasMany
     {
-        return $this->hasMany(\App\Dongdezhuan\Gold::class);
+        return $this->hasMany(\App\DDZ\Gold::class);
     }
 
 
     //repo
-    public static function rmbWalletOf(\App\Dongdezhuan\User $user): \App\Dongdezhuan\Wallet
+    public static function rmbWalletOf(\App\DDZ\User $user): \App\DDZ\Wallet
     {
         $wallet = self::firstOrCreate([
             'user_id' => $user->id,
@@ -65,7 +65,7 @@ class Wallet extends Model
         return $wallet;
     }
 
-    public static function goldWalletOf(\App\Dongdezhuan\User $user): \App\Dongdezhuan\Wallet
+    public static function goldWalletOf(\App\DDZ\User $user): \App\DDZ\Wallet
     {
         $wallet = self::firstOrCreate([
             'user_id' => $user->id,
@@ -80,7 +80,7 @@ class Wallet extends Model
             throw new GQLException('余额不足');
         }
 
-        $withdraw = \App\Dongdezhuan\Withdraw::create([
+        $withdraw = \App\DDZ\Withdraw::create([
             'wallet_id'  => $this->id,
             'amount'     => $amount,
             'to_account' => $this->pay_account,

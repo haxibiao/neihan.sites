@@ -2,7 +2,7 @@
 
 namespace App\Nova\Actions;
 
-use App\Dongdezhuan\App;
+use App\DDZ\App;
 use App\OAuth;
 use App\User;
 use Illuminate\Bus\Queueable;
@@ -32,6 +32,7 @@ class BindDongdezhuanAccount extends Action
      * @param \Illuminate\Support\Collection $models
      * @return mixed
      * @throws \Exception
+     * @throws \Throwable
      */
     public function handle(ActionFields $fields, Collection $models)
     {
@@ -41,7 +42,7 @@ class BindDongdezhuanAccount extends Action
 
         $app = App::whereName(config('app.name_cn'))->first();
         $user = \App\User::find($models->first()->id);
-        $ddzUser = \App\Dongdezhuan\User::where('phone',$fields->ddz_account)->first();
+        $ddzUser = \App\DDZ\User::where('phone',$fields->ddz_account)->first();
 
         if ($ddzUser === null){
             return Action::danger('懂得赚内此手机号不存在,请检查是否输入正确');
@@ -56,18 +57,18 @@ class BindDongdezhuanAccount extends Action
             \DB::beginTransaction();
 
             if ($user->checkUserIsBindDongdezhuan()){
-                \App\Dongdezhuan\UserApp::whereUserId($ddzUser->id)->where('app_id',$app->id)->delete();
+                \App\DDZ\UserApp::whereUserId($ddzUser->id)->where('app_id',$app->id)->delete();
                 \App\OAuth::whereUserId($user->id)->where('oauth_type','dongdezhuan')->delete();
             }
 
             \App\OAuth::where('oauth_type', 'dongdezhuan')->where('oauth_id', $ddzUser->id)->delete();
 
             if ($ddzUser->apps()->where('app_id',$app->id)->first() !== null){
-                \App\Dongdezhuan\UserApp::whereUserId($ddzUser->id)->where('app_id',$app->id)->delete();
+                \App\DDZ\UserApp::whereUserId($ddzUser->id)->where('app_id',$app->id)->delete();
             }
 
 //            3.绑定
-            $user->bindDongdezhuanUser($user,$ddzUser);
+            $user->bingDDZ();
 
             \DB::commit();
         }catch (\Exception $exception){

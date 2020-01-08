@@ -394,15 +394,19 @@ trait UserAttrs
 
     public function getDongdezhuanUserAttribute()
     {
-        //        如果绑定过了
-        if ($this->checkUserIsBindDongdezhuan()) {
-            return $this->getDongdezhuanUser();
-        }
-        return null;
+        return $this->getDongdezhuanUser();
     }
 
     public function getForceAlertAttribute()
     {
         return $this->isWithdrawBefore();
+    }
+
+    public function getTitlePhoneAttribute()
+    {
+        if ($this->phone !== null){
+            return substr_replace($this->phone,'****',3,4);
+        }
+        return null;
     }
 }
