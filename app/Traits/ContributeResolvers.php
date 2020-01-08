@@ -23,16 +23,16 @@ trait ContributeResolvers
         if ($user = checkUser()) {
 //            今日draw广告点击次数
             $count = self::getToDayCountByTypeAndId(self::DRAW_AD_CONTRIBUTED_TYPE, self::DRAW_AD_CONTRIBUTED_ID, $user);
-            if ($count <= self::MAX_REWARD_CLICK_TIMES) {
+            if ($count <= self::MAX_DRAW_CLICK) {
                 $contribute = self::rewardUserContribute($user->id, self::DRAW_AD_CONTRIBUTED_ID, self::REWARD_DRAW_AMOUNT,
                     self::DRAW_AD_CONTRIBUTED_TYPE, "刷视频奖励");
-                $contribute->message = '看广告奖励' . $contribute->amount . '点贡献,谢谢您的支持！~';
+                $contribute->message = '恭喜，获得' . $contribute->amount . '点贡献';
                 return $contribute;
             }
 //          兼容旧版本
             $contribute          = new Contribute();
             $contribute->amount  = 0;
-            $contribute->message = '今天已查看' . self::MAX_REWARD_CLICK_TIMES . '次推荐,更多贡献值,在任务里的看视频赚钱...';
+            $contribute->message = '您已超过正常下载行为...';
             return $contribute;
         }
 
@@ -127,17 +127,16 @@ trait ContributeResolvers
     public function clickFeedAD2($rootValue, array $args, $context, $resolveInfo)
     {
         if ($user = checkUser()) {
-            if (Contribute::getToDayCountByTypeAndId(self::AD_FEED_CONTRIBUTED_TYPE, self::AD_FEED_CONTRIBUTED_ID, $user) <= 10) {
+            if (Contribute::getToDayCountByTypeAndId(self::AD_FEED_CONTRIBUTED_TYPE, self::AD_FEED_CONTRIBUTED_ID, $user) <= self::MAX_FEED_CLICK) {
                 $contribute = Contribute::rewardUserContribute($user->id, self::AD_FEED_CONTRIBUTED_ID, self::AD_AMOUNT,
                     self::AD_FEED_CONTRIBUTED_TYPE, "发现页广告奖励");
-                $contribute->message = '看广告奖励' . $contribute->amount . '点贡献,谢谢您的支持！~';
+                $contribute->message = '您刚获得' . $contribute->amount . '点贡献';
                 return $contribute;
             }
             //          兼容旧版本
-
             $contribute          = new Contribute();
             $contribute->amount  = 0;
-            $contribute->message = '今天已经看了10次发现页面上广告了哦~,快去尝试一下看视频广告吧,记得点击详情,奖励更加丰厚！~';
+            $contribute->message = '您已超过正常下载行为...';
             return $contribute;
         }
 

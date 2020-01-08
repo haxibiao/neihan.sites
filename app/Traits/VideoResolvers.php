@@ -85,11 +85,11 @@ trait VideoResolvers
 
     public function queryDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        return '增加贡献的场景：
-1.做喝水和睡觉任务，随机获得(+2贡献)
-2.看激励视频任务(每日限90次)得(+2贡献)
-3.刷视频时，查看视频广告得(+2贡献)
-4.动态广场，查看广告动态得(+1贡献)
+        return '增加贡献的场景:
+1.奖励任务看视频赚钱,获得(+2*N贡献)
+2.日常任务和奖励任务,获得(+2*N贡献)
+3.刷视频时,查看广告视频得(+2*N贡献)
+4.动态广场,查看广告动态得(+1*N贡献)
 5.分享/评论/点赞/发布视频也+贡献';
     }
 }

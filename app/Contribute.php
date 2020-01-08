@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Profile;
-use App\Traits\ContributeConst;
 use App\Traits\ContributeRepo;
 use App\Traits\ContributeResolvers;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +11,50 @@ class Contribute extends Model
 {
 
     use ContributeResolvers, ContributeRepo;
+
+    // 发布有奖问答奖励贡献点汇率
+    const ISSUE_CONVERSION_RATE = 10;
+
+    // 提现金额与贡献值的汇率
+    const WITHDRAW_DATE = 60;
+
+    // 采纳问答奖励贡献点
+    const REWARD_RESOLUTION_AMOUNT = 1;
+
+    // 发布视频动态奖励贡献点
+    const REWARD_VIDEO_POST_AMOUNT = 2;
+
+    // DRAW 广告 morph 值
+    const DRAW_AD_CONTRIBUTED_ID   = 1;
+    const DRAW_AD_CONTRIBUTED_TYPE = 'AD';
+
+    // FEED 广告 morph 值
+    const AD_FEED_CONTRIBUTED_ID   = 3;
+    const AD_FEED_CONTRIBUTED_TYPE = 'AD_FEED';
+
+    // 激励视频 广告 morph 值
+    const REWARD_VIDEO_CONTRIBUTED_ID   = 2;
+    const REWARD_VIDEO_CONTRIBUTED_TYPE = 'AD_VIDEO';
+
+    // 点广告奖励值
+    const AD_AMOUNT = 1;
+
+    // 看激励视频奖励值
+    const AD_VIDEO_AMOUNT = 2;
+
+    // 点赞奖励值
+    const LIKED_AMOUNT = 1;
+
+    // 评论奖励值
+    const COMMENTED_AMOUNT = 1;
+
+    // 视频刷点击广告奖励贡献值
+    const REWARD_DRAW_AMOUNT = 2;
+
+    // 最大draw点击次数
+    const MAX_DRAW_CLICK = 5;
+    // 最大feed点击次数
+    const MAX_FEED_CLICK = 5;
 
     protected $guarded  = [];
     protected $fillable = [
@@ -113,48 +156,4 @@ class Contribute extends Model
     {
         return Contribute::where('id', '<', $this->id)->where('user_id', $this->user_id)->sum('amount');
     }
-
-
-
-    // 发布有奖问答奖励贡献点汇率
-    const ISSUE_CONVERSION_RATE = 10;
-
-    // 提现金额与贡献值的汇率
-    const WITHDRAW_DATE = 60;
-
-    // 采纳问答奖励贡献点
-    const REWARD_RESOLUTION_AMOUNT = 1;
-
-    // 发布视频动态奖励贡献点
-    const REWARD_VIDEO_POST_AMOUNT = 2;
-
-    // DRAW 广告 morph 值
-    const DRAW_AD_CONTRIBUTED_ID   = 1;
-    const DRAW_AD_CONTRIBUTED_TYPE = 'AD';
-
-    // FEED 广告 morph 值
-    const AD_FEED_CONTRIBUTED_ID   = 3;
-    const AD_FEED_CONTRIBUTED_TYPE = 'AD_FEED';
-
-    // 激励视频 广告 morph 值
-    const REWARD_VIDEO_CONTRIBUTED_ID   = 2;
-    const REWARD_VIDEO_CONTRIBUTED_TYPE = 'AD_VIDEO';
-
-    // 点广告奖励值
-    const AD_AMOUNT = 1;
-
-    // 看激励视频奖励值
-    const AD_VIDEO_AMOUNT = 2;
-
-    // 点赞奖励值
-    const LIKED_AMOUNT = 1;
-
-    // 评论奖励值
-    const COMMENTED_AMOUNT = 1;
-
-    // 视频刷点击广告奖励贡献值
-    const REWARD_DRAW_AMOUNT = 2;
-
-    //最大点击刷的广告奖励贡献次数
-    const MAX_REWARD_CLICK_TIMES = 30;
 }
