@@ -59,7 +59,7 @@ class User extends Resource
             Text::make('名字', 'name')
                 ->sortable()
                 ->rules('required', 'max:255'),
-            Text::make('最近使用版本', 'profile.app_version')->sortable(),
+            Text::make('最近使用版本', 'profile.app_version')->sortable()->hideWhenUpdating(),
             Select::make('性别', 'gender')->options([
                 AppUser::MALE_GENDER   => '男',
                 AppUser::FEMALE_GENDER => '女',
@@ -74,19 +74,19 @@ class User extends Resource
 
             Text::make('发布内容数', function () {
                 return $this->allArticles()->count();
-            }),
+            })->hideWhenUpdating(),
 
-            hasMany::make('钱包', 'wallets', Wallet::class),
+            hasMany::make('钱包', 'wallets', Wallet::class)->hideWhenUpdating(),
 
-            Number::make('智慧点', 'gold')->exceptOnForms(),
+            Number::make('智慧点', 'gold')->exceptOnForms()->hideWhenUpdating(),
             Text::make('账户', 'account'),
             Text::make('uuid', 'uuid')->hideFromIndex(),
-            Text::make('api_token', 'api_token')->hideFromIndex(),
+            Text::make('api_token', 'api_token')->hideFromIndex()->hideWhenUpdating(),
             Text::make('手机号', 'phone'),
             Text::make('邮件地址', 'email'),
 
-            DateTime::make('创建时间', 'created_at'),
-            DateTime::make('最后登录时间', 'updated_at'),
+            DateTime::make('创建时间', 'created_at')->hideWhenUpdating(),
+            DateTime::make('最后登录时间', 'updated_at')->hideWhenUpdating(),
 
             Select::make('状态', 'status')->options([
                 AppUser::STATUS_ONLINE  => '上线',

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 
 class Aso extends Resource
 {
@@ -36,7 +37,10 @@ class Aso extends Resource
             ID::make()->sortable(),
             Text::make('组', 'group'),
             Text::make('名称', 'name'),
-            Text::make('值', 'value'),
+            Text::make('值', function () {
+                return strlen($this->value) > 50 ? mb_substr($this->value, 0, 50) . '...' : $this->value;
+            })->onlyOnIndex()->hideWhenUpdating(),
+            Textarea::make('值', 'value')->alwaysShow(),
 
             File::make('图片1', 'value')->store(
                 function (Request $request, $model) {
