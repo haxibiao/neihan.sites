@@ -77,4 +77,18 @@ class ImageController extends Controller
         return $result;
 
     }
+
+    public function upload(Request $request){
+        $image = new Image();
+        $image = $image->saveImage($request->photo);
+        //给simditor编辑器返回上传图片结果...
+        if ($request->get('from') == 'simditor') {
+            $json = (object) [];
+            $json->success = true;
+            $json->msg = '图片上传成功';
+            $json->file_path = $image->url;
+            return json_encode($json);
+        }
+        return $image->url;
+    }
 }

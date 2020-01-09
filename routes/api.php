@@ -51,6 +51,8 @@
     require_once 'api/search.php';
     require_once 'api/video.php';
 //}
+Route::post('/image/upload', 'Api\ImageController@upload');
+
 
 //返回URL二维码
 Route::get('/share/qrcode/{url}', 'SharingController@qrcode');
@@ -74,6 +76,7 @@ Route::middleware('auth:api')->post('/image/save', 'Api\ImageController@store');
 
 Route::post('/article/resolverDouyin', 'Api\ArticleController@resolverDouyinVideo');
 Route::post('/media/import', 'Api\SpiderController@importDouyinSpider');
+Route::any('/media/hook', 'Api\SpiderController@hook');
 
 Route::namespace ('Api')->middleware('auth:api')->group(function () {
     Route::post('/background', 'UserController@saveBackground');

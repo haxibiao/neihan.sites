@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Article;
 use App\Category;
+use App\Http\Controllers\Controller;
 use App\User;
 use App\Video;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -15,22 +16,22 @@ use Illuminate\Support\Str;
 
 class SpiderController extends Controller
 {
-    public function importDouyinSpider(Request $request){
-        try{
-            $video_url      = $request->video_url;
-            $account        = $request->account;
-            $metaInfo       = $request->description;
+    public function importDouyinSpider(Request $request)
+    {
+        try {
+            $video_url = $request->video_url;
+            $account   = $request->account;
+            $metaInfo  = $request->description;
 
-            $description = Str::replaceFirst('#在抖音，记录美好生活#','',$metaInfo);
-            if(Str::contains($description,'#')){
-                $description = Str::before($description,'#');
+            $description = Str::replaceFirst('#在抖音，记录美好生活#', '', $metaInfo);
+            if (Str::contains($description, '#')) {
+                $description = Str::before($description, '#');
             } else {
-                $description = Str::before($description,'http');
+                $description = Str::before($description, 'http');
             }
 
-
-            $user = User::where('account',$account)
-                ->orWhere('email',$account)
+            $user = User::where('account', $account)
+                ->orWhere('email', $account)
                 ->firstOrFail();
             Auth::login($user);
             $hash  = md5_file($video_url);
@@ -39,13 +40,12 @@ class SpiderController extends Controller
             ]);
             $video->setJsonData('metaInfo', $metaInfo);
             $video->user_id = $user->id;
-            $video->title = $description;
-            $video->save();//不触发事件通知
-
+            $video->title   = $description;
+            $video->save(); //不触发事件通知
 
             //本地存一份用于截图
             $cosPath     = 'video/' . $video->id . '.mp4';
-            $video->path  = $cosPath;
+            $video->path = $cosPath;
             Storage::disk('public')->put($cosPath, @file_get_contents($video_url));
             $video->disk = 'local'; //先标记为成功保存到本地
             $video->save();
@@ -58,12 +58,12 @@ class SpiderController extends Controller
 
             //TODO 分类关系
             $category = Category::firstOrNew([
-                'name' => '我要上热门'
+                'name' => '我要上热门',
             ]);
-            if(!$category->id){
-                $category->name_en  = 'douyin';
-                $category->status   = 1;
-                $category->user_id  = 1;
+            if (!$category->id) {
+                $category->name_en = 'douyin';
+                $category->status  = 1;
+                $category->user_id = 1;
                 $category->save();
             }
 
@@ -83,7 +83,23 @@ class SpiderController extends Controller
 
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            abort(500,$e->getMessage());
+            abort(500, $e->getMessage());
+        }
+    }
+
+    public function hook(Request $request)
+    {
+        $sourceUrl = $request->get('source_url');
+        $data      = $request->get('data');
+        if (!empty($sourceUrl)) {
+            $article = Article::where('source_url', $sourceUrl)
+                ->where('submit', Article::REVIEW_SUBMIT)
+                ->first();
+            $video = Arr::get($data, 'video');
+            if (!is_null($article) && is_array($video)) {
+                $article->processSpider($data);
+            }
+
         }
     }
 }

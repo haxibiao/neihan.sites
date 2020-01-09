@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Version;
 use Closure;
 
 class GQLGuard
@@ -17,9 +18,11 @@ class GQLGuard
     {
         $user = checkUser();
         if($user){
-            $profile = $user->profile;
-            $profile->app_version  = request()->header('version', null);
-            $profile->save(['timestamps' => false]);
+            if ($version = request()->header('version', null)) {
+                $user->getProfileAttribute()->update([
+                    'app_version' => $version,
+                ]);
+            }
         }
         return $next($request);
     }
