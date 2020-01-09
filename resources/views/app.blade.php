@@ -105,20 +105,22 @@
   </div>
 @endpush
 @push('scripts')
-<script type="text/javascript">
-    function download_btn(){
-        
-        var ua = navigator.userAgent.toLowerCase();
-        if(ua.match(/MicroMessenger\/[0-9]/i )||ua.match(/QQ\/[0-9]/i) ){
-            
-            document.getElementById("mask").style.display="inline";
-
-        } else {			
-          window.location.href="{{ getDownloadUrl() }}";
-        }
+  <script type="text/javascript">
+    if(checkIsTenCent()){
+      document.getElementById("mask").style.display="inline";
     }
-
-</script>
+    function download_btn(){
+      if(checkIsTenCent()){
+        document.getElementById("mask").style.display="inline";
+      } else {
+        window.location.href="{{ getDownloadUrl() }}";
+      }
+    }
+    function checkIsTenCent(){
+      var ua = navigator.userAgent.toLowerCase();
+      return !!(ua.match(/MicroMessenger\/[0-9]/i) || ua.match(/QQ\/[0-9]/i));
+    }
+  </script>
 @endpush
 
 

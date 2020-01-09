@@ -1,7 +1,7 @@
 @if(Auth::check())
-	@include('parts.header_user')
+    @include('parts.header_user')
 @else
-	@include('parts.header_guest')
+    @include('parts.header_guest')
 @endif
 
 @push('scripts')
