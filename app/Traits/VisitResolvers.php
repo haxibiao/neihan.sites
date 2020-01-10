@@ -30,7 +30,7 @@ trait VisitResolvers
         }
     }
 
-    public function create($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    public function resolvecreatevisit($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         return Visit::firstOrCreate([
             'user_id'      => $args['user_id'],

@@ -5,6 +5,7 @@ type Task {
   details: String
   type: Int
   icon: String
+  background_img: String
   status: Int
   task_progress: Float
   progress_details: String

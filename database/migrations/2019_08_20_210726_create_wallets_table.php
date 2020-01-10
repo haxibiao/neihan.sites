@@ -28,7 +28,7 @@ class CreateWalletsTable extends Migration
 
             $table->json('pay_infos')->nullable()->comment('提现信息');
             //TODO：冗余字段，drop,用属性算
-            $table->unsignedInteger('total_withdraw_amount')->default(0)->comment('提现总额');
+            $table->decimal('total_withdraw_amount')->default(0)->comment('提现总额');
 
             $table->string('wechat_account')->default("")->comment('微信OPENID');
 

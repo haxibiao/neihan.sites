@@ -44,89 +44,89 @@ class TaskSeeder extends Seeder
         //     'icon' => 'https://dongdezhuan-1254284941.cos.ap-guangzhou.myqcloud.com/taskImages/bindPhoneNumber.png'
         // ]);
 
-        Task::where('name', 'SleepMorning')->first()->update([
-            'reward' => array("gold" => "15", 'contribute' => '1'),
-        ]);
+        // Task::where('name', 'SleepMorning')->first()->update([
+        //     'reward' => array("gold" => "15", 'contribute' => '1'),
+        // ]);
 
-        Task::where('name', 'like', '%睡觉赚钱%')->first()->update([
-            'reward' => array("gold" => "15", 'contribute' => '1'),
-        ]);
-//
-        //        Task::firstOrCreate([
-        //            'name'     => 'DrinkWater',
-        //            'status'   => Task::ENABLE,
-        //            'details'  => '喝水赚钱10:00-11:00打卡',
-        //            'type'     => Task::TIME_TASK,
-        //            'start_at' => '2019-12-01 10:00:00',
-        //            'end_at'   => '2019-12-01 11:00:00',
-        //            'reward'   => null,
-        //        ]);
+        // Task::where('name', 'like', '%睡觉赚钱%')->first()->update([
+        //     'reward' => array("gold" => "15", 'contribute' => '1'),
+        // ]);
+
+        // $DrinkWater_all = Task::where('name', '喝水赚钱')->first();
+        // $DrinkWater_all->update([
+        //     'resolve' => array('method' => 'drinkWater', 'router' => 'GoDrinkWater', 'task_en' => 'DrinkWaterAll', 'limit' => 8),
+        // ]);
         //
-        //        Task::firstOrCreate([
-        //            'name'     => 'DrinkWater',
-        //            'status'   => Task::ENABLE,
-        //            'details'  => '喝水赚钱11:00-12:00打卡',
-        //            'type'     => Task::TIME_TASK,
-        //            'start_at' => '2019-12-01 11:00:00',
-        //            'end_at'   => '2019-12-01 12:00:00',
-        //            'reward'   => null,
-        //        ]);
-        //        Task::firstOrCreate([
-        //            'name'     => 'DrinkWater',
-        //            'status'   => Task::ENABLE,
-        //            'details'  => '喝水赚钱12:00-13:00打卡',
-        //            'type'     => Task::TIME_TASK,
-        //            'start_at' => '2019-12-01 12:00:00',
-        //            'end_at'   => '2019-12-01 13:00:00',
-        //            'reward'   => null,
-        //        ]);
-        //        Task::firstOrCreate([
-        //            'name'     => 'DrinkWater',
-        //            'status'   => Task::ENABLE,
-        //            'details'  => '喝水赚钱13:00-14:00打卡',
-        //            'type'     => Task::TIME_TASK,
-        //            'start_at' => '2019-12-01 13:00:00',
-        //            'end_at'   => '2019-12-01 14:00:00',
-        //            'reward'   => null,
-        //        ]);
-        //
-        //        Task::firstOrCreate([
-        //            'name'     => 'DrinkWater',
-        //            'status'   => Task::ENABLE,
-        //            'details'  => '喝水赚钱14:00-15:00打卡',
-        //            'type'     => Task::TIME_TASK,
-        //            'start_at' => '2019-12-01 14:00:00',
-        //            'end_at'   => '2019-12-01 15:00:00',
-        //            'reward'   => null,
-        //        ]);
-        //
-        //        Task::firstOrCreate([
-        //            'name'     => 'DrinkWater',
-        //            'status'   => Task::ENABLE,
-        //            'details'  => '喝水赚钱15:00-16:00打卡',
-        //            'type'     => Task::TIME_TASK,
-        //            'start_at' => '2019-12-01 15:00:00',
-        //            'end_at'   => '2019-12-01 16:00:00',
-        //            'reward'   => null,
-        //        ]);
-        //
-        //        Task::firstOrCreate([
-        //            'name'     => 'DrinkWater',
-        //            'status'   => Task::ENABLE,
-        //            'details'  => '喝水赚钱16:00-17:00打卡',
-        //            'type'     => Task::TIME_TASK,
-        //            'start_at' => '2019-12-01 16:00:00',
-        //            'end_at'   => '2019-12-01 17:00:00',
-        //            'reward'   => null,
-        //        ]);
-        //
-        //        Task::firstOrCreate([
-        //            'name'    => 'DrinkWaterAll',
-        //            'status'  => Task::ENABLE,
-        //            'details' => '喝水赚钱总任务打卡',
-        //            'type'    => Task::TIME_TASK,
-        //            'reward'  => array("gold" => "100"),
-        //        ]);
+        $DrinkWaterTasks = Task::where('name', 'DrinkWater')->get();
+
+        foreach ($DrinkWaterTasks as $DrinkWaterTask) {
+            $DrinkWaterTask->update([
+                'parent_task' => 12,
+                'resolve'     => array('task_en' => 'DrinkWater', 'task_undone' => '未喝', 'task_done' => '以完成', 'task_failed' => '没开始', 'task_review' => '进行中', 'task_reach' => '以喝'),
+            ]);
+        }
+
+        // Task::where('name', '睡觉赚钱')->first()->update(
+        //     [
+        //         'type'    => 2,
+        //         'resolve' => array("method" => "sleep", "router" => "GoSleep", 'task_en' => 'SleepAll', 'limit' => 50),
+        //     ]
+        // );
+
+        Task::where('name', '应用商店好评')->first()->update(
+            [
+                'resolve' => array("method" => "toPraise", "router" => "ToPraise", 'task_en' => 'Praise'),
+            ]
+        );
+
+        // Task::where('name', '喝水赚钱')->first()->update(
+        //     [
+        //         'type' => 2,
+        //     ]
+        // );
+
+        Task::where('name', '看视频赚钱')->first()->update(
+            [
+                'type'    => 2,
+                'resolve' => array("method" => "rewardVideo", "router" => "MotivationalVideo", 'limit' => 30, 'task_en' => 'RewardVideo'),
+            ]
+        );
+
+        Task::where('name', 'SleepMorning')->first()->update(
+            [
+                'name'    => '起床',
+                'details' => '别睡了起来嗨',
+                'resolve' => array('minutes' => '15', 'task_en' => 'Wake'),
+            ]
+        );
+
+        // Task::where('name', '起床卡')->first()->update(
+        //     ['details' => '别睡了起来嗨']
+        // );
+
+        Task::where('name', 'SleepNight')->first()->update(
+            [
+                'name'    => '睡觉',
+                'reward'  => null,
+                'resolve' => array('minutes' => '15', 'task_en' => 'Sleep'),
+            ]
+        );
+
+        // Task::where('name', '睡觉卡')->first()->update(
+        //     [
+        //         'name'    => '睡觉卡',
+        //         'reward'  => null,
+        //         'resolve' => array('minutes' => '15', 'task_en' => 'Sleep'),
+        //     ]
+        // );
+
+        //    Task::firstOrCreate([
+        //        'name'    => 'DrinkWaterAll',
+        //        'status'  => Task::ENABLE,
+        //        'details' => '喝水赚钱总任务打卡',
+        //        'type'    => Task::TIME_TASK,
+        //        'reward'  => array("gold" => "100"),
+        //    ]);
         //
         //    Task::firstOrCreate([
         //        'name'     => 'SleepMorning',
@@ -150,14 +150,7 @@ class TaskSeeder extends Seeder
         //        'end_at'   => '2019-12-03 23:59:59',
         //    ]);
         //
-        //        Task::firstOrCreate([
-        //            'name'    => '喝水赚钱',
-        //            'status'  => Task::ENABLE,
-        //            'details' => '喝水赚钱',
-        //            'type'    => Task::CUSTOM_TASK,
-        //            'reward'  => array("gold" => "100"),
-        //            'resolve' => array('method' => 'drinkWater', 'router' => 'GoDrinkWater'),
-        //        ]);
+
         //
         // Task::firstOrCreate([
         //     'name'    => '睡觉赚钱',

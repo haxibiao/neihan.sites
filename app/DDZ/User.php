@@ -2,10 +2,11 @@
 
 namespace App\DDZ;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Psy\Util\Str;
+use App\DDZ\Invitation;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Model
 {
@@ -31,7 +32,6 @@ class User extends Model
         'password', 'remember_token',
     ];
 
-
     public function save(array $options = array())
     {
         parent::save($options);
@@ -39,29 +39,27 @@ class User extends Model
         //维护懂得赚的数据完整性
         Profile::firstOrCreate([
             'user_id' => $this->id,
-        ],[
-            'user_id' => $this->id,
+        ], [
+            'user_id'      => $this->id,
             'introduction' => sprintf('我是从%s来的小白,望多多指教!~', config('app.name_cn')),
         ]);
     }
 
     //repo:
-    public static function makeNewUser($uuid) {
+    public static function makeNewUser($uuid)
+    {
         $ddzUser = self::firstOrNew([
             'uuid' => $uuid,
-        ],[
-            'uuid' => $uuid,
-            'name' => self::DEFAULT_NAME,
+        ], [
+            'uuid'      => $uuid,
+            'name'      => self::DEFAULT_NAME,
             'api_token' => \Illuminate\Support\Str::random(60),
-            'avatar' => self::AVATAR_DEFAULT,
+            'avatar'    => self::AVATAR_DEFAULT,
         ]);
         $ddzUser->save();
         UserApp::bind($ddzUser->id);
         return $ddzUser;
     }
-
-
-
 
     public function appTasks(): HasMany
     {
@@ -130,6 +128,14 @@ class User extends Model
         }
 //        懂得赚 filesystem cdn url
         return 'http://cos-dongdezhuan.dianmoge.com/' . $this->avatar;
+    }
+
+    public function getMyInviterAttribute()
+    {
+        $invitation = Invitation::where('be_inviter_id', $this->id)->first();
+        if (!is_null($invitation)) {
+            return $invitation->user;
+        }
     }
 
 }

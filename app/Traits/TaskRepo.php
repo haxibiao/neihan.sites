@@ -9,12 +9,18 @@ use App\Task;
 use App\User;
 use App\UserTask;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 
 trait TaskRepo
 {
     public function isDailyTask()
     {
         return $this->type == self::DAILY_TASK;
+    }
+
+    public function isTimeTask()
+    {
+        return $this->type == self::TIME_TASK;
     }
 
     public function getDailyStartTime()
@@ -42,46 +48,91 @@ trait TaskRepo
         return $end_date_day;
     }
 
-    public function getTaskContent()
+    public function getTaskContent($reward_rate = 1)
     {
 
-        // $content         = sprintf('<%s>以完成。任务奖励:', $usertask_all->details);
         $usertask_reward = $this->reward_info;
         if (empty($usertask_reward)) {
-            return '无';
+            return sprintf('%s完成。', $this->name);
         }
         $reward_content = '';
         if (array_get($usertask_reward, "gold")) {
-            $reward_content = sprintf(" 金币+%s", array_get($usertask_reward, "gold"));
+            $reward_content = sprintf(" 金币+%s", array_get($usertask_reward, "gold") * $reward_rate);
 
         }
 
         if (array_get($usertask_reward, "contribute")) {
-            $reward_content = $reward_content . sprintf(" 贡献值+%s", array_get($usertask_reward, "contribute"));
+            $reward_content = $reward_content . sprintf(" 贡献值+%s", array_get($usertask_reward, "contribute") * $reward_rate);
         }
 
-        return $reward_content;
+        //TODO 更新掉名字,用中文
+        if ($this->name == "SleepMorning") {
+            $name = "起床卡";
+        }
+        if ($this->name == "SleepNight") {
+            $name = "睡觉卡";
+        }
+
+        $reward_info = sprintf('%s完成。奖励:', $this->name);
+
+        if ($reward_rate > 1) {
+            $reward_info = sprintf('%s完成。' . $reward_rate . '倍奖励:', $this->name);
+        }
+
+        return $reward_info . $reward_content;
     }
 
-    public function getUserTask($user_id, $date = null)
+    //获取所有子任务的queryBuild
+    public function getchildrenBuild($user_id)
+    {
+        $childrenTasks_id = $this->childrenTasks()->pluck('id')->toArray();
+
+        $childrenTasksBuild = UserTask::where('user_id', $user_id)->whereIn('task_id', $childrenTasks_id);
+        if ($childrenTasksBuild->get()) {
+            $firstchilderentask = $childrenTasksBuild->first()->task;
+            if ($firstchilderentask->type == self::TIME_TASK) {
+                $childrenTasksBuildClone = $childrenTasksBuild->whereDate('updated_at', today());
+            }
+        }
+        return $childrenTasksBuildClone;
+    }
+
+    public function getUserTask($user_id, $chilren = false)
     {
         $userTaskBuild = UserTask::where(['task_id' => $this->id, 'user_id' => $user_id]);
-
-        $default_date = Carbon::today();
-        if (!empty($date)) {
-            $default_date = $date;
+        //时间任务
+        if ($this->isTimeTask() || $this->isDailyTask()) {
+            $userTaskBuild = $userTaskBuild->whereDate('updated_at', today());
         }
 
-        if ($this->type == self::TIME_TASK) {
-            $userTaskBuild = $this->getDateUserTask($userTaskBuild, $default_date);
+        //获取所有的子任务
+        if ($chilren) {
+            return $this->getchildrenBuild($user_id)->get();
         }
-
         return $userTaskBuild->first();
     }
 
-    public function getDateUserTask($userTaskBuild, $date)
+    //获取子任务的最后完成时间
+    public function getparentTaskComplete($user_id)
     {
-        return $userTaskBuild->whereDate('created_at', $date);
+        $usertaskBuilder = $this->getchildrenBuild($user_id);
+        //处理最后完成时间
+        $complete_count  = $usertaskBuilder->whereNull('completed_at')->count();
+        $usertaskBuilder = $this->getchildrenBuild($user_id);
+
+        if (!$complete_count) {
+            $completed_usertasks = $usertaskBuilder->orderBy('completed_at', 'desc')->first();
+            return $completed_usertasks->completed_at;
+        }
+
+        return null;
+    }
+
+    //获取所有子任务进度
+    public function getparentTaskProgress($user_id)
+    {
+        $usertaskBuilder = $this->getchildrenBuild($user_id);
+        return $usertaskBuilder->avg('progress');
     }
 
     /**
@@ -103,6 +154,25 @@ trait TaskRepo
         return true;
     }
 
+    //为了兼容app 2.8版本喝水赚钱
+    public function updateDrinkUserTask($user)
+    {
+        //app 2.8版本兼容喝水赚钱
+        $isDrinkWater = getAppVersion() < '2.9.0' ? Arr::get($this->resolve, 'task_en') == "DrinkWaterAll" : false;
+
+        if ($isDrinkWater) {
+            $piovt = UserTask::createUserTask($this->id, $user->id, now());
+            if ($piovt->updated_at < today()) {
+                $piovt->status       = UserTask::TASK_UNDONE;
+                $piovt->progress     = 0;
+                $piovt->completed_at = null;
+                $piovt->save();
+                //强制更新
+                $piovt->touch();
+            }
+        }
+    }
+
     /**
      * 重置状态与修改状态
      * @param User $user
@@ -115,9 +185,21 @@ trait TaskRepo
             "user_id" => $user->id,
         ]);
 
+        // if ($this->name == "喝水赚钱") {
+        //     dd($piovt);
+        // }
+
+        //为了兼容app 2.8版本喝水赚钱
+        $this->updateDrinkUserTask($user);
+
         if ($this->isDailyTask()) {
             if ($piovt->updated_at < today()) {
-                $piovt->status = UserTask::TASK_UNDONE;
+                $piovt->status       = UserTask::TASK_UNDONE;
+                $piovt->progress     = 0;
+                $piovt->completed_at = null;
+                $piovt->save();
+                //强制更新
+                $piovt->touch();
             }
         }
 
@@ -132,11 +214,11 @@ trait TaskRepo
                         \info($e->getMessage());
                     }
                     if ($taskDone) {
-                        $piovt->fill(['status' => UserTask::TASK_REACH])->save();
+                        $piovt->fill(['status' => UserTask::TASK_REACH]);
                     }
                 }
-            }
 
+            }
         }
 
         return $piovt->status;
@@ -153,7 +235,7 @@ trait TaskRepo
                 $process_reward = $pivot->processReward($task->reward_info);
                 if ($process_reward) {
                     $pivot->status  = UserTask::TASK_DONE;
-                    $pivot->content = sprintf('%s完成。奖励:', $task->details) . $task->getTaskContent();
+                    $pivot->content = $task->getTaskContent();
                     $pivot->save();
                     $task->increment('count');
                     $task->save();

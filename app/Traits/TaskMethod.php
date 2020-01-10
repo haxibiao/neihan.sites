@@ -2,7 +2,10 @@
 
 namespace App\Traits;
 
+use App\Contribute;
+use App\Task;
 use App\User;
+use App\Visit;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
@@ -32,11 +35,47 @@ trait TaskMethod
         return [checkUser()];
     }
 
+    public function drinkWaterCount($user)
+    {
+        return $this->getparentTaskProgress($user->id) * $this->resolve['limit'];
+    }
+
+    public function drinkWaterCountArgs()
+    {
+        return [checkUser()];
+    }
+
+    public function sleepCount($user)
+    {
+        $SleepTask           = Task::where('resolve->task_en', 'Wake')->first();
+        $VisitSleepTaskCount = Visit::where([
+            'user_id'      => $user->id,
+            'visited_id'   => $SleepTask->id,
+            'visited_type' => 'tasks',
+        ])->whereDate('created_at', today())->count();
+        return $VisitSleepTaskCount;
+    }
+
+    public function sleepCountArgs()
+    {
+        return [checkUser()];
+    }
+
+    public function rewardVideoCount($user)
+    {
+        return Contribute::getCountByType(Contribute::REWARD_VIDEO_CONTRIBUTED_TYPE, $user);
+    }
+
+    public function rewardVideoCountArgs()
+    {
+        return [checkUser()];
+    }
+
     public function checkUserIsUpdateAvatar(): bool
     {
 
-        $user             = $this->getCurrentUser();
-        if(Str::contains($user->avatar,'storage/avatar/avatar')){
+        $user = $this->getCurrentUser();
+        if (Str::contains($user->avatar, 'storage/avatar/avatar')) {
             return false;
         }
 
@@ -62,7 +101,6 @@ trait TaskMethod
         }
         return true;
     }
-
 
     public function getCurrentUser(): User
     {

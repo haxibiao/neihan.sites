@@ -4,18 +4,56 @@ namespace App\Traits;
 
 use App\Contribute;
 use App\DDZ\UserApp;
+use App\Jobs\ReportUserEarningsToDDZ;
 use App\OAuth;
 use App\Profile;
 use App\User;
 use App\Wallet;
 use App\Withdraw;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 trait UserRepo
 {
+    /**
+     *
+     * 上报收益数据到懂得赚
+     *
+     * @param float|null $availableWithdraws  可提现额
+     * @param float|null $successfulWithdraws 成功提现额
+     *
+     */
+    public function reportUserEarningsToDDZ(float $availableWithdraws = null,float $successfulWithdraws=null){
+        try{
+            $ddzId = $this->getDongdezhuanUserId();
+
+            //未绑定懂得赚账号
+            if( $ddzId==0 ) {
+                return;
+            }
+
+            $prefix = is_prod_env() ? 'gql.' : 'develop.';
+            $endPoint  = sprintf('http://%sdongdezhuan.com/api/', $prefix);
+
+            //更新冗余数据
+            (new Client(['base_uri' => $endPoint]))->request('POST', 'user/appWithdrawDetail', [
+                'http_errors' => false,
+                'form_params' => [
+                    'app'         => config('app.name_cn'),
+                    'user_id'     => $ddzId,
+                    'successful_withdraws'  => $successfulWithdraws,
+                    'avaliable_withdraws'   => $availableWithdraws,
+                ],
+            ]);
+        } catch(\Exception $e) {
+            Log::error($e->getMessage());
+        }
+    }
+
     public function createUser($name, $account, $password)
     {
         $user = new User();
@@ -512,6 +550,9 @@ trait UserRepo
             throw new \Exception('uuid为空，不能绑定ddz');
         }
         $this->createDDZUser($this->uuid);
+
+        //上报收益数据到懂得赚
+        dispatch_now(new ReportUserEarningsToDDZ($this));
     }
 
     /**

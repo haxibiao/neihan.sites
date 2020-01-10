@@ -4,5 +4,6 @@ extend type Mutation @middleware(checks: ["auth:api"]) {
   SleepReward(task_id: Int!): UserTask @field(resolver: "App\\Task@resolveSleepReward")
   receiveTask(id: ID!): Task @field(resolver: "App\\Task@receiveTaskResolver")
   rewardTask(id: ID!): Task @field(resolver: "App\\Task@getReWardResolver")
-  highPraiseTask(id:ID,content:String):Boolean @field(resolver: "App\\Task@highPraiseTaskResolver")
+  highPraiseTask(id: ID, content: String): Boolean @field(resolver: "App\\Task@highPraiseTaskResolver")
+  doubleReWard(id: ID): UserTask @field(resolver: "App\\Task@doubleReWardResolver")
 }

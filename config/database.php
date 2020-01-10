@@ -57,13 +57,13 @@ return [
         ],
 
 //        FIXME: 先这样写，以后实现到 env:refresh
-        'dongdezhuan'        => [
+        'dongdezhuan'  => [
             'driver'      => 'mysql',
-            'host'        => env('APP_ENV') === 'prod' ? 'gz03':'127.0.01',
+            'host'        => env('APP_ENV') === 'prod' ? 'gz03': (env('APP_ENV') === 'develop'?'gz002' :'127.0.01'),
             'port'        => env('DDZ_DB_PORT', '3306'),
-            'database'    => env('DDZ_DB_DATABASE', 'dongdezhuan'),
+            'database'    => env('APP_ENV') === 'develop' ? 'dongdezhuan_dev' : env('DDZ_DB_DATABASE'),
             'username'    => env('DDZ_DB_USERNAME', 'root'),
-            'password'    => env('APP_ENV') === 'prod' ? 'yp1qaz@WSX':'localdb001',
+            'password'    => in_array(env('APP_ENV'),['prod','develop'])? 'yp1qaz@WSX':'localdb001',
             'unix_socket' => env('DDZ_DB_SOCKET', ''),
             'charset'     => 'utf8mb4',
             'collation'   => 'utf8mb4_unicode_ci',
@@ -72,7 +72,7 @@ return [
             'engine'      => null,
         ],
 
-        'dianmoge_vod'        => [
+        'dianmoge_vod' => [
             'driver'      => 'mysql',
             'host'        => env('DB_HOST', '127.0.0.1'),
             'port'        => env('DB_PORT', '3306'),

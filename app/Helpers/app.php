@@ -9,6 +9,11 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
+function getAppVersion()
+{
+    return request()->header('version') ?: request()->get('version');
+}
+
 function seo_value($group, $name)
 {
     return \App\Seo::getValue($group, $name);

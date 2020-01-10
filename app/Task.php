@@ -53,6 +53,16 @@ class Task extends Model
             ->withTimestamps();
     }
 
+    public function parentTasks()
+    {
+        return $this->belongsTo(\App\Task::class, 'parent_task', 'id');
+    }
+
+    public function childrenTasks()
+    {
+        return $this->hasMany(\App\Task::class, 'parent_task', 'id');
+    }
+
     public static function getTypes()
     {
         return [
@@ -61,6 +71,16 @@ class Task extends Model
             self::CUSTOM_TASK   => '自定义任务',
             self::TIME_TASK     => '实时任务',
         ];
+    }
+
+    public function isparentTasks()
+    {
+        return $this->childrenTasks()->count() > 0;
+    }
+
+    public function ischildrenTasks()
+    {
+        return $this->parentTasks()->exists();
     }
 
     public static function getStatuses()
@@ -74,7 +94,7 @@ class Task extends Model
     public function saveDownloadImage($file)
     {
         if ($file) {
-            $task_logo = 'task/task' . $this->id . '.png';
+            $task_logo = 'task/task' . $this->id . '_' . time() . '.png';
             $cosDisk   = \Storage::cloud();
             $cosDisk->put($task_logo, \file_get_contents($file->path()));
 
@@ -82,10 +102,31 @@ class Task extends Model
         }
     }
 
+    public function saveBackGroundImage($file)
+    {
+        if ($file) {
+            $task_logo = 'task/background/task/' . $this->id . '_' . time() . '.png';
+            $cosDisk   = \Storage::cloud();
+            $cosDisk->put($task_logo, \file_get_contents($file->path()));
+            return $task_logo;
+        }
+    }
+
+    public function getbackgroundImgAttribute()
+    {
+
+        $logo = $this->getOriginal('background_img');
+        // dd($logo);
+        if (!empty($logo) && !Str::contains($logo, 'http')) {
+            return Storage::cloud()->url($logo);
+        }
+        return $logo;
+    }
+
     public function getIconAttribute()
     {
         $logo = $this->getOriginal('icon');
-        if (!empty($logo) && !Str::contains($logo,'http')) {
+        if (!empty($logo) && !Str::contains($logo, 'http')) {
             return Storage::cloud()->url($logo);
         }
         return $logo;

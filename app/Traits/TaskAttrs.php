@@ -2,10 +2,9 @@
 
 namespace App\Traits;
 
-use App\Task;
-use App\User;
 use App\UserTask;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 
 trait TaskAttrs
 {
@@ -22,12 +21,10 @@ trait TaskAttrs
 
         $status = $this->checkTaskStatus($user);
 
-
         if ($type == self::TIME_TASK) {
-            $date_user_task = $usertask->whereDate('created_at', Carbon::today())->first();
-            if ($date_user_task) {
-                $status = $date_user_task->status;
-
+            $dateUserTask = $usertask->whereDate('updated_at', Carbon::today())->first();
+            if ($dateUserTask) {
+                $status = $dateUserTask->status;
             }
         }
 
@@ -37,24 +34,33 @@ trait TaskAttrs
     public function getTaskProgressAttribute()
     {
         $user = getUser();
-
-        $type = $this->type;
-        if ($type == self::TIME_TASK) {
-            if (!str_contains($this->name, 'All')) {
-                $task_all = Task::where('name', $this->name . 'All')->first();
-                return $task_all->getUserTask($user->id)->progress;
-            }
-            return $this->getUserTask($user->id)->progress;
-        }
+        //TODO ::time_task进度只获取自己的,不从其他地方获取了
+        // if ($type == self::TIME_TASK) {
+        //     if (!str_contains($this->name, 'All')) {
+        //         $task_all = Task::where('name', $this->name . 'All')->first();
+        //         return $task_all->getUserTask($user->id)->progress;
+        //     }
+        //     return $this->getUserTask($user->id)->progress;
+        // }
 
         $user_task = $this->getUserTask($user->id);
         $progress  = !empty($user_task) ? $user_task->progress : null;
+        //父任务进度
+
+        if ($this->isparentTasks()) {
+            $progress = $this->getUserTask($user->id, true) ? $this->getparentTaskProgress($user->id) : 0;
+        }
+
+        if ($this->ischildrenTasks()) {
+            $progress = $this->parentTasks->getUserTask($user->id, true) ? $this->parentTasks->getparentTaskProgress($user->id) : 0;
+        }
+
         return $progress;
     }
 
     public function getProgressDetailsAttribute()
     {
-        if ($this->type === 1){
+        if ($this->type === 1) {
             $taskCount      = null;
             $method         = $this->resolve['method'] ?? null;
             $progressMethod = !empty($method) ? $this->resolve['method'] . 'Count' : null;
@@ -68,7 +74,7 @@ trait TaskAttrs
                 }
             }
             $limit           = $this->resolve['limit'] ?? null;
-            $progress_detail = (!empty($progressMethod) && !empty($limit)) ? sprintf('%d / %d', $taskCount, $limit) : $this->submit_name;
+            $progress_detail = (!empty($progressMethod) || !empty($limit)) ? sprintf('%d / %d', $taskCount, $limit) : $this->submit_name;
 
             return $progress_detail;
         }
@@ -125,14 +131,20 @@ trait TaskAttrs
         }
 
         switch ($this->task_status) {
+            case UserTask::TASK_FAILED:
+                return Arr::get($this->resolve, 'task_failed') ?? '失败';
+                break;
             case UserTask::TASK_UNDONE:
-                return '未完成';
+                return Arr::get($this->resolve, 'task_undone') ?? '未完成';
+                break;
+            case UserTask::TASK_REVIEW:
+                return Arr::get($this->resolve, 'task_review') ?? '进行中';
                 break;
             case UserTask::TASK_REACH:
-                return '领奖';
+                return Arr::get($this->resolve, 'task_reach') ?? '领奖';
                 break;
             case UserTask::TASK_DONE:
-                return '完成';
+                return Arr::get($this->resolve, 'task_done') ?? '完成';
                 break;
 
         }
@@ -153,12 +165,15 @@ trait TaskAttrs
 
     public function getSleepStatusAttribute()
     {
-        switch ($this->name) {
-            case "SleepMorning":
+        switch (Arr::get($this->resolve, 'task_en')) {
+            case "Wake":
                 return true;
                 break;
-            case "SleepNight":
+            case "Sleep":
                 return false;
+                break;
+            default:
+                return true;
                 break;
         }
     }

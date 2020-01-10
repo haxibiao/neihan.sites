@@ -74,6 +74,16 @@ class Task extends Resource
             })->preview(function () {
                 return $this->icon;
             })->disableDownload(),
+
+            Image::make('任务背景图', 'background_img')->store(
+                function (Request $request, $model) {
+                    $file = $request->file('background_img');
+                    return $model->saveBackGroundImage($file);
+                })->thumbnail(function () {
+                return $this->background_img;
+            })->preview(function () {
+                return $this->background_img;
+            })->disableDownload(),
         ];
     }
 

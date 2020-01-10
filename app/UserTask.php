@@ -13,6 +13,8 @@ class UserTask extends Pivot
 
     protected $table = 'user_task';
 
+    public $incrementing = true;
+
     protected $fillable = [
         'id',
         'task_id',
@@ -69,28 +71,26 @@ class UserTask extends Pivot
         return $status;
     }
 
-    public function processReward($reward)
+    public function processReward($reward, $reward_rate = 1)
     {
         $task = $this->task;
         $user = $this->user;
 
-
         $name = $task->name;
-
-        if($name=="SleepMorning" || $name=="SleepNight"){
-            $name= "睡觉任务";
+        if ($name == "SleepMorning" || $name == "SleepNight") {
+            $name = "睡觉任务";
         }
         try {
             DB::beginTransaction(); //开启数据库事务
             if (array_get($reward, "gold")) {
-                $remark     = sprintf('%s奖励', $name);
-                $rewardGold = $reward["gold"];
+                $remark     = $reward_rate > 1 ? sprintf('%s %d倍奖励', $name, $reward_rate) : sprintf('%s奖励', $name);
+                $rewardGold = $reward["gold"] * $reward_rate;
                 $user->goldWallet->changeGold($rewardGold, $remark);
             }
 
             if (array_get($reward, "contribute")) {
-                $remark     = sprintf('%s奖励', $name);
-                $rewardGold = $reward['contribute'];
+                $remark     = $reward_rate > 1 ? sprintf('%s %d倍奖励', $name, $reward_rate) : sprintf('%s奖励', $name);
+                $rewardGold = $reward['contribute'] * $reward_rate;
                 Contribute::rewardUserContribute($user->id, $this->id, $rewardGold, "usertasks", $remark);
             }
 
@@ -105,15 +105,32 @@ class UserTask extends Pivot
     //创建每日任务
     public static function createUserTask($task_id, $user_id, $date)
     {
-        $task     = Task::find($task_id);
-        $usertask = $task->getUserTask($user_id);
 
-        if (!$usertask) {
-            $usertask = UserTask::firstOrCreate(
-                ['task_id'   => $task_id,
-                    'user_id'    => $user_id,
-                    'created_at' => $date]);
+        $task     = Task::find($task_id);
+        $userTask = $task->getUserTask($user_id);
+
+        //任务不存在,创建任务
+        if (is_null($userTask)) {
+            $userTask = UserTask::firstOrNew([
+                'task_id' => $task_id,
+                'user_id' => $user_id,
+            ]);
+            $userTask->save();
+
+        } else {
+            if ($task->isTimeTask() || $task->isDailyTask()) {
+                if ($userTask->updated_at < today()) {
+                    //更新状态\进度\完成时间
+                    $userTask->status       = UserTask::TASK_UNDONE;
+                    $userTask->progress     = 0;
+                    $userTask->completed_at = null;
+                    $userTask->save();
+                    //强制更新
+                    $userTask->touch();
+                }
+            }
         }
-        return $usertask;
+
+        return $userTask;
     }
 }

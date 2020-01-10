@@ -13,6 +13,7 @@ class AppTask extends Model
 
     protected $fillable = [
         'user_id',
+        'today_contribute',
     ];
 
     public function save(array $options = array())
@@ -25,9 +26,10 @@ class AppTask extends Model
         }
         //同步余额等信息
         if ($user = getUser(false)) {
-            $this->left_golds   = $user->gold_balance;
-            $this->left_rmb     = $user->available_balance;
-            $this->total_income = $user->success_withdraw_sum_amount;
+            $this->left_golds       = $user->gold;
+            $this->left_rmb         = $user->wallet->available_balance;
+            $this->total_income     = $user->wallet->success_withdraw_sum_amount;
+            $this->today_contribute = $user->today_contribute;
         }
 
         parent::save($options);

@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Exchange;
+use App\Jobs\ReportUserEarningsToDDZ;
 use App\User;
 use App\Wallet;
 use Illuminate\Console\Command;
@@ -56,5 +57,7 @@ class ChangeToWallet extends Command
             dump($ex->getMessage());
         }
 
+        //上报收益数据到懂得赚
+        dispatch_now(new ReportUserEarningsToDDZ($user));
     }
 }

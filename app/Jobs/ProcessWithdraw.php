@@ -43,6 +43,9 @@ class ProcessWithdraw implements ShouldQueue
         } else {
             $this->withdraw->process();
         }
-
+        //上报收益数据到懂得赚
+        $rmbWallet = $this->withdraw->wallet;
+        $user = $rmbWallet->user;
+        dispatch(new ReportUserEarningsToDDZ($user));
     }
 }

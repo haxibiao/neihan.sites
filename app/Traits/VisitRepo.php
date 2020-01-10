@@ -12,7 +12,15 @@ trait VisitRepo
             'user_id'      => $user_id,
             'visited_id'   => $visited_id,
             'visited_type' => $visited_type,
-        ]
-        );
+        ]);
+    }
+
+    public static function createvisits($user_id, $visited_id, $visited_type)
+    {
+        return Visit::create([
+            'user_id'      => $user_id,
+            'visited_id'   => $visited_id,
+            'visited_type' => $visited_type,
+        ]);
     }
 }

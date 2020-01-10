@@ -380,7 +380,7 @@ trait UserAttrs
 
     public function getTodayContributeAttribute()
     {
-        $amount = Contribute::where('user_id', $this->id)->where('amount','>',0)->whereDate('created_at', today())->sum('amount');
+        $amount = Contribute::where('user_id', $this->id)->where('amount', '>', 0)->whereDate('created_at', today())->sum('amount');
         if ($amount <= 0) {
             return 0;
         }
@@ -404,8 +404,8 @@ trait UserAttrs
 
     public function getTitlePhoneAttribute()
     {
-        if ($this->phone !== null){
-            return substr_replace($this->phone,'****',3,4);
+        if ($this->phone !== null) {
+            return substr_replace($this->phone, '****', 3, 4);
         }
         return null;
     }
