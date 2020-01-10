@@ -1151,16 +1151,21 @@ class FixData extends Command
 
     public function spiders()
     {
-        $count    = 0;
-        $articles = \App\Article::where('source_url', 'like', '%v.douyin.com%')
-            ->where('status', \App\Article::REVIEW_SUBMIT)
-            ->chunk(1000, function ($artilces) use (&$count) {
-                foreach ($artilces as $article) {
-                    $article->startSpider();
-                    $this->info('Article Id:' . $article->id . ' spider start');
-                    $count++;
-                }
-            });
+        // $count    = 0;
+        // $articles = \App\Article::where('source_url', 'like', '%v.douyin.com%')
+        //     ->where('status', \App\Article::REVIEW_SUBMIT)
+        //     ->chunk(1000, function ($artilces) use (&$count) {
+        //         foreach ($artilces as $article) {
+        //             $article->startSpider();
+        //             $this->info('Article Id:' . $article->id . ' spider start');
+        //             $count++;
+        //         }
+        //     });
+
+        //这个hash有问题
+        $hash  = 'd41d8cd98f00b204e9800998ecf8427e';
+        $video = Video::where('hash', $hash)->first();
+        $count = Article::where('video_id', $video->id)->update(['status' => Article::REFUSED_SUBMIT, 'submit' => Article::REFUSED_SUBMIT]);
 
         $this->info('本次成功修复待处理爬虫:' . $count);
 
