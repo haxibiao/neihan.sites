@@ -23,11 +23,10 @@ trait WithdrawResolvers
         //1. 可控制提现关闭
         stopfunction("提现");
 
-
 //        截图版本号前3位作为当前使用版本参考
-        $version = substr($profile->app_version,0,3);
+        $version       = substr($profile->app_version, 0, 3);
         $latestVersion = Version::latest('name')->first();
-        if ($profile->app_version === null || !Str::contains($latestVersion->name,$version)){
+        if ($profile->app_version === null || !Str::contains($latestVersion->name, $version)) {
             throw new GQLException('当前版本过低,请更新后再尝试提现,详情咨询QQ群:808982693');
         }
 

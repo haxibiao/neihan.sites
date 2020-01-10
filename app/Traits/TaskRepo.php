@@ -86,15 +86,17 @@ trait TaskRepo
     public function getchildrenBuild($user_id)
     {
         $childrenTasks_id = $this->childrenTasks()->pluck('id')->toArray();
-
         $childrenTasksBuild = UserTask::where('user_id', $user_id)->whereIn('task_id', $childrenTasks_id);
         if ($childrenTasksBuild->get()) {
-            $firstchilderentask = $childrenTasksBuild->first()->task;
-            if ($firstchilderentask->type == self::TIME_TASK) {
-                $childrenTasksBuildClone = $childrenTasksBuild->whereDate('updated_at', today());
+            $firstchilderentask = $childrenTasksBuild->first();
+            if (!is_null($firstchilderentask)) {
+                $firstchilderentask = $firstchilderentask->task;
+                if ($firstchilderentask->type == self::TIME_TASK) {
+                    $childrenTasksBuild = $childrenTasksBuild->whereDate('updated_at', today());
+                }
             }
         }
-        return $childrenTasksBuildClone;
+        return $childrenTasksBuild;
     }
 
     public function getUserTask($user_id, $chilren = false)

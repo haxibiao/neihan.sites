@@ -1165,7 +1165,9 @@ class FixData extends Command
         //这个hash有问题
         $hash  = 'd41d8cd98f00b204e9800998ecf8427e';
         $video = Video::where('hash', $hash)->first();
-        $count = Article::where('video_id', $video->id)->update(['status' => Article::REFUSED_SUBMIT, 'submit' => Article::REFUSED_SUBMIT]);
+        if(!is_null($video)){
+            $count = Article::where('video_id', $video->id)->update(['status' => Article::REFUSED_SUBMIT, 'submit' => Article::REFUSED_SUBMIT]);
+        }
 
         $this->info('本次成功修复待处理爬虫:' . $count);
 
