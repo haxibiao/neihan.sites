@@ -16,7 +16,7 @@ class VersionSeeder extends Seeder
         Version::truncate();
 
         Version::firstOrCreate([
-            'name'        => '2.82',
+            'name'        => '2.9.0',
             'url'         => 'http://' . env('COS_DOMAIN') . '/' . env('APP_NAME') . '-release.apk',
             'is_force'    => 1,
             'os'          => 'Android',
@@ -24,7 +24,7 @@ class VersionSeeder extends Seeder
             'size'        => '35554432', //大约35M,不需要太精准
             'package'     => 'com.' . env('APP_NAME'),
             'status'      => Version::RUNNING,
-            'description' => "1.添加看激励视频时间\n2.间隔修复睡觉打卡判断机制问题\n3.修复Android9.0的Http网络阻断图片加载不了问题",
+            'description' => "1.修复已知闪退问题\n2.修复已知严重BUG\n3.优化任务系统",
         ]);
 
     }
