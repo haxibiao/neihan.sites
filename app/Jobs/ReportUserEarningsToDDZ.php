@@ -31,8 +31,8 @@ class ReportUserEarningsToDDZ implements ShouldQueue
      */
     public function handle()
     {
-        $user = $this->user;
-        $wallet      = $this->wallet;
+        $user        = $this->user;
+        $wallet      = $user->wallet;
         $user->reportUserEarningsToDDZ($availableWithdraws = $wallet->balance,$successfulWithdraws = $wallet->total_withdraw_amount);
     }
 }
