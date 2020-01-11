@@ -108,7 +108,6 @@ class UserTask extends Pivot
 
         $task     = Task::find($task_id);
         $userTask = $task->getUserTask($user_id);
-
         //任务不存在,创建任务
         if (is_null($userTask)) {
             $userTask = UserTask::firstOrNew([
@@ -116,19 +115,6 @@ class UserTask extends Pivot
                 'user_id' => $user_id,
             ]);
             $userTask->save();
-
-        } else {
-            if ($task->isTimeTask() || $task->isDailyTask()) {
-                if ($userTask->updated_at < today()) {
-                    //更新状态\进度\完成时间
-                    $userTask->status       = UserTask::TASK_UNDONE;
-                    $userTask->progress     = 0;
-                    $userTask->completed_at = null;
-                    $userTask->save();
-                    //强制更新
-                    $userTask->touch();
-                }
-            }
         }
 
         return $userTask;

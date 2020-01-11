@@ -85,7 +85,7 @@ trait TaskRepo
     //获取所有子任务的queryBuild
     public function getchildrenBuild($user_id)
     {
-        $childrenTasks_id = $this->childrenTasks()->pluck('id')->toArray();
+        $childrenTasks_id   = $this->childrenTasks()->pluck('id')->toArray();
         $childrenTasksBuild = UserTask::where('user_id', $user_id)->whereIn('task_id', $childrenTasks_id);
         if ($childrenTasksBuild->get()) {
             $firstchilderentask = $childrenTasksBuild->first();
@@ -102,8 +102,20 @@ trait TaskRepo
     public function getUserTask($user_id, $chilren = false)
     {
         $userTaskBuild = UserTask::where(['task_id' => $this->id, 'user_id' => $user_id]);
+
         //时间任务
         if ($this->isTimeTask() || $this->isDailyTask()) {
+            $userTask = $userTaskBuild->first();
+            if ($userTask->updated_at < today()) {
+                //更新状态\进度\完成时间
+                $userTask->status       = UserTask::TASK_UNDONE;
+                $userTask->progress     = 0;
+                $userTask->completed_at = null;
+                $userTask->save();
+                //强制更新
+                $userTask->touch();
+                return $userTask;
+            }
             $userTaskBuild = $userTaskBuild->whereDate('updated_at', today());
         }
 
@@ -186,10 +198,6 @@ trait TaskRepo
             "task_id" => $this->id,
             "user_id" => $user->id,
         ]);
-
-        // if ($this->name == "喝水赚钱") {
-        //     dd($piovt);
-        // }
 
         //为了兼容app 2.8版本喝水赚钱
         $this->updateDrinkUserTask($user);

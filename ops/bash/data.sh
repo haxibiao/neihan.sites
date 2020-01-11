@@ -8,4 +8,4 @@
 # 修复3小时内用户uuid覆盖的问题，已经手动修复测试了.. 下次清空这里
 # php artisan fix:data users
 # 修复金币兑换故障
-php artisan change:towallet
+# php artisan change:towallet
