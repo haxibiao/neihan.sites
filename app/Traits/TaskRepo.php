@@ -106,15 +106,17 @@ trait TaskRepo
         //时间任务
         if ($this->isTimeTask() || $this->isDailyTask()) {
             $userTask = $userTaskBuild->first();
-            if ($userTask->updated_at < today()) {
-                //更新状态\进度\完成时间
-                $userTask->status       = UserTask::TASK_UNDONE;
-                $userTask->progress     = 0;
-                $userTask->completed_at = null;
-                $userTask->save();
-                //强制更新
-                $userTask->touch();
-                return $userTask;
+            if (!is_null($userTask)) {
+                if ($userTask->updated_at < today()) {
+                    //更新状态\进度\完成时间
+                    $userTask->status       = UserTask::TASK_UNDONE;
+                    $userTask->progress     = 0;
+                    $userTask->completed_at = null;
+                    $userTask->save();
+                    //强制更新
+                    $userTask->touch();
+                    return $userTask;
+                }
             }
             $userTaskBuild = $userTaskBuild->whereDate('updated_at', today());
         }
