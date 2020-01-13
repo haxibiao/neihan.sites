@@ -2,6 +2,9 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+
 trait VideoAttrs
 {
     public function getCoversAttribute()
@@ -11,8 +14,13 @@ trait VideoAttrs
 
     public function getCoverUrlAttribute()
     {
+        $cover = $this->cover;
+        if (Str::contains($cover, 'hashvod') && Str::contains($cover, 'http')) {
+            return $cover;
+        }
+
         //TODO: 修复数据，数据库统一存path
-        $coverPath = parse_url($this->cover, PHP_URL_PATH);
+        $coverPath = parse_url($cover, PHP_URL_PATH);
         return cdnurl($coverPath);
     }
 

@@ -101,9 +101,9 @@ trait ArticleAttrs
         //TODO: 图片在本地？需要修复到cos
         if ($this->video) {
             if (!is_null($this->video->cover)) {
-
-                $video_cover_path = parse_url($this->video->cover, PHP_URL_PATH);
-                return \Storage::cloud()->url($video_cover_path);
+                $this->cover_path = $this->video->cover;
+                $this->save();
+                return $this->cover_path;
             }
         }
 

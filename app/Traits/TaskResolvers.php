@@ -119,7 +119,7 @@ trait TaskResolvers
             if ($diffmi < $minutes) {
                 $status = 3;
             } else {
-                $task = $sleepUserTask->status == 1 ? $sleepTask : Task::where('name', "起床卡")->first();
+                $task = $sleepUserTask->status == 1 ? $sleepTask : Task::where('resolve->task_en', 'Wake')->first();
             }
         }
 
