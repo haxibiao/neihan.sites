@@ -20,11 +20,14 @@ class Wallet extends Model
         'pay_infos',
         'pay_info_change_count',
         'total_withdraw_amount',
+        'wechat_account',
+        'is_withdraw_before'
     ];
 
     protected $casts = [
         'balance'   => 'double',
         'pay_infos' => 'array',
+        'is_withdraw_before' => 'boolean'
     ];
 
     //提现资料更改上限

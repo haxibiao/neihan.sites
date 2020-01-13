@@ -102,7 +102,9 @@ trait ArticleAttrs
         if ($this->video) {
             if (!is_null($this->video->cover)) {
                 $this->cover_path = $this->video->cover;
-                $this->save();
+                if(isset($this->id) && !isset($this->isAdPosition)){
+                    $this->save();
+                }
                 return $this->cover_path;
             }
         }

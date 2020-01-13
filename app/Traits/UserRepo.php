@@ -416,9 +416,16 @@ trait UserRepo
     {
         if ($ddzUser = $this->getDongdezhuanUser()){
             $wallet = $ddzUser->getWalletAttribute();
-            if ($wallet->withdraws()->exists()){
-                return true;
+
+            if ($wallet->is_withdraw_before !== null){
+                return $wallet->is_withdraw_before;
             }
+
+            if($this->getWalletAttribute()->withdraws()->exists()){
+                // fix data.. 工厂内提现过直接更新懂得赚账号是否提现标识
+                $ddzUser->getWalletAttribute()->update(['is_withdraw_before' => true,]);
+            }
+
         }
         return false;
     }
