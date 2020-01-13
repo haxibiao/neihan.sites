@@ -132,10 +132,11 @@ class User extends Model
 
     public function getMyInviterAttribute()
     {
-        $invitation = Invitation::where('be_inviter_id', $this->id)->first();
-        if (!is_null($invitation)) {
-            return $invitation->user;
-        }
+        $invitation = Invitation::where('be_inviter_id', $this->id)
+            ->whereNotNull('invited_in')
+            ->first();
+
+        return data_get($invitation,'user');
     }
 
 }
