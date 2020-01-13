@@ -139,4 +139,15 @@ class User extends Model
         return data_get($invitation,'user');
     }
 
+    public function getProfileAttribute()
+    {
+        if ($profile = $this->hasOne(Profile::class)->first()) {
+            return $profile;
+        }
+        //确保profile数据完整
+        $profile          = new Profile();
+        $profile->user_id = $this->id;
+        $profile->save();
+        return $profile;
+    }
 }

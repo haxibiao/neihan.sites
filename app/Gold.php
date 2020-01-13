@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\DDZ\AppTask;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -46,6 +47,9 @@ class Gold extends Model
         //更新user表上的冗余字段
         User::where('id', $user->id)->update(['gold' => $goldBalance]);
 
+        //更新懂得赚金币数据
+        AppTask::countUserGolds($user);
+
         return $gold;
     }
 
@@ -61,6 +65,9 @@ class Gold extends Model
         ]);
         //更新user表上的冗余字段
         User::where('id', $user->id)->update(['gold' => $goldBalance]);
+
+        //更新懂得赚金币数据
+        AppTask::countUserGolds($user);
 
         return $gold;
     }

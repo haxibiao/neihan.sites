@@ -59,7 +59,7 @@ return [
 //        FIXME: 先这样写，以后实现到 env:refresh
         'dongdezhuan'  => [
             'driver'      => 'mysql',
-            'host'        => env('APP_ENV') === 'prod' ? 'gz03' : (env('APP_ENV') === 'develop' ? 'gz002' : '127.0.01'),
+            'host'        => env('APP_ENV') === 'prod' ? 'nwgz03' : (env('APP_ENV') === 'develop' ? 'gz002' : '127.0.01'),
             'port'        => env('DDZ_DB_PORT', '3306'),
             'database'    => env('APP_ENV') === 'develop' ? 'dongdezhuan_dev' : 'dongdezhuan',
             'username'    => env('DDZ_DB_USERNAME', 'root'),
