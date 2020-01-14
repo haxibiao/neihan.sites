@@ -56,8 +56,5 @@ class ChangeToWallet extends Command
             Log::error($ex);
             dump($ex->getMessage());
         }
-
-        //上报收益数据到懂得赚
-        dispatch_now(new ReportUserEarningsToDDZ($user));
     }
 }

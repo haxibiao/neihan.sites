@@ -323,7 +323,7 @@ class ArticleMutators
                 }
             }
             DB::commit();
-//            app_track_user('发布问答','issue');
+            app_track_user('发布问答','issue');
             return $article;
         } catch (\Exception $ex) {
             DB::rollBack();

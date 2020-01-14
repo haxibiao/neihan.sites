@@ -60,16 +60,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-//        if (isset(config('matomo.site')[env('APP_DOMAIN')])) {
-        //            $siteId = env('MATOMO_SITEID');
-        //            $matomo = '';
-        //
-        //            $piwik = new PiwikTracker($siteId, $matomo);
-        //            $piwik->setUserId(getUniqueUserId());
-        //            return $piwik;
-        //        }
-        //        return null;
-
         $this->app->singleton('piwik', function ($app) {
             return new PiwikTracker(env('MATOMO_SITE_ID'), env('MATOMO_URL'));
         });

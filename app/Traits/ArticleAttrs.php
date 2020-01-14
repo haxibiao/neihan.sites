@@ -162,7 +162,11 @@ trait ArticleAttrs
         if (!in_array($this->type, ['issue'])) {
             return 0;
         }
-        return ($this->issue)->gold;
+        $issue = $this->issue;
+        if($issue){
+            return $issue->gold;
+        }
+        return 0;
     }
 
     public function getScreenshotsAttribute()

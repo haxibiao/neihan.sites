@@ -172,30 +172,11 @@ function indexArticles()
 
 function getUniqueUserId()
 {
-    //web
-    if (Auth::id()) {
-        return Auth::id();
+    try {
+        return getUserId();
+    } catch (\Exception $ex) {
+        return getIp();
     }
-    //rest api
-    if (request()->user()) {
-        return request()->user()->id;
-    }
-    //gql api
-    $token = !empty(request()->header('token')) ? request()->header('token') : request()->get('token');
-    if (!empty($token)) {
-        $user = User::where('api_token', $token)->first();
-        if ($user) {
-            return $user->id;
-        }
-    }
-
-    //web guest
-    if ($session_id = session_id()) {
-        return $session_id;
-    }
-
-    //app guest
-    return getIp();
 }
 
 function getUserId()

@@ -28,7 +28,6 @@ class AppTask extends Model
         $hasModified = false;
         //同步余额等信息
         if ($user = getUser(false)) {
-            $this->left_golds       = $user->gold;
             $this->left_rmb         = $user->wallet->available_balance;
             $this->total_income     = $user->wallet->total_withdraw_amount;
             $this->today_contribute = $user->today_contribute;
@@ -102,15 +101,4 @@ class AppTask extends Model
             // \info("用户  $user->id, uuid: $user->uuid,  appTask里 $app_name_cn 在懂得赚没找到...");
         }
     }
-
-    public static function countUserGolds(\App\User $user){
-        $ddzUser     = $user->getDongdezhuanUser();
-        $app_name_cn = env('APP_NAME_CN');
-        $appTask     = $ddzUser->appTasks()->whereAppName($app_name_cn)->first();
-        if ($appTask) {
-            $appTask->left_golds = $user->gold;
-            $appTask->save();
-        }
-    }
-
 }

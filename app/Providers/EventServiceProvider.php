@@ -62,5 +62,6 @@ class EventServiceProvider extends ServiceProvider
         \App\BadWord::observe(\App\Observers\BadWordObserver::class);
         \App\Notice::observe(\App\Observers\NoticeObserver::class);
         \App\Contribute::observe(\App\Observers\ContributeObserver::class);
+        \App\Gold::observe(\App\Observers\GoldObserver::class);
     }
 }

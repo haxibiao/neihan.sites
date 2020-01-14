@@ -557,9 +557,6 @@ trait UserRepo
             throw new \Exception('uuid为空，不能绑定ddz');
         }
         $this->createDDZUser($this->uuid);
-
-        //上报收益数据到懂得赚
-        dispatch_now(new ReportUserEarningsToDDZ($this));
     }
 
     /**
