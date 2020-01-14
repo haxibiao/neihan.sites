@@ -226,10 +226,9 @@ trait TaskRepo
                         \info($e->getMessage());
                     }
                     if ($taskDone) {
-                        $piovt->fill(['status' => UserTask::TASK_REACH]);
+                        $piovt->fill(['status' => UserTask::TASK_REACH])->save();
                     }
                 }
-
             }
         }
 
