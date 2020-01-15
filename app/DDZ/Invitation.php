@@ -15,11 +15,15 @@ class Invitation extends Model
         'user_id',
         'invited_in',
         'be_inviter_id',
+        'today_rewards_count',
     ];
 
     protected $casts = [
         'invited_in' => 'datetime',
     ];
+
+    //今日最大奖励次数上限
+    const TODAY_MAX_REWARDS_COUNT = 20;
 
     public function user()
     {
@@ -72,6 +76,11 @@ class Invitation extends Model
         }
 
         return $query;
+    }
+
+    public function isMaxUper()
+    {
+        return $this->today_rewards_count >= Invitation::TODAY_MAX_REWARDS_COUNT;
     }
 
 }
