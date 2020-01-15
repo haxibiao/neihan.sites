@@ -57,58 +57,16 @@ class TaskSeeder extends Seeder
         //     'resolve' => array('method' => 'drinkWater', 'router' => 'GoDrinkWater', 'task_en' => 'DrinkWaterAll', 'limit' => 8),
         // ]);
         //
-        $DrinkWaterTasks = Task::where('name', 'DrinkWater')->get();
 
-        foreach ($DrinkWaterTasks as $DrinkWaterTask) {
-            $DrinkWaterTask->update([
-                'parent_task' => 12,
-                'resolve'     => array('task_en' => 'DrinkWater', 'task_undone' => '未喝', 'task_done' => '以完成', 'task_failed' => '没开始', 'task_review' => '进行中', 'task_reach' => '以喝'),
-            ]);
-        }
-
-        // Task::where('name', '睡觉赚钱')->first()->update(
-        //     [
-        //         'type'    => 2,
-        //         'resolve' => array("method" => "sleep", "router" => "GoSleep", 'task_en' => 'SleepAll', 'limit' => 50),
-        //     ]
-        // );
-
-        Task::where('name', '应用商店好评')->first()->update(
+        Task::where('resolve->task_en', 'DrinkWaterAll')->first()->update(
             [
-                'resolve' => array("method" => "toPraise", "router" => "ToPraise", 'task_en' => 'Praise'),
+                'reward'  => array("gold" => "100", 'contribute' => '16'),
             ]
         );
 
-        // Task::where('name', '喝水赚钱')->first()->update(
-        //     [
-        //         'type' => 2,
-        //     ]
-        // );
-
-        Task::where('name', '看视频赚钱')->first()->update(
+        Task::where('resolve->task_en', 'Wake')->first()->update(
             [
-                'type'    => 2,
-                'resolve' => array("method" => "rewardVideo", "router" => "MotivationalVideo", 'limit' => 30, 'task_en' => 'RewardVideo'),
-            ]
-        );
-
-        Task::where('name', 'SleepMorning')->first()->update(
-            [
-                'name'    => '起床',
-                'details' => '别睡了起来嗨',
-                'resolve' => array('minutes' => '15', 'task_en' => 'Wake'),
-            ]
-        );
-
-        // Task::where('name', '起床卡')->first()->update(
-        //     ['details' => '别睡了起来嗨']
-        // );
-
-        Task::where('name', 'SleepNight')->first()->update(
-            [
-                'name'    => '睡觉',
-                'reward'  => null,
-                'resolve' => array('minutes' => '15', 'task_en' => 'Sleep'),
+                'reward'  => array("gold" => "15", 'contribute' => '4'),
             ]
         );
 
