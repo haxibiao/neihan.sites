@@ -58,10 +58,6 @@ trait ArticleRepo
 
         $this->title         = $this->title;
         $this->description   = $this->summary;
-        $this->url           = $this->url;
-        $this->image_url     = $this->cover;
-        $this->has_image     = $this->has_image;
-        $this->primary_image = $this->primary_image;
 
         if ($this->video) {
             $this->duration = gmdate('i:s', $this->video->duration);

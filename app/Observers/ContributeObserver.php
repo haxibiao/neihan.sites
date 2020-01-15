@@ -29,23 +29,25 @@ class ContributeObserver
                 $user       = $contribute->user;
                 $ddzUser    = $user->getDongdezhuanUser();
                 $invitation = Invitation::hasBeInvitation($ddzUser->id);
-                $inviter    = $invitation->user;
-                if (!is_null($inviter)) {
+                if($invitation){
+                    $inviter    = $invitation->user;
+                    if (!is_null($inviter)) {
 
-                    //分红倍率
-                    $userInvitation = UserInvitation::firstOrCreate(['user_id' => $inviter->id], ['phase_id' => InvitationPhase::DEFAULT_PHASE_ID]);
-                    $rate           = $userInvitation->rate;
-                    if ($rate > 0) {
-                        $rewardAmount *= $rate;
-                    }
-                    //一天20次后奖励下调到0.01
-                    $rewardAmount = $invitation->isMaxUper() ? 0.01 : 0.05;
+                        //分红倍率
+                        $userInvitation = UserInvitation::firstOrCreate(['user_id' => $inviter->id], ['phase_id' => InvitationPhase::DEFAULT_PHASE_ID]);
+                        $rate           = $userInvitation->rate;
+                        if ($rate > 0) {
+                            $rewardAmount *= $rate;
+                        }
+                        //一天20次后奖励下调到0.01
+                        $rewardAmount = $invitation->isMaxUper() ? 0.01 : 0.05;
 
-                    if ($rewardAmount >= 0.01) {
-                        //找到他的上级
-                        $wallet = Wallet::firstOrCreate(['user_id' => $inviter->id, 'type' => Wallet::UNION_WALLET]);
-                        Transaction::makeIncome($wallet, $rewardAmount, '好友活跃奖励', '奖励');
-                        $invitation->increment('today_rewards_count');
+                        if ($rewardAmount >= 0.01) {
+                            //找到他的上级
+                            $wallet = Wallet::firstOrCreate(['user_id' => $inviter->id, 'type' => Wallet::UNION_WALLET]);
+                            Transaction::makeIncome($wallet, $rewardAmount, '好友活跃奖励', '奖励');
+                            $invitation->increment('today_rewards_count');
+                        }
                     }
                 }
             }

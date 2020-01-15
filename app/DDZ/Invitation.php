@@ -2,8 +2,6 @@
 
 namespace App\DDZ;
 
-use App\DDZ\Invitation;
-use App\DDZ\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
