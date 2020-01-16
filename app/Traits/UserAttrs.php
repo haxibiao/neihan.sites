@@ -17,6 +17,62 @@ use Illuminate\Support\Str;
 
 trait UserAttrs
 {
+    /**
+     *
+     * 高额提现限量抢成功率 2倍
+     *
+     * @return int
+     */
+    public function getDoubleHighWithdrawCardsRateAttribute(){
+        return 0;
+    }
+    /**
+     *
+     * 高额提现限量抢成功率 5倍
+     *
+     * @return int
+     */
+    public function getFiveTimesHighWithdrawCardsRateAttribute(){
+        return 0;
+    }
+
+    /**
+     *
+     * 高额提现限量抢成功率 10倍
+     *
+     * @return int
+     */
+    public function getTenTimesHighWithdrawCardsRateAttribute(){
+        return 0;
+    }
+    /**
+     *
+     * 高额提现令牌数  3元
+     *
+     * @return mixed
+     */
+    public function getThreeYuanWithdrawBadgesCountAttribute(){
+        return 0;
+    }
+    /**
+     *
+     * 高额提现令牌数  5元
+     *
+     * @return mixed
+     */
+    public function getFiveYuanWithdrawBadgesCountAttribute(){
+        return 0;
+    }
+    /**
+     *
+     * 高额提现令牌数  10元
+     *
+     * @return mixed
+     */
+    public function getTenYuanWithdrawBadgesCountAttribute(){
+        return 0;
+    }
+
     //用户激励视频的计数器
     public function getRewardCounterAttribute()
     {

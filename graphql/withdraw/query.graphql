@@ -26,4 +26,8 @@ type WithdrawInfo{
   tips:String
   fontColor:String
   bgColor:String
+  """
+  限量抢倍率
+  """
+  highWithdrawCardsRate: Int
 }

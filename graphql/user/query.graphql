@@ -57,6 +57,19 @@ type User {
   force_alert:Boolean
   dongdezhuanUser:User @rename(attribute:"dongdezhuan_user")
   title_phone:String
+  """
+  高额限量抢倍率
+  """
+  doubleHighWithdrawCardsRate: Int
+  fiveTimesHighWithdrawCardsRate: Int
+  tenTimesHighWithdrawCardsRate: Int
+
+  """
+  高额限量抢令牌数量
+  """
+  threeYuanWithdrawBadgesCount: Int
+  fiveYuanWithdrawBadgesCount: Int
+  tenYuanWithdrawBadgesCount: Int
 }
 
 type blockInfo {

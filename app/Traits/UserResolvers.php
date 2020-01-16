@@ -2,16 +2,17 @@
 
 namespace App\Traits;
 
-use App\DDZ\UserApp;
-use App\Exceptions\GQLException;
 use App\Ip;
+use App\User;
 use App\OAuth;
 use App\Profile;
-use App\User;
 use App\UserTask;
-use GraphQL\Type\Definition\ResolveInfo;
-use Illuminate\Support\Facades\Cache;
+use Carbon\Carbon;
+use App\DDZ\UserApp;
 use Illuminate\Support\Str;
+use App\Exceptions\GQLException;
+use Illuminate\Support\Facades\Cache;
+use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 trait UserResolvers
@@ -279,6 +280,11 @@ trait UserResolvers
                         $profile_infos[$index] = $args[$index];
                         if ($index == "gender") {
                             $profile_infos[$index] = User::getGenderNumber($args[$index]);
+                        }
+                        if ($index == "birthday") {
+                            if(Str::contains($args[$index],"1970-1-1")){
+                                $profile_infos[$index] = Carbon::parse($args[$index])->addHour(23)->addMinute(59)->addSecond(59);
+                            }
                         }
                     }
 

@@ -2,4 +2,5 @@ extend type Mutation {
      addUserBlock(id: Int!): UserBlock! @field(resolver: "App\\UserBlock@addUserBlock")
      addArticleBlock(id: Int!): UserBlock! @field(resolver: "App\\UserBlock@addArticleBlock")
      reportArticle(id: Int!): UserBlock! @field(resolver: "App\\UserBlock@reportArticle")
+      removeUserBlock(id:Int!):Int! @field(resolver: "App\\UserBlock@removeUserBlock")
 }

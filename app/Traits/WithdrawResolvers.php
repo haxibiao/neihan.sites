@@ -184,6 +184,7 @@ trait WithdrawResolvers
                 'tips'        => '秒到账',
                 'fontColor'   => '#FFA200',
                 'bgColor'     => '#EF514A',
+                'highWithdrawCardsRate' => null,
             ],
             [
                 'amount'      => 1,
@@ -191,27 +192,32 @@ trait WithdrawResolvers
                 'tips'        => '秒到账',
                 'fontColor'   => '#A0A0A0',
                 'bgColor'     => '#FFBB04',
+                'highWithdrawCardsRate' => null,
             ],
             [
                 'amount'      => 3,
                 'description' => $contribute * 3 . '日活跃',
-                'tips'        => '秒到账',
+                'tips'        => '限量抢',
                 'fontColor'   => '#A0A0A0',
                 'bgColor'     => '#FFBB04',
+                'highWithdrawCardsRate' => $user->doubleHighWithdrawCardsRate,
+
             ],
             [
                 'amount'      => 5,
                 'description' => $contribute * 5 . '日活跃',
-                'tips'        => '秒到账',
+                'tips'        => '限量抢',
                 'fontColor'   => '#A0A0A0',
                 'bgColor'     => '#FFBB04',
+                'highWithdrawCardsRate' => $user->fiveTimesHighWithdrawCardsRate,
             ],
             [
                 'amount'      => 10,
                 'description' => $contribute * 10 . '日活跃',
-                'tips'        => '秒到账',
+                'tips'        => '限量抢',
                 'fontColor'   => '#A0A0A0',
                 'bgColor'     => '#FFBB04',
+                'highWithdrawCardsRate' => $user->tenTimesHighWithdrawCardsRate,
             ],
         ];
 

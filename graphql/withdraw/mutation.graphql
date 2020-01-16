@@ -1,5 +1,5 @@
 extend type Mutation @middleware(checks: ["auth:api"]) {
-  createWithdraw(amount:Float!,platform:Platform = ALIPAY @spread):Withdraw  @field(resolver: "App\\Withdraw@createWithdraw")
+  createWithdraw(amount:Float!,platform:Platform = ALIPAY @spread,useWithdrawBadges:Boolean=false):Withdraw  @field(resolver: "App\\Withdraw@createWithdraw")
 }
 
 enum Platform{

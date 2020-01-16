@@ -10,5 +10,4 @@ type UserBlock {
 
 extend type Query {
    showUserBlock(user_id:Int!):[User]! @paginate(defaultCount: 10,builder: "App\\UserBlock@showUserBlock")
-   removeUserBlock(id:Int!):Int! @field(resolver: "App\\UserBlock@removeUserBlock")
 }
