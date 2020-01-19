@@ -3,7 +3,6 @@
 namespace App\Traits;
 
 use App\Contribute;
-use App\DDZ\AppTask;
 use App\Gold;
 
 trait ContributeResolvers
@@ -74,7 +73,7 @@ trait ContributeResolvers
             }
 
             //工厂统计看激励视频的次数
-            AppTask::countRewardVideoDone($user, $count);
+            \DDZUser::countRewardVideoDone($user, $count);
 
             //  拼接前端所需信息
             $message = $contribute === null ? $remark : $remark . '、贡献点';

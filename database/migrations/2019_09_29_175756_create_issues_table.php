@@ -25,7 +25,7 @@ class CreateIssuesTable extends Migration
 
             //利用软删除实现状态
             //$table->unsignedInteger('status')->default(0);
-
+            $table->unsignedInteger('gold')->default(0)->comment('金币');
             //pay
             $table->boolean('is_anonymous')->default(false)->comment('是否匿名问答');
             $table->decimal('bonus')->nullable()->commit('赏金');

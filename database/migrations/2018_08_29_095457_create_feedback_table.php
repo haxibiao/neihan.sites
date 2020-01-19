@@ -33,6 +33,8 @@ class CreateFeedbackTable extends Migration
                 ->comment('手机,邮箱');
 
             $table->unsignedInteger('status')->default(0)->comment('0待处理 1已驳回 2已处理');
+            $table->timestamp('top_at')->nullable()->comment('置顶时间');
+            $table->unsignedInteger('rank')->default(0)->comment('排名');
             $table->timestamps();
         });
     }

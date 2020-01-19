@@ -231,10 +231,9 @@ return [
         'Html'         => Collective\Html\HtmlFacade::class,
         'Pinyin'       => Overtrue\LaravelPinyin\Facades\Pinyin::class,
         'QrCode'       => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
-        //自定义工具类
-        'ImageUtils'   => App\Helpers\ImageUtils::class,
-        'StringUtils'  => App\Helpers\StringUtils::class,
-        'HttpUtils'    => App\Helpers\HttpUtils::class,
+
+        //懂得赚User接口
+        'DDZUser'      => App\DDZ\UserFacade::class,
     ],
 
 ];

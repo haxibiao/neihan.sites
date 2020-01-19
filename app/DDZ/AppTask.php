@@ -13,8 +13,7 @@ class AppTask extends Model
 
     protected $fillable = [
         'user_id',
-        'today_contribute',
-        'left_golds'
+        'left_golds',
     ];
 
     public function save(array $options = array())
@@ -28,22 +27,21 @@ class AppTask extends Model
         $hasModified = false;
         //同步余额等信息
         if ($user = getUser(false)) {
-            $this->left_rmb         = $user->wallet->available_balance;
-            $this->total_income     = $user->wallet->total_withdraw_amount;
-            $this->today_contribute = $user->today_contribute;
+            $this->left_rmb     = $user->wallet->available_balance;
+            $this->total_income = $user->wallet->total_withdraw_amount;
 
             // left_rmb or total_income  has changed
-            if($this->isDirty(['left_rmb','total_income'])){
+            if ($this->isDirty(['left_rmb', 'total_income'])) {
                 $hasModified = true;
             }
         }
         parent::save($options);
 
-        if($hasModified){
-            $user = $this->user;
-            $profile = $user->profile;
-            $successfulWithdraws = $user->appTasks()->sum('total_income');
-            $availableWithdraws = $user->appTasks()->sum('left_rmb');
+        if ($hasModified) {
+            $user                          = $this->user;
+            $profile                       = $user->profile;
+            $successfulWithdraws           = $user->appTasks()->sum('total_income');
+            $availableWithdraws            = $user->appTasks()->sum('left_rmb');
             $profile->successful_withdraws = $successfulWithdraws;
             $profile->avaliable_withdraws  = $availableWithdraws;
             $profile->save();
@@ -55,50 +53,4 @@ class AppTask extends Model
         return $this->belongsTo(\App\DDZ\User::class);
     }
 
-    //methods
-
-    //统计当日喝水任务次数
-    public static function countHeshuiTaskDone(\App\User $user, $count)
-    {
-        $ddzUser     = $user->getDongdezhuanUser();
-        $app_name_cn = env('APP_NAME_CN');
-        $appTask     = $ddzUser->appTasks()->whereAppName($app_name_cn)->first();
-        if ($appTask) {
-            $appTask->done_reward1 = $count;
-            $appTask->save();
-            \info("用户 $user->id,  $user->name, uuid: $user->uuid,  appTask里 $app_name_cn 在懂得赚,喝水任务次数更新成功, 2.0工厂面板可见...");
-        } else {
-            // \info("用户 $user->id, uuid: $user->uuid,  appTask里 $app_name_cn 在懂得赚没找到...");
-        }
-    }
-
-    //统计当日睡觉任务次数
-    public static function countShuijiaoTaskDone(\App\User $user, $count)
-    {
-        $ddzUser     = $user->getDongdezhuanUser();
-        $app_name_cn = env('APP_NAME_CN');
-        $appTask     = $ddzUser->appTasks()->whereAppName($app_name_cn)->first();
-        if ($appTask) {
-            $appTask->done_reward2 = $count;
-            $appTask->save();
-            \info("用户 $user->id, $user->name, uuid: $user->uuid,  appTask里 $app_name_cn 在懂得赚,睡觉任务次数更新成功, 2.0工厂面板可见...");
-        } else {
-            // \info("用户  $user->id, uuid: $user->uuid,  appTask里 $app_name_cn 在懂得赚没找到...");
-        }
-    }
-
-    //统计当日看视频次数
-    public static function countRewardVideoDone(\App\User $user, $count)
-    {
-        $ddzUser     = $user->getDongdezhuanUser();
-        $app_name_cn = env('APP_NAME_CN');
-        $appTask     = $ddzUser->appTasks()->whereAppName($app_name_cn)->first();
-        if ($appTask) {
-            $appTask->done_reward3 = $count;
-            $appTask->save();
-            \info("用户 $user->id,  $user->name, uuid: $user->uuid,  appTask里 $app_name_cn 在懂得赚,看视频任务次数更新成功, 2.0工厂面板可见...");
-        } else {
-            // \info("用户  $user->id, uuid: $user->uuid,  appTask里 $app_name_cn 在懂得赚没找到...");
-        }
-    }
 }

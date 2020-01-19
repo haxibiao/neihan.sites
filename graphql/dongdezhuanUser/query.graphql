@@ -8,4 +8,5 @@ type dongdezhuanUser{
     avatar:String @rename(attribute:"avatar_url")
     api_token:String
     created_at:String
+    ad_duration:Int
 }

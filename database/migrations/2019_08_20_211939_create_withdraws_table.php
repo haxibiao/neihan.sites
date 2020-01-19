@@ -26,6 +26,7 @@ class CreateWithdrawsTable extends Migration
             $table->string('trade_no')->nullable()->comment('第三方交易单号');
             $table->string('to_account')->nullable()->comment('提现账户');
             $table->string('to_platform')->nullable()->comment('支付平台');
+            $table->unsignedInteger('rate')->nullable()->index()->comment('倍率');
             $table->timestamps();
 
         });

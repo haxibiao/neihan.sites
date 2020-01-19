@@ -23,6 +23,7 @@ class CreateUserTaskTable extends Migration
                 $table->integer('status')->default(0)->comment('完成状态 -1:任务失败 0:未完成 1:进行中 2:任务达标未领取奖励 3:任务已完成');
                 $table->integer('reward_rate')->default(1)->comment('奖励倍数');
                 $table->timestamp('completed_at')->nullable()->comment('完成时间');
+                $table->integer('parent_task')->nullable()->comment('父任务');
                 $table->timestamps();
             });
         }

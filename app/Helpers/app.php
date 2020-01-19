@@ -9,6 +9,31 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
+/**
+ *
+ * 随机算法
+ *
+ * 假设我们有这样一个数组[ 'withdraw01'=>5, 'withdraw02'=>5, 'withdraw03'=>10]
+ * withdraw01概率25%，withdraw02奖概率25%，withdraw03奖概率50%
+ *
+ * @param $plucked
+ * @return int|string|null
+ */
+function getRand( $plucked ){
+    $luckId = null;
+    $sumRate = array_sum($plucked);
+    foreach ($plucked as $key => $value) {
+        $randNum = mt_rand(1, $sumRate);
+        if ($randNum <= $value) {
+            $luckId = $key;
+            break;
+        } else {
+            $sumRate -= $value;
+        }
+    }
+    return $luckId;
+}
+
 function getAppVersion()
 {
     return request()->header('version') ?: request()->get('version');

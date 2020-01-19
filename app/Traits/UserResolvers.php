@@ -2,17 +2,15 @@
 
 namespace App\Traits;
 
+use App\Exceptions\GQLException;
 use App\Ip;
-use App\User;
-use App\OAuth;
 use App\Profile;
+use App\User;
 use App\UserTask;
 use Carbon\Carbon;
-use App\DDZ\UserApp;
-use Illuminate\Support\Str;
-use App\Exceptions\GQLException;
-use Illuminate\Support\Facades\Cache;
 use GraphQL\Type\Definition\ResolveInfo;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 trait UserResolvers
@@ -242,7 +240,6 @@ trait UserResolvers
 
             Ip::createIpRecord('users', $user->id, $user->id);
         }
-//        $user->bingDDZ();
         $user->updateProfileAppVersion($user);
 
         app_track_user('静默登录', "auto_signIn", $user->id);
@@ -282,7 +279,7 @@ trait UserResolvers
                             $profile_infos[$index] = User::getGenderNumber($args[$index]);
                         }
                         if ($index == "birthday") {
-                            if(Str::contains($args[$index],"1970-1-1")){
+                            if (Str::contains($args[$index], "1970-1-1")) {
                                 $profile_infos[$index] = Carbon::parse($args[$index])->addHour(23)->addMinute(59)->addSecond(59);
                             }
                         }
@@ -336,31 +333,8 @@ trait UserResolvers
     public function bindDongdezhuan($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         if ($user = checkUser()) {
-
-//            App工厂效验
-            if ($user->checkUserIsBindDongdezhuan()) {
-                throw new GQLException('您已经绑定过了哦~');
-            }
-
-//            检查用户身份
-            $ddzUser = \App\DDZ\User::whereAccount($args['account'])->orWhere('phone', $args['account'])->first();
-            throw_if($ddzUser === null, GQLException::class, '绑定失败~懂得赚账号或密码输入错误~');
-
-//            懂得赚端效验
-            if (UserApp::checkIsBind($ddzUser->id)) {
-                $message = sprintf('该懂得赚账号在%s被绑定过了哦~,请检查您的信息是否正确~!', config('app.name_cn'));
-                throw new GQLException('' . $message . '');
-            }
-
-//            检查账号密码
-            if (!password_verify($args['password'], $ddzUser->password)) {
-                throw new GQLException('绑定失败~懂得赚账号或密码输入错误~');
-            }
-
-            \DB::transaction(static function () use ($user, $ddzUser) {
-                OAuth::createRelation($user->id, 'dongdezhuan', $ddzUser->id);
-                UserApp::bind($ddzUser->id);
-            });
+            //不允许用户从APP手动指定绑懂得赚账户，必须默认本手机...
+            $user->bindDDZ();
             return true;
         }
     }

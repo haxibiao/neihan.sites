@@ -18,6 +18,7 @@ class CreateTasksTable extends Migration
                 $table->increments('id');
                 $table->string('name')->comment('任务名称');
                 $table->text('details')->nullable()->comment('描述');
+                $table->string('icon')->after('details')->nullable()->comment("任务图标");
                 $table->integer('type')->nullable()->comment('类型：0:新人任务 1:每日任务 2:自定义任务 3:实时任务');
                 $table->json('reward')->nullable()->comment('奖励');
                 $table->unsignedInteger('count')->default(0)->comment('统计');
@@ -26,6 +27,7 @@ class CreateTasksTable extends Migration
                 $table->timestamp('start_at')->nullable()->comment('开始时间');
                 $table->timestamp('end_at')->nullable()->comment('截止时间');
                 $table->json('resolve')->nullable()->comment('解析');
+                $table->string('background_img')->nullable()->comment('任务背景图');
                 $table->timestamps();
 
             });

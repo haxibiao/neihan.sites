@@ -60,9 +60,9 @@ type User {
   """
   高额限量抢倍率
   """
-  doubleHighWithdrawCardsRate: Int
-  fiveTimesHighWithdrawCardsRate: Int
-  tenTimesHighWithdrawCardsRate: Int
+  doubleHighWithdrawCardsCount: Int
+  fiveTimesHighWithdrawCardsCount: Int
+  tenTimesHighWithdrawCardsCount: Int
 
   """
   高额限量抢令牌数量

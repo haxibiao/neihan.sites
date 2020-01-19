@@ -2,14 +2,13 @@
 
 namespace App\DDZ;
 
-use Psy\Util\Str;
-use App\DDZ\Invitation;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Model
 {
+    use UserAttrs;
 
     protected $connection = 'dongdezhuan';
 
@@ -32,6 +31,24 @@ class User extends Model
         'password', 'remember_token',
     ];
 
+    // 性别
+    const MALE_GENDER   = 0;
+    const FEMALE_GENDER = 1;
+
+    // 正常状态
+    const STATUS_ONLINE = 0;
+
+    // 冻结状态
+    const STATUS_OFFLINE = 1;
+
+    // 注销状态
+    const STATUS_DESTORY = 1;
+
+    // 默认头像
+    const AVATAR_DEFAULT = 'storage/avatar/avatar-1.jpg';
+
+    const DEFAULT_NAME = '槐序十七';
+
     public function save(array $options = array())
     {
         parent::save($options);
@@ -45,20 +62,19 @@ class User extends Model
         ]);
     }
 
-    //repo:
-    public static function makeNewUser($uuid)
+    public static function getGenders(): array
     {
-        $ddzUser = self::firstOrNew([
-            'uuid' => $uuid,
-        ], [
-            'uuid'      => $uuid,
-            'name'      => self::DEFAULT_NAME,
-            'api_token' => \Illuminate\Support\Str::random(60),
-            'avatar'    => self::AVATAR_DEFAULT,
-        ]);
-        $ddzUser->save();
-        UserApp::bind($ddzUser->id);
-        return $ddzUser;
+        return [
+            self::MALE_GENDER   => '男',
+            self::FEMALE_GENDER => '女',
+        ];
+    }
+
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(\App\DDZ\Product::class, 'user_products')
+            ->whereNull('user_products.deleted_at')
+            ->withPivot(['scope', 'expired_at']);
     }
 
     public function appTasks(): HasMany
@@ -83,71 +99,4 @@ class User extends Model
             ->withTimestamps();
     }
 
-    public static function getGenders(): array
-    {
-        return [
-            self::MALE_GENDER   => '男',
-            self::FEMALE_GENDER => '女',
-        ];
-    }
-
-    /**
-     * 性别
-     */
-    const MALE_GENDER   = 0;
-    const FEMALE_GENDER = 1;
-
-    // 正常状态
-    const STATUS_ONLINE = 0;
-
-    // 冻结状态
-    const STATUS_OFFLINE = 1;
-
-    // 注销状态
-    const STATUS_DESTORY = 1;
-
-    // 默认头像
-    const AVATAR_DEFAULT = 'storage/avatar/avatar-1.jpg';
-
-    const DEFAULT_NAME = '槐序十七';
-
-    //rmb钱包，默认钱包
-    public function getWalletAttribute()
-    {
-        if ($wallet = $this->wallets()->whereType(0)->first()) {
-            return $wallet;
-        }
-
-        return Wallet::rmbWalletOf($this);
-    }
-
-    public function getAvatarUrlAttribute()
-    {
-        if (\Illuminate\Support\Str::contains($this->avatar, 'http')) {
-            return $this->avatar;
-        }
-//        懂得赚 filesystem cdn url
-        return 'http://cos-dongdezhuan.dianmoge.com/' . $this->avatar;
-    }
-
-    public function getMyInviterAttribute()
-    {
-        $invitation = Invitation::where('be_inviter_id', $this->id)
-            ->whereNotNull('invited_in')
-            ->first();
-
-        return data_get($invitation,'user');
-    }
-
-    public function getProfileAttribute()
-    {
-        if ($profile = $this->hasOne(Profile::class)->first()) {
-            return $profile;
-        }
-        //确保profile数据完整
-        $profile          = new Profile();
-        $profile->user_id = $this->id;
-        $profile->save();
-        return $profile;
-    }
 }

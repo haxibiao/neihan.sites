@@ -3,55 +3,39 @@
 namespace App\Traits;
 
 use App\Contribute;
-use App\DDZ\UserApp;
-use App\Jobs\ReportUserEarningsToDDZ;
 use App\OAuth;
 use App\Profile;
 use App\User;
 use App\Wallet;
 use App\Withdraw;
 use Carbon\Carbon;
-use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 trait UserRepo
 {
     /**
      *
-     * 上报收益数据到懂得赚
+     * 计算高额提现倍率
      *
-     * @param float|null $availableWithdraws  可提现额
-     * @param float|null $successfulWithdraws 成功提现额
-     *
+     * @param User $user
+     * @return int
      */
-    public function reportUserEarningsToDDZ(float $availableWithdraws = null,float $successfulWithdraws=null){
-        try{
-            $ddzId = $this->getDongdezhuanUserId();
+    public function countByHighWithdrawCardsRate()
+    {
+        return \DDZUser::countByHighWithdrawCardsRate($this);
+    }
 
-            //未绑定懂得赚账号
-            if( $ddzId==0 ) {
-                return;
-            }
-
-            $prefix = is_prod_env() ? 'gql.' : 'develop.';
-            $endPoint  = sprintf('http://%sdongdezhuan.com/api/', $prefix);
-
-            //更新冗余数据
-            (new Client(['base_uri' => $endPoint]))->request('POST', 'user/appWithdrawDetail', [
-                'http_errors' => false,
-                'form_params' => [
-                    'app'         => config('app.name_cn'),
-                    'user_id'     => $ddzId,
-                    'successful_withdraws'  => $successfulWithdraws,
-                    'avaliable_withdraws'   => $availableWithdraws,
-                ],
-            ]);
-        } catch(\Exception $e) {
-            Log::error($e->getMessage());
-        }
+    /**
+     *
+     * 获取高额提现令牌数
+     *
+     * @param int $amount
+     * @return int
+     */
+    public function countByHighWithdrawBadgeCount(int $amount)
+    {
+        return \DDZUser::countByHighWithdrawBadgeCount($this, $amount);
     }
 
     public function createUser($name, $account, $password)
@@ -61,8 +45,8 @@ trait UserRepo
         if (filter_var($account, FILTER_VALIDATE_EMAIL)) {
             $user->email = $account;
         }
-        if(is_phone_number($account)){
-            $user->phone  = $account;
+        if (is_phone_number($account)) {
+            $user->phone = $account;
         }
         $user->account  = $account;
         $user->name     = $name;
@@ -74,8 +58,8 @@ trait UserRepo
         $user->save();
 
         Profile::create([
-            'user_id' => $user->id,
-            'app_version'  => request()->header('version', null),
+            'user_id'     => $user->id,
+            'app_version' => request()->header('version', null),
         ]);
 
         return $user;
@@ -414,22 +398,21 @@ trait UserRepo
 
     public function hasWithdrawOnDDZ(): bool
     {
-        if ($ddzUser = $this->getDongdezhuanUser()){
+        if ($ddzUser = $this->getDDZUser()) {
             $wallet = $ddzUser->getWalletAttribute();
 
-            if ($wallet->is_withdraw_before !== null){
+            if ($wallet->is_withdraw_before !== null) {
                 return $wallet->is_withdraw_before;
             }
 
-            if($this->getWalletAttribute()->withdraws()->exists()){
+            if ($this->getWalletAttribute()->withdraws()->exists()) {
                 // fix data.. 工厂内提现过直接更新懂得赚账号是否提现标识
-                $ddzUser->getWalletAttribute()->update(['is_withdraw_before' => true,]);
+                $ddzUser->getWalletAttribute()->update(['is_withdraw_before' => true]);
             }
 
         }
         return false;
     }
-
 
     public function checkWithdraw($amount)
     {
@@ -470,7 +453,7 @@ trait UserRepo
         $payAccount = $this->wallet->getPayId(Withdraw::ALIPAY_PLATFORM);
         if (!empty($payAccount)) {
             $wallet_ids = Wallet::where('pay_account', $payAccount)->select('id')->get()->pluck('id')->toArray();
-            $bool       = Withdraw::whereIn('wallet_id', $wallet_ids)->where('status','>',Withdraw::FAILURE_WITHDRAW)->whereDate('created_at', $time->toDateString())->exists();
+            $bool       = Withdraw::whereIn('wallet_id', $wallet_ids)->where('status', '>', Withdraw::FAILURE_WITHDRAW)->whereDate('created_at', $time->toDateString())->exists();
         }
 
         return $bool;
@@ -516,57 +499,21 @@ trait UserRepo
         return $this->role_id >= self::EDITOR_STATUS;
     }
 
-    public function checkUserIsBindDongdezhuan(): bool
+    public function getUserSuccessWithdrawAmount()
     {
-        return $this->getDongdezhuanUserId() > 0;
-    }
-
-    public function getDongdezhuanUser(): \App\DDZ\User
-    {
-        $ddzUserId = $this->getDongdezhuanUserId();
-        if(!$ddzUserId) {
-            return $this->createDDZUser($this->uuid);
-        }
-        $ddzUser =  \App\DDZ\User::find($ddzUserId);
-        if(!$ddzUser) {
-            throw new \RuntimeException('糟糕，DDZ账户获取失败');
-        }
-        return $ddzUser;
-    }
-
-    public function getDongdezhuanUserId(): int
-    {
-        $qb = $this->oauth()->where('oauth_type', 'dongdezhuan')->select('oauth_id');
-        if ($qb->count()){
-            return $qb->first()->oauth_id;
-        }
-        return 0;
-    }
-
-    public function getUserSuccessWithdrawAmount(){
         return $this->wallet->total_withdraw_amount;
     }
-    /**
-     * @param string $uuid
-     * @param User $user
-     * @throws \Throwable
-     */
-    public function bingDDZ(): void
+
+    //返回懂得赚账户
+    public function getDDZUser()
     {
-        if(empty($this->uuid)) {
-            throw new \Exception('uuid为空，不能绑定ddz');
-        }
-        $this->createDDZUser($this->uuid);
+        return \DDZUser::getUser($this->uuid);
     }
 
-    /**
-     * @param string $uuid
-     * @return mixed
-     */
-    public function createDDZUser(string $uuid): \App\DDZ\User
+    // FIXME: 绑定懂得赚 (基本废弃了...)
+    public function bingDDZ(): void
     {
-        $ddzUser = \App\DDZ\User::makeNewUser($this->uuid);
+        $ddzUser = \DDZUser::getUser($this->uuid);
         OAuth::createRelation($this->id, 'dongdezhuan', $ddzUser->id);
-        return $ddzUser;
     }
 }

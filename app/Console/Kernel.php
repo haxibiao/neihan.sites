@@ -34,6 +34,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('mark:hotpost')->dailyAt('3:00');
         $schedule->command('recount:novadata')->dailyAt('3:00');
 
+        if (is_prod_env()) {
+            //限量抢核算脚本
+            $schedule->command('process:withdrawLimitPlaces')->dailyAt('00:15');
+        }
         // 凌晨将 处理 提现等待过久的
         // $schedule->command('withdraw:process')->daily();
     }

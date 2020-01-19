@@ -23,12 +23,16 @@ class CreateCommentsTable extends Migration
             $table->integer('comment_id')->index()->nullable()->comment('楼中楼id');
             $table->integer('lou')->index()->default(0);
 
+
             $table->integer('count_likes')->index()->default(0);
             $table->integer('count_reports')->index()->default(0);
 
             //for app @user
             $table->integer('at_uid')->index()->nullable();
             $table->integer('status')->index()->nullable();
+
+            //评论被采纳
+            $table->boolean('is_accept')->default(false)->comment('是否被采纳');
 
             $table->timestamps();
             $table->softDeletes();

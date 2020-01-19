@@ -3,7 +3,6 @@
 namespace App\Traits;
 
 use App\Contribute;
-use App\DDZ\UserApp;
 use App\Helpers\Pay\PayUtils;
 use App\Transaction;
 use App\User;
@@ -17,6 +16,52 @@ use Illuminate\Support\Facades\Storage;
 trait WithdrawRepo
 {
 
+    /**
+     *
+     * 处理不同额度 [3, 5, 10]的限量抢逻辑
+     *
+     * @param $withdraws
+     * @param $withdrawThree
+     */
+    public static function progressWithdrawLimit($withdraws,$withdrawThree){
+
+        if(!$withdraws){
+            return;
+        }
+
+        $amountMapping = [
+            '3.00'  => 3,
+            '5.00'  => 5,
+            '10.00' => 10,
+        ];
+        $amount = $amountMapping[$withdrawThree];
+
+        $successWithdrawsCount = Withdraw::whereDate('created_at',Carbon::yesterday())
+            ->where('status',Withdraw::SUCCESS_WITHDRAW)
+            ->where('amount',$amount)
+            ->count();
+
+        //当前额度没有用户提现成功则选中一位幸运儿
+        $luckWithdrawId = null;
+        if($successWithdrawsCount == 0){
+            $plucked = $withdraws->pluck('rate','id')->all();
+            $luckWithdrawId = getRand($plucked);
+        }
+
+        foreach ( $withdraws as $withdraw ){
+
+            $currentId = $withdraw->id;
+
+            $isLuckUser = !is_null($luckWithdrawId) && $currentId === $luckWithdrawId;
+            if( $isLuckUser ){
+                $withdraw->processDongdezhuan();
+                continue;
+            } else {
+                $withdraw->processingFailedWithdraw('限量抢失败');
+            }
+        }
+    }
+
     //处理该笔提现
     public function process()
     {
@@ -26,16 +71,16 @@ trait WithdrawRepo
         if (!$this->isWaitingWithdraw()) {
             return;
         }
-        
-//        if ($user->isWithDrawTodayByPayAccount($this->created_at)) {
-//            return $this->illegalWithdraw('当前支付宝账号已经提现过了噢 ~，请勿重复提现~~');
-//        }
+
+        // if ($user->isWithDrawTodayByPayAccount($this->created_at)) {
+        //     return $this->illegalWithdraw('当前支付宝账号已经提现过了噢 ~，请勿重复提现~~');
+        // }
 
         //判断余额
         if ($wallet->balance < $this->amount) {
             return $this->illegalWithdraw('余额不足,非法订单！');
         }
-        $transferResult = $this->makingAlipayTransfer();
+        $transferResult = $this->makeAlipayTransfer();
 
         // 本地调试 模拟提现
         // $transferResult = ['order_id' => rand(10000000000, 100000000000), 'sub_msg' => '本地调试提现成功'];
@@ -73,7 +118,7 @@ trait WithdrawRepo
             return $this->illegalWithdraw('余额不足,非法订单！');
         }
 
-        $result = $this->makingDongdezhuanTransfer($user);
+        $result = $this->makeDongdezhuanTransfer($user);
 
         if (isset($result['success'])) {
             //转账成功
@@ -90,7 +135,7 @@ trait WithdrawRepo
      *
      * @return array
      */
-    private function makingAlipayTransfer()
+    private function makeAlipayTransfer()
     {
         $result   = [];
         $wallet   = $this->wallet;
@@ -133,62 +178,10 @@ trait WithdrawRepo
         return $result;
     }
 
-    private function makingDongdezhuanTransfer(User $user)
+    private function makeDongdezhuanTransfer(User $user)
     {
-
-        $result = array();
-        $appId  = UserApp::checkApp();
-
-        if ($appId === null) {
-            $result['error'] = '当前App没有权限提现到懂得赚哦~';
-            return $result;
-        }
-
-        $app     = $appId     = \App\DDZ\App::find($appId);
-        $ddzUser = $user->getDongdezhuanUser();
-
-        $remark = '从' . $app->name . '提现到懂得赚' . $this->amount . '元';
-
-        try {
-//            1.开启事务
-
-            \DB::beginTransaction();
-
-//            2.生成转账订单
-            $order = \App\DDZ\Order::create([
-                'user_id'     => $ddzUser->id,
-                'app_id'      => $app->id,
-                'app_user_id' => $user->id,
-                'amount'      => $this->amount,
-                'remark'      => $remark,
-                'receipt'     => self::getOrderNum(),
-            ]);
-
-//            3.写入懂得赚转账流水记录
-            \App\DDZ\Transaction::create([
-                'wallet_id' => $ddzUser->wallet->id,
-                'type'      => '转账',
-                'status'    => '已支付',
-                'remark'    => $app->name . '转账',
-                'amount'    => $order->amount,
-                'balance'   => $ddzUser->wallet->balance + $order->amount,
-            ]);
-
-//            4.转账
-            $order->status = \App\DDZ\Order::STATUS_SUCCESS;
-            $order->save();
-
-            \DB::commit();
-
-            $result['success'] = $order->receipt;
-            return $result;
-        } catch (\Exception $exception) {
-            \DB::rollBack();
-            info($exception->getMessage());
-            $result['error'] = '转账失败,服务器打瞌睡了~';
-            return $result;
-        }
-
+        //重构到DDZ下面
+        return \DDZUser::withdraw($user, $this->amount, self::getOrderNum());
     }
 
     /**
@@ -246,7 +239,7 @@ trait WithdrawRepo
      * @return void
      * @throws \Exception
      */
-    protected function processingFailedWithdraw($remark = "")
+    public function processingFailedWithdraw($remark = "")
     {
         //重新查询锁住该记录更新
         $withdraw = Withdraw::lockForUpdate()->find($this->id);
@@ -261,14 +254,14 @@ trait WithdrawRepo
             $withdraw->save();
 
             // 2.退回提现贡献点
-            $contribute = $withdraw->amount * Contribute::WITHDRAW_DATE;
-            Contribute::create([
-                'user_id' => $user->id,
-                'remark'  => '提现失败返回贡献值',
-                'amount'  => $contribute,
-                'contributed_id' => $withdraw->id,
-                'contributed_type' => 'withdraws',
-            ]);
+//            $contribute = $withdraw->amount * Contribute::WITHDRAW_DATE;
+//            Contribute::create([
+//                'user_id'          => $user->id,
+//                'remark'           => '提现失败返回贡献值',
+//                'amount'           => $contribute,
+//                'contributed_id'   => $withdraw->id,
+//                'contributed_type' => 'withdraws',
+//            ]);
 
             //事务提交
             DB::commit();

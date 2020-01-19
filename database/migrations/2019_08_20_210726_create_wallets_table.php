@@ -18,7 +18,7 @@ class CreateWalletsTable extends Migration
         }
         Schema::create('wallets', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('user_id')->unique()->comment('用户ID');
+            $table->unsignedInteger('user_id')->index()->comment('用户ID');
             $table->tinyInteger('type')->default(0)->comment('0:余额钱包,交易记录transactions，1:金币钱包,交易记录golds');
 
             //FIXME:  提现信息移动到profile ..

@@ -12,7 +12,6 @@ use App\User;
 use App\Wallet;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 trait UserAttrs
@@ -23,8 +22,9 @@ trait UserAttrs
      *
      * @return int
      */
-    public function getDoubleHighWithdrawCardsRateAttribute(){
-        return 0;
+    public function getDoubleHighWithdrawCardsCountAttribute()
+    {
+        return $this->countByHighWithdrawCardsRate();
     }
     /**
      *
@@ -32,8 +32,9 @@ trait UserAttrs
      *
      * @return int
      */
-    public function getFiveTimesHighWithdrawCardsRateAttribute(){
-        return 0;
+    public function getFiveTimesHighWithdrawCardsCountAttribute()
+    {
+        return $this->countByHighWithdrawCardsRate();
     }
 
     /**
@@ -42,8 +43,9 @@ trait UserAttrs
      *
      * @return int
      */
-    public function getTenTimesHighWithdrawCardsRateAttribute(){
-        return 0;
+    public function getTenTimesHighWithdrawCardsCountAttribute()
+    {
+        return $this->countByHighWithdrawCardsRate();
     }
     /**
      *
@@ -51,8 +53,9 @@ trait UserAttrs
      *
      * @return mixed
      */
-    public function getThreeYuanWithdrawBadgesCountAttribute(){
-        return 0;
+    public function getThreeYuanWithdrawBadgesCountAttribute()
+    {
+        return $this->countByHighWithdrawBadgeCount(3);
     }
     /**
      *
@@ -60,8 +63,9 @@ trait UserAttrs
      *
      * @return mixed
      */
-    public function getFiveYuanWithdrawBadgesCountAttribute(){
-        return 0;
+    public function getFiveYuanWithdrawBadgesCountAttribute()
+    {
+        return $this->countByHighWithdrawBadgeCount(5);
     }
     /**
      *
@@ -69,8 +73,9 @@ trait UserAttrs
      *
      * @return mixed
      */
-    public function getTenYuanWithdrawBadgesCountAttribute(){
-        return 0;
+    public function getTenYuanWithdrawBadgesCountAttribute()
+    {
+        return $this->countByHighWithdrawBadgeCount(10);
     }
 
     //用户激励视频的计数器
@@ -200,6 +205,7 @@ trait UserAttrs
 
     public function getTotalContributionAttribute()
     {
+        //TODO: sum比取last费时，可以用total替代这个...
         return $this->contributes()->sum('amount');
     }
 
@@ -443,14 +449,15 @@ trait UserAttrs
         return $amount;
     }
 
+    //默认都自动绑定懂得赚
     public function getIsBindDongdezhuanAttribute()
     {
-        return $this->checkUserIsBindDongdezhuan();
+        return true;
     }
 
     public function getDongdezhuanUserAttribute()
     {
-        return $this->getDongdezhuanUser();
+        return $this->getDDZUser();
     }
 
     public function getForceAlertAttribute()

@@ -56,18 +56,6 @@ trait WalletAttrs
         return $count;
     }
 
-    public function getDongdezhuanAvailableBalanceAttribute()
-    {
-        if ($user = checkUser()) {
-            $oauth = $user->oauth()->where('oauth_type', 'dongdezhuan')->first();
-            if ($oauth !== null) {
-                $ddzUser = \App\DDZ\User::findOrFail($oauth->oauth_id);
-                return $ddzUser->wallet->available_balance;
-            }
-        }
-        return null;
-    }
-
     public function getPlatformsAttribute()
     {
         return [

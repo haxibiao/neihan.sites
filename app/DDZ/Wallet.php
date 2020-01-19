@@ -106,4 +106,13 @@ class Wallet extends Model
 
         return $availableBalance;
     }
+    /**
+     * 获取用户提现阶段
+     * @return float
+     */
+    public function getWithdrawPhaseAttribute(): float
+    {
+        $withdraw = $this->transactions()->where('type', '提现')->latest('id')->first();
+        return $withdraw ? $withdraw->amount : 0;
+    }
 }

@@ -23,6 +23,7 @@ class CreateResolutionsTable extends Migration
             $table->string('image_url')->nullable();
             $table->longText('answer');
 
+            $table->unsignedInteger('gold')->default(0)->comment('金币');
             $table->unsignedInteger('count_likes')->default(0);
             $table->unsignedInteger('count_unlikes')->default(0);
             $table->unsignedInteger('count_comments')->default(0);

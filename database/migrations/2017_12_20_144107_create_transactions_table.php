@@ -17,7 +17,7 @@ class CreateTransactionsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->nullable()->index();
             $table->unsignedInteger('wallet_id')->nullable()->index();
-
+            
             //TODO: morphs('tradable')
             $table->string('type')->index()->comment('账单类型：打赏, 充值，提现，奖励问答等');
             $table->integer('relate_id')->nullable()->comment('关联的对象id，配合type可以查询关联对象');

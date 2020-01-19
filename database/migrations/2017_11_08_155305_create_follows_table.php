@@ -18,6 +18,10 @@ class CreateFollowsTable extends Migration
             $table->integer('user_id')->index();
             $table->string('followed_type')->index();
             $table->integer('followed_id')->index();
+            $table->integer('status')->default(0)->index();
+            $table->unsignedInteger('gold')->default(0)->comment('金币');
+            $table->decimal('amount')->default(0)->change();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

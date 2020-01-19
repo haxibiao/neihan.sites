@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use App\DDZ\AppTask;
 use App\Exceptions\GQLException;
 use App\Task;
 use App\UserTask;
@@ -49,9 +48,9 @@ trait TaskResolvers
         $parentUserTask->save();
         //完成的次数
         $doneCount = $parentTask->getchildrenBuild($user_id)->whereNotNull('completed_at')->count();
-        //TODO: 单次喝水打卡或者补卡成功, 更新次数到工厂
+        //单次喝水打卡或者补卡成功, 更新次数到工厂
         if (getAppVersion() >= '2.9.0') {
-            AppTask::countHeshuiTaskDone($user, $doneCount);
+            \DDZUser::countHeshuiTaskDone($user, $doneCount);
         }
         return $parentTask->childrenTasks;
     }
@@ -180,7 +179,7 @@ trait TaskResolvers
         }
         //TODO: 更新睡觉次数到工厂里
         if (getAppVersion() >= '2.9.0') {
-            AppTask::countShuijiaoTaskDone($user, $countOfSleep);
+            \DDZUser::countShuijiaoTaskDone($user, $countOfSleep);
         }
         return $user_task;
     }

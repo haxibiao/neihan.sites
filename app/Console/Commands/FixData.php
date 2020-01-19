@@ -52,6 +52,37 @@ class FixData extends Command
         return $this->error("必须提供你要修复数据的table");
     }
 
+    public function failWithdraws(){
+        $withdraws = Withdraw::whereIn('id',[5486,5485])->get();
+        foreach ($withdraws as $withdraw){
+            //重新查询锁住该记录更新
+            $wallet   = $withdraw->wallet;
+            $user     = $wallet->user;
+
+            DB::beginTransaction(); //开启事务
+            try {
+                //1.更改提现记录
+                $withdraw->status = Withdraw::FAILURE_WITHDRAW;
+                $withdraw->remark = '提现失败';
+                $withdraw->save();
+
+                // 2.退回提现贡献点
+                Contribute::create([
+                    'user_id' => $user->id,
+                    'remark'  => '提现失败返回贡献值',
+                    'amount'  => 128,
+                    'contributed_id' => $withdraw->id,
+                    'contributed_type' => 'withdraws',
+                ]);
+                //事务提交
+                DB::commit();
+            } catch (\Exception $ex) {
+                Log::error($ex);
+                DB::rollback(); //数据回滚
+            }
+        }
+    }
+
     /**
      * 修复抖音抓取视频的描述信息
      */

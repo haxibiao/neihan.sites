@@ -17,6 +17,7 @@ class CreateAppConfigsTable extends Migration
             $table->string('group')->comment('功能组：ios huawei android');
             $table->string('name')->comment('功能名称, 例子：ad,wallet');
             $table->unsignedInteger('state')->default(1)->comment('状态，1 开启 0 关闭');
+            $table->json('data')->nullable()->comment('app配置信息');
             $table->timestamps();
         });
     }

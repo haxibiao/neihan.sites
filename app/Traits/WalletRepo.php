@@ -27,20 +27,26 @@ trait WalletRepo
         ]);
     }
 
-    public function withdraw($amount, $to_account = null, $to_platform = Withdraw::ALIPAY_PLATFORM): Withdraw
+    public function withdraw($amount, $to_account = null, $to_platform = Withdraw::ALIPAY_PLATFORM,$totalRate = null): Withdraw
     {
         if ($this->available_balance < $amount) {
             throw new GQLException('余额不足');
         }
-
         $withdraw = Withdraw::create([
             'wallet_id'   => $this->id,
             'amount'      => $amount,
             'to_account'  => $to_account ?? $this->getPayId($to_platform),
             'to_platform' => $to_platform,
         ]);
-        //交给提现队列
-        dispatch(new ProcessWithdraw($withdraw->id))->onQueue('withdraws');
+
+        $isImmediatePayment = is_null($totalRate);
+
+        if($isImmediatePayment){
+            dispatch(new ProcessWithdraw($withdraw->id))->onQueue('withdraws');
+        } else {
+            $withdraw->rate = $totalRate;
+            $withdraw->save();
+        }
         return $withdraw;
     }
 

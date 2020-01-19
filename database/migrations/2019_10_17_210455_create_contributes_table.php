@@ -16,7 +16,8 @@ class CreateContributesTable extends Migration
         Schema::create('contributes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id')->index()->comment('用户id');
-            $table->tinyInteger('amount')->comment('贡献数量');
+            $table->integer('amount')->comment('贡献数量');
+            $table->string('remark')->nullable()->comment('备注');
             $table->morphs('contributed');
             $table->timestamps();
         });
