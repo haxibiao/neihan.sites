@@ -2,6 +2,7 @@
 namespace App\Traits;
 
 use App\Exceptions\GQLException;
+use App\Gold;
 use App\Video;
 use App\Visit;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -14,9 +15,15 @@ trait VideoResolvers
         $user   = getUser();
         $inputs = $args['input'];
 
+        $countReward = Gold::whereUserId($user->id)->whereDate('created_at',today())->count('id');
+        if($countReward > 500){
+            return null;
+        }
+
         //兼容老接口
         if (isset($inputs['video_id'])) {
             $video = Video::find($inputs['video_id']);
+
             if (is_null($video)) {
                 throw new GQLException('视频不存在,请刷新后再试！');
             }
