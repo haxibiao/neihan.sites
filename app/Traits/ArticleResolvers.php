@@ -204,8 +204,6 @@ trait ArticleResolvers
      */
     public function resolveDouyinVideo($rootValue, array $args, $context, $resolveInfo)
     {
-        throw new GQLException('粘贴失败,采集服务维护中,请耐心等待！');
-
         $user = getUser();
         throw_if($user->isBlack(), GQLException::class, '发布失败,你以被禁言');
 

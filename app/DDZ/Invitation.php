@@ -4,10 +4,13 @@ namespace App\DDZ;
 
 use DDZUser;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 
 class Invitation extends Model
 {
+    use SoftDeletes;
+
     protected $connection = 'dongdezhuan';
 
     protected $fillable = [
