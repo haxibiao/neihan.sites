@@ -58,15 +58,20 @@ class TaskSeeder extends Seeder
         // ]);
         //
 
-        Task::where('resolve->task_en', 'DrinkWaterAll')->first()->update(
+//        Task::where('resolve->task_en', 'DrinkWaterAll')->first()->update(
+//            [
+//                'reward'  => array("gold" => "100", 'contribute' => '16'),
+//            ]
+//        );
+//
+//        Task::where('resolve->task_en', 'Wake')->first()->update(
+//            [
+//                'reward'  => array("gold" => "15", 'contribute' => '4'),
+//            ]
+//        );
+        Task::where('name', '今日视频发布满15个')->first()->update(
             [
-                'reward'  => array("gold" => "100", 'contribute' => '16'),
-            ]
-        );
-
-        Task::where('resolve->task_en', 'Wake')->first()->update(
-            [
-                'reward'  => array("gold" => "15", 'contribute' => '4'),
+                'resolve'  => array("limit" => "15", 'method' => 'publicArticleTask','router' => 'GoDYTutorial'),
             ]
         );
 
