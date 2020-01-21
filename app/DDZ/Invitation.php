@@ -134,10 +134,19 @@ class Invitation extends Model
     public function rewardSuperior(float $rewardAmount, string $remark)
     {
         $superiorInvitation = Invitation::hasBeInvitation($this->user_id);
-        $superior           = $superiorInvitation->user;
-        if (!is_null($superior)) {
-            //上上级分红
-            DDZUser::makeInvitationReawrd($superior, $rewardAmount, $remark);
+        //存在上上级邀请关系
+        if (!is_null($superiorInvitation)) {
+
+            //交叉关系,互相为上下级,不发放奖励
+            if ($superiorInvitation->user_id == $this->be_inviter_id) {
+                return null;
+            }
+
+            $superior = $superiorInvitation->user;
+            if (!is_null($superior)) {
+                //上上级分红
+                DDZUser::makeInvitationReawrd($superior, $rewardAmount, $remark);
+            }
         }
     }
 

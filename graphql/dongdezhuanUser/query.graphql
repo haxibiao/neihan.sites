@@ -8,5 +8,8 @@ type dongdezhuanUser{
     avatar:String @rename(attribute:"avatar_url")
     api_token:String
     created_at:String
+    """
+    激励视频间隔时间 （毫秒）
+    """
     ad_duration:Int
 }

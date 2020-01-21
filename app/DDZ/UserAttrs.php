@@ -46,7 +46,7 @@ trait UserAttrs
         return $profile;
     }
 
-    // 根据提现阶段获取当前广告的间隔时间秒
+    // 根据提现阶段获取当前广告的间隔时间 毫秒
     public function getAdDurationAttribute()
     {
         $withdrawPhase = $this->wallet->withdraw_phase;
@@ -72,6 +72,6 @@ trait UserAttrs
                 break;
         }
 
-        return $seconds;
+        return $seconds * 1000;
     }
 }

@@ -20,6 +20,7 @@ return [
 
     'name_cn'         => env('APP_NAME_CN', 'Laravel'),
     'name'            => env('APP_NAME', 'dianmoge'),
+    'domain'          => env('APP_DOMAIN'),
 
     /*
     |--------------------------------------------------------------------------

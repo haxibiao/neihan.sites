@@ -19,8 +19,9 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
  * @param $plucked
  * @return int|string|null
  */
-function getRand( $plucked ){
-    $luckId = null;
+function getRand($plucked)
+{
+    $luckId  = null;
     $sumRate = array_sum($plucked);
     foreach ($plucked as $key => $value) {
         $randNum = mt_rand(1, $sumRate);
@@ -360,4 +361,23 @@ function formatSizeUnits($bytes)
 function is_email($email)
 {
     return filter_var($email, FILTER_VALIDATE_EMAIL);
+}
+
+function failed_response($statusCode = 500, $message = '服务器开小差了...')
+{
+    return response()->json([
+        'status'  => 'FAILED',
+        'code'    => $statusCode,
+        'message' => $message,
+    ], $statusCode);
+}
+
+function successful_response($statusCode = 200, $data)
+{
+    return response()->json([
+        'status' => 'SUCCESS',
+        'code'   => $statusCode,
+        'data'   => $data,
+    ], $statusCode);
+
 }
