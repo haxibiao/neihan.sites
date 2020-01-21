@@ -86,11 +86,28 @@ class Invitation extends Model
         return $this->today_rewards_count >= Invitation::TODAY_MAX_REWARDS_COUNT;
     }
 
-    //返回当前分红的倍率
-    public static function getBonusRate()
+    public function getBonusRate()
     {
-        //TODO：先简单返回，去掉InvitationPhase表，换一个数组，代码更新即可
         return 1;
+        // $phases = Invitation::getBonusPhases();
+
+        // return Arr::get($phases, $this->phase_id, 1);
+    }
+
+    public static function getBonusPhases()
+    {
+        return [
+            '1'  => ['rate' => 1.0],
+            '2'  => ['rate' => 1.1],
+            '3'  => ['rate' => 1.2],
+            '4'  => ['rate' => 1.3],
+            '5'  => ['rate' => 1.4],
+            '6'  => ['rate' => 1.5],
+            '7'  => ['rate' => 1.6],
+            '8'  => ['rate' => 1.7],
+            '9'  => ['rate' => 1.8],
+            '10' => ['rate' => 2.0],
+        ];
     }
 
     public function bonus(float $rewardAmount)
@@ -119,7 +136,7 @@ class Invitation extends Model
     public function calculateReward($reward)
     {
         //分红倍率
-        $rate = Invitation::getBonusRate();
+        $rate = $this->getBonusRate();
         //分红的加速倍率，1+才有效
         if ($rate >= 1) {
             $reward *= $rate;
