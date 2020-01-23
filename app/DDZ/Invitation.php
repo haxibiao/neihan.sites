@@ -88,10 +88,15 @@ class Invitation extends Model
 
     public function getBonusRate()
     {
-        return 1;
-        // $phases = Invitation::getBonusPhases();
+        $rate           = 1;
+        $userInvitation = UserInvitation::userId($this->user_id)->first();
+        if (!is_null($userInvitation)) {
+            $phases = Invitation::getBonusPhases();
+            $key    = sprintf('%s.rate', $userInvitation->phase_id);
+            $rate   = Arr::get($phases, $key, 1);
+        }
 
-        // return Arr::get($phases, $this->phase_id, 1);
+        return $rate;
     }
 
     public static function getBonusPhases()
@@ -115,6 +120,7 @@ class Invitation extends Model
         //计算奖励收益
         $rewardAmount = $this->calculateReward($rewardAmount);
         if ($rewardAmount >= 0.01) {
+            //这个收益是翻倍收益
             $this->rewardInviter($rewardAmount, '好友贡献奖励');
 
             //邀请人再向他的上级分红奖励 && 随机奖励0.01-0.02
@@ -138,12 +144,11 @@ class Invitation extends Model
         //分红倍率
         $rate = $this->getBonusRate();
         //分红的加速倍率，1+才有效
-        if ($rate >= 1) {
-            $reward *= $rate;
-        }
 
+        $rewardAmount = 0.05;
+        $rewardAmount = $rate > 1 ? $rewardAmount * $rate : $rewardAmount;
         //一天20次后奖励下调到0.01
-        $rewardAmount = $this->isMaxUper() ? 0.01 : 0.05;
+        $rewardAmount = $this->isMaxUper() ? 0.01 : $rewardAmount;
 
         return $rewardAmount;
     }

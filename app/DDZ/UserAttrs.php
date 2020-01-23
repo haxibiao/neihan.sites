@@ -50,25 +50,22 @@ trait UserAttrs
     public function getAdDurationAttribute()
     {
         $withdrawPhase = $this->wallet->withdraw_phase;
-        $seconds = 60;
-        switch ($withdrawPhase){
-            case 5:
-                $seconds = 90;
-                break;
+        $seconds       = 120;
+        switch ($withdrawPhase) {
             case 20:
-                $seconds = 120;
+                $seconds = $seconds + 30 * 1;
                 break;
             case 50:
-                $seconds = 150;
+                $seconds = $seconds + 30 * 2;
                 break;
             case 100:
-                $seconds = 180;
+                $seconds = $seconds + 30 * 3;
                 break;
             case 200:
-                $seconds = 210;
+                $seconds = $seconds + 30 * 4;
                 break;
             case 500:
-                $seconds = 240;
+                $seconds = $seconds + 30 * 5;
                 break;
         }
 
