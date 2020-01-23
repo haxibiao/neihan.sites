@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
 
             $table->string('password')->nullable();
             $table->string('avatar')->nullable();
-            $table->integer('status')->default(0)->index();
+            $table->integer('status')->default(0)->index()->comment('0:默认，-1:异常');
             $table->boolean('role_id')->default(0)->index()->comment("0用户，１签约作者，２：管理员");
 
             $table->unsignedInteger('ticket')->default(180)->comment('精力点');

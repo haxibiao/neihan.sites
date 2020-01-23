@@ -2,11 +2,11 @@
 namespace App\Traits;
 
 use App\Contribute;
+use App\DDZ\User as DDZUser;
 use App\Exceptions\GQLException;
 use App\Exchange;
 use App\Version;
 use App\Withdraw;
-use App\DDZ\User as DDZUser;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
@@ -17,7 +17,10 @@ trait WithdrawResolvers
 {
     public function createWithdraw($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $user              = getUser();
+        $user = getUser();
+        if (!$user->status) {
+            throw new GQLException('账户异常,详情咨询QQ群:808982693');
+        }
         $profile           = $user->profile;
         $amount            = $args['amount'];
         $platform          = $args['platform'];

@@ -1,6 +1,11 @@
 <?php
 use Illuminate\Support\Facades\Request;
 
+function get_os_version()
+{
+    return request()->header('systemVersion') ?? request()->get('systemVersion');
+}
+
 function get_ip()
 {
     $ip = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
@@ -37,7 +42,7 @@ function trim_https($url)
 {
     //替换URL协议
     if (starts_with($url, 'https:')) {
-        return  str_replace(['https:'], 'http:', $url);
+        return str_replace(['https:'], 'http:', $url);
     }
     return $url;
 }

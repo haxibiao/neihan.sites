@@ -46,11 +46,17 @@ class User extends Authenticatable implements MustVerifyEmail
     // 正常状态
     const STATUS_ONLINE = 0;
 
-    // 冻结状态
+    //以前奇怪的冻结账户，怎么用status=1啊...
+    //FIXME: 这个后面要修复为-1, 注销修复为-2, 负数的status都是异常的
+
+    // 封禁状态
     const STATUS_OFFLINE = 1;
 
+    //暂时冻结的账户
+    const STATUS_FREEZE = -1;
+
     // 注销状态
-    const STATUS_DESTORY = 1;
+    const STATUS_DESTORY = -2; //这个注销状态值太诡异
 
     // 默认头像
     const AVATAR_DEFAULT = 'storage/avatar/avatar-1.jpg';
@@ -202,14 +208,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function collections()
     {
 //        //默认给个文集...
-//        if (!Collection::where('user_id', $this->id)->count()) {
-//            $collection = Collection::firstOrNew([
-//                'user_id' => $this->id,
-//                'name'    => '日记本',
-//            ]);
-//            $collection->save();
-//            $this->count_collections = 1;
-//        }
+        //        if (!Collection::where('user_id', $this->id)->count()) {
+        //            $collection = Collection::firstOrNew([
+        //                'user_id' => $this->id,
+        //                'name'    => '日记本',
+        //            ]);
+        //            $collection->save();
+        //            $this->count_collections = 1;
+        //        }
 
         return $this->hasMany(\App\Collection::class);
     }
@@ -323,7 +329,7 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    public function oauth():HasMany
+    public function oauth(): HasMany
     {
         return $this->hasMany(OAuth::class);
     }

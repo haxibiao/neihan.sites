@@ -56,6 +56,26 @@ trait ContributeResolvers
     public function clickRewardVideo($rootValue, array $args, $context, $resolveInfo)
     {
         if ($user = checkUser()) {
+
+            $lastRewardContribute = $user->contributes()
+                ->where('contributed_type', self::REWARD_VIDEO_CONTRIBUTED_TYPE)
+                ->latest('id')
+                ->first();
+
+            //激励视频的贡献获得间隔已经不允许低于2分钟了
+            if ($lastRewardContribute && $lastRewardContribute->created_at > now()->subSeconds(119)) {
+                $user->status = \App\User::STATUS_FREEZE; //账户异常了
+                $user->save();
+            }
+
+            if ($user->status == \App\User::STATUS_FREEZE) {
+                return [
+                    'message'    => '账户行为异常，已上报...',
+                    'gold'       => 0,
+                    'contribute' => 0,
+                ];
+            }
+
             $count      = self::getCountByType(self::REWARD_VIDEO_CONTRIBUTED_TYPE, $user);
             $isClick    = $args['is_click'];
             $contribute = null; //激励视频永远至少+2贡献
