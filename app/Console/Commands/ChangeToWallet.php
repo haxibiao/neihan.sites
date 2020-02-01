@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Exchange;
-use App\Jobs\ReportUserEarningsToDDZ;
 use App\User;
 use App\Wallet;
 use Illuminate\Console\Command;
@@ -24,11 +23,11 @@ class ChangeToWallet extends Command
 
     public function handle()
     {
-        User::where('status', 0)->chunk(1000, function ($users) {
+        User::chunk(1000, function ($users) {
             foreach ($users as $user) {
-                if ($user->gold > 50){
+                if ($user->gold > 50) {
                     $this->exchangeToWallet($user);
-                    $this->info($user->id.'：'.$user->wallet->balance);
+                    $this->info($user->id . '：' . $user->wallet->balance);
                 }
             }
         });

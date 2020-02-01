@@ -62,16 +62,19 @@ trait ContributeResolvers
                 ->latest('id')
                 ->first();
 
-            //激励视频的贡献获得间隔已经不允许低于2分钟了
-            if ($lastRewardContribute && $lastRewardContribute->created_at > now()->subSeconds(119)) {
+            //激励视频的贡献获得间隔已经不允许低于60s分钟（降低误伤正常用户的概率）
+            //http://pm.haxibiao.com:8080/browse/DDZ-488
+            if ($lastRewardContribute && now()->diffInSeconds($lastRewardContribute->created_at) < 60) {
                 $user->status = \App\User::STATUS_FREEZE; //账户异常了
                 $user->save();
             }
 
+            $remark     = '激励视频奖励';
             if ($user->status == \App\User::STATUS_FREEZE) {
+                $gold = Gold::makeIncome($user, Gold::REWARD_VIDEO_GOLD, $remark);
                 return [
-                    'message'    => '账户行为异常，已上报...',
-                    'gold'       => 0,
+                    'message'    => $remark,
+                    'gold'       => $gold->gold,
                     'contribute' => 0,
                 ];
             }
@@ -79,7 +82,7 @@ trait ContributeResolvers
             $count      = self::getCountByType(self::REWARD_VIDEO_CONTRIBUTED_TYPE, $user);
             $isClick    = $args['is_click'];
             $contribute = null; //激励视频永远至少+2贡献
-            $remark     = '激励视频奖励';
+
 
             $gold = Gold::makeIncome($user, Gold::REWARD_VIDEO_GOLD, $remark);
 
