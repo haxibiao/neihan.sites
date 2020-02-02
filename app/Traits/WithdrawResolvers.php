@@ -2,6 +2,7 @@
 namespace App\Traits;
 
 use App\Contribute;
+use App\User;
 use App\DDZ\User as DDZUser;
 use App\Exceptions\GQLException;
 use App\Exchange;
