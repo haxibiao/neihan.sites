@@ -18,7 +18,7 @@ trait WithdrawResolvers
     public function createWithdraw($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $user = getUser();
-        if (!$user->status) {
+        if ($user->status == User::STATUS_FREEZE) {
             throw new GQLException('账户异常,详情咨询QQ群:808982693');
         }
         $profile           = $user->profile;
