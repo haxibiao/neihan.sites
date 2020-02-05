@@ -37,6 +37,7 @@ class Kernel extends ConsoleKernel
         if (is_prod_env()) {
             //限量抢核算脚本
             $schedule->command('process:withdrawLimitPlaces')->dailyAt('00:15');
+            $schedule->command('withdrawl:process')->cron('0 */3 * * *');
         }
         // 凌晨将 处理 提现等待过久的
         // $schedule->command('withdraw:process')->daily();

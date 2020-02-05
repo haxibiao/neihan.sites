@@ -4,6 +4,8 @@ namespace App\Traits;
 
 use App\Contribute;
 use App\Gold;
+use App\Version;
+use Illuminate\Support\Str;
 
 trait ContributeResolvers
 {
@@ -62,14 +64,19 @@ trait ContributeResolvers
                 ->latest('id')
                 ->first();
 
-            //激励视频的贡献获得间隔已经不允许低于60s分钟（降低误伤正常用户的概率）
+            //激励视频奖励只允许最新版本的用户获得
             //http://pm.haxibiao.com:8080/browse/DDZ-488
-            if ($lastRewardContribute && now()->diffInSeconds($lastRewardContribute->created_at) < 60) {
-                $user->status = \App\User::STATUS_FREEZE; //账户异常了
-                $user->save();
+            $version       = substr($user->profile->app_version, 0, 3);
+            $latestVersion = Version::getLatestVersion();
+            if ($user->profile->app_version === null || !Str::contains($latestVersion->name, $version)) {
+                return [
+                    'message'    => '请使用最新版本',
+                    'gold'       => 0,
+                    'contribute' => 0,
+                ];
             }
 
-            $remark     = '激励视频奖励';
+            $remark = '激励视频奖励';
             if ($user->status == \App\User::STATUS_FREEZE) {
                 $gold = Gold::makeIncome($user, Gold::REWARD_VIDEO_GOLD, $remark);
                 return [
@@ -82,7 +89,6 @@ trait ContributeResolvers
             $count      = self::getCountByType(self::REWARD_VIDEO_CONTRIBUTED_TYPE, $user);
             $isClick    = $args['is_click'];
             $contribute = null; //激励视频永远至少+2贡献
-
 
             $gold = Gold::makeIncome($user, Gold::REWARD_VIDEO_GOLD, $remark);
 

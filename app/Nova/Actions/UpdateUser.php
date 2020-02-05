@@ -70,7 +70,7 @@ class UpdateUser extends Action
                     User::STATUS_OFFLINE => '封禁',
                     User::STATUS_ONLINE  => '正常',
                     User::STATUS_DESTORY => '注销',
-                    User::STATUS_FREEZE => '状态异常系统封禁',
+                    User::STATUS_FREEZE  => '状态异常系统封禁',
                 ]
             ),
         ];
