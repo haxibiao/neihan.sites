@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use App\Contribute;
 use App\Helpers\Pay\PayUtils;
 use App\Transaction;
 use App\User;
@@ -23,12 +22,12 @@ trait WithdrawRepo
      * @param $withdraws
      * @param $withdrawThree
      */
-    public static function progressWithdrawLimit($withdraws,$withdrawThree){
+    public static function progressWithdrawLimit($withdraws, $withdrawThree)
+    {
 
-        if(!$withdraws){
+        if (!$withdraws) {
             return;
         }
-
         $amountMapping = [
             '3.00'  => 3,
             '5.00'  => 5,
@@ -36,24 +35,24 @@ trait WithdrawRepo
         ];
         $amount = $amountMapping[$withdrawThree];
 
-        $successWithdrawsCount = Withdraw::whereDate('created_at',Carbon::yesterday())
-            ->where('status',Withdraw::SUCCESS_WITHDRAW)
-            ->where('amount',$amount)
+        $successWithdrawsCount = Withdraw::whereDate('created_at', Carbon::yesterday())
+            ->where('status', Withdraw::SUCCESS_WITHDRAW)
+            ->where('amount', $amount)
             ->count();
 
         //当前额度没有用户提现成功则选中一位幸运儿
         $luckWithdrawId = null;
-        if($successWithdrawsCount == 0){
-            $plucked = $withdraws->pluck('rate','id')->all();
+        if ($successWithdrawsCount == 0) {
+            $plucked        = $withdraws->pluck('rate', 'id')->all();
             $luckWithdrawId = getRand($plucked);
         }
 
-        foreach ( $withdraws as $withdraw ){
+        foreach ($withdraws as $withdraw) {
 
             $currentId = $withdraw->id;
 
             $isLuckUser = !is_null($luckWithdrawId) && $currentId === $luckWithdrawId;
-            if( $isLuckUser ){
+            if ($isLuckUser) {
                 $withdraw->processDongdezhuan();
                 continue;
             } else {
@@ -254,14 +253,14 @@ trait WithdrawRepo
             $withdraw->save();
 
             // 2.退回提现贡献点
-//            $contribute = $withdraw->amount * Contribute::WITHDRAW_DATE;
-//            Contribute::create([
-//                'user_id'          => $user->id,
-//                'remark'           => '提现失败返回贡献值',
-//                'amount'           => $contribute,
-//                'contributed_id'   => $withdraw->id,
-//                'contributed_type' => 'withdraws',
-//            ]);
+            //            $contribute = $withdraw->amount * Contribute::WITHDRAW_DATE;
+            //            Contribute::create([
+            //                'user_id'          => $user->id,
+            //                'remark'           => '提现失败返回贡献值',
+            //                'amount'           => $contribute,
+            //                'contributed_id'   => $withdraw->id,
+            //                'contributed_type' => 'withdraws',
+            //            ]);
 
             //事务提交
             DB::commit();

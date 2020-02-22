@@ -2,10 +2,10 @@
 namespace App\Traits;
 
 use App\Contribute;
-use App\User;
 use App\DDZ\User as DDZUser;
 use App\Exceptions\GQLException;
 use App\Exchange;
+use App\User;
 use App\Version;
 use App\Withdraw;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -48,7 +48,7 @@ trait WithdrawResolvers
 
         //4. 非首次提现,只许提现到懂得赚
         $isWithdrawBefore = $user->isWithdrawBefore();
-        if ($isWithdrawBefore && $platform !== 'dongdezhuan') {
+        if ($isWithdrawBefore && $platform != 'dongdezhuan') {
             throw new GQLException('温馨提示:提现系统全面升级,请下载懂得赚提现哦~,不仅高收益秒提现还不限时');
         }
 

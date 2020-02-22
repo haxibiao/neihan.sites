@@ -8,7 +8,7 @@ type Like {
   article: Article
   question: Question
   comment: Comment
-  isLiked: Boolean
+  liked: Boolean
 }
 extend type Query {
   likes(user_id: Int! @eq, liked_type: String!, orderBy: [OrderByClause!] @orderBy): Like

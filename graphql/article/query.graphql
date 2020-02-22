@@ -11,6 +11,8 @@ type Article {
   time_ago: String!
   liked: Boolean
   liked_id: Int
+  favorited: Boolean
+  favorited_id: Int
   cover: String
   submit: Int
   hits: Int!

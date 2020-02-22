@@ -1,0 +1,3 @@
+extend type Mutation {
+        toggleFavorited(article_id: Int!): Favorite! @field(resolver: "App\\Favorite@toggleFavorite")
+}

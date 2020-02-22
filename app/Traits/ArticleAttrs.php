@@ -135,6 +135,23 @@ trait ArticleAttrs
         return false;
     }
 
+    public function getFavoritedAttribute()
+    {
+        if ($user = getUser(false)) {
+            return $favorite = $user->favoritedArticles()->where('faved_id', $this->id)->count() > 0;
+        }
+        return false;
+    }
+
+    public function getFavoritedIdAttribute()
+    {
+        if ($user = getUser(false)) {
+            $favorite = $user->favoritedArticles()->where('faved_id', $this->id)->first();
+            return $favorite ? $favorite->id : 0;
+        }
+        return 0;
+    }
+
     public function getLikedIdAttribute()
     {
         if ($user = getUser(false)) {

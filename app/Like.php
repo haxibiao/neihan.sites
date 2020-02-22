@@ -60,4 +60,12 @@ class Like extends Model
         return $query->where('user_id', $user_id);
     }
 
+    public function getLikedAttribute()
+    {
+        if ($user = getUser(false)) {
+            //dd($this->article->id);
+            return $like = $user->likedArticles()->where('liked_id', $this->article->id)->count() > 0;
+        }
+        return false;
+    }
 }

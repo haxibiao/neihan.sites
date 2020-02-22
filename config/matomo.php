@@ -29,6 +29,9 @@ return [
         'dongmiaomu.com'  => 27,
         'dongdianyao.com' => 28,
         'dongdianhai'     => 47,
+        'xiaofang' => 50,
+        'dongfanwen' => 53,
+        'donglangman' => 54,
     ],
     'matomo' => 'http://matomo.haxibiao.com',
 ];

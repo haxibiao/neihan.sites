@@ -41,6 +41,9 @@ $config = [
     'donglishi'    => 'http://de1acd5f1dd2449b901a649be373dc62@sentry.haxibiao.cn:9000/51',
     'dongzhengzhi' => 'http://cbb6f1d0e4d240d199b3c0657a21cfda@sentry.haxibiao.cn:9000/52',
     'dongdianhai'  => 'http://b3dde8fcfa714355aab35aa565559482@sentry.haxibiao.cn:9000/60',
+    'xiaofang' => 'http://80005b284a064719821ce9a23223f1a2@sentry.haxibiao.cn:9000/63',
+    'dongfanwen'  =>'http://1c3da14ba9c2402db1853ba161952a60@sentry.haxibiao.cn:9000/65',
+    'donglangman' => 'http://b7aad4874b794858a21b564ea4848526@sentry.haxibiao.cn:9000/66',
 ];
 return [
 

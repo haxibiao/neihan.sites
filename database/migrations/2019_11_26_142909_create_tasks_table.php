@@ -17,8 +17,8 @@ class CreateTasksTable extends Migration
             Schema::create('tasks', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('name')->comment('任务名称');
+                $table->string('icon')->nullable()->comment("任务图标");
                 $table->text('details')->nullable()->comment('描述');
-                $table->string('icon')->after('details')->nullable()->comment("任务图标");
                 $table->integer('type')->nullable()->comment('类型：0:新人任务 1:每日任务 2:自定义任务 3:实时任务');
                 $table->json('reward')->nullable()->comment('奖励');
                 $table->unsignedInteger('count')->default(0)->comment('统计');

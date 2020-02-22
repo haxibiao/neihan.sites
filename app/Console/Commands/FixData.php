@@ -1203,4 +1203,5 @@ class FixData extends Command
         $this->info('本次成功修复待处理爬虫:' . $count);
 
     }
+
 }

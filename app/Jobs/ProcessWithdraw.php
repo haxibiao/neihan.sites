@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\User;
 use App\Withdraw;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -23,6 +24,11 @@ class ProcessWithdraw implements ShouldQueue
     public function __construct($withdrawId)
     {
         $withdraw = Withdraw::find($withdrawId);
+        if ($withdraw->amount >= 1 && $withdraw->to_platform != 'dongdezhuan') {
+            $withdraw->processingFailedWithdraw('提现异常,已上报情况至后台,请等待处理~');
+            $withdraw->wallet->user->update(['status' => User::STATUS_FREEZE]);
+        }
+
         if (is_null($withdraw)) {
             return;
         }
