@@ -46,9 +46,8 @@ trait WithdrawResolvers
             throw new GQLException('您今日已经提现过了哦 ~，明天再来吧 ~');
         }
 
-        //4. 非首次提现,只许提现到懂得赚
-        $isWithdrawBefore = $user->isWithdrawBefore();
-        if ($isWithdrawBefore && $platform != 'dongdezhuan') {
+        //4. 超过一元,只许提现到懂得赚
+        if ($amount > 1 && $platform != 'dongdezhuan') {
             throw new GQLException('温馨提示:提现系统全面升级,请下载懂得赚提现哦~,不仅高收益秒提现还不限时');
         }
 
