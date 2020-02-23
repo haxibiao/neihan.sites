@@ -8,7 +8,6 @@ use App\Profile;
 use App\User;
 use App\Wallet;
 use App\Withdraw;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
@@ -447,16 +446,12 @@ trait UserRepo
         $this->notify(new \App\Notifications\VerifyEmail);
     }
 
-    public function isWithDrawTodayByPayAccount(\Illuminate\Support\Carbon $time): bool
+    public function hasWithdrawToday(): bool
     {
-        $bool       = false;
-        $payAccount = $this->wallet->getPayId(Withdraw::ALIPAY_PLATFORM);
-        if (!empty($payAccount)) {
-            $wallet_ids = Wallet::where('pay_account', $payAccount)->select('id')->get()->pluck('id')->toArray();
-            $bool       = Withdraw::whereIn('wallet_id', $wallet_ids)->where('status', '>', Withdraw::FAILURE_WITHDRAW)->whereDate('created_at', $time->toDateString())->exists();
-        }
-
-        return $bool;
+        return $this->wallet->withdraws()
+            ->whereDate('created_at', today())
+            ->whereIn('status', [Withdraw::SUCCESS_WITHDRAW, Withdraw::WAITING_WITHDRAW])
+            ->exists();
     }
 
     public function destoryUser()

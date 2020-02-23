@@ -42,7 +42,7 @@ trait WithdrawResolvers
         if (is_null($wallet)) {
             throw new GQLException('提现失败, 请先完善提现资料!');
         }
-        if ($user->isWithDrawTodayByPayAccount(now())) {
+        if ($user->hasWithdrawToday()) {
             throw new GQLException('您今日已经提现过了哦 ~，明天再来吧 ~');
         }
 
