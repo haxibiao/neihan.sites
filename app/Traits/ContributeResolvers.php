@@ -76,7 +76,18 @@ trait ContributeResolvers
                 ];
             }
 
-            $remark = '激励视频奖励';
+            $remark          = '激励视频奖励';
+            $todayClickCount = Gold::where([
+                'remark'  => $remark,
+                'user_id' => $user->id,
+            ])->whereDate('created_at', today())->count();
+            if ($todayClickCount > 30) {
+                return [
+                    'message'    => '今天次数用完啦',
+                    'gold'       => 0,
+                    'contribute' => 0,
+                ];
+            }
             if ($user->status == \App\User::STATUS_FREEZE) {
                 $gold = Gold::makeIncome($user, Gold::REWARD_VIDEO_GOLD, $remark);
                 return [
