@@ -3,9 +3,6 @@
 namespace App\Observers;
 
 use App\Contribute;
-use DDZUser;
-use Exception;
-use Illuminate\Support\Facades\Log;
 
 class ContributeObserver
 {
@@ -17,18 +14,18 @@ class ContributeObserver
      */
     public function created(Contribute $contribute)
     {
-        try {
-            $user = $contribute->user;
+        // try {
+        //     $user = $contribute->user;
 
-            if ($contribute->amount > 0) {
-                //计算分红
-                DDZUser::bonusOnUserContribute($user, $contribute);
-            }
-            //上报用户贡献到懂得赚
-            DDZUser::updateContribute($user, $contribute);
-        } catch (Exception $ex) {
-            Log::error($ex->getMessage());
-        }
+        //     if ($contribute->amount > 0) {
+        //         //计算分红
+        //         DDZUser::bonusOnUserContribute($user, $contribute);
+        //     }
+        //     //上报用户贡献到懂得赚
+        //     DDZUser::updateContribute($user, $contribute);
+        // } catch (Exception $ex) {
+        //     Log::error($ex->getMessage());
+        // }
     }
 
     /**

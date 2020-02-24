@@ -11,7 +11,6 @@ use App\Withdraw;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 trait WithdrawResolvers
@@ -26,16 +25,16 @@ trait WithdrawResolvers
         $amount            = $args['amount'];
         $platform          = $args['platform'];
         $useWithdrawBadges = Arr::get($args, 'useWithdrawBadges', false);
-
+        $isWithdrawBefore  = $user->isWithdrawBefore();
         //1. 可控制提现关闭
         stopfunction("提现");
 
         //2. 判断版本号
         $version       = substr($profile->app_version, 0, 3);
         $latestVersion = Version::latest('name')->first();
-        if ($profile->app_version === null || !Str::contains($latestVersion->name, $version)) {
-            throw new GQLException('当前版本过低,请更新后再尝试提现,详情咨询QQ群:808982693');
-        }
+        // if ($profile->app_version === null || !Str::contains($latestVersion->name, $version)) {
+        //     throw new GQLException('当前版本过低,请更新后再尝试提现,详情咨询QQ群:808982693');
+        // }
 
         //3. 用户钱包信息完整性校验
         $wallet = $user->wallet;
