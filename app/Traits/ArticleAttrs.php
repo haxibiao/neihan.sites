@@ -98,13 +98,9 @@ trait ArticleAttrs
             return $cover_url;
         }
 
-        //TODO: 图片在本地？需要修复到cos
         if ($this->video) {
             if (!is_null($this->video->cover)) {
                 $this->cover_path = $this->video->cover;
-                if(isset($this->id) && !isset($this->isAdPosition)){
-                    $this->save();
-                }
                 return $this->cover_path;
             }
         }

@@ -91,7 +91,7 @@ class User extends Resource
             Select::make('状态', 'status')->options([
                 AppUser::STATUS_ONLINE  => '上线',
                 AppUser::STATUS_OFFLINE => '下线',
-                AppUser::STATUS_FREEZE => '状态异常系统封禁',
+                AppUser::STATUS_FREEZE  => '状态异常系统封禁',
             ])->displayUsingLabels(),
 
             HasMany::make('智慧点明细', 'golds', Gold::class)->onlyOnDetail(),

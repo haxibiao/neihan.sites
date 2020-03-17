@@ -48,19 +48,20 @@ trait ArticleRepo
 
     public function fillForJs()
     {
-        //TODO: 这个错误需要放出来，应该有脏数据
         if ($this->user) {
             $this->user->fillForJs();
         }
+
         if ($this->category) {
             $this->category->fillForJs();
         }
 
-        $this->title         = $this->title;
         $this->description   = $this->summary;
 
         if ($this->video) {
             $this->duration = gmdate('i:s', $this->video->duration);
+            $this->cover = $this->video->cover_url;
+            $this->video->cover = $this->video->cover_url;
         }
     }
 

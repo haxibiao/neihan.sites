@@ -38,6 +38,10 @@ trait WithdrawResolvers
 
         //3. 用户钱包信息完整性校验
         $wallet = $user->wallet;
+        if ($platform == 'alipay') {
+            throw new GQLException('支付宝提现正在维护中...');
+        }
+
         if (is_null($wallet)) {
             throw new GQLException('提现失败, 请先完善提现资料!');
         }

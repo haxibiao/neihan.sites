@@ -4,7 +4,9 @@ namespace App\Traits;
 
 use App\Contribute;
 use App\Gold;
+use App\User;
 use App\Version;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 trait ContributeResolvers
@@ -59,35 +61,17 @@ trait ContributeResolvers
     {
         if ($user = checkUser()) {
 
-            $lastRewardContribute = $user->contributes()
-                ->where('contributed_type', self::REWARD_VIDEO_CONTRIBUTED_TYPE)
-                ->latest('id')
-                ->first();
-
             //激励视频奖励只允许最新版本的用户获得
             //http://pm.haxibiao.com:8080/browse/DDZ-488
-            $version       = substr($user->profile->app_version, 0, 3);
-            $latestVersion = Version::getLatestVersion();
-            if ($user->profile->app_version === null || !Str::contains($latestVersion->name, $version)) {
-                return [
-                    'message'    => '请使用最新版本',
-                    'gold'       => 0,
-                    'contribute' => 0,
-                ];
+            if ($result = $this->checkVersion($user)) {
+                return $result;
+            }
+            $count = self::getCountByType(Contribute::REWARD_VIDEO_CONTRIBUTED_TYPE, $user);
+            if ($result = $this->checkUser($user, $count)) {
+                return $result;
             }
 
-            $remark          = '激励视频奖励';
-            $todayClickCount = Gold::where([
-                'remark'  => $remark,
-                'user_id' => $user->id,
-            ])->whereDate('created_at', today())->count();
-            if ($todayClickCount > 30) {
-                return [
-                    'message'    => '今天次数用完啦',
-                    'gold'       => 0,
-                    'contribute' => 0,
-                ];
-            }
+            $remark = '激励视频奖励';
             if ($user->status == \App\User::STATUS_FREEZE) {
                 $gold = Gold::makeIncome($user, Gold::REWARD_VIDEO_GOLD, $remark);
                 return [
@@ -97,7 +81,6 @@ trait ContributeResolvers
                 ];
             }
 
-            $count      = self::getCountByType(self::REWARD_VIDEO_CONTRIBUTED_TYPE, $user);
             $isClick    = $args['is_click'];
             $contribute = null; //激励视频永远至少+2贡献
 
@@ -111,9 +94,6 @@ trait ContributeResolvers
                 $contribute = self::rewardUserContribute($user->id, self::REWARD_VIDEO_CONTRIBUTED_ID,
                     self::AD_VIDEO_AMOUNT, self::REWARD_VIDEO_CONTRIBUTED_TYPE, "看激励视频");
             }
-
-            //工厂统计看激励视频的次数
-            \DDZUser::countRewardVideoDone($user, $count);
 
             //  拼接前端所需信息
             $message = $contribute === null ? $remark : $remark . '、贡献点';
@@ -183,5 +163,45 @@ trait ContributeResolvers
         $contribute->amount  = 0;
         $contribute->message = '请先登录哦！~';
         return $contribute;
+    }
+
+    public function checkUser($user, $todayCount)
+    {
+        if ($todayCount >= 30) {
+            return [
+                'message'    => '今天次数用完啦',
+                'gold'       => 0,
+                'contribute' => 0,
+            ];
+        }
+
+        $lastRewardContribute = $user->contributes()
+            ->select('created_at')
+            ->where('contributed_type', Contribute::REWARD_VIDEO_CONTRIBUTED_TYPE)
+            ->latest('id')
+            ->first();
+
+        // 上次看激励视频与本次间隔 < 60 秒
+        if (now()->diffInSeconds(Carbon::parse($lastRewardContribute->created_at)) < 60) {
+            $user->update(['status' => User::STATUS_FREEZE]);
+            return [
+                'message'    => '行为异常,详情咨询QQ群:808982693',
+                'gold'       => 0,
+                'contribute' => 0,
+            ];
+        }
+    }
+
+    public function checkVersion($user)
+    {
+        $version       = substr($user->profile->app_version, 0, 3);
+        $latestVersion = Version::getLatestVersion();
+        if ($user->profile->app_version === null || !Str::contains($latestVersion->name, $version)) {
+            return [
+                'message'    => '请使用最新版本',
+                'gold'       => 0,
+                'contribute' => 0,
+            ];
+        }
     }
 }
