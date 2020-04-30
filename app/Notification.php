@@ -11,6 +11,13 @@ class Notification extends DatabaseNotification
     {
         //赞了你 评论的内容  @某某某 内容
         switch ($this->type) {
+            case "App\\Notifications\\PlatformAccountExpire":
+                $account = $this->data['account'];
+                $order_status = $this->data['order_status'];
+                if ($order_status == PlatformAccount::EXPIRE) {
+                    return "租借账号" . $account . "已到期";
+                }
+                return "租借账号" . $account . "还有10分钟到期";
             case "App\\Notifications\\ArticleApproved":
                 return "收录了动态";
             case "App\\Notifications\\ArticleRejected":
@@ -51,6 +58,12 @@ class Notification extends DatabaseNotification
     {
         //回复了你的评论、在评论中提到了你...等等通知类型
         switch ($this->type) {
+            case "App\\Notifications\\PlatformAccountExpire":
+                $order_status = $this->data['order_status'];
+                if ($order_status == PlatformAccount::EXPIRE) {
+                    return "租借账号已到期";
+                }
+                return "租借账号即将到期";
             case "App\\Notifications\\ArticleApproved":
                 return "收录了动态";
             case "App\\Notifications\\ArticleRejected":

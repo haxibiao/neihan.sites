@@ -71,7 +71,7 @@ class EnvRefresh extends Command
             'APP_ENV'          => 'develop',
             'APP_DEBUG'        => 'true',
             'FILESYSTEM_CLOUD' => 'public',
-            'LOCAL_APP_URL'    => 'http://develop.'.env('APP_NAME').'.com',
+            'LOCAL_APP_URL'    => 'http://develop.' . env('APP_NAME') . '.com',
             'DB_HOST'          => $db_host,
             'DB_DATABASE'      => $this->option('db_database'),
         ]);

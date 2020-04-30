@@ -14,7 +14,9 @@ class EditCommentsAddIsAccept extends Migration
     public function up()
     {
         Schema::table('comments', function (Blueprint $table) {
-            $table->boolean('is_accept')->default(false);
+            if (!Schema::hasColumn('comments', 'is_accept')) {
+                $table->boolean('is_accept')->default(false);
+            }
         });
     }
 

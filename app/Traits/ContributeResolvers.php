@@ -25,7 +25,7 @@ trait ContributeResolvers
     {
         if ($user = checkUser()) {
 //            今日draw广告点击次数
-            $count = self::getToDayCountByTypeAndId(self::DRAW_AD_CONTRIBUTED_TYPE, self::DRAW_AD_CONTRIBUTED_ID, $user);
+            $count = self::getTodayCountByContributed(self::DRAW_AD_CONTRIBUTED_TYPE, self::DRAW_AD_CONTRIBUTED_ID, $user);
             if ($count <= self::MAX_DRAW_CLICK) {
                 $contribute = self::rewardUserContribute($user->id, self::DRAW_AD_CONTRIBUTED_ID, self::REWARD_DRAW_AMOUNT,
                     self::DRAW_AD_CONTRIBUTED_TYPE, "刷视频奖励");
@@ -66,7 +66,7 @@ trait ContributeResolvers
             if ($result = $this->checkVersion($user)) {
                 return $result;
             }
-            $count = self::getCountByType(Contribute::REWARD_VIDEO_CONTRIBUTED_TYPE, $user);
+            $count = self::getTodayCountByType(Contribute::REWARD_VIDEO_CONTRIBUTED_TYPE, $user);
             if ($result = $this->checkUser($user, $count)) {
                 return $result;
             }
@@ -121,7 +121,7 @@ trait ContributeResolvers
     public function clickFeedAD($rootValue, array $args, $context, $resolveInfo)
     {
         if ($user = checkUser()) {
-            if (Contribute::getToDayCountByTypeAndId(self::AD_FEED_CONTRIBUTED_TYPE, self::AD_FEED_CONTRIBUTED_ID,
+            if (Contribute::getTodayCountByContributed(self::AD_FEED_CONTRIBUTED_TYPE, self::AD_FEED_CONTRIBUTED_ID,
                 $user) <= 10) {
                 $contribute = Contribute::rewardUserContribute($user->id, self::AD_FEED_CONTRIBUTED_ID,
                     self::AD_AMOUNT,
@@ -146,7 +146,7 @@ trait ContributeResolvers
     public function clickFeedAD2($rootValue, array $args, $context, $resolveInfo)
     {
         if ($user = checkUser()) {
-            if (Contribute::getToDayCountByTypeAndId(self::AD_FEED_CONTRIBUTED_TYPE, self::AD_FEED_CONTRIBUTED_ID, $user) <= self::MAX_FEED_CLICK) {
+            if (Contribute::getTodayCountByContributed(self::AD_FEED_CONTRIBUTED_TYPE, self::AD_FEED_CONTRIBUTED_ID, $user) <= self::MAX_FEED_CLICK) {
                 $contribute = Contribute::rewardUserContribute($user->id, self::AD_FEED_CONTRIBUTED_ID, self::AD_AMOUNT,
                     self::AD_FEED_CONTRIBUTED_TYPE, "发现页广告奖励");
                 $contribute->message = '您刚获得' . $contribute->amount . '点贡献';

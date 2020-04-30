@@ -6,6 +6,7 @@ use App\Article;
 use App\Category;
 use App\Exceptions\GQLException;
 use App\Helpers\BadWord\BadWordUtils;
+use App\Product;
 use App\User;
 use App\Video;
 use App\Visit;
@@ -116,6 +117,9 @@ trait ArticleResolvers
         GraphQLContext $context,
         ResolveInfo $resolveInfo
     ) {
+
+        app_track_user('推荐视频');
+
         $user      = checkUser();
         $pageCount = $args['count'];
 
@@ -183,6 +187,17 @@ trait ArticleResolvers
                     $article->isAdPosition = true;
                     $mixPosts[]            = $article;
                 }
+                //每五条数据选择一件商品展示
+                if ($index % 3 == 0) {
+                    $article             = clone $article;
+                    $article->id         = random_str(7);
+                    $product             = Product::where("status", 1)->inRandomOrder()->first();
+                    $article->user       = $product->store->user;
+                    $article->video      = $product->video;
+                    $article->body       = str_limit($product->description, 50);
+                    $article->product_id = $product->id;
+                    $mixPosts[]          = $article;
+                }
             }
         }
 
@@ -204,6 +219,8 @@ trait ArticleResolvers
      */
     public function resolveDouyinVideo($rootValue, array $args, $context, $resolveInfo)
     {
+        app_track_user('粘贴抖音视频');
+
         $user = getUser();
         throw_if($user->isBlack(), GQLException::class, '发布失败,你以被禁言');
 
@@ -261,6 +278,8 @@ trait ArticleResolvers
 
     public function getShareLink($rootValue, array $args, $context, $resolveInfo)
     {
+        app_track_user('分享视频');
+
         $article = Article::find($args['id']);
         throw_if(is_null($article), GQLException::class, '该动态不存在哦~,请稍后再试');
         if ($article->type !== 'post' && $article->type !== 'video') {

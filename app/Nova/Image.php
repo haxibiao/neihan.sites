@@ -53,10 +53,14 @@ class Image extends Resource
     {
         return [
             ID::make()->sortable(),
-            LaravelImage::make('图片', 'path')
-                ->thumbnail(function () {
-                    return $this->url;
-                })->preview(function () {
+            LaravelImage::make('图片', 'path')->store(
+                function (Request $request, $model) {
+                    $file = $request->file('path');
+                    return $model->saveDownloadImage($file);
+                }
+            )->thumbnail(function () {
+                return $this->url;
+            })->preview(function () {
                 return $this->url;
             })->disableDownload(),
         ];

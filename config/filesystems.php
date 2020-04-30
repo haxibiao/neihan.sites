@@ -26,7 +26,7 @@ return [
     |
      */
 
-    'cloud'   => env('FILESYSTEM_CLOUD', 'public'),
+    'cloud' => env('FILESYSTEM_CLOUD', 'public'),
 
     /*
     |--------------------------------------------------------------------------
@@ -41,42 +41,42 @@ return [
     |
      */
 
-    'disks'   => [
+    'disks' => [
 
-        'local'  => [
+        'local' => [
             'driver' => 'local',
-            'root'   => storage_path('app'),
+            'root' => storage_path('app'),
         ],
 
         'public' => [
-            'driver'     => 'local',
-            'root'       => storage_path('app/public'),
-            'url'        => env('LOCAL_APP_URL', 'http:://l.' . env('APP_NAME') . '.com') . '/storage',
+            'driver' => 'local',
+            'root' => storage_path('app/public'),
+            'url' => env('LOCAL_APP_URL', 'http:://l.' . env('APP_NAME') . '.com') . '/storage',
             'visibility' => 'public',
         ],
 
         //腾讯COSV5
-        'cosv5'  => [
-            'driver'          => 'cosv5',
-            'region'          => env('COS_REGION', 'ap-guangzhou'),
-            'credentials'     => [
-                'appId'     => env('COS_APP_ID'),
-                'secretId'  => env('COS_SECRET_ID'),
+        'cosv5' => [
+            'driver' => 'cosv5',
+            'region' => env('COS_REGION', 'ap-guangzhou'),
+            'credentials' => [
+                'appId' => env('COS_APP_ID'),
+                'secretId' => env('COS_SECRET_ID'),
                 'secretKey' => env('COS_SECRET_KEY'),
             ],
-            'timeout'         => env('COS_TIMEOUT', 60),
+            'timeout' => env('COS_TIMEOUT', 60),
             'connect_timeout' => env('COS_CONNECT_TIMEOUT', 60),
-            'bucket'          => env('COS_BUCKET'),
-            'cdn'             => "http://" . env('COS_DOMAIN'),
-            'scheme'          => env('COS_SCHEME', 'http'),
-            'read_from_cdn'   => env('COS_READ_FROM_CDN', false),
-            'cdn_key'         => env('COS_CDN_KEY'),
-            'encrypt'         => env('COS_ENCRYPT', false),
+            'bucket' => env('COS_BUCKET'),
+            'cdn' => "http://" . env('COS_DOMAIN'),
+            'scheme' => env('COS_SCHEME', 'http'),
+            'read_from_cdn' => env('COS_READ_FROM_CDN', false),
+            'cdn_key' => env('COS_CDN_KEY'),
+            'encrypt' => env('COS_ENCRYPT', false),
         ],
 
-        's3'     => [
+        's3' => [
             'driver' => 's3',
-            'key'    => env('AWS_KEY'),
+            'key' => env('AWS_KEY'),
             'secret' => env('AWS_SECRET'),
             'region' => env('AWS_REGION'),
             'bucket' => env('AWS_BUCKET'),

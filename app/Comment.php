@@ -58,12 +58,6 @@ class Comment extends Model
         return $this->comments()->count();
     }
 
-    public function resolveComments($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {
-        $comment = self::findOrFail($rootValue->id);
-        return $comment->comments();
-    }
-
     public function likes()
     {
         return $this->morphMany(\App\Like::class, 'liked');
@@ -102,5 +96,15 @@ class Comment extends Model
     public function getArticleAttribute()
     {
         return $this->article()->first();
+    }
+
+    //resolvers
+
+    public function resolveComments($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+        app_track_user('获取评论列表');
+
+        $comment = self::findOrFail($rootValue->id);
+        return $comment->comments();
     }
 }

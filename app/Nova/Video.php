@@ -37,9 +37,9 @@ class Video extends Resource
             BelongsTo::make('作者', 'user', User::class),
             Image::make('封面', 'cover')
                 ->thumbnail(function () {
-                    return $this->cover;
+                    return $this->coverUrl;
                 })->preview(function () {
-                return $this->cover;
+                return $this->coverUrl;
             })->disableDownload(),
             Text::make('status', 'status')->onlyOnDetail(),
             Text::make('path', 'path')->onlyOnDetail(),

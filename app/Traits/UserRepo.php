@@ -3,6 +3,9 @@
 namespace App\Traits;
 
 use App\Contribute;
+use App\Invitation;
+use App\InviteInstall;
+use App\InviteOpen;
 use App\OAuth;
 use App\Profile;
 use App\User;
@@ -13,6 +16,59 @@ use Illuminate\Support\Facades\Storage;
 
 trait UserRepo
 {
+
+    public function openInstall()
+    {
+        $isOpenUser = false;
+
+        //这里可能用户不存在
+        $user = blank($this->toArray()) ? getUser() : $this;
+        $ip   = getIp();
+
+        if (!blank($user->toArray())) {
+            //1小时内的新用户，检查open install || ip 不存在
+            if ($user->created_at < now()->subHour(1) || empty($ip)) {
+                return $isOpenUser;
+            }
+
+            $invitation = Invitation::hasBeInvitation($user->id);
+            if (!is_null($invitation)) {
+                return !$invitation->isInviteSuccess();
+            }
+
+            $inviterInstall = InviteInstall::firstOrNew(['user_id' => $user->id], [
+                'user_agent' => get_user_agent() ?? '',
+                'ip'         => $ip,
+                'os'         => get_os() ?? '',
+                'os_version' => get_os_version() ?? '',
+            ]);
+
+            //查找n分钟内的invite_open记录
+            $inviterOpen = InviteOpen::whereIp($inviterInstall->ip)
+                ->where('created_at', '>', now()->subMinutes(60))
+                ->latest('id')
+                ->first();
+            if (!is_null($inviterOpen)) {
+
+                //2020年02月13日防刷控制 一个IP：24小时成功一次
+                // $lastInviteOpen = InviteOpen::whereIp($inviterInstall->ip)->installed()->today()->first();
+                // if (!is_null($lastInviteOpen)) {
+                //     return $isOpenUser;
+                // }
+
+                $inviterInstall->invite_open_id = $inviterOpen->id;
+                $inviterOpen->installs          = 1;
+                $inviterOpen->save();
+                //简单的匹配邀请成功
+                InvitationRepo::createInvitation($inviterOpen->user_id, $inviterInstall->user_id);
+                $isOpenUser = true;
+            }
+            $inviterInstall->save();
+        }
+
+        return $isOpenUser;
+    }
+
     /**
      *
      * 计算高额提现倍率
@@ -22,7 +78,13 @@ trait UserRepo
      */
     public function countByHighWithdrawCardsRate()
     {
-        return \DDZUser::countByHighWithdrawCardsRate($this);
+        // return \DDZUser::countByHighWithdrawCardsRate($this);
+        return 1;
+    }
+
+    public function getCountInvitationAttribute()
+    {
+        return $this->invitations()->count();
     }
 
     /**
@@ -502,7 +564,8 @@ trait UserRepo
     //返回懂得赚账户
     public function getDDZUser()
     {
-        return \DDZUser::getUser($this->uuid);
+        // return \DDZUser::getUser($this->uuid);
+        return $this;
     }
 
     // FIXME: 绑定懂得赚 (基本废弃了...)

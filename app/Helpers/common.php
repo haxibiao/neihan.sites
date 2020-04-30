@@ -1,27 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Request;
 
-function get_os_version()
-{
-    return request()->header('systemVersion') ?? request()->get('systemVersion');
-}
-
-function get_ip()
-{
-    $ip = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
-    if (isset($_SERVER['HTTP_CLIENT_IP']) && preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/', $_SERVER['HTTP_CLIENT_IP'])) {
-        $ip = $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR']) and preg_match_all('#\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}#s', $_SERVER['HTTP_X_FORWARDED_FOR'], $matches)) {
-        foreach ($matches[0] as $xip) {
-            if (!preg_match('#^(10|172\.16|192\.168)\.#', $xip)) {
-                $ip = $xip;
-                break;
-            }
-        }
-    }
-    return $ip;
-}
-
 function random_str($length)
 {
     return str_pad(mt_rand(0, 999999), $length, "0", STR_PAD_BOTH);

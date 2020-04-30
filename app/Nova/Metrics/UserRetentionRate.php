@@ -20,30 +20,32 @@ class UserRetentionRate extends Value
     {
         $range = $request->range;
         $startTime = today()->subDay($range + 1);
-        $userIds = User::whereDate('created_at',$startTime)->count();
-
+        $userIds = User::whereDate('created_at', $startTime)->count();
+        if ($userIds <= 0) {
+            return null;
+        }
         $query = UserRetention::query();
 
-        switch ($range){
+        switch ($range) {
             case 1:
-                $query->whereDate('next_day_retention_at',$startTime);
+                $query->whereDate('next_day_retention_at', $startTime);
                 break;
             case 3:
-                $query->whereDate('third_day_retention_at',$startTime);
+                $query->whereDate('third_day_retention_at', $startTime);
                 break;
             case 5:
-                $query->whereDate('fifth_day_retention_at',$startTime);
+                $query->whereDate('fifth_day_retention_at', $startTime);
                 break;
             case 7:
-                $query->whereDate('sixth_day_retention_at',$startTime);
+                $query->whereDate('sixth_day_retention_at', $startTime);
                 break;
             case 30:
-                $query->whereDate('month_retention_at',$startTime);
+                $query->whereDate('month_retention_at', $startTime);
                 break;
         }
         $userRetentionNum = $query->count();
-        $result = sprintf('%.2f',($userRetentionNum/$userIds) * 100);
-        return $this->result($result)->suffix(' % (  '.$userRetentionNum.' :  '.$userIds.')');
+        $result = sprintf('%.2f', ($userRetentionNum / $userIds) * 100);
+        return $this->result($result)->suffix(' % (  ' . $userRetentionNum . ' :  ' . $userIds . ')');
     }
 
     /**
@@ -54,10 +56,10 @@ class UserRetentionRate extends Value
     public function ranges()
     {
         return [
-            1  => '次日留存率',
-            3  => '三日留存率',
-            5  => '五日留存率',
-            7  => '七日留存率',
+            1 => '次日留存率',
+            3 => '三日留存率',
+            5 => '五日留存率',
+            7 => '七日留存率',
             30 => '三十日留存率',
         ];
     }

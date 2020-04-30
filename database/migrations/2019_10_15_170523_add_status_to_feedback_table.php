@@ -14,10 +14,10 @@ class AddStatusToFeedbackTable extends Migration
     public function up()
     {
         Schema::table('feedback', function (Blueprint $table) {
-            if (!Schema::hasColumn('users', 'top_at')) {
+            if (!Schema::hasColumn('feedback', 'top_at')) {
                 $table->timestamp('top_at')->nullable()->comment('置顶时间');
             }
-            if (!Schema::hasColumn('users', 'rank')) {
+            if (!Schema::hasColumn('feedback', 'rank')) {
                 $table->unsignedInteger('rank')->default(0)->comment('排名');
             }
         });

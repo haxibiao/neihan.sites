@@ -1,0 +1,37 @@
+type PlatformAccount {
+  id: Int!
+  created_at: DateTime!
+  updated_at: DateTime!
+  user: User!
+  product: Product
+  order: Order
+  order_status: OrderStatus
+  platform: String!
+  dimension: String!
+  dimension2: String!
+  price: Int!
+  count: Int
+  account: String
+  password: String
+}
+
+extend type Query {
+  # platformAccounts(user_id: Int! @eq): [PlatformAccount!] @paginate(defaultCount: 10, builder: "App\\PlatformAccount@getPlatformAccounts")
+  dimension(product_id: Int! @eq, type: DimensionType @eq): [String!]
+    @field(resolver: "App\\PlatformAccount@getDimension")
+  platformAccountPrice(
+    product_id: Int! @eq
+    dimension: String! @eq
+    dimension2: Int! @eq
+  ): PlatformAccount! @field(resolver: "App\\PlatformAccount@getPrice")
+}
+
+enum OrderStatus {
+  UNUSE @enum(value: "0")
+  INUSE @enum(value: "1")
+  EXPIRE @enum(value: "2")
+}
+enum DimensionType {
+  DIMENSION @enum(value: "dimension")
+  DIMENSION2 @enum(value: "dimension2")
+}

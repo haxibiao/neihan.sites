@@ -61,12 +61,12 @@ class User extends Resource
                 ->rules('required', 'max:255'),
             Text::make('最近使用版本', 'profile.app_version')->sortable()->hideWhenUpdating(),
             Select::make('性别', 'gender')->options([
-                AppUser::MALE_GENDER   => '男',
+                AppUser::MALE_GENDER => '男',
                 AppUser::FEMALE_GENDER => '女',
             ])->displayUsingLabels()->hideWhenUpdating(),
 
             Select::make('权限', 'role_id')->options([
-                AppUser::USER_STATUS   => '平民玩家',
+                AppUser::USER_STATUS => '平民玩家',
                 AppUser::EDITOR_STATUS => '普通管理员',
             ])->displayUsingLabels()->onlyOnForms(),
 
@@ -75,7 +75,7 @@ class User extends Resource
             Text::make('发布内容数', function () {
                 return $this->allArticles()->count();
             })->hideWhenUpdating(),
-
+            HasMany::make('历史订单', 'order', Order::class)->onlyOnDetail(),
             hasMany::make('钱包', 'wallets', Wallet::class)->hideWhenUpdating(),
 
             Number::make('智慧点', 'gold')->exceptOnForms()->hideWhenUpdating(),
@@ -89,15 +89,14 @@ class User extends Resource
             DateTime::make('最后登录时间', 'updated_at')->hideWhenUpdating(),
 
             Select::make('状态', 'status')->options([
-                AppUser::STATUS_ONLINE  => '上线',
+                AppUser::STATUS_ONLINE => '上线',
                 AppUser::STATUS_OFFLINE => '下线',
-                AppUser::STATUS_FREEZE  => '状态异常系统封禁',
+                AppUser::STATUS_FREEZE => '状态异常系统封禁',
             ])->displayUsingLabels(),
 
             HasMany::make('智慧点明细', 'golds', Gold::class)->onlyOnDetail(),
             HasMany::make('贡献记录', 'contributes', Contribute::class),
-            HasMany::make('用户文章', 'videoArticles', Article::class),
-
+            HasMany::make('用户文章', 'articles', Article::class),
         ];
     }
 

@@ -37,8 +37,10 @@ class Wallet extends Model
     const PAY_INFO_CHANGE_MAX = 3;
 
     //钱包类型
-    const RMB_WALLET  = 0; //RMB钱包
-    const GOLD_WALLET = 1; //金币钱包
+    const RMB_WALLET        = 0; //RMB钱包
+    const GOLD_WALLET       = 1; //金币钱包
+    const UNION_WALLET      = 2; //联盟(邀请)钱包
+    const RED_PACKET_WALLET = 3; //红包钱包
 
     public function user(): BelongsTo
     {

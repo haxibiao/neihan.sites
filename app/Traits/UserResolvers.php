@@ -35,6 +35,11 @@ trait UserResolvers
         }
     }
 
+    public function resolveUsers($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+        return User::latest('id');
+    }
+
     public function resolveFriends($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $user    = \App\User::findOrFail($args['user_id']);
@@ -169,6 +174,7 @@ trait UserResolvers
                         'App\Notifications\ArticleApproved',
                         'App\Notifications\ArticleRejected',
                         'App\Notifications\CommentAccepted',
+                        "App\Notifications\PlatformAccountExpire",
                     ]);
 
                 //mark as read
@@ -179,6 +185,7 @@ trait UserResolvers
                         'App\Notifications\ArticleApproved',
                         'App\Notifications\ArticleRejected',
                         'App\Notifications\CommentAccepted',
+                        "App\Notifications\PlatformAccountExpire",
                     ])->get();
                 $unread_notifications->markAsRead();
                 break;
@@ -232,6 +239,8 @@ trait UserResolvers
                 'api_token' => Str::random(60),
                 'avatar'    => User::AVATAR_DEFAULT,
             ]);
+            $user->name += $user->id;
+            $user->save();
             Profile::create([
                 'user_id'      => $user->id,
                 'introduction' => '这个人暂时没有 freestyle ',

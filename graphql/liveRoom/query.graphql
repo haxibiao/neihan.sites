@@ -1,0 +1,24 @@
+type LiveRoom {
+  id: ID!
+  title: String
+  streamer: User! @belongsTo
+  push_stream_url: String
+  push_stream_key: String
+  push_url: String
+  pull_url: String
+  pull_stream_url: String
+  stream_name: String
+  cover: String @rename(attribute: "cover_url")
+  count_audience: Int @rename(attribute: "count_online_audience")
+  latest_live_time: DateTime
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+extend type Query {
+  liveRoom(id: ID! @eq): LiveRoom @find
+  recommendLiveRoom: [LiveRoom]
+    @paginate(defaultCount: 10, builder: "App\\LiveRoom@recommendLiveRoom")
+  getLiveRoomUsers(live_room_id: Int!): [User!]
+    @field(resolver: "App\\LiveRoom@getLiveRoomUsers")
+}

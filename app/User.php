@@ -3,11 +3,14 @@
 namespace App;
 
 use App\Feedback;
+use App\Traits\PlayWithTasks;
 use App\Traits\UserAttrs;
 use App\Traits\UserRepo;
 use App\Traits\UserResolvers;
+use App\UserRetention;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -17,6 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use UserAttrs;
     use UserRepo;
     use UserResolvers;
+    use PlayWithTasks;
 
     /**
      * The attributes that are mass assignable.
@@ -61,7 +65,7 @@ class User extends Authenticatable implements MustVerifyEmail
     // 默认头像
     const AVATAR_DEFAULT = 'storage/avatar/avatar-1.jpg';
 
-    const DEFAULT_NAME = '匿名用户';
+    const DEFAULT_NAME = '小剑剑';
     //
 
     /**
@@ -80,11 +84,28 @@ class User extends Authenticatable implements MustVerifyEmail
         'password', 'remember_token',
     ];
 
+    public function lives(): HasMany
+    {
+        return $this->hasMany(UserLive::class);
+    }
+
     public function retentions()
     {
         return $this->hasMany(\App\UserRetention::class);
     }
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(Invitation::class);
+    }
+    public function invitationRewards(): HasMany
+    {
+        return $this->hasMany(InvitationReward::class);
+    }
 
+    public function invitation(): HasOne
+    {
+        return $this->hasOne(UserInvitation::class);
+    }
     public function exchanges()
     {
         return $this->hasMany(\App\Exchange::class);
@@ -113,8 +134,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function tasks()
     {
-        return $this->belongsToMany(\App\Task::class, 'user_task')
-            ->withPivot(['status', 'content', 'id'])
+        return $this->belongsToMany(\App\Task::class, 'assignments')
+            ->withPivot(['status', 'current_count', 'id'])
             ->withTimestamps();
     }
 
@@ -153,6 +174,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(\App\Like::class);
     }
 
+    public function liveRoom(): HasOne
+    {
+        return $this->hasOne(LiveRoom::class, 'anchor_id');
+    }
+
+    public function userLives()
+    {
+        return $this->hasMany(\App\UserLive::class);
+    }
+
     public function likedArticles()
     {
         return $this->hasMany(\App\Like::class)->where('liked_type', 'articles');
@@ -161,6 +192,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public function userBlock()
     {
         return $this->hasMany(\App\UserBlock::class);
+    }
+
+    public function assignments()
+    {
+        return $this->hasMany(\App\Assignment::class);
+
     }
 
     #trick!! 这里其实是关注这个用户的粉丝
@@ -207,7 +244,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function collections()
     {
-//        //默认给个文集...
+        //        //默认给个文集...
         //        if (!Collection::where('user_id', $this->id)->count()) {
         //            $collection = Collection::firstOrNew([
         //                'user_id' => $this->id,
@@ -334,4 +371,18 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(OAuth::class);
     }
 
+    public function product()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function store()
+    {
+        return $this->hasOne(Store::class);
+    }
+
+    public function order()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

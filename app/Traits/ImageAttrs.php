@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 trait ImageAttrs
 {
     private static $small = 1; //小图
-    private static $top   = 2; //小图
+    private static $top = 2; //小图
 
     public function getUrlAttribute()
     {
@@ -55,27 +55,27 @@ trait ImageAttrs
 
     public function url()
     {
-        return $this->path();
+        return $this->getPath();
     }
 
     public function path_small()
     {
-        return $this->path(self::$small);
+        return $this->getPath(self::$small);
     }
 
     public function path_top()
     {
-        return $this->path(self::$top);
+        return $this->getPath(self::$top);
     }
 
-    public function path($size = 0)
+    public function getPath($size = 0)
     {
         $path = $this->path;
         if (empty($path)) {
             return null;
         }
-        $extension    = pathinfo($path, PATHINFO_EXTENSION);
-        $folder       = pathinfo($path, PATHINFO_DIRNAME);
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+        $folder = pathinfo($path, PATHINFO_DIRNAME);
         $url_formater = $folder . '/' . basename($path, '.' . $extension) . '%s' . $extension;
         switch ($size) {
             case 1:

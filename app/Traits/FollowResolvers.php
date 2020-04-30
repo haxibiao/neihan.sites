@@ -10,11 +10,15 @@ trait FollowResolvers
 {
     public function getByType($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+        app_track_user('关注列表');
+
         return Follow::where('followed_type', $args['followed_type']);
     }
 
     public function createFollow($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+        app_track_user('关注操作');
+
         unset($args['directive']);
         return Follow::firstOrCreate($args);
     }

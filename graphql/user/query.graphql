@@ -5,6 +5,7 @@ type User {
   avatar: String! @rename(attribute: "avatar_url")
   token: String
   introduction: String
+  store: Store
   unread_comments: Int
   unread_likes: Int
   unread_follows: Int
@@ -29,8 +30,8 @@ type User {
   followed_status: Int @rename(attribute: "followed_id")
   chats: [Chat!]
   categories: [Category!]
-  created_at: DateTime!
-  updated_at: DateTime!
+  created_at: DateTime
+  updated_at: DateTime
   blockedUsers: [blockInfo] @field(resolver: "App\\User@blockedUsers")
   wallet: Wallet
     @rename(attribute: "is_wallet")
@@ -52,11 +53,15 @@ type User {
   totalContribution: Int
   exchangeRate: Int
   contribute: Int
-  is_bind_dongdezhuan:Boolean
-  today_contribute:Int
-  force_alert:Boolean
-  dongdezhuanUser:dongdezhuanUser @rename(attribute:"dongdezhuan_user")
-  title_phone:String
+  is_bind_dongdezhuan: Boolean
+  today_contribute: Int
+  force_alert: Boolean
+  dongdezhuanUser: dongdezhuanUser @rename(attribute: "dongdezhuan_user")
+  title_phone: String
+  """
+  open install 前端主动调用并返回结果
+  """
+  open_install: Boolean @field(resolver: "App\\User@openInstall")
   """
   高额限量抢倍率
   """
@@ -70,6 +75,11 @@ type User {
   threeYuanWithdrawBadgesCount: Int
   fiveYuanWithdrawBadgesCount: Int
   tenYuanWithdrawBadgesCount: Int
+
+  """
+  用户发布的文章
+  """
+  articles: [Article!]
 }
 
 type blockInfo {
@@ -81,6 +91,7 @@ type blockInfo {
 extend type Query {
   users: [User!]!
     @paginate(defaultCount: 10, type: "paginator", model: "App\\User")
+
   user(id: Int! @eq): User @find
   recommendAuthors: [User!]
     @paginate(defaultCount: 10, builder: "App\\User@resolveRecommendAuthors")

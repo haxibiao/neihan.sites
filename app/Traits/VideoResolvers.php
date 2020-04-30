@@ -1,6 +1,7 @@
 <?php
 namespace App\Traits;
 
+use App\Aso;
 use App\Exceptions\GQLException;
 use App\Gold;
 use App\Video;
@@ -12,11 +13,13 @@ trait VideoResolvers
 {
     public function videoPlayReward($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $user   = getUser();
+        app_track_user('激励视频奖励');
+
+        $user = getUser();
         $inputs = $args['input'];
 
-        $countReward = Gold::whereUserId($user->id)->whereDate('created_at',today())->count('id');
-        if($countReward > 500){
+        $countReward = Gold::whereUserId($user->id)->whereDate('created_at', today())->count('id');
+        if ($countReward > 500) {
             return null;
         }
 
@@ -75,7 +78,7 @@ trait VideoResolvers
             return $gold;
         }
 
-        $video_ids  = $inputs['video_ids'];
+        $video_ids = $inputs['video_ids'];
         $rewardGold = random_int(5, 10);
 
         //大致统计用户浏览历史
@@ -92,10 +95,13 @@ trait VideoResolvers
 
     public function queryDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        return '增加贡献的场景:
-1.奖励任务看视频赚钱,获得(+2*N贡献)
-2.日常任务和奖励任务,获得(+2*N贡献)
-3.刷视频时,查看广告视频得(+2*N贡献)
-4.动态广场,查看广告动态得(+1*N贡献)';
+
+        $asos = Aso::where('group', '贡献来源')->where('name', '增加活跃值的场景')->orderBy("id")->get();
+
+        $str = '';
+        foreach ($asos as $aso) {
+            $str = $str . $aso->value . PHP_EOL;
+        }
+        return '增加活跃值的场景:' . $str;
     }
 }

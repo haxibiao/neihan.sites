@@ -36,20 +36,22 @@ return [
         'public_key'  => 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiNjDjBN1XGIXArSwrZ753WUURKqWcdEmvc7cS8Np7zjLtR3BBml1VZspjPLufgfqMrnguONYrvitvoU85Db4w28lvSS1qVVobWTPmy0BnQrvMtXawGnfhysXKNoctfE36mMdvwG+WRm4tqpTQOjpDUMaeWIoF9/ly9fLBcneynwvs5VFcrYI5L/a+i+P++dVrLUjM2M8NBiDUYLwTggy3h3AeATT+Sd7kC1uZtotQ2NGz451ahmhHXM6Po36KV5sfSAinxeRsznkZ59FIs2Jkeftzsp9murgyikUW3NqbgTRRnpwoGEpEez7kXqzfroQu7tiJ1COAm4sZYWtHU4AIQIDAQAB',
     ],
     'alipay'     => [
-        'app_id'         => env('ALIPAY_PAY_APPID'),
-        'private_key'    => file_get_contents(base_path('cert/alipay/private_key')),
-        'ali_public_key' => file_get_contents(base_path('cert/alipay/public_key')),
-        'log'            => [
+        'app_id'              => env('ALIPAY_PAY_APPID'),
+        'private_key'         => file_get_contents(base_path('cert/alipay/private_key')),
+        'ali_public_key'      => base_path('cert/alipay/alipayCertPublicKey_RSA2.crt'),
+        'app_cert_public_key' => base_path('cert/alipay/appCertPublicKey_2018100161614055.crt'), //应用公钥证书路径
+        'alipay_root_cert'    => base_path('cert/alipay/alipayRootCert.crt'),
+        'log'                 => [
             'file'     => storage_path('logs/pay/alipay.log'),
             'level'    => 'info',
             'type'     => 'daily',
             'max_file' => 30,
         ],
-        'http'           => [
+        'http'                => [
             'timeout'         => 30,
             'connect_timeout' => 30,
         ],
-        'mode'           => 'normal',
+        'mode'                => 'normal',
     ],
     'wechat'     => [
         'appid'       => env('WECHAT_APPID'), // APP APPID

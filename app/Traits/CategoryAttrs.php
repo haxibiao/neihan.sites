@@ -7,6 +7,15 @@ use Illuminate\Support\Facades\Auth;
 
 trait CategoryAttrs
 {
+    public function getNovaLogoAttribute()
+    {
+        if (\str_contains($this->logo, 'cos')) {
+            return $this->logo;
+        } else {
+            return cdnurl($this->logo);
+        }
+    }
+
     public function canAdmin()
     {
         if (!Auth::check()) {

@@ -1,0 +1,14 @@
+extend type Mutation {
+    resolveInvitation(input:invitationInput! @spread):Invitation @field(resolver: "App\\Invitation@resolveInvitation")
+    inrementRateAd(user_id: Int! @eq):UserInvitation @field(resolver: "App\\UserInvitation@resolveInrementRateAd")
+    deleteInvitation(input: deleteInvitationInput! @spread): Invitation @field(resolver: "App\\Invitation@resolveDeleteInvitation")
+}
+
+input invitationInput{
+    invite_slogan:String
+}
+
+input deleteInvitationInput{
+    id:ID
+    user_id:ID
+}

@@ -1,0 +1,14 @@
+type Aso {
+  id: Int!
+  group: String
+  name: String
+  value: String
+}
+
+extend type Query {
+  QQNumber: String @field(resolver: "App\\Aso@QQNumber")
+
+  question_answer(group: String! @eq): [Aso]! @all
+
+  getContributionDetails(group: String! @eq): [Aso] @all
+}

@@ -3,11 +3,12 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 
@@ -36,6 +37,8 @@ class Task extends Resource
         'id', 'name', 'details',
     ];
 
+    public static $group = '任务管理';
+
     public static function label()
     {
         return '任务';
@@ -43,7 +46,7 @@ class Task extends Resource
 
     public static function singularLabel()
     {
-        return '内容管理';
+        return '任务';
     }
 
     /**
@@ -60,8 +63,19 @@ class Task extends Resource
             Text::make('任务描述', 'details'),
             Select::make('类型', 'type')->options(\App\Task::getTypes())->displayUsingLabels(),
             Select::make('状态', 'status')->options(\App\Task::getStatuses())->displayUsingLabels(),
-            Code::make('奖励', 'reward')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
-            Code::make('解析', 'resolve')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
+            Code::make('奖励', 'reward')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE)->withMeta(
+                [
+                    'value' => json_encode(['gold' => '0', 'contribute' => '0']),
+                ]
+            ),
+            Code::make('任务配置', 'resolve')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
+            //Code::make('解析', 'resolve')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
+            BelongsTo::make('任务模版', 'reviewFlow', 'App\Nova\ReviewFlow')->hideWhenUpdating(),
+            Number::make('最多完成的次数（每日任务用）', 'max_count')->withMeta(
+                [
+                    'value' => 0,
+                ]
+            ),
             DateTime::make('开始时间', 'start_at'),
             DateTime::make('截止时间', 'end_at'),
             DateTime::make('创建时间', 'created_at')->exceptOnForms(),

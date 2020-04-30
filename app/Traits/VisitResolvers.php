@@ -12,6 +12,8 @@ trait VisitResolvers
 {
     public function getVisits($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+        app_track_user('获取浏览记录');
+
         $articles = Article::whereNull('video_id')->pluck('id');
         $user     = User::find($args['user_id']);
         return Visit::where('user_id', $args['user_id'])->whereIn('visited_type', ['articles'])->whereNotIn(
@@ -21,6 +23,8 @@ trait VisitResolvers
 
     public function getByDate($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+        app_track_user('获取浏览记录');
+
         if (isset($args['filter'])) {
             if ($args['filter'] == 'TODAY') {
                 return Visit::where('created_at', '>=', today());

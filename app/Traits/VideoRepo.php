@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use App\Article;
 use App\Helpers\QcloudUtils;
 use App\Jobs\MakeVideoCovers;
 use Illuminate\Http\UploadedFile;
@@ -17,6 +16,26 @@ use TencentCloud\Vod\V20180717\VodClient;
 
 trait VideoRepo
 {
+
+    // VOD视频资源预热
+    public function pushUrlCacheWithVODUrl($url)
+    {
+        //VOD预热
+        $cred        = new Credential(config('tencentvod.' . config('app.name') . '.secret_id'), config('tencentvod.' . config('app.name') . '.secret_key'));
+        $httpProfile = new HttpProfile();
+        $httpProfile->setEndpoint("vod.tencentcloudapi.com");
+
+        $clientProfile = new ClientProfile();
+        $clientProfile->setHttpProfile($httpProfile);
+
+        $client = new VodClient($cred, "ap-guangzhou", $clientProfile);
+        $req    = new PushUrlCacheRequest();
+        $params = '{"Urls":["' . $url . '"]}';
+
+        $req->fromJsonString($params);
+        return $client->PushUrlCache($req);
+    }
+
     public function fillForJs()
     {
         $video        = $this;
@@ -93,9 +112,10 @@ trait VideoRepo
         }
     }
 
-    public function pushUrlCacheRequest($url){
+    public function pushUrlCacheRequest($url)
+    {
         //VOD预热
-        $cred = new Credential(env('VOD_SECRET_ID'), env('VOD_SECRET_KEY'));
+        $cred        = new Credential(env('VOD_SECRET_ID'), env('VOD_SECRET_KEY'));
         $httpProfile = new HttpProfile();
         $httpProfile->setEndpoint("vod.tencentcloudapi.com");
 
@@ -103,22 +123,23 @@ trait VideoRepo
         $clientProfile->setHttpProfile($httpProfile);
 
         $client = new VodClient($cred, "ap-guangzhou", $clientProfile);
-        $req = new PushUrlCacheRequest();
-        $params = '{"Urls":["'.$url.'"]}';
+        $req    = new PushUrlCacheRequest();
+        $params = '{"Urls":["' . $url . '"]}';
 
         $req->fromJsonString($params);
         $client->PushUrlCache($req);
     }
 
-    public function processVod(){
+    public function processVod()
+    {
 
-        $videoInfo = QcloudUtils::getVideoInfo($this->qcvod_fileid);
-        $duration  = Arr::get($videoInfo,'basicInfo.duration');
-        $sourceVideoUrl  = Arr::get($videoInfo,'basicInfo.sourceVideoUrl');
-        $this->path    = $sourceVideoUrl;
-        $this->duration= $duration;
-        $this->disk    = 'vod';
-        $this->hash    = hash_file('md5',$sourceVideoUrl);
+        $videoInfo      = QcloudUtils::getVideoInfo($this->qcvod_fileid);
+        $duration       = Arr::get($videoInfo, 'basicInfo.duration');
+        $sourceVideoUrl = Arr::get($videoInfo, 'basicInfo.sourceVideoUrl');
+        $this->path     = $sourceVideoUrl;
+        $this->duration = $duration;
+        $this->disk     = 'vod';
+        $this->hash     = hash_file('md5', $sourceVideoUrl);
         $this->save();
         //触发截图操作
         MakeVideoCovers::dispatchNow($this);

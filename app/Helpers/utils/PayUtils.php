@@ -36,12 +36,13 @@ class PayUtils
         $this->instance = Pay::$platform($config);
     }
 
-    public function transfer(string $outBizNo, string $payId, $realName, $amount, $remark = null)
+    public function transfer(string $outBizNo, string $payId, string $realName, $amount, $remark = null)
     {
         $order = [];
         if ($this->platform == 'wechat') {
             //微信平台 amount 单位:/分
             $amount *= 100;
+
             $order = [
                 'partner_trade_no' => $outBizNo,
                 'openid'           => $payId,
@@ -50,16 +51,21 @@ class PayUtils
                 'amount'           => $amount,
                 'desc'             => $remark,
                 'type'             => 'app',
-                'spbill_create_ip' => self::WITHDRAW_SERVER_IP,
+                'spbill_create_ip' => '203.195.161.189',
             ];
         } else if ($this->platform == 'alipay') {
             $order = [
-                'out_biz_no'      => $outBizNo,
-                'payee_type'      => self::isAlipayOpenId($payId) ? 'ALIPAY_USERID' : 'ALIPAY_LOGONID',
-                'payee_account'   => $payId,
-                'payee_real_name' => $realName,
-                'amount'          => $amount,
-                'remark'          => $remark,
+                'out_biz_no'   => $outBizNo,
+                'biz_scene'    => 'DIRECT_TRANSFER',
+                'trans_amount' => $amount,
+                'product_code' => 'TRANS_ACCOUNT_NO_PWD',
+                'payee_info'   => [
+                    'identity'      => $payId,
+                    'identity_type' => self::isAlipayOpenId($payId) ? 'ALIPAY_USER_ID' : 'ALIPAY_LOGON_ID',
+                    'name'          => $realName,
+                ],
+                'remark'       => $remark,
+                'order_title'  => $remark,
             ];
         }
 

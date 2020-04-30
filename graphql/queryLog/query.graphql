@@ -4,7 +4,3 @@ type QueryLog {
   hits: Int
   user: User!
 }
-
-extend type Query {
-  queryLogs(user_id: Int! @eq): QueryLog @paginate(defaultCount: 10)
-}

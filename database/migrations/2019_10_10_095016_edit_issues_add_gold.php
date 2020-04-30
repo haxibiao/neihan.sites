@@ -14,7 +14,9 @@ class EditIssuesAddGold extends Migration
     public function up()
     {
         Schema::table('issues', function (Blueprint $table) {
-            $table->unsignedInteger('gold')->default(0)->comment('金币');
+            if (!Schema::hasColumn('issues', 'gold')) {
+                $table->unsignedInteger('gold')->default(0)->comment('金币');
+            }
         });
     }
 

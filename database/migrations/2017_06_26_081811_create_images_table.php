@@ -16,6 +16,8 @@ class CreateImagesTable extends Migration
         Schema::create('images', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->nullable();
+            $table->Integer('store_id')->index()->comment('店铺id');
+            $table->Integer('product_id')->index()->comment('商品id');
 
             $table->string('title')->nullable()->index()->comment('图片最后一次配文时的标题，方便搜索图片用');
             $table->string('source_url')->nullable()->comment('外链地址,disk为null时需要采集回来');

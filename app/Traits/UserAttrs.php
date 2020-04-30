@@ -16,6 +16,28 @@ use Illuminate\Support\Str;
 
 trait UserAttrs
 {
+    //返回至少6位数字的邀请码
+    public function getInviteCodeAttribute()
+    {
+        $code      = $this->id;
+        $minLength = 6;
+        while (strlen($code) < $minLength) {
+            $code = '0' . $code;
+        }
+        return $code;
+    }
+
+    //返回用户所有直播观众数量
+    public function getCountAudiencesAttribute()
+    {
+        return $this->userLives()->sum('count_users');
+    }
+
+    public function getCountSuccessInvitationAttribute()
+    {
+        return $this->invitations()->whereNotNull('invited_in')->count();
+    }
+
     /**
      *
      * 高额提现限量抢成功率 2倍
@@ -24,7 +46,8 @@ trait UserAttrs
      */
     public function getDoubleHighWithdrawCardsCountAttribute()
     {
-        return $this->countByHighWithdrawCardsRate();
+        return 0;
+        // return $this->countByHighWithdrawCardsRate();
     }
     /**
      *
@@ -34,7 +57,8 @@ trait UserAttrs
      */
     public function getFiveTimesHighWithdrawCardsCountAttribute()
     {
-        return $this->countByHighWithdrawCardsRate();
+        return 0;
+        // return $this->countByHighWithdrawCardsRate();
     }
 
     /**
@@ -45,7 +69,8 @@ trait UserAttrs
      */
     public function getTenTimesHighWithdrawCardsCountAttribute()
     {
-        return $this->countByHighWithdrawCardsRate();
+        return 0;
+        // return $this->countByHighWithdrawCardsRate();
     }
     /**
      *
@@ -55,7 +80,8 @@ trait UserAttrs
      */
     public function getThreeYuanWithdrawBadgesCountAttribute()
     {
-        return $this->countByHighWithdrawBadgeCount(3);
+        return 0;
+        // return $this->countByHighWithdrawBadgeCount(3);
     }
     /**
      *
@@ -65,7 +91,8 @@ trait UserAttrs
      */
     public function getFiveYuanWithdrawBadgesCountAttribute()
     {
-        return $this->countByHighWithdrawBadgeCount(5);
+        return 0;
+        // return $this->countByHighWithdrawBadgeCount(5);
     }
     /**
      *
@@ -75,7 +102,8 @@ trait UserAttrs
      */
     public function getTenYuanWithdrawBadgesCountAttribute()
     {
-        return $this->countByHighWithdrawBadgeCount(10);
+        return 0;
+        // return $this->countByHighWithdrawBadgeCount(10);
     }
 
     //用户激励视频的计数器
@@ -364,8 +392,8 @@ trait UserAttrs
     //TODO: 这些可以后面淘汰，前端直接访问 user->profile->atts 即可
     public function getCountArticlesAttribute()
     {
-        return $this->allArticles()->where("status",">",0)->count();
-       // return $this->profile->count_articles;
+        return $this->allArticles()->count();
+        // return $this->profile->count_articles;
     }
 
     public function getCountLikesAttribute()
@@ -458,7 +486,8 @@ trait UserAttrs
 
     public function getDongdezhuanUserAttribute()
     {
-        return $this->getDDZUser();
+        // return $this->getDDZUser();
+        return $this;
     }
 
     public function getForceAlertAttribute()

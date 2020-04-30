@@ -1,9 +1,26 @@
 extend type Mutation @middleware(checks: ["auth:api"]) {
+  """
+  喝水任务上报打卡
+  """
   DrinkWater(task_id: Int!): [Task!] @field(resolver: "App\\Task@resolveDrinkWater")
-  DrinkWaterReward: UserTask @field(resolver: "App\\Task@resolveDrinkWaterReward")
-  SleepReward(task_id: Int!): UserTask @field(resolver: "App\\Task@resolveSleepReward")
+  """
+  喝水打卡任务获取奖励
+  """
+  DrinkWaterReward: Assignment @field(resolver: "App\\Task@resolveDrinkWaterReward")
+  """
+  睡觉打卡奖励
+  """
+  SleepReward(task_id: Int!): Assignment @field(resolver: "App\\Task@resolveSleepReward")
+  """
+  任务中心领取任务
+  """
   receiveTask(id: ID!): Task @field(resolver: "App\\Task@receiveTaskResolver")
+  """
+  任务中心领取奖励
+  """
   rewardTask(id: ID!): Task @field(resolver: "App\\Task@getReWardResolver")
+  """
+  应用商店好评任务
+  """
   highPraiseTask(id: ID, content: String): Boolean @field(resolver: "App\\Task@highPraiseTaskResolver")
-  doubleReWard(id: ID): UserTask @field(resolver: "App\\Task@doubleReWardResolver")
 }

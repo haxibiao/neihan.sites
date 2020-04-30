@@ -1,42 +1,111 @@
 type Task {
   id: Int!
   user: User
+  """
+  任务的名称
+  """
   name: String
+  """
+  任务的说明
+  """
   details: String
+  """
+  任务的类别(日常，新人...)
+  """
   type: Int
+  """
+  任务的图标
+  """
   icon: String
+  """
+  任务的背景图
+  """
   background_img: String
+
+  """
+  任务的模板的可用状态
+  """
   status: Int
+
+  """
+  用户的指派的进度百分比（目前：喝水的杯子UI显示用）
+  """
   task_progress: Float
+  """
+  用户的指派的进度描述(1/8)
+  """
   progress_details: String
+
+  """
+  用户的指派的状态(1:已指派，2:已完成，3:已奖励)
+  """
   task_status: Int
+  """
+  任务的去做指令（去答题，去发视频，去直播）
+  """
   submit_name: String
+  """
+  User,Post,Question...这样的任务对象类名，方便前端知道行动指令...(可以淘汰router)
+  """
   task_class: String
+  """
+  睡觉任务的状态
+  """
   sleep_status: Boolean
-  check_functions: String
+
+  """
+  任务的奖励设置
+  """
   reward_info: RewardInfo
-  taskInfo: TaskInfo
-  start_at: DateTime
-  end_at: DateTime
-  start_time: String
-  end_time: String
+  """
+  任务的前端路由信息在这
+  """
+  taskInfo: TaskInfo @deprecated(reason: "后端数据不需要知道前端的路由名")
+
+  start_at: DateTime @deprecated(reason: "睡觉任务用的")
+  end_at: DateTime @deprecated(reason: "睡觉任务用的")
+
+  start_time: String @deprecated(reason: "喝水任务用的")
+  end_time: String @deprecated(reason: "喝水任务用的")
+
   created_at: DateTime
   updated_at: DateTime
 }
 
 type RewardInfo {
+  """
+  奖励金币
+  """
   gold: Int
+  """
+  奖励贡献
+  """
   contribute: Int
 }
 
 type TaskInfo {
+  """
+  任务校验方法
+  """
   method: String
+  """
+  前端去做任务的页面路由名
+  """
   router: String
 }
 
 extend type Query @middleware(checks: ["auth:api"]) {
+  """
+  喝水打卡任务列表
+  """
   DrinkWaterTasks: [Task!] @field(resolver: "App\\Task@resolveDrinkWaterTasks")
+  """
+  睡觉打卡玩法获取
+  """
   SleepTask: Task @field(resolver: "App\\Task@resolveSleepTask")
+  """
+  获取全部任务列表
+  """
   tasks(type: TaskType!): [Task!] @field(resolver: "App\\Task@resolveTasks")
 }
 

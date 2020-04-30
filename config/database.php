@@ -13,9 +13,9 @@ return [
     |
      */
 
-    'default'     => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'mysql'),
 
-    'debug'       => env('DB_DEBUG', false),
+    'debug' => env('DB_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -35,115 +35,129 @@ return [
 
     'connections' => [
 
-        'sqlite'       => [
-            'driver'   => 'sqlite',
+        'sqlite' => [
+            'driver' => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
-            'prefix'   => '',
+            'prefix' => '',
         ],
 
-        'mysql'        => [
-            'driver'      => 'mysql',
-            'host'        => env('DB_HOST', '127.0.0.1'),
-            'port'        => env('DB_PORT', '3306'),
-            'database'    => env('DB_DATABASE', 'forge'),
-            'username'    => env('DB_USERNAME', 'forge'),
-            'password'    => env('DB_PASSWORD', ''),
+        'mysql' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
-            'charset'     => 'utf8mb4',
-            'collation'   => 'utf8mb4_unicode_ci',
-            'prefix'      => '',
-            'strict'      => false,
-            'engine'      => null,
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+            'exclude_tables' => [
+                'gold',
+                'answer',
+                'contributes',
+                'category_user',
+                'cache',
+                'visits',
+                'verification_codes',
+                'likes',
+                'favorites',
+                'user_task',
+                'exchanges',
+                'user_blocks',
+            ],
         ],
 
 //        FIXME: 先这样写，以后实现到 env:refresh
-        'dongdezhuan'  => [
-            'driver'      => 'mysql',
-            'host'        => env('APP_ENV') === 'prod' ? 'nwgz03' : (env('APP_ENV') === 'develop' ? 'gz002' : '127.0.01'),
-            'port'        => env('DDZ_DB_PORT', '3306'),
-            'database'    => env('APP_ENV') === 'develop' ? 'dongdezhuan_dev' : 'dongdezhuan',
-            'username'    => env('DDZ_DB_USERNAME', 'root'),
-            'password'    => in_array(env('APP_ENV'), ['prod', 'develop']) ? 'yp1qaz@WSX' : 'localdb001',
+        'dongdezhuan' => [
+            'driver' => 'mysql',
+            'host' => env('APP_ENV') === 'prod' ? 'nwgz03' : (env('APP_ENV') === 'develop' ? 'gz002' : '127.0.01'),
+            'port' => env('DDZ_DB_PORT', '3306'),
+            'database' => env('APP_ENV') === 'develop' ? 'dongdezhuan_dev' : 'dongdezhuan',
+            'username' => env('DDZ_DB_USERNAME', 'root'),
+            'password' => in_array(env('APP_ENV'), ['prod', 'develop']) ? 'yp1qaz@WSX' : 'localdb001',
             'unix_socket' => env('DDZ_DB_SOCKET', ''),
-            'charset'     => 'utf8mb4',
-            'collation'   => 'utf8mb4_unicode_ci',
-            'prefix'      => '',
-            'strict'      => false,
-            'engine'      => null,
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
         ],
 
         'dianmoge_vod' => [
-            'driver'      => 'mysql',
-            'host'        => env('DB_HOST', '127.0.0.1'),
-            'port'        => env('DB_PORT', '3306'),
-            'database'    => 'dianmoge_vod',
-            'username'    => env('DB_USERNAME', 'root'),
-            'password'    => env('DB_PASSWORD', 'localdb001'),
+            'driver' => 'mysql',
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => 'dianmoge_vod',
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', 'localdb001'),
             'unix_socket' => env('DB_SOCKET', ''),
-            'charset'     => 'utf8mb4',
-            'collation'   => 'utf8mb4_unicode_ci',
-            'prefix'      => '',
-            'strict'      => true,
-            'engine'      => null,
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
         ],
 
         'datizhuanian' => [
-            'driver'         => 'mysql',
-            'url'            => env('DM_DATABASE_URL'),
-            'host'           => env('DTZQ_DB_HOST', '127.0.0.1'),
-            'port'           => env('DTZQ_DB_PORT', '3306'),
-            'database'       => env('DTZQ_DB_DATABASE', 'damei'),
-            'username'       => env('DTZQ_DB_USERNAME', 'root'),
-            'password'       => env('DTZQ_DB_PASSWORD', 'localdb001'),
-            'unix_socket'    => env('DB_SOCKET', ''),
-            'charset'        => 'utf8mb4',
-            'collation'      => 'utf8mb4_unicode_ci',
-            'prefix'         => '',
+            'driver' => 'mysql',
+            'url' => env('DM_DATABASE_URL'),
+            'host' => env('DTZQ_DB_HOST', '127.0.0.1'),
+            'port' => env('DTZQ_DB_PORT', '3306'),
+            'database' => env('DTZQ_DB_DATABASE', 'damei'),
+            'username' => env('DTZQ_DB_USERNAME', 'root'),
+            'password' => env('DTZQ_DB_PASSWORD', 'localdb001'),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
             'prefix_indexes' => true,
-            'strict'         => true,
-            'engine'         => null,
-            'options'        => extension_loaded('pdo_mysql') ? array_filter([
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
 
-        'local_dtzq'   => [
-            'driver'      => 'mysql',
-            'host'        => env('DB_HOST', '127.0.0.1'),
-            'port'        => env('DB_PORT', '3306'),
-            'database'    => 'damei',
-            'username'    => env('DB_USERNAME', 'forge'),
-            'password'    => env('DB_PASSWORD', ''),
+        'local_dtzq' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => 'damei',
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
-            'charset'     => 'utf8mb4',
-            'collation'   => 'utf8mb4_unicode_ci',
-            'prefix'      => '',
-            'strict'      => true,
-            'engine'      => null,
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
         ],
 
-        'pgsql'        => [
-            'driver'   => 'pgsql',
-            'host'     => env('DB_HOST', '127.0.0.1'),
-            'port'     => env('DB_PORT', '5432'),
+        'pgsql' => [
+            'driver' => 'pgsql',
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '5432'),
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
-            'charset'  => 'utf8',
-            'prefix'   => '',
-            'schema'   => 'public',
-            'sslmode'  => 'prefer',
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+            'sslmode' => 'prefer',
         ],
 
-        'sqlsrv'       => [
-            'driver'   => 'sqlsrv',
-            'host'     => env('DB_HOST', 'localhost'),
-            'port'     => env('DB_PORT', '1433'),
+        'sqlsrv' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DB_HOST', 'localhost'),
+            'port' => env('DB_PORT', '1433'),
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
-            'charset'  => 'utf8',
-            'prefix'   => '',
+            'charset' => 'utf8',
+            'prefix' => '',
         ],
 
     ],
@@ -159,7 +173,7 @@ return [
     |
      */
 
-    'migrations'  => 'migrations',
+    'migrations' => 'migrations',
 
     /*
     |--------------------------------------------------------------------------
@@ -172,14 +186,14 @@ return [
     |
      */
 
-    'redis'       => [
+    'redis' => [
 
-        'client'  => 'predis',
+        'client' => 'predis',
 
         'default' => [
-            'host'     => env('REDIS_HOST', '127.0.0.1'),
+            'host' => env('REDIS_HOST', '127.0.0.1'),
             'password' => env('REDIS_PASSWORD', null),
-            'port'     => env('REDIS_PORT', 6379),
+            'port' => env('REDIS_PORT', 6379),
             'database' => 1,
         ],
 

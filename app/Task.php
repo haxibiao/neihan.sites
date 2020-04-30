@@ -6,9 +6,6 @@ use App\Traits\TaskAttrs;
 use App\Traits\TaskMethod;
 use App\Traits\TaskRepo;
 use App\Traits\TaskResolvers;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class Task extends Model
 {
@@ -23,16 +20,20 @@ class Task extends Model
         'details',
         'logo',
         'type',
-        'count',
-        'check_functions',
         'status',
+        'icon',
+        'reward',
+        'resolve',
+        'review_flow_id',
+        'max_count',
     ];
 
     protected $casts = [
-        'start_at' => 'datetime',
-        'end_at'   => 'datetime',
-        'reward'   => 'array',
-        'resolve'  => 'array',
+        'start_at'    => 'datetime',
+        'end_at'      => 'datetime',
+        'reward'      => 'array',
+        'resolve'     => 'array',
+        'review_info' => 'array',
     ];
 
     //任务类型
@@ -45,42 +46,36 @@ class Task extends Model
     const ENABLE  = 1;
     const DISABLE = 0;
 
+    public function scopeEnabled($query)
+    {
+        return $query->whereStatus(self::ENABLE);
+    }
+
+    public function reviewFlow()
+    {
+        return $this->belongsTo(\App\ReviewFlow::class);
+    }
+
+    public function assignments()
+    {
+        return $this->hasMany(\App\Assignment::class);
+    }
+
     public function users()
     {
         return $this->belongsToMany(\App\User::class)
-            ->using(\App\UserTask::class)
-            ->withPivot(['id', 'content', 'progress'])
+            ->using(\App\Assignment::class)
+            ->withPivot(['id', 'content', 'current_count'])
             ->withTimestamps();
     }
-
-    public function parentTasks()
-    {
-        return $this->belongsTo(\App\Task::class, 'parent_task', 'id');
-    }
-
-    public function childrenTasks()
-    {
-        return $this->hasMany(\App\Task::class, 'parent_task', 'id');
-    }
-
     public static function getTypes()
     {
         return [
             self::NEW_USER_TASK => '新人任务',
-            self::DAILY_TASK    => '每日任务',
+            self::DAILY_TASK    => '日常任务',
             self::CUSTOM_TASK   => '自定义任务',
             self::TIME_TASK     => '实时任务',
         ];
-    }
-
-    public function isparentTasks()
-    {
-        return $this->childrenTasks()->count() > 0;
-    }
-
-    public function ischildrenTasks()
-    {
-        return $this->parentTasks()->exists();
     }
 
     public static function getStatuses()
@@ -89,46 +84,5 @@ class Task extends Model
             self::ENABLE  => '已展示',
             self::DISABLE => '未展示',
         ];
-    }
-
-    public function saveDownloadImage($file)
-    {
-        if ($file) {
-            $task_logo = 'task/task' . $this->id . '_' . time() . '.png';
-            $cosDisk   = \Storage::cloud();
-            $cosDisk->put($task_logo, \file_get_contents($file->path()));
-
-            return $task_logo;
-        }
-    }
-
-    public function saveBackGroundImage($file)
-    {
-        if ($file) {
-            $task_logo = 'task/background/task/' . $this->id . '_' . time() . '.png';
-            $cosDisk   = \Storage::cloud();
-            $cosDisk->put($task_logo, \file_get_contents($file->path()));
-            return $task_logo;
-        }
-    }
-
-    public function getbackgroundImgAttribute()
-    {
-
-        $logo = $this->getOriginal('background_img');
-        // dd($logo);
-        if (!empty($logo) && !Str::contains($logo, 'http')) {
-            return Storage::cloud()->url($logo);
-        }
-        return $logo;
-    }
-
-    public function getIconAttribute()
-    {
-        $logo = $this->getOriginal('icon');
-        if (!empty($logo) && !Str::contains($logo, 'http')) {
-            return Storage::cloud()->url($logo);
-        }
-        return $logo;
     }
 }

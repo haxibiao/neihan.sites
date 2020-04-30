@@ -5,12 +5,13 @@ namespace App\Traits;
 use App\Category;
 use App\Helpers\QcloudUtils;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 trait CategoryRepo
 {
     public function fillForJs()
     {
-        $this->logo        = $this->logoUrl;
+        $this->logo = $this->logoUrl;
         $this->description = $this->description();
     }
 
@@ -31,7 +32,7 @@ trait CategoryRepo
 
     public function topFollowers()
     {
-        $topFollows   = $this->follows()->orderBy('id', 'desc')->take(8)->get();
+        $topFollows = $this->follows()->orderBy('id', 'desc')->take(8)->get();
         $topFollowers = [];
         foreach ($topFollows as $follow) {
             $topFollowers[] = $follow->user;
@@ -44,13 +45,13 @@ trait CategoryRepo
     {
         $name = $this->id . '_' . time();
         if ($request->logo) {
-            $file                = $request->logo;
-            $extension           = $file->getClientOriginalExtension();
+            $file = $request->logo;
+            $extension = $file->getClientOriginalExtension();
             $file_name_formatter = $name . '.%s.' . $extension;
             //save logo
             $file_name_big = sprintf($file_name_formatter, 'logo');
-            $tmp_big       = '/tmp/' . $file_name_big;
-            $img           = \ImageMaker::make($file->path());
+            $tmp_big = '/tmp/' . $file_name_big;
+            $img = \ImageMaker::make($file->path());
             $img->fit(180);
             $img->save($tmp_big);
             $cos_file_info = QcloudUtils::uploadFile($tmp_big, $file_name_big, 'category');
@@ -61,20 +62,20 @@ trait CategoryRepo
             //save small logo
             $img->fit(32);
             $file_name_small = sprintf($file_name_formatter, 'logo.small');
-            $tmp_small       = '/tmp/' . $file_name_small;
+            $tmp_small = '/tmp/' . $file_name_small;
             $img->save($tmp_small);
             QcloudUtils::uploadFile($tmp_small, $file_name_small, 'category');
             $this->logo = $cos_file_info['data']['custom_url'];
         }
 
         if ($request->logo_app) {
-            $file                = $request->logo_app;
-            $extension           = $file->getClientOriginalExtension();
+            $file = $request->logo_app;
+            $extension = $file->getClientOriginalExtension();
             $file_name_formatter = $name . '.%s.' . $extension;
             //save logo_app
             $file_name_big = sprintf($file_name_formatter, 'logo.app');
-            $tmp_big       = '/tmp/' . $file_name_big;
-            $img           = \ImageMaker::make($file->path());
+            $tmp_big = '/tmp/' . $file_name_big;
+            $img = \ImageMaker::make($file->path());
             $img->fit(180);
             $img->save($tmp_big);
             $cos_file_info = QcloudUtils::uploadFile($tmp_big, $file_name_big, 'category');
@@ -85,7 +86,7 @@ trait CategoryRepo
             //save small logo_app
             $img->fit(32);
             $file_name_small = sprintf($file_name_formatter, 'logo.small.app');
-            $tmp_small       = '/tmp/' . $file_name_small;
+            $tmp_small = '/tmp/' . $file_name_small;
             $img->save($tmp_small);
             QcloudUtils::uploadFile($tmp_small, $file_name_small, 'test');
             $this->logo_app = $cos_file_info['data']['custom_url'];
@@ -99,9 +100,9 @@ trait CategoryRepo
             $user = getUser();
             //如果重复浏览只更新纪录的时间戳
             $visited = \App\Visit::firstOrNew([
-                'user_id'      => $user->id,
+                'user_id' => $user->id,
                 'visited_type' => 'categories',
-                'visited_id'   => $this->id,
+                'visited_id' => $this->id,
             ]);
             $visited->updated_at = now();
             $visited->save();
@@ -110,7 +111,7 @@ trait CategoryRepo
 
     public static function getTopCategory($number = 5)
     {
-        $data             = [];
+        $data = [];
         $ten_top_category = Category::select(DB::raw('count(*) as categoryCount,category_id'))
             ->from('articles')
             ->whereNotNull('video_id')
@@ -120,7 +121,7 @@ trait CategoryRepo
             ->take($number)->get()->toArray();
 
         foreach ($ten_top_category as $top_category) {
-            $cate           = Category::find($top_category["category_id"]);
+            $cate = Category::find($top_category["category_id"]);
             $data['name'][] = $cate ? $cate->name : '空';
             $data['data'][] = $top_category["categoryCount"];
         }
@@ -140,10 +141,21 @@ trait CategoryRepo
             ->take($number)->get()->toArray();
 
         foreach ($ten_top_category as $top_category) {
-            $cate              = Category::find($top_category["category_id"]);
+            $cate = Category::find($top_category["category_id"]);
             $data['options'][] = $cate ? $cate->name : '空';
-            $data['value'][]   = $top_category["categoryCount"];
+            $data['value'][] = $top_category["categoryCount"];
         }
         return $data;
+    }
+
+    public function saveDownloadImage($file)
+    {
+        if ($file) {
+            $task_logo = 'category/category' . $this->id . '_' . time() . '.png';
+            $cosDisk = \Storage::cloud();
+            $cosDisk->put($task_logo, \file_get_contents($file->path()));
+
+            return $task_logo;
+        }
     }
 }

@@ -7,6 +7,7 @@ use App\Traits\MakeCovers;
 use App\Traits\VideoAttrs;
 use App\Traits\VideoRepo;
 use App\Traits\VideoResolvers;
+use App\Traits\VodVideoRepo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Video extends Model
@@ -16,6 +17,7 @@ class Video extends Model
     use VideoAttrs;
     use VideoRepo;
     use MakeCovers;
+    use VodVideoRepo;
 
     protected $fillable = [
         'title',
@@ -27,6 +29,8 @@ class Video extends Model
         'hash',
         'disk',
         'qcvod_fileid',
+        'width',
+        'height',
     ];
 
     public function user()

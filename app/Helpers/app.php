@@ -9,6 +9,20 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
+function get_user_agent()
+{
+    return request()->header('userAgent') ?? request()->get('userAgent');
+}
+
+function get_os()
+{
+    return request()->header('os') ?? request()->get('os');
+}
+
+function get_os_version()
+{
+    return request()->header('systemVersion') ?? request()->get('systemVersion');
+}
 /**
  *
  * 随机算法
@@ -149,9 +163,10 @@ function formatBytes($byteSize)
 
 function cdnurl($path)
 {
-    if (!is_prod() && file_exists(public_path($path))) {
-        return url($path);
-    }
+
+    // if (!is_prod() && file_exists(public_path($path))) {
+    //     return url($path);
+    // }
     $path = "/" . $path;
     $path = str_replace('//', '/', $path);
     return "http://" . env('COS_DOMAIN') . $path;

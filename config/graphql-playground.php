@@ -5,32 +5,20 @@ declare (strict_types = 1);
 return [
     /*
     |--------------------------------------------------------------------------
-    | GraphQL Playground route
-    |--------------------------------------------------------------------------
-    |
-    | Set the route to which the GraphQL Playground responds.
-    | The default endpoint is "yourdomain.com/graphql-playground".
-    |
-     */
-
-    'route_name' => 'gqlp',
-
-    /*
-    |--------------------------------------------------------------------------
     | Route configuration
     |--------------------------------------------------------------------------
     |
-    | Additional configuration for the route group https://lumen.laravel.com/docs/routing#route-groups
-    |
-    | For domain config it could be something like:
-    | 'domain' => 'graphql.' . env('APP_DOMAIN', 'localhost'),
+    | Set the URI at which the GraphQL Playground can be viewed
+    | and any additional configuration for the route.
     |
      */
 
-    'route'      => [
-        // 'prefix' => '',
+    'route'    => [
+        'uri'  => '/gqlp',
+        'name' => 'gqlp',
         // 'middleware' => ['web']
-        'domain' => env('GRAPHQL_PLAYGROUND_DOMAIN', null),
+        // 'prefix' => '',
+        // 'domain' => 'graphql.' . env('APP_DOMAIN', 'localhost'),
     ],
 
     /*
@@ -39,12 +27,12 @@ return [
     |--------------------------------------------------------------------------
     |
     | The default endpoint that the Playground UI is set to.
-    | It assumes you are running GraphQL from the same Laravel instance,
-    | but can be set to any URL.
+    | It assumes you are running GraphQL on the same domain
+    | as GraphQL Playground, but can be set to any URL.
     |
      */
 
-    'endpoint'   => 'gql',
+    'endpoint' => '/gql',
 
     /*
     |--------------------------------------------------------------------------
@@ -57,5 +45,5 @@ return [
     |
      */
 
-    'enabled'    => env('GRAPHQL_PLAYGROUND_ENABLED', true),
+    'enabled'  => env('GRAPHQL_PLAYGROUND_ENABLED', true),
 ];

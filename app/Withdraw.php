@@ -33,6 +33,8 @@ class Withdraw extends Model
     const FAILURE_WITHDRAW = -1;
     const WAITING_WITHDRAW = 0;
 
+    const MAX_WITHDRAW_SUM_AMOUNT = 200;
+
     const WITHDRAW_MAX = 1;
 
     public function wallet(): BelongsTo
@@ -63,4 +65,8 @@ class Withdraw extends Model
         return $this->created_at->format('YmdHis') . $this->id;
     }
 
+    public function scopeToday($query)
+    {
+        return $query->whereDate('created_at', today());
+    }
 }

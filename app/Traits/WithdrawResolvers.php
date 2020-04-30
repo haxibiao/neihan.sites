@@ -2,7 +2,6 @@
 namespace App\Traits;
 
 use App\Contribute;
-use App\DDZ\User as DDZUser;
 use App\Exceptions\GQLException;
 use App\Exchange;
 use App\User;
@@ -10,7 +9,6 @@ use App\Version;
 use App\Withdraw;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 trait WithdrawResolvers
@@ -36,12 +34,11 @@ trait WithdrawResolvers
         //     throw new GQLException('当前版本过低,请更新后再尝试提现,详情咨询QQ群:808982693');
         // }
 
+        $this->checkHighWithdraw($user, $amount);
         //3. 用户钱包信息完整性校验
         $wallet = $user->wallet;
-        if ($platform == 'alipay') {
-            throw new GQLException('支付宝提现正在维护中...');
-        }
 
+        $payId = $wallet->getPayId($platform);
         if (is_null($wallet)) {
             throw new GQLException('提现失败, 请先完善提现资料!');
         }
@@ -49,31 +46,138 @@ trait WithdrawResolvers
             throw new GQLException('您今日已经提现过了哦 ~，明天再来吧 ~');
         }
 
-        //4. 超过一元,只许提现到懂得赚
-        if ($amount > 1 && $platform != 'dongdezhuan') {
-            throw new GQLException('温馨提示:提现系统全面升级,请下载懂得赚提现哦~,不仅高收益秒提现还不限时');
-        }
-
         //5. 限制每日提现上限
-        $todayWithDrawAmout = $wallet->withdraws()
-            ->where('status', '>', \App\Withdraw::FAILURE_WITHDRAW)
-            ->whereDate('created_at', Carbon::today())
-            ->sum('amount');
-        if ($todayWithDrawAmout >= Withdraw::WITHDRAW_MAX) {
-            throw new GQLException('今日提现额度已达上限,明日再来哦~');
-        }
-
+        $this->checkUserToDayWithdrawAmount($wallet);
         //6. 最低提现额度
         if ($amount < Exchange::MIN_RMB) {
             throw new GQLException('提现失败,最低' . Exchange::MIN_RMB . '元起提现！');
         }
+
+        $this->checkSystemWithdrawAmount();
 
         //7. 是否超支
         if ($wallet->available_balance < $amount) {
             throw new GQLException('提现失败, 余额不足');
         }
 
+        $this->controlHighWithdrawAmount($amount);
+
         //8. 新用户不做限制
+
+        $this->checkUserContribute($isWithdrawBefore, $user, $amount);
+        //9. 检查提现信息
+        if ($platform !== 'dongdezhuan') {
+            $this->checkPayWalletInfo($platform, $wallet);
+
+            if ($isWithdrawBefore) {
+                $contribute      = $user->getTodayContributeAttribute();
+                $need_contribute = $amount * Contribute::WITHDRAW_DATE;
+                $diffContributes = $need_contribute - $contribute;
+                if ($contribute < $need_contribute) {
+                    throw new GQLException('今日贡献不足,您还需' . $diffContributes . '点日贡献值就可以提现成功啦~');
+                }
+
+            }
+
+            $withdraw = $wallet->withdraw($amount, $payId, $platform);
+            if (!$withdraw) {
+                throw new GQLException('兑换失败,请稍后再试!');
+            }
+            return $withdraw;
+        }
+    }
+
+    /**
+     * 检查今日提现金额总数
+     *
+     * @param [Double] $amount
+     * @return void
+     * @throws UserException
+     */
+    public function checkSystemWithdrawAmount()
+    {
+        //总额（总提现金额，含队列内未成功的）
+        $todayWithdrawAmount = Withdraw::today()->sum('amount');
+        if ($todayWithdrawAmount >= Withdraw::MAX_WITHDRAW_SUM_AMOUNT) {
+            throw new GQLException('今日提现总名额已用完,请明日9点再来哦');
+        }
+    }
+
+    // 控制高额提现金额发放名额
+    public function controlHighWithdrawAmount($amount)
+    {
+        //控制额度上限
+        $todayAmountGroup = Withdraw::selectRaw('amount,count(*) as count')->today()->groupBy('amount')->get();
+        foreach ($todayAmountGroup as $todayAmount) {
+            if ($amount == $todayAmount->amount) {
+                if ($todayAmount->amount == 3 && $todayAmount->count >= 5) {
+                    throw new GQLException('提现失败,3元额度已用完,请提现其他额度哦！');
+                }
+
+                if ($todayAmount->amount == 5 && $todayAmount->count >= 2) {
+                    throw new GQLException('提现失败,5元额度已用完,请提现其他额度哦！');
+                }
+
+                if ($todayAmount->amount == 10 && $todayAmount->count >= 1) {
+                    throw new GQLException('提现失败,10元额度已用完,请提现其他额度哦！');
+                }
+            }
+        }
+    }
+
+    public function checkUserToDayWithdrawAmount($wallet)
+    {
+        $todayWithDrawAmount = $wallet->withdraws()
+            ->where('status', '>', \App\Withdraw::FAILURE_WITHDRAW)
+            ->whereDate('created_at', today())
+            ->sum('amount');
+        if ($todayWithDrawAmount >= Withdraw::WITHDRAW_MAX) {
+            throw new GQLException('今日提现额度已达上限,明日再来哦~');
+        }
+
+    }
+
+    public function checkHighWithdraw($user, $amount)
+    {
+        //高额度政策
+        if ($amount > 1) {
+            $hour   = now()->hour;
+            $minute = now()->minute;
+
+            // 工作时间才可以提现
+            // if (($hour < 10 || $hour >= 18 || $minute >= 10)) {
+            //     throw new GQLException('提现的限量抢时间段在: 10:00-18:00,每个小时前10分钟内开抢,下次早点来哦~');
+            // }
+
+            //新注册3小时内的用户不能高额提现，防止撸毛
+            if (!now()->diffInHours($user->created_at) >= 3) {
+                throw new GQLException('当前限量抢额度已被抢光了,下个时段再试吧');
+            }
+
+            throw_if($user->hasWithdrawToday(), GQLException::class, '今天已经提现过啦~');
+
+            // 提现额度逻辑因为邀请下线，已弃用... 改为限制限量抢额度
+            // 每人默认最高10元限量抢额度，以后邀请放开可提高,先简单防止老刷子账户疯狂并发提现...
+            // $withdrawLines = $user->withdraw_lines;
+            // if ($withdrawLines < $amount) {
+            //     throw new GQLException('您的限量抢额度不足,请等新版本开放提额玩法');
+            // }
+
+            /**
+             * 限流:
+             * 每时段前10分钟，比如10:00 - 10:10 限制流量,避免DB SERVER 负载压力100%
+             * 限制几率 20%
+             * 时间超出过,恢复正常!
+             */
+            if ($minute < 10) {
+                $rand = mt_rand(1, 10);
+                throw_if($rand <= 8, GQLException::class, '目前人数过多,请您下个时段(' . ($hour + 1) . '点)再试!');
+            }
+        }
+    }
+
+    public function checkUserContribute($isWithdrawBefore, $user, $amount)
+    {
         if ($isWithdrawBefore) {
             $contribute      = $user->getTodayContributeAttribute();
             $need_contribute = $amount * Contribute::WITHDRAW_DATE;
@@ -81,66 +185,26 @@ trait WithdrawResolvers
             if ($contribute < $need_contribute) {
                 throw new GQLException('今日贡献不足,您还需' . $diffContributes . '点日贡献值就可以提现成功啦~');
             }
-        }
-
-        //9. 懂得赚提现单独操作
-        if ($platform !== 'dongdezhuan') {
-            $payId = $wallet->getPayId($platform);
-            if (empty($payId)) {
-                throw_if($platform == Withdraw::ALIPAY_PLATFORM, GQLException::class, '提现失败,支付宝提现信息未绑定!');
-                throw_if($platform == Withdraw::WECHAT_PLATFORM, GQLException::class, '提现失败,微信提现信息未绑定!');
-            }
-        }
-
-        //高额提现 amount > 1
-        $totalRate = null; //null代表高额提现令牌的概率，必中
-        if ($amount > Withdraw::WITHDRAW_MAX) {
-            //高额提现只限3，5，10元
-            if (!in_array($amount, [3, 5, 10])) {
-                throw new GQLException('当前版本过低,请更新后再尝试提现,详情咨询QQ群:808982693');
-            }
-
-            //高额提现令牌
-            if ($useWithdrawBadges) {
-                //高额提现令牌每天只有一位用户能成功..... 用户辛苦拿到令牌和总贡献，最后失败会崩溃.....
-                // $todayWithdrawSuccessCount = Withdraw::where('status', '>', \App\Withdraw::FAILURE_WITHDRAW)
-                //     ->whereIsNull('rate')
-                //     ->whereDate('created_at', Carbon::today())
-                //     ->whereAmount($amount)
-                //     ->count();
-                // if ($todayWithdrawSuccessCount > 0) {
-                //     throw new GQLException('今日系统发放的高额令牌名额已用完~');
-                // }
-
-                //FIXME: 使用高额提现令这里没看懂...
-                //使用高额提现令
-                \DDZUser::useHighWithdrawBadge($user, $amount);
-
+            //10. 开启兑换事务,替换到钱包 创建提现订单
+            if ($platform === 'dongdezhuan') {
+                //处理限量抢倍率
+                $ddzUser  = $user->getDDZUser();
+                $withdraw = $wallet->withdraw($amount, $ddzUser->account, 'dongdezhuan', $totalRate);
             } else {
-                //限量抢倍率卷
-                $totalRate = \DDZUser::useHighWithdrawCard($user);
+                $withdraw = $wallet->withdraw($amount, $payId, $platform);
             }
+
+        }
+    }
+
+    public function checkPayWalletInfo($platform, $wallet)
+    {
+        $payId = $wallet->getPayId($platform);
+        if (empty($payId)) {
+            throw_if($platform == Withdraw::ALIPAY_PLATFORM, GQLException::class, '提现失败,支付宝提现信息未绑定!');
+            throw_if($platform == Withdraw::WECHAT_PLATFORM, GQLException::class, '提现失败,微信提现信息未绑定!');
         }
 
-        //10. 开启兑换事务,替换到钱包 创建提现订单
-        if ($platform === 'dongdezhuan') {
-            //处理限量抢倍率
-            $ddzUser  = $user->getDDZUser();
-            $withdraw = $wallet->withdraw($amount, $ddzUser->account, 'dongdezhuan', $totalRate);
-        } else {
-            $withdraw = $wallet->withdraw($amount, $payId, $platform);
-        }
-
-        if (!$withdraw) {
-            throw new GQLException('兑换失败,请稍后再试!');
-        }
-
-        //FIXME: 之前消耗日贡献去提现的减贡献的数据，需要删除掉，减贡献今后仅限被惩罚场景...
-        // 11. 消耗贡献值 ? 不用了，直接判断日贡献就够了
-        // if ($isWithdrawBefore) {
-        //     $user->consumeContributeToWithdraw($amount, "withdraws", $withdraw->id);
-        // }
-        return $withdraw;
     }
 
     public function resolveWithdraws($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
@@ -212,7 +276,7 @@ trait WithdrawResolvers
             ],
             [
                 'amount'                => 1,
-                'description'           => $contribute . '日活跃',
+                'description'           => $contribute . '活跃',
                 'tips'                  => '秒到账',
                 'fontColor'             => '#A0A0A0',
                 'bgColor'               => '#FFBB04',
@@ -220,7 +284,7 @@ trait WithdrawResolvers
             ],
             [
                 'amount'                => 3,
-                'description'           => $contribute * 3 . '日活跃',
+                'description'           => $contribute * 3 . '活跃',
                 'tips'                  => '限量抢',
                 'fontColor'             => '#A0A0A0',
                 'bgColor'               => '#FFBB04',
@@ -229,7 +293,7 @@ trait WithdrawResolvers
             ],
             [
                 'amount'                => 5,
-                'description'           => $contribute * 5 . '日活跃',
+                'description'           => $contribute * 5 . '活跃',
                 'tips'                  => '限量抢',
                 'fontColor'             => '#A0A0A0',
                 'bgColor'               => '#FFBB04',
@@ -237,7 +301,7 @@ trait WithdrawResolvers
             ],
             [
                 'amount'                => 10,
-                'description'           => $contribute * 10 . '日活跃',
+                'description'           => $contribute * 10 . '活跃',
                 'tips'                  => '限量抢',
                 'fontColor'             => '#A0A0A0',
                 'bgColor'               => '#FFBB04',

@@ -36,7 +36,7 @@ class ArticleObserver
 
         if ($profile = $article->user->profile) {
             $profile->count_articles = $article->user->publishedArticles()->count();
-            $profile->count_words    = $article->user->publishedArticles()->sum('count_words');
+            $profile->count_words = $article->user->publishedArticles()->sum('count_words');
             $profile->save();
         }
 
@@ -50,22 +50,33 @@ class ArticleObserver
         if ($article->status == 1) {
             //可能是发布了文章，需要统计文集的文章数，字数
             if ($collection = $article->collection) {
-                $collection->count       = $collection->articles()->count();
+                $collection->count = $collection->articles()->count();
                 $collection->count_words = $collection->articles()->sum('count_words');
                 $collection->save();
             }
         }
-
     }
 
     public function updated(Article $article)
     {
         //TODO: 更多需要更新文章数和字数的场景需要写这里...
         //TODO: 文章软删除时
-        if ($article->status = 0) {
-            $article->update([
-                'submit' => Article::REFUSED_SUBMIT,
-            ]);
+        // if ($article->status == 0) {
+        //     $article->update([
+        //         'submit' => Article::REFUSED_SUBMIT,
+        //     ]);
+        // }
+
+        //发布成功
+        if ($article->status == 1) {
+            //更新用户在发布任务方面的各任务的指派的状态
+            $user = $article->user;
+            $articleTasks = $user->article_tasks;
+            if ($articleTasks) {
+                foreach ($articleTasks as $task) {
+                    $task->checkTaskStatus($user);
+                }
+            }
         }
     }
 

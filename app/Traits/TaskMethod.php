@@ -2,114 +2,191 @@
 
 namespace App\Traits;
 
+use App\Assignment;
 use App\Contribute;
-use App\Task;
-use App\User;
-use App\Visit;
-use Carbon\Carbon;
+use App\Gold;
 use Illuminate\Support\Str;
 
 trait TaskMethod
 {
-
-    //检查发布数
-    public function publicArticleTask(): bool
+    /**
+     * 检查直播观看人数任务
+     *
+     * @return bool
+     */
+    public function checkAudienceCount($user, $task, $assignment)
     {
-        $user = checkUser();
-        //包含软删除
-        $count_article = $user->articles()->withTrashed()->whereDate('created_at', Carbon::today())->count();
-        if ($count_article >= $this->resolve['limit']) {
-            return true;
-        }
-
-        return false;
+        //TODO:ObServer
+        $count = $user->count_audiences;
+        return [
+            'status'        => $count >= $task->max_count,
+            'current_count' => $count,
+        ];
     }
 
-    public function publicArticleTaskCount($user)
+    /**
+     * 检查作品点赞任务
+     *
+     * @return bool true:已完成；false:未完成
+     */
+    public function checkLikesCount($user, $task, $assignment)
     {
-        return $user->articles()->withTrashed()->whereDate('created_at', Carbon::today())->count();
+        $count = $user->profile->count_likes;
+        return [
+            'status'        => $count >= $task->max_count,
+            'current_count' => $count,
+        ];
     }
 
-    public function publicArticleTaskCountArgs()
+    /**
+     * 检查喝水赚钱任务
+     *
+     * @return bool
+     */
+    public function checkDrinkWater($user, $task, $assignment)
     {
-        return [checkUser()];
+        $count = $assignment->current_count;
+        return [
+            'status'        => $count >= $task->max_count,
+            'current_count' => $count, //喝水任务唯一的区别是知道你喝了哪几杯...
+        ];
     }
 
-    public function drinkWaterCount($user)
+    /**
+     * 检查睡觉赚钱
+     *
+     * @return bool
+     */
+    public function checkSleep($user, $task, $assignment)
     {
-        return $this->getparentTaskProgress($user->id) * $this->resolve['limit'];
+        $count = $assignment->current_count;
+        return [
+            'status'        => $count >= $task->max_count,
+            'current_count' => $count, //睡觉任务唯一的区别是知道你目前是醒来的还是睡着...
+        ];
     }
 
-    public function drinkWaterCountArgs()
+    /**
+     * 检查视频动态的发布任务
+     *
+     * @return bool
+     */
+    public function checkPublishVideo($user, $task, $assignment)
     {
-        return [checkUser()];
+        $count = $user->profile->count_articles;
+        return [
+            'status'        => $count >= $task->max_count,
+            'current_count' => $count,
+        ];
     }
 
-    public function sleepCount($user)
+    /**
+     * 检查用户头像
+     *
+     * @return bool
+     */
+    public function checkUserHasAvatar($user, $task, $assignment)
     {
-        $SleepTask           = Task::where('resolve->task_en', 'Wake')->first();
-        $VisitSleepTaskCount = Visit::where([
-            'user_id'      => $user->id,
-            'visited_id'   => $SleepTask->id,
-            'visited_type' => 'tasks',
-        ])->whereDate('created_at', today())->count();
-        return $VisitSleepTaskCount;
+        //TODO: 判断是否有头像的要重构，avatar=null表示还没上传过头像
+        return [
+            'status'        => \Str::contains($user->avatar, 'storage/avatar/avatar'),
+            'current_count' => 0,
+        ];
     }
 
-    public function sleepCountArgs()
+    /**
+     * 检查用户手机号绑定
+     *
+     * @return bool
+     */
+    public function checkUserHasPhone($user, $task, $assignment)
     {
-        return [checkUser()];
+        return [
+            'status'        => $user->phone,
+            'current_count' => null,
+        ];
     }
 
-    public function rewardVideoCount($user)
+    /**
+     * 检查用户性别和生日
+     *
+     * @return bool
+     */
+    public function checkUserGenderAndBirthday($user, $task, $assignment)
     {
-        return Contribute::getCountByType(Contribute::REWARD_VIDEO_CONTRIBUTED_TYPE, $user);
-    }
-
-    public function rewardVideoCountArgs()
-    {
-        return [checkUser()];
-    }
-
-    public function checkUserIsUpdateAvatar(): bool
-    {
-
-        $user = $this->getCurrentUser();
-        if (Str::contains($user->avatar, 'storage/avatar/avatar')) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public function checkUserIsUpdatePassAndPhone(): bool
-    {
-        $user = $this->getCurrentUser();
-
-        if (is_null($user->phone) && is_null($user->password)) {
-            return false;
-        }
-        return true;
-    }
-
-    public function checkUserIsUpdateGenderAndBirthday(): bool
-    {
-        $user    = $this->getCurrentUser();
         $profile = $user->profile;
-        if (is_null($profile->gender) || is_null($profile->birthday)) {
-            return false;
-        }
-        return true;
+        return [
+            'status'        => $profile->gender && $profile->birthday,
+            'current_count' => null,
+        ];
     }
 
-    public function getCurrentUser(): User
+    /**
+     * 检查应用商店好评
+     *
+     * @return bool
+     */
+    public function checkAppStoreComment($user, $task, $assignment)
     {
-//            避免重复查询数据库
-        if (is_null($this->user)) {
-            $user       = checkUser();
-            $this->user = $user;
-            return $this->user;
-        }
-        return $this->user;
+        //TODO: 目前简单，日后这里加逻辑
+        //无需审核，1分钟后任务自动完成
+
+        return array(
+            [
+                'status'        => $assignment->status,
+                'current_count' => 0,
+            ],
+
+        );
     }
+
+    /**
+     * 检查激励视频数量
+     *
+     * @return bool
+     */
+    public function checkRewardVideo($user, $task, $assignment)
+    {
+        //FIXME: getTodayCountByType表示获取今日激励视频奖励次数...
+        $count = Contribute::getTodayCountByType(Contribute::REWARD_VIDEO_CONTRIBUTED_TYPE, $user);
+        return [
+            'status'        => $count >= $task->max_count,
+            'current_count' => $count,
+        ];
+    }
+
+    /**
+     * 检查试完App任务
+     *
+     * @return bool
+     */
+    public function checkDemoApp($user, $task, $assignment)
+    {
+        return array(
+            [
+                'status'        => false,
+                'current_count' => 0,
+            ],
+        );
+    }
+
+    //检查邀请任务
+    public function checkInviteUser($user, $task, $assignment)
+    {
+        $count = $user->count_success_invitation;
+
+        if ($task_reach = $count >= $task->max_count) {
+            //达成，自动领取任务奖励
+            $gold = $task->reward['gold'];
+            Gold::makeIncome($user, $gold, '邀请用户奖励');
+            //更新状态到已领取
+            $assignment->status = Assignment::TASK_DONE;
+            $assignment->save();
+        }
+        return [
+            'status'        => $task_reach,
+            'current_count' => $count,
+        ];
+    }
+
 }

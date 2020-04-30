@@ -1,0 +1,3 @@
+extend type Mutation @middleware(checks: ["auth:api"]) {
+  makeOrder(product_id: Int @eq, dimension: String, dimension2: Int): Order! @field(resolver: "App\\Order@makeOrder")
+}

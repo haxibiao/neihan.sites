@@ -2,10 +2,13 @@
 
 namespace App;
 
+use App\Follow;
 use App\Model;
 use App\Traits\CategoryAttrs;
 use App\Traits\CategoryRepo;
 use App\Traits\CategoryResolvers;
+use App\User;
+use Carbon\Carbon;
 
 class Category extends Model
 {
@@ -19,6 +22,7 @@ class Category extends Model
         'name',
         'name_en',
         'description',
+        'logo',
         'user_id',
         'parent_id',
         'type',
@@ -132,5 +136,10 @@ class Category extends Model
     public function hasManyArticles()
     {
         return $this->hasMany('App\Article', 'category_id', 'id');
+    }
+
+    public function product()
+    {
+        return $this->hasMany(Product::class);
     }
 }

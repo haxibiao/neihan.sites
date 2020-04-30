@@ -30,7 +30,7 @@ trait ArticleAttrs
     {
         $description = $this->description;
         if (empty($description) || strlen($description) < 2) {
-            $body        = html_entity_decode($this->body);
+            $body = html_entity_decode($this->body);
             $description = str_limit(strip_tags($body), 130);
         }
         return str_limit($description, 130);
@@ -101,13 +101,16 @@ trait ArticleAttrs
         if ($this->video) {
             if (!is_null($this->video->cover)) {
                 $this->cover_path = $this->video->cover;
+                if (!Str::contains($this->cover_path, "http")) {
+                    return cdnurl($this->cover_path);
+                }
                 return $this->cover_path;
             }
         }
 
         //为空返回默认图片
         if (empty($cover_url)) {
-            if($this->type == 'article'){
+            if ($this->type == 'article') {
                 return null;
             }
             return url("/images/cover.png");
@@ -176,7 +179,7 @@ trait ArticleAttrs
             return 0;
         }
         $issue = $this->issue;
-        if($issue){
+        if ($issue) {
             return $issue->gold;
         }
         return 0;
@@ -184,7 +187,7 @@ trait ArticleAttrs
 
     public function getScreenshotsAttribute()
     {
-        $images      = $this->images;
+        $images = $this->images;
         $screenshots = [];
         foreach ($images as $image) {
             $screenshots[] = ['url' => $image->url];

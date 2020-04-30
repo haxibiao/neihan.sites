@@ -1,17 +1,30 @@
-extend type Mutation @group(namespace: "App") {
-  signIn(account: String, email: String, password: String!,uuid:String): User!
-    @field(resolver: "User@signIn")
-  signOut(user_id: ID!): User @field(resolver: "User@signOut")
+extend type Mutation {
+  signIn(
+    account: String
+    email: String
+    password: String!
+    uuid: String
+  ): User! @field(resolver: "App\\User@signIn")
+  signOut(user_id: ID!): User @field(resolver: "App\\User@signOut")
   autoSignIn(uuid: String!, phone: String): User
-    @field(resolver: "User@autoSignIn")
-  destoryUser: Boolean @field(resolver: "User@destoryUserByToken")
-  newUserReword(type:RewardType!): Int @field(resolver: "User@newUserReword")
-  bindDongdezhuan(account:String!,password:String!):Boolean @field(resolver: "User@bindDongdezhuan")
+    @field(resolver: "App\\User@autoSignIn")
+  destoryUser: Boolean @field(resolver: "App\\User@destoryUserByToken")
+  newUserReword(type: RewardType!): Int
+    @field(resolver: "App\\User@newUserReword")
+  bindDongdezhuan(account: String!, password: String!): Boolean
+    @field(resolver: "App\\User@bindDongdezhuan")
+  signUp(
+    account: String
+    email: String!
+    password: String!
+    name: String
+    uuid: String
+  ): User! @field(resolver: "App\\User@signUp")
 }
 
-enum RewardType{
-  DOUYIN@enum(value:"douyin")
-  VIDEO@enum(value:"newUser")
+enum RewardType {
+  DOUYIN @enum(value: "douyin")
+  VIDEO @enum(value: "newUser")
 }
 
 # test

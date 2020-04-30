@@ -14,7 +14,9 @@ class EditResolutionsAddGold extends Migration
     public function up()
     {
         Schema::table('resolutions', function (Blueprint $table) {
-            $table->unsignedInteger('gold')->default(0)->comment('金币');
+            if (!Schema::hasColumn('resolutions', 'gold')) {
+                $table->unsignedInteger('gold')->default(0)->comment('金币');
+            }
         });
     }
 
