@@ -7,7 +7,7 @@
     "redis": {
       "port": "6999",
       "host": "ngz009",
-      "db": "3",
+      "db": "5",
       "password": "xxJUSEQs"
     },
     "sqlite": {
