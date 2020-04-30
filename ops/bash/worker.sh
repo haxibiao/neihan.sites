@@ -1,12 +1,39 @@
 #!/bin/bash
 
-echo "更新队列 ..."
-rm -rf /etc/supervisor/conf.d/laravel-worker-ainicheng*
-/bin/cp -rf ./ops/etc/supervisor/conf.d/laravel-worker-ainicheng* /etc/supervisor/conf.d/
+echo "重启队列 ..."
+php artisan queue:restart
+
+if [ "queue" == "$1" ]; then
+    echo "更新 queue 队列 ..."
+    rm -rf /etc/supervisor/conf.d/laravel-worker-ainicheng*
+    /bin/cp -rf ./ops/workers/queue/*.conf /etc/supervisor/conf.d/
+fi
+
+if [ "web" == "$1" ]; then
+    echo "更新 web 服务器需要的 workers..."
+    rm -rf /etc/supervisor/conf.d/laravel-worker-ainicheng*
+    /bin/cp -rf ./ops/workers/web/*.conf /etc/supervisor/conf.d/
+fi
+
+if [ "socket" == "$1" ]; then
+    echo "更新 socket 服务器需要的 workers..."
+    rm -rf /etc/supervisor/conf.d/laravel-worker-ainicheng*
+    /bin/cp -rf ./ops/workers/socket/*.conf /etc/supervisor/conf.d/
+fi
+
+if [ "all" == "$1" ]; then
+    echo "更新 全部 队列 ..."
+    echo " -- web ..."
+    /bin/cp -rf ./ops/workers/web/*.conf /etc/supervisor/conf.d/
+    echo " -- socket ..."
+    /bin/cp -rf ./ops/workers/socket/*.conf /etc/supervisor/conf.d/
+    echo " -- queue ..."
+    /bin/cp -rf ./ops/workers/queue/*.conf /etc/supervisor/conf.d/
+fi
+
+echo "全部跑 worker matomo proxy ..."
+/bin/cp -rf ./ops/workers/web/*.conf /etc/supervisor/conf.d/
+pkill matomo
+
 supervisorctl reread
 supervisorctl update
-
-echo "重启队列 ... (TODO: 未包含提现队列，可能需要单独手动处理)"
-# php artisan queue:restart # 重启所有队列
-supervisorctl restart laravel-worker-ainicheng:*
-supervisorctl restart laravel-worker-ainicheng-queue-spider:*
