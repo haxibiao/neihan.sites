@@ -14,7 +14,9 @@ class RenameTodayCountCurrentCountToAssignments extends Migration
     public function up()
     {
         Schema::table('assignments', function (Blueprint $table) {
-            $table->renameColumn('today_count', 'current_count');
+            if (Schema::hasColumn('assignments', 'today_count')) {
+                $table->renameColumn('today_count', 'current_count');
+            }
         });
     }
 
