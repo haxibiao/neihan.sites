@@ -48,8 +48,8 @@ trait ArticleResolvers
         GraphQLContext $context,
         ResolveInfo $resolveInfo
     ) {
-        $user       = getUser();
-        $articles   = [];
+        $user = getUser();
+        $articles = [];
         $categories = isset($args['category_id']) ? [\App\Category::find($args['category_id'])] : $user->adminCategories;
 
         foreach ($categories as $category) {
@@ -81,9 +81,9 @@ trait ArticleResolvers
         ResolveInfo $resolveInfo
     ) {
         //TODO: 关注的文集，人的文章还没加入...
-        $user     = \App\User::findOrFail($args['user_id']);
+        $user = \App\User::findOrFail($args['user_id']);
         $cate_ids = $user->followingCategories()->pluck('followed_id');
-        $qb       = self::whereIn('category_id', $cate_ids);
+        $qb = self::whereIn('category_id', $cate_ids);
         return $qb;
     }
 
@@ -96,7 +96,7 @@ trait ArticleResolvers
         if (!empty($args['category_ids'])) {
             //排除重复专题
             $category_ids = array_unique($args['category_ids']);
-            $category_id  = reset($category_ids);
+            $category_id = reset($category_ids);
             array_shift($category_ids);
 
             //第一个专题为主专题
@@ -120,7 +120,7 @@ trait ArticleResolvers
 
         app_track_user('推荐视频');
 
-        $user      = checkUser();
+        $user = checkUser();
         $pageCount = $args['count'];
 
         $qb = Article::with(['video', 'user', 'categories'])->whereNotNull('video_id')->publish()->orderByDesc('review_id');
@@ -146,10 +146,10 @@ trait ArticleResolvers
         $total = $qb->count();
 
         //50%概率获取热门视频
-        $seed        = random_int(1, 2);
+        $seed = random_int(1, 2);
         $dataFromHot = $seed % 2 == 1;
         if ($dataFromHot) {
-            $newQb          = clone $qb;
+            $newQb = clone $qb;
             $isHotRecommand = $newQb->where('is_hot', true)->count() > 4;
             if ($isHotRecommand) {
                 //获取热门标签
@@ -160,11 +160,11 @@ trait ArticleResolvers
         //分页角标
         if (!$user && !$dataFromHot) {
             $offset = mt_rand(0, 50);
-            $qb     = $qb->skip($offset);
+            $qb = $qb->skip($offset);
         }
 
         $limit = $pageCount >= 10 ? 8 : 4;
-        $qb    = $qb->take($limit);
+        $qb = $qb->take($limit);
 
         $articles = $qb->get();
 
@@ -176,27 +176,27 @@ trait ArticleResolvers
         //广告开关判断
         if (adIsOpened()) {
             $mixPosts = [];
-            $index    = 0;
+            $index = 0;
             foreach ($articles as $article) {
                 $index++;
                 $mixPosts[] = $article;
 
                 if ($index % 4 == 0) {
-                    $article               = clone $article;
-                    $article->id           = random_str(7);
+                    $article = clone $article;
+                    $article->id = random_str(7);
                     $article->isAdPosition = true;
-                    $mixPosts[]            = $article;
+                    $mixPosts[] = $article;
                 }
                 //每五条数据选择一件商品展示
                 if ($index % 3 == 0) {
-                    $article             = clone $article;
-                    $article->id         = random_str(7);
-                    $product             = Product::where("status", 1)->inRandomOrder()->first();
-                    $article->user       = $product->store->user;
-                    $article->video      = $product->video;
-                    $article->body       = str_limit($product->description, 50);
+                    $article = clone $article;
+                    $article->id = random_str(7);
+                    $product = Product::where("status", 1)->inRandomOrder()->first();
+                    $article->user = $product->store->user;
+                    $article->video = $product->video;
+                    $article->body = str_limit($product->description, 50);
                     $article->product_id = $product->id;
-                    $mixPosts[]          = $article;
+                    $mixPosts[] = $article;
                 }
             }
         }
@@ -226,7 +226,7 @@ trait ArticleResolvers
 
         try {
             $shareMsg = $args['share_link'];
-            $link     = filterText($shareMsg)[0];
+            $link = filterText($shareMsg)[0];
             //删除分享信息中违禁词
             $description = $this->deleteBadWord($shareMsg);
 
@@ -243,14 +243,14 @@ trait ArticleResolvers
             $article = Article::firstOrNew([
                 'source_url' => $link,
             ], [
-                'user_id'     => $user->id,
-                'type'        => 'post',
-                'submit'      => Article::REVIEW_SUBMIT,
+                'user_id' => $user->id,
+                'type' => 'post',
+                'submit' => Article::REVIEW_SUBMIT,
                 'description' => $description,
-                'title'       => $description,
-                'body'        => $description,
-                'cover_path'  => 'video/black.jpg',
-                'video_id'    => 1,
+                'title' => $description,
+                'body' => $description,
+                'cover_path' => 'video/black.jpg',
+                'video_id' => 1,
             ]);
             if ($article->id) {
                 if ($article->submit == Article::SUBMITTED_SUBMIT) {
