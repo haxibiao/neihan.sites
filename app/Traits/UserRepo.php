@@ -16,7 +16,15 @@ use Illuminate\Support\Facades\Storage;
 
 trait UserRepo
 {
-
+    public function updateAvatar($avatar)
+    {
+        $avatarPath   = sprintf('/storage/app/avatars/avatar-%s.jpeg', $this->id);
+        $fileStream   = file_get_contents($avatar);
+        $uploadResult = \Storage::cloud()->put($avatarPath, $fileStream);
+        if ($uploadResult) {
+            $this->avatar = $avatarPath;
+        }
+    }
     public function openInstall()
     {
         $isOpenUser = false;

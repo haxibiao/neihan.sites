@@ -129,7 +129,7 @@ return [
     |
      */
 
-    'pagination_amount_argument' => 'first',
+    'pagination_amount_argument' => 'count',
 
     /*
     |--------------------------------------------------------------------------

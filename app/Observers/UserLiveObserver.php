@@ -15,6 +15,7 @@ class UserLiveObserver
     public function created(UserLive $userLive)
     {
         //触发直播任务更新和检查
+        $user  = $userLive->user;
         $tasks = $user->getUserLiveTasks();
         foreach ($tasks as $task) {
             $task->checkTaskStatus($userLive->user);

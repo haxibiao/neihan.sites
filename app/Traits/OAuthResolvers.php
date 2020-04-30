@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Exceptions\GQLException;
 use App\Helpers\AlipayUtils;
 use App\Helpers\WechatAppUtils;
+use App\Jobs\UserSyncWeChatAccountInfo;
 use App\OAuth;
 use App\User;
 use App\Wallet;
@@ -71,7 +72,10 @@ trait OAuthResolvers
         $wallet = $user->wallet;
         $wallet->setPayId($openId, Withdraw::WECHAT_PLATFORM);
         $wallet->save();
-
+        $wechatUserInfo = $this->wechatAppUtil->userInfo($accessTokens['access_token'], $accessTokens['openid']);
+        if (!empty($wechatUserInfo)) {
+            dispatch(new UserSyncWeChatAccountInfo($user->id, $wechatUserInfo));
+        }
         return $oAuth;
     }
 

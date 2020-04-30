@@ -86,9 +86,9 @@ trait TaskAttrs
      * 获取任务Icon
      * @return false|string
      */
-    public function getIconAttribute()
+    public function getIconUrlAttribute()
     {
-        if (!$this && $this->icon) {
+        if ($this && $this->icon) {
             return Storage::cloud()->url($this->icon);
         }
     }
@@ -103,9 +103,8 @@ trait TaskAttrs
      */
     public function getProgressDetailsAttribute()
     {
-        $user = getUser();
         //resolvers里会关联这个属性回来
-        if (isset($this->assignment)) {
+        if ($this->max_count != 0 && isset($this->assignment)) {
             $count = $this->assignment->current_count;
             return $count . " / " . $this->max_count;
         }
@@ -119,7 +118,9 @@ trait TaskAttrs
         if (isset($this->assignment)) {
             return $this->assignment->status;
         }
-        return 1; //已指派
+        // 没有指派任务，用户应该可以自己领取
+        return 0;
+        // return 1; //已指派
     }
 
     //判断任务的进度条(喝水杯子UI)
@@ -134,6 +135,6 @@ trait TaskAttrs
     //这个名称交给前端兄弟去决定
     public function getSubmitNameAttribute()
     {
-        return '领取';
+        return '进行中';
     }
 }

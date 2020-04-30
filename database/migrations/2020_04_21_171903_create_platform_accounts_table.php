@@ -24,7 +24,7 @@ class CreatePlatformAccountsTable extends Migration
             $table->unsignedInteger('price')->default(0)->comment('下单时的商品价格');
 
             $table->String('dimension')->nullable()->index()->comment("规格，维度: 大号,至尊宝，紫霞仙子。。。");
-            $table->String('dimension2')->nullable()->index()->comment("规格，维度:1小时，2小时。。。");
+            $table->String('dimension2')->after("dimension")->nullable()->index()->comment("规格，维度:1小时，2小时。。。");
 
             $table->String('platform')->index()->comment("平台：优酷，王者，LOL, 某论坛");
             $table->String('account')->comment("账号");

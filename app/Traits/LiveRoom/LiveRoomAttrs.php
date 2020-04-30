@@ -29,6 +29,9 @@ trait LiveRoomAttrs
 
     public function getCoverUrlAttribute(): string
     {
-        return \Storage::cloud()->url($this->cover) ?? 'https://dtzq-1251052432.cos.ap-shanghai.myqcloud.com/2020-03-25/u%3A980235-screenshot-15-20-45-1192x746.jpg';
+        if (!$this->cover) {
+            return 'https://dtzq-1251052432.cos.ap-shanghai.myqcloud.com/2020-03-25/u%3A980235-screenshot-15-20-45-1192x746.jpg';
+        }
+        return \Storage::cloud()->url($this->cover);
     }
 }

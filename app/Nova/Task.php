@@ -84,10 +84,10 @@ class Task extends Resource
                     $file = $request->file('icon');
                     return $model->saveDownloadImage($file);
                 })->thumbnail(function () {
-                return $this->icon;
+                return $this->icon_url;
             })->preview(function () {
-                return $this->icon;
-            })->disableDownload(),
+                return $this->icon_url;
+            }),
 
             Image::make('任务背景图', 'background_img')->store(
                 function (Request $request, $model) {
