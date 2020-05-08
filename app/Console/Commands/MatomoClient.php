@@ -13,7 +13,7 @@ class MatomoClient extends Command
      *
      * @var string
      */
-    protected $signature = 'matomo:client {--siteid=7}　{--test} {--port=9504}';
+    protected $signature = 'matomo:client {--siteid=7}　{--test} {--port=9505}';
 
     /**
      * The console command description.
