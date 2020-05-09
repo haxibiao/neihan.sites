@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(AsoSeeder::class);
 
 //        $this->call(AdconfigProviderSeeder::class);
-        $this->call(VersionSeeder::class);
+        $this->call(TaskSeeder::class);
 
     }
 }

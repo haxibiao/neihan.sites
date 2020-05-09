@@ -9,3 +9,4 @@
 # php artisan fix:data users
 # 修复金币兑换故障
 # php artisan change:towallet
+php artisan db:seed
