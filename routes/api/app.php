@@ -13,3 +13,4 @@ Route::get('/ad-config', 'Api\AppController@adConfig');
 Route::get('/app-config', 'Api\AppController@index');
 //app版本管理
 Route::any('/app-version', 'Api\AppController@version');
+Route::any('/configs', 'Api\AppController@configs');
