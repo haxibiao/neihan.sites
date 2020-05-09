@@ -26,7 +26,7 @@ class AppController extends Controller
             $group = 'huawei';
         }
 
-        $array   = [];
+        $array = [];
         $configs = AppConfig::whereGroup($group)->get();
         foreach ($configs as $config) {
             $array[$config->name] = $config->status;
@@ -35,6 +35,12 @@ class AppController extends Controller
         //AdConfig的合并一起返回
         $array = array_merge($array, $this->getAdConfig());
         return $array;
+    }
+
+    public function configs(Request $request)
+    {
+
+        return json_decode(\App\Config::query()->select(['name', 'value'])->get());
     }
 
     public function getAdConfig()
@@ -73,12 +79,12 @@ class AppController extends Controller
                 $counter = $user->rewardCounter;
                 if ($counter->last_provider == "头条") {
                     $adData['reward_video_provider'] = '腾讯';
-                    $counter->count_tencent          = $counter->count_tencent + 1;
-                    $counter->last_provider          = "腾讯";
+                    $counter->count_tencent = $counter->count_tencent + 1;
+                    $counter->last_provider = "腾讯";
                 } else {
                     $adData['reward_video_provider'] = '头条';
-                    $counter->count_toutiao          = $counter->count_toutiao + 1;
-                    $counter->last_provider          = "头条";
+                    $counter->count_toutiao = $counter->count_toutiao + 1;
+                    $counter->last_provider = "头条";
                 }
                 $counter->count = $counter->count + 1;
                 $counter->save();
@@ -119,12 +125,12 @@ class AppController extends Controller
         $array = $version->toArray();
         return array_map(static function ($item) {
             return array(
-                'version'     => $item['name'],
-                'apk'         => $item['url'],
-                'is_force'    => $item['is_force'],
+                'version' => $item['name'],
+                'apk' => $item['url'],
+                'is_force' => $item['is_force'],
                 'description' => $item['description'],
-                'size'        => formatSizeUnits($item['size']),
-                'package'     => $item['package'],
+                'size' => formatSizeUnits($item['size']),
+                'package' => $item['package'],
             );
         }, $array);
     }
