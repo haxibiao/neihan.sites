@@ -19,7 +19,7 @@ trait UserAttrs
     //返回至少6位数字的邀请码
     public function getInviteCodeAttribute()
     {
-        $code      = $this->id;
+        $code = $this->id;
         $minLength = 6;
         while (strlen($code) < $minLength) {
             $code = '0' . $code;
@@ -189,7 +189,7 @@ trait UserAttrs
     public function isBlack()
     {
 
-        $black    = BlackList::where('user_id', $this->id);
+        $black = BlackList::where('user_id', $this->id);
         $is_black = $black->exists();
         return $is_black;
     }
@@ -210,7 +210,7 @@ trait UserAttrs
             return $profile;
         }
         //确保profile数据完整
-        $profile          = new Profile();
+        $profile = new Profile();
         $profile->user_id = $this->id;
         $profile->save();
         return $profile;
@@ -273,7 +273,7 @@ trait UserAttrs
     public function getBalanceAttribute()
     {
         $balance = 0;
-        $wallet  = $this->wallet;
+        $wallet = $this->wallet;
         if (!$wallet) {
             return 0;
         }
@@ -289,9 +289,9 @@ trait UserAttrs
     {
         if ($user = checkUser()) {
             $follow = Follow::where([
-                'user_id'       => $user->id,
+                'user_id' => $user->id,
                 'followed_type' => 'users',
-                'followed_id'   => $this->id,
+                'followed_id' => $this->id,
             ])->select('id')->first();
             if (!is_null($follow)) {
                 return $follow->id;
@@ -313,7 +313,7 @@ trait UserAttrs
     public function getIntroductionAttribute()
     {
         if (!$this->profile || empty($this->profile->introduction)) {
-            return '这个人很懒，一点介绍都没留下...';
+            return '好看的皮囊千篇一律，有趣的灵魂万里挑一，让我们来鉴定一下你属于哪一种吧！';
         }
         return $this->profile->introduction;
     }
