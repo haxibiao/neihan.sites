@@ -313,7 +313,7 @@ trait UserAttrs
     public function getIntroductionAttribute()
     {
         if (!$this->profile || empty($this->profile->introduction)) {
-            return '，这个人很懒，一点介绍都没留下...';
+            return '这个人很懒，一点介绍都没留下...';
         }
         return $this->profile->introduction;
     }
