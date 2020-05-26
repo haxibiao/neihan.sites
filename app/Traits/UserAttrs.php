@@ -313,7 +313,7 @@ trait UserAttrs
     public function getIntroductionAttribute()
     {
         if (!$this->profile || empty($this->profile->introduction)) {
-            return '好看的皮囊千篇一律，有趣的灵魂万里挑一，让我们来鉴定一下你属于哪一种吧！';
+            return '，这个人很懒，一点介绍都没留下...';
         }
         return $this->profile->introduction;
     }
