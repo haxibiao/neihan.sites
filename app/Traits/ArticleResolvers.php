@@ -188,19 +188,14 @@ trait ArticleResolvers
                     $mixPosts[] = $article;
                 }
 
-                //每五条数据选择一件商品展示
-                $product = Product::where("status", 1)->inRandomOrder()->first();
-                if ($product) {
-                    if ($index % 3 == 0) {
-                        $article = clone $article;
-                        $article->id = random_str(7);
-                        $article->user = $product->store->user;
-                        $article->video = $product->video;
-                        $article->body = str_limit($product->description, 50);
-                        $article->product_id = $product->id;
+                //广告商品展示
+                if ($index % 3 == 0) {
+                    $product = Product::where("status", 1)->whereNotNull("video_id")->inRandomOrder()->first();
+                    if (!empty($product) && !empty($product->video)) {
+                        $article = $product->video->article;
+                        $article->body = $product->description;
                         $mixPosts[] = $article;
                     }
-
                 }
 
             }
