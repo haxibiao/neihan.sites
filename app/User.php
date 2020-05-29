@@ -44,7 +44,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * 性别
      */
-    const MALE_GENDER   = 0;
+    const MALE_GENDER = 0;
     const FEMALE_GENDER = 1;
 
     // 正常状态
@@ -65,15 +65,15 @@ class User extends Authenticatable implements MustVerifyEmail
     // 默认头像
     const AVATAR_DEFAULT = 'storage/avatar/avatar-1.jpg';
 
-    const DEFAULT_NAME = '小剑剑';
+    const DEFAULT_NAME = '城市猎人';
     //
 
     /**
      * 编辑身份
      */
-    const USER_STATUS   = 0;
+    const USER_STATUS = 0;
     const EDITOR_STATUS = 1;
-    const ADMIN_STATUS  = 2;
+    const ADMIN_STATUS = 2;
 
     /**
      * The attributes that should be hidden for arrays.
@@ -361,7 +361,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public static function getGenders()
     {
         return [
-            self::MALE_GENDER   => '男',
+            self::MALE_GENDER => '男',
             self::FEMALE_GENDER => '女',
         ];
     }

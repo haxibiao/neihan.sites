@@ -187,17 +187,22 @@ trait ArticleResolvers
                     $article->isAdPosition = true;
                     $mixPosts[] = $article;
                 }
+
                 //每五条数据选择一件商品展示
-                if ($index % 3 == 0) {
-                    $article = clone $article;
-                    $article->id = random_str(7);
-                    $product = Product::where("status", 1)->inRandomOrder()->first();
-                    $article->user = $product->store->user;
-                    $article->video = $product->video;
-                    $article->body = str_limit($product->description, 50);
-                    $article->product_id = $product->id;
-                    $mixPosts[] = $article;
+                $product = Product::where("status", 1)->inRandomOrder()->first();
+                if ($product) {
+                    if ($index % 3 == 0) {
+                        $article = clone $article;
+                        $article->id = random_str(7);
+                        $article->user = $product->store->user;
+                        $article->video = $product->video;
+                        $article->body = str_limit($product->description, 50);
+                        $article->product_id = $product->id;
+                        $mixPosts[] = $article;
+                    }
+
                 }
+
             }
         }
 

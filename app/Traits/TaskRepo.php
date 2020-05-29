@@ -126,7 +126,9 @@ trait TaskRepo
                         }
                         //检查结果1：任务进度
                         $assignment->current_count = Arr::get($result, 'current_count', 0);
-                        $assignment->progress      = $assignment->current_count / $task->max_count;
+                        if ($task->max_count > 0) {
+                            $assignment->progress = $assignment->current_count / $task->max_count;
+                        }
                         $assignment->save();
                     }
                 }

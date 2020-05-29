@@ -14,11 +14,15 @@ trait InvitationResolvers
 {
     public function resolveInvitation($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $user   = getUser();
+        $user = getUser();
         $userId = $user->id;
 
         //验证邀请口令
         $inviterId = Invitation::validateSlogan(Arr::get($args, 'invite_slogan'));
+        if (is_null($inviterId)) {
+            return;
+        }
+
         //验证邀请者
         $inviter = Invitation::valadateUser($inviterId);
 
@@ -76,7 +80,7 @@ trait InvitationResolvers
     public function resolveDeleteInvitation($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         throw_if(!isset($args['user_id']) && !isset($args['id']), GQLException::class, '解除失败,参数错误');
-        $user   = getUser();
+        $user = getUser();
         $userId = $user->id;
 
         //根据参数构建不同的对象
@@ -91,7 +95,7 @@ trait InvitationResolvers
         throw_if(now() <= $invitation->created_at->addDays(7), GQLException::class, '邀请关系绑定7天内不可辞职！');
 
         throw_if(!in_array($userId, [
-            'user_id'       => $invitation->user_id,
+            'user_id' => $invitation->user_id,
             'be_inviter_id' => $invitation->be_inviter_id,
         ]), GQLException::class, '解除失败,权限不足!!!');
 
@@ -115,14 +119,16 @@ trait InvitationResolvers
             //匹配邀请码
             preg_match_all('#【(.*?)】#', $slogan, $match);
             $code = Arr::get($match, '1.0');
-            throw_if(empty($code), GQLException::class, '邀请口令有误,无法正常识别!');
+            if (empty($code)) {
+                return;
+            }
         }
 
         //新版邀请码是纯数字00001 && 此处保留兼容老邀请码base64
         $id = is_numeric($code) ? $code : Invitation::decode($code);
-        //验证邀请口令
-        throw_if(!is_numeric($id), GQLException::class, '邀请口令不正确,请复制正确的邀请口令!');
-
+        if (!is_numeric($id)) {
+            return;
+        }
         return $id;
     }
 
@@ -143,9 +149,9 @@ trait InvitationResolvers
 
     public function resolveSecondaryInvitations($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $limit       = Arr::get($args, 'limit', 10);
+        $limit = Arr::get($args, 'limit', 10);
         $invitations = [];
-        $user        = User::find($args['user_id']);
+        $user = User::find($args['user_id']);
 
         $beInviterIds = $user->invitations()
             ->success()
@@ -162,9 +168,9 @@ trait InvitationResolvers
 
     public function resolveMyInvitations($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $limit       = Arr::get($args, 'limit', 18);
-        $user        = getUser();
-        $data        = [];
+        $limit = Arr::get($args, 'limit', 18);
+        $user = getUser();
+        $data = [];
         $invitations = $user->invitations()->latest('id')->get();
         foreach ($invitations as $invitation) {
             $data[] = $invitation;
@@ -175,10 +181,10 @@ trait InvitationResolvers
             // $apps = App::select('name')->factory()->take($surplusCount)->get();
             //填充未满18个的
             for ($i = 0; $i < $surplusCount; $i++) {
-                $invitation              = new Invitation;
-                $invitation->id          = random_str(7);
+                $invitation = new Invitation;
+                $invitation->id = random_str(7);
                 $invitation->faker_title = 'Faker Title';
-                $data[]                  = $invitation;
+                $data[] = $invitation;
             }
         }
 

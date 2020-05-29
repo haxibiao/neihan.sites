@@ -63,11 +63,7 @@ class Task extends Resource
             Text::make('任务描述', 'details'),
             Select::make('类型', 'type')->options(\App\Task::getTypes())->displayUsingLabels(),
             Select::make('状态', 'status')->options(\App\Task::getStatuses())->displayUsingLabels(),
-            Code::make('奖励', 'reward')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE)->withMeta(
-                [
-                    'value' => json_encode(['gold' => '0', 'contribute' => '0']),
-                ]
-            ),
+            Code::make('奖励', 'reward')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
             Code::make('任务配置', 'resolve')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
             //Code::make('解析', 'resolve')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
             BelongsTo::make('任务模版', 'reviewFlow', 'App\Nova\ReviewFlow')->hideWhenUpdating(),

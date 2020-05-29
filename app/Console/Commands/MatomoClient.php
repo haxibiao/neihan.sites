@@ -13,7 +13,7 @@ class MatomoClient extends Command
      *
      * @var string
      */
-    protected $signature = 'matomo:client {--siteid=11}　{--test} {--port=9503}';
+    protected $signature = 'matomo:client {--siteid=7}　{--test} {--port=9505}';
 
     /**
      * The console command description.
@@ -21,7 +21,7 @@ class MatomoClient extends Command
      * @var string
      */
     protected $description = 'test send data to matomo proxy';
-    protected $tracker     = null;
+    protected $tracker = null;
 
     /**
      * Create a new command instance.
@@ -46,7 +46,7 @@ class MatomoClient extends Command
         }
 
         $event = $this->getTestEvent();
-        $data  = json_encode($event);
+        $data = json_encode($event);
 
         // go(function () use ($data) {
         // //http
@@ -95,10 +95,10 @@ class MatomoClient extends Command
                 $client->connect($server, $this->option('port')) or die("swoole connect failed\n");
                 $this->info('connect ...');
                 $client->set([
-                    'open_length_check'     => true,
-                    'package_length_type'   => 'n',
+                    'open_length_check' => true,
+                    'package_length_type' => 'n',
                     'package_length_offset' => 0,
-                    'package_body_offset'   => 2,
+                    'package_body_offset' => 2,
                 ]);
                 $client->send(tcp_pack($data));
                 var_dump(tcp_unpack($client->recv()));
@@ -111,10 +111,10 @@ class MatomoClient extends Command
 
     public function test_matomo()
     {
-        $tracker    = $this->getTracker();
-        $event      = $this->getTestEvent();
+        $tracker = $this->getTracker();
+        $event = $this->getTestEvent();
         $event_json = json_encode($event);
-        $event      = json_decode($event_json);
+        $event = json_decode($event_json);
 
         $tracker->setCustomVariable(1, "Server", gethostname(), "visit");
         $tracker->setUserId($event->user_id);
@@ -137,10 +137,10 @@ class MatomoClient extends Command
 
     public function getTestEvent()
     {
-        $event            = [];
-        $event['siteId']  = $this->option('siteid');
+        $event = [];
+        $event['siteId'] = $this->option('siteid');
         $event['user_id'] = rand(1, 3);
-        $event['ip']      = '127.0.0.1';
+        $event['ip'] = '127.0.0.1';
 
         //记录是哪个web服务器来的
         $event['server'] = 'local';
@@ -153,9 +153,9 @@ class MatomoClient extends Command
         $event['dimension6'] = '测试华为';
 
         $event['category'] = 'launch';
-        $event['action']   = 'visited';
-        $event['name']     = '浏览题目';
-        $event['value']    = rand(1000, 9999);
+        $event['action'] = 'visited';
+        $event['name'] = '浏览题目';
+        $event['value'] = rand(1000, 9999);
         return $event;
     }
 
