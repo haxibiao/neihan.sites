@@ -42,7 +42,7 @@ trait UserResolvers
 
     public function resolveFriends($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $user    = \App\User::findOrFail($args['user_id']);
+        $user = \App\User::findOrFail($args['user_id']);
         $follows = $user->followingUsers()->take(500)->get();
         $friends = [];
         foreach ($follows as $follow) {
@@ -65,7 +65,7 @@ trait UserResolvers
     public function signIn($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $account = $args['account'] ?? $args['email'];
-        $qb      = User::where('phone', $account)->orWhere('email', $account)->orWhere('account', $account);
+        $qb = User::where('phone', $account)->orWhere('email', $account)->orWhere('account', $account);
         if ($qb->exists()) {
             $user = $qb->first();
             if (!password_verify($args['password'], $user->password)) {
@@ -110,14 +110,14 @@ trait UserResolvers
             return self::createUser($name, $account, $args['password']);
         }
 
-        $email  = $args['email'];
+        $email = $args['email'];
         $exists = User::Where('email', $email)->exists();
 
         if ($exists) {
             throw new GQLException('该邮箱已经存在');
         }
 
-        $user        = self::createUser(User::DEFAULT_NAME, $email, $args['password']);
+        $user = self::createUser(User::DEFAULT_NAME, $email, $args['password']);
         $user->phone = null;
         $user->email = $email;
         $user->save();
@@ -148,8 +148,8 @@ trait UserResolvers
 
     public function resolveNotifications($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $user                = getUser();
-        $notifications       = \App\Notification::where('notifiable_type', 'users')->where('notifiable_id', $user->id);
+        $user = getUser();
+        $notifications = \App\Notification::where('notifiable_type', 'users')->where('notifiable_id', $user->id);
         $unreadNotifications = \App\Notification::where('notifiable_type', 'users')->where('notifiable_id', $user->id)->whereNull('read_at');
         switch ($args['type']) {
             case 'GROUP_COMMENT':
@@ -233,18 +233,18 @@ trait UserResolvers
             }
         } else {
             $user = User::create([
-                'uuid'      => $args['uuid'],
-                'account'   => $args['phone'] ?? $args['uuid'],
-                'name'      => User::DEFAULT_NAME,
+                'uuid' => $args['uuid'],
+                'account' => $args['phone'] ?? $args['uuid'],
+                'name' => User::DEFAULT_NAME,
                 'api_token' => Str::random(60),
-                'avatar'    => User::AVATAR_DEFAULT,
+                'avatar' => User::AVATAR_DEFAULT,
             ]);
-            $user->name += $user->id;
+            $user->name = $user->name . $user->id;
             $user->save();
             Profile::create([
-                'user_id'      => $user->id,
+                'user_id' => $user->id,
                 'introduction' => '这个人暂时没有 freestyle ',
-                'app_version'  => request()->header('version', null),
+                'app_version' => request()->header('version', null),
             ]);
 
             Ip::createIpRecord('users', $user->id, $user->id);
@@ -279,7 +279,7 @@ trait UserResolvers
 
             //TODO:暂时不牵涉前端的gql,后期需要修改掉的gql,有关用户信息修改的
             $args_profile_infos = ["age", "gender", "introduction", "birthday"];
-            $profile_infos      = [];
+            $profile_infos = [];
             foreach ($args_profile_infos as $profile_info) {
                 foreach ($args as $index => $value) {
                     if ($index == $profile_info) {
@@ -324,14 +324,14 @@ trait UserResolvers
         $user = checkUser();
         $type = $args['type'];
         if ($type === 'newUser') {
-            $task             = \App\Task::where("name", "观看新手视频教程")->first();
-            $userTask         = \App\UserTask::where("task_id", $task->id)->where("user_id", $user->id)->first();
+            $task = \App\Task::where("name", "观看新手视频教程")->first();
+            $userTask = \App\UserTask::where("task_id", $task->id)->where("user_id", $user->id)->first();
             $userTask->status = \App\UserTask::TASK_REACH;
             $userTask->save();
             return 1;
         } else if ($type === 'douyin') {
-            $task             = \App\Task::where("name", "观看采集视频教程")->first();
-            $userTask         = \App\UserTask::where("task_id", $task->id)->where("user_id", $user->id)->first();
+            $task = \App\Task::where("name", "观看采集视频教程")->first();
+            $userTask = \App\UserTask::where("task_id", $task->id)->where("user_id", $user->id)->first();
             $userTask->status = \App\UserTask::TASK_REACH;
             $userTask->save();
             return 1;
