@@ -56,11 +56,11 @@ trait ArticleRepo
             $this->category->fillForJs();
         }
 
-        $this->description   = $this->summary;
+        $this->description = $this->summary;
 
         if ($this->video) {
-            $this->duration = gmdate('i:s', $this->video->duration);
-            $this->cover = $this->video->cover_url;
+            $this->duration     = gmdate('i:s', $this->video->duration);
+            $this->cover        = $this->video->cover_url;
             $this->video->cover = $this->video->cover_url;
         }
     }
@@ -698,7 +698,7 @@ trait ArticleRepo
         $response = $client->request('GET', 'http://media.haxibiao.com/api/v1/spider/store', [
             'http_errors' => false,
             'query'       => [
-                'source_url' => trim($url),
+                'source_url' => urlencode(trim($url)),
                 'hook_url'   => $hookUrl,
             ],
         ]);
