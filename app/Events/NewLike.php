@@ -24,7 +24,7 @@ class NewLike implements ShouldBroadcast
     public function broadcastOn()
     {
         $this->likable = $this->like->likable;
-        if (!is_null($this->like->likable)) {
+        if (!is_null($this->likable)) {
             if (!is_null($this->likable->user_id)) {
                 return new PrivateChannel('App.User.' . $this->likable->user_id);
             }
@@ -33,29 +33,29 @@ class NewLike implements ShouldBroadcast
 
     public function broadcastWith()
     {
-        $data = [];
-        $likable = $this->likable;
+        $data     = [];
+        $likable  = $this->likable;
         $likeUser = $this->like->user;
         if (!is_null($likeUser)) {
 
             if ($likable instanceof \App\Article) {
-                $moudle = '动态';
+                $moudle  = '动态';
                 $content = str_limit(strip_tags($likable->body), 5);
             } else if ($likable instanceof \App\Comment) {
-                $moudle = '评论';
+                $moudle  = '评论';
                 $content = str_limit(strip_tags($likable->body), 5);
             }
 
             if (isset($moudle)) {
                 $content = sprintf('%s 刚刚点赞了你的%s《%s》', $likeUser->name, $moudle, $content);
-                $data = [
-                    'title' => '新点赞提醒',
+                $data    = [
+                    'title'        => '新点赞提醒',
                     'like_content' => $content,
-                    'like_id' => $this->like->id,
-                    'likeable_id' => $this->likable->id,
-                    'user_id' => $this->like->user->id,
-                    'user_avatar' => $this->like->user->avatarUrl,
-                    'user_name' => $this->like->user->name,
+                    'like_id'      => $this->like->id,
+                    'likeable_id'  => $this->likable->id,
+                    'user_id'      => $this->like->user->id,
+                    'user_avatar'  => $this->like->user->avatarUrl,
+                    'user_name'    => $this->like->user->name,
                 ];
             }
         }
