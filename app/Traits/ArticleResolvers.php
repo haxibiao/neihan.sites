@@ -221,19 +221,24 @@ trait ArticleResolvers
      */
     public function resolveDouyinVideo($rootValue, array $args, $context, $resolveInfo)
     {
+        $shareMsg = $args['share_link'];
+
+        //校验视频链接
+        if (!Str::contains($shareMsg, 'https://v.douyin.com')) {
+            return;
+        }
         app_track_user('粘贴抖音视频');
 
         $user = getUser();
         throw_if($user->isBlack(), GQLException::class, '发布失败,你以被禁言');
 
         try {
+
             $shareMsg = $args['share_link'];
             $link     = filterText($shareMsg)[0];
+
             //删除分享信息中违禁词
             $description = $this->deleteBadWord($shareMsg);
-
-            //校验视频链接
-            throw_if(!Str::contains($link, 'https://v.douyin.com'), GQLException::class, '您的分享链接有误哦~');
 
             //检查用户今日分享爬虫数量
             $this->checkTodaySpiderCount($user);
