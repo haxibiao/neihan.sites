@@ -10,7 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class SendNewLikeNotification implements ShouldQueue
 {
 
-    public $delay = 60 * 10;
+    public $delay = 60;
 
     public function __construct()
     {
@@ -26,7 +26,6 @@ class SendNewLikeNotification implements ShouldQueue
      */
     public function handle(NewLike $event)
     {
-
         $like = $event->like;
 
         //排除重复点赞发送通知
@@ -35,10 +34,11 @@ class SendNewLikeNotification implements ShouldQueue
             'liked_type' => $like->liked_type,
             'liked_id'   => $like->liked_id,
         ])->exists();
+        $article = $like->liked()->first();
 
-        if ($like->liked instanceof \App\Article) {
-            $article = $like->liked;
+        if ($article instanceof \App\Article) {
             if (!$is_deLike && $like->user && $article->user && $article->user->id != $like->user->id) {
+
                 $article->user->notify(new ArticleLiked($article->id, $like->user->id));
             }
         }

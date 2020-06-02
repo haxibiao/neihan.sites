@@ -24,8 +24,10 @@ class NewLike implements ShouldBroadcast
     public function broadcastOn()
     {
         $this->likable = $this->like->likable;
-        if (!is_null($this->likable->user_id)) {
-            return new PrivateChannel('App.User.' . $this->likable->user_id);
+        if (!is_null($this->likable)) {
+            if (!is_null($this->likable->user_id)) {
+                return new PrivateChannel('App.User.' . $this->likable->user_id);
+            }
         }
     }
 
