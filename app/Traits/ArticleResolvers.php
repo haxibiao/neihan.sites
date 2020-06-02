@@ -193,7 +193,7 @@ trait ArticleResolvers
                     $product = Product::where("status", 1)->whereNotNull("video_id")->inRandomOrder()->first();
                     if (!empty($product) && !empty($product->video)) {
                         $article = $product->video->article;
-                        if (!empty($article) && !empty($product->description)) {
+                        if (!empty($article)) {
                             $article->body = $product->description;
                             $mixPosts[]    = $article;
                         }
