@@ -4,7 +4,7 @@ type Chat {
   last_message_id: Int
   time_ago: String
   created_at: DateTime!
-  updated_at: DateTime!
+  updated_at: String!
   lastMessage: Message
   messages: [Message!] @hasMany
   withUser: User
