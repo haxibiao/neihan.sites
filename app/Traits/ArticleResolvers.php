@@ -194,8 +194,9 @@ trait ArticleResolvers
                     if (!empty($product) && !empty($product->video)) {
                         $article = $product->video->article;
                         if (!empty($article)) {
-                            $article->body = $product->description;
-                            $mixPosts[]    = $article;
+                            $article->product_id = $product->id;
+                            $article->body       = $product->description;
+                            $mixPosts[]          = $article;
                         }
                     }
                 }
