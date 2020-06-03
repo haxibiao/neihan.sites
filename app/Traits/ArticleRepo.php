@@ -692,7 +692,7 @@ trait ArticleRepo
 
     public function spiderParse($url)
     {
-        $hookUrl  = url('api/media/hook');
+        $hookUrl  = 'hotfix.ainicheng.com/api/media/hook';
         $data     = [];
         $client   = new Client();
         $response = $client->request('GET', 'http://media.haxibiao.com/api/v1/spider/store', [
