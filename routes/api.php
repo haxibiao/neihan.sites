@@ -35,24 +35,23 @@
 //    require 'api/search.php';
 //    require 'api/video.php';
 //} else {
-    require_once 'api/user.php';
-    require_once 'api/follow.php';
-    require_once 'api/notification.php';
-    require_once 'api/issue.php';
-    require_once 'api/article.php';
-    require_once 'api/comment.php';
-    require_once 'api/collection.php';
-    //专题投稿
-    require_once 'api/category.php';
-    //保存文章相关片段数据
-    require_once 'api/relation.php';
-    require_once 'api/app.php';
-    //搜索
-    require_once 'api/search.php';
-    require_once 'api/video.php';
+require_once 'api/user.php';
+require_once 'api/follow.php';
+require_once 'api/notification.php';
+require_once 'api/issue.php';
+require_once 'api/article.php';
+require_once 'api/comment.php';
+require_once 'api/collection.php';
+//专题投稿
+require_once 'api/category.php';
+//保存文章相关片段数据
+require_once 'api/relation.php';
+require_once 'api/app.php';
+//搜索
+require_once 'api/search.php';
+require_once 'api/video.php';
 //}
 Route::post('/image/upload', 'Api\ImageController@upload');
-
 
 //返回URL二维码
 Route::get('/share/qrcode/{url}', 'SharingController@qrcode');
@@ -64,6 +63,10 @@ Route::middleware('auth:api')->get('/favorite/{id}/{type}', 'Api\FavoriteControl
 //获取VOD上传签名
 Route::get('/signature/vod-{site}', 'Api\VodController@signature');
 
+Route::post('/live/screenShots', 'Api\LiveController@screenShots');
+Route::post('/live/cutOut', 'Api\LiveController@cutOutLive');
+Route::post('/live/recording', 'Api\LiveController@recording');
+
 //like赞
 Route::middleware('auth:api')->post('/like/{id}/{type}', 'Api\LikeController@toggle');
 Route::middleware('auth:api')->get('/like/{id}/{type}', 'Api\LikeController@get');
@@ -74,7 +77,8 @@ Route::get('/image', 'Api\ImageController@index');
 Route::middleware('auth:api')->post('/image', 'Api\ImageController@store');
 Route::middleware('auth:api')->post('/image/save', 'Api\ImageController@store'); //兼容1.0 or vue上传视频接口
 
-Route::post('/article/resolverDouyin', 'Api\ArticleController@resolverDouyinVideo');
+////注释的原因：RestFul方法废弃了，现在统一用GQL解析抖音视频
+//Route::post('/article/resolverDouyin', 'Api\ArticleController@resolverDouyinVideo');
 Route::post('/media/import', 'Api\SpiderController@importDouyinSpider');
 Route::any('/media/hook', 'Api\SpiderController@hook');
 
