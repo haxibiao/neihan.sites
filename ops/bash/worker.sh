@@ -32,7 +32,8 @@ if [ "all" == "$1" ]; then
 fi
 
 echo "全部跑 worker matomo proxy ..."
-/bin/cp -rf ./ops/workers/web/*.conf /etc/supervisor/conf.d/
+supervisorctl stop laravel-worker-ainicheng-matomo-proxy:*
+supervisorctl start laravel-worker-ainicheng-matomo-proxy:*
 pkill matomo
 
 supervisorctl reread
