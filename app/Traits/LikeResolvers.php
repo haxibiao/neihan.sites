@@ -12,7 +12,7 @@ trait LikeResolvers
 {
     public function getByType($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        app_track_user('获取喜欢列表');
+        app_track_event('用户页', '获取喜欢列表');
 
         return Like::where('liked_type', $args['liked_type']);
     }
@@ -25,7 +25,7 @@ trait LikeResolvers
 
     public function toggleTheLike($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        app_track_user('喜欢操作');
+        app_track_event('喜欢', '喜欢操作');
 
         //只能简单创建
         $user = getUser();
@@ -40,7 +40,7 @@ trait LikeResolvers
             $like->delete();
             $like->isLiked = false;
         } else {
-            app_track_user("点赞", 'like_' . $like->likable_type, $like->likable_id);
+            app_track_event("点赞", '点赞操作');
             $like->save();
             $like->isLiked = true;
         }

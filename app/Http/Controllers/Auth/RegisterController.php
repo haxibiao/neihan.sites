@@ -62,7 +62,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        app_track_event('user', 'register');
+        app_track_event('首页', '注册');
         $user = new User();
         return $user->createUser($data['name'], $data['email'], $data['password']);
     }

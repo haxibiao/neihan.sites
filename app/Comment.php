@@ -102,7 +102,7 @@ class Comment extends Model
 
     public function resolveComments($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        app_track_user('获取评论列表');
+        app_track_event('用户页', '获取评论列表');
 
         $comment = self::findOrFail($rootValue->id);
         return $comment->comments();

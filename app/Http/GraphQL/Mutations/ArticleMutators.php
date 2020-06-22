@@ -158,7 +158,7 @@ class ArticleMutators
             Ip::createIpRecord('articles', $article->id, $article->user->id);
 
             DB::commit();
-            app_track_user('发布动态', 'post');
+            app_track_event('发布', '发布动态');
             return $article;
         } catch (\Exception $ex) {
             if ($ex->getCode() == 0) {
@@ -322,7 +322,7 @@ class ArticleMutators
                 }
             }
             DB::commit();
-            app_track_user('发布问答', 'issue');
+            app_track_event('发布', '发布问答');
             return $article;
         } catch (\Exception $ex) {
             DB::rollBack();

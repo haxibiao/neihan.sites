@@ -431,7 +431,7 @@ trait ArticleRepo
             $this->images()->sync($image_ids);
             $this->save();
         }
-        app_track_user('发布动态', 'post');
+        app_track_event('发布', '发布操作');
         return $this;
     }
 

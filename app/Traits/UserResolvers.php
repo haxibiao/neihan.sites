@@ -122,7 +122,7 @@ trait UserResolvers
         $user->email = $email;
         $user->save();
 
-        app_track_user("用户注册", 'register');
+        app_track_event("首页", '注册');
 
         Ip::createIpRecord('users', $user->id, $user->id);
         return $user;
@@ -251,7 +251,7 @@ trait UserResolvers
         }
         $user->updateProfileAppVersion($user);
 
-        app_track_user('静默登录', "auto_signIn", $user->id);
+        app_track_event('首页', '静默登录');
 
         return $user;
     }
@@ -293,7 +293,6 @@ trait UserResolvers
                             }
                         }
                     }
-
                 }
             }
             $user->update(array_diff($args, $profile_infos));

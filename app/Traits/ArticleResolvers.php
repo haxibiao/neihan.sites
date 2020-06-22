@@ -118,7 +118,7 @@ trait ArticleResolvers
         ResolveInfo $resolveInfo
     ) {
 
-        app_track_user('推荐视频');
+        app_track_event('首页', '推荐视频');
 
         $user      = checkUser();
         $pageCount = $args['count'];
@@ -227,7 +227,7 @@ trait ArticleResolvers
         if (!Str::contains($shareMsg, 'https://v.douyin.com')) {
             return;
         }
-        app_track_user('粘贴抖音视频');
+        app_track_event('发布', '粘贴抖音视频');
 
         $user = getUser();
         throw_if($user->isBlack(), GQLException::class, '发布失败,你以被禁言');
@@ -285,7 +285,7 @@ trait ArticleResolvers
 
     public function getShareLink($rootValue, array $args, $context, $resolveInfo)
     {
-        app_track_user('分享视频');
+        app_track_event('分享', '分享视频');
 
         $article = Article::find($args['id']);
         throw_if(is_null($article), GQLException::class, '该动态不存在哦~,请稍后再试');

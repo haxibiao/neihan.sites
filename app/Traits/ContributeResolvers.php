@@ -128,7 +128,7 @@ trait ContributeResolvers
 
     public function resolveContributes($rootValue, array $args, $context, $resolveInfo)
     {
-        app_track_user("查看贡献点", 'list_contributes', getUserId());
+        app_track_event('钱包', "查看贡献点");
         return Contribute::orderBy('id', 'desc')->where('user_id', $args['user_id']);
     }
 

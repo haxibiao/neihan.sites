@@ -148,32 +148,32 @@ class UserController extends Controller
         // $videos = smartPager($qb, 10);
         // $data['videos'] = $videos;
 
-        app_track_user('访问他人主页', "check_user_page", $user->id);
+        app_track_event('用户页', '访问他人主页');
 
         return view('user.show')
             ->withUser($user)
             ->withData($data);
     }
 
-/**
- * Show the form for editing the specified resource.
- *
- * @param  int  $id
- * @return \Illuminate\Http\Response
- */
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
         $user = User::findOrFail($id);
         return view('user.edit')->withUser($user);
     }
 
-/**
- * Update the specified resource in storage.
- *
- * @param  \Illuminate\Http\Request  $request
- * @param  int  $id
- * @return \Illuminate\Http\Response
- */
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -186,12 +186,12 @@ class UserController extends Controller
         return redirect()->to('/user/' . $user->id);
     }
 
-/**
- * Remove the specified resource from storage.
- *
- * @param  int  $id
- * @return \Illuminate\Http\Response
- */
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
         $user = User::find($id);

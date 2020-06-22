@@ -35,7 +35,7 @@ trait CategoryResolvers
 
     public function resolveCategories($root, array $args, $context)
     {
-        app_track_user('获取专题列表');
+        app_track_event('首页', '获取专题列表');
 
         $filter = $args['filter'] ?? 'hot';
         //TODO 紧急兼容其它站点老数据问题
@@ -55,5 +55,4 @@ trait CategoryResolvers
 
         return $qb;
     }
-
 }

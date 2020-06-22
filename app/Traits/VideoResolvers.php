@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Traits;
 
 use App\Aso;
@@ -13,7 +14,7 @@ trait VideoResolvers
 {
     public function videoPlayReward($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        app_track_user('激励视频奖励');
+        app_track_event('钱包', '激励视频奖励');
 
         $user = getUser();
         $inputs = $args['input'];

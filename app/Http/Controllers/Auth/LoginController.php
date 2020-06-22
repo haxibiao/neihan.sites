@@ -45,10 +45,9 @@ class LoginController extends Controller
         $this->clearLoginAttempts($request);
 
         //track event 到 matomo
-        app_track_event('user', 'login');
+        app_track_event('首页', '登录');
 
         return $this->authenticated($request, $this->guard()->user())
-        ?: redirect()->intended($this->redirectPath());
+            ?: redirect()->intended($this->redirectPath());
     }
-
 }

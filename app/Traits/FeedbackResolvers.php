@@ -13,14 +13,14 @@ trait FeedbackResolvers
 {
     public function resolveAllFeedbacks($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        app_track_user('获取反馈列表');
+        app_track_event('用户页', '获取反馈列表');
 
         return Feedback::orderBy('top_at', 'desc')->orderBy('rank', 'desc');
     }
 
     public function resolveCreateFeedback($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        app_track_user('提交反馈');
+        app_track_event('用户页', '提交反馈');
 
         $user = getUser();
         $contact = array_get($args, "contact");
