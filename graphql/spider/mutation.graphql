@@ -1,0 +1,6 @@
+# extend type Mutation {
+#   """
+#   采集抖音视频里的分享地址
+#   """
+#   resolveDouyinVideo(share_link: String!): Spider @field(resolver: "App\\Spider@resolveShareLink")
+# }

@@ -8,8 +8,8 @@ use App\Contribute;
 use App\Exceptions\GQLException;
 use App\Exceptions\UserException;
 use App\Gold;
-use App\Helpers\BadWord\BadWordUtils;
-use App\Helpers\QcloudUtils;
+use haxibiao\helpers\BadWordUtils;
+use haxibiao\helpers\QcloudUtils;
 use App\Image;
 use App\Ip;
 use App\Issue;
@@ -79,8 +79,8 @@ class ArticleMutators
                 throw new GQLException('发布失败,你以被禁言');
             }
             //带视频动态
-            if ($inputs['video_id'] || $inputs['qcvod_fileid'] ) {
-                if($inputs['video_id']){
+            if ($inputs['video_id'] || $inputs['qcvod_fileid']) {
+                if ($inputs['video_id']) {
                     $video   = Video::findOrFail($inputs['video_id']);
                     $article = $video->article;
                     if (!$article) {
@@ -158,7 +158,7 @@ class ArticleMutators
             Ip::createIpRecord('articles', $article->id, $article->user->id);
 
             DB::commit();
-            app_track_user('发布动态','post');
+            app_track_user('发布动态', 'post');
             return $article;
         } catch (\Exception $ex) {
             if ($ex->getCode() == 0) {
@@ -167,7 +167,6 @@ class ArticleMutators
             }
             throw new GQLException($ex->getMessage());
         }
-
     }
 
     /**
@@ -202,7 +201,7 @@ class ArticleMutators
                 if ($todayPublishVideoNum == 10) {
                     throw new UserException('每天只能发布10个视频动态!');
                 }
-                if($inputs['video_id'] != null){
+                if ($inputs['video_id'] != null) {
                     $video = Video::findOrFail($inputs['video_id']);
                     /**
                      * 判断视频时长放到队列中处理，如果不满足条件则发布失败，时长不够
@@ -233,7 +232,7 @@ class ArticleMutators
                     $article->review_id   = Article::makeNewReviewId();
                     $article->type     = 'issue';
                     $article->save();
-                } else if($inputs['qcvod_fileid'] != null){
+                } else if ($inputs['qcvod_fileid'] != null) {
                     $qcvod_fileid = $inputs['qcvod_fileid'];
                     $video = Video::firstOrNew([
                         'qcvod_fileid' => $qcvod_fileid,
@@ -323,7 +322,7 @@ class ArticleMutators
                 }
             }
             DB::commit();
-            app_track_user('发布问答','issue');
+            app_track_user('发布问答', 'issue');
             return $article;
         } catch (\Exception $ex) {
             DB::rollBack();

@@ -2,67 +2,9 @@
 
 namespace App;
 
-use App\Model;
-use App\Traits\MakeCovers;
-use App\Traits\VideoAttrs;
-use App\Traits\VideoRepo;
-use App\Traits\VideoResolvers;
-use App\Traits\VodVideoRepo;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use haxibiao\media\Video as BaseVideo;
 
-class Video extends Model
+class Video extends BaseVideo
 {
-    use SoftDeletes;
-    use VideoResolvers;
-    use VideoAttrs;
-    use VideoRepo;
-    use MakeCovers;
-    use VodVideoRepo;
-
-    protected $fillable = [
-        'title',
-        'user_id',
-        'path',
-        'duration',
-        'json',
-        'cover',
-        'hash',
-        'disk',
-        'qcvod_fileid',
-        'width',
-        'height',
-    ];
-
-    public function user()
-    {
-        return $this->belongsTo(\App\User::class);
-    }
-
-    public function article()
-    {
-        return $this->hasOne(\App\Article::class);
-    }
-
-    public static function boot()
-    {
-        parent::boot();
-
-        /**
-         * 注释原因：在保存视频时，视频对象还没有封面
-         */
-
-        // //自动通过封面获得视频宽高
-        // static::created(function ($video) {
-        //     $coverPath = parse_url($video->cover, PHP_URL_PATH);
-        //     $video->saveWidthHeight(public_path($coverPath));
-        // });
-
-        //FIXME:视频截图成功，同步发布文章上线? 现在这个需要审核了
-        // static::updated(function ($model) {
-        //     if ($article = $model->article) {
-        //         $article->status = $model->status;
-        //     }
-        // });
-    }
 
 }

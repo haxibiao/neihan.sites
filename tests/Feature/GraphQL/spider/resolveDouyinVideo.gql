@@ -1,0 +1,6 @@
+# 采集视频
+mutation ResolveDouyinVideo($share_link: String!) {
+    resolveDouyinVideo(share_link: $share_link) {
+        id
+    }
+}

@@ -3,8 +3,8 @@
 namespace App\Traits;
 
 use App\Exceptions\GQLException;
-use App\Helpers\AlipayUtils;
-use App\Helpers\WechatAppUtils;
+use haxibiao\helpers\AlipayUtils;
+use haxibiao\helpers\WechatAppUtils;
 use App\Jobs\UserSyncWeChatAccountInfo;
 use App\OAuth;
 use App\User;

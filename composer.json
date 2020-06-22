@@ -38,7 +38,8 @@
     "piwik/piwik-php-tracker": "^2.0",
     "predis/predis": "^1.1",
     "qcloud/cos-sdk-v5": "^2.0",
-    "simplesoftwareio/simple-qrcode": "^2.0"
+    "simplesoftwareio/simple-qrcode": "^2.0",
+    "spatie/laravel-backup": "^6.5.0"
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^2.6",
@@ -65,10 +66,6 @@
       "type": "vcs",
       "url": "http://code.haxibiao.cn/web/nova.git"
     },
-    "2": {
-      "type": "path",
-      "url": "./nova-components/HotCatoryCount"
-    },
     "3": {
       "type": "path",
       "url": "./nova-components/CategoryCount"
@@ -93,7 +90,15 @@
   },
   "autoload": {
     "psr-4": {
-      "App\\": "app/"
+      "App\\": "app/",
+      "haxibiao\\config\\": "packages/haxibiao/config/src/",
+      "haxibiao\\helpers\\": "packages/haxibiao/helpers/src/",
+      "haxibiao\\task\\": "packages/haxibiao/task/src/",
+      "haxibiao\\user\\": "packages/haxibiao/user/src/",
+      "haxibiao\\matomo\\": "packages/haxibiao/matomo/src/",
+      "haxibiao\\store\\": "packages/haxibiao/store/src/",
+      "haxibiao\\content\\": "packages/haxibiao/content/src/",
+      "haxibiao\\media\\": "packages/haxibiao/media/src/"
     },
     "classmap": [
       "database/seeds",

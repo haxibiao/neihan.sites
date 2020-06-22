@@ -3,7 +3,7 @@
 namespace App\Traits;
 
 use App\Exceptions\GQLException;
-use App\Helpers\SMSUtils;
+use haxibiao\helpers\SMSUtils;
 use App\User;
 use App\Verify;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -44,7 +44,6 @@ trait VerifyResolvers
             }
 
             return $verify;
-
         } else {
             throw new GQLException('发送失败！手机号未注册');
         }

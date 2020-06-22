@@ -4,6 +4,7 @@ namespace Tests\Feature\GraphQL;
 
 use App\Chat;
 use App\User;
+use Illuminate\Support\Str;
 
 class ChatTest extends TestCase
 {
@@ -49,7 +50,7 @@ class ChatTest extends TestCase
         $variables = [
             'user_id' => $user->id,
             'chat_id' => $chat->id,
-            'message' => '测试策划I是的发送到发送到C黑痴儿hi痴儿贺词黑',
+            'message' => Str::random(7),
         ];
 
         $this->startGraphQL($query, $variables);

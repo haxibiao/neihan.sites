@@ -1,0 +1,34 @@
+#视频详情
+query PostQuery($id: Int!) {
+  post(id: $id) {
+    paginatorInfo {
+      hasMorePages
+      currentPage
+    }
+    data {
+      id
+      description
+      content
+      count_likes
+      count_comments
+      liked
+      is_ad
+      created_at
+      spider {
+        id
+        created_at
+        status
+      }
+      video {
+        id
+        url
+      }
+      user {
+        id
+        name
+        avatar
+        gender
+      }
+    }
+  }
+}

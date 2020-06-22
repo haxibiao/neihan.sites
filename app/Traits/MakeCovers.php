@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Helpers\FFMpeg\FFMpegUtils;
+use haxibiao\helpers\FFMpeg\FFMpegUtils;
 use App\Video;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,33 +15,33 @@ trait MakeCovers
      */
     public function makeCovers(string $videoPath, $disk = 'vod')
     {
-//            1. 获取宽高
+        //            1. 获取宽高
         $video = $this;
         $videoInfo = $this->getVideoInfo($videoPath);
         $duration = $this->getVideoDuration($videoInfo);
         $width = array_get($videoInfo, 'width');
         $height = array_get($videoInfo, 'height');
 
-//            2.截图，存在本地
+        //            2.截图，存在本地
         $coverPath = $this->saveCovers($video, $videoPath);
 
-//            3.将本地截图上传
+        //            3.将本地截图上传
         \Storage::cloud()->put($coverPath, file_get_contents(storage_path('app/public/' . $coverPath)));
 
-//            4.更新视频信息
+        //            4.更新视频信息
         $video->timestamps = false;
         $video->disk = $disk;
         $video->status = 1;
         $video->cover = $coverPath;
         $video->duration = $duration;
 
-//            5.填充视频关键信息
+        //            5.填充视频关键信息
         $video->setJsonData('cover', $coverPath);
         $video->setJsonData('width', $width);
         $video->setJsonData('height', $height);
 
         $video->save();
-//            6.释放服务器资源
+        //            6.释放服务器资源
         if (!is_local_env()) {
             $relativePath = 'video/' . $video->id . '.mp4';
             //删除视频

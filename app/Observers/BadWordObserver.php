@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\BadWord;
-use App\Helpers\BadWord\BadWordUtils;
+use haxibiao\helpers\BadWordUtils;
 
 class BadWordObserver
 {

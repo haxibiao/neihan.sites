@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Helpers\QcloudUtils;
+use haxibiao\helpers\QcloudUtils;
 
 trait ImageRepo
 {

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Helpers\QcloudUtils;
+use haxibiao\helpers\QcloudUtils;
 use Illuminate\Console\Command;
 
 class VodApi extends Command
@@ -74,7 +74,6 @@ class VodApi extends Command
             $res = QcloudUtils::$fileAction($fileid);
             dd($res);
         }
-
     }
 
     public function clearEvents()

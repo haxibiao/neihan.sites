@@ -5,10 +5,11 @@ type Favorite {
   created_at: DateTime
   updated_at: DateTime
   article: Article
-  favorited:Boolean
+  post: Post
+  favorited: Boolean
 }
 extend type Query {
-  favorites(user_id: Int! @eq,orderBy: [OrderByClause!] @orderBy): [Favorite] @paginate(defaultCount: 10)
-  
-  favorite(user_id: Int! @eq,faved_id:Int! @eq): Favorite @paginate(defaultCount:5)
+  favorites(user_id: Int! @eq, faved_type: String, orderBy: [OrderByClause!] @orderBy): [Favorite] @paginate(defaultCount: 10)
+
+  favorite(user_id: Int! @eq, faved_id: Int! @eq): Favorite @paginate(defaultCount: 5)
 }

@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Helpers\Pay\PayUtils;
+use haxibiao\helpers\Pay\PayUtils;
 use App\Withdraw;
 
 trait WalletAttrs
@@ -43,7 +43,6 @@ trait WalletAttrs
     {
         $user          = checkUser();
         $dongdezhuanId = $user->oauth()->where('oauth_type', 'dongdezhuan')->first()->oauth_id;
-
     }
 
     public function getTodayWithdrawLeftAttribute()

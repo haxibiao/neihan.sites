@@ -1,0 +1,24 @@
+[submodule "packages/haxibiao/store"]
+	path = packages/haxibiao/store
+	url = http://code.haxibiao.cn/packages/haxibiao-store.git/
+[submodule "packages/haxibiao/helpers"]
+	path = packages/haxibiao/helpers
+	url = http://code.haxibiao.cn/packages/haxibiao-helpers.git/
+[submodule "packages/haxibiao/task"]
+	path = packages/haxibiao/task
+	url = http://code.haxibiao.cn/packages/haxibiao-task.git/
+[submodule "packages/haxibiao/matomo"]
+	path = packages/haxibiao/matomo
+	url = http://code.haxibiao.cn/packages/haxibiao-matomo.git/
+[submodule "packages/haxibiao/content"]
+	path = packages/haxibiao/content
+	url = http://code.haxibiao.cn/packages/haxibiao-content.git/
+[submodule "packages/haxibiao/media"]
+	path = packages/haxibiao/media
+	url = http://code.haxibiao.cn/packages/haxibiao-media.git/
+[submodule "packages/haxibiao/user"]
+	path = packages/haxibiao/user
+	url = http://code.haxibiao.cn/packages/haxibiao-user.git/
+[submodule "packages/haxibiao/config"]
+	path = packages/haxibiao/config
+	url = http://code.haxibiao.cn/packages/haxibiao-config.git/

@@ -25,7 +25,7 @@ type Article {
   pivot_time_ago: String
   pivot_status: String
   pivot_category: Category
-  user: User!
+  user: User
   video: Video
   images: [Image!]
   artilceImages: [Image!]

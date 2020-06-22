@@ -7,7 +7,7 @@ use App\Article;
 use App\Category;
 use App\Exceptions\GQLException;
 use App\Gold;
-use App\Helpers\BadWord\BadWordUtils;
+use haxibiao\helpers\BadWordUtils;
 use App\Image;
 use App\Notifications\ReceiveAward;
 use App\Tag;
@@ -36,7 +36,7 @@ trait ArticleRepo
         $video = \App\Video::firstOrNew([
             'hash' => $hash,
         ]);
-//        秒传
+        //        秒传
         if (isset($video->id)) {
             return $video->id;
         }
@@ -553,11 +553,9 @@ trait ArticleRepo
 
                 // 防止 gql 属性找不到
                 return Article::find($this->id);
-
             } catch (\Exception $ex) {
                 \Log::error("video save exception" . $ex->getMessage());
             }
-
         }
         throw new Exception('分享失败，请检查您的分享信息是否正确!');
     }

@@ -1,0 +1,62 @@
+type Post {
+  id: Int!
+  user: User
+  """
+  视频
+  """
+  video: Video
+  """
+  爬虫
+  """
+  spider: Spider
+  """
+  动态的内容
+  """
+  content: String
+  """
+  动态的简介，一般没场景用，除非内容过多的时候列表只显示简介
+  """
+  description: String
+  """
+  -1删除，0草稿，1发布
+  """
+  status: Int
+  liked: Int
+  count_likes: Int
+  count_comments: Int
+  review_id: String
+  review_day: String
+  is_ad: Int
+
+  """
+  发布时间（多久前）
+  """
+  created_at: String @rename(attribute: "time_age")
+}
+
+extend type Query {
+  """
+  Post动态详情
+  """
+  post(id: Int! @eq): Post @find
+
+  """
+  学习视频列表（兼容token为游客的情况）
+  """
+  recommendPosts: [Post!] @field(resolver: "haxibiao\\content\\Post@resolveRecommendPosts")
+
+  """
+  动态广场
+  """
+  publicPosts(user_id: Int): [Post!] @paginate(defaultCount: 10, builder: "haxibiao\\content\\Post@resolvePublicPosts")
+
+  """
+  个人主页动态列表
+  """
+  posts(user_id: Int!): [Post!] @paginate(builder: "haxibiao\\content\\Post@resolvePosts", defaultCount: 10)
+
+  """
+  分享post
+  """
+  shareNewPost(id: ID!): String @field(resolver: "App\\Post@getShareLink")
+}

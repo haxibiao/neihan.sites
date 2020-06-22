@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Helpers\Pay\PayUtils;
+use haxibiao\helpers\Pay\PayUtils;
 use App\Transaction;
 use App\User;
 use App\Withdraw;

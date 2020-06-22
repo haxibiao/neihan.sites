@@ -1,0 +1,82 @@
+type Spider {
+  id: Int
+
+  """
+  提交次数
+  """
+  count: Int
+
+  """
+  用户
+  """
+  user: User
+
+  """
+  视频
+  """
+  video: Video
+
+  """
+  题目
+  """
+  question: Question
+
+  """
+  来源地址
+  """
+  source_url: String
+
+  """
+  状态
+  """
+  status: SpiderTypeEnum
+
+  """
+  标题
+  """
+  title: String
+
+  """
+  奖励
+  """
+  reward: Int
+
+  """
+  备注
+  """
+  remark: String
+
+  """
+  创建时间
+  """
+  created_at: String
+
+  """
+  更新时间
+  """
+  updated_at: String
+}
+
+enum SpiderTypeEnum {
+  """
+  待处理
+  """
+  WATING_STATUS @enum(value: 0)
+
+  """
+  已处理
+  """
+  PROCESSED_STATUS @enum(value: 1)
+
+  """
+  失败的
+  """
+  FAILED_STATUS @enum(value: -1)
+}
+
+extend type Query {
+  """
+  采集抖音视频的爬虫...
+  """
+  spiders(type: SpiderTypeEnum): [Spider!] @paginate(defaultCount: 10, builder: "App\\Spider@resolveSpiders")
+}

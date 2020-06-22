@@ -1,7 +1,5 @@
 <?php
 
-require_once app_path() . '/Helpers/common.php';
-
 return [
 
     'backup' => [

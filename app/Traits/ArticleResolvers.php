@@ -5,7 +5,7 @@ namespace App\Traits;
 use App\Article;
 use App\Category;
 use App\Exceptions\GQLException;
-use App\Helpers\BadWord\BadWordUtils;
+use haxibiao\helpers\BadWordUtils;
 use App\Product;
 use App\User;
 use App\Video;
@@ -200,7 +200,6 @@ trait ArticleResolvers
                         }
                     }
                 }
-
             }
         }
 

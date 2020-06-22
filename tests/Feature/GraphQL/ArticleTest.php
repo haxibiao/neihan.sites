@@ -55,25 +55,25 @@ class ArticleTest extends TestCase
         $this->startGraphQL($query, $variables, $headers);
 
         //情形3:创建视频问答
-        $variables = [
-            'video_id'   => $video->id,
-            'body'       => '可以上传Base64的图片啦？',
-            'type'       => 'ISSUE',
-            'issueInput' => [
-                'gold' => 30,
-            ],
-        ];
-        $this->startGraphQL($query, $variables, $headers);
+        // $variables = [
+        //     'video_id'   => $video->id,
+        //     'body'       => '可以上传Base64的图片啦？',
+        //     'type'       => 'ISSUE',
+        //     'issueInput' => [
+        //         'gold' => 30,
+        //     ],
+        // ];
+        // $this->startGraphQL($query, $variables, $headers);
 
-        //情形4:创建带图问答
-        $variables = [
-            'body'       => '可以上传Base64的图片啦？',
-            'type'       => 'ISSUE',
-            'images'     => $base64,
-            'issueInput' => [
-                'gold' => 30,
-            ],
-        ];
+        // //情形4:创建带图问答
+        // $variables = [
+        //     'body'       => '可以上传Base64的图片啦？',
+        //     'type'       => 'ISSUE',
+        //     'images'     => $base64,
+        //     'issueInput' => [
+        //         'gold' => 30,
+        //     ],
+        // ];
         $this->startGraphQL($query, $variables, $headers);
     }
     /* --------------------------------------------------------------------- */

@@ -3,7 +3,7 @@
 namespace App\Traits;
 
 use App\Category;
-use App\Helpers\QcloudUtils;
+use haxibiao\helpers\QcloudUtils;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 

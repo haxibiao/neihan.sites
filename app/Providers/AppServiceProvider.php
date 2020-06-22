@@ -28,7 +28,8 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         View::composer(
-            '*', 'App\Http\ViewComposers\SiteComposer'
+            '*',
+            'App\Http\ViewComposers\SiteComposer'
         );
 
         Blade::directive('timeago', function ($expression) {
@@ -94,13 +95,12 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment() !== 'production') {
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
-
     }
 
     public function registerSingleObject()
     {
         $this->app->singleton('DouyinSpider', function ($app) {
-            return new \App\Helpers\DouyinSpider();
+            return new \haxibiao\helpers\DouyinSpider();
         });
         $this->app->singleton('GuzzleClient', function ($app) {
             return new \GuzzleHttp\Client();

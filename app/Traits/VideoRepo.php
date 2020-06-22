@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Helpers\QcloudUtils;
+use haxibiao\helpers\QcloudUtils;
 use App\Jobs\MakeVideoCovers;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
@@ -70,7 +70,8 @@ trait VideoRepo
         try {
             //本地存一份用于截图
             $file->storeAs(
-                'video', $this->id . '.mp4'
+                'video',
+                $this->id . '.mp4'
             );
             $this->disk = 'local'; //先标记为成功保存到本地
             $this->save();
@@ -83,7 +84,6 @@ trait VideoRepo
 
             dispatch((new MakeVideoCovers($this)))->delay(now()->addMinute(1));
             return true;
-
         } catch (\Exception $ex) {
             \Log::error("video save exception" . $ex->getMessage());
         }
