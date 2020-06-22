@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Traits;
 
 use App\Contribute;
@@ -76,7 +77,6 @@ trait WithdrawResolvers
                 if ($contribute < $need_contribute) {
                     throw new GQLException('今日贡献不足,您还需' . $diffContributes . '点日贡献值就可以提现成功啦~');
                 }
-
             }
 
             $withdraw = $wallet->withdraw($amount, $payId, $platform);
@@ -134,7 +134,6 @@ trait WithdrawResolvers
         if ($todayWithDrawAmount >= Withdraw::WITHDRAW_MAX) {
             throw new GQLException('今日提现额度已达上限,明日再来哦~');
         }
-
     }
 
     public function checkHighWithdraw($user, $amount)
@@ -176,24 +175,16 @@ trait WithdrawResolvers
         }
     }
 
-    public function checkUserContribute($isWithdrawBefore, $user, $amount)
+    public function checkUserContribute($user, $amount)
     {
-        if ($isWithdrawBefore) {
-            $contribute      = $user->getTodayContributeAttribute();
-            $need_contribute = $amount * Contribute::WITHDRAW_DATE;
+        //0.3元以上提现检查贡献
+        if ($amount > 0.3) {
+            $contribute = $user->getTodayContributeAttribute();
+            $need_contribute = $amount * $user->getUserWithdrawDate();
             $diffContributes = $need_contribute - $contribute;
             if ($contribute < $need_contribute) {
                 throw new GQLException('今日贡献不足,您还需' . $diffContributes . '点日贡献值就可以提现成功啦~');
             }
-            //10. 开启兑换事务,替换到钱包 创建提现订单
-            if ($platform === 'dongdezhuan') {
-                //处理限量抢倍率
-                $ddzUser  = $user->getDDZUser();
-                $withdraw = $wallet->withdraw($amount, $ddzUser->account, 'dongdezhuan', $totalRate);
-            } else {
-                $withdraw = $wallet->withdraw($amount, $payId, $platform);
-            }
-
         }
     }
 
@@ -204,7 +195,6 @@ trait WithdrawResolvers
             throw_if($platform == Withdraw::ALIPAY_PLATFORM, GQLException::class, '提现失败,支付宝提现信息未绑定!');
             throw_if($platform == Withdraw::WECHAT_PLATFORM, GQLException::class, '提现失败,微信提现信息未绑定!');
         }
-
     }
 
     public function resolveWithdraws($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
@@ -309,7 +299,7 @@ trait WithdrawResolvers
             ],
         ];
 
-//        去掉头或尾部数据
+        //        去掉头或尾部数据
         if (count($withdrawInfo) > 4) {
             if ($isWithdrawBefore || $hasWithdrawOnDDZ) {
                 array_shift($withdrawInfo);
