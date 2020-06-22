@@ -24,15 +24,20 @@ trait ContributeResolvers
     public function clickDraw($rootValue, array $args, $context, $resolveInfo)
     {
         if ($user = checkUser()) {
-//            今日draw广告点击次数
-            $count = self::getTodayCountByContributed(self::DRAW_AD_CONTRIBUTED_TYPE, self::DRAW_AD_CONTRIBUTED_ID, $user);
-            if ($count <= self::MAX_DRAW_CLICK) {
-                $contribute = self::rewardUserContribute($user->id, self::DRAW_AD_CONTRIBUTED_ID, self::REWARD_DRAW_AMOUNT,
-                    self::DRAW_AD_CONTRIBUTED_TYPE, "刷视频奖励");
+            //            今日draw广告点击次数
+            $count = self::getTodayCountByContributed(Contribute::DRAW_AD_CONTRIBUTED_TYPE, Contribute::DRAW_AD_CONTRIBUTED_ID, $user);
+            if ($count <= Contribute::MAX_DRAW_CLICK) {
+                $contribute = Contribute::rewardUserContribute(
+                    $user->id,
+                    Contribute::DRAW_AD_CONTRIBUTED_ID,
+                    Contribute::REWARD_DRAW_AMOUNT,
+                    Contribute::DRAW_AD_CONTRIBUTED_TYPE,
+                    "刷视频奖励"
+                );
                 $contribute->message = '恭喜，获得' . $contribute->amount . '点贡献';
                 return $contribute;
             }
-//          兼容旧版本
+            //          兼容旧版本
             $contribute          = new Contribute();
             $contribute->amount  = 0;
             $contribute->message = '您已超过正常下载行为...';
@@ -88,11 +93,21 @@ trait ContributeResolvers
 
             // 前30次, 点击了能获取贡献点*2
             if ($isClick && $count < 30) {
-                $contribute = self::rewardUserContribute($user->id, self::REWARD_VIDEO_CONTRIBUTED_ID,
-                    self::AD_VIDEO_AMOUNT * 2, self::REWARD_VIDEO_CONTRIBUTED_TYPE, "点击激励视频");
+                $contribute = Contribute::rewardUserContribute(
+                    $user->id,
+                    Contribute::REWARD_VIDEO_CONTRIBUTED_ID,
+                    Contribute::AD_VIDEO_AMOUNT * 2,
+                    Contribute::REWARD_VIDEO_CONTRIBUTED_TYPE,
+                    "点击激励视频"
+                );
             } else {
-                $contribute = self::rewardUserContribute($user->id, self::REWARD_VIDEO_CONTRIBUTED_ID,
-                    self::AD_VIDEO_AMOUNT, self::REWARD_VIDEO_CONTRIBUTED_TYPE, "看激励视频");
+                $contribute = Contribute::rewardUserContribute(
+                    $user->id,
+                    Contribute::REWARD_VIDEO_CONTRIBUTED_ID,
+                    Contribute::AD_VIDEO_AMOUNT,
+                    Contribute::REWARD_VIDEO_CONTRIBUTED_TYPE,
+                    "看激励视频"
+                );
             }
 
             //  拼接前端所需信息
@@ -117,15 +132,22 @@ trait ContributeResolvers
         return Contribute::orderBy('id', 'desc')->where('user_id', $args['user_id']);
     }
 
-//    兼容旧版本Feed
+    //    兼容旧版本Feed
     public function clickFeedAD($rootValue, array $args, $context, $resolveInfo)
     {
         if ($user = checkUser()) {
-            if (Contribute::getTodayCountByContributed(self::AD_FEED_CONTRIBUTED_TYPE, self::AD_FEED_CONTRIBUTED_ID,
-                $user) <= 10) {
-                $contribute = Contribute::rewardUserContribute($user->id, self::AD_FEED_CONTRIBUTED_ID,
-                    self::AD_AMOUNT,
-                    self::AD_FEED_CONTRIBUTED_TYPE, "看发现页面广告奖励");
+            if (Contribute::getTodayCountByContributed(
+                Contribute::AD_FEED_CONTRIBUTED_TYPE,
+                Contribute::AD_FEED_CONTRIBUTED_ID,
+                $user
+            ) <= 10) {
+                $contribute = Contribute::rewardUserContribute(
+                    $user->id,
+                    Contribute::AD_FEED_CONTRIBUTED_ID,
+                    Contribute::AD_AMOUNT,
+                    Contribute::AD_FEED_CONTRIBUTED_TYPE,
+                    "看发现页面广告奖励"
+                );
                 $contribute->message = '看广告奖励' . $contribute->amount . '点贡献,谢谢您的支持！~';
                 return $contribute->amount;
             }
@@ -146,9 +168,14 @@ trait ContributeResolvers
     public function clickFeedAD2($rootValue, array $args, $context, $resolveInfo)
     {
         if ($user = checkUser()) {
-            if (Contribute::getTodayCountByContributed(self::AD_FEED_CONTRIBUTED_TYPE, self::AD_FEED_CONTRIBUTED_ID, $user) <= self::MAX_FEED_CLICK) {
-                $contribute = Contribute::rewardUserContribute($user->id, self::AD_FEED_CONTRIBUTED_ID, self::AD_AMOUNT,
-                    self::AD_FEED_CONTRIBUTED_TYPE, "发现页广告奖励");
+            if (Contribute::getTodayCountByContributed(Contribute::AD_FEED_CONTRIBUTED_TYPE, Contribute::AD_FEED_CONTRIBUTED_ID, $user) <= Contribute::MAX_FEED_CLICK) {
+                $contribute = Contribute::rewardUserContribute(
+                    $user->id,
+                    Contribute::AD_FEED_CONTRIBUTED_ID,
+                    Contribute::AD_AMOUNT,
+                    Contribute::AD_FEED_CONTRIBUTED_TYPE,
+                    "发现页广告奖励"
+                );
                 $contribute->message = '您刚获得' . $contribute->amount . '点贡献';
                 return $contribute;
             }
@@ -181,14 +208,17 @@ trait ContributeResolvers
             ->latest('id')
             ->first();
 
-        // 上次看激励视频与本次间隔 < 60 秒
-        if (now()->diffInSeconds(Carbon::parse($lastRewardContribute->created_at)) < 60) {
-            $user->update(['status' => User::STATUS_FREEZE]);
-            return [
-                'message'    => '行为异常,详情咨询QQ群:808982693',
-                'gold'       => 0,
-                'contribute' => 0,
-            ];
+        if ($lastRewardContribute) {
+
+            // 上次看激励视频与本次间隔 < 60 秒
+            if (now()->diffInSeconds(Carbon::parse($lastRewardContribute->created_at)) < 60) {
+                $user->update(['status' => User::STATUS_FREEZE]);
+                return [
+                    'message'    => '行为异常,详情咨询QQ群:808982693',
+                    'gold'       => 0,
+                    'contribute' => 0,
+                ];
+            }
         }
     }
 
