@@ -1,37 +1,26 @@
 <?php
 
-/**
- * 对应matomo SiteId
- */
 return [
-    'site'   => [
-        'dianmoge.com'    => 2,
-        'dongdezhuan.com' => 4,
-        'ainicheng.com'   => 7,
-        'dongmeiwei.com'  => 8,
-        'dongdianyi.com'  => 9,
-        'qunyige.com'     => 10,
-        'youjianqi.com'   => 11,
-        'jucheshe.com'    => 12,
-        'dongdiancai.com' => 13,
-        'dongdianfa.com'  => 14,
-        'dongdianmei.com' => 15,
-        'diudie.com'      => 17,
-        'dongqizhi.com'   => 18,
-        'dongwaiyu.com'   => 19,
-        'tongjiuxiu.com'  => 20,
-        'dongwuli.com'    => 21,
-        'dongdaima.com'   => 22,
-        'caohan.com'      => 23,
-        'dongshouji.com'  => 24,
-        'dongyundong.com' => 25,
-        'donghuamu.com'   => 26,
-        'dongmiaomu.com'  => 27,
-        'dongdianyao.com' => 28,
-        'dongdianhai'     => 47,
-        'xiaofang' => 50,
-        'dongfanwen' => 53,
-        'donglangman' => 54,
-    ],
-    'matomo' => 'http://matomo.haxibiao.com',
+    //总开关,可以暂时关闭
+    'on'         => env('MATOMO_ON', true),
+
+    //是否借用swoole的proxy实现tcp+bulk发送
+    'use_swoole' => env('MATOMO_USE_SWOOLE', false),
+    'proxy_port' => env('MATOMO_PROXY_PORT', 9502),
+    'token_auth' => env('MATOMO_TOKEN_AUTH'),
+
+    //后端事件统计的site_id
+    'matomo_id'  => env('MATOMO_ID'),
+    //后端事件统计查看的matomo url
+    'matomo_url' => env('MATOMO_URL'),
+
+    //APP事件统计的site_id 前端可以直接上报了,基本不借道后端了
+    'app_id'     => env('MATOMO_APP_ID', env('MATOMO_ID')),
+    //APP事件统计查看的matomo url
+    'app_url'    => env('MATOMO_APP_URL', env('MATOMO_URL')),
+
+    //Web事件统计的site_id
+    'web_id'     => env('MATOMO_WEB_ID', env('MATOMO_ID')),
+    //Web事件统计查看的matomo url
+    'web_url'    => env('MATOMO_WEB_URL', env('MATOMO_URL')),
 ];
