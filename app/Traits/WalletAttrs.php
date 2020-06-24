@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use haxibiao\helpers\Pay\PayUtils;
+use haxibiao\helpers\PayUtils;
 use App\Withdraw;
 
 trait WalletAttrs
