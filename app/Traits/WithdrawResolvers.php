@@ -65,7 +65,7 @@ trait WithdrawResolvers
 
         //8. 新用户不做限制
 
-        $this->checkUserContribute($isWithdrawBefore, $user, $amount);
+        $this->checkUserContribute($user, $amount);
         //9. 检查提现信息
         if ($platform !== 'dongdezhuan') {
             $this->checkPayWalletInfo($platform, $wallet);
