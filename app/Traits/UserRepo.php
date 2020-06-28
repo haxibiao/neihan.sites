@@ -517,10 +517,14 @@ trait UserRepo
 
     public function hasWithdrawToday(): bool
     {
-        return $this->wallet->withdraws()
+        $withdraw =  $this->wallet->withdraws()
             ->whereDate('created_at', today())
-            ->whereIn('status', [Withdraw::SUCCESS_WITHDRAW])
-            ->exists();
+            ->whereIn('status', [Withdraw::SUCCESS_WITHDRAW])->first();
+        if ($withdraw) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public function destoryUser()
