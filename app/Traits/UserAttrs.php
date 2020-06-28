@@ -502,4 +502,19 @@ trait UserAttrs
         }
         return null;
     }
+
+    //根据用户类型（老用户，新用户，刷子），返回提现需要的贡献值
+    function getUserWithdrawDate()
+    {
+        if (empty($this->wallet) || $this->wallet->total_withdraw_amount < 2) {
+            //新用户
+            return Contribute::WITHDRAW_DATE;
+        } else if ($this->wallet->total_withdraw_amount < 5) {
+            //老用户
+            return Contribute::WITHDRAW_DATE * 2;
+        } else {
+            //刷子
+            return Contribute::WITHDRAW_DATE * 3;
+        }
+    }
 }

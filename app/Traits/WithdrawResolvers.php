@@ -217,7 +217,7 @@ trait WithdrawResolvers
 
         if ($isWithdrawBefore) {
             $contribute      = $user->contribute;
-            $need_contribute = $amount * Contribute::WITHDRAW_DATE;
+            $need_contribute = $amount * $user->getUserWithdrawDate();
             $diffContributes = $need_contribute - $contribute;
             if ($diffContributes <= 0) {
                 return 0;
@@ -245,7 +245,7 @@ trait WithdrawResolvers
 
         $user = checkUser();
 
-        $contribute       = Contribute::WITHDRAW_DATE;
+        $contribute = $user->getUserWithdrawDate();
         $isWithdrawBefore = $user->isWithdrawBefore();
         $hasWithdrawOnDDZ = $user->hasWithdrawOnDDZ();
         //  工厂内是否提现 || 懂得赚上是否提现
