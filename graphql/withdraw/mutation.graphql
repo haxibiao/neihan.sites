@@ -1,9 +1,10 @@
 extend type Mutation @middleware(checks: ["auth:api"]) {
-  createWithdraw(amount:Float!,platform:Platform = ALIPAY @spread,useWithdrawBadges:Boolean=false):Withdraw  @field(resolver: "App\\Withdraw@createWithdraw")
+  createWithdraw(amount: Float!, platform: Platform = ALIPAY @spread, useWithdrawBadges: Boolean = false): Withdraw
+    @field(resolver: "App\\Withdraw@createWithdraw")
 }
 
-enum Platform{
-  ALIPAY @enum(value:Alipay)
-  WECHAT @enum(value:Wechat)
-  DONGDEZHUAN @enum(value:dongdezhuan)
+enum Platform {
+  ALIPAY @enum(value: alipay)
+  WECHAT @enum(value: wechat)
+  DONGDEZHUAN @enum(value: dongdezhuan)
 }
