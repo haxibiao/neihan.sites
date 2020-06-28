@@ -192,7 +192,7 @@ trait WithdrawResolvers
     {
         $payId = $wallet->getPayId($platform);
         if (empty($payId)) {
-            throw_if(strcasecmp($platform, Withdraw::WECHAT_PLATFORM) == 0, GQLException::class, '提现失败,支付宝提现信息未绑定!');
+            throw_if(strcasecmp($platform, Withdraw::ALIPAY_PLATFORM) == 0, GQLException::class, '提现失败,支付宝提现信息未绑定!');
             throw_if(strcasecmp($platform, Withdraw::WECHAT_PLATFORM) == 0, GQLException::class, '提现失败,微信提现信息未绑定!');
         }
     }
