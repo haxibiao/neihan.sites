@@ -384,30 +384,30 @@ trait UserRepo
         //下列通知类型是进入了notification表的
         $unreadNotifications->each(function ($item) use (&$unreads) {
             switch ($item->type) {
-                //评论文章通知
+                    //评论文章通知
                 case 'App\Notifications\ArticleCommented':
                     $unreads['comments']++;
                     break;
                 case 'App\Notifications\ReplyComment':
                     $unreads['comments']++;
                     break;
-                //喜欢文章通知
+                    //喜欢文章通知
                 case 'App\Notifications\ArticleLiked':
                     $unreads['likes']++;
                     break;
-                //关注用户通知
+                    //关注用户通知
                 case 'App\Notifications\UserFollowed':
                     $unreads['follows']++;
                     break;
-                //打赏文章通知
+                    //打赏文章通知
                 case 'App\Notifications\ArticleTiped':
                     $unreads['tips']++;
                     break;
-                //打赏文章通知
+                    //打赏文章通知
                 case 'App\Notifications\ChatNewMessage':
                     $unreads['chat']++;
                     break;
-                //其他类型的通知
+                    //其他类型的通知
                 default:
                     $unreads['others'];
                     break;
@@ -478,7 +478,6 @@ trait UserRepo
                 // fix data.. 工厂内提现过直接更新懂得赚账号是否提现标识
                 $ddzUser->getWalletAttribute()->update(['is_withdraw_before' => true]);
             }
-
         }
         return false;
     }
@@ -503,7 +502,7 @@ trait UserRepo
     {
         Contribute::create([
             'user_id'          => $this->id,
-            'amount'           => -($amount * Contribute::WITHDRAW_DATE),
+            'amount'           => - ($amount * Contribute::WITHDRAW_DATE),
             'remark'           => '提现兑换',
             'contributed_id'   => $id,
             'contributed_type' => $type,
@@ -520,7 +519,7 @@ trait UserRepo
     {
         return $this->wallet->withdraws()
             ->whereDate('created_at', today())
-            ->whereIn('status', [Withdraw::SUCCESS_WITHDRAW, Withdraw::WAITING_WITHDRAW])
+            ->whereIn('status', [Withdraw::SUCCESS_WITHDRAW])
             ->exists();
     }
 
