@@ -157,13 +157,13 @@ trait WithdrawRepo
         Log::channel('withdraws')->info($transferResult);
 
         //处理支付响应
-        if ($platform == Withdraw::WECHAT_PLATFORM) {
+        if (strcasecmp($platform, Withdraw::WECHAT_PLATFORM) == 0) {
             //微信余额不足
             if (Arr::get($transferResult, 'err_code') != 'NOTENOUGH') {
                 $result['order_id']   = $transferResult['payment_no'] ?? null;
                 $result['failed_msg'] = $transferResult['err_code_des'] ?? null;
             }
-        } else if ($platform == Withdraw::ALIPAY_PLATFORM) {
+        } else if (strcasecmp($platform, Withdraw::ALIPAY_PLATFORM) == 0) {
             //支付宝余额不足、转账失败
             if (isset($transferResult['alipay_fund_trans_toaccount_transfer_response'])) {
                 $transferResult = $transferResult['alipay_fund_trans_toaccount_transfer_response'];
