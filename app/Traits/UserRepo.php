@@ -521,9 +521,9 @@ trait UserRepo
             ->whereDate('created_at', today())
             ->whereIn('status', [Withdraw::SUCCESS_WITHDRAW])->first();
         if ($withdraw) {
-            return false;
-        } else {
             return true;
+        } else {
+            return false;
         }
     }
 
