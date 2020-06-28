@@ -103,13 +103,13 @@ trait WalletRepo
 
     public function setPayId($openId, $platform = Withdraw::ALIPAY_PLATFORM)
     {
-        $field        = strcasecmp($platform, Withdraw::WECHAT_PLATFORM) == 0 ? 'pay_account' : 'wechat_account';
+        $field        = strcasecmp($platform, Withdraw::WECHAT_PLATFORM) != 0 ? 'pay_account' : 'wechat_account';
         $this->$field = $openId;
     }
 
     public function getPayId($platform = Withdraw::ALIPAY_PLATFORM)
     {
-        $field = strcasecmp($platform, Withdraw::WECHAT_PLATFORM) == 0 ? 'pay_account' : 'wechat_account';
+        $field = strcasecmp($platform, Withdraw::WECHAT_PLATFORM) != 0 ? 'pay_account' : 'wechat_account';
         return $this->$field;
     }
 }
