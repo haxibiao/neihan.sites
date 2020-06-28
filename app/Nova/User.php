@@ -2,16 +2,17 @@
 
 namespace App\Nova;
 
-use App\Nova\Actions\BindDongdezhuanAccount;
-use App\Nova\Actions\UpdateUser;
 use App\User as AppUser;
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Text;
+use App\Nova\Actions\UpdateUser;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\DateTime;
+use App\Nova\Actions\User\RewardUser;
+use App\Nova\Actions\BindDongdezhuanAccount;
 
 class User extends Resource
 {
@@ -144,6 +145,7 @@ class User extends Resource
     public function actions(Request $request)
     {
         return [
+            new RewardUser,
             new UpdateUser,
             new BindDongdezhuanAccount,
         ];
