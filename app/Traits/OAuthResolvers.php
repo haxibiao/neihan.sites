@@ -72,7 +72,7 @@ trait OAuthResolvers
         $wallet = $user->wallet;
         $wallet->setPayId($openId, Withdraw::WECHAT_PLATFORM);
         $wallet->save();
-        $wechatUserInfo = $this->wechatAppUtil->userInfo($accessTokens['access_token'], $accessTokens['openid']);
+        $wechatUserInfo = $utils->userInfo($accessTokens['access_token'], $accessTokens['openid']);
         if (!empty($wechatUserInfo)) {
             dispatch(new UserSyncWeChatAccountInfo($user->id, $wechatUserInfo));
         }
