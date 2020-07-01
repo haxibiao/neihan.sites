@@ -3,8 +3,8 @@
 namespace App\Traits;
 
 use App\Exceptions\GQLException;
-use haxibiao\helpers\AlipayUtils;
-use haxibiao\helpers\WechatAppUtils;
+use haxibiao\helpers\PayUtils;
+use haxibiao\helpers\WechatUtils;
 use App\Jobs\UserSyncWeChatAccountInfo;
 use App\OAuth;
 use App\User;
@@ -37,7 +37,7 @@ trait OAuthResolvers
 
     public function wechat(User $user, $code)
     {
-        $utils = new WechatAppUtils;
+        $utils = new WechatUtils;
 
         //获取微信token
         $accessTokens = $utils->accessToken($code);
@@ -83,7 +83,7 @@ trait OAuthResolvers
     {
         throw_if(true, GQLException::class, '支付宝暂未开放,请稍后再试!');
 
-        $userInfo = AlipayUtils::userInfo($code);
+        $userInfo = PayUtils::userInfo($code);
         $openId   = Arr::get($userInfo, 'user_id');
         throw_if(empty($openId), GQLException::class, '授权失败,请稍后再试!');
 
