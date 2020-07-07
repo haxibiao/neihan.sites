@@ -43,17 +43,17 @@ extend type Query {
   """
   学习视频列表（兼容token为游客的情况）
   """
-  recommendPosts: [Post!] @field(resolver: "haxibiao\\content\\Post@resolveRecommendPosts")
+  recommendPosts: [Post!] @field(resolver: "App\\Post@resolveRecommendPosts")
 
   """
   动态广场
   """
-  publicPosts(user_id: Int): [Post!] @paginate(defaultCount: 10, builder: "haxibiao\\content\\Post@resolvePublicPosts")
+  publicPosts(user_id: Int): [Post!] @paginate(defaultCount: 10, builder: "App\\Post@resolvePublicPosts")
 
   """
   个人主页动态列表
   """
-  posts(user_id: Int!): [Post!] @paginate(builder: "haxibiao\\content\\Post@resolvePosts", defaultCount: 10)
+  posts(user_id: Int!): [Post!] @paginate(builder: "App\\Post@resolvePosts", defaultCount: 10)
 
   """
   分享post
