@@ -185,7 +185,7 @@ return [
         Haxibiao\Task\TaskServiceProvider::class,
         Haxibiao\Helpers\HelpersServiceProvider::class,
         Haxibiao\Matomo\MatomoServiceProvider::class,
-        Haxibiao\User\UserServiceProvider::class,
+        Haxibiao\Base\UserServiceProvider::class,
         Haxibiao\Config\ConfigServiceProvider::class,
         Haxibiao\Content\ContentServiceProvider::class,
         Haxibiao\Store\StoreServiceProvider::class,
