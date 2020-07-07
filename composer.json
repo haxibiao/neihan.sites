@@ -94,7 +94,7 @@
       "Haxibiao\\Config\\": "packages/haxibiao/config/src/",
       "Haxibiao\\Helpers\\": "packages/haxibiao/helpers/src/",
       "Haxibiao\\Task\\": "packages/haxibiao/task/src/",
-      "Haxibiao\\User\\": "packages/haxibiao/user/src/",
+      "Haxibiao\\Base\\": "packages/haxibiao/user/src/",
       "Haxibiao\\Matomo\\": "packages/haxibiao/matomo/src/",
       "Haxibiao\\Store\\": "packages/haxibiao/store/src/",
       "Haxibiao\\Content\\": "packages/haxibiao/content/src/",
