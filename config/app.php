@@ -182,14 +182,14 @@ return [
 
 
         //依赖packages，composer安装的会自动加载 service provider
-        haxibiao\task\TaskServiceProvider::class,
-        haxibiao\helpers\HelpersServiceProvider::class,
-        haxibiao\matomo\MatomoServiceProvider::class,
-        haxibiao\user\UserServiceProvider::class,
-        haxibiao\config\ConfigServiceProvider::class,
-        haxibiao\content\ContentServiceProvider::class,
-        haxibiao\store\StoreServiceProvider::class,
-        haxibiao\media\MediaServiceProvider::class,
+        Haxibiao\Task\TaskServiceProvider::class,
+        Haxibiao\Helpers\HelpersServiceProvider::class,
+        Haxibiao\Matomo\MatomoServiceProvider::class,
+        Haxibiao\User\UserServiceProvider::class,
+        Haxibiao\Config\ConfigServiceProvider::class,
+        Haxibiao\Content\ContentServiceProvider::class,
+        Haxibiao\Store\StoreServiceProvider::class,
+        Haxibiao\Media\MediaServiceProvider::class,
     ],
 
     /*

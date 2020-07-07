@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use haxibiao\helpers\QcloudUtils;
+use Haxibiao\Helpers\QcloudUtils;
 
 //过期的一些VOD 函数
 trait VideoRepoVod

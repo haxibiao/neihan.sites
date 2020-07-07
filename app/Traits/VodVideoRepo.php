@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use haxibiao\helpers\VodUtils;
+use Haxibiao\Helpers\VodUtils;
 use App\User;
 use App\Video;
 

@@ -3,10 +3,10 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use Faker\Generator as Faker;
-use haxibiao\media\Video;
+use Haxibiao\Media\Video;
 
 /**
- * note: 如果您的项目还没有使用 haxibiao\media\Video，请import项目中Video的命名空间
+ * note: 如果您的项目还没有使用 Haxibiao\Media\Video，请import项目中Video的命名空间
  */
 $factory->define(Video::class, function (Faker $faker) {
 

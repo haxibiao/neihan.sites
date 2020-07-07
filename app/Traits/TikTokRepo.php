@@ -3,7 +3,7 @@
 namespace App\Traits;
 
 use App\Exceptions\GQLException;
-use haxibiao\helpers\TikTok\TikTokUtils;
+use Haxibiao\Helpers\TikTok\TikTokUtils;
 use App\OAuth;
 use Illuminate\Support\Arr;
 

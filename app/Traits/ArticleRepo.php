@@ -7,7 +7,7 @@ use App\Article;
 use App\Category;
 use App\Exceptions\GQLException;
 use App\Gold;
-use haxibiao\helpers\BadWordUtils;
+use Haxibiao\Helpers\BadWordUtils;
 use App\Image;
 use App\Notifications\ReceiveAward;
 use App\Tag;

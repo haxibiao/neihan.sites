@@ -4,7 +4,7 @@ namespace App\Traits;
 
 use App\Exceptions\GQLException;
 use App\Feedback;
-use haxibiao\helpers\BadWordUtils;
+use Haxibiao\Helpers\BadWordUtils;
 use App\Image;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;

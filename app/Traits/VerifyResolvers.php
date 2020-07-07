@@ -3,7 +3,7 @@
 namespace App\Traits;
 
 use App\Exceptions\GQLException;
-use haxibiao\helpers\SMSUtils;
+use Haxibiao\Helpers\SMSUtils;
 use App\User;
 use App\Verify;
 use GraphQL\Type\Definition\ResolveInfo;

@@ -100,7 +100,7 @@ class AppServiceProvider extends ServiceProvider
     public function registerSingleObject()
     {
         $this->app->singleton('DouyinSpider', function ($app) {
-            return new \haxibiao\helpers\DouyinSpider();
+            return new \Haxibiao\Helpers\DouyinSpider();
         });
         $this->app->singleton('GuzzleClient', function ($app) {
             return new \GuzzleHttp\Client();

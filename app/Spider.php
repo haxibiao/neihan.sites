@@ -2,9 +2,8 @@
 
 namespace App;
 
-use haxibiao\media\Spider as BaseSpider;
+use Haxibiao\Media\Spider as BaseSpider;
 
 class Spider extends BaseSpider
 {
-
 }

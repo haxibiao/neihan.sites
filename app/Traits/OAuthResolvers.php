@@ -3,8 +3,8 @@
 namespace App\Traits;
 
 use App\Exceptions\GQLException;
-use haxibiao\helpers\PayUtils;
-use haxibiao\helpers\WechatUtils;
+use Haxibiao\Helpers\PayUtils;
+use Haxibiao\Helpers\WechatUtils;
 use App\Jobs\UserSyncWeChatAccountInfo;
 use App\OAuth;
 use App\User;

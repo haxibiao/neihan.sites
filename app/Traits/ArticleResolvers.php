@@ -5,7 +5,7 @@ namespace App\Traits;
 use App\Article;
 use App\Category;
 use App\Exceptions\GQLException;
-use haxibiao\helpers\BadWordUtils;
+use Haxibiao\Helpers\BadWordUtils;
 use App\Product;
 use App\User;
 use App\Video;

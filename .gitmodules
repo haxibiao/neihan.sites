@@ -22,3 +22,6 @@
 [submodule "packages/haxibiao/config"]
 	path = packages/haxibiao/config
 	url = http://code.haxibiao.cn/packages/haxibiao-config.git/
+[submodule "packages/haxibiao/live"]
+	path = packages/haxibiao/live
+	url = http://code.haxibiao.cn/packages/haxibiao-live.git/

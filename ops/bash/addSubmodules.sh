@@ -6,3 +6,4 @@ git submodule add http://code.haxibiao.cn/packages/haxibiao-content.git/ package
 git submodule add http://code.haxibiao.cn/packages/haxibiao-media.git/ packages/haxibiao/media
 git submodule add http://code.haxibiao.cn/packages/haxibiao-user.git/ packages/haxibiao/user
 git submodule add http://code.haxibiao.cn/packages/haxibiao-config.git/ packages/haxibiao/config
+git submodule add http://code.haxibiao.cn/packages/haxibiao-live.git/ packages/haxibiao/live

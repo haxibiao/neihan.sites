@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use haxibiao\helpers\QcloudUtils;
+use Haxibiao\Helpers\QcloudUtils;
 use App\Jobs\MakeVideoCovers;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;

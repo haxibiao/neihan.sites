@@ -8,7 +8,7 @@ use App\Contribute;
 use App\Exceptions\GQLException;
 use App\Exceptions\UserException;
 use App\Gold;
-use haxibiao\helpers\BadWordUtils;
+use Haxibiao\Helpers\BadWordUtils;
 use App\Resolution;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;

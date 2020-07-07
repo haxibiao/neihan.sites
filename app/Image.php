@@ -2,9 +2,8 @@
 
 namespace App;
 
-use haxibiao\media\Image as BaseImage;
+use Haxibiao\Media\Image as BaseImage;
 
 class Image extends BaseImage
 {
-
 }

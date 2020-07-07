@@ -2,7 +2,7 @@
 
 namespace App;
 
-use haxibiao\content\Favorite as HxbFavorite;
+use Haxibiao\Content\Favorite as HxbFavorite;
 
 class Favorite extends HxbFavorite
 {

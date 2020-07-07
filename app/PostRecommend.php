@@ -2,9 +2,8 @@
 
 namespace App;
 
-use haxibiao\content\PostRecommend as BasePostRecommend;
+use Haxibiao\Content\PostRecommend as BasePostRecommend;
 
 class PostRecommend extends BasePostRecommend
 {
-
 }

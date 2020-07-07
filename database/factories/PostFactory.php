@@ -4,7 +4,7 @@
 
 
 use Faker\Generator as Faker;
-use haxibiao\content\Post;
+use Haxibiao\Content\Post;
 
 $factory->define(Post::class, function (Faker $faker) {
 

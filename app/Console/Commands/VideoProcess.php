@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use haxibiao\helpers\QcloudUtils;
+use Haxibiao\Helpers\QcloudUtils;
 use App\Video;
 use Illuminate\Console\Command;
 

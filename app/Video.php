@@ -2,9 +2,8 @@
 
 namespace App;
 
-use haxibiao\media\Video as BaseVideo;
+use Haxibiao\Media\Video as BaseVideo;
 
 class Video extends BaseVideo
 {
-
 }

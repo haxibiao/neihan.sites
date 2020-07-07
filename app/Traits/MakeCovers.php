@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use haxibiao\helpers\FFMpeg\FFMpegUtils;
+use Haxibiao\Helpers\FFMpeg\FFMpegUtils;
 use App\Video;
 use Illuminate\Support\Facades\Storage;
 

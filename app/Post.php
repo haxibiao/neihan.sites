@@ -2,9 +2,8 @@
 
 namespace App;
 
-use haxibiao\content\Post as BasePost;
+use Haxibiao\Content\Post as BasePost;
 
 class Post extends BasePost
 {
-
 }
