@@ -100,7 +100,7 @@ trait UserResolvers
             }
 
             if (preg_match("/([\x81-\xfe][\x40-\xfe])/", $args['password'])) {
-                throw GQLException('密码中不能包含中文');
+                throw new GQLException('密码中不能包含中文');
             }
 
             if ($exists) {
@@ -300,6 +300,12 @@ trait UserResolvers
                 $profile = $user->profile;
 
                 $profile->update($profile_infos);
+            }
+            //FIXME::简单处理，在更新用户信息后就检查任务状态
+            //判断新手任务是否完成
+            $tasks = $user->getNewUserTasks();
+            foreach ($tasks as $task) {
+                $task->checkTaskStatus($user);
             }
 
             return $user;

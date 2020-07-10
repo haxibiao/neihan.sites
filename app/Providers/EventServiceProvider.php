@@ -33,9 +33,7 @@ class EventServiceProvider extends ServiceProvider
      * 消息订阅者，
      * @var [type]
      */
-    protected $subscribe = [
-
-    ];
+    protected $subscribe = [];
 
     /**
      * Register any events for your application.
@@ -63,5 +61,6 @@ class EventServiceProvider extends ServiceProvider
         \App\Notice::observe(\App\Observers\NoticeObserver::class);
         \App\Contribute::observe(\App\Observers\ContributeObserver::class);
         \App\Gold::observe(\App\Observers\GoldObserver::class);
+        \App\User::observe(\App\Observers\UserObserver::class);
     }
 }

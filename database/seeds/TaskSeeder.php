@@ -1,7 +1,9 @@
 <?php
 
 use App\Task;
+use App\ReviewFlow;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class TaskSeeder extends Seeder
 {
@@ -22,7 +24,7 @@ class TaskSeeder extends Seeder
             'type' => Task::NEW_USER_TASK,
             'reward' => array("gold" => "10"),
             'resolve' => array('method' => 'checkUserIsUpdateAvatar', 'router' => 'editInformation'),
-            'review_flow_id' => 5,
+            'review_flow_id' => ReviewFlow::where("name", "完善头像")->first()->id,
         ]);
 
         Task::firstOrCreate([
@@ -32,7 +34,7 @@ class TaskSeeder extends Seeder
             'type' => Task::CUSTOM_TASK,
             'reward' => array("gold" => "10"),
             'resolve' => array('limit' => '15', 'router' => '', 'method' => 'publicArticleTask'),
-            'review_flow_id' => 3,
+            'review_flow_id' => ReviewFlow::where("name", "视频发布满15个")->first()->id,
             'max_count' => 15,
         ]);
 
@@ -43,7 +45,7 @@ class TaskSeeder extends Seeder
             'type' => Task::NEW_USER_TASK,
             'reward' => array("gold" => "50"),
             'resolve' => array('method' => 'checkUserIsUpdatePassAndPhone', 'router' => 'accountBinding'),
-            'review_flow_id' => 6,
+            'review_flow_id' => ReviewFlow::where("name", "绑定手机号")->first()->id,
         ]);
 
         Task::firstOrCreate([
@@ -53,7 +55,7 @@ class TaskSeeder extends Seeder
             'type' => Task::NEW_USER_TASK,
             'reward' => array("gold" => "10"),
             'resolve' => array('method' => 'checkUserIsUpdateGenderAndBirthday', 'router' => 'editInformation'),
-            'review_flow_id' => 7,
+            'review_flow_id' => ReviewFlow::where("name", "修改性别和生日")->first()->id,
         ]);
 
         Task::firstOrCreate([
@@ -62,7 +64,7 @@ class TaskSeeder extends Seeder
             'type' => Task::CUSTOM_TASK,
             'status' => Task::DISABLE,
             'resolve' => array('method' => '', 'router' => 'GoDrinkWater'),
-            'review_flow_id' => 0,
+            'review_flow_id' => ReviewFlow::where("name", "视频采集悬浮球")->first()->id,
         ]);
 
         Task::firstOrCreate([
@@ -71,7 +73,7 @@ class TaskSeeder extends Seeder
             'type' => Task::CUSTOM_TASK,
             'status' => Task::DISABLE,
             'resolve' => array('method' => '', 'router' => 'ToComment'),
-            'review_flow_id' => 8,
+            'review_flow_id' => ReviewFlow::where("name", "应用商店好评")->first()->id,
         ]);
 
         Task::firstOrCreate([
@@ -81,7 +83,7 @@ class TaskSeeder extends Seeder
             'status' => Task::ENABLE,
             'reward' => array("gold" => "100", "contribute" => "20"),
             'resolve' => array('method' => '', 'router' => 'MotivationalVideo'),
-            'review_flow_id' => 4,
+            'review_flow_id' => ReviewFlow::where("name", "看视频赚钱")->first()->id,
             'max_count' => 10,
         ]);
 
@@ -91,7 +93,7 @@ class TaskSeeder extends Seeder
             'type' => Task::CUSTOM_TASK,
             'status' => Task::ENABLE,
             'reward' => array("gold" => "600"),
-            'review_flow_id' => 11,
+            'review_flow_id' => ReviewFlow::where("name", "邀请任务")->first()->id,
             'max_count' => 5,
         ]);
         Task::firstOrCreate([
@@ -100,7 +102,7 @@ class TaskSeeder extends Seeder
             'type' => Task::CUSTOM_TASK,
             'status' => Task::ENABLE,
             'reward' => array("gold" => "200"),
-            'review_flow_id' => 9,
+            'review_flow_id' => ReviewFlow::where("name", "直播任务")->first()->id,
             'max_count' => 10,
         ]);
         Task::firstOrCreate([
@@ -109,7 +111,7 @@ class TaskSeeder extends Seeder
             'type' => Task::CUSTOM_TASK,
             'status' => Task::ENABLE,
             'reward' => array("gold" => "600"),
-            'review_flow_id' => 10,
+            'review_flow_id' => ReviewFlow::where("name", "作品获赞")->first()->id,
             'max_count' => 1000,
         ]);
     }
