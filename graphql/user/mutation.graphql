@@ -1,25 +1,10 @@
 extend type Mutation {
-  signIn(
-    account: String
-    email: String
-    password: String!
-    uuid: String
-  ): User! @field(resolver: "App\\User@signIn")
+  signIn(account: String, email: String, password: String!, uuid: String): User! @field(resolver: "App\\User@signIn")
   signOut(user_id: ID!): User @field(resolver: "App\\User@signOut")
-  autoSignIn(uuid: String!, phone: String): User
-    @field(resolver: "App\\User@autoSignIn")
+  autoSignIn(uuid: String!, phone: String): User @field(resolver: "App\\User@autoSignIn")
   destoryUser: Boolean @field(resolver: "App\\User@destoryUserByToken")
-  newUserReword(type: RewardType!): Int
-    @field(resolver: "App\\User@newUserReword")
-  bindDongdezhuan(account: String!, password: String!): Boolean
-    @field(resolver: "App\\User@bindDongdezhuan")
-  signUp(
-    account: String
-    email: String!
-    password: String!
-    name: String
-    uuid: String
-  ): User! @field(resolver: "App\\User@signUp")
+  bindDongdezhuan(account: String!, password: String!): Boolean @field(resolver: "App\\User@bindDongdezhuan")
+  signUp(account: String, email: String!, password: String!, name: String, uuid: String): User! @field(resolver: "App\\User@signUp")
 }
 
 enum RewardType {
@@ -29,10 +14,8 @@ enum RewardType {
 
 # test
 extend type Mutation {
-  blockUser(user_id: Int!): blockInfo
-    @field(resolver: "App\\User@removeBlockUser")
-  updateUserInfo(id: Int @eq, input: updateUserInfo! @spread): User!
-    @field(resolver: "App\\User@updateUserInfo")
+  blockUser(user_id: Int!): blockInfo @field(resolver: "App\\User@removeBlockUser")
+  updateUserInfo(id: Int @eq, input: updateUserInfo! @spread): User! @field(resolver: "App\\User@updateUserInfo")
 }
 
 input updateUserInfo {
