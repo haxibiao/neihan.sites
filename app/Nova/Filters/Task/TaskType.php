@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Nova\Filters\Other;
+namespace App\Nova\Filters\Task;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Filters\Filter;
 
 class TaskType extends Filter
 {
-    public $name = '任务类型';  
+    public $name = '任务类型';
 
     public $component = 'select-filter';
     /**
@@ -20,7 +20,7 @@ class TaskType extends Filter
      */
     public function apply(Request $request, $query, $value)
     {
-        return $query->where('type',$value);
+        return $query->where('type', $value);
     }
 
     /**
@@ -32,9 +32,9 @@ class TaskType extends Filter
     public function options(Request $request)
     {
         return [
-              '新人任务' => \App\Task::NEW_USER_TASK,
-              '每日任务' =>  \App\Task::DAILY_TASK,
-              '自定义任务' => \App\Task::CUSTOM_TASK,
+            '新人任务'  => \App\Task::NEW_USER_TASK,
+            '每日任务'  => \App\Task::DAILY_TASK,
+            '自定义任务' => \App\Task::CUSTOM_TASK,
         ];
     }
 }

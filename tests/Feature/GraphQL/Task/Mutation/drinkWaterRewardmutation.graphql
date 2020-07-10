@@ -1,0 +1,14 @@
+# 喝水打卡任务获取奖励接口
+mutation drinkWaterRewardMutation {
+  DrinkWaterReward {
+    id
+    content
+    task {
+      reward_info {
+        gold
+        contribute
+      }
+    }
+    status
+  }
+}

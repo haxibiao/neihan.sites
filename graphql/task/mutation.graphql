@@ -1,26 +1,52 @@
-extend type Mutation @middleware(checks: ["auth:api"]) {
+extend type Mutation {
+  """
+  新用户奖励接口
+  """
+  newUserReword(type: RewardType!): Int
+    @field(resolver: "App\\Task@newUserReword")
   """
   喝水任务上报打卡
   """
-  DrinkWater(task_id: Int!): [Task!] @field(resolver: "App\\Task@resolveDrinkWater")
+  DrinkWater(id: Int!): [Task!] @field(resolver: "App\\Task@resolveDrinkWater")
   """
   喝水打卡任务获取奖励
   """
-  DrinkWaterReward: Assignment @field(resolver: "App\\Task@resolveDrinkWaterReward")
+  DrinkWaterReward: Assignment
+    @field(resolver: "App\\Task@resolveDrinkWaterReward")
   """
   睡觉打卡奖励
   """
-  SleepReward(task_id: Int!): Assignment @field(resolver: "App\\Task@resolveSleepReward")
+  SleepReward(id: Int!): Assignment
+    @field(resolver: "App\\Task@resolveSleepReward")
   """
-  任务中心领取任务
+  领取任务(ID!兼容工厂APP)
   """
-  receiveTask(id: ID!): Task @field(resolver: "App\\Task@receiveTaskResolver")
+  receiveTask(id: ID!): Task @field(resolver: "App\\Task@resolveReceive")
   """
-  任务中心领取奖励
+  答复任务(content JSON 可选)
   """
-  rewardTask(id: ID!): Task @field(resolver: "App\\Task@getReWardResolver")
+  replyTask(id: Int!, content: String): Int
+    @field(resolver: "App\\Task@resolveReply")
+
   """
-  应用商店好评任务
+  完成任务
   """
-  highPraiseTask(id: ID, content: String): Boolean @field(resolver: "App\\Task@highPraiseTaskResolver")
+  completeTask(id: Int!): Int @field(resolver: "App\\Task@resolveComplete")
+
+  """
+  领取奖励(ID!兼容工厂APP, high:兼容高额奖励,比如激励视频点了详情的，奖励高一点...)
+  """
+  rewardTask(id: ID!, high: Boolean = false): Task
+    @field(resolver: "App\\Task@resolveReward")
+
+  """
+  应用商店好评任务回复
+  """
+  highPraiseTask(id: Int, content: String): Boolean
+    @field(resolver: "App\\Task@resolveHighPariseReply")
+}
+
+enum RewardType {
+  DOUYIN @enum(value: "douyin")
+  VIDEO @enum(value: "newUser")
 }

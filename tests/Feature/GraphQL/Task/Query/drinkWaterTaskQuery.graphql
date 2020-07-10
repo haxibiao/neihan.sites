@@ -1,0 +1,20 @@
+#喝水任务列表
+query DrinkWaterTasks {
+  DrinkWaterTasks {
+    id
+    name
+    user {
+      name
+      id
+    }
+    details
+    taskInfo {
+      method
+      router
+    }
+    type
+    status
+    progress_details
+    task_progress
+  }
+}

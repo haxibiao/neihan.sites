@@ -1,0 +1,30 @@
+type ReviewFlow {
+  id: Int!
+  """
+  模版名
+  """
+  name: String!
+  """
+  任务检查流程函数名
+  """
+  check_functions: [String!]
+  """
+  是否需要任务建立者Review
+  """
+  need_owner_review: Int!
+  """
+  是否需要官方人员Review
+  """
+  need_offical_review: Int!
+  """
+  模版类型 1 - 运营选用 2 - 用户可选用
+  """
+  type: Int!
+}
+
+extend type Query {
+  """
+  所有的任务定义
+  """
+  review_flows: [ReviewFlow] @all
+}

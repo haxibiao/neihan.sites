@@ -1,18 +1,32 @@
 type Task {
   id: Int!
   user: User
+
   """
   任务的名称
   """
   name: String
+
+  review_flow_id: Int
+
   """
-  任务的说明
+  任务定义(做什么事情，到什么程度)
+  """
+  review_flow: ReviewFlow
+
+  """
+  任务的说明文本(nova)
   """
   details: String
+
   """
-  任务的类别(日常，新人...)
+  任务的分组Int
   """
   type: Int
+  """
+  任务的分组(日常，新人...)
+  """
+  group: String
   """
   任务的图标
   """
@@ -23,31 +37,18 @@ type Task {
   background_img: String
 
   """
-  任务的模板的可用状态
-  """
-  status: Int
-
-  """
   用户的指派的进度百分比（目前：喝水的杯子UI显示用）
   """
-  task_progress: Float
+  assignment_progress: Float @rename(attribute: "task_progress")
   """
   用户的指派的进度描述(1/8)
   """
   progress_details: String
 
   """
-  用户的指派的状态(1:已指派，2:已完成，3:已奖励)
+  指派的状态(0:未开始，1:已指派/进行中/审核中，2:已达成，3:已奖励)
   """
-  task_status: Int
-  """
-  任务的去做指令（去答题，去发视频，去直播）
-  """
-  submit_name: String
-  """
-  User,Post,Question...这样的任务对象类名，方便前端知道行动指令...(可以淘汰router)
-  """
-  task_class: String
+  assignment_status: Int @rename(attribute: "task_status")
   """
   睡觉任务的状态
   """
@@ -58,9 +59,9 @@ type Task {
   """
   reward_info: RewardInfo
   """
-  任务的前端路由信息在这
+  前端存nova里的 resolve 字段json
   """
-  taskInfo: TaskInfo @deprecated(reason: "后端数据不需要知道前端的路由名")
+  resolve: String @deprecated(reason: "3.x后前端逻辑依赖的数据不存nova")
 
   start_at: DateTime @deprecated(reason: "睡觉任务用的")
   end_at: DateTime @deprecated(reason: "睡觉任务用的")
@@ -70,31 +71,41 @@ type Task {
 
   created_at: DateTime
   updated_at: DateTime
+
+  """
+  从当前计算与下次激励视频的间隔时间
+  """
+  next_reward_video_time: Int
 }
 
 type RewardInfo {
   """
-  奖励金币
+  普通金币奖励
   """
   gold: Int
   """
-  奖励贡献
+  高额金币奖励
+  """
+  gold_high: Int
+  """
+  普通贡献奖励
   """
   contribute: Int
+  """
+  高额贡献奖励
+  """
+  contribute_high: Int
+  """
+  普通精力奖励
+  """
+  ticket: Int
+  """
+  高额精力奖励
+  """
+  ticket_high: Int
 }
 
-type TaskInfo {
-  """
-  任务校验方法
-  """
-  method: String
-  """
-  前端去做任务的页面路由名
-  """
-  router: String
-}
-
-extend type Query @middleware(checks: ["auth:api"]) {
+extend type Query {
   """
   喝水打卡任务列表
   """
@@ -104,14 +115,15 @@ extend type Query @middleware(checks: ["auth:api"]) {
   """
   SleepTask: Task @field(resolver: "App\\Task@resolveSleepTask")
   """
-  获取全部任务列表
+  获取任务列表（type空取全部任务）
   """
-  tasks(type: TaskType!): [Task!] @field(resolver: "App\\Task@resolveTasks")
+  tasks(type: TaskType): [Task!] @field(resolver: "App\\Task@resolveTasks")
 }
 
 enum TaskType {
   NEW_USER_TASK @enum(value: "0")
   DAILY_TASK @enum(value: "1")
   CUSTOM_TASK @enum(value: "2")
+  CONTRIBUTE_TASK @enum(value: "4")
   All @enum(value: "All")
 }

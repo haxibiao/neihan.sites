@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Nova\Filters\Other;
+namespace App\Nova\Filters\Task;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Filters\Filter;
@@ -20,7 +20,7 @@ class TaskStatusType extends Filter
      */
     public function apply(Request $request, $query, $value)
     {
-        return $query->where('status',$value);
+        return $query->where('status', $value);
     }
 
     /**

@@ -61,12 +61,14 @@ class Task extends Resource
             ID::make()->sortable(),
             Text::make('任务名称', 'name'),
             Text::make('任务描述', 'details'),
+            Text::make('任务模板id', 'review_flow_id'),
             Select::make('类型', 'type')->options(\App\Task::getTypes())->displayUsingLabels(),
             Select::make('状态', 'status')->options(\App\Task::getStatuses())->displayUsingLabels(),
             Code::make('奖励', 'reward')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
             Code::make('任务配置', 'resolve')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
             //Code::make('解析', 'resolve')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
-            BelongsTo::make('任务模版', 'reviewFlow', 'App\Nova\ReviewFlow')->hideWhenUpdating(),
+            Text::make('任务模版ID', 'review_flow_id'),
+            // BelongsTo::make('任务模版', 'reviewFlow', 'App\Nova\ReviewFlow')->hideWhenUpdating(),
             Number::make('最多完成的次数（每日任务用）', 'max_count')->withMeta(
                 [
                     'value' => 0,
@@ -117,8 +119,8 @@ class Task extends Resource
     public function filters(Request $request)
     {
         return [
-            new \App\Nova\Filters\Other\TaskType,
-            new \App\Nova\Filters\Other\TaskStatusType,
+            new Filters\Task\TaskType,
+            new Filters\Task\TaskStatus,
         ];
     }
 
