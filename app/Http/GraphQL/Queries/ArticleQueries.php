@@ -20,7 +20,7 @@ class ArticleQueries
         }
 
         $query = Article::withoutGlobalScope(ArticleSubmitScope::class)
-            ->whereNotNull("user_id")
+            ->has("user")
             ->whereIn('type', ['video', 'post', 'issue'])
             ->orderBy('id', 'desc');
 
