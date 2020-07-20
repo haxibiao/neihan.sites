@@ -93,4 +93,9 @@ class Model extends BaseModel
     {
         return $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
     }
+
+    public function scopeToday($query, $column = 'created_at')
+    {
+        return $query->where($column, '>=', today());
+    }
 }
