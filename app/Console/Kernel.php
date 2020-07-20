@@ -12,9 +12,7 @@ class Kernel extends ConsoleKernel
      *
      * @var array
      */
-    protected $commands = [
-
-    ];
+    protected $commands = [];
 
     /**
      * Define the application's command schedule.
@@ -24,6 +22,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        //每日统计日活
+        $schedule->command('user:active')->dailyAt('23:59');
         //$schedule->command('sitemap:refresh')->daily();
         //$schedule->command('video:process')->everyMinute();
         //$schedule->command('video:process --codeinfo')->hourly();
