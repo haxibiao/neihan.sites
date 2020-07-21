@@ -190,6 +190,7 @@ return [
         Haxibiao\Content\ContentServiceProvider::class,
         Haxibiao\Store\StoreServiceProvider::class,
         Haxibiao\Media\MediaServiceProvider::class,
+        Haxibiao\Live\LiveServiceProvider::class,
     ],
 
     /*

@@ -3,16 +3,17 @@
 namespace App;
 
 use App\Feedback;
-use App\Traits\PlayWithTasks;
-use App\Traits\UserAttrs;
-use App\Traits\UserRepo;
-use App\Traits\UserResolvers;
 use App\UserRetention;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Traits\UserRepo;
+use App\Traits\UserAttrs;
+use App\Traits\PlayWithTasks;
+use App\Traits\UserResolvers;
+use Haxibiao\Live\Traits\PlayWithLive;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -21,7 +22,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use UserRepo;
     use UserResolvers;
     use PlayWithTasks;
-
+    use PlayWithLive;
     /**
      * The attributes that are mass assignable.
      *
@@ -197,7 +198,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function assignments()
     {
         return $this->hasMany(\App\Assignment::class);
-
     }
 
     #trick!! 这里其实是关注这个用户的粉丝
