@@ -2,11 +2,12 @@
 
 namespace App\Observers;
 
+use App\Ip;
 use App\Action;
 use App\comment;
 use App\Contribute;
 use App\Events\NewComment;
-use App\Ip;
+use Illuminate\Support\Facades\DB;
 
 class CommentObserver
 {
@@ -30,20 +31,35 @@ class CommentObserver
         }
         event(new NewComment($comment));
         if ($comment->commentable instanceof \App\Article) {
-            $article                 = $comment->commentable;
-            $article->count_replies  = $article->count_replies + 1;
+            $article = $comment->commentable;
+            $article->count_replies = $article->count_replies + 1;
             $article->count_comments = $article->comments()->whereNull('comment_id')->count();
             $article->save();
             $comment->lou = $article->count_comments;
             $comment->save();
         }
-        $profile = $comment->commentable->user->profile;
-        // 奖励贡献值
-        if ($comment->user->id != $comment->commentable->user->id) {
-            $profile->increment('count_contributes', Contribute::COMMENTED_AMOUNT);
+
+        //评论任务
+        if (!is_null($comment->commentable->user)) {
+            $profile = $comment->commentable->user->profile;
+            // 奖励贡献值
+            if ($comment->user->id != $comment->commentable->user->id) {
+                //新增任务：评论奖励金币
+                $user = $comment->user;
+
+                $tasks = $user->getCommentTasks();
+                foreach ($tasks as $task) {
+                    $task->checkTaskStatus($user);
+                    $assignment               = $user->tasks()->where('task_id', $task->id)->first()->pivot;
+                    $assignment->update(["current_count" => DB::raw("current_count+1")]); //次数加1
+                }
+
+                //不奖励贡献值了，直接做任务，任务激励
+                // $profile->increment('count_contributes', Contribute::COMMENTED_AMOUNT);
+            }
         }
+
         Action::createAction('comments', $comment->id, $comment->user->id);
         Ip::createIpRecord('comments', $comment->id, $comment->user->id);
     }
-
 }

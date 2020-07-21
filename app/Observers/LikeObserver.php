@@ -23,8 +23,12 @@ class LikeObserver
 
             //更新用户在文章被点赞任务方面,作者的各任务的指派的状态
             $author = $article->user;
-            $tasks  = $author->like_tasks;
-
+            if (!$author) {
+                return null;
+            }
+            $tasks = $author->like_tasks;
+            $user  = $like->article->user; //获取的是 收到点赞的用户
+            $this->updateProfileCountLikes($user);
             foreach ($tasks as $task) {
                 $task->checkTaskStatus($author);
             }
@@ -33,15 +37,11 @@ class LikeObserver
             $comment->count_likes = $comment->likes()->count();
             $comment->save();
 
-            //TODO: 评论被点赞的通知，暂时不发
+            $user = $like->comment->user; //获取的是 收到点赞的用户
+            $this->updateProfileCountLikes($user);
         }
 
-        //用户收到新的点赞...
-        $user    = $like->user;
-        $profile = $user->profile;
-        //TODO: 需要修复一个用户所有可like的东西(article, comment)的 count_likes sum起来，然后每次新like ++
-        $profile->count_likes = ++$profile->count_likes;
-        $profile->save();
+        //TODO: 评论被点赞的通知，暂时不发
 
         event(new NewLike($like));
     }
@@ -99,5 +99,25 @@ class LikeObserver
     public function forceDeleted(Like $like)
     {
         //
+    }
+
+    public function updateProfileCountLikes($user)
+    {
+
+        //保存总喜欢数量
+        $profile = $user->profile;
+        //TODO: 需要修复一个用户所有可like的东西(article, comment)的 count_likes sum起来，然后每次新like ++
+        $profile->count_likes = ++$profile->count_likes;
+        $profile->save();
+
+        //保存每日喜欢数量，用于获赞任务
+        if (!$user->tasks()->whereName('作品获赞')->first()) {
+            return;
+        }
+        $assignments                = $user->tasks()->whereName('作品获赞')->first()->pivot;
+        $assignments->current_count = ++$assignments->current_count;
+
+        $assignments->save();
+        return $profile;
     }
 }
