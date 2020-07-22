@@ -67,13 +67,8 @@ class Task extends Resource
             Code::make('奖励', 'reward')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
             Code::make('任务配置', 'resolve')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
             //Code::make('解析', 'resolve')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
-            Text::make('任务模版ID', 'review_flow_id'),
             // BelongsTo::make('任务模版', 'reviewFlow', 'App\Nova\ReviewFlow')->hideWhenUpdating(),
-            Number::make('最多完成的次数（每日任务用）', 'max_count')->withMeta(
-                [
-                    'value' => 0,
-                ]
-            ),
+            Number::make('最多完成的次数（每日任务用）', 'max_count'),
             DateTime::make('开始时间', 'start_at'),
             DateTime::make('截止时间', 'end_at'),
             DateTime::make('创建时间', 'created_at')->exceptOnForms(),
@@ -81,7 +76,8 @@ class Task extends Resource
                 function (Request $request, $model) {
                     $file = $request->file('icon');
                     return $model->saveDownloadImage($file);
-                })->thumbnail(function () {
+                }
+            )->thumbnail(function () {
                 return $this->icon_url;
             })->preview(function () {
                 return $this->icon_url;
@@ -91,7 +87,8 @@ class Task extends Resource
                 function (Request $request, $model) {
                     $file = $request->file('background_img');
                     return $model->saveBackGroundImage($file);
-                })->thumbnail(function () {
+                }
+            )->thumbnail(function () {
                 return $this->background_img;
             })->preview(function () {
                 return $this->background_img;
