@@ -37,6 +37,8 @@ return [
     ],
     'alipay'     => [
         'app_id'              => env('ALIPAY_PAY_APPID'),
+        'notify_url'          => 'http://youjianqi.com/alipay/notify',
+        'return_url'          => 'http://youjianqi.com/alipay/return',
         'private_key'         => file_get_contents(base_path('cert/alipay/private_key')),
         'ali_public_key'      => base_path('cert/alipay/alipayCertPublicKey_RSA2.crt'),
         'app_cert_public_key' => base_path('cert/alipay/appCertPublicKey_2018100161614055.crt'), //应用公钥证书路径

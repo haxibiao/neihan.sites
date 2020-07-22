@@ -46,13 +46,8 @@ class CommentObserver
             if ($comment->user->id != $comment->commentable->user->id) {
                 //新增任务：评论奖励金币
                 $user = $comment->user;
-
-                $tasks = $user->getCommentTasks();
-                foreach ($tasks as $task) {
-                    $task->checkTaskStatus($user);
-                    $assignment               = $user->tasks()->where('task_id', $task->id)->first()->pivot;
-                    $assignment->update(["current_count" => DB::raw("current_count+1")]); //次数加1
-                }
+                //刷新“点赞超人”任务进度
+                \App\Task::refreshTask($user, "评论高手");
 
                 //不奖励贡献值了，直接做任务，任务激励
                 // $profile->increment('count_contributes', Contribute::COMMENTED_AMOUNT);
