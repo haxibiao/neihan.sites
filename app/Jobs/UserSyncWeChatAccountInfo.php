@@ -38,8 +38,7 @@ class UserSyncWeChatAccountInfo implements ShouldQueue
             $user->name = $this->wechatUserInfo['nickname'];
         }
         if ($user->avatar == User::AVATAR_DEFAULT) {
-            $user->updateAvatar($wechatUserInfo['headimgurl']);
-
+            $user->updateAvatar($this->wechatUserInfo['headimgurl']);
         }
         $user->save();
     }
