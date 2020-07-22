@@ -21,6 +21,7 @@ class LikeObserver
             $article->count_likes = $article->likes()->count();
             $article->save();
 
+
             //更新用户在文章被点赞任务方面,作者的各任务的指派的状态
             $author = $article->user;
             if (!$author) {
@@ -29,6 +30,9 @@ class LikeObserver
             $tasks = $author->like_tasks;
             $user  = $like->article->user; //获取的是 收到点赞的用户
             $this->updateProfileCountLikes($user);
+            //刷新“点赞超人”任务进度
+            \App\Task::refreshTask($user, "点赞超人");
+
             foreach ($tasks as $task) {
                 $task->checkTaskStatus($author);
             }

@@ -46,6 +46,8 @@ class CommentObserver
             if ($comment->user->id != $comment->commentable->user->id) {
                 //新增任务：评论奖励金币
                 $user = $comment->user;
+                //刷新“点赞超人”任务进度
+                \App\Task::refreshTask($user, "评论高手");
 
                 $tasks = $user->getCommentTasks();
                 foreach ($tasks as $task) {
