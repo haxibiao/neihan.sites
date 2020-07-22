@@ -232,6 +232,8 @@ trait ContributeResolvers
                 'gold'       => 0,
                 'contribute' => 0,
             ];
+        } else {
+            $user->profile::update(["app_version" => $latestVersion]);
         }
     }
 }
