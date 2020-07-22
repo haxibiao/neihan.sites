@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 
 class Model extends BaseModel
