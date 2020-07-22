@@ -69,6 +69,7 @@ trait ContributeResolvers
             //激励视频奖励只允许最新版本的用户获得
             //http://pm.haxibiao.com:8080/browse/DDZ-488
             if ($result = $this->checkVersion($user)) {
+                dd($result);
                 return $result;
             }
             $count = self::getTodayCountByType(Contribute::REWARD_VIDEO_CONTRIBUTED_TYPE, $user);
@@ -233,7 +234,7 @@ trait ContributeResolvers
                 'contribute' => 0,
             ];
         } else {
-            $user->profile::update(["app_version" => $latestVersion]);
+            $user->profile->update(["app_version" => $latestVersion]);
         }
     }
 }
