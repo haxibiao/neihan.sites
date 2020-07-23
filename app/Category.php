@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\CategoryAttrs;
 use App\Traits\CategoryRepo;
 use App\Traits\CategoryResolvers;
 use  Haxibiao\Question\Category as BaseCategory;
@@ -9,6 +10,7 @@ use  Haxibiao\Question\Category as BaseCategory;
 class Category extends BaseCategory
 {
     use CategoryRepo;
+    use CategoryAttrs;
 
     // resolvers
     public function getByType($rootValue, array $args,  $context, $resolveInfo)

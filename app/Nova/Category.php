@@ -4,7 +4,6 @@ namespace App\Nova;
 
 use Haxibiao\Question\Category as QuestionCategory;
 use Haxibiao\Question\Question;
-use Haxibiao\Question\Tag;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
@@ -81,6 +80,18 @@ class Category extends Resource
             })->onlyOnIndex()->asHtml(),
             Textarea::make('描述', 'description'),
             Textarea::make('tips', 'tips'),
+
+            Image::make('分类图片', 'logo')->store(
+                function (Request $request, $model) {
+                    $file = $request->file('logo');
+                    return $model->saveDownloadImage($file);
+                }
+            )->thumbnail(function () {
+                return $this->novaLogo;
+            })->preview(function () {
+                return $this->novaLogo;
+            })->disableDownload(),
+
             Image::make('图标', 'icon')->disk('local')->store(function (Request $request, $model) {
                 return $model->saveIcon($request->file('icon'))->icon;
             })->thumbnail(function () {

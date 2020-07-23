@@ -18,7 +18,7 @@ class Tag extends Resource
      *
      * @var string
      */
-    public static $model = 'Haxibiao\Question\Tag';
+    public static $model = 'Haxibiao\\Question\\Tag';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
