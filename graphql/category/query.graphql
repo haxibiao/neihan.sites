@@ -10,6 +10,7 @@ type Category {
   user_id: Int!
   questions_count: Int @cache
   logo: String
+  nova_logo: String
   """
   题库总计被答次数
   """
