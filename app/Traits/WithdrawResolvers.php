@@ -35,6 +35,11 @@ trait WithdrawResolvers
         //     throw new GQLException('当前版本过低,请更新后再尝试提现,详情咨询QQ群:808982693');
         // }
 
+        throw_if($amount > 0.5, GQLException::class, '高额提现被抢光啦~');
+
+        //检查有没有作弊，比如贡献值，金币获取时间都在同一时间
+        // $this->checkCheating($user);
+
         $this->checkHighWithdraw($user, $amount);
         //3. 用户钱包信息完整性校验
         $wallet = $user->wallet;
@@ -134,6 +139,11 @@ trait WithdrawResolvers
         if ($todayWithDrawAmount >= Withdraw::WITHDRAW_MAX) {
             throw new GQLException('今日提现额度已达上限,明日再来哦~');
         }
+    }
+
+    public function checkCheating($user)
+    {
+        //Contribute::where("user_id", $user->id)->where("created_at", now()->toDateString())->groupBy("created_at")->havng("created_at", ">", 2); //有获取贡献时间重复的情况直接封号
     }
 
     public function checkHighWithdraw($user, $amount)
@@ -265,16 +275,16 @@ trait WithdrawResolvers
                 'highWithdrawCardsRate' => null,
             ],
             [
-                'amount'                => 1,
-                'description'           => $contribute . '活跃',
+                'amount'                => 0.5,
+                'description'           => $contribute * 0.5 . '活跃',
                 'tips'                  => '秒到账',
                 'fontColor'             => '#A0A0A0',
                 'bgColor'               => '#FFBB04',
                 'highWithdrawCardsRate' => null,
             ],
             [
-                'amount'                => 3,
-                'description'           => $contribute * 3 . '活跃',
+                'amount'                => 1,
+                'description'           => $contribute * 1 . '活跃',
                 'tips'                  => '限量抢',
                 'fontColor'             => '#A0A0A0',
                 'bgColor'               => '#FFBB04',
@@ -282,16 +292,16 @@ trait WithdrawResolvers
 
             ],
             [
-                'amount'                => 5,
-                'description'           => $contribute * 5 . '活跃',
+                'amount'                => 3,
+                'description'           => $contribute * 3 . '活跃',
                 'tips'                  => '限量抢',
                 'fontColor'             => '#A0A0A0',
                 'bgColor'               => '#FFBB04',
                 'highWithdrawCardsRate' => $user->fiveTimesHighWithdrawCardsCount,
             ],
             [
-                'amount'                => 10,
-                'description'           => $contribute * 10 . '活跃',
+                'amount'                => 5,
+                'description'           => $contribute * 5 . '活跃',
                 'tips'                  => '限量抢',
                 'fontColor'             => '#A0A0A0',
                 'bgColor'               => '#FFBB04',
