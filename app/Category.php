@@ -9,5 +9,11 @@ use  Haxibiao\Question\Category as BaseCategory;
 class Category extends BaseCategory
 {
     use CategoryRepo;
-    use CategoryResolvers;
+
+    // resolvers
+    public function getByType($rootValue, array $args,  $context, $resolveInfo)
+    {
+        $category = self::where("type", $args['type'])->where("status", 1)->orderBy("order", "desc");
+        return $category;
+    }
 }
