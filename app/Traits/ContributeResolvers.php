@@ -233,7 +233,7 @@ trait ContributeResolvers
                 'contribute' => 0,
             ];
         } else {
-            $user->profile->update(["app_version" => $latestVersion]);
+            $user->profile->update(["app_version" => $latestVersion->name]);
         }
     }
 }
