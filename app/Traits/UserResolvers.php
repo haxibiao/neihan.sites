@@ -226,6 +226,7 @@ trait UserResolvers
         // 不是首次登录
         if ($qb->exists()) {
             $user = $qb->first();
+            $user->profile->update(['app_version' => request()->header('version', null),]);
             if ($user->status === User::STATUS_OFFLINE) {
                 throw new GQLException('登录失败！账户已被封禁');
             } else if ($user->status === User::STATUS_DESTORY) {
