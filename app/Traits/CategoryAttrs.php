@@ -9,10 +9,13 @@ trait CategoryAttrs
 {
     public function getNovaLogoAttribute()
     {
-        if (\str_contains($this->logo, 'cos')) {
-            return $this->logo;
-        } else {
-            return cdnurl($this->logo);
+        if ($this->logo) {
+
+            if (\str_contains($this->logo, 'cos')) {
+                return $this->logo;
+            } else {
+                return cdnurl($this->logo);
+            }
         }
     }
 

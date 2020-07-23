@@ -23,7 +23,7 @@ class Category extends Resource
      *
      * @var string
      */
-    public static $model = 'Haxibiao\Question\Category';
+    public static $model = 'App\Category';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -57,7 +57,7 @@ class Category extends Resource
      * 预加载关联关系
      * @var array
      */
-    public static $with = ['parent', 'user'];
+    public static $with = ['user'];
 
     /**
      * Get the fields displayed by the resource.
@@ -67,10 +67,10 @@ class Category extends Resource
      */
     public function fields(Request $request)
     {
-        $rank = empty($this->rank) ? '0' : $this->rank;
         return [
             ID::make()->sortable(),
             Text::make('名称', 'name')->hideFromIndex(),
+            Text::make('类型', 'type'),
             Text::make('名称', function () {
                 return sprintf(
                     '<a href="%s" class="no-underline dim text-primary font-bold"> %s </a>',
@@ -78,7 +78,7 @@ class Category extends Resource
                     str_limit($this->name, 10)
                 );
             })->onlyOnIndex()->asHtml(),
-            Textarea::make('描述', 'description'),
+            // Text::make('描述', 'description'),
             Textarea::make('tips', 'tips'),
 
             Image::make('分类图片', 'logo')->store(
@@ -92,12 +92,12 @@ class Category extends Resource
                 return $this->novaLogo;
             })->disableDownload(),
 
-            Image::make('图标', 'icon')->disk('local')->store(function (Request $request, $model) {
-                return $model->saveIcon($request->file('icon'))->icon;
-            })->thumbnail(function () {
-                return $this->icon_url;
-            })->hideWhenCreating(),
-            BelongsTo::make('上级分类', 'parent', 'App\Nova\Category')->exceptOnForms(),
+            // Image::make('图标', 'icon')->disk('local')->store(function (Request $request, $model) {
+            //     return $model->saveIcon($request->file('icon'))->icon;
+            // })->thumbnail(function () {
+            //     return $this->icon_url;
+            // })->hideWhenCreating(),
+            // BelongsTo::make('上级分类', 'parent', 'App\Nova\Category')->exceptOnForms(),
             MorphToMany::make('标签', 'tags', Tag::class)->exceptOnForms(),
             Number::make('上级分类ID', 'parent_id')->onlyOnForms(),
             Select::make('状态', 'status')->options(QuestionCategory::getStatuses())->displayUsingLabels(),
@@ -116,7 +116,7 @@ class Category extends Resource
             //                return $this->can_review_count;
             //            }),
             Number::make('出题最小答对数', 'min_answer_correct')->hideFromIndex(),
-            Number::make('排名', 'rank')->help('数字越大,排名越靠前(建议范围0-999)')->withMeta(['value' => $rank]),
+            Number::make('排名', 'rank')->help('数字越大,排名越靠前(建议范围0-999)'),
             BelongsTo::make('用户', 'user', 'App\Nova\User')->exceptOnForms(),
             HasMany::make('题目列表', 'questions', 'App\Nova\Question')->singularLabel('题目'),
         ];

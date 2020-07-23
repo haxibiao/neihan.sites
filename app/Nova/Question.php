@@ -84,7 +84,7 @@ class Question extends Resource
             Number::make('错', 'wrong_count')->sortable()->min(0)->exceptOnForms(),
             BelongsTo::make('用户', 'user', 'App\Nova\User')->nullable()->exceptOnForms(),
             BelongsTo::make('视频', 'video', 'App\Nova\Video')->nullable()->hideFromIndex(),
-            BelongsTo::make('音频', 'audio', 'App\Nova\Audio')->hideFromIndex(),
+            // BelongsTo::make('音频', 'audio', 'App\Nova\Audio')->hideFromIndex(),
             Select::make('审核', 'submit')->options(QuestionQuestion::getSubmitStatus())->hideFromIndex(),
 
             DateTime::make('时间', 'created_at')->hideFromIndex()->exceptOnForms(),

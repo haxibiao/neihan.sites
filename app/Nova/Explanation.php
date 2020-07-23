@@ -2,13 +2,12 @@
 
 namespace App\Nova;
 
-use Halimtuhu\ArrayImages\ArrayImages;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Resource;
 
 class Explanation extends Resource
 {
@@ -17,14 +16,14 @@ class Explanation extends Resource
      *
      * @var string
      */
-    public static $model = 'Haxibiao\Question\Explanation';
+    public static $model = 'App\Explanation';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'description';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -32,19 +31,15 @@ class Explanation extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'content',
-    ];
-
-    public static $with = [
-        'video',
+        'id',
     ];
 
     public static function label()
     {
-        return '解析';
+        return "解析";
     }
 
-    public static $category = '题库管理';
+    public static $group = '题库管理';
 
     /**
      * Get the fields displayed by the resource.
@@ -56,14 +51,12 @@ class Explanation extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('内容', function () {
-                return $this->description;
-            }),
-            Textarea::make('内容', 'content')->onlyOnDetail(),
-            BelongsTo::make('视频', 'video', 'App\Nova\Video')->exceptOnForms(),
-            ArrayImages::make('图片', function () {
-                return $this->image_array;
-            })->exceptOnForms(),
+            BelongsTo::make('用户', 'user', User::class),
+            BelongsTo::make('视频', 'video', Video::class)->exceptOnForms(),
+            Text::make('内容', 'content'),
+            Text::make('类型', 'type'),
+            DateTime::make('创建时间', 'created_at'),
+            DateTime::make('更新时间', 'updated_at'),
         ];
     }
 
@@ -86,9 +79,7 @@ class Explanation extends Resource
      */
     public function filters(Request $request)
     {
-        return [
-            new \Haxibiao\Question\Nova\Filters\Explanation\ExplanationTypeFilter,
-        ];
+        return [];
     }
 
     /**
