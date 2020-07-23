@@ -1,0 +1,7 @@
+extend type Mutation {
+    """
+    审核
+    """
+    audit(question_id: Int, status: Boolean): Audit
+        @field(resolver: "App\\Audit@resolveStore")
+}

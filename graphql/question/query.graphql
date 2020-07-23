@@ -1,26 +1,161 @@
-
-
-type Question{
-    id:Int!
-    answer:String!
-    gold:Int!
-    ticket:Int!
-    selections:JsonType
-    image:Image
-    category:Category
-    type:Int!
-    correct_count:Int
-    wrong_count:Int
-    user:User
-    submit:Int
-    video:Video
-    rank:Int
-    count_comments:Int
-    count_likes:Int
-    answers_count:Int
+type Question {
+    """
+    题号
+    """
+    id: Int! @cacheKey
+    """
+    创建者
+    """
+    user: User! @belongsTo
+    """
+    分类
+    """
+    category: Category! @belongsTo
+    """
+    主配图
+    """
+    image: Image @belongsTo
+    """
+    视频信息
+    """
+    video: Video @belongsTo
+    """
+    音频
+    """
+    audio: Audio @belongsTo
+    """
+    题目下的评论
+    """
+    comments: [Comment] @morphMany @cache(maxAge: 10800)
+    """
+    题目下的审批记录(人和投票记录)
+    """
+    audits: [Audit!]
+    """
+    题目下的答题记录(人和答题结果)
+    """
+    answer_logs: String
+    """
+    描述
+    """
+    description: String
+    """
+    题目权重
+    """
+    rank: Int
+    # selections: String
+    # answer: String
+    """
+    状态:  删除(-1) 隐藏(0) 正常(1)
+    """
+    status: Int
+    """
+    智慧点
+    """
+    gold: Int
+    """
+    精力点
+    """
+    ticket: Int
+    """
+    类型：text(文字答题)
+    """
+    type: String
+    """
+    喜欢数
+    """
+    count_likes: Int
+    """
+    评论数
+    """
+    count_comments: Int
+    """
+    审题赞同数
+    """
+    accepted_count: Int
+    """
+    审题反对数
+    """
+    declined_count: Int
+    """
+    统计：正确回答
+    """
+    correct_count: Int
+    """
+    统计：错误回答
+    """
+    wrong_count: Int
+    """
+    提交状态 1 - 已收录, 0 - 待审核, -1 - 已移除,-2 - 已拒绝, 3 - (暂存)已撤回
+    """
+    submit: Int
+    """
+    审核结果
+    """
+    remark: String
+    review_id: Int
+    """
+    置顶的评论
+    """
+    top_comments: Int
+    """
+    解析
+    """
+    explanation: Explanation @belongsTo
+    """
+    是否已点赞
+    """
+    liked: Int
+    """
+    答题人数
+    """
+    count: Int
+    """
+    问题的简要描述
+    """
+    subject: String
+    """
+    收藏状态 (1:已收藏 0:未收藏)
+    """
+    favorite_status: Int
+    """
+    答题状态 (1:已答 0:未答)
+    """
+    answered_status: Int
+    """
+    创建时间
+    """
+    created_at: String
+    """
+    答案
+    """
+    answer: String
+    """
+    选项
+    """
+    selection_array: [QuestionSelectionsField]
 }
 
-type Query{
-    questions(count:Int):[Question] @field(resolver: "App\\Question@resolveQuestions")
-    question(id:Int @eq): Question @find
+type QuestionSelectionsField {
+    Text: String
+    Value: String
+}
+
+extend type Query {
+    """
+    随机答题
+    """
+    randomQuestion: [Question]
+        @field(resolver: "App\\Question@resolveRandomQuestionWithRecommend")
+
+    """
+    按题库,一次取多少个题出来作答
+    """
+    questions(category_id: Int!, limit: Int = 10): [Question]
+        @field(resolver: "App\\Question@resolveQuestions")
+
+    """
+    题目详情
+    """
+    question(id: Int! @eq): Question @find @cache(maxAge: 36000)
 }

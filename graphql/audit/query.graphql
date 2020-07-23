@@ -1,0 +1,39 @@
+type Audit {
+    id: Int!
+    """
+    用户
+    """
+    user: User
+    """
+    题目
+    """
+    question: Question @belongsTo
+    """
+    状态:赞成(true) 否定(false)
+    """
+    status: Boolean
+    """
+    精力变化
+    """
+    ticket: Int
+    """
+    经验变化
+    """
+    exp: Int
+    """
+    智慧点变化
+    """
+    gold: Int
+    """
+    贡献点变化
+    """
+    contribute: Int
+    """
+    创建时间
+    """
+    created_at: String
+    """
+    更新时间
+    """
+    updated_at: String
+}

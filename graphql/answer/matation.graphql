@@ -1,0 +1,26 @@
+extend type Mutation {
+    """
+    考试答题领奖接口
+    """
+    testAnswerReward(
+        answers: [AnswerDataInputType]
+        is_watched_ad: Boolean
+    ): UserReward @field(resolver: "App\\Answer@resolveAnswerReward")
+
+    """
+    考试提交答案
+    """
+    testAnswers(answers: [AnswerDataInputType]): [Answer]
+        @field(resolver: "App\\Answer@resolveTestAnswers")
+}
+
+input AnswerDataInputType {
+    """
+    题目id
+    """
+    question_id: Int
+    """
+    答案
+    """
+    answer: String
+}

@@ -2,27 +2,8 @@
 
 namespace App;
 
-use App\Model;
+use  Haxibiao\Question\Tag as BaseTag;
 
-class Tag extends Model
+class Tag extends BaseTag
 {
-    protected $fillable = [
-        'name',
-        'user_id'
-    ];
-
-    public function creator()
-    {
-        return $this->belongsTo(\App\User::class);
-    }
-
-    public function articles()
-    {
-        return $this->morphedByMany('App\Article', 'taggable')->exclude(['body', 'json']);
-    }
-
-    public function videos()
-    {
-        return $this->morphedByMany('App\Video', 'taggable');
-    }
 }

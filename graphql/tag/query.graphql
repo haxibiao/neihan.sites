@@ -1,0 +1,61 @@
+type Tag {
+    id: Int! @cacheKey
+    """
+    标签名
+    """
+    name: String!
+    """
+    可以展示QQ交流群之类提示信息
+    """
+    tips: String
+    """
+    提交次数
+    """
+    count: Int
+    user: User
+    """
+    标签下的题库列表（分页）
+    """
+    categories: [Category!] @hasMany(type: "paginator", defaultCount: 10)
+    """
+    首页Tag下的子分类题库（比如：猜你喜欢）
+    """
+    subTagCategories: [Category!] @rename(attribute: "categories")
+
+    """
+    子标签(兼顾热门，目前返回3个,每个返回9个子分类题库)
+    """
+    subTags: [Tag!] @field(resolver: "App\\Tag@resolveSubTags")
+    created_at: String
+
+    """
+    子标签(3.0后弃用，无需翻页)
+    """
+    tags: [Tag!]
+        @hasMany(type: "paginator", defaultCount: 10)
+        @deprecated(reason: "这里分页太麻烦了")
+
+    """
+    首页tag
+    """
+    index_page_tags: [Tag!]
+        @field(resolver: "App\\Tag@resolveIndexQuery")
+        @deprecated(reason: "这个用起来不舒服，有点野，需要前端单独注意..")
+}
+
+extend type Query {
+    tag(id: Int @eq): Tag @find
+    """
+    首页查询
+    """
+    tags(filter: TagFilter!): [Tag!]
+        @cache
+        @paginate(defaultCount: 10, builder: "App\\Tag@resolveTags")
+}
+
+enum TagFilter {
+    """
+    新版首页
+    """
+    HOMEPAGE
+}

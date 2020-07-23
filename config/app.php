@@ -191,6 +191,7 @@ return [
         Haxibiao\Store\StoreServiceProvider::class,
         Haxibiao\Media\MediaServiceProvider::class,
         Haxibiao\Live\LiveServiceProvider::class,
+        Haxibiao\Question\QuestionServiceProvider::class,
     ],
 
     /*

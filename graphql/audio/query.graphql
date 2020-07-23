@@ -1,0 +1,34 @@
+type Audio {
+    id: Int!
+    """
+    创建者
+    """
+    user: User
+    """
+    音频名称
+    """
+    name: String
+    """
+    播放地址
+    """
+    url: String
+    """
+    时长(秒)
+    """
+    duration: Int
+    """
+    时长(毫秒)
+    """
+    duration_ms: String
+    """
+    播放时长
+    """
+    play_time: String
+}
+
+extend type Query {
+    """
+    音频查询
+    """
+    audio(id: Int): Audio @find
+}

@@ -99,6 +99,7 @@
       "Haxibiao\\Store\\": "packages/haxibiao/store/src/",
       "Haxibiao\\Content\\": "packages/haxibiao/content/src/",
       "Haxibiao\\Media\\": "packages/haxibiao/media/src/",
+      "Haxibiao\\Question\\": "packages/haxibiao/question/src/",
       "Haxibiao\\Live\\": "packages/haxibiao/live/src/"
     },
     "classmap": [
