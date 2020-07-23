@@ -1,26 +1,40 @@
 extend type Mutation {
-    """
-    考试答题领奖接口
-    """
-    testAnswerReward(
-        answers: [AnswerDataInputType]
-        is_watched_ad: Boolean
-    ): UserReward @field(resolver: "App\\Answer@resolveAnswerReward")
+  """
+  考试答题领奖接口
+  """
+  testAnswerReward(answers: [AnswerDataInputType], is_watched_ad: Boolean): testReward @field(resolver: "App\\Answer@resolveAnswerReward")
 
-    """
-    考试提交答案
-    """
-    testAnswers(answers: [AnswerDataInputType]): [Answer]
-        @field(resolver: "App\\Answer@resolveTestAnswers")
+  """
+  考试提交答案
+  """
+  testAnswers(answers: [AnswerDataInputType]): [Answer] @field(resolver: "App\\Answer@resolveTestAnswers")
+}
+
+"""
+奖励结果
+"""
+type testReward {
+  """
+  已奖励金币
+  """
+  gold: Int
+  """
+  已奖励精力
+  """
+  ticket: Int
+  """
+  已奖励贡献值
+  """
+  contribute: Int
 }
 
 input AnswerDataInputType {
-    """
-    题目id
-    """
-    question_id: Int
-    """
-    答案
-    """
-    answer: String
+  """
+  题目id
+  """
+  question_id: Int
+  """
+  答案
+  """
+  answer: String
 }

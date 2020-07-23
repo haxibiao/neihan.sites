@@ -1,8 +1,4 @@
 #import scalar.graphql
 #import inputs.graphql
 
-type Query {
-  me: User @auth(guard: "api")
-}
-
 #import */*.graphql
