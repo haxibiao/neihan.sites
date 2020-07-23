@@ -61,4 +61,6 @@ extend type Query {
   推荐题库
   """
   RecommendCategories: [Category!]! @field(resolver: "App\\Category@resolveRecommendCategories")
+
+  categoryType(type: String! @eq): [Category!] @paginate(defaultCount: 10, builder: "App\\Category@getByType")
 }
