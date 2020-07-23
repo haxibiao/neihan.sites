@@ -30,6 +30,7 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('gold')->default(0)->comment('墨宝');
             $table->unsignedInteger('dz_id')->nullable()->unique()->comment('答题赚钱ID');
 
+            $table->integer("last_category_id");
             //token
             $table->string('api_token', 60)->unique();
             $table->rememberToken();
