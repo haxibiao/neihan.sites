@@ -37,7 +37,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function withAuthenticationRoutes($middleware = ['web'])
     {
 
-        \Route::namespace ('App\Nova\Http\Controllers\Auth')
+        \Route::namespace('App\Nova\Http\Controllers\Auth')
             ->domain(config('nova.domain', null))
             ->middleware($middleware)
             ->as('nova.')
@@ -85,9 +85,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             new UserAppVersionPartition,
             new \App\Nova\Metrics\TodayAdData,
             new \App\Nova\Metrics\YesterdayAdData,
-            (new \Hxb\CategoryLikeCount\CategoryLikeCount)
-                ->withName("受欢迎的分类前十个统计(视频点赞数)")
-                ->withData(\App\Category::getTopLikeCategory(10)),
+            // (new \Hxb\CategoryLikeCount\CategoryLikeCount)
+            //     ->withName("受欢迎的分类前十个统计(视频点赞数)")
+            //     ->withData(\App\Category::getTopLikeCategory(10)),
         ];
     }
 
