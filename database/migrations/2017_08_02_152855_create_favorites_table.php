@@ -17,6 +17,8 @@ class CreateFavoritesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->index();
             $table->integer('faved_id');
+            $table->integer('favorable_id');
+            $table->string('favorable_type')->default('articles');
             $table->string('faved_type')->default('articles');
             $table->timestamps();
         });
