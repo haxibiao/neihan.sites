@@ -20,6 +20,7 @@ class CreateCategoryUserTable extends Migration
 
             $table->integer('count_approved')->default(0)->comment('用户在该专题的投稿成功数');
             $table->boolean('is_admin')->default(0)->comment('是否该专题管理');
+
             $table->timestamps();
         });
     }

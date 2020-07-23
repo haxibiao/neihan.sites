@@ -585,4 +585,11 @@ trait UserRepo
         $ddzUser = \DDZUser::getUser($this->uuid);
         OAuth::createRelation($this->id, 'dongdezhuan', $ddzUser->id);
     }
+
+
+    public function saveLastCategoryId($category_id)
+    {
+        $this->last_category_id = $category_id;
+        $this->save();
+    }
 }
