@@ -55,7 +55,7 @@ class User extends Authenticatable implements MustVerifyEmail
     //FIXME: 这个后面要修复为-1, 注销修复为-2, 负数的status都是异常的
 
     // 封禁状态
-    const STATUS_OFFLINE = 1;
+    const STATUS_OFFLINE = -1;
 
     //暂时冻结的账户
     const STATUS_FREEZE = -1;
