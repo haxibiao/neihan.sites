@@ -17,6 +17,13 @@ use Illuminate\Support\Facades\Storage;
 trait UserRepo
 {
 
+    public function rewardExpAndLevelUp()
+    {
+        return;
+        // $this->increment('exp');
+        // $this->levelUp();
+    }
+
     public function usedTicket($ticket)
     {
         return;
