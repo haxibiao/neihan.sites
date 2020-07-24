@@ -38,7 +38,7 @@ trait WithdrawResolvers
         throw_if($amount > 0.5, GQLException::class, '高额提现被抢光啦~');
 
         //检查有没有作弊，比如贡献值，金币获取时间都在同一时间
-        // $this->checkCheating($user);
+        $this->checkCheating($user);
 
         $this->checkHighWithdraw($user, $amount);
         //3. 用户钱包信息完整性校验
@@ -143,7 +143,14 @@ trait WithdrawResolvers
 
     public function checkCheating($user)
     {
-        //Contribute::where("user_id", $user->id)->where("created_at", now()->toDateString())->groupBy("created_at")->havng("created_at", ">", 2); //有获取贡献时间重复的情况直接封号
+        $count = Contribute::where("user_id", $user->id)->where("created_at", ">=", now()->toDateString())->groupBy("created_at")->havingRaw("count(created_at)>1")->count();
+        //有获取贡献时间重复的情况直接封号
+        if ($count == 0) {
+            return true;
+        } else {
+            $user->update(["status" => User::STATUS_FREEZE]);
+            throw new GQLException('提现失败,账号行为异常~');
+        }
     }
 
     public function checkHighWithdraw($user, $amount)
