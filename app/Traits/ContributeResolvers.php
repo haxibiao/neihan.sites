@@ -72,7 +72,7 @@ trait ContributeResolvers
             //     return $result;
             // }
             $latestVersion = Version::getLatestVersion();
-            if (getAppVersion() != $latestVersion->name) {
+            if (getAppVersion() < $latestVersion->name) {
                 return [
                     'message'    => '请使用最新版本',
                     'gold'       => 0,
