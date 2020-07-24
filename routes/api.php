@@ -82,7 +82,7 @@ Route::middleware('auth:api')->post('/image/save', 'Api\ImageController@store');
 ////注释的原因：RestFul方法废弃了，现在统一用GQL解析抖音视频
 //Route::post('/article/resolverDouyin', 'Api\ArticleController@resolverDouyinVideo');
 Route::post('/media/import', 'Api\SpiderController@importDouyinSpider');
-Route::any('/media/lodHook', 'Api\SpiderController@hook');
+Route::any('/media/oldHook', 'Api\SpiderController@hook');
 
 Route::namespace('Api')->middleware('auth:api')->group(function () {
     Route::post('/background', 'UserController@saveBackground');
