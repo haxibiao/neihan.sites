@@ -8,7 +8,7 @@ use  Haxibiao\Question\Question as BaseQuestion;
 class Question extends BaseQuestion
 {
 
-    const MAX_ANSWER = 30;
+    const MAX_ANSWER = 5;
 
     public function resolveCanAnswer($root, array $args, $context, $info)
     {
