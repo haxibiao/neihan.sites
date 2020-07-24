@@ -90,6 +90,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(UserLive::class);
     }
 
+    public function answers(): HasMany
+    {
+        return $this->hasMany(\App\Answer::class)->latest();
+    }
+
+
     public function retentions()
     {
         return $this->hasMany(\App\UserRetention::class);
