@@ -16,6 +16,16 @@ use Illuminate\Support\Facades\Storage;
 
 trait UserRepo
 {
+
+    public function usedTicket($ticket)
+    {
+        return;
+        //先不使用精力点答题
+        // $this->ticket -= $ticket;
+        // //保证精力点不少于0
+        // $this->ticket = $this->ticket > 0 ? $this->ticket : 0;
+    }
+
     public function updateAvatar($avatar)
     {
         $avatarPath   = sprintf('/storage/app/avatars/avatar-%s.jpeg', $this->id);
