@@ -51,8 +51,6 @@ class CreateCategoriesTable extends Migration
             $table->unsignedInteger('user_id')->index()->comment('用户ID');
 
             $table->string('logo')->nullable();
-            //counts
-            $table->integer('count')->default(0)->comment('文章数');
 
             $table->timestamps();
         });
