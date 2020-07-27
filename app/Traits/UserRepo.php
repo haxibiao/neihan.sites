@@ -519,12 +519,12 @@ trait UserRepo
     {
         Contribute::create([
             'user_id'          => $this->id,
-            'amount'           => - ($amount * Contribute::WITHDRAW_DATE),
+            'amount'           => - ($amount * $this->getUserWithdrawDate()),
             'remark'           => '提现兑换',
             'contributed_id'   => $id,
             'contributed_type' => $type,
         ]);
-        Profile::where('user_id', $this->id)->decrement('count_contributes', $amount * Contribute::WITHDRAW_DATE);
+        Profile::where('user_id', $this->id)->decrement('count_contributes', $amount * $this->getUserWithdrawDate());
     }
 
     public function sendEmailVerificationNotification()

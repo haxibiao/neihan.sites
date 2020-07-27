@@ -77,7 +77,7 @@ trait WithdrawResolvers
 
             if ($isWithdrawBefore) {
                 $contribute      = $user->getTodayContributeAttribute();
-                $need_contribute = $amount * Contribute::WITHDRAW_DATE;
+                $need_contribute = $amount * $user->getUserWithdrawDate();
                 $diffContributes = $need_contribute - $contribute;
                 if ($contribute < $need_contribute) {
                     throw new GQLException('今日贡献不足,您还需' . $diffContributes . '点日贡献值就可以提现成功啦~');
@@ -197,7 +197,7 @@ trait WithdrawResolvers
         //0.3元以上提现检查贡献
         if ($amount > 0.3) {
             $contribute = $user->getTodayContributeAttribute();
-            $need_contribute = $amount * Contribute::WITHDRAW_DATE;
+            $need_contribute = $amount * $user->getUserWithdrawDate();
             $diffContributes = $need_contribute - $contribute;
             if ($contribute < $need_contribute) {
                 throw new GQLException('今日贡献不足,您还需' . $diffContributes . '点日贡献值就可以提现成功啦~');
@@ -234,7 +234,7 @@ trait WithdrawResolvers
 
         if ($isWithdrawBefore) {
             $contribute      = $user->contribute;
-            $need_contribute = $amount * Contribute::WITHDRAW_DATE;;
+            $need_contribute = $amount * $user->getUserWithdrawDate();;
             $diffContributes = $need_contribute - $contribute;
             if ($diffContributes <= 0) {
                 return 0;
@@ -262,7 +262,7 @@ trait WithdrawResolvers
 
         $user = checkUser();
 
-        $contribute = Contribute::WITHDRAW_DATE;
+        $contribute = $user->getUserWithdrawDate();
         $isWithdrawBefore = $user->isWithdrawBefore();
         $hasWithdrawOnDDZ = $user->hasWithdrawOnDDZ();
         //  工厂内是否提现 || 懂得赚上是否提现
