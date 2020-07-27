@@ -37,6 +37,7 @@ class CreateCategoriesTable extends Migration
             $table->string('name_en')->nullable()->comment('可以理解为分类的url 的 slug 部分');
             $table->boolean('has_child', 1)->default(0);
             $table->integer('order')->nullable()->index()->comment('分类需要排序时用');
+            $table->string('type')->nullable()->comment('分类');
             $table->integer('level')->nullable()->index();
             $table->integer('count_follows')->default(0)->index();
             $table->integer('count')->default(0)->comment('文章数');
