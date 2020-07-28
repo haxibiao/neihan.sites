@@ -219,7 +219,7 @@ trait ContributeResolvers
         if ($lastRewardContribute) {
 
             // 上次看激励视频与本次间隔 < 60 秒
-            if (now()->diffInSeconds(Carbon::parse($lastRewardContribute->created_at)) < 60) {
+            if (now()->diffInSeconds(Carbon::parse($lastRewardContribute->created_at)) < 20) {
                 $user->update(['status' => User::STATUS_FREEZE]);
                 return [
                     'message'    => '行为异常,详情咨询QQ群:808982693',
