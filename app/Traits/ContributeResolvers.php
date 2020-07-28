@@ -210,24 +210,24 @@ trait ContributeResolvers
             ];
         }
 
-        // $lastRewardContribute = $user->contributes()
-        //     ->select('created_at')
-        //     ->where('contributed_type', Contribute::REWARD_VIDEO_CONTRIBUTED_TYPE)
-        //     ->latest('id')
-        //     ->first();
+        $lastRewardContribute = $user->contributes()
+            ->select('created_at')
+            ->where('contributed_type', Contribute::REWARD_VIDEO_CONTRIBUTED_TYPE)
+            ->latest('id')
+            ->first();
 
-        // if ($lastRewardContribute) {
+        if ($lastRewardContribute) {
 
-        //     // 上次看激励视频与本次间隔 < 60 秒
-        //     if (now()->diffInSeconds(Carbon::parse($lastRewardContribute->created_at)) < 60) {
-        //         $user->update(['status' => User::STATUS_FREEZE]);
-        //         return [
-        //             'message'    => '行为异常,详情咨询QQ群:808982693',
-        //             'gold'       => 0,
-        //             'contribute' => 0,
-        //         ];
-        //     }
-        // }
+            // 上次看激励视频与本次间隔 < 60 秒
+            if (now()->diffInSeconds(Carbon::parse($lastRewardContribute->created_at)) < 60) {
+                $user->update(['status' => User::STATUS_FREEZE]);
+                return [
+                    'message'    => '行为异常,详情咨询QQ群:808982693',
+                    'gold'       => 0,
+                    'contribute' => 0,
+                ];
+            }
+        }
     }
 
     public function checkVersion($user)
