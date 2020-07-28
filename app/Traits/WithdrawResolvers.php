@@ -28,6 +28,11 @@ trait WithdrawResolvers
         //1. 可控制提现关闭
         stopfunction("提现");
 
+        //提现强制要求绑定手机号
+        if (empty($user->phone)) {
+            throw new GQLException("请先绑定手机号再来提现吧~");
+        }
+
         //2. 判断版本号
         $version       = substr($profile->app_version, 0, 3);
         $latestVersion = Version::latest('name')->first();
