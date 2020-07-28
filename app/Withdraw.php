@@ -33,7 +33,7 @@ class Withdraw extends Model
     const FAILURE_WITHDRAW = -1;
     const WAITING_WITHDRAW = 0;
 
-    const MAX_WITHDRAW_SUM_AMOUNT = 200;
+    const MAX_WITHDRAW_SUM_AMOUNT = 30;
 
     const WITHDRAW_MAX = 1;
 
