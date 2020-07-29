@@ -54,7 +54,7 @@ class SetEnv extends Command
 
         // 有剑气和答妹的 sms key 一模一样
         $this->setKV(['SMS_APP_KEY' => @file_get_contents("/etc/sms_key_secret_dm")]);
-        $this->setKV(['COS_SECRET_KEY' => @file_get_contents("/etc/cos_secret_key")]);
+        // $this->setKV(['COS_SECRET_KEY' => @file_get_contents("/etc/cos_secret_key")]);
         // $this->setKV(['MAIL_PASSWORD' => @file_get_contents("/etc/mailgun_mail_pass")]);
         $this->setKV(['WECHAT_APP_SECRET' => @file_get_contents("/etc/wechat_app_secret_dm")]);
         $this->setKV(['LIVE_KEY' => @file_get_contents("/etc/live_key_dm")]);
@@ -69,7 +69,6 @@ class SetEnv extends Command
             $this->setKV(['WECHAT_PAY_MCH_ID' => @file_get_contents("/etc/wechat_pay_mch_id")]);
             $this->setKV(['ALIPAY_PAY_APPID' => @file_get_contents("/etc/appid_alipay")]);
         }
-
     }
 
     /**
