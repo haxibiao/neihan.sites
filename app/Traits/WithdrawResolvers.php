@@ -161,7 +161,7 @@ trait WithdrawResolvers
     public function checkHighWithdraw($user, $amount)
     {
         //高额度政策
-        if ($amount > 1) {
+        if ($amount > 0.3) {
             $hour   = now()->hour;
             $minute = now()->minute;
 
@@ -175,7 +175,7 @@ trait WithdrawResolvers
                 throw new GQLException('当前限量抢额度已被抢光了,下个时段再试吧');
             }
 
-            throw_if($user->hasWithdrawToday(), GQLException::class, '今天已经提现过啦~');
+            // throw_if($user->hasWithdrawToday(), GQLException::class, '今天已经提现过啦~');
 
             // 提现额度逻辑因为邀请下线，已弃用... 改为限制限量抢额度
             // 每人默认最高10元限量抢额度，以后邀请放开可提高,先简单防止老刷子账户疯狂并发提现...
