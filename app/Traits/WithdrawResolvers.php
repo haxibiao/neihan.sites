@@ -165,32 +165,34 @@ trait WithdrawResolvers
             $hour   = now()->hour;
             $minute = now()->minute;
 
-            // 工作时间才可以提现
-            if (($hour < 10 || $hour >= 18 || $minute >= 10)) {
-                throw new GQLException('提现的限量抢时间段在: 10:00-18:00,每个小时前10分钟内开抢,下次早点来哦~');
-            }
-
-            //新注册3小时内的用户不能高额提现，防止撸毛
-            if (!now()->diffInHours($user->created_at) >= 3) {
-                throw new GQLException('当前限量抢额度已被抢光了,下个时段再试吧');
-            }
-
-            // throw_if($user->hasWithdrawToday(), GQLException::class, '今天已经提现过啦~');
-
-            // 提现额度逻辑因为邀请下线，已弃用... 改为限制限量抢额度
-            // 每人默认最高10元限量抢额度，以后邀请放开可提高,先简单防止老刷子账户疯狂并发提现...
-            // $withdrawLines = $user->withdraw_lines;
-            // if ($withdrawLines < $amount) {
-            //     throw new GQLException('您的限量抢额度不足,请等新版本开放提额玩法');
-            // }
-
-            /**
-             * 限流:
-             * 每时段前10分钟，比如10:00 - 10:10 限制流量,避免DB SERVER 负载压力100%
-             * 限制几率 20%
-             * 时间超出过,恢复正常!
-             */
             if ($this->wallet->total_withdraw_amount > 2) {
+
+                // 工作时间才可以提现
+                if (($hour < 10 || $hour >= 18 || $minute >= 10)) {
+                    throw new GQLException('提现的限量抢时间段在: 10:00-18:00,每个小时前10分钟内开抢,下次早点来哦~');
+                }
+
+                //新注册3小时内的用户不能高额提现，防止撸毛
+                if (!now()->diffInHours($user->created_at) >= 3) {
+                    throw new GQLException('当前限量抢额度已被抢光了,下个时段再试吧');
+                }
+
+                // throw_if($user->hasWithdrawToday(), GQLException::class, '今天已经提现过啦~');
+
+                // 提现额度逻辑因为邀请下线，已弃用... 改为限制限量抢额度
+                // 每人默认最高10元限量抢额度，以后邀请放开可提高,先简单防止老刷子账户疯狂并发提现...
+                // $withdrawLines = $user->withdraw_lines;
+                // if ($withdrawLines < $amount) {
+                //     throw new GQLException('您的限量抢额度不足,请等新版本开放提额玩法');
+                // }
+
+                /**
+                 * 限流:
+                 * 每时段前10分钟，比如10:00 - 10:10 限制流量,避免DB SERVER 负载压力100%
+                 * 限制几率 20%
+                 * 时间超出过,恢复正常!
+                 */
+
                 if ($minute < 10) {
                     $rand = mt_rand(1, 10);
                     throw_if($rand <= 8, GQLException::class, '目前人数过多,请您下个时段(' . ($hour + 1) . '点)再试!');
