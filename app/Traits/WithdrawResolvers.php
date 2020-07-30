@@ -190,9 +190,11 @@ trait WithdrawResolvers
              * 限制几率 20%
              * 时间超出过,恢复正常!
              */
-            if ($minute < 10) {
-                $rand = mt_rand(1, 10);
-                throw_if($rand <= 8, GQLException::class, '目前人数过多,请您下个时段(' . ($hour + 1) . '点)再试!');
+            if ($this->wallet->total_withdraw_amount > 2) {
+                if ($minute < 10) {
+                    $rand = mt_rand(1, 10);
+                    throw_if($rand <= 8, GQLException::class, '目前人数过多,请您下个时段(' . ($hour + 1) . '点)再试!');
+                }
             }
         }
     }
