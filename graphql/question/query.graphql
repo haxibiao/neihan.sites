@@ -156,4 +156,6 @@ extend type Query {
   题目详情
   """
   question(id: Int! @eq): Question @find @cache(maxAge: 36000)
+
+  canAnswer: Int @field(resolver: "App\\Question@resolveCanAnswer")
 }
