@@ -165,11 +165,11 @@ trait WithdrawResolvers
             $hour   = now()->hour;
             $minute = now()->minute;
 
-            if ($this->wallet->total_withdraw_amount > 2) {
+            if ($user->wallet->total_withdraw_amount > 2) {
 
                 // 工作时间才可以提现
-                if (($hour < 10 || $hour >= 18 || $minute >= 10)) {
-                    throw new GQLException('提现的限量抢时间段在: 10:00-18:00,每个小时前10分钟内开抢,下次早点来哦~');
+                if (($hour < 9 || $hour >= 20 || $minute >= 10)) {
+                    throw new GQLException('提现的限量抢时间段在: 9:00-20:00,每个小时前10分钟内开抢,下次早点来哦~');
                 }
 
                 //新注册3小时内的用户不能高额提现，防止撸毛
@@ -195,7 +195,7 @@ trait WithdrawResolvers
 
                 if ($minute < 10) {
                     $rand = mt_rand(1, 10);
-                    throw_if($rand <= 8, GQLException::class, '目前人数过多,请您下个时段(' . ($hour + 1) . '点)再试!');
+                    throw_if($rand <= 5, GQLException::class, '目前人数过多,请您下个时段(' . ($hour + 1) . '点)再试!');
                 }
             }
         }
