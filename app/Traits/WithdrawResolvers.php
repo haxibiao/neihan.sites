@@ -168,8 +168,8 @@ trait WithdrawResolvers
             if ($user->wallet->total_withdraw_amount > 2) {
 
                 // 工作时间才可以提现
-                if (($hour < 9 || $hour >= 20 || $minute >= 10)) {
-                    throw new GQLException('提现的限量抢时间段在: 9:00-20:00,每个小时前10分钟内开抢,下次早点来哦~');
+                if (($hour < 10 || $hour >= 18 || $minute >= 10)) {
+                    throw new GQLException('提现的限量抢时间段在: 10:00-18:00,每个小时前10分钟内开抢,下次早点来哦~');
                 }
 
                 //新注册3小时内的用户不能高额提现，防止撸毛
