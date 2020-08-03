@@ -39,6 +39,10 @@ rm -rf $pathPrefix/$tosite/graphql
 rm -rf $pathPrefix/$tosite/app/Http/GraphQL
 /bin/cp -rf $pathPrefix/$from/app/Http/GraphQL $pathPrefix/$tosite/app/Http
 
+echo "composer.json"
+rm -rf $pathPrefix/$tosite/composer.*
+/bin/cp -rf $pathPrefix/$from/composer.* $pathPrefix/$tosite/
+
 echo 'sync gql相关php代码 ...'
 echo ' - Model  ...'
 rm -rf $pathPrefix/$tosite/app/*.php
