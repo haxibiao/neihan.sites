@@ -11,14 +11,14 @@ class MatomoProxy extends Command
      *
      * @var string
      */
-    protected $signature = 'matomo:proxy {--num=10} {--port=}';
+    protected $signature = 'matomo:proxy {--num=5} {--port=}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'matomo proxy base on swoole, accept client data then send to matomo';
+    protected $description = '负责tcp代理matomo事件批量http发送到matomo去';
 
     protected $events = [];
 
@@ -44,9 +44,13 @@ class MatomoProxy extends Command
 
         $config = [
             'siteId' => $siteId,
-            'matomo' => 'http://matomo.haxibiao.com',
+            'matomo' => config('matomo.matomo_url'),
         ];
-        $tracker              = new \MatomoTracker($config['siteId'], $config['matomo']);
+        $tracker = new \MatomoTracker($config['siteId'], $config['matomo']);
+        $tracker->setCountry('中国');
+        $tracker->setBrowserLanguage('zh-cn');
+        $tracker->setTokenAuth(config('matomo.token_auth'));
+        $tracker->disableCookieSupport();
         $this->trackers[$key] = $tracker;
         return $tracker;
     }
@@ -58,10 +62,7 @@ class MatomoProxy extends Command
      */
     public function handle()
     {
-        $port = env('MATOMO_PROXY_PORT');
-        if ($this->option('port')) {
-            $port = $this->option('port');
-        }
+        $port = $this->option('port') ?? config('matomo.proxy_port');
 
         $server = new \Swoole\WebSocket\Server('0.0.0.0', $port - 1, SWOOLE_BASE);
         // $server->set(['open_http2_protocol' => true]);
@@ -114,10 +115,10 @@ class MatomoProxy extends Command
         //当actions累计到n个的时候，把之前的都send
         if (count($this->events) >= $this->option('num')) {
             $this->sendBulkEvents($this->events);
-            $this->info("sent " . $this->option('num') . " events to matomo ...");
+            $this->info("sent events ...");
             $this->events = [];
         } else {
-            $this->warn("bulked events:" . count($this->events));
+            $this->warn("got events:" . count($this->events));
         }
     }
 
@@ -132,14 +133,15 @@ class MatomoProxy extends Command
             if (count($user_events) >= $this->option('num')) {
                 $this->sendBulkEvents($user_events);
                 $this->events[$event->user_id] = [];
-                $this->info("sent 用户: $event->user_id 的events");
+                $this->info("============== sent 用户: $event->user_id 的 events");
             } else {
-                $this->warn("用户 $event->user_id 已经累计了events:" . count($user_events));
+                $this->warn("用户 $event->user_id 已经累计了 events:" . count($user_events));
             }
         } else {
             $this->info("新用户访问：" . $event->user_id);
             $user_events[]                 = $event;
             $this->events[$event->user_id] = $user_events;
+            //FIXME: 定时把所有新用户不够bulk num的每分钟都统一逐个发送出去
         }
     }
 
@@ -149,62 +151,35 @@ class MatomoProxy extends Command
         $events     = $collection->groupBy('siteId');
 
         foreach ($events as $siteId => $groupEvents) {
-            $this->info("siteid:" . $siteId);
+            $this->error("siteId:" . $siteId);
             $tracker = $this->getTracker($siteId);
             try {
                 $tracker->enableBulkTracking();
                 //循环send
                 foreach ($groupEvents as $event) {
-                    // $tracker->setCustomVariable(1, "服务器", $event->server, "visit");
-                    // $tracker->setCustomVariable(2, "用户", $event->dimension5, "visit");
-                    // $tracker->setCustomVariable(3, "机型", $event->dimension6, "visit");
+                    // $tracker->setCustomVariable(1, '机型', $event->dimension5, 'visit');
 
                     $tracker->setUserId($event->user_id);
                     $tracker->setIp($event->ip);
+                    $tracker->setForceVisitDateTime($event->cdt);
 
-                    // //设备系统
-                    // $tracker->setCustomTrackingParameter('dimension1', $event->dimension1);
-                    // //安装来源
-                    // $tracker->setCustomTrackingParameter('dimension2', $event->dimension2);
-                    // //APP版本
-                    // $tracker->setCustomTrackingParameter('dimension3', $event->dimension3);
-                    // //APP build
-                    // $tracker->setCustomTrackingParameter('dimension4', $event->dimension4);
-                    // //新老用户分类
-                    // $tracker->setCustomTrackingParameter('dimension5', $event->dimension5);
-                    // //用户机型
-                    // $tracker->setCustomTrackingParameter('dimension6', $event->dimension6);
+                    $tracker->setCustomVariable(1, '系统', $event->dimension1, 'visit');
+                    $tracker->setCustomVariable(2, '来源', $event->dimension2, 'visit');
+                    $tracker->setCustomVariable(3, '版本', $event->dimension3, 'visit');
+                    $tracker->setCustomVariable(4, '用户', $event->dimension4, 'visit');
+                    $tracker->setCustomVariable(5, "服务器", $event->server, "visit");
+                    $tracker->setCustomVariable(6, '机型', $event->dimension5, 'visit');
 
+                    // $url = $tracker->getUrlTrackEvent($event->category, $event->action, $event->name, $event->value);
                     //send
                     $tracker->doTrackEvent($event->category, $event->action, $event->name, $event->value);
                 }
                 //真正的send
-                $tracker->doBulkTrack();
+                $result = $tracker->doBulkTrack();
+                $this->info($result);
             } catch (\Throwable $th) {
-                \info($events);
-                \info($th);
                 $this->error($th->getMessage());
             }
         }
-
-    }
-
-    //github上示范的 mixed server
-    public function runDemoServer()
-    {
-        // $server = new \Swoole\WebSocket\Server('0.0.0.0', 9501, SWOOLE_BASE);
-        // $server->set(['open_http2_protocol' => true]);
-
-        // // http && http2
-        // $server->on('request', function (\Swoole\Http\Request $request, \Swoole\Http\Response $response) {
-        //     $data = $request->rawcontent();
-        //     try {
-        //         $this->trackEvent($data);
-        //         $response->end('http2 server processed ');
-        //     } catch (\Throwable $th) {
-        //         $this->error($th->getMessage());
-        //     }
-        // });
-
     }
 }
