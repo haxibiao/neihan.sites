@@ -94,6 +94,13 @@ class ReviewFlowsSeeder extends Seeder
                 'need_offical_review' => false,
                 'type'                => 1, //1代表只能后台用户选用
             ],
+            [
+                'name'                => '通用任务检查模板',
+                'check_functions'     => ['checkPublishVideo'],
+                'need_owner_review'   => false,
+                'need_offical_review' => false,
+                'type'                => 1, //1代表只能后台用户选用
+            ],
         ];
         foreach ($reviewFlows as $reviewFlow) {
             ReviewFlow::firstOrCreate($reviewFlow);
