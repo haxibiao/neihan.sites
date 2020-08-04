@@ -162,6 +162,7 @@ trait WithdrawResolvers
     {
         //高额度政策
         if ($amount > 0.3) {
+            throw new GQLException("目前提现人数过多，请稍后再来~");
             $hour   = now()->hour;
             $minute = now()->minute;
 
