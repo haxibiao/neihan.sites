@@ -22,7 +22,7 @@ class Gold extends Model
     //    const DRAW_GOLD_AMOUNT = 0;
 
     //    点击 激励视频 广告的金币额度
-    const REWARD_VIDEO_GOLD = 7;
+    const REWARD_VIDEO_GOLD = 0;
 
     const REWARD_GOLD = 10;
 
