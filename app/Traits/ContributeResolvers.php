@@ -2,11 +2,12 @@
 
 namespace App\Traits;
 
-use App\Contribute;
 use App\Gold;
+use App\Task;
 use App\User;
 use App\Version;
 use Carbon\Carbon;
+use App\Contribute;
 use Illuminate\Support\Str;
 
 trait ContributeResolvers
@@ -121,6 +122,7 @@ trait ContributeResolvers
             //  拼接前端所需信息
             $message = $contribute === null ? $remark : $remark . '、贡献点';
 
+            Task::refreshTask($user, "看视频赚钱");
             return [
                 'message'    => $message,
                 'gold'       => $gold->gold,
