@@ -85,10 +85,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'password', 'remember_token',
     ];
 
-    public function lives(): HasMany
-    {
-        return $this->hasMany(UserLive::class);
-    }
 
     public function answers(): HasMany
     {
