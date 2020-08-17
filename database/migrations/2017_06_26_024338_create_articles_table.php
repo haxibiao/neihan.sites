@@ -52,7 +52,7 @@ class CreateArticlesTable extends Migration
             $table->integer('count_tips')->default(0);
             $table->integer('count_likes')->default(0)->index();
             $table->integer('count_words')->default(0);
-            $table->integer('count_comments')->nullable(); //comments, not include replies in comments...
+            $table->integer('count_comments')->default(0)->nullable(); //comments, not include replies in comments...
             $table->integer('count_reports')->default(0);
 
             $table->string('slug')->nullable()->unique();
