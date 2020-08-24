@@ -2,18 +2,18 @@
 
 namespace App;
 
-use App\PlatformAccount;
+use App\User;
+use App\Model;
 use App\Product;
-use App\Traits\OrderAttrs;
+use App\PlatformAccount;
 use App\Traits\OrderRepo;
 use App\Traits\OrderResolvers;
-use App\User;
-use Illuminate\Database\Eloquent\Model;
+use App\Traits\OrderAttrsCache;
 
 class Order extends Model
 {
     use OrderResolvers;
-    use OrderAttrs;
+    use OrderAttrsCache;
     use OrderRepo;
 
     protected $fillable = [

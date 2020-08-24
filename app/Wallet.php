@@ -2,19 +2,20 @@
 
 namespace App;
 
-use App\Exceptions\GQLException;
-use App\Traits\WalletAttrs;
-use App\Traits\WalletRepo;
-use App\Traits\WalletResolvers;
 use App\User;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Traits\WalletRepo;
+use App\Traits\WalletAttrs;
+use App\Traits\WalletResolvers;
+use App\Exceptions\GQLException;
+use App\Traits\WalletAttrsCache;
+use App\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Wallet extends Model
 {
     use WalletResolvers;
-    use WalletAttrs;
+    use WalletAttrsCache;
     use WalletRepo;
 
     protected $fillable = [

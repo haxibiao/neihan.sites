@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Category;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 trait ArticleAttrs
 {
@@ -118,7 +119,7 @@ trait ArticleAttrs
 
         //TODO: 剩余的保存fullurl的，需要修复为path, 同步image, video的　disk变化
         $path = parse_url($cover_url, PHP_URL_PATH);
-        return \Storage::cloud()->url($path);
+        return Storage::cloud()->url($path);
     }
 
     public function getVideoUrlAttribute()

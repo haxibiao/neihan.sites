@@ -4,16 +4,16 @@ namespace App;
 
 use App\Order;
 use App\Product;
-use App\Traits\PlatformAccountAttrs;
+use App\Traits\ProductAttrsCache;
 use App\Traits\PlatformAccountRepo;
 use App\Traits\PlatformAccountResolvers;
 use App\User;
-use Illuminate\Database\Eloquent\Model;
+use App\Model;
 
 class PlatformAccount extends Model
 {
     //
-    use PlatformAccountAttrs;
+    use ProductAttrsCache;
     use PlatformAccountRepo;
     use PlatformAccountResolvers;
 
@@ -50,5 +50,4 @@ class PlatformAccount extends Model
     {
         return $this->belongsTo(\App\Order::class);
     }
-
 }

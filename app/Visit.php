@@ -2,15 +2,15 @@
 
 namespace App;
 
-use App\Traits\VisitAttrs;
+use App\Traits\VisitAttrsCache;
 use App\Traits\VisitRepo;
 use App\Traits\VisitResolvers;
-use Illuminate\Database\Eloquent\Model;
+use App\Model;
 
 class Visit extends Model
 {
     use VisitResolvers;
-    use VisitAttrs;
+    use VisitAttrsCache;
     use VisitRepo;
 
     protected $fillable = [

@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Product;
-use App\Traits\StoreAttrs;
 use App\Traits\StoreRepo;
 use App\Traits\StoreResolvers;
 use App\User;
@@ -12,7 +11,6 @@ use Illuminate\Database\Eloquent\Model;
 class Store extends Model
 {
     use StoreResolvers;
-    use StoreAttrs;
     use StoreRepo;
 
     protected $fillable = [
@@ -36,5 +34,4 @@ class Store extends Model
     {
         return $this->hasMany(\App\Image::class);
     }
-
 }

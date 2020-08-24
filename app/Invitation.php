@@ -2,15 +2,15 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Invitation extends Model
 {
     use Traits\InvitationResolvers;
     use Traits\InvitationRepo;
-    use Traits\InvitationAttrs;
+    use Traits\InvitationAttrsCache;
     use SoftDeletes;
 
     protected $fillable = [
@@ -85,5 +85,4 @@ class Invitation extends Model
     {
         return $query->whereDate('created_at', today());
     }
-
 }

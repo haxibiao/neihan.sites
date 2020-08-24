@@ -3,7 +3,7 @@
 namespace App;
 
 use App\Model;
-use App\Traits\CommentAttrs;
+use App\Traits\CommentAttrsCache;
 use App\Traits\CommentRepo;
 use App\User;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -13,7 +13,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 class Comment extends Model
 {
     use SoftDeletes;
-    use CommentAttrs;
+    use CommentAttrsCache;
     use CommentRepo;
 
     protected $touches = ['commentable'];

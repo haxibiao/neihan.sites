@@ -3,7 +3,7 @@
 namespace App;
 
 use App\Model;
-use App\Traits\ChatAttrs;
+use App\Traits\ChatAttrsCache;
 use App\Traits\ChatResolvers;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -12,7 +12,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 class Chat extends Model
 {
-    use ChatAttrs;
+    use ChatAttrsCache;
     use ChatResolvers;
 
     public $fillable = [

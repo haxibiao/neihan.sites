@@ -2,23 +2,24 @@
 
 namespace App;
 
-use App\Category;
-use App\Comment;
-use App\Favorite;
+use App\Tip;
 use App\Like;
 use App\Model;
-use App\Tip;
-use App\Traits\ArticleAttrs;
-use App\Traits\ArticleRepo;
-use App\Traits\ArticleResolvers;
 use App\Video;
+use App\Comment;
+use App\Category;
+use App\Favorite;
+use App\Traits\ArticleRepo;
+use App\Traits\ArticleAttrs;
+use App\Traits\ArticleResolvers;
+use App\Traits\ArticleAttrsCache;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Article extends Model
 {
     use ArticleRepo;
     use ArticleResolvers;
-    use ArticleAttrs;
+    use ArticleAttrsCache;
     use SoftDeletes;
 
     protected $fillable = [
@@ -58,11 +59,11 @@ class Article extends Model
     const REVIEW_SUBMIT    = 0; //待审核
     const SUBMITTED_SUBMIT = 1; //已收录
 
-//  动态状态
+    //  动态状态
     const STATUS_REFUSED = -1;
     const STATUS_REVIEW  = 0;
     const STATUS_ONLINE  = 1;
-    
+
     protected $touches = ['category', 'collection', 'categories'];
 
     protected $dates = ['edited_at', 'delay_time', 'commented'];
@@ -164,7 +165,7 @@ class Article extends Model
             ->whereIn('category_id', $this->categories->pluck('id'));
     }
 
-//    public function save(array $options = array())
+    //    public function save(array $options = array())
     //    {
     //        $this->description = $this->summary;
     //        parent::save($options);

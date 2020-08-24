@@ -2,11 +2,15 @@
 
 namespace App;
 
+use App\Traits\AttributeCacheHelper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 
 class Model extends BaseModel
 {
+
+    use AttributeCacheHelper;
+    use GeneralCache;
     //time
     function getTimeAgoAttribute()
     {
