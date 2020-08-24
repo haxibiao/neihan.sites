@@ -64,9 +64,4 @@ class Withdraw extends Model
         //拼接格式 年月日时分秒 + 提现订单号
         return $this->created_at->format('YmdHis') . $this->id;
     }
-
-    public function scopeToday($query)
-    {
-        return $query->whereDate('created_at', today());
-    }
 }

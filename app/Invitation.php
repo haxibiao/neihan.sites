@@ -80,9 +80,4 @@ class Invitation extends Model
     {
         return $query->whereNotNull('invited_in');
     }
-
-    public function scopeToday($query)
-    {
-        return $query->whereDate('created_at', today());
-    }
 }
