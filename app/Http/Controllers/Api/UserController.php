@@ -64,7 +64,7 @@ class UserController extends Controller
                 'avatar' => $avatarPath,
             ]);
         }
-        return $user->avatar_url;
+        return $user->avatar;
     }
 
 
