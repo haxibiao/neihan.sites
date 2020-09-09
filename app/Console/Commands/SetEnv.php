@@ -54,7 +54,7 @@ class SetEnv extends Command
 
         $this->setKV(['LIVE_SECRET_KEY' => @file_get_contents("/etc/live_secret_dongdianyi")]);
         // //其他key
-        // $this->setKV(['SMS_APP_KEY' => @file_get_contents("/etc/sms_key_secret_dm")]);
+        $this->setKV(['SMS_APP_KEY' => @file_get_contents("/etc/sms_key_secret_dm")]);
         // $this->setKV(['COS_SECRET_KEY' => @file_get_contents("/etc/cos_secret_key")]);
         // $this->setKV(['MAIL_PASSWORD' => @file_get_contents("/etc/mailgun_mail_pass")]);
         // $this->setKV(['WECHAT_APP_SECRET' => @file_get_contents("/etc/wechat_app_secret_dm")]);
