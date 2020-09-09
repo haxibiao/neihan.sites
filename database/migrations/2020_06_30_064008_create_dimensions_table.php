@@ -13,6 +13,9 @@ class CreateDimensionsTable extends Migration
      */
     public function up()
     {
+        if (Schema::hasTable('dimensions')) {
+            return;
+        }
         Schema::create('dimensions', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id')->index()->comment('统计的用户');
