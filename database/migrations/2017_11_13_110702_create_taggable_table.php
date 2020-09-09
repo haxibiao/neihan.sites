@@ -14,7 +14,7 @@ class CreateTaggableTable extends Migration
     public function up()
     {
         if (Schema::hasTable('taggables')) {
-            Schema::drop("taggables");
+            Schema::dropIfExists("taggables");
         }
 
         Schema::create('taggables', function (Blueprint $table) {
