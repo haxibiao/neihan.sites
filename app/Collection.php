@@ -3,9 +3,11 @@
 namespace App;
 
 use App\Model;
+use Haxibiao\Sns\Traits\CanBeFollow;
 
 class Collection extends Model
 {
+    use CanBeFollow;
     public $fillable = [
         'user_id',
         'status',
@@ -33,11 +35,6 @@ class Collection extends Model
     public function publishedArticles()
     {
         return $this->hasMany(\App\Article::class)->where('status', '>=', '0');
-    }
-
-    public function follows()
-    {
-        return $this->morphMany(\App\Follow::class, 'followed');
     }
 
     public function logo()

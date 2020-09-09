@@ -5,18 +5,30 @@ type Like {
   liked_type: String!
   created_at: DateTime!
   updated_at: DateTime!
-  article: Article
+  """
+  暂时借道用于动态
+  """
+  article: Article @rename(attribute: "post")
+  """
+  动态
+  """
+  post: Post
   question: Question
   comment: Comment
   liked: Boolean
+  isLiked:Boolean @rename(attribute:"liked")
 }
 extend type Query {
+  """
+  点赞列表
+  """
   likes(user_id: Int! @eq, liked_type: String!, orderBy: [OrderByClause!] @orderBy): Like
-    @paginate(defaultCount: 10, builder: "App\\Like@resolveLikeArticle")
+    @paginate(defaultCount: 10, builder: "App\\Like@resolveLikes")
 }
 
 enum LikeType {
-  VIDEO @enum(value: "articles")
-  ARTICLE @enum(value: "articles")
+  VIDEO @enum(value: "posts")
+  ARTICLE @enum(value: "posts")
   COMMENT @enum(value: "comments")
+  POST    @enum(value:"posts")
 }

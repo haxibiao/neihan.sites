@@ -1,7 +1,33 @@
 type Issue {
   id: ID
+  title:String
+  background:String
   bonus: Int
   user:User
   gold:Int
+  resolutions:[Solution!]
+  count_likes:Int
+  count_answers:Int
   closed:Boolean
+  count_answers:Int
+  created_at:DateTime
+  updated_at:DateTime
+  image_urls:[String!],
+  image_url:String @rename(attribute: "image_cover")
+}
+extend type Query {
+
+  searchIssue(query:String!):[Issue!]  @paginate(defaultCount: 10  builder: "App\\Issue@searchIssueResolver")
+
+  issues(orderBy: _ @orderBy(columnsEnum: "IssueColumn"))
+  :[Issue!]@paginate(defaultCount: 10  builder: "App\\Issue@issueResolver")
+
+  issue(id:Int!@eq):Issue@find
+
+
+}
+
+enum IssueColumn {
+  HOT @enum(value: "count_answers")
+  LASTEST @enum(value: "created_at")
 }

@@ -27,18 +27,10 @@ class FeedbackStatus extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
 
-        if (!isset($fields->status) or !isset($fields->top_at)) {
-            return Action::danger('状态或者置顶时间不能为空');
-        }
-
-        $rank = $fields->rank ?? 0;
-
         \DB::beginTransaction();
         try {
             foreach ($models as $model) {
                 $model->status = $fields->status;
-                $model->top_at = $fields->top_at;
-                $model->rank   = $rank;
                 $model->save();
             }
         } catch (\Exception $e) {
@@ -59,8 +51,6 @@ class FeedbackStatus extends Action
                     1 => '以驳回',
                     2 => '已处理',
                 ]),
-            DateTime::make('置顶时间', 'top_at'),
-            Number::make('排名', 'rank'),
         ];
     }
 }

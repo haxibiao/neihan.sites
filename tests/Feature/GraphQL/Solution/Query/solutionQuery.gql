@@ -1,0 +1,23 @@
+# 回复详情
+query solutionQuery($id: Int!) {
+    solution(id: $id) {
+        id
+        answer
+        image_urls
+        liked
+        count_likes
+        count_unlikes
+        count_comments
+        created_at
+        time_ago
+        user {
+            id
+            name
+            avatar
+        }
+        issue {
+            id
+            title
+        }
+    }
+}

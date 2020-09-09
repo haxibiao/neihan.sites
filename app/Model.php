@@ -2,15 +2,13 @@
 
 namespace App;
 
-use App\Traits\AttributeCacheHelper;
-use Illuminate\Support\Facades\Auth;
+use Auth;
+use Haxibiao\Base\Traits\ModelHelpers;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 
 class Model extends BaseModel
 {
-
-    use AttributeCacheHelper;
-    use GeneralCache;
+    use ModelHelpers;
     //time
     function getTimeAgoAttribute()
     {
@@ -96,10 +94,5 @@ class Model extends BaseModel
     public function getTableColumns()
     {
         return $this->getConnection()->getSchemaBuilder()->getColumnListing($this->getTable());
-    }
-
-    public function scopeToday($query, $column = 'created_at')
-    {
-        return $query->where($column, '>=', today());
     }
 }

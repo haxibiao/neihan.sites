@@ -10,6 +10,10 @@ type Post {
   """
   spider: Spider
   """
+  关联的商品
+  """
+  product:Product
+  """
   动态的内容
   """
   content: String
@@ -18,20 +22,64 @@ type Post {
   """
   description: String
   """
+  图片
+  """
+  images:[Image]
+  """
+  分类
+  """
+  categories:[Category]
+  """
   -1删除，0草稿，1发布
   """
   status: Int
-  liked: Int
+  liked: Boolean
   count_likes: Int
   count_comments: Int
+  count_visits:Int
   review_id: String
   review_day: String
   is_ad: Int
-
+  """
+  标签
+  """
+  tags:[Tag!] @paginate(defaultCount: 10, builder:"\\App\\Post@resovlePostTags")
   """
   发布时间（多久前）
   """
-  created_at: String @rename(attribute: "time_age")
+  created_at: String @rename(attribute: "time_ago")
+}
+type Certification {
+  id: Int
+  """
+  审核反馈
+  """
+  remark: String
+  """
+  审核状态：(-1 已驳回, 0 待审核,1 审核成功)
+  """
+  status: Int
+}
+type Product {
+  id: Int!
+  category: Category
+  video: Video
+  cover: Image
+  user: User!
+  price: Int
+  dimension: String
+  dimension2: String
+  name: String!
+  image: [Image!]
+  """
+  图片
+  """
+  images:[Image!]
+  description: String
+  available_amount: Int
+  amount: Int
+  created_at: DateTime!
+  updated_at: DateTime!
 }
 
 extend type Query {
@@ -43,20 +91,95 @@ extend type Query {
   """
   学习视频列表（兼容token为游客的情况）
   """
-  recommendPosts: [Post!] @field(resolver: "App\\Post@resolveRecommendPosts")
+  recommendPosts: [Post!]
+    @field(resolver: "App\\Post@resolveRecommendPosts")
 
   """
   动态广场
   """
-  publicPosts(user_id: Int): [Post!] @paginate(defaultCount: 10, builder: "App\\Post@resolvePublicPosts")
+  publicPosts(user_id: Int): [Post!]
+    @paginate(
+      defaultCount: 10
+      builder: "App\\Post@resolvePublicPosts"
+    )
 
   """
   个人主页动态列表
   """
-  posts(user_id: Int!): [Post!] @paginate(builder: "App\\Post@resolvePosts", defaultCount: 10)
+  posts(user_id: Int!): [Post!]
+    @paginate(builder: "App\\Post@resolvePosts", defaultCount: 10)
 
   """
   分享post
   """
   shareNewPost(id: ID!): String @field(resolver: "App\\Post@getShareLink")
+
+  """
+  根据标签获取视频列表
+  """
+  postsByTag(
+    """
+    视频类型
+    """
+    type: PostTag
+
+    """
+    用户是否第一次调用, 主要用于判断是否添加学习视频模块的固定视频
+    true: 第一次调用 false: 不是第一次
+    """
+    is_first: Boolean
+
+    """
+    请求条数
+    """
+    limit: Int
+  ): [Post] @field(resolver: "App\\Post@resolvePostsByTag")
+  """
+  搜索动态
+  """
+  searchPosts(query:String!,tag_id:Int,user_id:Int,type:PostType=VIDEO): [Post!]
+    @paginate(defaultCount: 10, builder: "App\\Post@resolveSearchPosts")
+  """
+  收藏/普通动态
+  """
+  userPosts(user_id: Int!,filter:PostFilter=spider): [Post!]
+    @paginate(builder: "App\\Post@resolveUserPosts", defaultCount: 10)
+}
+
+enum PostFilter {
+  """
+  用户爬取的动态
+  """
+  spider
+  """
+  用户发布的动态
+  """
+  normal
+  """
+  全部
+  """
+  all
+}
+
+enum PostTag {
+  """
+  学习模块
+  """
+  STUDY @enum(value: 1)
+
+  """
+  娱乐模块
+  """
+  PLAY @enum(value: 2)
+}
+
+enum PostType {
+  """
+  视频
+  """
+  VIDEO
+  """
+  图文
+  """
+  IMAGE
 }

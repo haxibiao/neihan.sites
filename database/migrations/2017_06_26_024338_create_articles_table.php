@@ -44,7 +44,7 @@ class CreateArticlesTable extends Migration
 
             $table->string('image_top')->nullable(); //影响旧web太多功能，暂时不动
 
-            $table->integer('hits')->default(0);
+            $table->integer('hits')->default(0); 
 
             $table->integer('count_replies')->default(0);
             $table->integer('count_favorites')->default(0);
@@ -52,7 +52,7 @@ class CreateArticlesTable extends Migration
             $table->integer('count_tips')->default(0);
             $table->integer('count_likes')->default(0)->index();
             $table->integer('count_words')->default(0);
-            $table->integer('count_comments')->default(0)->nullable(); //comments, not include replies in comments...
+            $table->integer('count_comments')->nullable(); //comments, not include replies in comments...
             $table->integer('count_reports')->default(0);
 
             $table->string('slug')->nullable()->unique();
@@ -77,6 +77,8 @@ class CreateArticlesTable extends Migration
 
             $table->unsignedBigInteger('review_id')->index()->nullable();
             $table->boolean('is_hot')->index()->default(false);
+
+            $table->unsignedInteger('issue_id')->nullable()->comment('问题ID');
 
             $table->softDeletes();
 

@@ -5,12 +5,18 @@ type Visit {
   visited_type: String!
   created_at: DateTime!
   updated_at: DateTime!
-  article: Article
+  article: Article @deprecated(attribute: "如果是查看动态请使用post")
+  post: Post
   category: Category
   time_ago: String!
   type: String!
 }
 
 extend type Query {
-  visits(user_id: Int! @eq): [Visit] @paginate(defaultCount: 10, builder: "App\\Visit@getVisits")
+  visits(user_id: Int!, visitType:VisitType=POST): [Visit]
+    @paginate(defaultCount: 10, builder: "App\\Visit@getVisits")
+}
+
+enum VisitType {
+  POST @enum(value: "posts")
 }

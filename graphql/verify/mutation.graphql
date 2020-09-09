@@ -9,4 +9,6 @@ extend type Mutation {
 enum verifyType {
   RESET_PASSWORD
   USER_INFO_CHANGE
+  USER_REGISTER
+  USER_LOGIN
 }

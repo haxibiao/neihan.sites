@@ -1,0 +1,4 @@
+#注销账号
+mutation destoryUserMutation {
+    destoryUser
+}

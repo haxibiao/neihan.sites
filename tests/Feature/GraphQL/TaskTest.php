@@ -3,8 +3,8 @@
 namespace Tests\Feature\GraphQL;
 
 use App\User;
-use Haxibiao\Task\Assignment;
-use Haxibiao\Task\Task;
+use App\Assignment;
+use App\Task;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\Feature\GraphQL\GraphQLTestCase;
 
@@ -21,9 +21,6 @@ class TaskTest extends GraphQLTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        //最新注册的10个用户里随机一个，方便发现新用户的体验问题...
-        // $this->user = User::latest('id')->take(100)->get()->random();
 
         $this->user = factory(User::class)->create([
             'api_token' => str_random(60),

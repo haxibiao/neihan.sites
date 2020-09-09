@@ -1,0 +1,54 @@
+# 评论列表
+query commentsQuery(
+    $commentable_type: String!
+    $commentable_id: Int!
+    $page: Int
+    $count: Int
+    $replyCount: Int
+    $user_id: Int
+    $order: [OrderByClause!]
+) {
+    comments(
+        commentable_type: $commentable_type
+        commentable_id: $commentable_id
+        page: $page
+        count: $count
+        user_id: $user_id
+        orderBy: $order
+    ) {
+        paginatorInfo {
+            currentPage
+            hasMorePages
+        }
+        data {
+            id
+            body
+            likes
+            liked
+            count_replies
+            time_ago
+            commentable_id
+            is_accept
+            user {
+                id
+                name
+                avatar
+            }
+            comments(count: $replyCount) {
+                paginatorInfo {
+                    currentPage
+                    hasMorePages
+                }
+                data {
+                    id
+                    body
+                    user {
+                        id
+                        name
+                    }
+                    time_ago
+                }
+            }
+        }
+    }
+}

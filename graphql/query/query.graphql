@@ -7,3 +7,7 @@ type DBQuery {
   created_at: DateTime
   updated_at: DateTime
 }
+
+#extend type Query {
+#  queries: DBQuery @paginate(defaultCount: 10, builder: "App\\Query@resolverQuery")
+#}

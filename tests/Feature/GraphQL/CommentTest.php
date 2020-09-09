@@ -6,10 +6,12 @@ use App\Article;
 use App\Comment;
 use App\Feedback;
 use App\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\Feature\GraphQL\TestCase;
 
-class CommentTest extends TestCase
+class CommentTest extends GraphQLTestCase
 {
+    use DatabaseTransactions;
     protected $user;
 
     protected function setUp(): void
@@ -23,11 +25,10 @@ class CommentTest extends TestCase
     /* --------------------------------------------------------------------- */
     /* ------------------------------- Mutation ----------------------------- */
     /* --------------------------------------------------------------------- */
-    // public function testAcceptCommentMutation()
-    // {
-    //     //TODO 需要填充假数据
-    // }
 
+    /**
+     * @group  testAddCommentMutation
+     */
     public function testAddCommentMutation()
     {
         $token   = $this->user->api_token;
@@ -45,7 +46,7 @@ class CommentTest extends TestCase
             'body'             => '评论动态',
         ];
 
-        $this->startGraphQL($query, $variables, $headers);
+        $this->runGuestGQL($query, $variables, $headers);
 
         //情形二:评论评论
         $comment   = Comment::inRandomOrder()->first();
@@ -55,7 +56,7 @@ class CommentTest extends TestCase
             'body'             => '评论评论',
         ];
 
-        $this->startGraphQL($query, $variables, $headers);
+        $this->runGuestGQL($query, $variables, $headers);
 
         //情形二:评论评论
         $comment   = Feedback::inRandomOrder()->first();
@@ -64,9 +65,11 @@ class CommentTest extends TestCase
             'commentable_id'   => $comment->id,
             'body'             => '评论评论',
         ];
-        $this->startGraphQL($query, $variables, $headers);
+        $this->runGuestGQL($query, $variables, $headers);
     }
-
+    /**
+     * @group  testDeleteCommentMutation
+     */
     public function testDeleteCommentMutation()
     {
         $token   = $this->user->api_token;
@@ -81,12 +84,15 @@ class CommentTest extends TestCase
             'id' => $comment->id,
         ];
 
-        $this->startGraphQL($query, $variables, $headers);
+        $this->runGuestGQL($query, $variables, $headers);
     }
 
     /* --------------------------------------------------------------------- */
     /* ------------------------------- Query ----------------------------- */
     /* --------------------------------------------------------------------- */
+    /**
+     * @group  testCommentRepliesQuery
+     */
     public function testCommentRepliesQuery()
     {
         $query     = file_get_contents(__DIR__ . '/Comment/Query/commentRepliesQuery.gql');
@@ -94,9 +100,11 @@ class CommentTest extends TestCase
         $variables = [
             'id' => $comment->commentable_id,
         ];
-        $this->startGraphQL($query, $variables);
+        $this->runGuestGQL($query, $variables);
     }
-
+    /**
+     * @group  testCommentsQuery
+     */
     public function testCommentsQuery()
     {
         $query = file_get_contents(__DIR__ . '/Comment/Query/commentsQuery.gql');
@@ -107,7 +115,7 @@ class CommentTest extends TestCase
             'commentable_id'   => $comment->commentable_id,
             'commentable_type' => 'articles',
         ];
-        $this->startGraphQL($query, $variables);
+        $this->runGuestGQL($query, $variables);
     }
 
     protected function tearDown(): void

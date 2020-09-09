@@ -1,0 +1,20 @@
+# 编辑动态
+# {
+#   "post_id": 1,
+#   "content": '这是动态详情',
+#   "description": '动态描述',
+#   "tag_names": ['战争','历史']
+# }
+mutation updatePostMutation($id: Int!, $content: String, $description: String, $tag_names: [String]) {
+    updatePost(post_id: $id, content: $content, description: $description, tag_names: $tag_names) {
+        id
+        content
+        description
+        tags {
+            data {
+                id
+                name
+            }
+        }
+    }
+}

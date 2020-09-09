@@ -15,13 +15,12 @@ class CreateLikesTable extends Migration
     {
         Schema::create('likes', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->index();
-            $table->integer('liked_id')->index();
-            $table->integer('likable_id')->index();
-            $table->string('liked_type')->default('articles')->index();
-            $table->string('likable_type')->default('articles')->index();
+            $table->integer('user_id');
+            $table->morphs('likable');
             $table->softDeletes();
             $table->timestamps();
+            $table->unique(['likable_id', 'likable_type','user_id']);
+            $table->index('user_id');
         });
     }
 

@@ -16,9 +16,6 @@ return [
     'route'    => [
         'uri'  => '/gqlp',
         'name' => 'gqlp',
-        // 'middleware' => ['web']
-        // 'prefix' => '',
-        // 'domain' => 'graphql.' . env('APP_DOMAIN', 'localhost'),
     ],
 
     /*

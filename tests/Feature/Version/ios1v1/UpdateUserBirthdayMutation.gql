@@ -1,0 +1,6 @@
+# 修改生日
+mutation updateUserBirthday($id: Int!, $input: updateUserInfo!) {
+    updateUserInfo(id: $id, input: $input) {
+        birthday_msg
+    }
+}

@@ -33,11 +33,20 @@ class Profile extends Model
         'questions_count',
         'answers_count',
         'correct_count',
-        'app_version'
+        'app_version',
+        'keep_checkin_days',
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(\App\User::class);
+    }
+    public function getTodayRewardVideoCountAttribute()
+    {
+        $record = Dimension::whereDate('created_at', today())
+            ->where('user_id', $this->user->id)
+            ->whereIn('name', ['WATCH_REWARD_VIDEO', 'CLICK_REWARD_VIDEO'])
+            ->sum('count');
+        return $record;
     }
 }

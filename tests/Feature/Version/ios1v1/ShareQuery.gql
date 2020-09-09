@@ -1,0 +1,4 @@
+#复制视频链接
+query shareQuery($id: ID!) {
+    sharePost(id: $id)
+}

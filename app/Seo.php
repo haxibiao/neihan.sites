@@ -2,15 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Haxibiao\Config\Seo as BaseSeo;
 
-class Seo extends Model
+class Seo extends BaseSeo
 {
-    protected $fillable = ['group', 'name', 'value'];
-
-    public static function getValue($group, $name)
-    {
-        $item = self::whereGroup($group)->whereName($name)->first();
-        return $item ? $item->value : '';
-    }
+    //
 }

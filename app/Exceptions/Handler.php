@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Category;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
@@ -9,7 +10,7 @@ use Throwable;
 class Handler extends ExceptionHandler
 {
     /**
-     * A list of the exception types that are not reported.
+     * A list of the exception types that should not be reported.
      *
      * @var array
      */
@@ -20,16 +21,6 @@ class Handler extends ExceptionHandler
         \Illuminate\Database\Eloquent\ModelNotFoundException::class,
         \Illuminate\Session\TokenMismatchException::class,
         \Illuminate\Validation\ValidationException::class,
-    ];
-
-    /**
-     * A list of the inputs that are never flashed for validation exceptions.
-     *
-     * @var array
-     */
-    protected $dontFlash = [
-        'password',
-        'password_confirmation',
     ];
 
     /**
@@ -69,7 +60,7 @@ class Handler extends ExceptionHandler
         //404 异常处理
         $e = $this->prepareException($exception);
         if ($this->isHttpException($e) && ($e->getStatusCode() == 404)) {
-            $data['categories'] = \App\Category::where('parent_id', 1)->orderByDesc('updated_at')->take(4)->get();
+            $data['categories'] = Category::where('parent_id', 1)->orderByDesc('updated_at')->take(4)->get();
             //取最近七天点击量 倒叙
             $data['articles'] = \App\Article::with('video')->whereType('video')
                 ->whereStatus(1)

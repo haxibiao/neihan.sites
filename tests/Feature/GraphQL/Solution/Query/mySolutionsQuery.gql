@@ -1,0 +1,29 @@
+# 查询我的回答
+query mySolutionsQuery($user_id: Int, $page: Int) {
+    mySolutions(user_id: $user_id, page: $page) {
+        paginatorInfo {
+            hasMorePages
+            currentPage
+        }
+        data {
+            id
+            answer
+            count_likes
+            count_comments
+            count_visits
+            created_at
+            user {
+                id
+                name
+                avatar
+            }
+            issue {
+                id
+                title
+            }
+            comments {
+                id
+            }
+        }
+    }
+}

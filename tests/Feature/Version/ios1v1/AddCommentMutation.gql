@@ -1,0 +1,39 @@
+# commentable_id 所属内容id / 回复评论id
+# enum commentType {
+# articles
+# comments
+# feedbacks
+# }
+mutation addCommentMutation($commentable_type: commentType!, $commentable_id: Int!, $body: String!) {
+    addComment(commentable_type: $commentable_type, commentable_id: $commentable_id, body: $body) {
+        id
+        commentable_id
+        body
+        likes
+        liked
+        is_accept
+        count_replies
+        time_ago
+        user {
+            id
+            name
+            avatar
+        }
+        comments {
+            paginatorInfo {
+                currentPage
+                hasMorePages
+            }
+            data {
+                id
+                body
+                user {
+                    id
+                    name
+                    avatar
+                }
+                time_ago
+            }
+        }
+    }
+}

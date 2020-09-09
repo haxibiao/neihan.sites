@@ -49,6 +49,7 @@ return [
             'path'   => storage_path('logs/laravel.log'),
             'level'  => env('APP_LOG_LEVEL', 'debug'),
             'days'   => 7,
+            'permission' => 0666,
         ],
 
         'slack'     => [
@@ -82,6 +83,7 @@ return [
             'path'   => storage_path('logs/withdraws.log'),
             'level'  => 'debug',
             'days'   => 14,
+            'permission' => 0666,
         ],
     ],
 

@@ -98,7 +98,7 @@ Route::get('/video/list', 'VideoController@list');
 Route::get('/video/{id}/process', 'VideoController@processVideo');
 Route::resource('/video', 'VideoController');
 
-Route::any('/share/post/{id}','ArticleController@shareVideo');
+Route::any('/share/post/{id}', 'ArticleController@shareVideo');
 
 //logs
 Route::get('/logshow', 'LogController@logShow');
@@ -130,4 +130,4 @@ Route::get('sitemap', 'SitemapController@index');
 
 //last, use category name_en (限制分类英文url5个字母以上，避免 /gql, /gqlp 会被这个路由拦截)
 // $router->pattern('name_en', '\w{5,100}'); //最新测试好像没被拦截了
-Route::get('/{name_en}', 'CategoryController@name_en')->where('name_en', '(?!nova).*');
+Route::get('/{name_en}', 'CategoryController@name_en')->where('name_en', '(?!nova).*')->where('name_en', '(?!api).*');

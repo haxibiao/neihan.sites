@@ -1,0 +1,68 @@
+# 个人动态
+# filter 筛选动态类型
+# enum PostFilter {
+# spider
+# 用户爬取的动态
+# normal
+# 用户发布的动态
+# all
+# 全部
+# }
+query userPostsQuery($user_id: Int!, $filter: PostFilter, $count: Int, $page: Int) {
+    userPosts(user_id: $user_id, filter: $filter, count: $count, page: $page) {
+        paginatorInfo {
+            hasMorePages
+            currentPage
+        }
+        data {
+            id
+            spider {
+                id
+            }
+            content
+            description
+            status
+            liked
+            count_likes
+            count_comments
+            review_id
+            review_day
+            is_ad
+            created_at
+            user {
+                id
+                name
+                avatar
+                followed_status
+                gender
+                age
+                introduction
+            }
+            tags {
+                data {
+                    id
+                    name
+                }
+            }
+            categories {
+                id
+                name
+                logo
+            }
+            images {
+                id
+                url
+                width
+                height
+            }
+            video {
+                id
+                url
+                cover
+                duration
+                width
+                height
+            }
+        }
+    }
+}

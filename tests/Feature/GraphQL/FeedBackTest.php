@@ -4,9 +4,11 @@ namespace Tests\Feature\GraphQL;
 
 use App\Article;
 use App\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class FeedBackTest extends TestCase
+class FeedBackTest extends GraphQLTestCase
 {
+    use DatabaseTransactions;
     protected $user;
 
     protected function setUp(): void
@@ -22,45 +24,45 @@ class FeedBackTest extends TestCase
     /* --------------------------------------------------------------------- */
 
     //接口没写
-    public function testcreateFeedbackMutation()
-    {
-        $query = file_get_contents(__DIR__ . '/FeedBack/Mutation/createFeedbackMutation.gql');
-
-        $article = Article::inRandomOrder()->first();
-
-        $image = file_get_contents(__DIR__ . '/FeedBack/image1');
-
-        $token = $this->user->api_token;
-
-        $headers = [
-            'Authorization' => 'Bearer ' . $token,
-            'Accept'        => 'application/json',
-        ];
-
-        //只传字符串
-        $variables = [
-            'content' => "测试反馈",
-        ];
-
-        $this->startGraphQL($query, $variables, $headers);
-
-        //传图片和内容
-        $variables = [
-            'content' => "测试反馈",
-            'images'  => [$image, $image],
-        ];
-
-        $this->startGraphQL($query, $variables, $headers);
-
-        //传图片和联系方式以及内荣
-        $variables = [
-            'content' => "测试反馈",
-            'images'  => [$image, $image],
-            "contact" => "123456",
-        ];
-
-        $this->startGraphQL($query, $variables, $headers);
-    }
+//    public function testcreateFeedbackMutation()
+//    {
+//        $query = file_get_contents(__DIR__ . '/FeedBack/Mutation/createFeedbackMutation.gql');
+//
+//        $article = Article::inRandomOrder()->first();
+//
+//        $image = file_get_contents(__DIR__ . '/FeedBack/image1');
+//
+//        $token = $this->user->api_token;
+//
+//        $headers = [
+//            'Authorization' => 'Bearer ' . $token,
+//            'Accept'        => 'application/json',
+//        ];
+//
+//        //只传字符串
+//        $variables = [
+//            'content' => "测试反馈",
+//        ];
+//
+//        $this->startGraphQL($query, $variables, $headers);
+//
+//        //传图片和内容
+//        $variables = [
+//            'content' => "测试反馈",
+//            'images'  => [$image, $image],
+//        ];
+//
+//        $this->startGraphQL($query, $variables, $headers);
+//
+//        //传图片和联系方式以及内荣
+//        $variables = [
+//            'content' => "测试反馈",
+//            'images'  => [$image, $image],
+//            "contact" => "123456",
+//        ];
+//
+//        $this->startGraphQL($query, $variables, $headers);
+//    }
     /* --------------------------------------------------------------------- */
     /* ------------------------------- Query ----------------------------- */
     /* --------------------------------------------------------------------- */
@@ -68,15 +70,7 @@ class FeedBackTest extends TestCase
     {
         $query = file_get_contents(__DIR__ . '/FeedBack/Query/FeedbacksQuery.gql');
 
-        $token = $this->user->api_token;
-
-        $user = User::inRandomOrder()->first();
-
-        // $variables = [
-        //     'count' => 10
-        // ];
-
-        $this->startGraphQL($query);
+        $this->runGuestGQL($query);
     }
 
     public function testMyFeedbackQuery()
@@ -94,7 +88,7 @@ class FeedBackTest extends TestCase
             'id' => $this->user->id,
         ];
 
-        $this->startGraphQL($query, $variables, $headers);
+        $this->runGuestGQL($query, $variables, $headers);
     }
 
     protected function tearDown(): void

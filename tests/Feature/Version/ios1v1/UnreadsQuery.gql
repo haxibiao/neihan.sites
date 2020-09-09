@@ -1,0 +1,10 @@
+# 未读消息数
+query unreadsQuery {
+    me {
+        id
+        unread_comments
+        unread_likes
+        unread_follows
+        unread_others
+    }
+}

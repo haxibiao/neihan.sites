@@ -1,0 +1,7 @@
+extend type Mutation @middleware(checks: ["auth:api"]){
+
+    """
+    创建用户签到
+    """
+    createCheckIn:CheckIn @field(resolver: "App\\CheckIn@resolveStore")
+}

@@ -1,0 +1,47 @@
+# 用户喜欢的动态
+query userLikedArticlesQuery($user_id: Int!, $page: Int) {
+    likes(user_id: $user_id, page: $page, liked_type: "articles") {
+        paginatorInfo {
+            currentPage
+            hasMorePages
+        }
+        data {
+            article {
+                id
+                type
+                body
+                description
+                created_at
+                liked
+                cover
+                count_likes
+                count_comments
+                count_tips
+                user {
+                    avatar
+                    name
+                    id
+                }
+                category {
+                    id
+                    name
+                    logo
+                }
+                images {
+                    id
+                    url
+                    width
+                    height
+                }
+                video {
+                    id
+                    url
+                    duration
+                    width
+                    height
+                    cover
+                }
+            }
+        }
+    }
+}

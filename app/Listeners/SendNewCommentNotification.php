@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\NewComment;
 use App\Notifications\ArticleCommented;
+use App\Notifications\CommentedNotification;
 use App\Notifications\ReplyComment;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -15,7 +16,7 @@ class SendNewCommentNotification implements ShouldQueue
      * @return void
      */
 
-    public $delay = 60;
+    public $delay = 10;
 
     public function __construct()
     {
@@ -40,10 +41,16 @@ class SendNewCommentNotification implements ShouldQueue
                 $article->user->notify(new ArticleCommented($comment));
             }
         } else if ($comment->commentable instanceof \App\Comment) {
+            $user = $comment->commentable->user;
+            $user->notify(new CommentedNotification($comment));
             //TODO: 即时发送每个通知，需要改为汇总到 Listener里去决策
-            if ($comment->commentable->user) {
-                $comment->commentable->user->notify(new ReplyComment($comment));
-            }
+//            if ($comment->commentable->user) {
+//                $comment->commentable->user->notify(new ReplyComment($comment));
+//            }
+        } else if($comment->commentable instanceof \App\Post){
+            $post = $comment->commentable;
+            $user = $post->user;
+            $user->notify(new CommentedNotification($comment));
         }
 
     }

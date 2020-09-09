@@ -1,0 +1,31 @@
+#APP-创建意见反馈
+#content：反馈内容
+#contact：联系方式
+#images:图片补充
+mutation createFeedbackMutation($content: String!, $images: [String], $contact: String) {
+    createFeedback(content: $content, images: $images, contact: $contact) {
+        id
+        user {
+            id
+            name
+            avatar
+            gender
+        }
+        images {
+            id
+            width
+            height
+            url
+            thumbnail
+        }
+        content
+        contact
+        status_msg
+        created_at
+        hot
+        comments {
+            id
+            body
+        }
+    }
+}

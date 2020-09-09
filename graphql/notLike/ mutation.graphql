@@ -1,0 +1,9 @@
+extend type Mutation {
+    notLike(notlike_id: Int!,notlike_type:NotLikeType=POST): NotLike
+        @field(resolver: "App\\NotLike@resolveStore")
+}
+
+enum NotLikeType {
+    COMMENT @enum(value: "comments")
+    POST    @enum(value:"posts")
+}

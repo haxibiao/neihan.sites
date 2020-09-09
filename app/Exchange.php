@@ -19,7 +19,7 @@ class Exchange extends Model
         'updated_at',
     ];
 
-    const RATE = 600;
+    const RATE = 500;
 
     const MIN_RMB = 0.3;
 

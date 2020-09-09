@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Haxibiao\Config\AdConfig as BaseAdConfig;
 
-class AdConfig extends Model
+class AdConfig extends BaseAdConfig
 {
     //
 }

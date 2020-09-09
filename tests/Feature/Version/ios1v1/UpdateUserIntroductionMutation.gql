@@ -1,0 +1,6 @@
+# 修改签名
+mutation updateUserIntroduction($id: Int!, $input: updateUserInfo!) {
+    updateUserInfo(id: $id, input: $input) {
+        introduction
+    }
+}

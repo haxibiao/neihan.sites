@@ -3,26 +3,46 @@
 namespace App;
 
 use App\Feedback;
-use App\UserRetention;
-use App\Traits\UserRepo;
+use App\Traits\CanLike;
+use App\Traits\CanNotLike;
+use App\Traits\CanTag;
 use App\Traits\UserAttrs;
+use App\Traits\UserRepo;
 use App\Traits\UserResolvers;
+use Haxibiao\Base\Traits\AvatarHelper;
+use Haxibiao\Content\Traits\HasContent;
+use Haxibiao\Live\Traits\PlayWithCamera;
 use Haxibiao\Live\Traits\PlayWithLive;
+use Haxibiao\Media\Traits\WithMedia;
+use Haxibiao\Sns\Traits\CanFollow;
 use Haxibiao\Task\Traits\PlayWithTasks;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Model implements AuthenticatableContract,
+    AuthorizableContract
 {
+    use \Illuminate\Auth\Authenticatable, Authorizable;
+
     use Notifiable;
     use UserAttrs;
     use UserRepo;
     use UserResolvers;
+    use WithMedia;
+    use HasContent;
+    use CanTag;
+    use CanLike;
+    use AvatarHelper;
+    use CanNotLike;
+    use CanFollow;
     use PlayWithTasks;
-    use PlayWithLive;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -40,12 +60,14 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
         'created_at',
         'updated_at',
+        'role_id',
+        'ticket',
     ];
 
     /**
      * 性别
      */
-    const MALE_GENDER = 0;
+    const MALE_GENDER   = 0;
     const FEMALE_GENDER = 1;
 
     // 正常状态
@@ -55,7 +77,7 @@ class User extends Authenticatable implements MustVerifyEmail
     //FIXME: 这个后面要修复为-1, 注销修复为-2, 负数的status都是异常的
 
     // 封禁状态
-    const STATUS_OFFLINE = -1;
+    const STATUS_OFFLINE = 1;
 
     //暂时冻结的账户
     const STATUS_FREEZE = -1;
@@ -66,15 +88,20 @@ class User extends Authenticatable implements MustVerifyEmail
     // 默认头像
     const AVATAR_DEFAULT = 'storage/avatar/avatar-1.jpg';
 
-    const DEFAULT_NAME = '城市猎人';
+    const DEFAULT_NAME = '匿名用户';
     //
 
     /**
      * 编辑身份
      */
-    const USER_STATUS = 0;
+    const USER_STATUS   = 0;
     const EDITOR_STATUS = 1;
-    const ADMIN_STATUS = 2;
+    const ADMIN_STATUS  = 2;
+
+    //用户激励视频奖励
+    const VIDEO_REWARD_GOLD       = 10;
+    const VIDEO_REWARD_TICKET     = 10;
+    const VIDEO_REWARD_CONTRIBUTE = 6;
 
     /**
      * The attributes that should be hidden for arrays.
@@ -85,30 +112,32 @@ class User extends Authenticatable implements MustVerifyEmail
         'password', 'remember_token',
     ];
 
+    /**
+     * 用户状态 -2:禁用(禁止提现) -1:禁言 0:正常启用
+     */
+    const DISABLE_STATUS = -2;
+    const MUTE_STATUS    = -1;
+    const ENABLE_STATUS  = 0;
 
-    public function answers(): HasMany
+
+    public function withdraws(): HasManyThrough
     {
-        return $this->hasMany(\App\Answer::class)->latest();
+        return $this->hasManyThrough(\App\Withdraw::class, \App\Wallet::class);
     }
 
+    public function checkIns(): HasMany
+    {
+        return $this->hasMany(CheckIn::class);
+    }
+    public function orders(){
+        return $this->hasMany(Order::class);
+    }
 
     public function retentions()
     {
         return $this->hasMany(\App\UserRetention::class);
     }
-    public function invitations(): HasMany
-    {
-        return $this->hasMany(Invitation::class);
-    }
-    public function invitationRewards(): HasMany
-    {
-        return $this->hasMany(InvitationReward::class);
-    }
 
-    public function invitation(): HasOne
-    {
-        return $this->hasOne(UserInvitation::class);
-    }
     public function exchanges()
     {
         return $this->hasMany(\App\Exchange::class);
@@ -135,13 +164,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(\App\Feedback::class);
     }
 
-    public function tasks()
-    {
-        return $this->belongsToMany(\App\Task::class, 'assignments')
-            ->withPivot(['status', 'current_count', 'id'])
-            ->withTimestamps();
-    }
-
     //问答
     public function issues()
     {
@@ -149,20 +171,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function resolutions()
     {
-        return $this->hasMany(\App\Resolution::class);
+        return $this->hasMany(\App\Solution::class);
+    }
+    public function solutions()
+    {
+        return $this->hasMany(\App\Solution::class);
     }
 
     public function querylogs()
     {
         return $this->hasMany(\App\Querylog::class);
-    }
-    public function profile()
-    {
-        return $this->hasOne(\App\Profile::class);
-    }
-    public function role()
-    {
-        return $this->hasOne(\App\Role::class);
     }
 
     public function transactions()
@@ -180,47 +198,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(\App\Favorite::class)->where('faved_type', 'articles');
     }
 
-    public function likes()
-    {
-        return $this->hasMany(\App\Like::class);
-    }
-
-    public function liveRoom(): HasOne
-    {
-        return $this->hasOne(LiveRoom::class, 'anchor_id');
-    }
-
-    public function userLives()
-    {
-        return $this->hasMany(\App\UserLive::class);
-    }
-
-    public function likedArticles()
-    {
-        return $this->hasMany(\App\Like::class)->where('liked_type', 'articles');
-    }
-
     public function userBlock()
     {
         return $this->hasMany(\App\UserBlock::class);
     }
 
-    public function assignments()
-    {
-        return $this->hasMany(\App\Assignment::class);
-    }
-
-    #trick!! 这里其实是关注这个用户的粉丝
-    public function follows()
-    {
-        return $this->morphMany(\App\Follow::class, 'followed');
-    }
-
-    #trick!! 这里才是用户的一对多的关注行为记录
-    public function followings()
-    {
-        return $this->hasMany(\App\Follow::class);
-    }
 
     public function followingCategories()
     {
@@ -254,16 +236,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function collections()
     {
-        //        //默认给个文集...
-        //        if (!Collection::where('user_id', $this->id)->count()) {
-        //            $collection = Collection::firstOrNew([
-        //                'user_id' => $this->id,
-        //                'name'    => '日记本',
-        //            ]);
-        //            $collection->save();
-        //            $this->count_collections = 1;
-        //        }
-
         return $this->hasMany(\App\Collection::class);
     }
 
@@ -279,69 +251,6 @@ class User extends Authenticatable implements MustVerifyEmail
             ->orderBy('updated_at', 'desc');
     }
 
-    public function categories()
-    {
-        return $this->belongsToMany(\App\Category::class);
-    }
-
-    public function drafts()
-    {
-        return $this->hasMany(\App\Article::class)->where('status', 0);
-    }
-
-    public function articles()
-    {
-        return $this->hasMany(\App\Article::class)
-            ->where('status', '>', 0)
-            ->exclude(['body', 'json']);
-    }
-
-    public function removedArticles()
-    {
-        return $this->hasMany(\App\Article::class)->where('status', -1);
-    }
-
-    public function allArticles()
-    {
-        return $this->hasMany(\App\Article::class)
-            ->exclude(['body', 'json']);
-    }
-
-    public function allVideoPosts()
-    {
-        return $this->allArticles()->where('type', 'video');
-    }
-
-    public function publishedArticles()
-    {
-        return $this->allArticles()->where('status', '>', 0);
-    }
-
-    public function videoPosts()
-    {
-        return $this->publishedArticles()->where('type', 'video');
-    }
-
-    public function adminCategories()
-    {
-        return $this->belongsToMany(\App\Category::class)->where('type', 'article')->wherePivot('is_admin', 1);
-    }
-
-    public function requestCategories()
-    {
-        return $this->belongsToMany(\App\Category::class)->wherePivot('approved', 0);
-    }
-
-    public function joinCategories()
-    {
-        return $this->belongsToMany(\App\Category::class)->wherePivot('approved', 1);
-    }
-
-    public function hasManyCategories()
-    {
-        return $this->hasMany(\App\Category::class, 'user_id', 'id')->where('type', 'article');
-    }
-
     public function wallets(): HasMany
     {
         return $this->hasMany(\App\Wallet::class);
@@ -352,17 +261,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Visit::class);
     }
 
-    public function newReuqestCategories()
-    {
-        return $this->adminCategories()->orderBy('new_requests', 'desc')->orderBy('updated_at', 'desc');
-    }
-
-    public function videoArticles()
-    {
-        return $this->hasMany('App\Article')
-            ->where('articles.type', 'video');
-    }
-
     public function issueInvites()
     {
         return $this->hasMany('App\IssueInvite', 'user_id', 'id');
@@ -371,7 +269,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public static function getGenders()
     {
         return [
-            self::MALE_GENDER => '男',
+            self::MALE_GENDER   => '男',
             self::FEMALE_GENDER => '女',
         ];
     }
@@ -381,18 +279,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(OAuth::class);
     }
 
-    public function product()
+    public function saveDownloadImage($file)
     {
-        return $this->hasMany(Product::class);
+        if ($file) {
+            $avatar = 'avatar/avatar' . $this->id . '_' . time() . '.png';
+            $cosDisk   = \Storage::cloud();
+            $cosDisk->put($avatar, \file_get_contents($file->path()));
+
+            return $avatar;
+        }
     }
 
-    public function store()
-    {
-        return $this->hasOne(Store::class);
-    }
-
-    public function order()
-    {
-        return $this->hasMany(Order::class);
-    }
 }

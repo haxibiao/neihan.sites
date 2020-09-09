@@ -1,0 +1,20 @@
+mutation ($title:String!,
+    $background:String!,
+    $category_id:Int,
+    $cover_image: String){
+    createIssue(title:$title,
+        background:$background,
+        category_id: $category_id,
+        cover_image: $cover_image,){
+        id
+        title
+        background
+        user {
+            avatar
+            name
+            id
+
+        }
+
+    }
+}

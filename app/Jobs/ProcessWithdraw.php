@@ -13,6 +13,8 @@ class ProcessWithdraw implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $description = "提现队列，走数据库job";
+    public $tries          = 1;
     protected $withdraw;
 
     /**
@@ -20,14 +22,11 @@ class ProcessWithdraw implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($withdrawId)
+    public function __construct(Withdraw $withdraw)
     {
-        $withdraw = Withdraw::find($withdrawId);
-
-        if (is_null($withdraw)) {
-            return;
-        }
         $this->withdraw = $withdraw;
+        $this->onQueue('withdraws');
+        $this->onConnection('database');
     }
 
     /**
@@ -37,11 +36,6 @@ class ProcessWithdraw implements ShouldQueue
      */
     public function handle()
     {
-
-        if ($this->withdraw->to_platform === 'dongdezhuan') {
-            $this->withdraw->processDongdezhuan();
-        } else {
-            $this->withdraw->process();
-        }
+        $this->withdraw->process();
     }
 }

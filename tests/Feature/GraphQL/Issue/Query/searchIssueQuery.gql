@@ -1,0 +1,26 @@
+#问答
+query searchIssue($query: String!, $page: Int, $count: Int) {
+    searchIssue(query: $query, page: $page, count: $count) {
+        paginatorInfo {
+            hasMorePages
+            currentPage
+        }
+        data {
+            id
+            title
+            background
+            bonus
+            user {
+                avatar
+                name
+                id
+            }
+            gold
+            count_likes
+            count_answers
+            closed
+            created_at
+            updated_at
+        }
+    }
+}

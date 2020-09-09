@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Model;
 use Illuminate\Support\Facades\DB;
 
 class Dimension extends Model
@@ -10,11 +9,11 @@ class Dimension extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'group',
         'value',
         'count',
         'created_at',
-        'updated_at',
+        'hour',
+        'date',
     ];
 
     public function user()
@@ -36,46 +35,25 @@ class Dimension extends Model
     }
 
     //更新维度统计
-    public static function setDimension($group, $name, int $value = 0, int $count = 0)
+    public static function setDimension($user, $name, int $value = 1)
     {
-        if ($name) {
-            $query = Dimension::where('name', $name)->today();
-            if ($group) {
-                $query->where("group", $group);
-            }
-
-            $dimension = $query->first();
-            if (is_null($dimension)) {
-                return $dimension = Dimension::create([
-                    'name'    => $name,
-                    'group' => $group ?? '',
-                    'count' => $count,
-                    'value'   => $value,
-                ]);
-            } else {
-                //更新数值和统计次数
-                $dimension->update(['value' => DB::raw('value +' . $value), 'count' => DB::raw('count + ' . $count)]);
-            }
-        }
-        return $dimension;
-    }
-
-    //更新维度统计（一维用,value和count覆盖之前的数据）
-    public static function setSimpleDimension($name, int $value = 0, int $count = 0)
-    {
-        $query = Dimension::where('name', $name)->today();
-
-        $dimension = $query->first();
+        $userId = $user->id;
+        //每天一个维度统计一到一个记录里
+        $dimension = Dimension::where('user_id', $userId)->where('name', $name)
+            ->today()
+            ->latest('id')
+            ->first();
         if (is_null($dimension)) {
             return $dimension = Dimension::create([
+                'user_id' => $userId,
                 'name'    => $name,
-                'count' => $count,
                 'value'   => $value,
             ]);
         } else {
             //更新数值和统计次数
-            $dimension->update(['value' => $value, 'count' => $count]);
+            $dimension->update(['value' => DB::raw('value +' . $value), 'count' => DB::raw('count + 1')]);
         }
+
         return $dimension;
     }
 

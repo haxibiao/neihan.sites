@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Notifications\DatabaseNotification;
 
 class Notification extends DatabaseNotification
@@ -11,13 +12,6 @@ class Notification extends DatabaseNotification
     {
         //赞了你 评论的内容  @某某某 内容
         switch ($this->type) {
-            case "App\\Notifications\\PlatformAccountExpire":
-                $account = $this->data['account'];
-                $order_status = $this->data['order_status'];
-                if ($order_status == PlatformAccount::EXPIRE) {
-                    return "租借账号" . $account . "已到期";
-                }
-                return "租借账号" . $account . "还有10分钟到期";
             case "App\\Notifications\\ArticleApproved":
                 return "收录了动态";
             case "App\\Notifications\\ArticleRejected":
@@ -25,9 +19,18 @@ class Notification extends DatabaseNotification
             case "App\\Notifications\\ArticleCommented":
                 $comment = \App\Comment::find($this->data['comment_id']);
                 return str_limit($comment->body, 15, '...');
+            case "App\\Notifications\\CommentedNotification":
+                $comment = \App\Comment::find($this->data['comment_id']);
+                return str_limit($comment->body, 15, '...');
             case "App\\Notifications\\ArticleFavorited":
                 return "收藏了动态";
             case "App\\Notifications\\ArticleLiked":
+                return "喜欢了文章";
+            case "App\\Notifications\\LikedNotification":
+                $type = data_get($this,'date.type');
+                if($type == 'comments'){
+                    return "点赞了评论";
+                }
                 return "喜欢了动态";
             case "App\\Notifications\\CommentLiked":
                 return "赞了评论";
@@ -58,21 +61,22 @@ class Notification extends DatabaseNotification
     {
         //回复了你的评论、在评论中提到了你...等等通知类型
         switch ($this->type) {
-            case "App\\Notifications\\PlatformAccountExpire":
-                $order_status = $this->data['order_status'];
-                if ($order_status == PlatformAccount::EXPIRE) {
-                    return "租借账号已到期";
-                }
-                return "租借账号即将到期";
             case "App\\Notifications\\ArticleApproved":
                 return "收录了动态";
             case "App\\Notifications\\ArticleRejected":
                 return "拒绝了动态";
             case "App\\Notifications\\ArticleCommented":
                 return "评论了动态";
+            case "App\\Notifications\\CommentedNotification":
+                return "评论了";
             case "App\\Notifications\\ArticleFavorited":
                 return "收藏了动态";
             case "App\\Notifications\\ArticleLiked":
+                return "喜欢了文章";
+            case "App\\Notifications\\LikedNotification":
+                if(data_get($this,'data.type') == 'comments'){
+                    return "点赞了评论";
+                }
                 return "喜欢了动态";
             case "App\\Notifications\\CommentLiked":
                 return "赞了评论";
@@ -113,28 +117,63 @@ class Notification extends DatabaseNotification
 
     public function getArticleAttribute()
     {
-        if (isset($this->data['article_id'])) {
-            $article = \App\Article::find($this->data['article_id']);
-            return $article;
+        $modelType = data_get($this,'data.type');
+        if(!in_array($modelType,['posts','comments'])){
+            return null;
         }
-        return null;
+        if($modelType == 'posts'){
+            $modelId = data_get($this,'data.id');
+            if($modelId){
+                $modelString = Relation::getMorphedModel($modelType);
+                return $modelString::withTrashed()->find($modelId);
+            }
+            return null;
+        }
+        $comment = $this->getCommentAttribute();
+        if(data_get($this,'type') == 'App\Notifications\LikedNotification'){
+            $commentable = data_get($comment,'commentable');
+            if($commentable instanceof  \App\Comment){
+                return data_get($comment,'commentable.commentable');
+            }
+            return data_get($comment,'commentable');
+        }
+        return data_get($comment,'commentable.commentable');
+    }
+
+    public function getPostAttribute()
+    {
+        $modelType = data_get($this,'data.type');
+        if(in_array($modelType,['posts','comments'])){
+            return null;
+        }
+        if($modelType == 'posts'){
+            $modelId = data_get($this,'data.id');
+            if($modelId){
+                $modelString = Relation::getMorphedModel($modelType);
+                return $modelString::withTrashed()->find($modelId);
+            }
+            return null;
+        }
+        $comment = $this->getCommentAttribute();
+        return data_get($comment,'commentable.commentable');
     }
 
     public function getCommentAttribute()
     {
-        if (isset($this->data['comment_id'])) {
-            $comment = \App\Comment::find($this->data['comment_id']);
-            return $comment;
+        $modelType = data_get($this,'data.type');
+        if($modelType != 'comments'){
+            return null;
+        }
+        $modelId = data_get($this,'data.id');
+        if($modelId){
+            $modelString = Relation::getMorphedModel($modelType);
+            return $modelString::withTrashed()->find($modelId);
         }
         return null;
     }
 
     public function getReplyAttribute()
     {
-        if (isset($this->data['reply_id'])) {
-            $comment = \App\Comment::find($this->data['reply_id']);
-            return $comment;
-        }
-        return null;
+        return $this->getCommentAttribute();
     }
 }

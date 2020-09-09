@@ -1,6 +1,16 @@
-extend type Mutation  @middleware(checks: ["auth:api"]){
-  like(user_id: Int!, liked_id: Int!, liked_type: String!): Like! @field(resolver: "App\\Like@create")
-  unlike(id: Int! @eq): Like @delete
-  toggleLike(liked_id: Int!, liked_type: LikeType!): Like! @field(resolver: "App\\Like@toggleTheLike")
+extend type Mutation  @guard(with: ["api"]){
+    """
+    点赞
+    """
+    like(user_id: Int!, liked_id: Int!, liked_type: String!): Like! @field(resolver: "App\\Like@resolveCreate")
+    """
+    取消点赞
+    """
+    unlike(id: Int! @eq): Like @delete
+    """
+    切换点赞/取消点赞
+    """
+    toggleLike(liked_id: Int!, liked_type: LikeType!): Like!
+      @field(resolver: "App\\Like@resolveToggleLike")
 }
 

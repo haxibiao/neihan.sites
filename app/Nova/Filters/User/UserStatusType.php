@@ -20,7 +20,7 @@ class UserStatusType extends Filter
      */
     public function apply(Request $request, $query, $value)
     {
-        return $query->where('status', $value);
+        return $query->where('status',$value);
     }
 
     /**
@@ -34,7 +34,6 @@ class UserStatusType extends Filter
         return [
             '上线' =>  \App\User::STATUS_ONLINE,
             '下线' =>  \App\User::STATUS_OFFLINE,
-            '封禁' =>  \App\User::STATUS_FREEZE,
         ];
     }
 }

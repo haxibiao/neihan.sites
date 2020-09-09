@@ -1,0 +1,8 @@
+extend type Mutation @middleware(checks: ["auth:api"]) {
+    answerQuestion(input:AnswerQuestionInput @spread):Answer! @field(resolver: "App\\Answer@answerQuestion")
+}
+
+input AnswerQuestionInput {
+    question_id:Int!
+    answer:String!
+}

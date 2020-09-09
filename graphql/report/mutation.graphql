@@ -1,5 +1,5 @@
 extend type Mutation @middleware(checks: ["auth:api"]) {
-  createReport(id: Int, reason: String, type: ReportType = articles): Report!
+  createReport(id: Int, reason: String, type: ReportType = posts): Report!
     @field(resolver: "App\\Report@store")
 }
 
@@ -7,5 +7,7 @@ enum ReportType {
   articles
   comments
   users
+  posts
+  post @enum(value: "posts")
   user @deprecated(reason: "请使用 `users` field!")
 }

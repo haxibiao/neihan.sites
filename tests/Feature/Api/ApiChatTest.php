@@ -21,23 +21,23 @@ class ApiChatTest extends TestCase
     }
 
     //测试聊天消息能否正常发出
-    // public function testChatMassage()
-    // {
-    //     $chat    = \App\Chat::orderBy('id', 'desc')->take(1)->first();
-    //     $uids    = json_decode($chat->uids);
-    //     $user_id = $uids[0];
+    public function testChatMassage()
+    {
+        $chat    = \App\Chat::orderBy('id', 'desc')->take(1)->first();
+        $uids    = json_decode($chat->uids);
+        $user_id = $uids[0];
 
-    //     $user = \App\User::find($user_id);
+        $user = \App\User::find($user_id);
 
-    //     $response = $this->json("POST", "/api/notification/chat/$chat->id/send", [
-    //         'api_token' => $user->api_token,
-    //         'message'   => 'test',
-    //     ]);
+        $response = $this->json("POST", "/api/notification/chat/$chat->id/send", [
+            'api_token' => $user->api_token,
+            'message'   => 'test',
+        ]);
 
-    //     $response->assertStatus(200);
-    //     $response->assertJson([
-    //         'message' => 'test',
-    //     ]);
-    // }
+        $response->assertStatus(200);
+        $response->assertJson([
+            'message' => 'test',
+        ]);
+    }
 
 }

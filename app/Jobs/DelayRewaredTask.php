@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Assignment;
+use App\UserTask;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -13,7 +13,7 @@ class DelayRewaredTask implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $assignment;
+    protected $userTask;
 
     /**
      * Create a new job instance.
@@ -22,7 +22,7 @@ class DelayRewaredTask implements ShouldQueue
      */
     public function __construct($userTaskId)
     {
-        $this->assignment = Assignment::find($userTaskId);
+        $this->userTask = UserTask::find($userTaskId);
     }
 
     /**
@@ -32,10 +32,17 @@ class DelayRewaredTask implements ShouldQueue
      */
     public function handle()
     {
-        $assignment = $this->assignment;
-        if ($assignment) {
-            $assignment->status = Assignment::TASK_DONE;
-            $assignment->save();
+        if (!is_null($this->userTask)) {
+            $this->userTask->status = UserTask::TASK_REACH;
+            $this->userTask->save();
+
+            $task = $this->userTask->task;
+            $user = $this->userTask->user;
+
+            $task->rewardTask($task, $user);
+            $task->increment('count');
+
+
         }
     }
 }

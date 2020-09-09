@@ -61,23 +61,19 @@ class Task extends Resource
             ID::make()->sortable(),
             Text::make('任务名称', 'name'),
             Text::make('任务描述', 'details'),
-            Text::make('任务模板id', 'review_flow_id'),
+            BelongsTo::make('任务模版', 'review_flow', 'App\Nova\ReviewFlow'),
             Select::make('类型', 'type')->options(\App\Task::getTypes())->displayUsingLabels(),
             Select::make('状态', 'status')->options(\App\Task::getStatuses())->displayUsingLabels(),
             Code::make('奖励', 'reward')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
             Code::make('任务配置', 'resolve')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
             //Code::make('解析', 'resolve')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
-            // BelongsTo::make('任务模版', 'reviewFlow', 'App\Nova\ReviewFlow')->hideWhenUpdating(),
             Number::make('最多完成的次数（每日任务用）', 'max_count'),
-            DateTime::make('开始时间', 'start_at'),
-            DateTime::make('截止时间', 'end_at'),
-            DateTime::make('创建时间', 'created_at')->exceptOnForms(),
+            DateTime::make('创建时间', 'created_at')->exceptOnForms()->hideFromIndex(),
             Image::make('任务图标', 'icon')->store(
                 function (Request $request, $model) {
                     $file = $request->file('icon');
                     return $model->saveDownloadImage($file);
-                }
-            )->thumbnail(function () {
+                })->thumbnail(function () {
                 return $this->icon_url;
             })->preview(function () {
                 return $this->icon_url;
@@ -87,8 +83,7 @@ class Task extends Resource
                 function (Request $request, $model) {
                     $file = $request->file('background_img');
                     return $model->saveBackGroundImage($file);
-                }
-            )->thumbnail(function () {
+                })->thumbnail(function () {
                 return $this->background_img;
             })->preview(function () {
                 return $this->background_img;

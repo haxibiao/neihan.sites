@@ -2,20 +2,18 @@
 
 namespace App;
 
-use App\User;
-use App\Traits\WalletRepo;
-use App\Traits\WalletAttrs;
-use App\Traits\WalletResolvers;
 use App\Exceptions\GQLException;
-use App\Traits\WalletAttrsCache;
-use App\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Traits\WalletAttrs;
+use App\Traits\WalletRepo;
+use App\Traits\WalletResolvers;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Wallet extends Model
 {
     use WalletResolvers;
-    use WalletAttrsCache;
+    use WalletAttrs;
     use WalletRepo;
 
     protected $fillable = [
@@ -38,10 +36,8 @@ class Wallet extends Model
     const PAY_INFO_CHANGE_MAX = 3;
 
     //钱包类型
-    const RMB_WALLET        = 0; //RMB钱包
-    const GOLD_WALLET       = 1; //金币钱包
-    const UNION_WALLET      = 2; //联盟(邀请)钱包
-    const RED_PACKET_WALLET = 3; //红包钱包
+    const RMB_WALLET  = 0; //RMB钱包
+    const GOLD_WALLET = 1; //金币钱包
 
     public function user(): BelongsTo
     {
@@ -63,7 +59,7 @@ class Wallet extends Model
     {
         $wallet = self::firstOrCreate([
             'user_id' => $user->id,
-            'type'    => 0,
+            'type'    => Wallet::RMB_WALLET,
         ]);
         return $wallet;
     }
@@ -76,6 +72,18 @@ class Wallet extends Model
         ]);
         return $wallet;
     }
+
+    public function isCanWithdraw($amount)
+    {
+        return $this->availableBalance >= $amount;
+    }
+
+
+    public function scopeToday($query, $column = 'created_at')
+    {
+        return $query->where($column, '>=', today());
+    }
+
 
     public function createWithdraw($amount)
     {

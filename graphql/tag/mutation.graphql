@@ -1,0 +1,25 @@
+extend type Mutation{
+  """
+  添加标签
+  """
+  addTag(
+    taggable_id: Int!
+
+    taggable_type: tagType!
+    """
+    标签名
+    """
+    name: String
+    """
+    标签ID
+    """
+    tag_ids: [Int]
+  ): Boolean! @field(resolver: "App\\Tag@resovelAddTags")
+}
+
+enum tagType {
+  """
+  动态
+  """
+  posts
+}

@@ -21,6 +21,8 @@ use Laravel\Nova\Resource;
 class Article extends Resource
 {
 
+    public static $displayInNavigation = false;
+
     public static $model = 'App\\Article';
 
     public static $title = 'title';

@@ -156,4 +156,45 @@ class Contribute extends Model
     {
         return Contribute::where('id', '<', $this->id)->where('user_id', $this->user_id)->sum('amount');
     }
+
+    public static function rewardAssignmentContribute($user, $assignment, $amount)
+    {
+        Contribute::create(
+            [
+                'user_id'          => $user->id,
+                'contributed_id'   => $assignment->id,
+                'contributed_type' => 'assignments',
+                'amount'           => $amount,
+            ]
+        );
+    }
+
+    public static function rewardSignInAdditional($user, $amount = 10)
+    {
+        $contribute = self::create(
+            [
+                'user_id'          => $user->id,
+                'contributed_id'   => 0,
+                'amount'           => $amount,
+                'contributed_type' => 'sign_ins_additional',
+            ]
+        );
+
+        return $contribute;
+    }
+
+    public static function rewardSignInDoubleReward($user, $signIn, $amount = 10)
+    {
+        $contribute = self::firstOrNew(
+            [
+                'user_id'          => $user->id,
+                'contributed_id'   => $signIn->id,
+                'contributed_type' => 'sign_ins_double_reward',
+            ]
+        );
+        $contribute->amount = $amount;
+        $contribute->save();
+
+        return $contribute;
+    }
 }

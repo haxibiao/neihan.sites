@@ -1,6 +1,6 @@
 type Feedback {
   id: Int!
-  content: String!
+  content: String
   user: User!
   images: [Image]
   comments: [Comment]

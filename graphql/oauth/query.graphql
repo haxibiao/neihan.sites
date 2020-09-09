@@ -8,4 +8,5 @@ type OAuth{
 enum OAuthType{
     WECHAT @enum(value:wechat)
     ALIPAY @enum(value:alipay)
+    PHONE @enum(value:mobile)
 }

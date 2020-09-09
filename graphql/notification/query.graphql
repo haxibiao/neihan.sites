@@ -3,7 +3,8 @@ type Notification {
   body: String
   type: String @rename(attribute: "TypeName")
   time_ago: String
-  article: Article
+  article: Article @deprecated(reason: "如果是查看动态请使用post属性")
+  post: Post
   comment: Comment
   reply: Comment @deprecated(reason: "已经废弃,请使用comment")
   user: User
@@ -12,7 +13,8 @@ type Notification {
 }
 
 extend type Query @middleware(checks: ["auth:api"]) {
-  notifications(type: NotificationType!): [Notification!] @paginate(defaultCount: 10, builder: "App\\User@resolveNotifications")
+  notifications(type: NotificationType!): [Notification!]
+    @paginate(defaultCount: 10, builder: "App\\User@resolveNotifications")
 }
 
 enum NotificationType {
@@ -25,7 +27,6 @@ enum NotificationType {
   ARTICLE_FAVORITED @enum(value: "App\\Notifications\\ArticleFavorited")
   ARTICLE_LIKED @enum(value: "App\\\\Notifications\\\\ArticleLiked")
   COMMENT_LIKED @enum(value: "App\\\\Notifications\\\\CommentLiked")
-  PLATFORMACCOUNT_EXPIRE @enum(value: "App\\Notifications\\PlatformAccountExpire")
   ARTICLE_TIPED @enum(value: "App\\Notifications\\ArticleTiped")
   CATEGORY_FOLLOWED @enum(value: "App\\Notifications\\CategoryFollowed")
   CATEGORY_REQUESTED @enum(value: "App\\Notifications\\CategoryRequested")

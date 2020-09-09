@@ -1,0 +1,4 @@
+# 取消拉黑用户
+mutation removeUserBlockMutation($id: Int!) {
+    removeUserBlock(id: $id)
+}

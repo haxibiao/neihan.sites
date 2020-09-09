@@ -1,0 +1,18 @@
+# 回复问答
+mutation addSolutionMutation($issue_id: Int!, $answer: String!, $images: [String!]) {
+    addSolution(issue_id: $issue_id, answer: $answer, images: $images) {
+        id
+        answer
+        image_urls
+        time_ago
+        user {
+            id
+            name
+            avatar
+        }
+        issue {
+            id
+            title
+        }
+    }
+}

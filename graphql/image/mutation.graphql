@@ -1,0 +1,11 @@
+extend type Mutation {
+  """
+  上传图片(多)
+  """
+  uploadImage(
+    """
+    多个图片(base64)
+    """
+    image: [String!]
+  ): [String!] @field(resolver: "App\\Image@resolveUploadImage")
+}

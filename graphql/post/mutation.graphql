@@ -28,6 +28,41 @@ extend type Mutation @middleware(checks: ["auth:api"]) {
     """
     图片链接
     """
-    images: [String!]
+    images: [String!],
+    """
+    标签名
+    """
+    tag_names: [String],
+    """
+    抖音的分享链接
+    """
+    share_link:String
   ): Post! @field(resolver: "App\\Post@resolveCreateContent")
+
+  updatePost(
+    """
+    动态ID
+    """
+    post_id: Int!
+    """
+    正文
+    """
+    content: String
+    """
+    正文
+    """
+    description: String,
+    """
+    标签名
+    """
+    tag_names: [String]
+  ): Post! @field(resolver: "App\\Post@resolveUpdatePost")
+
+
+
+  """
+  删除动态
+  """
+  deletePost(id: ID!): Post @delete
+  deletePost(id: Int!): Post @delete
 }

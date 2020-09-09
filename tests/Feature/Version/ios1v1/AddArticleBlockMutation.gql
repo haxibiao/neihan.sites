@@ -1,0 +1,6 @@
+# 不感兴趣
+mutation addArticleBlockMutation($id: Int!) {
+    addArticleBlock(id: $id) {
+        id
+    }
+}

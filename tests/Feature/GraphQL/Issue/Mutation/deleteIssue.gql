@@ -1,0 +1,5 @@
+mutation($issue_id:Int!){
+    deleteIssue(issue_id:$issue_id){
+        id
+    }
+}

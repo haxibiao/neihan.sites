@@ -20,7 +20,7 @@ class TaskStatusType extends Filter
      */
     public function apply(Request $request, $query, $value)
     {
-        return $query->where('status', $value);
+        return $query->where('status',$value);
     }
 
     /**

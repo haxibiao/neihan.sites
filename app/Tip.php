@@ -2,10 +2,12 @@
 
 namespace App;
 
-use App\Model;
+use App\Traits\TipResolvers;
 
 class Tip extends Model
 {
+    use TipResolvers;
+
     public $fillable = [
         'user_id',
         'tipable_id',

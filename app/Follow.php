@@ -3,14 +3,14 @@
 namespace App;
 
 use App\Model;
-use App\Traits\FollowAttrsCache;
+use App\Traits\FollowAttrs;
 use App\Traits\FollowResolvers;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Follow extends Model
 {
-    use FollowAttrsCache;
+    use FollowAttrs;
     use FollowResolvers;
     use SoftDeletes;
 

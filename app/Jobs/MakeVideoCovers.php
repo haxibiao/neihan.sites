@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Str;
 use TencentCloud\Common\Credential;
 use TencentCloud\Common\Profile\ClientProfile;
@@ -17,7 +18,7 @@ use TencentCloud\Vod\V20180717\VodClient;
 
 class MakeVideoCovers implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $tries = 2;
     // public $timeout = 600;  //need pcntl PHP extension!!!
@@ -43,12 +44,12 @@ class MakeVideoCovers implements ShouldQueue
     {
         $video = $this->video;
 
-        if (Str::contains($video->path, 'vod')) {
+        if(Str::contains($video->path,'vod')){
             $videoPath = $video->path;
             $video->makeCovers($videoPath);
-        } else {
+        }else{
             $videoPath = \Storage::cloud()->url($video->path);
-            $video->makeCovers($videoPath, 'cos');
+            $video->makeCovers($videoPath,'cos');
         }
 
         $video = $this->video;
@@ -59,7 +60,7 @@ class MakeVideoCovers implements ShouldQueue
         ]);
 
         $article->cover_path = $video->cover;
-        $article->user_id    = $video->user_id;
+        $article->user_id = $video->user_id;
 
         if (!$article->type) {
             $article->type = 'video';
@@ -70,16 +71,15 @@ class MakeVideoCovers implements ShouldQueue
 
         $article->save();
 
-        if (Str::contains($video->path, 'vod')) {
+        if(Str::contains($video->path,'vod')){
             //CDN预热
             $this->pushUrlCacheRequest($video->path);
         }
     }
 
-    public function pushUrlCacheRequest($url)
-    {
+    public function pushUrlCacheRequest($url){
         //VOD预热
-        $cred        = new Credential(config('tencentvod.' . config('app.name') . '.secret_id'), config('tencentvod.' . config('app.name') . '.secret_key'));
+        $cred = new Credential(config('tencentvod.'.config('app.name').'.secret_id'), config('tencentvod.'.config('app.name').'.secret_key'));
         $httpProfile = new HttpProfile();
         $httpProfile->setEndpoint("vod.tencentcloudapi.com");
 
@@ -87,8 +87,8 @@ class MakeVideoCovers implements ShouldQueue
         $clientProfile->setHttpProfile($httpProfile);
 
         $client = new VodClient($cred, "ap-guangzhou", $clientProfile);
-        $req    = new PushUrlCacheRequest();
-        $params = '{"Urls":["' . $url . '"]}';
+        $req = new PushUrlCacheRequest();
+        $params = '{"Urls":["'.$url.'"]}';
 
         $req->fromJsonString($params);
         $client->PushUrlCache($req);

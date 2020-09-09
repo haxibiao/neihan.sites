@@ -1,0 +1,23 @@
+query chatsQuery($user_id: Int!, $page: Int) {
+    chats(user_id: $user_id, page: $page) {
+        paginatorInfo {
+            currentPage
+            hasMorePages
+        }
+        data {
+            id
+            unreads
+            time_ago
+            updated_at
+            lastMessage {
+                id
+                message
+            }
+            withUser {
+                id
+                name
+                avatar
+            }
+        }
+    }
+}

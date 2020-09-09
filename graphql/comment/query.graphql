@@ -1,10 +1,10 @@
 extend type Query {
   comments(
-    commentable_id: Int! @eq
-    commentable_type: String! @eq
-    user_id: Int @eq
+    commentable_id: Int!
+    commentable_type: String!
+    user_id: Int
     orderBy: [OrderByClause!] @orderBy @deprecated(reason: "已经废弃")
-  ): [Comment!] @paginate(defaultCount: 5, builder: "App\\Http\\GraphQL\\Queries\\CommentQueries@comments")
+  ): [Comment!] @paginate(defaultCount: 5, builder: "App\\Comment@resovleComments")
 
   comment(id: Int! @eq): Comment @find
 
@@ -15,7 +15,8 @@ type Comment {
   id: Int!
   user: User
   body: String!
-  likes: Int
+  likes: Int @rename(attribute:"count_likes")
+  count_likes: Int
   liked: Boolean
   count_replies: Int
   commentable_id: Int!

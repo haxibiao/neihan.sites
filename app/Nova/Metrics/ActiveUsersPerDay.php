@@ -2,7 +2,6 @@
 
 namespace App\Nova\Metrics;
 
-use App\Dimension;
 use App\User;
 use App\Visit;
 use Illuminate\Http\Request;
@@ -23,29 +22,20 @@ class ActiveUsersPerDay extends Trend
      */
     public function calculate(Request $request)
     {
-
         $range = $request->range;
         $data  = [];
-        // $cacheKey = 'nova_user_activity_num_of_%s';
+        $cacheKey = 'nova_user_activity_num_of_%s';
         $endOfDay = Carbon::yesterday();
-        $headOfDay = Carbon::yesterday()->addDay(1);
-        for ($i = 0; $i < $range - 1; $i++) {
-
-            // $key   = sprintf($cacheKey, $endOfDay->toDateString());
-            // $cacheValue = cache()->store('database')->get($key, 0);
-            $dimension = Dimension::where("created_at", "<", $headOfDay)->where("created_at", ">=", $endOfDay)->where("name", "日活数")->first();
-            $count = 0;
-            if ($dimension) {
-                $count = $dimension->count;
-            }
-            $data[$endOfDay->toDateString()] = $count;
+        for ( $i = 0; $i<$range-1; $i++ ){
+            $key   = sprintf($cacheKey,$endOfDay->toDateString());
+            $cacheValue = cache()->store('database')->get($key,0);
+            $data[$endOfDay->toDateString()] = $cacheValue;
             $endOfDay = $endOfDay->subDay(1);
-            $headOfDay = $headOfDay->subDay(1);
         }
-        // //实时获取今日的用户活跃数
-        // $count  = Visit::whereDate('created_at',today())->distinct()->count('user_id');
+        //实时获取今日的用户活跃数
+        $count  = Visit::whereDate('created_at',today())->distinct()->count('user_id');
         $data = array_reverse($data);
-        // $data = array_merge($data,[today()->toDateString() => $count]);
+        $data = array_merge($data,[today()->toDateString() => $count]);
 
         return (new TrendResult(Arr::last($data)))->trend($data);
     }
@@ -72,7 +62,7 @@ class ActiveUsersPerDay extends Trend
      */
     public function cacheFor()
     {
-        return now();
+        return now()->addMinutes(5);
     }
 
     /**

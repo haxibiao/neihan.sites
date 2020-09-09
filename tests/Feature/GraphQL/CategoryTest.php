@@ -4,10 +4,11 @@ namespace Tests\Feature\GraphQL;
 
 use App\Chat;
 use App\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CategoryTest extends TestCase
 {
-
+    use DatabaseTransactions;
     /* --------------------------------------------------------------------- */
     /* ------------------------------- Mutation ----------------------------- */
     /* --------------------------------------------------------------------- */

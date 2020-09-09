@@ -1,0 +1,8 @@
+type IssueInvite {
+  id: Int!
+  user: User!
+  invited_user:User!
+  issue:Issue!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
