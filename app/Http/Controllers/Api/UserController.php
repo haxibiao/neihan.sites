@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Article;
-use App\Http\Controllers\Controller;
-use App\Image;
 use App\User;
+use App\Image;
 use App\Video;
+use App\Article;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserController extends Controller
 {
