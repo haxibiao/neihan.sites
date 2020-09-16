@@ -39,7 +39,7 @@ Route::group(['namespace' => '\Haxibiao\Media\Http\Api'], function () {
     // Route::post('/media/import', 'SpiderController@importDouyinSpider');
 
     //media服务抖音采集成功回调
-    Route::any('/media/hook', 'SpiderController@hook');
+    // Route::any('/media/hook', 'SpiderController@hook');
 
     //COS视频回调
     Route::any('cos/video/hook', 'VideoController@cosHookVideo');

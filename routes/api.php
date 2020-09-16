@@ -65,9 +65,9 @@ Route::middleware('auth:api')->get('/favorite/{id}/{type}', 'Api\FavoriteControl
 //获取VOD上传签名
 Route::get('/signature/vod-{site}', 'Api\VodController@signature');
 
-Route::post('/live/screenShots', 'Api\LiveController@screenShots');
-Route::post('/live/cutOut', 'Api\LiveController@cutOutLive');
-Route::post('/live/recording', 'Api\LiveController@recording');
+// Route::post('/live/screenShots', 'Api\LiveController@screenShots');
+// Route::post('/live/cutOut', 'Api\LiveController@cutOutLive');
+// Route::post('/live/recording', 'Api\LiveController@recording');
 
 //like赞
 Route::middleware('auth:api')->post('/like/{id}/{type}', 'Api\LikeController@toggle');
