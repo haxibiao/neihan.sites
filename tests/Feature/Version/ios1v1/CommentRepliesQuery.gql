@@ -1,0 +1,36 @@
+# 子评论列表
+query commentRepliesQuery($id: Int!, $page: Int, $count: Int) {
+    comment(id: $id) {
+        id
+        body
+        likes
+        liked
+        count_replies
+        time_ago
+        commentable_id
+        user {
+            id
+            name
+            avatar
+        }
+        comments(page: $page, count: $count) {
+            paginatorInfo {
+                currentPage
+                hasMorePages
+            }
+            data {
+                id
+                body
+                likes
+                liked
+                time_ago
+                commentable_id
+                user {
+                    id
+                    name
+                    avatar
+                }
+            }
+        }
+    }
+}

@@ -8,7 +8,7 @@ return [
          * The name of this application. You can use this name to monitor
          * the backups.
          */
-        'name' => config('app.name') . '-backup',
+        'name' => env('APP_NAME', 'laravel-backup'),
 
         'source' => [
 
@@ -34,7 +34,12 @@ return [
                 /*
                  * Determines if symlinks should be followed.
                  */
-                'followLinks' => false,
+                'follow_links' => false,
+
+                /*
+                 * Determines if it should avoid unreadable folders.
+                 */
+                'ignore_unreadable_directories' => false,
             ],
 
             /*
@@ -51,7 +56,18 @@ return [
              *                'table_to_exclude_from_backup',
              *                'another_table_to_exclude'
              *            ]
-             *       ]
+             *       ],
+             * ],
+             *
+             * If you are using only InnoDB tables on a MySQL server, you can
+             * also supply the useSingleTransaction option to avoid table locking.
+             *
+             * E.g.
+             * 'mysql' => [
+             *       ...
+             *      'dump' => [
+             *           'useSingleTransaction' => true,
+             *       ],
              * ],
              *
              * For a complete list of available customization options, see https://github.com/spatie/db-dumper
@@ -85,7 +101,7 @@ return [
              * The disk names on which the backups will be stored.
              */
             'disks' => [
-                'local',
+                'cosv5',
             ],
         ],
 
@@ -97,7 +113,7 @@ return [
 
     /*
      * You can get notified when specific events occur. Out of the box you can use 'mail' and 'slack'.
-     * For Slack you need to install guzzlehttp/guzzle.
+     * For Slack you need to install guzzlehttp/guzzle and laravel/slack-notification-channel.
      *
      * You can also use your own notification classes, just make sure the class is named after one of
      * the `Spatie\Backup\Events` classes.
@@ -105,11 +121,11 @@ return [
     'notifications' => [
 
         'notifications' => [
-            \Spatie\Backup\Notifications\Notifications\BackupHasFailed::class => ['mail'],
-            \Spatie\Backup\Notifications\Notifications\UnhealthyBackupWasFound::class => ['mail'],
+            \Spatie\Backup\Notifications\Notifications\BackupHasFailed::class => [],
+            \Spatie\Backup\Notifications\Notifications\UnhealthyBackupWasFound::class => [],
             \Spatie\Backup\Notifications\Notifications\CleanupHasFailed::class => [],
-            \Spatie\Backup\Notifications\Notifications\BackupWasSuccessful::class => ['mail'],
-            \Spatie\Backup\Notifications\Notifications\HealthyBackupWasFound::class => ['mail'],
+            \Spatie\Backup\Notifications\Notifications\BackupWasSuccessful::class => [],
+            \Spatie\Backup\Notifications\Notifications\HealthyBackupWasFound::class => [],
             \Spatie\Backup\Notifications\Notifications\CleanupWasSuccessful::class => [],
         ],
 
@@ -119,16 +135,14 @@ return [
          */
         'notifiable' => \Spatie\Backup\Notifications\Notifiable::class,
 
-        //邮件通知
-        'mail' => [
-            'to' => [
-                'xiaoxinming@haxibiao.com',
-                'ivan@haxibiao.com',
-                'caizhigang@haxibiao.com',
-                'zengdawei@haxibiao.com',
-                'wuxiuzhang@haxibiao.com',
-            ],
-        ],
+//        'mail' => [
+//            'to' => 'tangshujuan@haxifang.cn',
+//
+//            'from' => [
+//                'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+//                'name' => env('MAIL_FROM_NAME', 'Example'),
+//            ],
+//        ],
 
         'slack' => [
             'webhook_url' => '',
@@ -150,22 +164,26 @@ return [
      * If a backup does not meet the specified requirements the
      * UnHealthyBackupWasFound event will be fired.
      */
-    'monitorBackups' => [
+    'monitor_backups' => [
         [
-            'name' => config('app.name'),
+            'name' => env('APP_NAME', 'laravel-backup'),
             'disks' => ['local'],
-            'newestBackupsShouldNotBeOlderThanDays' => 1,
-            'storageUsedMayNotBeHigherThanMegabytes' => 5000,
+            'health_checks' => [
+                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 1,
+                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 5000,
+            ],
         ],
 
         /*
-    [
-    'name' => 'name of the second app',
-    'disks' => ['local', 's3'],
-    'newestBackupsShouldNotBeOlderThanDays' => 1,
-    'storageUsedMayNotBeHigherThanMegabytes' => 5000,
-    ],
-     */
+        [
+            'name' => 'name of the second app',
+            'disks' => ['local', 's3'],
+            'health_checks' => [
+                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 1,
+                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 5000,
+            ],
+        ],
+        */
     ],
 
     'cleanup' => [
@@ -180,39 +198,39 @@ return [
          */
         'strategy' => \Spatie\Backup\Tasks\Cleanup\Strategies\DefaultStrategy::class,
 
-        'defaultStrategy' => [
+        'default_strategy' => [
 
             /*
-             * 所有每日备份必须保留的天数。
-             * 0就是只保留当天的备份
+             * The number of days for which backups must be kept.
              */
-            'keepAllBackupsForDays' => 0,
+            'keep_all_backups_for_days' => 0,
 
             /*
              * The number of days for which daily backups must be kept.
              */
-            'keepDailyBackupsForDays' => 16,
+            'keep_daily_backups_for_days' => 16,
 
             /*
              * The number of weeks for which one weekly backup must be kept.
              */
-            'keepWeeklyBackupsForWeeks' => 8,
+            'keep_weekly_backups_for_weeks' => 8,
 
             /*
              * The number of months for which one monthly backup must be kept.
              */
-            'keepMonthlyBackupsForMonths' => 4,
+            'keep_monthly_backups_for_months' => 4,
 
             /*
              * The number of years for which one yearly backup must be kept.
              */
-            'keepYearlyBackupsForYears' => 5,
+            'keep_yearly_backups_for_years' => 2,
 
             /*
              * After cleaning up the backups remove the oldest backup until
              * this amount of megabytes has been reached.
              */
-            'deleteOldestBackupsWhenUsingMoreMegabytesThan' => 5000,
+            'delete_oldest_backups_when_using_more_megabytes_than' => 5000,
         ],
     ],
+
 ];

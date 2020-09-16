@@ -2,11 +2,12 @@
 
 namespace App\Traits;
 
-use App\Assignment;
+use App\Action;
 use App\Exceptions\GQLException;
 use App\Jobs\DelayRewaredTask;
 use App\Task;
 use App\User;
+use App\UserTask;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 
@@ -20,16 +21,6 @@ trait TaskRepo
     public function isTimeTask()
     {
         return $this->type == self::TIME_TASK;
-    }
-
-    public function isNewUserTask()
-    {
-        return $this->type == self::NEW_USER_TASK;
-    }
-
-    public function isCustomTask()
-    {
-        return $this->type == self::CUSTOM_TASK;
     }
 
     public function getDailyStartTime()
@@ -57,7 +48,7 @@ trait TaskRepo
         return $end_date_day;
     }
 
-    public function getTaskContent()
+    public function getTaskContent($reward_rate = 1)
     {
 
         $usertask_reward = $this->reward_info;
@@ -66,201 +57,232 @@ trait TaskRepo
         }
         $reward_content = '';
         if (array_get($usertask_reward, "gold")) {
-            $reward_content = sprintf(" 金币+%s", array_get($usertask_reward, "gold"));
+            $reward_content = sprintf(" 金币+%s", array_get($usertask_reward, "gold") * $reward_rate);
+
         }
 
         if (array_get($usertask_reward, "contribute")) {
-            $reward_content = $reward_content . sprintf(" 贡献值+%s", array_get($usertask_reward, "contribute"));
+            $reward_content = $reward_content . sprintf(" 贡献值+%s", array_get($usertask_reward, "contribute") * $reward_rate);
+        }
+
+        //TODO 更新掉名字,用中文
+        if ($this->name == "SleepMorning") {
+            $name = "起床卡";
+        }
+        if ($this->name == "SleepNight") {
+            $name = "睡觉卡";
         }
 
         $reward_info = sprintf('%s完成。奖励:', $this->name);
 
+        if ($reward_rate > 1) {
+            $reward_info = sprintf('%s完成。' . $reward_rate . '倍奖励:', $this->name);
+        }
+
         return $reward_info . $reward_content;
     }
 
-    public function getAssignment($user_id)
+    //获取所有子任务的queryBuild
+    public function getchildrenBuild($user_id)
     {
-        return \App\Assignment::firstOrCreate([
-            "task_id" => $this->id,
-            "user_id" => $user_id,
-        ]);
-    }
-
-    //检查并更新assignment的进度（current_count）和状态（status）
-    public function checkTaskStatus($user)
-    {
-        $task       = $this;
-        $assignment = $task->getAssignment($user->id);
-
-        //每日任务: 重置刷新状态和进度
-        if ($task->isDailyTask()) {
-            //新的一天开始
-            if ($assignment->updated_at < today()) {
-                $assignment->progress      = 0;
-                $assignment->completed_at  = null;
-                $assignment->resolve       = null;
-                $assignment->current_count = 0;
-                $assignment->save();
-            }
-        }
-
-        if ($assignment->status < Assignment::TASK_REACH) {
-            if ($flow = $task->reviewFlow) {
-                // 执行模版任务定义的检查方法s
-                $checkoutFunctions = $flow->check_functions;
-                $taskIsDone        = false;
-                if (is_array($checkoutFunctions)) {
-                    foreach ($checkoutFunctions as $method) {
-                        if (!method_exists($this, $method)) {
-                            break;
-                        }
-                        //执行检查
-                        $result = $this->$method($user, $task, $assignment);
-                        if ($result['status']) {
-                            //检查结果2：任务状态,已指派的更新为已完成
-                            if ($assignment->status == Assignment::TASK_REVIEW) {
-                                $assignment->status = Assignment::TASK_REACH;
-                            }
-
-                            $assignment->completed_at = now();
-                        }
-                        //检查结果1：任务进度
-                        $assignment->current_count = Arr::get($result, 'current_count', 0);
-                        if ($task->max_count > 0) {
-                            $assignment->progress = $assignment->current_count / $task->max_count;
-                        }
-                        $assignment->save();
-                    }
+        $childrenTasks_id   = $this->childrenTasks()->pluck('id')->toArray();
+        $childrenTasksBuild = UserTask::where('user_id', $user_id)->whereIn('task_id', $childrenTasks_id);
+        if ($childrenTasksBuild->get()) {
+            $firstchilderentask = $childrenTasksBuild->first();
+            if (!is_null($firstchilderentask)) {
+                $firstchilderentask = $firstchilderentask->task;
+                if ($firstchilderentask->type == self::TIME_TASK) {
+                    $childrenTasksBuild = $childrenTasksBuild->whereDate('updated_at', today());
                 }
             }
         }
-        return $assignment->status;
+        return $childrenTasksBuild;
     }
 
-    public function highPraise(User $user, Task $task, string $content): bool
+    public function getUserTask($user_id, $chilren = false)
     {
-        $assignment = $task->getAssignment($user->id);
+        $userTaskBuild = UserTask::where(['task_id' => $this->id, 'user_id' => $user_id]);
 
-        if ($assignment->status >= Assignment::TASK_REACH) {
-            throw new GQLException('好评任务已经做过了哦~');
-        }
-
-        $assignment->status = Assignment::TASK_REVIEW;
-        $assignment->save();
-
-        //无需审核，1分钟后任务自动完成
-        dispatch(new DelayRewaredTask($assignment->id))->delay(now()->addMinute(1));
-        return 1;
-    }
-
-    public function toastDiffTime($completed_at, $minutes)
-    {
-        $seconds = $minutes * 60;
-        $diffmi  = Carbon::parse($completed_at)->diffInMinutes();
-        $diffse  = Carbon::parse($completed_at)->diffInSeconds(now());
-        if ($diffmi < $minutes) {
-            if ($seconds - $diffse < 60 && $seconds - $diffse > 0) {
-                $diffsecoend = 60 - $diffse;
-                return '请' . $diffsecoend . '秒后来';
-            } else {
-                $diffminutes = $minutes - $diffmi;
-                return '请' . $diffminutes . '分钟后来';
+        //时间任务
+        if ($this->isTimeTask() || $this->isDailyTask()) {
+            $userTask = $userTaskBuild->first();
+            if (!is_null($userTask)) {
+                if ($userTask->updated_at < today()) {
+                    //更新状态\进度\完成时间
+                    $userTask->status       = UserTask::TASK_UNDONE;
+                    $userTask->progress     = 0;
+                    $userTask->completed_at = null;
+                    $userTask->save();
+                    //强制更新
+                    $userTask->touch();
+                    return $userTask;
+                }
             }
+            $userTaskBuild = $userTaskBuild->whereDate('updated_at', today());
         }
+
+        //获取所有的子任务
+        if ($chilren) {
+            return $this->getchildrenBuild($user_id)->get();
+        }
+        return $userTaskBuild->first();
+    }
+
+    //获取子任务的最后完成时间
+    public function getparentTaskComplete($user_id)
+    {
+        $usertaskBuilder = $this->getchildrenBuild($user_id);
+        //处理最后完成时间
+        $complete_count  = $usertaskBuilder->whereNull('completed_at')->count();
+        $usertaskBuilder = $this->getchildrenBuild($user_id);
+
+        if (!$complete_count) {
+            $completed_usertasks = $usertaskBuilder->orderBy('completed_at', 'desc')->first();
+            return $completed_usertasks->completed_at;
+        }
+
         return null;
     }
 
-    public function saveDownloadImage($file)
+    //获取所有子任务进度
+    public function getparentTaskProgress($user_id)
     {
-        if ($file) {
-            $task_logo = 'task/task' . $this->id . '_' . time() . '.png';
-            $cosDisk   = \Storage::cloud();
-            $cosDisk->put($task_logo, \file_get_contents($file->path()));
-
-            return $task_logo;
-        }
+        $usertaskBuilder = $this->getchildrenBuild($user_id);
+        return $usertaskBuilder->avg('progress');
     }
 
-    public function saveBackGroundImage($file)
+    /**
+     * 接受任务
+     * @param User $user
+     * @param Task $task
+     * @return bool
+     */
+    public function receiveTask(User $user, Task $task)
     {
-        if ($file) {
-            $task_logo = 'task/background/task/' . $this->id . '_' . time() . '.png';
-            $cosDisk   = \Storage::cloud();
-            $cosDisk->put($task_logo, \file_get_contents($file->path()));
-            return $task_logo;
+
+        $taskExisted = $user->tasks()->wherePivot('task_id', $task->id)->exists();
+
+        if (!$taskExisted) {
+
+            $user->tasks()->attach($task->id, ['status' => UserTask::TASK_UNDONE]);
+            Action::createAction('tasks', $task->id, $user->id);
+        }
+        return true;
+    }
+
+    //为了兼容app 2.8版本喝水赚钱
+    public function updateDrinkUserTask($user)
+    {
+        //app 2.8版本兼容喝水赚钱
+        $isDrinkWater = getAppVersion() < '2.9.0' ? Arr::get($this->resolve, 'task_en') == "DrinkWaterAll" : false;
+
+        if ($isDrinkWater) {
+            $piovt = UserTask::createUserTask($this->id, $user->id, now());
+            if ($piovt->updated_at < today()) {
+                $piovt->status       = UserTask::TASK_UNDONE;
+                $piovt->progress     = 0;
+                $piovt->completed_at = null;
+                $piovt->save();
+                //强制更新
+                $piovt->touch();
+            }
         }
     }
 
     /**
-     * 获取喝水子任务列表
-     *
-     * @param $resolve
-     * @return array[]
+     * 重置状态与修改状态
+     * @param User $user
+     * @return int
      */
-    public function getDrinkWaterSubTasks($resolve)
+    public function checkTaskStatus($user)
     {
-        $results = [
-            [
-                'id'            => 1,
-                'task_status'   => Assignment::TASK_UNDONE,
-                'start_time'    => '9:00',
-                'task_progress' => 0,
-            ], [
-                'id'            => 2,
-                'task_status'   => Assignment::TASK_UNDONE,
-                'start_time'    => '10:00',
-                'task_progress' => 0,
-            ], [
-                'id'            => 3,
-                'task_status'   => Assignment::TASK_UNDONE,
-                'start_time'    => '11:00',
-                'task_progress' => 0,
-            ], [
-                'id'            => 4,
-                'task_status'   => Assignment::TASK_UNDONE,
-                'start_time'    => '12:00',
-                'task_progress' => 0,
-            ], [
-                'id'            => 5,
-                'task_status'   => Assignment::TASK_UNDONE,
-                'start_time'    => '13:00',
-                'task_progress' => 0,
-            ], [
-                'id'            => 6,
-                'task_status'   => Assignment::TASK_UNDONE,
-                'start_time'    => '14:00',
-                'task_progress' => 0,
-            ], [
-                'id'            => 7,
-                'task_status'   => Assignment::TASK_UNDONE,
-                'start_time'    => '15:00',
-                'task_progress' => 0,
-            ], [
-                'id'            => 8,
-                'task_status'   => Assignment::TASK_UNDONE,
-                'start_time'    => '16:00',
-                'task_progress' => 0,
-            ],
-        ];
-        for ($position = 1; $position <= count($results); $position++) {
-            $index = $position - 1;
-            //补卡的状态
-            $hour = Carbon::now()->hour;
-            if ($position + 8 == $hour) {
-                $results[$index]['task_status'] = Assignment::TASK_REVIEW;
-            }
-            if ($position + 8 < $hour) {
-                $results[$index]['task_status'] = Assignment::TASK_FAILED;
-            }
+        $piovt = UserTask::firstOrNew([
+            "task_id" => $this->id,
+            "user_id" => $user->id,
+        ]);
 
-            //打卡完成状态
-            if (is_array($resolve)) {
-                if (in_array($position, $resolve)) {
-                    $results[$index]['task_status']   = Assignment::TASK_DONE;
-                    $results[$index]['task_progress'] = count($resolve) / 8;
+        //为了兼容app 2.8版本喝水赚钱
+        $this->updateDrinkUserTask($user);
+
+        if ($this->isDailyTask()) {
+            if ($piovt->updated_at < today()) {
+                $piovt->status       = UserTask::TASK_UNDONE;
+                $piovt->progress     = 0;
+                $piovt->completed_at = null;
+                $piovt->save();
+                //强制更新
+                $piovt->touch();
+            }
+        }
+
+        if ($this->type != self::CUSTOM_TASK) {
+            if ($piovt->status < UserTask::TASK_REACH) {
+                $method = $this->resolve['method'] ?? null;
+                if (!is_null($method) && method_exists($this, $method)) {
+                    $args = $this->resolve['args'] ?? [];
+                    try {
+                        $taskDone = $this->$method(...$args);
+                    } catch (Exception $e) {
+                        \info($e->getMessage());
+                    }
+                    if ($taskDone) {
+                        $piovt->fill(['status' => UserTask::TASK_REACH])->save();
+                    }
                 }
             }
         }
-        return $results;
+
+        return $piovt->status;
+    }
+
+    public function rewardTask(Task $task, User $user)
+    {
+        $pivot = \App\UserTask::firstOrNew([
+            'user_id' => $user->id,
+            'task_id' => $task->id,
+        ]);
+        if ($pivot->id) {
+            if ($pivot->status == UserTask::TASK_REACH) {
+                $process_reward = $pivot->processReward($task->reward_info);
+                if ($process_reward) {
+                    $pivot->status  = UserTask::TASK_DONE;
+                    $pivot->content = $task->getTaskContent();
+                    $pivot->save();
+                    $task->increment('count');
+                    $task->save();
+                }
+            }
+        }
+    }
+
+    /**
+     * @param User $user
+     * @param Task $task
+     * @param string $content
+     * @return bool
+     * @throws GQLException
+     */
+    public function highPraise(User $user, Task $task, string $content): bool
+    {
+        $qb = UserTask::where([
+            'task_id' => $task->id,
+            'user_id' => $user->id,
+        ]);
+
+        if ($qb->doesntExist()) {
+            $user->tasks()->attach($task->id, ['status' => UserTask::TASK_UNDONE]);
+        }
+        $userTask = $qb->first();
+
+        if ($userTask->status > UserTask::TASK_UNDONE) {
+            throw new GQLException('好评任务已经做过了哦~');
+        }
+
+        $userTask->content = $content;
+        $userTask->status  = UserTask::TASK_REVIEW;
+        $saveStatus        = $userTask->save();
+//        无需审核，1分钟后任务自动完成
+        dispatch(new DelayRewaredTask($userTask->id))->delay(now()->addMinute(1));
+        return $saveStatus;
     }
 }

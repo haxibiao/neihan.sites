@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Haxibiao\Config\Config as BaseConfig;
 
-class Config extends Model
+class Config extends BaseConfig
 {
-    protected $guarded = [];
+    //
 }

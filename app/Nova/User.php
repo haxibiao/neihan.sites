@@ -2,17 +2,17 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\BindDongdezhuanAccount;
+use App\Nova\Actions\UpdateUser;
 use App\User as AppUser;
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
-use App\Nova\Actions\UpdateUser;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\DateTime;
-use App\Nova\Actions\User\RewardUser;
-use App\Nova\Actions\BindDongdezhuanAccount;
+use Laravel\Nova\Fields\Text;
 
 class User extends Resource
 {
@@ -60,23 +60,33 @@ class User extends Resource
             Text::make('名字', 'name')
                 ->sortable()
                 ->rules('required', 'max:255'),
+            Image::make('头像', 'avatar')
+                ->store(function (Request $request, $model) {
+                    $file = $request->file('avatar');
+                    return $model->saveDownloadImage($file);
+                })
+                ->thumbnail(function () {
+                    return $this->avatar_url;
+                })->preview(function () {
+                    return $this->avatar_url;
+                })->disableDownload(),
             Text::make('最近使用版本', 'profile.app_version')->sortable()->hideWhenUpdating(),
             Select::make('性别', 'gender')->options([
-                AppUser::MALE_GENDER => '男',
+                AppUser::MALE_GENDER   => '男',
                 AppUser::FEMALE_GENDER => '女',
             ])->displayUsingLabels()->hideWhenUpdating(),
 
             Select::make('权限', 'role_id')->options([
-                AppUser::USER_STATUS => '平民玩家',
+                AppUser::USER_STATUS   => '平民玩家',
                 AppUser::EDITOR_STATUS => '普通管理员',
             ])->displayUsingLabels()->onlyOnForms(),
 
             Text::make('年龄', 'age')->hideWhenUpdating(),
 
             Text::make('发布内容数', function () {
-                return $this->allArticles()->count();
+                return $this->posts()->count();
             })->hideWhenUpdating(),
-            HasMany::make('历史订单', 'order', Order::class)->onlyOnDetail(),
+
             hasMany::make('钱包', 'wallets', Wallet::class)->hideWhenUpdating(),
 
             Number::make('智慧点', 'gold')->exceptOnForms()->hideWhenUpdating(),
@@ -90,14 +100,16 @@ class User extends Resource
             DateTime::make('最后登录时间', 'updated_at')->hideWhenUpdating(),
 
             Select::make('状态', 'status')->options([
-                AppUser::STATUS_ONLINE => '上线',
+                AppUser::STATUS_ONLINE  => '上线',
                 AppUser::STATUS_OFFLINE => '下线',
-                AppUser::STATUS_FREEZE => '状态异常系统封禁',
+                AppUser::STATUS_FREEZE  => '状态异常系统封禁',
             ])->displayUsingLabels(),
 
             HasMany::make('智慧点明细', 'golds', Gold::class)->onlyOnDetail(),
             HasMany::make('贡献记录', 'contributes', Contribute::class),
-            HasMany::make('用户文章', 'articles', Article::class),
+            HasMany::make('用户文章', 'videoArticles', Article::class),
+            HasMany::make('用户动态','posts',Post::class),
+
         ];
     }
 
@@ -145,7 +157,6 @@ class User extends Resource
     public function actions(Request $request)
     {
         return [
-            new RewardUser,
             new UpdateUser,
             new BindDongdezhuanAccount,
         ];

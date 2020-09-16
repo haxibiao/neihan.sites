@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Exceptions\GQLException;
+use App\Exceptions\UserException;
 use App\Exchange;
 use App\Gold;
 use App\Jobs\ProcessWithdraw;
@@ -10,9 +11,52 @@ use App\Transaction;
 use App\User;
 use App\Wallet;
 use App\Withdraw;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 trait WalletRepo
+
+{ public static function exchangeBalance(User $user, $amount)
 {
+    // 攻击提现接口时，延迟提现有可能堵塞php-fpm 并发能力，也降低用户秒提现体验了
+    // sleep(1);
+
+    $gold        = $amount * Exchange::RATE;
+    $goldBalance = $user->gold - $gold;
+    $canExchange = $goldBalance >= 0 && $gold > 0;
+
+    $wallet = $user->wallet;
+    if (is_null($wallet)) {
+        throw new \Exception('兑换失败,请先完善提现信息!');
+    }
+
+    if (!$canExchange) {
+        throw new UserException('兑换失败,智慧点不足!');
+    }
+
+    /**
+     * 开启事务、锁住智慧点记录
+     */
+    DB::beginTransaction();
+    //兑换状态
+    $exchangeStatus = 0;
+    try {
+        //扣除智慧点
+        Gold::makeOutcome($user, $gold, "兑换余额");
+        //添加兑换记录
+        Exchange::exchangeOut($user, $gold);
+        //添加流水记录
+        Transaction::makeIncome($wallet, $amount, '智慧点兑换');
+        //变更兑换状态
+        $exchangeStatus = 1;
+        DB::commit();
+    } catch (\Exception $ex) {
+        DB::rollBack(); //数据库回滚
+        Log::error($ex);
+    }
+
+    return $exchangeStatus;
+}
     //FIXME: rmb钱包对象负责： 收入,提现
     //TODO: 充值
     public function changeRMB($amount, $remark)
@@ -27,7 +71,7 @@ trait WalletRepo
         ]);
     }
 
-    public function withdraw($amount, $to_account = null, $to_platform = Withdraw::ALIPAY_PLATFORM, $totalRate = null): Withdraw
+    public function withdraw($amount, $to_account = null, $to_platform = Withdraw::ALIPAY_PLATFORM,$totalRate = null): Withdraw
     {
         if ($this->available_balance < $amount) {
             throw new GQLException('余额不足');
@@ -41,7 +85,7 @@ trait WalletRepo
 
         $isImmediatePayment = is_null($totalRate);
 
-        if ($isImmediatePayment) {
+        if($isImmediatePayment){
             dispatch(new ProcessWithdraw($withdraw->id))->onQueue('withdraws');
         } else {
             $withdraw->rate = $totalRate;
@@ -103,13 +147,14 @@ trait WalletRepo
 
     public function setPayId($openId, $platform = Withdraw::ALIPAY_PLATFORM)
     {
-        $field        = strcasecmp($platform, Withdraw::WECHAT_PLATFORM) != 0 ? 'pay_account' : 'wechat_account';
+        $field        = $platform == Withdraw::ALIPAY_PLATFORM ? 'pay_account' : 'wechat_account';
         $this->$field = $openId;
     }
 
     public function getPayId($platform = Withdraw::ALIPAY_PLATFORM)
     {
-        $field = strcasecmp($platform, Withdraw::WECHAT_PLATFORM) != 0 ? 'pay_account' : 'wechat_account';
+        $field = $platform == Withdraw::ALIPAY_PLATFORM ? 'pay_account' : 'wechat_account';
         return $this->$field;
     }
+
 }

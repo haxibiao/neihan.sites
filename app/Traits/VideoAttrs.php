@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 trait VideoAttrs
 {
@@ -30,9 +30,9 @@ trait VideoAttrs
 
         // 相对路径 转 绝对路径
         $data = [
-            'cover' => \Storage::cloud()->url($json['cover'] ?? '/images/cover.png'),
-            'width' => $json['width'] ?? null,
-            'height' => $json['height'] ?? null,
+            'cover'  => \Storage::cloud()->url($json['cover'] ?? '/images/cover.png'),
+            'width'  => $json['width']?? null,
+            'height' => $json['height']?? null,
         ];
 
         return $data;

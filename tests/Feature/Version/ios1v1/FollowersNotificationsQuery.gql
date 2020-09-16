@@ -1,0 +1,34 @@
+#粉丝通知
+query followersNotificationsQuery($page: Int) {
+    notifications(type: USER_FOLLOWED, page: $page) {
+        paginatorInfo {
+            currentPage
+            hasMorePages
+        }
+        data {
+            id
+            type
+            time_ago
+            comment {
+                id
+                body
+                lou
+                created_at
+                user {
+                    id
+                    avatar
+                    name
+                }
+            }
+            user {
+                id
+                name
+                avatar
+                followed_status
+                gender
+                age
+                introduction
+            }
+        }
+    }
+}

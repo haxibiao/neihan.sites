@@ -1,5 +1,6 @@
-query favoritedArticlesQuery($user_id: Int!, $page: Int) {
-  favorites(user_id: $user_id, page: $page, faved_type: "articles") {
+# 收藏的文章
+query favoritedArticlesQuery($user_id: Int!) {
+  favorites(user_id: $user_id) {
     paginatorInfo {
       currentPage
       hasMorePages

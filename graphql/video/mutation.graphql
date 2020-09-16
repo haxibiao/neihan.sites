@@ -1,10 +1,13 @@
 extend type Mutation @middleware(checks: ["auth:api"]) {
-    videoPlayReward(input:videoPlayReport):Gold @field(resolver: "App\\Video@videoPlayReward")
+  """
+  这就是工厂里刷视频赚金币的奖励接口（依赖gql type Gold）
+  """
+  videoPlayReward(input: videoPlayReport): Gold
+    @field(resolver: "App\\Video@videoPlayReward")
 }
 
-input videoPlayReport{
-    video_id:Int
-    play_duration:Float,
-    video_ids:[Int],
-
+input videoPlayReport {
+  video_id: Int
+  play_duration: Float
+  video_ids: [Int]
 }

@@ -1,0 +1,35 @@
+#反馈查询
+query FeedbacksQuery($page: Int, $count: Int) {
+    feedbacks(count: $count, page: $page) {
+        paginatorInfo {
+            count
+            currentPage
+            hasMorePages
+        }
+        data {
+            id
+            user {
+                id
+                name
+                avatar
+                gender
+            }
+            images {
+                id
+                width
+                height
+                url
+                thumbnail
+            }
+            content
+            contact
+            status_msg
+            created_at
+            hot
+            comments {
+                id
+                body
+            }
+        }
+    }
+}

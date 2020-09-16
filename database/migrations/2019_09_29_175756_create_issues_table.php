@@ -40,9 +40,6 @@ class CreateIssuesTable extends Migration
             //closed
             $table->boolean('closed')->default(false)->comment('问题是否解决');
 
-            $table->string('image1')->nullable();
-            $table->string('image2')->nullable();
-            $table->string('image3')->nullable();
             $table->string('resolution_ids')->nullable();
 
             $table->timestamps();

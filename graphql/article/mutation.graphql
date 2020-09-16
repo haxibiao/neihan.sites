@@ -1,10 +1,13 @@
 extend type Mutation @middleware(checks: ["auth:api"]) {
+
   createPost(
     body: String!
     image_urls: [String!]
     video_id: Int
     category_ids: [Int!]
-  ): Article! @field(resolver: "App\\Article@resolveCreatePost")
+  ): Article!  @field(resolver: "App\\Post@resolveCreateContent")
+    @deprecated(reason: "请使用createPostContent")
+
   createContent(
     body: String!
     image_urls: [String!]
@@ -14,22 +17,22 @@ extend type Mutation @middleware(checks: ["auth:api"]) {
     images: [String!]
     type: ContenType!
     issueInput: IssueInfo
-  ): Article!
-    @field(
-      resolver: "App\\Http\\GraphQL\\Mutations\\ArticleMutators@createContent"
-    )
+  ):  Article! @field(resolver: "App\\Post@resolveCreateContent")
+    @deprecated(reason: "请使用createPostContent")
+
   restoreArticle(id: Int!): Article
     @field(resolver: "App\\Article@restoreArticle")
-  deleteArticle(id: Int!): Article
-    @field(resolver: "App\\Article@deleteArticle")
 
-  resolveDouyinVideo(share_link: String!): Article
-    @field(resolver: "App\\Article@resolveDouyinVideo")
+  """
+  接口已经废弃,请使用deletePost
+  """
+  deleteArticle(id: Int!): Post @delete
+    @deprecated(reason: "接口已经废弃,请使用deletePost")
 }
 
 enum ContenType {
   POST @enum(value: "post")
-  ISSUE @enum(value: "issue")
+  ISSUE @enum(value: "issue") @deprecated(reason: "已废弃，请使用CreateIssue")
 }
 
 input IssueInfo {

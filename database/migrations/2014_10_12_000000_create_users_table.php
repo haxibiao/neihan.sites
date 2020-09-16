@@ -9,7 +9,7 @@ class CreateUsersTable extends Migration
     /**
      * Run the migrations.
      *
-     * @return void
+     * @return void  
      */
     public function up()
     {
@@ -30,11 +30,20 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('gold')->default(0)->comment('墨宝');
             $table->unsignedInteger('dz_id')->nullable()->unique()->comment('答题赚钱ID');
 
-            $table->integer("last_category_id");
+            $table->timestamp('birthday')->nullable()->comment('生日');
+            $table->unsignedInteger('age')->default(0)->comments('年龄,如果设置了生日，自动更新年龄');
+            $table->string('background')->nullable()->comment('用户背景图');
+
+            $table->timestamp('withdraw_at')->nullable()->comments('最近提现提交的时间');
+            $table->unsignedInteger('withdraw_lines')->default(10)->comment('限量抢额度');
+
+            $table->timestamp('email_verified_at')->nullable();
             //token
             $table->string('api_token', 60)->unique();
             $table->rememberToken();
             $table->timestamps();
+
+            $table->softDeletes();
         });
     }
 

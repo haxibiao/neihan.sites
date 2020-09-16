@@ -18,8 +18,8 @@ class Like extends Model
 
     protected $fillable = [
         'user_id',
-        'liked_id',
-        'liked_type',
+        'likable_id',
+        'likable_type',
     ];
 
     public function user()
@@ -27,45 +27,57 @@ class Like extends Model
         return $this->belongsTo(User::class);
     }
 
+    // 兼容旧接口用
     public function liked()
     {
         return $this->morphTo();
     }
 
-    //兼容likable的写法
     public function likable()
     {
-        return $this->morphTo('liked');
+        return $this->morphTo('likable');
     }
 
-    public function article()
+    public function scopeByLikableType($query, $likableType)
     {
-        return $this->belongsTo(Article::class, 'liked_id');
+        return $query->where('likable_type', $likableType);
     }
 
-    public function comment()
+    public function scopeByLikableId($query, $likableId)
     {
-        return $this->belongsTo(Comment::class, 'liked_id');
+        return $query->where('likable_id', $likableId);
     }
 
-    // scope
-
-    public function scopeOfType($query, $type)
+    public function scopeByUserId($query, $userId)
     {
-        return $query->where('liked_type', $type);
+        return $query->where('user_id', $userId);
     }
 
-    public function scopeOfUser($query, $user_id)
-    {
-        return $query->where('user_id', $user_id);
-    }
-
+    // 兼容旧接口用
     public function getLikedAttribute()
     {
         if ($user = getUser(false)) {
-            //dd($this->article->id);
-            return $like = $user->likedArticles()->where('liked_id', $this->article->id)->count() > 0;
+            return $user->likes()
+                    ->byLikableType($this->likable_type)
+                    ->byLikableId($this->likable_id)->count() > 0;
         }
         return false;
+    }
+
+    // 兼容旧接口用
+    public function getPostAttribute(){
+        return $this->likable;
+    }
+
+    // 兼容旧接口用
+    public function getArticleAttribute()
+    {
+        return $this->likable;
+    }
+
+    // 兼容旧接口用
+    public function getCommentAttribute()
+    {
+        return $this->likable;
     }
 }

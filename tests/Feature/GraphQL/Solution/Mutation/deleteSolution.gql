@@ -1,0 +1,6 @@
+# 删除回答
+mutation deleteSolutionMutation($id: Int!) {
+    deleteSolution(id: $id) {
+        id
+    }
+}

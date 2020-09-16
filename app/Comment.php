@@ -3,8 +3,10 @@
 namespace App;
 
 use App\Model;
+use App\Traits\CanBeLiked;
 use App\Traits\CommentAttrs;
 use App\Traits\CommentRepo;
+use App\Traits\CommentResolvers;
 use App\User;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,6 +17,9 @@ class Comment extends Model
     use SoftDeletes;
     use CommentAttrs;
     use CommentRepo;
+    use CommentResolvers;
+    use CanBeLiked;
+
 
     protected $touches = ['commentable'];
 
@@ -27,6 +32,11 @@ class Comment extends Model
         'lou',
         'status',
     ];
+
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likable');
+    }
 
     public function commented()
     {
@@ -58,22 +68,16 @@ class Comment extends Model
         return $this->comments()->count();
     }
 
-    public function likes()
+    public function resolveComments($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        return $this->morphMany(\App\Like::class, 'liked');
+        $comment = self::findOrFail($rootValue->id);
+        return $comment->comments();
     }
 
     public function getLikesAttribute()
     {
         return $this->likes()
             ->count();
-    }
-
-    //上面的likes模型方法与comments数据库字段重名了，导致vue数据访问错误。
-    //现增加下面的方法用于区分  TODO: likes字段应该重命名为 count_likes
-    public function hasManyLikes()
-    {
-        return $this->likes();
     }
 
     public function article()
@@ -96,15 +100,5 @@ class Comment extends Model
     public function getArticleAttribute()
     {
         return $this->article()->first();
-    }
-
-    //resolvers
-
-    public function resolveComments($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {
-        app_track_event('用户页', '获取评论列表');
-
-        $comment = self::findOrFail($rootValue->id);
-        return $comment->comments();
     }
 }

@@ -4,6 +4,6 @@ type Verify {
   code: String!
   action: String!
   channel: String!
-  user: User! @belongsTo
+  user: User @belongsTo
   created_at: DateTime!
 }

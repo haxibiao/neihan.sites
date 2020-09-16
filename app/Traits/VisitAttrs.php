@@ -8,7 +8,12 @@ trait VisitAttrs
 {
     public function getArticleAttribute()
     {
-        return $this->visited instanceof \App\Article ? $this->visited : null;
+        return $this->visited instanceof \App\Post ? $this->visited : null;
+    }
+
+    public function getPostAttribute()
+    {
+        return $this->visited instanceof \App\Post ? $this->visited : null;
     }
 
     public function getTypeAttribute()

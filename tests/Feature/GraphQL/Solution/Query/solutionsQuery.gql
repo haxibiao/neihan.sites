@@ -1,0 +1,29 @@
+# 回复查询
+query solutionsQuery($issue_id: Int!, $page: Int, $count: Int) {
+    solutions(issue_id: $issue_id, page: $page, count: $count) {
+        paginatorInfo {
+            hasMorePages
+            currentPage
+        }
+        data {
+            id
+            answer
+            image_urls
+            liked
+            count_likes
+            count_unlikes
+            count_comments
+            created_at
+            time_ago
+            user {
+                id
+                name
+                avatar
+            }
+            issue {
+                id
+                title
+            }
+        }
+    }
+}

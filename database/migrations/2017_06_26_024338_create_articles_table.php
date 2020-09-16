@@ -44,7 +44,7 @@ class CreateArticlesTable extends Migration
 
             $table->string('image_top')->nullable(); //影响旧web太多功能，暂时不动
 
-            $table->integer('hits')->default(0);
+            $table->integer('hits')->default(0); 
 
             $table->integer('count_replies')->default(0);
             $table->integer('count_favorites')->default(0);
@@ -77,6 +77,8 @@ class CreateArticlesTable extends Migration
 
             $table->unsignedBigInteger('review_id')->index()->nullable();
             $table->boolean('is_hot')->index()->default(false);
+
+            $table->unsignedInteger('issue_id')->nullable()->comment('问题ID');
 
             $table->softDeletes();
 

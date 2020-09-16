@@ -28,3 +28,9 @@
 [submodule "packages/haxibiao/question"]
 	path = packages/haxibiao/question
 	url = http://code.haxibiao.cn/packages/haxibiao-question.git/
+[submodule "packages/haxibiao/tag"]
+	path = packages/haxibiao/tag
+	url = http://code.haxibiao.cn/packages/haxibiao-tag.git
+[submodule "packages/haxibiao/sns"]
+	path = packages/haxibiao/sns
+	url = http://code.haxibiao.cn/packages/haxibiao-sns.git

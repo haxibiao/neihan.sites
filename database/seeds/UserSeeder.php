@@ -21,7 +21,6 @@ class UserSeeder extends Seeder
         }
         $user->account    = $user->email;
         $user->phone      = $user->email;
-        $user->roleId     = 2;
         $user->name       = '超级管理员';
         $user->password   = bcrypt('mm1122');
         $avatar_formatter = 'http://cos.' . env('APP_NAME') . '.com/storage/avatar/avatar-%d.jpg';

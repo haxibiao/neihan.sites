@@ -81,12 +81,12 @@ class AwardResolution implements ShouldQueue
 
             foreach ($comments as $comment) {
                 //注释的原因：与PM沟通后系统自动采纳评论不放入问题的解决方案
-                //                $resolution = new Resolution();
-                //                $resolution->answer   = $comment->body;
-                //                $resolution->user_id  = $comment->user_id;
-                //                $resolution->issue_id = $article->issue_id;
-                //                $resolution->gold = $individual;
-                //                $resolution->save();
+                //                $solution = new Solution();
+                //                $solution->answer   = $comment->body;
+                //                $solution->user_id  = $comment->user_id;
+                //                $solution->issue_id = $article->issue_id;
+                //                $solution->gold = $individual;
+                //                $solution->save();
 
                 //评论被采纳
                 $comment->is_accept = true;

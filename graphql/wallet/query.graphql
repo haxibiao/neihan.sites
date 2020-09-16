@@ -1,7 +1,7 @@
 type Wallet {
   id: Int!
   user: User!
-  type: String
+  type: Int
   pay_account: String
   real_name: String
   pay_infos: String

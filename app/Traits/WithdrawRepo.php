@@ -2,11 +2,13 @@
 
 namespace App\Traits;
 
-use Haxibiao\Helpers\PayUtils;
+use App\Exchange;
+use App\Gold;
 use App\Transaction;
 use App\User;
 use App\Withdraw;
 use Carbon\Carbon;
+use Haxibiao\Helpers\PayUtils;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -22,12 +24,12 @@ trait WithdrawRepo
      * @param $withdraws
      * @param $withdrawThree
      */
-    public static function progressWithdrawLimit($withdraws, $withdrawThree)
-    {
+    public static function progressWithdrawLimit($withdraws,$withdrawThree){
 
-        if (!$withdraws) {
+        if(!$withdraws){
             return;
         }
+
         $amountMapping = [
             '3.00'  => 3,
             '5.00'  => 5,
@@ -35,24 +37,24 @@ trait WithdrawRepo
         ];
         $amount = $amountMapping[$withdrawThree];
 
-        $successWithdrawsCount = Withdraw::whereDate('created_at', Carbon::yesterday())
-            ->where('status', Withdraw::SUCCESS_WITHDRAW)
-            ->where('amount', $amount)
+        $successWithdrawsCount = Withdraw::whereDate('created_at',Carbon::yesterday())
+            ->where('status',Withdraw::SUCCESS_WITHDRAW)
+            ->where('amount',$amount)
             ->count();
 
         //当前额度没有用户提现成功则选中一位幸运儿
         $luckWithdrawId = null;
-        if ($successWithdrawsCount == 0) {
-            $plucked        = $withdraws->pluck('rate', 'id')->all();
+        if($successWithdrawsCount == 0){
+            $plucked = $withdraws->pluck('rate','id')->all();
             $luckWithdrawId = getRand($plucked);
         }
 
-        foreach ($withdraws as $withdraw) {
+        foreach ( $withdraws as $withdraw ){
 
             $currentId = $withdraw->id;
 
             $isLuckUser = !is_null($luckWithdrawId) && $currentId === $luckWithdrawId;
-            if ($isLuckUser) {
+            if( $isLuckUser ){
                 $withdraw->processDongdezhuan();
                 continue;
             } else {
@@ -64,43 +66,133 @@ trait WithdrawRepo
     //处理该笔提现
     public function process()
     {
-        $wallet = $this->wallet;
-        $user   = $this->wallet->user;
-        //提现是否等待中
-        if (!$this->isWaitingWithdraw()) {
-            return;
-        }
+        $withdraw = $this;
+        $wallet   = $this->wallet;
+        $user     = $wallet->user;
+        $wallet   = $this->wallet;
+        $platform = $this->to_platform;
+        $amount   = $this->amount;
 
-        if ($user->hasWithdrawToday()) {
-            return $this->illegalWithdraw('今日已经提现过了~');
-        }
-
-        //判断余额
-        if ($wallet->balance < $this->amount) {
-            return $this->illegalWithdraw('余额不足,非法订单！');
-        }
-        $transferResult = $this->makeAlipayTransfer();
-
-        // 本地调试 模拟提现
-        // $transferResult = ['order_id' => rand(10000000000, 100000000000), 'sub_msg' => '本地调试提现成功'];
-
-        //账户余额不足 || 未知异常,直接退出
-        if (empty($transferResult)) {
+        //用户被禁用
+        if (empty($withdraw) || empty($user) || $user->is_disable || empty($wallet)) {
+            $this->processingFailedWithdraw("账号已被禁用");
             return null;
         }
 
-        if (isset($transferResult['order_id'])) {
-            //转账成功
-            $this->processingSucceededWithdraw($transferResult['order_id']);
-        } else {
-            //转账失败
-            $remark = $transferResult['failed_msg'] ?? '系统错误,提现失败,请重新尝试！';
-            $this->processingFailedWithdraw($remark);
+        //提现待处理 && 非刷子 && 测试号
+        if ($withdraw->isWaiting()) {
+            //判断余额
+            if ($wallet->balance < $withdraw->amount) {
+                return $this->IllegalWithdraw('余额不足,非法订单！');
+            }
+
+            // 简单后置处理并发提现请求
+            if ($wallet->todaySuccessWithdrawCount > 0) {
+                $this->processingFailedWithdraw('提现失败,今日提次数已达上限!');
+            } else {
+                $transferResult = $this->makingTransfer($withdraw, $wallet);
+
+                //未知异常,直接处理完成
+                if (empty($transferResult)) {
+                    return null;
+                }
+
+                if (isset($transferResult['order_id'])) {
+                    //转账成功
+                    $this->processingSucceededWithdraw($transferResult['order_id']);
+                } else {
+                    //转账失败
+                    $remark = $transferResult['failed_msg'] ?? '系统错误,提现失败,请重新尝试！';
+                    $this->processingFailedWithdraw($remark);
+                }
+            }
+
+            //写入文件储存
+            $this->writeWithdrawStorage();
+        }
+    }
+
+    private function makingTransfer($withdraw, $wallet)
+    {
+        $result   = null;
+        $outBizNo = $withdraw->biz_no;
+        $platform = $withdraw->to_platform;
+        $realName = $wallet->real_name;
+        $remark   = sprintf('【%s】%s', config('app.name_cn'), '提现');
+        $amount   = $withdraw->amount;
+        $payId    = $withdraw->to_account;
+
+        //懂得赚提现
+        try {
+            //支付宝、微信平台提现
+            $result = $this->transferPayPlatform($outBizNo, $payId, $realName, $amount, $remark, $platform);
+        } catch (\Exception $ex) {
+            $result = null;
+            Log::channel('withdraws')->error($ex);
+        }
+        return $result;
+    }
+
+
+    public function transferPayPlatform($outBizNo, $payId, $realName, $amount, $remark, $platform)
+    {
+        $result = [];
+        //转账
+        $payUtils = new PayUtils($platform);
+        try {
+            $transferResult = $payUtils->transfer($outBizNo, $payId, $realName, $amount, $remark);
+        } catch (\Exception $ex) {
+            $transferResult = $ex->raw ?? null;
         }
 
-        //写入文件储存
-        $this->writeWithdrawLog();
+        Log::channel('withdraws')->info($transferResult);
+
+        //处理支付响应
+        if ($platform == Withdraw::WECHAT_PLATFORM) {
+            //微信余额不足
+            if (Arr::get($transferResult, 'err_code') != 'NOTENOUGH') {
+                $result['order_id']   = $transferResult['payment_no'] ?? null;
+                $result['failed_msg'] = $transferResult['err_code_des'] ?? null;
+            }
+        } else if ($platform == Withdraw::ALIPAY_PLATFORM) {
+            //支付宝余额不足、转账失败
+            if (isset($transferResult['alipay_fund_trans_uni_transfer_response'])) {
+                $transferResult = $transferResult['alipay_fund_trans_uni_transfer_response'];
+            }
+
+            if (Arr::get($transferResult, 'sub_code') != 'PAYER_BALANCE_NOT_ENOUGH') {
+                $result['order_id']   = $transferResult['order_id'] ?? null;
+                $result['failed_msg'] = $transferResult['sub_msg'] ?? null;
+            }
+        }
+
+        return $result;
     }
+
+    private function writeWithdrawStorage()
+    {
+        $withdraw = $this;
+
+        $log = 'Withdraw ID:' . $withdraw->id . ' 账号:' . $withdraw->to_account . '  ';
+
+        if ($withdraw->isSuccessWithdraw()) {
+            $log .= '提现成功(交易单号:' . $withdraw->trade_no . ')';
+        } else if ($withdraw->isFailureWithdraw()) {
+            $log .= '提现失败(' . $withdraw->remark . ')';
+        } else {
+            return;
+        }
+
+        //写入到文件中记录 格式 withdraw/2018-xx-xx
+        $file = 'withdraw/' . Carbon::now()->toDateString();
+
+        if (!Storage::exists($file)) {
+            Storage::makeDirectory('withdraw');
+        }
+
+        Storage::disk('local')->append($file, $log);
+    }
+
 
     public function processDongdezhuan()
     {
@@ -129,53 +221,6 @@ trait WithdrawRepo
         }
     }
 
-    /**
-     * 支付宝转账
-     *
-     * @return array
-     */
-    private function makeAlipayTransfer()
-    {
-        $result   = [];
-        $wallet   = $this->wallet;
-        $outBizNo = $this->biz_no; //第三方交易流水
-        $realName = $wallet->real_name; //用户真实姓名
-        $remark   = sprintf('【%s】%s', config('app.name_cn'), '提现');
-        $amount   = $this->amount;
-        $platform = $this->to_platform;
-        $payId    = $this->to_account;
-
-        $payUtils = new PayUtils($platform);
-        //支付宝转账 内部业务单号 收款人账号 收款人姓名 金额 备注
-        try {
-            $transferResult = $payUtils->transfer($outBizNo, $payId, $realName, $amount, $remark);
-        } catch (\Exception $ex) {
-            $transferResult = $ex->raw ?? null;
-        }
-
-        //写入日志
-        Log::channel('withdraws')->info($transferResult);
-
-        //处理支付响应
-        if (strcasecmp($platform, Withdraw::WECHAT_PLATFORM) == 0) {
-            //微信余额不足
-            if (Arr::get($transferResult, 'err_code') != 'NOTENOUGH') {
-                $result['order_id']   = $transferResult['payment_no'] ?? null;
-                $result['failed_msg'] = $transferResult['err_code_des'] ?? null;
-            }
-        } else if (strcasecmp($platform, Withdraw::ALIPAY_PLATFORM) == 0) {
-            //支付宝余额不足、转账失败
-            if (isset($transferResult['alipay_fund_trans_toaccount_transfer_response'])) {
-                $transferResult = $transferResult['alipay_fund_trans_toaccount_transfer_response'];
-            }
-            if (Arr::get($transferResult, 'sub_code') != 'PAYER_BALANCE_NOT_ENOUGH') {
-                $result['order_id']   = $transferResult['order_id'] ?? null;
-                $result['failed_msg'] = $transferResult['sub_msg'] ?? null;
-            }
-        }
-
-        return $result;
-    }
 
     private function makeDongdezhuanTransfer(User $user)
     {
@@ -242,8 +287,13 @@ trait WithdrawRepo
     {
         //重新查询锁住该记录更新
         $withdraw = Withdraw::lockForUpdate()->find($this->id);
-        $wallet   = $withdraw->wallet;
-        $user     = $wallet->user;
+        //最后检查
+        if (!$withdraw->isWaiting()) {
+            return;
+        }
+        $wallet = $this->wallet;
+        $user   = $wallet->user;
+
 
         DB::beginTransaction(); //开启事务
         try {
@@ -252,18 +302,20 @@ trait WithdrawRepo
             $withdraw->remark = $remark;
             $withdraw->save();
 
-            // 2.退回提现贡献点
-            //            $contribute = $withdraw->amount * Contribute::WITHDRAW_DATE;
-            //            Contribute::create([
-            //                'user_id'          => $user->id,
-            //                'remark'           => '提现失败返回贡献值',
-            //                'amount'           => $contribute,
-            //                'contributed_id'   => $withdraw->id,
-            //                'contributed_type' => 'withdraws',
-            //            ]);
+            //金额兑换智慧点
+            $amount = $withdraw->amount;
+            $gold   = Exchange::computeGold($amount);
 
-            //事务提交
-            DB::commit();
+            //2.创建流水记录
+            $transaction = Transaction::makeOutcome($wallet, $amount, '提现失败');
+
+            // 3.退回智慧点
+            Gold::makeIncome($user, $gold, '提现失败退款');
+
+            //4.创建兑换记录
+            Exchange::exhangeIn($user, $gold);
+
+            DB::commit(); //事务提交
         } catch (\Exception $ex) {
             Log::error($ex);
             DB::rollback(); //数据回滚

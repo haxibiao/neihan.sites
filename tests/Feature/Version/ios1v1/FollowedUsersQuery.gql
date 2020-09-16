@@ -1,0 +1,22 @@
+# 用户关注的用户
+query followedUsersQuery($user_id: Int!, $page: Int) {
+    follows(user_id: $user_id, page: $page, followed_type: "users") {
+        paginatorInfo {
+            currentPage
+            hasMorePages
+        }
+        data {
+            id
+            name
+            people {
+                id
+                name
+                avatar
+                count_articles
+                count_likes
+                introduction
+                followed_status
+            }
+        }
+    }
+}

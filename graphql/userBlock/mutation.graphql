@@ -1,6 +1,11 @@
 extend type Mutation {
      addUserBlock(id: Int!): UserBlock! @field(resolver: "App\\UserBlock@addUserBlock")
      addArticleBlock(id: Int!): UserBlock! @field(resolver: "App\\UserBlock@addArticleBlock")
-     reportArticle(id: Int!): UserBlock! @field(resolver: "App\\UserBlock@reportArticle")
-      removeUserBlock(id:Int!):Int! @field(resolver: "App\\UserBlock@removeUserBlock")
+     """
+     举报文章,已经废弃
+     """
+     reportArticle(id: Int!): UserBlock!
+          @field(resolver: "App\\UserBlock@reportArticle")
+          @deprecated(reason: "接口已经废弃")
+     removeUserBlock(id:Int!):Int! @field(resolver: "App\\UserBlock@removeUserBlock")
 }

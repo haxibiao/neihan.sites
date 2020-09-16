@@ -4,67 +4,53 @@ namespace App\Traits;
 
 use App\Article;
 use App\Like;
+use App\Post;
 use App\User;
 use GraphQL\Type\Definition\ResolveInfo;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 trait LikeResolvers
 {
-    public function getByType($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {
-        app_track_event('用户页', '获取喜欢列表');
 
-        return Like::where('liked_type', $args['liked_type']);
+    public function resolveCreate($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+        $likedId     = data_get($args,'liked_id');
+        $likedType   = data_get($args,'liked_type');
+
+        $modelString = Relation::getMorphedModel($likedType);
+        $model = $modelString::findOrFail($likedId);
+        return $model->likeIt();
     }
 
-    public function create($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    public function resolveToggleLike($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        unset($args['directive']);
-        return Like::firstOrCreate($args);
-    }
-
-    public function toggleTheLike($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {
-        app_track_event('喜欢', '喜欢操作');
-
-        //只能简单创建
         $user = getUser();
-        $like = Like::firstOrNew([
-            'user_id' => $user->id,
-            'liked_id' => $args['liked_id'],
-            'liked_type' => $args['liked_type'],
-        ]);
+        $likedId     = data_get($args,'liked_id');
+        $likedType   = data_get($args,'liked_type');
+        $undo        = data_get($args,'undo',false);
 
-        //取消喜欢
-        if (($args['undo'] ?? false) || $like->id) {
-            $like->delete();
-            $like->isLiked = false;
-        } else {
-            app_track_event("点赞", '点赞操作');
-            $like->save();
-            $like->isLiked = true;
+        //处理由于前端乐观更新导致的id=-1
+        if($likedId<0) {
+            return null;
+         }
+        $modelString = Relation::getMorphedModel($likedType);
+        $model = $modelString::findOrFail($likedId);
+        if($undo){
+            return $model->unLikeIt($user);
         }
-        //更新关联模型数据
-        $like->likable->count_likes = $like->likable->likes()->count();
-
-        $like->likable->save();
-        return $like;
+        return $model->toggleLike($user);
     }
 
-    public function resolveLikeArticle($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    public function resolveLikes($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $liked_type = $args['liked_type'];
-        $user = User::find($args['user_id']);
-
-        $like_builder = $user->likes();
-
-        $like_articles_id = $user->likedArticles()->pluck('liked_id');
-        $articles_id = Article::whereIn('id', $like_articles_id)->whereNotNull('video_id')->pluck('id');
-
-        if ($liked_type == 'videos') {
-            return $like_builder->where('liked_type', "articles")->whereIn('liked_id', $articles_id)->groupBy("liked_id")->orderBy('id', 'desc');
-        } else {
-            return $like_builder->where('liked_type', $liked_type)->groupBy("liked_id")->orderBy('id', 'desc');
+        $user       = User::find($args['user_id']);
+        if($user){
+            return static::whereHasMorph(
+                'likable',
+                ['App\Post']
+            )->where('user_id',$user->id)->orderBy('id', 'desc');
         }
     }
 }

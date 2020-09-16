@@ -16,26 +16,21 @@ use Illuminate\Support\Str;
 
 trait UserAttrs
 {
-    //返回至少6位数字的邀请码
-    public function getInviteCodeAttribute()
+    public function getNextRewardVideoTimeAttribute()
     {
-        $code = $this->id;
-        $minLength = 6;
-        while (strlen($code) < $minLength) {
-            $code = '0' . $code;
+        return 0;
+    }
+
+    public function getAvatarAttribute()
+    {
+        $avatar = $this->getRawOriginal('avatar');
+        if (is_null($avatar)) {
+            return url(self::getDefaultAvatar());
         }
-        return $code;
-    }
-
-    //返回用户所有直播观众数量
-    public function getCountAudiencesAttribute()
-    {
-        return $this->userLives()->sum('count_users');
-    }
-
-    public function getCountSuccessInvitationAttribute()
-    {
-        return $this->invitations()->whereNotNull('invited_in')->count();
+        if (Str::contains($avatar, 'http')) {
+            return $avatar;
+        }
+        return \Storage::cloud()->url($avatar);
     }
 
     /**
@@ -46,8 +41,7 @@ trait UserAttrs
      */
     public function getDoubleHighWithdrawCardsCountAttribute()
     {
-        return 0;
-        // return $this->countByHighWithdrawCardsRate();
+        return $this->countByHighWithdrawCardsRate();
     }
     /**
      *
@@ -57,8 +51,7 @@ trait UserAttrs
      */
     public function getFiveTimesHighWithdrawCardsCountAttribute()
     {
-        return 0;
-        // return $this->countByHighWithdrawCardsRate();
+        return $this->countByHighWithdrawCardsRate();
     }
 
     /**
@@ -69,8 +62,7 @@ trait UserAttrs
      */
     public function getTenTimesHighWithdrawCardsCountAttribute()
     {
-        return 0;
-        // return $this->countByHighWithdrawCardsRate();
+        return $this->countByHighWithdrawCardsRate();
     }
     /**
      *
@@ -80,8 +72,7 @@ trait UserAttrs
      */
     public function getThreeYuanWithdrawBadgesCountAttribute()
     {
-        return 0;
-        // return $this->countByHighWithdrawBadgeCount(3);
+        return $this->countByHighWithdrawBadgeCount(3);
     }
     /**
      *
@@ -91,8 +82,7 @@ trait UserAttrs
      */
     public function getFiveYuanWithdrawBadgesCountAttribute()
     {
-        return 0;
-        // return $this->countByHighWithdrawBadgeCount(5);
+        return $this->countByHighWithdrawBadgeCount(5);
     }
     /**
      *
@@ -102,8 +92,7 @@ trait UserAttrs
      */
     public function getTenYuanWithdrawBadgesCountAttribute()
     {
-        return 0;
-        // return $this->countByHighWithdrawBadgeCount(10);
+        return $this->countByHighWithdrawBadgeCount(10);
     }
 
     //用户激励视频的计数器
@@ -176,20 +165,11 @@ trait UserAttrs
         return $this->is_editor || $this->is_admin;
     }
 
-    public function isFollow($type, $id)
-    {
-        return $this->followings()->where('followed_type', get_polymorph_types($type))->where('followed_id', $id)->count() ? true : false;
-    }
-
-    public function isLiked($type, $id)
-    {
-        return $this->likes()->where('liked_type', get_polymorph_types($type))->where('liked_id', $id)->count() ? true : false;
-    }
 
     public function isBlack()
     {
 
-        $black = BlackList::where('user_id', $this->id);
+        $black    = BlackList::where('user_id', $this->id);
         $is_black = $black->exists();
         return $is_black;
     }
@@ -210,7 +190,7 @@ trait UserAttrs
             return $profile;
         }
         //确保profile数据完整
-        $profile = new Profile();
+        $profile          = new Profile();
         $profile->user_id = $this->id;
         $profile->save();
         return $profile;
@@ -253,17 +233,17 @@ trait UserAttrs
         return $this->role_id >= 2;
     }
 
-    public function getAvatarUrlAttribute()
-    {
-        if (isset($this->avatar)) {
-            if (Str::contains($this->avatar, 'http')) {
-                return $this->avatar;
-            }
-            return \Storage::cloud()->url($this->avatar);
-        }
-        // 避免前端取不到数据
-        return \Storage::cloud()->url(User::AVATAR_DEFAULT);
-    }
+    //    public function getAvatarUrlAttribute()
+    //    {
+    //        if (isset($this->avatar)) {
+    //            if (Str::contains($this->avatar, 'http')) {
+    //                return $this->avatar;
+    //            }
+    //            return \Storage::cloud()->url($this->avatar);
+    //        }
+    //        // 避免前端取不到数据
+    //        return \Storage::cloud()->url(User::AVATAR_DEFAULT);
+    //    }
 
     public function getTokenAttribute()
     {
@@ -273,7 +253,7 @@ trait UserAttrs
     public function getBalanceAttribute()
     {
         $balance = 0;
-        $wallet = $this->wallet;
+        $wallet  = $this->wallet;
         if (!$wallet) {
             return 0;
         }
@@ -289,9 +269,9 @@ trait UserAttrs
     {
         if ($user = checkUser()) {
             $follow = Follow::where([
-                'user_id' => $user->id,
+                'user_id'       => $user->id,
                 'followed_type' => 'users',
-                'followed_id' => $this->id,
+                'followed_id'   => $this->id,
             ])->select('id')->first();
             if (!is_null($follow)) {
                 return $follow->id;
@@ -353,9 +333,10 @@ trait UserAttrs
         return $this->unreads('others');
     }
 
-    public function getCountCategoriesAttribute()
+
+    public function getCountPostsAttribute()
     {
-        return $this->categories()->count() ?? 0;
+        return $this->posts()->count();
     }
 
     public function getCountProductionAttribute()
@@ -392,14 +373,10 @@ trait UserAttrs
     //TODO: 这些可以后面淘汰，前端直接访问 user->profile->atts 即可
     public function getCountArticlesAttribute()
     {
-        return $this->allArticles()->count();
+        return $this->allArticles()->where("status", ">", 0)->count();
         // return $this->profile->count_articles;
     }
 
-    public function getCountLikesAttribute()
-    {
-        return $this->profile->count_likes;
-    }
     public function getCountFollowsAttribute()
     {
         return $this->profile->count_follows;
@@ -486,8 +463,7 @@ trait UserAttrs
 
     public function getDongdezhuanUserAttribute()
     {
-        // return $this->getDDZUser();
-        return $this;
+        return $this->getDDZUser();
     }
 
     public function getForceAlertAttribute()
@@ -501,20 +477,5 @@ trait UserAttrs
             return substr_replace($this->phone, '****', 3, 4);
         }
         return null;
-    }
-
-    //根据用户类型（老用户，新用户，刷子），返回提现需要的贡献值
-    function getUserWithdrawDate()
-    {
-        if (empty($this->wallet) || $this->wallet->total_withdraw_amount < 2) {
-            //新用户
-            return Contribute::WITHDRAW_DATE;
-        } else if ($this->wallet->total_withdraw_amount < 5) {
-            //老用户
-            return Contribute::WITHDRAW_DATE * 2;
-        } else {
-            //刷子
-            return Contribute::WITHDRAW_DATE * 3;
-        }
     }
 }

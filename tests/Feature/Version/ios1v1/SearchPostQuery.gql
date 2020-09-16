@@ -1,0 +1,58 @@
+# 搜索动态
+query searchPostQuery($query: String!, $page: Int) {
+    searchPosts(query: $query, page: $page) {
+        paginatorInfo {
+            total
+        }
+        data {
+            id
+            spider {
+                id
+            }
+            content
+            description
+            status
+            liked
+            count_likes
+            count_comments
+            review_id
+            review_day
+            is_ad
+            created_at
+            user {
+                id
+                name
+                avatar
+                followed_status
+                gender
+                age
+                introduction
+            }
+            tags {
+                data {
+                    id
+                    name
+                }
+            }
+            categories {
+                id
+                name
+                logo
+            }
+            images {
+                id
+                url
+                width
+                height
+            }
+            video {
+                id
+                url
+                cover
+                duration
+                width
+                height
+            }
+        }
+    }
+}

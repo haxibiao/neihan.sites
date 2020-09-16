@@ -61,7 +61,7 @@ type Task {
   """
   前端存nova里的 resolve 字段json
   """
-  resolve: String @deprecated(reason: "3.x后前端逻辑依赖的数据不存nova")
+  resolve: ResolveInfo @deprecated(reason: "3.x后前端逻辑依赖的数据不存nova")
 
   start_at: DateTime @deprecated(reason: "睡觉任务用的")
   end_at: DateTime @deprecated(reason: "睡觉任务用的")
@@ -118,6 +118,10 @@ extend type Query {
   获取任务列表（type空取全部任务）
   """
   tasks(type: TaskType): [Task!] @field(resolver: "App\\Task@resolveTasks")
+}
+
+type ResolveInfo {
+  submit_name:String
 }
 
 enum TaskType {

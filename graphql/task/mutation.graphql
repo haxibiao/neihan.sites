@@ -40,10 +40,14 @@ extend type Mutation {
     @field(resolver: "App\\Task@resolveReward")
 
   """
-  应用商店好评任务回复
+  应用商店好评任务回复-印象视频带审核
   """
-  highPraiseTask(id: Int, content: String): Boolean
-    @field(resolver: "App\\Task@resolveHighPariseReply")
+  highPraiseTask(
+    user_id: Int,
+    account:String!
+    images:[String!]!
+    info:String): Task
+    @field(resolver: "App\\Task@resolveReplyTaskWithCheck")
 }
 
 enum RewardType {

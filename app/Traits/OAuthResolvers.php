@@ -3,15 +3,16 @@
 namespace App\Traits;
 
 use App\Exceptions\GQLException;
-use Haxibiao\Helpers\PayUtils;
-use Haxibiao\Helpers\WechatUtils;
-use App\Jobs\UserSyncWeChatAccountInfo;
 use App\OAuth;
 use App\User;
 use App\Wallet;
 use App\Withdraw;
 use GraphQL\Type\Definition\ResolveInfo;
+use Haxibiao\Helpers\PayUtils;
+use Haxibiao\Helpers\PhoneUtils;
+use Haxibiao\Helpers\WechatUtils;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 trait OAuthResolvers
@@ -72,10 +73,7 @@ trait OAuthResolvers
         $wallet = $user->wallet;
         $wallet->setPayId($openId, Withdraw::WECHAT_PLATFORM);
         $wallet->save();
-        $wechatUserInfo = $utils->userInfo($accessTokens['access_token'], $accessTokens['openid']);
-        if (!empty($wechatUserInfo)) {
-            dispatch(new UserSyncWeChatAccountInfo($user->id, $wechatUserInfo));
-        }
+
         return $oAuth;
     }
 
@@ -101,5 +99,35 @@ trait OAuthResolvers
         $wallet->save();
 
         return $oauth;
+    }
+
+    public function phone(User $user, $code)
+    {
+        $utils = new PhoneUtils();
+
+        //获取手机号码
+        $accessTokens = $utils->accessToken($code);
+
+        Log::info('移动获取号码接口参数',$accessTokens);
+
+        throw_if($accessTokens['resultCode']!='103000',GQLException::class, '授权失败,请稍后再试!');
+
+        $phone = $accessTokens['msisdn'];
+        //建立oauth关联
+        $oAuth  = OAuth::firstOrNew(['oauth_type' => 'phone', 'oauth_id' => $phone]);
+        if (isset($oAuth->id)) {
+            throw_if($oAuth->user_id != $user->id, GQLException::class, '授权失败,该手机号已绑定其他账户');
+
+        }
+        $accessTokens['code']=$code;
+        $oAuth->user_id = $user->id;
+        $oAuth->data    = $accessTokens;
+        $oAuth->save();
+
+        //同步用户数据
+        $user->phone=$phone;
+        $user->save();
+
+        return $oAuth;
     }
 }

@@ -1,44 +1,70 @@
 <?php
 
-namespace App\Traits;
+    namespace App\Traits;
 
-use App\Contribute;
-use App\User;
+    use App\Contribute;
+    use App\User;
+    use Symfony\Component\VarDumper\Cloner\Data;
 
-trait ContributeRepo
-{
-    public static function rewardUserContribute($user_id, $id, $amount, $type, $remark)
+    trait ContributeRepo
     {
-        $contribute = Contribute::create(
-            [
-                'user_id'          => $user_id,
-                'contributed_id'   => $id,
+        public static function rewardUserAction($user, $amount)
+        {
+            $contribute = Contribute::create(
+                [
+                    'user_id'          => $user->id,
+                    'contributed_id'   => $user->id,
+                    'contributed_type' => 'users',
+                    'amount'           => $amount,
+                ]
+            );
+
+            return $contribute;
+        }
+
+        public static function rewardSignIn($user, $signIn, $amount)
+        {
+            $contribute = Contribute::create(
+                [
+                    'user_id'          => $user->id,
+                    'contributed_id'   => $signIn->id,
+                    'contributed_type' => 'sign_ins',
+                    'amount'           => $amount,
+                ]
+            );
+
+            return $contribute;
+        }
+        public static function rewardUserContribute($user_id, $id, $amount, $type, $remark)
+        {
+            $contribute = Contribute::create(
+                [
+                    'user_id' => $user_id,
+                    'contributed_id' => $id,
+                    'contributed_type' => $type,
+                    'remark' => $remark,
+                    'amount' => $amount,
+                ]
+            );
+            $contribute->recountUserContribute();
+            return $contribute;
+        }
+
+        public static function getCountByType(string $type, User $user)
+        {
+            return Contribute::where([
                 'contributed_type' => $type,
-                'remark'           => $remark,
-                'amount'           => $amount,
-            ]
-        );
-        $contribute->recountUserContribute();
-        return $contribute;
-    }
+                'user_id' => $user->id,
+            ])->whereRaw("created_at  >= curdate()")->count();
+        }
 
-    //获取今日的某类型$type的奖励次数
-    public static function getTodayCountByType(string $type, User $user)
-    {
-        return Contribute::where([
-            'contributed_type' => $type,
-            'user_id'          => $user->id,
-        ])->whereRaw("created_at  >= curdate()")->count();
-    }
+        public static function getToDayCountByTypeAndId(string $type, $id, User $user)
+        {
+            return Contribute::where([
+                'contributed_type' => $type,
+                'contributed_id' => $id,
+                'user_id' => $user->id,
+            ])->whereDate('created_at', today())->count();
+        }
 
-    //获取今日的某类型$type 和锁定的$id(比如某文章的) 的奖励次数
-    public static function getTodayCountByContributed(string $type, $id, User $user)
-    {
-        return Contribute::where([
-            'contributed_type' => $type,
-            'contributed_id'   => $id,
-            'user_id'          => $user->id,
-        ])->whereDate('created_at', today())->count();
     }
-
-}

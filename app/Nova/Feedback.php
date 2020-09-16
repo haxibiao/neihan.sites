@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Filters\FeedbackType;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
@@ -60,39 +61,23 @@ class Feedback extends Resource
             ID::make()->sortable(),
             BelongsTo::make('用户', 'user', User::class),
             Text::make('内容', 'content'),
-            Image::make('图片1', 'images')
-                ->thumbnail(function () {
-                    return $this->getImageItemUrl(0);
-                })->preview(function () {
-                return $this->getImageItemUrl(0);
-            })->disableDownload(),
-            Image::make('图片2', 'images')
-                ->thumbnail(function () {
-                    return $this->getImageItemUrl(1);
-                })->preview(function () {
-                return $this->getImageItemUrl(1);
-            })->disableDownload(),
-            Image::make('图片3', 'images')
-                ->thumbnail(function () {
-                    return $this->getImageItemUrl(2);
-                })->preview(function () {
-                return $this->getImageItemUrl(2);
-            })->disableDownload(),
+            MorphMany::make('图片','images',\App\Nova\Image::class),
             Text::make('评论数', function () {
                 return $this->comments()->count();
             }),
-            Select::make('类型', 'status')->options([
+            Select::make('反馈状态', 'status')->options([
                 0 => '待处理',
                 1 => '已驳回',
                 2 => '已处理',
             ])->displayUsingLabels(),
+            Select::make('反馈类型', 'type')->options([
+                0 => '使用反馈',
+                1 => '好评反馈',
+            ])->displayUsingLabels(),
             Text::make('联系方式', 'contact'),
             MorphMany::make('评论', 'comments', Comment::class),
             DateTime::make('反馈时间', 'created_at'),
-            DateTime::make('置顶时间', 'top_at'),
-            // Text::make('创建时间', function () {
-            //     return time_ago($this->created_at);
-            // }),
+
         ];
     }
 
@@ -115,7 +100,9 @@ class Feedback extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new FeedbackType
+        ];
     }
 
     /**

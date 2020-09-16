@@ -12,20 +12,13 @@ trait VisitResolvers
 {
     public function getVisits($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        app_track_event('用户页', '获取浏览记录');
-
-        $articles = Article::whereNull('video_id')->pluck('id');
         $user     = User::find($args['user_id']);
-        return Visit::where('user_id', $args['user_id'])->whereIn('visited_type', ['articles'])->whereNotIn(
-            'visited_id',
-            $articles
-        )->latest('id');
+        return $user->visits()->where('visited_type',$args['visitType'])
+            ->latest('id');
     }
 
     public function getByDate($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        app_track_event('用户页', '获取浏览记录');
-
         if (isset($args['filter'])) {
             if ($args['filter'] == 'TODAY') {
                 return Visit::where('created_at', '>=', today());
@@ -35,12 +28,19 @@ trait VisitResolvers
         }
     }
 
-    public function resolvecreatevisit($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    public function resolveCreateVisit($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        return Visit::firstOrCreate([
-            'user_id'      => $args['user_id'],
-            'visited_id'   => $args['visited_id'],
-            'visited_type' => $args['visited_type'],
-        ]);
+        $user = getUser(false);
+        if($user){
+            foreach(data_get($args,'visited_id') as $visitedId){
+                 Visit::firstOrCreate([
+                    'user_id'      => $user->id,
+                    'visited_id'   => $visitedId,
+                    'visited_type' => $args['visited_type'],
+                ]);
+            }
+            return true;
+        }
+        return false;
     }
 }

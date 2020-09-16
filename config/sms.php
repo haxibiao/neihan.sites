@@ -54,9 +54,9 @@ return [
             'file' => env('SMS_ERROR_LOG_PATH', '/tmp/easy-sms.log'),
         ],
         'qcloud'   => [
-            'sdk_app_id' => env('SMS_APP_ID'),
-            'app_key'    => env('SMS_APP_KEY'),
-            'sign_name'  => env('SMS_SIGN_NAME'),
+            'sdk_app_id' => env('QCLOUD_SMS_ACCESS_KEY_ID'),
+            'app_key'    => env('QCLOUD_SMS_ACCESS_KEY_SECRET'),
+            'sign_name'  => env('QCLOUD_SMS_SIGN_NAME'),
         ],
         'aliyun'   => [
             'access_key_id'     => env('SMS_ACCESS_KEY_ID'),

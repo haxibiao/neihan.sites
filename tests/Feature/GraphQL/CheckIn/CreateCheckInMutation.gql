@@ -1,0 +1,8 @@
+# 签到
+mutation CreateCheckInMutation {
+    createCheckIn {
+        id
+        gold_reward
+        contribute_reward
+    }
+}

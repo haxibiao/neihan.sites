@@ -1,20 +1,151 @@
 type Video {
-  id: Int!
+  id: ID!
+
+  """
+  视频播放地址(兼容老版本,新版本请使用url字段)
+  """
+  path: String
+
+  """
+  上传用户
+  """
+  user: User
+
+  """
+  视频资源地址
+  """
   url: String
-  duration: Int
-  info: VideoInfo
-  status: Int!
-  cover_url: String
-  article: Article!
-}
-extend type Query {
-  queryDetail:String! @field(resolver: "App\\Video@queryDetail")
-}
-type VideoInfo {
-  width: Int
-  weight: Int
-  height: Int
-  covers: [String!]
+
+  """
+  封面
+  """
   cover: String
-  rotate: Int
+
+  """
+  视频广告
+  """
+  is_ad_video: Boolean
+
+  """
+  评论数
+  """
+  count_comments: Int
+
+  """
+  是否点赞
+  """
+  liked: Boolean
+
+  """
+  视频文件的信息
+  """
+  video_info: VideoInfo
+
+  """
+  视频文件的信息
+  """
+  info: VideoInfo @rename(attribute: "video_info")
+
+  status: Int!
+  """
+  视频封面的cdn url
+  """
+  cover_url: String
+  """
+  动图
+  """
+  dynamic_cover:String
+  """
+  关联的文章（工厂APP）
+  """
+  article: Article!
+
+  """
+  喜欢数
+  """
+  count_likes: Int
+
+  """
+  宽度
+  """
+  width: Float
+
+  """
+  高度
+  """
+  height: Float
+
+  """
+  视频拍摄方向
+  """
+  rotate: Float
+
+  """
+  视频时长
+  """
+  duration: Float
+  """
+  题目
+  """
+  question: Question @hasOne
+
+  """
+  创建时间
+  """
+  created_at: DateTime
+}
+
+type VideoInfo {
+  """
+  宽度
+  """
+  width: Float
+
+  """
+  高度
+  """
+  height: Float
+
+  """
+  视频拍摄方向
+  """
+  rotate: Float
+
+  """
+  视频时长
+  """
+  duration: Float
+
+  """
+  所有的截图
+  """
+  covers: [String]
+
+  """
+  截图封面
+  """
+  cover: String
+  """
+  动图
+  """
+  dynamic_cover:String
+}
+
+extend type Query {
+  """
+  工厂APP看视频赚钱部分详细文字描述用
+  """
+  queryDetail: String!
+    @field(resolver: "App\\Video@queryDetail")
+    @deprecated(reason: "旧工厂APP里用的")
+
+  """
+  单个视频的信息
+  """
+  video(id: Int! @eq): Video @find
+  """
+  推荐视频刷接口 - 需要尽快转换为 posts(默认走答赚一样的FastRecommend的推荐算法)
+  """
+  videos(limit: Int = 10, offset: Int = 0): [Video]
+    @field(resolver: "App\\Video@resolveRecommendVideos")
 }

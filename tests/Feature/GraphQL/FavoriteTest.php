@@ -3,9 +3,11 @@
 namespace Tests\Feature\GraphQL;
 
 use App\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class FavoriteTest extends TestCase
+class FavoriteTest extends GraphQLTestCase
 {
+    use DatabaseTransactions;
     protected $user;
 
     protected function setUp(): void
@@ -57,7 +59,7 @@ class FavoriteTest extends TestCase
             'user_id' => $user->id,
         ];
 
-        $this->startGraphQL($query, $variables);
+        $this->runGuestGQL($query, $variables);
     }
 
     protected function tearDown(): void

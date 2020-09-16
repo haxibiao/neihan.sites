@@ -2,11 +2,30 @@
 
 namespace App\Traits;
 
-use Haxibiao\Helpers\PayUtils;
 use App\Withdraw;
+use Haxibiao\Helpers\PayUtils;
 
 trait WalletAttrs
 {
+    /**
+     * 今日提现成功笔数
+     *
+     * @return int
+     */
+    public function getTodaySuccessWithdrawCountAttribute()
+    {
+        return $this->withdraws()->today()->success()->count();
+    }
+
+    public function getAvailableWithdrawCountAttribute()
+    {
+        $maxCount      = 1; //提现次数上限
+        $withdrawCount = $this->withdraws()
+            ->today()
+            ->where('status', '>=', 0)
+            ->count();
+        return $maxCount - $withdrawCount;
+    }
 
     public function getBalanceAttribute()
     {
@@ -43,6 +62,7 @@ trait WalletAttrs
     {
         $user          = checkUser();
         $dongdezhuanId = $user->oauth()->where('oauth_type', 'dongdezhuan')->first()->oauth_id;
+
     }
 
     public function getTodayWithdrawLeftAttribute()

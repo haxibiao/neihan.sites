@@ -1,4 +1,7 @@
 extend type Mutation {
-  addVisit(user_id: Int!, visited_id: Int!, visited_type: String!): Visit
-    @field(resolver: "App\\Visit@resolvecreatevisit")
+  addVisit(
+    visited_id: [Int]!,
+    visited_type: VisitType=POST
+  ): Boolean
+    @field(resolver: "App\\Visit@resolveCreateVisit")
 }

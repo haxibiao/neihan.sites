@@ -2,79 +2,253 @@
 
 namespace App\Traits;
 
+use App\CheckIn;
 use App\Contribute;
-use App\Invitation;
-use App\InviteInstall;
-use App\InviteOpen;
+use App\Dimension;
+use App\Exceptions\GQLException;
+use App\Exceptions\UserException;
+use App\Gold;
 use App\OAuth;
 use App\Profile;
 use App\User;
+use App\Verify;
 use App\Wallet;
 use App\Withdraw;
+use Haxibiao\Base\Exceptions\SignInException;
+use Haxibiao\Helpers\PhoneUtils;
+use Haxibiao\Helpers\WechatUtils;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 trait UserRepo
 {
-    public function updateAvatar($avatar)
+    public static function userReward(User $user, array $reward)
     {
-        $avatarPath   = sprintf('/storage/app/avatars/avatar-%s.jpeg', $this->id);
-        $fileStream   = file_get_contents($avatar);
-        $uploadResult = \Storage::cloud()->put($avatarPath, $fileStream);
-        if ($uploadResult) {
-            $this->avatar = $avatarPath;
+        $action = Arr::get($reward, 'action');
+        $result = [
+            'gold'       => 0,
+            'ticket'     => 0,
+            'contribute' => 0,
+        ];
+
+        //记录该维度数据给运营看
+        if (in_array($action, ['WATCH_REWARD_VIDEO', 'CLICK_REWARD_VIDEO', 'VIDEO_PLAY_REWARD'])) {
+            //            if ($action == 'VIDEO_PLAY_REWARD') {
+            //                Dimension::setDimension($user, $action, $reward['gold']);
+            //            } else {
+            //                Dimension::setDimension($user, $action, $reward['contribute']);
+            //            }
+        }
+
+        //智慧点奖励
+        if (isset($reward['gold'])) {
+            Gold::makeIncome($user, $reward['gold'], $reward['remark']);
+            $result['gold'] = $reward['gold'];
+        }
+
+        //精力点奖励
+        if (isset($reward['ticket'])) {
+            if ($action != 'SUCCESS_ANSWER_VIDEO_REWARD' && $action != 'FAIL_ANSWER_VIDEO_REWARD') {
+                $user->increment('ticket', $reward['ticket']);
+                $result['ticket'] = $reward['ticket'];
+            }
+        }
+
+        //贡献奖励
+        if (isset($reward['contribute'])) {
+            Contribute::rewardUserAction($user, $reward['contribute']);
+            $result['contribute'] = $reward['contribute'];
+        }
+        //统计激励视频当天
+        $profile = $user->profile;
+        if ($action == 'WATCH_REWARD_VIDEO') {
+            if ($profile->last_reward_video_time > today()) {
+                $profile->today_reward_video_count = 1;
+                $profile->last_reward_video_time = now();
+                $profile->save();
+            } else {
+                $profile->increment('today_reward_video_count');
+                $profile->last_reward_video_time = now();
+                $profile->save();
+            }
+        }
+
+        //签到额外奖励
+        if ($action == 'SIGNIN_VIDEO_REWARD') {
+            $signRewards = CheckIn::getSignInReward($profile->keep_checkin_days);
+            //智慧点
+            if (isset($signRewards['gold_reward'])) {
+                Gold::makeIncome($user, $signRewards['gold_reward'], '签到额外奖励');
+                $result['gold'] = $signRewards['gold_reward'];
+            }
+            //贡献
+            if (Arr::get($signRewards, 'contribute_reward', 0) > 0) {
+                Contribute::rewardSignInAdditional($user, $signRewards['contribute_reward']);
+                $result['contribute'] = $signRewards['contribute_reward'];
+            }
+        }
+
+        //签到双倍奖励
+        if ($action == 'DOUBLE_SIGNIN_REWARD') {
+            $rewardRate = 2;
+            $signIn     = CheckIn::todaySigned($user->id);
+            throw_if(is_null($signIn), UserException::class, '领取失败,请先完成签到!');
+            throw_if($signIn->reward_rate >= $rewardRate, UserException::class, '领取失败,签到双倍奖励已领取过!');
+
+            //更新奖励倍率
+            $signIn->reward_rate = $rewardRate;
+            $signIn->save();
+            $result = [
+                'gold'       => $signIn->gold_reward,
+                'contribute' => $signIn->contribute_reward,
+            ];
+
+            //双倍智慧
+            if ($signIn->gold_reward > 0) {
+                Gold::makeIncome($user, $result['gold'], '签到翻倍奖励');
+            }
+
+            //双倍贡献
+            if ($signIn->contribute_reward > 0) {
+                Contribute::rewardSignInDoubleReward($user, $signIn, $result['contribute']);
+            }
+        }
+
+
+        return $result;
+    }
+
+    public function getLatestWatchRewardVideoTime()
+    {
+        return Dimension::where('user_id', $this->id)
+            ->whereIn('name', ['WATCH_REWARD_VIDEO', 'CLICK_REWARD_VIDEO'])
+            ->max('updated_at');
+    }
+    public  function smsSignIn($sms_code, $phone)
+    {
+
+        throw_if(!is_phone_number($phone), SignInException::class, '手机号格式不正确!');
+        throw_if(empty($sms_code), SignInException::class, '验证码不能为空!');
+
+        $qb = User::wherePhone($phone);
+        Verify::checkSMSCode($sms_code, $phone, Verify::USER_LOGIN);
+        if ($qb->exists()) {
+            return $qb->get()->first();
+        } else {
+            //新用户注册账号
+            $user = User::getDefaultUser();
+            $user->phone = $phone;
+            $user->account = $phone;
+            $user->save();
+            return $user;
         }
     }
-    public function openInstall()
+
+    public  function authSignIn($code, $type)
     {
-        $isOpenUser = false;
 
-        //这里可能用户不存在
-        $user = blank($this->toArray()) ? getUser() : $this;
-        $ip   = getIp();
+        throw_if(!method_exists(self::class, $type), GQLException::class, '暂时只支持手机号和微信一键登录');
+        $user = self::$type($code);
+        return $user;
+    }
+    //手机号一键登录
+    public function mobile($code)
+    {
+        $accessTokens = PhoneUtils::getInstance()->accessToken($code);
 
-        if (!blank($user->toArray())) {
-            //1小时内的新用户，检查open install || ip 不存在
-            if ($user->created_at < now()->subHour(1) || empty($ip)) {
-                return $isOpenUser;
-            }
+        Log::info('移动获取号码接口参数', $accessTokens);
 
-            $invitation = Invitation::hasBeInvitation($user->id);
-            if (!is_null($invitation)) {
-                return !$invitation->isInviteSuccess();
-            }
-
-            $inviterInstall = InviteInstall::firstOrNew(['user_id' => $user->id], [
-                'user_agent' => get_user_agent() ?? '',
-                'ip'         => $ip,
-                'os'         => get_os() ?? '',
-                'os_version' => get_os_version() ?? '',
-            ]);
-
-            //查找n分钟内的invite_open记录
-            $inviterOpen = InviteOpen::whereIp($inviterInstall->ip)
-                ->where('created_at', '>', now()->subMinutes(60))
-                ->latest('id')
-                ->first();
-            if (!is_null($inviterOpen)) {
-
-                //2020年02月13日防刷控制 一个IP：24小时成功一次
-                // $lastInviteOpen = InviteOpen::whereIp($inviterInstall->ip)->installed()->today()->first();
-                // if (!is_null($lastInviteOpen)) {
-                //     return $isOpenUser;
-                // }
-
-                $inviterInstall->invite_open_id = $inviterOpen->id;
-                $inviterOpen->installs          = 1;
-                $inviterOpen->save();
-                //简单的匹配邀请成功
-                InvitationRepo::createInvitation($inviterOpen->user_id, $inviterInstall->user_id);
-                $isOpenUser = true;
-            }
-            $inviterInstall->save();
+        $token = $accessTokens['msisdn'];
+        if ($accessTokens['resultCode'] != '103000' || !array_key_exists('msisdn', $accessTokens)) {
+            throw new GQLException("获取手机号一键登录授权失败");
         }
 
-        return $isOpenUser;
+        $oAuth  = OAuth::firstOrNew(['oauth_type' => 'phone', 'oauth_id' => $token]);
+        //已授权的老用户
+        if (isset($oAuth->id)) {
+            return $oAuth->user;
+        }
+        $user = User::firstOrNew([
+            'phone'      => $token,
+        ]);
+        //初次授权的新用户
+        if (!isset($user->id)) {
+            $suffix = strval(time());
+            $user->name = "手机用户" . $suffix;
+            $user->api_token = str_random(60);
+            $user->avatar = User::AVATAR_DEFAULT;
+            $user->phone = $token;
+            $user->account = $token;
+            $user->save();
+        }
+        //初次授权的老用户
+        $oAuth->user_id = $user->id;
+        $oAuth->save();
+        return $user;
+    }
+
+    //微信号一键登录
+    public function wechat($code)
+    {
+        try {
+            $accessTokens = WechatUtils::getInstance()->accessToken($code);
+            Log::info("微信用户登录接口回参", $accessTokens);
+            if (!is_array($accessTokens) || !array_key_exists('unionid', $accessTokens) || !array_key_exists('openid', $accessTokens)) {
+                throw new GQLException("获取微信登录授权失败");
+            }
+            $token = $accessTokens['unionid'];
+
+            $oAuth  = OAuth::firstOrNew(['oauth_type' => 'wechat', 'oauth_id' => $token]);
+            //已授权的老用户
+            if (isset($oAuth->id)) {
+                return $oAuth->user;
+            }
+            //初次授权的新用户
+            $oAuth->data    = Arr::only($accessTokens, ['openid', 'refresh_token']);
+            $oAuth->save();
+            $user = $this->getDefaultUser();
+            $wallet          = Wallet::firstOrNew(['user_id' => $user->id]);
+            $wallet->wechat_account = $token;
+            $wallet->save();
+            //绑定微信信息
+            $wechatUserInfo = WechatUtils::getInstance()->userInfo($accessTokens['access_token'], $accessTokens['openid']);
+            Log::info("微信用户信息接口回参", $wechatUserInfo);
+            if ($wechatUserInfo && Str::contains($user->name, User::DEFAULT_NAME)) {
+                WechatUtils::getInstance()->syncWeChatInfo($wechatUserInfo, $user);
+                Log::info("oauth", $oAuth->data);
+                $wechatData = array_merge($oAuth->data, $wechatUserInfo);
+                $oAuth->data = $wechatData;
+                $oAuth->save();
+            }
+            $oAuth->user_id = $user->id;
+            $oAuth->save();
+            return $user;
+        } catch (\Exception $e) {
+            Log::info('异常信息' . $e->getMessage());
+        }
+    }
+
+    //创建默认用户
+    public static function getDefaultUser()
+    {
+        return User::firstOrCreate([
+            'name'      => User::DEFAULT_NAME,
+            'api_token' => str_random(60),
+            'avatar'    => User::AVATAR_DEFAULT,
+        ]);
+    }
+
+    public function followedUserIds($userIds)
+    {
+        return $this->follows()->select('followed_id')
+            ->whereIn('followed_type', $userIds)
+            ->where('followed_type', 'users')
+            ->get()
+            ->pluck('followed_id');
     }
 
     /**
@@ -86,13 +260,7 @@ trait UserRepo
      */
     public function countByHighWithdrawCardsRate()
     {
-        // return \DDZUser::countByHighWithdrawCardsRate($this);
-        return 1;
-    }
-
-    public function getCountInvitationAttribute()
-    {
-        return $this->invitations()->count();
+        return 0;
     }
 
     /**
@@ -104,7 +272,7 @@ trait UserRepo
      */
     public function countByHighWithdrawBadgeCount(int $amount)
     {
-        return \DDZUser::countByHighWithdrawBadgeCount($this, $amount);
+        return 0;
     }
 
     public function createUser($name, $account, $password)
@@ -174,7 +342,7 @@ trait UserRepo
             //FIXME:上传COS失败？？
         }
 
-        return $this->avatar_url;
+        return $this->avatar;
     }
 
     public function save_background($file)
@@ -388,11 +556,14 @@ trait UserRepo
                 case 'App\Notifications\ArticleCommented':
                     $unreads['comments']++;
                     break;
+                case 'App\Notifications\CommentedNotification':
+                    $unreads['comments']++;
+                    break;
                 case 'App\Notifications\ReplyComment':
                     $unreads['comments']++;
                     break;
                     //喜欢文章通知
-                case 'App\Notifications\ArticleLiked':
+                case 'App\Notifications\LikedNotification':
                     $unreads['likes']++;
                     break;
                     //关注用户通知
@@ -517,14 +688,10 @@ trait UserRepo
 
     public function hasWithdrawToday(): bool
     {
-        $withdraw =  $this->wallet->withdraws()
+        return $this->wallet->withdraws()
             ->whereDate('created_at', today())
-            ->whereIn('status', [Withdraw::SUCCESS_WITHDRAW])->first();
-        if ($withdraw) {
-            return true;
-        } else {
-            return false;
-        }
+            ->whereIn('status', [Withdraw::SUCCESS_WITHDRAW, Withdraw::WAITING_WITHDRAW])
+            ->exists();
     }
 
     public function destoryUser()
@@ -575,8 +742,7 @@ trait UserRepo
     //返回懂得赚账户
     public function getDDZUser()
     {
-        // return \DDZUser::getUser($this->uuid);
-        return $this;
+        return \DDZUser::getUser($this->uuid);
     }
 
     // FIXME: 绑定懂得赚 (基本废弃了...)
@@ -584,12 +750,5 @@ trait UserRepo
     {
         $ddzUser = \DDZUser::getUser($this->uuid);
         OAuth::createRelation($this->id, 'dongdezhuan', $ddzUser->id);
-    }
-
-
-    public function saveLastCategoryId($category_id)
-    {
-        $this->last_category_id = $category_id;
-        $this->save();
     }
 }

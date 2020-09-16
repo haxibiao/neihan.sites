@@ -2,19 +2,13 @@
 
 namespace App\Nova;
 
-use Haxibiao\Question\Category as QuestionCategory;
-use Haxibiao\Question\Question;
+use App\Category as AppCategory;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Image;
-use Laravel\Nova\Fields\MorphToMany;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Resource;
 
 class Category extends Resource
 {
@@ -23,7 +17,7 @@ class Category extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Category';
+    public static $model = 'App\\Category';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -38,26 +32,15 @@ class Category extends Resource
      * @var array
      */
     public static $search = [
-        'name',
+        'id', 'name', 'name_en',
     ];
 
     public static function label()
     {
-        return '分类';
+        return "专题";
     }
 
-    public static function singularLabel()
-    {
-        return '分类';
-    }
-
-    public static $category = "题库管理";
-
-    /**
-     * 预加载关联关系
-     * @var array
-     */
-    public static $with = ['user'];
+    public static $group = '内容管理';
 
     /**
      * Get the fields displayed by the resource.
@@ -69,56 +52,22 @@ class Category extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('名称', 'name')->hideFromIndex(),
             Text::make('类型', 'type'),
-            Text::make('名称', function () {
-                return sprintf(
-                    '<a href="%s" class="no-underline dim text-primary font-bold"> %s </a>',
-                    nova_resource_uri($this),
-                    str_limit($this->name, 10)
-                );
-            })->onlyOnIndex()->asHtml(),
-            // Text::make('描述', 'description'),
-            Textarea::make('tips', 'tips'),
-
-            Image::make('分类图片', 'logo')->store(
-                function (Request $request, $model) {
-                    $file = $request->file('logo');
-                    return $model->saveDownloadImage($file);
-                }
-            )->thumbnail(function () {
-                return $this->novaLogo;
-            })->preview(function () {
-                return $this->novaLogo;
-            })->disableDownload(),
-
-            // Image::make('图标', 'icon')->disk('local')->store(function (Request $request, $model) {
-            //     return $model->saveIcon($request->file('icon'))->icon;
-            // })->thumbnail(function () {
-            //     return $this->icon_url;
-            // })->hideWhenCreating(),
-            // BelongsTo::make('上级分类', 'parent', 'App\Nova\Category')->exceptOnForms(),
-            MorphToMany::make('标签', 'tags', Tag::class)->exceptOnForms(),
-            Number::make('上级分类ID', 'parent_id')->onlyOnForms(),
-            Select::make('状态', 'status')->options(QuestionCategory::getStatuses())->displayUsingLabels(),
-            Select::make('允许出题', 'allow_submit')->options(QuestionCategory::getAllowSubmits())->displayUsingLabels(),
-            Select::make('官方', 'is_official')->options([
-                '0' => '否',
-                '1' => '是',
+            Text::make('分类名称', 'name'),
+            Text::make('分类英文名', 'name_en'),
+            Select::make('官方专题','is_official')->options([1 =>'是',0=>'否'])->onlyOnForms(),
+            Select::make('状态', 'status')->options([
+                1 => '上架',
+                0 => '隐藏',
             ])->displayUsingLabels(),
-            Text::make('题目数', function () {
-                return $this->questions_count;
+            BelongsTo::make('作者', 'user', User::class),
+            HasMany::make('文章', 'hasManyArticles', Article::class),
+            Text::make('视频数量', function () {
+                return $this->containedVideoPosts()->count();
             }),
-            Text::make('答题数', function () {
-                return $this->answers_count;
+            Text::make('时间', function () {
+                return time_ago($this->created_at);
             }),
-            //            Text::make('可审题人数', function () {
-            //                return $this->can_review_count;
-            //            }),
-            Number::make('出题最小答对数', 'min_answer_correct')->hideFromIndex(),
-            Number::make('排名', 'rank')->help('数字越大,排名越靠前(建议范围0-999)'),
-            BelongsTo::make('用户', 'user', 'App\Nova\User')->exceptOnForms(),
-            HasMany::make('题目列表', 'questions', 'App\Nova\Question')->singularLabel('题目'),
         ];
     }
 
@@ -130,7 +79,13 @@ class Category extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            (new \Hxb\CategoryCount\CategoryCount)
+                ->withName("分类下的视频数量前十个统计")
+                ->withLegend("视频数量")
+                ->withColor("#FF00FF")
+                ->withData(AppCategory::getTopCategory(10)),
+        ];
     }
 
     /**
@@ -142,11 +97,7 @@ class Category extends Resource
     public function filters(Request $request)
     {
         return [
-            new \Haxibiao\Question\Nova\Filters\Category\CategoryTagFilter,
-            new \Haxibiao\Question\Nova\Filters\Category\CategoryQuestionsCountOrder,
-            new \Haxibiao\Question\Nova\Filters\Category\CategoryAnswersCountOrder,
-            new \Haxibiao\Question\Nova\Filters\Category\CategoryStatusFilter,
-            new \Haxibiao\Question\Nova\Filters\Category\CategorySubmitFilter,
+            new \App\Nova\Filters\Content\TaskStatusType,
         ];
     }
 
@@ -169,8 +120,6 @@ class Category extends Resource
      */
     public function actions(Request $request)
     {
-        return [
-            new \Haxibiao\Question\Nova\Actions\Category\UpdateTag,
-        ];
+        return [];
     }
 }

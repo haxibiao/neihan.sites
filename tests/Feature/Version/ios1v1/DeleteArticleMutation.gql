@@ -1,0 +1,6 @@
+# 删除
+mutation deleteArticle($id: Int!) {
+    deleteArticle(id: $id) {
+        id
+    }
+}

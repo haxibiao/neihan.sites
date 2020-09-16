@@ -2,17 +2,8 @@
 
 namespace App;
 
+use Haxibiao\Content\IssueInvite as BaseIssueInvite;
 
-class IssueInvite extends Model
+class IssueInvite extends BaseIssueInvite
 {
-    public $fillable = [
-        'user_id',
-        'issue_id',
-        'invite_user_id',
-    ];
-
-    public function freshTimestamp()
-    {
-        return time();
-    }
 }

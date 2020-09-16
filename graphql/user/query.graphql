@@ -2,10 +2,9 @@ type User {
   id: ID!
   name: String!
   email: String
-  avatar: String! @rename(attribute: "avatar_url")
+  avatar: String!
   token: String
   introduction: String
-  store: Store
   unread_comments: Int
   unread_likes: Int
   unread_follows: Int
@@ -13,9 +12,9 @@ type User {
   unread_tips: Int
   unread_others: Int
   unread_chat: Int
-  count_articles: Int
+  count_articles: Int @rename(attribute: "count_posts") @deprecated(reason: "改属性已经弃用，请使用count_posts")
   count_likes: Int
-  count_articles: Int
+  count_posts: Int
   count_production: Int
   count_likes: Int
   count_follows: Int
@@ -30,8 +29,8 @@ type User {
   followed_status: Int @rename(attribute: "followed_id")
   chats: [Chat!]
   categories: [Category!]
-  created_at: DateTime
-  updated_at: DateTime
+  created_at: DateTime!
+  updated_at: DateTime!
   blockedUsers: [blockInfo] @field(resolver: "App\\User@blockedUsers")
   wallet: Wallet
     @rename(attribute: "is_wallet")
@@ -51,17 +50,19 @@ type User {
   account: String
   wallets: [Wallet!] @hasMany
   totalContribution: Int
+  total_contribution: Int @deprecated(reason: "这个属性废弃掉了，请使用total_contributes")
+  total_contributes: Int
   exchangeRate: Int
   contribute: Int
-  is_bind_dongdezhuan: Boolean
-  today_contribute: Int
-  force_alert: Boolean
-  dongdezhuanUser: dongdezhuanUser @rename(attribute: "dongdezhuan_user")
-  title_phone: String
+  is_bind_dongdezhuan:Boolean
+  today_contribute:Int @deprecated(reason: "这个属性废弃掉了，请使用today_contributes")
   """
-  open install 前端主动调用并返回结果
+  今日贡献值
   """
-  open_install: Boolean @field(resolver: "App\\User@openInstall")
+  today_contributes:Int
+  force_alert:Boolean
+  dongdezhuanUser:dongdezhuanUser @rename(attribute:"dongdezhuan_user")
+  title_phone:String
   """
   高额限量抢倍率
   """
@@ -77,9 +78,21 @@ type User {
   tenYuanWithdrawBadgesCount: Int
 
   """
-  用户发布的文章
+  是否为商户
   """
-  articles: [Article!]
+  is_store:Boolean
+  """
+  最新的商户申请
+  """
+  lastest_certification:Certification
+  """
+  用户的标签
+  """
+  tags:[Tag!] @paginate(defaultCount: 10, builder:"\\App\\User@resovleUserTags")
+  """
+  用户的精力点
+  """
+  ticket:Int
 }
 
 type blockInfo {
@@ -91,7 +104,6 @@ type blockInfo {
 extend type Query {
   users: [User!]!
     @paginate(defaultCount: 10, type: "paginator", model: "App\\User")
-
   user(id: Int! @eq): User @find
   recommendAuthors: [User!]
     @paginate(defaultCount: 10, builder: "App\\User@resolveRecommendAuthors")

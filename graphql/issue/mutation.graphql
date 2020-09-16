@@ -1,0 +1,13 @@
+extend type Mutation @middleware(checks: ["auth:api"]) {
+    createIssue(
+        title:String!,
+        background:String,
+        category_id:Int,
+        cover_image: String
+    ):Issue!@field(resolver: "App\\Issue@createIssueResolver")
+    deleteIssue(issue_id:Int!):Issue @field(resolver: "App\\Issue@deleteIssueResolver")
+    inviteAnswer(invited_user_id:Int!,issue_id:Int!)
+    :IssueInvite!
+    @field(resolver: "App\\Issue@inviteAnswerResolver")
+
+}

@@ -1,0 +1,21 @@
+# 用户的粉丝
+query userFollowersQuery($user_id: Int!, $page: Int) {
+    followers(followed_id: $user_id, page: $page, followed_type: "users") {
+        paginatorInfo {
+            currentPage
+            hasMorePages
+        }
+        data {
+            id
+            user {
+                id
+                name
+                avatar
+                count_articles
+                count_likes
+                introduction
+                followed_status
+            }
+        }
+    }
+}

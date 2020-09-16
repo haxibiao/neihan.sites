@@ -5,10 +5,12 @@ namespace Tests\Feature\GraphQL;
 use App\Article;
 use App\User;
 use App\Video;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
 
-class ArticleTest extends TestCase
+class ArticleTest extends GraphQLTestCase
 {
+    use DatabaseTransactions;
     protected $user;
 
     protected function setUp(): void
@@ -21,6 +23,9 @@ class ArticleTest extends TestCase
     /* --------------------------------------------------------------------- */
     /* ------------------------------- Mutation ----------------------------- */
     /* --------------------------------------------------------------------- */
+    /**
+     * @group  testCreatePostMutation
+     */
     public function testCreatePostMutation()
     {
 
@@ -54,31 +59,34 @@ class ArticleTest extends TestCase
         ];
         $this->startGraphQL($query, $variables, $headers);
 
-        //情形3:创建视频问答
-        // $variables = [
-        //     'video_id'   => $video->id,
-        //     'body'       => '可以上传Base64的图片啦？',
-        //     'type'       => 'ISSUE',
-        //     'issueInput' => [
-        //         'gold' => 30,
-        //     ],
-        // ];
-        // $this->startGraphQL($query, $variables, $headers);
-
-        // //情形4:创建带图问答
-        // $variables = [
-        //     'body'       => '可以上传Base64的图片啦？',
-        //     'type'       => 'ISSUE',
-        //     'images'     => $base64,
-        //     'issueInput' => [
-        //         'gold' => 30,
-        //     ],
-        // ];
+//        //情形3:创建视频问答
+        $variables = [
+            'video_id'   => $video->id,
+            'body'       => '可以上传Base64的图片啦？',
+            'type'       => 'ISSUE',
+            'issueInput' => [
+                'gold' => 1,
+            ],
+        ];
         $this->startGraphQL($query, $variables, $headers);
+
+        //情形4:创建带图问答
+        $variables = [
+            'body'       => '可以上传Base64的图片啦？',
+            'type'       => 'ISSUE',
+            'images'     => $base64,
+            'issueInput' => [
+                'gold' => 30,
+            ],
+        ];
+        $this->runGuestGQL($query, $variables, $headers);
     }
     /* --------------------------------------------------------------------- */
     /* ------------------------------- Query ----------------------------- */
     /* --------------------------------------------------------------------- */
+    /**
+     * @group  testArticleQuery
+     */
     public function testArticleQuery()
     {
         $query = file_get_contents(__DIR__ . '/Article/Query/articleQuery.gql');
@@ -92,9 +100,12 @@ class ArticleTest extends TestCase
         $variableses = [
             'id' => $videoPost->id,
         ];
-        $this->startGraphQL($query, $variableses);
+        $this->runGuestGQL($query, $variableses);
     }
 
+    /**
+     * @group  testArticlesQuery
+     */
     public function testArticlesQuery()
     {
         $query = file_get_contents(__DIR__ . '/Article/Query/articlesQuery.gql');
@@ -102,9 +113,12 @@ class ArticleTest extends TestCase
         $variableses = [
             'page' => random_int(1, 10),
         ];
-        $this->startGraphQL($query, $variableses);
+        $this->runGuestGQL($query, $variableses);
     }
 
+    /**
+     * @group  testUserArticlesQuery
+     */
     public function testUserArticlesQuery()
     {
         $query = file_get_contents(__DIR__ . '/Article/Query/userArticlesQuery.gql');
@@ -115,7 +129,7 @@ class ArticleTest extends TestCase
             'user_id' => $user->id,
             'page'    => random_int(1, 10),
         ];
-        $this->startGraphQL($query, $variableses);
+        $this->runGuestGQL($query, $variableses);
     }
 
     protected function tearDown(): void

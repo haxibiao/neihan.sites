@@ -2,6 +2,7 @@
 namespace App\Traits;
 
 use App\Gold;
+use App\Post;
 use App\User;
 use App\Wallet;
 use App\Article;
@@ -41,7 +42,7 @@ trait UserBlockResolvers
        public function addArticleBlock($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
        {
            if($user = checkUser()){
-                  $articleBlock  = Article::find($args['id']);  
+                  $articleBlock  = Post::find($args['id']);
                   if(empty($articleBlock)){
                       throw new GQLException('添加\'不感兴趣\'失败，不存在该动态');
                   }
@@ -62,8 +63,9 @@ trait UserBlockResolvers
       public function reportArticle($rootValue, array $args, $context, $resolveInfo){
           
           $userReport = getUser();
-          $article = Article::where("id",$args['id'])->where("status",1)->first();
-          if(empty($article)){
+          $post = Post::publish()->find($args['id']);
+          //$article = Article::where("id",$args['id'])->where("status",1)->first();
+          if(empty($post)){
               throw new GQLException("举报失败，该动态不存在或已被下架！");
           }
   
@@ -81,8 +83,8 @@ trait UserBlockResolvers
               $ReportCount = UserBlock::where("article_report_id",$args['id'])->count();
                //举报成功下架，并扣除智慧点和贡献点
                if($ReportCount>=2){
-                   $article->status = -1;
-                   $user = $article->user;
+                   $post->status = -1;
+                   $user = $post->user;
                    //智慧点或贡献点不够   扣则置为0
                   $gold =  \App\Gold::makeOutcome($user,$user->gold - \App\Gold::REWARD_GOLD < 0 ?
                                                                                       $user->gold :  \App\Gold::REWARD_GOLD , '动态被举报下架扣除');
@@ -91,9 +93,9 @@ trait UserBlockResolvers
                    $count = $user->profile->count_contributes - Contribute::REWARD_VIDEO_POST_AMOUNT < 0 ?
                                                                                       0 : $user->profile->count_contributes - Contribute::REWARD_VIDEO_POST_AMOUNT;
                         //更新profile表上的字段
-                    Profile::where('id', $user->profile->id)->update(['count_contributes' => $count]);
-       
-                    $article->save();
+                   Profile::where('id', $user->profile->id)->update(['count_contributes' => $count]);
+
+                   $post->save();
                 }
               \DB::commit();
           }catch(Exception $e){

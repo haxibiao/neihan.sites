@@ -116,7 +116,7 @@ return [
     |
      */
 
-    'paginate_max_count'         => 10,
+    'paginate_max_count'         => 15,
 
     /*
     |--------------------------------------------------------------------------
@@ -155,7 +155,8 @@ return [
      */
 
     'error_handlers'             => [
-        \Nuwave\Lighthouse\Execution\ExtensionErrorHandler::class,
+//        \Nuwave\Lighthouse\Execution\ExtensionErrorHandler::class,
+        \App\Exceptions\LighthouseErrorHandler::class,
     ],
 
     /*

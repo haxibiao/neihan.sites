@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Traits\FeedbackResolvers;
+use Haxibiao\Media\Traits\WithMedia;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -11,11 +12,14 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 class Feedback extends Model
 {
     use FeedbackResolvers;
+    use WithMedia;
 
     protected $fillable = [
         'user_id',
         'content',
         'contact',
+        'type',
+        'status'
     ];
 
     protected $casts = [
@@ -31,10 +35,10 @@ class Feedback extends Model
     // 已处理
     const STATUS_PROCESSED = 2;
 
-    public function images(): BelongsToMany
-    {
-        return $this->belongsToMany(\App\Image::class)->withTimestamps();
-    }
+    //使用反馈
+    const CUSTOM_TYPE = 0;
+    //好评反馈
+    const COMMENT_TYPE = 1;
 
     public function user(): BelongsTo
     {

@@ -11,8 +11,6 @@ trait ChatResolvers
 {
     public function resolveCreateChat($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        app_track_event('消息', '发送消息');
-
         $user = getUser();
         $with = User::findOrFail($args['with_user_id']);
         $uids = [$with->id, $user->id];
@@ -27,4 +25,5 @@ trait ChatResolvers
         $user->chats()->syncWithoutDetaching($chat->id);
         return $chat;
     }
+
 }

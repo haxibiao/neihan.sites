@@ -52,23 +52,24 @@ class SetEnv extends Command
             $this->setKV(['DB_HOST' => $this->option("db_host")]);
         }
 
-        // 有剑气和答妹的 sms key 一模一样
+        $this->setKV(['LIVE_SECRET_KEY' => @file_get_contents("/etc/live_secret_dongdianyi")]);
+        // //其他key
         $this->setKV(['SMS_APP_KEY' => @file_get_contents("/etc/sms_key_secret_dm")]);
-        $this->setKV(['COS_SECRET_KEY' => @file_get_contents("/etc/cos_secret_key")]);
+        // $this->setKV(['COS_SECRET_KEY' => @file_get_contents("/etc/cos_secret_key")]);
         // $this->setKV(['MAIL_PASSWORD' => @file_get_contents("/etc/mailgun_mail_pass")]);
-        $this->setKV(['WECHAT_APP_SECRET' => @file_get_contents("/etc/wechat_app_secret_dm")]);
-        $this->setKV(['LIVE_KEY' => @file_get_contents("/etc/live_key_dm")]);
-        $this->setKV(['VOD_SECRET_KEY' => @file_get_contents("/etc/vod_secret_key")]);
-        $this->setKV(['REDIS_PASSWORD' => @file_get_contents("/etc/redis_pass")]);
+        // $this->setKV(['WECHAT_APP_SECRET' => @file_get_contents("/etc/wechat_app_secret_dm")]);
+        // $this->setKV(['LIVE_KEY' => @file_get_contents("/etc/live_key_dm")]);
+        // $this->setKV(['VOD_SECRET_KEY' => @file_get_contents("/etc/vod_secret_key")]);
+        // $this->setKV(['REDIS_PASSWORD' => @file_get_contents("/etc/redis_pass")]);
 
-        //支付的
-        if ($this->option('pay')) {
-            $this->warn("更新支付信息...");
-            //答妹暂时没微信支付
-            $this->setKV(['WECHAT_PAY_KEY' => @file_get_contents("/etc/wechat_pay_key")]);
-            $this->setKV(['WECHAT_PAY_MCH_ID' => @file_get_contents("/etc/wechat_pay_mch_id")]);
-            $this->setKV(['ALIPAY_PAY_APPID' => @file_get_contents("/etc/appid_alipay")]);
-        }
+        // //支付的
+        // if ($this->option('pay')) {
+        //     $this->warn("更新支付信息...");
+        //     //答妹暂时没微信支付
+        //     $this->setKV(['WECHAT_PAY_KEY' => @file_get_contents("/etc/wechat_pay_key")]);
+        //     $this->setKV(['WECHAT_PAY_MCH_ID' => @file_get_contents("/etc/wechat_pay_mch_id")]);
+        //     $this->setKV(['ALIPAY_PAY_APPID' => @file_get_contents("/etc/appid_alipay")]);
+        // }
 
     }
 

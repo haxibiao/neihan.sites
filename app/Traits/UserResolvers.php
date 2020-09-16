@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Exceptions\GQLException;
 use App\Ip;
+use App\OAuth;
 use App\Profile;
 use App\User;
 use App\UserTask;
@@ -15,6 +16,97 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 trait UserResolvers
 {
+    public static function resolveReward($root, array $args, $context, $info)
+    {
+        $user   = getUser();
+        $reason = $args['reason'];
+
+        $rewardValues = data_get(self::getUserRewardEnum(), $reason . '.value');
+        $rewardReason = data_get(self::getUserRewardEnum(), $reason . '.description');
+
+        app_track_event("奖励", $rewardReason);
+        return User::userReward($user, $rewardValues);
+
+    }
+
+    public static function getUserRewardEnum()
+    {
+        return [
+            'WATCH_REWARD_VIDEO'          => [
+                'value'       => [
+                    'gold'       => 10,
+                    'remark'     => '观看激励视频奖励',
+                    'action'     => 'WATCH_REWARD_VIDEO',
+                ],
+                'description' => '观看激励视频奖励',
+            ],
+            'SIGNIN_VIDEO_REWARD'         => [
+                'value'       => [
+                    'remark' => '签到视频观看奖励',
+                    'action' => 'SIGNIN_VIDEO_REWARD',
+                ],
+                'description' => '签到视频观看奖励',
+            ],
+            'TICKET_SIGNIN_REWARD'         => [
+                'value'       => [
+                    'remark' => '签到精力点奖励',
+                    'action' => 'TICKET_SIGNIN_REWARD',
+                    'gold'=>50,
+                    'ticket'=>10
+                ],
+                'description' => '签到精力点奖励',
+            ],
+            'GOLD_SIGNIN_REWARD'         => [
+                'value'       => [
+                    'remark' => '签到金币奖励',
+                    'action' => 'GOLD_SIGNIN_REWARD',
+                    'gold'=>100,
+                ],
+                'description' => '签到金币奖励',
+            ],
+            'DOUBLE_SIGNIN_REWARD'        => [
+                'value'       => [
+                    'remark' => '双倍签到奖励',
+                    'action' => 'DOUBLE_SIGNIN_REWARD',
+                ],
+                'description' => '双倍签到奖励',
+            ],
+            'CLICK_REWARD_VIDEO'          => [
+                'value'       => [
+                    'ticket'     => User::VIDEO_REWARD_TICKET,
+                    'contribute' => User::VIDEO_REWARD_CONTRIBUTE,
+                    'gold'       => User::VIDEO_REWARD_GOLD,
+                    'remark'     => '点击激励视频奖励',
+                    'action'     => 'CLICK_REWARD_VIDEO',
+                ],
+                'description' => '点击激励视频奖励',
+            ],
+        ];
+    }
+    /**
+     * @param $root
+     * @param array $args
+     * @param $context
+     * @param $info
+     * 第三方账号登录：微信，手机号，支付宝
+     */
+    public  function resolveAuthSignIn($root, array $args, $context, $info){
+
+        $code = $args['code'];
+        $type = $args['type'];
+        app_track_event("用户登录","第三方登录",$type);
+        return $this->authSignIn($code, $type);
+
+    }
+    public  function resolveSMSSignIn($root, array $args, $context, $info){
+
+        $sms_code = $args['sms_code'];
+        $phone = $args['phone'];
+        app_track_event("用户登录","验证码登录",$phone);
+        return $this->smsSignIn($sms_code, $phone);
+
+    }
+
     public function me($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         if ($user = getUser()) {
@@ -35,14 +127,9 @@ trait UserResolvers
         }
     }
 
-    public function resolveUsers($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {
-        return User::latest('id');
-    }
-
     public function resolveFriends($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $user = \App\User::findOrFail($args['user_id']);
+        $user    = \App\User::findOrFail($args['user_id']);
         $follows = $user->followingUsers()->take(500)->get();
         $friends = [];
         foreach ($follows as $follow) {
@@ -65,7 +152,7 @@ trait UserResolvers
     public function signIn($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $account = $args['account'] ?? $args['email'];
-        $qb = User::where('phone', $account)->orWhere('email', $account)->orWhere('account', $account);
+        $qb      = User::where('phone', $account)->orWhere('email', $account)->orWhere('account', $account);
         if ($qb->exists()) {
             $user = $qb->first();
             if (!password_verify($args['password'], $user->password)) {
@@ -100,7 +187,7 @@ trait UserResolvers
             }
 
             if (preg_match("/([\x81-\xfe][\x40-\xfe])/", $args['password'])) {
-                throw new GQLException('密码中不能包含中文');
+                throw GQLException('密码中不能包含中文');
             }
 
             if ($exists) {
@@ -110,19 +197,18 @@ trait UserResolvers
             return self::createUser($name, $account, $args['password']);
         }
 
-        $email = $args['email'];
+        $email  = $args['email'];
         $exists = User::Where('email', $email)->exists();
 
         if ($exists) {
             throw new GQLException('该邮箱已经存在');
         }
 
-        $user = self::createUser(User::DEFAULT_NAME, $email, $args['password']);
+        $user        = self::createUser(User::DEFAULT_NAME, $email, $args['password']);
         $user->phone = null;
         $user->email = $email;
         $user->save();
-
-        app_track_event("首页", '注册');
+        app_track_event('用户','用户注册');
 
         Ip::createIpRecord('users', $user->id, $user->id);
         return $user;
@@ -148,8 +234,8 @@ trait UserResolvers
 
     public function resolveNotifications($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $user = getUser();
-        $notifications = \App\Notification::where('notifiable_type', 'users')->where('notifiable_id', $user->id);
+        $user                = getUser();
+        $notifications       = \App\Notification::where('notifiable_type', 'users')->where('notifiable_id', $user->id);
         $unreadNotifications = \App\Notification::where('notifiable_type', 'users')->where('notifiable_id', $user->id)->whereNull('read_at');
         switch ($args['type']) {
             case 'GROUP_COMMENT':
@@ -157,12 +243,14 @@ trait UserResolvers
                     ->whereIn('type', [
                         'App\Notifications\ReplyComment',
                         'App\Notifications\ArticleCommented',
+                        'App\Notifications\CommentedNotification',
                     ]);
                 //mark as read
                 $unread_notifications = $unreadNotifications
                     ->whereIn('type', [
                         'App\Notifications\ReplyComment',
                         'App\Notifications\ArticleCommented',
+                        'App\Notifications\CommentedNotification',
                     ])->get();
                 $unread_notifications->markAsRead();
                 break;
@@ -174,7 +262,6 @@ trait UserResolvers
                         'App\Notifications\ArticleApproved',
                         'App\Notifications\ArticleRejected',
                         'App\Notifications\CommentAccepted',
-                        "App\Notifications\PlatformAccountExpire",
                     ]);
 
                 //mark as read
@@ -185,7 +272,6 @@ trait UserResolvers
                         'App\Notifications\ArticleApproved',
                         'App\Notifications\ArticleRejected',
                         'App\Notifications\CommentAccepted',
-                        "App\Notifications\PlatformAccountExpire",
                     ])->get();
                 $unread_notifications->markAsRead();
                 break;
@@ -194,12 +280,14 @@ trait UserResolvers
                     ->whereIn('type', [
                         'App\Notifications\ArticleLiked',
                         'App\Notifications\CommentLiked',
+                        'App\Notifications\LikedNotification'
                     ]);
                 //mark as read
                 $unread_notifications = $unreadNotifications
                     ->whereIn('type', [
                         'App\Notifications\ArticleLiked',
                         'App\Notifications\CommentLiked',
+                        'App\Notifications\LikedNotification'
                     ])->get();
                 $unread_notifications->markAsRead();
                 break;
@@ -226,7 +314,6 @@ trait UserResolvers
         // 不是首次登录
         if ($qb->exists()) {
             $user = $qb->first();
-            $user->profile->update(['app_version' => request()->header('version', null),]);
             if ($user->status === User::STATUS_OFFLINE) {
                 throw new GQLException('登录失败！账户已被封禁');
             } else if ($user->status === User::STATUS_DESTORY) {
@@ -234,26 +321,23 @@ trait UserResolvers
             }
         } else {
             $user = User::create([
-                'uuid' => $args['uuid'],
-                'account' => $args['phone'] ?? $args['uuid'],
-                'name' => User::DEFAULT_NAME,
+                'uuid'      => $args['uuid'],
+                'account'   => $args['phone'] ?? $args['uuid'],
+                'name'      => User::DEFAULT_NAME,
                 'api_token' => Str::random(60),
-                'avatar' => User::AVATAR_DEFAULT,
+                'avatar'    => User::AVATAR_DEFAULT,
             ]);
-            $user->name = $user->name . $user->id;
-            $user->save();
             Profile::create([
-                'user_id' => $user->id,
+                'user_id'      => $user->id,
                 'introduction' => '这个人暂时没有 freestyle ',
-                'app_version' => request()->header('version', null),
+                'app_version'  => request()->header('version', null),
             ]);
 
             Ip::createIpRecord('users', $user->id, $user->id);
         }
         $user->updateProfileAppVersion($user);
 
-        app_track_event('首页', '静默登录');
-
+        app_track_event('用户','静默登录');
         return $user;
     }
 
@@ -280,7 +364,7 @@ trait UserResolvers
 
             //TODO:暂时不牵涉前端的gql,后期需要修改掉的gql,有关用户信息修改的
             $args_profile_infos = ["age", "gender", "introduction", "birthday"];
-            $profile_infos = [];
+            $profile_infos      = [];
             foreach ($args_profile_infos as $profile_info) {
                 foreach ($args as $index => $value) {
                     if ($index == $profile_info) {
@@ -294,6 +378,7 @@ trait UserResolvers
                             }
                         }
                     }
+
                 }
             }
             $user->update(array_diff($args, $profile_infos));
@@ -301,12 +386,6 @@ trait UserResolvers
                 $profile = $user->profile;
 
                 $profile->update($profile_infos);
-            }
-            //FIXME::简单处理，在更新用户信息后就检查任务状态
-            //判断新手任务是否完成
-            $tasks = $user->getNewUserTasks();
-            foreach ($tasks as $task) {
-                $task->checkTaskStatus($user);
             }
 
             return $user;
@@ -324,6 +403,26 @@ trait UserResolvers
         throw_if(!isset($user->id) || is_null($user), GQLException::class, '请登录后再尝试哦~');
     }
 
+    //观看新手教程或采集视频教程任务状态变更
+    public function newUserReword($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+        $user = checkUser();
+        $type = $args['type'];
+        if ($type === 'newUser') {
+            $task             = \App\Task::where("name", "观看新手视频教程")->first();
+            $userTask         = \App\UserTask::where("task_id", $task->id)->where("user_id", $user->id)->first();
+            $userTask->status = \App\UserTask::TASK_REACH;
+            $userTask->save();
+            return 1;
+        } else if ($type === 'douyin') {
+            $task             = \App\Task::where("name", "观看采集视频教程")->first();
+            $userTask         = \App\UserTask::where("task_id", $task->id)->where("user_id", $user->id)->first();
+            $userTask->status = \App\UserTask::TASK_REACH;
+            $userTask->save();
+            return 1;
+        }
+        return -1;
+    }
 
     public function bindDongdezhuan($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {

@@ -24,10 +24,8 @@ class NewLike implements ShouldBroadcast
     public function broadcastOn()
     {
         $this->likable = $this->like->likable;
-        if (!is_null($this->likable)) {
-            if (!is_null($this->likable->user_id)) {
-                return new PrivateChannel('App.User.' . $this->likable->user_id);
-            }
+        if (!is_null($this->likable->user_id)) {
+            return new PrivateChannel('App.User.' . $this->likable->user_id);
         }
     }
 
@@ -39,13 +37,15 @@ class NewLike implements ShouldBroadcast
         if (!is_null($likeUser)) {
 
             if ($likable instanceof \App\Article) {
+                $moudle  = '文章';
+                $content = str_limit(strip_tags($likable->body), 5);
+            } else if  ($likable instanceof \App\Post) {
                 $moudle  = '动态';
                 $content = str_limit(strip_tags($likable->body), 5);
             } else if ($likable instanceof \App\Comment) {
                 $moudle  = '评论';
                 $content = str_limit(strip_tags($likable->body), 5);
             }
-
             if (isset($moudle)) {
                 $content = sprintf('%s 刚刚点赞了你的%s《%s》', $likeUser->name, $moudle, $content);
                 $data    = [

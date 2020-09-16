@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Article;
-use App\Http\Controllers\Controller;
-use App\Image;
 use App\User;
+use App\Image;
 use App\Video;
+use App\Article;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserController extends Controller
 {
@@ -34,9 +35,38 @@ class UserController extends Controller
     public function saveAvatar(Request $request)
     {
         $user = $request->user();
-        $file = $request->file('avatar');
-        return $user->save_avatar($file);
+        $hasFile = $request->hasFile('avatar');
+        if ($hasFile) {
+            $file = $request->file('avatar');
+            $extension   = $file->getClientOriginalExtension();
+            $imageStream = file_get_contents($file->getRealPath());
+        } else {
+            $avatar = $request->get('avatar');
+            if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $avatar, $res)) {
+                //base64图像
+                $extension     = $res[2];
+                $base64_string = str_replace($res[1], '', $avatar);
+                $imageStream   = base64_decode($base64_string);
+            }
+        }
+
+        $fileTemplate = 'avatar-%s.%s'; //以后所有cos的头像保存文件名模板
+        $storePrefix  = '/storage/app/avatars/'; //以后所有cos的头像保存位置就这样了
+
+        $filename = time();
+        if (!is_prod_env()) {
+            $filename = $user->id . "_test"; //测试不覆盖线上cos文件
+        }
+        $avatarPath  = sprintf($storePrefix . $fileTemplate, $filename, $extension);
+        $storeStatus = Storage::cloud()->put($avatarPath, $imageStream);
+        if ($storeStatus) {
+            $user->update([
+                'avatar' => $avatarPath,
+            ]);
+        }
+        return $user->avatar;
     }
+
 
     public function saveBackground(Request $request)
     {

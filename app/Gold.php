@@ -18,7 +18,7 @@ class Gold extends Model
         'updated_at',
     ];
 
-    //    点击 DRAW 广告的金币额度,
+//    点击 DRAW 广告的金币额度,
     //    const DRAW_GOLD_AMOUNT = 0;
 
     //    点击 激励视频 广告的金币额度
@@ -67,7 +67,7 @@ class Gold extends Model
 
     public function resolveGolds($rootValue, array $args, $context, $resolveInfo)
     {
-        app_track_event('钱包', "查看账单");
+        app_track_event('用户',"查看账单");
         return Gold::orderBy('id', 'desc')->where('user_id', $args['user_id']);
     }
 }

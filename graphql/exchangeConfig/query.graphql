@@ -1,0 +1,13 @@
+type ExchangeConfig {
+  id: Int!
+  num: Int
+  name: String
+  value: String
+  status: String
+}
+
+extend type Query {
+  exchangeConfigs: [ExchangeConfig] @all
+
+  exchangeConfig(status: String! @eq): [ExchangeConfig] @all
+}

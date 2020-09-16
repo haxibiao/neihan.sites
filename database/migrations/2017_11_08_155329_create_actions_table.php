@@ -18,6 +18,7 @@ class CreateActionsTable extends Migration
             $table->integer('user_id');
             $table->string('actionable_type')->index();
             $table->integer('actionable_id');
+            $table->integer('status')->default(0)->index();
             $table->timestamps();
         });
     }

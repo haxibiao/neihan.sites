@@ -1,0 +1,13 @@
+# 睡觉打卡奖励接口
+mutation sleepRewardMutation {
+  SleepReward {
+    id
+    content
+    task {
+      reward_info {
+        gold
+        contribute
+      }
+    }
+  }
+}

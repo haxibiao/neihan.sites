@@ -4,10 +4,11 @@ namespace Tests\Feature\GraphQL;
 
 use App\Chat;
 use App\User;
-use Illuminate\Support\Str;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ChatTest extends TestCase
+class ChatTest extends GraphQLTestCase
 {
+    use DatabaseTransactions;
     protected $user;
 
     protected function setUp(): void
@@ -21,6 +22,9 @@ class ChatTest extends TestCase
     /* --------------------------------------------------------------------- */
     /* ------------------------------- Mutation ----------------------------- */
     /* --------------------------------------------------------------------- */
+    /**
+     * @group  testcreateChatMutation
+     */
     public function testcreateChatMutation()
     {
         $query = file_get_contents(__DIR__ . '/Chat/Mutation/createChatMutation.gql');
@@ -38,9 +42,12 @@ class ChatTest extends TestCase
             'id' => $user->id,
         ];
 
-        $this->startGraphQL($query, $variables, $headers);
+        $this->runGuestGQL($query, $variables, $headers);
     }
 
+    /**
+     * @group  testsendMessageMutation
+     */
     public function testsendMessageMutation()
     {
         $query = file_get_contents(__DIR__ . '/Chat/Mutation/sendMessageMutation.gql');
@@ -50,14 +57,17 @@ class ChatTest extends TestCase
         $variables = [
             'user_id' => $user->id,
             'chat_id' => $chat->id,
-            'message' => Str::random(7),
+            'message' => '测试策划I是的发送到发送到C黑痴儿hi痴儿贺词黑',
         ];
 
-        $this->startGraphQL($query, $variables);
+        $this->runGuestGQL($query, $variables);
     }
     /* --------------------------------------------------------------------- */
     /* ------------------------------- Query ----------------------------- */
     /* --------------------------------------------------------------------- */
+    /**
+     * @group  testchatsQuery
+     */
     public function testchatsQuery()
     {
         $query = file_get_contents(__DIR__ . '/Chat/Query/chatsQuery.gql');
@@ -76,9 +86,11 @@ class ChatTest extends TestCase
             'user_id' => $user->id,
         ];
 
-        $this->startGraphQL($query, $variables, $headers);
+        $this->runGuestGQL($query, $variables, $headers);
     }
-
+    /**
+     * @group  testmessageQuery
+     */
     public function testmessageQuery()
     {
         $query = file_get_contents(__DIR__ . '/Chat/Query/messagesQuery.gql');
@@ -89,7 +101,7 @@ class ChatTest extends TestCase
             'chat_id' => $chat->id,
         ];
 
-        $this->startGraphQL($query, $variables);
+        $this->runGuestGQL($query, $variables);
     }
 
     protected function tearDown(): void

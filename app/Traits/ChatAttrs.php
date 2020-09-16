@@ -12,11 +12,6 @@ trait ChatAttrs
         return $this->pivot->unreads;
     }
 
-    public function getUpdatedAtAttribute($value)
-    {
-        return time_ago($value);
-    }
-
     public function getWithUserAttribute()
     {
         if ($user = getUser()) {

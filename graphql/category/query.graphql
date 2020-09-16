@@ -1,67 +1,41 @@
 type Category {
-  id: Int! @cacheKey
-  name: String! @cache
-  description: String @cache
-  icon: String @cache
-  count: Int @cache
-  parent_id: Int
-  status: Int
-  is_official: Boolean
-  user_id: Int!
-  questions_count: Int @cache
-  logo: String
-  nova_logo: String
-  """
-  题库总计被答次数
-  """
-  answers_count: Int
-  """
-  用户在题库答对的题数
-  """
-  user_correct_count: Int @rename(attribute: "pivot_correct_count")
-  user_can_submit: Int
-  tips: String @cache
-  children: [Category!] @rename(attribute: "publishedChildren") @cache
-  """
-  用户最近答过题的5个分类(置顶用)
-  """
-  recentCategories: [Category!]
-  created_at: String
+	id: Int!
+	name: String!
+	type: String
+	status: Int
+	avatar: String @rename(attribute: "logo")
+	logo: String
+	description: String
+	count_follows: Int
+	count_articles: Int @rename(attribute: "count")
+	count_authors: Int
+	follow_id: Int
+	followed: Int
+	followed_status: Int @rename(attribute: "followed")
+	need_approve: Int
+	created_at: DateTime!
+	updated_at: DateTime!
+	user: User!
+	topAuthors: [User!]
+	topAdmins: [User!]
+	new_requests: Int
+	latestArticle: Article
 }
 
 extend type Query {
-  """
-  题库列表(首页，所有公开的题库)
-  """
-  categories(key_word: String): [Category!] @paginate(builder: "App\\Category@resolveCategories", defaultCount: 10)
-
-  """
-  可出题的题库（支持搜索）
-  """
-  categoriesCanSubmit(keyword: String): [Category!] @paginate(builder: "App\\Category@resolveCategoriesCanSubmit", defaultCount: 10)
-
-  """
-  最近答题的题库
-  """
-  categoriesLatest(top: Int): [Category!]! @field(resolver: "App\\Category@resolveLatestCategories")
-
-  """
-  题库搜索
-  """
-  categoriesSearch(keyword: String!): [Category!]! @paginate(defaultCount: 10, builder: "App\\Category@resolveSearchCategories")
-
-  """
-  猜你喜欢
-  """
-  GuestUserLike: [Category!]! @field(resolver: "App\\Category@resolveGuestUserLike")
-  """
-  猜你喜欢
-  """
-  newestCategories: [Category!]! @field(resolver: "App\\Category@resolveNewestCategories")
-  """
-  推荐题库
-  """
-  RecommendCategories: [Category!]! @field(resolver: "App\\Category@resolveRecommendCategories")
-
-  categoryType(type: String! @eq): [Category!] @paginate(defaultCount: 10, builder: "App\\Category@getByType")
+	category(id: Int! @eq): Category @find(model: "App\\Category")
+	categoryAdmins(category_id: Int!): [User!]
+	@paginate(defaultCount: 10, builder: "App\\Category@resolveAdmins")
+	categoryAuthors(category_id: Int!): [User!]
+	@paginate(defaultCount: 10, builder: "App\\Category@resolveAuthors")
+	categories(filter: CategoryFilter): [Category!]
+	@paginate(defaultCount: 10, builder: "App\\Category@resolveCategories")
+}
+enum CategoryStatus {
+	public @enum(value: 1)
+	draft @enum(value: 0)
+}
+enum CategoryFilter {
+	hot
+	other
 }

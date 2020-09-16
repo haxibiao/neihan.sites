@@ -14,18 +14,10 @@ class ContributeObserver
      */
     public function created(Contribute $contribute)
     {
-        // try {
-        //     $user = $contribute->user;
-
-        //     if ($contribute->amount > 0) {
-        //         //计算分红
-        //         DDZUser::bonusOnUserContribute($user, $contribute);
-        //     }
-        //     //上报用户贡献到懂得赚
-        //     DDZUser::updateContribute($user, $contribute);
-        // } catch (Exception $ex) {
-        //     Log::error($ex->getMessage());
-        // }
+        //更新user表上的冗余字段
+        $user = $contribute->user;
+        //更新任务状态
+        $user->reviewTasksByClass(get_class($contribute));
     }
 
     /**

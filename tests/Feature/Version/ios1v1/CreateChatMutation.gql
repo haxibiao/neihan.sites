@@ -1,0 +1,10 @@
+mutation createChatMutation($id: Int!) {
+    createChat(with_user_id: $id) {
+        id
+        withUser {
+            id
+            name
+            avatar
+        }
+    }
+}

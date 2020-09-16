@@ -38,6 +38,7 @@ class CreateProfilesTable extends Migration
             $table->integer('count_favorites')->default(0);
             $table->integer('count_actions')->default(0);
             $table->integer('count_reports')->default(0);
+            $table->integer('count_contributes')->default(0)->comment('用户贡献点');
 
             //profile
             $table->boolean('enable_tips')->default(1)->comment('开启打赏');
