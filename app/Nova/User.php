@@ -67,9 +67,9 @@ class User extends Resource
                     return $model->saveDownloadImage($file);
                 })
                 ->thumbnail(function () {
-                    return $this->avatar_url;
+                    return $this->avatar;
                 })->preview(function () {
-                    return $this->avatar_url;
+                    return $this->avatar;
                 })->disableDownload(),
             Text::make('最近使用版本', 'profile.app_version')->sortable()->hideWhenUpdating(),
             Select::make('性别', 'gender')->options([
@@ -110,7 +110,7 @@ class User extends Resource
             HasMany::make('智慧点明细', 'golds', Gold::class)->onlyOnDetail(),
             HasMany::make('贡献记录', 'contributes', Contribute::class),
             HasMany::make('用户文章', 'videoArticles', Article::class),
-            HasMany::make('用户动态','posts',Post::class),
+            HasMany::make('用户动态', 'posts', Post::class),
 
         ];
     }
