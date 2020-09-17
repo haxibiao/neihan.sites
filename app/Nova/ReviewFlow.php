@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\User as AppUser;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
@@ -58,7 +59,9 @@ class ReviewFlow extends Resource
             ID::make()->sortable(),
             Text::make('模板名称', 'name'),
             Text::make('任务检查类', 'review_class'),
-            Text::make('任务检查函数类', 'check_functions'),
+            Code::make('任务检查函数类', 'check_functions')
+                ->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE)
+                ->showOnIndex(),
             Select::make('类型', 'type')->options([
                 \App\ReviewFlow::ADMIN_USER_SCOPE   => '运营选用',
                 \App\ReviewFlow::NORMAL_USER_SCOPE   => '用户可选用',

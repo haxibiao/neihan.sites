@@ -10,12 +10,63 @@ use App\Profile;
 use App\RewardCounter;
 use App\User;
 use App\Wallet;
+use App\Withdraw;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 trait UserAttrs
 {
+    /**
+     * 用户是否被禁用
+     *
+     * @return bool
+     */
+    public function getIsDisableAttribute()
+    {
+        return $this->status == User::DISABLE_STATUS;
+    }
+
+    /**
+     * 是否为刷子
+     *
+     * @return bool
+     */
+    public function getIsShuaZiAttribute()
+    {
+        //UT时跳过
+        if (is_testing_env()) {
+            return false;
+        }
+
+        if ($wallet = $this->wallet) {
+
+            //未进行绑定支付宝
+            if (empty($wallet->pay_account)) {
+                return false;
+            }
+            //当前账号多次提现 并且钱包不一致
+            $withdraws = Withdraw::with(['wallet'])->where(function ($query)
+            use ($wallet) {
+                $query->where('to_account', $this->account)
+                    ->orWhere('to_account', $wallet->pay_account);
+            })->where('wallet_id', '!=', $wallet->id)
+                ->get();
+            foreach ($withdraws as $withdraw) {
+                $user = $withdraw->user;
+                if ($user->status == $this->ENABLE_STATUS) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static function getAmountNeedDayContributes($amount)
+    {
+        return $amount * 60;
+    }
+
     public function getNextRewardVideoTimeAttribute()
     {
         return 0;
@@ -26,9 +77,6 @@ trait UserAttrs
         $avatar = $this->getRawOriginal('avatar');
         if (is_null($avatar)) {
             return url(self::getDefaultAvatar());
-        }
-        if (Str::contains($avatar, 'http')) {
-            return $avatar;
         }
         return \Storage::cloud()->url($avatar);
     }
@@ -115,7 +163,7 @@ trait UserAttrs
     //rmb钱包，默认钱包
     public function getWalletAttribute()
     {
-        if ($wallet = $this->wallets()->whereType(0)->first()) {
+        if ($wallet = $this->wallets()->whereType(Wallet::RMB_WALLET)->first()) {
             return $wallet;
         }
 
@@ -138,7 +186,7 @@ trait UserAttrs
     //金币钱包
     public function getGoldWalletAttribute()
     {
-        if ($wallet = $this->wallets()->whereType(1)->first()) {
+        if ($wallet = $this->wallets()->whereType(Wallet::GOLD_WALLET)->first()) {
             return $wallet;
         }
         return Wallet::goldWalletOf($this);
@@ -233,17 +281,17 @@ trait UserAttrs
         return $this->role_id >= 2;
     }
 
-    //    public function getAvatarUrlAttribute()
-    //    {
-    //        if (isset($this->avatar)) {
-    //            if (Str::contains($this->avatar, 'http')) {
-    //                return $this->avatar;
-    //            }
-    //            return \Storage::cloud()->url($this->avatar);
-    //        }
-    //        // 避免前端取不到数据
-    //        return \Storage::cloud()->url(User::AVATAR_DEFAULT);
-    //    }
+//    public function getAvatarUrlAttribute()
+//    {
+//        if (isset($this->avatar)) {
+//            if (Str::contains($this->avatar, 'http')) {
+//                return $this->avatar;
+//            }
+//            return \Storage::cloud()->url($this->avatar);
+//        }
+//        // 避免前端取不到数据
+//        return \Storage::cloud()->url(User::AVATAR_DEFAULT);
+//    }
 
     public function getTokenAttribute()
     {
@@ -267,17 +315,19 @@ trait UserAttrs
 
     public function getFollowedIdAttribute()
     {
-        if ($user = checkUser()) {
-            $follow = Follow::where([
-                'user_id'       => $user->id,
-                'followed_type' => 'users',
-                'followed_id'   => $this->id,
-            ])->select('id')->first();
-            if (!is_null($follow)) {
-                return $follow->id;
+        return $this->remember('followed_id', 0, function() {
+            if ($user = checkUser()) {
+                $follow = Follow::where([
+                    'user_id'       => $user->id,
+                    'followed_type' => 'users',
+                    'followed_id'   => $this->id,
+                ])->select('id')->first();
+                if (!is_null($follow)) {
+                    return $follow->id;
+                }
             }
-        }
-        return null;
+            return null;
+        });
     }
 
     // public function getQqAttribute()
@@ -292,10 +342,13 @@ trait UserAttrs
 
     public function getIntroductionAttribute()
     {
-        if (!$this->profile || empty($this->profile->introduction)) {
+        return $this->remember('introduction', 0, function() {
+            $introduction = optional($this->profile)->introduction;
+            if($introduction){
+                return $introduction;
+            }
             return '这个人很懒，一点介绍都没留下...';
-        }
-        return $this->profile->introduction;
+        });
     }
 
     //unreads
@@ -333,10 +386,11 @@ trait UserAttrs
         return $this->unreads('others');
     }
 
-
     public function getCountPostsAttribute()
     {
-        return $this->posts()->count();
+        return $this->remember('count_posts', 0, function() {
+            return $this->posts()->count();
+        });
     }
 
     public function getCountProductionAttribute()
@@ -351,7 +405,9 @@ trait UserAttrs
 
     public function getCountFollowingsAttribute()
     {
-        return $this->followingUsers()->count();
+        return $this->remember('count_followings', 0, function() {
+            return $this->followingUsers()->count();
+        });
     }
 
     public function getCountDraftsAttribute()
@@ -373,13 +429,14 @@ trait UserAttrs
     //TODO: 这些可以后面淘汰，前端直接访问 user->profile->atts 即可
     public function getCountArticlesAttribute()
     {
-        return $this->allArticles()->where("status", ">", 0)->count();
-        // return $this->profile->count_articles;
+        return $this->allArticles()->where("status",">",0)->count();
     }
 
     public function getCountFollowsAttribute()
     {
-        return $this->profile->count_follows;
+        return $this->remember('count_follows', 0, function() {
+            return $this->profile->count_follows;
+        });
     }
 
     public function getCountCollectionsAttribute()
@@ -389,7 +446,9 @@ trait UserAttrs
 
     public function getCountFavoritesAttribute()
     {
-        return $this->profile->count_favorites;
+        return $this->remember('count_favorites', 0, function() {
+            return $this->profile->count_favorites;
+        });
     }
 
     public function getGenderAttribute()
@@ -399,16 +458,18 @@ trait UserAttrs
 
     public function getGenderMsgAttribute()
     {
-        switch ($this->profile->gender) {
-            case self::MALE_GENDER:
-                return '男';
-                break;
-            case self::FEMALE_GENDER:
-                return '女';
-                break;
-            default:
-                return "女";
-        }
+        return $this->remember('gender', 0, function() {
+            switch ($this->profile->gender) {
+                case self::MALE_GENDER:
+                    return '男';
+                    break;
+                case self::FEMALE_GENDER:
+                    return '女';
+                    break;
+                default:
+                    return "女";
+            }
+        });
     }
 
     public static function getGenderNumber($gender)
@@ -427,8 +488,10 @@ trait UserAttrs
 
     public function getAgeAttribute()
     {
-        $birthday = Carbon::parse($this->birthday);
-        return $birthday->diffInYears(now(), false);
+        return $this->remember('age', 0, function() {
+            $birthday = Carbon::parse($this->birthday);
+            return $birthday->diffInYears(now(), false);
+        });
     }
 
     public function getBirthdayMsgAttribute()

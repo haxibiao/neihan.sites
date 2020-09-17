@@ -2,19 +2,15 @@
 
 namespace App;
 
-use GuzzleHttp\Client;
 use Haxibiao\Media\Spider as BaseSpider;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 
 class Spider extends BaseSpider
 {
     public function resolveShareLink($root, $args, $context, $info)
     {
-        $spider = parent::resolveDouyinVideo(getUser(), $args['share_link']);
 
+        $spider = parent::resolveDouyinVideo(getUser(), $args['share_link']);
         $post = Post::with('video')->firstOrNew(['spider_id' => $spider->id]);
-        $post->user_id          = $spider->user_id;
 
         $content = data_get($args,'content');
         if($content){

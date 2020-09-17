@@ -67,7 +67,7 @@ trait WithdrawFacade
             if ($minute < 10) {
                 $rand = mt_rand(1, 100);
                 // sleep(1); //不能sleep!! 会占用 php-fpm 和 mysql connections...
-                throw_if($rand <= 95, GQLException::class, '目前人数过多,请您下个时段(' . ($hour + 1) . '点)再试!');
+                throw_if($rand <= 30, GQLException::class, '目前人数过多,请您下个时段(' . ($hour + 1) . '点)再试!');
             }
 
         }

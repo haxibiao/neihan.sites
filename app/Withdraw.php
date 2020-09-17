@@ -27,7 +27,7 @@ class Withdraw extends Model
         'host',
     ];
 
-    const MAX_WITHDRAW_SUM_AMOUNT = 100;
+    const MAX_WITHDRAW_SUM_AMOUNT = 30;
     //提现平台
     const ALIPAY_PLATFORM = 'alipay';
     const WECHAT_PLATFORM = 'wechat';

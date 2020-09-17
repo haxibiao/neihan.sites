@@ -52,7 +52,7 @@ class Task extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function fields(Request $request)
@@ -64,6 +64,15 @@ class Task extends Resource
             BelongsTo::make('任务模版', 'review_flow', 'App\Nova\ReviewFlow'),
             Select::make('类型', 'type')->options(\App\Task::getTypes())->displayUsingLabels(),
             Select::make('状态', 'status')->options(\App\Task::getStatuses())->displayUsingLabels(),
+            Select::make('任务分组', 'group')->hideFromIndex()
+                ->options([
+                    '新人任务' => '新人任务',
+                    '每日任务' => '每日任务',
+                    '自定义任务' => '自定义任务',
+                    '实时任务' => '实时任务',
+                    '每周任务' => '每周任务',
+                ])
+                ->displayUsingLabels(),
             Code::make('奖励', 'reward')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
             Code::make('任务配置', 'resolve')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
             //Code::make('解析', 'resolve')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE),
@@ -94,7 +103,7 @@ class Task extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function cards(Request $request)
@@ -105,7 +114,7 @@ class Task extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function filters(Request $request)
@@ -119,7 +128,7 @@ class Task extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function lenses(Request $request)
@@ -130,7 +139,7 @@ class Task extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function actions(Request $request)

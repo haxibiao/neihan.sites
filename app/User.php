@@ -43,6 +43,8 @@ class User extends Model implements AuthenticatableContract,
     use CanFollow;
     use PlayWithTasks;
 
+    use \Haxibiao\Helpers\Traits\CanCacheAttributes;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -97,6 +99,7 @@ class User extends Model implements AuthenticatableContract,
     const USER_STATUS   = 0;
     const EDITOR_STATUS = 1;
     const ADMIN_STATUS  = 2;
+    const VEST_STATUS  = 3;
 
     //用户激励视频奖励
     const VIDEO_REWARD_GOLD       = 10;

@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Nova\Actions\BindDongdezhuanAccount;
 use App\Nova\Actions\UpdateUser;
+use App\Nova\Filters\User\UserRoleID;
 use App\User as AppUser;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\DateTime;
@@ -77,8 +78,9 @@ class User extends Resource
             ])->displayUsingLabels()->hideWhenUpdating(),
 
             Select::make('权限', 'role_id')->options([
-                AppUser::USER_STATUS   => '平民玩家',
-                AppUser::EDITOR_STATUS => '普通管理员',
+                AppUser::USER_STATUS    => '平民玩家',
+                AppUser::EDITOR_STATUS  => '运营人员',
+                AppUser::VEST_STATUS    => '马甲号',
             ])->displayUsingLabels()->onlyOnForms(),
 
             Text::make('年龄', 'age')->hideWhenUpdating(),
@@ -134,6 +136,7 @@ class User extends Resource
     {
         return [
             new \App\Nova\Filters\User\UserStatusType,
+            new UserRoleID,
         ];
     }
 

@@ -18,6 +18,7 @@ use Throwable;
 class LighthouseErrorHandler implements ErrorHandler
 {
     protected static $dontReport = [
+        \Haxibiao\Base\Exceptions\GQLException::class,
         \App\Exceptions\GQLException::class,
         \App\Exceptions\UserException::class,
         \App\Exceptions\UnregisteredException::class,
