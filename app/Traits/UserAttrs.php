@@ -78,6 +78,9 @@ trait UserAttrs
         if (is_null($avatar)) {
             return url(self::getDefaultAvatar());
         }
+        if (str_contains($avatar, "http")) {
+            return $avatar;
+        }
         return \Storage::cloud()->url($avatar);
     }
 
@@ -281,17 +284,17 @@ trait UserAttrs
         return $this->role_id >= 2;
     }
 
-//    public function getAvatarUrlAttribute()
-//    {
-//        if (isset($this->avatar)) {
-//            if (Str::contains($this->avatar, 'http')) {
-//                return $this->avatar;
-//            }
-//            return \Storage::cloud()->url($this->avatar);
-//        }
-//        // 避免前端取不到数据
-//        return \Storage::cloud()->url(User::AVATAR_DEFAULT);
-//    }
+    //    public function getAvatarUrlAttribute()
+    //    {
+    //        if (isset($this->avatar)) {
+    //            if (Str::contains($this->avatar, 'http')) {
+    //                return $this->avatar;
+    //            }
+    //            return \Storage::cloud()->url($this->avatar);
+    //        }
+    //        // 避免前端取不到数据
+    //        return \Storage::cloud()->url(User::AVATAR_DEFAULT);
+    //    }
 
     public function getTokenAttribute()
     {
@@ -315,7 +318,7 @@ trait UserAttrs
 
     public function getFollowedIdAttribute()
     {
-        return $this->remember('followed_id', 0, function() {
+        return $this->remember('followed_id', 0, function () {
             if ($user = checkUser()) {
                 $follow = Follow::where([
                     'user_id'       => $user->id,
@@ -342,9 +345,9 @@ trait UserAttrs
 
     public function getIntroductionAttribute()
     {
-        return $this->remember('introduction', 0, function() {
+        return $this->remember('introduction', 0, function () {
             $introduction = optional($this->profile)->introduction;
-            if($introduction){
+            if ($introduction) {
                 return $introduction;
             }
             return '这个人很懒，一点介绍都没留下...';
@@ -388,7 +391,7 @@ trait UserAttrs
 
     public function getCountPostsAttribute()
     {
-        return $this->remember('count_posts', 0, function() {
+        return $this->remember('count_posts', 0, function () {
             return $this->posts()->count();
         });
     }
@@ -405,7 +408,7 @@ trait UserAttrs
 
     public function getCountFollowingsAttribute()
     {
-        return $this->remember('count_followings', 0, function() {
+        return $this->remember('count_followings', 0, function () {
             return $this->followingUsers()->count();
         });
     }
@@ -429,12 +432,12 @@ trait UserAttrs
     //TODO: 这些可以后面淘汰，前端直接访问 user->profile->atts 即可
     public function getCountArticlesAttribute()
     {
-        return $this->allArticles()->where("status",">",0)->count();
+        return $this->allArticles()->where("status", ">", 0)->count();
     }
 
     public function getCountFollowsAttribute()
     {
-        return $this->remember('count_follows', 0, function() {
+        return $this->remember('count_follows', 0, function () {
             return $this->profile->count_follows;
         });
     }
@@ -446,7 +449,7 @@ trait UserAttrs
 
     public function getCountFavoritesAttribute()
     {
-        return $this->remember('count_favorites', 0, function() {
+        return $this->remember('count_favorites', 0, function () {
             return $this->profile->count_favorites;
         });
     }
@@ -458,7 +461,7 @@ trait UserAttrs
 
     public function getGenderMsgAttribute()
     {
-        return $this->remember('gender', 0, function() {
+        return $this->remember('gender', 0, function () {
             switch ($this->profile->gender) {
                 case self::MALE_GENDER:
                     return '男';
@@ -488,7 +491,7 @@ trait UserAttrs
 
     public function getAgeAttribute()
     {
-        return $this->remember('age', 0, function() {
+        return $this->remember('age', 0, function () {
             $birthday = Carbon::parse($this->birthday);
             return $birthday->diffInYears(now(), false);
         });
