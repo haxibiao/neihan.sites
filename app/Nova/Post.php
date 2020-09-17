@@ -25,9 +25,9 @@ class Post extends Resource
 
     public static $group = '内容管理';
 
-//    public static $search = [
-//        'id', 'description',
-//    ];
+    //    public static $search = [
+    //        'id', 'description',
+    //    ];
 
     public static function label()
     {
@@ -46,19 +46,34 @@ class Post extends Resource
             ID::make()->sortable(),
             Textarea::make('文章内容', 'content')->rules('required')->hideFromIndex(),
             BelongsTo::make('作者', 'user', 'App\Nova\User')->exceptOnForms(),
+            BelongsTo::make('视频', 'video', Video::class)->exceptOnForms(),
+            Text::make('描述', 'description')->exceptOnForms(),
+            Text::make('热度', 'hot')->exceptOnForms(),
+            Text::make('点赞', 'count_likes')->exceptOnForms(),
+            Text::make('评论', 'count_comments')->exceptOnForms(),
+            Select::make('状态', 'status')->options([
+                1  => '公开',
+                0  => '草稿',
+                -1 => '下架',
+            ])->displayUsingLabels(),
+
+            Text::make('视频', function () {
+                if ($this->video) {
+                    return "<div style='width:150px; overflow:hidden;'><video controls style='widht:150px; height:300px' src='" . $this->video->url . "?t=" . time() . "'></video></div>";
+                }
+                return '';
+            })->asHtml(),
         ];
     }
 
     public function cards(Request $request)
     {
-        return [
-        ];
+        return [];
     }
 
     public function filters(Request $request)
     {
-        return [
-        ];
+        return [];
     }
 
     public function lenses(Request $request)
@@ -68,7 +83,6 @@ class Post extends Resource
 
     public function actions(Request $request)
     {
-        return [
-        ];
+        return [];
     }
 }
