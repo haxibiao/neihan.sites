@@ -24,7 +24,6 @@ class Spider extends BaseSpider
         // 标签
         $tagNames = data_get($args, 'tag_names', []);
         $post->tagByNames($tagNames);
-        $post->user_id = getUser()->id;
         $post->save();
 
         return $spider;
