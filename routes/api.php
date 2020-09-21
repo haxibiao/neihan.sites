@@ -87,3 +87,5 @@ Route::any('/media/oldHook', 'Api\SpiderController@hook');
 Route::namespace('Api')->middleware('auth:api')->group(function () {
     Route::post('/background', 'UserController@saveBackground');
 });
+
+Route::post('/douyin/import', 'Api\SpiderController@importDouYin');

@@ -2,20 +2,21 @@
 
 namespace App\Nova;
 
-use App\Nova\Actions\Article\AuditVideoPostSubmitStatus;
-use App\Nova\Filters\Article\ArticleSubmitFilter;
-use App\Nova\Filters\ArticleSource;
-use App\Scopes\ArticleSubmitScope;
-use Halimtuhu\ArrayImages\ArrayImages;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Select;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Textarea;
+use App\Scopes\ArticleSubmitScope;
+use Laravel\Nova\Fields\BelongsTo;
+use App\Nova\Filters\ArticleSource;
+use Halimtuhu\ArrayImages\ArrayImages;
+use App\Nova\Actions\Article\UpdatePost;
+use Illuminate\Support\Facades\Validator;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use App\Nova\Filters\Article\ArticleSubmitFilter;
+use App\Nova\Actions\Article\AuditVideoPostSubmitStatus;
 
 class Post extends Resource
 {
@@ -73,7 +74,9 @@ class Post extends Resource
 
     public function filters(Request $request)
     {
-        return [];
+        return [
+            new Filters\Post\PostStatusType,
+        ];
     }
 
     public function lenses(Request $request)
@@ -83,6 +86,8 @@ class Post extends Resource
 
     public function actions(Request $request)
     {
-        return [];
+        return [
+            new UpdatePost,
+        ];
     }
 }
