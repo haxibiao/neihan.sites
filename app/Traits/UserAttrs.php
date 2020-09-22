@@ -240,6 +240,9 @@ trait UserAttrs
         if ($profile = $this->hasOne(Profile::class)->first()) {
             return $profile;
         }
+        if (empty($this) || empty($this->id)) {
+            return;
+        }
         //确保profile数据完整
         $profile          = new Profile();
         $profile->user_id = $this->id;
@@ -345,6 +348,9 @@ trait UserAttrs
 
     public function getIntroductionAttribute()
     {
+        if (empty($this->profile)) {
+            return;
+        }
         return $this->remember('introduction', 0, function () {
             $introduction = optional($this->profile)->introduction;
             if ($introduction) {
@@ -437,6 +443,9 @@ trait UserAttrs
 
     public function getCountFollowsAttribute()
     {
+        if (empty($this->profile)) {
+            return;
+        }
         return $this->remember('count_follows', 0, function () {
             return $this->profile->count_follows;
         });
@@ -444,11 +453,17 @@ trait UserAttrs
 
     public function getCountCollectionsAttribute()
     {
+        if (empty($this->profile)) {
+            return;
+        }
         return $this->profile->count_collections;
     }
 
     public function getCountFavoritesAttribute()
     {
+        if (empty($this->profile)) {
+            return;
+        }
         return $this->remember('count_favorites', 0, function () {
             return $this->profile->count_favorites;
         });
@@ -456,11 +471,17 @@ trait UserAttrs
 
     public function getGenderAttribute()
     {
+        if (empty($this->profile)) {
+            return;
+        }
         return $this->profile->gender;
     }
 
     public function getGenderMsgAttribute()
     {
+        if (empty($this->profile)) {
+            return;
+        }
         return $this->remember('gender', 0, function () {
             switch ($this->profile->gender) {
                 case self::MALE_GENDER:
@@ -504,11 +525,17 @@ trait UserAttrs
 
     public function getBirthdayAttribute()
     {
+        if (empty($this->profile)) {
+            return;
+        }
         return $this->profile->birthday;
     }
 
     public function getContributeAttribute()
     {
+        if (empty($this->profile)) {
+            return;
+        }
         return $this->profile->count_contributes;
     }
 

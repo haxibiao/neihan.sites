@@ -120,14 +120,17 @@ class SpiderController extends Controller
                     $spider = Spider::resolveDouyinVideo(getUser(), $spider_link);
                     $post = Post::with('video')->firstOrNew(['spider_id' => $spider->id]);
                     //标签
-                    $tags = str_after($array[$i], '#');
-                    $tags = str_replace(' ', '', $tags);
-                    $tagNames = explode('#', $tags);
-                    $post->tagByNames($tagNames ?? []);
+                    if (str_contains($array[$i], "#")) {
+                        $tags = str_after($array[$i], '#');
+                        if ($tags) {
 
+                            $tags = str_replace(' ', '', $tags);
+                            $tagNames = explode('#', $tags);
+                            $post->tagByNames($tagNames ?? []);
+                        }
+                    }
                     $post->user_id = getUser()->id;
                     $post->save();
-
                     $count++;
                     sleep(5);
                 } catch (Exception $e) {
