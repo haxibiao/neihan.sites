@@ -2,18 +2,19 @@
 
 namespace App\Nova;
 
-use App\Nova\Actions\BindDongdezhuanAccount;
-use App\Nova\Actions\UpdateUser;
-use App\Nova\Filters\User\UserRoleID;
 use App\User as AppUser;
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Text;
+use App\Nova\Actions\UpdateUser;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Password;
+use App\Nova\Filters\User\UserRoleID;
+use App\Nova\Actions\BindDongdezhuanAccount;
 
 class User extends Resource
 {
@@ -97,7 +98,11 @@ class User extends Resource
             Text::make('api_token', 'api_token')->hideFromIndex()->onlyOnDetail(),
             Text::make('手机号', 'phone'),
             Text::make('邮件地址', 'email'),
-            Text::make('密码', 'password')->hideWhenUpdating(),
+            Password::make('密码', 'Password')
+                ->onlyOnForms()
+                ->creationRules('required', 'string', 'min:6')
+                ->updateRules('nullable', 'string', 'min:6'),
+            // Text::make('密码', 'password')->hideWhenUpdating(),
 
             DateTime::make('创建时间', 'created_at')->onlyOnDetail(),
             DateTime::make('最后登录时间', 'updated_at')->onlyOnDetail(),
