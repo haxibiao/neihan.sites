@@ -95,7 +95,7 @@ class User extends Resource
             Text::make('账户', 'account')->onlyOnDetail(),
             Text::make('uuid', 'uuid')->onlyOnDetail(),
             Text::make('api_token', 'api_token')->hideFromIndex()->onlyOnDetail(),
-            Text::make('手机号', 'phone')->onlyOnDetail(),
+            Text::make('手机号', 'phone'),
             Text::make('邮件地址', 'email'),
             Text::make('密码', 'password')->hideWhenUpdating(),
 
