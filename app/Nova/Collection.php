@@ -5,23 +5,28 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\MorphedByMany;
 use Laravel\Nova\Fields\Text;
 
 class Collection extends Resource
 {
 
-    public static $group = '基础内容';
+    public static $group = '内容管理';
 
     public static $model = 'App\\Collection';
 
     public static $title = 'id';
 
-    public static $displayInNavigation = false;
+    public static $displayInNavigation = true;
 
     public static $search = [
         'id', 'name',
     ];
-
+    public static function label()
+    {
+        return "合集";
+    }
     /**
      * Get the fields displayed by the resource.
      *
@@ -32,7 +37,10 @@ class Collection extends Resource
     {
         return [
             ID::make()->sortable(),
+            Text::make('合集名','name'),
+            Text::make('合集简介','description'),
             BelongsTo::make('作者', 'user', User::class),
+            MorphedByMany::make('合集内视频','posts',Post::class),
             Text::make('是否上架', function () {
                 if ($this->status == 0) {
                     return "未上架";
@@ -42,14 +50,20 @@ class Collection extends Resource
             Text::make('创建时间', function () {
                 return time_ago($this->created_at);
             }),
-            Text::make('文章数', 'count'),
+            Image::make('封面图片', 'logo')
+                ->store(function (Request $request, $model) {
+                    $file = $request->file('logo');
+                    return $model->saveDownloadImage($file);
+                })->thumbnail(function () {
+                    return $this->logo;
+                })->preview(function () {
+                    return $this->logo;
+                })->disableDownload(),
+            Text::make('文章数', 'count')->hideWhenCreating(),
         ];
     }
 
-    public static function label()
-    {
-        return "文集";
-    }
+
 
     /**
      * Get the cards available for the request.

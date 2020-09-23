@@ -19,6 +19,7 @@ class CreateCollectionsTable extends Migration
             $table->integer('status')->default(1)->index();  // 0 private 1 public
             $table->string('type')->default('article')->index(); // faved...
             $table->string('name');
+            $table->string('description');
             $table->string('logo')->nullable();
 
             //add counts
@@ -27,6 +28,7 @@ class CreateCollectionsTable extends Migration
             $table->integer('count_follows')->default(0)->index();
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
