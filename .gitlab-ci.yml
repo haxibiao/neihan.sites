@@ -29,7 +29,7 @@ go_develop:
   script:
     - hostname
     - whoami
-    - ssh root@gz009 "cd /data/www/ainicheng.com && bash ops/bash/env.sh staging"
+    - ssh root@gz009 "cd /data/www/ainicheng.com && bash ops/bash/env.sh develop"
     - ssh root@gz009 "cd /data/www/ainicheng.com && bash ops/bash/worker.sh all"
     - ssh root@gz009 "cd /data/www/ainicheng.com && bash ops/bash/data.sh"
   only:
