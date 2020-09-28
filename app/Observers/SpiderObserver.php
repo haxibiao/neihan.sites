@@ -13,7 +13,7 @@ class SpiderObserver
      * @param  \App\Spider  $spider
      * @return void
      */
-    public function created(Spider $spider)
+    public function created($spider)
     {
         //创建爬虫的时候，自动发布一个动态
         Post::saveSpiderVideoPost($spider);
@@ -25,7 +25,7 @@ class SpiderObserver
      * @param  \App\Spider  $spider
      * @return void
      */
-    public function updated(Spider $spider)
+    public function updated( $spider)
     {
         if ($spider->status == Spider::PROCESSED_STATUS) {
             Post::publishSpiderVideoPost($spider);
@@ -44,7 +44,7 @@ class SpiderObserver
      * @param  \App\Spider  $spider
      * @return void
      */
-    public function deleted(Spider $spider)
+    public function deleted( $spider)
     {
         //
     }

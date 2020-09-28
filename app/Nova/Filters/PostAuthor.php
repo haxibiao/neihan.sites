@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Nova\Filters\Post;
+namespace App\Nova\Filters;
 
+use App\User;
 use Illuminate\Http\Request;
 use Laravel\Nova\Filters\Filter;
 
-class PostStatusType extends Filter
+class PostAuthor extends Filter
 {
-    public $name = '动态状态';
+    public $name = '文章作者';
     /**
      * The filter's component.
      *
@@ -18,28 +19,29 @@ class PostStatusType extends Filter
     /**
      * Apply the filter to the given query.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  mixed  $value
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed $value
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function apply(Request $request, $query, $value)
     {
-        return $query->where('status', $value);
+        return $query->where('user_id', $value);
     }
 
     /**
      * Get the filter's available options.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function options(Request $request)
     {
-        return [
-            '公开' => '1',
-            '草稿' => '0',
-            '下架' => '-1',
-        ];
+        $data = User::query()
+            ->orderBy('name', 'DESC')
+            ->pluck('id', 'name')
+            ->toArray();
+        return $data;
+
     }
 }

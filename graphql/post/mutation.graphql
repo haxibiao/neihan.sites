@@ -37,6 +37,10 @@ extend type Mutation @middleware(checks: ["auth:api"]) {
     抖音的分享链接
     """
     share_link:String
+    """
+    合集ID
+    """
+    collection_ids: [Int!]
   ): Post! @field(resolver: "App\\Post@resolveCreateContent")
 
   updatePost(

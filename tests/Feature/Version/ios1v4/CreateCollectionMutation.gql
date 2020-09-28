@@ -1,0 +1,23 @@
+mutation createCollectionMutation(
+    $name: String!
+    $description: String
+    $logo: String
+    $collectable_ids:[Int!]
+) {
+    createCollection(
+        name: $name,
+        logo: $logo,
+      	description:$description
+        collectable_ids:$collectable_ids
+    ) {
+        id
+        name
+        logo
+        type
+        status
+        count_articles
+        count_follows
+        count_posts
+        followed
+    }
+}

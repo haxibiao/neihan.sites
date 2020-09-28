@@ -18,6 +18,8 @@ class Notice extends Resource
      */
     public static $model = 'App\Notice';
 
+    public static $displayInNavigation = false;
+
     public static $title = 'title';
 
     public static $search = [

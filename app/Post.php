@@ -27,6 +27,7 @@ class Post extends BasePost
     public function resolveSearchPosts($root, array $args, $context){
         $userId = data_get($args,'user_id');
         $tagId  = data_get($args,'tag_id');
+        $collectionId  = data_get($args,'collection_id');
         $type  = data_get($args,'type');
         return static::publish()->search(data_get($args,'query'))
             ->when($type == 'VIDEO', function ($q) use ($userId){
@@ -38,6 +39,10 @@ class Post extends BasePost
             })->when($tagId, function ($q) use ($tagId){
                 return $q->whereHas('tags',function($q) use ($tagId) {
                     $q->where('tags.id', $tagId);
+                });
+            })->when($collectionId, function ($q) use ($collectionId){
+                return $q->whereHas('collections',function($q) use ($collectionId) {
+                    $q->where('collections.id', $collectionId);
                 });
             })->with('video');
     }

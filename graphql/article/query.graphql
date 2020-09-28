@@ -31,6 +31,7 @@ type Article {
   category: Category
   categories: [Category!]
   collection: Collection
+  collections: [Collection]
   tips: [Tip!]
   comments: [Comment]!
   created_at: DateTime!

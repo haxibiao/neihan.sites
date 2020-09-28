@@ -24,6 +24,7 @@ class Gold extends Model
     const REWARD_VIDEO_GOLD = 7;
 
     const REWARD_GOLD = 10;
+    const NEW_USER_GOLD = 30;
 
     //当日通过观看视频获取的最高奖励
     const TODAY_VIDEO_PLAY_MAX_GOLD=30;

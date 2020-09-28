@@ -62,6 +62,15 @@ class Task extends Resource
             Text::make('任务名称', 'name'),
             Text::make('任务描述', 'details'),
             BelongsTo::make('任务模版', 'review_flow', 'App\Nova\ReviewFlow'),
+            Select::make('目标行为', 'task_action')
+                ->options(\App\Task::getActions())
+                ->displayUsingLabels()
+                ->hideFromIndex(),
+            Select::make('目标类', 'relation_class')
+                ->options(\App\Task::getActionClasses())
+                ->displayUsingLabels()
+                ->hideFromIndex(),
+            Code::make('目标对象', 'task_object')->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE)->hideFromIndex(),
             Select::make('类型', 'type')->options(\App\Task::getTypes())->displayUsingLabels(),
             Select::make('状态', 'status')->options(\App\Task::getStatuses())->displayUsingLabels(),
             Select::make('任务分组', 'group')->hideFromIndex()

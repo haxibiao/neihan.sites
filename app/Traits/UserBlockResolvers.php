@@ -22,7 +22,7 @@ trait UserBlockResolvers
       {
           if($user = checkUser()){
                   $userBlock  = User::find($args['id']);  
-                  if(!$userBlock->count()){
+                  if(!$userBlock){
                       throw new GQLException('屏蔽失败，不存在该用户');
                   }
                  //跳过已经屏蔽过的用户

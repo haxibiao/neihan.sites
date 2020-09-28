@@ -48,8 +48,8 @@ trait WithdrawFacade
             }
 
             //老用户 工作时间才可以提现
-            if (($hour < 10 || $hour >= 18 || $minute >= 10)) {
-                throw new GQLException('限量抢时间段：10:00-18:00，请在每个小时开始的0-10分钟内开抢哦');
+            if (($hour < 10 || $hour >= 18 || $minute >= 40)) {
+                throw new GQLException('限量抢时间段：10:00-18:00，请在每个小时开始的0-40分钟内开抢哦');
             }
 
             //每人默认最高10元限量抢额度，新版本开放提额玩法,先简单防止老刷子账户疯狂并发提现...
@@ -64,7 +64,7 @@ trait WithdrawFacade
              * 限制几率 95%
              * 时间超出过,恢复正常!
              */
-            if ($minute < 10) {
+            if ($minute < 40) {
                 $rand = mt_rand(1, 100);
                 // sleep(1); //不能sleep!! 会占用 php-fpm 和 mysql connections...
                 throw_if($rand <= 30, GQLException::class, '目前人数过多,请您下个时段(' . ($hour + 1) . '点)再试!');
@@ -153,15 +153,15 @@ trait WithdrawFacade
 
         //贡献点检查
         //提现成功0.3元以上的，不再无门槛
-        if ($user->successWithdrawAmount >= 0.3) {
-            $needContributes = User::getAmountNeedDayContributes($amount);
-            $leftContributes = $needContributes - $user->week_contribute;
-            //无法完成该额度提现，提示需要的贡献值
-            if ($leftContributes > 0) {
-                $remark = sprintf('还差%s周贡献', $leftContributes);
-                throw new GQLException($remark);
-            }
-        }
+//        if ($user->successWithdrawAmount >= 0.3) {
+//            $needContributes = User::getAmountNeedDayContributes($amount);
+//            $leftContributes = $needContributes - $user->week_contribute;
+//            //无法完成该额度提现，提示需要的贡献值
+//            if ($leftContributes > 0) {
+//                $remark = sprintf('还差%s周贡献', $leftContributes);
+//                throw new GQLException($remark);
+//            }
+//        }
     }
 
     public static function getAllowAmount()

@@ -64,9 +64,9 @@ abstract class GraphQLTestCase extends TestCase
     /**
      * @group gql
      */
-    public function getRandomUserHeaders()
+    public function getRandomUserHeaders($user=null)
     {
-        $user  = $this->getRandomUser();
+        $user  = $user??$this->getRandomUser();
         $token = $user->api_token;
 
         $headers = [

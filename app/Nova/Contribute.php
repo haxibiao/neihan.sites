@@ -32,7 +32,7 @@ class Contribute extends Resource
         return "贡献值";
     }
 
-    public static $group = '用户管理';
+    public static $group = '交易管理';
 
     /**
      * The single value that should be used to represent the resource when being displayed.

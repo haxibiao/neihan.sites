@@ -31,6 +31,14 @@ class UserFollowed extends Notification
      */
     public function via($notifiable)
     {
+        $notification = $notifiable->notifications()
+            ->whereType('App\Notifications\UserFollowed')
+            ->where('data->type','follow')
+            ->where('data->user_id',$this->user->id)
+            ->first();
+        if($notification){
+            return [];
+        }
         return ['database'];
     }
 
