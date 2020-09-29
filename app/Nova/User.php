@@ -9,12 +9,10 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
-use App\Nova\Actions\UpdateUser;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Password;
 use App\Nova\Filters\User\UserRoleID;
-use App\Nova\Actions\BindDongdezhuanAccount;
 
 class User extends Resource
 {
@@ -41,7 +39,12 @@ class User extends Resource
         'id', 'name', 'email', 'account', 'phone',
     ];
 
+    public static $with = ['wallets', 'golds', 'contributes', 'videoArticles', 'posts'];
     public static function label()
+    {
+        return "用户";
+    }
+    public static function singularLabel()
     {
         return "用户";
     }
@@ -85,14 +88,14 @@ class User extends Resource
             ])->displayUsingLabels()->onlyOnForms(),
 
             Text::make('年龄', 'age')->onlyOnDetail(),
+            HasMany::make('钱包', 'wallets', Wallet::class)->onlyOnDetail(),
 
-            Text::make('发布内容数', function () {
-                return $this->posts()->count();
-            })->hideWhenUpdating(),
+            // Text::make('发布内容数', function () {
+            //     return $this->posts()->count();
+            // })->hideWhenUpdating(),
+            // Number::make('智慧点', 'gold')->exceptOnForms()->hideWhenUpdating(),
 
-            hasMany::make('钱包', 'wallets', Wallet::class)->hideWhenUpdating(),
 
-            Number::make('智慧点', 'gold')->exceptOnForms()->hideWhenUpdating(),
             Text::make('账户', 'account')->onlyOnDetail(),
             Text::make('uuid', 'uuid')->onlyOnDetail(),
             Text::make('api_token', 'api_token')->hideFromIndex()->onlyOnDetail(),
@@ -102,7 +105,7 @@ class User extends Resource
                 ->onlyOnForms()
                 ->creationRules('required', 'string', 'min:6')
                 ->updateRules('nullable', 'string', 'min:6'),
-            // Text::make('密码', 'password')->hideWhenUpdating(),
+            Text::make('密码', 'password')->hideWhenUpdating(),
 
             DateTime::make('创建时间', 'created_at')->onlyOnDetail(),
             DateTime::make('最后登录时间', 'updated_at')->onlyOnDetail(),
@@ -114,9 +117,9 @@ class User extends Resource
             ])->displayUsingLabels()->onlyOnDetail(),
 
             HasMany::make('智慧点明细', 'golds', Gold::class)->onlyOnDetail(),
-            HasMany::make('贡献记录', 'contributes', Contribute::class),
-            HasMany::make('用户文章', 'videoArticles', Article::class),
-            HasMany::make('用户动态', 'posts', Post::class),
+            HasMany::make('贡献记录', 'contributes', Contribute::class)->onlyOnDetail(),
+            HasMany::make('用户文章', 'videoArticles', Article::class)->onlyOnDetail(),
+            HasMany::make('用户动态', 'posts', Post::class)->onlyOnDetail(),
 
         ];
     }
@@ -141,8 +144,8 @@ class User extends Resource
     public function filters(Request $request)
     {
         return [
-            new \App\Nova\Filters\User\UserStatusType,
-            new UserRoleID,
+            // new \App\Nova\Filters\User\UserStatusType,
+            // new UserRoleID,
         ];
     }
 
@@ -166,8 +169,8 @@ class User extends Resource
     public function actions(Request $request)
     {
         return [
-            new UpdateUser,
-            new BindDongdezhuanAccount,
+            // new UpdateUser,
+            // new BindDongdezhuanAccount,
         ];
     }
 }

@@ -43,7 +43,6 @@ class Post extends Resource
 
     public function fields(Request $request)
     {
-        $user = getUser();
         return [
             ID::make()->sortable(),
             Textarea::make('文章内容', 'content')->rules('required')->hideFromIndex(),

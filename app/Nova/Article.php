@@ -29,6 +29,7 @@ class Article extends Resource
 
     public static $group = '内容管理';
 
+    public static $with = ['user', 'category', 'video'];
     public static $search = [
         'id', 'title',
     ];
@@ -98,7 +99,8 @@ class Article extends Resource
                         return '视频格式有问题';
                     }
                     return $model->saveVideoFile($file);
-                }),
+                }
+            ),
             BelongsTo::make('视频', 'video', Video::class)->exceptOnForms(),
             ArrayImages::make('图片', function () {
                 return $this->screenshots;
@@ -121,8 +123,7 @@ class Article extends Resource
 
     public function cards(Request $request)
     {
-        return [
-        ];
+        return [];
     }
 
     public function filters(Request $request)
