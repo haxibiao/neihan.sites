@@ -59,4 +59,11 @@ class Task extends HXBTask
         ];
     }
 
+    public  function getCollectionsAttribute()
+    {
+        if ($this->relation_class == self::COLLECTION) {
+            return  Collection::whereIn('id', $this->task_object)->get();
+        }
+        return null;
+    }
 }
