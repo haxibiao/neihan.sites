@@ -22,7 +22,7 @@ class LikeObserver
         if ($like->likable instanceof \App\Collection) {
             if ($like->likable->name == "一起看阅兵") {
                 \App\Task::refreshTask($user, "国庆活动");
-            } else if ($like->likable->name == "中秋故事汇") {
+            } else if ($like->likable->name == "欢聚中秋") {
                 \App\Task::refreshTask($user, "中秋活动");
             }
         }
