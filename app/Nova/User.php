@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Collection;
 use App\User as AppUser;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
@@ -39,7 +40,7 @@ class User extends Resource
         'id', 'name', 'email', 'account', 'phone',
     ];
 
-    public static $with = ['wallets', 'golds', 'contributes', 'videoArticles', 'posts'];
+    public static $with = ['wallets', 'golds', 'contributes', 'videoArticles', 'posts', 'collections'];
     public static function label()
     {
         return "用户";
@@ -90,10 +91,13 @@ class User extends Resource
             Text::make('年龄', 'age')->onlyOnDetail(),
             HasMany::make('钱包', 'wallets', Wallet::class)->onlyOnDetail(),
 
-            // Text::make('发布内容数', function () {
-            //     return $this->posts()->count();
-            // })->hideWhenUpdating(),
-            // Number::make('智慧点', 'gold')->exceptOnForms()->hideWhenUpdating(),
+            Text::make('发布内容数', function () {
+                return $this->posts()->count();
+            })->onlyOnDetail(),
+            Number::make('智慧点', 'gold')->exceptOnForms()->onlyOnDetail(),
+            Number::make('创建合集数', function () {
+                return $this->collections()->count();
+            })->exceptOnForms()->onlyOnDetail(),
 
 
             Text::make('账户', 'account')->onlyOnDetail(),
@@ -119,6 +123,7 @@ class User extends Resource
             HasMany::make('贡献记录', 'contributes', Contribute::class)->onlyOnDetail(),
             HasMany::make('用户文章', 'videoArticles', Article::class)->onlyOnDetail(),
             HasMany::make('用户动态', 'posts', Post::class)->onlyOnDetail(),
+            HasMany::make('用户合集', 'collections', Collection::class)->onlyOnDetail(),
 
         ];
     }
