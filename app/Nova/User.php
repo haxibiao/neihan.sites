@@ -105,7 +105,6 @@ class User extends Resource
                 ->onlyOnForms()
                 ->creationRules('required', 'string', 'min:6')
                 ->updateRules('nullable', 'string', 'min:6'),
-            Text::make('密码', 'password')->hideWhenUpdating(),
 
             DateTime::make('创建时间', 'created_at')->onlyOnDetail(),
             DateTime::make('最后登录时间', 'updated_at')->onlyOnDetail(),
