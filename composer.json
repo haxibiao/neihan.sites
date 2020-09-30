@@ -86,6 +86,10 @@
     "packagist": {
       "type": "composer",
       "url": "https://mirrors.aliyun.com/composer/"
+    },
+    "6": {
+      "type": "vcs",
+      "url": "http://code.haxibiao.cn/composer/haxibiao-nova.git"
     }
   },
   "extra": {
