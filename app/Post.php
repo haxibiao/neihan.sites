@@ -3,7 +3,6 @@
 namespace App;
 
 use Haxibiao\Content\Post as BasePost;
-use Haxibiao\Media\Spider;
 use Illuminate\Support\Arr;
 
 class Post extends BasePost
@@ -28,6 +27,7 @@ class Post extends BasePost
     public function resolveSearchPosts($root, array $args, $context){
         $userId = data_get($args,'user_id');
         $tagId  = data_get($args,'tag_id');
+        $collectionId  = data_get($args,'collection_id');
         $type  = data_get($args,'type');
         return static::publish()->search(data_get($args,'query'))
             ->when($type == 'VIDEO', function ($q) use ($userId){
@@ -39,6 +39,10 @@ class Post extends BasePost
             })->when($tagId, function ($q) use ($tagId){
                 return $q->whereHas('tags',function($q) use ($tagId) {
                     $q->where('tags.id', $tagId);
+                });
+            })->when($collectionId, function ($q) use ($collectionId){
+                return $q->whereHas('collections',function($q) use ($collectionId) {
+                    $q->where('collections.id', $collectionId);
                 });
             })->with('video');
     }
@@ -67,5 +71,25 @@ class Post extends BasePost
         $post->retagByNames($tagNames);
 
         return $post;
+    }
+
+    //关注用户的收藏列表
+    public function resolveFollowPosts($rootValue, array $args, $context, $resolveInfo)
+    {
+        $filter = data_get($args,'filter');
+        $user = getUser();
+        //2.获取用户关注列表
+        $followedUserIds = $user->follows() ->pluck('followed_id');
+
+        //3.获取关注用户发布的视频
+        $qb = static::query()
+            ->whereIn('user_id', $followedUserIds)
+            ->orderByDesc('created_at');
+        if($filter == 'spider'){
+            return $qb->whereNotNull('spider_id');
+        } elseif($filter == 'normal') {
+            return $qb->whereNull('spider_id');
+        }
+        return $qb;
     }
 }

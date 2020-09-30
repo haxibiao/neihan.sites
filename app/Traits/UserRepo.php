@@ -7,9 +7,11 @@ use App\Contribute;
 use App\Dimension;
 use App\Exceptions\GQLException;
 use App\Exceptions\UserException;
+use App\Exchange;
 use App\Gold;
 use App\OAuth;
 use App\Profile;
+use App\Transaction;
 use App\User;
 use App\Verify;
 use App\Wallet;
@@ -20,12 +22,72 @@ use Haxibiao\Helpers\WechatUtils;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 trait UserRepo
 {
+    //标记上次提现提交的时间
+    public function withdrawAt()
+    {
+        $this->withdraw_at = now();
+        $this->save();
+    }
+
+    public function startExchageChangeToWallet()
+    {
+        //账户异常
+        if ($this->isShuaZi) {
+            return;
+        }
+        //注意:此处默认为双精度 根据默认10000:1的兑换率  50智慧点上下浮动兑换会出现差距0.01
+        $wallet      = $this->wallet;
+        $amount      = Exchange::computeAmount($this->gold);
+        $amount      = floor($amount * 100) / 100;
+        $gold        = $amount * Exchange::RATE;
+        $goldBalance = $this->gold - $gold;
+
+        //兑换条件:金币余额 >= 0 && 兑换金额 > 0 && 钱包已存在
+        $canExchange = $goldBalance >= 0 && $gold > 0 && !is_null($wallet);
+        if (!$canExchange) {
+            return null;
+        }
+
+        /**
+         * 开启事务、锁住智慧点记录
+         */
+        DB::beginTransaction();
+        //兑换状态
+        try {
+            //扣除智慧点
+            Gold::makeOutcome($this, $gold, "兑换余额");
+            //添加兑换记录
+            Exchange::exchangeOut($this, $gold);
+            //添加流水记录
+            Transaction::makeIncome($wallet, $amount, '智慧点兑换');
+
+            DB::commit();
+        } catch (\Exception $ex) {
+            DB::rollBack(); //数据库回滚
+            \Yansongda\Supports\Log::error($ex);
+        }
+    }
+
+    /**
+     * 成功提现总金额数
+     *
+     * @return int
+     */
+    public function getSuccessWithdrawAmountAttribute()
+    {
+        return $this->withdraws()
+            ->where('withdraws.status', '>', 0)
+            ->sum('withdraws.amount');
+    }
+
+
     public static function userReward(User $user, array $reward)
     {
         $action = Arr::get($reward, 'action');
@@ -37,11 +99,11 @@ trait UserRepo
 
         //记录该维度数据给运营看
         if (in_array($action, ['WATCH_REWARD_VIDEO', 'CLICK_REWARD_VIDEO', 'VIDEO_PLAY_REWARD'])) {
-            //            if ($action == 'VIDEO_PLAY_REWARD') {
-            //                Dimension::setDimension($user, $action, $reward['gold']);
-            //            } else {
-            //                Dimension::setDimension($user, $action, $reward['contribute']);
-            //            }
+//            if ($action == 'VIDEO_PLAY_REWARD') {
+//                Dimension::setDimension($user, $action, $reward['gold']);
+//            } else {
+//                Dimension::setDimension($user, $action, $reward['contribute']);
+//            }
         }
 
         //智慧点奖励
@@ -66,15 +128,17 @@ trait UserRepo
         //统计激励视频当天
         $profile = $user->profile;
         if ($action == 'WATCH_REWARD_VIDEO') {
-            if ($profile->last_reward_video_time > today()) {
-                $profile->today_reward_video_count = 1;
+            if ($profile->last_reward_video_time<today()){
+                $profile->today_reward_video_count=1;
                 $profile->last_reward_video_time = now();
                 $profile->save();
-            } else {
+            }else{
                 $profile->increment('today_reward_video_count');
                 $profile->last_reward_video_time = now();
                 $profile->save();
             }
+            //触发分享任务
+            $user->reviewTasksByClass('Contribute');
         }
 
         //签到额外奖励
@@ -128,42 +192,39 @@ trait UserRepo
             ->whereIn('name', ['WATCH_REWARD_VIDEO', 'CLICK_REWARD_VIDEO'])
             ->max('updated_at');
     }
-    public  function smsSignIn($sms_code, $phone)
-    {
+    public  function smsSignIn($sms_code, $phone){
 
         throw_if(!is_phone_number($phone), SignInException::class, '手机号格式不正确!');
         throw_if(empty($sms_code), SignInException::class, '验证码不能为空!');
 
         $qb = User::wherePhone($phone);
-        Verify::checkSMSCode($sms_code, $phone, Verify::USER_LOGIN);
-        if ($qb->exists()) {
+        Verify::checkSMSCode($sms_code,$phone,Verify::USER_LOGIN);
+        if ($qb->exists()){
             return $qb->get()->first();
-        } else {
+        } else{
             //新用户注册账号
             $user = User::getDefaultUser();
-            $user->phone = $phone;
-            $user->account = $phone;
+            $user->phone=$phone;
+            $user->account=$phone;
             $user->save();
             return $user;
         }
     }
 
-    public  function authSignIn($code, $type)
-    {
+    public  function authSignIn($code, $type){
 
         throw_if(!method_exists(self::class, $type), GQLException::class, '暂时只支持手机号和微信一键登录');
         $user = self::$type($code);
         return $user;
     }
     //手机号一键登录
-    public function mobile($code)
-    {
+    public function mobile($code){
         $accessTokens = PhoneUtils::getInstance()->accessToken($code);
 
-        Log::info('移动获取号码接口参数', $accessTokens);
+        Log::info('移动获取号码接口参数',$accessTokens);
 
         $token = $accessTokens['msisdn'];
-        if ($accessTokens['resultCode'] != '103000' || !array_key_exists('msisdn', $accessTokens)) {
+        if ($accessTokens['resultCode']!='103000' || !array_key_exists('msisdn', $accessTokens) ) {
             throw new GQLException("获取手机号一键登录授权失败");
         }
 
@@ -178,29 +239,28 @@ trait UserRepo
         //初次授权的新用户
         if (!isset($user->id)) {
             $suffix = strval(time());
-            $user->name = "手机用户" . $suffix;
-            $user->api_token = str_random(60);
-            $user->avatar = User::AVATAR_DEFAULT;
-            $user->phone = $token;
-            $user->account = $token;
+            $user->name="手机用户".$suffix;
+            $user->api_token=str_random(60);
+            $user->avatar=User::AVATAR_DEFAULT;
+            $user->phone=$token;
+            $user->account=$token;
             $user->save();
         }
         //初次授权的老用户
-        $oAuth->user_id = $user->id;
+        $oAuth->user_id=$user->id;
         $oAuth->save();
         return $user;
     }
 
     //微信号一键登录
-    public function wechat($code)
-    {
+    public function wechat($code){
         try {
             $accessTokens = WechatUtils::getInstance()->accessToken($code);
-            Log::info("微信用户登录接口回参", $accessTokens);
+            Log::info("微信用户登录接口回参",$accessTokens);
             if (!is_array($accessTokens) || !array_key_exists('unionid', $accessTokens) || !array_key_exists('openid', $accessTokens)) {
                 throw new GQLException("获取微信登录授权失败");
             }
-            $token = $accessTokens['unionid'];
+            $token =$accessTokens['unionid'];
 
             $oAuth  = OAuth::firstOrNew(['oauth_type' => 'wechat', 'oauth_id' => $token]);
             //已授权的老用户
@@ -216,25 +276,25 @@ trait UserRepo
             $wallet->save();
             //绑定微信信息
             $wechatUserInfo = WechatUtils::getInstance()->userInfo($accessTokens['access_token'], $accessTokens['openid']);
-            Log::info("微信用户信息接口回参", $wechatUserInfo);
+            Log::info("微信用户信息接口回参",$wechatUserInfo);
             if ($wechatUserInfo && Str::contains($user->name, User::DEFAULT_NAME)) {
                 WechatUtils::getInstance()->syncWeChatInfo($wechatUserInfo, $user);
-                Log::info("oauth", $oAuth->data);
+                Log::info("oauth",$oAuth->data);
                 $wechatData = array_merge($oAuth->data, $wechatUserInfo);
                 $oAuth->data = $wechatData;
                 $oAuth->save();
             }
-            $oAuth->user_id = $user->id;
+            $oAuth->user_id=$user->id;
             $oAuth->save();
             return $user;
-        } catch (\Exception $e) {
-            Log::info('异常信息' . $e->getMessage());
+        }catch (\Exception $e) {
+            Log::info('异常信息'.$e->getMessage());
         }
+
     }
 
     //创建默认用户
-    public static function getDefaultUser()
-    {
+    public static function getDefaultUser(){
         return User::firstOrCreate([
             'name'      => User::DEFAULT_NAME,
             'api_token' => str_random(60),
@@ -342,7 +402,7 @@ trait UserRepo
             //FIXME:上传COS失败？？
         }
 
-        return $this->avatar;
+        return $this->avatar_url;
     }
 
     public function save_background($file)
@@ -552,7 +612,7 @@ trait UserRepo
         //下列通知类型是进入了notification表的
         $unreadNotifications->each(function ($item) use (&$unreads) {
             switch ($item->type) {
-                    //评论文章通知
+                //评论文章通知
                 case 'App\Notifications\ArticleCommented':
                     $unreads['comments']++;
                     break;
@@ -562,23 +622,23 @@ trait UserRepo
                 case 'App\Notifications\ReplyComment':
                     $unreads['comments']++;
                     break;
-                    //喜欢文章通知
+                //喜欢文章通知
                 case 'App\Notifications\LikedNotification':
                     $unreads['likes']++;
                     break;
-                    //关注用户通知
+                //关注用户通知
                 case 'App\Notifications\UserFollowed':
                     $unreads['follows']++;
                     break;
-                    //打赏文章通知
+                //打赏文章通知
                 case 'App\Notifications\ArticleTiped':
                     $unreads['tips']++;
                     break;
-                    //打赏文章通知
+                //打赏文章通知
                 case 'App\Notifications\ChatNewMessage':
                     $unreads['chat']++;
                     break;
-                    //其他类型的通知
+                //其他类型的通知
                 default:
                     $unreads['others'];
                     break;
@@ -649,6 +709,7 @@ trait UserRepo
                 // fix data.. 工厂内提现过直接更新懂得赚账号是否提现标识
                 $ddzUser->getWalletAttribute()->update(['is_withdraw_before' => true]);
             }
+
         }
         return false;
     }
@@ -673,7 +734,7 @@ trait UserRepo
     {
         Contribute::create([
             'user_id'          => $this->id,
-            'amount'           => - ($amount * Contribute::WITHDRAW_DATE),
+            'amount'           => -($amount * Contribute::WITHDRAW_DATE),
             'remark'           => '提现兑换',
             'contributed_id'   => $id,
             'contributed_type' => $type,

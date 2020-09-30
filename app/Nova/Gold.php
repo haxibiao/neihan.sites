@@ -21,7 +21,7 @@ class Gold extends Resource
 
     public static $with = ['user'];
 
-    public static $group = '用户管理';
+    public static $group = '交易管理';
 
     public static function label()
     {

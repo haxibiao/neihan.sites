@@ -15,7 +15,11 @@ type Tag {
   """
   播放总数
   """
-  count_plays:Int
+  count_plays:Int @rename(attribute: "count_views")
+  """
+  播放总数
+  """
+  count_views:String
   """
   动态
   """

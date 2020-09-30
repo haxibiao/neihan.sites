@@ -2,47 +2,22 @@
 
 namespace App;
 
-use App\Model;
+use Haxibiao\Content\Collection as BaseCollection;
 use Haxibiao\Sns\Traits\CanBeFollow;
+use Illuminate\Support\Facades\Storage;
 
-class Collection extends Model
+class Collection extends BaseCollection
 {
     use CanBeFollow;
-    public $fillable = [
-        'user_id',
-        'status',
-        'type',
-        'name',
-        'logo',
-        'count_words',
-    ];
 
-    public function user()
+    public function saveDownloadImage($file)
     {
-        return $this->belongsTo(\App\User::class);
-    }
+        if ($file) {
+            $cover = '/collect' . $this->id . '_' . time() . '.png';
+            $cosDisk   = Storage::cloud();
+            $cosDisk->put($cover, \file_get_contents($file->path()));
 
-    public function articles()
-    {
-        return $this->hasMany(\App\Article::class);
-    }
-
-    public function hasManyArticles()
-    {
-        return $this->hasMany(\App\Article::class)->where('status', '>=', '0');
-    }
-
-    public function publishedArticles()
-    {
-        return $this->hasMany(\App\Article::class)->where('status', '>=', '0');
-    }
-
-    public function logo()
-    {
-        $path = empty($this->logo) ? '/images/collection.png' : $this->logo;
-        if (file_exists(public_path($path))) {
-            return $path;
+            return Storage::cloud()->url($cover);;
         }
-        return env('APP_URL') . $path;
     }
 }

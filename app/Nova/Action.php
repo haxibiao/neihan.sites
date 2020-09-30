@@ -17,6 +17,8 @@ class Action extends Resource
 
     public static $model = 'App\Action';
 
+    public static $displayInNavigation = false;
+
     public static $title = 'id';
 
     public static $search = [

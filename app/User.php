@@ -25,7 +25,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class User extends Model implements AuthenticatableContract,
+class User extends Model implements
+    AuthenticatableContract,
     AuthorizableContract
 {
     use \Illuminate\Auth\Authenticatable, Authorizable;
@@ -42,6 +43,8 @@ class User extends Model implements AuthenticatableContract,
     use CanNotLike;
     use CanFollow;
     use PlayWithTasks;
+
+    use \Haxibiao\Helpers\Traits\CanCacheAttributes;
 
     /**
      * The attributes that are mass assignable.
@@ -97,6 +100,7 @@ class User extends Model implements AuthenticatableContract,
     const USER_STATUS   = 0;
     const EDITOR_STATUS = 1;
     const ADMIN_STATUS  = 2;
+    const VEST_STATUS  = 3;
 
     //用户激励视频奖励
     const VIDEO_REWARD_GOLD       = 10;
@@ -119,6 +123,16 @@ class User extends Model implements AuthenticatableContract,
     const MUTE_STATUS    = -1;
     const ENABLE_STATUS  = 0;
 
+    public static function boot()
+    {
+        parent::boot();
+        //保存时触发
+        self::saving(function ($post) {
+            if (empty($post->api_token)) {
+                $post->api_token = str_random(60);
+            }
+        });
+    }
 
     public function withdraws(): HasManyThrough
     {
@@ -129,7 +143,8 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->hasMany(CheckIn::class);
     }
-    public function orders(){
+    public function orders()
+    {
         return $this->hasMany(Order::class);
     }
 
@@ -289,5 +304,4 @@ class User extends Model implements AuthenticatableContract,
             return $avatar;
         }
     }
-
 }

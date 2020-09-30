@@ -64,7 +64,11 @@ class Tag extends BaseTag
         return $this->count;
     }
 
-    public function getCountPlaysAttribute(){
-        return random_int(20,60);
+    public function getCountViewsAttribute(){
+        $countViews = 0;
+        $this->posts()->each(function ($post) use (&$countViews){
+            $countViews += data_get($post,'video.json.count_views',0);
+        });
+        return numberToReadable($countViews);
     }
 }

@@ -66,6 +66,11 @@ type Video {
   count_likes: Int
 
   """
+  播放量
+  """
+  count_views:String
+
+  """
   宽度
   """
   width: Float

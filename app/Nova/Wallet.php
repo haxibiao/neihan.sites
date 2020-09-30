@@ -18,6 +18,8 @@ class Wallet extends Resource
      */
     public static $model = 'App\Wallet';
 
+    public static $displayInNavigation = false;
+
     /**
      * The single value that should be used to represent the resource when being displayed.
      *

@@ -2,10 +2,7 @@
 namespace App\Traits;
 
 use App\Contribute;
-use App\Exceptions\UserException;
 use App\Jobs\ProcessWithdraw;
-use App\User;
-use App\Wallet;
 use App\Withdraw;
 use GraphQL\Type\Definition\ResolveInfo;
 use Haxibiao\Base\Exceptions\GQLException;
@@ -45,6 +42,10 @@ trait WithdrawResolvers
 
         // 可提现策略检查
         Withdraw::canWithdraw($user, $wallet, $amount, $platform);
+        //如果是新人(未提现过），则预先进行余额转换
+        if (!$user->isWithdrawBefore()){
+            $user->startExchageChangeToWallet();
+        }
 
         if ($wallet->isCanWithdraw($amount)) {
             //创建提现记录
@@ -58,11 +59,11 @@ trait WithdrawResolvers
 //                Contribute::makeOutCome($user->id,$withdraw->id,$needContributes,'withdraws','提现兑换');
 
                 //加入延时1小时提现队列
-                dispatch(new ProcessWithdraw($withdraw))->delay(now()->addMinutes(rand(50, 60))); //不再手快者得
+                dispatch_now(new ProcessWithdraw($withdraw))->delay(now()->addMinutes(rand(50, 60))); //不再手快者得
 
             } else {
                 //加入秒提现队列
-                dispatch(new ProcessWithdraw($withdraw));
+                dispatch_now(new ProcessWithdraw($withdraw));
             }
             return $withdraw;
         } else {

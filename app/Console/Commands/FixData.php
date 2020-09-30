@@ -2,34 +2,35 @@
 
 namespace App\Console\Commands;
 
-use App\Article;
-use App\BadWord;
-use App\Contribute;
 use App\Gold;
-use App\Jobs\ProcessSpider;
-use App\OAuth;
-use App\Transaction;
 use App\User;
-use App\UserRetention;
+use App\OAuth;
 use App\Video;
 use App\Visit;
 use App\Wallet;
-use App\WalletTransaction;
+use App\Article;
+use App\BadWord;
+use App\Profile;
 use App\Withdraw;
-use Illuminate\Console\Command;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use TencentCloud\Common\Credential;
-use TencentCloud\Common\Exception\TencentCloudSDKException;
-use TencentCloud\Common\Profile\ClientProfile;
-use TencentCloud\Common\Profile\HttpProfile;
-use TencentCloud\Vod\V20180717\Models\PushUrlCacheRequest;
-use TencentCloud\Vod\V20180717\VodClient;
-use Vod\Model\VodUploadRequest;
+use App\Contribute;
+use App\Transaction;
+use App\UserRetention;
 use Vod\VodUploadClient;
+use App\WalletTransaction;
+use App\Jobs\ProcessSpider;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
+use Illuminate\Console\Command;
+use Vod\Model\VodUploadRequest;
+use Illuminate\Support\Facades\DB;
+use TencentCloud\Common\Credential;
+use Illuminate\Support\Facades\Storage;
+use TencentCloud\Vod\V20180717\VodClient;
+use TencentCloud\Common\Profile\HttpProfile;
+use TencentCloud\Common\Profile\ClientProfile;
+use TencentCloud\Vod\V20180717\Models\PushUrlCacheRequest;
+use TencentCloud\Common\Exception\TencentCloudSDKException;
 
 class FixData extends Command
 {
@@ -52,9 +53,10 @@ class FixData extends Command
         return $this->error("必须提供你要修复数据的table");
     }
 
-    public function failWithdraws(){
-        $withdraws = Withdraw::whereIn('id',[5486,5485])->get();
-        foreach ($withdraws as $withdraw){
+    public function failWithdraws()
+    {
+        $withdraws = Withdraw::whereIn('id', [5486, 5485])->get();
+        foreach ($withdraws as $withdraw) {
             //重新查询锁住该记录更新
             $wallet   = $withdraw->wallet;
             $user     = $wallet->user;
@@ -80,6 +82,134 @@ class FixData extends Command
                 Log::error($ex);
                 DB::rollback(); //数据回滚
             }
+        }
+    }
+
+    //马甲号，机器人
+    public function robotUser()
+    {
+        $count  = 0;
+        for ($i = 1; $i < 100; $i++) {
+
+            $user = User::firstOrNew([
+                'email' => 'author_test' . $i . '@haxibiao.com',
+            ]);
+            if ($user->id) {
+                return;
+            }
+            $user->account    = $user->email;
+            $user->role_id = User::VEST_STATUS;
+            $user->phone      = $user->email;
+            $user->name       = $this->roundName();
+            $user->password   = bcrypt('mm1122');
+            $avatar_formatter = 'http://cos.' . env('APP_NAME') . '.com/storage/avatar/avatar-%d.jpg';
+            $user->avatar     = sprintf($avatar_formatter, rand(1, 15));
+            $user->api_token  = str_random(60);
+            $user->save();
+            $profile = $user->profile;
+            if (empty($profile)) {
+                $profile          = new Profile();
+                $profile->user_id = $user->id;
+            }
+            $profile->save();
+            $count++;
+            $this->info("创建用户成功:" . $user->name);
+        }
+        $this->info("共创建用户" . $count . '个');
+    }
+
+
+    //随机昵称
+    public function roundName()
+    { {
+            $tou = array(
+                '快乐', '冷静', '醉熏', '潇洒', '糊涂', '积极', '冷酷',
+                '深情', '粗暴', '温柔', '可爱', '愉快', '义气', '认真', '威武', '帅气',
+                '传统', '潇洒', '漂亮', '自然', '专一', '听话', '昏睡', '狂野', '等待',
+                '搞怪', '幽默', '魁梧', '活泼', '开心', '高兴', '超帅', '留胡子', '坦率',
+                '直率', '轻松', '痴情', '完美', '精明', '无聊', '有魅力', '丰富', '繁荣',
+                '饱满', '炙热', '暴躁', '碧蓝', '俊逸', '英勇', '健忘', '故意', '无心',
+                '土豪', '朴实', '兴奋', '幸福', '淡定', '不安', '阔达', '孤独', '独特',
+                '疯狂', '时尚', '落后', '风趣', '忧伤', '大胆', '爱笑', '矮小', '健康',
+                '合适', '玩命', '沉默', '斯文', '香蕉', '苹果', '鲤鱼', '鳗鱼', '任性',
+                '细心', '粗心', '大意', '甜甜', '酷酷', '健壮', '英俊', '霸气', '阳光',
+                '默默', '大力', '孝顺', '忧虑', '着急', '紧张', '善良', '凶狠', '害怕',
+                '重要', '危机', '欢喜', '欣慰', '满意', '跳跃', '诚心', '称心', '如意',
+                '怡然', '娇气', '无奈', '无语', '激动', '愤怒', '美好', '感动', '激情',
+                '激昂', '震动', '虚拟', '超级', '寒冷', '精明', '明理', '犹豫', '忧郁',
+                '寂寞', '奋斗', '勤奋', '现代', '过时', '稳重', '热情', '含蓄', '开放',
+                '无辜', '多情', '纯真', '拉长', '热心', '从容', '体贴', '风中', '曾经',
+                '追寻', '儒雅', '优雅', '开朗', '外向', '内向', '清爽', '文艺', '长情',
+                '平常', '单身', '伶俐', '高大', '懦弱', '柔弱', '爱笑', '乐观', '耍酷',
+                '酷炫', '神勇', '年轻', '唠叨', '瘦瘦', '无情', '包容', '顺心', '畅快',
+                '舒适', '靓丽', '负责', '背后', '简单', '谦让', '彩色', '缥缈', '欢呼',
+                '生动', '复杂', '慈祥', '仁爱', '魔幻', '虚幻', '淡然', '受伤', '雪白',
+                '高高', '糟糕', '顺利', '闪闪', '羞涩', '缓慢', '迅速', '优秀', '聪明', '含糊',
+                '俏皮', '淡淡', '坚强', '平淡', '欣喜', '能干', '灵巧', '友好', '机智', '机灵',
+                '正直', '谨慎', '俭朴', '殷勤', '虚心', '辛勤', '自觉', '无私', '无限', '踏实',
+                '老实', '现实', '可靠', '务实', '拼搏', '个性', '粗犷', '活力', '成就', '勤劳',
+                '单纯', '落寞', '朴素', '悲凉', '忧心', '洁净', '清秀', '自由', '小巧', '单薄',
+                '贪玩', '刻苦', '干净', '壮观', '和谐', '文静', '调皮', '害羞', '安详', '自信',
+                '端庄', '坚定', '美满', '舒心', '温暖', '专注', '勤恳', '美丽', '腼腆', '优美',
+                '甜美', '甜蜜', '整齐', '动人', '典雅', '尊敬', '舒服', '妩媚', '秀丽', '喜悦',
+                '甜美', '彪壮', '强健', '大方', '俊秀', '聪慧', '迷人', '陶醉', '悦耳', '动听',
+                '明亮', '结实', '魁梧', '标致', '清脆', '敏感', '光亮', '大气', '老迟到', '知性',
+                '冷傲', '呆萌', '野性', '隐形', '笑点低', '微笑', '笨笨', '难过', '沉静', '火星上',
+                '失眠', '安静', '纯情', '要减肥', '迷路', '烂漫', '哭泣', '贤惠', '苗条', '温婉',
+                '发嗲', '会撒娇', '贪玩', '执着', '眯眯眼', '花痴', '想人陪', '眼睛大', '高贵',
+                '傲娇', '心灵美', '爱撒娇', '细腻', '天真', '怕黑', '感性', '飘逸', '怕孤独', '忐忑',
+                '高挑', '傻傻', '冷艳', '爱听歌', '还单身', '怕孤单', '懵懂'
+            );
+            $do = array(
+                "的", "爱", "", "与", "给", "扯", "和", "用", "方", "打", "就",
+                "迎", "向", "踢", "笑", "闻", "有", "等于", "保卫", "演变"
+            );
+            $wei = array(
+                '嚓茶', '凉面', '便当', '毛豆', '花生', '可乐', '灯泡',
+                '哈密瓜', '野狼', '背包', '眼神', '缘分', '雪碧', '人生', '牛排', '蚂蚁',
+                '飞鸟', '灰狼', '斑马', '汉堡', '悟空', '巨人', '绿茶', '自行车', '保温杯',
+                '大碗', '墨镜', '魔镜', '煎饼', '月饼', '月亮', '星星', '芝麻', '啤酒', '玫瑰',
+                '大叔', '小伙', '哈密瓜，数据线', '太阳', '树叶', '芹菜', '黄蜂', '蜜粉', '蜜蜂',
+                '信封', '西装', '外套', '裙子', '大象', '猫咪', '母鸡', '路灯', '蓝天', '白云',
+                '星月', '彩虹', '微笑', '摩托', '板栗', '高山', '大地', '大树', '电灯胆', '砖头',
+                '楼房', '水池', '鸡翅', '蜻蜓', '红牛', '咖啡', '机器猫', '枕头', '大船', '诺言',
+                '钢笔', '刺猬', '天空', '飞机', '大炮', '冬天', '洋葱', '春天', '夏天', '秋天',
+                '冬日', '航空', '毛衣', '豌豆', '黑米', '玉米', '眼睛', '老鼠', '白羊', '帅哥',
+                '美女', '季节', '鲜花', '服饰', '裙子', '白开水', '秀发', '大山', '火车', '汽车',
+                '歌曲', '舞蹈', '老师', '导师', '方盒', '大米', '麦片', '水杯', '水壶', '手套', '鞋子',
+                '自行车', '鼠标', '手机', '电脑', '书本', '奇迹', '身影', '香烟', '夕阳', '台灯', '宝贝',
+                '未来', '皮带', '钥匙', '心锁', '故事', '花瓣', '滑板', '画笔', '画板', '学姐', '店员',
+                '电源', '饼干', '宝马', '过客', '大白', '时光', '石头', '钻石', '河马', '犀牛', '西牛',
+                '绿草', '抽屉', '柜子', '往事', '寒风', '路人', '橘子', '耳机', '鸵鸟', '朋友', '苗条',
+                '铅笔', '钢笔', '硬币', '热狗', '大侠', '御姐', '萝莉', '毛巾', '期待', '盼望', '白昼',
+                '黑夜', '大门', '黑裤', '钢铁侠', '哑铃', '板凳', '枫叶', '荷花', '乌龟', '仙人掌', '衬衫',
+                '大神', '草丛', '早晨', '心情', '茉莉', '流沙', '蜗牛', '战斗机', '冥王星', '猎豹', '棒球',
+                '篮球', '乐曲', '电话', '网络', '世界', '中心', '鱼', '鸡', '狗', '老虎', '鸭子', '雨',
+                '羽毛', '翅膀', '外套', '火', '丝袜', '书包', '钢笔', '冷风', '八宝粥', '烤鸡', '大雁',
+                '音响', '招牌', '胡萝卜', '冰棍', '帽子', '菠萝', '蛋挞', '香水', '泥猴桃', '吐司', '溪流',
+                '黄豆', '樱桃', '小鸽子', '小蝴蝶', '爆米花', '花卷', '小鸭子', '小海豚', '日记本', '小熊猫',
+                '小懒猪', '小懒虫', '荔枝', '镜子', '曲奇', '金针菇', '小松鼠', '小虾米', '酒窝', '紫菜',
+                '金鱼', '柚子', '果汁', '百褶裙', '项链', '帆布鞋', '火龙果', '奇异果', '煎蛋', '唇彩',
+                '小土豆', '高跟鞋', '戒指', '雪糕', '睫毛', '铃铛', '手链', '香氛', '红酒', '月光',
+                '酸奶', '银耳汤', '咖啡豆', '小蜜蜂', '小蚂蚁', '蜡烛', '棉花糖', '向日葵', '水蜜桃',
+                '小蝴蝶', '小刺猬', '小丸子', '指甲油', '康乃馨', '糖豆', '薯片', '口红', '超短裙',
+                '乌冬面', '冰淇淋', '棒棒糖', '长颈鹿', '豆芽', '发箍', '发卡', '发夹', '发带', '铃铛',
+                '小馒头', '小笼包', '小甜瓜', '冬瓜', '香菇', '小兔子', '含羞草', '短靴', '睫毛膏', '小蘑菇',
+                '跳跳糖', '小白菜', '草莓', '柠檬', '月饼', '百合', '纸鹤', '小天鹅', '云朵', '芒果', '面包',
+                '海燕', '小猫咪', '龙猫', '唇膏', '鞋垫', '羊', '黑猫', '白猫', '万宝路', '金毛', '山水',
+                '音响', '尊云', '西安'
+            );
+
+            $tou_num = rand(0, 331);
+            $do_num = rand(0, 19);
+            $wei_num = rand(0, 327);
+            $type = rand(0, 1);
+            if ($type == 0) {
+                $username = $tou[$tou_num] . $do[$do_num] . $wei[$wei_num];
+            } else {
+                $username = $wei[$wei_num] . $tou[$tou_num];
+            }
+            return $username;
         }
     }
 
@@ -114,7 +244,8 @@ class FixData extends Command
 
     public function contribute()
     {
-        Contribute::chunk(100,
+        Contribute::chunk(
+            100,
             function ($contributes) {
                 foreach ($contributes as $contribute) {
                     $contributed = $contribute->contributed_type;
@@ -140,7 +271,8 @@ class FixData extends Command
                     $this->info('id' . $contribute->id . 'remark' . $contribute->remark);
                     $contribute->save();
                 }
-            });
+            }
+        );
     }
 
     public function userActivities()
@@ -164,21 +296,21 @@ class FixData extends Command
 
         Article::where('source_url', 'like', 'https://v.douyin.com%')
             ->where('submit', Article::SUBMITTED_SUBMIT)->chunk(1000, function ($posts) use (&$count) {
-            foreach ($posts as $post) {
-                $videoId = $post->video_id;
-                //截图正常的视频则跳过
-                if (Str::contains($post->cover_path, $videoId)) {
-                    continue;
+                foreach ($posts as $post) {
+                    $videoId = $post->video_id;
+                    //截图正常的视频则跳过
+                    if (Str::contains($post->cover_path, $videoId)) {
+                        continue;
+                    }
+                    $video = $post->video;
+                    $this->info($post->id);
+                    if ($video) {
+                        $count++;
+                        $post->cover_path = $video->cover;
+                        $post->save(['timestamps' => false]);
+                    }
                 }
-                $video = $post->video;
-                $this->info($post->id);
-                if ($video) {
-                    $count++;
-                    $post->cover_path = $video->cover;
-                    $post->save(['timestamps' => false]);
-                }
-            }
-        });
+            });
     }
 
     //修复黑屏视频
@@ -301,20 +433,20 @@ class FixData extends Command
     {
         Article::with('video')->whereNotNull('source_url')
             ->whereNotNull('video_id')->chunk(100, function ($articles) {
-            foreach ($articles as $article) {
-                $video = $article->video;
-                if (!$video || $video->disk != 'local') {
-                    continue;
+                foreach ($articles as $article) {
+                    $video = $article->video;
+                    if (!$video || $video->disk != 'local') {
+                        continue;
+                    }
+                    $this->info($article->id);
+                    $json = json_decode($video->json, true);
+
+                    $shareMsg = Arr::get($json, 'metaInfo.item_list.0.desc') . ' ' . $article->source_url;
+
+                    //队列开始处理爬虫视频
+                    ProcessSpider::dispatch($article, $shareMsg)->onQueue('spider');
                 }
-                $this->info($article->id);
-                $json = json_decode($video->json, true);
-
-                $shareMsg = Arr::get($json, 'metaInfo.item_list.0.desc') . ' ' . $article->source_url;
-
-                //队列开始处理爬虫视频
-                ProcessSpider::dispatch($article, $shareMsg)->onQueue('spider');
-            }
-        });
+            });
     }
 
     /**
@@ -350,7 +482,8 @@ class FixData extends Command
             'dongdezhuan'  => 621611,
             'dongmiaomu'   => 619195,
         ];
-        Article::whereNotNull('video_id')->where('status', 1)->where('submit', 1)->chunk(100,
+        Article::whereNotNull('video_id')->where('status', 1)->where('submit', 1)->chunk(
+            100,
             function ($articles) use ($vodClassIds) {
                 foreach ($articles as $article) {
                     $video = $article->video;
@@ -361,8 +494,10 @@ class FixData extends Command
                     if (Str::contains($video->path, 'vod2')) {
                         continue;
                     }
-                    $client = new VodUploadClient("AKIDKZeYH6uMdqyxkxKyhFuQ0W5ThliVtWlq",
-                        "61nNlyzqWxLbgaIpBMPM8lCWfeSAkEaq");
+                    $client = new VodUploadClient(
+                        "AKIDKZeYH6uMdqyxkxKyhFuQ0W5ThliVtWlq",
+                        "61nNlyzqWxLbgaIpBMPM8lCWfeSAkEaq"
+                    );
                     $client->setLogPath(storage_path('/logs/vod_upload.log'));
                     $req = new VodUploadRequest();
                     if (\str_contains($video->url, 'cos')) {
@@ -377,8 +512,10 @@ class FixData extends Command
                     }
 
                     try {
-                        Storage::put($article->cover_path,
-                            @file_get_contents(\Storage::disk('cosv5')->url($article->cover_path)));
+                        Storage::put(
+                            $article->cover_path,
+                            @file_get_contents(\Storage::disk('cosv5')->url($article->cover_path))
+                        );
                         $req->MediaFilePath = storage_path('app/public/' . $video->path);
                         //!!! 注意替换这个分类ID
                         $req->ClassId       = $vodClassIds[env('APP_NAME')];
@@ -398,7 +535,8 @@ class FixData extends Command
                         continue;
                     }
                 }
-            });
+            }
+        );
     }
 
     /**
@@ -413,8 +551,10 @@ class FixData extends Command
             }
             if ($videoUrl) {
                 try {
-                    $cred = new Credential("AKIDKZeYH6uMdqyxkxKyhFuQ0W5ThliVtWlq",
-                        "61nNlyzqWxLbgaIpBMPM8lCWfeSAkEaq");
+                    $cred = new Credential(
+                        "AKIDKZeYH6uMdqyxkxKyhFuQ0W5ThliVtWlq",
+                        "61nNlyzqWxLbgaIpBMPM8lCWfeSAkEaq"
+                    );
                     $httpProfile = new HttpProfile();
                     $httpProfile->setEndpoint("vod.tencentcloudapi.com");
 
@@ -463,8 +603,10 @@ class FixData extends Command
             Storage::cloud()->move('video/1.mp4', 'video/1_old.mp4');
         }
         Storage::cloud()->put('video/1.mp4', @file_get_contents('http://cos.dianmoge.com/video/1.mp4'));
-        Storage::cloud()->put('video/1.mp4.0_0.p0.jpg',
-            @file_get_contents('http://cos.dianmoge.com/video/1.mp4.0_0.p0.jpg '));
+        Storage::cloud()->put(
+            'video/1.mp4.0_0.p0.jpg',
+            @file_get_contents('http://cos.dianmoge.com/video/1.mp4.0_0.p0.jpg ')
+        );
 
         //下架Video_id的Article
         $video = Video::find(1);
@@ -647,7 +789,6 @@ class FixData extends Command
         });
         $this->info('合并失败数:' . count($failIds));
         $this->info('merge WalletTransaction To Transaction finished...');
-
     }
 
     public function golds()
@@ -751,9 +892,7 @@ class FixData extends Command
                             $article->save();
                             $this->info($video->id . '视频的封面' . $video->cover . '文章' . $article->id . '的封面' . $article->cover_path);
                         }
-
                     }
-
                 } else {
                     $article->status     = -1;
                     $article->timestamps = false;
@@ -761,9 +900,7 @@ class FixData extends Command
                     $this->info('文章' . $article->id . '的状态' . $article->status);
                 }
             }
-
         });
-
     }
 
     public function categories()
@@ -1016,11 +1153,9 @@ class FixData extends Command
                 }
                 $action->timestamps = false;
                 $action->save();
-
             }
         });
         $this->info('fix action end');
-
     }
 
     public function users()
@@ -1052,11 +1187,8 @@ class FixData extends Command
 
                     $oldUser->api_token = $token;
                     $oldUser->save();
-
                 }
-
             }
-
         }
         // -  清空uuid (account 已存)
         // -  账户停用
@@ -1071,7 +1203,8 @@ class FixData extends Command
     public function notifications()
     {
         $this->info('fix notifications ....');
-        DB::table('notifications')->whereType('App\Notifications\ArticleLiked')->orderByDesc('id')->chunk(100,
+        DB::table('notifications')->whereType('App\Notifications\ArticleLiked')->orderByDesc('id')->chunk(
+            100,
             function ($notifications) {
                 foreach ($notifications as $notification) {
                     $data = json_decode($notification->data);
@@ -1099,7 +1232,8 @@ class FixData extends Command
                         }
                     }
                 }
-            });
+            }
+        );
         $this->info('fix success');
     }
 
@@ -1153,7 +1287,6 @@ class FixData extends Command
                     $wallet->pay_account = null;
                     $wallet->save();
                 }
-
             }
         });
     }
@@ -1196,12 +1329,10 @@ class FixData extends Command
         //这个hash有问题
         $hash  = 'd41d8cd98f00b204e9800998ecf8427e';
         $video = Video::where('hash', $hash)->first();
-        if(!is_null($video)){
+        if (!is_null($video)) {
             $count = Article::where('video_id', $video->id)->update(['status' => Article::REFUSED_SUBMIT, 'submit' => Article::REFUSED_SUBMIT]);
         }
 
         $this->info('本次成功修复待处理爬虫:' . $count);
-
     }
-
 }

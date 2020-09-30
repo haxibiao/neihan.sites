@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Article;
-use App\Category;
-use App\Http\Controllers\Controller;
+use App\Post;
 use App\User;
 use App\Video;
-use Illuminate\Http\Request;
+use App\Article;
+use App\Category;
+use Haxibiao\Media\Spider;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Exception;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class SpiderController extends Controller
 {
@@ -80,7 +83,6 @@ class SpiderController extends Controller
 
             //TODO 奖励接口
             return 'ok';
-
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             abort(500, $e->getMessage());
@@ -99,7 +101,43 @@ class SpiderController extends Controller
             if (!is_null($article) && is_array($video)) {
                 $article->processSpider($data);
             }
+        }
+    }
 
+    //文件上传批量解析抖音链接
+    public function importDouYin(Request $request)
+    {
+        $file = $request->file('file');
+        if ($file->isValid()) {
+            $str = file_get_contents($file->getRealPath());
+            $str = trim($str);
+            $array = explode(',', $str);
+
+            $count = 0;
+            for ($i = 0; $i < count($array); $i++) {
+                try {
+                    $spider_link = str_before($array[$i], '#');
+                    $spider = Spider::resolveDouyinVideo(getUser(), $spider_link);
+                    $post = Post::with('video')->firstOrNew(['spider_id' => $spider->id]);
+                    //标签
+                    if (str_contains($array[$i], "#")) {
+                        $tags = str_after($array[$i], '#');
+                        if ($tags) {
+
+                            $tags = str_replace(' ', '', $tags);
+                            $tagNames = explode('#', $tags);
+                            $post->tagByNames($tagNames ?? []);
+                        }
+                    }
+                    $post->user_id = getUser()->id;
+                    $post->save();
+                    $count++;
+                    sleep(5);
+                } catch (Exception $e) {
+                    continue;
+                }
+            }
+            Log::info("成功解析" . $count . "条抖音分享");
         }
     }
 }

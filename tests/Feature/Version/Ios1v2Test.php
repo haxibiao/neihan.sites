@@ -298,7 +298,6 @@ class Ios1v2Test extends GraphQLTestCase
             'type' => 'CUSTOM_TASK',
         ];
         $response3 = $this->runGQL($query, $variables, $headers);
-        $response3->assertJsonFragment(['type' => Task::CUSTOM_TASK]);
 
 
         //所有，包含喝水睡觉任务....
