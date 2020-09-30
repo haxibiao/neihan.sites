@@ -19,11 +19,14 @@ class LikeObserver
         //检查点赞任务是否完成了
         $user->reviewTasksByClass(get_class($like));
 
-        if ($like->likable instanceof \App\Collection) {
-            if ($like->likable->name == "一起看阅兵") {
-                \App\Task::refreshTask($user, "国庆活动");
-            } else if ($like->likable->name == "欢聚中秋") {
-                \App\Task::refreshTask($user, "中秋活动");
+        if ($like->likable instanceof \App\Post) {
+            $collection = $like->likable->collectable()->first();
+            if ($collection) {
+                if ($collection->collection_name == "一起看阅兵") {
+                    \App\Task::refreshTask($user, "国庆活动");
+                } else if ($collection->collection_name == "欢聚中秋") {
+                    \App\Task::refreshTask($user, "中秋活动");
+                }
             }
         }
 
