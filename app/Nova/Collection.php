@@ -2,12 +2,13 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Image;
-use Laravel\Nova\Fields\MorphedByMany;
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\MorphedByMany;
+use App\Nova\Actions\Article\UpdatePost;
 
 class Collection extends Resource
 {
@@ -37,10 +38,10 @@ class Collection extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('合集名','name'),
-            Text::make('合集简介','description'),
+            Text::make('合集名', 'name'),
+            Text::make('合集简介', 'description'),
             BelongsTo::make('作者', 'user', User::class),
-            MorphedByMany::make('合集内视频','posts',Post::class),
+            MorphedByMany::make('合集内视频', 'posts', Post::class),
             Text::make('是否上架', function () {
                 if ($this->status == 0) {
                     return "未上架";
