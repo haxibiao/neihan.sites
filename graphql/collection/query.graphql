@@ -8,7 +8,7 @@ type Collection {
   """
   合集播放量
   """
-  count_views:String
+  count_views: String
   """
   封面图
   """
@@ -30,12 +30,11 @@ type Collection {
   """
   合集内的动态
   """
-  posts(count: Int = 10, page: Int = 1,order: PostOrderEnum = LATEST): PostPaginator
-    @field(resolver: "App\\Collection@resolverPosts")
+  posts(count: Int = 10, page: Int = 1, order: PostOrderEnum = LATEST): PostPaginator @field(resolver: "App\\Collection@resolverPosts")
 }
 
 extend type Query {
-  collections(user_id: Int!): [Collection!] @paginate(defaultCount: 10,builder: "App\\Collection@resolveCollections")
+  collections(user_id: Int!, keyword: String): [Collection!] @paginate(defaultCount: 10, builder: "App\\Collection@resolveCollections")
   collection(collection_id: Int!): Collection @field(resolver: "App\\Collection@resolveCollection")
   shareCollection(collection_id: Int!): String @field(resolver: "App\\Collection@getShareLink")
   searchCollections(query: String!): [Collection] @paginate(defaultCount: 5, builder: "App\\Collection@resolveSearchCollections")
