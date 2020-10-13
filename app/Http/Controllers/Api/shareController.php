@@ -35,7 +35,7 @@ class ShareController extends Controller
             $url = $this->linkUrlDecode($url);
             return QrCode::size(400)->generate($url);
         }
-        return QrCode::size(400)->generate('https://www.ainicheng.com/');
+        return QrCode::size(400)->generate('https://www.yanjiao.com/');
     }
 
     public function linkUrlDecode($url)
@@ -44,7 +44,8 @@ class ShareController extends Controller
         $len = count($cs);
         $newUrl = '';
         for ($i = 1; $i <= $len; $i++) {
-            $newUrl .= $cs[$i] > 127 ? '%' . strtoupper(dechex($cs[$i])) : $url{$i - 1};
+            $newUrl .= $cs[$i] > 127 ? '%' . strtoupper(dechex($cs[$i])) : $url{
+            $i - 1};
         }
         return $newUrl;
     }

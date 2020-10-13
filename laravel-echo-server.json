@@ -1,5 +1,5 @@
 {
-  "authHost": "http://socket.ainicheng.com",
+  "authHost": "http://socket.yanjiao.com",
   "authEndpoint": "/api/broadcasting/auth",
   "clients": [],
   "database": "redis",
