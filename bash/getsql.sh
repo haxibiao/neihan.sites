@@ -3,7 +3,7 @@
 source ~/.bash_aliases
 
 server="gz002"
-db="yanjiao"
+db="ainicheng"
 
 if [ "$1" != "local" ] && [ "$1" != "refresh" ]; then
 	if [ ! -z $1 ]; then
