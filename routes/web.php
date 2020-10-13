@@ -15,6 +15,11 @@ Auth::routes();
 Route::pattern('id', '\d+');
 Auth::routes(['verify' => true]);
 
+Route::get('/test', function () {
+    dispatch(new DelayRewaredTask(1));
+    return 1;
+});
+
 Route::get('/', 'IndexController@index');
 
 //隐私政策
