@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateImageablesTable extends Migration
+class CreateImageables2Table extends Migration
 {
     /**
      * Run the migrations.
