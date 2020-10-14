@@ -76,6 +76,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             new \App\Nova\Metrics\ActiveUsersPerDay,
             new \App\Nova\Metrics\WithdrawsPerDay,
             // new \App\Nova\Metrics\ArticlePerDay,
+            new \App\Nova\Metrics\PostPerDay,
+            new \App\Nova\Metrics\PostSpiderPerDay,
             // new \App\Nova\Metrics\ArticleSpiderPerDay,
             new \App\Nova\Metrics\UserGender,
             new \App\Nova\Metrics\UserRetentionRate,
