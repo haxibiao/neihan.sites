@@ -69,7 +69,6 @@ trait WithdrawFacade
                 // sleep(1); //不能sleep!! 会占用 php-fpm 和 mysql connections...
                 throw_if($rand <= 30, GQLException::class, '目前人数过多,请您下个时段(' . ($hour + 1) . '点)再试!');
             }
-
         }
     }
 
@@ -99,7 +98,7 @@ trait WithdrawFacade
                     throw new GQLException(sprintf('您的提现速度过快,请%s秒后再试!', $validSecond));
                 }
             }
-            if ($lastWithdraw->created_at > today()) {
+            if ($lastWithdraw->created_at > today() && $lastWithdraw->remark != "提现失败") {
                 throw new GQLException("您今日已提交过提现请求");
             }
         }
@@ -153,15 +152,15 @@ trait WithdrawFacade
 
         //贡献点检查
         //提现成功0.3元以上的，不再无门槛
-//        if ($user->successWithdrawAmount >= 0.3) {
-//            $needContributes = User::getAmountNeedDayContributes($amount);
-//            $leftContributes = $needContributes - $user->week_contribute;
-//            //无法完成该额度提现，提示需要的贡献值
-//            if ($leftContributes > 0) {
-//                $remark = sprintf('还差%s周贡献', $leftContributes);
-//                throw new GQLException($remark);
-//            }
-//        }
+        //        if ($user->successWithdrawAmount >= 0.3) {
+        //            $needContributes = User::getAmountNeedDayContributes($amount);
+        //            $leftContributes = $needContributes - $user->week_contribute;
+        //            //无法完成该额度提现，提示需要的贡献值
+        //            if ($leftContributes > 0) {
+        //                $remark = sprintf('还差%s周贡献', $leftContributes);
+        //                throw new GQLException($remark);
+        //            }
+        //        }
     }
 
     public static function getAllowAmount()
