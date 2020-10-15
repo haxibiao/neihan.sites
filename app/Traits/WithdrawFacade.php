@@ -98,7 +98,7 @@ trait WithdrawFacade
                     throw new GQLException(sprintf('您的提现速度过快,请%s秒后再试!', $validSecond));
                 }
             }
-            if ($lastWithdraw->created_at > today() && $lastWithdraw->remark != "提现失败") {
+            if ($lastWithdraw->created_at > today() && $lastWithdraw->status > -1) {
                 throw new GQLException("您今日已提交过提现请求");
             }
         }
