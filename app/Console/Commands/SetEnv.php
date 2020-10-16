@@ -66,8 +66,8 @@ class SetEnv extends Command
         if ($this->option('pay')) {
             $this->warn("更新支付信息...");
             //     //答妹暂时没微信支付
-            //     $this->setKV(['WECHAT_PAY_KEY' => @file_get_contents("/etc/wechat_pay_key")]);
-            //     $this->setKV(['WECHAT_PAY_MCH_ID' => @file_get_contents("/etc/wechat_pay_mch_id")]);
+            $this->setKV(['WECHAT_PAY_KEY' => @file_get_contents("/etc/wechat_pay_key")]);
+            $this->setKV(['WECHAT_PAY_MCH_ID' => @file_get_contents("/etc/wechat_pay_mch_id")]);
             $this->setKV(['ALIPAY_PAY_APPID' => @file_get_contents("/etc/appid_alipay")]);
         }
     }
