@@ -2,14 +2,14 @@
 
 namespace App\Nova\Actions\Article;
 
-use App\Collection as AppCollection;
-use App\Tag;
 use Laravel\Nova\Nova;
 use Illuminate\Bus\Queueable;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Actions\Action;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use App\Collection as AppCollection;
 use Laravel\Nova\Actions\Actionable;
 use Laravel\Nova\Fields\ActionFields;
 use Illuminate\Queue\SerializesModels;
@@ -34,8 +34,8 @@ class UpdatePost extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        if (!isset($fields->tag1) && !isset($fields->status) && !isset($fields->tag3) && !isset($fields->tag2)) {
-            return Action::danger('状态或者合集不能为空！');
+        if (!isset($fields->tag1) && !isset($fields->status) && !isset($fields->new_collection)) {
+            return Action::danger('状态或者合集或者创建合集名称不能为空！');
         }
         \DB::beginTransaction();
         try {
@@ -54,10 +54,18 @@ class UpdatePost extends Action
 
                 if (isset($fields->tag1)) {
                     $tag = AppCollection::find($fields->tag1);
-                    if ($tag) {
-                        $model->collectivize([$tag->id]);
-                        $tag->increment('count');
+                } else if (isset($fields->new_collection)) {
+                    $tag = AppCollection::firstOrNew(["name" => $fields->new_collection]);
+                    if (empty($tag->id)) {
+                        $tag->description = "暂无简介";
+                        $tag->user_id = getUser()->id;
+                        $tag->status = AppCollection::STATUS_ONLINE;
+                        $tag->save();
                     }
+                }
+                if ($tag) {
+                    $model->collectivize([$tag->id]);
+                    $tag->increment('count');
                 }
                 // if (isset($fields->tag2)) {
                 //     $tag = AppCollection::find($fields->tag2);
@@ -107,6 +115,7 @@ class UpdatePost extends Action
                 $data
             ),
 
+            Text::make("创建合集", 'new_collection')
             // SelectAutoComplete::make("合集2", 'tag2')->options(
             //     $data
             // ),
