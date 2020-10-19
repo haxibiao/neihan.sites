@@ -144,6 +144,7 @@ trait WithdrawFacade
 
         //高额度政策（1元以上都算，目前日提0.5了）
         if ($amount >= 1) {
+            throw new GQLException("系统升级中,暂不支持高额提现!");
             //限制总额度100元
             self::checkTodayWithdrawAmount($amount);
             //当天注册,禁止提现3元以上

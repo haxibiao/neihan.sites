@@ -28,6 +28,9 @@ class LikeObserver
                     \App\Task::refreshTask($user, "中秋活动");
                 }
             }
+            //刷新“点赞超人”任务进度
+            \App\Task::refreshTask($like->likable->user, "作品获赞");
+            \App\Task::refreshTask($like->user, "点赞超人");
         }
 
         app_track_event('用户', '点赞');

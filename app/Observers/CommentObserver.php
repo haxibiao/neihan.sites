@@ -47,6 +47,8 @@ class CommentObserver
         $profile = $comment->commentable->user->profile;
         // 奖励贡献值
         if ($comment->user->id != $comment->commentable->user->id) {
+            //刷新“点赞超人”任务进度
+            \App\Task::refreshTask($comment->user, "评论高手");
             $profile->increment('count_contributes', Contribute::COMMENTED_AMOUNT);
         }
         Action::createAction('comments', $comment->id, $comment->user->id);
