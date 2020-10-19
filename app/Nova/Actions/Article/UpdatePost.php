@@ -111,7 +111,7 @@ class UpdatePost extends Action
                 ]
             ),
 
-            SelectAutoComplete::make("合集1", 'tag1')->options(
+            SelectAutoComplete::make("合集", 'tag1')->options(
                 $data
             ),
 

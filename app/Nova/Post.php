@@ -26,9 +26,9 @@ class Post extends Resource
 
     public static $group = '内容管理';
 
-    //    public static $search = [
-    //        'id', 'description',
-    //    ];
+    public static $search = [
+        'id', 'content',
+    ];
 
     public static $with = ['user', 'video'];
     public static function label()
