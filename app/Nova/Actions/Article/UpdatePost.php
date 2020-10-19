@@ -37,7 +37,6 @@ class UpdatePost extends Action
         if (!isset($fields->tag1) && !isset($fields->status) && !isset($fields->tag3) && !isset($fields->tag2)) {
             return Action::danger('状态或者合集不能为空！');
         }
-
         \DB::beginTransaction();
         try {
             foreach ($models as $model) {
@@ -60,20 +59,20 @@ class UpdatePost extends Action
                         $tag->increment('count');
                     }
                 }
-                if (isset($fields->tag2)) {
-                    $tag = AppCollection::find($fields->tag2);
-                    if ($tag) {
-                        $model->collectivize([$tag->id]);
-                        $tag->increment('count');
-                    }
-                }
-                if (isset($fields->tag3)) {
-                    $tag = AppCollection::find($fields->tag3);
-                    if ($tag) {
-                        $model->collectivize([$tag->id]);
-                        $tag->increment('count');
-                    }
-                }
+                // if (isset($fields->tag2)) {
+                //     $tag = AppCollection::find($fields->tag2);
+                //     if ($tag) {
+                //         $model->collectivize([$tag->id]);
+                //         $tag->increment('count');
+                //     }
+                // }
+                // if (isset($fields->tag3)) {
+                //     $tag = AppCollection::find($fields->tag3);
+                //     if ($tag) {
+                //         $model->collectivize([$tag->id]);
+                //         $tag->increment('count');
+                //     }
+                // }
             }
             // $model->timestamp = true;
             $model->save();
@@ -104,18 +103,17 @@ class UpdatePost extends Action
                 ]
             ),
 
-            //laravel 缺少复选框，先这样用
             SelectAutoComplete::make("合集1", 'tag1')->options(
                 $data
             ),
 
-            SelectAutoComplete::make("合集2", 'tag2')->options(
-                $data
-            ),
+            // SelectAutoComplete::make("合集2", 'tag2')->options(
+            //     $data
+            // ),
 
-            SelectAutoComplete::make("合集2", 'tag3')->options(
-                $data
-            ),
+            // SelectAutoComplete::make("合集2", 'tag3')->options(
+            //     $data
+            // ),
         ];
     }
 }
