@@ -29,7 +29,9 @@ class LikeObserver
                 }
             }
             //刷新“点赞超人”任务进度
-            \App\Task::refreshTask($like->likable->user, "作品获赞");
+            if ($like->likable->user) {
+                \App\Task::refreshTask($like->likable->user, "作品获赞");
+            }
             \App\Task::refreshTask($like->user, "点赞超人");
         }
 
