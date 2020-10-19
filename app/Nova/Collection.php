@@ -9,6 +9,7 @@ use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\MorphedByMany;
 use App\Nova\Actions\Article\UpdatePost;
+use Techouse\SelectAutoComplete\SelectAutoComplete;
 
 class Collection extends Resource
 {
@@ -40,7 +41,10 @@ class Collection extends Resource
             ID::make()->sortable(),
             Text::make('合集名', 'name'),
             Text::make('合集简介', 'description'),
-            BelongsTo::make('作者', 'user', User::class),
+            SelectAutoComplete::make('作者', 'user_id')->options(
+                \App\User::pluck('name', 'id')->toArray()
+            )->onlyOnForms(),
+            BelongsTo::make('作者', 'user', User::class)->exceptOnForms(),
             MorphedByMany::make('合集内视频', 'posts', Post::class),
             Text::make('是否上架', function () {
                 if ($this->status == 0) {
