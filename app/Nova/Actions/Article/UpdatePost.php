@@ -40,6 +40,7 @@ class UpdatePost extends Action
         \DB::beginTransaction();
         try {
             foreach ($models as $model) {
+                $user = $model->user;
                 if (isset($fields->status)) {
                     $model->status = $fields->status;
                     //如果下架，相应的视频应该也要下架
@@ -58,7 +59,7 @@ class UpdatePost extends Action
                     $tag = AppCollection::firstOrNew(["name" => $fields->new_collection]);
                     if (empty($tag->id)) {
                         $tag->description = "暂无简介";
-                        $tag->user_id = getUser()->id;
+                        $tag->user_id = $user->id;
                         $tag->status = AppCollection::STATUS_ONLINE;
                         $tag->save();
                     }
