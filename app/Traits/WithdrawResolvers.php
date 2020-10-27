@@ -41,6 +41,11 @@ trait WithdrawResolvers
             throw_if(!$wallet->availableWithdrawCount, GQLException::class, '今日提次数已达上限!');
         }
 
+        //提现老刷子随机提现
+        if($wallet->total_withdraw_amount>10){
+            throw_if(random_int(1,10)>2, GQLException::class, '当前提现人数过多，请晚些再来提现吧~');
+        }
+
         // 可提现策略检查
         Withdraw::canWithdraw($user, $wallet, $amount, $platform);
         //如果是新人(未提现过），则预先进行余额转换
