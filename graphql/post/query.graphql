@@ -115,7 +115,7 @@ extend type Query {
   个人主页动态列表
   """
   posts(user_id: Int!,keyword: String): [Post!]
-    @paginate(builder: "App\\Post@resolvePosts", defaultCount: 10)
+    @paginate(builder: "App\\Post@resolvePosts", defaultCount: 15)
 
   """
   分享post
