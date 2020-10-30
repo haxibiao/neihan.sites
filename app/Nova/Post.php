@@ -13,10 +13,6 @@ use Laravel\Nova\Fields\BelongsTo;
 use App\Nova\Filters\ArticleSource;
 use Halimtuhu\ArrayImages\ArrayImages;
 use App\Nova\Actions\Article\UpdatePost;
-use Illuminate\Support\Facades\Validator;
-use Laravel\Nova\Http\Requests\NovaRequest;
-use App\Nova\Filters\Article\ArticleSubmitFilter;
-use App\Nova\Actions\Article\AuditVideoPostSubmitStatus;
 
 class Post extends Resource
 {
