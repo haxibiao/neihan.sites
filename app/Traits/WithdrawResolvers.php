@@ -1,10 +1,10 @@
 <?php
+
 namespace App\Traits;
 
-use App\User;
-use App\Withdraw;
 use App\Contribute;
 use App\Jobs\ProcessWithdraw;
+use App\Withdraw;
 use GraphQL\Type\Definition\ResolveInfo;
 use Haxibiao\Base\Exceptions\GQLException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
@@ -15,7 +15,7 @@ trait WithdrawResolvers
     {
         //throw_if(true, UserException::class, '提现正在维护中，望请谅解~');
         $user     = \getUser();
-        throw_if($user->is_disable||$user->status==User::STATUS_FREEZE, GQLException::class, '账号异常!');
+        throw_if($user->is_disable, GQLException::class, '账号异常!');
 
         $amount   = $args['amount'];
         $platform = $args['platform'];
@@ -27,8 +27,8 @@ trait WithdrawResolvers
         // 检查时间和限量抢限流控制并发
         Withdraw::checkHighWithdraw($user, $amount);
 
-//        // 检查版本 2.9.7
-//        Withdraw::checkWithdrawVersion(getAppVersion());
+        //        // 检查版本 2.9.7
+        //        Withdraw::checkWithdrawVersion(getAppVersion());
 
         // 预防新用户快速请求提现，和一日重复提现
         Withdraw::checkLastWithdrawTime($wallet);
@@ -41,10 +41,15 @@ trait WithdrawResolvers
             throw_if(!$wallet->availableWithdrawCount, GQLException::class, '今日提次数已达上限!');
         }
 
+        //提现老刷子随机提现
+        if($wallet->total_withdraw_amount>10){
+            throw_if(random_int(1,10)>2, GQLException::class, '当前提现人数过多，请晚些再来提现吧~');
+        }
+
         // 可提现策略检查
         Withdraw::canWithdraw($user, $wallet, $amount, $platform);
         //如果是新人(未提现过），则预先进行余额转换
-        if (!$user->isWithdrawBefore()){
+        if (!$user->isWithdrawBefore()) {
             $user->startExchageChangeToWallet();
         }
 
@@ -56,21 +61,20 @@ trait WithdrawResolvers
                 $user->decrement('withdraw_lines', $amount);
 
                 // 扣除贡献点
-//                $needContributes = User::getAmountNeedDayContributes($amount);
-//                Contribute::makeOutCome($user->id,$withdraw->id,$needContributes,'withdraws','提现兑换');
+                //                $needContributes = User::getAmountNeedDayContributes($amount);
+                //                Contribute::makeOutCome($user->id,$withdraw->id,$needContributes,'withdraws','提现兑换');
 
                 //加入延时1小时提现队列
-                dispatch(new ProcessWithdraw($withdraw))->delay(now()->addMinutes(rand(50, 60))); //不再手快者得
+                dispatch_now(new ProcessWithdraw($withdraw))->delay(now()->addMinutes(rand(50, 60))); //不再手快者得
 
             } else {
                 //加入秒提现队列
-                dispatch(new ProcessWithdraw($withdraw));
+                dispatch_now(new ProcessWithdraw($withdraw));
             }
             return $withdraw;
         } else {
             throw new GQLException('账户余额不足,请稍后再试!');
         }
-
     }
 
     public function resolveWithdraws($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
@@ -103,7 +107,7 @@ trait WithdrawResolvers
         $user = checkUser();
 
         $contribute       = Contribute::WITHDRAW_DATE;
-        $isWithdrawBefore = $user?$user->isWithdrawBefore():false;
+        $isWithdrawBefore = $user ? $user->isWithdrawBefore() : false;
         //  工厂内是否提现 || 懂得赚上是否提现
         if ($isWithdrawBefore) {
             $minAmount = 1;
@@ -113,9 +117,9 @@ trait WithdrawResolvers
         $tenTimesHighWithdrawCardsCount = 0;
         $fiveTimesHighWithdrawCardsCount = 0;
         $doubleHighWithdrawCardsCount = 0;
-        if ($user){
-            $tenTimesHighWithdrawCardsCount= $user->tenTimesHighWithdrawCardsCount;;
-            $fiveTimesHighWithdrawCardsCount= $user->fiveTimesHighWithdrawCardsCount;
+        if ($user) {
+            $tenTimesHighWithdrawCardsCount = $user->tenTimesHighWithdrawCardsCount;;
+            $fiveTimesHighWithdrawCardsCount = $user->fiveTimesHighWithdrawCardsCount;
             $doubleHighWithdrawCardsCount = $user->doubleHighWithdrawCardsCount;
         }
 
@@ -129,16 +133,16 @@ trait WithdrawResolvers
                 'highWithdrawCardsRate' => null,
             ],
             [
-                'amount'                => 1,
-                'description'           => $contribute . '日活跃',
+                'amount'                => 0.5,
+                'description'           => $contribute * 0.5 . '日活跃',
                 'tips'                  => '秒到账',
                 'fontColor'             => '#A0A0A0',
                 'bgColor'               => '#FFBB04',
                 'highWithdrawCardsRate' => null,
             ],
             [
-                'amount'                => 3,
-                'description'           => $contribute * 3 . '日活跃',
+                'amount'                => 1,
+                'description'           => $contribute * 1 . '日活跃',
                 'tips'                  => '限量抢',
                 'fontColor'             => '#A0A0A0',
                 'bgColor'               => '#FFBB04',
@@ -146,16 +150,16 @@ trait WithdrawResolvers
 
             ],
             [
-                'amount'                => 5,
-                'description'           => $contribute * 5 . '日活跃',
+                'amount'                => 3,
+                'description'           => $contribute * 3 . '日活跃',
                 'tips'                  => '限量抢',
                 'fontColor'             => '#A0A0A0',
                 'bgColor'               => '#FFBB04',
                 'highWithdrawCardsRate' => $fiveTimesHighWithdrawCardsCount,
             ],
             [
-                'amount'                => 10,
-                'description'           => $contribute * 10 . '日活跃',
+                'amount'                => 5,
+                'description'           => $contribute * 5 . '日活跃',
                 'tips'                  => '限量抢',
                 'fontColor'             => '#A0A0A0',
                 'bgColor'               => '#FFBB04',
@@ -163,7 +167,7 @@ trait WithdrawResolvers
             ],
         ];
 
-//        去掉头或尾部数据
+        //        去掉头或尾部数据
         if (count($withdrawInfo) > 4) {
             if ($isWithdrawBefore) {
                 array_shift($withdrawInfo);
