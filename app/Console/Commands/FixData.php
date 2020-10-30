@@ -12,6 +12,7 @@ use App\Article;
 use App\BadWord;
 use App\Profile;
 use App\Withdraw;
+use App\Collection;
 use App\Contribute;
 use App\Transaction;
 use App\UserRetention;
@@ -51,6 +52,16 @@ class FixData extends Command
             return $this->$table();
         }
         return $this->error("必须提供你要修复数据的table");
+    }
+
+    public function collectionAsCountPosts(){
+        $this->info('fix collections count_posts...');
+        Collection::chunk(100, function ($collections) {
+            foreach ($collections as $collection) {
+                $collection->updateCountPosts();
+            }
+        });
+        $this->info('fix collections count_posts success');
     }
 
     public function failWithdraws()
