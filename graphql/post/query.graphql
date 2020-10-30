@@ -12,7 +12,7 @@ type Post {
   """
   关联的商品
   """
-  product: Product
+  product:Product
   """
   动态的内容
   """
@@ -24,19 +24,19 @@ type Post {
   """
   图片
   """
-  images: [Image]
+  images:[Image]
   """
   分类
   """
-  categories: [Category]
+  categories:[Category]
   """
   合集
   """
-  collections: [Collection]
+  collections:[Collection]
   """
   当前集数
   """
-  current_episode: Int
+  current_episode:Int
   """
   -1删除，0草稿，1发布
   """
@@ -44,14 +44,14 @@ type Post {
   liked: Boolean
   count_likes: Int
   count_comments: Int
-  count_visits: Int
+  count_visits:Int
   review_id: String
   review_day: String
   is_ad: Int
   """
   标签
   """
-  tags: [Tag!] @paginate(defaultCount: 10, builder: "\\App\\Post@resovlePostTags")
+  tags:[Tag!] @paginate(defaultCount: 10, builder:"\\App\\Post@resovlePostTags")
   """
   发布时间（多久前）
   """
@@ -82,7 +82,7 @@ type Product {
   """
   图片
   """
-  images: [Image!]
+  images:[Image!]
   description: String
   available_amount: Int
   amount: Int
@@ -99,17 +99,23 @@ extend type Query {
   """
   学习视频列表（兼容token为游客的情况）
   """
-  recommendPosts: [Post!] @field(resolver: "App\\Post@resolveRecommendPosts")
+  recommendPosts: [Post!]
+    @field(resolver: "App\\Post@resolveRecommendPosts")
 
   """
   动态广场
   """
-  publicPosts(user_id: Int): [Post!] @paginate(defaultCount: 10, builder: "App\\Post@resolvePublicPosts")
+  publicPosts(user_id: Int): [Post!]
+    @paginate(
+      defaultCount: 10
+      builder: "App\\Post@resolvePublicPosts"
+    )
 
   """
   个人主页动态列表
   """
-  posts(user_id: Int!, keyword: String): [Post!] @paginate(builder: "App\\Post@resolvePosts", defaultCount: 10)
+  posts(user_id: Int!,keyword: String): [Post!]
+    @paginate(builder: "App\\Post@resolvePosts", defaultCount: 10)
 
   """
   分享post
@@ -139,17 +145,25 @@ extend type Query {
   """
   搜索动态
   """
-  searchPosts(query: String!, tag_id: Int, user_id: Int, type: PostType = VIDEO, collection_id: Int): [Post!]
+  searchPosts(query:String!,tag_id:Int,user_id:Int,type:PostType=VIDEO,collection_id:Int): [Post!]
     @paginate(defaultCount: 10, builder: "App\\Post@resolveSearchPosts")
   """
   收藏/普通动态
   """
-  userPosts(user_id: Int!, filter: PostFilter = spider): [Post!] @paginate(builder: "App\\Post@resolveUserPosts", defaultCount: 10)
+  userPosts(user_id: Int!,filter:PostFilter=spider): [Post!]
+    @paginate(builder: "App\\Post@resolveUserPosts", defaultCount: 10)
 
   """
   关注用户的 收藏/普通动态
   """
-  followPosts(user_id: Int!, filter: PostFilter = spider): [Post!] @paginate(builder: "App\\Post@resolveFollowPosts", defaultCount: 10)
+  followPosts(user_id: Int!,filter:PostFilter=spider): [Post!]
+  @paginate(builder: "App\\Post@resolveFollowPosts", defaultCount: 10)
+
+  postByVid(vid: String!):Post @field(resolver: "App\\Post@resolvePostByVid")
+  """
+  通过video_id获取相应的动态
+  """
+  postByVideoId(video_id: Int!):Post @field(resolver: "App\\Post@postByVideoId")
 }
 
 enum PostFilter {

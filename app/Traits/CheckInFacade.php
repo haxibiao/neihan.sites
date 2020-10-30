@@ -71,7 +71,7 @@ trait CheckInFacade
         //todo 签到七天，增加一次提现机会
 
         } else {
-            Gold::makeIncome($user, $goldReward, '连续签到奖励');
+            // Gold::makeIncome($user, $goldReward, '连续签到奖励');
         }
         //保存奖励
         $signIn->gold_reward       = $goldReward;

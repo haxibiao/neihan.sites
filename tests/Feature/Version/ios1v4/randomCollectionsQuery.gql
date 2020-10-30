@@ -1,0 +1,14 @@
+# 随机的集合列表
+query randomCollectionsQuery( $page: Int, $count: Int) {
+  randomCollections( page: $page, count: $count) {
+    paginatorInfo {
+      hasMorePages
+      currentPage
+    }
+    data {
+      id
+      name
+      logo
+    }
+  }
+}

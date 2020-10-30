@@ -22,58 +22,53 @@ class Tag extends BaseTag
         return $this->belongsTo(\App\User::class);
     }
 
-    public function articles(): MorphToMany
+    public function articles():MorphToMany
     {
         return $this->taggable('App\Article');
     }
 
-    public function videos(): MorphToMany
+    public function videos():MorphToMany
     {
         return $this->taggable('App\Video');
     }
 
-    public function posts(): MorphToMany
+    public function posts():MorphToMany
     {
         return $this->taggable(\App\Post::class);
     }
 
-    public function resolverPosts($rootValue, $args, $context, $resolveInfo)
-    {
+    public function resolverPosts($rootValue, $args, $context, $resolveInfo){
 
-        $visibility = data_get($args, 'visibility');
-        $order      = data_get($args, 'order');
+        $visibility = data_get($args,'visibility');
+        $order      = data_get($args,'order');
         $user = getUser(false);
 
         $qb = $rootValue->posts()->publish();
 
-        $qb->when($visibility == 'self', function ($q) use ($user) {
-            $q->where('taggables.user_id', data_get($user, 'id'));
+        $qb->when( $visibility == 'self' , function ($q) use ($user){
+            $q->where('taggables.user_id',data_get($user,'id'));
         });
 
-        $qb->when($order == 'LATEST', function ($q) {
+        $qb->when( $order == 'LATEST' , function ($q){
             $q->orderByDesc('id');
         });
 
         return $qb;
     }
 
-    public function resolveSearchTags($rootValue, $args, $context, $resolveInfo)
-    {
-        return Tag::search(data_get($args, 'query'));
+    public function resolveSearchTags($rootValue, $args, $context, $resolveInfo){
+        return Tag::search(data_get($args,'query'));
     }
 
-    public function getCountPostsAttribute()
-    {
+    public function getCountPostsAttribute(){
         return $this->count;
     }
 
-    public function getCountViewsAttribute()
-    {
-        return random_int(1000, 10000);
-        // $countViews = 0;
-        // $this->posts()->each(function ($post) use (&$countViews){
-        //     $countViews += data_get($post,'video.json.count_views',0);
-        // });
-        // return numberToReadable($countViews);
+    public function getCountViewsAttribute(){
+        $countViews = 0;
+        $this->posts()->with('video')->each(function ($post) use (&$countViews){
+            $countViews += data_get($post,'video.json.count_views',0);
+        });
+        return numberToReadable($countViews);
     }
 }

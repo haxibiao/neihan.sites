@@ -1,0 +1,20 @@
+#集合推荐列表
+query recommendCollectionsQuery{
+  recommendCollections{
+    topCollection{
+      id
+      name
+      description
+    }
+    recommendCollectionsA{
+      id
+      name
+      description
+    }
+    recommendCollectionsB{
+      id
+      name
+      description
+    }
+  }
+}

@@ -21,6 +21,7 @@ class CheckIn extends Model
         'gold_reward',
         'contribute_reward',
         'reward_rate',
+        'keep_checkin_days',
     ];
 
     //最大签到天数

@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Feedback;
+use App\Traits\CanCustomizeTask;
 use App\Traits\CanLike;
 use App\Traits\CanNotLike;
 use App\Traits\CanTag;
@@ -16,17 +16,14 @@ use Haxibiao\Live\Traits\PlayWithLive;
 use Haxibiao\Media\Traits\WithMedia;
 use Haxibiao\Sns\Traits\CanFollow;
 use Haxibiao\Task\Traits\PlayWithTasks;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\Access\Authorizable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class User extends Model implements
-    AuthenticatableContract,
+class User extends Model implements AuthenticatableContract,
     AuthorizableContract
 {
     use \Illuminate\Auth\Authenticatable, Authorizable;
@@ -43,9 +40,11 @@ class User extends Model implements
     use CanNotLike;
     use CanFollow;
     use PlayWithTasks;
+    use CanCustomizeTask;
 
     use \Haxibiao\Helpers\Traits\CanCacheAttributes;
 
+    protected  $with=['hasOneProfile'];
     /**
      * The attributes that are mass assignable.
      *
@@ -123,7 +122,7 @@ class User extends Model implements
     const MUTE_STATUS    = -1;
     const ENABLE_STATUS  = 0;
 
-    public static function boot()
+        public static function boot()
     {
         parent::boot();
         //保存时触发
@@ -132,6 +131,10 @@ class User extends Model implements
                 $post->api_token = str_random(60);
             }
         });
+    }
+
+    public function hasOneProfile(){
+        return $this->hasOne(Profile::class);
     }
 
     public function withdraws(): HasManyThrough
@@ -143,8 +146,7 @@ class User extends Model implements
     {
         return $this->hasMany(CheckIn::class);
     }
-    public function orders()
-    {
+    public function orders(){
         return $this->hasMany(Order::class);
     }
 
@@ -304,4 +306,5 @@ class User extends Model implements
             return $avatar;
         }
     }
+
 }

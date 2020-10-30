@@ -19,6 +19,7 @@
     "fideloper/proxy": "^4.3",
     "freyo/flysystem-qcloud-cos-v5": "^2.0",
     "fruitcake/laravel-cors": "^1.0",
+    "gregoriohc/laravel-nova-theme-responsive": "^0.8.1",
     "guzzlehttp/guzzle": "^6.3",
     "halimtuhu/array-images": "^1.1",
     "haxibiao/pay": "2.9.3",
@@ -27,7 +28,7 @@
     "jenssegers/agent": "^2.6",
     "jingling0101/laravel-qcloud-cos": "^4.0",
     "laravel/framework": "^7.0",
-    "laravel/nova": "^3.0@dev",
+    "laravel/nova": "^3.8",
     "laravel/passport": "^8.4",
     "laravel/tinker": "^2.0",
     "laravelcollective/html": "^6.1",
@@ -39,6 +40,7 @@
     "piwik/piwik-php-tracker": "^2.0",
     "predis/predis": "^1.1",
     "qcloud/cos-sdk-v5": "^2.0",
+    "qcloud/vod-sdk-v5": "^2.0",
     "sentry/sentry-laravel": "1.8.0",
     "simplesoftwareio/simple-qrcode": "^2.0",
     "spatie/laravel-backup": "^6.11",
@@ -58,7 +60,7 @@
     "nunomaduro/collision": "^4.1",
     "overtrue/easy-sms": "^1.1",
     "phpunit/phpunit": "^8.5",
-    "tencentcloud/tencentcloud-sdk-php": "3.0.94"
+    "tencentcloud/tencentcloud-sdk-php": "^3.0"
   },
   "config": {
     "optimize-autoloader": true,
@@ -86,10 +88,6 @@
     "packagist": {
       "type": "composer",
       "url": "https://mirrors.aliyun.com/composer/"
-    },
-    "6": {
-      "type": "vcs",
-      "url": "http://code.haxibiao.cn/composer/haxibiao-nova.git"
     }
   },
   "extra": {

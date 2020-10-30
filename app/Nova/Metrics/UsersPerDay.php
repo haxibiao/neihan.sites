@@ -21,7 +21,7 @@ class UsersPerDay extends Trend
     {
         $range = $request->range;
         $data  = [];
-        
+
         //没有数据的日期默认值为0
         for($j=$range-1;$j>=0;$j--){
                     $intervalDate = date('Y-m-d',strtotime(now().'-'.$j.'day'));
@@ -39,8 +39,11 @@ class UsersPerDay extends Trend
         if (count($data) < $range) {
             $data[now()->toDateString()] = 0;
         }
+        $max       = max($data);
+        $yesterday = array_values($data)[$range-2];
 
-        return (new TrendResult(end($data)))->trend($data);
+        return (new TrendResult(end($data)))->trend($data)
+            ->suffix("昨日: $yesterday  最大: $max");
     }
 
     /**

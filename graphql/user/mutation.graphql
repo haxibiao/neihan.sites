@@ -1,34 +1,42 @@
-extend type Mutation {
-  signIn(account: String, email: String, password: String!, uuid: String): User! @field(resolver: "App\\User@signIn")
+extend type Mutation{
+  signIn(account: String, email: String, password: String!,uuid:String): User!
+    @field(resolver: "App\\User@signIn")
   signOut(user_id: ID!): User @field(resolver: "App\\User@signOut")
-  autoSignIn(uuid: String!, phone: String): User @field(resolver: "App\\User@autoSignIn")
+  autoSignIn(uuid: String!, phone: String): User
+    @field(resolver: "App\\User@autoSignIn")
   """
   第三方账号登录
   """
-  authSignIn(code: String!, type: OAuthType!): User @field(resolver: "App\\User@resolveAuthSignIn")
+  authSignIn(code:String!, type:OAuthType!):User
+  @field(resolver: "App\\User@resolveAuthSignIn")
   """
   手机验证码登录
   """
-  smsSignIn(sms_code: String!, phone: String!): User @field(resolver: "App\\User@resolveSMSSignIn")
+  smsSignIn(sms_code:String!, phone:String!):User
+  @field(resolver: "App\\User@resolveSMSSignIn")
 
   destoryUser: Boolean @field(resolver: "App\\User@destoryUserByToken")
-  #  newUserReword(type:RewardType!): Int @field(resolver: "App\\User@newUserReword")
-  bindDongdezhuan(account: String!, password: String!): Boolean @field(resolver: "App\\User@bindDongdezhuan")
+#  newUserReword(type:RewardType!): Int @field(resolver: "App\\User@newUserReword")
+  bindDongdezhuan(account:String!,password:String!):Boolean @field(resolver: "App\\User@bindDongdezhuan")
   """
   奖励接口，提供reason，返回具体奖励结果
   """
-  reward(reason: RewardEnum): UserReward @field(resolver: "App\\User@resolveReward")
+  reward(reason: RewardEnum): UserReward
+   @middleware(checks: ["graphql:10,1,userReward"])
+  @field(resolver: "App\\User@resolveReward")
 }
 
-enum RewardType {
-  DOUYIN @enum(value: "douyin")
-  VIDEO @enum(value: "newUser")
+enum RewardType{
+  DOUYIN@enum(value:"douyin")
+  VIDEO@enum(value:"newUser")
 }
 
 # test
 extend type Mutation {
-  blockUser(user_id: Int!): blockInfo @field(resolver: "App\\User@removeBlockUser")
-  updateUserInfo(id: Int @eq, input: updateUserInfo! @spread): User! @field(resolver: "App\\User@updateUserInfo")
+  blockUser(user_id: Int!): blockInfo
+    @field(resolver: "App\\User@removeBlockUser")
+  updateUserInfo(id: Int @eq, input: updateUserInfo! @spread): User!
+    @field(resolver: "App\\User@updateUserInfo")
 }
 
 input updateUserInfo {
@@ -58,10 +66,6 @@ type UserReward {
 
 enum RewardEnum {
   """
-  新用户奖励
-  """
-  NEW_USER_REWARD
-  """
   签到视频观看奖励
   """
   SIGNIN_VIDEO_REWARD
@@ -77,6 +81,10 @@ enum RewardEnum {
   签到金币奖励
   """
   GOLD_SIGNIN_REWARD
+  """
+    连续签到奖励
+  """
+  KEEP_SIGNIN_REWARD
   """
   观看激励视频奖励
   """

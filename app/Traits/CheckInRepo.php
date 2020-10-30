@@ -23,7 +23,7 @@ trait CheckInRepo
         $signIn       = CheckIn::create(['user_id' => $user->id]);
         $keepSignDays = $profile->keep_checkin_days + 1;
         $profile->update(['keep_checkin_days' => $keepSignDays]);
-
+        $signIn->update(['keep_checkin_days' => $keepSignDays]);
         //触发连续签到奖励 && 保存奖励
         self::keepSignInReward($signIn, $keepSignDays);
         return $signIn;

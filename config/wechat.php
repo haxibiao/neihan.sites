@@ -18,7 +18,7 @@ $config = [
     /*
      * 账号基本信息，请从微信公众平台/开放平台获取
      */
-    'app_id'            => env('WECHAT_APPID', 'wx659d2f82c6ac4981'), // AppID
+    'app_id'            => env('WECHAT_APPID', 'wx058fb6b32fc2b7c0'), // AppID
     'secret'            => env('WECHAT_SECRET', 'bb3852359ae82709ab0f30f05bca8560'), // AppSecret
     'token'             => env('WECHAT_TOKEN', 'dongdianyiapp'), // Token
     'aes_key'           => env('WECHAT_AES_KEY', '3dZF0qF9FfbYutRs8tIuBGawrN72VzVaFNbRfALUPl4'), // EncodingAESKey
@@ -221,6 +221,12 @@ $config = [
         'wechat_app' => [
             'appid'  => 'wx4a953352ba5e5aee',
             'secret' => '11a1edd61129196ead561bf08f9a1040',
+        ],
+    ],
+    'yinxiangshipin'        => [
+        'wechat_app' => [
+            'appid'  => 'wx058fb6b32fc2b7c0',
+            'secret' => '34e567cfeb4b5345234bc0447dde140b',
         ],
     ],
 ];

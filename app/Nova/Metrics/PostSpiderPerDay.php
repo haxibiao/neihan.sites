@@ -6,6 +6,7 @@ use Haxibiao\Content\Post;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Trend;
 use Laravel\Nova\Metrics\TrendResult;
+use Illuminate\Support\Arr;
 
 class PostSpiderPerDay extends Trend
 {
@@ -41,7 +42,10 @@ class PostSpiderPerDay extends Trend
             $data[now()->toDateString()] = 0;
         }
 
-        return (new TrendResult(end($data)))->trend($data);
+        $max       = max($data);
+        $yesterday = array_values($data)[$range-2];
+
+        return (new TrendResult(Arr::last($data)))->trend($data)->suffix("昨日: $yesterday  最大: $max");
     }
 
     /**

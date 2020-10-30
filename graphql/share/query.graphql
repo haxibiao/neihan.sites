@@ -1,0 +1,26 @@
+type Share {
+  id: Int!
+  user: User
+  """
+  分享链接
+  """
+  url :String
+  """
+  分享的视频
+  """
+  video:Video
+  """
+  动态
+  """
+  post:Post
+
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+extend type Query {
+  """
+  所有的任务定义
+  """
+  visitShareablebyUuid(uuid:String!):Share @field(resolver: "App\\Share@visitShareUuid")
+}

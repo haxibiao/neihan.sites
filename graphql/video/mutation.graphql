@@ -4,10 +4,20 @@ extend type Mutation @middleware(checks: ["auth:api"]) {
   """
   videoPlayReward(input: videoPlayReport): Gold
     @field(resolver: "App\\Video@videoPlayReward")
+  """
+  获取视频下载链接
+  """
+  downloadVideo(video_id:Int!) :String
+    @field(resolver: "App\\Video@downloadVideo")
+
 }
 
 input videoPlayReport {
   video_id: Int
   play_duration: Float
   video_ids: [Int]
+}
+
+input MetadataInfo {
+  title:String
 }

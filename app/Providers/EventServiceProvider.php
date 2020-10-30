@@ -60,6 +60,8 @@ class EventServiceProvider extends ServiceProvider
         \App\BadWord::observe(\App\Observers\BadWordObserver::class);
         \App\Notice::observe(\App\Observers\NoticeObserver::class);
         \App\Contribute::observe(\App\Observers\ContributeObserver::class);
+        \Haxibiao\Media\Spider::observe(\App\Observers\SpiderObserver::class);
+        \App\Spider::observe(\App\Observers\SpiderObserver::class);
         \App\Gold::observe(\App\Observers\GoldObserver::class);
         \App\User::observe(\App\Observers\UserObserver::class);
     }

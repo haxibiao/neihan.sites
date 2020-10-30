@@ -2,18 +2,20 @@
 
 namespace App\Traits;
 
+use App\User;
+use App\Follow;
+use App\Wallet;
+use App\Profile;
+use App\Exchange;
+use App\Withdraw;
 use App\BlackList;
 use App\Contribute;
-use App\Exchange;
-use App\Follow;
-use App\Profile;
 use App\RewardCounter;
-use App\User;
-use App\Wallet;
-use App\Withdraw;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
+use App\Gold as AppGold;
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
+use App\Exceptions\GQLException;
+use Illuminate\Support\Facades\Auth;
 
 trait UserAttrs
 {
@@ -77,9 +79,6 @@ trait UserAttrs
         $avatar = $this->getRawOriginal('avatar');
         if (is_null($avatar)) {
             return url(self::getDefaultAvatar());
-        }
-        if (str_contains($avatar, "http")) {
-            return $avatar;
         }
         return \Storage::cloud()->url($avatar);
     }
@@ -287,17 +286,17 @@ trait UserAttrs
         return $this->role_id >= 2;
     }
 
-    //    public function getAvatarUrlAttribute()
-    //    {
-    //        if (isset($this->avatar)) {
-    //            if (Str::contains($this->avatar, 'http')) {
-    //                return $this->avatar;
-    //            }
-    //            return \Storage::cloud()->url($this->avatar);
-    //        }
-    //        // 避免前端取不到数据
-    //        return \Storage::cloud()->url(User::AVATAR_DEFAULT);
-    //    }
+//    public function getAvatarUrlAttribute()
+//    {
+//        if (isset($this->avatar)) {
+//            if (Str::contains($this->avatar, 'http')) {
+//                return $this->avatar;
+//            }
+//            return \Storage::cloud()->url($this->avatar);
+//        }
+//        // 避免前端取不到数据
+//        return \Storage::cloud()->url(User::AVATAR_DEFAULT);
+//    }
 
     public function getTokenAttribute()
     {
@@ -321,7 +320,7 @@ trait UserAttrs
 
     public function getFollowedIdAttribute()
     {
-        return $this->remember('followed_id', 0, function () {
+        return $this->remember('followed_id', 0, function() {
             if ($user = checkUser()) {
                 $follow = Follow::where([
                     'user_id'       => $user->id,
@@ -348,12 +347,9 @@ trait UserAttrs
 
     public function getIntroductionAttribute()
     {
-        if (empty($this->profile)) {
-            return;
-        }
-        return $this->remember('introduction', 0, function () {
+        return $this->remember('introduction', 0, function() {
             $introduction = optional($this->profile)->introduction;
-            if ($introduction) {
+            if($introduction){
                 return $introduction;
             }
             return '这个人很懒，一点介绍都没留下...';
@@ -397,7 +393,7 @@ trait UserAttrs
 
     public function getCountPostsAttribute()
     {
-        return $this->remember('count_posts', 0, function () {
+        return $this->remember('count_posts', 0, function() {
             return $this->posts()->count();
         });
     }
@@ -414,7 +410,7 @@ trait UserAttrs
 
     public function getCountFollowingsAttribute()
     {
-        return $this->remember('count_followings', 0, function () {
+        return $this->remember('count_followings', 0, function() {
             return $this->followingUsers()->count();
         });
     }
@@ -438,51 +434,36 @@ trait UserAttrs
     //TODO: 这些可以后面淘汰，前端直接访问 user->profile->atts 即可
     public function getCountArticlesAttribute()
     {
-        return $this->allArticles()->where("status", ">", 0)->count();
+        return $this->allArticles()->where("status",">",0)->count();
     }
 
     public function getCountFollowsAttribute()
     {
-        if (empty($this->profile)) {
-            return;
-        }
-        return $this->remember('count_follows', 0, function () {
+        return $this->remember('count_follows', 0, function() {
             return $this->profile->count_follows;
         });
     }
 
     public function getCountCollectionsAttribute()
     {
-        if (empty($this->profile)) {
-            return;
-        }
         return $this->profile->count_collections;
     }
 
     public function getCountFavoritesAttribute()
     {
-        if (empty($this->profile)) {
-            return;
-        }
-        return $this->remember('count_favorites', 0, function () {
+        return $this->remember('count_favorites', 0, function() {
             return $this->profile->count_favorites;
         });
     }
 
     public function getGenderAttribute()
     {
-        if (empty($this->profile)) {
-            return;
-        }
         return $this->profile->gender;
     }
 
     public function getGenderMsgAttribute()
     {
-        if (empty($this->profile)) {
-            return;
-        }
-        return $this->remember('gender', 0, function () {
+        return $this->remember('gender', 0, function() {
             switch ($this->profile->gender) {
                 case self::MALE_GENDER:
                     return '男';
@@ -512,7 +493,7 @@ trait UserAttrs
 
     public function getAgeAttribute()
     {
-        return $this->remember('age', 0, function () {
+        return $this->remember('age', 0, function() {
             $birthday = Carbon::parse($this->birthday);
             return $birthday->diffInYears(now(), false);
         });
@@ -525,17 +506,11 @@ trait UserAttrs
 
     public function getBirthdayAttribute()
     {
-        if (empty($this->profile)) {
-            return;
-        }
         return $this->profile->birthday;
     }
 
     public function getContributeAttribute()
     {
-        if (empty($this->profile)) {
-            return;
-        }
         return $this->profile->count_contributes;
     }
 
@@ -570,5 +545,43 @@ trait UserAttrs
             return substr_replace($this->phone, '****', 3, 4);
         }
         return null;
+    }
+
+    //检查用户异常获取 积分的行为
+    public function checkRewardCount($user, $remark)
+    {
+
+       $todayCount= AppGold::where([
+            'remark' => $remark,
+            'user_id' => $user->id,
+        ])->whereBetween('created_at',[today(),now()])->count();
+
+        switch($remark){
+            case "观看激励视频奖励":
+            case "点击激励视频奖励":
+                    $maxCount=8;
+                    break;
+            case "双倍签到奖励":
+            case "签到视频观看奖励":
+                    $maxCount=1;
+                    break;
+            default:
+            $maxCount=1;
+                
+        }
+        throw_if($todayCount >= $maxCount,GQLException::class, '今天的次数已经用完了哦');
+
+        $lastReward = $user->golds()
+            ->select('created_at')
+            ->where('remark', $remark)
+            ->latest('id')
+            ->first();
+
+        // 上次看激励视频与本次间隔 < 60 秒
+        if ($lastReward&&now()->diffInSeconds(Carbon::parse($lastReward->created_at)) < 2) {
+            $user->update(['status' => User::STATUS_FREEZE]);
+            throw new   GQLException('行为异常,详情咨询QQ群:326423747');
+
+        }
     }
 }

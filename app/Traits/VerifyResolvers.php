@@ -24,7 +24,7 @@ trait VerifyResolvers
             app_track_event("发送验证码",self::getVerificationActions()[$action],$phone);
             $verify = $this->sendSMSCode($phone, $action);
         } else {
-            app_track_event("发送验证码",self::USER_REGISTER,$phone);
+            app_track_event("发送验证码",Verify::USER_REGISTER,$phone);
             //新用户手机号注册验证码
             $verify=  $this->sendLoginSMSCode($phone,$action);
         }

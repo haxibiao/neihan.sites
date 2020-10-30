@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\Select;
+use Techouse\SelectAutoComplete\SelectAutoComplete;
 
 class PickCollectionPost extends Action
 {
@@ -26,11 +27,11 @@ class PickCollectionPost extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
 
-        foreach ($models as $story) {
-            $post = Post::find($story->id);
-            $post->collectivize([$fields->collection]);
-            \App\Collection::find($fields->collection)->increment('count');
-        }
+        $collectableIds=$models->pluck('id');
+        $collection=\App\Collection::find($fields->collection);
+        $collection->recollect($collectableIds,'posts');
+        $collection->count_posts=$collection->posts()->count();
+        $collection->save();
         return Action::message('加入成功');
     }
 
@@ -46,7 +47,7 @@ class PickCollectionPost extends Action
             ->pluck('name', 'id')
             ->toArray();
         return [
-            Select::make(_("加入合集"), 'collection')->options(
+            SelectAutoComplete::make(_("加入合集"), 'collection')->options(
                 $data
             ),
         ];

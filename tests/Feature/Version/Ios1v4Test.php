@@ -185,6 +185,37 @@ class Ios1v4Test extends GraphQLTestCase
         $this->startGraphQL($query, $variables, $userHeaders);
 
     }
+    /**
+     * @group  Ios1v4Test
+     * @group  Ios1v4Test_testRandomCollectionsMutation
+     *     //测试随机查询合集
+     */
+    public function testRandomCollectionsMutation()
+    {
+        $query = file_get_contents(__DIR__ . '/ios1v4/randomCollectionsQuery.gql');
+        $userHeaders = $this->getRandomUserHeaders($this->user);
+
+        $variables = [
+        ];
+        $this->startGraphQL($query, $variables, $userHeaders);
+
+    }
+
+       /**
+     * @group  Ios1v4Test
+     * @group  Ios1v4Test_testRecommendCollectionsMutation
+     *     //测试随机查询合集
+     */
+    public function testRecommendCollectionsMutation()
+    {
+        $query = file_get_contents(__DIR__ . '/ios1v4/recommendCollectionsQuery.gql');
+        $userHeaders = $this->getRandomUserHeaders($this->user);
+
+        $variables = [
+        ];
+        $this->startGraphQL($query, $variables, $userHeaders);
+
+    }
 
     /**
      * @group  Ios1v4Test

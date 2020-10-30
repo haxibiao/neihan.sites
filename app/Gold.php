@@ -27,7 +27,7 @@ class Gold extends Model
     const NEW_USER_GOLD = 30;
 
     //当日通过观看视频获取的最高奖励
-    const TODAY_VIDEO_PLAY_MAX_GOLD=30;
+    const TODAY_VIDEO_PLAY_MAX_GOLD=50;
 
     public function user(): BelongsTo
     {

@@ -74,8 +74,8 @@ type Task {
   任务操作对象
   """
   task_object: JsonType
+  collection:Collection
 
-  collection: Collection
   start_at: DateTime @deprecated(reason: "睡觉任务用的")
   end_at: DateTime @deprecated(reason: "睡觉任务用的")
 
@@ -134,7 +134,7 @@ extend type Query {
 }
 
 type ResolveInfo {
-  submit_name: String
+  submit_name:String
 }
 
 enum TaskType {

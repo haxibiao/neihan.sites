@@ -26,19 +26,12 @@ trait UserResolvers
 
         app_track_event("奖励", $rewardReason);
         return User::userReward($user, $rewardValues);
+
     }
 
     public static function getUserRewardEnum()
     {
         return [
-            'NEW_USER_REWARD'          => [
-                'value'       => [
-                    'gold'       => 150,
-                    'remark'     => '新用户奖励',
-                    'action'     => 'NEW_USER_REWARD',
-                ],
-                'description' => '新用户奖励',
-            ],
             'WATCH_REWARD_VIDEO'          => [
                 'value'       => [
                     'gold'       => 10,
@@ -58,8 +51,8 @@ trait UserResolvers
                 'value'       => [
                     'remark' => '签到精力点奖励',
                     'action' => 'TICKET_SIGNIN_REWARD',
-                    'gold' => 50,
-                    'ticket' => 10
+                    'gold'=>50,
+                    'ticket'=>10
                 ],
                 'description' => '签到精力点奖励',
             ],
@@ -67,7 +60,7 @@ trait UserResolvers
                 'value'       => [
                     'remark' => '签到金币奖励',
                     'action' => 'GOLD_SIGNIN_REWARD',
-                    'gold' => 100,
+                    'gold'=>100,
                 ],
                 'description' => '签到金币奖励',
             ],
@@ -77,6 +70,13 @@ trait UserResolvers
                     'action' => 'DOUBLE_SIGNIN_REWARD',
                 ],
                 'description' => '双倍签到奖励',
+            ],
+            'KEEP_SIGNIN_REWARD'        => [
+                'value'       => [
+                    'remark' => '连续签到奖励',
+                    'action' => 'KEEP_SIGNIN_REWARD',
+                ],
+                'description' => '连续签到奖励',
             ],
             'CLICK_REWARD_VIDEO'          => [
                 'value'       => [
@@ -97,21 +97,21 @@ trait UserResolvers
      * @param $info
      * 第三方账号登录：微信，手机号，支付宝
      */
-    public  function resolveAuthSignIn($root, array $args, $context, $info)
-    {
+    public  function resolveAuthSignIn($root, array $args, $context, $info){
 
         $code = $args['code'];
         $type = $args['type'];
-        app_track_event("用户登录", "第三方登录", $type);
+        app_track_event("用户登录","第三方登录",$type);
         return $this->authSignIn($code, $type);
+
     }
-    public  function resolveSMSSignIn($root, array $args, $context, $info)
-    {
+    public  function resolveSMSSignIn($root, array $args, $context, $info){
 
         $sms_code = $args['sms_code'];
         $phone = $args['phone'];
-        app_track_event("用户登录", "验证码登录", $phone);
+        app_track_event("用户登录","验证码登录",$phone);
         return $this->smsSignIn($sms_code, $phone);
+
     }
 
     public function me($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
@@ -215,7 +215,7 @@ trait UserResolvers
         $user->phone = null;
         $user->email = $email;
         $user->save();
-        app_track_event('用户', '用户注册');
+        app_track_event('用户','用户注册');
 
         Ip::createIpRecord('users', $user->id, $user->id);
         return $user;
@@ -344,7 +344,7 @@ trait UserResolvers
         }
         $user->updateProfileAppVersion($user);
 
-        app_track_event('用户', '静默登录');
+        app_track_event('用户','静默登录');
         return $user;
     }
 
@@ -385,6 +385,7 @@ trait UserResolvers
                             }
                         }
                     }
+
                 }
             }
             $user->update(array_diff($args, $profile_infos));

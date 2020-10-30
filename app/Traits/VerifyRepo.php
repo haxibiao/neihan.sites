@@ -13,6 +13,9 @@ trait VerifyRepo
     {
         $qb = User::wherePhone($phone);
         $user = $qb->first();
+        if(!$user){
+            throw new \App\Exceptions\GQLException('该手机号尚未绑定账号，请绑定后再试');
+        }
         // 生成验证码
         $code = rand(1000, 9999);
 
@@ -75,7 +78,7 @@ trait VerifyRepo
             }
 
             // 验证码过期了
-            if ($verify->created_at->diffInSeconds(now(), false) > self::CODE_VALID_TIME) {
+            if ($verify->created_at->diffInSeconds(now(), false) > Verify::CODE_VALID_TIME) {
                 throw new GQLException('验证失败，验证码过期');
             }
             return $verify;

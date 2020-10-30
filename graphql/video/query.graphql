@@ -98,6 +98,8 @@ type Video {
   创建时间
   """
   created_at: DateTime
+
+  post:Post
 }
 
 type VideoInfo {

@@ -46,6 +46,10 @@ extend type Mutation @middleware(checks: ["auth:api"]){
         合集类型
         """
         type:CollectType
+        """
+        合集简介
+        """
+        description: String
     )
     : Collection! @field(resolver: "App\\Collection@resolveUpdateCollection")
 

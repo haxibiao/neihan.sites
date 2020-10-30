@@ -24,6 +24,7 @@ class LighthouseErrorHandler implements ErrorHandler
         \App\Exceptions\UnregisteredException::class,
         \App\Exceptions\ValidationExcetion::class,
         \Illuminate\Auth\AuthenticationException::class,
+        \Illuminate\Database\Eloquent\ModelNotFoundException::class,
     ];
 
     public static function handle(Error $error, Closure $next): array

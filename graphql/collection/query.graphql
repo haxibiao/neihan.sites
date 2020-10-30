@@ -8,7 +8,7 @@ type Collection {
   """
   合集播放量
   """
-  count_views: String
+  count_views: String @rename(attribute:"count_plays")
   """
   封面图
   """
@@ -30,12 +30,59 @@ type Collection {
   """
   合集内的动态
   """
-  posts(count: Int = 10, page: Int = 1, order: PostOrderEnum = LATEST): PostPaginator @field(resolver: "App\\Collection@resolverPosts")
+  posts(
+    count: Int = 10
+    page: Int = 1
+    order: PostOrderEnum = LATEST
+  ): PostPaginator @field(resolver: "App\\Collection@resolverPosts")
+}
+"""
+  推荐集合列表
+  """
+type CollectionsList {
+    topCover:String
+    topCollection: Collection
+    recommendCollectionsA: [Collection!]
+    recommendCollectionsB: [Collection!]
 }
 
 extend type Query {
-  collections(user_id: Int!, keyword: String): [Collection!] @paginate(defaultCount: 10, builder: "App\\Collection@resolveCollections")
-  collection(collection_id: Int!): Collection @field(resolver: "App\\Collection@resolveCollection")
-  shareCollection(collection_id: Int!): String @field(resolver: "App\\Collection@getShareLink")
-  searchCollections(query: String!): [Collection] @paginate(defaultCount: 5, builder: "App\\Collection@resolveSearchCollections")
+  """
+  某用户的合集
+  """
+  collections(user_id: Int!): [Collection!]
+    @paginate(defaultCount: 10, builder: "App\\Collection@resolveCollections")
+  collection(collection_id: Int!): Collection
+    @field(resolver: "App\\Collection@resolveCollection")
+
+  """
+  分享集合
+  """
+  shareCollection(collection_id: Int!): String
+    @field(resolver: "App\\Collection@getShareLink")
+  """
+  搜索集合
+  """
+  searchCollections(query: String!): [Collection]
+    @paginate(
+      defaultCount: 5
+      builder: "App\\Collection@resolveSearchCollections"
+    )
+  """
+  随机推荐的一组集合
+  """
+  randomCollections: [Collection]
+    @paginate(
+      defaultCount: 5
+      builder: "App\\Collection@resolveRandomCollections"
+    )
+
+    """
+  推荐集合
+  """
+  recommendCollections: CollectionsList
+   @field(resolver:"App\\Collection@resolveRecommendCollections")
+  
+
+
 }

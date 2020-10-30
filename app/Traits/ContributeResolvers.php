@@ -185,7 +185,7 @@ trait ContributeResolvers
         if (now()->diffInSeconds(Carbon::parse($lastRewardContribute->created_at)) < 60) {
             $user->update(['status' => User::STATUS_FREEZE]);
             return [
-                'message'    => '行为异常,详情咨询QQ群:808982693',
+                'message'    => '行为异常,详情咨询QQ群:326423747',
                 'gold'       => 0,
                 'contribute' => 0,
             ];
