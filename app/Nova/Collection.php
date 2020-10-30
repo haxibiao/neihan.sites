@@ -6,6 +6,7 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\MorphedByMany;
 use App\Nova\Actions\Article\UpdatePost;
@@ -55,6 +56,9 @@ class Collection extends Resource
             Text::make('创建时间', function () {
                 return time_ago($this->created_at);
             }),
+             Select::make('是否推荐','sort_rank')
+            ->options([1 =>'已置顶',2=>'已推荐'])
+            ->displayUsingLabels(),
             Image::make('封面图片', 'logo')
                 ->store(function (Request $request, $model) {
                     $file = $request->file('logo');
