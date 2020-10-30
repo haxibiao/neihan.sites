@@ -52,6 +52,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+           'graphql'       => \App\Http\Middleware\ThrottleGraphQL::class,
         'auth'         => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic'   => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.editor'  => \App\Http\Middleware\AuthEditor::class,
