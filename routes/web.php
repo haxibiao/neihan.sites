@@ -33,6 +33,9 @@ Route::get('/trending', 'IndexController@trending');
 //动态
 Route::post('/post/new', 'ArticleController@storePost');
 
+//电影
+Route::any('/movie', 'MovieController@index');
+
 //问答
 Route::resource('/question', 'IssueController');
 Route::resource('/answer', 'ResolutionController');

@@ -1,0 +1,25 @@
+@charset "utf-8";
+@font-face {
+  font-family: 'iconfont';  /* project id 1202188 */
+  src: url('../images/font_1202188_52t53tpslts.eot');
+  src: url('../images/font_1202188_52t53tpslts.eot?#iefix') format('embedded-opentype'),
+  url('../images/font_1202188_52t53tpslts.woff2') format('woff2'),
+  url('../images/font_1202188_52t53tpslts.woff') format('woff'),
+  url('../images/font_1202188_52t53tpslts.ttf') format('truetype'),
+  url('../images/font_1202188_52t53tpslts.svg#iconfont') format('svg');
+}
+.iconfont{
+  font-family:"iconfont" !important;
+  font-size: 0.6rem;
+  color: #ff6600;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.fed-font-xvi .iconfont{
+    display: inline-block;
+    margin-right: .4rem;
+    margin-top: -.1rem;
+    float: left;}
+.fed-part-rows.fed-font-xvi .iconfont{margin-top: 0px;}
+.fed-index-menu li:hover .icon{color: #fff!important;}
