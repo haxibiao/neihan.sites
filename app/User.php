@@ -307,4 +307,8 @@ class User extends Model implements AuthenticatableContract,
         }
     }
 
+    public function getAvatarUrlAttribute()
+    {
+        return $this->avatar;
+    }
 }
