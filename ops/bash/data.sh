@@ -12,4 +12,4 @@ php artisan migrate
 # php artisan db:seed
 
 # 一键备份数据库
-php artisan backup:run --only-db --filename=ainicheng.zip
+#php artisan backup:run --only-db --filename=ainicheng.zip
