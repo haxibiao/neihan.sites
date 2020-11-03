@@ -78,7 +78,11 @@ trait UserAttrs
     {
         $avatar = $this->getRawOriginal('avatar');
         if (is_null($avatar)) {
-            return url(self::getDefaultAvatar());
+            return self::getDefaultAvatar();
+        }
+        
+        if(str_contains($avatar,'http')){
+            return $avatar;
         }
         return \Storage::cloud()->url($avatar);
     }
