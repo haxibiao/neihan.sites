@@ -309,4 +309,8 @@ AuthorizableContract
         }
     }
 
+    public function getAvatarUrlAttribute()
+    {
+        return $this->avatar;
+    }
 }

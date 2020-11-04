@@ -241,12 +241,14 @@ class UserController extends Controller
     public function favorites(Request $request)
     {
         $user             = $request->user();
-        $data['articles'] = Favorite::with('faved')
+        $data['articles'] = Favorite::whereHasMorph('faved',
+        ['App\Article'])
             ->where('user_id', $user->id)
             ->where('faved_type', 'articles')
             ->orderBy('id', 'desc')
             ->paginate(10);
-        $data['questions'] = Favorite::with('faved')
+        $data['questions'] = Favorite::whereHasMorph('faved',
+        ['App\Question'])
             ->where('user_id', $user->id)
             ->where('faved_type', 'questions')
             ->orderBy('id', 'desc')

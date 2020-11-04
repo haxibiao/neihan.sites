@@ -10,3 +10,6 @@ php artisan migrate
 # 修复金币兑换故障
 # php artisan change:towallet
 # php artisan db:seed
+
+# 一键备份数据库
+#php artisan backup:run --only-db --filename=ainicheng.zip
