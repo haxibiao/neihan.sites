@@ -20,7 +20,6 @@ class Comment extends Model
     use CommentResolvers;
     use CanBeLiked;
 
-
     protected $touches = ['commentable'];
 
     public $fillable = [
@@ -32,6 +31,16 @@ class Comment extends Model
         'lou',
         'status',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+        //保存时触发
+        self::saving(function ($comment) {
+            $body          = $comment->body;
+            $comment->body = app('SensitiveUtils')->replace($body, '*');
+        });
+    }
 
     public function likes()
     {

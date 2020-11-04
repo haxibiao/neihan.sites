@@ -36,19 +36,29 @@ class Profile extends Model
         'app_version',
         'keep_checkin_days',
         'last_reward_video_time',
-        'today_reward_video_count'
+        'today_reward_video_count',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+        self::saving(function ($profile) {
+            if ($profile->isDirty(['introduction'])) {
+                $profile->introduction = app('SensitiveUtils')->replace($profile->introduction, '*');
+            }
+        });
+    }
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(\App\User::class);
     }
 //    public function getTodayRewardVideoCountAttribute()
-//    {
-//        $record = Dimension::whereDate('created_at', today())
-//            ->where('user_id', $this->user->id)
-//            ->whereIn('name', ['WATCH_REWARD_VIDEO', 'CLICK_REWARD_VIDEO'])
-//            ->sum('count');
-//        return $record;
-//    }
+    //    {
+    //        $record = Dimension::whereDate('created_at', today())
+    //            ->where('user_id', $this->user->id)
+    //            ->whereIn('name', ['WATCH_REWARD_VIDEO', 'CLICK_REWARD_VIDEO'])
+    //            ->sum('count');
+    //        return $record;
+    //    }
 }

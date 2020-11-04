@@ -11,8 +11,6 @@ use App\Traits\UserRepo;
 use App\Traits\UserResolvers;
 use Haxibiao\Base\Traits\AvatarHelper;
 use Haxibiao\Content\Traits\HasContent;
-use Haxibiao\Live\Traits\PlayWithCamera;
-use Haxibiao\Live\Traits\PlayWithLive;
 use Haxibiao\Media\Traits\WithMedia;
 use Haxibiao\Sns\Traits\CanFollow;
 use Haxibiao\Task\Traits\PlayWithTasks;
@@ -24,7 +22,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Model implements AuthenticatableContract,
-    AuthorizableContract
+AuthorizableContract
 {
     use \Illuminate\Auth\Authenticatable, Authorizable;
 
@@ -44,7 +42,7 @@ class User extends Model implements AuthenticatableContract,
 
     use \Haxibiao\Helpers\Traits\CanCacheAttributes;
 
-    protected  $with=['hasOneProfile'];
+    protected $with = ['hasOneProfile'];
     /**
      * The attributes that are mass assignable.
      *
@@ -99,7 +97,7 @@ class User extends Model implements AuthenticatableContract,
     const USER_STATUS   = 0;
     const EDITOR_STATUS = 1;
     const ADMIN_STATUS  = 2;
-    const VEST_STATUS  = 3;
+    const VEST_STATUS   = 3;
 
     //用户激励视频奖励
     const VIDEO_REWARD_GOLD       = 10;
@@ -122,18 +120,22 @@ class User extends Model implements AuthenticatableContract,
     const MUTE_STATUS    = -1;
     const ENABLE_STATUS  = 0;
 
-        public static function boot()
+    public static function boot()
     {
         parent::boot();
-        //保存时触发
-        self::saving(function ($post) {
-            if (empty($post->api_token)) {
-                $post->api_token = str_random(60);
+        self::saving(function ($user) {
+            if ($user->isDirty(['name'])) {
+                $user->name = app('SensitiveUtils')->replace($user->name, '*');
             }
+            if (empty($user->api_token)) {
+                $user->api_token = str_random(60);
+            }
+
         });
     }
 
-    public function hasOneProfile(){
+    public function hasOneProfile()
+    {
         return $this->hasOne(Profile::class);
     }
 
@@ -146,7 +148,8 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->hasMany(CheckIn::class);
     }
-    public function orders(){
+    public function orders()
+    {
         return $this->hasMany(Order::class);
     }
 
@@ -219,7 +222,6 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->hasMany(\App\UserBlock::class);
     }
-
 
     public function followingCategories()
     {
@@ -299,8 +301,8 @@ class User extends Model implements AuthenticatableContract,
     public function saveDownloadImage($file)
     {
         if ($file) {
-            $avatar = 'avatar/avatar' . $this->id . '_' . time() . '.png';
-            $cosDisk   = \Storage::cloud();
+            $avatar  = 'avatar/avatar' . $this->id . '_' . time() . '.png';
+            $cosDisk = \Storage::cloud();
             $cosDisk->put($avatar, \file_get_contents($file->path()));
 
             return $avatar;
