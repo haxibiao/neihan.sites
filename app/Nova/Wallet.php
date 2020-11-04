@@ -18,7 +18,7 @@ class Wallet extends Resource
      */
     public static $model = 'App\Wallet';
 
-    public static $displayInNavigation = false;
+    // public static $displayInNavigation = false;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -33,7 +33,7 @@ class Wallet extends Resource
      * @var array
      */
     public static $search = [
-        'id','real_name','pay_account'
+        'id', 'real_name', 'pay_account',
     ];
 
     public static function label()
@@ -84,7 +84,7 @@ class Wallet extends Resource
     public function filters(Request $request)
     {
         return [
-            new  \App\Nova\Filters\Transaction\WalletType,
+            new \App\Nova\Filters\Transaction\WalletType,
         ];
     }
 
