@@ -2,7 +2,7 @@
     {{-- Header --}}
     @slot('header')
         @component('mail::header', ['url' => config('app.url')])
-            {{ config('app.name_cn') }}
+            {{ seo_site_name() }}
         @endcomponent
     @endslot
 
@@ -21,7 +21,7 @@
     {{-- Footer --}}
     @slot('footer')
         @component('mail::footer')
-            © {{ date('Y') }} {{ config('app.name_cn') }}. All rights reserved.
+            © {{ date('Y') }} {{ seo_site_name() }}. All rights reserved.
         @endcomponent
     @endslot
 @endcomponent

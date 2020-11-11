@@ -16,7 +16,7 @@
             </div>
             <div class="recommend">
                 <div class="title">
-                    <h3>{{ config('app.name_cn') }}为你推荐</h3>
+                    <h3>{{ seo_site_name() }}为你推荐</h3>
                 </div>
                 <div class="hot-recommend">
                     <span>精彩推荐：</span>

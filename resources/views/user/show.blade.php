@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title') {{ $user->name }} -{{ config('app.name_cn') }}
+@section('title') {{ $user->name }} -{{ seo_site_name() }}
  @stop
 
 @section('content')
@@ -47,7 +47,7 @@
                         @else
                             @each('user.parts.action_item', $data['actions'], 'action')
                             @if(Auth::check())
-                                <action-list api="/user/{{ $user->id }}?actions=1" start-page="2" not-empty="{{count($data['actions'])>0}}" app-name="{{ config('app.name_cn') }}"/>
+                                <action-list api="/user/{{ $user->id }}?actions=1" start-page="2" not-empty="{{count($data['actions'])>0}}" app-name="{{ seo_site_name() }}"/>
                             @else
                                 <div>{!! $data['actions']->fragment('actions')->links() !!}</div>
                             @endif
@@ -61,7 +61,7 @@
                                         <div class="info">
                                             <a class="nickname" target="_blank" href="/user/{{ $user->id }}">{{ $user->name }}</a>
                                             {{-- <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt=""> --}}
-                                            <span class="time"> 加入了{{ config('app.name_cn') }} · {{ $user->created_at }}</span>
+                                            <span class="time"> 加入了{{ seo_site_name() }} · {{ $user->created_at }}</span>
                                         </div>
                                     </div>
                                 </div>

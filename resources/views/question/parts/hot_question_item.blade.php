@@ -13,7 +13,7 @@
     </a> 
     <div class="info">
       <a class="nickname" target="_blank" href="/user/{{ $question->latestAnswer->user_id }}">{{ $question->latestAnswer->user->name }}</a>
-      <img class="badge-icon" src="/images/verified.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name_cn') }}认证" alt="">
+      <img class="badge-icon" src="/images/verified.png" data-toggle="tooltip" data-placement="top" title="{{ seo_site_name() }}认证" alt="">
       <span class="time" data-shared-at="2017-11-06T09:20:28+08:00">知名自媒体人</span>
     </div>
 @php

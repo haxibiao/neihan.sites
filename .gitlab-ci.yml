@@ -1,34 +1,7 @@
 go_production:
-  stage: deploy
-  script:
-    - ssh root@gz015 "cd /data/www/ainicheng.com && git pull && bash ops/bash/env.sh"
-    - ssh root@gz015 "cd /data/www/ainicheng.com && git pull && bash ops/bash/worker.sh web"
-  only:
-    - master
-
-go_hotfix:
-  stage: deploy
-  script:
-    - ssh root@gz009 "cd /data/www/ainicheng.com && git pull && bash ops/bash/env.sh hotfix"
-    - ssh root@gz009 "cd /data/www/ainicheng.com && git pull && bash ops/bash/worker.sh all"
-    - ssh root@gz009 "cd /data/www/ainicheng.com && git pull && bash ops/bash/data.sh"
-  only:
-    - hotfix
-
-go_staging:
-  stage: deploy
-  script:
-    - ssh root@gz008 "cd /data/www/ainicheng.com && git pull && bash ops/bash/env.sh staging"
-    - ssh root@gz008 "cd /data/www/ainicheng.com && git pull && bash ops/bash/worker.sh all"
-    - ssh root@gz008 "cd /data/www/ainicheng.com && git pull && bash ops/bash/data.sh"
-  only:
-    - staging
-
-go_develop:
-  stage: deploy
-  script:
-    - ssh root@gz009 "cd /data/www/ainicheng.com && bash ops/bash/env.sh develop"
-    - ssh root@gz009 "cd /data/www/ainicheng.com && bash ops/bash/worker.sh all"
-    - ssh root@gz009 "cd /data/www/ainicheng.com && bash ops/bash/data.sh"
-  only:
-    - develop
+    stage: deploy
+    script:
+        - ssh root@jp001 "cd /data/www/neihan.sites && git pull && bash ops/bash/env.sh"
+        - ssh root@jp001 "cd /data/www/neihan.sites && git pull && bash ops/bash/worker.sh web"
+    only:
+        - master

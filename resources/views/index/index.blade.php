@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-   {{ config('app.name_cn') }}-{{ get_seo_title() }}
+   {{ seo_site_name() }}-{{ get_seo_title() }}
 @stop
 
 @section('keywords'){{ get_seo_keywords() }}
@@ -73,8 +73,6 @@
             <recommend-authors is-login="{{ Auth::check() ? true : false }}"></recommend-authors>
         </div>
       </div>
-      {{-- 网站底部信息 --}}
-      @include('parts.footer')
 </div>
 
 @endsection

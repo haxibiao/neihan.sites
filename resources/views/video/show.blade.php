@@ -144,9 +144,6 @@ $article = $video->article;
         </div>
     </div>
 </div>
-<div class="container">
-    @include('parts.footer')
-</div>
 
 
 </div>
@@ -161,7 +158,7 @@ $article = $video->article;
 @stop
 
 @push('scripts')
-@include('parts.js_for_app')
+
 @if(Auth::check())
 <script type="text/javascript">
     var at_config = {

@@ -11,7 +11,7 @@
 @section('content')
 <div class="container">
   <ol class="breadcrumb">
-    <li><a href="/">{{ config('app.name_cn') }}</a></li>
+    <li><a href="/">{{ seo_site_name() }}</a></li>
     <li class="active">片段</li>
   </ol>
     <div class="panel panel-default">

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-	视频主页 - {{ config('app.name_cn') }}
+	视频主页 - {{ seo_site_name() }}
 @stop
 @section('keywords') 视频主页,{{ implode(",", array_keys($data)) }} @endsection
 @section('description') 视频主页, {{ implode(",", array_keys($data)) }} @endsection

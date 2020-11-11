@@ -20,7 +20,7 @@
                 </div>
                 @endif
                 <a href="/user/{{ $answer->user->id }}" class="name">{{ $answer->user->name }}</a>
-                <img class="badge-icon" src="/images/verified.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name_cn') }}认证" alt="">
+                <img class="badge-icon" src="/images/verified.png" data-toggle="tooltip" data-placement="top" title="{{ seo_site_name() }}认证" alt="">
                 <span class="user-intro">{{ $answer->user->question_tag ? $answer->user->question_tag : config('app.name_cn').'热心用户' }}</span>
             </div>
             <div class="info"><p>{{ $answer->timeAgo() }}</p></div>

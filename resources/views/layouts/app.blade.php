@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="{{ small_logo() }}" sizes="60*60">
-    <link rel="icon" type="image/png" href="{{ small_logo() }}" sizes="120*120">
+    <link rel="icon" type="image/png" href="{{ seo_small_logo() }}" sizes="60*60">
+    <link rel="icon" type="image/png" href="{{ seo_small_logo() }}" sizes="120*120">
     <link rel="apple-touch-icon" href="/logo/{{ get_domain() }}.touch.png">
 
     <!-- CSRF Token -->
@@ -15,8 +15,8 @@
     <title> @yield('title') </title>
     
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="keywords" content="@yield('keywords'),{{ config('app.name_cn') }} ">
-    <meta name="description" content="@yield('description') ,{{ config('app.name_cn') }} ">
+    <meta name="keywords" content="@yield('keywords'),{{ seo_site_name() }} ">
+    <meta name="description" content="@yield('description') ,{{ seo_site_name() }} ">
     @stack('seo_metatags')
     @stack('seo_og_result')
     <!-- Styles -->
@@ -52,7 +52,7 @@
     <!-- Scripts -->
     @if(Auth::check())
     <script type="text/javascript">
-            window.appName = '{{ config('app.name_cn') }}';
+            window.appName = '{{ seo_site_name() }}';
             window.tokenize =　 function(api_url){
                 var api_token = '{{ Auth::user()->api_token }}'
                 if(api_url.indexOf('?') === -1) {
@@ -101,7 +101,11 @@
     <div style="display: none">
     {!! get_seo_push() !!}
     {!! get_seo_tj() !!}
-    </div>
+	</div>
+	
+	<div class="container">
+		@include('parts.footer')
+	</div>
 
 </body>
 </html>

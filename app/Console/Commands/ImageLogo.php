@@ -18,7 +18,7 @@ class ImageLogo extends Command
      *
      * @var string
      */
-    protected $description = 'make loge for all sizes';
+    protected $description = '生成网站logo几个场景需要的尺寸图片';
 
     /**
      * Create a new command instance.

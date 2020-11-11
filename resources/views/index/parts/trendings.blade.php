@@ -19,7 +19,7 @@
   </div>
    <div class="board-list">
     <a class="question" target="{{ isDeskTop()? '_blank':'_self' }}" href="/question">
-      <span class="board-title">{{ config('app.name_cn') }}问答<i class="iconfont icon-youbian"></i></span>
+      <span class="board-title">{{ seo_site_name() }}问答<i class="iconfont icon-youbian"></i></span>
       <i class="iconfont icon-changjianwenti board-right"></i> 
     </a>
   </div>

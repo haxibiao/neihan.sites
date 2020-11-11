@@ -31,8 +31,6 @@
        </div>
      </div>
    </div>
-     {{-- 网站底部信息 --}}
-  @include('parts.footer')
   <modal-ask-question></modal-ask-question>
  </div>
 @endpush

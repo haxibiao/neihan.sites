@@ -25,7 +25,7 @@
         @endphp
         <i class="iconfont {{  $gender_icon }}"></i>
         @if($user->is_editor)
-          <img class="badge-icon hidden-md hidden-sm hidden-lg" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name_cn') }}签约作者" alt="">
+          <img class="badge-icon hidden-md hidden-sm hidden-lg" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ seo_site_name() }}签约作者" alt="">
         @endif
     </div>
     

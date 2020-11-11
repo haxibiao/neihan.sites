@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title') 
-  {{ config('app.name_cn') }}移动应用 App - {{ config('app.name_cn') }}   
+  {{ seo_site_name() }}移动应用 App - {{ seo_site_name() }}   
 @endsection
 @push('section')
 
@@ -16,9 +16,9 @@
     <div class="row">
         <div class="container top-part">
           <div class="top-logo">
-            <img class="logo" src="{{ small_logo() }}" alt="app logo">
+            <img class="logo" src="{{ seo_small_logo() }}" alt="app logo">
             <div class="info">
-              <div class="title">{{ config('app.name_cn') }} </div>
+              <div class="title">{{ seo_site_name() }} </div>
               <div class="slogan">{!! get_seo_title() !!}</div>
             </div>
           </div>
@@ -26,7 +26,7 @@
           <img id = "tancen" class="phone-img" src="{{ aso_value('下载页','功能介绍1图') }}" alt="app phone">
           <div class="top-qrcode">
             <img src=data:image/png;base64,{{ qrcode_url() }} alt="Download apps page top qrcode">
-            <div class="title">扫码下载{{ config('app.name_cn') }}</div>
+            <div class="title">扫码下载{{ seo_site_name() }}</div>
           </div>
           <div class="download-phone">
 
@@ -40,7 +40,7 @@
 
             <a href="{{ aso_value('下载页','苹果地址') }}"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
             <img class="background-img" src="/images/app/appBackground.png" alt="Misc background">
-            <h4>点击下载{{ config('app.name_cn') }}App</h4>
+            <h4>点击下载{{ seo_site_name() }}App</h4>
           </div>
         </div>
       </div>
@@ -84,18 +84,18 @@
         <div class="download-web">
           <img class="bottom-qrcode" src=data:image/png;base64,{{ qrcode_url() }} alt="Download apps page bottom qrcode">
           <img class="background-img" src="/images/app/appBackground.png" alt="Misc background">
-          <div>扫码下载{{ config('app.name_cn') }}</div>
+          <div>扫码下载{{ seo_site_name() }}</div>
         </div>
         <div class="download-phone">
           <img src="/images/app/android_app.png"  onclick="download_btn()" class="download2" alt="download-andorid">
           <a href="{{ aso_value('下载页','苹果地址') }}"><img src="/images/app/ios_app.png" class="download2" alt="download-ios"></a>
           <img class="background-img" src="/images/app/appBackground.png" alt="Misc background">
-          <h4>点击下载{{ config('app.name_cn') }}App</h4>
+          <h4>点击下载{{ seo_site_name() }}App</h4>
         </div>
         <div class="bottom-logo">
-          <img src="{{ small_logo() }}" alt="Misc logo">
+          <img src="{{ seo_small_logo() }}" alt="Misc logo">
           <div class="info">
-            <div class="title">{{ config('app.name_cn') }}</div>
+            <div class="title">{{ seo_site_name() }}</div>
               <div class="slogan">{!! get_seo_title() !!}</div>
           </div>
         </div>
