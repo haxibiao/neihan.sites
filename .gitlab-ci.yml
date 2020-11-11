@@ -1,7 +1,7 @@
 go_production:
     stage: deploy
     script:
-        - ssh root@jp001 "cd /data/www/neihan.sites && git pull && bash ops/bash/env.sh"
-        - ssh root@jp001 "cd /data/www/neihan.sites && git pull && bash ops/bash/worker.sh web"
+        - ssh root@hk008 "cd /data/www/neihan.sites && git pull && bash ops/bash/env.sh"
+        - ssh root@hk008 "cd /data/www/neihan.sites && git pull && bash ops/bash/worker.sh web"
     only:
         - master
