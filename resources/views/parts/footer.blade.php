@@ -9,4 +9,4 @@
     </div>
 </footer>
 
-@include('parts.js_mta')
+@include('parts.js_for_footer')
