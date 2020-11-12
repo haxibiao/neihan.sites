@@ -149,7 +149,7 @@ $article = $video->article;
 </div>
 <div class="share-module">
     <div class="module-share-h3">分享到....</div>
-    <div>@include('video.parts.share')</div>
+    <div>@include('video.parts.share', ['subject' => $video->name, 'url'=>url('/video/'.$video->id)])</div>
     <close-share></close-share>
 </div>
 <div id="pageLayout">

@@ -2,12 +2,12 @@
 	<div class="width-limit">
 		@section('logo')
 			@if( isMobile() )
-				<a class="logo" href="/">
-					<img src="{{ seo_small_logo() }}" alt="">
+				<a class="logo" href="/" title="{{ seo_site_name() }}">
+					<img src="{{ seo_small_logo() }}" alt="{{ seo_site_name() }}">
 				</a>
 			@else
-			   <a class="logo" href="/">
-					<img src="{{ seo_small_logo() }}" alt="">
+			   <a class="logo" href="/" title="{{ seo_site_name() }}">
+					<img src="{{ seo_small_logo() }}" alt="{{ seo_site_name() }}">
 				</a>
 			@endif
 		@show

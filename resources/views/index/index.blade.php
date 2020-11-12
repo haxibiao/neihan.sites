@@ -30,7 +30,7 @@
            <div class="vd-head">
               <h3 class="vd-title">
                 <span class="title-icon">
-                  <i class="iconfont icon-huo"></i>推荐视频
+                  <i class="iconfont icon-huo"></i>推荐{{ seo_site_name() }}
                 </span>
               </h3>
                <a href="/video" class="more-video">

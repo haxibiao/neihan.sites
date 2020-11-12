@@ -35,13 +35,13 @@ return [
 
     'connections' => [
 
-        'sqlite'       => [
+        'sqlite' => [
             'driver'   => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix'   => '',
         ],
 
-        'mysql'        => [
+        'mysql'  => [
             'driver'      => 'mysql',
             'host'        => env('DB_HOST', '127.0.0.1'),
             'port'        => env('DB_PORT', '3306'),
@@ -58,15 +58,15 @@ return [
                 'use_single_transaction',
                 'extended-insert',
                 'timeout'        => 60 * 20, // 20 minute timeout
-                'addExtraOption' => '--column-statistics=0' //解决MySQL8.0dump错误
+                'addExtraOption' => '--column-statistics=0', //解决MySQL8.0dump错误
             ],
         ],
 
-        'dongyundong'   => [
+        'nhdy'   => [
             'driver'      => 'mysql',
             'host'        => env('DB_HOST', '127.0.0.1'),
             'port'        => env('DB_PORT', '3306'),
-            'database'    => 'dongyundong',
+            'database'    => 'neihandianying',
             'username'    => env('DB_USERNAME', 'forge'),
             'password'    => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
@@ -77,7 +77,7 @@ return [
             'engine'      => null,
         ],
 
-        'pgsql'        => [
+        'pgsql'  => [
             'driver'   => 'pgsql',
             'host'     => env('DB_HOST', '127.0.0.1'),
             'port'     => env('DB_PORT', '5432'),
@@ -90,7 +90,7 @@ return [
             'sslmode'  => 'prefer',
         ],
 
-        'sqlsrv'       => [
+        'sqlsrv' => [
             'driver'   => 'sqlsrv',
             'host'     => env('DB_HOST', 'localhost'),
             'port'     => env('DB_PORT', '1433'),

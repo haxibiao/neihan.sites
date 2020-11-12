@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,7 +37,7 @@ Route::get('/trending', 'IndexController@trending');
 Route::post('/post/new', 'ArticleController@storePost');
 
 //电影
-Route::any('/movie', 'MovieController@index');
+Route::resource('/movie', 'MovieController');
 
 //问答
 Route::resource('/question', 'IssueController');
