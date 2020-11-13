@@ -12,13 +12,13 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
+        $this->call(CleanupSeeder::class);
+
         // $this->call(AdConfigSeeder::class);
         // $this->call(TaskSeeder::class);
-        // $this->call(FunctionSwitchSeeder::class);
         // $this->call(AsoSeeder::class);
-
-//        $this->call(AdconfigProviderSeeder::class);
-        $this->call(VersionSeeder::class);
+        // $this->call(AdconfigProviderSeeder::class);
+        // $this->call(VersionSeeder::class);
 
     }
 }
