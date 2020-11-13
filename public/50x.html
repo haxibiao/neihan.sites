@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="" />
+        <meta name="baidu-site-verification" content="code-4jOLEP1AzJ" />
+
+        <title>服务器异常或页面找不到</title>
+
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="keywords" content=",在线美剧 " />
+        <meta name="description" content=" ,在线美剧 " />
+        <!-- Styles -->
+        <link href="/css/guest.css" rel="stylesheet" />
+
+        <style type="text/css">
+            .hot-search-wrp {
+                margin-top: 9px;
+                width: 220px;
+                left: 0;
+                top: 100%;
+                visibility: hidden;
+                opacity: 0;
+                border-radius: 4px;
+                z-index: 999;
+            }
+            .hot-search-wrp,
+            .hot-search-wrp::before {
+                position: absolute;
+                background-color: #fff;
+                box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+            }
+            .hot-search-wrp::before {
+                content: '';
+                left: 27px;
+                width: 10px;
+                height: 10px;
+                transform: rotate(45deg);
+                top: -5px;
+                z-index: -1;
+            }
+            .hot-search-wrp .hot-search {
+                border-bottom: 1px solid #f0f0f0;
+            }
+            .hot-search-wrp .search-recent {
+                padding: 10px 15px;
+            }
+        </style>
+        <style type="text/css">
+            .hot-search {
+                padding: 15px 15px 10px;
+                background-color: #fff;
+            }
+            .hot-search ul {
+                text-align: left;
+            }
+            .hot-search ul li {
+                margin-right: 10px;
+                display: inline-block;
+                line-height: 28px;
+            }
+            .hot-search ul li a {
+                padding: 2px 6px;
+                font-size: 12px;
+                color: #717171;
+                border: 1px solid #c4c4c4;
+                border-radius: 3px;
+            }
+            .hot-search ul li a:hover {
+                color: #252525;
+                border-color: #717171;
+            }
+        </style>
+        <style type="text/css"></style>
+    </head>
+    <body>
+        <div id="app">
+            <nav role="navigation" class="navbar navbar-default navbar-fixed-top">
+                <div class="width-limit">
+                    <a href="https://zaixianmeiju.com/" title="在线美剧" class="logo"
+                        ><img src="/logo/zaixianmeiju.com.small.png" alt="在线美剧"
+                    /></a>
+                    <div class="register">
+                        <a href="https://zaixianmeiju.com/register" class="btn-base theme-tag">注册</a>
+                    </div>
+                    <a href="https://zaixianmeiju.com/app" class="download-app"><p>下载APP</p></a>
+                    <a href="https://zaixianmeiju.com/login" class="login btn">登录</a>
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button
+                                type="button"
+                                data-toggle="collapse"
+                                data-target=".navbar-ex1-collapse"
+                                class="navbar-toggle"
+                            >
+                                <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
+                                <span class="icon-bar"></span> <span class="icon-bar"></span>
+                            </button>
+                        </div>
+                        <div class="collapse navbar-collapse navbar-ex1-collapse">
+                            <ul class="nav navbar-nav">
+                                <li class="tab">
+                                    <a href="https://zaixianmeiju.com/"
+                                        ><i class="iconfont icon-faxian hidden-xs hidden-md"></i
+                                        ><span class="hidden-sm">首页</span></a
+                                    >
+                                </li>
+                                <li class="tab">
+                                    <a target="_blank" href="https://zaixianmeiju.com/movie"
+                                        ><i class="iconfont icon-shipin3 hidden-xs hidden-md"></i
+                                        ><span class="hidden-sm">电影</span></a
+                                    >
+                                </li>
+                                <li class="tab">
+                                    <a target="_blank" href="https://zaixianmeiju.com/app"
+                                        ><i class="iconfont icon-ordinarymobile hidden-xs hidden-md"></i
+                                        ><span class="hidden-sm">下载App</span></a
+                                    >
+                                </li>
+                            </ul>
+                            <a class="search"
+                                ><form
+                                    target="_blank"
+                                    role="search"
+                                    action="https://zaixianmeiju.com/search"
+                                    method="get"
+                                    id="searchForm"
+                                    class="navbar-form navbar-left"
+                                >
+                                    <div class="form-group">
+                                        <div class="search-wrapper">
+                                            <input
+                                                type="text"
+                                                id="search-input"
+                                                placeholder="搜索"
+                                                name="q"
+                                                autocomplete="off"
+                                                class="form-control"
+                                            />
+                                            <span class="iconfont icon-sousuo search-btn"></span>
+                                            <div
+                                                class="hot-search-wrp hidden-xs"
+                                                style="visibility: hidden; opacity: 0"
+                                            >
+                                                <div>
+                                                    <div class="hot-search">
+                                                        <div class="plate-title">
+                                                            热门搜索
+                                                            <a target="_blank" href="javascript:;" class="right"
+                                                                ><i
+                                                                    class="iconfont icon-shuaxin"
+                                                                    style="transform: rotate(360deg)"
+                                                                ></i
+                                                                >换一批</a
+                                                            >
+                                                        </div>
+                                                        <ul>
+                                                            <li>
+                                                                <a
+                                                                    target="_blank"
+                                                                    href="https://zaixianmeiju.com/search?q=%E8%83%8C%E6%99%AF"
+                                                                    title="背景"
+                                                                    >背景</a
+                                                                >
+                                                            </li>
+                                                            <li>
+                                                                <a
+                                                                    target="_blank"
+                                                                    href="https://zaixianmeiju.com/search?q=%E7%BD%91%E5%90%8D"
+                                                                    title="网名"
+                                                                    >网名</a
+                                                                >
+                                                            </li>
+                                                            <li>
+                                                                <a
+                                                                    target="_blank"
+                                                                    href="https://zaixianmeiju.com/search?q=%E6%83%85%E4%BE%A3"
+                                                                    title="情侣"
+                                                                    >情侣</a
+                                                                >
+                                                            </li>
+                                                            <li>
+                                                                <a
+                                                                    target="_blank"
+                                                                    href="https://zaixianmeiju.com/search?q=%E7%8E%8B%E8%80%85"
+                                                                    title="王者"
+                                                                    >王者</a
+                                                                >
+                                                            </li>
+                                                            <li>
+                                                                <a
+                                                                    target="_blank"
+                                                                    href="https://zaixianmeiju.com/search?q=%E6%98%B5%E7%A7%B0"
+                                                                    title="昵称"
+                                                                    >昵称</a
+                                                                >
+                                                            </li>
+                                                            <li>
+                                                                <a
+                                                                    target="_blank"
+                                                                    href="https://zaixianmeiju.com/search?q=%E5%AD%97"
+                                                                    title="字"
+                                                                    >字</a
+                                                                >
+                                                            </li>
+                                                            <li>
+                                                                <a
+                                                                    target="_blank"
+                                                                    href="https://zaixianmeiju.com/search?q=%E7%8E%8B%E8%80%85%E8%8D%A3%E8%80%80"
+                                                                    title="王者荣耀"
+                                                                    >王者荣耀</a
+                                                                >
+                                                            </li>
+                                                            <li>
+                                                                <a
+                                                                    target="_blank"
+                                                                    href="https://zaixianmeiju.com/search?q=%E5%A4%B4%E5%83%8F"
+                                                                    title="头像"
+                                                                    >头像</a
+                                                                >
+                                                            </li>
+                                                            <li>
+                                                                <a
+                                                                    target="_blank"
+                                                                    href="https://zaixianmeiju.com/search?q=%E4%B8%AA%E6%80%A7"
+                                                                    title="个性"
+                                                                    >个性</a
+                                                                >
+                                                            </li>
+                                                            <li>
+                                                                <a
+                                                                    target="_blank"
+                                                                    href="https://zaixianmeiju.com/search?q=QQ%E6%98%B5%E7%A7%B0"
+                                                                    title="QQ昵称"
+                                                                    >QQ昵称</a
+                                                                >
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <!---->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form></a
+                            >
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="container">
+                <div class="row">
+                    <div class="container">
+                        <div class="jumbotron">
+                            <div class="container error">
+                                <img src="./404_files/404.png" alt="" />
+                                <div class="info">
+                                    <h2>服务器异常或页面找不到</h2>
+                                    <p class="state">
+                                        输入地址有误或该地址已被删除，你可以<a
+                                            href="https://zaixianmeiju.com/"
+                                            class="return"
+                                        >
+                                            返回首页 </a
+                                        >，也可以尝试我们为你推荐的有趣内容。
+                                    </p>
+                                    <i class="iconfont icon-icon-test"></i>
+                                </div>
+                                <div class="recommend">
+                                    <div class="title"><h3>在线美剧为你推荐</h3></div>
+                                    <div class="hot-recommend"><span>精彩推荐：</span></div>
+                                    <div class="video"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="side-tool">
+                <ul data-v-25095146="">
+                    <li
+                        data-v-25095146=""
+                        id="goTop"
+                        data-placement="left"
+                        data-toggle="tooltip"
+                        data-container="body"
+                        data-title="回到頂部"
+                        data-original-title=""
+                        title=""
+                    >
+                        <a data-v-25095146="" class="function_button"
+                            ><i data-v-25095146="" class="iconfont icon-xiangshangjiantou"></i
+                        ></a>
+                    </li>
+                    <!---->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Scripts -->
+        <script type="text/javascript">
+            window.csrf_token = '';
+        </script>
+
+        <script src="./js/app.js"></script>
+
+        <script type="text/javascript">
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                },
+            });
+        </script>
+
+        <script>
+            $(function () {
+                // bs3提示框控件
+                $('.dropdown-toggle').dropdown();
+                $('[data-toggle="tooltip"]').tooltip();
+                $('[data-toggle="popover"]').popover();
+
+                $('.form-control').focus(function () {
+                    $(this).siblings('.hot-search-wrp').css({ visibility: 'visible', opacity: 1 });
+                });
+                $(document).click(function (e) {
+                    if ($(e.target).parents('.search-wrapper')[0] != $('.search-wrapper')[0]) {
+                        $('.hot-search-wrp').css({ visibility: 'hidden', opacity: 0 });
+                    }
+                    if ($(e.target).attr('data-action') == 'weixin-share') {
+                        $('.modal-share-weixin').modal({});
+                    }
+                });
+            });
+        </script>
+        <div style="display: none"></div>
+
+        <div class="container">
+            <footer id="footer">
+                <div class="icp">
+                    <p>
+                        本站所有图片和视频均来自互联网收集而来，版权归原创作者所有，本站只提供web页面服务，并不提供资源存储，也不参与录制，上传
+                    </p>
+                    <p>
+                        若本站收录的内容无意侵犯了贵司版权，请发邮件至neihandianying@gmail.com,
+                        我们会在3个工作日内删除侵权内容，谢谢。
+                    </p>
+                </div>
+            </footer>
+
+            <script>
+                var _mtac = {};
+                (function () {
+                    var mta = document.createElement('script');
+                    mta.src = '//pingjs.qq.com/h5/stats.js?v2.0.4';
+                    mta.setAttribute('name', 'MTAH5');
+                    mta.setAttribute('sid', '500733348');
+                    var s = document.getElementsByTagName('script')[0];
+                    s.parentNode.insertBefore(mta, s);
+                })();
+            </script>
+
+            <script>
+                (function () {
+                    var canonicalURL, curProtocol;
+                    //Get the <link> tag
+                    var x = document.getElementsByTagName('link');
+                    //Find the last canonical URL
+                    if (x.length > 0) {
+                        for (i = 0; i < x.length; i++) {
+                            if (x[i].rel.toLowerCase() == 'canonical' && x[i].href) {
+                                canonicalURL = x[i].href;
+                            }
+                        }
+                    }
+                    //Get protocol
+                    if (!canonicalURL) {
+                        curProtocol = window.location.protocol.split(':')[0];
+                    } else {
+                        curProtocol = canonicalURL.split(':')[0];
+                    }
+                    //Get current URL if the canonical URL does not exist
+                    if (!canonicalURL) canonicalURL = window.location.href;
+                    //Assign script content. Replace current URL with the canonical URL
+                    !(function () {
+                        var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                            r = canonicalURL,
+                            t = document.referrer;
+                        if (!e.test(r)) {
+                            var n =
+                                String(curProtocol).toLowerCase() === 'https'
+                                    ? 'https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif'
+                                    : '//api.share.baidu.com/s.gif';
+                            t
+                                ? ((n += '?r=' + encodeURIComponent(document.referrer)), r && (n += '&l=' + r))
+                                : r && (n += '?l=' + r);
+                            var i = new Image();
+                            i.src = n;
+                        }
+                    })(window);
+                })();
+            </script>
+        </div>
+    </body>
+</html>
