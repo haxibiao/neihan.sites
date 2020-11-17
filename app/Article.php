@@ -16,9 +16,9 @@ class Article extends BaseArticle
         //保存时触发
         self::saving(function ($article) {
             $description          = $article->description;
-            $article              = $article->body;
-            $article->description = app('SensitiveUtils')->replace($article, '*');
-            $article->body        = app('SensitiveUtils')->replace($description, '*');
+            $body              = $article->body;
+            $article->description = app('SensitiveUtils')->replace($description, '*');
+            $article->body        = app('SensitiveUtils')->replace($body, '*');
         });
     }
 
