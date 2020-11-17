@@ -5,7 +5,7 @@ namespace App\Nova\Filters\Content;
 use Illuminate\Http\Request;
 use Laravel\Nova\Filters\Filter;
 
-class TaskStatusType extends Filter
+class CategoryStatusType extends Filter
 {
     public $name = '专题状态';
 

@@ -9,8 +9,6 @@
   "license": "MIT",
   "require": {
     "php": "^7.2.5",
-    "Hxb/CategoryCount": "*",
-    "Hxb/CategoryLikeCount": "*",
     "acme/price-tracker": "*",
     "anerg2046/sns_auth": "^2.0",
     "coderello/laravel-nova-lang": "^1.4",
@@ -72,18 +70,6 @@
     "1": {
       "type": "vcs",
       "url": "http://code.haxibiao.cn/web/nova.git"
-    },
-    "3": {
-      "type": "path",
-      "url": "./nova-components/CategoryCount"
-    },
-    "4": {
-      "type": "path",
-      "url": "./nova-components/CategoryLikeCount"
-    },
-    "5": {
-      "type": "path",
-      "url": "./nova-components/PriceTracker"
     },
     "packagist": {
       "type": "composer",
