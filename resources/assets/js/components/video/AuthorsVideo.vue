@@ -151,7 +151,7 @@ export default {
                 }
               }
               .hover-play{
-                background: url(https://www.ainicheng.com/images/play-icon.png) no-repeat;
+                background: url(/images/play-icon.png) no-repeat;
                 font-size: 14px;
                 color: #777;
                 font-weight: 400;

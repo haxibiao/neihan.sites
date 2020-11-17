@@ -22,7 +22,8 @@ class IndexController extends Controller
         $data = (object) [];
 
         //首页轮播图
-        $data->carousel = get_top_articles();
+        $data->carousel = Article::latest('id')->take(5)->get();
+        
 
         //首页专题
         $data->categories = $this->indexTopCategories();

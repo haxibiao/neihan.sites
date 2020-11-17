@@ -2,14 +2,20 @@
 
 namespace App\Providers;
 
-use Auth;
-use Blade;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\ServiceProvider;
 use PiwikTracker;
+use Carbon\Carbon;
+use FFMpeg\FFMpeg;
+use FFMpeg\FFProbe;
+use Psr\Log\LoggerInterface;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,9 +27,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
 
-        // 升级laravel 5.8 注释
-        // $this->app->alias('bugsnag.multi', \Illuminate\Contracts\Logging\Log::class);
-        // $this->app->alias('bugsnag.multi', \Psr\Log\LoggerInterface::class);
+        Paginator::useBootstrap();
+       
         Carbon::setLocale('zh');
         Schema::defaultStringLength(191);
 

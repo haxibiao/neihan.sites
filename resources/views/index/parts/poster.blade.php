@@ -6,9 +6,9 @@
     <script>
       var poster_items = [];
       @foreach($data->carousel as $article)
-        @if(!empty($article->image_top)) 
-          poster_items.push(['/article/{{ $article->id }}','{{ $article->cover }}','{{ $article->subject }}']);
-        @endif
+        
+          poster_items.push(['/article/{{ $article->id }}','/images/carousel001.jpg','{{ $article->subject }}']);
+        
       @endforeach
 
       var options = {
