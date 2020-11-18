@@ -7,7 +7,7 @@
           <div class="embed-responsive video-player">
             <div class="fluid_video_wrapper">
               <video-player
-                url="http://cdn-youku-com.diudie.com/series/5/index.m3u8"
+                url="https://cdn-youku-com.diudie.com/series/5/index.m3u8"
               />
             </div>
           </div>
