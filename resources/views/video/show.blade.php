@@ -2,7 +2,7 @@
 $article = $video->article;
 @endphp
 
-@extends('layouts.black')
+@extends('layouts.video')
 
 @section('title')
 {{ $article->subject ?: $article->summary }} -{{ empty($article->category)?config("app.name_cn"): $article->category->name}}

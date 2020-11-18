@@ -37,6 +37,12 @@ Route::get('/trending', 'IndexController@trending');
 Route::post('/post/new', 'ArticleController@storePost');
 
 //电影
+Route::get('/movie/riju', 'MovieController@riju');
+Route::get('/movie/meiju', 'MovieController@meiju');
+Route::get('/movie/hanju', 'MovieController@hanju');
+Route::get('/movie/gangju', 'MovieController@gangju');
+
+Route::get('/movie/search', 'MovieController@search');
 Route::resource('/movie', 'MovieController');
 
 //问答

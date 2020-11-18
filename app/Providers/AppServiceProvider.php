@@ -2,20 +2,18 @@
 
 namespace App\Providers;
 
-use PiwikTracker;
+use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Carbon\Carbon;
 use FFMpeg\FFMpeg;
 use FFMpeg\FFProbe;
-use Psr\Log\LoggerInterface;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
-use Illuminate\Pagination\Paginator;
+use PiwikTracker;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,8 +25,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
 
+        // Paginator::useTailwind();
         Paginator::useBootstrap();
-       
+        // Paginator::useBootstrapThree();
+
         Carbon::setLocale('zh');
         Schema::defaultStringLength(191);
 
