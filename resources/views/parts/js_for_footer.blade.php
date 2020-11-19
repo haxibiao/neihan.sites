@@ -53,7 +53,7 @@
 </script>
 
 @php
-{{-- $ga_id = "G-W72CHJT74V";//内涵电影 --}}
+
 $ga_id = "G-CRK4B4W5R4";//疯狂美剧
 @endphp
 
