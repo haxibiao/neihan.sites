@@ -53,8 +53,7 @@
 </script>
 
 @php
-
-$ga_id = "G-CRK4B4W5R4";//疯狂美剧
+$ga_id = neihan_ga_measure_id();
 @endphp
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -66,7 +65,7 @@ $ga_id = "G-CRK4B4W5R4";//疯狂美剧
         dataLayer.push(arguments);
     }
     gtag('js', new Date());
-
+    console.log('{{ $ga_id }}', '{{ $ga_id }}');
     gtag('config', '{{ $ga_id }}');
 
 </script>
