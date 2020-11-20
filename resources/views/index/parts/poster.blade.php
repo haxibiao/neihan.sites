@@ -5,10 +5,8 @@
   @push('scripts')
     <script>
       var poster_items = [];
-      @foreach($data->carousel as $article)
-        
-          poster_items.push(['/article/{{ $article->id }}','/images/carousel001.jpg','{{ $article->subject }}']);
-        
+      @foreach($data->carousel as $index => $article)
+          poster_items.push(['/article/{{ $article->id }}','/images/movie/carousel/movie{{ $index+1 }}.jpg','{{ $article->subject }}']);
       @endforeach
 
       var options = {
