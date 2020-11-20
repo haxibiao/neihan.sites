@@ -1,18 +1,18 @@
 @extends('layouts.app')
 
 @section('title')
-    权限不足 - {{ config("app.name_cn") }}
+    权限不足 - {{ config('app.name_cn') }}
 @endsection
 
 @section('content')
-<div class="container">
-    <div class="jumbotron">
+
+    <div class="jumbotron" style="min-height: 400px">
         <div class="container">
             <h1>
                 权限不足
             </h1>
             <p class="lead">
-                @if(session('message'))
+                @if (session('message'))
                     {{ session('message') }}
                 @endif
             </p>
@@ -29,5 +29,5 @@
             </p>
         </div>
     </div>
-</div>
+
 @endsection

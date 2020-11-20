@@ -1,9 +1,9 @@
 <header class="app-header__top clearfix" id="header-top">
     <div class="container-xl">
         <div class="app-header row">
-            <div class="app-header__logo"><a class="logo" href="/movie">内涵电影</a></div>
+            <div class="app-header__logo"><a class="logo" href="/movie">{{ seo_site_name() }}</a></div>
             <ul class="app-header__menu type-list">
-                <li class="active hide-xs"><a href="/movie">首页</a></li>
+                <li class="active hide-xs"><a href="/">首页</a></li>
                 <li class="hide-xs"><a href="/movie/riju" data-type-en="riju">日剧</a></li>
                 <li class="hide-xs"><a href="/movie/meiju" data-type-en="meiju">美剧</a></li>
                 <li class="hide-xs"><a href="/movie/hanju" data-type-en="hanju">韩剧</a></li>
@@ -124,9 +124,9 @@
                     <a href="/movie?cid=1">科幻</a>
                     <a href="/movie?cid=1">战争</a>
                     <a href="/movie?cid=1">爱情</a>
-					<a href="/movie?cid=1">动作</a>
-					<a href="/movie?cid=1">恐怖</a>
-					<a href="/movie?cid=1">剧情</a>
+                    <a href="/movie?cid=1">动作</a>
+                    <a href="/movie?cid=1">恐怖</a>
+                    <a href="/movie?cid=1">剧情</a>
                 </div>
             </div>
         </div>

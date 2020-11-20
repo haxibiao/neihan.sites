@@ -16,6 +16,7 @@ mix.sass('resources/assets/sass_movie/movie.scss', 'public/css/movie');
 mix.sass('resources/assets/sass_movie/movie/home.scss', 'public/css/movie');
 mix.sass('resources/assets/sass_movie/movie/play.scss', 'public/css/movie');
 mix.sass('resources/assets/sass_movie/movie/search.scss', 'public/css/movie');
+mix.sass('resources/assets/sass_movie/movie/category.scss', 'public/css/movie');
 
 //电影 js
 mix.js('resources/assets/js_movie/movie.js', 'public/js/movie');

@@ -1,10 +1,10 @@
 @extends('layouts.app')
 @section('title')
-    服务器错误 - {{ config("app.name_cn") }}
+    服务器错误 - {{ config('app.name_cn') }}
 @endsection
 @section('content')
-<div class="container">
-    <div class="jumbotron">
+
+    <div class="jumbotron" style="min-height: 400px">
         <div class="container error">
             <img src="/images/404.png" alt="">
             <div class="info">
@@ -14,5 +14,5 @@
             </div>
         </div>
     </div>
-</div>
+
 @endsection

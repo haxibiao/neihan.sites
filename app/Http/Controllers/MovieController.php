@@ -44,28 +44,28 @@ class MovieController extends Controller
     {
         $qb     = Movie::orderBy('id');
         $movies = (clone $qb)->where('category_id', 1)->paginate(24);
-        return view('movie.region')->with('movies', $movies)->withCate("日剧");
+        return view('movie.region')->with('movies', $movies)->withCate("日剧")->with('cate_id', 1);
     }
 
     public function meiju()
     {
         $qb     = Movie::orderBy('id');
         $movies = (clone $qb)->where('category_id', 2)->paginate(24);
-        return view('movie.region')->with('movies', $movies)->withCate("美剧");
+        return view('movie.region')->with('movies', $movies)->withCate("美剧")->with('cate_id', 2);
     }
 
     public function hanju()
     {
         $qb     = Movie::orderBy('id');
         $movies = (clone $qb)->where('category_id', 3)->paginate(24);
-        return view('movie.region')->with('movies', $movies)->withCate("韩剧");
+        return view('movie.region')->with('movies', $movies)->withCate("韩剧")->with('cate_id', 3);
     }
 
     public function gangju()
     {
         $qb     = Movie::orderBy('id');
         $movies = (clone $qb)->where('category_id', 2)->paginate(24); //FIXME 港剧4 暂时无数据
-        return view('movie.region')->with('movies', $movies)->withCate("港剧");
+        return view('movie.region')->with('movies', $movies)->withCate("港剧")->with('cate_id', 4);
     }
 
     public function show(Movie $movie)
