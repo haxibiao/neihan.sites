@@ -16,11 +16,6 @@
 
 @section('content')
 
-{{-- 允许cssfix来修复特定爬虫分类下的文章样式 --}}
-@foreach($article->categories as $category)
-{!! link_source_css($category) !!}
-@endforeach
-
 <div id="detail">
   <div class="main">
     <article>
@@ -62,10 +57,10 @@
   <p>{{ $article->user->tip_words ? $article->user->tip_words : '如果觉得我的文章对您有用，请随意赞赏。您的支持将鼓励我继续创作！' }}</p>
 
   @if(!$article->isSelf())
-  @if($article->user && $article->user->enable_tips)
+  {{--  @if($article->user && $article->user->enable_tips)  --}}
   <a class="btn-base btn-theme" data-target=".modal-admire" data-toggle="modal">赞赏支持</a>
   <modal-admire article-id="{{ $article->id }}"></modal-admire>
-  @endif
+  {{--  @endif  --}}
   @endif
 
   {{-- 赞赏用户 --}}

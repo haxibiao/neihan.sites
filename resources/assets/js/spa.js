@@ -20,27 +20,27 @@ Vue.prototype.$http = window.axios;
  */
 
 //关注，消息spa页面
-Vue.component("reply-comment", require("./components/comment/ReplyComment.vue"));
-Vue.component("blank-content", require("./components/BlankContent.vue"));
-Vue.component("loading-more", require("./components/pure/LoadingMore.vue"));
-Vue.component("follow", require("./components/button/Follow.vue"));
-Vue.component("article-list", require("./components/article/ArticleList.vue"));
-Vue.component("video-list", require("./components/video/VideoList.vue"));
-Vue.component("hot-search", require("./components/search/Hot.vue"));
-Vue.component("search-box", require("./components/search/SearchBox.vue"));
-Vue.component("recently", require("./components/search/Recently.vue"));
+Vue.component("reply-comment", require("./components/comment/ReplyComment.vue").default);
+Vue.component("blank-content", require("./components/BlankContent.vue").default);
+Vue.component("loading-more", require("./components/pure/LoadingMore.vue").default);
+Vue.component("follow", require("./components/button/Follow.vue").default);
+Vue.component("article-list", require("./components/article/ArticleList.vue").default);
+Vue.component("video-list", require("./components/video/VideoList.vue").default);
+Vue.component("hot-search", require("./components/search/Hot.vue").default);
+Vue.component("search-box", require("./components/search/SearchBox.vue").default);
+Vue.component("recently", require("./components/search/Recently.vue").default);
 
-Vue.component("modal-post", require("./components/modals/ModalPost.vue"));
-Vue.component("loading", require("./components/Loading.vue"));
+Vue.component("modal-post", require("./components/modals/ModalPost.vue").default);
+Vue.component("loading", require("./components/Loading.vue").default);
 
-Vue.component("notification-aside", require("./components/notification/Aside.vue"));
-Vue.component("follow-aside", require("./components/follow/Aside.vue"));
-Vue.component("setting-aside", require("./components/setting/Aside.vue"));
-Vue.component("side-tool", require("./components/SideTool.vue"));
-Vue.component("to-comment", require("./components/ToComment.vue"));
-Vue.component("share-module", require("./components/ShareModule.vue"));
-Vue.component("close-share", require("./components/CloseShare.vue"));
-Vue.component("modal-contribute", require("./components/modals/ModalContribute.vue"));
+Vue.component("notification-aside", require("./components/notification/Aside.vue").default);
+Vue.component("follow-aside", require("./components/follow/Aside.vue").default);
+Vue.component("setting-aside", require("./components/setting/Aside.vue").default);
+Vue.component("side-tool", require("./components/SideTool.vue").default);
+Vue.component("to-comment", require("./components/ToComment.vue").default);
+Vue.component("share-module", require("./components/ShareModule.vue").default);
+Vue.component("close-share", require("./components/CloseShare.vue").default);
+Vue.component("modal-contribute", require("./components/modals/ModalContribute.vue").default);
 
 const routes = [
   {
