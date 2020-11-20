@@ -6,7 +6,7 @@
     <script>
       var poster_items = [];
       @foreach($data->carousel as $index => $article)
-          poster_items.push(['/article/{{ $article->id }}','/images/movie/carousel/movie{{ $index+1 }}.jpg','{{ $article->subject }}']);
+          poster_items.push(['/movie/{{ $index+1 }}','/images/movie/carousel/movie{{ $index+1 }}.jpg','{{ $article->subject }}']);
       @endforeach
 
       var options = {
