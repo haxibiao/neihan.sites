@@ -13,14 +13,17 @@ use Illuminate\Support\Facades\Cache;
 
 class LikeController extends Controller
 {
+    /**
+     * 用户点赞/取消点赞
+     */
     public function toggle(Request $request, $id, $type)
     {
         $like = new Like();
         $user = $request->user();
         $data = [
             'user_id'   =>  $user->id,
-            'liked_id'  =>  $id,
-            'liked_type'=>  str_plural($type)
+            'likable_id'  =>  $id,
+            'likable_type'=>  str_plural($type)
         ];
         $like->toggleLike($data);
         return $like->likeUsers($data);
@@ -35,8 +38,8 @@ class LikeController extends Controller
     {
         $like = new Like();
         $data = [
-            'liked_id'  =>  $id,
-            'liked_type'=>  str_plural($type)
+            'likable_id'  =>  $id,
+            'likable_type'=>  str_plural($type)
         ];
         return $like->likeUsers($data);
     }

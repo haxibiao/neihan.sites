@@ -15,22 +15,19 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->index();
-            $table->integer('commentable_id')->index();
-            $table->string('commentable_type')->index();
+            $table->integer('level')->index()->default(0)->comment("层级");
+            $table->integer('at_uid')->index()->nullable()->comment("@指定 user_id");
+            $table->integer('user_id')->index()->comment("User表主键");
+            $table->integer('comment_id')->index()->nullable()->comment('评论父ID');
+            $table->integer('count_likes')->index()->default(0)->comment("点赞数");
+            $table->integer('count_reports')->index()->default(0)->comment("举报数");
+            $table->integer('commentable_id')->index()->comment("多态id，例如：1，则代表 article 表 id 为 1 的文章");
 
-            $table->text('body');
-            $table->integer('comment_id')->index()->nullable()->comment('楼中楼id');
-            $table->integer('lou')->index()->default(0);
-
-
-            $table->integer('count_likes')->index()->default(0);
-            $table->integer('count_reports')->index()->default(0);
+            $table->string('commentable_type')->index()->comment("类型，例如：article");
+            $table->text('body')->comment("评论正文");
 
             //for app @user
-            $table->integer('at_uid')->index()->nullable();
-            $table->integer('status')->index()->nullable();
-
+            $table->boolean('status')->index()->nullable()->comment("我也不知道这个字段什么意思");
             //评论被采纳
             $table->boolean('is_accept')->default(false)->comment('是否被采纳');
 

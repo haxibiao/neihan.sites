@@ -13,8 +13,8 @@ trait LikeRepo
         $user = getUser();
         $like = Like::firstOrNew([
             'user_id'    => $user->id,
-            'likable_id'   => $input['liked_id'],
-            'likable_type' => $input['liked_type'],
+            'likable_id'   => $input['likable_id'],
+            'likable_type' => $input['likable_type'],
         ]);
         //取消喜欢
         if (($input['undo'] ?? false) || $like->id) {
@@ -25,7 +25,7 @@ trait LikeRepo
             $liked_flag = true;
         }
         $like_obj = $like->liked;
-        if ($input['liked_type'] == 'comments') {
+        if ($input['likable_type'] == 'comments') {
             $like_obj->liked = $liked_flag;
         }
         return $like_obj;
@@ -40,8 +40,8 @@ trait LikeRepo
             $data['is_liked'] = $like->id;
         }
         $data['likes'] = [];
-        if (isset($input['liked_type'])&&$input['liked_type'] == 'articles') {
-            $article       = Article::findOrFail($input['liked_id']);
+        if (isset($input['likable_type'])&&$input['likable_type'] == 'articles') {
+            $article       = Article::findOrFail($input['likable_id']);
             $data['likes'] = $article->likes()
                 ->with(['user' => function ($query) {
                     $query->select('id', 'name', 'avatar');
