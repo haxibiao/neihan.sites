@@ -138,7 +138,7 @@
                 @include('question.parts.guess')
             </div>
 
-            @if ($question->isSelf() && $question->isPay() && !$question->closed)
+            @if ($question->isSelf() && !$question->closed)
                 <question-bottom question-id="{{ $question->id }}"></question-bottom>
             @endif
 
