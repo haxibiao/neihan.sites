@@ -90,8 +90,8 @@ class IssueController extends Controller
      */
     public function store(Request $request)
     {
-        $user            = $request->user();
-        $issue        = new Issue($request->all());
+        $user  = $request->user();
+        $issue = new Issue($request->all());
         //付费问题
         $issue->save();
         if (request()->is_pay) {

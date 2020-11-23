@@ -46,11 +46,11 @@ Route::get('/movie/search', 'MovieController@search');
 Route::resource('/movie', 'MovieController');
 
 //问答
-Route::resource('/question', 'IssueController');
-Route::resource('/answer', 'ResolutionController');
+
+// Route::resource('/question', 'IssueController');
+// Route::resource('/answer', 'ResolutionController');
 Route::get('/categories-for-question', 'IssueController@categories');
 Route::get('/question-bonused', 'IssueController@bonused');
-Route::post('/question-add', 'IssueController@add')->name('question.add');
 
 //搜索
 Route::get('/search', 'SearchController@search');

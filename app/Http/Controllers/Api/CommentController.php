@@ -33,7 +33,7 @@ class CommentController extends Controller
             }])
             ->with(['replyComments.user' => function ($query) {
                 $query->select('id', 'name', 'avatar');
-            }])->with('hasManyLikes')
+            }])->with('likes')
             ->orderBy('lou')
             ->where('comment_id', null)
             ->where('commentable_type', $type)
@@ -41,7 +41,7 @@ class CommentController extends Controller
             ->paginate(5);
         foreach ($comments as $comment) {
             $comment->time  = $comment->createdAt();
-            $comment->liked = empty($user) ? 0 : $comment->hasManyLikes()
+            $comment->liked = empty($user) ? 0 : $comment->likes()
                 ->where('user_id', $user->id)
                 ->exists();
             //TODO 存在BUG-缓存过期状态会消失。目前先不引入report表。

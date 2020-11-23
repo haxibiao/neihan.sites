@@ -4,28 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Image;
 use App\Notifications\QuestionAnswered;
-use App\Resolution;
+use App\Solution;
 use Illuminate\Http\Request;
 
 class ResolutionController extends Controller
 {
 
-
     public function store(Request $request)
     {
-        $user   = $request->user();
-        $resolution = new Resolution($request->all());
-        if(empty($resolution->answer)) {
-            if(checkEditor()){
+        $user       = $request->user();
+        $resolution = new Solution($request->all());
+        if (empty($resolution->answer)) {
+            if (checkEditor()) {
                 $resolution->answer = '<p></p>'; //允许编辑用户填写文章后，答案不写
             } else {
                 dd('回答不能是空白的!');
             }
         }
-        $js_reg='#<a.*?href="(.*?)".*?#';
-        preg_match($js_reg, $resolution->answer,$answerText);
-        if($answerText)
-        {
+        $js_reg = '#<a.*?href="(.*?)".*?#';
+        preg_match($js_reg, $resolution->answer, $answerText);
+        if ($answerText) {
             dd('提交含有非法字符，请重新回答');
         }
         //从文章地址(https://dongmeiwei.com/article/1139)提取文章id （1139）
@@ -51,8 +49,8 @@ class ResolutionController extends Controller
         $imgs = extractImagePaths($resolution->answer);
         if (!empty($imgs)) {
             $resolution->image_url = $imgs[0];
-            $image = Image::where('path', $resolution->image_url)->first();
-            if($image) {
+            $image                 = Image::where('path', $resolution->image_url)->first();
+            if ($image) {
                 $resolution->image_url = $image->path_small();
             }
         }
