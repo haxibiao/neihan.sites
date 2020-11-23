@@ -84,7 +84,6 @@ class WapController extends Controller
                 $transaction = Transaction::create([
                     'user_id' => $user->id,
                     'type'    => $type,
-                    'log'     => '充值',
                     'amount'  => $amount,
                     'status'  => '未支付',
                     'balance' => $user->balance,

@@ -59,6 +59,8 @@ Route::get('/search/video', 'SearchController@searchVideos');
 Route::get('/search/categories', 'SearchController@searchCategories');
 Route::get('/search/collections', 'SearchController@searchCollections');
 
+Route::any('/alipay/wap/notify', 'Alipay/WapController@wapNotify');
+
 //文章
 Route::get('/drafts', 'ArticleController@drafts');
 //文章 slug
