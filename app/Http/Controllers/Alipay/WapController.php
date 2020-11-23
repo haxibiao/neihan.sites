@@ -24,8 +24,8 @@ class WapController extends Controller
         $gateway->setPrivateKey(config('pay')['hxb_alipay']['private_key']);
         $gateway->setAlipayPublicKey(config('pay')['hxb_alipay']['public_key']);
 
-        $gateway->setReturnUrl('http://' . config('app.url') . '/alipay/wap/return');
-        $gateway->setNotifyUrl('http://' . config('app.url') . '/alipay/wap/notify');
+        $gateway->setReturnUrl(config('app.url') . '/alipay/wap/return');
+        $gateway->setNotifyUrl(config('app.url') . '/alipay/wap/notify');
         return $gateway;
     }
 
