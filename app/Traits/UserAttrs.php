@@ -2,19 +2,18 @@
 
 namespace App\Traits;
 
-use App\User;
-use App\Follow;
-use App\Wallet;
-use App\Profile;
-use App\Exchange;
-use App\Withdraw;
 use App\BlackList;
 use App\Contribute;
-use App\RewardCounter;
-use App\Gold as AppGold;
-use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
 use App\Exceptions\GQLException;
+use App\Exchange;
+use App\Follow;
+use App\Gold as AppGold;
+use App\Profile;
+use App\RewardCounter;
+use App\User;
+use App\Wallet;
+use App\Withdraw;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 trait UserAttrs
@@ -49,10 +48,10 @@ trait UserAttrs
             }
             //当前账号多次提现 并且钱包不一致
             $withdraws = Withdraw::with(['wallet'])->where(function ($query)
-            use ($wallet) {
-                $query->where('to_account', $this->account)
-                    ->orWhere('to_account', $wallet->pay_account);
-            })->where('wallet_id', '!=', $wallet->id)
+                 use ($wallet) {
+                    $query->where('to_account', $this->account)
+                        ->orWhere('to_account', $wallet->pay_account);
+                })->where('wallet_id', '!=', $wallet->id)
                 ->get();
             foreach ($withdraws as $withdraw) {
                 $user = $withdraw->user;
@@ -80,8 +79,8 @@ trait UserAttrs
         if (is_null($avatar)) {
             return self::getDefaultAvatar();
         }
-        
-        if(str_contains($avatar,'http')){
+
+        if (str_contains($avatar, 'http')) {
             return $avatar;
         }
         return \Storage::cloud()->url($avatar);
@@ -219,7 +218,6 @@ trait UserAttrs
         return $this->is_editor || $this->is_admin;
     }
 
-
     public function isBlack()
     {
 
@@ -291,16 +289,16 @@ trait UserAttrs
     }
 
 //    public function getAvatarUrlAttribute()
-//    {
-//        if (isset($this->avatar)) {
-//            if (Str::contains($this->avatar, 'http')) {
-//                return $this->avatar;
-//            }
-//            return \Storage::cloud()->url($this->avatar);
-//        }
-//        // 避免前端取不到数据
-//        return \Storage::cloud()->url(User::AVATAR_DEFAULT);
-//    }
+    //    {
+    //        if (isset($this->avatar)) {
+    //            if (Str::contains($this->avatar, 'http')) {
+    //                return $this->avatar;
+    //            }
+    //            return \Storage::cloud()->url($this->avatar);
+    //        }
+    //        // 避免前端取不到数据
+    //        return \Storage::cloud()->url(User::AVATAR_DEFAULT);
+    //    }
 
     public function getTokenAttribute()
     {
@@ -324,7 +322,7 @@ trait UserAttrs
 
     public function getFollowedIdAttribute()
     {
-        return $this->remember('followed_id', 0, function() {
+        return $this->remember('followed_id', 0, function () {
             if ($user = checkUser()) {
                 $follow = Follow::where([
                     'user_id'       => $user->id,
@@ -351,9 +349,9 @@ trait UserAttrs
 
     public function getIntroductionAttribute()
     {
-        return $this->remember('introduction', 0, function() {
+        return $this->remember('introduction', 0, function () {
             $introduction = optional($this->profile)->introduction;
-            if($introduction){
+            if ($introduction) {
                 return $introduction;
             }
             return '这个人很懒，一点介绍都没留下...';
@@ -397,7 +395,7 @@ trait UserAttrs
 
     public function getCountPostsAttribute()
     {
-        return $this->remember('count_posts', 0, function() {
+        return $this->remember('count_posts', 0, function () {
             return $this->posts()->count();
         });
     }
@@ -414,7 +412,7 @@ trait UserAttrs
 
     public function getCountFollowingsAttribute()
     {
-        return $this->remember('count_followings', 0, function() {
+        return $this->remember('count_followings', 0, function () {
             return $this->followingUsers()->count();
         });
     }
@@ -438,12 +436,12 @@ trait UserAttrs
     //TODO: 这些可以后面淘汰，前端直接访问 user->profile->atts 即可
     public function getCountArticlesAttribute()
     {
-        return $this->allArticles()->where("status",">",0)->count();
+        return $this->allArticles()->where("status", ">", 0)->count();
     }
 
     public function getCountFollowsAttribute()
     {
-        return $this->remember('count_follows', 0, function() {
+        return $this->remember('count_follows', 0, function () {
             return $this->profile->count_follows;
         });
     }
@@ -455,7 +453,7 @@ trait UserAttrs
 
     public function getCountFavoritesAttribute()
     {
-        return $this->remember('count_favorites', 0, function() {
+        return $this->remember('count_favorites', 0, function () {
             return $this->profile->count_favorites;
         });
     }
@@ -467,7 +465,7 @@ trait UserAttrs
 
     public function getGenderMsgAttribute()
     {
-        return $this->remember('gender', 0, function() {
+        return $this->remember('gender', 0, function () {
             switch ($this->profile->gender) {
                 case self::MALE_GENDER:
                     return '男';
@@ -497,7 +495,7 @@ trait UserAttrs
 
     public function getAgeAttribute()
     {
-        return $this->remember('age', 0, function() {
+        return $this->remember('age', 0, function () {
             $birthday = Carbon::parse($this->birthday);
             return $birthday->diffInYears(now(), false);
         });
@@ -555,25 +553,25 @@ trait UserAttrs
     public function checkRewardCount($user, $remark)
     {
 
-       $todayCount= AppGold::where([
-            'remark' => $remark,
+        $todayCount = AppGold::where([
+            'remark'  => $remark,
             'user_id' => $user->id,
-        ])->whereBetween('created_at',[today(),now()])->count();
+        ])->whereBetween('created_at', [today(), now()])->count();
 
-        switch($remark){
+        switch ($remark) {
             case "观看激励视频奖励":
             case "点击激励视频奖励":
-                    $maxCount=8;
-                    break;
+                $maxCount = 8;
+                break;
             case "双倍签到奖励":
             case "签到视频观看奖励":
-                    $maxCount=1;
-                    break;
+                $maxCount = 1;
+                break;
             default:
-            $maxCount=1;
-                
+                $maxCount = 1;
+
         }
-        throw_if($todayCount >= $maxCount,GQLException::class, '今天的次数已经用完了哦');
+        throw_if($todayCount >= $maxCount, GQLException::class, '今天的次数已经用完了哦');
 
         $lastReward = $user->golds()
             ->select('created_at')
@@ -582,9 +580,9 @@ trait UserAttrs
             ->first();
 
         // 上次看激励视频与本次间隔 < 60 秒
-        if ($lastReward&&now()->diffInSeconds(Carbon::parse($lastReward->created_at)) < 2) {
+        if ($lastReward && now()->diffInSeconds(Carbon::parse($lastReward->created_at)) < 2) {
             $user->update(['status' => User::STATUS_FREEZE]);
-            throw new   GQLException('行为异常,详情咨询QQ群:326423747');
+            throw new GQLException('行为异常,详情咨询QQ群:326423747');
 
         }
     }

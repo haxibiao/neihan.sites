@@ -55,6 +55,7 @@ class WapController extends Controller
                     $transaction = Transaction::create([
                         'user_id'      => $user->id,
                         'from_user_id' => $user->id,
+                        'wallet_id'    => $user->wallet->id,
                         'to_user_id'   => $article->user_id,
                         'type'         => $type,
                         'log'          => '向' . $article->user->link() . '的文章' . $article->link() . '打赏' . $amount . '元',
@@ -66,6 +67,7 @@ class WapController extends Controller
                     //对方账户准备个交易记录
                     $transaction = Transaction::create([
                         'user_id'      => $article->user->id,
+                        'wallet_id'    => $user->wallet->id,
                         'from_user_id' => $user->id,
                         'to_user_id'   => $article->user->id,
                         'type'         => $type,
@@ -82,11 +84,12 @@ class WapController extends Controller
             } else {
                 //充值　　－－　到账后只更新自己个人钱包
                 $transaction = Transaction::create([
-                    'user_id' => $user->id,
-                    'type'    => $type,
-                    'amount'  => $amount,
-                    'status'  => '未支付',
-                    'balance' => $user->balance,
+                    'wallet_id' => $user->wallet->id,
+                    'user_id'   => $user->id,
+                    'type'      => $type,
+                    'amount'    => $amount,
+                    'status'    => '未支付',
+                    'balance'   => $user->balance,
                 ]);
                 $tran_id1     = $transaction->id;
                 $out_trade_no = $this->encodeOutTradeNo($type, '.' . $tran_id1);
@@ -207,12 +210,13 @@ class WapController extends Controller
 
             }
             return Transaction::create([
-                'user_id' => $article->user->id,
-                'type'    => '打赏',
-                'log'     => $user_link . $article->link(),
-                'amount'  => $amount,
-                'status'  => '已到账',
-                'balance' => $article->user->balance + $amount,
+                'user_id'   => $article->user->id,
+                'wallet_id' => $article->user->wallet->id,
+                'type'      => '打赏',
+                'log'       => $user_link . $article->link(),
+                'amount'    => $amount,
+                'status'    => '已到账',
+                'balance'   => $article->user->balance + $amount,
             ]);
         }
         return false;

@@ -104,12 +104,13 @@ class IssueController extends Controller
 
             //先把提问者的钱扣到系统
             Transaction::create([
-                'user_id' => $user->id,
-                'type'    => '付费提问',
-                'log'     => $issue->link() . '的付费咨询金',
-                'amount'  => $issue->bonus,
-                'status'  => '已支付',
-                'balance' => $user->balance - $issue->bonus,
+                'user_id'   => $user->id,
+                'wallet_id' => $user->wallet->id,
+                'type'      => '付费提问',
+                'log'       => $issue->link() . '的付费咨询金',
+                'amount'    => $issue->bonus,
+                'status'    => '已支付',
+                'balance'   => $user->balance - $issue->bonus,
             ]);
 
             if ($issue->deadline > 0) {
@@ -206,12 +207,13 @@ class IssueController extends Controller
 
                     //到账
                     Transaction::create([
-                        'user_id' => $resolution->user->id,
-                        'type'    => '付费回答奖励',
-                        'log'     => $resolution->link() . '选中了您的回答',
-                        'amount'  => $bonus_each,
-                        'status'  => '已到账',
-                        'balance' => $resolution->user->balance + $bonus_each,
+                        'user_id'   => $resolution->user->id,
+                        'wallet_id' => $user->wallet->id,
+                        'type'      => '付费回答奖励',
+                        'log'       => $resolution->link() . '选中了您的回答',
+                        'amount'    => $bonus_each,
+                        'status'    => '已到账',
+                        'balance'   => $resolution->user->balance + $bonus_each,
                     ]);
 
                     //消息
@@ -221,12 +223,13 @@ class IssueController extends Controller
                 $issue->resolution_ids = implode($top10Resolutions->pluck('id')->toArray(), ',');
             } else {
                 Transaction::create([
-                    'user_id' => $issue->user->id,
-                    'type'    => '退回问题奖金',
-                    'log'     => $issue->link() . '您的问题无人回答',
-                    'amount'  => $issue->bonus,
-                    'status'  => '已到账',
-                    'balance' => $issue->user->balance + $issue->bonus,
+                    'user_id'   => $issue->user->id,
+                    'type'      => '退回问题奖金',
+                    'wallet_id' => $user->wallet->id,
+                    'log'       => $issue->link() . '您的问题无人回答',
+                    'amount'    => $issue->bonus,
+                    'status'    => '已到账',
+                    'balance'   => $issue->user->balance + $issue->bonus,
                 ]);
             }
         }

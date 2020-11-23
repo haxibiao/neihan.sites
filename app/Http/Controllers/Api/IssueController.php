@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Issue;
 use App\IssueInvite;
 use App\Notifications\QuestionBonused;
@@ -11,7 +12,6 @@ use App\Resolution;
 use App\Transaction;
 use App\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class IssueController extends Controller
@@ -57,7 +57,7 @@ class IssueController extends Controller
         if ($invite_user) {
             $invite = IssueInvite::firstOrNew([
                 'user_id'        => $user->id,
-                'issue_id'    => $qid,
+                'issue_id'       => $qid,
                 'invite_user_id' => $invite_uid,
             ]);
             //避免重复发消息
@@ -93,7 +93,7 @@ class IssueController extends Controller
             }
 
             $issue->resolution_ids = implode($resolution_ids, ',');
-            $issue->closed       = true;
+            $issue->closed         = true;
             $issue->save();
 
             //选中的回答者分奖金，发消息
@@ -104,12 +104,13 @@ class IssueController extends Controller
 
                 //到账
                 Transaction::create([
-                    'user_id' => $answer->user->id,
-                    'type'    => '付费回答奖励',
-                    'log'     => $issue->link() . '选中了您的回答',
-                    'amount'  => $bonus_each,
-                    'status'  => '已到账',
-                    'balance' => $answer->user->balance + $bonus_each,
+                    'user_id'   => $answer->user->id,
+                    'wallet_id' => $answer->user->wallet->id,
+                    'type'      => '付费回答奖励',
+                    'log'       => $issue->link() . '选中了您的回答',
+                    'amount'    => $bonus_each,
+                    'status'    => '已到账',
+                    'balance'   => $answer->user->balance + $bonus_each,
                 ]);
 
                 //消息
@@ -206,6 +207,7 @@ class IssueController extends Controller
                     //到账
                     Transaction::create([
                         'user_id' => $resolution->user->id,
+                        'user_id' => $resolution->user->wallet->id,
                         'type'    => '付费回答奖励',
                         'log'     => $issue->link() . '选中了您的回答',
                         'amount'  => $bonus_each,
@@ -222,6 +224,7 @@ class IssueController extends Controller
             } else {
                 Transaction::create([
                     'user_id' => $issue->user->id,
+                    'user_id' => $issue->user->wallet->id,
                     'type'    => '退回问题奖金',
                     'log'     => $issue->link() . '您的问题无人回答',
                     'amount'  => $issue->bonus,
