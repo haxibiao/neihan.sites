@@ -60,6 +60,7 @@ Route::get('/search/categories', 'SearchController@searchCategories');
 Route::get('/search/collections', 'SearchController@searchCollections');
 
 Route::any('/alipay/wap/notify', 'Alipay/WapController@wapNotify');
+Route::any('/alipay/wap/return', 'Alipay/WapController@wapReturn');
 
 //文章
 Route::get('/drafts', 'ArticleController@drafts');
