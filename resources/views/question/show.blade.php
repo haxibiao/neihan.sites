@@ -80,8 +80,8 @@
                         url="{{ url('/question/' . $question->id) }}" author="{{ $question->user->name }}"
                         title="{{ $question->title }}"></answer-tool>
 
-                    {!! Form::open(['method' => 'POST', 'route' => $question->isSelf() ? 'question.add' : 'answer.store',
-                    'class' => 'form-horizontal']) !!}
+                    {!! Form::open(['method' => 'POST', 'route' => $question->isSelf() ? 'question.updateBackground' :
+                    'answer.store', 'class' => 'form-horizontal']) !!}
 
                     @if (!$question->isSelf())
                         @editor
