@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title')问答 - {{ neihan_sites_domains() }} @stop
+@section('title')问答 - {{ seo_site_name() }} @stop
 @section('description') {{ get_seo_description() }} @stop
 @section('keywords') {{ get_seo_keywords() }} @stop
 
