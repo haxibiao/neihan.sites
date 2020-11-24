@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    我的钱包 - {{ config("app.name_cn") }}
+我的钱包 - {{ config("app.name_cn") }}
 @stop
 @section('content')
 <div id="wallet">
@@ -8,7 +8,7 @@
         <div class="col-sm-3 left">
             <div class="note-info info-lg note-info-wallet">
                 <a class="avatar" href="/user/{{ $user->id }}">
-                    <img alt="" src="{{ $user->avatarUrl }}"/>
+                    <img alt="" src="{{ $user->avatarUrl }}" />
                 </a>
                 <div class="title">
                     <a class="name" href="/user/{{ $user->id }}">
@@ -18,7 +18,7 @@
                 <div class="info">
                     已绑定手机
                 </div>
-              </div>
+            </div>
         </div>
         <div class="col-sm-5 middle">
             <div class="wallet-account">
@@ -30,18 +30,21 @@
                 </span>
                 <span class="money-sub">
                     @php
-                		$weishu = floor(($user->cash - floor($user->cash)) * 100);
-                	@endphp
+                    $weishu = floor(($user->cash - floor($user->cash)) * 100);
+                    @endphp
                     .{{ $weishu < 10 ? '0'.$weishu : $weishu }}元
                 </span>
                 <div class="action">
-                  <a class="btn-base btn-handle btn-md" data-target=".modal-to-up" data-toggle="modal">充值</a>
-                  <modal-to-up></modal-to-up>
-                  <a class="btn-base btn-hollow btn-md " data-target=".modal-withdraw" data-toggle="modal">
-                    提现
-                  </a>
-                  <modal-withdraw></modal-withdraw>
-                  {{-- <span class="warn">*当前余额不足</span> 低于100元时显示，并且在提现按钮上添加disable类--}}
+                    <a class="btn-base btn-handle btn-md" data-target=".modal-to-up" data-toggle="modal">充值</a>
+                    <modal-to-up></modal-to-up>
+                    <a class="btn-base btn-hollow btn-md " data-target=".modal-withdraw" data-toggle="modal">
+                        提现
+                    </a>
+                    <modal-withdraw></modal-withdraw>
+                    <!-- <modal-alert :show="true" :title="title" @hideModal="hideModal" @submit="submit">
+                        <p>这里放弹窗的内容</p>
+                    </modal-alert> -->
+                    {{-- <span class="warn">*当前余额不足</span> 低于100元时显示，并且在提现按钮上添加disable类--}}
                 </div>
             </div>
         </div>
@@ -84,7 +87,7 @@
                 {{ $transaction->type }}
             </div>
             <div class="details">
-                {!! $transaction->log !!}
+                {!! $transaction->remark !!}
             </div>
             <div class="amount plus">
                 ￥{{ $transaction->amount }}

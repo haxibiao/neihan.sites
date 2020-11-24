@@ -89,3 +89,7 @@ Route::namespace('Api')->middleware('auth:api')->group(function () {
 });
 
 Route::post('/douyin/import', 'Api\SpiderController@importDouYin');
+
+
+
+Route::post('/withdraw', 'Api\WithdrawController@withdraws');

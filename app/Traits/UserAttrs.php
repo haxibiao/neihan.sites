@@ -48,10 +48,10 @@ trait UserAttrs
             }
             //当前账号多次提现 并且钱包不一致
             $withdraws = Withdraw::with(['wallet'])->where(function ($query)
-                 use ($wallet) {
-                    $query->where('to_account', $this->account)
-                        ->orWhere('to_account', $wallet->pay_account);
-                })->where('wallet_id', '!=', $wallet->id)
+            use ($wallet) {
+                $query->where('to_account', $this->account)
+                    ->orWhere('to_account', $wallet->pay_account);
+            })->where('wallet_id', '!=', $wallet->id)
                 ->get();
             foreach ($withdraws as $withdraw) {
                 $user = $withdraw->user;
@@ -200,12 +200,12 @@ trait UserAttrs
     //TODO 临时过渡
     public function getCashAttribute()
     {
-        $tansaction = $this->transactions()
-            ->latest()->first();
-        if (!$tansaction) {
+        $transaction = $this->transactions()
+            ->latest('id')->first();
+        if (!$transaction) {
             return 0;
         }
-        return $tansaction->balance;
+        return $transaction->balance;
     }
 
     public function checkAdmin()
@@ -288,7 +288,7 @@ trait UserAttrs
         return $this->role_id >= 2;
     }
 
-//    public function getAvatarUrlAttribute()
+    //    public function getAvatarUrlAttribute()
     //    {
     //        if (isset($this->avatar)) {
     //            if (Str::contains($this->avatar, 'http')) {
@@ -569,7 +569,6 @@ trait UserAttrs
                 break;
             default:
                 $maxCount = 1;
-
         }
         throw_if($todayCount >= $maxCount, GQLException::class, '今天的次数已经用完了哦');
 
@@ -583,7 +582,6 @@ trait UserAttrs
         if ($lastReward && now()->diffInSeconds(Carbon::parse($lastReward->created_at)) < 2) {
             $user->update(['status' => User::STATUS_FREEZE]);
             throw new GQLException('行为异常,详情咨询QQ群:326423747');
-
         }
     }
 }

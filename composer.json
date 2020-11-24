@@ -41,7 +41,8 @@
     "sentry/sentry-laravel": "^2.2",
     "simplesoftwareio/simple-qrcode": "^2.0",
     "spatie/laravel-backup": "^6.11",
-    "techouse/select-auto-complete": "^1.3"
+    "techouse/select-auto-complete": "^1.3",
+    "yansongda/pay": "^2.10"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.3",

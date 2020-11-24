@@ -21,8 +21,9 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Model implements AuthenticatableContract,
-AuthorizableContract
+class User extends Model implements
+    AuthenticatableContract,
+    AuthorizableContract
 {
     use \Illuminate\Auth\Authenticatable, Authorizable;
 
@@ -130,7 +131,6 @@ AuthorizableContract
             if (empty($user->api_token)) {
                 $user->api_token = str_random(60);
             }
-
         });
     }
 
@@ -168,16 +168,6 @@ AuthorizableContract
         return $this->hasMany(\App\Contribute::class);
     }
 
-    //TODO 临时过渡
-    public function getCashAttribute()
-    {
-        $tansaction = $this->transactions()
-            ->latest()->first();
-        if (!$tansaction) {
-            return 0;
-        }
-        return $tansaction->balance;
-    }
 
     public function feedbacks()
     {

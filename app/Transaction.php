@@ -29,7 +29,7 @@ class Transaction extends Model
     public function wallet()
     {
         //dd("bbbb");
-        return $this->belongsTo(\App\Wallet::class,'wallet_id');
+        return $this->belongsTo(\App\Wallet::class, 'wallet_id');
     }
 
     public function toUser()
@@ -61,7 +61,7 @@ class Transaction extends Model
         ]);
     }
 
-    public static function makeOutcome($wallet, $amount, $remark = '提现'): Transaction
+    public static function makeOutcome($wallet, $amount, $user_id, $remark = '提现'): Transaction
     {
         $amount  = -1 * $amount;
         $balance = $wallet->balance + $amount;
@@ -72,6 +72,7 @@ class Transaction extends Model
             'amount'    => $amount,
             'balance'   => $balance,
             'remark'    => $remark,
+            'user_id'   => $user_id
         ]);
     }
 }

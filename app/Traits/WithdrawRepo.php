@@ -6,6 +6,7 @@ use App\Exchange;
 use App\Gold;
 use App\Transaction;
 use App\User;
+use App\Wallet;
 use App\Withdraw;
 use Carbon\Carbon;
 use Haxibiao\Helpers\PayUtils;
@@ -17,6 +18,22 @@ use Illuminate\Support\Facades\Storage;
 trait WithdrawRepo
 {
 
+
+    public function store(Wallet $wallet, $amount, $platform, $to_account)
+    {
+        return Withdraw::create([
+            'wallet_id'   => $wallet->id,
+            'amount'      => $amount,
+            'to_account'  => $to_account,
+            'host'        => gethostname(),
+            'to_platform' => $platform,
+        ]);
+    }
+
+
+
+    //FIXME: 如下的一般来说都被废弃了
+
     /**
      *
      * 处理不同额度 [3, 5, 10]的限量抢逻辑
@@ -24,9 +41,10 @@ trait WithdrawRepo
      * @param $withdraws
      * @param $withdrawThree
      */
-    public static function progressWithdrawLimit($withdraws,$withdrawThree){
+    public static function progressWithdrawLimit($withdraws, $withdrawThree)
+    {
 
-        if(!$withdraws){
+        if (!$withdraws) {
             return;
         }
 
@@ -37,24 +55,24 @@ trait WithdrawRepo
         ];
         $amount = $amountMapping[$withdrawThree];
 
-        $successWithdrawsCount = Withdraw::whereDate('created_at',Carbon::yesterday())
-            ->where('status',Withdraw::SUCCESS_WITHDRAW)
-            ->where('amount',$amount)
+        $successWithdrawsCount = Withdraw::whereDate('created_at', Carbon::yesterday())
+            ->where('status', Withdraw::SUCCESS_WITHDRAW)
+            ->where('amount', $amount)
             ->count();
 
         //当前额度没有用户提现成功则选中一位幸运儿
         $luckWithdrawId = null;
-        if($successWithdrawsCount == 0){
-            $plucked = $withdraws->pluck('rate','id')->all();
+        if ($successWithdrawsCount == 0) {
+            $plucked = $withdraws->pluck('rate', 'id')->all();
             $luckWithdrawId = getRand($plucked);
         }
 
-        foreach ( $withdraws as $withdraw ){
+        foreach ($withdraws as $withdraw) {
 
             $currentId = $withdraw->id;
 
             $isLuckUser = !is_null($luckWithdrawId) && $currentId === $luckWithdrawId;
-            if( $isLuckUser ){
+            if ($isLuckUser) {
                 $withdraw->processDongdezhuan();
                 continue;
             } else {
