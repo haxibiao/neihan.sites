@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\Category;
+use App\Movie;
+use App\Stick;
 use App\User;
 use Auth;
 
@@ -21,18 +23,29 @@ class IndexController extends Controller
 
         $data = (object) [];
 
-        //首页轮播图(暂时糊弄5个电影，引导去电影频道)
-        $data->carousel = Article::latest('id')->take(5)->get();
+        $sticks = Stick::where('name', '首页轮播图')->take(5)->get();
+        if (count($sticks) < 5) {
+            //首页轮播图(暂时糊弄5个电影，引导去电影频道)
+            $data->carousel = Movie::latest('id')->take(5)->get();
+        } else {
+            $data->carousel = Stick::items($sticks);
+        }
 
         //首页专题
         $data->categories = $this->indexTopCategories();
 
         //首页推荐视频
-        $data->videoPosts = Article::with('video')
-            ->where('type', 'video')
-            ->orderByDesc('id')
-            ->where('status', '>', 0)
-            ->take(4)->get();
+        $sticks = Stick::where('name', '首页短视频')->take(4)->get();
+        if (count($sticks) < 4) {
+            //首页轮播图(暂时糊弄5个电影，引导去电影频道)
+            $data->videoPosts = Article::with('video')
+                ->where('type', 'video')
+                ->orderByDesc('id')
+                ->where('status', '>', 0)
+                ->take(4)->get();
+        } else {
+            $data->videoPosts = Stick::items($sticks);
+        }
 
         //首页文章
         $data->articles = indexArticles();
