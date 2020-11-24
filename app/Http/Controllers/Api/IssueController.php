@@ -249,7 +249,9 @@ class IssueController extends Controller
         } else {
             $issue->message = "您的问题已删除";
         }
-        $issue->deleted = 1;
+        $issue->deleted_at = now();
+        $issue->save();
+
         return $issue;
     }
 

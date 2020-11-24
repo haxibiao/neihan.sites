@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Favorite;
 use App\Follow;
+use App\Issue;
+use App\Solution;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -242,13 +245,13 @@ class UserController extends Controller
     {
         $user             = $request->user();
         $data['articles'] = Favorite::whereHasMorph('faved',
-        ['App\Article'])
+            ['App\Article'])
             ->where('user_id', $user->id)
             ->where('faved_type', 'articles')
             ->orderBy('id', 'desc')
             ->paginate(10);
         $data['questions'] = Favorite::whereHasMorph('faved',
-        ['App\Question'])
+            ['App\Question'])
             ->where('user_id', $user->id)
             ->where('faved_type', 'questions')
             ->orderBy('id', 'desc')
@@ -261,18 +264,11 @@ class UserController extends Controller
     public function questions(Request $request)
     {
         $user              = Auth::user();
-        $questions[]       = null;
-        $data['questions'] = Topic::where('user_id', $user->id)->where('status', '>=', 0)->orderBy('id', 'desc')->paginate(10);
+        $data['questions'] = Issue::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(10);
 
-        $ans = $user->answers;
-        foreach ($ans as $answer) {
-            $question = $answer->topic;
-            if ($question->status >= 0) {
-                $questions[] = $question;
-            }
-        }
-        $questions                = array_unique($questions);
-        $data['answer_questions'] = $questions;
+        $issue_ids                = Solution::where('user_id', $user->id)->select('issue_id')->get()->pluck('issue_id');
+        $ans                      = Issue::whereIn('id', $issue_ids)->get();
+        $data['answer_questions'] = $ans;
         return view('user.questions')->withUser($user)->withData($data);
     }
 
