@@ -194,7 +194,7 @@
                     <div class="img-file">
                       <input type="file" @change="upload" multiple />
                     </div>
-                    <span class="img-limit">支持图片拖拽上传</span>
+                    <!-- <span class="img-limit">支持图片拖拽上传</span> -->
                   </div>
                   <div class="img-loading" style="display: none;">
                     <div class="img-progress">

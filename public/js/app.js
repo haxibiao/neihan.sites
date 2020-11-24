@@ -78778,10 +78778,6 @@ var render = function() {
                           attrs: { type: "file", multiple: "" },
                           on: { change: _vm.upload }
                         })
-                      ]),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "img-limit" }, [
-                        _vm._v("支持图片拖拽上传")
                       ])
                     ]),
                     _vm._v(" "),
