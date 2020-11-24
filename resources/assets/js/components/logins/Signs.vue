@@ -54,7 +54,7 @@
           <i class="iconfont icon-yonghu01"></i>
         </div>
         <div class="input-prepend restyle no-radius">
-          <input placeholder="邮箱" type="email" name="email" required="required" />
+          <input placeholder="邮箱" type="text" name="email" required="required" />
           <i class="iconfont icon-ordinarymobile"></i>
         </div>
         <div class="input-prepend">

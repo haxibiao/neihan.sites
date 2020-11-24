@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\User;
-use App\Image;
-use App\Video;
 use App\Article;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Image;
+use App\User;
+use App\Video;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserController extends Controller
 {
@@ -34,10 +34,10 @@ class UserController extends Controller
 
     public function saveAvatar(Request $request)
     {
-        $user = $request->user();
+        $user    = $request->user();
         $hasFile = $request->hasFile('avatar');
         if ($hasFile) {
-            $file = $request->file('avatar');
+            $file        = $request->file('avatar');
             $extension   = $file->getClientOriginalExtension();
             $imageStream = file_get_contents($file->getRealPath());
         } else {
@@ -66,7 +66,6 @@ class UserController extends Controller
         }
         return $user->avatar;
     }
-
 
     public function saveBackground(Request $request)
     {
@@ -154,14 +153,14 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
-        $data = $request->only([
-            'name',
-            'email',
-            'password',
-        ]);
-        if (!str_contains($data['email'], '@')) {
-            return 'email format incorrect';
-        }
+        $data = [
+            'name'     => $request->get('name'),
+            'email'    => $request->get('email'),
+            'password' => $request->get('password'),
+        ];
+        // if (!str_contains($data['email'], '@')) {
+        //     return 'email format incorrect';
+        // }
         if (strlen($data['password']) < 6) {
             return 'password too short';
         }
@@ -172,6 +171,7 @@ class UserController extends Controller
             throw new \Exception('Email already exists');
         }
         $user->name     = $data['name'];
+        $user->account  = $data['email'];
         $user->password = bcrypt($data['password']);
         $user->avatar   = '/images/avatar-' . rand(1, 15) . '.jpg';
         $user->save();
