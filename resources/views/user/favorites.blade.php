@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    收藏的文章 - {{ config("app.name_cn") }}
+    收藏的文章 - {{ seo_site_name() }}
 @stop
 @section('content')
         <div id="bookmarks">

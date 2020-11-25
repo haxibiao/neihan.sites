@@ -1,17 +1,17 @@
 @extends('layouts.app')
 @section('title')
-	关注 - {{ config("app.name_cn") }}
+    关注 - {{ seo_site_name() }}
 @stop
 @section('content')
-	<div id="follow">
-		<section class="left-aside clearfix">
-			<follow-aside></follow-aside>
-			<div class="main">
-				<router-view></router-view>
-			</div>
-		</section>
-	</div>
+    <div id="follow">
+        <section class="left-aside clearfix">
+            <follow-aside></follow-aside>
+            <div class="main">
+                <router-view></router-view>
+            </div>
+        </section>
+    </div>
 
-	<!-- Modal -->
-	<modal-contribute></modal-contribute>
+    <!-- Modal -->
+    <modal-contribute></modal-contribute>
 @endsection

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    搜索 - {{ config("app.name_cn") }}
+    搜索 - {{ seo_site_name() }}
 @endsection
 
 @section('content')

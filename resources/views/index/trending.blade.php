@@ -8,7 +8,7 @@
 	@else
 	   经典热门
 	@endif
-	 - {{ config("app.name_cn") }}
+	 - {{ seo_site_name() }}
 @stop
 @section('content')
 	<div id="trending">

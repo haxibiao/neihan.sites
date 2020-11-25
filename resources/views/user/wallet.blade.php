@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-我的钱包 - {{ config("app.name_cn") }}
+我的钱包 - {{ seo_site_name() }}
 @stop
 @section('content')
 <div id="wallet">

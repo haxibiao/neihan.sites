@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    我的设置 - {{ config("app.name_cn") }}
+    我的设置 - {{ seo_site_name() }}
 @stop
 @section('content')
 	<div id="setting">

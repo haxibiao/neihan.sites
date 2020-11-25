@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title'){{ $user->name }}-{{ config("app.name_cn") }}@endsection
+@section('title'){{ $user->name }}-{{ seo_site_name() }}@endsection
 
 @section('content')
 	<div id="user">
