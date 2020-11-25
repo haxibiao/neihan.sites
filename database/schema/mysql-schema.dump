@@ -1,0 +1,2715 @@
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+DROP TABLE IF EXISTS `action_events`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `action_events` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `batch_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` int unsigned NOT NULL,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `actionable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `actionable_id` int unsigned NOT NULL,
+  `target_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `target_id` int unsigned NOT NULL,
+  `model_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `model_id` int unsigned DEFAULT NULL,
+  `fields` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'running',
+  `exception` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `original` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `changes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`id`),
+  KEY `action_events_actionable_type_actionable_id_index` (`actionable_type`,`actionable_id`),
+  KEY `action_events_batch_id_model_type_model_id_index` (`batch_id`,`model_type`,`model_id`),
+  KEY `action_events_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `actions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `actions` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `actionable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `actionable_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `actions_actionable_type_index` (`actionable_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `ad_configs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ad_configs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `answer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `answer` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '用户ID',
+  `question_id` int unsigned NOT NULL COMMENT '题库ID',
+  `answered_count` int NOT NULL DEFAULT '0' COMMENT '回答次数',
+  `correct_count` int NOT NULL DEFAULT '0' COMMENT '统计：正确回答',
+  `wrong_count` int NOT NULL DEFAULT '0' COMMENT '统计：错误回答',
+  `gold_awarded` int unsigned NOT NULL DEFAULT '0' COMMENT '总获智慧点',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `answer_user_id_index` (`user_id`),
+  KEY `answer_question_id_index` (`question_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `answers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `answers` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `question_id` int NOT NULL,
+  `article_id` int DEFAULT NULL,
+  `answer` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `image_url` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `count_likes` int DEFAULT NULL,
+  `count_unlikes` int DEFAULT NULL,
+  `count_comments` int DEFAULT NULL,
+  `count_reports` int DEFAULT NULL,
+  `status` int NOT NULL DEFAULT '0',
+  `bonus` decimal(8,2) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `answers_user_id_index` (`user_id`),
+  KEY `answers_question_id_index` (`question_id`),
+  KEY `answers_article_id_index` (`article_id`),
+  KEY `answers_image_url_index` (`image_url`),
+  KEY `answers_count_likes_index` (`count_likes`),
+  KEY `answers_count_unlikes_index` (`count_unlikes`),
+  KEY `answers_status_index` (`status`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `app_configs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `app_configs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `group` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '功能组：ios huawei android',
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '功能名称, 例子：ad,wallet',
+  `state` int unsigned NOT NULL DEFAULT '1' COMMENT '状态，1 开启 0 关闭',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `data` json DEFAULT NULL COMMENT 'app配置信息',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `appointment_lives`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `appointment_lives` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `live_id` int unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `appointment_lives_live_id_user_id_index` (`live_id`,`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `article_category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `article_category` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `category_id` int NOT NULL,
+  `article_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `submit` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `article_category_submit_index` (`submit`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `article_image`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `article_image` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `article_id` int NOT NULL,
+  `image_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `article_music`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `article_music` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `article_id` int NOT NULL,
+  `music_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `article_tag`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `article_tag` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `article_id` int NOT NULL,
+  `tag_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `articles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `articles` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keywords` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `body` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `author` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_id` int NOT NULL,
+  `category_id` int DEFAULT NULL,
+  `cover_path` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` int NOT NULL DEFAULT '0',
+  `is_top` tinyint(1) NOT NULL DEFAULT '0',
+  `source_url` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `hits` int NOT NULL DEFAULT '0',
+  `count_replies` int NOT NULL DEFAULT '0',
+  `count_favorites` int NOT NULL DEFAULT '0',
+  `count_shares` int NOT NULL DEFAULT '0',
+  `image_top` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `hits_mobile` int NOT NULL DEFAULT '0',
+  `hits_phone` int NOT NULL DEFAULT '0',
+  `hits_wechat` int NOT NULL DEFAULT '0',
+  `hits_robot` int NOT NULL DEFAULT '0',
+  `author_id` int DEFAULT NULL,
+  `edited_at` timestamp NULL DEFAULT NULL,
+  `json` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `count_likes` int NOT NULL DEFAULT '0',
+  `commented` timestamp NULL DEFAULT NULL,
+  `count_words` int NOT NULL DEFAULT '0',
+  `count_tips` int NOT NULL DEFAULT '0',
+  `delay_time` timestamp NULL DEFAULT NULL,
+  `collection_id` int DEFAULT NULL,
+  `count_comments` int NOT NULL DEFAULT '0',
+  `count_reports` int NOT NULL DEFAULT '0',
+  `video_id` int unsigned DEFAULT NULL COMMENT '视频id',
+  `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'article' COMMENT '文章的类型:article(文章)，video(视频), post(动态).默认为articles',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `slug` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `issue_id` int unsigned DEFAULT NULL COMMENT '问题ID',
+  `submit` tinyint NOT NULL DEFAULT '1' COMMENT '审核状态: -1 已拒绝, 0 审核中, 1 已收录',
+  `remark` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
+  `review_id` bigint unsigned DEFAULT NULL,
+  `is_hot` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `articles_slug_unique` (`slug`),
+  KEY `articles_image_url_index` (`cover_path`),
+  KEY `articles_status_index` (`status`),
+  KEY `articles_is_top_index` (`is_top`),
+  KEY `articles_source_url_index` (`source_url`),
+  KEY `articles_category_id_foreign` (`category_id`),
+  KEY `articles_likes_index` (`count_likes`),
+  KEY `articles_collection_id_index` (`collection_id`),
+  KEY `articles_category_id_index` (`category_id`),
+  KEY `articles_video_id_index` (`video_id`),
+  KEY `articles_type_index` (`type`),
+  KEY `articles_title_index` (`title`),
+  KEY `articles_submit_index` (`submit`),
+  KEY `articles_review_id_index` (`review_id`),
+  KEY `articles_is_hot_index` (`is_hot`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `asos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `asos` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `group` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '功能组',
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '名称',
+  `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'ASO相关具体值',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `assignments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `assignments` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '用户ID',
+  `task_id` int unsigned DEFAULT NULL COMMENT '任务ID',
+  `progress` double(10,2) NOT NULL DEFAULT '0.00' COMMENT '任务进度',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '内容',
+  `status` int NOT NULL DEFAULT '1' COMMENT '状态 1:已指派 2:已达成 3:已奖励',
+  `completed_at` timestamp NULL DEFAULT NULL COMMENT '完成时间',
+  `resolve` json DEFAULT NULL,
+  `current_count` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`,`task_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `audio`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `audio` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '用户ID',
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '音频名称',
+  `duration` int unsigned NOT NULL DEFAULT '0' COMMENT '时长',
+  `json` json DEFAULT NULL COMMENT '音频信息',
+  `hash` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '文件hash',
+  `path` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '储存地址',
+  `disk` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `audio_user_id_index` (`user_id`),
+  KEY `audio_hash_index` (`hash`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `audit`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `audit` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `question_id` int unsigned NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `audit_user_id_question_id_unique` (`user_id`,`question_id`),
+  KEY `audit_created_at_index` (`created_at`),
+  KEY `audit_question_id_index` (`question_id`),
+  KEY `audit_user_id_index` (`user_id`),
+  KEY `audit_status_index` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `bad_words`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bad_words` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `word` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `bad_words_word_index` (`word`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `badwords`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `badwords` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `word` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'system',
+  `user_id` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `badwords_word_index` (`word`),
+  KEY `badwords_type_index` (`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `black_lists`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `black_lists` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `comment` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '意见',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `black_lists_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `cache`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cache` (
+  `key` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiration` int NOT NULL,
+  UNIQUE KEY `cache_key_unique` (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `categories` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name_en` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `logo` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `count` int NOT NULL DEFAULT '0',
+  `user_id` int NOT NULL DEFAULT '0',
+  `parent_id` int DEFAULT '0',
+  `has_child` tinyint(1) NOT NULL DEFAULT '0',
+  `level` int DEFAULT '0',
+  `status` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `order` int NOT NULL DEFAULT '0',
+  `count_follows` int NOT NULL DEFAULT '0',
+  `new_requests` int NOT NULL DEFAULT '0',
+  `count_questions` int NOT NULL DEFAULT '0',
+  `request_status` int NOT NULL DEFAULT '0',
+  `is_official` tinyint(1) NOT NULL DEFAULT '0',
+  `is_for_app` tinyint(1) NOT NULL DEFAULT '0',
+  `logo_app` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `new_request_title` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `count_videos` int NOT NULL DEFAULT '0',
+  `questions_count` int unsigned NOT NULL DEFAULT '0' COMMENT '问题统计',
+  `answers_count` int unsigned NOT NULL DEFAULT '0' COMMENT '回答统计',
+  `ranks` json DEFAULT NULL COMMENT '分类下题目的ranks',
+  `allow_submit` tinyint NOT NULL DEFAULT '1' COMMENT '系统是否允许用户出题到这个分类',
+  `correct_answer_users_count` int unsigned NOT NULL DEFAULT '0' COMMENT '答对用户',
+  `min_answer_correct` int unsigned NOT NULL DEFAULT '20' COMMENT '最小答对数',
+  `answers_count_by_month` json DEFAULT NULL COMMENT '每个月的答题次数',
+  `tips` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '分类tips',
+  `rank` int DEFAULT NULL,
+  `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `categories_user_id_index` (`user_id`),
+  KEY `categories_parent_id_index` (`parent_id`),
+  KEY `categories_has_child_index` (`has_child`),
+  KEY `categories_level_index` (`level`),
+  KEY `categories_status_index` (`status`),
+  KEY `categories_type_index` (`type`),
+  KEY `categories_count_follows_index` (`count_follows`),
+  KEY `categories_min_answer_correct_index` (`min_answer_correct`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `categorizeds`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `categorizeds` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `category_id` int unsigned NOT NULL,
+  `categorized_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `categorized_id` bigint unsigned NOT NULL,
+  `submit` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '投稿状态：待审核，已收录，已拒绝',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `categorizeds_categorized_type_categorized_id_index` (`categorized_type`,`categorized_id`),
+  KEY `categorizeds_submit_index` (`submit`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `category_issue`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `category_issue` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `category_id` int unsigned NOT NULL,
+  `issue_id` int unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `category_question`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `category_question` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `category_id` int NOT NULL,
+  `question_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `category_question_category_id_index` (`category_id`),
+  KEY `category_question_question_id_index` (`question_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `category_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `category_user` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `category_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `count_approved` int NOT NULL DEFAULT '0',
+  `is_admin` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `in_rank` tinyint DEFAULT NULL COMMENT '用户在该分类正在作答的权重指针',
+  `rank_ranges` json DEFAULT NULL COMMENT '用户在该分类的每个rank的min_review_id,max_review_id',
+  `min_review_id` int DEFAULT NULL COMMENT '用户在该题库已答题最小Review ID',
+  `max_review_id` int DEFAULT NULL COMMENT '用户在该题库已答题最大Review ID',
+  `correct_count` int NOT NULL DEFAULT '0' COMMENT '用户在该题库答对题数',
+  `answer_count` int NOT NULL DEFAULT '0' COMMENT '用户在该题库答题数',
+  `reviews_today` int NOT NULL DEFAULT '0' COMMENT '用户在该题库今日审题数',
+  `answers_count_today` bigint unsigned NOT NULL DEFAULT '0' COMMENT '每日答题数',
+  `last_answer_at` timestamp NULL DEFAULT NULL COMMENT '最后一次答题时间',
+  PRIMARY KEY (`id`),
+  KEY `category_user_category_id_index` (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `category_video`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `category_video` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `category_id` int NOT NULL,
+  `video_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `chat_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `chat_user` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `chat_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `unreads` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `chat_user_user_id_index` (`user_id`),
+  KEY `chat_user_chat_id_index` (`chat_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `chats`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `chats` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `last_message_id` int DEFAULT NULL,
+  `uids` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subject` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `introduction` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `check_ins`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `check_ins` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '用户ID',
+  `reward_rate` tinyint NOT NULL DEFAULT '1' COMMENT '奖励倍数',
+  `gold_reward` int unsigned NOT NULL DEFAULT '0' COMMENT '健康分奖励',
+  `contribute_reward` int unsigned NOT NULL DEFAULT '0' COMMENT '精力点奖励',
+  `keep_checkin_days` int unsigned NOT NULL DEFAULT '0' COMMENT '连续签到日',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `collectables`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `collectables` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `collection_id` int unsigned NOT NULL,
+  `user_id` int unsigned NOT NULL,
+  `collectable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `collectable_id` bigint unsigned NOT NULL,
+  `collection_name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sort_rank` int unsigned DEFAULT NULL COMMENT '排序(置顶方法)',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `collectable_unique` (`collection_id`,`collectable_id`,`collectable_type`),
+  KEY `collectables_collectable_type_collectable_id_index` (`collectable_type`,`collectable_id`),
+  KEY `collectables_user_id_index` (`user_id`),
+  KEY `collectables_collection_name_index` (`collection_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `collections`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `collections` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `status` int NOT NULL DEFAULT '1',
+  `type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'article',
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `logo` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `json` json DEFAULT NULL COMMENT '非结构化的数据，冗余一些额外信息',
+  `count` int NOT NULL DEFAULT '0',
+  `count_words` int NOT NULL DEFAULT '0',
+  `count_follows` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `count_posts` int unsigned NOT NULL DEFAULT '0' COMMENT '动态的个数',
+  `count_views` int unsigned NOT NULL DEFAULT '0' COMMENT '浏览量',
+  `sort_rank` int unsigned DEFAULT NULL COMMENT '排序(置顶方法)',
+  PRIMARY KEY (`id`),
+  KEY `collections_user_id_index` (`user_id`),
+  KEY `collections_status_index` (`status`),
+  KEY `collections_type_index` (`type`),
+  KEY `collections_count_follows_index` (`count_follows`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `comments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `comments` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `commentable_id` int NOT NULL,
+  `commentable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `body` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `comment_id` int DEFAULT NULL,
+  `lou` int NOT NULL DEFAULT '0',
+  `count_likes` int NOT NULL DEFAULT '0',
+  `count_reports` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `at_uid` int DEFAULT NULL,
+  `status` int DEFAULT NULL,
+  `is_accept` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `comments_user_id_index` (`user_id`),
+  KEY `comments_object_id_index` (`commentable_id`),
+  KEY `comments_type_index` (`commentable_type`),
+  KEY `comments_comment_id_index` (`comment_id`),
+  KEY `comments_lou_index` (`lou`),
+  KEY `comments_likes_index` (`count_likes`),
+  KEY `comments_reports_index` (`count_reports`),
+  KEY `comments_at_uid_index` (`at_uid`),
+  KEY `comments_status_index` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `configs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `configs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `configs_name_index` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `contributes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contributes` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL COMMENT '用户id',
+  `amount` int NOT NULL COMMENT '贡献数量',
+  `contributed_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `contributed_id` bigint unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `remark` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`),
+  KEY `contributes_contributed_type_contributed_id_index` (`contributed_type`,`contributed_id`),
+  KEY `contributes_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `curations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `curations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '用户表ID',
+  `question_id` int unsigned NOT NULL COMMENT '题库表ID',
+  `content` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '内容',
+  `type` tinyint NOT NULL COMMENT '类型',
+  `gold_awarded` int unsigned NOT NULL DEFAULT '0' COMMENT '所获智慧点',
+  `remark` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态: -1:未通过 0:审核中 1:审核成功',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `curations_user_id_index` (`user_id`),
+  KEY `curations_question_id_index` (`question_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `dimensions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `dimensions` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '统计的用户',
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '重要维度的名称',
+  `group` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '维度的分组',
+  `value` int unsigned NOT NULL DEFAULT '0' COMMENT '值',
+  `count` int unsigned NOT NULL DEFAULT '1' COMMENT '次数',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `dimensions_created_at_index` (`created_at`),
+  KEY `dimensions_user_id_index` (`user_id`),
+  KEY `dimensions_name_index` (`name`),
+  KEY `dimensions_group_index` (`group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `exchange_configs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `exchange_configs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `num` int NOT NULL,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '0:禁用，1启用',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `exchange_configs_num_index` (`num`),
+  KEY `exchange_configs_name_index` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `exchanges`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `exchanges` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '用户ID',
+  `gold` int NOT NULL COMMENT '智慧点',
+  `rmb` int unsigned NOT NULL COMMENT 'RMB',
+  `exchange_rate` int unsigned NOT NULL COMMENT '兑换比率',
+  `gold_balance` int unsigned NOT NULL COMMENT '智慧点余额',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `explanations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `explanations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `video_id` int unsigned DEFAULT NULL,
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '解析内容',
+  `type` tinyint NOT NULL DEFAULT '0' COMMENT '类型',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `explanations_user_id_index` (`user_id`),
+  KEY `explanations_video_id_index` (`video_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `failed_jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `failed_jobs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `connection` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `favorites`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `favorites` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `faved_id` int NOT NULL,
+  `faved_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'article',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `favorable_id` int NOT NULL,
+  `favorable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'articles',
+  PRIMARY KEY (`id`),
+  KEY `favorites_user_id_index` (`user_id`),
+  KEY `favorites_object_id_index` (`faved_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `feedback`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `feedback` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '反馈的内容',
+  `user_id` int unsigned DEFAULT NULL COMMENT '反馈的用户',
+  `contact` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '联系方式',
+  `contact_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '联系方式: phone:手机 email:邮箱 ',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `top_at` timestamp NULL DEFAULT NULL COMMENT '置顶时间',
+  `rank` int unsigned NOT NULL DEFAULT '0' COMMENT '排名',
+  `status` int unsigned NOT NULL DEFAULT '0' COMMENT '状态',
+  `type` smallint DEFAULT NULL COMMENT '反馈类型，type-0：使用反馈，type-1:好评反馈',
+  PRIMARY KEY (`id`),
+  KEY `feedback_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `feedback_image`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `feedback_image` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `feedback_id` int unsigned NOT NULL,
+  `image_id` int unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `follows`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `follows` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `followed_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `followed_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `follows_user_id_index` (`user_id`),
+  KEY `follows_followed_type_index` (`followed_type`),
+  KEY `follows_followed_id_index` (`followed_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `function_switchs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `function_switchs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '关闭的功能',
+  `state` int unsigned NOT NULL DEFAULT '1' COMMENT '状态，1 开启 0 关闭',
+  `close_details` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '关闭理由',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `gold`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `gold` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '用户ID',
+  `gold` int NOT NULL COMMENT '智慧点',
+  `balance` int NOT NULL DEFAULT '0' COMMENT '智慧点余额',
+  `remark` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `wallet_id` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `gold_user_id_index` (`user_id`),
+  KEY `gold_wallet_id_index` (`wallet_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `image_tag`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `image_tag` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `image_id` int NOT NULL,
+  `tag_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `image_tag_image_id_index` (`image_id`),
+  KEY `image_tag_tag_id_index` (`tag_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `imageable`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `imageable` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `imageable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `imageable_id` bigint unsigned NOT NULL,
+  `image_id` int unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `imageable_imageable_type_imageable_id_index` (`imageable_type`,`imageable_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `imageables`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `imageables` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `imageable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `imageable_id` bigint unsigned NOT NULL,
+  `image_id` int unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `imageables_imageable_type_imageable_id_index` (`imageable_type`,`imageable_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `images`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `images` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `path` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `disk` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `source_url` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `count` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `status` int NOT NULL DEFAULT '0',
+  `user_id` int DEFAULT NULL,
+  `width` int DEFAULT NULL,
+  `height` int DEFAULT NULL,
+  `path_top` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `hash` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `extension` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `store_id` int NOT NULL COMMENT '店铺id',
+  `product_id` int NOT NULL COMMENT '商品id',
+  `issue_id` int unsigned DEFAULT NULL COMMENT '问答id',
+  PRIMARY KEY (`id`),
+  KEY `images_status_index` (`status`),
+  KEY `images_title_index` (`title`),
+  KEY `images_path_origin_index` (`hash`),
+  KEY `images_path_index` (`path`),
+  KEY `images_store_id_index` (`store_id`),
+  KEY `images_product_id_index` (`product_id`),
+  KEY `images_issue_id_index` (`issue_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `invitation_phases`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `invitation_phases` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `amount` decimal(10,2) NOT NULL COMMENT '目标金额',
+  `rate` decimal(8,2) NOT NULL COMMENT '倍率',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `invitation_rewards`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `invitation_rewards` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '用户ID',
+  `invitation_id` int unsigned NOT NULL COMMENT '邀请ID',
+  `source` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '来源',
+  `reward` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '奖励',
+  `reward_type` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '奖励类型',
+  `reward_id` int unsigned NOT NULL DEFAULT '0' COMMENT '奖励ID',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `invitation_rewards_user_id_index` (`user_id`),
+  KEY `invitation_rewards_invitation_id_index` (`invitation_id`),
+  KEY `invitation_rewards_reward_id_index` (`reward_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `invitations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `invitations` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '邀请人用户ID',
+  `be_inviter_id` int unsigned NOT NULL COMMENT '被邀请人ID',
+  `invited_in` timestamp NULL DEFAULT NULL,
+  `app_id` int unsigned NOT NULL DEFAULT '1' COMMENT '厂长头衔ID',
+  `today_rewards_count` int unsigned NOT NULL DEFAULT '0' COMMENT '今日奖励次数',
+  `total_contribute` int unsigned NOT NULL DEFAULT '0' COMMENT '厂长的总贡献',
+  `rate` decimal(5,2) NOT NULL DEFAULT '0.00' COMMENT '倍率',
+  `secondary_user_ids` json DEFAULT NULL COMMENT '下级用户ID',
+  `next_increment_at` timestamp NULL DEFAULT NULL COMMENT '下次增重时间',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `invitations_user_id_index` (`user_id`),
+  KEY `invitations_be_inviter_id_index` (`be_inviter_id`),
+  KEY `invitations_app_id_index` (`app_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `invite_installs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `invite_installs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '受邀请的下级用户的id,先记录,方便后续修正',
+  `invite_open_id` int unsigned DEFAULT NULL COMMENT '成功匹配到的invite_open的id',
+  `user_agent` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '关键匹配信息靠IP',
+  `os` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'OS',
+  `os_version` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'OS version',
+  `os_build` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'OS build',
+  `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '手机型号信息',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `invite_installs_invite_open_id_index` (`invite_open_id`),
+  KEY `invite_installs_ip_index` (`ip`),
+  KEY `invite_installs_os_index` (`os`),
+  KEY `invite_installs_os_version_index` (`os_version`),
+  KEY `invite_installs_os_build_index` (`os_build`),
+  KEY `invite_installs_model_index` (`model`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `invite_opens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `invite_opens` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '发邀请的上级用户的id',
+  `user_agent` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '关键匹配信息靠IP',
+  `os` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'OS',
+  `os_version` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'OS version',
+  `os_build` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'OS build',
+  `model` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '手机型号信息',
+  `installs` int unsigned NOT NULL DEFAULT '0' COMMENT '一般成功匹配到后installs=1',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `invite_opens_ip_index` (`ip`),
+  KEY `invite_opens_os_index` (`os`),
+  KEY `invite_opens_os_version_index` (`os_version`),
+  KEY `invite_opens_os_build_index` (`os_build`),
+  KEY `invite_opens_model_index` (`model`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `ips`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ips` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `ipable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ipable_id` bigint unsigned NOT NULL,
+  `ip` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ips_ipable_type_ipable_id_index` (`ipable_type`,`ipable_id`),
+  KEY `ips_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `issue_invites`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `issue_invites` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `issue_id` int unsigned NOT NULL,
+  `invite_user_id` int unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `issue_invites_user_id_index` (`user_id`),
+  KEY `issue_invites_invite_user_id_index` (`invite_user_id`),
+  KEY `issue_invites_issue_id_index` (`issue_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `issues`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `issues` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `title` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `background` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `latest_resolution_id` int unsigned DEFAULT NULL,
+  `best_resolution_id` int unsigned DEFAULT NULL,
+  `is_anonymous` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否匿名问答',
+  `bonus` decimal(8,2) DEFAULT NULL,
+  `deadline` smallint DEFAULT NULL,
+  `hits` int unsigned NOT NULL DEFAULT '0',
+  `count_answers` int unsigned NOT NULL DEFAULT '0',
+  `count_favorites` int NOT NULL DEFAULT '0',
+  `count_reports` int NOT NULL DEFAULT '0',
+  `count_likes` int NOT NULL DEFAULT '0',
+  `closed` tinyint(1) NOT NULL DEFAULT '0' COMMENT '问题是否解决',
+  `image1` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image2` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image3` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `resolution_ids` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `gold` int unsigned NOT NULL DEFAULT '0' COMMENT '金币',
+  `is_pay` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `issues_user_id_index` (`user_id`),
+  KEY `issues_closed_index` (`closed`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `item_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `item_user` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned DEFAULT NULL,
+  `item_id` int unsigned DEFAULT NULL,
+  `total` int NOT NULL COMMENT '持有数量',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `items`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `items` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '道具名称',
+  `value` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '价值',
+  `description` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '道具描述',
+  `price` int NOT NULL COMMENT '道具价格',
+  `count` int NOT NULL COMMENT '总数量',
+  `status` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '0:禁用，1启用',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `jobs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `queue` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `attempts` tinyint unsigned NOT NULL,
+  `reserved_at` int unsigned DEFAULT NULL,
+  `available_at` int unsigned NOT NULL,
+  `created_at` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `jobs_queue_index` (`queue`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `likes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `likes` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `likable_id` int NOT NULL,
+  `likable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `likes_user_id_index` (`user_id`),
+  KEY `likes_object_id_index` (`likable_id`),
+  KEY `likes_type_index` (`likable_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `live_actions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `live_actions` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `live_id` int unsigned NOT NULL COMMENT '直播秀id',
+  `user_id` int unsigned NOT NULL COMMENT '用户id',
+  `actionable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `actionable_id` bigint unsigned DEFAULT NULL,
+  `action_at` int unsigned NOT NULL COMMENT '行为发生时间（秒）',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `live_actions_actionable_type_actionable_id_index` (`actionable_type`,`actionable_id`),
+  KEY `live_actions_live_id_index` (`live_id`),
+  KEY `live_actions_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `live_rooms`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `live_rooms` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '主播id',
+  `cover` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '直播间封面，可自定义设置',
+  `status` tinyint NOT NULL DEFAULT '0' COMMENT '-1:被封 0:正常',
+  `count_exception` tinyint unsigned DEFAULT NULL COMMENT '异常断流次数',
+  `type` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '直播间类型: 普通房间（0）答题房间（1）你画我猜房间（2）...等等自定义类型',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `live_users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `live_users` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `live_id` int unsigned NOT NULL COMMENT '直播秀id',
+  `user_id` int unsigned NOT NULL COMMENT '用户id',
+  `duration` int unsigned NOT NULL DEFAULT '0' COMMENT '用户加入直播间时长',
+  `count_comments` int unsigned NOT NULL DEFAULT '0' COMMENT '总评论数',
+  `count_joins` int unsigned NOT NULL DEFAULT '0' COMMENT '总加入次数',
+  `count_leaves` int unsigned NOT NULL DEFAULT '0' COMMENT '总离开次数',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `live_users_live_id_index` (`live_id`),
+  KEY `live_users_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `lives`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `lives` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '直播秀标题',
+  `user_id` int unsigned NOT NULL COMMENT '主播 ID',
+  `live_room_id` int unsigned NOT NULL COMMENT '直播间 ID',
+  `status` tinyint NOT NULL DEFAULT '0' COMMENT '状态:0默认,-1关闭,1推荐',
+  `cover` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '直播的截图，回调自动更新',
+  `push_stream_url` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '推流地址',
+  `push_stream_key` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '鉴权密钥',
+  `pull_stream_url` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '拉流地址',
+  `stream_name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '流名称',
+  `video_id` int unsigned DEFAULT NULL COMMENT '直播录制视频 ID',
+  `duration` int unsigned DEFAULT NULL COMMENT '直播时长',
+  `count_users` int unsigned DEFAULT NULL COMMENT '总观看人数',
+  `count_comments` int unsigned DEFAULT NULL COMMENT '总观看人数',
+  `data` json DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `begin_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '直播开始时间',
+  PRIMARY KEY (`id`),
+  KEY `lives_title_index` (`title`),
+  KEY `lives_user_id_index` (`user_id`),
+  KEY `lives_live_room_id_index` (`live_room_id`),
+  KEY `lives_stream_name_index` (`stream_name`),
+  KEY `lives_video_id_index` (`video_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `messages`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `messages` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `chat_id` int NOT NULL,
+  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `migrations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `movies`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `movies` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `musics`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `musics` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `article_id` int DEFAULT NULL,
+  `path` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `not_likes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `not_likes` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `not_likable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `not_likable_id` bigint unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `not_likes_not_likable_type_not_likable_id_index` (`not_likable_type`,`not_likable_id`),
+  KEY `not_likes_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `notices`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `notices` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '用户ID',
+  `title` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '标题',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '内容',
+  `expires_at` timestamp NULL DEFAULT NULL COMMENT '到期时间',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `notices_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `notifications`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `notifications` (
+  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `notifiable_id` int unsigned NOT NULL,
+  `notifiable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `read_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `notifications_notifiable_id_notifiable_type_index` (`notifiable_id`,`notifiable_type`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `o_auths`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `o_auths` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '用户ID',
+  `oauth_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `oauth_id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `data` json DEFAULT NULL COMMENT 'json',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `o_auths_user_id_oauth_type_oauth_id_index` (`user_id`,`oauth_type`,`oauth_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `oauth_access_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `oauth_access_tokens` (
+  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint DEFAULT NULL,
+  `client_id` int unsigned NOT NULL,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `scopes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `revoked` tinyint(1) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `expires_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `oauth_access_tokens_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `oauth_auth_codes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `oauth_auth_codes` (
+  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint NOT NULL,
+  `client_id` int unsigned NOT NULL,
+  `scopes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `revoked` tinyint(1) NOT NULL,
+  `expires_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `oauth_clients`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `oauth_clients` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint DEFAULT NULL,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `secret` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `redirect` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `personal_access_client` tinyint(1) NOT NULL,
+  `password_client` tinyint(1) NOT NULL,
+  `revoked` tinyint(1) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `oauth_clients_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `oauth_personal_access_clients`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `oauth_personal_access_clients` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `client_id` int unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `oauth_personal_access_clients_client_id_index` (`client_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `oauth_refresh_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `oauth_refresh_tokens` (
+  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `access_token_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `revoked` tinyint(1) NOT NULL,
+  `expires_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `oauth_refresh_tokens_access_token_id_index` (`access_token_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `orders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `orders` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `number` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '订单号',
+  `status` int NOT NULL COMMENT '订单状态：0:未支付, 1:已支付|可用中, 2:已收货, 3：已过期(账号时间到)',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `orders_user_id_index` (`user_id`),
+  KEY `orders_number_index` (`number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `password_resets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `password_resets` (
+  `email` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  KEY `password_resets_email_index` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `platform_accounts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `platform_accounts` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `product_id` int unsigned NOT NULL,
+  `order_id` int unsigned DEFAULT NULL COMMENT '租到某订单内的关系',
+  `order_status` int NOT NULL DEFAULT '0' COMMENT '账号状态：0:可用中, 1:使用中, 2:维护中 -1：不可用',
+  `price` int unsigned NOT NULL DEFAULT '0' COMMENT '下单时的商品价格',
+  `dimension` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '规格，维度: 大号,至尊宝，紫霞仙子。。。',
+  `dimension2` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '规格，维度:1小时，2小时。。。',
+  `platform` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '平台：优酷，王者，LOL, 某论坛',
+  `account` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '账号',
+  `password` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '密码',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `platform_accounts_user_id_index` (`user_id`),
+  KEY `platform_accounts_product_id_index` (`product_id`),
+  KEY `platform_accounts_order_id_index` (`order_id`),
+  KEY `platform_accounts_dimension_index` (`dimension`),
+  KEY `platform_accounts_dimension2_index` (`dimension2`),
+  KEY `platform_accounts_platform_index` (`platform`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `post_recommends`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `post_recommends` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '用户ID',
+  `day_review_ids` json DEFAULT NULL COMMENT '用户在各日期块的指针',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `post_recommends_user_id_unique` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `posts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `posts` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '作者',
+  `owner_id` int unsigned DEFAULT NULL COMMENT '所有者',
+  `video_id` int unsigned DEFAULT NULL COMMENT '视频ID',
+  `spider_id` int DEFAULT NULL COMMENT '动态的爬虫id',
+  `description` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '描述',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '内容',
+  `status` tinyint NOT NULL DEFAULT '0' COMMENT '状态',
+  `hot` int unsigned NOT NULL DEFAULT '0' COMMENT '热度',
+  `count_likes` int unsigned NOT NULL DEFAULT '0' COMMENT '点赞数',
+  `count_comments` int unsigned NOT NULL DEFAULT '0' COMMENT '点赞数',
+  `review_id` bigint unsigned DEFAULT NULL COMMENT '快速排重推荐用',
+  `review_day` bigint unsigned NOT NULL DEFAULT '0' COMMENT '快速排重推荐用',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `posts_user_id_index` (`user_id`),
+  KEY `posts_video_id_index` (`video_id`),
+  KEY `posts_spider_id_index` (`spider_id`),
+  KEY `posts_review_id_index` (`review_id`),
+  KEY `posts_review_day_index` (`review_day`),
+  KEY `posts_owner_id_index` (`owner_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `product_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_order` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` int unsigned NOT NULL,
+  `order_id` int unsigned NOT NULL,
+  `price` int unsigned NOT NULL DEFAULT '1' COMMENT '下单时的商品价格',
+  `amount` int unsigned NOT NULL DEFAULT '1' COMMENT '商品数量',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `product_order_product_id_index` (`product_id`),
+  KEY `product_order_order_id_index` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `products`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `products` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `store_id` int unsigned NOT NULL,
+  `category_id` int unsigned NOT NULL,
+  `parent_id` int unsigned DEFAULT NULL,
+  `video_id` int NOT NULL COMMENT '视频id',
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '名称:比如王者账号,衣服',
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '商品描述',
+  `price` int unsigned NOT NULL COMMENT '商品价格',
+  `available_amount` int unsigned NOT NULL COMMENT '商品上架中数量',
+  `amount` int unsigned NOT NULL COMMENT '商品总数量',
+  `dimension` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '规格，维度: 大号，1小时的，XL...',
+  `dimension2` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '安卓区' COMMENT '安卓区，ios区。。。',
+  `status` int NOT NULL COMMENT '1：上架，-1下架',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `products_user_id_index` (`user_id`),
+  KEY `products_store_id_index` (`store_id`),
+  KEY `products_category_id_index` (`category_id`),
+  KEY `products_parent_id_index` (`parent_id`),
+  KEY `products_video_id_index` (`video_id`),
+  KEY `products_dimension_index` (`dimension`),
+  KEY `products_dimension2_index` (`dimension2`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `profiles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `profiles` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `qq` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `introduction` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `json` json DEFAULT NULL,
+  `count_articles` int NOT NULL DEFAULT '0',
+  `count_likes` int NOT NULL DEFAULT '0',
+  `count_follows` int NOT NULL DEFAULT '0',
+  `count_followings` int NOT NULL DEFAULT '0',
+  `count_words` int NOT NULL DEFAULT '0',
+  `count_collections` int NOT NULL DEFAULT '0',
+  `count_favorites` int NOT NULL DEFAULT '0',
+  `count_actions` int NOT NULL DEFAULT '0',
+  `count_reports` int NOT NULL DEFAULT '0',
+  `enable_tips` tinyint(1) NOT NULL DEFAULT '1',
+  `tip_words` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `gender` tinyint NOT NULL DEFAULT '-1',
+  `website` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `qrcode` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `age` int unsigned NOT NULL DEFAULT '0',
+  `source` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'unknown' COMMENT '来源',
+  `birthday` timestamp NULL DEFAULT NULL COMMENT '生日',
+  `questions_count` int unsigned NOT NULL DEFAULT '0' COMMENT '出题总数',
+  `answers_count` int unsigned NOT NULL DEFAULT '0' COMMENT '答题总数',
+  `correct_count` int unsigned NOT NULL DEFAULT '0' COMMENT '答对总数',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `background` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户背景图',
+  `count_contributes` int NOT NULL DEFAULT '0' COMMENT '用户贡献点',
+  `app_version` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户最后活跃时的App版本号',
+  `answers_count_today` int NOT NULL DEFAULT '0',
+  `keep_checkin_days` int unsigned NOT NULL DEFAULT '0' COMMENT '连续签到日',
+  `today_reward_video_count` int unsigned NOT NULL DEFAULT '0' COMMENT '今日激励视频次数',
+  `last_reward_video_time` timestamp NULL DEFAULT NULL COMMENT '最后激励视频时间',
+  PRIMARY KEY (`id`),
+  KEY `profiles_user_id_index` (`user_id`),
+  KEY `profiles_source_index` (`source`),
+  KEY `profiles_questions_count_index` (`questions_count`),
+  KEY `profiles_answers_count_index` (`answers_count`),
+  KEY `profiles_correct_count_index` (`correct_count`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `queries`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `queries` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `query` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `results` int NOT NULL DEFAULT '0',
+  `hits` int NOT NULL DEFAULT '0',
+  `status` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `querylogs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `querylogs` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `query` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `querylogs_user_id_index` (`user_id`),
+  KEY `querylogs_query_index` (`query`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `question_invites`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `question_invites` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `question_id` int NOT NULL,
+  `invite_user_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `question_invites_user_id_index` (`user_id`),
+  KEY `question_invites_question_id_index` (`question_id`),
+  KEY `question_invites_invite_user_id_index` (`invite_user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `question_recommends`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `question_recommends` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `question_id` int unsigned NOT NULL COMMENT '题目id',
+  `rank` tinyint NOT NULL COMMENT '权重',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `question_recommends_question_id_index` (`question_id`),
+  KEY `question_recommends_rank_index` (`rank`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `questions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `questions` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `description` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '题目描述',
+  `selections` json NOT NULL COMMENT '题目选项',
+  `answer` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '答案',
+  `gold` int NOT NULL DEFAULT '0' COMMENT '智慧点',
+  `ticket` int NOT NULL DEFAULT '1' COMMENT '精力点',
+  `image_id` int unsigned DEFAULT NULL COMMENT '主配图',
+  `category_id` int unsigned DEFAULT NULL COMMENT '分类ID',
+  `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'text' COMMENT '类型：text 文字答题',
+  `correct_count` int NOT NULL DEFAULT '0' COMMENT '统计：正确回答',
+  `wrong_count` int NOT NULL DEFAULT '0' COMMENT '统计：错误回答',
+  `user_id` int unsigned DEFAULT NULL COMMENT '用户ID',
+  `submit` int DEFAULT '0' COMMENT '提交状态: 1 - 已收录 -2 - 已拒绝 -3 - 已撤回 -1 - 已移除 0 - 待审核 ',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `merchant_id` int unsigned DEFAULT NULL COMMENT '商户ID',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
+  `video_id` int unsigned DEFAULT NULL COMMENT '视频',
+  `rank` tinyint NOT NULL DEFAULT '0' COMMENT '题目权重',
+  `reviewed_at` timestamp NULL DEFAULT NULL,
+  `rejected_at` timestamp NULL DEFAULT NULL,
+  `review_id` int NOT NULL DEFAULT '0',
+  `reports_count` int NOT NULL DEFAULT '0' COMMENT '举报数',
+  `reports_weight` int NOT NULL DEFAULT '0' COMMENT '举报权重：总人等级数',
+  `count_comments` int NOT NULL DEFAULT '0' COMMENT '统计：评论数量',
+  `count_likes` int NOT NULL DEFAULT '0' COMMENT '喜欢点赞数',
+  `accepted_count` tinyint NOT NULL DEFAULT '0' COMMENT '赞成投票数',
+  `declined_count` tinyint NOT NULL DEFAULT '0' COMMENT '反对投票数',
+  `is_rewarded` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否奖励',
+  `explanation_id` int unsigned DEFAULT NULL COMMENT '解析ID',
+  `answers_count` int unsigned NOT NULL DEFAULT '0' COMMENT '回答总数',
+  `md5` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'MD5',
+  `audio_id` int unsigned NOT NULL DEFAULT '0' COMMENT '音频ID',
+  PRIMARY KEY (`id`),
+  KEY `questions_image_index` (`image_id`),
+  KEY `questions_category_id_index` (`category_id`),
+  KEY `questions_user_id_index` (`user_id`),
+  KEY `questions_submit_index` (`submit`),
+  KEY `questions_merchant_id_index` (`merchant_id`),
+  KEY `questions_video_id_index` (`video_id`),
+  KEY `questions_correct_count_index` (`correct_count`),
+  KEY `questions_updated_at_index` (`updated_at`),
+  KEY `questions_status_category_id_video_id_index` (`category_id`,`video_id`),
+  KEY `questions_cate_id_status_id_updated_at_index` (`category_id`,`id`,`updated_at`) USING BTREE,
+  KEY `questions_rank_index` (`rank`),
+  KEY `questions_category_id_user_id_status_index` (`category_id`,`user_id`),
+  KEY `questions_category_id_user_id_status_rank_review_id_index` (`category_id`,`user_id`,`rank`,`review_id`),
+  KEY `questions_category_id_user_id_status_rank_index` (`category_id`,`user_id`,`rank`) USING BTREE,
+  KEY `questions_rank_review_id_index` (`rank`,`review_id`) USING BTREE,
+  KEY `questions_reports_count_index` (`reports_count`),
+  KEY `questions_reports_weight_index` (`reports_weight`),
+  KEY `questions_created_at_index` (`created_at`),
+  KEY `questions_count_comments_index` (`count_comments`),
+  KEY `questions_answers_count_index` (`answers_count`),
+  KEY `questions_md5_index` (`md5`),
+  KEY `questions_review_id_unique` (`review_id`) USING BTREE,
+  KEY `questions_audio_id_index` (`audio_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `reports`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reports` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL COMMENT '举报人id',
+  `reason` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '举报理由',
+  `reportable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `reportable_id` bigint unsigned NOT NULL,
+  `status` tinyint NOT NULL DEFAULT '0' COMMENT '举报的状态',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `reports_reportable_type_reportable_id_index` (`reportable_type`,`reportable_id`),
+  KEY `reports_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `review_flows`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `review_flows` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '模版名',
+  `check_functions` json DEFAULT NULL COMMENT '任务检查流程函数名',
+  `need_owner_review` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否需要任务建立者Review',
+  `need_offical_review` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否需要官方人员Review',
+  `type` tinyint NOT NULL DEFAULT '0' COMMENT '模版类型 1 - 运营选用 2 - 用户可选用',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `review_class` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务关联的模型的class,去掉App\\ haxibiao\\content等namespace',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `reward_counters`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reward_counters` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `count` int unsigned NOT NULL DEFAULT '0' COMMENT '总激励视频奖励次数',
+  `count_toutiao` int unsigned NOT NULL DEFAULT '0',
+  `count_tencent` int unsigned NOT NULL DEFAULT '0',
+  `count_baidu` int unsigned NOT NULL DEFAULT '0',
+  `last_provider` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '上次轮的平台，切换间隔用',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `roles` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `rank` int unsigned NOT NULL DEFAULT '0' COMMENT '权重',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `seos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `seos` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `group` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'SEO功能组',
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'SEO名称',
+  `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'SEO相关值',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `series`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `series` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `shares`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `shares` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `shareable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `shareable_id` bigint unsigned NOT NULL,
+  `url` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '分享地址',
+  `user_id` int unsigned NOT NULL COMMENT '分享的用户',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expired_at` datetime DEFAULT NULL COMMENT '过期时间',
+  `uids` json DEFAULT NULL COMMENT '已经浏览过的用户',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `shares_shareable_type_shareable_id_index` (`shareable_type`,`shareable_id`),
+  KEY `shares_user_id_index` (`user_id`),
+  KEY `shares_uuid_index` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `snapshots`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `snapshots` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '用户ID',
+  `data` json NOT NULL COMMENT '记录用户每日临时数据计数',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `snapshots_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `snippets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `snippets` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `category_id` int NOT NULL,
+  `title` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `body` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `image` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `snippets_user_id_index` (`user_id`),
+  KEY `snippets_category_id_index` (`category_id`),
+  KEY `snippets_title_index` (`title`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `solutions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `solutions` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `issue_id` int unsigned NOT NULL,
+  `article_id` int unsigned DEFAULT NULL,
+  `image_url` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `answer` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `count_likes` int unsigned NOT NULL DEFAULT '0',
+  `count_unlikes` int unsigned NOT NULL DEFAULT '0',
+  `count_comments` int unsigned NOT NULL DEFAULT '0',
+  `count_reports` int unsigned NOT NULL DEFAULT '0',
+  `status` tinyint NOT NULL DEFAULT '0',
+  `bonus` decimal(8,2) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `gold` int unsigned NOT NULL DEFAULT '0' COMMENT '金币',
+  PRIMARY KEY (`id`),
+  KEY `resolutions_user_id_index` (`user_id`),
+  KEY `resolutions_issue_id_index` (`issue_id`),
+  KEY `resolutions_article_id_index` (`article_id`),
+  KEY `resolutions_status_index` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `spiders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `spiders` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '用户ID',
+  `source_url` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '源URL',
+  `raw` json DEFAULT NULL COMMENT '源信息',
+  `data` json DEFAULT NULL,
+  `status` tinyint NOT NULL DEFAULT '0',
+  `spider_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `spider_id` bigint unsigned DEFAULT NULL,
+  `count` int unsigned NOT NULL DEFAULT '1' COMMENT '爬虫粘贴次数',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `spiders_user_id_index` (`user_id`),
+  KEY `spiders_source_url_index` (`source_url`),
+  KEY `spiders_spider_id_index` (`spider_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `stores`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `stores` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '名称',
+  `description` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '分类描述',
+  `status` int NOT NULL COMMENT '1：上架，-1下架',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `taggables`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `taggables` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `tag_id` int unsigned NOT NULL,
+  `user_id` int unsigned NOT NULL,
+  `taggable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `taggable_id` bigint unsigned NOT NULL,
+  `tag_name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `taggables_tag_id_taggable_id_taggable_type_unique` (`tag_id`,`taggable_id`,`taggable_type`),
+  KEY `taggables_taggable_type_taggable_id_index` (`taggable_type`,`taggable_id`),
+  KEY `taggables_user_id_index` (`user_id`),
+  KEY `taggables_tag_name_index` (`tag_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `tags`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tags` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `count` int NOT NULL DEFAULT '0',
+  `user_id` int NOT NULL,
+  `type` int NOT NULL DEFAULT '0',
+  `status` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tags_user_id_index` (`user_id`),
+  KEY `tags_type_index` (`type`),
+  KEY `tags_status_index` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `tasks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tasks` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务名称',
+  `details` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '描述',
+  `icon` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务图标',
+  `type` int DEFAULT NULL COMMENT '类型：0:新人任务 1:每日任务 2:自定义任务 3:实时任务',
+  `reward` json DEFAULT NULL COMMENT '奖励',
+  `review_flow_id` int DEFAULT NULL,
+  `max_count` int NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态: 0:删除 1:展示',
+  `start_at` timestamp NULL DEFAULT NULL COMMENT '开始时间',
+  `end_at` timestamp NULL DEFAULT NULL COMMENT '截止时间',
+  `resolve` json DEFAULT NULL COMMENT '解析',
+  `background_img` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务背景图',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `group` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务分组：新人任务|每日任务|自定义任务|实时任务|贡献任务...',
+  `description` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `task_action` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务对应的行为，如浏览，点赞，评论等',
+  `relation_class` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务对应的类，如合集，动态等',
+  `task_object` json DEFAULT NULL COMMENT '任务指定的对象，如collections,posts数组等',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `tips`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tips` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `amount` decimal(8,2) NOT NULL DEFAULT '0.00',
+  `tipable_id` int NOT NULL,
+  `tipable_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `user_id` int NOT NULL,
+  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `gold` int unsigned NOT NULL DEFAULT '0' COMMENT '金币',
+  PRIMARY KEY (`id`),
+  KEY `tips_tipable_id_index` (`tipable_id`),
+  KEY `tips_tipable_type_index` (`tipable_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `traffic`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `traffic` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `is_desktop` tinyint(1) NOT NULL DEFAULT '0',
+  `is_mobile` tinyint(1) NOT NULL DEFAULT '0',
+  `is_phone` tinyint(1) NOT NULL DEFAULT '0',
+  `is_tablet` tinyint(1) NOT NULL DEFAULT '0',
+  `is_wechat` tinyint(1) NOT NULL DEFAULT '0',
+  `is_android_os` tinyint(1) NOT NULL DEFAULT '0',
+  `is_robot` tinyint(1) NOT NULL DEFAULT '0',
+  `device` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `platform` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `browser` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `robot` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ip` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `province` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `city` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `path` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `referer` varchar(2083) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `referer_domain` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `date` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `year` int DEFAULT NULL,
+  `month` int DEFAULT NULL,
+  `day` int DEFAULT NULL,
+  `dayOfWeek` int DEFAULT NULL,
+  `dayOfYear` int DEFAULT NULL,
+  `daysInMonth` int DEFAULT NULL,
+  `weekOfMonth` int DEFAULT NULL,
+  `weekOfYear` int DEFAULT NULL,
+  `article_id` int DEFAULT NULL,
+  `category` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
+  `is_app` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `traffic_is_desktop_index` (`is_desktop`),
+  KEY `traffic_is_mobile_index` (`is_mobile`),
+  KEY `traffic_is_phone_index` (`is_phone`),
+  KEY `traffic_is_tablet_index` (`is_tablet`),
+  KEY `traffic_is_wechat_index` (`is_wechat`),
+  KEY `traffic_is_android_os_index` (`is_android_os`),
+  KEY `traffic_is_robot_index` (`is_robot`),
+  KEY `traffic_device_index` (`device`),
+  KEY `traffic_platform_index` (`platform`),
+  KEY `traffic_browser_index` (`browser`),
+  KEY `traffic_robot_index` (`robot`),
+  KEY `traffic_ip_index` (`ip`),
+  KEY `traffic_country_index` (`country`),
+  KEY `traffic_province_index` (`province`),
+  KEY `traffic_city_index` (`city`),
+  KEY `traffic_date_index` (`date`),
+  KEY `traffic_year_index` (`year`),
+  KEY `traffic_month_index` (`month`),
+  KEY `traffic_day_index` (`day`),
+  KEY `traffic_dayofweek_index` (`dayOfWeek`),
+  KEY `traffic_dayofyear_index` (`dayOfYear`),
+  KEY `traffic_daysinmonth_index` (`daysInMonth`),
+  KEY `traffic_weekofmonth_index` (`weekOfMonth`),
+  KEY `traffic_weekofyear_index` (`weekOfYear`),
+  KEY `traffic_user_id_index` (`user_id`),
+  KEY `traffic_is_app_index` (`is_app`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `transactions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `transactions` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remark` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `amount` decimal(8,2) NOT NULL,
+  `status` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `balance` decimal(8,2) NOT NULL DEFAULT '0.00',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `from_user_id` int DEFAULT NULL,
+  `to_user_id` int DEFAULT NULL,
+  `relate_id` int DEFAULT NULL,
+  `wallet_id` int unsigned DEFAULT NULL,
+  `log` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `transactions_user_id_index` (`user_id`),
+  KEY `transactions_type_index` (`type`),
+  KEY `transactions_status_index` (`status`),
+  KEY `transactions_wallet_id_index` (`wallet_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `user_actions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_actions` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `can_submit_categories` json DEFAULT NULL COMMENT '可出题分类',
+  `latest_visited_categories` json DEFAULT NULL COMMENT '最新浏览的分类',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_actions_user_id_unique` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `user_blocks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_blocks` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `user_block_id` bigint DEFAULT NULL COMMENT '屏蔽用户id',
+  `article_report_id` int DEFAULT NULL COMMENT '被举报的动态id',
+  `article_block_id` bigint DEFAULT NULL COMMENT '不感兴趣的动态id',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_blocks_user_id_index` (`user_id`),
+  KEY `user_blocks_user_block_id_index` (`user_block_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `user_invitations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_invitations` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '用户ID',
+  `firends_total_contribute` int NOT NULL DEFAULT '0' COMMENT '邀请好友总贡献',
+  `success_firends_count` int unsigned NOT NULL DEFAULT '0' COMMENT '邀请成功好友数',
+  `firends_count` int unsigned NOT NULL DEFAULT '0' COMMENT '邀请好友数量',
+  `phase_id` int unsigned NOT NULL DEFAULT '0' COMMENT '邀请阶段ID',
+  `red_packet_phase_amount` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '红包阶段金额',
+  `red_packet_invites_count` int unsigned NOT NULL DEFAULT '0' COMMENT '红包阶段邀请人数',
+  `next_increment_at` timestamp NULL DEFAULT NULL COMMENT '下次增重时间',
+  `rate` decimal(5,2) NOT NULL DEFAULT '0.00' COMMENT '倍率',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_invitations_user_id_unique` (`user_id`),
+  KEY `user_invitations_phase_id_index` (`phase_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `user_retentions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_retentions` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL COMMENT '用户ID',
+  `next_day_retention_at` timestamp NULL DEFAULT NULL COMMENT '次日留存',
+  `third_day_retention_at` timestamp NULL DEFAULT NULL COMMENT '三日留存',
+  `fifth_day_retention_at` timestamp NULL DEFAULT NULL COMMENT '五日留存',
+  `sixth_day_retention_at` timestamp NULL DEFAULT NULL COMMENT '七日留存',
+  `month_retention_at` timestamp NULL DEFAULT NULL COMMENT '月留存',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_retentions_user_id_index` (`user_id`),
+  KEY `user_retentions_next_day_retention_at_index` (`next_day_retention_at`),
+  KEY `user_retentions_third_day_retention_at_index` (`third_day_retention_at`),
+  KEY `user_retentions_fifth_day_retention_at_index` (`fifth_day_retention_at`),
+  KEY `user_retentions_sixth_day_retention_at_index` (`sixth_day_retention_at`),
+  KEY `user_retentions_month_retention_at_index` (`month_retention_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `avatar` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `role_id` tinyint(1) NOT NULL DEFAULT '0',
+  `status` int NOT NULL DEFAULT '0',
+  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `json` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `api_token` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'U6QqLM6nDlvCSndGLKiOLKQOdnzknG6od08WwNscppyDK3wuZEFcX0eoj5g2',
+  `count_comments` int NOT NULL DEFAULT '0',
+  `count_tips` int NOT NULL DEFAULT '0',
+  `introduction_tips` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_tips` int DEFAULT NULL,
+  `ticket` int unsigned NOT NULL DEFAULT '180' COMMENT '精力点',
+  `gold` int unsigned NOT NULL DEFAULT '0' COMMENT '墨宝',
+  `dz_id` int unsigned DEFAULT NULL COMMENT '答题赚钱ID',
+  `uuid` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户设备唯一标识',
+  `phone` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户手机号',
+  `account` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '账号',
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `last_category_id` int NOT NULL,
+  `withdraw_at` timestamp NULL DEFAULT NULL,
+  `withdraw_lines` int unsigned NOT NULL DEFAULT '10' COMMENT '限量抢额度',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `count_posts` int DEFAULT NULL COMMENT '动态数',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`),
+  UNIQUE KEY `users_dz_id_unique` (`dz_id`),
+  UNIQUE KEY `users_account_unique` (`account`),
+  UNIQUE KEY `users_phone_unique` (`phone`) USING BTREE,
+  KEY `users_is_editor_index` (`role_id`),
+  KEY `users_status_index` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `verifies`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `verifies` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL COMMENT '关联用户',
+  `channel` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '发送频道，例如 mail, sms',
+  `account` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '发送账户',
+  `code` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '发送验证码',
+  `action` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `verifies_account_index` (`account`),
+  KEY `verifies_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `versions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `versions` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '版本名称',
+  `build` int unsigned NOT NULL DEFAULT '0',
+  `description` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '描述',
+  `size` int unsigned NOT NULL DEFAULT '0' COMMENT '文件大小',
+  `url` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `os` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` tinyint NOT NULL DEFAULT '0' COMMENT '类型: 0:内测包 1:正式包',
+  `is_force` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否强制更新: 0否 1:强更',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态 1:上架 0:下架 -1:删除',
+  `package` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '包名',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `videos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `videos` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL DEFAULT '0',
+  `title` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `path` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `duration` int DEFAULT '0',
+  `status` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `hash` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `json` json DEFAULT NULL,
+  `disk` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `qcvod_fileid` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `vid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '视频的VID',
+  `cover` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `width` int unsigned DEFAULT NULL COMMENT '宽',
+  `height` int unsigned DEFAULT NULL COMMENT '高',
+  PRIMARY KEY (`id`),
+  KEY `videos_status_index` (`status`),
+  KEY `videos_hash_index` (`hash`),
+  KEY `videos_user_id_index` (`user_id`),
+  KEY `videos_qcvod_fileid_index` (`qcvod_fileid`),
+  KEY `videos_vid_index` (`vid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `visits`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `visits` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '用户id',
+  `visited_id` int unsigned NOT NULL,
+  `visited_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'articles' COMMENT '浏览类型,默认浏览文章',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `visits_updated_at_index` (`updated_at`),
+  KEY `visits_user_id_index` (`user_id`),
+  KEY `visits_visited_id_index` (`visited_id`),
+  KEY `visits_visited_type_index` (`visited_type`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `wallet_transactions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `wallet_transactions` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `wallet_id` int unsigned NOT NULL COMMENT '钱包ID',
+  `amount` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '变动金额',
+  `balance` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '余额',
+  `remark` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0' COMMENT '备注',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `wallet_transactions_wallet_id_index` (`wallet_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `wallets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `wallets` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '用户ID',
+  `type` tinyint NOT NULL DEFAULT '0' COMMENT '类型：默认RMB钱包',
+  `pay_account` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '提现账号',
+  `real_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '真实姓名 支持10个中文符号 此处50个长度方便扩展',
+  `pay_infos` json DEFAULT NULL COMMENT '提现信息',
+  `total_withdraw_amount` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '提现总额',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `wechat_account` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '微信OPENID',
+  PRIMARY KEY (`id`),
+  KEY `wallets_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `withdraws`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `withdraws` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `wallet_id` int unsigned NOT NULL COMMENT '钱包ID',
+  `status` tinyint NOT NULL DEFAULT '0' COMMENT '待处理(0) 提现成功(1) 提现失败(-1)',
+  `transaction_id` int unsigned DEFAULT NULL COMMENT '交易ID',
+  `amount` decimal(10,2) NOT NULL COMMENT '金额',
+  `remark` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '回执信息',
+  `trade_no` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '第三方交易单号',
+  `to_account` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '提现账户',
+  `to_platform` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '支付平台',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `rate` int unsigned DEFAULT NULL COMMENT '倍率',
+  PRIMARY KEY (`id`),
+  KEY `withdraws_wallet_id_index` (`wallet_id`),
+  KEY `withdraws_rate_index` (`rate`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `wrong_answers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `wrong_answers` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '用户ID',
+  `data` json DEFAULT NULL COMMENT '错题数据',
+  `count` int unsigned NOT NULL DEFAULT '0' COMMENT '错题数',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `wrong_answers_user_id_unique` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1);
+INSERT INTO `migrations` VALUES (2,'2014_10_12_100000_create_password_resets_table',1);
+INSERT INTO `migrations` VALUES (3,'2017_06_26_024338_create_articles_table',1);
+INSERT INTO `migrations` VALUES (4,'2017_06_26_081811_create_images_table',1);
+INSERT INTO `migrations` VALUES (5,'2017_06_26_081928_create_article_images_table',1);
+INSERT INTO `migrations` VALUES (6,'2017_06_28_131050_create_categories_table',1);
+INSERT INTO `migrations` VALUES (7,'2017_06_28_131055_create_tags_table',1);
+INSERT INTO `migrations` VALUES (8,'2017_06_28_131107_create_article_tags_table',1);
+INSERT INTO `migrations` VALUES (9,'2017_07_04_162109_articles_description_longtext',2);
+INSERT INTO `migrations` VALUES (10,'2017_07_04_055405_articles_rename_has_pic',3);
+INSERT INTO `migrations` VALUES (11,'2017_07_04_201336_images_add_status',3);
+INSERT INTO `migrations` VALUES (12,'2017_07_06_150524_articles_add_hits_replies',4);
+INSERT INTO `migrations` VALUES (13,'2017_07_06_152617_articles_add_image_top',5);
+INSERT INTO `migrations` VALUES (14,'2017_07_06_221026_articles_add_hits_fields',6);
+INSERT INTO `migrations` VALUES (15,'2017_07_06_231455_create_traffic_table',7);
+INSERT INTO `migrations` VALUES (16,'2017_07_07_080832_traffic_add_path_referer',8);
+INSERT INTO `migrations` VALUES (17,'2017_07_07_084946_user_add_is_seoer',9);
+INSERT INTO `migrations` VALUES (18,'2017_07_07_104756_articles_add_author_id_user_name',10);
+INSERT INTO `migrations` VALUES (19,'2017_07_07_143640_images_add_user_id',11);
+INSERT INTO `migrations` VALUES (20,'2017_07_09_194059_traffic_longer2083_referer',12);
+INSERT INTO `migrations` VALUES (21,'2017_07_09_194059_traffic_longer_referer',12);
+INSERT INTO `migrations` VALUES (22,'2017_07_10_105731_traffic_add_date',13);
+INSERT INTO `migrations` VALUES (23,'2017_07_10_140708_articles_add_category_fk',14);
+INSERT INTO `migrations` VALUES (24,'2017_07_10_143617_images_add_width',15);
+INSERT INTO `migrations` VALUES (25,'2017_07_10_154518_traffic_add_article_id',16);
+INSERT INTO `migrations` VALUES (26,'2017_07_11_114042_traffic_add_user_id',17);
+INSERT INTO `migrations` VALUES (27,'2017_07_11_114333_article_add_date',17);
+INSERT INTO `migrations` VALUES (28,'2017_07_21_105645_create_videos_table',18);
+INSERT INTO `migrations` VALUES (29,'2017_07_26_085132_images_add_title',18);
+INSERT INTO `migrations` VALUES (30,'2017_07_26_115645_create_videos_table',19);
+INSERT INTO `migrations` VALUES (31,'2017_07_26_160454_create_article_videos_table',19);
+INSERT INTO `migrations` VALUES (32,'2017_07_27_140603_articles_add_json',20);
+INSERT INTO `migrations` VALUES (33,'2017_08_01_125119_videos_add_hash',21);
+INSERT INTO `migrations` VALUES (34,'2017_08_01_134449_create_snippets_table',22);
+INSERT INTO `migrations` VALUES (35,'2017_08_01_223115_videos_add_json',22);
+INSERT INTO `migrations` VALUES (36,'2017_08_01_232729_video_path_nullable',22);
+INSERT INTO `migrations` VALUES (37,'2017_08_02_111943_videos_add_adstime',23);
+INSERT INTO `migrations` VALUES (38,'2017_08_02_152855_create_favorites_table',24);
+INSERT INTO `migrations` VALUES (39,'2017_08_02_165143_users_add_api_token',24);
+INSERT INTO `migrations` VALUES (40,'2017_08_03_092602_create_likes_table',25);
+INSERT INTO `migrations` VALUES (41,'2017_08_03_092801_videos_add_likes',25);
+INSERT INTO `migrations` VALUES (42,'2017_08_03_092853_articles_add_likes',25);
+INSERT INTO `migrations` VALUES (43,'2017_08_03_093715_users_api_token_random',25);
+INSERT INTO `migrations` VALUES (44,'2017_08_03_105954_create_comments_table',25);
+INSERT INTO `migrations` VALUES (45,'2017_08_03_110217_favorites_add_index',25);
+INSERT INTO `migrations` VALUES (46,'2017_08_03_110234_likes_add_index',25);
+INSERT INTO `migrations` VALUES (47,'2017_08_07_100553_create_queries_table',26);
+INSERT INTO `migrations` VALUES (48,'2017_08_08_134449_create_snippets_table',27);
+INSERT INTO `migrations` VALUES (49,'2017_08_09_092004_images_add_path_origin',28);
+INSERT INTO `migrations` VALUES (50,'2017_08_09_221738_image_all_nullable',28);
+INSERT INTO `migrations` VALUES (51,'2017_08_16_140906_categories_add_type',29);
+INSERT INTO `migrations` VALUES (52,'2017_10_12_135932_add_order_to_categories_table',30);
+INSERT INTO `migrations` VALUES (53,'2017_11_08_155305_create_follows_table',31);
+INSERT INTO `migrations` VALUES (54,'2017_11_08_155320_create_collections_table',31);
+INSERT INTO `migrations` VALUES (55,'2017_11_08_155329_create_actions_table',31);
+INSERT INTO `migrations` VALUES (56,'2017_11_13_102918_comments_commentable_change',31);
+INSERT INTO `migrations` VALUES (57,'2017_11_13_110701_create_taggable_table',31);
+INSERT INTO `migrations` VALUES (58,'2017_11_13_114713_create_category_user_table',31);
+INSERT INTO `migrations` VALUES (59,'2017_11_13_115751_create_article_category_table',31);
+INSERT INTO `migrations` VALUES (60,'2017_11_13_115816_create_category_video_table',31);
+INSERT INTO `migrations` VALUES (61,'2017_11_13_133344_likes_type_change_liked_type',31);
+INSERT INTO `migrations` VALUES (62,'2017_11_13_133439_favorites_type_change_faved_type',31);
+INSERT INTO `migrations` VALUES (63,'2017_11_13_143940_create_article_collection_table',31);
+INSERT INTO `migrations` VALUES (64,'2017_11_13_144228_create_tips_table',31);
+INSERT INTO `migrations` VALUES (65,'2017_11_13_152414_create_chats_table',31);
+INSERT INTO `migrations` VALUES (66,'2017_11_13_152420_create_messages_table',31);
+INSERT INTO `migrations` VALUES (67,'2017_11_13_152441_create_chat_user_table',31);
+INSERT INTO `migrations` VALUES (68,'2017_11_23_150653_articles_add_count_tips',32);
+INSERT INTO `migrations` VALUES (69,'2017_12_01_102416_categories_add_count_follows',32);
+INSERT INTO `migrations` VALUES (70,'2017_12_01_103813_articles_add_commented',32);
+INSERT INTO `migrations` VALUES (71,'2017_12_01_105719_articles_add_words',32);
+INSERT INTO `migrations` VALUES (72,'2017_12_01_115340_create_notifications_table',32);
+INSERT INTO `migrations` VALUES (73,'2017_12_01_133830_users_add_likes_follows_words',32);
+INSERT INTO `migrations` VALUES (74,'2017_12_04_111104_images_rename_path_origin_extension',32);
+INSERT INTO `migrations` VALUES (75,'2017_12_06_142118_collections_status_default_1',32);
+INSERT INTO `migrations` VALUES (76,'2017_12_06_174611_users_add_count_actions',32);
+INSERT INTO `migrations` VALUES (77,'2017_12_06_190222_collections_add_count_follows',32);
+INSERT INTO `migrations` VALUES (78,'2017_12_07_144827_chat_user_add_unreads',32);
+INSERT INTO `migrations` VALUES (79,'2017_12_12_162318_article_category_add_status',32);
+INSERT INTO `migrations` VALUES (80,'2017_12_13_094932_images_path_index',32);
+INSERT INTO `migrations` VALUES (81,'2017_12_13_141638_articles_rename_likes_count_likes',32);
+INSERT INTO `migrations` VALUES (82,'2017_12_13_143017_categories_add_new_requests',32);
+INSERT INTO `migrations` VALUES (83,'2017_12_14_145019_users_add_profile_fields',32);
+INSERT INTO `migrations` VALUES (84,'2017_12_14_150118_collections_add_count_fields',32);
+INSERT INTO `migrations` VALUES (85,'2017_12_19_134215_articles_description_nullable',33);
+INSERT INTO `migrations` VALUES (86,'2017_12_19_150126_users_add_count_favorites',34);
+INSERT INTO `migrations` VALUES (87,'2017_12_20_144107_create_transactions_table',35);
+INSERT INTO `migrations` VALUES (88,'2018_01_10_112052_create_questions_table',36);
+INSERT INTO `migrations` VALUES (89,'2018_01_10_112128_create_answers_table',36);
+INSERT INTO `migrations` VALUES (90,'2018_01_10_112409_create_question_invites_table',36);
+INSERT INTO `migrations` VALUES (91,'2018_01_10_151029_create_category_question_table',36);
+INSERT INTO `migrations` VALUES (92,'2018_01_10_195255_category_add_request_status',36);
+INSERT INTO `migrations` VALUES (93,'2018_01_10_112053_create_questions_table',37);
+INSERT INTO `migrations` VALUES (94,'2018_01_10_112129_create_answers_table',37);
+INSERT INTO `migrations` VALUES (95,'2018_01_14_110645_categories_add_has_question',37);
+INSERT INTO `migrations` VALUES (96,'2018_01_16_095208_create_jobs_table',38);
+INSERT INTO `migrations` VALUES (97,'2018_01_16_100455_create_failed_jobs_table',38);
+INSERT INTO `migrations` VALUES (98,'2018_01_17_091227_edit_users_enable_tips_bool',39);
+INSERT INTO `migrations` VALUES (99,'2018_01_17_110712_tips_add_message',39);
+INSERT INTO `migrations` VALUES (100,'2018_01_18_105446_article_add_delay_time',40);
+INSERT INTO `migrations` VALUES (101,'2018_01_18_143448_answers_add_status',40);
+INSERT INTO `migrations` VALUES (102,'2018_01_18_143511_questions_add_status',40);
+INSERT INTO `migrations` VALUES (103,'2018_01_18_144450_questions_rename_count_comments_reports',40);
+INSERT INTO `migrations` VALUES (104,'2018_01_23_141838_articles_remove_category_id_forieign',41);
+INSERT INTO `migrations` VALUES (105,'2018_01_23_2190137_articles_category_id_nullable',41);
+INSERT INTO `migrations` VALUES (106,'2018_01_23_170018_articles_nullable_more_fields',42);
+INSERT INTO `migrations` VALUES (107,'2018_01_25_173229_questions_add_pay_fields',43);
+INSERT INTO `migrations` VALUES (108,'2018_01_26_143809_answers_add_bonus',43);
+INSERT INTO `migrations` VALUES (109,'2018_01_28_195016_articles_nullable_body',44);
+INSERT INTO `migrations` VALUES (110,'2018_01_31_234704_categories_add_new_request_title',45);
+INSERT INTO `migrations` VALUES (111,'2018_02_01_204013_questions_add_closed',46);
+INSERT INTO `migrations` VALUES (112,'2018_02_07_112302_articles_add_collection_id',47);
+INSERT INTO `migrations` VALUES (113,'2018_02_08_112106_create_querylogs_table',48);
+INSERT INTO `migrations` VALUES (114,'2018_03_20_145021_users_api_token_index',49);
+INSERT INTO `migrations` VALUES (115,'2018_03_29_114022_articles_count_words',50);
+INSERT INTO `migrations` VALUES (116,'2018_03_29_120152_articles_source_url_nullable',50);
+INSERT INTO `migrations` VALUES (117,'2018_04_20_091641_add_categories_column_table',51);
+INSERT INTO `migrations` VALUES (118,'2018_04_28_101555_edit_comments_add_at_uid',52);
+INSERT INTO `migrations` VALUES (119,'2018_05_08_134341_edit_articles_add_count_comments',53);
+INSERT INTO `migrations` VALUES (120,'2018_05_19_020131_edit_images_path_small_disk',54);
+INSERT INTO `migrations` VALUES (121,'2018_05_21_164003_add_clomun_hash_table',54);
+INSERT INTO `migrations` VALUES (122,'2018_05_30_153915_edit_category_user_table_add_count_approved',55);
+INSERT INTO `migrations` VALUES (123,'2018_05_30_153915_edit_category_user_table_change_count_approved',55);
+INSERT INTO `migrations` VALUES (124,'2018_05_30_165916_edit_articles_add_count_reports',55);
+INSERT INTO `migrations` VALUES (125,'2018_05_30_170459_edit_users_drop_seofields_rename_json',55);
+INSERT INTO `migrations` VALUES (126,'2018_05_31_153744_edit_users_add_count_reports',56);
+INSERT INTO `migrations` VALUES (127,'2018_05_23_132127_add_categories_add_count_videos',57);
+INSERT INTO `migrations` VALUES (128,'2018_05_24_103640_add_videos_add_hits',57);
+INSERT INTO `migrations` VALUES (129,'2018_05_31_105124_create_visits_table',58);
+INSERT INTO `migrations` VALUES (130,'2018_06_15_153459_edit_transactions_add_from_to_relate_id',59);
+INSERT INTO `migrations` VALUES (131,'2018_06_25_154905_alert_articles_table',60);
+INSERT INTO `migrations` VALUES (132,'2018_06_25_154917_alert_videos_table',60);
+INSERT INTO `migrations` VALUES (133,'2018_06_30_132836_alert_video_step2',60);
+INSERT INTO `migrations` VALUES (134,'2018_06_30_132837_alert_video_step2',61);
+INSERT INTO `migrations` VALUES (135,'2018_07_04_135103_drop_some_tables',62);
+INSERT INTO `migrations` VALUES (136,'2018_07_10_155701_drop_article_collection_table',63);
+INSERT INTO `migrations` VALUES (137,'2018_07_16_180005_edit_users_table',64);
+INSERT INTO `migrations` VALUES (138,'2018_07_24_151144_edit_videos_add_qcvod_id',64);
+INSERT INTO `migrations` VALUES (139,'2018_08_10_173018_edit_articles_modify_title',65);
+INSERT INTO `migrations` VALUES (140,'2018_08_15_050540_edit_taggables_drop_id',66);
+INSERT INTO `migrations` VALUES (141,'2018_08_29_095457_create_feedback_table',67);
+INSERT INTO `migrations` VALUES (142,'2018_08_29_095704_create_feedback_image_table',67);
+INSERT INTO `migrations` VALUES (143,'2018_09_04_112330_edit_articles_slug_column',68);
+INSERT INTO `migrations` VALUES (144,'2018_09_07_131215_edit_users_rename_is_signed',69);
+INSERT INTO `migrations` VALUES (145,'2018_09_14_113241_edit_traffic_table_ints',70);
+INSERT INTO `migrations` VALUES (146,'2018_09_16_105947_edit_articles_source_url_null',70);
+INSERT INTO `migrations` VALUES (147,'2018_10_27_170322_add_is_app_column_to_traffic',71);
+INSERT INTO `migrations` VALUES (148,'2018_11_08_201449_edit_actions_table',71);
+INSERT INTO `migrations` VALUES (149,'2016_06_01_000001_create_oauth_auth_codes_table',72);
+INSERT INTO `migrations` VALUES (150,'2016_06_01_000002_create_oauth_access_tokens_table',72);
+INSERT INTO `migrations` VALUES (151,'2016_06_01_000003_create_oauth_refresh_tokens_table',72);
+INSERT INTO `migrations` VALUES (152,'2016_06_01_000004_create_oauth_clients_table',72);
+INSERT INTO `migrations` VALUES (153,'2016_06_01_000005_create_oauth_personal_access_clients_table',72);
+INSERT INTO `migrations` VALUES (154,'2018_01_01_000000_create_action_events_table',72);
+INSERT INTO `migrations` VALUES (155,'2019_02_10_131245_create_versions_table',72);
+INSERT INTO `migrations` VALUES (156,'2019_05_10_000000_add_fields_to_action_events_table',72);
+INSERT INTO `migrations` VALUES (157,'2019_08_20_095055_create_profiles_table',72);
+INSERT INTO `migrations` VALUES (158,'2019_08_20_170129_rename_role_id_to_users_table',72);
+INSERT INTO `migrations` VALUES (159,'2019_08_20_172918_create_answer_table',72);
+INSERT INTO `migrations` VALUES (160,'2019_08_20_181245_add_tikcet_column_to_users_table',72);
+INSERT INTO `migrations` VALUES (161,'2019_08_20_182636_create_gold_table',72);
+INSERT INTO `migrations` VALUES (162,'2019_08_20_210726_create_wallets_table',72);
+INSERT INTO `migrations` VALUES (163,'2019_08_20_211939_create_withdraws_table',72);
+INSERT INTO `migrations` VALUES (164,'2019_08_20_212424_create_exchanges_table',72);
+INSERT INTO `migrations` VALUES (165,'2019_08_21_114414_create_wallet_transactions_table',72);
+INSERT INTO `migrations` VALUES (166,'2019_08_21_210537_add_app_column_to_users_table',72);
+INSERT INTO `migrations` VALUES (167,'2019_08_22_143048_create_questions_table',72);
+INSERT INTO `migrations` VALUES (168,'2019_08_25_170426_add_dz_id_to_users_table',72);
+INSERT INTO `migrations` VALUES (169,'2019_09_26_234455_create_cache_table',72);
+INSERT INTO `migrations` VALUES (170,'2019_09_29_175756_create_issues_table',72);
+INSERT INTO `migrations` VALUES (171,'2019_09_29_175846_create_resolutions_table',72);
+INSERT INTO `migrations` VALUES (172,'2019_09_29_182452_create_category_issue_table',72);
+INSERT INTO `migrations` VALUES (173,'2019_09_29_194906_create_imageables_table',72);
+INSERT INTO `migrations` VALUES (174,'2019_09_30_090135_create_issue_invites_table',72);
+INSERT INTO `migrations` VALUES (175,'2019_10_09_095918_edit_articles_add_issue_id',72);
+INSERT INTO `migrations` VALUES (176,'2019_10_09_173504_edit_comments_add_is_accept',72);
+INSERT INTO `migrations` VALUES (177,'2019_10_10_095016_edit_issues_add_gold',72);
+INSERT INTO `migrations` VALUES (178,'2019_10_10_095038_edit_resolutions_add_gold',72);
+INSERT INTO `migrations` VALUES (179,'2019_10_11_085446_edit_comments_add_soft_delete',72);
+INSERT INTO `migrations` VALUES (180,'2019_10_15_103021_create_verifies_table',72);
+INSERT INTO `migrations` VALUES (181,'2019_10_15_141036_add_background_on_users',72);
+INSERT INTO `migrations` VALUES (182,'2019_10_15_151203_add_uuid_on_users',72);
+INSERT INTO `migrations` VALUES (183,'2019_10_15_170523_add_status_to_feedback_table',72);
+INSERT INTO `migrations` VALUES (184,'2019_10_15_173310_add_birthday_on_users',72);
+INSERT INTO `migrations` VALUES (185,'2019_10_16_010603_edit_images_add_index_to_hash',72);
+INSERT INTO `migrations` VALUES (186,'2019_10_16_204600_edit_tips_add_gold',72);
+INSERT INTO `migrations` VALUES (187,'2019_10_17_093106_create_app_configs_table',72);
+INSERT INTO `migrations` VALUES (188,'2019_10_17_161132_edit_articles_add_submit',72);
+INSERT INTO `migrations` VALUES (189,'2019_10_17_210455_create_contributes_table',72);
+INSERT INTO `migrations` VALUES (190,'2019_10_18_153601_edit_feedback_to_status',72);
+INSERT INTO `migrations` VALUES (191,'2019_10_22_231017_rename_adstime_disk_to_videos_table',72);
+INSERT INTO `migrations` VALUES (192,'2019_10_31_105149_add_account_to_users_table',73);
+INSERT INTO `migrations` VALUES (193,'2019_10_25_105024_create_reports_table',74);
+INSERT INTO `migrations` VALUES (194,'2019_10_27_163026_drop_profile_fields_to_users_table',74);
+INSERT INTO `migrations` VALUES (195,'2019_10_27_163604_add_profile_fields_to_profiles_table',74);
+INSERT INTO `migrations` VALUES (196,'2019_10_27_173138_drop_has_pic_to_articles_table',74);
+INSERT INTO `migrations` VALUES (197,'2019_10_27_173857_drop_date_username_to_articles_table',74);
+INSERT INTO `migrations` VALUES (198,'2019_10_27_175754_rename_image_url_cover_to_articles_table',74);
+INSERT INTO `migrations` VALUES (199,'2019_10_27_183636_drop_video_url_to_articles_table',74);
+INSERT INTO `migrations` VALUES (200,'2019_10_27_210223_rename_count_likes_reports_to_comments_table',74);
+INSERT INTO `migrations` VALUES (201,'2019_10_27_211920_drop_with_users_to_chat_user_table',74);
+INSERT INTO `migrations` VALUES (202,'2019_10_28_104910_rename_log_remark_to_transactions_table',74);
+INSERT INTO `migrations` VALUES (203,'2019_10_28_112319_add_wallet_id_to_gold_table',74);
+INSERT INTO `migrations` VALUES (204,'2019_10_28_112449_add_wallet_id_to_transactions_table',74);
+INSERT INTO `migrations` VALUES (205,'2019_10_28_163606_drop_wallets_user_id_unique_index_to_wallet_table',74);
+INSERT INTO `migrations` VALUES (206,'2019_10_29_102955_edit_transaction_user_id_nullable',74);
+INSERT INTO `migrations` VALUES (207,'2019_10_29_170427_add_account_to_users_table',74);
+INSERT INTO `migrations` VALUES (208,'2019_11_02_101349_create_seos_table',75);
+INSERT INTO `migrations` VALUES (209,'2019_11_02_101355_create_asos_table',75);
+INSERT INTO `migrations` VALUES (210,'2019_11_04_161726_add_softdelete_to_follows_table',75);
+INSERT INTO `migrations` VALUES (211,'2019_11_04_161726_add_softdelete_to_likes_table',75);
+INSERT INTO `migrations` VALUES (212,'2019_11_07_161945_add_status_to_actions_table',75);
+INSERT INTO `migrations` VALUES (213,'2019_11_21_140402_add_total_contributes_on_profiles',76);
+INSERT INTO `migrations` VALUES (214,'2019_11_22_150653_add_email_verified_at_to_users_table',76);
+INSERT INTO `migrations` VALUES (215,'2019_11_26_142909_create_tasks_table',76);
+INSERT INTO `migrations` VALUES (216,'2019_11_26_154319_create_user_task_table',76);
+INSERT INTO `migrations` VALUES (217,'2019_11_28_115049_create_ips_table',76);
+INSERT INTO `migrations` VALUES (218,'2019_11_28_134535_create_black_lists_table',76);
+INSERT INTO `migrations` VALUES (219,'2019_11_29_091331_create_bad_words_table',76);
+INSERT INTO `migrations` VALUES (220,'2019_11_29_165106_drop_device_id_and_expired_at_to_black_list_table',76);
+INSERT INTO `migrations` VALUES (221,'2019_08_01_154508_create_o_auths_table',77);
+INSERT INTO `migrations` VALUES (222,'2019_12_09_103526_create_user_blocks_table',77);
+INSERT INTO `migrations` VALUES (223,'2019_12_09_215051_edit_article_add_review_id',77);
+INSERT INTO `migrations` VALUES (224,'2019_12_12_111310_add_is_hot_to_articles_table',78);
+INSERT INTO `migrations` VALUES (225,'2019_12_17_114716_add_remark_to_contributes_table',79);
+INSERT INTO `migrations` VALUES (226,'2019_12_17_164949_create_user_retentions_table',80);
+INSERT INTO `migrations` VALUES (227,'2019_12_17_165133_add_not_interested_on_user_blocks',81);
+INSERT INTO `migrations` VALUES (228,'2019_12_19_145558_add_logo_to_tasks_table',82);
+INSERT INTO `migrations` VALUES (229,'2019_12_20_101057_add_data_on_appconfigs',83);
+INSERT INTO `migrations` VALUES (230,'2019_12_20_153824_create_ad_configs_table',84);
+INSERT INTO `migrations` VALUES (231,'2019_12_23_155644_create_function_switchs_table',84);
+INSERT INTO `migrations` VALUES (232,'2019_12_24_160213_add_wechat_account_to_wallets_table',85);
+INSERT INTO `migrations` VALUES (233,'2019_12_26_162232_create_notices_table',85);
+INSERT INTO `migrations` VALUES (234,'2019_12_28_133512_create_reward_counters_table',86);
+INSERT INTO `migrations` VALUES (235,'2020_01_03_163005_add_app_version_to_profiles',87);
+INSERT INTO `migrations` VALUES (236,'2020_01_02_145142_add_reward_rate_to_user_task_table',88);
+INSERT INTO `migrations` VALUES (237,'2020_01_03_114857_add_parent_task_to_tasks_table',88);
+INSERT INTO `migrations` VALUES (238,'2020_01_09_135210_add_background_img_to_tasks_table',88);
+INSERT INTO `migrations` VALUES (239,'2020_01_09_154313_change_total_withdraw_amount_to_decimal_on_wallets',88);
+INSERT INTO `migrations` VALUES (240,'2020_01_16_145849_edit_withdraws_add_rate',89);
+INSERT INTO `migrations` VALUES (241,'2020_01_18_180617_edit_contributes_modify_amount_from_tinyinteger_to_integer',89);
+INSERT INTO `migrations` VALUES (242,'2019_10_23_095412_add_account_to_users_table',90);
+INSERT INTO `migrations` VALUES (243,'2019_10_29_170427_add_dz_id_to_users_table',90);
+INSERT INTO `migrations` VALUES (244,'2020_01_02_141947_create_invitations_table',90);
+INSERT INTO `migrations` VALUES (245,'2020_01_02_173950_create_invitation_rewards_table',90);
+INSERT INTO `migrations` VALUES (246,'2020_01_09_103844_create_user_invitations_table',90);
+INSERT INTO `migrations` VALUES (247,'2020_01_09_104234_create_invitation_phases_table',90);
+INSERT INTO `migrations` VALUES (248,'2020_01_14_141923_create_invite_opens_table',90);
+INSERT INTO `migrations` VALUES (249,'2020_01_14_141929_create_invite_installs_table',90);
+INSERT INTO `migrations` VALUES (250,'2020_02_28_120514_create_live_rooms_table',90);
+INSERT INTO `migrations` VALUES (251,'2020_04_21_095104_create_stores_table',90);
+INSERT INTO `migrations` VALUES (252,'2020_04_21_100022_create_products_table',90);
+INSERT INTO `migrations` VALUES (253,'2020_04_21_142118_create_orders_table',90);
+INSERT INTO `migrations` VALUES (254,'2020_04_21_171903_create_platform_accounts_table',91);
+INSERT INTO `migrations` VALUES (255,'2020_04_21_172909_create_product_order_table',91);
+INSERT INTO `migrations` VALUES (256,'2020_04_22_005439_add_product_id_to_image_table',91);
+INSERT INTO `migrations` VALUES (257,'2020_04_22_160409_add_dimension2_to_product_table',91);
+INSERT INTO `migrations` VALUES (258,'2020_04_24_102937_add_password_add_orders_table',91);
+INSERT INTO `migrations` VALUES (259,'2020_04_26_151121_create_assignments_table',91);
+INSERT INTO `migrations` VALUES (260,'2020_04_26_151147_create_review_flows_table',91);
+INSERT INTO `migrations` VALUES (261,'2020_04_27_160646_add_dimension_to_platform_accounts_tables',91);
+INSERT INTO `migrations` VALUES (262,'2020_04_28_093315_create_user_lives_table',91);
+INSERT INTO `migrations` VALUES (263,'2020_04_28_155952_edit_to_videos',91);
+INSERT INTO `migrations` VALUES (264,'2020_04_28_165210_add_video_id_to_user_lives',91);
+INSERT INTO `migrations` VALUES (265,'2020_04_28_174124_delete_passsword_and_account_to_orders_table',91);
+INSERT INTO `migrations` VALUES (266,'2020_04_28_175531_update_order_status_to_platform_account_tables',91);
+INSERT INTO `migrations` VALUES (267,'2020_04_28_175649_add_price_to_product_order_tables',91);
+INSERT INTO `migrations` VALUES (268,'2020_04_29_110041_add_dimension2_to_platform_accounts_tables',91);
+INSERT INTO `migrations` VALUES (269,'2020_04_29_111058_add_price_to_platform_account_tables',91);
+INSERT INTO `migrations` VALUES (270,'2020_04_29_195301_edit_status_default_to_assignments',91);
+INSERT INTO `migrations` VALUES (271,'2020_04_30_093138_rename_today_count_current_count_to_assignments',91);
+INSERT INTO `migrations` VALUES (272,'2020_04_30_093843_rename_checkout_functions_to_review_flows',91);
+INSERT INTO `migrations` VALUES (273,'2020_04_30_100511_drop_user_task_table',91);
+INSERT INTO `migrations` VALUES (274,'2020_04_30_111149_create_configs_table',91);
+INSERT INTO `migrations` VALUES (275,'2020_04_30_120521_drop_tasks_table',91);
+INSERT INTO `migrations` VALUES (276,'2020_04_30_999903_create_tasks_table',91);
+INSERT INTO `migrations` VALUES (277,'2019_11_09_163346_create_spiders_table',92);
+INSERT INTO `migrations` VALUES (278,'2019_11_18_154639_create_posts_table',92);
+INSERT INTO `migrations` VALUES (279,'2020_02_25_153158_create_post_recommends_table',92);
+INSERT INTO `migrations` VALUES (280,'2020_04_26_151123_create_assignments_table',92);
+INSERT INTO `migrations` VALUES (281,'2020_05_26_210349_create_categorizeds_table',92);
+INSERT INTO `migrations` VALUES (282,'2020_06_05_164309_create_item_table',92);
+INSERT INTO `migrations` VALUES (283,'2020_06_05_164614_create_item_user_table',92);
+INSERT INTO `migrations` VALUES (284,'2020_06_15_173502_add_group_to_tasks',92);
+INSERT INTO `migrations` VALUES (285,'2020_06_16_122459_add_review_class_to_review_flows',92);
+INSERT INTO `migrations` VALUES (286,'2020_06_03_160662_create_exchange_config_table',93);
+INSERT INTO `migrations` VALUES (287,'2019_11_04_174646_create_dimensions_table',94);
+INSERT INTO `migrations` VALUES (288,'2020_07_15_093315_create_lives_table',95);
+INSERT INTO `migrations` VALUES (289,'2020_07_15_113704_create_live_rooms_table',95);
+INSERT INTO `migrations` VALUES (290,'2020_07_16_105932_create_live_actions_table',95);
+INSERT INTO `migrations` VALUES (291,'2020_07_16_110817_create_live_users_table',95);
+INSERT INTO `migrations` VALUES (292,'2018_11_17_095034_create_questions_table',96);
+INSERT INTO `migrations` VALUES (293,'2018_11_18_170217_create_categories_table',96);
+INSERT INTO `migrations` VALUES (294,'2019_02_11_152154_create_curations_table',96);
+INSERT INTO `migrations` VALUES (295,'2019_02_19_175820_create_tags_table',96);
+INSERT INTO `migrations` VALUES (296,'2019_02_20_135752_create_taggables_table',96);
+INSERT INTO `migrations` VALUES (297,'2019_04_08_082852_create_category_users_table',96);
+INSERT INTO `migrations` VALUES (298,'2019_04_09_115921_create_audit_table',96);
+INSERT INTO `migrations` VALUES (299,'2019_06_26_174326_create_explanations_table',96);
+INSERT INTO `migrations` VALUES (300,'2019_07_09_114740_create_user_actions_table',96);
+INSERT INTO `migrations` VALUES (301,'2019_08_19_194542_create_answer_table',96);
+INSERT INTO `migrations` VALUES (302,'2020_02_18_204223_create_wrong_answers_table',96);
+INSERT INTO `migrations` VALUES (303,'2020_03_18_195915_create_question_recommends_table',96);
+INSERT INTO `migrations` VALUES (304,'2018_11_17_095035_create_questions_table',97);
+INSERT INTO `migrations` VALUES (305,'2018_11_17_095036_create_questions_table',98);
+INSERT INTO `migrations` VALUES (306,'2018_11_17_095037_create_questions_table',99);
+INSERT INTO `migrations` VALUES (307,'2020_07_23_142802_add_clomen_to_categories_table',100);
+INSERT INTO `migrations` VALUES (308,'2020_07_23_143454_add_column_to_category_user_table',101);
+INSERT INTO `migrations` VALUES (309,'2020_07_23_144136_add_last_category_id_to_users_table',102);
+INSERT INTO `migrations` VALUES (310,'2020_07_23_155707_add_likeable_id_to_likes_table',103);
+INSERT INTO `migrations` VALUES (311,'2020_07_23_155834_add_likeable_type_to_likes_table',104);
+INSERT INTO `migrations` VALUES (312,'2020_02_19_111359_create_audio_table',105);
+INSERT INTO `migrations` VALUES (313,'2020_07_23_173716_add_favorable_id_to_favorites_table',106);
+INSERT INTO `migrations` VALUES (314,'2019_06_18_142413_create_roles_table',107);
+INSERT INTO `migrations` VALUES (315,'2019_08_02_095159_create_snapshots_table',108);
+INSERT INTO `migrations` VALUES (316,'2020_07_30_092523_create_appointment_lives_table',109);
+INSERT INTO `migrations` VALUES (317,'2020_07_30_094722_add_began_time_on_lives_table',109);
+INSERT INTO `migrations` VALUES (318,'2020_08_05_155259_add_answers_count_today_to_profile_table',109);
+INSERT INTO `migrations` VALUES (319,'2020_04_29_093315_create_user_lives_table',110);
+INSERT INTO `migrations` VALUES (320,'2019_09_29_175846_create_solutions_table',111);
+INSERT INTO `migrations` VALUES (321,'2019_09_29_194906_create_imageable_table',111);
+INSERT INTO `migrations` VALUES (322,'2020_06_29_120848_create_check_ins_table',111);
+INSERT INTO `migrations` VALUES (323,'2020_06_29_163239_add_keep_checkin_days_to_profiles',111);
+INSERT INTO `migrations` VALUES (324,'2020_06_30_064008_create_dimensions_table',112);
+INSERT INTO `migrations` VALUES (325,'2020_07_02_115321_add_withdraw_at_and_withdraw_lines_to_users',112);
+INSERT INTO `migrations` VALUES (326,'2020_07_15_160402_edit_articles_json_column',112);
+INSERT INTO `migrations` VALUES (327,'2020_07_16_053604_edit_posts_add_softdelete',112);
+INSERT INTO `migrations` VALUES (328,'2020_07_19_084727_edit_likes_renam_liked',113);
+INSERT INTO `migrations` VALUES (329,'2020_07_25_003835_add_description_to_tasks_table',113);
+INSERT INTO `migrations` VALUES (330,'2020_07_31_111953_edit_users_add_soft_deletes',113);
+INSERT INTO `migrations` VALUES (331,'2020_08_06_154414_update_videos_table',113);
+INSERT INTO `migrations` VALUES (332,'2020_08_12_092135_create_not_likes_table',113);
+INSERT INTO `migrations` VALUES (333,'2020_08_18_171558_update_profiles_table',113);
+INSERT INTO `migrations` VALUES (334,'2020_08_24_171357_add_count_user_table',113);
+INSERT INTO `migrations` VALUES (335,'2020_09_04_114039_add_column_to_feedbacks',113);
+INSERT INTO `migrations` VALUES (336,'2017_11_13_110702_create_taggable_table',114);
+INSERT INTO `migrations` VALUES (337,'2020_09_16_143621_update_posts_table',115);
+INSERT INTO `migrations` VALUES (338,'2020_09_17_165345_create_collectables_table',116);
+INSERT INTO `migrations` VALUES (339,'2020_09_22_102150_add_description_to_collections',117);
+INSERT INTO `migrations` VALUES (340,'2020_09_23_100927_add_soft_deletes_to_collections_table',117);
+INSERT INTO `migrations` VALUES (341,'2017_11_08_155321_create_collections_table',118);
+INSERT INTO `migrations` VALUES (342,'2020_09_23_150311_add_sortrank_to_collectables_table',119);
+INSERT INTO `migrations` VALUES (343,'2020_09_23_175419_add_count_posts_to_collections_table',119);
+INSERT INTO `migrations` VALUES (344,'2020_09_24_100004_add_json_to_collections_table',119);
+INSERT INTO `migrations` VALUES (345,'2020_09_27_114503_add_columns_to_tasks',119);
+INSERT INTO `migrations` VALUES (346,'2020_10_10_152839_add_sort_rank_to_collections',120);
+INSERT INTO `migrations` VALUES (347,'2019_09_29_194907_create_imageables_table',121);
+INSERT INTO `migrations` VALUES (348,'2019_09_29_194907_create_imageables2_table',122);
+INSERT INTO `migrations` VALUES (349,'2020_09_28_002551_create_shares_table',123);
+INSERT INTO `migrations` VALUES (350,'2020_10_21_180852_add_uids_to_shares_table',123);
+INSERT INTO `migrations` VALUES (351,'2020_10_23_102902_add_count_views_to_collections_table',124);
+INSERT INTO `migrations` VALUES (352,'2020_10_14_172626_add_vid_to_videos_table',125);
+INSERT INTO `migrations` VALUES (353,'2020_11_12_105048_create_movies_table',126);
+INSERT INTO `migrations` VALUES (354,'2020_11_12_105419_create_series_table',126);
+INSERT INTO `migrations` VALUES (355,'2020_11_20_163119_add_issue_id_on_images_table',127);
+INSERT INTO `migrations` VALUES (356,'2020_11_20_112348_add_issue_id_to_images',128);
+INSERT INTO `migrations` VALUES (357,'2020_11_23_181755_add_is_pay_on_issues_tables',128);
+INSERT INTO `migrations` VALUES (359,'2020_11_23_182023_add_log_on_transactions_table',129);
