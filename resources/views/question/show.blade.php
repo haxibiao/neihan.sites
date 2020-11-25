@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title'){{ $question->title }}-{{ config('app.name_cn') }}问答@stop
+@section('title'){{ $question->title }}-{{ seo_site_name() }}问答@stop
 @section('description') {{ get_seo_description() }} @stop
 @section('keywords') {{ get_seo_keywords() }} @stop
 

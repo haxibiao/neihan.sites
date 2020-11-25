@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    页面找不到 - {{ config('app.name_cn') }}
+    页面找不到 - {{ seo_site_name() }}
 @endsection
 @section('content')
 

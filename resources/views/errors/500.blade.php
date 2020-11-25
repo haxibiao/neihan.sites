@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    服务器错误 - {{ config('app.name_cn') }}
+    服务器错误 - {{ seo_site_name() }}
 @endsection
 @section('content')
 

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    权限不足 - {{ config('app.name_cn') }}
+    权限不足 - {{ seo_site_name() }}
 @endsection
 
 @section('content')
