@@ -174,7 +174,7 @@ function openlink(link) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/zdw/data/www/neihan.sites/resources/assets/js/main.js */"./resources/assets/js/main.js");
+module.exports = __webpack_require__(/*! /Users/wangyukun/data/www/neihan.sites/resources/assets/js/main.js */"./resources/assets/js/main.js");
 
 
 /***/ })

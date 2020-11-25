@@ -265,7 +265,7 @@ $(document).ready(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/zdw/data/www/neihan.sites/resources/assets/js_movie/home.js */"./resources/assets/js_movie/home.js");
+module.exports = __webpack_require__(/*! /Users/wangyukun/data/www/neihan.sites/resources/assets/js_movie/home.js */"./resources/assets/js_movie/home.js");
 
 
 /***/ })
