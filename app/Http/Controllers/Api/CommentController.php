@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Like;
 use App\Comment;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 
 class CommentController extends Controller
@@ -47,9 +48,15 @@ class CommentController extends Controller
             //TODO 存在BUG-缓存过期状态会消失。目前先不引入report表。
             $comment->reported = empty($user) ? 0 : $this->check_cache($request, $comment->id, 'report_comment');
             $comment->replying = 0;
+            $count_likes = Like::query()
+            ->where('likable_type', 'comments')
+            ->where('likable_id', $comment->id)
+            ->count();
+
+            $comment->count_likes = $count_likes;
         }
         return $comments;
-    }
+    } 
 
     public function like(Request $request, $id)
     {
@@ -57,8 +64,8 @@ class CommentController extends Controller
         $user = $request->user();
         $data = [
             'user_id'    => $user->id,
-            'liked_id'   => $id,
-            'liked_type' => 'comments',
+            'likable_id'   => $id,
+            'likable_type' => 'comments',
         ];
         return $like->toggleLike($data);
     }

@@ -30,7 +30,7 @@
             <div class="comment-dtl">
               <p v-html="comment.body"></p>
               <div class="tool-group">
-                <a :class="['like',comment.liked?'active':'']" @click="like(comment)"><i :class="['iconfont',comment.liked?'icon-dianzan':'icon-fabulous']"></i> <span><b v-show="comment.likes">{{comment.likes+'人'}}</b>赞</span></a>
+                <a :class="['like',comment.liked?'active':'']" @click="like(comment)"><i :class="['iconfont',comment.liked?'icon-dianzan':'icon-fabulous']"></i> <span><b v-show="comment.likes">{{comment.count_likes+'人'}}</b>赞</span></a>
                 <a class="reply" @click="toggleReplyComment(comment, index)"><i class="iconfont icon-xinxi"></i> <span>回复</span></a>
                 <a href="javascript:;" class="report" @click="report(comment)"><span>{{ comment.reported ? '已举报':'举报'}}</span></a>
               </div>
@@ -147,7 +147,7 @@ export default {
       return api;
     },
     actionApiUrl: function(id, action) {
-      return window.tokenize("/api/comment/" + id + "/" + action);
+      return window.tokenize("/api/comment/" + id + "/" + action); 
     },
     //写新评论
     postComment(body) {
@@ -289,9 +289,9 @@ export default {
       if (this.checkLogin()) {
         this.$set(comment, "liked", !comment.liked);
         window.axios
-          .get(this.actionApiUrl(comment.id, "like"))
+          .get(this.actionApiUrl(comment.id, "like")) 
           .then(function(response) {
-            comment.likes = response.data.likes;
+            comment.count_likes = response.data.count_likes;
             comment.liked = response.data.liked;
           });
       }
@@ -320,8 +320,10 @@ export default {
             });
           }
         });
+        console("response:" , response);
         _this.lastPage = response.data.last_page;
         _this.total = response.data.total;
+        //_this.count_likes = response.data.count_likes;
       });
     },
     commentBody: function(comment){
