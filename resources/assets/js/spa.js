@@ -45,53 +45,77 @@ Vue.component("modal-contribute", require("./components/modals/ModalContribute.v
 const routes = [
   {
     path: "/comments",
-    component: require("./components/notification/Comments.vue")
+    component: require("./components/notification/Comments.vue").default
   },
-  { path: "/chats", component: require("./components/notification/Chats.vue") },
+  {
+    path: "/chats",
+    component: require("./components/notification/Chats.vue").default
+  },
   {
     path: "/chat/:id",
-    component: require("./components/notification/Chat.vue")
+    component: require("./components/notification/Chat.vue").default
   },
   {
     path: "/requests",
-    component: require("./components/notification/Requests.vue")
+    component: require("./components/notification/Requests.vue").default
   },
-  { path: "/likes", component: require("./components/notification/Likes.vue") },
+  {
+    path: "/likes",
+    component: require("./components/notification/Likes.vue").default
+  },
   {
     path: "/follows",
-    component: require("./components/notification/Follows.vue")
+    component: require("./components/notification/Follows.vue").default
   },
-  { path: "/tips", component: require("./components/notification/Tips.vue") },
+  {
+    path: "/tips",
+    component: require("./components/notification/Tips.vue").default
+  },
   {
     path: "/others",
-    component: require("./components/notification/Others.vue")
+    component: require("./components/notification/Others.vue").default
   },
 
-  { path: "/timeline", component: require("./components/follow/Timeline.vue") },
+  {
+    path: "/timeline",
+    component: require("./components/follow/Timeline.vue").default
+  },
   {
     path: "/categories/:id",
-    component: require("./components/follow/Category.vue")
+    component: require("./components/follow/Category.vue").default
   },
   {
     path: "/collections/:id",
-    component: require("./components/follow/Collection.vue")
+    component: require("./components/follow/Collection.vue").default
   },
-  { path: "/users/:id", component: require("./components/follow/User.vue") },
+  {
+    path: "/users/:id",
+    component: require("./components/follow/User.vue").default
+  },
   {
     path: "/recommend",
-    component: require("./components/follow/Recommend.vue")
+    component: require("./components/follow/Recommend.vue").default
   },
   {
     path: "/submissions/:id",
-    component: require("./components/notification/Submissions.vue")
+    component: require("./components/notification/Submissions.vue").default
   },
   {
     path: "/pending_submissions",
-    component: require("./components/notification/PendingSubmissions.vue")
+    component: require("./components/notification/PendingSubmissions.vue").default
   },
-  { path: "/base", component: require("./components/setting/Base.vue") },
-  { path: "/profile", component: require("./components/setting/Profile.vue") },
-  { path: "/reward", component: require("./components/setting/Reward.vue") }
+  {
+    path: "/base",
+    component: require("./components/setting/Base.vue").default
+  },
+  {
+    path: "/profile",
+    component: require("./components/setting/Profile.vue").default
+  },
+  {
+    path: "/reward",
+    component: require("./components/setting/Reward.vue").default
+  }
 ];
 
 const router = new VueRouter({
