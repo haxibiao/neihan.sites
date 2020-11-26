@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Scopes\ArticleScope;
 use App\Traits\CanBeLiked;
 use Haxibiao\Content\Article as BaseArticle;
 
@@ -20,6 +21,11 @@ class Article extends BaseArticle
             $article->description = app('SensitiveUtils')->replace($description, '*');
             $article->body        = app('SensitiveUtils')->replace($body, '*');
         });
+    }
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new ArticleScope);
     }
 
 }

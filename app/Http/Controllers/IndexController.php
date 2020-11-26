@@ -8,6 +8,7 @@ use App\Movie;
 use App\Stick;
 use App\User;
 use Auth;
+use Illuminate\Support\Facades\Artisan;
 
 class IndexController extends Controller
 {
