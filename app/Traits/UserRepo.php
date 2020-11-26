@@ -613,6 +613,7 @@ trait UserRepo
 
     public function unreads($type = null, $num = null)
     {
+
         //缓存未命中
         $unreadNotifications = \App\Notification::where([
             'read_at'       => null,
@@ -624,7 +625,7 @@ trait UserRepo
             'follows'  => null,
             'tips'     => null,
             'others'   => null,
-            'chat'     => null,
+            'chats'     => null,
         ];
         //下列通知类型是进入了notification表的
         $unreadNotifications->each(function ($item) use (&$unreads) {
@@ -653,7 +654,7 @@ trait UserRepo
                     break;
                 //打赏文章通知
                 case 'App\Notifications\ChatNewMessage':
-                    $unreads['chat']++;
+                    $unreads['chats']++;
                     break;
                 //其他类型的通知
                 default:
