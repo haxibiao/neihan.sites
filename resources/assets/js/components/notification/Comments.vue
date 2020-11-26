@@ -41,9 +41,12 @@ export default {
 	name: "Comments",
 
 	created() {
-		var api_url = window.tokenize("/api/notifications/comment");
+		var api_url = window.tokenize("/api/notifications/comment"); 
 		var vm = this;
+		
 		window.axios.get(api_url).then(function(response) {
+			console.log("response:", response);
+
 			vm.notifications = response.data;
 		});
 	},
@@ -76,7 +79,7 @@ export default {
 
 	data() {
 		return {
-			notifications: []
+			notifications: [],
 		};
 	}
 };

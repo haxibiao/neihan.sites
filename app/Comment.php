@@ -2,18 +2,20 @@
 
 namespace App;
 
+use App\User;
 use App\Model;
 use App\Traits\CanBeLiked;
-use App\Traits\CommentAttrs;
 use App\Traits\CommentRepo;
+use App\Traits\CommentAttrs;
 use App\Traits\CommentResolvers;
-use App\User;
 use GraphQL\Type\Definition\ResolveInfo;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 class Comment extends Model
 {
+    use Notifiable;
     use SoftDeletes;
     use CommentAttrs;
     use CommentRepo;

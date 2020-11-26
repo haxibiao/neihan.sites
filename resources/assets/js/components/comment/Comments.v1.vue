@@ -54,7 +54,7 @@
                             </p>
                             <div class="tool-group">
                                 <a class="like"><i class="iconfont icon-fabulous"></i> <span>赞</span></a>
-                                <a class="reply"><i class="iconfont icon-xinxi"></i> <span>回复</span></a>
+                                <!-- <a class="reply"><i class="iconfont icon-xinxi"></i> <span>回复</span></a> -->
                                 <a href="javascript:;" class="report"><span>举报</span></a>
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                                 </p>
                                 <div class="sub-tool-group">
                                     <span>{{ reply.created_at }}</span>
-                                    <a class="reply"><i class="iconfont icon-xinxi"></i> <span>回复</span></a>
+                                    <!-- <a class="reply"><i class="iconfont icon-xinxi"></i> <span>回复</span></a> -->
                                     <a href="javascript:;" class="report"><span>举报</span></a>
                                 </div>
                             </div>

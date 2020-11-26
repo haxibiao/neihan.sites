@@ -66,7 +66,7 @@ class NotificationController extends Controller
         $chats = $user->chats()->orderBy('id', 'desc')->paginate(10);
         foreach ($chats as $chat) {
             $with_user = $chat->withUser;
-            if ($with_user) {
+            if ($with_user) { 
                 $chat->with_id     = $with_user->id;
                 $chat->with_name   = $with_user->name;
                 $chat->with_avatar = $with_user->avatarUrl;
@@ -87,6 +87,7 @@ class NotificationController extends Controller
     {
         $notifications = [];
         $user          = $request->user();
+
         foreach ($user->notifications as $notification) {
             $data = $notification->data;
             //每个通知里都有个group的 type值，方便组合通知列表

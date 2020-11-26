@@ -7,6 +7,7 @@ use App\comment;
 use App\Contribute;
 use App\Events\NewComment;
 use App\Ip;
+use App\Notifications\CommentAccepted;
 
 class CommentObserver
 {
@@ -28,7 +29,11 @@ class CommentObserver
             // throw new GQLException('发布失败,你以被禁言');
 
         }
+        // App 发送即时通知
         event(new NewComment($comment));
+        // Web 发送即时通知
+        $comment->commentable->user->notify((new CommentAccepted($comment, $comment->commentable->user))->onQueue('notifications'));
+
         if ($comment->commentable instanceof \App\Article) {
             $article                 = $comment->commentable;
             $article->count_replies  = $article->count_replies + 1;

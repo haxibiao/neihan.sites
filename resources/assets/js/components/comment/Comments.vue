@@ -31,7 +31,7 @@
               <p v-html="comment.body"></p>
               <div class="tool-group">
                 <a :class="['like',comment.liked?'active':'']" @click="like(comment)"><i :class="['iconfont',comment.liked?'icon-dianzan':'icon-fabulous']"></i> <span><b v-show="comment.likes">{{comment.count_likes+'人'}}</b>赞</span></a>
-                <a class="reply" @click="toggleReplyComment(comment, index)"><i class="iconfont icon-xinxi"></i> <span>回复</span></a>
+                <!-- <a class="reply" @click="toggleReplyComment(comment, index)"><i class="iconfont icon-xinxi"></i> <span>回复</span></a> -->
                 <a href="javascript:;" class="report" @click="report(comment)"><span>{{ comment.reported ? '已举报':'举报'}}</span></a>
               </div>
             </div>

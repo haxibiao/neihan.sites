@@ -15,7 +15,7 @@ class CommentController extends Controller
         $input   = $request->all();
         $comment = new Comment();
         return $comment->store($input);
-    }
+    } 
 
     public function getWithToken(Request $request, $id, $type)
     {

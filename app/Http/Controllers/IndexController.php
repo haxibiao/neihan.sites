@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\Category;
+use App\Comment;
 use App\Movie;
+use App\Notifications\CommentAccepted;
 use App\Stick;
 use App\User;
 use Auth;
@@ -18,6 +20,8 @@ class IndexController extends Controller
      */
     public function index()
     {
+        // User::find(2)->notify((new CommentAccepted(Comment::find(1),User::find(1)))->onQueue('aaaa'));
+        // dd(User::find(2)->notifications()->first()->markAsRead());
         if (isRecording()) {
             return view('app');
         }

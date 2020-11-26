@@ -5,10 +5,10 @@ namespace App\Notifications;
 use App\Comment;
 use App\User;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
-use Illuminate\Notifications\Messages\MailMessage;
 
-class CommentAccepted extends Notification
+class CommentAccepted extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -34,24 +34,7 @@ class CommentAccepted extends Notification
      */
     public function via($notifiable)
     {
-//        if ($notifiable->id === $this->sender->id) {
-//            return [];
-//        }
         return ['database'];
-    }
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
     }
 
     /**
@@ -63,7 +46,7 @@ class CommentAccepted extends Notification
     public function toArray($notifiable)
     {
         return [
-            'type'    => 'comment_accpeted',
+            'type'    => 'comment',
             'comment_id' => $this->comment->id,
             'article_id' => $this->comment->commentable_id,
             'user_id'   => $this->sender->id,

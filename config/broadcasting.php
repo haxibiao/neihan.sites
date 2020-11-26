@@ -15,7 +15,7 @@ return [
     |
      */
 
-    'default'     => env('BROADCAST_DRIVER', 'redis'),
+    // 'default'     => env('BROADCAST_DRIVER', 'redis'),
 
     /*
     |--------------------------------------------------------------------------
