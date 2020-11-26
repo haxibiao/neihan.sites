@@ -15,9 +15,9 @@
         </a>      
       </div>
       </a>
-      <div class="modal-wrap" >
+      <!-- <div class="modal-wrap" >
         <a data-target=".like-user" data-toggle="modal">{{ likesTotal }}</a>
-      </div>
+      </div> -->
     </div>
     <modal-like-user v-if="isLogin" :id="id" :type="type" :likes="likes"></modal-like-user>
   </div>
@@ -70,7 +70,7 @@ export default {
   data () {
     return {
       is_liked: null,
-      likesTotal: 0,
+      likesTotal: 1,
     	likes: [],
     };
   }
