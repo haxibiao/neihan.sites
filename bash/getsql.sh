@@ -2,8 +2,8 @@
 
 source ~/.bash_aliases
 
-server="gz002"
-db="ainicheng"
+server="hk008"
+db="neihan_sites"
 
 if [ "$1" != "local" ] && [ "$1" != "refresh" ]; then
 	if [ ! -z $1 ]; then
@@ -16,7 +16,8 @@ if [ "$1" != "local" ] && [ "$1" != "refresh" ]; then
 
 echo '服务器上备份数据库...'
 ssh root@$server 2>&1 << eeooff
-	source ~/.bashrc
+	hostname
+	source ~/.zshrc
 	cd /data/sqlfiles
 	sqld $db>$db.sql
 	zip -r $db.sql.zip $db.sql
