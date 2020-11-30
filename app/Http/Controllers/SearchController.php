@@ -28,7 +28,7 @@ class SearchController extends Controller
             $qb->orWhere('description', 'like', '%' . $query . '%');
         })->exclude(['body', 'json'])
             ->where('status', 1)
-            ->whereType('article')
+            ->whereIn('type',['articles','diagrams'])
             ->orderBy('id', 'desc')
             ->paginate(10);
         $total = $articles->total();
