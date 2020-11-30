@@ -10,19 +10,19 @@
       </div>
       <div class="box-body">
          <ul class="game-video-list">
-            <li v-for="article in articles" class="game-video-item">           
-                <a :href="'/video/'+article.video_id" class="video-info" :target="isDesktop? '_blank' : '_self'">     <img class="video-photo" :src="article.image_url">
+            <li v-for="post in posts" class="game-video-item">           
+                <a :href="'/video/'+post.video.id" class="video-info" :target="isDesktop? '_blank' : '_self'">     <img class="video-photo" :src="post.video.cover">
                     <i class="hover-play"> </i>
                 </a>
-                <a :href="'/video/'+article.video_id"  class="video-title" :target="isDesktop? '_blank' : '_self'">{{ article.title }}</a>
+                <a :href="'/video/'+post.video.id"  class="video-title" :target="isDesktop? '_blank' : '_self'">{{ post.content }}</a>
                 <div class="info">
-                    <a class="user" :href="'/user/'+article.user_id">
-                        <img :src="article.user.avatar" class="avatar">
-                        <span>{{ article.user.name }}</span>                          
+                    <a class="user" :href="'/user/'+post.user.id">
+                        <img :src="post.user.avatar" class="avatar">
+                        <span>{{ post.user.name }}</span>                          
                     </a>
                     <div class="num">
-                        <i class="iconfont icon-liulan"> {{ article.hits }}</i>
-                        <i class="iconfont icon-svg37" v-if="article.count_comments > 0"> {{ article.count_replies }}</i>
+                        <i class="iconfont icon-liulan"> {{ post.hits }}</i>
+                        <i class="iconfont icon-svg37" v-if="post.count_comments > 0"> {{ post.count_replies }}</i>
                         <i class="iconfont icon-svg37" v-else> 0</i>
                     </div>
                 </div>
@@ -70,7 +70,7 @@ export default {
 
   methods: {
     clear() {
-      this.articles = [];
+      this.posts = [];
     },
     listenScrollBotton() {
       var m = this;
@@ -95,12 +95,12 @@ export default {
     fetchData() {
       var vm = this;
       window.axios.get(this.apiUrl).then(function(response) {
-        vm.articles = vm.articles.concat(response.data.data);
+        vm.posts = vm.posts.concat(response.data.data);
         vm.lastPage = response.data.lastPage;
       });
     },
     loadData(){
-      if(this.articles.length<1){
+      if(this.posts.length<1){
           ++this.page;
          this.fetchData();
       }
@@ -113,7 +113,7 @@ export default {
       apiDefault: "",
       page: this.startPage ? this.startPage : 0,
       lastPage: -1,
-      articles: []
+      posts: []
     };
   }
 };

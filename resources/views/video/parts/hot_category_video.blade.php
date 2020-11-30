@@ -1,40 +1,40 @@
 <div class="video-box">
-    @foreach($articles as $article)
-        @if($loop->last)
+    @foreach($posts as $post)
+        @if($loop->last && $post->collections)
             <div class="box-top">
                 <div class="top-left">
-                    <img  class="cateory-logo" src="{{ $article->category->logoUrl }}">
-                    <a href="/category/{{ $article->category->id }}">
-                        <p class="title">{{ $article->category->name }}</p>
+                    <img  class="cateory-logo" src="$post->collections[0]->logo??'/images/appicons/cover.jpg' }}">
+                    <a href="/category/{{ $post->collections[0]->id }}">
+                        <p class="title">{{ $post->collections[0]->name }}</p>
                     </a>
                 </div>
                 <div class="top-right">
-                    <a href="/category/{{ $article->category->id }}" class="more-cateory"><p>更多<i class="iconfont icon-youbian"></i></p></a>
+                    <a href="/category/{{ $post->collections[0]->id }}" class="more-cateory"><p>更多<i class="iconfont icon-youbian"></i></p></a>
                 </div>
             </div>
         @endif
     @endforeach
     <div class="box-body">
         <ul class="game-video-list">
-            @foreach($articles as $article)
+            @foreach($posts as $post)
                 <li class="game-video-item">
-                    <a href="/video/{{ $article->video_id }}" target="{{ isDeskTop()? '_blank':'_self' }}" class="video-info">   
-                        <img class="video-photo"  id="video-img" src=" {{ $article->cover }}">
+                    <a href="/video/{{ $post->video->id??'' }}" target="{{ isDeskTop()? '_blank':'_self' }}" class="video-info">
+                        <img class="video-photo"  id="video-img" src="https://cos.diudie.com/images/1575/16754/5d5b6808100a4afbb1d17d4ee753d6de.jpeg">
                         <i class="hover-play"> </i>
                     </a>
-                    <a href="/video/{{ $article->video_id }}" target="{{ isDeskTop()? '_blank':'_self' }}"  class="video-title">{{ $article->subject ?: $article->summary }}</a>
+                    <a href="/video/{{ $post->video->id??'' }}" target="{{ isDeskTop()? '_blank':'_self' }}"  class="video-title">{{ $post->content }}</a>
                     <div class="info">
-                        <a class="user" href="/user/{{ $article->user_id }}">
-                            <img src="{{ $article->user->avatarUrl }}" class="avatar">
-                            <span> {{ $article->user->name }}</span>                          
+                        <a class="user" href="/user/{{ $post->user_id }}">
+                            <img src="{{ $post->user->avatarUrl }}" class="avatar">
+                            <span> {{ $post->user->name }}</span>
                         </a>
                         <div class="num">
-                            <i class="iconfont icon-liulan"> {{ $article->hits }}</i>
-                            <i class="iconfont icon-svg37"> {{ $article->count_replies }}</i>
-                        </div> 
-                    </div>          
+                            <i class="iconfont icon-liulan"> {{ $post->hits }}</i>
+                            <i class="iconfont icon-svg37"> {{ $post->count_replies }}</i>
+                        </div>
+                    </div>
                 </li>
             @endforeach
         </ul>
     </div>
-</div>  
+</div>

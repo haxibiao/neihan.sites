@@ -2,7 +2,7 @@
    <div class="col-xs-6 col-md-3 video">
      <div class="video-item vt">
        <div class="thumb">
-         <a href="/video/{{$post->id}}" target="_blank">
+         <a href="/video/{{$post->video->id}}" target="_blank">
           @if(!empty($post->cover))
            <img src="{{ $post->cover}}" alt="{{ $post->content }}">
           @endif
@@ -14,7 +14,7 @@
        </div>
        <ul class="info-list">
          <li class="video-title">
-           <a target="_blank" href="/video/{{$post->id}}">{{ $post->content}}</a>
+           <a target="_blank" href="/video/{{$post->video->id}}">{{ $post->content}}</a>
          </li>
          <li>
            <p class="subtitle single-line">{{ random_int(1000,9999) }}次播放</p>

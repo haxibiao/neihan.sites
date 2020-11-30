@@ -7,7 +7,7 @@
         </div>
         <ul class="video-list">
               <li class="video-item" v-for="post in posts">
-                  <a :href="'/video/'+post.id+'?related_page='+page" class="link">  
+                  <a :href="'/video/'+post.video.id+'?related_page='+page" class="link">  
                       <div class="cover">
                           <img :src="post.video.cover" alt=""/>
                           <i class="hover-play"></i>

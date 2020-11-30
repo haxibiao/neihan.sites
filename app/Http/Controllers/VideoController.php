@@ -6,7 +6,6 @@ use App\Article;
 use App\Category;
 use App\Http\Requests\VideoRequest;
 use App\Movie;
-use App\Post;
 use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -25,32 +24,54 @@ class VideoController extends Controller
     public function index(Request $request)
     {
         //首页渲染需要的数据
-        $data = [];
+        // $data = [];
 
-        //置顶几个电影吧
-        $movies         = Movie::latest('id')->take(6)->get();
-        $data['movies'] = $movies;
+        // //置顶几个电影吧
+        // $movies         = Movie::latest('id')->take(6)->get();
+        // $data['movies'] = $movies;
 
-        //热门专题（top3）
-        $categories = Category::orderBy('count_videos', 'desc')->take(3)
-            ->get();
+        // //热门专题（top3）
+        // $categories = Category::orderBy('count_videos', 'desc')->take(3)
+        //     ->get();
 
-        $cates = [];
-        foreach ($categories as $category) {
-            $articles = $category->articles()
-                ->latest('articles.id')
-                ->take(3)
-                ->get();
-            if (!$articles->isEmpty()) {
-                $cates[$category->name] = $articles;
-            }
-        }
-        $data['cates'] = $cates;
+        // $cates = [];
+        // foreach ($categories as $category) {
+        //     $articles = $category->articles()
+        //         ->latest('articles.id')
+        //         ->take(3)
+        //         ->get();
+        //     if (!$articles->isEmpty()) {
+        //         $cates[$category->name] = $articles;
+        //     }
+        // }
+        // $data['cates'] = $cates;
 
-        //合集
-        $data['collections'] = \App\Collection::has('posts')->take(12)->get();
+        // //合集
+        // $data['collections'] = \App\Collection::has('posts')->take(12)->get();
 
-        return view('video.index')->with('data', $data);
+        // return view('video.index')->with('data', $data);
+        //取置顶视频专题
+        // $stick_video_categories = get_stick_video_categories();
+        // $video_category = [];
+        // foreach ($stick_video_categories as $video_categories) {
+        //     $video_id = $video_categories->id;
+        //     $video_category[$video_categories->name]['video'] = Article::find($video_id)->orderby('count_likes','desc')->paginate(3);
+        // }
+
+        //热门专题，简单规则就按视频数多少来判断专题是否热门视频专题
+        $collections = \App\Collection::orderBy('sort_rank', 'desc')->take(6)->get();
+        $data        = [];
+        // foreach ($collections as $collection) {
+        //     $posts = $collection->with('posts')
+        //         ->where('status', '>', 0)
+        //         ->take(3)
+        //         ->get();
+        //     if (!empty($posts)) {
+        //         $data[$collection->name] = $posts;
+        //     }
+        // }
+
+        return view('video.index')->with('data', $data)->with('collections', $collections);
     }
 
     function list(Request $request) {
@@ -152,13 +173,13 @@ class VideoController extends Controller
      */
     public function show($id)
     {
-        $post                 = Post::findOrFail($id);
+        $video                = Video::findOrFail($id);
         $data['related_page'] = request()->get('related_page');
         //记录用户浏览记录
         // $article->recordBrowserHistory();
 
         return view('video.show')
-            ->withVideo($post->video)
+            ->withVideo($video)
             ->withData($data);
     }
 

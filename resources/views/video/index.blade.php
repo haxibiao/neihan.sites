@@ -6,14 +6,12 @@
 @section('keywords') 视频主页,{{ get_seo_keywords() }} @endsection
 @section('description') 视频主页, {{ get_seo_description() }} @endsection
 
+
+
 @section('content')
 <div class="container">
-     @include('video.parts.latest_movies', ['movies' => $data['movies']])
-	 
-	 @foreach ($data['cates'] as $cate => $articles)
-		@include('video.parts.hot_category_video', ['articles' => $articles])	 
-	 @endforeach
-	 
+     @include('video.parts.top_list')
+     @each('video.parts.hot_category_video', $data,"posts")
      <video-list api="api/getlatestVideo" is-desktop="{{ isDeskTop() == 1 }}" ></video-list>
 </div>
 @stop
