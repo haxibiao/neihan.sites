@@ -62,6 +62,8 @@ return [
             ],
         ],
 
+
+
         'nhdy'   => [
             'driver'      => 'mysql',
             'host'        => env('DB_HOST', '127.0.0.1'),
@@ -101,6 +103,45 @@ return [
             'prefix'   => '',
         ],
 
+        'diudie'         => [
+            'driver'         => 'mysql',
+            'url'            => env('DATABASE_URL'),
+            'host'           => '127.0.0.1',
+            'port'           => '3306',
+            'database'       => 'diudie',
+            'username'       => 'root',
+            'password'       => 'localdb001',
+            'unix_socket'    => env('DB_SOCKET', ''),
+            'charset'        => 'utf8mb4',
+            'collation'      => 'utf8mb4_unicode_ci',
+            'prefix'         => '',
+            'prefix_indexes' => true,
+            'strict'         => false,
+            'engine'         => null,
+            'options'        => [
+                PDO::ATTR_PERSISTENT => true,
+            ],
+        ],
+
+        'neihan_sites'         => [
+            'driver'         => 'mysql',
+            'url'            => env('DATABASE_URL'),
+            'host'           => '101.32.203.3',
+            'port'           => '3306',
+            'database'       => 'neihan_sites',
+            'username'       => 'root',
+            'password'       => 'yp1qaz@WSX',
+            'unix_socket'    => env('DB_SOCKET', ''),
+            'charset'        => 'utf8mb4',
+            'collation'      => 'utf8mb4_unicode_ci',
+            'prefix'         => '',
+            'prefix_indexes' => true,
+            'strict'         => false,
+            'engine'         => null,
+            'options'        => [
+                PDO::ATTR_PERSISTENT => true,
+            ],
+        ],
     ],
 
     /*
