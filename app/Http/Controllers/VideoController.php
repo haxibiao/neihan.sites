@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Category;
 use App\Http\Requests\VideoRequest;
+use App\Movie;
 use App\Post;
 use App\Video;
 use Illuminate\Http\Request;
@@ -23,31 +24,33 @@ class VideoController extends Controller
      */
     public function index(Request $request)
     {
-        //取置顶视频专题
-        // $stick_video_categories = get_stick_video_categories();
-        // $video_category = [];
-        // foreach ($stick_video_categories as $video_categories) {
-        //     $video_id = $video_categories->id;
-        //     $video_category[$video_categories->name]['video'] = Article::find($video_id)->orderby('count_likes','desc')->paginate(3);
-        // }
+        //首页渲染需要的数据
+        $data = [];
 
-        //热门专题，简单规则就按视频数多少来判断专题是否热门视频专题
-        // $categories = Category::orderBy('count_videos', 'desc')->take(3)
-        //     ->get();
-        // $data = [];
-        // foreach ($categories as $category) {
-        //     $articles = $category->containedVideoPosts()
-        //         ->where('status', '>', 0)
-        //         ->orderByDesc('hits')
-        //         ->take(3)
-        //         ->get();
-        //     if (!$articles->isEmpty()) {
-        //         $data[$category->name] = $articles;
-        //     }
-        // }
-        $collection = \App\Collection::has('posts')->take(10)->get();
+        //置顶几个电影吧
+        $movies         = Movie::latest('id')->take(6)->get();
+        $data['movies'] = $movies;
 
-        return view('video.index')->with('data', $collection);
+        //热门专题（top3）
+        $categories = Category::orderBy('count_videos', 'desc')->take(3)
+            ->get();
+
+        $cates = [];
+        foreach ($categories as $category) {
+            $articles = $category->articles()
+                ->latest('articles.id')
+                ->take(3)
+                ->get();
+            if (!$articles->isEmpty()) {
+                $cates[$category->name] = $articles;
+            }
+        }
+        $data['cates'] = $cates;
+
+        //合集
+        $data['collections'] = \App\Collection::has('posts')->take(12)->get();
+
+        return view('video.index')->with('data', $data);
     }
 
     function list(Request $request) {
