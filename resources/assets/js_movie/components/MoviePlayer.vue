@@ -6,9 +6,9 @@
         <div class="embed-responsive">
           <div class="embed-responsive video-player">
             <div class="fluid_video_wrapper">
-              <video-player
-                url="https://cdn-youku-com.diudie.com/series/5/index.m3u8"
-              />
+              <template v-if="source">
+                <video-js-player :source="source" />
+              </template>
             </div>
           </div>
         </div>
@@ -40,34 +40,37 @@
       </ul>
     </div>
     <div class="col-lg-3 player-side">
-      <div class="side-pannel">
+      <div class="side-panel">
         <div class="movie-info col-pd">
           <div class="video_desc">
             <h3 class="title">
-              {{ title }}
-              <small class="text-ep">第01集</small>
+              {{ title }}&nbsp;
+              <small class="text-ep">第{{ episode }}集</small>
             </h3>
           </div>
           <div class="video_desc">
             <div class="type">
-              9.0分
-              <a href="/home">{{ type }}</a>
-              <a href="/home">{{ region_name }}</a>
+              9.0分&nbsp;/&nbsp;
+              <a href="/">{{ region }}</a
+              >&nbsp;/&nbsp;
+              <a href="/">{{ movie_type }}</a>
+              &nbsp;/&nbsp;
+              <a href="/">{{ movie_style }}</a>
             </div>
           </div>
         </div>
         <div class="video_playlist" id="playlist">
-          <ul class="pannel-content__list">
+          <ul class="panel-content__list">
             <li
               class="col-xs-2"
-              v-for="(v, i) in parseInt(count_series)"
-              :key="i"
+              v-for="(media, index) in series"
+              :key="media.id"
             >
               <a
-                :class="['btn-episode', i == 0 && 'active']"
                 href="javascript:void(0)"
-                @click="load_series(i)"
-                >{{ i + 1 }}</a
+                :class="['btn-episode', episode == index + 1 && 'active']"
+                v-on:click="clickEpisode(media, index + 1)"
+                >{{ index + 1 }}</a
               >
             </li>
           </ul>
@@ -79,124 +82,49 @@
 
 <script>
 export default {
-  props: ["title", "type", "region_name", "count_series"],
+  // TODO: 应该只接受一个movie对象，从对象里拿id和各类信息
+  props: ["title", "movie_id", "movie_type", "movie_style", "region", "count"],
+
+  created() {
+    // var routeParams = window.location.search
+
+    this.episode = Number(this.count) + 1;
+    this.fetchData();
+  },
+
   methods: {
-    load_series(i) {
-      //加载剧集
-      console.log("加载剧集");
+    clickEpisode(item, index) {
+      this.episode = index;
+      this.source = item.url;
+      console.log(index + " source = ", this.source);
     },
+    fetchData() {
+      const that = this;
+      // 获取电视剧集数，设置当前播放集数
+      window.axios
+        .get(`/api/movie/${that.movie_id}/series`)
+        .then(function (response) {
+          if (response && response.data) {
+            let series = response.data;
+            that.series = series;
+            //默认播放第一集
+            that.source = series[0].url;
+            console.log("source", that.source);
+          }
+        })
+        .catch((e) => {});
+    },
+  },
+
+  data() {
+    return {
+      episode: 1,
+      source: null,
+      series: [],
+    };
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.movie-player {
-  position: relative;
-  background-color: #1c1d30;
-  //   background-color: #0f0f1e;
-}
-.player-main {
-  padding: 0 !important;
-}
-.embed-responsive {
-  padding-bottom: 56.25%;
-}
-.fluid_video_wrapper {
-  width: 100%;
-  height: 100%;
-}
-.player__operate {
-  background: #0f0f1e;
-  display: flex;
-  padding: 15px 0 15px 5px;
-  & > li {
-    width: 90px;
-    cursor: pointer;
-    transition: all 0.3s;
-    display: inline-block;
-    white-space: nowrap;
-    position: relative;
-    font-size: 1rem;
-    &:not(:last-child) {
-      margin-right: 8px;
-    }
-    a {
-      color: #999;
-    }
-    i {
-      font-size: 1.2rem;
-    }
-  }
-}
-.player-side {
-  padding: 0;
-}
-.side-pannel {
-  padding: 10px;
-}
-.video_desc {
-  position: relative;
-  margin-bottom: 10px;
-  .title {
-    display: inline-block;
-    margin: 0;
-    padding-right: 10px;
-    line-height: 30px;
-    font-size: 1.5rem;
-    color: #f0f0f0;
-    .text-ep {
-      color: #ff5c38;
-    }
-  }
-  .type {
-    font-size: 0.9rem;
-    color: #999;
-  }
-}
-.video_playlist {
-  overflow: auto;
-  max-height: 160px;
-  @media (min-width: 992px) {
-    max-height: 400px;
-  }
-  &::-webkit-scrollbar {
-    width: 4px;
-    background-color: #0f0f1e;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #434145;
-  }
-}
-.pannel-content__list {
-  display: flex;
-  flex-wrap: wrap;
-  [class*="col-"] {
-    padding: 10px 5px;
-  }
-  @media (max-width: 991px) {
-    [class*="col-"] {
-      padding: 10px;
-    }
-  }
-}
-.btn-episode {
-  display: block;
-  padding: 8px 0;
-  border-radius: 3px;
-  width: 100%;
-  font-size: 0.8rem;
-  text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #ddd;
-  &.active {
-    background-color: #0f0f1e;
-    color: #ff5c38;
-  }
-  &:hover {
-    background-color: #0f0f1e;
-    color: #ff5c38;
-  }
-}
 </style>

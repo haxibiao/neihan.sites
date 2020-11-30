@@ -1,50 +1,62 @@
 <template>
   <div class="responsive-video">
-    <video
-      id="video-player"
-      muted
-      class="video-js"
-      autoplay
-      controls
-      preload="auto"
-      crossorigin="anonymous"
-    >
-      <source :src="url" type="application/x-mpegURL" />
-      <p class="no-vjs">
-        To view this video please enable JavaScript,
-        <br />and consider upgrading to a web browser that
-        <a
-          href="https://videojs.com/html5-video-support/"
-          target="_blank"
-        >supports HTML5 video</a>
-      </p>
-    </video>
+    <div id="dplayer"></div>
   </div>
 </template>
 
 <script>
-import videojs from 'video.js/dist/video.js'
+import DPlayer from "dplayer";
+
 export default {
-  props: ['url'],
+  props: ["source"],
   mounted() {
-    videojs('video-player')
+    console.log("DPlayer 加载成功 " + this.source);
+    this.player = new DPlayer({
+      container: document.getElementById("dplayer"),
+      preload: true,
+      autoplay: true,
+      screenshot: true,
+      video: {
+        url: this.source,
+        type: "hls",
+      },
+      pluginOptions: {
+        hls: {},
+      },
+      //   subtitle: {
+      //     url: 'webvtt.vtt'
+      //   },
+      //   danmaku: {
+      //     id: 'demo',
+      //     api: 'https://api.prprpr.me/dplayer/'
+      //   }
+    });
+  },
+  updated() {
+    console.log("DPlayer 更新 " + this.source);
+  },
+  beforeDestroy() {
+    if (this.player) {
+      this.player.destroy();
+    }
+  },
+  watch: {
+    source(newV, oldV) {
+      console.log("dplay source newV = " + newV);
+      if (this.player) {
+        this.player.switchVideo({
+          url: newV,
+        });
+        this.player.play();
+      }
+    },
   },
   data() {
-    return {}
-  }
-}
+    return {};
+  },
+};
 </script>
 
-<style src="video.js/dist/video-js.css"></style>
-<style>
-.responsive-video .video-js .vjs-big-play-button {
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-}
-</style>
 <style lang="scss" scoped>
 .responsive-video {
   position: relative;
@@ -54,14 +66,14 @@ export default {
   height: 0;
   padding-bottom: 56.25%;
   background-color: #000;
-  .video-js {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-  }
+}
+#dplayer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 </style>

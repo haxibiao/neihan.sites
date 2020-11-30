@@ -9,7 +9,7 @@
 @endpush
 
 @push('head-scripts')
-<script src="{{ asset('js/movie/play.js') }}" defer></script>
+<script src="{{ mix('js/movie/play.js') }}" defer></script>
 @endpush
 
 @section('content')
@@ -17,9 +17,11 @@
     <div class="container-xl">
 		<movie-player 
 		title="{{ $movie->name }}"  
-		type="国产剧" 
-		region_name="{{ $movie->region_name }}"
-		count_series="{{ $movie->count_series }}"
+		movie_id="{{ $movie->id }}"
+		region="{{ $movie->region }}"
+		movie_type="{{ $movie->type }}" 
+		movie_style="{{ $movie->style }}"
+		count="{{ count($movie->data) }}"
 		/>
     </div>
 </div>

@@ -32,10 +32,10 @@ class MovieController extends Controller
         //热门电影专题
         $qb = Movie::latest('id');
 
-        $data['在线美剧'] = (clone $qb)->where('category_id', 2)->take(6)->get();
-        $data['在线日剧'] = (clone $qb)->where('category_id', 1)->take(6)->get();
-        $data['在线韩剧'] = (clone $qb)->where('category_id', 3)->take(6)->get();
-        $data['在线港剧'] = (clone $qb)->where('category_id', 2)->take(6)->get(); //FIXME 港剧4 暂时无数据
+        $data['在线美剧'] = (clone $qb)->where('region', "美剧")->take(6)->get();
+        $data['在线日剧'] = (clone $qb)->where('region', "日剧")->take(6)->get();
+        $data['在线韩剧'] = (clone $qb)->where('region', "韩剧")->take(6)->get();
+        $data['在线港剧'] = (clone $qb)->where('region', "港剧")->take(6)->get(); //FIXME 港剧4 暂时无数据
 
         return view('movie.home')->with('data', $data);
     }
@@ -43,34 +43,35 @@ class MovieController extends Controller
     public function riju()
     {
         $qb     = Movie::orderBy('id');
-        $movies = (clone $qb)->where('category_id', 1)->paginate(24);
+        $movies = (clone $qb)->where('region', "日剧")->paginate(24);
         return view('movie.region')->with('movies', $movies)->withCate("日剧")->with('cate_id', 1);
     }
 
     public function meiju()
     {
         $qb     = Movie::orderBy('id');
-        $movies = (clone $qb)->where('category_id', 2)->paginate(24);
+        $movies = (clone $qb)->where('region', "美剧")->paginate(24);
         return view('movie.region')->with('movies', $movies)->withCate("美剧")->with('cate_id', 2);
     }
 
     public function hanju()
     {
         $qb     = Movie::orderBy('id');
-        $movies = (clone $qb)->where('category_id', 3)->paginate(24);
+        $movies = (clone $qb)->where('region', "韩剧")->paginate(24);
         return view('movie.region')->with('movies', $movies)->withCate("韩剧")->with('cate_id', 3);
     }
 
     public function gangju()
     {
         $qb     = Movie::orderBy('id');
-        $movies = (clone $qb)->where('category_id', 2)->paginate(24); //FIXME 港剧4 暂时无数据
+        $movies = (clone $qb)->where('region', "港剧")->paginate(24);
         return view('movie.region')->with('movies', $movies)->withCate("港剧")->with('cate_id', 4);
     }
 
     public function show(Movie $movie)
     {
-        $qb   = Movie::latest('updated_at')->where('category_id', $movie->category_id);
+        // dd($movie->play_url);
+        $qb   = Movie::latest('updated_at')->where('region', $movie->region);
         $more = $qb->take(6)->get();
         return view('movie.show')->withMovie($movie)->withMore($more);
     }

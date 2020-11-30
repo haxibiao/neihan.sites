@@ -1,6 +1,7 @@
 import Vue from 'vue';
 
-Vue.component('video-player', require('./components/VideoPlayer.vue').default);
+// Vue.component('video-player', require('./components/VideoPlayer.vue').default);
+Vue.component('video-js-player', require('./components/VideoJsPlayer.vue').default);
 // movie
 Vue.component('movie-player', require('./components/MoviePlayer.vue').default);
 // comment

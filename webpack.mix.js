@@ -12,21 +12,24 @@ let { env } = require('minimist')(process.argv.slice(2));
  */
 
 //电影 css
-mix.sass('resources/assets/sass_movie/movie.scss', 'public/css/movie');
-mix.sass('resources/assets/sass_movie/movie/home.scss', 'public/css/movie');
-mix.sass('resources/assets/sass_movie/movie/play.scss', 'public/css/movie');
-mix.sass('resources/assets/sass_movie/movie/search.scss', 'public/css/movie');
-mix.sass('resources/assets/sass_movie/movie/category.scss', 'public/css/movie');
+mix.sass('resources/assets/sass_movie/movie.scss', 'public/css/movie').version();
+mix.sass('resources/assets/sass_movie/movie/home.scss', 'public/css/movie').version();
+mix.sass('resources/assets/sass_movie/movie/play.scss', 'public/css/movie').version();
+mix.sass('resources/assets/sass_movie/movie/search.scss', 'public/css/movie').version();
+mix.sass('resources/assets/sass_movie/movie/category.scss', 'public/css/movie').version();
 
 //电影 js
-mix.js('resources/assets/js_movie/movie.js', 'public/js/movie');
-mix.js('resources/assets/js_movie/play.js', 'public/js/movie');
-mix.js('resources/assets/js_movie/home.js', 'public/js/movie');
+mix.js('resources/assets/js_movie/movie.js', 'public/js/movie').version();
+mix.js('resources/assets/js_movie/play.js', 'public/js/movie').version();
+mix.js('resources/assets/js_movie/home.js', 'public/js/movie').version();
 
 // ====== css
 mix.sass('resources/assets/sass/app.scss', 'public/css')
+    .version()
     .sass('resources/assets/sass/write.scss', 'public/css')
-    .sass('resources/assets/sass/simditor/simditor.scss', 'public/css');
+    .version()
+    .sass('resources/assets/sass/simditor/simditor.scss', 'public/css')
+    .version();
 
 //guest a.css
 mix.styles(['public/css/app.css', 'public/fonts/iconfont.css'], 'public/css/guest.css').version();
@@ -39,7 +42,6 @@ if (env && env.css) {
 }
 
 // ====== js
-mix.js('resources/assets/js/main.js', 'public/js');
 mix.babel('resources/assets/js/plugins/poster.js', 'public/js/poster.js');
 mix.copy('resources/assets/js/plugins/jquery-form.js', 'public/js/jquery-form.js');
 
