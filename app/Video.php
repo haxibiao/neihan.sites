@@ -14,19 +14,20 @@ class Video extends BaseVideo
     /**
      * 获取视频下载链接
      */
-    public function downloadVideo($rootValue, $args, $context, $resolveInfo){
-        $videoId    = data_get($args,'video_id');
-        $video      = Video::findOrFail($videoId);
-        $user       = getUser();
-        $originUrl       = $video->path;
+    public function downloadVideo($rootValue, $args, $context, $resolveInfo)
+    {
+        $videoId   = data_get($args, 'video_id');
+        $video     = Video::findOrFail($videoId);
+        $user      = getUser();
+        $originUrl = $video->path;
 
         // 之前下载过,不需要重复解析
-        $share = Share::where('user_id',$user->id)
-            ->where('shareable_id',$video->id)
-            ->where('shareable_type','videos')
-            ->where('active',true)
+        $share = Share::where('user_id', $user->id)
+            ->where('shareable_id', $video->id)
+            ->where('shareable_type', 'videos')
+            ->where('active', true)
             ->first();
-        if($share){
+        if ($share) {
             return $share->url;
         }
 
@@ -37,32 +38,32 @@ class Video extends BaseVideo
             ->build();
 
         // 请求处理media.haxibiao.com进行MetaData处理
-        $uuid = $share->uuid;
-        $title2MetaData = sprintf('uuid:%s',$uuid);
-        $curl = curl_init();
+        $uuid           = $share->uuid;
+        $title2MetaData = sprintf('uuid:%s', $uuid);
+        $curl           = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "http://media.haxibiao.com/api/video/modifyMetadata",
+            CURLOPT_URL            => "http://media.haxibiao.com/api/video/modifyMetadata",
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
+            CURLOPT_ENCODING       => "",
+            CURLOPT_MAXREDIRS      => 10,
+            CURLOPT_TIMEOUT        => 0,
             CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => [
+            CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST  => "POST",
+            CURLOPT_POSTFIELDS     => [
                 'title' => $title2MetaData,
-                'url' => $originUrl
+                'url'   => $originUrl,
             ],
         ));
         $response = curl_exec($curl);
         curl_close($curl);
         $result = json_decode($response);
 
-        $responseCode = data_get($result,'code');
-        $modifiedUrl  = data_get($result,'data.MediaUrl');
-        if($responseCode == 200 && $modifiedUrl){
-            $share->url     = $modifiedUrl;
-            $share->active  = true;
+        $responseCode = data_get($result, 'code');
+        $modifiedUrl  = data_get($result, 'data.MediaUrl');
+        if ($responseCode == 200 && $modifiedUrl) {
+            $share->url    = $modifiedUrl;
+            $share->active = true;
             $share->save();
 
             return $modifiedUrl;
@@ -71,16 +72,16 @@ class Video extends BaseVideo
     }
 
     //刷视频悬浮球奖励
-    public  static  function videoPlayReward($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    public static function videoPlayReward($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $user = getUser();
+        $user   = getUser();
         $inputs = $args['input'];
 
         //今日通过 视频刷获取的积分
         $countReward = Gold::whereUserId($user->id)
-            ->where('remark','like', '%视频观看时长奖励%')
+            ->where('remark', 'like', '%视频观看时长奖励%')
             ->whereBetWeen('created_at', [today(), today()->addDay()])->sum('gold');
-        if (Gold::TODAY_VIDEO_PLAY_MAX_GOLD<$countReward ) {
+        if (Gold::TODAY_VIDEO_PLAY_MAX_GOLD < $countReward) {
             return null;
         }
 
@@ -132,11 +133,10 @@ class Video extends BaseVideo
             Visit::createVisit($user->id, $video->article->id, 'articles');
 
             $remark = sprintf('<%s>观看奖励', $video->id);
-            $gold = $user->goldWallet->changeGold($rewardGold, $remark);
+            $gold   = $user->goldWallet->changeGold($rewardGold, $remark);
 
             return $gold;
         }
-
 
         $video_ids  = $inputs['video_ids'];
         $rewardGold = random_int(1, 3);
@@ -150,8 +150,8 @@ class Video extends BaseVideo
         return $gold;
     }
 
-    public function getPostAttribute(){
-        $videoId = data_get($this,'video_id');
-        return \App\Post::where('video_id',$videoId)->first();
+    public function getPostAttribute()
+    {
+        return \App\Post::where('video_id', $this->id)->first();
     }
 }
