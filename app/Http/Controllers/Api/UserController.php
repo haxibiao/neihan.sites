@@ -280,7 +280,10 @@ class UserController extends Controller
 
         $num  = $request->get('num') ? $request->get('num') : 10;
         $data = Post::where('user_id', $user->id)->with('video')->paginate($num);
+        if (count($data) < 1) {
+            $data = Post::inRandomOrder()->with('video')->paginate($num);
 
+        }
         return $data;
     }
 
