@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Category;
 use App\Http\Requests\VideoRequest;
+use App\Post;
 use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -31,20 +32,22 @@ class VideoController extends Controller
         // }
 
         //热门专题，简单规则就按视频数多少来判断专题是否热门视频专题
-        $categories = Category::orderBy('count_videos', 'desc')->take(3)
-            ->get();
-        $data = [];
-        foreach ($categories as $category) {
-            $articles = $category->containedVideoPosts()
-                ->where('status', '>', 0)
-                ->orderByDesc('hits')
-                ->take(3)
-                ->get();
-            if (!$articles->isEmpty()) {
-                $data[$category->name] = $articles;
-            }
-        }
-        return view('video.index')->with('data', $data);
+        // $categories = Category::orderBy('count_videos', 'desc')->take(3)
+        //     ->get();
+        // $data = [];
+        // foreach ($categories as $category) {
+        //     $articles = $category->containedVideoPosts()
+        //         ->where('status', '>', 0)
+        //         ->orderByDesc('hits')
+        //         ->take(3)
+        //         ->get();
+        //     if (!$articles->isEmpty()) {
+        //         $data[$category->name] = $articles;
+        //     }
+        // }
+        $collection = \App\Collection::has('posts')->take(10)->get();
+
+        return view('video.index')->with('data', $collection);
     }
 
     function list(Request $request) {
@@ -146,27 +149,13 @@ class VideoController extends Controller
      */
     public function show($id)
     {
-        $video = Video::with('article')
-            ->with('user')
-            ->findOrFail($id);
-
-        //check article exist and status
-        $article = $video->article;
-        if (empty($article)) {
-            abort(404);
-        }
-        if ($article->status < 1) {
-            if (!canEdit($article)) {
-                abort(404);
-            }
-        }
-
+        $post                 = Post::findOrFail($id);
         $data['related_page'] = request()->get('related_page');
         //记录用户浏览记录
-        $article->recordBrowserHistory();
+        // $article->recordBrowserHistory();
 
         return view('video.show')
-            ->withVideo($video)
+            ->withVideo($post->video)
             ->withData($data);
     }
 

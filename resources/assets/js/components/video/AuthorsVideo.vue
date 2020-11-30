@@ -6,17 +6,17 @@
             <a v-if="last_page>1" target="_blank" href="javascript:;" class="font" @click="fetchData()"><i class="iconfont icon-shuaxin" ref="fresh"></i>换一批</a>
         </div>
         <ul class="video-list">
-              <li class="video-item" v-for="video in videos">
-                  <a :href="'/video/'+video.video.id+'?related_page='+page" class="link">  
+              <li class="video-item" v-for="post in posts">
+                  <a :href="'/video/'+post.id+'?related_page='+page" class="link">  
                       <div class="cover">
-                          <img :src="video.image_url" alt=""/>
+                          <img :src="post.video.cover" alt=""/>
                           <i class="hover-play"></i>
-                          <span class="duration">{{video.duration}}</span>
+                          <span class="duration">{{post.video.duration}}秒</span>
                       </div>
                       <div class="info">
-                          <div class="recommend-video-title">{{video.title}}</div> 
+                          <div class="recommend-video-title">{{post.content}}</div> 
                           <span class="amount">
-                          {{video.hits+"次播放"}}
+                          {{post.count_likes+"次点赞"}}
                           </span>
                       </div>
                   </a> 
@@ -33,6 +33,7 @@ export default {
   props: ["userId","categoryId","videoId","relatedPage"],
 
   mounted() {
+    console.log('mounted');
       this.fetchData(this.relatedPage);
   },
 
@@ -50,10 +51,12 @@ export default {
 
       $(this.$refs.fresh).css('transform',`rotate(${360*this.counter}deg)`);
       let apiUser = '/api/user/'+this.userId+'/videos/relatedVideos?num=4&page='+this.page+'&video_id='+this.videoId;
-      let apiCategory= '/api/category/'+this.categoryId+'/videos?video_id='+this.videoId+'&num=4&page='+this.page;
+      // let apiCategory= '/api/category/'+this.categoryId+'/videos?video_id='+this.videoId+'&num=4&page='+this.page;
+      let apiCategory= '/api/collection/'+this.categoryId+'/posts?video_id='+this.videoId+'&num=4&page='+this.page;
       if(this.userId){
         window.axios.get(apiUser).then(function(response){
-        vm.videos = response.data.data
+        vm.posts = response.data.data;
+        console.log('posts', vm.posts);
         vm.last_page=response.data.last_page;
 
         if(vm.page==vm.last_page){
@@ -64,7 +67,7 @@ export default {
         console.log('取专题');
         console.log(this.categoryId);
          window.axios.get(apiCategory).then(function(response){
-            vm.videos = response.data.data
+            vm.posts = response.data.data
             vm.last_page=response.data.last_page;
 
             if(vm.page==vm.last_page){
@@ -78,7 +81,7 @@ export default {
 
   data () {
     return {
-    	videos:null,
+    	posts:null,
       counter:-1,
       page:0,
       last_page:null,

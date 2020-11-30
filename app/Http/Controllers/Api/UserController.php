@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Article;
 use App\Http\Controllers\Controller;
 use App\Image;
+use App\Post;
 use App\User;
 use App\Video;
 use Illuminate\Http\Request;
@@ -278,11 +279,8 @@ class UserController extends Controller
         $video_id = $request->video_id;
 
         $num  = $request->get('num') ? $request->get('num') : 10;
-        $data = $user->videoPosts()->where('video_id', '<>', $video_id)->paginate($num);
+        $data = Post::where('user_id', $user->id)->with('video')->paginate($num);
 
-        foreach ($data as $article) {
-            $article->fillForJs();
-        }
         return $data;
     }
 

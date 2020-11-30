@@ -12,9 +12,9 @@ class CollectionController extends Controller
     public function index(Request $request)
     {
         $user        = $request->user();
-        $collections = $user->collections()->where('status','>=',0)->with(['articles' => function ($query) {
+        $collections = $user->collections()->where('status', '>=', 0)->with(['articles' => function ($query) {
             $query->where('status', '>=', 0);
-        }])->orderBy('id', 'desc')->get();  
+        }])->orderBy('id', 'desc')->get();
         return $collections;
     }
 
@@ -67,9 +67,9 @@ class CollectionController extends Controller
 
     public function moveArticle(Request $request, $id, $cid)
     {
-        $article = Article::findOrFail($id);
+        $article                = Article::findOrFail($id);
         $article->collection_id = $cid;
-        $article->timestamps = false;
+        $article->timestamps    = false;
         $article->save();
 
         return $article;
@@ -77,8 +77,8 @@ class CollectionController extends Controller
 
     public function createArticle(Request $request, $id)
     {
-        $article          = new Article($request->all());
-        $article->user_id = $request->user()->id;
+        $article                = new Article($request->all());
+        $article->user_id       = $request->user()->id;
         $article->collection_id = $id;
         $article->save();
 
@@ -86,5 +86,21 @@ class CollectionController extends Controller
         // $article->collections()->sync($id);
 
         return $article;
+    }
+
+    //获取指定合集下的动态
+    public function getCollectionVideos($collection_id)
+    {
+        $video_id = request()->get('video_id');
+
+        $num = request()->get('num') ? request()->get('num') : 10;
+
+        $data = \App\Collection::find($collection_id)
+            ->with('post')
+            ->whereStatus(1)
+            ->where('video_id', '!=', $video_id)
+            ->paginate($num);
+
+        return $data;
     }
 }
