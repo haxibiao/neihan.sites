@@ -9,7 +9,7 @@
     <ul class="category-video-list">
         @foreach($collections as $collection)
     	<li class="category-video-item">
-    		<a href="/{{$collection->id??0}}">
+    		<a href="share/collection/{{$collection->id}}">
             	<img class="game-category" src="{{$collection->logo}}" alt="{{$collection->name}}">
             	<p>{{$collection->name}}</p>
         	</a>

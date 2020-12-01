@@ -121,6 +121,8 @@ Route::resource('/video', 'VideoController');
 
 Route::any('/share/post/{id}', 'ArticleController@shareVideo');
 
+Route::get('/share/collection/{id}', CollectionController::class . '@shareCollection');
+
 //logs
 Route::get('/logshow', 'LogController@logShow');
 Route::get('/logclear', 'LogController@logClear');
