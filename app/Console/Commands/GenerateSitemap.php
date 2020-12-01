@@ -6,7 +6,6 @@ namespace App\Console\Commands;
 
 use App\Category;
 use Illuminate\Console\Command;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -68,6 +67,7 @@ class GenerateSitemap  extends Command
                 $fileName = 'movie_'.$mi.'.xml';
                 $gzFileName = $fileName.'.gz';
                 $relativePath = 'sitemap/'.$domain.'/'.$fileName;
+
                 $sitemapGenerator = SitemapGenerator::create($domain)
                     ->getSitemap();
                 foreach ($movies as $movie){
@@ -80,6 +80,9 @@ class GenerateSitemap  extends Command
 
                 $sitemapGenerator->writeToDisk('public', $relativePath);
                 $path = Storage::disk('public')->path($relativePath);
+                if(file_exists($path.'.gz')){
+                    unlink($path.'.gz');
+                }
                 UnifiedArchive::archiveFile($path, $path.'.gz');
                 $siteMapIndexUrls[] = '/'.$gzFileName;
                 $mi++;
@@ -108,6 +111,9 @@ class GenerateSitemap  extends Command
                 }
                 $sitemapGenerator->writeToDisk('public', $relativePath);
                 $path = Storage::disk('public')->path($relativePath);
+                if(file_exists($path.'.gz')){
+                    unlink($path.'.gz');
+                }
                 UnifiedArchive::archiveFile($path, $path.'.gz');
                 $siteMapIndexUrls[] = '/'.$gzFileName;
                 $qi++;
@@ -134,6 +140,9 @@ class GenerateSitemap  extends Command
             }
             $sitemapGenerator->writeToDisk('public', $relativePath);
             $path = Storage::disk('public')->path($relativePath);
+            if(file_exists($path.'.gz')){
+                unlink($path.'.gz');
+            }
             UnifiedArchive::archiveFile($path, $path.'.gz');
 
             $siteMapIndexUrls[] = '/'.$gzFileName;
@@ -165,6 +174,9 @@ class GenerateSitemap  extends Command
                 }
                 $sitemapGenerator->writeToDisk('public', $relativePath);
                 $path = Storage::disk('public')->path($relativePath);
+                if(file_exists($path.'.gz')){
+                    unlink($path.'.gz');
+                }
                 UnifiedArchive::archiveFile($path, $path.'.gz');
                 $siteMapIndexUrls[] = '/'.$gzFileName;
                 $ai++;
@@ -194,6 +206,9 @@ class GenerateSitemap  extends Command
                 }
                 $sitemapGenerator->writeToDisk('public', $relativePath);
                 $path = Storage::disk('public')->path($relativePath);
+                if(file_exists($path.'.gz')){
+                    unlink($path.'.gz');
+                }
                 UnifiedArchive::archiveFile($path, $path.'.gz');
                 $siteMapIndexUrls[] = '/'.$gzFileName;
                 $vi++;
