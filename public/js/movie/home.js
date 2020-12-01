@@ -1,1 +1,273 @@
-!function(t){var e={};function n(i){if(e[i])return e[i].exports;var r=e[i]={i:i,l:!1,exports:{}};return t[i].call(r.exports,r,r.exports,n),r.l=!0,r.exports}n.m=t,n.c=e,n.d=function(t,e,i){n.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:i})},n.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},n.t=function(t,e){if(1&e&&(t=n(t)),8&e)return t;if(4&e&&"object"==typeof t&&t&&t.__esModule)return t;var i=Object.create(null);if(n.r(i),Object.defineProperty(i,"default",{enumerable:!0,value:t}),2&e&&"string"!=typeof t)for(var r in t)n.d(i,r,function(e){return t[e]}.bind(null,r));return i},n.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return n.d(e,"a",e),e},n.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},n.p="/",n(n.s=3)}({3:function(t,e,n){t.exports=n("gV9R")},gV9R:function(t,e,n){var i=n("lewt");$(document).ready((function(){new i({container:"#hot-movies",items:$("#hot-movies .movie-pic"),itemsInfo:$(".hot-movies-intro .movie-info")})}))},lewt:function(t,e){function n(t){var e=t.container,n=t.items,i=t.itemsInfo;this.container=e,this.items=n,this.itemsInfo=i,this.loadedImages=0,this.imagesCount=this.items.length,this.currentMiddleIndex=Math.floor(this.items.length/2),this.midpoint=this.currentMiddleIndex,this.timer=null,this.translateValue={x:160,z:110},this.init(this.items)}n.prototype.init=function(){for(var t=0;t<this.items.length;t++){var e=this.items[t],n=$(e).attr("data-src");this.prevLoadImage(n,e)}},n.prototype.prevLoadImage=function(t,e){var n=this,i=new Image;i.src=t,i.onload=function(){i.onload=null,i.onerror=null,$(e).attr("src",t),n.loadedImages++,n.loadedImages==n.imagesCount&&(n.startAnimation(),n.onClickListener())},i.onerror=function(){i.onload=null,i.onerror=null,$(e).attr("src",t),n.loadedImages++,n.loadedImages==n.imagesCount&&(n.startAnimation(),n.onClickListener())}},n.prototype.startAnimation=function(){var t=this;this.timer&&clearTimeout(this.timer);for(var e=0;e<this.items.length;e++){var n=this.items[e],i=0,r=0,o=60;if(e==this.currentMiddleIndex)i=0,r=300,o=100,this.itemsInfo.removeClass("show"),this.itemsInfo.eq(e).addClass("show");else if(Math.abs(this.currentMiddleIndex-e)>this.midpoint){var s=e>this.currentMiddleIndex?-1:1,a=2*this.midpoint-Math.abs(this.currentMiddleIndex-e)+1;i=s*this.translateValue.x*a,r=270-this.translateValue.z*a}else i=(e-this.currentMiddleIndex)*this.translateValue.x,r=270-this.translateValue.z*Math.abs(e-this.currentMiddleIndex);$(n).parent().css("transform","translateX(".concat(i,"px) translateZ(").concat(r,"px)")),$(n).parent().css("filter","brightness(".concat(o,"%)"))}this.currentMiddleIndex===this.imagesCount-1?this.currentMiddleIndex=0:this.currentMiddleIndex++,this.timer=setTimeout((function(){t.startAnimation()}),5e3)},n.prototype.onClickListener=function(){var t=this,e=_.debounce((function(e){var n=$(e.target).parent().index();if(n==t.currentMiddleIndex-1){var i=$(e.target).parent().attr("href");i.indexOf("http")?window.location.assign(i):window.location.assign(window.location.host+i)}else t.currentMiddleIndex=n,t.startAnimation()}),150);$(this.container).on("click",(function(t){t.preventDefault(),e(t)}))},t.exports=n}});
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./resources/assets/js_movie/_hotMovies.js":
+/*!*************************************************!*\
+  !*** ./resources/assets/js_movie/_hotMovies.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function CarouselMovies(_ref) {
+  var container = _ref.container,
+      items = _ref.items,
+      itemsInfo = _ref.itemsInfo;
+  this.container = container; // 容器
+
+  this.items = items; // 电影图片
+
+  this.itemsInfo = itemsInfo; // 电影简洁
+
+  this.loadedImages = 0; // 已经加载完毕的图片
+
+  this.imagesCount = this.items.length; // 图片总数
+
+  this.currentMiddleIndex = Math.floor(this.items.length / 2); // 当前中间索引
+
+  this.midpoint = this.currentMiddleIndex; // 中点
+  // translate step
+
+  this.timer = null;
+  this.translateValue = {
+    x: 160,
+    z: 110
+  };
+  this.init(this.items);
+}
+
+CarouselMovies.prototype.init = function () {
+  for (var index = 0; index < this.items.length; index++) {
+    var element = this.items[index];
+    var url = $(element).attr('data-src');
+    this.prevLoadImage(url, element);
+  }
+};
+
+CarouselMovies.prototype.prevLoadImage = function (url, element) {
+  var that = this;
+  var img = new Image();
+  img.src = url;
+
+  img.onload = function () {
+    img.onload = null;
+    img.onerror = null;
+    $(element).attr('src', url);
+    that.loadedImages++;
+
+    if (that.loadedImages == that.imagesCount) {
+      that.startAnimation();
+      that.onClickListener();
+    }
+  };
+
+  img.onerror = function () {
+    img.onload = null;
+    img.onerror = null;
+    $(element).attr('src', url);
+    that.loadedImages++;
+
+    if (that.loadedImages == that.imagesCount) {
+      that.startAnimation();
+      that.onClickListener();
+    }
+  };
+};
+
+CarouselMovies.prototype.startAnimation = function () {
+  var _this = this;
+
+  if (this.timer) {
+    clearTimeout(this.timer);
+  }
+
+  for (var index = 0; index < this.items.length; index++) {
+    var element = this.items[index];
+    var translateX = 0;
+    var translateZ = 0;
+    var brightness = 60;
+
+    if (index == this.currentMiddleIndex) {
+      translateX = 0;
+      translateZ = 300;
+      brightness = 100;
+      this.itemsInfo.removeClass('show');
+      this.itemsInfo.eq(index).addClass('show');
+    } else if (Math.abs(this.currentMiddleIndex - index) > this.midpoint) {
+      var sign = index > this.currentMiddleIndex ? -1 : 1;
+      var distance = this.midpoint * 2 - Math.abs(this.currentMiddleIndex - index) + 1;
+      translateX = sign * this.translateValue.x * distance;
+      translateZ = 270 - this.translateValue.z * distance;
+    } else {
+      translateX = (index - this.currentMiddleIndex) * this.translateValue.x;
+      translateZ = 270 - this.translateValue.z * Math.abs(index - this.currentMiddleIndex);
+    }
+
+    $(element).parent().css('transform', "translateX(".concat(translateX, "px) translateZ(").concat(translateZ, "px)"));
+    $(element).parent().css('filter', "brightness(".concat(brightness, "%)"));
+  }
+
+  if (this.currentMiddleIndex === this.imagesCount - 1) {
+    this.currentMiddleIndex = 0;
+  } else {
+    this.currentMiddleIndex++;
+  }
+
+  this.timer = setTimeout(function () {
+    _this.startAnimation();
+  }, 5000);
+};
+
+CarouselMovies.prototype.onClickListener = function () {
+  var that = this;
+
+  var debouncedClickHandler = _.debounce(function clickHandler(event) {
+    var currentIndex = $(event.target).parent().index();
+
+    if (currentIndex == that.currentMiddleIndex - 1) {
+      var url = $(event.target).parent().attr('href');
+
+      if (url.indexOf('http')) {
+        window.location.assign(url);
+      } else {
+        window.location.assign(window.location.host + url);
+      }
+    } else {
+      that.currentMiddleIndex = currentIndex;
+      that.startAnimation();
+    }
+  }, 150);
+
+  $(this.container).on('click', function onCarouselMovieClick(event) {
+    event.preventDefault();
+    debouncedClickHandler(event);
+  });
+};
+
+module.exports = CarouselMovies; // -480 -60 1
+// -320 50 2
+// -160 160 3
+// 300 4
+// 160 160 5
+// 320 50 6
+// 480 -60 7
+
+/***/ }),
+
+/***/ "./resources/assets/js_movie/home.js":
+/*!*******************************************!*\
+  !*** ./resources/assets/js_movie/home.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var CarouselMovies = __webpack_require__(/*! ./_hotMovies */ "./resources/assets/js_movie/_hotMovies.js");
+
+$(document).ready(function () {
+  // $('#hot-movies').on('transitionend MSTransitionEnd webkitTransitionEnd oTransitionEnd');
+  new CarouselMovies({
+    container: '#hot-movies',
+    items: $('#hot-movies .movie-pic'),
+    itemsInfo: $('.hot-movies-intro .movie-info')
+  });
+});
+
+/***/ }),
+
+/***/ 3:
+/*!*************************************************!*\
+  !*** multi ./resources/assets/js_movie/home.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! /data/www/neihan.sites/resources/assets/js_movie/home.js */"./resources/assets/js_movie/home.js");
+
+
+/***/ })
+
+/******/ });
