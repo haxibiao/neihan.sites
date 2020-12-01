@@ -75,15 +75,8 @@ class HomeController extends Controller
         $domain = get_domain();
         $robotContent = <<<EOD
 User-agent: *
-Allow: /article/
-Allow: /category/
-Allow: /movie/
-Allow: /question/
-Allow: /video/
-Allow: /user/
-Allow: /trending/
+Disallow: 
 Disallow: /*q=*
-
 Sitemap: https://www.$domain/sitemap.xml
 EOD;
         return response($robotContent)
