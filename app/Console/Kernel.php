@@ -24,7 +24,6 @@ class Kernel extends ConsoleKernel
     {
         //每日统计日活
         $schedule->command('user:active')->dailyAt('23:59');
-        //$schedule->command('sitemap:refresh')->daily();
         //$schedule->command('video:process')->everyMinute();
         //$schedule->command('video:process --codeinfo')->hourly();
 
@@ -35,6 +34,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('recount:novadata')->dailyAt('3:00');
 
         if (is_prod_env()) {
+            // 生成SiteMap
+            $schedule->command('sitemap:generate')->dailyAt('3:00');
+
             //限量抢核算脚本
             $schedule->command('process:withdrawLimitPlaces')->dailyAt('00:15');
             $schedule->command('check:rewardvideo')->everyThirtyMinutes();

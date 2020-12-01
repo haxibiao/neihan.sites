@@ -148,8 +148,9 @@ Route::get('/share/qrcode', 'SharingController@qrcode');
 //search_log
 Route::get('/searchQuery', 'SearchController@search_all');
 
-//sitemap
-Route::get('sitemap', 'SitemapController@index');
+//sitemap.xml
+Route::get('sitemap.xml', 'SitemapController@index');
+Route::get('/sitemap/{name_en}', 'SitemapController@name_en');
 
 //last, use category name_en (限制分类英文url5个字母以上，避免 /gql, /gqlp 会被这个路由拦截)
 // $router->pattern('name_en', '\w{5,100}'); //最新测试好像没被拦截了
