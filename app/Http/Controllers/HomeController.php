@@ -17,7 +17,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['loginAs']]);
+        $this->middleware('auth', ['except' => ['loginAs','robot']]);
     }
 
     /**
@@ -69,5 +69,24 @@ class HomeController extends Controller
         $user = User::where('name', $name)->firstOrFail();
         Auth::login($user);
         return redirect()->to('/home');
+    }
+
+    public function robot(){
+        $domain = get_domain();
+        $robotContent = <<<EOD
+User-agent: *
+Allow: /article/
+Allow: /category/
+Allow: /movie/
+Allow: /question/
+Allow: /video/
+Allow: /user/
+Allow: /trending/
+Disallow: /*q=*
+
+Sitemap: https://www.$domain/sitemap.xml
+EOD;
+        return response($robotContent)
+            ->header('Content-Type', 'text/plain');
     }
 }
