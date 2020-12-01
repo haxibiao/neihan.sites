@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Category;
 use App\Http\Requests\VideoRequest;
-use App\Movie;
 use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -59,17 +58,21 @@ class VideoController extends Controller
         // }
 
         //热门专题，简单规则就按视频数多少来判断专题是否热门视频专题
-        $collections = \App\Collection::orderBy('sort_rank', 'desc')->take(6)->get();
-        $data        = [];
-        // foreach ($collections as $collection) {
-        //     $posts = $collection->with('posts')
-        //         ->where('status', '>', 0)
-        //         ->take(3)
-        //         ->get();
-        //     if (!empty($posts)) {
-        //         $data[$collection->name] = $posts;
-        //     }
-        // }
+        $collections = \App\Collection::orderBy('count', 'desc')->take(6)->get();
+
+        $categories = Category::orderBy('count_videos', 'desc')->where('type', 'diagrams')->take(3)
+            ->get();
+        $data = [];
+        foreach ($categories as $category) {
+            $articles = Article::where('category_id', $category->id)
+                ->where('status', '>', 0)
+                ->orderByDesc('hits')
+                ->take(3)
+                ->get();
+            if (!$articles->isEmpty()) {
+                $data[$category->name] = $articles;
+            }
+        }
 
         return view('video.index')->with('data', $data)->with('collections', $collections);
     }

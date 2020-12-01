@@ -11,7 +11,14 @@
 @section('content')
 <div class="container">
      @include('video.parts.top_list')
-     @each('video.parts.hot_category_video', $data,"posts")
+      	<div class="vd-head">
+              <h3 class="vd-title">
+                <span class="title-icon">
+                  <i class="iconfont icon-huo"></i>精彩文章-推荐分类
+                </span>
+              </h3>
+    </div>
+     @each('video.parts.hot_category_video', $data,"articles")
      <video-list api="api/getlatestVideo" is-desktop="{{ isDeskTop() == 1 }}" ></video-list>
 </div>
 @stop
