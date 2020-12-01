@@ -8,10 +8,6 @@
 <link rel="stylesheet" href="{{ mix('css/movie/play.css') }}">
 @endpush
 
-@push('head-scripts')
-<script src="{{ mix('js/movie/play.js') }}" defer></script>
-@endpush
-
 @section('content')
 <div class="app-player">
     <div class="container-xl">
@@ -123,3 +119,8 @@
 </div>
 
 @endsection
+
+@push('foot-scripts')
+<script src="{{ asset('js/hls.js') }}" defer></script>
+<script src="{{ mix('js/movie/play.js') }}" defer></script>
+@endpush

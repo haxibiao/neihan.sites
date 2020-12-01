@@ -27,6 +27,10 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "dplayer": "^1.26.0",
+        "es6-promise-promise": "^1.0.0",
+        "hls.js": "^0.14.16",
+        "html5shiv": "^3.7.3",
         "simditor": "2.3.6",
         "simditor-dropzone": "2.0.1",
         "bootstrap-tagsinput": "^0.7.1",

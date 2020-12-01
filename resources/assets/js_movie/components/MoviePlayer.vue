@@ -7,7 +7,7 @@
           <div class="embed-responsive video-player">
             <div class="fluid_video_wrapper">
               <template v-if="source">
-                <video-js-player :source="source" />
+                <video-player :source="source" />
               </template>
             </div>
           </div>
