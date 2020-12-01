@@ -1,1 +1,306 @@
-.home-top-bg{position:absolute;top:0;left:0;right:0;width:100%;height:644px;background-image:linear-gradient(135deg,#583230 10%,#360940);background-image:linear-gradient(180deg,#583230,#333)}.hot-movies-intro{position:relative;width:100%;max-width:600px;margin:0 auto}.hot-movies-intro .movie-info{position:absolute;left:15px;right:15px;visibility:hidden;z-index:-1;opacity:0}.hot-movies-intro .movie-info .movie-name{text-align:center;font-family:SimSun;color:#fff;font-size:1.5rem;font-weight:500;margin:30px 0 35px}.hot-movies-intro .movie-info .movie-abstract{text-align:center;color:#fff;font-size:1rem;line-height:1.8rem;font-weight:300;height:5.4rem;-webkit-line-clamp:3;overflow:hidden}.hot-movies-intro .movie-info.show{visibility:visible;z-index:1;opacity:1}.hot-movies-panel{width:100%;height:525px;position:relative;transform-style:preserve-3d;perspective:1800px;z-index:1;margin-left:-44px;margin-top:270px}.hot-movies-panel img:not([src]){visibility:hidden}.hot-movies-panel .movie-item{width:197px;height:262px;position:absolute;transition:.8s ease-in-out;left:calc(50% - 61px);box-shadow:0 -8px 16px rgba(0,0,0,.5);border-radius:4px;background:#f0f0f0}.hot-movies-panel .movie-item .movie-pic{width:100%;height:100%;-o-object-fit:cover;object-fit:cover}.movies-panel-container{position:relative;z-index:1;margin-top:-220px;display:block}@media (max-width:575px){.movies-panel-container{margin-top:-240px}}.movies-panel{width:100%;margin-bottom:30px}.movies-panel .panel-head{padding:15px;margin-bottom:5px}.movies-panel .panel-head .title{font-size:22px;display:inline-block;margin:0;padding-right:10px;line-height:30px}.movies-panel .panel-head .more{float:right;line-height:30px;color:#999}.movies-panel .movie-list{display:flex}.movie-list_title{padding:10px;display:flex;flex-wrap:wrap}.movie-list_title>li:first-of-type .badge{background-color:#ff4a4a;color:#fff}.movie-list_title>li:nth-of-type(2) .badge{background-color:#ff7701;color:#fff}.movie-list_title>li:nth-of-type(3) .badge{background-color:#ffb400;color:#fff}.movie-list_title .movie-title{display:block;padding:10px 10px 10px 0;font-size:15px;line-height:18px}.movie-list_title .movie-title:before{content:" ";position:absolute;left:0;top:0;right:0;width:100%;height:1px;border-color:currentcolor #eee #eee;border-top:1px dotted #eee}.movie-list_title .movie-title .badge{display:inline-block;vertical-align:middle;margin-right:10px;width:18px;height:18px;text-align:center;line-height:18px;border-radius:2px;font-size:12px;background-color:#eee;color:#333;position:relative;top:-1px}.video-list-item{width:100%}@media (max-width:991px){.video-list-item{margin-bottom:30px}}.video-list-item .panel_head{position:relative;padding:10px 10px 10px 0}.video-list-item .panel_head .title{float:left;margin:0;padding-right:10px;font-size:22px;line-height:30px}.video-list-item .panel_head .more{line-height:30px;color:#999}.video-list-item .panel_head:after{border-bottom:1px solid;border-color:#eee;content:" ";position:absolute;left:0;bottom:0;right:0;width:100%;height:1px}.video-list-item .panel_body{padding:10px 0}.video-list-item .panel_body .video_detail{padding:10px}.video-list-item .panel_body .video_detail .detail-thumb{display:inline-block;vertical-align:middle}.video-list-item .panel_body .video_detail .detail-thumb .video_thumb{position:relative;display:block;width:70px;padding-top:150%;border-radius:5px;background-position:50% 50%!important;background-size:cover!important;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.1)}.video-list-item .panel_body .video_detail .detail-side{display:inline-block;padding:0 10px;vertical-align:middle}.video-list-item .panel_body .video_detail .detail-side .title{margin:10px 0;font-size:18px;line-height:25px}.video-list-item .panel_body .video_detail .detail-side .info{font-size:12px}.video-list-item .panel_body .video_text{padding:10px}.video-list-item .panel_body .video_text>li:first-of-type .badge{background-color:#ff4a4a;color:#fff}.video-list-item .panel_body .video_text>li:nth-of-type(2) .badge{background-color:#ff7701;color:#fff}.video-list-item .panel_body .video_text>li:nth-of-type(3) .badge{background-color:#ffb400;color:#fff}.video-list-item .panel_body .video_text .movie-title{display:block;padding:10px 10px 10px 0;font-size:15px;line-height:18px}.video-list-item .panel_body .video_text .movie-title .badge{display:inline-block;vertical-align:middle;margin-right:10px;width:18px;height:18px;text-align:center;line-height:18px;border-radius:2px;font-size:12px;background-color:#eee;color:#333;position:relative;top:-2px}
+.home-top-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 644px;
+  background-image: linear-gradient(135deg, #583230 10%, #360940 100%);
+  background-image: linear-gradient(180deg, #583230, #333333);
+}
+
+.hot-movies-intro {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.hot-movies-intro .movie-info {
+  position: absolute;
+  left: 15px;
+  right: 15px;
+  visibility: hidden;
+  z-index: -1;
+  opacity: 0;
+}
+
+.hot-movies-intro .movie-info .movie-name {
+  text-align: center;
+  font-family: "SimSun";
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 30px 0 35px;
+}
+
+.hot-movies-intro .movie-info .movie-abstract {
+  text-align: center;
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1.8rem;
+  font-weight: 300;
+  height: 5.4rem;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.hot-movies-intro .movie-info.show {
+  visibility: visible;
+  z-index: 1;
+  opacity: 1;
+}
+
+.hot-movies-panel {
+  width: 100%;
+  height: 525px;
+  position: relative;
+  transform-style: preserve-3d;
+  perspective: 1800px;
+  z-index: 1;
+  margin-left: -44px;
+  margin-top: 270px;
+}
+
+.hot-movies-panel img:not([src]) {
+  visibility: hidden;
+}
+
+.hot-movies-panel .movie-item {
+  width: 197px;
+  height: 262px;
+  position: absolute;
+  transition: 0.8s ease-in-out;
+  left: calc(50% - 61px);
+  box-shadow: 0 -8px 16px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  background: #f0f0f0;
+}
+
+.hot-movies-panel .movie-item .movie-pic {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.movies-panel-container {
+  position: relative;
+  z-index: 1;
+  margin-top: -220px;
+  display: block;
+}
+
+@media (max-width: 575px) {
+  .movies-panel-container {
+    margin-top: -240px;
+  }
+}
+
+.movies-panel {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.movies-panel .panel-head {
+  padding: 15px;
+  margin-bottom: 5px;
+}
+
+.movies-panel .panel-head .title {
+  font-size: 22px;
+  display: inline-block;
+  margin: 0;
+  padding-right: 10px;
+  line-height: 30px;
+}
+
+.movies-panel .panel-head .more {
+  float: right;
+  line-height: 30px;
+  color: #999;
+}
+
+.movies-panel .movie-list {
+  display: flex;
+}
+
+.movie-list_title {
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.movie-list_title > li:nth-of-type(1) .badge {
+  background-color: #ff4a4a;
+  color: #fff;
+}
+
+.movie-list_title > li:nth-of-type(2) .badge {
+  background-color: #ff7701;
+  color: #fff;
+}
+
+.movie-list_title > li:nth-of-type(3) .badge {
+  background-color: #ffb400;
+  color: #fff;
+}
+
+.movie-list_title .movie-title {
+  display: block;
+  padding: 10px 10px 10px 0;
+  font-size: 15px;
+  line-height: 18px;
+}
+
+.movie-list_title .movie-title:before {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 1px;
+  border-top: 1px dotted;
+  border-color: #eee;
+}
+
+.movie-list_title .movie-title .badge {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+  width: 18px;
+  height: 18px;
+  text-align: center;
+  line-height: 18px;
+  border-radius: 2px;
+  font-size: 12px;
+  background-color: #eee;
+  color: #333;
+  position: relative;
+  top: -1px;
+}
+
+.video-list-item {
+  width: 100%;
+}
+
+@media (max-width: 991px) {
+  .video-list-item {
+    margin-bottom: 30px;
+  }
+}
+
+.video-list-item .panel_head {
+  position: relative;
+  padding: 10px 10px 10px 0;
+}
+
+.video-list-item .panel_head .title {
+  float: left;
+  margin: 0;
+  padding-right: 10px;
+  font-size: 22px;
+  line-height: 30px;
+}
+
+.video-list-item .panel_head .more {
+  line-height: 30px;
+  color: #999;
+}
+
+.video-list-item .panel_head:after {
+  border-bottom: 1px solid;
+  border-color: #eee;
+  content: " ";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 1px;
+}
+
+.video-list-item .panel_body {
+  padding: 10px 0;
+}
+
+.video-list-item .panel_body .video_detail {
+  padding: 10px;
+}
+
+.video-list-item .panel_body .video_detail .detail-thumb {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.video-list-item .panel_body .video_detail .detail-thumb .video_thumb {
+  position: relative;
+  display: block;
+  width: 70px;
+  padding-top: 150%;
+  border-radius: 5px;
+  background-position: 50% 50% !important;
+  background-size: cover !important;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.video-list-item .panel_body .video_detail .detail-side {
+  display: inline-block;
+  padding: 0 10px 0;
+  vertical-align: middle;
+}
+
+.video-list-item .panel_body .video_detail .detail-side .title {
+  margin: 10px 0 10px;
+  font-size: 18px;
+  line-height: 25px;
+}
+
+.video-list-item .panel_body .video_detail .detail-side .info {
+  font-size: 12px;
+}
+
+.video-list-item .panel_body .video_text {
+  padding: 10px;
+}
+
+.video-list-item .panel_body .video_text > li:nth-of-type(1) .badge {
+  background-color: #ff4a4a;
+  color: #fff;
+}
+
+.video-list-item .panel_body .video_text > li:nth-of-type(2) .badge {
+  background-color: #ff7701;
+  color: #fff;
+}
+
+.video-list-item .panel_body .video_text > li:nth-of-type(3) .badge {
+  background-color: #ffb400;
+  color: #fff;
+}
+
+.video-list-item .panel_body .video_text .movie-title {
+  display: block;
+  padding: 10px 10px 10px 0;
+  font-size: 15px;
+  line-height: 18px;
+}
+
+.video-list-item .panel_body .video_text .movie-title .badge {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+  width: 18px;
+  height: 18px;
+  text-align: center;
+  line-height: 18px;
+  border-radius: 2px;
+  font-size: 12px;
+  background-color: #eee;
+  color: #333;
+  position: relative;
+  top: -2px;
+}
+
