@@ -85,6 +85,8 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/",
             "Haxibiao\\Helpers\\": "packages/haxibiao/helpers/src/",
             "Haxibiao\\Matomo\\": "packages/haxibiao/matomo/src/",
             "Haxibiao\\Base\\": "packages/haxibiao/user/src/",
@@ -95,10 +97,7 @@
             "Haxibiao\\Sns\\": "packages/haxibiao/sns/src/",
             "Haxibiao\\Tag\\": "packages/haxibiao/tag/src/"
         },
-        "classmap": [
-            "database/seeds",
-            "database/factories"
-        ]
+        "classmap": []
     },
     "autoload-dev": {
         "psr-4": {
