@@ -9,10 +9,12 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Sitemap\SitemapGenerator;
 use Spatie\Sitemap\SitemapIndex;
 use Spatie\Sitemap\Tags\Sitemap;
 use Spatie\Sitemap\Tags\Url;
+use wapmorgan\UnifiedArchive\UnifiedArchive;
 
 /**
  *  一个sitemap文件最多5w个链接,所有sitmap文件大家加起来不能超过50M
@@ -62,6 +64,9 @@ class GenerateSitemap  extends Command
         $mi = 0;
         DB::table('movies')->select(['id'])
             ->orderBy('id','desc')->chunk(10000,function ($movies)use(&$mi,&$siteMapIndexUrls,$domain){
+                $fileName = 'movie_'.$mi.'.xml';
+                $gzFileName = $fileName.'.gz';
+                $relativePath = 'sitemap/'.$domain.'/'.$fileName;
                 $sitemapGenerator = SitemapGenerator::create($domain)
                     ->getSitemap();
                 foreach ($movies as $movie){
@@ -71,8 +76,11 @@ class GenerateSitemap  extends Command
                         ->setPriority(0.8)
                     );
                 }
-                $sitemapGenerator->writeToDisk('public', 'sitemap/'.$domain.'/movie_'.$mi.'.xml');
-                $siteMapIndexUrls[] = '/movie_'.$mi.'.xml';
+
+                $sitemapGenerator->writeToDisk('public', $relativePath);
+                $path = Storage::disk('public')->path($relativePath);
+                UnifiedArchive::archiveFile($path, $path.'.gz');
+                $siteMapIndexUrls[] = '/'.$gzFileName;
                 $mi++;
             });
         return $siteMapIndexUrls;
@@ -84,6 +92,10 @@ class GenerateSitemap  extends Command
         DB::table('issues')->select(['id'])
             ->whereNull('deleted_at')
             ->orderBy('id','desc')->chunk(10000,function ($questions)use(&$qi,&$siteMapIndexUrls,$domain){
+                $fileName = 'question_'.$qi.'.xml';
+                $gzFileName = $fileName.'.gz';
+                $relativePath = 'sitemap/'.$domain.'/'.$fileName;
+
                 $sitemapGenerator = SitemapGenerator::create($domain)
                     ->getSitemap();
                 foreach ($questions as $question){
@@ -93,9 +105,11 @@ class GenerateSitemap  extends Command
                         ->setPriority(0.8)
                     );
                 }
-                $sitemapGenerator->writeToDisk('public', 'sitemap/'.$domain.'/question_'.$qi.'.xml');
+                $sitemapGenerator->writeToDisk('public', $relativePath);
+                $path = Storage::disk('public')->path($relativePath);
+                UnifiedArchive::archiveFile($path, $path.'.gz');
+                $siteMapIndexUrls[] = '/'.$gzFileName;
                 $qi++;
-                $siteMapIndexUrls[] = '/question_'.$qi.'.xml';
             });
         return $siteMapIndexUrls;
     }
@@ -104,6 +118,10 @@ class GenerateSitemap  extends Command
         $siteMapIndexUrls = [];
         $ci = 0;
         Category::where('status',1)->where('count','>',0)->chunk(10000,function ($categories)use(&$ci,&$siteMapIndexUrls,$domain){
+            $fileName = 'category_'.$ci.'.xml';
+            $gzFileName = $fileName.'.gz';
+            $relativePath = 'sitemap/'.$domain.'/'.$fileName;
+
             $sitemapGenerator = SitemapGenerator::create($domain)
                 ->getSitemap();
             foreach ($categories as $category){
@@ -113,9 +131,12 @@ class GenerateSitemap  extends Command
                     ->setPriority(0.8)
                 );
             }
-            $sitemapGenerator->writeToDisk('public', 'sitemap/'.$domain.'/category_'.$ci.'.xml');
+            $sitemapGenerator->writeToDisk('public', $relativePath);
+            $path = Storage::disk('public')->path($relativePath);
+            UnifiedArchive::archiveFile($path, $path.'.gz');
+
+            $siteMapIndexUrls[] = '/'.$gzFileName;
             $ci++;
-            $siteMapIndexUrls[] = '/category_'.$ci.'.xml';
         });
         return $siteMapIndexUrls;
     }
@@ -127,6 +148,11 @@ class GenerateSitemap  extends Command
             ->where('status',1)
             ->whereNull('deleted_at')
             ->whereIn('type',['article','diagrams'])->orderBy('id','desc')->chunk(10000,function ($articles)use(&$ai,&$siteMapIndexUrls,$domain){
+
+                $fileName = 'article_'.$ai.'.xml';
+                $gzFileName = $fileName.'.gz';
+                $relativePath = 'sitemap/'.$domain.'/'.$fileName;
+
                 $sitemapGenerator = SitemapGenerator::create($domain)
                     ->getSitemap();
                 foreach ($articles as $article){
@@ -136,9 +162,12 @@ class GenerateSitemap  extends Command
                         ->setPriority(0.8)
                     );
                 }
-                $sitemapGenerator->writeToDisk('public', 'sitemap/'.$domain.'/article_'.$ai.'.xml');
+                $sitemapGenerator->writeToDisk('public', $relativePath);
+                $path = Storage::disk('public')->path($relativePath);
+                UnifiedArchive::archiveFile($path, $path.'.gz');
+                $siteMapIndexUrls[] = '/'.$gzFileName;
                 $ai++;
-                $siteMapIndexUrls[] = '/articles_'.$ai.'.xml';
+
             });
         return $siteMapIndexUrls;
     }
@@ -149,6 +178,11 @@ class GenerateSitemap  extends Command
         DB::table('videos')->whereStatus(1)->whereNull('deleted_at')
             ->select(['id'])
             ->orderBy('id','desc')->chunk(10000,function ($videos)use(&$vi,&$siteMapIndexUrls,$domain){
+                $fileName = 'video_'.$vi.'.xml';
+                $gzFileName = $fileName.'.gz';
+                $relativePath = 'sitemap/'.$domain.'/'.$fileName;
+
+
                 $sitemapGenerator = SitemapGenerator::create($domain)
                     ->getSitemap();
                 foreach ($videos as $video){
@@ -158,9 +192,11 @@ class GenerateSitemap  extends Command
                         ->setPriority(0.8)
                     );
                 }
-                $sitemapGenerator->writeToDisk('public', 'sitemap/'.$domain.'/video_'.$vi.'.xml');
+                $sitemapGenerator->writeToDisk('public', $relativePath);
+                $path = Storage::disk('public')->path($relativePath);
+                UnifiedArchive::archiveFile($path, $path.'.gz');
+                $siteMapIndexUrls[] = '/'.$gzFileName;
                 $vi++;
-                $siteMapIndexUrls[] = '/video_'.$vi.'.xml';
             });
         return $siteMapIndexUrls;
     }

@@ -22,6 +22,6 @@ class SitemapController extends Controller
     public function name_en($name_en){
         $siteMapContentPath = Storage::disk('public')->get('sitemap/'.get_domain().'/'.$name_en);
         return response($siteMapContentPath)
-            ->header('Content-Type', 'text/xml');
+            ->header('Content-Type', 'application/octet-stream');
     }
 }

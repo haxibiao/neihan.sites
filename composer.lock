@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7c4141c99ef65ffd8652d9de616d4e25",
+    "content-hash": "d7e4552f0efaf52fcc630841a83625c0",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -11600,6 +11600,105 @@
                 }
             ],
             "time": "2020-11-12T00:07:28+00:00"
+        },
+        {
+            "name": "wapmorgan/unified-archive",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wapmorgan/UnifiedArchive.git",
+                "reference": "7d3623fba223f690da42d3d6b18335eaa926f743"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wapmorgan/UnifiedArchive/zipball/7d3623fba223f690da42d3d6b18335eaa926f743",
+                "reference": "7d3623fba223f690da42d3d6b18335eaa926f743",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "php": ">=5.5.0"
+            },
+            "replace": {
+                "wapmorgan/cam": "1.0.2"
+            },
+            "require-dev": {
+                "docopt/docopt": "~1.0",
+                "phpunit/phpunit": "~4.8"
+            },
+            "suggest": {
+                "bin-ncompress": "TAR.Z support",
+                "docopt/docopt": "Requirement for cam (Console Archive Manager)",
+                "ext-bz2": "BZ2 and TAR.BZ2 support",
+                "ext-phar": "TAR support",
+                "ext-rar": "RAR support",
+                "ext-xz": "XZ and TAR.XZ support",
+                "ext-zip": "ZIP support",
+                "ext-zlib": "GZ and TAR.GZ support",
+                "gemorroj/archive7z": "7ZIP support",
+                "pear/archive_tar": "another TAR support",
+                "phpclasses/php-iso-file": "ISO support",
+                "wapmorgan/cab-archive": "CAB support"
+            },
+            "bin": [
+                "bin/cam"
+            ],
+            "type": "library",
+            "extra": {
+                "phar-builder": {
+                    "compression": "BZip2",
+                    "name": "cam.phar",
+                    "output-dir": "./",
+                    "entry-point": "bin/cam",
+                    "include": [
+                        "bin",
+                        "src",
+                        "vendor"
+                    ],
+                    "events": {
+                        "command.package.start": "git describe --tags > bin/version.txt",
+                        "command.package.end": "chmod +x cam.phar && rm bin/version.txt"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "wapmorgan\\UnifiedArchive\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "wapmorgan",
+                    "email": "wapmorgan@gmail.com",
+                    "role": "developer"
+                }
+            ],
+            "description": "UnifiedArchive - unified interface to all popular archive formats (zip, 7z, rar, gz, bz2, xz, cab, tar, tar.gz, tar.bz2, tar.xz, tar.Z, iso) for listing, reading, extracting and creation + built-in console archive manager + PclZip-like interface for zip archives.",
+            "keywords": [
+                "7z",
+                "archive",
+                "bzip2",
+                "cab",
+                "compression",
+                "gzip",
+                "iso",
+                "lzma2",
+                "ncompress",
+                "rar",
+                "tar",
+                "zip"
+            ],
+            "time": "2020-11-28T13:04:06+00:00"
         },
         {
             "name": "webonyx/graphql-php",
