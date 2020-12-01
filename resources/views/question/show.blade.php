@@ -45,12 +45,8 @@
                                     src="{{ $question->user->avatarUrl }}" alt=""></a>
                         @endif
                         <div class="info">
-                            @if ($question->is_anonymous)
-                                匿名用户
-                            @else
-                                <a target="_blank" href="/user/{{ $question->user->id }}"
-                                    class="nickname">{{ $question->user->name }}</a>
-                            @endif
+                            <a target="_blank" href="/user/{{ $question->user->id }}"
+                                class="nickname">{{ $question->user->name }}</a>
                             <span class="time">{{ $question->timeAgo() }}</span>
                         </div>
                         @if ($question->isPay())
