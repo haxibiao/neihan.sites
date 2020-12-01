@@ -62,6 +62,7 @@ class GenerateSitemap  extends Command
     private function generateMovies($domain){
         $siteMapIndexUrls = [];
         $mi = 0;
+
         DB::table('movies')->select(['id'])
             ->orderBy('id','desc')->chunk(10000,function ($movies)use(&$mi,&$siteMapIndexUrls,$domain){
                 $fileName = 'movie_'.$mi.'.xml';
@@ -175,18 +176,17 @@ class GenerateSitemap  extends Command
     private function generateVideos($domain){
         $siteMapIndexUrls = [];
         $vi = 0;
-        DB::table('videos')->whereStatus(1)->whereNull('deleted_at')
-            ->select(['id'])
-            ->orderBy('id','desc')->chunk(10000,function ($videos)use(&$vi,&$siteMapIndexUrls,$domain){
+        DB::table('posts')->select(['video_id'])->whereNull('deleted_at')
+            ->whereStatus(1)
+            ->orderBy('id','desc')->chunk(20000,function ($videos)use(&$vi,&$siteMapIndexUrls,$domain){
                 $fileName = 'video_'.$vi.'.xml';
                 $gzFileName = $fileName.'.gz';
                 $relativePath = 'sitemap/'.$domain.'/'.$fileName;
 
-
                 $sitemapGenerator = SitemapGenerator::create($domain)
                     ->getSitemap();
                 foreach ($videos as $video){
-                    $sitemapGenerator->add(Url::create('https://www.'.$domain.'/video/'.$video->id)
+                    $sitemapGenerator->add(Url::create('https://www.'.$domain.'/video/'.$video->video_id)
                         ->setLastModificationDate(Carbon::yesterday())
                         ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
                         ->setPriority(0.8)
