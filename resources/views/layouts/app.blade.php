@@ -105,7 +105,7 @@
     </div>
 
     <div class="container">
-        {{-- @include('parts.footer') --}}
+         @include('parts.footer')
     </div>
 
 </body>
