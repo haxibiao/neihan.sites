@@ -88,7 +88,7 @@ export default {
   created() {
     // var routeParams = window.location.search
 
-    this.episode = Number(this.count) + 1;
+    this.episode = 1;
     this.fetchData();
   },
 
