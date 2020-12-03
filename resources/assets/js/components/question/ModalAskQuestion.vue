@@ -38,7 +38,7 @@
                 <div class="pay-tip">
                   <span class="pay-tip-content">
                     使用付费咨询视为您已同意
-                    <a href="/article/question" target="_blank">《问答细则及责任声明》</a>
+                    <a href="/article/disclaimer" target="_blank">《问答细则及责任声明》</a>
                   </span>
                 </div>
                 <div class="money-amount">
