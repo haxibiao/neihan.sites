@@ -1,18 +1,18 @@
 @extends('layouts.app')
-@section('title') 
-  {{ seo_site_name() }}移动应用 App - {{ seo_site_name() }}   
+@section('title')
+  {{ seo_site_name() }}移动应用 App - {{ seo_site_name() }}
 @endsection
 @push('section')
 
   <div id="mask" style="position:fixed; z-index:999999999999; top: 0; width: 100%; height: 100%; background: rgba(102, 102, 102, 0.5); display: none;">
-    <div style="position:absolute; width: 100%; height: 100%;">        
+    <div style="position:absolute; width: 100%; height: 100%;">
         <img src="/images/app/big-mask.jpg" style="width :100%; position:absolute;" alt="请通过浏览器打开">
         <span style="color: #FFFFFF; width:70%; font-size: 15px; margin: 5% 30% 0 5%; position: relative; top: 30px; left:10%;">点击右上角按钮，然后在弹出的菜单中<br/>点击 "用浏览器打开" 后再下载安装。</span>
     </div>
     </div>
     <div id = "tancen" style="position:relative; top:600px;"></div>
 
-  <div class="container-fluid apps"> 
+  <div class="container-fluid apps">
     <div class="row">
         <div class="container top-part">
           <div class="top-logo">
@@ -100,7 +100,6 @@
           </div>
         </div>
       </div>
-        @include('parts.footer')
     </div>
   </div>
 @endpush
@@ -131,29 +130,29 @@
 
 <!-- <script type="text/javascript">
     function download_btn(){
-        
+
         var ua = navigator.userAgent.toLowerCase();
         if(ua.match(/MicroMessenger\/[0-9]/i )||ua.match(/QQ\/[0-9]/i) ){
-            
+
             document.getElementById("mask").style.display="inline";
 
-        } else {			
-			
+        } else {
+
             window.location.href="{{ env('APK_URL') }}";
         }
     }
 
 
 	function download2_btn(){
-        
+
         var ua = navigator.userAgent.toLowerCase();
         if(request()->path() == "app"){
 			if(ua.match(/MicroMessenger\/[0-9]/i )||ua.match(/QQ\/[0-9]/i) ){
-                
+
                 document.getElementById("mask").style.display="inline";
-    
-                } else {			
-    
+
+                } else {
+
                    window.location.href="{{ env('APK_URL')}}";
                 }
 
