@@ -5,6 +5,6 @@
 	 </span>
 	</h3>
 	<ul class="guess-list">
-		@each('question.parts.guess_item',$guess,'question')
+		@each('question.parts.hot_question_item', $guess , 'question')
 	</ul>
 </div>
