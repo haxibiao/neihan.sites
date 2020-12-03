@@ -1,35 +1,33 @@
 @php
   $have_img = !empty($question->relateImage()) ? 'have-img' : '';
+  $latestResolution = data_get($question,'latestResolution',null);
+
 @endphp
 <li class="question-item simple {{ $have_img }}">
   <a class="title" target="_blank" href="/question/{{ $question->id }}">
       <span>{{ $question->title }}</span>
   </a>
-
-  @if($question->latestAnswer)
+  @if($latestResolution)
   <div class="author hidden-sm">
-    <a class="avatar" target="_blank" href="/user/{{ $question->latestAnswer->user_id }}">
-      <img src="{{ $question->latestAnswer->user->avatarUrl }}" alt="">
-    </a> 
+    <a class="avatar" target="_blank" href="/user/{{ data_get($latestResolution,'user_id') }}">
+      <img src="{{ data_get($latestResolution,'user.avatarUrl') }}" alt="">
+    </a>
     <div class="info">
-      <a class="nickname" target="_blank" href="/user/{{ $question->latestAnswer->user_id }}">{{ $question->latestAnswer->user->name }}</a>
+      <a class="nickname" target="_blank" href="/user/{{ data_get($latestResolution,'user_id')}}">{{ data_get($latestResolution,'user.name')}}</a>
       <img class="badge-icon" src="/images/verified.png" data-toggle="tooltip" data-placement="top" title="{{ seo_site_name() }}认证" alt="">
       <span class="time" data-shared-at="2017-11-06T09:20:28+08:00">知名自媒体人</span>
     </div>
-@php
-  $count_likes = $question->latestAnswer->count_likes >0 ? $question->latestAnswer->count_likes : 0;;
-@endphp
-    <div class="pull-right">{{ $count_likes }}赞</div>
+    <div class="pull-right">{{ data_get($latestResolution,'count_likes',0) }}赞</div>
   </div>
   @endif
 
-  <div class="question-warp">    
+  <div class="question-warp">
     <div class="content">
       <p class="abstract">
-        @if($question->latestAnswer)
-            {{ $question->latestAnswer->shortText() }}
-        @else 
-          {{ $question->background }}
+        @if($latestResolution)
+            {{ $latestResolution->shortText() }}
+        @else
+          {!! $question->background !!}
         @endif
       </p>
     </div>
