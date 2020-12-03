@@ -15,12 +15,12 @@ class Article extends BaseArticle
         parent::boot();
 
         //保存时触发
-        self::saving(function ($article) {
-            $description          = $article->description;
-            $body              = $article->body;
-            $article->description = app('SensitiveUtils')->replace($description, '*');
-            $article->body        = app('SensitiveUtils')->replace($body, '*');
-        });
+//        self::saving(function ($article) {
+//            $description          = $article->description;
+//            $body              = $article->body;
+//            $article->description = app('SensitiveUtils')->replace($description, '*');
+//            $article->body        = app('SensitiveUtils')->replace($body, '*');
+//        });
     }
 
     protected static function booted()
