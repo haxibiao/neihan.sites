@@ -2,8 +2,7 @@
 	<p class="plate-title">{{ $user->ta() }}管理的专题</p>
 
 	<ul class="admin-category">
-		@foreach($user->adminCategories()->orderBy('id','desc')->get() as $category)
-
+		@foreach($user->hasCategories()->orderBy('id','desc')->get() as $category)
 		<li class="single-media"><a href="/category/{{ $category->id }}" class="avatar-category"><img src="{{ $category->logoUrl }}" alt="{{ $category->name }}"></a><a href="/category/{{ $category->id }}" class="info">{{ $category->name }}</a></li>	
 		@endforeach	
 	</ul>
