@@ -133,26 +133,31 @@ class IndexController extends Controller
     {
         if (request('type') == 'thirty') {
             $articles = Article::orderBy('hits', 'desc')
+                ->whereIn('type',['diagrams','articles','article'])
                 ->where('status', '>', 0)
                 ->where('updated_at', '>', \Carbon\Carbon::now()->addDays(-30))
                 ->paginate(10);
             if ($articles){
                 $articles = Article::orderBy('hits', 'desc')
+                    ->whereIn('type',['diagrams','articles','article'])
                     ->where('status', '>', 0)
                     ->paginate(10);
             }
         } else if (request('type') == 'seven') {
             $articles = Article::orderBy('hits', 'desc')
+                ->whereIn('type',['diagrams','articles','article'])
                 ->where('status', '>', 0)
                 ->where('updated_at', '>', \Carbon\Carbon::now()->addDays(-7))
                 ->paginate(10);
             if ($articles){
                 $articles = Article::orderBy('hits', 'desc')
+                    ->whereIn('type',['diagrams','articles','article'])
                     ->where('status', '>', 0)
                     ->paginate(10);
             }
         } else {
             $articles = Article::where('status', '>', 0)
+                ->whereIn('type',['diagrams','articles','article'])
                 ->orderBy('hits', 'desc')
                 ->paginate(10);
         }
