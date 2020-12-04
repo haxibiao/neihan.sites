@@ -83,13 +83,14 @@ class IndexController extends Controller
                 ->whereExists(function ($query) {
                     return $query->from('categories')
                         ->whereRaw('categories.id = follows.followed_id')
-                        ->where('categories.status', '>=', 0);
+                        ->where('categories.status', '>=', 0)
+                        ->where('categories.is_official',0);
                 })->take($top_count)->pluck('followed_id')->toArray();
             $category_ids = array_merge($stick_categorie_ids, $all_follow_category_ids);
 
             //置顶专题加上关注的专题都不够7个时获取官方大专题
             if (count($category_ids) != 7) {
-                $official_category_ids = Category::where('is_official', 1)
+                $official_category_ids = Category::where('is_official', 0)
                     ->where('count', '>=', 0)
                     ->where('status', '>=', 0)
                     ->where('parent_id', 0) //0代表顶级分类
@@ -102,7 +103,7 @@ class IndexController extends Controller
         } else {
 
             //未登录，随机取官方专题
-            $categories = Category::where('is_official', 1)
+            $categories = Category::where('is_official', 0)
                 ->where('count', '>=', 0)
                 ->where('status', '>=', 0)
                 ->where('parent_id', 0) //0代表顶级分类
