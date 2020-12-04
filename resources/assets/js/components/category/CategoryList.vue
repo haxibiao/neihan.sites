@@ -2,7 +2,7 @@
   <div>
     <li v-for="category in categories" class="col-sm-4 recommend-card">
       <div>
-        <a target="_blank" :href="'/'+category.name_en">
+        <a target="_blank" :href="'/category/'+category.id">
           <img class="avatar-category" :src="category.logo" alt="">
           <h4 class="name">{{ category.name }}</h4>
           <p class="category-description">{{ category.description }}</p>
@@ -14,7 +14,7 @@
             :followed="category.followed">
           </follow>
         <hr>
-        <div class="count"><a target="_blank" :href="'/'+category.name_en">{{ category.count }}篇作品</a> · {{ category.count_follows }}人关注</div>
+        <div class="count"><a target="_blank" :href="'/category/'+category.id">{{ category.count }}篇作品</a> · {{ category.count_follows }}人关注</div>
       </div>
     </li>
     <div class="clear"></div>
