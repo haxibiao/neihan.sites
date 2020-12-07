@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use App\User;
+use App\Issue;
+use App\Movie;
 use App\Article;
 use App\Category;
-use App\Movie;
-use App\User;
-use Auth;
+use App\Question;
 
 class IndexController extends Controller
 {
@@ -56,6 +58,11 @@ class IndexController extends Controller
 
         //首页文章
         $data->articles = indexArticles();
+
+        //首页问答
+        $questions =Issue::orderBy('hits', 'desc')->take(10)->get()->random(3);
+
+        $data->questions = $questions;
 
         return view('index.index')
             ->withData($data);
