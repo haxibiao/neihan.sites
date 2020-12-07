@@ -57,6 +57,10 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->registerSingleObject();
+        // production环境url全部https
+        if (is_prod()) {
+            \URL::forceScheme('https');
+        }
     }
 
     /**
