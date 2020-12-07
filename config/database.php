@@ -35,13 +35,13 @@ return [
 
     'connections' => [
 
-        'sqlite' => [
+        'sqlite'       => [
             'driver'   => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix'   => '',
         ],
 
-        'mysql'  => [
+        'mysql'        => [
             'driver'      => 'mysql',
             'host'        => env('DB_HOST', '127.0.0.1'),
             'port'        => env('DB_PORT', '3306'),
@@ -62,9 +62,7 @@ return [
             ],
         ],
 
-
-
-        'nhdy'   => [
+        'nhdy'         => [
             'driver'      => 'mysql',
             'host'        => env('DB_HOST', '127.0.0.1'),
             'port'        => env('DB_PORT', '3306'),
@@ -79,7 +77,27 @@ return [
             'engine'      => null,
         ],
 
-        'pgsql'  => [
+        'mediachain'   => [
+            'driver'         => 'mysql',
+            'url'            => env('DATABASE_URL'),
+            'host'           => '101.32.203.3',
+            'port'           => '3306',
+            'database'       => 'mediachain',
+            'username'       => env('DB_USERNAME', 'forge'),
+            'password'       => env('DB_PASSWORD', ''),
+            'unix_socket'    => env('DB_SOCKET', ''),
+            'charset'        => 'utf8mb4',
+            'collation'      => 'utf8mb4_unicode_ci',
+            'prefix'         => '',
+            'prefix_indexes' => true,
+            'strict'         => false,
+            'engine'         => null,
+            'options'        => [
+                PDO::ATTR_PERSISTENT => true,
+            ],
+        ],
+
+        'pgsql'        => [
             'driver'   => 'pgsql',
             'host'     => env('DB_HOST', '127.0.0.1'),
             'port'     => env('DB_PORT', '5432'),
@@ -92,7 +110,7 @@ return [
             'sslmode'  => 'prefer',
         ],
 
-        'sqlsrv' => [
+        'sqlsrv'       => [
             'driver'   => 'sqlsrv',
             'host'     => env('DB_HOST', 'localhost'),
             'port'     => env('DB_PORT', '1433'),
@@ -103,7 +121,7 @@ return [
             'prefix'   => '',
         ],
 
-        'diudie'         => [
+        'diudie'       => [
             'driver'         => 'mysql',
             'url'            => env('DATABASE_URL'),
             'host'           => '127.0.0.1',
@@ -123,7 +141,7 @@ return [
             ],
         ],
 
-        'neihan_sites'         => [
+        'neihan_sites' => [
             'driver'         => 'mysql',
             'url'            => env('DATABASE_URL'),
             'host'           => '101.32.203.3',
