@@ -32,11 +32,9 @@
     @endif
 
     {{-- 如果是文章，就显示标题 --}}
-    @if( $article->type=='article' )
     <a class="title" target="_blank" href="{{ $article->url }}">
         <span>{{ $article->subject }}</span>
     </a>
-    @endif
 
     {{-- 然后任何类型，这段简介是一定要显示的 --}}
     <a class="abstract" target="_blank" href="{{ $article->url }}">

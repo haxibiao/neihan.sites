@@ -85,7 +85,7 @@
                                 id="article">
 
                                 @foreach ($data['liked_articles'] as $like)
-                                    @include('parts.article_item', ['article' => $like->liked])
+                                    @include('parts.article_item', ['article' => $like->likable])
                                 @endforeach
                                 @if (Auth::check())
                                     <article-list api="/user/{{ $user->id }}/likes" is-desktop="{{ isDeskTop() == 1 }}"

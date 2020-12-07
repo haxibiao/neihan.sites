@@ -120,4 +120,11 @@ class Post extends BasePost
         $videoId = data_get($args, 'video_id');
         return \App\Post::where('video_id', $videoId)->first();
     }
+
+    public function getUrlAttribute()
+    {
+        $path = '/%s/%d';
+        $path = sprintf($path, 'video', $this->video_id);
+        return url($path);
+    }
 }
