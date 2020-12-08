@@ -19,7 +19,11 @@ $movies = $movies->forget(0);
             <div class="detail-side">
                 <h4 class="title">
                     <a href="movie/{{ $first->id }}">
-                        {{ $first->name }}
+                        @if(mb_strlen($first->name) <= 7)
+                            {{ $first->name }}
+                        @else
+                            {{ mb_substr($first->name, 0, 7).'...' }}
+                        @endif
                     </a>
                 </h4>
                 <p class="info">
