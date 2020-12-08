@@ -222,6 +222,11 @@ class User extends Model implements
     {
         return $this->hasMany(\App\Follow::class)->where('followed_type', 'collections');
     }
+    
+    public function movieHistory(): HasMany
+    {
+        return $this->hasMany(MovieHistory::class);
+    }
 
     public function followingUsers()
     {

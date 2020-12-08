@@ -11,44 +11,47 @@
             </ul>
             <ul class="app-header__user">
                 <li><a href="#" title="留言反馈"><i class="iconfont icon-comments-fill"></i></a></li>
-                <li class="hist dropdown-hover">
-                    <a href="javascript:;" title=""><i class="iconfont icon-clock-fill"></i></a>
-                    {{-- <div class="dropdown-box fadeInDown">
-                        <div class="item clearfix">
-                            <p>
-                                <a class="pull-right" href="javascript:;"
-                                    onclick="MyTheme.Cookie.Del('history','您确定要清除记录吗？');">
-                                    [清空]
-                                </a>
-                                播放记录
-                            </p>
-                            <div class="history-list clearfix">
-                                <p>
-                                    <a class="text-333" href="/vodplay/nf3jbhap9/1-yffdj4h.html" title="异兽觉醒">
-                                        <span class="pull-right">HD中字</span>异兽觉醒
-                                    </a>
-                                </p>
+                @if (Auth::check())
+                    <li title="播放记录" dropdown-target=".play-history" dropdown-toggle="hover">
+                        <a href="javascript:;">
+                            <i class="iconfont icon-clock-fill"></i>
+                        </a>
+                        <!-- <div class="dropdown-box play-history">
+                            <div class="history-box clearfix">
+                                <div class="ht-movie_list">
+                                    <div class="video_headline">播放记录</div>
+                                    @php
+                                    $historyMovies
+                                    =Auth::user()->movieHistory()->orderByDesc('updated_at')->take(10)->get();
+                                    @endphp
+                                    @foreach ($historyMovies as $historyItem)
+                                        @include('movie.parts.history_movie_item')
+                                    @endforeach
+                                </div>
                             </div>
-                        </div>
-                    </div> --}}
-                </li>
-                <li class="menu-user-login">
-                    <a href="javascript:;" onclick="console.log('utils.login();')">
-                        <i class="iconfont icon-account-fill"></i>
-                    </a>
-                </li>
-                {{-- <li class="menu dropdown-hover" style="display: none;">
-                    <a href="javascript:;"><i class="iconfont icon-user"></i></a>
-                    <div class="dropdown-box fadeInDown">
-                        <ul class="item clearfix">
-                            <li><a class="text-333" href="/user/index.html">会员中心</a></li>
-                            <li><a class="text-333" href="/user/favs.html">我的收藏</a></li>
-                            <li><a class="text-333" href="/user/plays.html">
-                                </a></li>
-                            <li><a class="text-333 logout" href="/user/logout.html">退出</a></li>
-                        </ul>
-                    </div>
-                </li> --}}
+                        </div> -->
+                    </li>
+                @endif
+                @if (Auth::check())
+                    {{-- 已登录 TODO: 登录后的UI交互 --}}
+                    <li title="个人中心" dropdown-target=".user-center" dropdown-toggle="hover">
+                        <a href="/movie/collection?type=like"><i class="iconfont icon-usercenter"></i></a>
+                        <!-- <div class="dropdown-box user-center open">
+                            <ul class="clearfix">
+                                <li><a class="item" href="/movie/collection?type=like">我的喜欢</a></li>
+                                <li><a class="item" href="/movie/collection?type=favorite">我的收藏</a></li>
+                                <li><a class="item logout">退出登录</a></li>
+                            </ul>
+                        </div> -->
+                    </li>
+                @else
+                    {{-- 未登录 TODO: 点击登录--}}
+                    <li title="点击登录" data-toggle="modal" data-target="#login-modal">
+                        <a href="javascript:;">
+                            <i class="iconfont icon-account-fill"></i>
+                        </a>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>
@@ -132,3 +135,7 @@
         </div>
     </div>
 </header>
+
+<!-- @push('foot-scripts')
+    <script type="text/javascript" src="js/movie/header.js"></script>
+@endpush -->

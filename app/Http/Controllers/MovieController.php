@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Favorite;
+use App\Like;
 use App\Movie;
+use App\MovieHistory;
 
 class MovieController extends Controller
 {
@@ -74,5 +77,36 @@ class MovieController extends Controller
         $qb   = Movie::latest('updated_at')->where('region', $movie->region);
         $more = $qb->take(6)->get();
         return view('movie.show')->withMovie($movie)->withMore($more);
+    }
+
+    public function collection()
+    {
+        $user = \Auth::user();
+        $type = request()->get('type');
+
+        if ($type == 'like') {
+            $movieID = Like::where([
+                'user_id'       => $user->id,
+                'likable_type' => 'movies',
+            ])->select('likable_id')->get()->pluck('likable_id');
+            $cate = "喜欢";
+        } else if ($type == 'favorite') {
+            $movieID = Favorite::where([
+                'user_id' => $user->id,
+                'faved_type' => 'movies',
+            ])->select('faved_id')->get()->pluck('faved_id');
+            $cate = "收藏";
+        } else if ($type == 'history') {
+             $movieID = MovieHistory::where([
+                 'user_id' => $user->id,
+             ])->select('movie_id')->get()->pluck('movie_id');
+             $cate = "足迹";
+        }
+
+        $movies = Movie::whereIn('id', $movieID)->paginate(18);
+        return view('movie.collection', [
+            'cate'   => $cate,
+            'movies' => $movies,
+        ]);
     }
 }
