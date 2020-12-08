@@ -67,7 +67,7 @@ return [
             'timeout'         => env('COS_TIMEOUT', 60),
             'connect_timeout' => env('COS_CONNECT_TIMEOUT', 60),
             'bucket'          => env('COS_BUCKET'),
-            'cdn'             => "http://" . env('COS_DOMAIN'),
+            'cdn'             => "https://" . env('COS_DOMAIN'),
             'scheme'          => env('COS_SCHEME', 'http'),
             'read_from_cdn'   => env('COS_READ_FROM_CDN', false),
             'cdn_key'         => env('COS_CDN_KEY'),
