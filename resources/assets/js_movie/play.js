@@ -1,5 +1,13 @@
 import Vue from 'vue';
 
+Vue.prototype.$optional = require('./common/optionalChaining').optionalChaining;
+// 为每个vue component注入user
+Vue.mixin({
+    created: function () {
+        this.$user = window.appUser || {}
+    }
+})
+
 Vue.component('video-player', require('./components/VideoPlayer.vue').default);
 // Vue.component('video-js-player', require('./components/VideoJsPlayer.vue').default);
 

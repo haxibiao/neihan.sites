@@ -86,7 +86,7 @@
                 </div>
             </div>
             <div class="video-comment">
-                <comment-module />
+                <comment-module movie-id={{ $movie->id }}/>
             </div>
         </div>
         <div class="side-right col-lg-3">
