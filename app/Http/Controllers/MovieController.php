@@ -24,23 +24,37 @@ class MovieController extends Controller
      */
     public function index()
     {
-        //TODO: 修复置顶电影专题
-        // $stick_video_categories = get_stick_video_categories();
-        // $video_category = [];
-        // foreach ($stick_video_categories as $video_categories) {
-        //     $video_id = $video_categories->id;
-        //     $video_category[$video_categories->name]['video'] = Article::find($video_id)->orderby('count_likes','desc')->paginate(3);
-        // }
-
-        //热门电影专题
-        $qb = Movie::latest('id');
-
-        $data['在线美剧'] = (clone $qb)->where('region', "美剧")->take(6)->get();
-        $data['在线日剧'] = (clone $qb)->where('region', "日剧")->take(6)->get();
-        $data['在线韩剧'] = (clone $qb)->where('region', "韩剧")->take(6)->get();
-        $data['在线港剧'] = (clone $qb)->where('region', "港剧")->take(6)->get(); //FIXME 港剧4 暂时无数据
-
-        return view('movie.home')->with('data', $data);
+        $qb             = Movie::latest('id');
+        $hotMovies      = (clone $qb)->take(15)->get();
+        $categoryMovies = [
+            '热门美剧'  => [
+                (clone $qb)->where('region', '美剧')->take(6)->get(),
+                (clone $qb)->where('region', '美剧')->take(12)->get(),
+            ],
+            '热门日剧'  => [
+                (clone $qb)->where('region', '日剧')->latest('id')->take(6)->get(),
+                (clone $qb)->where('region', '日剧')->latest('id')->take(12)->get(),
+            ],
+            '热门韩剧'  => [
+                (clone $qb)->where('region', '韩剧')->latest('id')->take(6)->get(),
+                (clone $qb)->where('region', '韩剧')->take(12)->get(),
+            ],
+            '怀旧老港剧' => [
+                (clone $qb)->where('region', '港剧')->latest('id')->take(6)->get(),
+                (clone $qb)->where('region', '港剧')->latest('id')->take(12)->get(),
+            ],
+        ];
+        $categoryMovieList = [
+            '美剧榜单' => (clone $qb)->where('region', '美剧')->offset(18)->take(8)->get(),
+            '日剧榜单' => (clone $qb)->where('region', '日剧')->offset(36)->take(8)->get(),
+            '韩剧榜单' => (clone $qb)->where('region', '韩剧')->offset(18)->take(8)->get(),
+            '港剧榜单' => (clone $qb)->where('region', '港剧')->offset(18)->take(8)->get(),
+        ];
+        return view('movie.home', [
+            'hotMovies'         => $hotMovies,
+            'categoryMovies'    => $categoryMovies,
+            'categoryMovieList' => $categoryMovieList,
+        ]);
     }
 
     public function riju()
