@@ -16,3 +16,5 @@ if [ "$branch" = "hotfix" -o "$branch" = "master" ]; then
 else
     php artisan set:env --db_host=${db_host} --db_database=${db}
 fi
+
+php artisan migrate
