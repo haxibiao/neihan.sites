@@ -26,7 +26,7 @@
     @endif
 
     @stack('css')
-{!! get_seo_js() !!}
+{!! get_seo_js(seo_site_name()) !!}
 </head>
 <body>
     <div id="app" class="black">
