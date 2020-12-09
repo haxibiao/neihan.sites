@@ -26,7 +26,7 @@
     @stack('css')
 
     @stack('css')
-
+{!! get_seo_js() !!}
 </head>
 <body>
     <div id="app" class="blank">
