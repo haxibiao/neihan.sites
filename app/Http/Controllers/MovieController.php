@@ -48,7 +48,7 @@ class MovieController extends Controller
             '美剧榜单' => (clone $qb)->where('region', '美剧')->offset(18)->take(8)->get(),
             '日剧榜单' => (clone $qb)->where('region', '日剧')->offset(36)->take(8)->get(),
             '韩剧榜单' => (clone $qb)->where('region', '韩剧')->offset(18)->take(8)->get(),
-            //'港剧榜单' => (clone $qb)->where('region', '港剧')->offset(18)->take(8)->get(),
+            '港剧榜单' => (clone $qb)->where('region', '港剧')->offset(18)->take(8)->get(),
         ];
         return view('movie.home', [
             'hotMovies'         => $hotMovies,
