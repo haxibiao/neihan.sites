@@ -30,18 +30,22 @@ class MovieController extends Controller
             '热门美剧'  => [
                 (clone $qb)->where('region', '美剧')->take(6)->get(),
                 (clone $qb)->where('region', '美剧')->take(12)->get(),
+                'meiju'
             ],
             '热门日剧'  => [
                 (clone $qb)->where('region', '日剧')->latest('id')->take(6)->get(),
                 (clone $qb)->where('region', '日剧')->latest('id')->take(12)->get(),
+                'riju'
             ],
             '热门韩剧'  => [
                 (clone $qb)->where('region', '韩剧')->latest('id')->take(6)->get(),
                 (clone $qb)->where('region', '韩剧')->take(12)->get(),
+                'hanju'
             ],
             '怀旧老港剧' => [
                 (clone $qb)->where('region', '港剧')->latest('id')->take(6)->get(),
                 (clone $qb)->where('region', '港剧')->latest('id')->take(12)->get(),
+                'gangju'
             ],
         ];
         $categoryMovieList = [
@@ -91,6 +95,12 @@ class MovieController extends Controller
         $qb   = Movie::latest('updated_at')->where('region', $movie->region);
         $more = $qb->take(6)->get();
         if($user = checkUser()){
+            MovieHistory::updateOrCreate([
+                'user_id'  => $user->id,
+                'movie_id' => $movie->id,
+            ], [
+                'last_watch_time' => now(),
+            ]);
             $movie->favorited = Favorite::where('user_id', $user->id)
             ->where('faved_id', $movie->id)->where('faved_type', 'movies')->exists();
             $movie->liked = Like::where('user_id', $user->id)

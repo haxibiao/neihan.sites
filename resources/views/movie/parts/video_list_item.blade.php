@@ -1,13 +1,19 @@
 @php
 $first = $movies->first();
 $movies = $movies->forget(0);
+$categories = [
+    '美剧'=>'meiju',
+    '日剧'=>'riju',
+    '韩剧'=>'hanju',
+    '港剧'=>'gangju',
+];
 
 @endphp
 
 <div class="video-list-item">
     <div class="panel_head clearfix">
         <h3 class="title">{{ $categoryTitle }}</h3>
-        <a class="more" href="/category/{{ $movies->get(1)->region}}">更多<i class="iconfont icon-arrow-right"></i></a>
+        <a class="more" href="/movie/{{ $categories[$movies->get(1)->region]}}">更多<i class="iconfont icon-arrow-right"></i></a>
     </div>
     <div class="panel_body">
         <div class="video_detail clearfix">
