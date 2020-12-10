@@ -4,9 +4,9 @@
 			<router-link to="/requests" class="back-list active"><i class="iconfont icon-zuobian"></i> 返回投稿请求</router-link>
 		</div>
 		<ul class="article-list">
-			<li　v-for="article in articles" class="article-item have-img">
+			<li v-for="article in articles" class="article-item have-img">
 			  <a class="wrap-img" :href="'/article/'+article.id" target="_blank">
-			      <img :src="article.image_url" alt="">
+			      <img :src="article.cover_path" alt="">
 			  </a>
 			  <div class="content">
 			    <div class="author">
@@ -32,25 +32,25 @@
 			        <i class="iconfont icon-svg37"></i> {{ article.count_replies }}
 			      </a>      
 			      <span><i class="iconfont icon-03xihuan"></i> {{ article.count_likes }}</span>
-			      <span　v-if="article.count_tips"><i class="iconfont icon-qianqianqian"></i> {{ article.count_tips }}</span>
+			      <span v-if="article.count_tips"><i class="iconfont icon-qianqianqian"></i> {{ article.count_tips }}</span>
 			    </div>
 			  </div>
-			  <div class="push-action" v-if="article.pivot.submit=='已收录'">
-			      <span class="push-status">已收入<a class="push-remove" @click="remove(article)">移除</a></span>
-			      <span class="push-time">{{ article.pivot.updated_at }} 投稿</span>
-			  </div>
-			  <div class="push-action" v-if="article.pivot.submit=='已拒绝'">
-			      <span class="push-status">已拒绝</span>
-			      <span class="push-time">{{ article.pivot.updated_at }} 投稿</span>
-			  </div>
-			  <div class="push-action" v-if="article.pivot.submit=='已撤回'">
-			      <span class="push-time">{{ article.pivot.updated_at }} 已撤回</span>
-			  </div>
-			  <div class="push-action" v-if="article.pivot.submit=='待审核' || !article.pivot.submit">
-				  	<a class="btn-base btn-hollow btn-xs" @click="approve(article)">接受</a>
-				  	<a class="btn-base btn-gray btn-xs" @click="deny(article)">拒绝</a>
-			      <span class="push-time">{{ article.pivot.updated_at }} 投稿</span>
-			  </div>
+<!--			  <div class="push-action" v-if="article.pivot.submit=='已收录'">-->
+<!--			      <span class="push-status">已收入<a class="push-remove" @click="remove(article)">移除</a></span>-->
+<!--			      <span class="push-time">{{ article.pivot.updated_at }} 投稿</span>-->
+<!--			  </div>-->
+<!--			  <div class="push-action" v-if="article.pivot.submit=='已拒绝'">-->
+<!--			      <span class="push-status">已拒绝</span>-->
+<!--			      <span class="push-time">{{ article.pivot.updated_at }} 投稿</span>-->
+<!--			  </div>-->
+<!--			  <div class="push-action" v-if="article.pivot.submit=='已撤回'">-->
+<!--			      <span class="push-time">{{ article.pivot.updated_at }} 已撤回</span>-->
+<!--			  </div>-->
+<!--			  <div class="push-action" v-if="article.pivot.submit=='待审核' || !article.pivot.submit">-->
+<!--				  	<a class="btn-base btn-hollow btn-xs" @click="approve(article)">接受</a>-->
+<!--				  	<a class="btn-base btn-gray btn-xs" @click="deny(article)">拒绝</a>-->
+<!--			      <span class="push-time">{{ article.pivot.updated_at }} 投稿</span>-->
+<!--			  </div>-->
 			</li>
 		</ul>
 	</div>
