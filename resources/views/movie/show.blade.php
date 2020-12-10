@@ -11,14 +11,16 @@
 @section('content')
 <div class="app-player">
     <div class="container-xl">
-		<movie-player 
-		title="{{ $movie->name }}"  
-		movie_id="{{ $movie->id }}"
-		region="{{ $movie->region }}"
-		movie_type="{{ $movie->type }}" 
-		movie_style="{{ $movie->style }}"
-		count="{{ count($movie->data) }}"
-		/>
+        @if(checkUser())
+            <movie-player :movie="{{ $movie }}"
+            count="{{ count($movie->data) }}" 
+            token="{{ getUser()->api_token }}"
+            />
+        @else
+        <movie-player :movie="{{ $movie }}"
+            count="{{ count($movie->data) }}"
+            />
+        @endif()
     </div>
 </div>
 <div class="container-xl">

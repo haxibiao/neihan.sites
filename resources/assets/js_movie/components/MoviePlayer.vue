@@ -7,22 +7,24 @@
           <div class="embed-responsive video-player">
             <div class="fluid_video_wrapper">
               <template v-if="source">
-                <video-player :source="source" />
+                <video-player 
+                :source="source" 
+                :notice="noticeInfo"
+                />
               </template>
             </div>
           </div>
         </div>
       </div>
       <ul class="player__operate">
-        <li class="fl">
+        <li class="fl hide-xs">
           <a
-            class="favorite"
+            :class="['favorite', movie.favorited && 'highlight']"
             href="javascript:void(0);"
-            data-type="2"
-            data-mid="1"
-            data-id="82651"
+            v-on:click="favoriteHandler"
           >
-            <i class="iconfont icon-collection-fill"></i>&nbsp;收藏
+            <i class="iconfont icon-collection-fill"></i>
+            <span>{{movie.favorited ? '已收藏' : '收藏'}}</span>
           </a>
         </li>
         <li class="fl">
@@ -44,18 +46,18 @@
         <div class="movie-info col-pd">
           <div class="video_desc">
             <h3 class="title">
-              {{ title }}&nbsp;
+              {{ movie.name }}&nbsp;
               <small class="text-ep">第{{ episode }}集</small>
             </h3>
           </div>
           <div class="video_desc">
             <div class="type">
               9.0分&nbsp;/&nbsp;
-              <a href="/">{{ region }}</a
+              <a href="/">{{ movie.region }}</a
               >&nbsp;/&nbsp;
-              <a href="/">{{ movie_type }}</a>
+              <a href="/">{{ movie.type }}</a>
               &nbsp;/&nbsp;
-              <a href="/">{{ movie_style }}</a>
+              <a href="/">{{ movie.style }}</a>
             </div>
           </div>
         </div>
@@ -83,7 +85,7 @@
 <script>
 export default {
   // TODO: 应该只接受一个movie对象，从对象里拿id和各类信息
-  props: ["title", "movie_id", "movie_type", "movie_style", "region", "count"],
+  props: ["movie", "count", "token"],
 
   created() {
     // var routeParams = window.location.search
@@ -102,7 +104,7 @@ export default {
       const that = this;
       // 获取电视剧集数，设置当前播放集数
       window.axios
-        .get(`/api/movie/${that.movie_id}/series`)
+        .get(`/api/movie/${that.movie.id}/series`)
         .then(function (response) {
           if (response && response.data) {
             let series = response.data;
@@ -114,6 +116,43 @@ export default {
         })
         .catch((e) => {});
     },
+
+    toggleFavorite() {
+      this.movie.favorited = !this.movie.favorited;
+    },
+    // 收藏处理
+    favoriteHandler() {
+      if (!this.token) {
+        $('#login-modal').modal('toggle');
+        alert("请登陆");
+        return;
+      }
+      const that = this;
+      this.toggleFavorite();
+      window.axios
+        .post(
+          `/api/movie/toggle-fan`,
+          {
+            movie_id: that.movie.id,
+            type: 'movies'
+          },
+          {
+            headers: {
+              token: that.token
+            }
+          }
+        )
+        .then(function(response) {
+          if (response && response.data) {
+            that.noticeInfo = that.movie.favorited ? '视频已放到收藏夹' : '';
+          } else {
+            that.toggleFavorite();
+          }
+        })
+        .catch(e => {
+          that.toggleFavorite();
+        });
+    },
   },
 
   data() {
@@ -121,6 +160,7 @@ export default {
       episode: 1,
       source: null,
       series: [],
+      noticeInfo: ''
     };
   },
 };

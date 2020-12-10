@@ -90,6 +90,10 @@ class MovieController extends Controller
         // dd($movie->play_url);
         $qb   = Movie::latest('updated_at')->where('region', $movie->region);
         $more = $qb->take(6)->get();
+        if($user = checkUser()){
+            $movie->favorited = Favorite::where('user_id', $user->id)
+            ->where('faved_id', $movie->id)->where('faved_type', 'movies')->exists();
+        }
         return view('movie.show')->withMovie($movie)->withMore($more);
     }
 
