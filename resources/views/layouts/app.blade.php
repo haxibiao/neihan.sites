@@ -101,7 +101,7 @@
     @stack('js')
 
     <div style="display: none">
-        {!! get_seo_push() !!}
+        {!! get_seo_push(seo_site_name()) !!}
         {!! get_seo_tj() !!}
     </div>
 
