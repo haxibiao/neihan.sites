@@ -48,7 +48,7 @@ class MovieController extends Controller
             '美剧榜单' => (clone $qb)->where('region', '美剧')->offset(18)->take(8)->get(),
             '日剧榜单' => (clone $qb)->where('region', '日剧')->offset(36)->take(8)->get(),
             '韩剧榜单' => (clone $qb)->where('region', '韩剧')->offset(18)->take(8)->get(),
-            '港剧榜单' => (clone $qb)->where('region', '港剧')->offset(18)->take(8)->get(),
+            //'港剧榜单' => (clone $qb)->where('region', '港剧')->offset(18)->take(8)->get(),
         ];
         return view('movie.home', [
             'hotMovies'         => $hotMovies,
@@ -93,7 +93,10 @@ class MovieController extends Controller
         if($user = checkUser()){
             $movie->favorited = Favorite::where('user_id', $user->id)
             ->where('faved_id', $movie->id)->where('faved_type', 'movies')->exists();
+            $movie->liked = Like::where('user_id', $user->id)
+            ->where('likable_id', $movie->id)->where('likable_type', 'movies')->exists();
         }
+        $movie->likes = Like::where('likable_id', $movie->id)->where('likable_type', 'movies')->count();
         return view('movie.show')->withMovie($movie)->withMore($more);
     }
 

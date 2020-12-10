@@ -30,7 +30,11 @@ class MovieController extends Controller
     public function movieHistory()
     {
         $user = \Auth::user();
-        return returnData(MovieHistory::where('user_id', $user->id)->get()->toArray(), '获取浏览记录成功', 200);
+        return [
+            'data'        => MovieHistory::where('user_id', $user->id)->get()->toArray(),
+            'message'     => '获取浏览记录成功',
+            'status_code' => 200,
+        ];
     }
 
     // public function comment()
@@ -79,7 +83,11 @@ class MovieController extends Controller
                 $like->save();
                 $isLike = true;
             }
-            return returnData($isLike, '点赞操作成功', 200);
+            return [
+                'data'        => $isLike,
+                'message'     => '点赞操作成功',
+                'status_code' => 200,
+            ];
         }
     }
 

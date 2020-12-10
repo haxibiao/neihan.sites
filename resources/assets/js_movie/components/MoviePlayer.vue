@@ -27,16 +27,14 @@
             <span>{{movie.favorited ? '已收藏' : '收藏'}}</span>
           </a>
         </li>
-        <li class="fl">
+       <li class="fl">
           <a
-            class="digg_link"
-            data-id="82651"
-            data-mid="1"
-            data-type="up"
-            href="javascript:;"
+            :class="['like', movie.liked && 'highlight']"
+            href="javascript:void(0);"
+            v-on:click="likeHandler"
           >
-            <i class="iconfont icon-good-fill"></i>&nbsp;
-            <span class="digg_num">164</span>
+            <i class="iconfont icon-good-fill"></i>
+            <span class="num">{{ movie.likes || 0 }}</span>
           </a>
         </li>
       </ul>
@@ -124,7 +122,7 @@ export default {
     favoriteHandler() {
       if (!this.token) {
         $('#login-modal').modal('toggle');
-        alert("请登陆");
+        alert("请登陆!");
         return;
       }
       const that = this;
@@ -153,6 +151,45 @@ export default {
           that.toggleFavorite();
         });
     },
+
+    toggleLike() {
+      this.movie.liked ? this.movie.likes-- : this.movie.likes++;
+      this.movie.liked = !this.movie.liked;
+    },
+    // 点赞处理
+    likeHandler() {
+      if (!this.token) {
+        $('#login-modal').modal('toggle');
+        alert("请登陆!");
+        return;
+      }
+      const that = this;
+      this.toggleLike();
+      window.axios
+        .post(
+          `/api/movie/toggle-like`,
+          {
+            movie_id: that.movie.id,
+            type: 'movies'
+          },
+          {
+            headers: {
+              token: that.token
+            }
+          }
+        )
+        .then(function(response) {
+          if (response && response.data) {
+            that.noticeInfo = that.movie.liked ? '视频已收入我的喜欢' : '';
+          } else {
+            that.toggleLike();
+          }
+        })
+        .catch(e => {
+          that.toggleLike();
+        });
+    },
+
   },
 
   data() {
