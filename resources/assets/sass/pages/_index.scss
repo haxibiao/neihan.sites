@@ -2,6 +2,22 @@
     margin-top: -30px;
     .poster-container {
         margin-bottom: 30px;
+        .hidden-xs{
+            .poster-inner{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-around;
+                position: relative;
+                width: 100%;
+                height: 100%;
+                img{
+                    background-size: cover;
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
     }
     .wrap {
         padding-top: 30px;
