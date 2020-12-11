@@ -10,7 +10,16 @@
                 <li class="hide-xs"><a href="/movie/gangju" data-type-en="gangju">港剧</a></li>
             </ul>
             <ul class="app-header__user">
-                <li><a href="#" title="留言反馈"><i class="iconfont icon-comments-fill"></i></a></li>
+                <li class="search">
+                    <form class="search-form" name="search" method="get" action="/movie/search">
+                        <input name="q" type="search" class="search-input"
+                            placeholder="{{ isset($queryKeyword) ? $queryKeyword : '搜索想看的' }}">
+                        <button class="search-submit" id="searchbutton" type="submit" name="submit">
+                            <i class="iconfont icon-search"></i>
+                        </button>
+                    </form>
+                </li>
+                {{-- <li><a href="#" title="留言反馈"><i class="iconfont icon-comments-fill"></i></a></li> --}}
                 @if (Auth::check())
                     <li title="播放记录" dropdown-target=".play-history" dropdown-toggle="hover">
                         <a href="javascript:;">
@@ -55,85 +64,7 @@
             </ul>
         </div>
     </div>
-    <div class="app-header__search">
-        <div class="container-xl">
-            <div class="header__search row">
-                <ul class="search-ul">
-                    <li class="search-type dropdown-hover"><i class="iconfont icon-category"></i>
-                        {{-- <div class="dropdown-box bottom fadeInDown clearfix">
-                            <ul class="item nav-list clearfix type-list">
-                                <li class="col-lg-5 col-md-5 col-sm-5 col-xs-3">
-                                    <a class="btn btn-sm btn-block btn-default" href="/">首页</a>
-                                </li>
-                                <li class="col-lg-5 col-md-5 col-sm-5 col-xs-3">
-                                    <a data-type-en="dianying" class="btn btn-sm btn-block btn-warm"
-                                        href="/vodtype/1.html">电影</a>
-                                </li>
-                                <li class="col-lg-5 col-md-5 col-sm-5 col-xs-3">
-                                    <a data-type-en="dianshiju" class="btn btn-sm btn-block btn-default"
-                                        href="/vodtype/2.html">电视剧</a>
-                                </li>
-                                <li class="col-lg-5 col-md-5 col-sm-5 col-xs-3">
-                                    <a data-type-en="zongyi" class="btn btn-sm btn-block btn-default"
-                                        href="/vodtype/3.html">综艺</a>
-                                </li>
-                                <li class="col-lg-5 col-md-5 col-sm-5 col-xs-3">
-                                    <a data-type-en="dongman" class="btn btn-sm btn-block btn-default"
-                                        href="/vodtype/4.html">动漫</a>
-                                </li>
-                                <li class="col-lg-5 col-md-5 col-sm-5 col-xs-3" style="display: none;">
-                                    <a data-type-en="lunli" class="btn btn-sm btn-block btn-default"
-                                        href="/vodtype/36.html">伦理</a>
-                                </li>
-                                <li class="col-lg-5 col-md-5 col-sm-5 col-xs-3" style="display: none;">
-                                    <a data-type-en="fuli" class="btn btn-sm btn-block btn-default"
-                                        href="/vodtype/37.html">福利</a>
-                                </li>
-                                <li class="col-lg-5 col-md-5 col-sm-5 col-xs-3">
-                                    <a data-type-en="jieshuo" class="btn btn-sm btn-block btn-default"
-                                        href="/vodtype/47.html">解说</a>
-                                </li>
-                                <li class="col-lg-5 col-md-5 col-sm-5 col-xs-3">
-                                    <a class="btn btn-sm btn-block btn-default" href="/topic.html">专题</a>
-                                </li>
-                                <li class="col-lg-5 col-md-5 col-sm-5 col-xs-3">
-                                    <a class="btn btn-sm btn-block btn-default" href="/actor.html">明星</a>
-                                </li>
-                            </ul>
-                        </div> --}}
-                    </li>
-                    {{-- <li class="search-select dropdown-hover" href="javascript:;">
-                        <span class="text">视频</span>
-                        <i class="iconfont icon-caret-down text-666"></i>
-                        <div class="dropdown-box bottom fadeInDown">
-                            <div class="item">
-                                <p class="vod" data-action="/vodsearch.html">视频</p>
-                                <p class="actor" data-action="/actor/search.html">明星</p>
-                            </div>
-                        </div>
-                    </li> --}}
-                    <li class="search-box dropdown-hover" href="javascript:;">
-                        <form id="search" name="search" method="get" action="/movie/search" data-pjax="">
-                            <input type="search" id="kw" name="q" class="search-kw" value="" placeholder="隐秘而伟大"
-                                autocomplete="off">
-                            <button class="search-btn" id="searchbutton" type="submit" name="submit">
-                                <i class="iconfont icon-search"></i>
-                            </button>
-                        </form>
-                    </li>
-                </ul>
-                <div class="search-hot hide-xs pull-right">
-                    <span><i class="iconfont icon-zhifeiji"></i></span>
-                    <a href="/movie?cid=1">科幻</a>
-                    <a href="/movie?cid=1">战争</a>
-                    <a href="/movie?cid=1">爱情</a>
-                    <a href="/movie?cid=1">动作</a>
-                    <a href="/movie?cid=1">恐怖</a>
-                    <a href="/movie?cid=1">剧情</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 </header>
 
 <!-- @push('foot-scripts')

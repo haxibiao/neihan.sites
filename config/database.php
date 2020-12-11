@@ -77,26 +77,6 @@ return [
             'engine'      => null,
         ],
 
-        'mediachain'   => [
-            'driver'         => 'mysql',
-            'url'            => env('DATABASE_URL'),
-            'host'           => '101.32.203.3',
-            'port'           => '3306',
-            'database'       => 'mediachain',
-            'username'       => env('DB_USERNAME', 'forge'),
-            'password'       => env('DB_PASSWORD', ''),
-            'unix_socket'    => env('DB_SOCKET', ''),
-            'charset'        => 'utf8mb4',
-            'collation'      => 'utf8mb4_unicode_ci',
-            'prefix'         => '',
-            'prefix_indexes' => true,
-            'strict'         => false,
-            'engine'         => null,
-            'options'        => [
-                PDO::ATTR_PERSISTENT => true,
-            ],
-        ],
-
         'pgsql'        => [
             'driver'   => 'pgsql',
             'host'     => env('DB_HOST', '127.0.0.1'),

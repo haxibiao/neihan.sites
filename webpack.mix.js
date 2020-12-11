@@ -65,4 +65,4 @@ mix.scripts(
     'public/js/app.js'
 ).version();
 
-mix.browserSync('l.zaixianmeiju.com');
+mix.browserSync('l.diudie.com');

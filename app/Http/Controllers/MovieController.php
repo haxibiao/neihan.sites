@@ -48,16 +48,28 @@ class MovieController extends Controller
                 'gangju'
             ],
         ];
-        $categoryMovieList = [
-            '美剧榜单' => (clone $qb)->where('region', '美剧')->offset(18)->take(8)->get(),
-            '日剧榜单' => (clone $qb)->where('region', '日剧')->offset(36)->take(8)->get(),
-            '韩剧榜单' => (clone $qb)->where('region', '韩剧')->offset(18)->take(8)->get(),
-            '港剧榜单' => (clone $qb)->where('region', '港剧')->offset(18)->take(8)->get(),
+        $cate_ranks = [
+            '美剧' => [
+                'cate'=>'meiju',
+                'movies'=>(clone $qb)->where('region', '美剧')->offset(18)->take(8)->get()
+            ],
+            '日剧' => [
+                'cate'=>'riju',
+                'movies'=>(clone $qb)->where('region', '日剧')->offset(36)->take(8)->get()
+            ],
+            '韩剧' => [
+                'cate'=>'hanju',
+                'movies'=>(clone $qb)->where('region', '韩剧')->offset(18)->take(8)->get()
+            ],
+            '港剧' => [
+                'cate'=>'gangju',
+                'movies'=>(clone $qb)->where('region', '港剧')->offset(18)->take(8)->get()
+            ],
         ];
-        return view('movie.home', [
+        return view('movie.index', [
             'hotMovies'         => $hotMovies,
             'categoryMovies'    => $categoryMovies,
-            'categoryMovieList' => $categoryMovieList,
+            'cate_ranks' => $cate_ranks,
         ]);
     }
 
