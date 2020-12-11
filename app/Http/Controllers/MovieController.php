@@ -144,7 +144,7 @@ class MovieController extends Controller
         return view('movie.show')->withMovie($movie)->withMore($more);
     }
 
-    public function collection()
+    public function favorites()
     {
         $user = \Auth::user();
         $type = request()->get('type');
@@ -169,7 +169,7 @@ class MovieController extends Controller
         }
 
         $movies = Movie::whereIn('id', $movieID)->paginate(18);
-        return view('movie.collection', [
+        return view('movie.favorites', [
             'cate'   => $cate,
             'movies' => $movies,
         ]);

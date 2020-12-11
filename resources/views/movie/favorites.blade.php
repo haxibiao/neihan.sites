@@ -1,13 +1,13 @@
 @extends('layouts.movie')
 
 @push('head-styles')
-    <link rel="stylesheet" href="{{ mix('css/movie/collection.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/movie/favorites.css') }}">
 @endpush
 
 @section('content')
-    <div class="movie_collection">
+    <div class="movie_favorites">
         <div class="container-xl padding-0">
-            <div class="collection-nav-panel">
+            <div class="favorites-nav-panel">
                 <div class="panel-box">
                     <div class="panel_head clearfix">
                         <h3 class="title">
@@ -28,11 +28,11 @@
                                 @foreach ($orders as $order => $word)
                                     @if ($word == $cate)
                                         <li>
-                                            <a class="btn-order active" href="/movie/collection?type={{ $order }}">{{ $word }}</a>
+                                            <a class="btn-order active" href="/movie/favorites?type={{ $order }}">{{ $word }}</a>
                                         </li>
                                     @else
                                         <li>
-                                            <a class="btn-order" href="/movie/collection?type={{ $order }}">{{ $word }}</a>
+                                            <a class="btn-order" href="/movie/favorites?type={{ $order }}">{{ $word }}</a>
                                         </li>
                                     @endif
                                 @endforeach

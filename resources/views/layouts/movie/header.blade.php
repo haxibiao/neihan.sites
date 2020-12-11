@@ -22,7 +22,7 @@
                 {{-- <li><a href="#" title="留言反馈"><i class="iconfont icon-comments-fill"></i></a></li> --}}
                 @if (Auth::check())
                     <li title="播放记录" dropdown-target=".play-history" dropdown-toggle="hover">
-                        <a href="/movie/collection?type=history">
+                        <a href="/movie/favorites?type=history">
                             <i class="iconfont icon-clock-fill"></i>
                         </a>
                     </li>
@@ -30,7 +30,7 @@
                 @if (Auth::check())
                     {{-- 已登录 TODO: 登录后的UI交互 --}}
                     <li title="个人中心" dropdown-target=".user-center" dropdown-toggle="hover">
-                        <a href="/movie/collection?type=like"><i class="iconfont icon-usercenter"></i></a>
+                        <a href="/movie/favorites?type=like"><i class="iconfont icon-usercenter"></i></a>
                     </li>
                 @else
                     {{-- 未登录 TODO: 点击登录--}}
