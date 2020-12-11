@@ -75,28 +75,48 @@ class MovieController extends Controller
 
     public function riju()
     {
-        $qb     = Movie::orderBy('id');
+        $order  = request()->get('order');
+        if($order){
+            $qb = Movie::orderByDesc($order);
+        }else{
+            $qb = Movie::orderBy('id');
+        }
         $movies = (clone $qb)->where('region', "日剧")->paginate(24);
         return view('movie.region')->with('movies', $movies)->withCate("日剧")->with('cate_id', 1);
     }
 
     public function meiju()
     {
-        $qb     = Movie::orderBy('id');
+        $order  = request()->get('order');
+        if($order){
+            $qb = Movie::orderByDesc($order);
+        }else{
+            $qb = Movie::orderBy('id');
+        }
         $movies = (clone $qb)->where('region', "美剧")->paginate(24);
         return view('movie.region')->with('movies', $movies)->withCate("美剧")->with('cate_id', 2);
     }
 
     public function hanju()
     {
-        $qb     = Movie::orderBy('id');
+        $order  = request()->get('order');
+        if($order){
+            $qb = Movie::orderByDesc($order);
+        }else{
+            $qb = Movie::orderBy('id');
+        }
         $movies = (clone $qb)->where('region', "韩剧")->paginate(24);
         return view('movie.region')->with('movies', $movies)->withCate("韩剧")->with('cate_id', 3);
     }
 
     public function gangju()
     {
-        $qb     = Movie::orderBy('id');
+        $order  = request()->get('order');
+        if($order){
+            $qb = Movie::orderByDesc($order);
+        }else{
+            $qb = Movie::orderBy('id');
+        }
         $movies = (clone $qb)->where('region', "港剧")->paginate(24);
         return view('movie.region')->with('movies', $movies)->withCate("港剧")->with('cate_id', 4);
     }
@@ -104,6 +124,8 @@ class MovieController extends Controller
     public function show(Movie $movie)
     {
         // dd($movie->play_url);
+        $movie->hits = $movie->hits+1;
+        $movie->save();
         $qb   = Movie::latest('updated_at')->where('region', $movie->region);
         $more = $qb->take(6)->get();
         if($user = checkUser()){

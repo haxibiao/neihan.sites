@@ -20,8 +20,8 @@
                                 <li><a class="btn-order btn-muted">排序</a></li>
                                 @php
                                 $orders = [
-                                'time' => '时间',
-                                'hot' => '人气',
+                                'year' => '时间',
+                                'hits' => '人气',
                                 'score' => '评分',
                                 ];
                                 @endphp
