@@ -14,7 +14,7 @@
 
     <link rel="icon" href="/picture/logo.png">
     <!-- Icons -->
-    <link rel="stylesheet" href="http://at.alicdn.com/t/font_2196966_ku6kbo1v4j.css">
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_2196966_ku6kbo1v4j.css">
     <!-- Styles -->
     <link href="{{ mix('css/movie/movie.css') }}" rel="stylesheet">
     @stack('head-styles')
