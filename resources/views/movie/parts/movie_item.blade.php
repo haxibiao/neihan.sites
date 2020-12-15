@@ -1,5 +1,5 @@
 <div class="movie-box">
-    <a class="movie-thumb lazyload-img" href="/movie/{{ $movie->id }}" target="_blank" title="匆匆心动"
+    <a class="movie-thumb lazyload-img" href="/movie/{{ $movie->id }}" target="_blank" title="{{ $movie->name }}"
         style="background-image: url({{ $movie->cover }});">
         <span class="play-icon hidden-xs">
             <i class="iconfont icon-play-fill1"></i>
