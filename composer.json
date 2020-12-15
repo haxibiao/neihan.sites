@@ -99,7 +99,10 @@
             "Haxibiao\\Sns\\": "packages/haxibiao/sns/src/",
             "Haxibiao\\Tag\\": "packages/haxibiao/tag/src/"
         },
-        "classmap": []
+        "classmap": [],
+        "files": [   
+            "app/Common/app.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
