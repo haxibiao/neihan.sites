@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Article;
 use App\Category;
-use App\Contribute;
 use App\Exceptions\GQLException;
 use App\Gold;
 use App\Notifications\ReceiveAward;
@@ -129,7 +128,7 @@ class ProcessSpider implements ShouldQueue
         $article->save();
 
         //将视频上传到VOD
-        $client = new VodUploadClient(config('tencentvod.' . config('app.name') . '.secret_id'), config('tencentvod.' . config('app.name') . '.secret_key'));
+        $client = new VodUploadClient(env("VOD_SECRET_ID"), env("VOD_SECRET_KEY"));
         $client->setLogPath(storage_path('/logs/vod_upload.log'));
         $req                = new VodUploadRequest();
         $req->MediaFilePath = storage_path('app/public/' . $cosPath);
@@ -158,11 +157,11 @@ class ProcessSpider implements ShouldQueue
         }
 
         //避免与Observer处理存在时间差导致重复创建
-        $article              = $this->article;
-        $article->video_id    = $video->id;
+        $article           = $this->article;
+        $article->video_id = $video->id;
 //        $article->body        = $description;
-//        $article->title       = Str::limit($description, 150); //截取微博那么长的内容存简介;
-//        $article->description = Str::limit($description, 280); //截取微博那么长的内容存简介
+        //        $article->title       = Str::limit($description, 150); //截取微博那么长的内容存简介;
+        //        $article->description = Str::limit($description, 280); //截取微博那么长的内容存简介
         $article->status      = Article::STATUS_ONLINE; //FIXME 合并submit与status字段
         $article->submit      = Article::SUBMITTED_SUBMIT; //不直接上架
         $article->user_id     = $user->id;
