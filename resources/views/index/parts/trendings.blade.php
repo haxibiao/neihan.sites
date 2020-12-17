@@ -23,8 +23,7 @@
       <i class="iconfont icon-changjianwenti board-right"></i> 
     </a>
   </div>
-   @if(file_exists(resource_path("/views/index/parts/special/". get_domain_key() .".blade.php")))
-      @include('index.parts.special.'. get_domain_key())
-   @endif
+   
+  {{--  // TODO： 官方博客  --}}
 
 </div>
