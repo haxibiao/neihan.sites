@@ -25,6 +25,9 @@
 [submodule "packages/haxibiao/live"]
 	path = packages/haxibiao/live
 	url = http://code.haxibiao.cn/packages/haxibiao-live.git/
+[submodule "packages/haxibiao/wallet"]
+	path = packages/haxibiao/wallet
+	url = http://code.haxibiao.cn/packages/haxibiao-wallet
 [submodule "packages/haxibiao/question"]
 	path = packages/haxibiao/question
 	url = http://code.haxibiao.cn/packages/haxibiao-question.git/

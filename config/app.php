@@ -243,9 +243,7 @@ return [
         'Html'         => Collective\Html\HtmlFacade::class,
         'Pinyin'       => Overtrue\LaravelPinyin\Facades\Pinyin::class,
         'QrCode'       => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
-        //'Debugbar' => Barryvdh\Debugbar\Facade::class,
-        //懂得赚User接口
-        'DDZUser'      => App\DDZ\UserFacade::class,
+
     ],
 
 ];
