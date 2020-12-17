@@ -99,9 +99,7 @@
             "Haxibiao\\Tag\\": "packages/haxibiao/tag/src/"
         },
         "classmap": [],
-        "files": [   
-            "app/Common/app.php"
-        ]
+        "files": []
     },
     "autoload-dev": {
         "psr-4": {
