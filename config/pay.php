@@ -40,10 +40,10 @@ return [
         'app_id'              => env('ALIPAY_PAY_APPID'),
         'notify_url'          => 'http://yxsp.jinlinle.com/alipay/notify',
         'return_url'          => 'http://yxsp.jinlinle.com/alipay/return',
-        'private_key'         => file_get_contents(base_path('cert/alipay/private_key')),
-        'ali_public_key'      => base_path('cert/alipay/alipayCertPublicKey_RSA2.crt'),
-        'app_cert_public_key' => base_path('cert/alipay/appCertPublicKey_2018100161614055.crt'), //应用公钥证书路径
-        'alipay_root_cert'    => base_path('cert/alipay/alipayRootCert.crt'),
+        'private_key'         => @file_get_contents('/etc/alipay/private_key'), //需要提前部署自己证书到服务器
+        'ali_public_key'      => '/etc/alipay/alipayCertPublicKey_RSA2.crt',
+        'app_cert_public_key' => '/etc/alipay/appCertPublicKey_2018100161614055.crt', //应用公钥证书路径
+        'alipay_root_cert'    => '/etc/alipay/alipayRootCert.crt',
         'log'                 => [
             'file'     => storage_path('logs/pay/alipay.log'),
             'level'    => 'info',
@@ -60,8 +60,8 @@ return [
         'appid'       => env('WECHAT_APPID'), // APP APPID
         'mch_id'      => env('WECHAT_PAY_MCH_ID'),
         'key'         => env('WECHAT_PAY_KEY'),
-        'cert_client' => base_path('cert/wechat/apiclient_cert.pem'), //退款等情况时用到
-        'cert_key'    => base_path('cert/wechat/apiclient_key.pem'), //退款等情况时用到
+        'cert_client' => '/etc/wechat/apiclient_cert.pem', //退款等情况时用到 //需要提前部署自己证书到服务器
+        'cert_key'    => '/etc/wechat/apiclient_key.pem', //退款等情况时用到
         'log'         => [
             'file'     => storage_path('logs/pay/wechat.log'),
             'level'    => 'info', // 建议生产环境等级调整为 info，开发环境为 debug
