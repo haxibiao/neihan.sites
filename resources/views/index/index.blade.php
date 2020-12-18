@@ -68,12 +68,12 @@
                 @include('index.parts.trendings')
                 
 				{{--  问答分类  --}}
-				@if(isDeskTop())
+				{{--  @if(isDeskTop())
 					<div class="recommend-follower">
 						<div class="plate-title">问答分类</div>
 						@include('index.parts.recommend_questions')
 					</div>
-				@endif
+				@endif  --}}
 
 				{{-- 下载APP --}}
 				@include('index.parts.download_app')

@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-use App\User;
-use App\Issue;
-use App\Movie;
 use App\Article;
 use App\Category;
-use App\Question;
+use App\Movie;
+use App\User;
+use Auth;
 
 class IndexController extends Controller
 {
@@ -59,10 +57,9 @@ class IndexController extends Controller
         //首页文章
         $data->articles = indexArticles();
 
-        //首页问答
-        $questions =Issue::orderBy('hits', 'desc')->take(10)->get()->random(3);
-
-        $data->questions = $questions;
+        //首页问答 - 暂时靠/question 入口内链吧...
+        // $questions =Issue::orderBy('hits', 'desc')->take(10)->get()->random(3);
+        // $data->questions = $questions;
 
         return view('index.index')
             ->withData($data);
@@ -91,7 +88,7 @@ class IndexController extends Controller
                     return $query->from('categories')
                         ->whereRaw('categories.id = follows.followed_id')
                         ->where('categories.status', '>=', 0)
-                        ->where('categories.is_official',0);
+                        ->where('categories.is_official', 0);
                 })->take($top_count)->pluck('followed_id')->toArray();
             $category_ids = array_merge($stick_categorie_ids, $all_follow_category_ids);
 
@@ -141,31 +138,31 @@ class IndexController extends Controller
     {
         if (request('type') == 'thirty') {
             $articles = Article::orderBy('hits', 'desc')
-                ->whereIn('type',['diagrams','articles','article'])
+                ->whereIn('type', ['diagrams', 'articles', 'article'])
                 ->where('status', '>', 0)
                 ->where('updated_at', '>', \Carbon\Carbon::now()->addDays(-30))
                 ->paginate(10);
-            if ($articles){
+            if ($articles) {
                 $articles = Article::orderBy('hits', 'desc')
-                    ->whereIn('type',['diagrams','articles','article'])
+                    ->whereIn('type', ['diagrams', 'articles', 'article'])
                     ->where('status', '>', 0)
                     ->paginate(10);
             }
         } else if (request('type') == 'seven') {
             $articles = Article::orderBy('hits', 'desc')
-                ->whereIn('type',['diagrams','articles','article'])
+                ->whereIn('type', ['diagrams', 'articles', 'article'])
                 ->where('status', '>', 0)
                 ->where('updated_at', '>', \Carbon\Carbon::now()->addDays(-7))
                 ->paginate(10);
-            if ($articles){
+            if ($articles) {
                 $articles = Article::orderBy('hits', 'desc')
-                    ->whereIn('type',['diagrams','articles','article'])
+                    ->whereIn('type', ['diagrams', 'articles', 'article'])
                     ->where('status', '>', 0)
                     ->paginate(10);
             }
         } else {
             $articles = Article::where('status', '>', 0)
-                ->whereIn('type',['diagrams','articles','article'])
+                ->whereIn('type', ['diagrams', 'articles', 'article'])
                 ->orderBy('hits', 'desc')
                 ->paginate(10);
         }
