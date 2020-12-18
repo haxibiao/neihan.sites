@@ -24,9 +24,8 @@
                 </div>
                 {{-- 推荐专题 --}}
                 @include('index.parts.recommend_categories')
-                <recommend-category></recommend-category>
-                @include('index.parts.recommend_questions')
-                <recommend-category></recommend-category>
+				<recommend-category></recommend-category>
+				
                 {{-- top 4 videos --}}
                 <div class="row videos distance">
                     <div class="vd-head">
@@ -67,12 +66,23 @@
             {{-- 侧栏 --}}
             <div class="aside sm-right hidden-xs">
                 @include('index.parts.trendings')
-                {{-- app --}}
-                @include('index.parts.download_app')
+                
+				{{--  问答分类  --}}
+				@if(isDeskTop())
+					<div class="recommend-follower">
+						<div class="plate-title">问答分类</div>
+						@include('index.parts.recommend_questions')
+					</div>
+				@endif
+
+				{{-- 下载APP --}}
+				@include('index.parts.download_app')
+				
                 {{-- 日报 --}}
                 {{-- @include('index.parts.daily') --}}
                 {{-- 推荐作者 --}}
-                <recommend-authors is-login="{{ Auth::check() ? true : false }}"></recommend-authors>
+				<recommend-authors is-login="{{ Auth::check() ? true : false }}"></recommend-authors>
+				
             </div>
         </div>
     </div>
