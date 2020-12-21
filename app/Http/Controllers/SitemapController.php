@@ -11,7 +11,7 @@ use Spatie\Sitemap\Tags\Url;
 // use Illuminate\Support\Facades\Storage;
 // use Illuminate\Support\Str;
 
-class SitemapController extends Controller
+class SiteMapController extends Controller
 {
     public $sitemap;
 
