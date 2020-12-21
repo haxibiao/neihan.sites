@@ -1,3 +1,6 @@
+[submodule "packages/haxibiao/base"]
+	path = packages/haxibiao/base
+	url = http://code.haxibiao.cn/packages/haxibiao-base.git/
 [submodule "packages/haxibiao/store"]
 	path = packages/haxibiao/store
 	url = http://code.haxibiao.cn/packages/haxibiao-store.git/
@@ -16,9 +19,6 @@
 [submodule "packages/haxibiao/media"]
 	path = packages/haxibiao/media
 	url = http://code.haxibiao.cn/packages/haxibiao-media.git/
-[submodule "packages/haxibiao/user"]
-	path = packages/haxibiao/user
-	url = http://code.haxibiao.cn/packages/haxibiao-user.git/
 [submodule "packages/haxibiao/config"]
 	path = packages/haxibiao/config
 	url = http://code.haxibiao.cn/packages/haxibiao-config.git/
@@ -27,13 +27,16 @@
 	url = http://code.haxibiao.cn/packages/haxibiao-live.git/
 [submodule "packages/haxibiao/wallet"]
 	path = packages/haxibiao/wallet
-	url = http://code.haxibiao.cn/packages/haxibiao-wallet
+	url = http://code.haxibiao.cn/packages/haxibiao-wallet.git/
 [submodule "packages/haxibiao/question"]
 	path = packages/haxibiao/question
 	url = http://code.haxibiao.cn/packages/haxibiao-question.git/
 [submodule "packages/haxibiao/tag"]
 	path = packages/haxibiao/tag
-	url = http://code.haxibiao.cn/packages/haxibiao-tag.git
+	url = http://code.haxibiao.cn/packages/haxibiao-tag.git/
 [submodule "packages/haxibiao/sns"]
 	path = packages/haxibiao/sns
-	url = http://code.haxibiao.cn/packages/haxibiao-sns.git
+	url = http://code.haxibiao.cn/packages/haxibiao-sns.git/
+[submodule "packages/haxibiao/packages/haxibiao/base"]
+	path = packages/haxibiao/packages/haxibiao/base
+	url = http://code.haxibiao.cn/packages/haxibiao-base
