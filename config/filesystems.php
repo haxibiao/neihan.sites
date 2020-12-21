@@ -43,6 +43,11 @@ return [
 
     'disks'   => [
 
+        'sitemap'     => [
+            'driver' => 'local',
+            'root'   => public_path('sitemap'),
+        ],
+
         'local'  => [
             'driver' => 'local',
             'root'   => storage_path('app'),

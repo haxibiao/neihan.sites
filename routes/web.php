@@ -151,9 +151,12 @@ Route::get('/share/qrcode', 'SharingController@qrcode');
 //search_log
 Route::get('/searchQuery', 'SearchController@search_all');
 
-//sitemap
-Route::get('sitemap.xml', 'SitemapController@index');
-Route::get('/sitemap/{name_en}', 'SitemapController@name_en');
+// //sitemap
+// Route::get('sitemap.xml', 'SiteMapController@index');
+// Route::get('/sitemap/{name_en}', 'SiteMapController@name_en');
+
+//sitemap 这个路径实际是生成 siteMap，请求具体地图，是直接获取 public 中对应的文件
+Route::get('/sitemap/all/{type}', 'SiteMapController@all');
 // robots
 Route::get('/robots.txt', 'HomeController@robot');
 
