@@ -1,4 +1,0 @@
-#答复任务
-mutation ReplyTaskMutation($id: Int!) {
-    replyTask(id: $id)
-}

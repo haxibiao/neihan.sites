@@ -1,6 +1,0 @@
-#拉黑用户
-mutation addUserBlockMutation($id: Int!) {
-    addUserBlock(id: $id) {
-        id
-    }
-}

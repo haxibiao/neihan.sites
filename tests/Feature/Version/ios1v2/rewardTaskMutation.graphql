@@ -1,6 +1,0 @@
-# 任务中心领取奖励接口
-mutation rewardTaskMutation($id: ID!) {
-  rewardTask(id: $id) {
-    id
-  }
-}

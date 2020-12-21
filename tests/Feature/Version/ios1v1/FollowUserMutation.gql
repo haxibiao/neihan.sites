@@ -1,5 +1,0 @@
-mutation followUserMutation($id: Int!) {
-    toggleFollow(followed_type: users, followed_id: $id) {
-        isFollowed
-    }
-}

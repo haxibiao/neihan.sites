@@ -1,4 +1,0 @@
-#完成任务
-mutation CompleteTask($id: Int!) {
-    completeTask(id: $id)
-}

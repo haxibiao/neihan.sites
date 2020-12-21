@@ -1,6 +1,0 @@
-# 修改用户名
-mutation updateUserName($id: Int!, $input: updateUserInfo!) {
-    updateUserInfo(id: $id, input: $input) {
-        name
-    }
-}
