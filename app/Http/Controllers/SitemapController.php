@@ -51,14 +51,14 @@ class SitemapController extends Controller
             ->setLastModificationDate(now())
             ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
             ->setPriority(0.9));
-        $this->sitemap =  $sitemap;
+        $this->sitemap = $sitemap;
 
         return $this;
     }
 
     public function movie()
     {
-        $movies = Movie::query()->where('status', 1)->get();
+        $movies = Movie::query()->get();
         $sitemap = $this->sitemap;
         foreach ($movies as $movie) {
             $sitemap = $this->sitemap->add(Url::create("/movie/{$movie->id}")
