@@ -69,7 +69,7 @@
     "secure-http": false
   },
   "repositories": {
-    "1": {
+    "nova": {
       "type": "vcs",
       "url": "http://code.haxibiao.cn/web/nova.git"
     },
