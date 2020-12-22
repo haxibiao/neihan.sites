@@ -181,6 +181,7 @@ return [
         // Overtrue\LaravelPinyin\ServiceProvider::class,app.
         //Barryvdh\Debugbar\ServiceProvider::class,
 
+        //FIXME: 最后用composer require后会auto discover这些packages...
         \Haxibiao\Helpers\HelpersServiceProvider::class,
         \Haxibiao\Matomo\MatomoServiceProvider::class,
         \Haxibiao\Base\UserServiceProvider::class,
@@ -190,6 +191,7 @@ return [
         \Haxibiao\Task\TaskServiceProvider::class,
         \Haxibiao\Sns\SnsServiceProvider::class,
         \Haxibiao\Tag\TagServiceProvider::class,
+        \Haxibiao\Cms\CmsServiceProvider::class,
     ],
 
     /*

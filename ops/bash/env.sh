@@ -4,8 +4,7 @@ branch="master"
 db="neihan_sites"
 db_host="localhost" #默认线上数据库
 
-
-echo "更新env ... ${branch} ${db} ${db_host}"
+echo "更新 env ... ${branch} ${db} ${db_host}"
 chmod -R 777 ./storage/
 chmod -R 777 .env*
 git config core.filemode false
@@ -16,5 +15,3 @@ if [ "$branch" = "hotfix" -o "$branch" = "master" ]; then
 else
     php artisan set:env --db_host=${db_host} --db_database=${db}
 fi
-
-php artisan migrate

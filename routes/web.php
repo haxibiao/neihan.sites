@@ -18,11 +18,6 @@ Auth::routes();
 Route::pattern('id', '\d+');
 Auth::routes(['verify' => true]);
 
-Route::get('/test', function () {
-    dispatch(new DelayRewaredTask(1));
-    return 1;
-});
-
 Route::get('/', 'IndexController@index');
 
 //隐私政策
@@ -46,7 +41,6 @@ Route::get('/movie/favorites', 'MovieController@favorites');
 
 Route::get('/movie/search', 'MovieController@search');
 Route::resource('/movie', 'MovieController');
-
 
 //问答
 
@@ -126,15 +120,6 @@ Route::any('/share/post/{id}', 'ArticleController@shareVideo');
 
 Route::get('/share/collection/{id}', CollectionController::class . '@shareCollection');
 
-//logs
-Route::get('/logshow', 'LogController@logShow');
-Route::get('/logclear', 'LogController@logClear');
-Route::get('/bug', 'LogController@debug');
-
-Route::get('/debug-sentry', function () {
-    throw new \Exception('My first Sentry error!');
-});
-
 //weixin
 Route::get('/wechat', 'WechatController@serve');
 
@@ -151,12 +136,6 @@ Route::get('/share/qrcode', 'SharingController@qrcode');
 //search_log
 Route::get('/searchQuery', 'SearchController@search_all');
 
-// //sitemap
-// Route::get('sitemap.xml', 'SiteMapController@index');
-// Route::get('/sitemap/{name_en}', 'SiteMapController@name_en');
-
-//sitemap 这个路径实际是生成 siteMap，请求具体地图，是直接获取 public 中对应的文件
-Route::get('/sitemap/all/{type}', 'SiteMapController@all');
 // robots
 Route::get('/robots.txt', 'HomeController@robot');
 
