@@ -1,19 +1,18 @@
 go_production:
-    stage: deploy
-    script:
-        - ssh root@hk008 "cd /data/www/neihan.sites && git checkout master && git pull"
-        - ssh root@hk008 "cd /data/www/neihan.sites && bash ops/bash/env.sh"
-        - ssh root@hk008 "cd /data/www/neihan.sites && bash ops/bash/pull.sh"
-    only:
-        - master
-
+  stage: deploy
+  script:
+    - ssh root@hk008 "cd /data/www/neihan.sites && git checkout master && git pull"
+    - ssh root@hk008 "cd /data/www/neihan.sites && bash ops/bash/pull.sh"
+    - ssh root@hk008 "cd /data/www/neihan.sites && bash ops/bash/env.sh"
+  only:
+    - master
 
 fix_data:
-    stage: deploy
-    script:
-        - ssh root@hk008 "cd /data/www/neihan.sites && git checkout hotfix && git pull"
-        - ssh root@hk008 "cd /data/www/neihan.sites && bash ops/bash/env.sh"
-        - ssh root@hk008 "cd /data/www/neihan.sites && bash ops/bash/pull.sh"
-        - ssh root@hk008 "cd /data/www/neihan.sites && bash ops/bash/data.sh"
-    only:
-        - hotfix
+  stage: deploy
+  script:
+    - ssh root@hk008 "cd /data/www/neihan.sites && git checkout hotfix && git pull"
+    - ssh root@hk008 "cd /data/www/neihan.sites && bash ops/bash/pull.sh"
+    - ssh root@hk008 "cd /data/www/neihan.sites && bash ops/bash/env.sh"
+    - ssh root@hk008 "cd /data/www/neihan.sites && bash ops/bash/data.sh"
+  only:
+    - hotfix
