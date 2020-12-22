@@ -36,7 +36,7 @@
 	url = http://code.haxibiao.cn/packages/haxibiao-sns.git/
 [submodule "packages/haxibiao/base"]
 	path = packages/haxibiao/base
-	url = http://code.haxibiao.cn/packages/haxibiao-base.git
+	url = http://code.haxibiao.cn/packages/haxibiao-base.git/
 [submodule "packages/haxibiao/cms"]
 	path = packages/haxibiao/cms
-	url = http://code.haxibiao.cn/packages/haxibiao-cms
+	url = http://code.haxibiao.cn/packages/haxibiao-cms.git/
