@@ -12,11 +12,13 @@
       <table class="table">
         <tr>
           <td>域名</td>
+          <td>已收录</td>
           <td>索引量</td>
         </tr>
         @foreach($items as $item)
         <tr>
           <td>{{ $item["url"] }}</td>
+          <td>{{ $item['收录']??0 > 0 ? '是':'' }}</td>
           @if($item['收录']??0)
             <td style="color:blue">{{ $item['收录']??0 }}</td>
           @else

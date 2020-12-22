@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Nova\Metrics\UserAppVersionPartition;
 use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
@@ -16,6 +15,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function boot()
     {
+        set_time_limit(0);
         parent::boot();
     }
 
@@ -37,7 +37,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function withAuthenticationRoutes($middleware = ['web'])
     {
 
-        \Route::namespace('App\Nova\Http\Controllers\Auth')
+        Route::namespace ('App\Nova\Http\Controllers\Auth')
             ->domain(config('nova.domain', null))
             ->middleware($middleware)
             ->as('nova.')
@@ -84,7 +84,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             // new \App\Nova\Metrics\ArticleCount,
             new \App\Nova\Metrics\UserCount,
             new \App\Nova\Metrics\WithDrawCount,
-            new UserAppVersionPartition,
+            // new UserAppVersionPartition,
             new \App\Nova\Metrics\TodayAdData,
             new \App\Nova\Metrics\YesterdayAdData,
             // (new \Hxb\CategoryLikeCount\CategoryLikeCount)

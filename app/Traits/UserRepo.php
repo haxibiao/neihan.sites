@@ -16,8 +16,9 @@ use App\User;
 use App\Verify;
 use App\Wallet;
 use App\Withdraw;
-use Haxibiao\Helpers\PhoneUtils;
-use Haxibiao\Helpers\WechatUtils;
+use Haxibiao\Helpers\utils\PhoneUtils;
+use Haxibiao\Helpers\utils\WechatUtils;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -85,7 +86,6 @@ trait UserRepo
             ->sum('withdraws.amount');
     }
 
-
     public static function userReward(User $user, array $reward)
     {
         $action = Arr::get($reward, 'action');
@@ -98,14 +98,14 @@ trait UserRepo
         //记录该维度数据给运营看
         if (in_array($action, ['WATCH_REWARD_VIDEO', 'CLICK_REWARD_VIDEO', 'VIDEO_PLAY_REWARD'])) {
 //            if ($action == 'VIDEO_PLAY_REWARD') {
-//                Dimension::setDimension($user, $action, $reward['gold']);
-//            } else {
-//                Dimension::setDimension($user, $action, $reward['contribute']);
-//            }
+            //                Dimension::setDimension($user, $action, $reward['gold']);
+            //            } else {
+            //                Dimension::setDimension($user, $action, $reward['contribute']);
+            //            }
         }
-      
+
         //奖励次数校验
-        $user->checkRewardCount($user,$reward['remark']);
+        $user->checkRewardCount($user, $reward['remark']);
 
         //智慧点奖励
         if (isset($reward['gold'])) {
@@ -129,11 +129,11 @@ trait UserRepo
         //统计激励视频当天
         $profile = $user->profile;
         if ($action == 'WATCH_REWARD_VIDEO') {
-            if ($profile->last_reward_video_time<today()){
-                $profile->today_reward_video_count=1;
-                $profile->last_reward_video_time = now();
+            if ($profile->last_reward_video_time < today()) {
+                $profile->today_reward_video_count = 1;
+                $profile->last_reward_video_time   = now();
                 $profile->save();
-            }else{
+            } else {
                 $profile->increment('today_reward_video_count');
                 $profile->last_reward_video_time = now();
                 $profile->save();
@@ -143,9 +143,9 @@ trait UserRepo
         }
 
         //获取今日签到奖励-连续签到奖励
-        if($action == 'KEEP_SIGNIN_REWARD'){
+        if ($action == 'KEEP_SIGNIN_REWARD') {
 
-            $signIn     = CheckIn::todaySigned($user->id);
+            $signIn = CheckIn::todaySigned($user->id);
             throw_if(is_null($signIn), UserException::class, '领取失败,请先完成签到!');
 
             if ($signIn->gold_reward > 0) {
@@ -156,7 +156,7 @@ trait UserRepo
                 'contribute' => $signIn->contribute_reward,
             ];
 
-                }
+        }
 
         //签到额外奖励
         if ($action == 'SIGNIN_VIDEO_REWARD') {
@@ -199,7 +199,6 @@ trait UserRepo
             }
         }
 
-
         return $result;
     }
 
@@ -209,109 +208,114 @@ trait UserRepo
             ->whereIn('name', ['WATCH_REWARD_VIDEO', 'CLICK_REWARD_VIDEO'])
             ->max('updated_at');
     }
-    public  function smsSignIn($sms_code, $phone){
+    public function smsSignIn($sms_code, $phone)
+    {
 
         throw_if(!is_phone_number($phone), UserException::class, '手机号格式不正确!');
         throw_if(empty($sms_code), UserException::class, '验证码不能为空!');
 
         $qb = User::wherePhone($phone);
-        Verify::checkSMSCode($sms_code,$phone,Verify::USER_LOGIN);
-        if ($qb->exists()){
+        Verify::checkSMSCode($sms_code, $phone, Verify::USER_LOGIN);
+        if ($qb->exists()) {
             return $qb->get()->first();
-        } else{
+        } else {
             //新用户注册账号
-            $user = User::getDefaultUser();
-            $user->phone=$phone;
-            $user->account=$phone;
+            $user          = User::getDefaultUser();
+            $user->phone   = $phone;
+            $user->account = $phone;
             $user->save();
             return $user;
         }
     }
 
-    public  function authSignIn($code, $type){
+    public function authSignIn($code, $type)
+    {
 
-        throw_if(!method_exists(self::class, $type), GQLException::class, '暂时只支持手机号和微信一键登录');
-        $user = self::$type($code);
+        throw_if(!method_exists(User::class, $type), GQLException::class, '暂时只支持手机号和微信一键登录');
+        $user = User::$type($code);
         return $user;
     }
     //手机号一键登录
-    public function mobile($code){
+    public function mobile($code)
+    {
         $accessTokens = PhoneUtils::getInstance()->accessToken($code);
 
-        Log::info('移动获取号码接口参数',$accessTokens);
+        Log::info('移动获取号码接口参数', $accessTokens);
 
         $token = $accessTokens['msisdn'];
-        if ($accessTokens['resultCode']!='103000' || !array_key_exists('msisdn', $accessTokens) ) {
+        if ($accessTokens['resultCode'] != '103000' || !array_key_exists('msisdn', $accessTokens)) {
             throw new GQLException("获取手机号一键登录授权失败");
         }
 
-        $oAuth  = OAuth::firstOrNew(['oauth_type' => 'phone', 'oauth_id' => $token]);
+        $oAuth = OAuth::firstOrNew(['oauth_type' => 'phone', 'oauth_id' => $token]);
         //已授权的老用户
         if (isset($oAuth->id)) {
             return $oAuth->user;
         }
         $user = User::firstOrNew([
-            'phone'      => $token,
+            'phone' => $token,
         ]);
         //初次授权的新用户
         if (!isset($user->id)) {
-            $suffix = strval(time());
-            $user->name="手机用户".$suffix;
-            $user->api_token=str_random(60);
-            $user->avatar=User::AVATAR_DEFAULT;
-            $user->phone=$token;
-            $user->account=$token;
+            $suffix          = strval(time());
+            $user->name      = "手机用户" . $suffix;
+            $user->api_token = str_random(60);
+            $user->avatar    = User::AVATAR_DEFAULT;
+            $user->phone     = $token;
+            $user->account   = $token;
             $user->save();
         }
         //初次授权的老用户
-        $oAuth->user_id=$user->id;
+        $oAuth->user_id = $user->id;
         $oAuth->save();
         return $user;
     }
 
     //微信号一键登录
-    public function wechat($code){
+    public function wechat($code)
+    {
         try {
             $accessTokens = WechatUtils::getInstance()->accessToken($code);
-            Log::info("微信用户登录接口回参",$accessTokens);
+            Log::info("微信用户登录接口回参", $accessTokens);
             if (!is_array($accessTokens) || !array_key_exists('unionid', $accessTokens) || !array_key_exists('openid', $accessTokens)) {
                 throw new GQLException("获取微信登录授权失败");
             }
-            $token =$accessTokens['unionid'];
+            $token = $accessTokens['unionid'];
 
-            $oAuth  = OAuth::firstOrNew(['oauth_type' => 'wechat', 'oauth_id' => $token]);
+            $oAuth = OAuth::firstOrNew(['oauth_type' => 'wechat', 'oauth_id' => $token]);
             //已授权的老用户
             if (isset($oAuth->id)) {
                 return $oAuth->user;
             }
             //初次授权的新用户
-            $oAuth->data    = Arr::only($accessTokens, ['openid', 'refresh_token']);
+            $oAuth->data = Arr::only($accessTokens, ['openid', 'refresh_token']);
             $oAuth->save();
-            $user = $this->getDefaultUser();
-            $wallet          = Wallet::firstOrNew(['user_id' => $user->id]);
+            $user                   = $this->getDefaultUser();
+            $wallet                 = Wallet::firstOrNew(['user_id' => $user->id]);
             $wallet->wechat_account = $token;
             $wallet->save();
             //绑定微信信息
             $wechatUserInfo = WechatUtils::getInstance()->userInfo($accessTokens['access_token'], $accessTokens['openid']);
-            Log::info("微信用户信息接口回参",$wechatUserInfo);
+            Log::info("微信用户信息接口回参", $wechatUserInfo);
             if ($wechatUserInfo && Str::contains($user->name, User::DEFAULT_NAME)) {
                 WechatUtils::getInstance()->syncWeChatInfo($wechatUserInfo, $user);
-                Log::info("oauth",$oAuth->data);
-                $wechatData = array_merge($oAuth->data, $wechatUserInfo);
+                Log::info("oauth", $oAuth->data);
+                $wechatData  = array_merge($oAuth->data, $wechatUserInfo);
                 $oAuth->data = $wechatData;
                 $oAuth->save();
             }
-            $oAuth->user_id=$user->id;
+            $oAuth->user_id = $user->id;
             $oAuth->save();
             return $user;
-        }catch (\Exception $e) {
-            Log::info('异常信息'.$e->getMessage());
+        } catch (\Exception $e) {
+            Log::info('异常信息' . $e->getMessage());
         }
 
     }
 
     //创建默认用户
-    public static function getDefaultUser(){
+    public static function getDefaultUser()
+    {
         return User::firstOrCreate([
             'name'      => User::DEFAULT_NAME,
             'api_token' => str_random(60),
@@ -391,7 +395,7 @@ trait UserRepo
     //重写用户的重置密码邮件通知
     public function sendPasswordResetNotification($token)
     {
-        $this->notify(new ResetPasswordNotification($token));
+        $this->notify(new ResetPassword($token));
     }
 
     /**
@@ -625,7 +629,7 @@ trait UserRepo
             'follows'  => null,
             'tips'     => null,
             'others'   => null,
-            'chats'     => null,
+            'chats'    => null,
         ];
         //下列通知类型是进入了notification表的
         $unreadNotifications->each(function ($item) use (&$unreads) {
@@ -692,7 +696,7 @@ trait UserRepo
 
     public function bannedAccount()
     {
-        $this->status = self::STATUS_OFFLINE;
+        $this->status = User::STATUS_OFFLINE;
         $this->save();
     }
 
@@ -775,7 +779,7 @@ trait UserRepo
 
     public function destoryUser()
     {
-        $this->status = self::STATUS_DESTORY;
+        $this->status = User::STATUS_DESTORY;
         $this->save();
     }
 
@@ -783,7 +787,7 @@ trait UserRepo
     public static function getTopWithDraw($number = 5)
     {
         $data          = [];
-        $ten_top_users = \App\Wallet::select(\DB::raw('total_withdraw_amount,real_name,user_id'))
+        $ten_top_users = \App\Wallet::select(DB::raw('total_withdraw_amount,real_name,user_id'))
             ->where('type', 0)
             ->orderBy('total_withdraw_amount', 'desc')
             ->take($number)->get()->toArray();
@@ -800,34 +804,21 @@ trait UserRepo
 
     public function isEditorRole()
     {
-        return $this->role_id == self::EDITOR_STATUS;
+        return $this->role_id == User::EDITOR_STATUS;
     }
 
     public function isAdminRole()
     {
-        return $this->role_id == self::ADMIN_STATUS;
+        return $this->role_id == User::ADMIN_STATUS;
     }
 
     public function isHighRole()
     {
-        return $this->role_id >= self::EDITOR_STATUS;
+        return $this->role_id >= User::EDITOR_STATUS;
     }
 
     public function getUserSuccessWithdrawAmount()
     {
         return $this->wallet->total_withdraw_amount;
-    }
-
-    //返回懂得赚账户
-    public function getDDZUser()
-    {
-        return \DDZUser::getUser($this->uuid);
-    }
-
-    // FIXME: 绑定懂得赚 (基本废弃了...)
-    public function bingDDZ(): void
-    {
-        $ddzUser = \DDZUser::getUser($this->uuid);
-        OAuth::createRelation($this->id, 'dongdezhuan', $ddzUser->id);
     }
 }

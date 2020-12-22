@@ -13,14 +13,15 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
+        $this->call(TrafficSeeder::class);
+
         // $this->call(CleanupSeeder::class);
 
-        $this->call(SeoSeeder::class);
-        $this->call(AsoSeeder::class);
+        // $this->call(SeoSeeder::class);
+        // $this->call(AsoSeeder::class);
 
         // $this->call(AdConfigSeeder::class);
         // $this->call(TaskSeeder::class);
-        // $this->call(AdconfigProviderSeeder::class);
         // $this->call(VersionSeeder::class);
 
     }

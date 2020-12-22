@@ -40,3 +40,6 @@
 [submodule "packages/haxibiao/cms"]
 	path = packages/haxibiao/cms
 	url = http://code.haxibiao.cn/packages/haxibiao-cms.git/
+[submodule "packages/haxibiao/dimension"]
+	path = packages/haxibiao/dimension
+	url = http://code.haxibiao.cn/packages/haxibiao-dimension.git/

@@ -192,6 +192,7 @@ return [
         \Haxibiao\Sns\SnsServiceProvider::class,
         \Haxibiao\Tag\TagServiceProvider::class,
         \Haxibiao\Cms\CmsServiceProvider::class,
+        \Haxibiao\Dimension\DimensionServiceProvider::class,
     ],
 
     /*

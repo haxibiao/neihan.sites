@@ -52,7 +52,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-           'graphql'       => \App\Http\Middleware\ThrottleGraphQL::class,
+        'graphql'      => \App\Http\Middleware\ThrottleGraphQL::class,
         'auth'         => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic'   => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.editor'  => \App\Http\Middleware\AuthEditor::class,
@@ -62,7 +62,7 @@ class Kernel extends HttpKernel
         'guest'        => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle'     => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'wechat.oauth' => \Overtrue\LaravelWechat\Middleware\OAuthAuthenticate::class,
-        'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
+        'signed'       => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'verified'     => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
 }

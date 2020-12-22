@@ -97,7 +97,8 @@
       "Haxibiao\\Task\\": "packages/haxibiao/task/src/",
       "Haxibiao\\Sns\\": "packages/haxibiao/sns/src/",
       "Haxibiao\\Tag\\": "packages/haxibiao/tag/src/",
-      "Haxibiao\\Cms\\": "packages/haxibiao/cms/src/"
+      "Haxibiao\\Cms\\": "packages/haxibiao/cms/src/",
+      "Haxibiao\\Dimension\\": "packages/haxibiao/dimension/src/"
     },
     "classmap": [],
     "files": []
