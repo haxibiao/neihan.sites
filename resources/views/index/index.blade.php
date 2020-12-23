@@ -13,17 +13,20 @@
 @section('content')
 
     <div id="index">
-        {{-- 轮播图 --}}
+        
         <div class="wrap clearfix">
             {{-- 主要内容 --}}
             <div class="main sm-left">
-                <div class="poster-container">
+                {{-- 轮播图 --}}
+                {{-- <div class="poster-container">
                     @if (config('editor.ui.show_poster'))
                         @include('index.parts.poster')
                     @endif
-                </div>
+                </div> --}}
+                {{-- 推荐电影 --}}
+                @include('index.parts.top_movies', ['movies'=>$data->movies])
                 {{-- 推荐专题 --}}
-                @include('index.parts.recommend_categories')
+                @include('index.parts.recommend_categories',['categories'=>$data->categories])
 				<recommend-category></recommend-category>
 				
                 {{-- top 4 videos --}}

@@ -16,20 +16,14 @@ class IndexController extends Controller
      */
     public function index()
     {
-        // User::find(2)->notify((new CommentAccepted(Comment::find(1),User::find(1)))->onQueue('aaaa'));
-        // dd(User::find(2)->notifications()->first()->markAsRead());
-        if (isRecording()) {
-            return view('app');
-        }
-
         $data = (object) [];
 
         // $sticks = Stick::where('name', '首页轮播图')->take(5)->get();
         // if (count($sticks) < 5) {
         //首页轮播图(暂时糊弄5个电影，引导去电影频道)
-        $data->carousel = Movie::latest('id')->take(5)->get();
+        $data->movies = Movie::latest('id')->take(4)->get();
         // } else {
-        // $data->carousel = Stick::items($sticks);
+        // $data->movies = Stick::items($sticks);
         // }
 
         //首页专题
@@ -61,8 +55,7 @@ class IndexController extends Controller
         // $questions =Issue::orderBy('hits', 'desc')->take(10)->get()->random(3);
         // $data->questions = $questions;
 
-        return view('index.index')
-            ->withData($data);
+        return view('index.index')->with('data', $data);
     }
 
     /**

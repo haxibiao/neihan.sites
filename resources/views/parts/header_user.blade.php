@@ -12,13 +12,13 @@
 			@endif
 		@show
 		@if(starts_with(request()->path(), 'question'))
-			<div class="ask"><a target="{{ isDeskTop()? '_blank':'_self' }}"  data-target=".modal-ask-question" data-toggle="modal" class="btn-base btn-theme"><span class="iconfont icon-maobi hidden-xs"></span>提问</a></div>
+			<div class="ask"><a    data-target=".modal-ask-question" data-toggle="modal" class="btn-base btn-theme"><span class="iconfont icon-maobi hidden-xs"></span>提问</a></div>
 		@else
 			<div class="user" data-hover="dropdown">
-				<div class="creation hidden-xs"><a target="{{ isDeskTop()? '_blank':'_self' }}" class="btn-base btn-theme"><span class="iconfont icon-icon-feixingmanyou"></span>发布</a></div>
+				<div class="creation hidden-xs"><a   class="btn-base btn-theme"><span class="iconfont icon-icon-feixingmanyou"></span>发布</a></div>
 				<ul class="dropdown-menu hover-dropdown-menu">
 				   <li>
-				     <a target="{{ isDeskTop()? '_blank':'_self' }}"  href="/write"><i class="iconfont icon-maobi"></i>文章</a>
+				     <a    href="/write"><i class="iconfont icon-maobi"></i>文章</a>
 				   </li>
 				   <li>
 				     <a data-target=".modal-post" data-toggle="modal">
@@ -36,39 +36,39 @@
 			<ul class="dropdown-menu hover-dropdown-menu">
 			   @editor
 			   <li>
-			     <a href="/home" target="{{ isDeskTop()? '_blank':'_self' }}">
+			     <a href="/home"  >
 			       <i class="iconfont icon-wendangxiugai"></i><span>编辑面板</span>
 				 </a>
 			   </li>
 			   @endeditor
 
 			   <li>
-			     <a href="/user/{{ Auth::user()->id }}" target="{{ isDeskTop()? '_blank':'_self' }}">
+			     <a href="/user/{{ Auth::user()->id }}"  >
 			       <i class="iconfont icon-yonghu01"></i><span>我的主页</span>
 					 </a>
 			   </li>
 			   <li>
-			     <a href="/user/{{ Auth::user()->id }}/favorites" target="{{ isDeskTop()? '_blank':'_self' }}">
+			     <a href="/user/{{ Auth::user()->id }}/favorites"  >
 			       <i class="iconfont icon-biaoqian"></i><span>我的收藏</span>
 					 </a>
 			   </li>
 			   <li>
-			     <a href="/user/{{ Auth::user()->id }}/questions" target="{{ isDeskTop()? '_blank':'_self' }}">
+			     <a href="/user/{{ Auth::user()->id }}/questions"  >
 			       <i class="iconfont icon-svg37"></i><span>我的问答</span>
 					 </a>
 			   </li>
 			   <li>
-			     <a href="/user/{{ Auth::user()->id }}/likes" target="{{ isDeskTop()? '_blank':'_self' }}">
+			     <a href="/user/{{ Auth::user()->id }}/likes"  >
 			       <i class="iconfont icon-03xihuan"></i><span>我的喜欢</span>
 					 </a>
 			   </li>
 			   <li>
-			     <a href="/wallet" target="{{ isDeskTop()? '_blank':'_self' }}">
+			     <a href="/wallet"  >
 			       <i class="iconfont icon-qianbao"></i><span>我的钱包</span>
 					 </a>
 			   </li>
 			   <li>
-			     <a href="/settings" target="{{ isDeskTop()? '_blank':'_self' }}">
+			     <a href="/settings"  >
 			       <i class="iconfont icon-shezhi"></i><span>我的设置</span>
 					 </a>
 			   </li>
@@ -103,11 +103,11 @@
 
 				<ul class="nav navbar-nav">
 					<li class="tab {{ get_active_css('/') }}"><a href="/"><i class="iconfont icon-faxian hidden-xs hidden-md"></i><span class="hidden-sm">发现</span></a></li>
-					<li class="tab {{ get_active_css('video') }}"><a target="{{ isDeskTop()? '_blank':'_self' }}" href="/video"><i class="iconfont icon-shipin1 hidden-xs hidden-md"></i><span class="hidden-sm">视频</span></a></li>
-					<li class="tab {{ get_active_css('video') }}"><a target="{{ isDeskTop()? '_blank':'_self' }}" href="/movie"><i class="iconfont icon-shipin3 hidden-xs hidden-md"></i><span class="hidden-sm">电影</span></a></li>
-					<li class="tab {{ get_active_css('follow') }}" class="follow"><a target="{{ isDeskTop()? '_blank':'_self' }}" href="/follow"><i class="iconfont icon-huizhang hidden-xs hidden-md"></i><span class="hidden-sm">关注</span></a></li>
+					<li class="tab {{ get_active_css('video') }}"><a   href="/video"><i class="iconfont icon-shipin1 hidden-xs hidden-md"></i><span class="hidden-sm">视频</span></a></li>
+					<li class="tab {{ get_active_css('video') }}"><a   href="/movie"><i class="iconfont icon-shipin3 hidden-xs hidden-md"></i><span class="hidden-sm">电影</span></a></li>
+					<li class="tab {{ get_active_css('follow') }}" class="follow"><a   href="/follow"><i class="iconfont icon-huizhang hidden-xs hidden-md"></i><span class="hidden-sm">关注</span></a></li>
 					<li class="tab notification {{ get_active_css('notification') }}" data-hover="dropdown">
-						<a target="{{ isDeskTop()? '_blank':'_self' }}" href="/notification"><i class="iconfont icon-zhongyaogaojing hidden-xs hidden-md"></i><span class="hidden-sm">消息</span></a>
+						<a   href="/notification"><i class="iconfont icon-zhongyaogaojing hidden-xs hidden-md"></i><span class="hidden-sm">消息</span></a>
 						@php
 							$unreads_all = array_sum(Auth::user()->unreads());
 						@endphp
@@ -116,25 +116,25 @@
 						@endif
 						<ul class="dropdown-menu hover-dropdown-menu hidden-xs">
 						   <li>
-						     <a target="{{ isDeskTop()? '_blank':'_self' }}" href="/notification#/comments"><i class="iconfont icon-xinxi"></i> <span>评论</span><span class="badge">{{ Auth::user()->unreads('comments') }}</span></a>
+						     <a   href="/notification#/comments"><i class="iconfont icon-xinxi"></i> <span>评论</span><span class="badge">{{ Auth::user()->unreads('comments') }}</span></a>
 						   </li>
 						   <li>
-						     <a target="{{ isDeskTop()? '_blank':'_self' }}" href="/notification#/chats"><i class="iconfont icon-email"></i> <span>消息</span><span class="badge">{{ Auth::user()->unreads('chats') }}</span></a>
+						     <a   href="/notification#/chats"><i class="iconfont icon-email"></i> <span>消息</span><span class="badge">{{ Auth::user()->unreads('chats') }}</span></a>
 						   </li>
 						   <li>
-						     <a target="{{ isDeskTop()? '_blank':'_self' }}" href="/notification#/requests"><i class="iconfont icon-tougaoguanli"></i> <span>投稿请求</span><span class="badge">{{ Auth::user()->unreads('requests') }}</span></a>
+						     <a   href="/notification#/requests"><i class="iconfont icon-tougaoguanli"></i> <span>投稿请求</span><span class="badge">{{ Auth::user()->unreads('requests') }}</span></a>
 						   </li>
 						   <li>
-						     <a target="{{ isDeskTop()? '_blank':'_self' }}" href="/notification#/likes"><i class="iconfont icon-xin"></i> <span>喜欢和赞</span><span class="badge">{{ Auth::user()->unreads('likes') }}</span></a>
+						     <a   href="/notification#/likes"><i class="iconfont icon-xin"></i> <span>喜欢和赞</span><span class="badge">{{ Auth::user()->unreads('likes') }}</span></a>
 						   </li>
 						   <li>
-						     <a target="{{ isDeskTop()? '_blank':'_self' }}" href="/notification#/follows"><i class="iconfont icon-jiaguanzhu"></i> <span>关注</span><span class="badge">{{ Auth::user()->unreads('follows') }}</span></a>
+						     <a   href="/notification#/follows"><i class="iconfont icon-jiaguanzhu"></i> <span>关注</span><span class="badge">{{ Auth::user()->unreads('follows') }}</span></a>
 						   </li>
 						   <li>
-						     <a target="{{ isDeskTop()? '_blank':'_self' }}" href="/notification#/tips"><i class="iconfont icon-zanshangicon"></i> <span>赞赏</span><span class="badge">{{ Auth::user()->unreads('tips') }}</span></a>
+						     <a   href="/notification#/tips"><i class="iconfont icon-zanshangicon"></i> <span>赞赏</span><span class="badge">{{ Auth::user()->unreads('tips') }}</span></a>
 						   </li>
 						   <li>
-						     <a target="{{ isDeskTop()? '_blank':'_self' }}" href="/notification#/others"><i class="iconfont icon-gengduo"></i> <span>其他消息</span><span class="badge">{{ Auth::user()->unreads('others') }}</span></a>
+						     <a   href="/notification#/others"><i class="iconfont icon-gengduo"></i> <span>其他消息</span><span class="badge">{{ Auth::user()->unreads('others') }}</span></a>
 						   </li>
 						</ul>
 					</li>

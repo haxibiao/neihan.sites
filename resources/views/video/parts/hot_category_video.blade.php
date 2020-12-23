@@ -18,11 +18,11 @@
         <ul class="game-video-list">
             @foreach($articles as $article)
                 <li class="game-video-item">
-                    <a href="/article/{{ $article->id }}" target="{{ isDeskTop()? '_blank':'_self' }}" class="video-info" >
+                    <a href="/article/{{ $article->id }}"   class="video-info" >
                         <img class="video-photo"  id="video-img" src=" {{ $article->cover }}">
                         <!-- <i class="hover-play"> </i> -->
                     </a>
-                    <a href="/article/{{ $article->id }}" target="{{ isDeskTop()? '_blank':'_self' }}"  class="video-title" >{{ $article->subject ?: $article->summary }}</a>
+                    <a href="/article/{{ $article->id }}"    class="video-title" >{{ $article->subject ?: $article->summary }}</a>
                     <div class="info">
                         <a class="user" href="/user/{{ $article->user_id }}">
                             <img src="{{ $article->user->avatarUrl }}" class="avatar">

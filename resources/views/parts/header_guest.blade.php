@@ -49,9 +49,9 @@
 						<ul class="nav navbar-nav">
 							@if (!isRecording())
 							<li class="tab {{ get_active_css('/') }}"><a href="/"><i class="iconfont icon-faxian hidden-xs hidden-md"></i><span class="hidden-sm">首页</span></a></li>
-							<li class="tab {{ get_active_css('video') }}"><a target="{{ isDeskTop()? '_blank':'_self' }}" href="/video"><i class="iconfont icon-shipin1 hidden-xs hidden-md"></i><span class="hidden-sm">短视频</span></a></li>	
-							<li class="tab {{ get_active_css('movie') }}"><a target="{{ isDeskTop()? '_blank':'_self' }}" href="/movie"><i class="iconfont icon-shipin3 hidden-xs hidden-md"></i><span class="hidden-sm">电影</span></a></li>
-							<li class="tab {{ get_active_css('app') }}"><a target="{{ isDeskTop()? '_blank':'_self' }}" href="/app"><i class="iconfont icon-ordinarymobile hidden-xs hidden-md"></i><span class="hidden-sm">下载App</span></a></li>
+							<li class="tab {{ get_active_css('video') }}"><a   href="/video"><i class="iconfont icon-shipin1 hidden-xs hidden-md"></i><span class="hidden-sm">短视频</span></a></li>	
+							<li class="tab {{ get_active_css('movie') }}"><a   href="/movie"><i class="iconfont icon-shipin3 hidden-xs hidden-md"></i><span class="hidden-sm">电影</span></a></li>
+							<li class="tab {{ get_active_css('app') }}"><a   href="/app"><i class="iconfont icon-ordinarymobile hidden-xs hidden-md"></i><span class="hidden-sm">下载App</span></a></li>
 							@endif
 						</ul>
 						@if (!isRecording())
