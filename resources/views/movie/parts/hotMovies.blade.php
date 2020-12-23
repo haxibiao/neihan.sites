@@ -10,7 +10,7 @@
 </div>
 <div id="hot-movies" class="hot-movies-panel">
     @foreach ($hotMovies as $movie)
-        <a href="/movie/{{ $movie->id }}" target="_blank" class="movie-item">
+        <a href="/movie/{{ $movie->id }}"   class="movie-item">
             <img data-src="{{ $movie->cover }}" alt="{{ $movie->name }}" class="movie-pic">
         </a>
     @endforeach

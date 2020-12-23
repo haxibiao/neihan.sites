@@ -1,7 +1,7 @@
 <template>
   <div class="comment-item" :data-id="comment.id">
     <div class="user-face">
-      <a href="/user/userId" target="_blank" :data-usercard-mid="comment.user.id">
+      <a href="/user/userId"   :data-usercard-mid="comment.user.id">
         <div class="app-avatar">
           <img class="app-avatar-img app-avatar-img-radius" :src="comment.user.avatar" alt="头像" />
         </div>
@@ -12,7 +12,7 @@
         <a
                 data-usercard-mid="9406473"
                 href="/user/userId"
-                target="_blank"
+                 
                 class="name vip-color"
         >{{comment.user.name}}</a>
       </div>

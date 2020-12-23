@@ -14,7 +14,7 @@
             <div class="main sm-left">
                 <div class="question-tags">
                     @foreach ($question->categories as $category)
-                        <a href="/question?cid={{ $category->id }}" target="_blank" class="tags tag"><span
+                        <a href="/question?cid={{ $category->id }}"   class="tags tag"><span
                                 class="name">{{ $category->name }}</span></a>
                     @endforeach
                 </div>
@@ -41,11 +41,11 @@
                 <div class="inquisitorial">
                     <div class="author">
                         @if (!$question->is_anonymous)
-                            <a target="_blank" href="/user/{{ $question->user->id }}" class="avatar"><img
+                            <a   href="/user/{{ $question->user->id }}" class="avatar"><img
                                     src="{{ $question->user->avatarUrl }}" alt=""></a>
                         @endif
                         <div class="info">
-                            <a target="_blank" href="/user/{{ $question->user->id }}"
+                            <a   href="/user/{{ $question->user->id }}"
                                 class="nickname">{{ $question->user->name }}</a>
                             <span class="time">{{ $question->timeAgo() }}</span>
                         </div>

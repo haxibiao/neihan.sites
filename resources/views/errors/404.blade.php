@@ -29,7 +29,7 @@
                         <div class="col-xs-6 col-md-3 video">
                             <div class="video-item vt">
                                 <div class="thumb">
-                                    <a href="{{ url("video/$article->video_id") }}" target="_blank">
+                                    <a href="{{ url("video/$article->video_id") }}"  >
                                         <img src="{{ $article->cover }}"
                                             alt="{{ $article->video->title ?: $article->summary }}">
                                         <i class="duration">{{ gmdate('i:s', $article->video->duration) }}</i>
@@ -37,7 +37,7 @@
                                     </a>
                                 </div>
                                 <ul class="info-list">
-                                    <li class="video-title"><a target="_blank"
+                                    <li class="video-title"><a  
                                             href="{{ url("video/$article->video_id") }}">{{ $article->video->title ?: $article->summary }}</a>
                                     </li>
                                     <li>

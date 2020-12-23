@@ -38,7 +38,7 @@
 
 
             @foreach($posts as $post)
-            <a class="list_a" href="/share/post/{{$post->id}}" target="_blank">
+            <a class="list_a" href="/share/post/{{$post->id}}"  >
                 <img class="list_img" src="{{ $post->cover }}" />
                 <div class="text_cl">
                     <div class="text_top">

@@ -16,7 +16,7 @@
                   <ul id="contribute-note-list">
                       <div class="title">
                         我管理的专题
-                        <a href="/category/create" target="_blank" class="new-note-btn"><span>新建专题</span></a>
+                        <a href="/category/create"   class="new-note-btn"><span>新建专题</span></a>
                       </div>
                       <li v-for="category in categoryList">
                         <a :href="'/'+category.name_en" class="avatar-category">

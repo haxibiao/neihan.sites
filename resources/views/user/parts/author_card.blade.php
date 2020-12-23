@@ -1,6 +1,6 @@
 <li class="col-sm-4 recommend-card">
   <div>
-    <a target="_blank" href="/user/{{ $user->id }}">
+    <a   href="/user/{{ $user->id }}">
 	    <img class="avatar" src="{{ $user->avatarUrl }}" alt="">
       <h4 class="name single-line">{{ $user->name }}</h4>
       <p class="author-description">{{ $user->introduction }}</p>
@@ -19,7 +19,7 @@
     <div class="meta">最近更新</div>
     <div class="recent-update">
        @foreach($user->articles()->orderBy('id','desc')->take(3)->get() as $article)
-        <a class="new single-line" target="_blank" href="/article/{{ $article->id }}">{{ $article->subject }}</a>
+        <a class="new single-line"   href="/article/{{ $article->id }}">{{ $article->subject }}</a>
         @endforeach
     </div>
   </div>

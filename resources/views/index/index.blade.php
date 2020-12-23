@@ -30,22 +30,8 @@
 				<recommend-category></recommend-category>
 				
                 {{-- top 4 videos --}}
-                <div class="row videos distance">
-                    <div class="vd-head">
-                        <h3 class="vd-title">
-                            <span class="title-icon">
-                                <i class="iconfont icon-huo"></i>{{ seo_site_name() }}-合集
-                            </span>
-                        </h3>
-                        <a href="/video" class="more-video">
-                            <p>
-                                更多
-                                <i class="iconfont icon-youbian"></i>
-                            </p>
-                        </a>
-                    </div>
-                    @include('index.parts.video_posts', ['videoPosts' => $data->videoPosts])
-                </div>
+                @include('index.parts.top_videos', ['videoPosts' => $data->videoPosts])
+                
                 {{-- 文章列表 --}}
                 <ul class="article-list">
                     {{-- 置顶文章 --}}

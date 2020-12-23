@@ -3,11 +3,11 @@
 		<div class="hot-search">
 			<div class="plate-title">
 			  热门搜索
-			  <a target="_blank" href="javascript:;" class="right" @click="change"><i class="iconfont icon-shuaxin" ref="fresh"></i>换一批</a>
+			  <a   href="javascript:;" class="right" @click="change"><i class="iconfont icon-shuaxin" ref="fresh"></i>换一批</a>
 			</div>
 			<ul>
 				<li v-for="query in queries">
-					<a target="_blank" :href="'/search?q='+query.query" :title="query.query">{{ query.q }}</a>
+					<a   :href="'/search?q='+query.query" :title="query.query">{{ query.q }}</a>
 				</li>
 			</ul>
 		</div>

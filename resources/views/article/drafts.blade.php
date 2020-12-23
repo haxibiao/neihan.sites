@@ -33,7 +33,7 @@
         @endif
 
         <div class="pull-right">
-          <a class="btn btn-sm btn-primary" href="/article/{{ $article->id }}/edit" role="button" target="_blank">编辑</a> 
+          <a class="btn btn-sm btn-primary" href="/article/{{ $article->id }}/edit" role="button"  >编辑</a> 
           <br/>
           <br/>
           {!! Form::open(['method' => 'delete', 'route' => ['article.destroy', $article->id], 'class' => 'form-horizontal']) !!}

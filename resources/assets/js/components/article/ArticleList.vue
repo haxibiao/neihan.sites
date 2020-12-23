@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<li v-for="article in articles" :class="article.cover_path?'content-item have-img':'content-item'">
-			<a v-if="article.cover_path" class="wrap-img" :href="'/article/'+article.id"  target="_blank">
+			<a v-if="article.cover_path" class="wrap-img" :href="'/article/'+article.id"   >
 				<img :src="article.cover_path" :alt="article.cover_path">
 				<span v-if="article.type =='video'" class="rotate-play">
 		        <i class="iconfont icon-shipin"></i>
@@ -10,32 +10,32 @@
 			</a>
 			<div class="content">
 				<div v-if="article.type !=='article'" class="author">
-					<a v-if="article.user" class="avatar"  target="_blank" :href="'/user/'+article.user.id">
+					<a v-if="article.user" class="avatar"    :href="'/user/'+article.user.id">
 						<img :src="article.user.avatar" alt="">
 					</a>
 					<div class="info">
-						<a v-if="article.user" class="nickname"  target="_blank" :href="'/user/'+article.user_id">{{ article.user.name }}</a>
+						<a v-if="article.user" class="nickname"    :href="'/user/'+article.user_id">{{ article.user.name }}</a>
 						<img v-if="article.user.is_signed" class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="签约作者" alt="签约作者">
 						<img v-if="article.user.is_editor" class="badge-icon" src="/images/editor.png" data-toggle="tooltip" data-placement="top" title="小编" alt="小编">
 						<span class="time">{{ article.time_ago }}</span>
 					</div>
 				</div>
 
-				<a v-if="article.type == 'article'" class="title"  target="_blank" :href="'/article/'+article.id">
+				<a v-if="article.type == 'article'" class="title"    :href="'/article/'+article.id">
 					<span>{{ article.title }}</span>
 				</a>
-				<a class="abstract":href="'/article/'+article.id" target="_blank">{{ article.description}}</a>
+				<a class="abstract":href="'/article/'+article.id"  >{{ article.description}}</a>
 
 				<div class="meta">
-					<a v-if="article.category" class="category"  target="_blank" :href="'/category/' + article.category.id">
+					<a v-if="article.category" class="category"    :href="'/category/' + article.category.id">
 						<i class="iconfont icon-zhuanti1"></i>
 						{{ article.category.name }}
 					</a>
-					<a v-if="article.user && article.type =='diagrams'" class="nickname"  target="_blank" :href="'/user/'+article.user.id">{{ article.user.name }}</a>
-					<a target="_blank" :href="'/article/'+article.id">
+					<a v-if="article.user && article.type =='diagrams'" class="nickname"    :href="'/user/'+article.user.id">{{ article.user.name }}</a>
+					<a   :href="'/article/'+article.id">
 						<i class="iconfont icon-liulan"></i> {{ article.hits }}
 					</a>
-					<a  target="_blank" :href="'/article/'+article.id+'/#comments'" class="comment_meta">
+					<a    :href="'/article/'+article.id+'/#comments'" class="comment_meta">
 						<i class="iconfont icon-svg37"></i> {{ article.count_replies }}
 					</a>
 					<span><i class="iconfont icon-03xihuan"></i> {{ article.count_likes }}</span>

@@ -9,8 +9,8 @@
 	            <div class="modal-body">
 	                <ul>
 	                    <li v-for="like in likes">
-	                    	<a :href="'/user/'+like.user.id" target="_blank" class="avatar"><img :src="like.user.avatar"></a>
-		                    <a :href="'/user/'+like.user.id" target="_blank" class="name">{{ like.user.name }}</a> <span class="time">{{ like.time }}</span>
+	                    	<a :href="'/user/'+like.user.id"   class="avatar"><img :src="like.user.avatar"></a>
+		                    <a :href="'/user/'+like.user.id"   class="name">{{ like.user.name }}</a> <span class="time">{{ like.time }}</span>
 	                    </li>
 	                </ul>
 	            </div>

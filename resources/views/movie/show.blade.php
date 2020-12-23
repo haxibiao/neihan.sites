@@ -28,20 +28,20 @@
         <div class="main-left col-lg-9">
             <div class="video-info">
                 <div id="media_module" class="clearfix report-wrap-module">
-                    <a href="/movie/{{ $movie->id }}" target="_blank" class="video-cover">
+                    <a href="/movie/{{ $movie->id }}"   class="video-cover">
                         <img src="{{ $movie->cover_url }}" alt="">
                     </a>
                     <div class="video-right">
-                        <a href="/movie/{{ $movie->id }}" target="_blank" title="{{ $movie->name }}" class="video-title">{{ $movie->name }}
+                        <a href="/movie/{{ $movie->id }}"   title="{{ $movie->name }}" class="video-title">{{ $movie->name }}
                         </a>
                         <div class="video-count text-ellipsis">
                             118.5万播放&nbsp;&nbsp;·&nbsp;&nbsp;1.2万评论&nbsp;&nbsp;·&nbsp;&nbsp;32.8万追剧
                         </div>
                         <div class="pub-wrapper clearfix">
-                            <a href="/movie" target="_blank" class="home-link">电视剧</a>
+                            <a href="/movie"   class="home-link">电视剧</a>
                             <span class="pub-info">连载中, 13话</span>
                         </div>
-                        <a href="/home" target="_blank" class="video-desc webkit-ellipsis">
+                        <a href="/home"   class="video-desc webkit-ellipsis">
                             <span class="absolute">{{ str_limit($movie->introduction,200) }} </span>
                             <span>{{ $movie->introduction }}</span>
                             {{-- <i style="">展开</i> --}}

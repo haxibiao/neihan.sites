@@ -13,7 +13,7 @@
                     <span>热门专题</span>
                 </div>
             </div>
-            <a target="_blank" class="help" href="/article/{{ config('editor.category.how_to_create') }}">
+            <a   class="help" href="/article/{{ config('editor.category.how_to_create') }}">
                 <i class="iconfont icon-bangzhu"></i>
                 如何创建并玩转专题
             </a>

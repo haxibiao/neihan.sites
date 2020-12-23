@@ -16,17 +16,17 @@
 						@foreach($data['video'] as $article)
 						<li class="article-item {{ $article->cover ? 'have-img' : '' }}">
 					      @if($article->cover)
-							  <a class="wrap-img" href="{{ $article->url }}" target="_blank">
+							  <a class="wrap-img" href="{{ $article->url }}"  >
 							      <img src="{{ $article->cover }}" alt="">
 							  </a>
 						  @endif
 						  <div class="content">
 						    <div class="author">
-						      <a class="avatar" target="_blank" href="/user/{{ $article->user_id }}">
+						      <a class="avatar"   href="/user/{{ $article->user_id }}">
 						        <img src="{{ $article->user->avatarUrl }}" alt="">
 						      </a>
 						      <div class="info">
-						        <a class="nickname" target="_blank" href="/user/{{ $article->user_id }}">{{ $article->user->name }}</a>
+						        <a class="nickname"   href="/user/{{ $article->user_id }}">{{ $article->user->name }}</a>
 						       @if($article->user->is_signed)
 	                             <img class="badge-icon"  src="/images/signed.png" data-toggle="tooltip" data-placement="top" title="{{ config('app.name') }}签约作者" alt="">
 	                           @endif
@@ -36,17 +36,17 @@
 						        <span class="time" data-shared-at="{{ $article->created_at }}">{{ $article->timeAgo() }}</span>
 						      </div>
 						    </div>
-						    <a class="title" target="_blank" href="{{ $article->url }}">
+						    <a class="title"   href="{{ $article->url }}">
 						        <span>{!! $article->subject !!}</span>
 						    </a>
 						    <p class="abstract">
 						      {!! $article->description !!}
 						    </p>
 						    <div class="meta">
-						      <a target="_blank" href="{{ $article->url }}">
+						      <a   href="{{ $article->url }}">
 						        <i class="iconfont icon-liulan"></i> {{ $article->hits }}
 						      </a>
-						      <a target="_blank" href="{{ $article->url }}">
+						      <a   href="{{ $article->url }}">
 						        <i class="iconfont icon-svg37"></i> {{ $article->count_replies }}
 						      </a>
 						      <span><i class="iconfont icon-03xihuan"></i> {{ $article->count_likes }}</span>

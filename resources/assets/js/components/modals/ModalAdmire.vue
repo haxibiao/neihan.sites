@@ -6,7 +6,7 @@
 			        	<button type="button" data-dismiss="modal" class="close" @click="rollBack">×</button>
 			        </div>
 			        <div class="modal-body">
-			            <form v-if="!wexinPay" target="_blank" class="new-reward">
+			            <form v-if="!wexinPay"   class="new-reward">
 			                <div class="reward-intro"><a class="avatar"><img src="/images/xbx.jpg"></a> <span class="intro">支持作者</span> <i class="iconfont icon-jinqian1"></i></div>
 			                <div class="main-inputs">
 			                    <div class="amount-group">

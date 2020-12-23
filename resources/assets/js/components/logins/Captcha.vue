@@ -13,7 +13,7 @@
 	              <div class="geetest-radar-tip">
 	                  <span class="geetest-radar-tip-content">点击按钮进行验证</span>
 	              </div>
-	              <a class="geetest-logo" target="_blank" href="javascript:;"><i class="iconfont icon-dunpai"></i></a>
+	              <a class="geetest-logo"   href="javascript:;"><i class="iconfont icon-dunpai"></i></a>
 	          </div>
 	    </div>
 	</div>

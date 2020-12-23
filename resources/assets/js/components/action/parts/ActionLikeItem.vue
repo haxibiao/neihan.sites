@@ -1,21 +1,21 @@
 <template>
 <li class="article-item have-img" v-if="is_like">
-        <a class="wrap-img"  :href="'/article/'+ actionTargetId" target="_blank">
+        <a class="wrap-img"  :href="'/article/'+ actionTargetId"  >
             <img :src="actionTargetImage" alt="">
         </a>
         <div class="content">
             <div class="author">
-                <a class="avatar" target="_blank" :href="'/user/'+item.user.id">
+                <a class="avatar"   :href="'/user/'+item.user.id">
                     <img :src="item.user.avatar" alt="">
                 </a>
                 <div class="info">
-                    <a class="nickname" target="_blank" :href="'/user/'+item.user.id">{{ item.user.name }}</a>
+                    <a class="nickname"   :href="'/user/'+item.user.id">{{ item.user.name }}</a>
                     <!-- <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" :title="appName+'签约作者'" alt=""> -->
                     <span class="time" v-if="item.actionable.liked_type == 'articles'"> 喜欢了作品 · {{ item.time }}</span>
                     <span class="time" v-else> 喜欢了作品的评论 · {{ item.time }}</span>
                 </div>
             </div>
-            <a class="title" target="_blank" :href="'/article/'+actionTargetId">
+            <a class="title"   :href="'/article/'+actionTargetId">
                 <span>{{ actionTargetTitle }}</span>
             </a>
             <p class="abstract">
@@ -23,12 +23,12 @@
             </p>
             <div class="meta">
                 <div class="origin-author">
-                    <a target="_blank" :href="'/user/'+actionTargetUserId">{{ actionTargetUserName }}</a>
+                    <a   :href="'/user/'+actionTargetUserId">{{ actionTargetUserName }}</a>
                 </div>
-                <a target="_blank" :href="'/article/'+actionTargetId">
+                <a   :href="'/article/'+actionTargetId">
                     <i class="iconfont icon-liulan"></i> {{ actionTargetHits }}
                 </a>
-                <a target="_blank" :href="'/article/'+actionTargetId+'/#comments'">
+                <a   :href="'/article/'+actionTargetId+'/#comments'">
                     <i class="iconfont icon-svg37"></i> {{ actionTargetReplise }}
                 </a>
                 <span><i class="iconfont icon-03xihuan"></i> {{ actionTargetLikes }}</span>

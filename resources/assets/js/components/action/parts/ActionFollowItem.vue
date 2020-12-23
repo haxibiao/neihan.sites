@@ -2,11 +2,11 @@
 <li class="feed-info" v-if="is_follow">
     <div class="content">
             <div class="author">
-                <a class="avatar" target="_blank" href="javascript:;">
+                <a class="avatar"   href="javascript:;">
                     <img :src="item.user.avatar" alt="">
                 </a>
                 <div class="info">
-                    <a class="nickname" target="_blank" :href="/user/+item.user.id">{{ item.user.name }}</a>
+                    <a class="nickname"   :href="/user/+item.user.id">{{ item.user.name }}</a>
                     <!-- <img class="badge-icon" src="/images/signed.png" data-toggle="tooltip" data-placement="top" :title="appName+'签约作者'" alt=""> -->
                     <span class="time" v-if="item.actionable.followed_type == 'users'"> 关注了作者 · {{ item.time }}</span>
                     <span class="time" v-else> 关注了专题 · {{ item.time }}</span>

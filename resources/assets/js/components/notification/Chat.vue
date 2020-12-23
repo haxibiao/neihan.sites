@@ -6,7 +6,7 @@
     <div class="chat-wrapper">
       <div class="chat-top">
         <router-link to="/chats" class="back-list active"><i class="iconfont icon-zuobian"></i><span class="hidden-xs">返回消息列表</span></router-link>
-        <b>与 <a href="javascript:;" target="_blank" class="single-line ">{{ with_user.name }}</a> 的对话</b>
+        <b>与 <a href="javascript:;"   class="single-line ">{{ with_user.name }}</a> 的对话</b>
         <div class="dropdown">
           <a href="javascript:;" class="open-dropdown dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="iconfont icon-xia"></i></a>
           <ul class="dropdown-menu">

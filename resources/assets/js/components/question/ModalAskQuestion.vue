@@ -38,7 +38,7 @@
                 <div class="pay-tip">
                   <span class="pay-tip-content">
                     使用付费咨询视为您已同意
-                    <a href="/article/disclaimer" target="_blank">《问答细则及责任声明》</a>
+                    <a href="/article/disclaimer"  >《问答细则及责任声明》</a>
                   </span>
                 </div>
                 <div class="money-amount">
@@ -48,7 +48,7 @@
                     </a>
                     付费金额 (当前账户余额：￥{{ balance }})
                     <a
-                      target="_blank"
+                       
                       href="/wallet"
                       v-if="money>balance"
                     >
@@ -168,7 +168,7 @@
                     <div class="img-tip">
                       <span class="img-tip-content">
                         使用图库视为您已同意
-                        <a href="/article/image-license" target="_blank">《图片许可使用协议》</a>，如不同意，请停止使用图库。
+                        <a href="/article/image-license"  >《图片许可使用协议》</a>，如不同意，请停止使用图库。
                       </span>
                     </div>
                     <div class="img-list">
@@ -213,7 +213,7 @@
             v-if="whetherPay && balance < money"
             href="/wallet"
             class="btn-base btn-theme btn-md pull-right"
-            target="_blank"
+             
           >充值</a>
           <button v-else class="btn-base btn-handle btn-md pull-right" @click="submit">提交</button>
         </footer>

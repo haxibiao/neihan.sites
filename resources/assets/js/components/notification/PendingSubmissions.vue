@@ -5,30 +5,30 @@
 		</div>
 		<ul class="article-list">
 			<li v-for="article in articles" class="article-item have-img">
-			  <a class="wrap-img" :href="'/article/'+article.id" target="_blank">
+			  <a class="wrap-img" :href="'/article/'+article.id"  >
 			      <img :src="article.cover_path" alt="">
 			  </a>
 			  <div class="content">
 			    <div class="author">
-			      <a class="avatar" target="_blank" :href="'/user/'+article.user.id">
+			      <a class="avatar"   :href="'/user/'+article.user.id">
 			        <img :src="article.user.avatar" alt="">
 			      </a> 
 			      <div class="info">
-			        <a class="nickname" target="_blank" :href="'/user/'+article.user_id">{{ article.user.name }}</a>
+			        <a class="nickname"   :href="'/user/'+article.user_id">{{ article.user.name }}</a>
 			        <span class="time">{{ article.created_at }}</span>
 			      </div>
 			    </div>
-			    <a class="title" target="_blank" :href="'/article/'+article.id">
+			    <a class="title"   :href="'/article/'+article.id">
 			        <span>{{ article.title }}</span>
 			    </a>
 			    <p class="abstract">
 			      {{ article.description }}
 			    </p>
 			    <div class="meta">
-			      <a target="_blank" :href="'/article/'+article.id">
+			      <a   :href="'/article/'+article.id">
 			        <i class="iconfont icon-liulan"></i> {{ article.hits }}
 			      </a>        
-			      <a target="_blank" :href="'/article/'+article.id">
+			      <a   :href="'/article/'+article.id">
 			        <i class="iconfont icon-svg37"></i> {{ article.count_replies }}
 			      </a>      
 			      <span><i class="iconfont icon-03xihuan"></i> {{ article.count_likes }}</span>

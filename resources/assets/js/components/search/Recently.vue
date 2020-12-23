@@ -2,11 +2,11 @@
 	<div class="search-recent" v-show="histories.length>0">
 		<div class="plate-title" v-if="!hideTitle">
 		  最近搜索
-		  <a target="_blank" href="javascript:;" class="right" @click="empty">清空</a>
+		  <a   href="javascript:;" class="right" @click="empty">清空</a>
 		</div>
 		<ul class="search-recent-item-wrap" v-if="histories.length">
 			<li v-for="history in histories">
-				<a :href="'/search?q='+history.query" target="_blank">
+				<a :href="'/search?q='+history.query"  >
 					<i class="iconfont icon-unie646"></i>
 					<span>{{ history.query }}</span>
 					<i class="iconfont icon-cha" :data-id="history.id" @click="deleteHistory"></i>

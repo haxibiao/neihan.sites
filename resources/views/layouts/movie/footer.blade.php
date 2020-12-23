@@ -7,7 +7,7 @@
                     <dd class="app-footer__sns-cont">
                         <ul class="app-footer__sns-lists">
                             <li class="app-footer__sns-list">
-                                <a href="https://github.com/haxibiao" target="_blank">
+                                <a href="https://github.com/haxibiao"  >
                                     <svg class="app-footer__sns-icon app-footer__sns-icon--fb" t="1565228304869"
                                         viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1971"
                                         xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -22,7 +22,7 @@
                 </dl>
                 <ul class="app-footer__list">
                     <li class="app-footer__list-item">
-                        <a href="mailto:ivan@haxibiao.com?subject=Mail from Haxibiao.com Site" target="_blank">
+                        <a href="mailto:ivan@haxibiao.com?subject=Mail from Haxibiao.com Site"  >
                             <span class="app-footer__list-txt">CONTACT US</span>
                         </a>
                     </li>

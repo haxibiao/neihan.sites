@@ -12,7 +12,7 @@
           <span>推荐作者</span>
         </div>
       </div>
-      <a target="_blank" class="help" href="/article/1375">
+      <a   class="help" href="/article/1375">
           <i class="iconfont icon-bangzhu"></i>
           如何成为签约作者
       </a>

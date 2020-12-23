@@ -1,5 +1,5 @@
 <div class="movie-box">
-    <a class="movie-thumb lazyload-img" href="/movie/{{ $movie->id }}" target="_blank" title="{{ $movie->name }}"
+    <a class="movie-thumb lazyload-img" href="/movie/{{ $movie->id }}"   title="{{ $movie->name }}"
         style="display:block;background-image: url({{$movie->cover}});width:150px; height:200px;background-size:cover;">
         <span class="play-icon hidden-xs">
             <i class="iconfont icon-play-fill1"></i>
@@ -14,7 +14,7 @@
     </a>
     <div class="movie-detail">
         <h5 class="title text-ellipsis">
-            <a href="/movie/{{ $movie->id }}" target="_blank" title="{{ $movie->name }}">
+            <a href="/movie/{{ $movie->id }}"   title="{{ $movie->name }}">
                 @if(mb_strlen($movie->name) <= 10)
                     {{ $movie->name }}
                 @else

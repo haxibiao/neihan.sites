@@ -34,8 +34,8 @@
             <li>
               <a class="link" href="/password/reset">用邮箱重置密码</a>
             </li>
-            <!-- <li><a class="link" target="_blank" href="javascript:;">无法用海外手机号登录</a></li>
-            <li><a class="link" target="_blank" href="javascript:;">无法用 Google 帐号登录</a></li>-->
+            <!-- <li><a class="link"   href="javascript:;">无法用海外手机号登录</a></li>
+            <li><a class="link"   href="javascript:;">无法用 Google 帐号登录</a></li>-->
           </ul>
         </div>
         <input type="submit" name="commit" value="登录" class="btn-base btn-login" />
@@ -65,8 +65,8 @@
         <p class="sign-up-msg">
           点击 “注册” 即表示您同意并愿意遵守我们的
           <br />
-          <a target="_blank" href="https://ainicheng.com/article/12422">用户协议</a> 和
-          <a target="_blank" href="https://ainicheng.com/article/12423">隐私政策</a> 。
+          <a   href="https://ainicheng.com/article/12422">用户协议</a> 和
+          <a   href="https://ainicheng.com/article/12423">隐私政策</a> 。
         </p>
       </form>
       <!-- 更多登录方式 -->

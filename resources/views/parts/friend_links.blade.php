@@ -7,5 +7,5 @@
 @endphp
 
 @foreach($links as $link)
-	<a href="{{ $link['website_domain'] }}" target="_blank">{{ $link['website_name'] }}</a><em> · </em>
+	<a href="{{ $link['website_domain'] }}"  >{{ $link['website_name'] }}</a><em> · </em>
 @endforeach

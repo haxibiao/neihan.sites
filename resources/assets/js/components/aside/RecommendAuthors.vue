@@ -2,13 +2,13 @@
   <div class="recommend-follower">
     <div class="plate-title">
       推荐作者
-      <a target="_blank" href="javascript:;" class="right" @click="fetchData"
+      <a   href="javascript:;" class="right" @click="fetchData"
         ><i class="iconfont icon-shuaxin" ref="fresh"></i>换一批</a
       >
     </div>
     <ul>
       <li v-for="user in users" v-bind:key="user.id" class="user-info">
-        <a target="_blank" :href="'/user/' + user.id" class="avatar"
+        <a   :href="'/user/' + user.id" class="avatar"
           ><img :src="user.avatar" alt=""
         /></a>
 
@@ -30,7 +30,7 @@
           <i class="chacha iconfont icon-cha"></i>
         </a>
 
-        <a target="_blank" :href="'/user/' + user.id" class="title">{{
+        <a   :href="'/user/' + user.id" class="title">{{
           user.name
         }}</a>
         <p class="info">
@@ -38,7 +38,7 @@
         </p>
       </li>
     </ul>
-    <a href="/user" target="_blank" class="btn-base btn-gray">
+    <a href="/user"   class="btn-base btn-gray">
       查看全部<i class="iconfont icon-youbian"></i>
     </a>
   </div>

@@ -1,5 +1,5 @@
 <div class="movie-box">
-    <a class="movie-thumb lazyload-img" href="/movie/{{ $movie->id }}" target="_blank" title="{{ $movie->name }}"
+    <a class="movie-thumb lazyload-img" href="/movie/{{ $movie->id }}"   title="{{ $movie->name }}"
         style="background-image: url({{ $movie->cover }});">
         <span class="play-icon hidden-xs">
             <i class="iconfont icon-play-fill1"></i>
@@ -9,7 +9,7 @@
     </a>
     <div class="movie-detail">
         <h4 class="title text-ellipsis">
-            <a href="/play" target="_blank" title="{{ $movie->name }}">{{ $movie->name }}</a>
+            <a href="/play"   title="{{ $movie->name }}">{{ $movie->name }}</a>
         </h4>
         <p class="text text-ellipsis hidden-xs">主演：{{ $movie->actors }}</p>
     </div>

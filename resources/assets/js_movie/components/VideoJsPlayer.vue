@@ -13,7 +13,7 @@
       <p class="no-vjs">
         To view this video please enable JavaScript,
         <br />and consider upgrading to a web browser that
-        <a href="https://videojs.com/html5-video-support/" target="_blank"
+        <a href="https://videojs.com/html5-video-support/"  
           >supports HTML5 video</a
         >
       </p>

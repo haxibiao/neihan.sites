@@ -19,9 +19,9 @@
         <div class="comment-item" v-for="(comment,index) in comments" :key="comment.id">
           <div>
             <div class="user-info info-xs">
-              <a :href="'/user/'+comment.user.id" target="_blank" class="avatar"><img :src="comment.user.avatar"></a>
+              <a :href="'/user/'+comment.user.id"   class="avatar"><img :src="comment.user.avatar"></a>
               <div class="title">
-                <a :href="'/user/'+comment.user.id" target="_blank" class="nickname">{{ comment.user.name }}</a>
+                <a :href="'/user/'+comment.user.id"   class="nickname">{{ comment.user.name }}</a>
               </div>
               <div class="info">
                 <span>{{ lou(comment.lou) }} · {{ comment.time }}</span>
@@ -38,7 +38,7 @@
               <blockquote class="sub-comment-list" v-if="comment.replying || comment.reply_comments.length">
                 <div class="sub-comment" v-for="reply in comment.reply_comments" v-if="!reply.hide">
                   <p>
-                    <a :href="'/user/'+reply.user.id" target="_blank">{{ reply.user.name }}</a>：
+                    <a :href="'/user/'+reply.user.id"  >{{ reply.user.name }}</a>：
                     <span v-html="reply.body">
                     </span>
                   </p>

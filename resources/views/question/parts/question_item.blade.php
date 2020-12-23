@@ -4,7 +4,7 @@ $is_pay = $question->bonus > 0;
 @endphp
 {{-- 问答结束 pay + payed --}}
 <li class="question-item {{ $have_img }} {{ $is_pay ? ($question->closed ? 'payed pay' : 'pay') : '' }} ">
-    <a class="title" target="_blank" href="/question/{{ $question->id }}">
+    <a class="title"   href="/question/{{ $question->id }}">
         <span>{{ $question->title }}</span>
     </a>
     <div class="question-info descriptor">
@@ -23,11 +23,11 @@ $is_pay = $question->bonus > 0;
                         匿名用户
                         <span class="time">{{ $question->createdAt() }}</span>
                     @else
-                        <a class="avatar" target="_blank" href="/user/{{ $question->latestAnswer->user_id }}">
+                        <a class="avatar"   href="/user/{{ $question->latestAnswer->user_id }}">
                             <img src="{{ $question->latestAnswer->user->avatarUrl }}" alt="">
                         </a>
                         <div class="info">
-                            <a class="nickname" target="_blank"
+                            <a class="nickname"  
                                 href="/user/{{ $question->latestAnswer->user_id }}">{{ $question->latestAnswer->user->name }}</a>
                             <img class="badge-icon" src="/images/verified.png" data-toggle="tooltip"
                                 data-placement="top" title="{{ seo_site_name() }}认证" alt="">
@@ -44,13 +44,13 @@ $is_pay = $question->bonus > 0;
                 @endif
             </p>
             <div class="meta">
-                <a target="_blank" href="/question/{{ $question->id }}">
+                <a   href="/question/{{ $question->id }}">
                     <i class="iconfont icon-liulan"></i> {{ $question->hits }}
                 </a>
-                <a target="_blank" href="/question/{{ $question->id }}">
+                <a   href="/question/{{ $question->id }}">
                     <i class="iconfont icon-svg37"></i> {{ $question->count_comments }}
                 </a>
-                <a target="_blank" href="/question/{{ $question->id }}"><i class="iconfont icon-03xihuan"></i>
+                <a   href="/question/{{ $question->id }}"><i class="iconfont icon-03xihuan"></i>
                     {{ $question->count_likes }}</a>
                 {{-- <span><i class="iconfont icon-qianqianqian"></i> 2</span>
                 --}}
@@ -58,7 +58,7 @@ $is_pay = $question->bonus > 0;
         </div>
 
         @if (!empty($question->relateImage()))
-            <a class="wrap-img" href="/question/{{ $question->id }}" target="_blank">
+            <a class="wrap-img" href="/question/{{ $question->id }}"  >
                 <img src="{{ $question->relateImage() }}" alt="">
             </a>
         @endif

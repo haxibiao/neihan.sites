@@ -40,9 +40,9 @@
                 <div class="comment-item" v-for="comment in comments">
                     <div>
                         <div class="user-info info-xs">
-                            <a href="user" target="_blank" class="avatar"><img :src="comment.user.avatar"></a>
+                            <a href="user"   class="avatar"><img :src="comment.user.avatar"></a>
                             <div class="title">
-                                <a :href="'/user/'+comment.user.id" target="_blank" class="nickname">{{ comment.user.name }}</a>
+                                <a :href="'/user/'+comment.user.id"   class="nickname">{{ comment.user.name }}</a>
                             </div>
                             <div class="info">
                                 <a :name="comment.lou"><span>{{ comment.lou }}楼 · {{ comment.time }}</span></a>
@@ -61,7 +61,7 @@
                         <blockquote class="sub-comment-list">
                             <div class="sub-comment" v-for="reply in comment.reply_comments">
                                 <p>
-                                    <a href="/v1/user" target="_blank">{{ reply.user.name }}</a>：
+                                    <a href="/v1/user"  >{{ reply.user.name }}</a>：
                                     <span>{{ reply.body }}</span>
                                 </p>
                                 <div class="sub-tool-group">
