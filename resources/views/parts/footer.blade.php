@@ -1,5 +1,8 @@
 <footer id="footer">
-    <!-- OR -->
+    {{--  站点地图  --}}
+    @include('parts.sitemap_links')
+
+    {{--  友情链接  --}}
     {!! seo_friendly_urls() !!}
     <div class="icp">
         <p>
