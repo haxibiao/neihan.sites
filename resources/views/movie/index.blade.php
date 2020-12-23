@@ -10,9 +10,7 @@ $videoList = array_fill(0, 4, 'video_list');
 @push('head-styles')
     <link rel="stylesheet" href="{{ mix('css/movie/home.css') }}">
 @endpush
-{{-- @push('head-scripts')
-<script src="{{ asset('js/vue-components.js') }}" defer></script>
-@endpush --}}
+
 
 @section('top')
     <div class="home-top-bg"></div>

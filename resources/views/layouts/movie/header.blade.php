@@ -1,7 +1,7 @@
 <header class="app-header__top clearfix" id="header-top">
     <div class="container-xl">
         <div class="app-header row">
-            <div class="app-header__logo"><a class="logo" href="/movie">{{ seo_site_name() }}</a></div>
+            <div class="app-header__logo"><a class="logo" href="/">{{ seo_site_name() }}</a></div>
             <ul class="app-header__menu type-list">
                 <li class="active hide-xs"><a href="/">首页</a></li>
                 <li class="hide-xs"><a href="/movie/riju" data-type-en="riju">日剧</a></li>
