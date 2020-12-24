@@ -37,10 +37,8 @@ class Kernel extends ConsoleKernel
             // 生成SiteMap
             $schedule->command('sitemap:generate')->dailyAt('3:00');
 
-            //限量抢核算脚本
-            $schedule->command('process:withdrawLimitPlaces')->dailyAt('00:15');
-            $schedule->command('check:rewardvideo')->everyThirtyMinutes();
-            $schedule->command('withdrawl:process')->cron('0 */3 * * *');
+            // 归档seo流量
+            $schedule->command('archive:traffic')->cron('0 */3 * * *');
         }
         // 凌晨将 处理 提现等待过久的
         // $schedule->command('withdraw:process')->daily();
