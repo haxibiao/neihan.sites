@@ -19,7 +19,7 @@ class ArticleController extends Controller
     //首页文章列表的api
     public function index()
     {
-        $articles = indexArticles();
+        $articles = cmsTopArticles();
         //下面是为了兼容VUE
         foreach ($articles as $article) {
             $article->fillForJs();

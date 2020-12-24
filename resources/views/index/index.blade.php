@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ seo_site_name() }}-{{ get_seo_title() }}
+    {{ seo_site_name() }}-{{ cms_seo_title() }}
 @stop
 
-@section('keywords'){{ get_seo_keywords() }}
+@section('keywords'){{ cms_seo_keywords() }}
 @stop
 
-@section('description'){{ get_seo_description() }}
+@section('description'){{ cms_seo_description() }}
 @stop
 
 @section('content')
@@ -35,9 +35,10 @@
                 {{-- 文章列表 --}}
                 <ul class="article-list">
                     {{-- 置顶文章 --}}
-                    @if (request('page') < 2)
+                    {{-- @if (request('page') < 2)
                         @each('parts.article_item', get_stick_articles('发现'), 'article')
-                    @endif
+					@endif --}}
+					
                     {{-- 文章 --}}
                     @each('parts.article_item', $data->articles, 'article')
 

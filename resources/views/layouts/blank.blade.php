@@ -25,8 +25,6 @@
 
     @stack('css')
 
-    @stack('css')
-{!! get_seo_js(seo_site_name()) !!}
 </head>
 <body>
     <div id="app" class="blank">
@@ -74,8 +72,8 @@
     @stack('js')
 
     <div style="display: none">
-    {!! get_seo_push(seo_site_name()) !!}
-    {!! get_seo_tj() !!}
+    {{-- 百度自动推送js 更新模板即可 --}}
+	{!! cms_seo_js() !!}
     </div>
 
     @include('parts.to_up')

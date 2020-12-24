@@ -19,7 +19,7 @@
             <img class="logo" src="{{ seo_small_logo() }}" alt="app logo">
             <div class="info">
               <div class="title">{{ seo_site_name() }} </div>
-              <div class="slogan">{!! get_seo_title() !!}</div>
+              <div class="slogan">{!! cms_seo_title() !!}</div>
             </div>
           </div>
           <img class="background-img" src="/images/app/appBackground.png" alt="app background">
@@ -96,7 +96,7 @@
           <img src="{{ seo_small_logo() }}" alt="Misc logo">
           <div class="info">
             <div class="title">{{ seo_site_name() }}</div>
-              <div class="slogan">{!! get_seo_title() !!}</div>
+              <div class="slogan">{!! cms_seo_title() !!}</div>
           </div>
         </div>
       </div>

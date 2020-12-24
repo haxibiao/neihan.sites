@@ -26,7 +26,7 @@
     @endif
 
     @stack('css')
-{!! get_seo_js(seo_site_name()) !!}
+
 </head>
 <body>
     <div id="app" class="black">
@@ -80,8 +80,8 @@
     <script src="//imgcache.qq.com/open/qcloud/js/vod/sdk/ugcUploader.js"></script>
 
     <div style="display: none">
-    {!! get_seo_push(seo_site_name()) !!}
-    {!! get_seo_tj() !!}
+    {{-- 百度自动推送js 更新模板即可 --}}
+	{!! cms_seo_js() !!}
     </div>
 	
 	<div class="container">

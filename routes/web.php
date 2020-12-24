@@ -28,9 +28,6 @@ Route::get('/app', 'IndexController@app');
 Route::get('/about-us', 'IndexController@aboutUs');
 Route::get('/trending', 'IndexController@trending');
 
-//动态
-Route::post('/post/new', 'ArticleController@storePost');
-
 //电影
 Route::get('/movie/riju', 'MovieController@riju');
 Route::get('/movie/meiju', 'MovieController@meiju');
@@ -43,7 +40,6 @@ Route::get('/movie/search', 'MovieController@search');
 Route::resource('/movie', 'MovieController');
 
 //问答
-
 // Route::resource('/question', 'IssueController');
 // Route::resource('/answer', 'ResolutionController');
 Route::get('/categories-for-question', 'IssueController@categories');
@@ -58,14 +54,6 @@ Route::get('/search/collections', 'SearchController@searchCollections');
 
 Route::any('/alipay/wap/notify', 'Alipay\WapController@wapNotify');
 Route::any('/alipay/wap/return', 'Alipay\WapController@wapReturn');
-
-//文章
-Route::get('/drafts', 'ArticleController@drafts');
-//文章 slug
-// Route::get('/article/{slug}', 'ArticleController@showBySlug')->where('slug','\D+');
-Route::resource('/article', 'ArticleController');
-//因为APP二维码分享用了 /post/{id}
-Route::resource('/post', 'ArticleController');
 
 //管理专题
 Route::get('/category/list', 'CategoryController@list');

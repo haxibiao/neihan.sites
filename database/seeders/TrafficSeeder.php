@@ -1,7 +1,7 @@
 <?php
 namespace Database\Seeders;
 
-use Haxibiao\Cms\Model\Traffic;
+use Haxibiao\Cms\Traffic;
 use Illuminate\Database\Seeder;
 
 class TrafficSeeder extends Seeder
