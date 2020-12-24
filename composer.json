@@ -19,6 +19,7 @@
     "gregoriohc/laravel-nova-theme-responsive": "^0.8.1",
     "guzzlehttp/guzzle": "^6.3",
     "halimtuhu/array-images": "^1.1",
+    "igaster/laravel-theme": "^2.0",
     "inspheric/nova-url-field": "^1.4",
     "intervention/image": "^2.5",
     "jenssegers/agent": "^2.6",

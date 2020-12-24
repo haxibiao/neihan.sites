@@ -10,6 +10,6 @@ class ArticleScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         // 因为 article 存在一些多态的表关系, 所以这里使用 articles.id
-        $builder->where('articles.id','>=', 32010);
+        // $builder->where('articles.id','>=', 32010);
     }
 }

@@ -313,54 +313,6 @@ class AdminController extends Controller
         return view('admin.article_push');
     }
 
-    public function push_article(Request $request)
-    {
-        //TODO: 这个做个job，文章添加event observered 后自动推送
-        $urls   = [];
-        $number = $request->number;
-        $type   = $request->type;
-
-        switch ($type) {
-            case 'pandaNumber':
-                $appid = config('seo.' . get_domain_key() . '.articlePush.pandaNumber.appid');
-                $token = config('seo.' . get_domain_key() . '.articlePush.pandaNumber.token');
-                $api   = 'http://data.zz.baidu.com/urls?appid=' . $appid . '&token=' . $token . '&type=realtime';
-                break;
-            case 'baiduNumber':
-                $token = config('seo.' . get_domain_key() . '.articlePush.baiduNumber.token');
-                $api   = 'http://data.zz.baidu.com/urls?site=' . env('APP_URL') . '&token=' . $token;
-                break;
-            default:
-                dd('提交的类型错误 没有这个类型');
-                break;
-        }
-
-        $articles = Article::orderBy('id', 'desc')
-            ->where('status', '>', 0)
-            ->whereType('article')
-            ->take($number)->get();
-
-        foreach ($articles as $article) {
-            $urls[] = config('app.url') . '/article/' . $article->id;
-        }
-
-        $ch      = curl_init();
-        $options = array(
-            CURLOPT_URL            => $api,
-            CURLOPT_POST           => true,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POSTFIELDS     => implode("\n", $urls),
-            CURLOPT_HTTPHEADER     => array('Content-Type: text/plain'),
-        );
-
-        curl_setopt_array($ch, $options);
-        $result = curl_exec($ch);
-        if (str_contains($result, "success")) {
-            return "成功";
-        }
-        return $result;
-    }
-
     /**
      * @Author      XXM
      * @DateTime    2018-09-23

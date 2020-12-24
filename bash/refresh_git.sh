@@ -15,3 +15,4 @@ cd /data/www/neihan.sites/packages/haxibiao/question && git config core.filemode
 cd /data/www/neihan.sites/packages/haxibiao/tag && git config core.filemode false
 cd /data/www/neihan.sites/packages/haxibiao/sns && git config core.filemode false
 cd /data/www/neihan.sites/packages/haxibiao/wallet && git config core.filemode false
+cd /data/www/neihan.sites/packages/haxibiao/cms && git config core.filemode false
