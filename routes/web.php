@@ -48,6 +48,7 @@ Route::get('/question-bonused', 'IssueController@bonused');
 //搜索
 Route::get('/search', 'SearchController@search');
 Route::get('/search/users', 'SearchController@searchUsers');
+Route::get('/search/article', 'SearchController@searchArticles');
 Route::get('/search/video', 'SearchController@searchVideos');
 Route::get('/search/categories', 'SearchController@searchCategories');
 Route::get('/search/collections', 'SearchController@searchCollections');
