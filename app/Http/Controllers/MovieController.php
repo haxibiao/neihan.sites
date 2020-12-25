@@ -11,11 +11,15 @@ class MovieController extends Controller
 {
 
     public function search()
-    {
+    { 
         $query  = request()->get('q');
         $result = Movie::orderBy('id')->where('name', 'like', '%' . $query . '%')->paginate(10);
         $hot    = Movie::orderBy('id')->paginate(10);
-        return view('movie.search')->withHot($hot)->withResult($result);
+        return view('movie.search',[
+            'hot' => $hot,
+            'result' =>$result,
+            'queryKeyword' => $query,
+        ]);
     }
 
     /**

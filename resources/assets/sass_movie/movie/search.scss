@@ -7,12 +7,12 @@
 .side {
     @media (min-width: $col-lg-width) {
         width: 260px;
-        float: right;
+        // float: right;
     }
 }
 .main {
     @media (min-width: $col-lg-width) {
-        margin-right: 320px;
+        // margin-right: 320px;
     }
 }
 
@@ -112,5 +112,21 @@
                 }
             }
         }
+    }
+}
+
+.result_tips.result_empty {
+    padding: 100px 0;
+    text-align: center;
+    .tips_title {
+        margin-bottom: 20px;
+        font-size: 18px;
+        .hl {
+            color: $theme-color;
+        }
+    }
+    .tips_desc {
+        color: #999;
+        font-size: 14px;
     }
 }
