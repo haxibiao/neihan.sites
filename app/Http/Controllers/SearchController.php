@@ -74,22 +74,6 @@ class SearchController extends Controller
         //     ->orderBy('count_follows', 'desc')
         //     ->paginate($page_size);
 
-        if (!empty($query)) {
-            //保存全局搜索
-            $query_item = Query::firstOrNew([
-                'query' => $query,
-            ]);
-            $query_item->results = $total;
-            $query_item->hits++;
-            $query_item->save();
-
-            //保存个人搜索
-            $query_log = Querylog::firstOrNew([
-                'user_id' => Auth::id(),
-                'query'   => $query,
-            ]);
-            $query_log->save();
-        }
         $data['articles'] = $articles;
         $data['query']    = $query;
         $data['total']    = $total;
@@ -118,6 +102,7 @@ class SearchController extends Controller
         $query         = request('q');
         $data['movie'] = \App\Movie::where('name', 'like', "%$query%")->paginate($page_size);
         $data['query'] = $query;
+        $total = count($data['movie']);
 
 
          //用户，专题
@@ -130,6 +115,23 @@ class SearchController extends Controller
          ->orderBy('count_follows', 'desc')
          ->paginate($page_size);
 
+
+         if (!empty($query)) {
+            //保存全局搜索
+            $query_item = Query::firstOrNew([
+                'query' => $query,
+            ]);
+            $query_item->results = $total;
+            $query_item->hits++;
+            $query_item->save();
+
+            //保存个人搜索
+            $query_log = Querylog::firstOrNew([
+                'user_id' => Auth::id(),
+                'query'   => $query,
+            ]);
+            $query_log->save();
+        }
         return view('search.movie')->withData($data);
     }
 

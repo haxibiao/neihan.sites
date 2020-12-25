@@ -11,7 +11,7 @@ class SearchController extends Controller
     public function hotQueries()
     {
         $queries = Query::where('status', '>=', 0)
-            ->where('created_at', now()->subDays(7)) //1个月内的热搜
+            ->where('created_at', '>=', now()->subDays(30)) //1个月内的热搜
             ->orderBy('hits', 'desc')->paginate(10);
         foreach ($queries as $query) {
             $query->q = str_limit($query->query, 14, '');
