@@ -18,7 +18,7 @@
                     @if (count($result) < 1)
                         <div class="result_tips result_empty" rep-tpl="true" r-notemplate="true">
                             <div class="tips_title">抱歉，没有找到“<em class="hl">{{ $queryKeyword }}</em>”的相关视频</div>
-                            <div class="tips_desc">丢碟图解建议您：缩短搜索词 或 更换搜索词</div>
+                            <div class="tips_desc">{{ seo_site_name() }}建议您：缩短搜索词 或 更换搜索词</div>
                         </div>
                     @endif
                 </div>
