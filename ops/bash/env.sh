@@ -2,7 +2,7 @@
 
 branch="master"
 db="neihan_sites"
-db_host="localhost" #默认线上数据库
+db_host="ngz014" #默认线上数据库
 
 echo "更新 env ... ${branch} ${db} ${db_host}"
 chmod -R 777 ./storage/
@@ -15,3 +15,6 @@ if [ "$branch" = "hotfix" -o "$branch" = "master" ]; then
 else
     php artisan set:env --db_host=${db_host} --db_database=${db}
 fi
+
+# gz013上安装了opcache
+lnmp php-fpm restart
