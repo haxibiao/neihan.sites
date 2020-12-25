@@ -176,18 +176,18 @@ class VideoController extends Controller
      */
     public function show($id)
     {
-        $video                = Video::findOrFail($id);
+        $video = Video::findOrFail($id);
 
-        // 没有动态的视频会出现500，避免误伤爬虫
-        if(!$video->post){
-            abort(404);
+        // 纯视频无动态
+        if (!$video->post) {
+            return view('video.show')->with('video', $video);
         }
 
         $data['related_page'] = request()->get('related_page');
         //记录用户浏览记录
         // $article->recordBrowserHistory();
 
-        return view('video.show')
+        return view('video.post')
             ->withVideo($video)
             ->withData($data);
     }

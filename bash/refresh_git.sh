@@ -16,3 +16,4 @@ cd /data/www/neihan.sites/packages/haxibiao/tag && git config core.filemode fals
 cd /data/www/neihan.sites/packages/haxibiao/sns && git config core.filemode false
 cd /data/www/neihan.sites/packages/haxibiao/wallet && git config core.filemode false
 cd /data/www/neihan.sites/packages/haxibiao/cms && git config core.filemode false
+cd /data/www/neihan.sites/packages/haxibiao/dimension && git config core.filemode false

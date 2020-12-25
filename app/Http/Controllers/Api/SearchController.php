@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Querylog;
 use App\Query;
+use App\Querylog;
 
 class SearchController extends Controller
 {
     public function hotQueries()
     {
-        $queries = Query::where('status', '>=', 0)->orderBy('hits', 'desc')->paginate(10);
+        $queries = Query::where('status', '>=', 0)
+            ->where('created_at', now()->subDays(7)) //1个月内的热搜
+            ->orderBy('hits', 'desc')->paginate(10);
         foreach ($queries as $query) {
             $query->q = str_limit($query->query, 14, '');
         }

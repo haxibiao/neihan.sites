@@ -77,7 +77,6 @@
 
     @stack('scripts')
     @stack('js')
-    <script src="//imgcache.qq.com/open/qcloud/js/vod/sdk/ugcUploader.js"></script>
 
     <div style="display: none">
     {{-- 百度自动推送js 更新模板即可 --}}

@@ -149,9 +149,4 @@ class Video extends BaseVideo
 
         return $gold;
     }
-
-    public function getPostAttribute()
-    {
-        return \App\Post::where('video_id', $this->id)->first();
-    }
 }

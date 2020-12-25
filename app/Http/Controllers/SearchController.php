@@ -9,10 +9,10 @@ use App\Query;
 use App\Querylog;
 use App\Tag;
 use App\User;
-use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection as LCollection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class SearchController extends Controller
@@ -28,7 +28,7 @@ class SearchController extends Controller
             $qb->orWhere('description', 'like', '%' . $query . '%');
         })->exclude(['body', 'json'])
             ->where('status', 1)
-            ->whereIn('type',['articles','diagrams'])
+            ->whereIn('type', ['articles', 'diagrams'])
             ->orderBy('id', 'desc')
             ->paginate(10);
         $total = $articles->total();
@@ -74,7 +74,7 @@ class SearchController extends Controller
             ->orderBy('count_follows', 'desc')
             ->paginate($page_size);
 
-        if (!empty($query) && $total) {
+        if (!empty($query)) {
             //保存全局搜索
             $query_item = Query::firstOrNew([
                 'query' => $query,
