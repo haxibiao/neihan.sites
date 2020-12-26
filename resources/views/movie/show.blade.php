@@ -1,4 +1,4 @@
-@extends('layouts.movie')
+@extends('movie.layouts.movie')
 
 @section('title') 
 {{ $movie->name }} - 
@@ -123,6 +123,5 @@
 @endsection
 
 @push('foot-scripts')
-<script src="{{ asset('js/hls.js') }}" defer></script>
 <script src="{{ mix('js/movie/play.js') }}" defer></script>
 @endpush

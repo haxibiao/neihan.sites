@@ -25,11 +25,11 @@
 
 <body>
     @yield('top')
-    @include('layouts.movie.header')
+    @include('movie.parts.header')
     <div id="app">
         @yield('content')
     </div>
-    @include('layouts.movie.footer')
+    @include('movie.parts.footer')
     @yield('bottom')
 </body>
 

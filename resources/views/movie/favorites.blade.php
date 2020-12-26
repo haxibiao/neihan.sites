@@ -1,4 +1,4 @@
-@extends('layouts.movie')
+@extends('movie.layouts.movie')
 
 @push('head-styles')
     <link rel="stylesheet" href="{{ mix('css/movie/favorites.css') }}">

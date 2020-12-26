@@ -5,7 +5,7 @@ $movieTitle = array_fill(0, 12, '我和我的家乡');
 $videoList = array_fill(0, 4, 'video_list');
 @endphp
 
-@extends('layouts.movie')
+@extends('movie.layouts.movie')
 
 @push('head-styles')
     <link rel="stylesheet" href="{{ mix('css/movie/home.css') }}">
