@@ -4,9 +4,9 @@
       <span>热门专题</span>
       <a class="category-change right" @click="changeCategory">
         <i class="iconfont icon-shuaxin" ref="fresh"></i>换一批
-        </a>
+      </a>
     </div>
-    <a :href="category.name_en" class="category-item"  v-for="category in categories">
+    <a :href="category.url" class="category-item" v-bind:key="category.id" v-for="category in categories">
       <span class="name">{{ category.name }}</span>
     </a>
   </div>
@@ -27,9 +27,9 @@ export default {
       this.fetchData();
     },
     fetchData() {
-      if(this.is_once){
-        this.api = '/api/recommend-categories?index=true';
-      }else{
+      if (this.is_once) {
+        this.api = "/api/recommend-categories?index=true";
+      } else {
         this.page++;
         if (this.lastPage) {
           if (this.page >= this.lastPage) {
@@ -41,20 +41,19 @@ export default {
       var _this = this;
       window.axios.get(this.api).then(
         function(response) {
-          if(_this.is_once){
+          if (_this.is_once) {
             _this.is_once = false;
             _this.categories = response.data;
-          }else{
+          } else {
             _this.categories = response.data.data;
             _this.lastPage = response.data.last_page;
           }
-          
         },
         function(error) {
           _this.categories = _this.defaultCategories;
         }
       );
-    }
+    },
   },
 
   data() {
@@ -62,8 +61,8 @@ export default {
       counter: 1,
       page: 0,
       lastPage: null,
-      api:'',
-      is_once:true,
+      api: "",
+      is_once: true,
       categories: [],
       defaultCategories: [
         { name: "美食食谱", name_en: "/meishicaipu" },
@@ -72,10 +71,10 @@ export default {
         { name: "各地美食", name_en: "/gedimeishi" },
         { name: "食疗养生", name_en: "/shiliaoyangsheng" },
         { name: "家常菜谱", name_en: "/jiachangcaicaipu" },
-        { name: "懒人食谱", name_en: "/lanrenshipu" }
-      ]
+        { name: "懒人食谱", name_en: "/lanrenshipu" },
+      ],
     };
-  }
+  },
 };
 </script>
 

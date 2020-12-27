@@ -20,14 +20,14 @@ require_once 'api/issue.php';
 require_once 'api/article.php';
 require_once 'api/comment.php';
 require_once 'api/collection.php';
-//专题投稿
-require_once 'api/category.php';
+
 //保存文章相关片段数据
 require_once 'api/relation.php';
 require_once 'api/app.php';
 //搜索
 require_once 'api/search.php';
-// require_once 'api/video.php';
+
+//FIXME: 部分重构到content包里的api 可以清理了
 
 Route::post('/image/upload', 'Api\ImageController@upload');
 
