@@ -46,6 +46,23 @@ CREATE TABLE `actions` (
   KEY `actions_actionable_type_index` (`actionable_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `activities`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `activities` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `movie_id` smallint NOT NULL COMMENT 'movies表主键',
+  `sort` tinyint DEFAULT '1' COMMENT '排序，值越大越靠前',
+  `type` tinyint NOT NULL COMMENT '1:首页，2：电视剧，3：电影专题',
+  `status` tinyint NOT NULL DEFAULT '1' COMMENT 'true:展示中，false:已下架',
+  `title` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '图片标题',
+  `subtitle` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '副标题',
+  `image_url` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '图片链接地址',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ad_configs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -901,7 +918,7 @@ CREATE TABLE `images` (
   `extension` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `store_id` int NOT NULL COMMENT '店铺id',
   `product_id` int NOT NULL COMMENT '商品id',
-  `issue_id` int unsigned DEFAULT NULL COMMENT '问答id',
+  `issue_id` int DEFAULT NULL COMMENT '问答的id',
   PRIMARY KEY (`id`),
   KEY `images_status_index` (`status`),
   KEY `images_title_index` (`title`),
@@ -1221,6 +1238,24 @@ CREATE TABLE `lives` (
   KEY `lives_video_id_index` (`video_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `locations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `locations` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `post_id` tinyint NOT NULL COMMENT '关联的post',
+  `address` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '详细地址',
+  `description` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '大概地址描述',
+  `longitude` double(9,6) NOT NULL COMMENT '精度',
+  `latitude` double(8,6) NOT NULL COMMENT '精度',
+  `geo_code` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'geohash code',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `lon_lat` (`longitude`,`latitude`),
+  KEY `locations_geo_code_index` (`geo_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `messages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -1244,14 +1279,64 @@ CREATE TABLE `migrations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `movie_histories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `movie_histories` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL,
+  `movie_id` int unsigned NOT NULL,
+  `progress` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '观看进度',
+  `last_watch_time` timestamp NOT NULL COMMENT '最后观看时间',
+  `series_id` int unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `movie_histories_user_id_index` (`user_id`),
+  KEY `movie_histories_movie_id_index` (`movie_id`),
+  KEY `movie_histories_series_id_index` (`series_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `movies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `movies` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `introduction` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '简介',
+  `cover` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '封面',
+  `producer` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '导演',
+  `year` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '年份',
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '分类:动作、科幻...',
+  `style` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '风格:武侠、玄幻...',
+  `region` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '地区：美剧、韩剧...',
+  `actors` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '演员',
+  `miner` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '爬取者',
+  `count_series` int unsigned DEFAULT NULL COMMENT '总集数',
+  `data` json DEFAULT NULL COMMENT '剧集详情',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `rank` tinyint NOT NULL DEFAULT '0' COMMENT '权重',
+  `country` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '国家',
+  `subname` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '别名',
+  `tags` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '标签',
+  `lang` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '语言',
+  `hits` int unsigned DEFAULT NULL COMMENT '点击次数',
+  `type_name` int unsigned DEFAULT NULL COMMENT '类型名',
+  `score` double DEFAULT NULL COMMENT '评分',
+  `source` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '资源来源',
+  `source_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '资源UID',
+  PRIMARY KEY (`id`),
+  KEY `movies_name_index` (`name`),
+  KEY `movies_introduction_index` (`introduction`),
+  KEY `movies_year_index` (`year`),
+  KEY `movies_type_index` (`type`),
+  KEY `movies_style_index` (`style`),
+  KEY `movies_region_index` (`region`),
+  KEY `movies_actors_index` (`actors`),
+  KEY `movies_miner_index` (`miner`),
+  KEY `movies_source_index` (`source`),
+  KEY `movies_source_key_index` (`source_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `musics`;
@@ -1815,6 +1900,43 @@ CREATE TABLE `shares` (
   KEY `shares_uuid_index` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `siteables`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `siteables` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `site_id` int NOT NULL,
+  `siteable_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `siteable_id` bigint unsigned NOT NULL,
+  `baidu_pushed_at` timestamp NULL DEFAULT NULL COMMENT '最后百度收录提交成功的时间',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `siteables_siteable_type_siteable_id_index` (`siteable_type`,`siteable_id`),
+  KEY `siteables_baidu_pushed_at_index` (`baidu_pushed_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `sites`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sites` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '站名',
+  `domain` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '域名',
+  `theme` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '主题',
+  `title` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keywords` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ziyuan_token` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '百度资源站长提交收录的token',
+  `footer_js` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '底部js 支持如ga，mta，matomo统计等站长权限',
+  `verify_meta` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '站长验证用meta',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sites_name_index` (`name`),
+  KEY `sites_domain_index` (`domain`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `snapshots`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -1892,6 +2014,22 @@ CREATE TABLE `spiders` (
   KEY `spiders_user_id_index` (`user_id`),
   KEY `spiders_source_url_index` (`source_url`),
   KEY `spiders_spider_id_index` (`spider_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `sticks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sticks` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '片名，置顶电影 | 最新韩剧 | 经典韩剧',
+  `page` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '页面',
+  `area` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '位置｜上下左右',
+  `item_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '类型：article图文｜video短视频｜movie电影',
+  `item_id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '内容id',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `route` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '路由url',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `stores`;
@@ -1994,67 +2132,20 @@ DROP TABLE IF EXISTS `traffic`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `traffic` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `is_desktop` tinyint(1) NOT NULL DEFAULT '0',
-  `is_mobile` tinyint(1) NOT NULL DEFAULT '0',
-  `is_phone` tinyint(1) NOT NULL DEFAULT '0',
-  `is_tablet` tinyint(1) NOT NULL DEFAULT '0',
-  `is_wechat` tinyint(1) NOT NULL DEFAULT '0',
-  `is_android_os` tinyint(1) NOT NULL DEFAULT '0',
-  `is_robot` tinyint(1) NOT NULL DEFAULT '0',
-  `device` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `platform` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `browser` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `robot` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ip` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `country` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `province` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `city` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `url` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'URL',
+  `domain` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '站点域名',
+  `bot` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '爬虫名称',
+  `referer` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '搜索来源URL',
+  `engine` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '搜索引擎',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `path` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `referer` varchar(2083) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `referer_domain` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `date` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `year` int DEFAULT NULL,
-  `month` int DEFAULT NULL,
-  `day` int DEFAULT NULL,
-  `dayOfWeek` int DEFAULT NULL,
-  `dayOfYear` int DEFAULT NULL,
-  `daysInMonth` int DEFAULT NULL,
-  `weekOfMonth` int DEFAULT NULL,
-  `weekOfYear` int DEFAULT NULL,
-  `article_id` int DEFAULT NULL,
-  `category` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_id` int DEFAULT NULL,
-  `is_app` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `traffic_is_desktop_index` (`is_desktop`),
-  KEY `traffic_is_mobile_index` (`is_mobile`),
-  KEY `traffic_is_phone_index` (`is_phone`),
-  KEY `traffic_is_tablet_index` (`is_tablet`),
-  KEY `traffic_is_wechat_index` (`is_wechat`),
-  KEY `traffic_is_android_os_index` (`is_android_os`),
-  KEY `traffic_is_robot_index` (`is_robot`),
-  KEY `traffic_device_index` (`device`),
-  KEY `traffic_platform_index` (`platform`),
-  KEY `traffic_browser_index` (`browser`),
-  KEY `traffic_robot_index` (`robot`),
-  KEY `traffic_ip_index` (`ip`),
-  KEY `traffic_country_index` (`country`),
-  KEY `traffic_province_index` (`province`),
-  KEY `traffic_city_index` (`city`),
-  KEY `traffic_date_index` (`date`),
-  KEY `traffic_year_index` (`year`),
-  KEY `traffic_month_index` (`month`),
-  KEY `traffic_day_index` (`day`),
-  KEY `traffic_dayofweek_index` (`dayOfWeek`),
-  KEY `traffic_dayofyear_index` (`dayOfYear`),
-  KEY `traffic_daysinmonth_index` (`daysInMonth`),
-  KEY `traffic_weekofmonth_index` (`weekOfMonth`),
-  KEY `traffic_weekofyear_index` (`weekOfYear`),
-  KEY `traffic_user_id_index` (`user_id`),
-  KEY `traffic_is_app_index` (`is_app`)
+  KEY `traffic_url_index` (`url`),
+  KEY `traffic_domain_index` (`domain`),
+  KEY `traffic_bot_index` (`bot`),
+  KEY `traffic_referer_index` (`referer`),
+  KEY `traffic_engine_index` (`engine`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `transactions`;
@@ -2074,7 +2165,7 @@ CREATE TABLE `transactions` (
   `to_user_id` int DEFAULT NULL,
   `relate_id` int DEFAULT NULL,
   `wallet_id` int unsigned DEFAULT NULL,
-  `log` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `log` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `transactions_user_id_index` (`user_id`),
   KEY `transactions_type_index` (`type`),
@@ -2329,6 +2420,7 @@ CREATE TABLE `withdraws` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `rate` int unsigned DEFAULT NULL COMMENT '倍率',
+  `host` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '提现ip',
   PRIMARY KEY (`id`),
   KEY `withdraws_wallet_id_index` (`wallet_id`),
   KEY `withdraws_rate_index` (`rate`)
@@ -2682,7 +2774,6 @@ INSERT INTO `migrations` VALUES (324,'2020_06_30_064008_create_dimensions_table'
 INSERT INTO `migrations` VALUES (325,'2020_07_02_115321_add_withdraw_at_and_withdraw_lines_to_users',112);
 INSERT INTO `migrations` VALUES (326,'2020_07_15_160402_edit_articles_json_column',112);
 INSERT INTO `migrations` VALUES (327,'2020_07_16_053604_edit_posts_add_softdelete',112);
-INSERT INTO `migrations` VALUES (328,'2020_07_19_084727_edit_likes_renam_liked',113);
 INSERT INTO `migrations` VALUES (329,'2020_07_25_003835_add_description_to_tasks_table',113);
 INSERT INTO `migrations` VALUES (330,'2020_07_31_111953_edit_users_add_soft_deletes',113);
 INSERT INTO `migrations` VALUES (331,'2020_08_06_154414_update_videos_table',113);
@@ -2709,7 +2800,26 @@ INSERT INTO `migrations` VALUES (351,'2020_10_23_102902_add_count_views_to_colle
 INSERT INTO `migrations` VALUES (352,'2020_10_14_172626_add_vid_to_videos_table',125);
 INSERT INTO `migrations` VALUES (353,'2020_11_12_105048_create_movies_table',126);
 INSERT INTO `migrations` VALUES (354,'2020_11_12_105419_create_series_table',126);
-INSERT INTO `migrations` VALUES (355,'2020_11_20_163119_add_issue_id_on_images_table',127);
-INSERT INTO `migrations` VALUES (356,'2020_11_20_112348_add_issue_id_to_images',128);
-INSERT INTO `migrations` VALUES (357,'2020_11_23_181755_add_is_pay_on_issues_tables',128);
+INSERT INTO `migrations` VALUES (355,'2020_11_20_112348_add_issue_id_to_images',127);
+INSERT INTO `migrations` VALUES (356,'2020_11_20_163119_add_issue_id_on_images_table',127);
+INSERT INTO `migrations` VALUES (357,'2020_07_19_084727_edit_likes_renam_liked',128);
+INSERT INTO `migrations` VALUES (358,'2020_11_23_181755_add_is_pay_on_issues_tables',129);
 INSERT INTO `migrations` VALUES (359,'2020_11_23_182023_add_log_on_transactions_table',129);
+INSERT INTO `migrations` VALUES (360,'2020_11_24_091700_create_location_table',130);
+INSERT INTO `migrations` VALUES (361,'2020_11_24_134452_create_sticks_table',130);
+INSERT INTO `migrations` VALUES (362,'2020_11_30_102439_create_movies_table',131);
+INSERT INTO `migrations` VALUES (363,'2020_12_01_100754_add_host_to_withdraws',131);
+INSERT INTO `migrations` VALUES (364,'2020_12_07_185757_add_columns_on_movies_table',132);
+INSERT INTO `migrations` VALUES (365,'2020_12_08_123024_create_movie_histories_table',133);
+INSERT INTO `migrations` VALUES (366,'2020_12_11_110422_add_source_key_to_movies',134);
+INSERT INTO `migrations` VALUES (367,'2020_12_03_102739_add_series_id_on_movie_histories_table',135);
+INSERT INTO `migrations` VALUES (368,'2020_12_16_110837_create_activities_table',135);
+INSERT INTO `migrations` VALUES (369,'2020_12_16_155241_create_movie_histories_table',135);
+INSERT INTO `migrations` VALUES (370,'2020_12_22_183604_create_traffic_table',136);
+INSERT INTO `migrations` VALUES (371,'2020_12_22_183605_create_traffic_table',137);
+INSERT INTO `migrations` VALUES (372,'2020_12_22_183606_create_sites_table',138);
+INSERT INTO `migrations` VALUES (373,'2020_12_24_101731_create_siteable_table',139);
+INSERT INTO `migrations` VALUES (374,'2020_12_22_183607_create_sites_table',140);
+INSERT INTO `migrations` VALUES (375,'2020_12_07_185758_add_columns_on_movies_table',141);
+INSERT INTO `migrations` VALUES (376,'2020_12_26_141526_add_miner_to_movies',141);
+INSERT INTO `migrations` VALUES (377,'2020_12_28_140223_add_owner_to_sites',141);

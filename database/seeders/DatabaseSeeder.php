@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-        // $this->call(CleanupSeeder::class);
+        $this->call(SiteSeeder::class);
 
         // $this->call(SeoSeeder::class);
         // $this->call(AsoSeeder::class);
