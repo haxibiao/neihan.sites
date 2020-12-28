@@ -7,7 +7,7 @@ go_production:
   only:
     - master
 
-fix_data:
+go_hotfix:
   stage: deploy
   script:
     - ssh root@gz013 "cd /data/www/neihan.sites && git checkout hotfix && git pull"
