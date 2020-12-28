@@ -18,3 +18,6 @@ fi
 
 # gz013上安装了opcache
 lnmp php-fpm restart
+
+echo "自动更新数据结构..."
+php artisan migrate
