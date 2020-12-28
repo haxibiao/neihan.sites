@@ -1,14 +1,10 @@
 @extends('layouts.app')
 
-@section('title')
-    {{ seo_site_name() }}-{{ cms_seo_title() }}
-@stop
+@section('title') {{ seo_site_name() }} - {{ cms_seo_title() }} @stop
 
-@section('keywords'){{ cms_seo_keywords() }}
-@stop
+@section('keywords') {{ cms_seo_keywords() }} @stop
 
-@section('description'){{ cms_seo_description() }}
-@stop
+@section('description') {{ cms_seo_description() }} @stop
 
 @section('content')
 
