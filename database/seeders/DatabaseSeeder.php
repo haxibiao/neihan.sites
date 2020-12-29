@@ -12,10 +12,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(MovieSeeder::class);
+
         // $this->call(SeoSeeder::class);
         // $this->call(AsoSeeder::class);
 
-        // $this->call(AdConfigSeeder::class);
         // $this->call(TaskSeeder::class);
         // $this->call(VersionSeeder::class);
 
