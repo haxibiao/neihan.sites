@@ -4,6 +4,10 @@ go_production:
     - ssh root@gz013 "cd /data/www/neihan.sites && git checkout master && git pull"
     - ssh root@gz013 "cd /data/www/neihan.sites && bash ops/bash/pull.sh"
     - ssh root@gz013 "cd /data/www/neihan.sites && bash ops/bash/env.sh"
+
+    - ssh root@jp002 "cd /data/www/neihan.sites && git checkout master && git pull"
+    - ssh root@jp002 "cd /data/www/neihan.sites && bash ops/bash/pull.sh"
+    - ssh root@jp002 "cd /data/www/neihan.sites && bash ops/bash/env.sh"
   only:
     - master
 
@@ -13,6 +17,11 @@ go_hotfix:
     - ssh root@gz013 "cd /data/www/neihan.sites && git checkout hotfix && git pull"
     - ssh root@gz013 "cd /data/www/neihan.sites && bash ops/bash/pull.sh"
     - ssh root@gz013 "cd /data/www/neihan.sites && bash ops/bash/env.sh"
-    - ssh root@gz013 "cd /data/www/neihan.sites && bash ops/bash/data.sh"
+    - ssh root@gz013 "cd /data/www/neihan.sites && bash ops/bash/data_beian.sh"
+
+    - ssh root@jp002 "cd /data/www/neihan.sites && git checkout hotfix && git pull"
+    - ssh root@jp002 "cd /data/www/neihan.sites && bash ops/bash/pull.sh"
+    - ssh root@jp002 "cd /data/www/neihan.sites && bash ops/bash/env.sh"
+    - ssh root@jp002 "cd /data/www/neihan.sites && bash ops/bash/data.sh"
   only:
     - hotfix

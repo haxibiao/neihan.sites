@@ -39,6 +39,9 @@ class Kernel extends ConsoleKernel
 
             // 归档seo流量
             $schedule->command('archive:traffic')->cron('0 */3 * * *');
+
+            // 更新站群首页资源
+            $schedule->command('cms:update')->cron('0 */3 * * *');
         }
         // 凌晨将 处理 提现等待过久的
         // $schedule->command('withdraw:process')->daily();

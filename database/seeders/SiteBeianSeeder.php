@@ -4,7 +4,10 @@ namespace Database\Seeders;
 use App\Site;
 use Illuminate\Database\Seeder;
 
-class SiteSeeder extends Seeder
+/**
+ * 一批带备案的域名站群
+ */
+class SiteBeianSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,7 +16,7 @@ class SiteSeeder extends Seeder
      */
     public function run()
     {
-        foreach (neihan_sites_domains() as $domain => $name) {
+        foreach (neihan_beian_domains() as $domain => $name) {
             $item = Site::firstOrCreate([
                 'domain' => $domain,
                 'name'   => $name,
@@ -23,6 +26,7 @@ class SiteSeeder extends Seeder
             // $item->description  = $name . ' ' . $domain . ' 是一个可以免费看全网影视大全的内涵电影网站';
             // $item->ziyuan_token = 'AWrriJorO5KMKgyj'; //曾聪的diudie
             // $item->owner = '曾聪';
+            $item->icp    = '本站有备案，需要填写ICP备案号';
             $item->active = true;
             $item->save();
         }
