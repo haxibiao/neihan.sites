@@ -71,14 +71,4 @@ class HomeController extends Controller
         return redirect()->to('/home');
     }
 
-    public function robot(){
-        $domain = get_domain();
-        $robotContent = <<<EOD
-User-agent: *
-Disallow: /*q=*
-Sitemap: https://www.$domain/sitemap.xml
-EOD;
-        return response($robotContent)
-            ->header('Content-Type', 'text/plain');
-    }
 }
