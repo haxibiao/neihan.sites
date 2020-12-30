@@ -91,7 +91,7 @@ class IndexController extends Controller
             $sogou = data_get($matches,'1.0');
             if($sogou){
                 return response($sogou)
-                    ->header('Content-Type', 'text/plain');
+                    ->header('Content-Type', 'text/html');
             }
             abort(404);
         }
