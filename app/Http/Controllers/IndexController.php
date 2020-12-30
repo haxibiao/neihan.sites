@@ -87,7 +87,7 @@ class IndexController extends Controller
         $url = request()->url();
 
         if(str_contains($url,'sogou')){
-            preg_match_all('/<meta.*name="sogou_site_verification".*content="(.*)".*\/>/', $meta, $matches);
+            preg_match_all('/<meta.*name="sogou_site_verification".*content="(.*)".*>/', $meta, $matches);
             $sogou = data_get($matches,'1.0');
             if($sogou){
                 return response($sogou)
