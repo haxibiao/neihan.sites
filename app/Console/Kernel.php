@@ -32,7 +32,8 @@ class Kernel extends ConsoleKernel
         //每天凌晨3点标记一次热门分类
         $schedule->command('mark:hotpost')->dailyAt('3:00');
         $schedule->command('recount:novadata')->dailyAt('3:00');
-
+        //保存每个站当天的百度索引量
+        $schedule->command('baidu:include')->dailyAt('4:00');
         if (is_prod_env()) {
             // 生成SiteMap
             $schedule->command('sitemap:generate')->dailyAt('3:00');
