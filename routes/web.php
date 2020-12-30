@@ -18,6 +18,11 @@ Auth::routes();
 Route::pattern('id', '\d+');
 Auth::routes(['verify' => true]);
 
+//sitemap
+Route::get('/sitemap.xml', 'SitemapController@index');
+Route::get('/sitemap', 'SitemapController@index');
+Route::get('/sitemap/{site}/{type}', 'SitemapController@all');
+
 Route::get('/', 'IndexController@index');
 
 //隐私政策
