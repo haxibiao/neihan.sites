@@ -9,7 +9,7 @@ php artisan image:logo neihanxiaoshipin.com
 php artisan image:logo neihanduanshipin.com
 php artisan image:logo jingdianmeiju.com
 php artisan image:logo jingdianriju.com
-php artisan image:logo jindianhanju.com
+php artisan image:logo jingdianhanju.com
 php artisan image:logo jingdiangangju.com
 php artisan image:logo jingdianyueyu.com
 php artisan image:logo huaijiumeiju.com
