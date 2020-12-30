@@ -2,7 +2,7 @@
  	  <div class="vd-head">
         <h3 class="vd-title">
           <span class="title-icon">
-            <i class="iconfont icon-huo"></i>推荐电影
+            <i class="iconfont icon-huo"></i>最新电影
           </span>
         </h3>
         <a href="/movie" class="more-video" title="全部电影">

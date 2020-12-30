@@ -21,8 +21,10 @@
             <tr>
               <td>{{ $item["url"] }}</td>
               <td>{{ $item['收录']??0 > 0 ? '是':'' }}</td>
-              @if($item['收录']??0)
-                <td style="color:blue">{{ $item['收录']??0 }}</td>
+              @if($item['收录'] ?? 0)
+                <td>
+                  <a target="_blank" href="https://www.baidu.com/s?wd=site:{{ $item["url"] }}" style="color:blue">{{ $item['收录']??0 }}</a>
+                </td>
               @else
                 <td>{{ $item['收录']??0 }}</td>
               @endif
@@ -49,8 +51,10 @@
             <tr>
               <td>{{ $item["url"] }}</td>
               <td>{{ $item['收录']??0 > 0 ? '是':'' }}</td>
-              @if($item['收录']??0)
-                <td style="color:blue">{{ $item['收录']??0 }}</td>
+              @if($item['收录'] ?? 0)
+                <td>
+                  <a target="_blank" href="https://www.baidu.com/s?wd=site:{{ $item["url"] }}" style="color:blue">{{ $item['收录']??0 }}</a>
+                </td>
               @else
                 <td>{{ $item['收录']??0 }}</td>
               @endif

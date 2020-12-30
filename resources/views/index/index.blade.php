@@ -19,7 +19,7 @@
                         @include('index.parts.poster')
                     @endif
                 </div> --}}
-                {{-- 推荐电影 --}}
+                {{-- 最新电影 --}}
                 @include('index.parts.top_movies', ['movies'=>$data->movies])
                 {{-- 推荐专题 --}}
                 @include('index.parts.recommend_categories',['categories'=>$data->categories])
