@@ -26,5 +26,12 @@ class SiteSeeder extends Seeder
             $item->active = true;
             $item->save();
         }
+
+        // neihandianying.com 不在站群
+        $item = Site::firstOrCreate([
+            'domain' => 'neihandianying.com',
+        ]);
+        $item->active = false;
+        $item->save();
     }
 }
