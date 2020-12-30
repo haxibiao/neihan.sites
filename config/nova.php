@@ -144,6 +144,6 @@ return [
     |
      */
 
-    'currency'   => 'USD',
+    'currency'   => 'CNY',
 
 ];
