@@ -9,3 +9,6 @@ php artisan set:env --db_host=ngz014 --db_database=neihan_sites
 
 echo "自动更新数据结构..."
 php artisan migrate
+
+echo "平滑重启php-fpm..."
+lnmp php-fpm restart
