@@ -71,16 +71,16 @@
     @stack('scripts')
     @stack('js')
 
-    <div style="display: none">
-    {{-- 百度自动推送js 更新模板即可 --}}
-	{!! cms_seo_js() !!}
-    </div>
-
     @include('parts.to_up')
 	
 	<div class="container">
 		@include('parts.footer')
 	</div>
+
+    <div style="display: none">
+    {{-- 百度自动推送js 更新模板即可 --}}
+	{!! cms_seo_js() !!}
+    </div>
 </body>
 </html>
 
