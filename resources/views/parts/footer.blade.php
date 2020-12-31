@@ -4,7 +4,13 @@
 
     {{--  友情链接  --}}
     {!! seo_friendly_urls() !!}
+    
     <div class="icp">
+        @if($icp = cms_icp_info())
+        <p>
+            <a href="http://beian.miit.gov.cn/">备案信息：{{ $icp }}</a>
+        </p>
+        @endif
         <p>
            本站所有图片和视频均来自互联网收集而来，版权归原创作者所有，本站只提供web页面服务，并不提供资源存储，也不参与录制，上传
 		</p>
