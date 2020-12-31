@@ -102,6 +102,6 @@
          @include('parts.footer')
     </div>
 
+{!! cms_seo_js() !!}
 </body>
-
 </html>
