@@ -12,19 +12,19 @@ let { env } = require("minimist")(process.argv.slice(2));
  */
 
 //电影 css
-mix.sass("resources/assets/sass_movie/movie.scss", "public/css/movie").version();
-mix.sass("resources/assets/sass_movie/movie/home.scss", "public/css/movie").version();
-mix.sass("resources/assets/sass_movie/movie/play.scss", "public/css/movie").version();
-mix.sass("resources/assets/sass_movie/movie/search.scss", "public/css/movie").version();
-mix.sass("resources/assets/sass_movie/movie/category.scss", "public/css/movie").version();
-mix.sass("resources/assets/sass_movie/movie/favorites.scss", "public/css/movie").version();
+mix.sass("resources/movie/sass/movie.scss", "public/css/movie").version();
+mix.sass("resources/movie/sass/movie/home.scss", "public/css/movie").version();
+mix.sass("resources/movie/sass/movie/play.scss", "public/css/movie").version();
+mix.sass("resources/movie/sass/movie/search.scss", "public/css/movie").version();
+mix.sass("resources/movie/sass/movie/category.scss", "public/css/movie").version();
+mix.sass("resources/movie/sass/movie/favorites.scss", "public/css/movie").version();
 
 //电影 js
-mix.js("resources/assets/js_movie/movie.js", "public/js/movie").version();
-mix.js("resources/assets/js_movie/play.js", "public/js/movie/_play.js").version();
+mix.js("resources/movie/js/movie.js", "public/js/movie").version();
+mix.js("resources/movie/js/play.js", "public/js/movie/_play.js").version();
 //合并hls支持m3u8
 mix.scripts(["public/js/movie/_play.js", "node_modules/hls.js/dist/hls.js"], "public/js/movie/play.js");
-mix.js("resources/assets/js_movie/home.js", "public/js/movie").version();
+mix.js("resources/movie/js/home.js", "public/js/movie").version();
 
 // ====== css
 mix
@@ -62,8 +62,8 @@ mix
     [
       "public/js/_app.js",
       "public/js/poster.js",
-      "resources/assets/js/plugins/bootstrap-tagsinput.js",
       "public/js/jquery-form.js",
+      "resources/assets/js/plugins/bootstrap-tagsinput.js",
       "resources/assets/js/plugins/at.js",
       "resources/assets/js/plugins/jquery.caret.js",
     ],
