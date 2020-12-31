@@ -34,6 +34,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('recount:novadata')->dailyAt('3:00');
         //保存每个站当天的百度索引量
         $schedule->command('baidu:include')->dailyAt('4:00');
+        //三天前的seo流量的元数据归档并删除
+        $schedule->command('dimension:track')->dailyAt('4:00');
         if (is_prod_env()) {
             // 生成SiteMap
             $schedule->command('sitemap:generate')->dailyAt('3:00');
