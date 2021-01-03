@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Haxibiao\Media\Series as BaseSeries;
 
-class Series extends Model
+class Series extends BaseSeries
 {
-    public $connection = 'nhdy';
+
 }
