@@ -26,7 +26,7 @@ class DimensionTrack extends Command{
                     $this->track(
                         $traffic->bot.'爬取数',
                         1,
-                        $this->getDomainName($traffic->domain),
+                        $this->getDomainName($traffic->domain)??$traffic->domain,
                         $traffic->created_at->toDateString()
                     );
                 }
@@ -34,7 +34,7 @@ class DimensionTrack extends Command{
                     $this->track(
                         $traffic->engine.'搜索量',
                         1,
-                        $this->getDomainName($traffic->domain),
+                        $this->getDomainName($traffic->domain)??$traffic->domain,
                         $traffic->created_at->toDateString()
                     );
                 }
