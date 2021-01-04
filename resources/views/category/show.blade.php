@@ -82,7 +82,7 @@
 
 @push('modals')
   {{-- 分享到微信 --}}
-  <modal-share-wx url="{{ url()->full() }}" aid="{{ $category->id }}"></modal-share-wx>
+{{--  <modal-share-wx url="{{ url()->full() }}" aid="{{ $category->id }}"></modal-share-wx>--}}
 @endpush
 
 @push('scripts')

@@ -174,5 +174,5 @@ $post = $video->post;
 @endpush
 @push('modals')
     {{-- 分享到微信 --}}
-    <modal-share-wx url="{{ url()->full() }}" aid="{{ $post->video_id }}"></modal-share-wx>
+{{--    <modal-share-wx url="{{ url()->full() }}" aid="{{ $post->video_id }}"></modal-share-wx>--}}
 @endpush
