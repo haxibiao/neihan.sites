@@ -82,22 +82,22 @@
             <div class="container clearfix">
                 <div class="row">
                     <div class="col-sm-8">
-                        {{-- 评论中心 --}}                        
+                        {{-- 评论中心 --}}
                     </div>
                     <div class="guess-like  hidden-xs">
                         {{-- 其他推荐的视频 --}}
-                        
+
                     </div>
                 </div>
             </div>
         </div>
 
     </div>
-    <div class="share-module">
-        <div class="module-share-h3">分享到....</div>
-        <div>@include('video.parts.share', ['subject' => $video->title, 'url'=>url('/video/'.$video->id)])</div>
-        <close-share></close-share>
-    </div>
+{{--    <div class="share-module">--}}
+{{--        <div class="module-share-h3">分享到....</div>--}}
+{{--        <div>@include('video.parts.share', ['subject' => $video->title, 'url'=>url('/video/'.$video->id)])</div>--}}
+{{--        <close-share></close-share>--}}
+{{--    </div>--}}
     <div id="pageLayout">
 
     </div>
