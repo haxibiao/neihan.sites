@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\SetTheme;
+
 return [
     'hook'                           => env('MEDIA_HOOK'), //'http://datizhuanqian.com/api/media/hook'
     'spider'                         => [
@@ -12,6 +14,10 @@ return [
      */
     'movie'                          => [
         'enable' => env('ENABLE_MOVIE', true),
+        'middleware' => [
+            'web',
+            SetTheme::class
+        ],
     ],
 
     /**

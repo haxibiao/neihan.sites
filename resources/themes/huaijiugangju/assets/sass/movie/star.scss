@@ -1,0 +1,79 @@
+@import "../variables";
+
+.star-main {
+    padding-top: 22px;
+    position: relative;
+}
+a:hover {
+    color: #EB5488;
+}
+
+.star-top {
+    width: 100%;
+    margin: 0 0 20px;
+    .star-img {
+        padding-right: 8%;
+        .star-thumb {
+            display: block;
+            position: relative;
+            padding-top: 120%;
+            background-position: 50% 50% !important;
+            background-size: cover !important;
+            overflow: hidden;
+            border-radius: 6px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+    }
+    .star-detail {
+        padding-left: 0;
+        h1 {
+            font-size: 20px;
+            line-height: 28px;
+            font-weight: bold;
+        }
+        ul {
+            padding: 20px 0;
+            li {
+                font-size: 15px;
+                line-height: 28px;
+                span.meta {
+                    color: #999;
+                }
+            }
+        }
+    }
+}
+.star-bottom {
+    width: 100%;
+    margin: 0;
+    padding: 0 20px;
+    h2,
+    h3 {
+        font-size: 16px;
+        line-height: 26px;
+        font-weight: bold;
+    }
+    h3 {
+        margin-top: 20px;
+    }
+    .movie-row {
+        margin: 0 -15px 0 0;
+        .movie-box {
+            padding-right: 15px;
+            .movie-thumb {
+                .pic-text {
+                    text-align: center;
+                    &.pic-bottom {
+                        background: rgba(0, 0, 0, 0.5);
+                    }
+                    &.pic-episode {
+                        opacity: 0;
+                    }
+                    &.pic-year-bottom {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,207 @@
+@import "../variables";
+
+body,html{
+    background-color: $body-bg;
+}
+
+.search_container {
+    margin: 20px;
+}
+
+.keywords{
+    font-size: 16px;
+    margin:20px 0;
+    span.keyword{
+        color:#ff4a4a;
+    }
+}
+.side {
+    padding:0;
+    @media (min-width: $col-lg-width) {
+        width: 260px;
+        float: right;
+
+    }
+}
+.main {
+    padding:0;
+    @media (min-width: $col-lg-width) {
+        // margin-right: 320px;
+    }
+    @media (max-width: $col-lg-width){
+        .search_result{
+            margin-right:0;
+        }
+    }
+}
+
+$badgeColors: #ff4a4a, #ff7701, #ffb400;
+.search_result{
+    display: flex;
+    flex-wrap: wrap;
+    padding:20px;
+    background-color: #fff;
+    margin-right: 20px;
+    .movie-box{
+        padding:0 20px 20px 0;
+        .movie-detail {
+            .title {
+                margin: 10px 0 0;
+                font-size: 14px;
+                line-height: 20px;
+                color: #333333;
+            }
+        }
+    }
+    .star-box{
+        margin:10px 15px 15px 0;
+        background-color: #F2F1F1;
+        border-radius: 6px;
+        overflow: hidden;
+        .star-thumb{
+            display: block;
+            position: relative;
+            padding-top: 110%;
+            background-position: 50% 50% !important;
+            background-size: cover !important;
+            overflow: hidden;
+            border-radius: 6px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .star-detail{
+            text-align: center;
+            margin:8px 0;
+            .title{
+                font-size: 14px;
+            }
+        }
+    }
+    .search-result_video{
+        margin-bottom: 20px;
+        padding-bottom: 0;
+        width:100%;
+    }
+}
+
+.search_mod {
+    margin-bottom: 20px;
+    .mod_box {
+        .mod_title {
+            zoom: 1;
+            position: relative;
+            margin-bottom: 0;
+            font-size: 18px;
+            white-space: nowrap;
+            .title {
+                margin-bottom: 15px;
+                color: #333;
+                font-size: 18px;
+                font-weight: 400;
+            }
+            .bg_rank_ball {
+                position: absolute;
+                top: -14px;
+                left: 90px;
+                width: 16px;
+                height: 34px;
+                border-radius: 13px 13px 0 0;
+                background-image: linear-gradient(-180deg, #ff5c38, rgba(255, 255, 255, 0) 83%);
+                opacity: 0.4;
+                &:before,
+                &:after {
+                    position: absolute;
+                    top: 38px;
+                    left: -14px;
+                    width: 12px;
+                    height: 24px;
+                    border-radius: 10px 10px 0 0;
+                    background-image: linear-gradient(-180deg, #ffb821, rgba(255, 255, 255, 0) 79%);
+                    content: "";
+                }
+                &:after {
+                    top: 26px;
+                    right: -16px;
+                    left: auto;
+                    width: 8.4px;
+                    height: 24px;
+                    border-radius: 7px 7px 0 0;
+                    background-image: linear-gradient(-180deg, #ff117a, rgba(255, 255, 255, 0) 77%);
+                }
+            }
+        }
+        .mod-list {
+            .hot-list {
+                .item {
+                    display: block;
+                    position: relative;
+                    width: 100%;
+                    float: left;
+                    line-height: 40px;
+                    padding: 10px 0;
+                    &:not(:last-child){
+                        border-bottom: 1px dashed #f0f0f0;
+                    }
+                    @media (min-width: $col-md-width) and (max-width: $col-lg-width) {
+                        width: 25%;
+                        border-bottom: none;
+                    }
+                    @media (max-width: $col-md-width){
+                        width:50%;
+                    }
+                    @for $i from 1 through length($badgeColors) {
+                        &:nth-of-type(#{$i}) {
+                            .num {
+                                background-color: nth($badgeColors, $i);
+                                // -webkit-background-clip: text;
+                                // -webkit-text-fill-color: transparent;
+                                // color: #E52164;
+                                // background-image: linear-gradient(0deg,#F26C9A, #F5709E 45%, #ffbe40);
+                                letter-spacing: 0;
+                                font-family: Georgia,"Times New Roman",Times,serif;
+                            }
+                        }
+                    }
+                    &>p{
+                        display: block;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                    }
+                    .num {
+                        display: inline-block;
+                        width: 25px;
+                        height: 25px;
+                        margin-right: 8px;
+                        color: #fff;
+                        font-size: 18px;
+                        line-height: 25px;
+                        text-align: center;
+                        vertical-align: middle;
+                        font-family: Georgia,"Times New Roman",Times,serif;
+                        background-color: #b0b7c2;
+                        border-radius: 50%;
+                    }
+                    .avatar-img{
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        // margin-bottom: 5px;
+                        margin-right: 10px;
+                        object-fit: cover;
+                    }
+                    .name {
+                        // display: inline-block;
+                        max-width: 12em;
+                        font-size: 15px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        vertical-align: top;
+                        white-space: nowrap;
+                    }
+
+                }
+            }
+        }
+    }
+}
+

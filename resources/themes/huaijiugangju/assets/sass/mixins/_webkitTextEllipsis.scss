@@ -1,0 +1,11 @@
+@mixin webkit-text-ellipsis($line-number:2) {
+    display: -webkit-box!important;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $line-number;
+    word-wrap: break-word!important;
+    word-break: break-word!important;
+    white-space: normal!important;
+    overflow: hidden!important;
+    -o-text-overflow: ellipsis!important;
+    text-overflow: ellipsis!important;
+}

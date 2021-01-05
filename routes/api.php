@@ -68,6 +68,6 @@ Route::post('/douyin/import', 'Api\SpiderController@importDouYin');
 
 Route::post('/withdraw', 'Api\WithdrawController@withdraws');
 
-Route::any('/movie/history', 'Api\MovieController@movieHistory');
-Route::post('/movie/toggle-like', 'Api\MovieController@toggoleLike');
-Route::post('/movie/toggle-fan', 'Api\MovieController@toggoleFan');
+//Route::any('/movie/history', 'Api\MovieController@movieHistory');
+//Route::post('/movie/toggle-like', 'Api\MovieController@toggoleLike');
+//Route::post('/movie/toggle-fan', 'Api\MovieController@toggoleFan');
