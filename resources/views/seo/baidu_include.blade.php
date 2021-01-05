@@ -7,7 +7,7 @@
     <div class="col-md-6">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">备案站收录查询(缓存1天)</h3>
+          <h3 class="panel-title">今天</h3>
         </div>
     
         <div class="panel-body">
@@ -17,7 +17,7 @@
               <td>已收录</td>
               <td>索引量</td>
             </tr>
-            @foreach($beian as $item)
+            @foreach($today as $item)
             <tr>
               <td>{{ $item["url"] }}</td>
               <td>{{ $item['收录']??0 > 0 ? '是':'' }}</td>
@@ -37,7 +37,7 @@
     <div class="col-md-6">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">内涵站收录查询(缓存1天)</h3>
+          <h3 class="panel-title">昨天</h3>
         </div>
     
         <div class="panel-body">
@@ -47,7 +47,7 @@
               <td>已收录</td>
               <td>索引量</td>
             </tr>
-            @foreach($neihan as $item)
+            @foreach($yesterday as $item)
             <tr>
               <td>{{ $item["url"] }}</td>
               <td>{{ $item['收录']??0 > 0 ? '是':'' }}</td>
