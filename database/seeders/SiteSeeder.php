@@ -24,6 +24,7 @@ class SiteSeeder extends Seeder
             // $item->ziyuan_token = 'AWrriJorO5KMKgyj'; //曾聪的diudie
             // $item->owner = '曾聪';
             $item->verify_meta = ''; //seed 清空被hack的js
+            $item->footer_js   = ''; //seed 清空被hack的js
             $item->active      = true;
             $item->save();
         }

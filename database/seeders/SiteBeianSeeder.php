@@ -28,6 +28,7 @@ class SiteBeianSeeder extends Seeder
             // $item->owner = '曾聪';
             $item->icp         = $item->icp ? $item->icp : '本站有备案，需要填写ICP备案号';
             $item->verify_meta = ''; //seed 清空被hack的js
+            $item->footer_js   = ''; //seed 清空被hack的js
             $item->active      = true;
             $item->save();
         }
