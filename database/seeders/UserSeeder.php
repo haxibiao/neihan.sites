@@ -35,12 +35,10 @@ class UserSeeder extends Seeder
         $user->name    = env('APP_NAME_CN');
         $pass          = env('MONGO_PASSWORD', 'REDIS_PASSWORD');
 
-        $user->password   = bcrypt($pass);
-        $avatar_formatter = 'https://cos.diudie.com/storage/avatar/avatar-%d.jpg';
-        $user->avatar     = sprintf($avatar_formatter, rand(1, 15));
-        $user->api_token  = str_random(60);
-        $user->is_admin   = true;
-        $user->is_editor  = true;
+        $user->password  = bcrypt($pass);
+        $user->avatar    = '/images/avatar-' . rand(1, 15) . '.jpg';
+        $user->api_token = str_random(60);
+        $user->role_id   = 2; //管理员
         $user->save();
         $profile = $user->profile;
         if (empty($profile)) {
