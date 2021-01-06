@@ -43,25 +43,25 @@ return [
 
     'disks'   => [
 
-        'sitemap'     => [
+        'sitemap' => [
             'driver' => 'local',
             'root'   => public_path('sitemap'),
         ],
 
-        'local'  => [
+        'local'   => [
             'driver' => 'local',
             'root'   => storage_path('app'),
         ],
 
-        'public' => [
+        'public'  => [
             'driver'     => 'local',
             'root'       => storage_path('app/public'),
-            'url'        => env('LOCAL_APP_URL', 'http:://l.' . env('APP_NAME') . '.com') . '/storage',
+            'url'        => url('/storage'),
             'visibility' => 'public',
         ],
 
         //腾讯COSV5
-        'cosv5'  => [
+        'cosv5'   => [
             'driver'          => 'cosv5',
             'region'          => env('COS_REGION', 'ap-guangzhou'),
             'credentials'     => [
@@ -80,7 +80,7 @@ return [
             'disable_asserts' => true,
         ],
 
-        's3'     => [
+        's3'      => [
             'driver' => 's3',
             'key'    => env('AWS_KEY'),
             'secret' => env('AWS_SECRET'),
