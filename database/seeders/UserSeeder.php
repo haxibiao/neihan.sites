@@ -39,6 +39,8 @@ class UserSeeder extends Seeder
         $avatar_formatter = 'https://cos.diudie.com/storage/avatar/avatar-%d.jpg';
         $user->avatar     = sprintf($avatar_formatter, rand(1, 15));
         $user->api_token  = str_random(60);
+        $user->is_admin   = true;
+        $user->is_editor  = true;
         $user->save();
         $profile = $user->profile;
         if (empty($profile)) {

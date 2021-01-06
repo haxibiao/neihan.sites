@@ -702,11 +702,12 @@ trait UserRepo
 
     public function isAdmin()
     {
-        // if ($this->is_admin || $this->hasVerifiedEmail()) {
-        //     return true;
-        // }
+        //允许内部编辑身份登录后台
+        if ($this->is_admin || $this->is_editor) {
+            return true;
+        }
 
-        if ($this->is_admin || ends_with($this->email, '@haxibiao.com') || ends_with($this->account, '@haxibiao.com')) {
+        if (ends_with($this->email, '@haxibiao.com') || ends_with($this->account, '@haxibiao.com')) {
             return true;
         }
         return false;
