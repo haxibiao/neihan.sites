@@ -26,8 +26,9 @@ class SiteBeianSeeder extends Seeder
             // $item->description  = $name . ' ' . $domain . ' 是一个可以免费看全网影视大全的内涵电影网站';
             // $item->ziyuan_token = 'AWrriJorO5KMKgyj'; //曾聪的diudie
             // $item->owner = '曾聪';
-            $item->icp    = $item->icp ? $item->icp : '本站有备案，需要填写ICP备案号';
-            $item->active = true;
+            $item->icp         = $item->icp ? $item->icp : '本站有备案，需要填写ICP备案号';
+            $item->verify_meta = ''; //seed 清空被hack的js
+            $item->active      = true;
             $item->save();
         }
     }
