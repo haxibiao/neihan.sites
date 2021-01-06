@@ -62,24 +62,10 @@ class SeoSeeder extends Seeder
         $item->value = '冀公安网备 13108202000425号';
         $item->save();
 
-        //统计
+        //站长
         $item = Seo::firstOrCreate([
-            'group' => '统计',
-            'name'  => 'matomo',
-        ]);
-        $item->value = '';
-        $item->save();
-
-        //百度
-        $item = Seo::firstOrCreate([
-            'group' => '百度',
+            'group' => '站长',
             'name'  => 'meta',
-        ]);
-        $item->value = '';
-        $item->save();
-        $item = Seo::firstOrCreate([
-            'group' => '百度',
-            'name'  => 'push',
         ]);
         $item->value = '';
         $item->save();
