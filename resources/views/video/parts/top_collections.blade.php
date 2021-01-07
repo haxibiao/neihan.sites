@@ -2,7 +2,7 @@
  	  <div class="vd-head">
         <h3 class="vd-title">
           <span class="title-icon">
-            <i class="iconfont icon-huo"></i>电影片段-推荐合集
+            <i class="iconfont icon-huo"></i>抖音合集
           </span>
         </h3>
     </div>

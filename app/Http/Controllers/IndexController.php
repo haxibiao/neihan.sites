@@ -15,16 +15,20 @@ class IndexController extends Controller
     {
         $data = (object) [];
 
-        //首页轮播图(暂时糊弄5个电影，引导去电影频道)
+        //FIXME: 可以用Stickable的函数获取
+        //置顶 - 电影 置顶优先原则（可无置顶）
         $data->movies = cmsTopMovies();
 
-        //首页专题
+        //FIXME: 可以用Stickable的函数获取
+        //置顶 - 专题
         $data->categories = cmsTopCategories();
 
-        //合集视频
+        //FIXME: 可以用Stickable的函数获取
+        //置顶 合集视频
         $data->videoPosts = cmsTopVideos();
 
-        //首页文章
+        //FIXME: 可以用Stickable的函数获取
+        //首页文章 - 可置顶部分优质文章避免首页脏乱数据
         $data->articles = cmsTopArticles();
         return view('index.index')->with('data', $data);
     }
@@ -82,25 +86,26 @@ class IndexController extends Controller
         return view('write');
     }
 
-    public function verification(){
+    public function verification()
+    {
         $meta = get_seo_meta();
-        $url = request()->url();
+        $url  = request()->url();
 
-        if(str_contains($url,'sogou')){
+        if (str_contains($url, 'sogou')) {
             preg_match_all('/<meta.*name="sogou_site_verification".*content="(.*)".*>/', $meta, $matches);
-            $sogou = data_get($matches,'1.0');
-            if($sogou){
+            $sogou = data_get($matches, '1.0');
+            if ($sogou) {
                 return response($sogou)
                     ->header('Content-Type', 'text/html');
             }
             abort(404);
         }
 
-        if(str_contains($url,'shenma')){
+        if (str_contains($url, 'shenma')) {
             preg_match_all('/<meta.*name="shenma-site-verification".*content="(.*)".*>/', $meta, $matches);
-            $shenma = data_get($matches,'1.0');
-            if($shenma){
-                return response('shenma-site-verification:'.$shenma)
+            $shenma = data_get($matches, '1.0');
+            if ($shenma) {
+                return response('shenma-site-verification:' . $shenma)
                     ->header('Content-Type', 'text/plain');
             }
             abort(404);

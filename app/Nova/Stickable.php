@@ -7,10 +7,10 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 
-class Stick extends Resource
+class Stickable extends Resource
 {
 
-    public static $model = 'App\Stick';
+    public static $model = 'App\Stickable';
 
     public static $title = 'id';
 
@@ -22,12 +22,7 @@ class Stick extends Resource
 
     public static function label()
     {
-        return "置顶";
-    }
-
-    public static function singularLabel()
-    {
-        return "置顶";
+        return "运营置顶";
     }
 
     public function fields(Request $request)

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Category;
 use App\Http\Requests\VideoRequest;
+use App\Movie;
 use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -22,47 +23,28 @@ class VideoController extends Controller
      */
     public function index(Request $request)
     {
-        //首页渲染需要的数据
-        // $data = [];
 
-        // //置顶几个电影吧
-        // $movies         = Movie::latest('id')->take(6)->get();
-        // $data['movies'] = $movies;
-
-        // //热门专题（top3）
-        // $categories = Category::orderBy('count_videos', 'desc')->take(3)
-        //     ->get();
-
-        // $cates = [];
-        // foreach ($categories as $category) {
-        //     $articles = $category->articles()
-        //         ->latest('articles.id')
-        //         ->take(3)
-        //         ->get();
-        //     if (!$articles->isEmpty()) {
-        //         $cates[$category->name] = $articles;
-        //     }
-        // }
-        // $data['cates'] = $cates;
-
-        // //合集
-        // $data['collections'] = \App\Collection::has('posts')->take(12)->get();
-
-        // return view('video.index')->with('data', $data);
-        //取置顶视频专题
-        // $stick_video_categories = get_stick_video_categories();
-        // $video_category = [];
-        // foreach ($stick_video_categories as $video_categories) {
-        //     $video_id = $video_categories->id;
-        //     $video_category[$video_categories->name]['video'] = Article::find($video_id)->orderby('count_likes','desc')->paginate(3);
-        // }
-
-        //热门专题，简单规则就按视频数多少来判断专题是否热门视频专题
-        $collections = \App\Collection::orderBy('count', 'desc')->take(6)->get();
-
-        $categories = Category::orderBy('count_videos', 'desc')->where('type', 'diagrams')->take(3)
-            ->get();
         $data = [];
+
+        //FIXME: 可以用Stickable的函数获取
+        // 置顶 - 电影
+        $movies = Movie::latest('updated_at')->take(6)->get();
+
+        //FIXME: 可以用Stickable的函数获取
+        // 置顶 - 视频专题
+        // $stick_video_cates = get_stick_video_cates();
+        $stick_video_cates = Category::whereType('video')->latest('updated_at')->take(3)->get();
+        $videos            = [];
+        foreach ($stick_video_cates as $video_cate) {
+            $data[$video_cate->name] = $video_cate->videoPosts()->orderby('updated_at')->take(3)->get();
+        }
+
+        //FIXME: 可以用Stickable的函数获取
+        //置顶 -图解专题
+        $categories = Category::orderBy('count_videos', 'desc')
+            ->where('type', 'diagrams')
+            ->take(3)
+            ->get();
         foreach ($categories as $category) {
             $articles = Article::where('category_id', $category->id)
                 ->where('status', '>', 0)
@@ -74,7 +56,15 @@ class VideoController extends Controller
             }
         }
 
-        return view('video.index')->with('data', $data)->with('collections', $collections);
+        //FIXME: 可以用Stickable的函数获取
+        //置顶 - 热门合集
+        $collections = \App\Collection::orderBy('count', 'desc')->take(6)->get();
+
+        return view('video.index')
+            ->with('data', $data)
+            ->with('videos', $videos)
+            ->with('collections', $collections)
+            ->with('movies', $movies);
     }
 
     function list(Request $request) {
