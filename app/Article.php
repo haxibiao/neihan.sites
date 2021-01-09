@@ -2,10 +2,9 @@
 
 namespace App;
 
-use App\Traits\CanBeLiked;
-use Haxibiao\Cms\Article as CmsArticle;
+use Haxibiao\Content\Article as BaseArticle;
 
-class Article extends CmsArticle
+class Article extends BaseArticle
 {
-    use CanBeLiked;
+
 }

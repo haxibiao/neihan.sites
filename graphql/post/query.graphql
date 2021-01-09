@@ -10,10 +10,6 @@ type Post {
   """
   spider: Spider
   """
-  关联的商品
-  """
-  product:Product
-  """
   动态的内容
   """
   content: String
@@ -24,19 +20,19 @@ type Post {
   """
   图片
   """
-  images:[Image]
+  images: [Image]
   """
   分类
   """
-  categories:[Category]
+  categories: [Category]
   """
-  合集
+    定位信息
   """
-  collections:[Collection]
+  location_desc:String
+    """
+    位置对象
   """
-  当前集数
-  """
-  current_episode:Int
+  location:Location
   """
   -1删除，0草稿，1发布
   """
@@ -44,50 +40,20 @@ type Post {
   liked: Boolean
   count_likes: Int
   count_comments: Int
-  count_visits:Int
   review_id: String
   review_day: String
+  current_episode: Int
   is_ad: Int
   """
-  标签
+  广告类型
   """
-  tags:[Tag!] @paginate(defaultCount: 10, builder:"\\App\\Post@resovlePostTags")
+  ad_type: String
+
   """
   发布时间（多久前）
   """
-  created_at: String @rename(attribute: "time_ago")
-}
-type Certification {
-  id: Int
-  """
-  审核反馈
-  """
-  remark: String
-  """
-  审核状态：(-1 已驳回, 0 待审核,1 审核成功)
-  """
-  status: Int
-}
-type Product {
-  id: Int!
-  category: Category
-  video: Video
-  cover: Image
-  user: User!
-  price: Int
-  dimension: String
-  dimension2: String
-  name: String!
-  image: [Image!]
-  """
-  图片
-  """
-  images:[Image!]
-  description: String
-  available_amount: Int
-  amount: Int
-  created_at: DateTime!
-  updated_at: DateTime!
+  created_at: String @rename(attribute: "time_age")
+  created_at: String @rename(attribute: "time_age")
 }
 
 extend type Query {
@@ -99,23 +65,19 @@ extend type Query {
   """
   学习视频列表（兼容token为游客的情况）
   """
-  recommendPosts: [Post!]
-    @field(resolver: "App\\Post@resolveRecommendPosts")
+  recommendPosts: [Post!] @field(resolver: "App\\Post@resolveRecommendPosts")
 
   """
   动态广场
   """
   publicPosts(user_id: Int): [Post!]
-    @paginate(
-      defaultCount: 10
-      builder: "App\\Post@resolvePublicPosts"
-    )
+    @paginate(defaultCount: 10, builder: "App\\Post@resolvePublicPosts")
 
   """
   个人主页动态列表
   """
-  posts(user_id: Int!,keyword: String): [Post!]
-    @paginate(builder: "App\\Post@resolvePosts", defaultCount: 15)
+  posts(user_id: Int!,keyword: String,type:PostType=VIDEO): [Post!]
+    @paginate(builder: "App\\Post@resolvePosts", defaultCount: 10)
 
   """
   分享post
@@ -142,43 +104,8 @@ extend type Query {
     """
     limit: Int
   ): [Post] @field(resolver: "App\\Post@resolvePostsByTag")
-  """
-  搜索动态
-  """
-  searchPosts(query:String!,tag_id:Int,user_id:Int,type:PostType=VIDEO,collection_id:Int): [Post!]
-    @paginate(defaultCount: 10, builder: "App\\Post@resolveSearchPosts")
-  """
-  收藏/普通动态
-  """
-  userPosts(user_id: Int!,filter:PostFilter=spider): [Post!]
-    @paginate(builder: "App\\Post@resolveUserPosts", defaultCount: 10)
 
-  """
-  关注用户的 收藏/普通动态
-  """
-  followPosts(user_id: Int!,filter:PostFilter=spider): [Post!]
-  @paginate(builder: "App\\Post@resolveFollowPosts", defaultCount: 10)
-
-  postByVid(vid: String!):Post @field(resolver: "App\\Post@resolvePostByVid")
-  """
-  通过video_id获取相应的动态
-  """
-  postByVideoId(video_id: Int!):Post @field(resolver: "App\\Post@postByVideoId")
-}
-
-enum PostFilter {
-  """
-  用户爬取的动态
-  """
-  spider
-  """
-  用户发布的动态
-  """
-  normal
-  """
-  全部
-  """
-  all
+  postByVid(vid: String!): Post @field(resolver: "App\\Post@resolvePostByVid")
 }
 
 enum PostTag {
@@ -191,15 +118,4 @@ enum PostTag {
   娱乐模块
   """
   PLAY @enum(value: 2)
-}
-
-enum PostType {
-  """
-  视频
-  """
-  VIDEO
-  """
-  图文
-  """
-  IMAGE
 }

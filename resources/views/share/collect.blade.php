@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta content="width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=0" name="viewport">
@@ -7,8 +8,12 @@
 
     <link rel="stylesheet" type="text/css" href="/css/base.css" />
     <link rel="stylesheet" type="text/css" href="/css/collection.css" />
+
 </head>
+
+
 <body style="background-color: #161819;">
+
     <div id="war">
         <div id="top">
             <img src="{{$collection->logo}}">
@@ -34,7 +39,7 @@
 
 
             @foreach($posts as $post)
-            <a class="list_a" href="/share/post/{{$post->id}}"  >
+            <a class="list_a" href="/share/post/{{$post->id}}" target="_blank">
                 <img class="list_img" src="{{ $post->cover }}" />
                 <div class="text_cl">
                     <div class="text_top">

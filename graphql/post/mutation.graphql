@@ -16,6 +16,11 @@ extend type Mutation @middleware(checks: ["auth:api"]) {
     video_id: Int
 
     """
+    商品ID（关联article）
+    """
+    product_id: Int
+
+    """
     视频文件ID
     """
     qcvod_fileid: String
@@ -26,47 +31,13 @@ extend type Mutation @middleware(checks: ["auth:api"]) {
     category_ids: [Int!]
 
     """
+    定位信息
+    """
+    location: LocationInfo
+    
+    """
     图片链接
     """
-    images: [String!],
-    """
-    标签名
-    """
-    tag_names: [String],
-    """
-    抖音的分享链接
-    """
-    share_link:String
-    """
-    合集ID
-    """
-    collection_ids: [Int!]
+    images: [String!]
   ): Post! @field(resolver: "App\\Post@resolveCreateContent")
-
-  updatePost(
-    """
-    动态ID
-    """
-    post_id: Int!
-    """
-    正文
-    """
-    content: String
-    """
-    正文
-    """
-    description: String,
-    """
-    标签名
-    """
-    tag_names: [String]
-  ): Post! @field(resolver: "App\\Post@resolveUpdatePost")
-
-
-
-  """
-  删除动态
-  """
-  deletePost(id: ID!): Post @delete
-  deletePost(id: Int!): Post @delete
 }

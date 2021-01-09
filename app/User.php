@@ -10,8 +10,8 @@ use App\Traits\UserAttrs;
 use App\Traits\UserRepo;
 use App\Traits\UserResolvers;
 use Haxibiao\Base\Traits\AvatarHelper;
-use Haxibiao\Content\Traits\HasContent;
-use Haxibiao\Media\Traits\WithMedia;
+use Haxibiao\Content\Traits\UseContent;
+use Haxibiao\Media\Traits\UseMedia;
 use Haxibiao\Sns\Traits\CanFollow;
 use Haxibiao\Task\Traits\PlayWithTasks;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -22,8 +22,8 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Model implements
-    AuthenticatableContract,
-    AuthorizableContract
+AuthenticatableContract,
+AuthorizableContract
 {
     use \Illuminate\Auth\Authenticatable, Authorizable;
 
@@ -31,8 +31,8 @@ class User extends Model implements
     use UserAttrs;
     use UserRepo;
     use UserResolvers;
-    use WithMedia;
-    use HasContent;
+    use UseMedia;
+    use UseContent;
     use CanTag;
     use CanLike;
     use AvatarHelper;
@@ -168,7 +168,6 @@ class User extends Model implements
         return $this->hasMany(\App\Contribute::class);
     }
 
-
     public function feedbacks()
     {
         return $this->hasMany(\App\Feedback::class);
@@ -222,7 +221,7 @@ class User extends Model implements
     {
         return $this->hasMany(\App\Follow::class)->where('followed_type', 'collections');
     }
-    
+
     public function movieHistory(): HasMany
     {
         return $this->hasMany(MovieHistory::class);

@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\Article;
-use App\Comment;
 use App\Model;
 use App\Traits\LikeRepo;
 use App\Traits\LikeResolvers;
@@ -58,14 +56,15 @@ class Like extends Model
     {
         if ($user = getUser(false)) {
             return $user->likes()
-                    ->byLikableType($this->likable_type)
-                    ->byLikableId($this->likable_id)->count() > 0;
+                ->byLikableType($this->likable_type)
+                ->byLikableId($this->likable_id)->count() > 0;
         }
         return false;
     }
 
     // 兼容旧接口用
-    public function getPostAttribute(){
+    public function getPostAttribute()
+    {
         return $this->likable;
     }
 

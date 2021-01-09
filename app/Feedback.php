@@ -6,7 +6,6 @@ use App\Traits\FeedbackResolvers;
 use Haxibiao\Media\Traits\WithMedia;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Feedback extends Model
@@ -19,7 +18,7 @@ class Feedback extends Model
         'content',
         'contact',
         'type',
-        'status'
+        'status',
     ];
 
     protected $casts = [

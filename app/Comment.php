@@ -2,15 +2,15 @@
 
 namespace App;
 
-use App\User;
 use App\Model;
-use App\Traits\CanBeLiked;
-use App\Traits\CommentRepo;
 use App\Traits\CommentAttrs;
+use App\Traits\CommentRepo;
 use App\Traits\CommentResolvers;
+use App\User;
 use GraphQL\Type\Definition\ResolveInfo;
-use Illuminate\Notifications\Notifiable;
+use Haxibiao\Sns\Traits\Likeable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 class Comment extends Model
@@ -20,7 +20,7 @@ class Comment extends Model
     use CommentAttrs;
     use CommentRepo;
     use CommentResolvers;
-    use CanBeLiked;
+    use Likeable;
 
     protected $touches = ['commentable'];
 

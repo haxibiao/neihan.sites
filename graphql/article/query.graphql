@@ -31,7 +31,6 @@ type Article {
   category: Category
   categories: [Category!]
   collection: Collection
-  collections: [Collection]
   tips: [Tip!]
   comments: [Comment]!
   created_at: DateTime!
@@ -45,13 +44,13 @@ type Article {
 
 extend type Query @middleware(checks: ["auth:api"]) {
   followedArticles(user_id: Int!): [Article!]
-    @paginate(defaultCount: 10, builder: "App\\Article@resolveFollowedArticles")
+  @paginate(defaultCount: 10, builder: "App\\Article@resolveFollowedArticles")
 
   pendingArticles(category_id: Int): [Article!]
-    @field(resolver: "App\\Article@resolvePendingArticles")
+  @field(resolver: "App\\Article@resolvePendingArticles")
 
   trashArticles: [Article!]
-    @paginate(defaultCount: 10, builder: "App\\Article@resolveTrashArticles")
+  @paginate(defaultCount: 10, builder: "App\\Article@resolveTrashArticles")
 
 }
 
@@ -60,15 +59,15 @@ extend type Query {
   获取推荐视频(废弃)
   """
   recommendVideos(count: Int = 5, page: Int = 1): ArticlePaginator
-    @field(resolver: "App\\Post@patchResolveRecommendPosts")
-    @deprecated(reason: "该接口已废弃，请使用recommendPosts")
+  @field(resolver: "App\\Post@patchResolveRecommendPosts")
+  @deprecated(reason: "该接口已废弃，请使用recommendPosts")
 
   """
   获取推荐视频(废弃)
   """
   RecommendVideos(count: Int = 5, page: Int = 1): ArticlePaginator
-    @field(resolver: "App\\Post@patchResolveRecommendPosts")
-    @deprecated(reason: "该接口已废弃，请使用recommendPosts")
+  @field(resolver: "App\\Post@patchResolveRecommendPosts")
+  @deprecated(reason: "该接口已废弃，请使用recommendPosts")
 
 
   """
@@ -80,16 +79,16 @@ extend type Query {
   获取推荐文章
   """
   recommendArticles: [Article!]
-    @paginate(
-      defaultCount: 10
-      builder: "App\\Article@resolveRecommendArticles"
-    )
+  @paginate(
+    defaultCount: 10
+    builder: "App\\Article@resolveRecommendArticles"
+  )
 
   """
   分享动态(废弃)
   """
   sharePost(id:ID!):String @field(resolver: "App\\Article@getShareLink")
-    @deprecated(reason: "该接口已废弃，请使用shareNewPost")
+  @deprecated(reason: "该接口已废弃，请使用shareNewPost")
 
   articles(
     status: ArticleStatus = all
@@ -98,9 +97,9 @@ extend type Query {
     submit: ArticleSubmitStatus = ALL
     orderBy: [OrderByClause!] @orderBy
   ): [Article!] @paginate(
-      defaultCount: 10
-      builder: "App\\Post@resolvePublicPosts"
-    )
+    defaultCount: 10
+    builder: "App\\Post@resolvePublicPosts"
+  )
   @deprecated(reason: "该接口已废弃")
 }
 
