@@ -20,23 +20,23 @@
             @foreach($today as $item)
             <tr>
               <td>{{ $item["url"] }}</td>
-              <td>{{ $item['收录']??0 > 0 ? '是':'' }}</td>
-              @if($item['收录'] ?? 0)
-                @if($item['up']==-1)
+              <td>{{ $item['收录'] > 0 ? '是':'' }}</td>
+              @if($item['收录'])
+                @if($item['up'] < 0)
                   <td>
-                    <a target="_blank" href="https://www.baidu.com/s?wd=site:{{ $item["url"] }}" style="color:blue">{{ $item['收录']??0 }}</a>
+                    <a target="_blank" href="https://www.baidu.com/s?wd=site:{{ $item["url"] }}" style="color:blue">{{ $item['收录'] }}</a>
                   </td>
-                @elseif($item['up']==1)
+                @elseif($item['up'] > 0)
                   <td>
-                    <a target="_blank" href="https://www.baidu.com/s?wd=site:{{ $item["url"] }}" style="color:red">{{ $item['收录']??0 }}</a>
+                    <a target="_blank" href="https://www.baidu.com/s?wd=site:{{ $item["url"] }}" style="color:red">{{ $item['收录'] }}</a>
                   </td>
                 @else
                   <td>
-                    <a target="_blank" href="https://www.baidu.com/s?wd=site:{{ $item["url"] }}">{{ $item['收录']??0 }}</a>
+                    <a target="_blank" href="https://www.baidu.com/s?wd=site:{{ $item["url"] }}">{{ $item['收录'] }}</a>
                   </td>
                 @endif
               @else
-                <td>{{ $item['收录']??0 }}</td>
+                <td>{{ $item['收录'] }}</td>
               @endif
             </tr>
             @endforeach
@@ -60,23 +60,23 @@
             @foreach($yesterday as $item)
             <tr>
               <td>{{ $item["url"] }}</td>
-              <td>{{ $item['收录']??0 > 0 ? '是':'' }}</td>
-              @if($item['收录'] ?? 0)
-                @if($item['up']==-1)
+              <td>{{ $item['收录'] > 0 ? '是':'' }}</td>
+              @if($item['收录'])
+                @if($item['up'] < 0)
                   <td>
-                    <a target="_blank" href="https://www.baidu.com/s?wd=site:{{ $item["url"] }}" style="color:blue">{{ $item['收录']??0 }}</a>
+                    <a target="_blank" href="https://www.baidu.com/s?wd=site:{{ $item["url"] }}" style="color:blue">{{ $item['收录'] }}</a>
                   </td>
-                @elseif($item['up']==1)
+                @elseif($item['up'] > 0)
                   <td>
-                    <a target="_blank" href="https://www.baidu.com/s?wd=site:{{ $item["url"] }}" style="color:red">{{ $item['收录']??0 }}</a>
+                    <a target="_blank" href="https://www.baidu.com/s?wd=site:{{ $item["url"] }}" style="color:red">{{ $item['收录'] }}</a>
                   </td>
                 @else
                   <td>
-                    <a target="_blank" href="https://www.baidu.com/s?wd=site:{{ $item["url"] }}" style="color:black">{{ $item['收录']??0 }}</a>
+                    <a target="_blank" href="https://www.baidu.com/s?wd=site:{{ $item["url"] }}" style="color:black">{{ $item['收录'] }}</a>
                   </td>
                 @endif
               @else
-                <td>{{ $item['收录']??0 }}</td>
+                <td>{{ $item['收录'] }}</td>
               @endif
             </tr>
             @endforeach
@@ -99,13 +99,13 @@
             @foreach($third as $item)
             <tr>
               <td>{{ $item["url"] }}</td>
-              <td>{{ $item['收录']??0 > 0 ? '是':'' }}</td>
-              @if($item['收录'] ?? 0)
+              <td>{{ $item['收录'] > 0 ? '是':'' }}</td>
+              @if($item['收录'])
                 <td>
-                  <a target="_blank" href="https://www.baidu.com/s?wd=site:{{ $item["url"] }}" style="color:black">{{ $item['收录']??0 }}</a>
+                  <a target="_blank" href="https://www.baidu.com/s?wd=site:{{ $item["url"] }}" style="color:black">{{ $item['收录'] }}</a>
                 </td>
               @else
-                <td>{{ $item['收录']??0 }}</td>
+                <td>{{ $item['收录'] }}</td>
               @endif
             </tr>
             @endforeach
