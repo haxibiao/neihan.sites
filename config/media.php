@@ -23,5 +23,5 @@ return [
     /**
      * 是否统计视频的播放量
      */
-    'enabled_statistics_video_views' => true,
+    'enabled_statistics_video_views' => false,
 ];
