@@ -190,7 +190,6 @@ return [
         \Haxibiao\Content\ContentServiceProvider::class,
         \Haxibiao\Task\TaskServiceProvider::class,
         \Haxibiao\Sns\SnsServiceProvider::class,
-        \Haxibiao\Tag\TagServiceProvider::class,
         \Haxibiao\Cms\CmsServiceProvider::class,
         \Haxibiao\Dimension\DimensionServiceProvider::class,
     ],
