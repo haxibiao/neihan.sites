@@ -39,6 +39,6 @@ class ActiveUser extends Command
     public function handle()
     {
         $count = \App\User::where("updated_at", ">", now()->toDateString())->count();
-        Dimension::setSimpleDimension("日活数", 0, $count);
+        Dimension::track("每天新增用户", $count, '新增');
     }
 }
