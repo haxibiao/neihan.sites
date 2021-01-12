@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Haxibiao\Tag\Tag as BaseTag;
+use Haxibiao\Content\Tag as BaseTag;
 
 class Tag extends BaseTag
 {
