@@ -119,3 +119,14 @@ enum PostTag {
   """
   PLAY @enum(value: 2)
 }
+
+enum PostType {
+  """
+  视频
+  """
+  VIDEO
+  """
+  图文
+  """
+  IMAGE
+}

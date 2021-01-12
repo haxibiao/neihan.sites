@@ -1,0 +1,37 @@
+type Location {
+  id: Int!
+  user: User
+  address: Int
+  description: String
+  longitude: Float
+  latitude: Float
+  """
+  动态
+  """
+  post: Post
+}
+extend type Query {
+   location(id:Int!): Location! @find
+  """
+    Post的定位
+  """
+    locationOfPost(post_id:Int!): Location! @belongsTo
+}
+
+input LocationInfo {
+  address: String
+  description:String
+  """
+    区域
+  """
+  district:String
+  """
+    经度
+  """
+  longitude:Float
+  """
+    纬度
+  """
+  latitude:Float
+
+}
