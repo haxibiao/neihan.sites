@@ -3,6 +3,7 @@ namespace Database\Seeders;
 
 use App\Site;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 /**
  * 一批带备案的域名站群
@@ -16,6 +17,8 @@ class SiteBeianSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('sites')->update(['active' => false]);
+        //seed目前激活的备案网站
         foreach (neihan_beian_domains() as $domain => $name) {
             $item = Site::firstOrCreate([
                 'domain' => $domain,
@@ -28,7 +31,6 @@ class SiteBeianSeeder extends Seeder
             // $item->owner = '曾聪';
             $item->icp         = $item->icp ? $item->icp : '本站有备案，需要填写ICP备案号';
             $item->verify_meta = ''; //seed 清空被hack的js
-            $item->footer_js   = ''; //seed 清空被hack的js
             $item->active      = true;
             $item->save();
         }
