@@ -39,4 +39,4 @@
 	url = http://code.haxibiao.cn/packages/haxibiao-dimension.git/
 [submodule "packages/haxibiao/breeze"]
 	path = packages/haxibiao/breeze
-	url = http://code.haxibiao.cn/packages/haxibiao-breeze
+	url = http://code.haxibiao.cn/packages/haxibiao-breeze.git
