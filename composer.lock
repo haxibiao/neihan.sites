@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4fcfba05f416dead008b1620d9c8ffef",
+    "content-hash": "3275088c7418eb4eefe742515dfaf5c6",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -7436,6 +7436,59 @@
                 }
             ],
             "time": "2020-12-07T09:19:29+00:00"
+        },
+        {
+            "name": "silvanite/novafieldcheckboxes",
+            "version": "v1.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Silvanite/novafieldcheckboxes.git",
+                "reference": "697e50f472b1a205132bc656657e482da1ca0774"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Silvanite/novafieldcheckboxes/zipball/697e50f472b1a205132bc656657e482da1ca0774",
+                "reference": "697e50f472b1a205132bc656657e482da1ca0774",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Silvanite\\NovaFieldCheckboxes\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Silvanite\\NovaFieldCheckboxes\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova field to display a number of multi-select options using checkboxes.",
+            "keywords": [
+                "checkbox",
+                "checkboxes",
+                "field",
+                "input",
+                "laravel",
+                "multiple choice",
+                "multiselect",
+                "nova"
+            ],
+            "time": "2020-05-17T18:38:55+00:00"
         },
         {
             "name": "simplesoftwareio/simple-qrcode",
@@ -15804,5 +15857,5 @@
         "php": "^7.3"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "1.1.0"
 }

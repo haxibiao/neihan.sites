@@ -39,6 +39,7 @@
     "qcloud/cos-sdk-v5": "^2.0",
     "qcloud/vod-sdk-v5": "^2.0",
     "sentry/sentry-laravel": "^2.2",
+    "silvanite/novafieldcheckboxes": "^1.2",
     "simplesoftwareio/simple-qrcode": "^2.0",
     "spatie/laravel-backup": "^6.11",
     "spatie/laravel-sitemap": "^5.8",
