@@ -37,3 +37,6 @@
 [submodule "packages/haxibiao/dimension"]
 	path = packages/haxibiao/dimension
 	url = http://code.haxibiao.cn/packages/haxibiao-dimension.git/
+[submodule "packages/haxibiao/breeze"]
+	path = packages/haxibiao/breeze
+	url = http://code.haxibiao.cn/packages/haxibiao-breeze

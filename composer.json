@@ -92,7 +92,7 @@
             "Database\\Seeders\\": "database/seeders/",
             "Haxibiao\\Helpers\\": "packages/haxibiao/helpers/src/",
             "Haxibiao\\Matomo\\": "packages/haxibiao/matomo/src/",
-            "Haxibiao\\Breeze\\": "packages/haxibiao/base/src/",
+            "Haxibiao\\Breeze\\": "packages/haxibiao/breeze/src/",
             "Haxibiao\\Config\\": "packages/haxibiao/config/src/",
             "Haxibiao\\Media\\": "packages/haxibiao/media/src/",
             "Haxibiao\\Content\\": "packages/haxibiao/content/src/",
