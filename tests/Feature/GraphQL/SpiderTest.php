@@ -3,7 +3,7 @@ namespace Tests\Feature\GraphQL;
 
 use App\Spider;
 use App\User;
-use Haxibiao\Base\GraphQLTestCase;
+use Haxibiao\Breeze\GraphQLTestCase;
 
 class SpiderTest extends GraphQLTestCase
 {

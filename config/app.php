@@ -159,32 +159,9 @@ return [
          */
         Laravel\Tinker\TinkerServiceProvider::class,
 
-        /*
-         * Application Service Providers...
-         */
-        App\Providers\NovaServiceProvider::class,
-
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\NovaServiceProvider::class,
-
-        App\Providers\RouteServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class,
-        Collective\Html\HtmlServiceProvider::class,
-
-        // Jenssegers\Agent\AgentServiceProvider::class,
-        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
-        // Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class,
-        YueCode\Cos\QCloudCosServiceProvider::class,
-        // Overtrue\LaravelPinyin\ServiceProvider::class,app.
-        //Barryvdh\Debugbar\ServiceProvider::class,
-
-        //FIXME: 最后用composer require后会auto discover这些packages...
+        //1. 第一层子模块包提供通用的providers
         \Haxibiao\Helpers\HelpersServiceProvider::class,
         \Haxibiao\Matomo\MatomoServiceProvider::class,
-        \Haxibiao\Base\UserServiceProvider::class,
         \Haxibiao\Config\ConfigServiceProvider::class,
         \Haxibiao\Media\MediaServiceProvider::class,
         \Haxibiao\Content\ContentServiceProvider::class,
@@ -192,6 +169,31 @@ return [
         \Haxibiao\Sns\SnsServiceProvider::class,
         \Haxibiao\Cms\CmsServiceProvider::class,
         \Haxibiao\Dimension\DimensionServiceProvider::class,
+
+        //2. Breeze层组合所有子模块，提供基础Starter kits...
+        \Haxibiao\Breeze\BreezeServiceProvider::class,
+
+        //3. App里的再覆盖自己的provider的搭建项目
+        /*
+         * Application Service Providers...
+         */
+
+        App\Providers\AppServiceProvider::class,
+        App\Providers\AuthServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
+        App\Providers\EventServiceProvider::class,
+        App\Providers\NovaServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class,
+        App\Providers\NovaServiceProvider::class,
+
+        // Jenssegers\Agent\AgentServiceProvider::class,
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        // Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class,
+        YueCode\Cos\QCloudCosServiceProvider::class,
+        // Overtrue\LaravelPinyin\ServiceProvider::class,app.
+        //Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*

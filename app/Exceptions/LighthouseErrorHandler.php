@@ -1,10 +1,8 @@
 <?php
 
-
 namespace App\Exceptions;
 
 use Closure;
-use Exception;
 use GraphQL\Error\Debug;
 use GraphQL\Error\Error;
 use GraphQL\Error\FormattedError;
@@ -14,11 +12,10 @@ use Nuwave\Lighthouse\Execution\ErrorHandler;
 use Sentry\State\Scope;
 use Throwable;
 
-
 class LighthouseErrorHandler implements ErrorHandler
 {
     protected static $dontReport = [
-        \Haxibiao\Base\Exceptions\GQLException::class,
+        \Haxibiao\Breeze\Exceptions\GQLException::class,
         \App\Exceptions\GQLException::class,
         \App\Exceptions\UserException::class,
         \App\Exceptions\UnregisteredException::class,
@@ -31,7 +28,7 @@ class LighthouseErrorHandler implements ErrorHandler
     {
         $underlyingException = $error->getPrevious();
 
-        if($underlyingException){
+        if ($underlyingException) {
             if (self::shouldReport($underlyingException)) {
                 self::reportSentry($error);
             }

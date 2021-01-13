@@ -9,7 +9,7 @@ use App\Traits\CanTag;
 use App\Traits\UserAttrs;
 use App\Traits\UserRepo;
 use App\Traits\UserResolvers;
-use Haxibiao\Base\Traits\AvatarHelper;
+use Haxibiao\Breeze\Traits\AvatarHelper;
 use Haxibiao\Content\Traits\UseContent;
 use Haxibiao\Media\Traits\UseMedia;
 use Haxibiao\Sns\Traits\CanFollow;

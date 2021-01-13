@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Haxibiao\Base\Model as BaseModel;
+use Haxibiao\Breeze\Model as BaseModel;
 
 class Model extends BaseModel
 {

@@ -4,7 +4,7 @@ namespace App\Traits;
 
 use App\User;
 use App\Withdraw;
-use Haxibiao\Base\Exceptions\GQLException;
+use Haxibiao\Breeze\Exceptions\GQLException;
 
 trait WithdrawFacade
 {
@@ -153,15 +153,15 @@ trait WithdrawFacade
 
         //贡献点检查
         //提现成功0.3元以上的，不再无门槛
-//        if ($user->successWithdrawAmount >= 0.3) {
-//            $needContributes = User::getAmountNeedDayContributes($amount);
-//            $leftContributes = $needContributes - $user->week_contribute;
-//            //无法完成该额度提现，提示需要的贡献值
-//            if ($leftContributes > 0) {
-//                $remark = sprintf('还差%s周贡献', $leftContributes);
-//                throw new GQLException($remark);
-//            }
-//        }
+        //        if ($user->successWithdrawAmount >= 0.3) {
+        //            $needContributes = User::getAmountNeedDayContributes($amount);
+        //            $leftContributes = $needContributes - $user->week_contribute;
+        //            //无法完成该额度提现，提示需要的贡献值
+        //            if ($leftContributes > 0) {
+        //                $remark = sprintf('还差%s周贡献', $leftContributes);
+        //                throw new GQLException($remark);
+        //            }
+        //        }
     }
 
     public static function getAllowAmount()

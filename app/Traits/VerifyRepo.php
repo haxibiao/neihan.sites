@@ -4,34 +4,33 @@ namespace App\Traits;
 
 use App\User;
 use App\Verify;
-use Haxibiao\Base\Exceptions\GQLException;
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use Haxibiao\Breeze\Exceptions\GQLException;
 
 trait VerifyRepo
 {
     public function sendSMSCode($phone, $action)
     {
-        $qb = User::wherePhone($phone);
+        $qb   = User::wherePhone($phone);
         $user = $qb->first();
-        if(!$user){
+        if (!$user) {
             throw new \App\Exceptions\GQLException('该手机号尚未绑定账号，请绑定后再试');
         }
         // 生成验证码
         $code = rand(1000, 9999);
 
         $data = [
-            'phone' => $user->phone,
-            'code' => $code,
-            'name' => $user->name ?? $user->phone,
+            'phone'  => $user->phone,
+            'code'   => $code,
+            'name'   => $user->name ?? $user->phone,
             'action' => self::getVerificationActions()[$action],
         ];
 
         $verify = Verify::create([
             'user_id' => $user->id,
-            'code' => $code,
+            'code'    => $code,
             'channel' => 'sms',
             'account' => $user->phone,
-            'action' => $action,
+            'action'  => $action,
         ]);
         // 发送验证码
         if ($this->sendSMS($data) != 1) {
@@ -40,20 +39,21 @@ trait VerifyRepo
         return $verify;
     }
 
-    public function sendLoginSMSCode( $phone, $action){
+    public function sendLoginSMSCode($phone, $action)
+    {
         // 生成验证码
         $code = rand(1000, 9999);
         $data = [
-            'phone' => $phone,
-            'code' => $code,
+            'phone'  => $phone,
+            'code'   => $code,
             'action' => self::getVerificationActions()[$action],
         ];
 
         $verify = Verify::create([
-            'code' => $code,
+            'code'    => $code,
             'channel' => 'sms',
-            'account' =>$phone,
-            'action' => $action,
+            'account' => $phone,
+            'action'  => $action,
         ]);
 
         // 发送验证码
@@ -68,7 +68,7 @@ trait VerifyRepo
     {
         $qb = Verify::where([
             'account' => $phone,
-            'action' => $action,
+            'action'  => $action,
         ]);
 
         if ($qb->exists()) {

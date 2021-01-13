@@ -6,7 +6,7 @@ use App\Contribute;
 use App\Jobs\ProcessWithdraw;
 use App\Withdraw;
 use GraphQL\Type\Definition\ResolveInfo;
-use Haxibiao\Base\Exceptions\GQLException;
+use Haxibiao\Breeze\Exceptions\GQLException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 trait WithdrawResolvers
@@ -14,12 +14,12 @@ trait WithdrawResolvers
     public function createWithdraw($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         //throw_if(true, UserException::class, '提现正在维护中，望请谅解~');
-        $user     = \getUser();
+        $user = \getUser();
         throw_if($user->is_disable, GQLException::class, '账号异常!');
 
         $amount   = $args['amount'];
         $platform = $args['platform'];
-        $wallet = $user->wallet;
+        $wallet   = $user->wallet;
 
         // 限制提现时间段
         Withdraw::checkWithdrawTime();
@@ -42,8 +42,8 @@ trait WithdrawResolvers
         }
 
         //提现老刷子随机提现
-        if($wallet->total_withdraw_amount>10){
-            throw_if(random_int(1,10)>2, GQLException::class, '当前提现人数过多，请晚些再来提现吧~');
+        if ($wallet->total_withdraw_amount > 10) {
+            throw_if(random_int(1, 10) > 2, GQLException::class, '当前提现人数过多，请晚些再来提现吧~');
         }
 
         // 可提现策略检查
@@ -114,13 +114,13 @@ trait WithdrawResolvers
         } else {
             $minAmount = 0.3;
         }
-        $tenTimesHighWithdrawCardsCount = 0;
+        $tenTimesHighWithdrawCardsCount  = 0;
         $fiveTimesHighWithdrawCardsCount = 0;
-        $doubleHighWithdrawCardsCount = 0;
+        $doubleHighWithdrawCardsCount    = 0;
         if ($user) {
-            $tenTimesHighWithdrawCardsCount = $user->tenTimesHighWithdrawCardsCount;;
+            $tenTimesHighWithdrawCardsCount  = $user->tenTimesHighWithdrawCardsCount;
             $fiveTimesHighWithdrawCardsCount = $user->fiveTimesHighWithdrawCardsCount;
-            $doubleHighWithdrawCardsCount = $user->doubleHighWithdrawCardsCount;
+            $doubleHighWithdrawCardsCount    = $user->doubleHighWithdrawCardsCount;
         }
 
         $withdrawInfo = [
