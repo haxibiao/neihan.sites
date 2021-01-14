@@ -258,9 +258,12 @@ class CategoryController extends Controller
                 return $q->orWhere('parent_id', $category->id);
             })->get();
         if (count($level_categories) == 0) {
-            $data['related_category'] = User::find($category->user_id)
-                ->adminCategories
-                ->take(5);
+            $user = $category->user;
+            $data['related_category'] = null;
+            if($user){
+                $data['related_category'] = $user->adminCategories()
+                    ->take(5);
+            }
         } else {
             $data['related_category'] = $level_categories;
         }
