@@ -34,13 +34,13 @@ class IssueController extends Controller
     public function bonused()
     {
         $category = null;
-        $qb       = Issue::with('latestAnswer.article')
+        $qb       = Issue::with('latestResolution.article')
             ->orderBy('closed')
             ->orderBy('id', 'desc')
             ->where('bonus', '>', 0);
         $questions  = $qb->paginate(10);
         $categories = Category::where('count_questions', '>', 0)->orderBy('updated_at', 'desc')->take(7)->get();
-        $hot        = Issue::with('latestAnswer.article')->orderBy('hits', 'desc')->where('status', '>=', 0)->take(3)->get();
+        $hot        = Issue::with('latestResolution.article')->orderBy('hits', 'desc')->where('status', '>=', 0)->take(3)->get();
         return view('question.index')
             ->withHot($hot)
             ->withCategory($category)
