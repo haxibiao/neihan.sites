@@ -40,7 +40,7 @@ class IssueController extends Controller
             ->where('bonus', '>', 0);
         $questions  = $qb->paginate(10);
         $categories = Category::where('count_questions', '>', 0)->orderBy('updated_at', 'desc')->take(7)->get();
-        $hot        = Issue::with('latestResolution.article')->orderBy('hits', 'desc')->where('status', '>=', 0)->take(3)->get();
+        $hot        = Issue::with('latestResolution.article')->orderBy('hits', 'desc')->take(3)->get();
         return view('question.index')
             ->withHot($hot)
             ->withCategory($category)
