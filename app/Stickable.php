@@ -38,6 +38,7 @@ class Stickable extends Model
             ],
             'articles' => [
                 '首页-文章列表'  => '首页-文章列表',
+                '视频页-电影图解'  => '视频页-电影图解',
             ],
             'categories' => [
                 '首页-专题'      => '首页-专题',

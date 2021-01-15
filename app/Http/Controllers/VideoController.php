@@ -25,45 +25,85 @@ class VideoController extends Controller
     {
 
         $data = [];
-
+        $site = cms_get_site();
         //FIXME: 可以用Stickable的函数获取
         // 置顶 - 电影
-        $movies = Movie::latest('updated_at')->take(6)->get();
-
+//        注释的原因：暂时使用Stickable的函数获取内容
+//        $movies = Movie::latest('updated_at')->take(6)->get();
+        if ($site->stickyMovies()->byStickableName('视频页-电影')->count()) {
+            $movies =  $site->stickyMovies()
+                ->byStickableName('视频页-电影')
+                ->take(6)
+                ->get();
+        } else {
+            $movies =  indexTopMovies(6);
+        }
         //FIXME: 可以用Stickable的函数获取
         // 置顶 - 视频专题
         // $stick_video_cates = get_stick_video_cates();
-        $stick_video_cates = Category::whereType('video')->latest('updated_at')->take(3)->get();
-        $videos            = [];
-        foreach ($stick_video_cates as $video_cate) {
-            $data[$video_cate->name] = $video_cate->videoPosts()->orderby('updated_at')->take(3)->get();
-        }
-
-        //FIXME: 可以用Stickable的函数获取
-        //置顶 -图解专题
-        $categories = Category::orderBy('count_videos', 'desc')
-            ->where('type', 'diagrams')
-            ->take(3)
-            ->get();
-        foreach ($categories as $category) {
-            $articles = Article::where('category_id', $category->id)
-                ->where('status', '>', 0)
-                ->orderByDesc('hits')
+//        注释的原因：暂时使用Stickable的函数获取内容
+//        $stick_video_cates = Category::whereType('video')->latest('updated_at')->take(3)->get();
+//        $videos            = [];
+//        foreach ($stick_video_cates as $video_cate) {
+//            $data[$video_cate->name] = $video_cate->videoPosts()->orderby('updated_at')->take(3)->get();
+//        }
+        if ($site->stickyCategories()->whereType('video')->byStickableName('视频页-视频专题')->count()) {
+            $catehories =  $site->stickyCategories()
+                ->whereType('video')
+                ->byStickableName('视频页-视频专题')
                 ->take(3)
                 ->get();
-            if (!$articles->isEmpty()) {
-                $data[$category->name] = $articles;
-            }
+        } else {
+            $catehories =  indexTopCategories(3);
+        }
+        foreach ($catehories as $video_cate) {
+            $data[$video_cate->name] = $video_cate->videoPosts()->orderby('updated_at')->take(3)->get();
+        }
+        //FIXME: 可以用Stickable的函数获取
+        //置顶 -图解专题
+//        注释的原因：暂时使用Stickable的函数获取内容
+//        $categories = Category::orderBy('count_videos', 'desc')
+//            ->where('type', 'diagrams')
+//            ->take(3)
+//            ->get();
+//        foreach ($categories as $category) {
+//            $articles = Article::where('category_id', $category->id)
+//                ->where('status', '>', 0)
+//                ->orderByDesc('hits')
+//                ->take(3)
+//                ->get();
+//            if (!$articles->isEmpty()) {
+//                $data[$category->name] = $articles;
+//            }
+//        }
+        if ($site->stickyCategories()->whereType('diagrams')->byStickableName('视频页-图解专题')->count()) {
+            $catehories =  $site->stickyCategories()
+                ->whereType('diagrams')
+                ->byStickableName('视频页-图解专题')
+                ->take(3)
+                ->get();
+        } else {
+            $catehories =  indexTopCategories(3);
+        }
+        foreach ($catehories as $video_cate) {
+            $data[$video_cate->name] = $video_cate->videoPosts()->orderby('updated_at')->take(3)->get();
         }
 
         //FIXME: 可以用Stickable的函数获取
         //置顶 - 热门合集
         $collections = \App\Collection::orderBy('count', 'desc')->take(6)->get();
 
+        // 电影图解
+        $articles = $site->stickyArticles()->whereType('diagrams')
+            ->byStickableName('视频页-电影图解')
+            ->take(12)
+            ->get();
+
         return view('video.index')
             ->with('data', $data)
-            ->with('videos', $videos)
+            ->with('videos', [])
             ->with('collections', $collections)
+            ->with('articles', $articles)
             ->with('movies', $movies);
     }
 
