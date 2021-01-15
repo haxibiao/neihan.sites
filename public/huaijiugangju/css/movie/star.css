@@ -1,0 +1,93 @@
+.star-main {
+  padding-top: 22px;
+  position: relative;
+}
+
+a:hover {
+  color: #EB5488;
+}
+
+.star-top {
+  width: 100%;
+  margin: 0 0 20px;
+}
+
+.star-top .star-img {
+  padding-right: 8%;
+}
+
+.star-top .star-img .star-thumb {
+  display: block;
+  position: relative;
+  padding-top: 120%;
+  background-position: 50% 50% !important;
+  background-size: cover !important;
+  overflow: hidden;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.star-top .star-detail {
+  padding-left: 0;
+}
+
+.star-top .star-detail h1 {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: bold;
+}
+
+.star-top .star-detail ul {
+  padding: 20px 0;
+}
+
+.star-top .star-detail ul li {
+  font-size: 15px;
+  line-height: 28px;
+}
+
+.star-top .star-detail ul li span.meta {
+  color: #999;
+}
+
+.star-bottom {
+  width: 100%;
+  margin: 0;
+  padding: 0 20px;
+}
+
+.star-bottom h2,
+.star-bottom h3 {
+  font-size: 16px;
+  line-height: 26px;
+  font-weight: bold;
+}
+
+.star-bottom h3 {
+  margin-top: 20px;
+}
+
+.star-bottom .movie-row {
+  margin: 0 -15px 0 0;
+}
+
+.star-bottom .movie-row .movie-box {
+  padding-right: 15px;
+}
+
+.star-bottom .movie-row .movie-box .movie-thumb .pic-text {
+  text-align: center;
+}
+
+.star-bottom .movie-row .movie-box .movie-thumb .pic-text.pic-bottom {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.star-bottom .movie-row .movie-box .movie-thumb .pic-text.pic-episode {
+  opacity: 0;
+}
+
+.star-bottom .movie-row .movie-box .movie-thumb .pic-text.pic-year-bottom {
+  opacity: 1;
+}
+

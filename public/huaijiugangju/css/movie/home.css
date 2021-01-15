@@ -1,0 +1,530 @@
+@charset "UTF-8";
+
+/* * {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+} */
+
+#banner {
+  width: 1200px;
+  /* 最好为图片真实宽度的一半 */
+  height: 482px;
+  /* 最好为图片真实高度的一半 */
+  /* margin: 50px auto; */
+  /* border-radius: 10px; */
+  overflow: hidden;
+  /* border: 1px #000 solid; */
+  /* 加上边框便于观察 */
+  position: relative;
+}
+
+@media (max-width: 576px) {
+  #banner {
+    height: 300px;
+  }
+}
+
+#banner #bg img {
+  width: 1200px;
+  height: 482px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  /* 图片高度也等比缩小 */
+}
+
+@media (max-width: 576px) {
+  #banner #bg img {
+    height: 300px;
+  }
+}
+
+#banner li {
+  float: left;
+}
+
+#banner #aList li {
+  width: 100px;
+  height: 80px;
+  /* border-radius: 10px; */
+  background: rgba(0, 0, 0, 0.5);
+  display: inline-block;
+  margin: 0 5px;
+}
+
+#banner #aList li img {
+  width: 100px;
+  height: 80px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border: 1px solid #fff;
+  cursor: pointer;
+  transition: all 0.6s;
+}
+
+.transformImg {
+  transform: scale(1.4);
+}
+
+#banner #aList li:hover {
+  cursor: pointer;
+}
+
+#banner #aList::-webkit-scrollbar {
+  display: none;
+}
+
+#banner #aList {
+  width: 100%;
+  /* height: 80px; */
+  background: rgba(0, 0, 0, 0.5);
+  margin: 0 auto;
+  position: absolute;
+  /* bottom: 10px; */
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  /* margin-left: -60px; */
+  /* 轮播图数据过多超出屏幕可滚动 */
+  /* overflow-x: scroll; */
+  list-style: none;
+  white-space: nowrap;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* width: auto; */
+}
+
+#banner .left,
+#banner .right {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  background: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 50%;
+  margin-top: -25px;
+  font-size: 35px;
+  font-family: bold;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  line-height: 45px;
+}
+
+#banner .left i.icon-arrow,
+#banner .right i.icon-arrow {
+  font-size: 40px;
+  line-height: 50px;
+}
+
+#banner .left:hover,
+#banner .right:hover {
+  background: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+#banner .left {
+  left: 20px;
+}
+
+#banner .right {
+  right: 20px;
+}
+
+@media (min-width: 991px) {
+  .carousel-item {
+    padding-top: 400px;
+  }
+
+  .movie_carousel {
+    height: 400px;
+  }
+}
+
+.header-top-bg {
+  height: 60px;
+}
+
+.d-block {
+  position: relative;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.module-style {
+  padding-bottom: 0;
+}
+
+.hot-movies-intro {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.hot-movies-intro .movie-info {
+  position: absolute;
+  left: 15px;
+  right: 15px;
+  opacity: 1;
+}
+
+.hot-movies-intro .movie-info .movie-name {
+  text-align: center;
+  font-family: 'SimSun';
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 30px 0 35px;
+}
+
+.hot-movies-intro .movie-info .movie-abstract {
+  text-align: center;
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1.8rem;
+  font-weight: 300;
+  height: 5.4rem;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.hot-movies-intro .movie-info.show {
+  visibility: visible;
+  z-index: 1;
+  opacity: 1;
+}
+
+.hot-movies-panel {
+  width: 100%;
+  height: 300px;
+  position: relative;
+  transform-style: preserve-3d;
+  perspective: 1800px;
+  z-index: 1;
+  margin-left: -44px;
+  margin-top: 270px;
+}
+
+.hot-movies-panel img:not([src]) {
+  visibility: hidden;
+}
+
+.hot-movies-panel .movie-item {
+  width: 100%;
+  height: 262px;
+  position: absolute;
+  transition: 0.8s ease-in-out;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.hot-movies-panel .movie-item .movie-pic {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: none;
+     object-fit: none;
+}
+
+.recommend-panel {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.right-list {
+  background-color: #fff;
+  margin-bottom: 20px;
+}
+
+.movies-panel-container {
+  position: relative;
+  z-index: 1;
+  display: block;
+}
+
+.movies-panel-container .carousel-box {
+  width: 100%;
+  background-color: #fff;
+  margin-bottom: 20px;
+}
+
+.movies-panel {
+  width: 100%;
+  background-color: #fff;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.movies-panel .panel-head {
+  position: relative;
+  width: 100%;
+  height: 26px;
+  line-height: 26px;
+  vertical-align: middle;
+  padding: 0 0 0 10px;
+  margin-bottom: 5px;
+}
+
+.movies-panel .panel-head .title {
+  float: left;
+  height: 26px;
+  font-size: 22px;
+  line-height: 26px;
+  position: relative;
+  font-weight: 700;
+}
+
+.movies-panel .panel-head .more {
+  float: right;
+  line-height: 26px;
+  color: #999;
+  font-family: PingFangTC-Light, 微軟正黑體, Microsoft JhengHei, Open Sans, sans-serif;
+}
+
+.movies-panel .panel-head .more .badge {
+  display: inline-block;
+  vertical-align: middle;
+  width: 26px;
+  height: 26px;
+  text-align: center;
+  line-height: 26px;
+  font-size: 20px;
+  color: #999;
+  position: relative;
+  top: -2px;
+  padding: 0;
+  font-weight: normal;
+}
+
+.movies-panel .movie-list .movie-row {
+  margin: 0 -10px 0 10px;
+}
+
+.movies-panel .movie-list .movie-row .movie-box {
+  padding-right: 20px;
+}
+
+.movies-panel .movie-list .movie-row .star-box {
+  margin: 10px 20px 15px 0;
+  background-color: #F2F1F1;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.movies-panel .movie-list .movie-row .star-box .star-thumb {
+  display: block;
+  position: relative;
+  padding-top: 110%;
+  background-position: 50% 50% !important;
+  background-size: cover !important;
+  overflow: hidden;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.movies-panel .movie-list .movie-row .star-box .star-detail {
+  text-align: center;
+  margin: 8px 0;
+}
+
+.movies-panel .movie-list .movie-row .star-box .star-detail .title {
+  font-size: 14px;
+}
+
+.movie-list_title {
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #FFFFFF;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.movie-list_title .movie-list_box {
+  padding: 10px 10px 10px 0;
+}
+
+.movie-list_title .movie-list_box .movie-title {
+  display: inline-block;
+  font-size: 15px;
+  line-height: 18px;
+}
+
+.movie-list_title .movie-list_box .movie-title:before {
+  content: ' ';
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 1px;
+  border-radius: 1px;
+}
+
+.movie-list_title .movie-list_box .badge {
+  float: right;
+}
+
+.video-list-item {
+  width: 100%;
+  padding: 0 10px 0 20px;
+}
+
+.video-list-item .panel_head {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.video-list-item .panel_head .title {
+  float: left;
+  padding-right: 10px;
+  font-size: 22px;
+  line-height: 26px;
+  color: #222;
+  font-weight: 700;
+}
+
+.video-list-item .panel_head .more {
+  font-size: 14px;
+  line-height: 24px;
+  color: #999;
+}
+
+.video-list-item .panel_head:after {
+  border-bottom: 1px solid;
+  border-color: #eee;
+  content: ' ';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 1px;
+}
+
+.video-list-item .panel_body .line {
+  border-bottom: 1px solid #F5F5F5;
+}
+
+.video-list-item .panel_body .video_text .video_detail {
+  padding: 10px 0;
+  white-space: nowrap;
+  position: relative;
+}
+
+.video-list-item .panel_body .video_text .video_detail .detail-thumb {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.video-list-item .panel_body .video_text .video_detail .detail-thumb .video_thumb {
+  position: relative;
+  display: block;
+  width: 70px;
+  padding-top: 150%;
+  background-position: 50% 50% !important;
+  background-size: cover !important;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.video-list-item .panel_body .video_text .video_detail .detail-side {
+  display: inline-block;
+  padding: 0 0 0 10px;
+  width: calc(100% - 70px);
+}
+
+.video-list-item .panel_body .video_text .video_detail .detail-side .title {
+  font-size: 14px;
+  line-height: 20px;
+  color: #FF443F;
+}
+
+.video-list-item .panel_body .video_text .video_detail .detail-side .info {
+  font-size: 12px;
+  line-height: 16px;
+  color: #888;
+}
+
+.video-list-item .panel_body .video_text .badge {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+  width: 18px;
+  height: 18px;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 2px;
+  font-size: 16px;
+  color: #333;
+  position: relative;
+  top: -2px;
+  padding: 10px 0;
+  font-weight: normal;
+  float: left;
+}
+
+.video-list-item .panel_body .video_text > li:nth-of-type(1) .first-badge {
+  color: #ff4a4a;
+  position: absolute;
+  top: 10px;
+  left: 0;
+  z-index: 2;
+}
+
+.video-list-item .panel_body .video_text > li:nth-of-type(1) .badge {
+  color: #ff4a4a;
+}
+
+.video-list-item .panel_body .video_text > li:nth-of-type(2) .first-badge {
+  color: #ff7701;
+  position: absolute;
+  top: 10px;
+  left: 0;
+  z-index: 2;
+}
+
+.video-list-item .panel_body .video_text > li:nth-of-type(2) .badge {
+  color: #ff7701;
+}
+
+.video-list-item .panel_body .video_text > li:nth-of-type(3) .first-badge {
+  color: #ffb400;
+  position: absolute;
+  top: 10px;
+  left: 0;
+  z-index: 2;
+}
+
+.video-list-item .panel_body .video_text > li:nth-of-type(3) .badge {
+  color: #ffb400;
+}
+
+.video-list-item .panel_body .video_text .movie-title {
+  display: block;
+  padding: 10px 0 10px 0;
+  font-size: 16px;
+  line-height: 20px;
+  color: #222;
+}
+
+.video-list-item .panel_body .video_text .movie-title:hover {
+  color: #EB5488;
+}
+
+.video-list-item .panel_body .video_text .description {
+  display: block;
+  color: #999;
+  font-size: 13px;
+  line-height: 18px;
+  padding-top: 10px;
+}
+
+a:hover {
+  color: #EB5488;
+}
+

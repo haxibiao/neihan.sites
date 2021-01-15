@@ -1,5 +1,5 @@
-let mix = require("laravel-mix");
-let { env } = require("minimist")(process.argv.slice(2));
+let mix = require('laravel-mix');
+let { env } = require('minimist')(process.argv.slice(2));
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -11,8 +11,8 @@ let { env } = require("minimist")(process.argv.slice(2));
  |
  */
 
-require(`${__dirname}/resources/themes/huaijiugangju/webpack.mix.js`);
+require(`${__dirname}/webpack.mix.breeze.js`);
 
-require(`${__dirname}/webpack.mix.default.js`);
+//项目下的css js
 
-mix.browserSync("l.diudie.com");
+mix.browserSync('l.diudie.com');

@@ -1,0 +1,248 @@
+.video-main {
+  padding-top: 22px;
+  position: relative;
+}
+
+@media (min-width: 1230px) {
+  .main-left {
+    padding-left: 0;
+  }
+
+  .side-right {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 991px) {
+  .side-right {
+    margin-top: 25px;
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 991px) {
+  .related-video-pannel {
+    display: none;
+  }
+}
+
+a:hover {
+  color: #32a6f9;
+}
+
+h3.title {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 700;
+}
+
+.like-pannel_head,
+.play-pannel_head,
+.related-pannel_head {
+  display: inline-block;
+  width: 100%;
+  height: 40px;
+}
+
+.play-list .play-pannel_head {
+  border-bottom: 1px solid #EEEEEE;
+  margin-bottom: 10px;
+}
+
+.play-list .episode-list {
+  margin-left: 0;
+  width: 100%;
+}
+
+.play-list .episode-list .episode-list-ul {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -15px 10px 0;
+}
+
+.play-list .episode-list .episode-list-ul .episode-list-li {
+  padding: 15px 15px 0 0;
+}
+
+.play-list .episode-list .episode-list-ul .episode-list-li a {
+  display: inline-block;
+  border: 1px solid #EEEEEE;
+  padding: 10px 0;
+  border-radius: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.play-list .episode-list .episode-list-ul .episode-list-li a .text-episode {
+  color: #333333;
+  font-size: 15px;
+  line-height: 18px;
+}
+
+.play-list .episode-list .episode-list-ul .episode-list-li a:hover {
+  background-color: #E66C97;
+}
+
+.play-list .episode-list .episode-list-ul .episode-list-li a:hover .text-episode {
+  color: #fff;
+}
+
+.intro-pannel div.intro {
+  display: block;
+  line-height: 28px;
+  overflow: hidden;
+  color: #999999;
+}
+
+.intro-pannel div.ellipsis {
+  display: block;
+  line-height: 28px;
+  color: #999999;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.like-pannel .movie-list,
+.related-video-pannel .movie-list {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.like-pannel .movie-list .movie-box,
+.related-video-pannel .movie-list .movie-box {
+  padding-right: 20px;
+}
+
+.side-right {
+  padding-left: 20px;
+}
+
+.qrcode-module .text-info {
+  color: #999999;
+}
+
+.qrcode-module .qrcode {
+  padding: 10px 0;
+}
+
+.qrcode-module .qrcode .img-qrcode {
+  max-width: 160px;
+  vertical-align: middle;
+}
+
+.recommend-module .rc-title {
+  width: 100%;
+  height: 20px;
+  line-height: 20px;
+  font-size: 16px;
+  color: #222;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.recommend-module .rc-list {
+  width: 100%;
+  margin: 0;
+}
+
+.recommend-module .rc-list .rc-item {
+  width: 100%;
+  height: 80px;
+  padding: 0;
+  margin-bottom: 14px;
+}
+
+.rc-item .cover-wrapper {
+  position: relative;
+  display: block;
+  float: left;
+  width: 130px;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.rc-item .cover-wrapper:hover .duration,
+.rc-item .cover-wrapper:hover .video-mask {
+  opacity: 1;
+}
+
+.rc-item .cover-wrapper:hover .common-lazy-img {
+  transform: scale(1.2);
+}
+
+.rc-item .cover-wrapper .common-lazy-img {
+  width: 100%;
+  height: 100%;
+  transition: all 4s linear;
+}
+
+.rc-item .cover-wrapper .common-lazy-img img {
+  width: 100%;
+  height: 100%;
+  border-radius: 2px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.rc-item .cover-wrapper .video-mask {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.rc-item .cover-wrapper .duration {
+  opacity: 0;
+  position: absolute;
+  bottom: 2px;
+  right: 6px;
+  color: #fff;
+  font-size: 12px;
+  height: 12px;
+  line-height: 12px;
+  padding: 0 0 1px 5px;
+  transition: all 0.3s;
+  z-index: 5;
+}
+
+.rc-item .info-wrapper {
+  padding-left: 140px;
+  height: 100%;
+}
+
+.rc-item .info-wrapper .video-title {
+  display: block;
+  height: 36px;
+  line-height: 18px;
+  font-size: 14px;
+  margin-bottom: 28px;
+  transition: color 0.3s ease;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.rc-item .info-wrapper .video-count {
+  height: 16px;
+  line-height: 16px;
+  font-size: 12px;
+  color: #999;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.video-comment {
+  margin-top: 6px;
+}
+
