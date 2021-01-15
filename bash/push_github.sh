@@ -22,4 +22,4 @@ cd /data/www/neihan.sites/packages/haxibiao/cms && git push github master
 cd /data/www/neihan.sites/packages/haxibiao/dimension && git push github master
 
 echo " - Breeze 代码 "
-cd /data/www/neihan.sites/packages/haxibiao/base && git push github master
+cd /data/www/neihan.sites/packages/haxibiao/breeze && git push github master

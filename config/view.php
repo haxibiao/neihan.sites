@@ -19,7 +19,7 @@ return [
 
         //FIXME breeze:install的时候，替换这段过来
         // $vendor_path = "__DIR__ . '/../packages/haxibiao";
-        __DIR__ . '/../packages/haxibiao/breeze/resources/views',
+        // __DIR__ . '/../packages/haxibiao/breeze/resources/views',
     ],
 
     /*
