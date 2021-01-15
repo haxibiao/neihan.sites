@@ -96,7 +96,7 @@ Route::get('/video/{id}', 'VideoController@show');
 Route::get('/video/{id}/process', 'VideoController@processVideo');
 Route::resource('/video', 'VideoController');
 
-Route::get('/share/collection/{id}', CollectionController::class . '@shareCollection');
+//Route::get('/share/collection/{id}', CollectionController::class . '@shareCollection');
 
 //weixin
 Route::get('/wechat', 'WechatController@serve');
