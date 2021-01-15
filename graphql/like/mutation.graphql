@@ -1,16 +1,15 @@
-extend type Mutation  @guard(with: ["api"]){
+extend type Mutation {
     """
-    点赞
+    用户的点赞操作
     """
-    like(user_id: Int!, liked_id: Int!, liked_type: String!): Like! @field(resolver: "App\\Like@resolveCreate")
-    """
-    取消点赞
-    """
-    unlike(id: Int! @eq): Like @delete
-    """
-    切换点赞/取消点赞
-    """
-    toggleLike(liked_id: Int!, liked_type: LikeType!): Like!
-      @field(resolver: "App\\Like@resolveToggleLike")
+    toggleLike(id: Int!, type: LikableEnumType, undo: Boolean): Like
+        @field(resolver: "App\\Like@resolveToggleLike")
 }
 
+enum LikableEnumType {
+    articles
+    questions
+    comments
+    videos
+    posts
+}

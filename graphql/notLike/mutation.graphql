@@ -1,0 +1,4 @@
+extend type Mutation {
+    notLike(notlike_id: Int!): NotLike
+        @field(resolver: "App\\NotLike@resolveStore")
+}

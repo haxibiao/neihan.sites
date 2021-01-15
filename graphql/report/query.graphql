@@ -1,7 +1,10 @@
-type Report {
-  id: Int!
-  user: User
-  reason:String
-  created_at: DateTime!
-  updated_at: DateTime!
+type Report{
+    id:ID
+    """
+    举报原因
+    """
+    reason: String
+    created_at: DateTime
+    user: User
+    question: Question
 }

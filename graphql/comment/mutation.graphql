@@ -1,19 +1,18 @@
-extend type Mutation @middleware(checks: ["auth:api"]) {
-  addComment(
-    commentable_id: Int!
-    commentable_type: commentType!
-    body: String!
-  ): Comment!
-    @field(resolver: "App\\Comment@create")
+extend type Mutation {
+    """
+    创建评论
+    """
+    createComment(
+        content: String
+        comment_id: Int
+        images: [String]
+        id: Int
+        type: CommentTableEnum
+    ): Comment @field(resolver: "App\\Comment@resolveCreateComment")
 
-  acceptComments(comment_ids: [Int]!): [Comment]!
-    @field(resolver: "App\\Comment@accept")
-
-  deleteComment(id: Int!): Comment! @delete
-}
-enum commentType {
-  articles @enum(value: "posts")
-  comments
-  feedbacks
-  posts
+    """
+    删除评论
+    """
+    deleteComment(id: Int!): Int
+        @field(resolver: "App\\Comment@resolveRemoveComment")
 }

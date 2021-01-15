@@ -1,3 +1,11 @@
 extend type Mutation {
-        toggleFavorited(article_id: Int!): Favorite! @field(resolver: "App\\Favorite@toggleFavorite")
+    toggleFavorite(type: FavorableEnum!, id: Int!): Favorite
+        @field(resolver: "App\\Favorite@resolveToggleFavorite")
 }
+
+enum FavorableEnum {
+    QUESTION @enum(value: "questions")
+    POSTS @enum(value: "posts")
+    ARTICLE @enum(value: "articles")
+}
+#TODO:favorable_type给默认值

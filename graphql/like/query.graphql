@@ -1,34 +1,29 @@
 type Like {
-  id: Int!
-  user: User!
-  liked_id: Int!
-  liked_type: String!
-  created_at: DateTime!
-  updated_at: DateTime!
-  """
-  暂时借道用于动态
-  """
-  article: Article @rename(attribute: "post")
-  """
-  动态
-  """
-  post: Post
-  question: Question
-  comment: Comment
-  liked: Boolean
-  isLiked:Boolean @rename(attribute:"liked")
-}
-extend type Query {
-  """
-  点赞列表
-  """
-  likes(user_id: Int! @eq, liked_type: String!, orderBy: [OrderByClause!] @orderBy): Like
-    @paginate(defaultCount: 10, builder: "App\\Like@resolveLikes")
+    id: Int!
+    """
+    点赞的用户
+    """
+    user: User @belongsTo
+    """
+    点赞的评论
+    """
+    comment: Comment
+    """
+    点赞的题目
+    """
+    question: Question
+    """
+    点赞的动态
+    """
+    post: Post
+    comment: Comment
+    created_at: String
 }
 
-enum LikeType {
-  VIDEO @enum(value: "posts")
-  ARTICLE @enum(value: "posts")
-  COMMENT @enum(value: "comments")
-  POST    @enum(value:"posts")
+extend type Query {
+    """
+    用户的点赞记录
+    """
+    likes(user_id: Int!, first: Int): [Like!]
+        @paginate(defaultCount: 10, builder: "App\\Like@resolveLikes")
 }
