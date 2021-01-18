@@ -6,6 +6,8 @@ use Closure;
 use GraphQL\Error\Debug;
 use GraphQL\Error\Error;
 use GraphQL\Error\FormattedError;
+use Haxibiao\Breeze\Exceptions\UnregisteredException;
+use Haxibiao\Breeze\Exceptions\UserException;
 use Illuminate\Support\Arr;
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
 use Nuwave\Lighthouse\Execution\ErrorHandler;
@@ -17,8 +19,8 @@ class LighthouseErrorHandler implements ErrorHandler
     protected static $dontReport = [
         \Haxibiao\Breeze\Exceptions\GQLException::class,
         \App\Exceptions\GQLException::class,
-        \App\Exceptions\UserException::class,
-        \App\Exceptions\UnregisteredException::class,
+        UserException::class,
+        UnregisteredException::class,
         \App\Exceptions\ValidationExcetion::class,
         \Illuminate\Auth\AuthenticationException::class,
         \Illuminate\Database\Eloquent\ModelNotFoundException::class,

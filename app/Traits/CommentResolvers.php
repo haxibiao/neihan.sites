@@ -1,38 +1,38 @@
 <?php
 namespace App\Traits;
 
-use App\Article;
 use App\Comment;
 use App\Contribute;
 use App\Exceptions\GQLException;
-use App\Exceptions\UserException;
 use App\Gold;
-use App\Resolution;
-use Haxibiao\Helpers\BadWordUtils;
+use Haxibiao\Breeze\Exceptions\UserException;
+use Haxibiao\Content\Solution;
+use Haxibiao\Helpers\utils\BadWordUtils;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 trait CommentResolvers
 {
-    public function resovleComments($root, array $args, $context){
+    public function resovleComments($root, array $args, $context)
+    {
 
-        $query = Comment::orderBy('is_accept','desc')
-            ->orderBy('id','desc');
+        $query = Comment::orderBy('is_accept', 'desc')
+            ->orderBy('id', 'desc');
 
-        $query->when( isset($args['commentable_id'] ) , function ($q) use ($args){
+        $query->when(isset($args['commentable_id']), function ($q) use ($args) {
             return $q->where('commentable_id', $args['commentable_id']);
         });
 
-        $query->when( isset($args['commentable_type'] ) , function ($q) use ($args){
+        $query->when(isset($args['commentable_type']), function ($q) use ($args) {
             $commentable_type = $args['commentable_type'];
-            if($args['commentable_type'] == 'articles'){
+            if ($args['commentable_type'] == 'articles') {
                 $commentable_type = 'posts';
             }
             return $q->where('commentable_type', $commentable_type);
         });
 
-        $query->when( isset($args['user_id'] ) , function ($q) use ($args){
+        $query->when(isset($args['user_id']), function ($q) use ($args) {
             return $q->where('user_id', $args['user_id']);
         });
         return $query;
@@ -44,7 +44,6 @@ trait CommentResolvers
      * @param array $args
      * @param $context
      * @return Comment
-     * @throws \App\Exceptions\UnregisteredException
      */
     public function create($root, array $args, $context)
     {
@@ -62,33 +61,33 @@ trait CommentResolvers
         $commentable_type = $args['commentable_type'];
 
         // 注释的原因：问答这块的逻辑与Article分开
-//        if ($args['commentable_type'] == 'articles') {
-//            $article = Article::findOrFail($args['commentable_id']);
-//            $type    = $article->type;
-//            //评论视频问答
-//            if ($type == 'issue') {
-//                $issue = $article->issue;
-//
-//                //该问答未结束
-//                if (!$issue->closed) {
-//                    //之前回答过这个问题，变成补充。
-//                    $comment = $article->comments()
-//                        ->where('user_id', $user->id)->first();
-//                    if ($comment) {
-//                        $comment->body = $comment->body . "\r\n\r\n" . now() . '补充：' . "\r\n" . $args['body'];
-//                        $comment->save();
-//                        return $comment;
-//                    }
-//                }
-//            }
-//        }
+        //        if ($args['commentable_type'] == 'articles') {
+        //            $article = Article::findOrFail($args['commentable_id']);
+        //            $type    = $article->type;
+        //            //评论视频问答
+        //            if ($type == 'issue') {
+        //                $issue = $article->issue;
+        //
+        //                //该问答未结束
+        //                if (!$issue->closed) {
+        //                    //之前回答过这个问题，变成补充。
+        //                    $comment = $article->comments()
+        //                        ->where('user_id', $user->id)->first();
+        //                    if ($comment) {
+        //                        $comment->body = $comment->body . "\r\n\r\n" . now() . '补充：' . "\r\n" . $args['body'];
+        //                        $comment->save();
+        //                        return $comment;
+        //                    }
+        //                }
+        //            }
+        //        }
         $comment                   = new Comment();
         $comment->user_id          = $user->id;
         $comment->commentable_type = $commentable_type;
         $comment->commentable_id   = $args['commentable_id'];
         $comment->body             = $args['body'];
         $comment->save();
-        app_track_event('用户',"评论");
+        app_track_event('用户', "评论");
         return $comment;
     }
 
@@ -99,7 +98,6 @@ trait CommentResolvers
      * @param $context
      * @return mixed
      * @throws GQLException
-     * @throws \App\Exceptions\UnregisteredException
      */
     public function accept($root, array $args, $context)
     {
@@ -128,7 +126,7 @@ trait CommentResolvers
             //该问题是免费问答
             if ($gold == 0) {
                 foreach ($comments as $comment) {
-                    $resolution           = new Resolution();
+                    $resolution           = new Solution();
                     $resolution->answer   = $comment->body;
                     $resolution->user_id  = $comment->user_id;
                     $resolution->issue_id = $commentable->issue_id;
@@ -142,7 +140,7 @@ trait CommentResolvers
             } else {
                 $individual = $gold / count($comment_ids);
                 foreach ($comments as $comment) {
-                    $resolution           = new Resolution();
+                    $resolution           = new Solution();
                     $resolution->answer   = $comment->body;
                     $resolution->user_id  = $comment->user_id;
                     $resolution->issue_id = $commentable->issue_id;

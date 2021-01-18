@@ -1,18 +1,17 @@
 <?php
 namespace App\Exceptions;
 
-use App\Exceptions\MessageError;
 // use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 use Exception;
 use Folklore\GraphQL\Error\ValidationError;
+use Haxibiao\Breeze\Exceptions\UnregisteredException;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
 
 class GraphQLExceptions
 {
     //不需要通知的异常放在下面
     protected static $dontReport = [
-        \App\Exceptions\UnregisteredException::class, //用户未登录异常
+        UnregisteredException::class, //用户未登录异常
         \App\Exceptions\ValidationExcetion::class, //自定义校验异常
         \Illuminate\Database\Eloquent\ModelNotFoundException::class, //模型找不到异常
     ];
@@ -34,12 +33,12 @@ class GraphQLExceptions
                 ->getValidatorMessages();
         }
 //        elseif (!($previous && $previous instanceof MessageError)) {
-//            if (is_prod()) {
-//                if (self::shouldReport($previous)) {
-//                    // \Bugsnag::notifyException($e);
-//                }
-//            }
-//        }
+        //            if (is_prod()) {
+        //                if (self::shouldReport($previous)) {
+        //                    // \Bugsnag::notifyException($e);
+        //                }
+        //            }
+        //        }
         //Log::debug('gql error: ' . json_encode($error));
         return $error;
     }
