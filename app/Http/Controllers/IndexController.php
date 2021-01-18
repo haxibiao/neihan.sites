@@ -15,21 +15,18 @@ class IndexController extends Controller
     {
         $data = (object) [];
 
-        //FIXME: 可以用Stickable的函数获取
         //置顶 - 电影 置顶优先原则（可无置顶）
         $data->movies = cmsTopMovies();
 
-        //FIXME: 可以用Stickable的函数获取
         //置顶 - 专题
         $data->categories = cmsTopCategories();
 
-        //FIXME: 可以用Stickable的函数获取
         //置顶 合集视频
         $data->videoPosts = cmsTopVideos();
 
-        //FIXME: 可以用Stickable的函数获取
         //首页文章 - 可置顶部分优质文章避免首页脏乱数据
         $data->articles = cmsTopArticles();
+
         return view('index.index')->with('data', $data);
     }
 
