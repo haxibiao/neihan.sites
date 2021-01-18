@@ -1,0 +1,190 @@
+type Movie {
+  id: ID
+  name: String
+  """
+  简介
+  """
+  introduction: String
+  """
+  影片简介(兼容答赚)
+  """
+  description: String @rename(attribute: "introduction")
+  """
+  伪装user发布者
+  """
+  user: User
+  """
+  封面
+  """
+  cover: String
+  """
+  导演
+  """
+  producer: String
+  """
+  年份
+  """
+  year: String
+  """
+  电影评分
+  """
+  score: Int
+  """
+  分类:动作科幻等
+  """
+  type: String
+  """
+  风格:武侠、玄幻
+  """
+  style: String
+  """
+  地区:美剧韩剧
+  """
+  region: String
+  """
+  演员
+  """
+  actors: String
+  """
+  总集数
+  """
+  count_series: Int
+  """
+  国家
+  """
+  country: String
+  """
+  语言
+  """
+  lang: String
+  """
+  点击次数
+  """
+  hits: Int
+  """
+  评分
+  """
+  score: String
+  """
+  语言
+  """
+  lang: String
+  """
+  剧集
+  """
+  data: [MovieData]
+  favorited: Boolean
+  created_at: DateTime
+  """
+  最近观看的集
+  """
+  last_watch_series: Int
+  """
+  最近观看的进度
+  """
+  last_watch_progress: String
+  """
+  评论
+  """
+  comments: [Comment] @MorphMany
+  """
+  评论数
+  """
+  count_comments: Int
+  """
+  收藏数
+  """
+  count_favorites: Int
+}
+
+extend type Query {
+  """
+  电影分类
+  """
+  categoryMovie(region: MovieCategory, type: String, style: String, country: String, lang: String, year: String, scopes: ScopesType): [Movie]
+    @paginate(defaultCount: 10, builder: "App\\Movie@resolversCategoryMovie")
+
+  """
+  获取过滤条件
+  """
+  getFilters: [MovieFilterData] @field(resolver: "App\\Movie@getFilters")
+
+  """
+  电影详情
+  """
+  movie(movie_id: ID!): Movie @field(resolver: "App\\Movie@resolversMovie")
+
+  """
+  电影推荐
+  """
+  recommendMovie(count: Int = 7): [Movie] @field(resolver: "App\\Movie@resolversRecommendMovie")
+
+  """
+  搜索电影
+  """
+  searchMovie(keyword: String!): [Movie] @paginate(defaultCount: 10, builder: "App\\Movie@resolversSearchMovie")
+
+  """
+  热门长视频
+  """
+  movies(user_id: Int, status: Int, keyword: String, orderBy: [OrderByClause!] @orderBy): [Movie!]
+    @paginate(builder: "App\\Movie@resolveMovies", defaultCount: 10)
+
+  """
+  分享长视频
+  """
+  shareMovie(id: ID!): MovieShareData @field(resolver: "App\\Movie@getSharePciture")
+}
+
+type MovieShareData {
+  title: String
+  covers: [String]
+}
+
+type MovieData {
+  url: String
+  name: String
+}
+
+enum MovieCategory {
+  ALL @enum(value: "ALL")
+  HAN @enum(value: "韩剧")
+  MEI @enum(value: "美剧")
+  RI @enum(value: "日剧")
+  GANG @enum(value: "港剧")
+  JIESHUO @enum(value: "解说")
+}
+
+enum ScopesType {
+  ALL @enum(value: "ALL")
+  """
+  最新
+  """
+  NEW @enum(value: "year")
+  """
+  最热
+  """
+  HOT @enum(value: "hits")
+  """
+  评分
+  """
+  SCORE @enum(value: "score")
+}
+
+type MovieFilterData {
+  """
+  搜索条件传递给搜索接口时，请务必使用对应的ID
+  """
+  id: String
+
+  """
+  筛选名称
+  """
+  filterName: String
+
+  """
+  筛选选项
+  """
+  filterOptions: [String]
+  filterValue: [String]
+}

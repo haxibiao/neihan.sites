@@ -1,0 +1,22 @@
+type MovieHistory {
+    id: ID
+    """
+    观看进度
+    """
+    progress: String
+    """
+    最后观看时间
+    """
+    last_watch_time: DateTime
+    """
+    剧集索引
+    """
+    series_index:Int @rename(attribute:"series_id")
+    movie: Movie
+}
+
+extend type Query @middleware(checks:["auth:api"]){
+    showMovieHistory : [MovieHistory] 
+    @paginate(defaultCount: 10, builder: "App\\MovieHistory@showMovieHistoryResolver")
+
+}

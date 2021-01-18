@@ -1,0 +1,71 @@
+type Activity {
+    id: ID
+
+    """
+    电影/电视剧
+    """
+    movie: Movie @belongsTo(relation: "movie")
+
+    """
+    排序, 值越大越靠前
+    """
+    sort: Int
+
+    """
+    类型 1:首页; 2:电视剧; 3:电影专题
+    """
+    type: Int
+
+    """
+    标题
+    """
+    title: String
+
+    """
+    副标题
+    """
+    subtitle: String
+
+    """
+    图片链接地址
+    """
+    image_url: String
+
+    """
+    创建时间
+    """
+    created_at: DateTime!
+    
+    """
+    更新时间
+    """
+    updated_at: DateTime!
+}
+extend type Query  {
+    """
+    获取指定类型的轮播图
+    """
+    activities(type: ActivityType=INDEX): [Activity]
+        @paginate(defaultCount:10,builder: "App\\Activity@getActivities")
+}
+
+enum ActivityType {
+    """
+    首页
+    """
+    INDEX  @enum(value: 1)
+    
+    """
+    电视剧
+    """
+    SERIES @enum(value: 2)
+    
+    """
+    电影专题
+    """
+    THEME  @enum(value: 3)
+    """
+    搜索页展示
+    """
+    SEARCH  @enum(value: 4)
+}
