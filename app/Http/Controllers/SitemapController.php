@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Article;
 use App\Category;
 use App\Movie;
