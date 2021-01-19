@@ -57,12 +57,13 @@ class EventServiceProvider extends ServiceProvider
         // \App\Article::observe(\App\Observers\ArticleObserver::class);
         \App\Follow::observe(\App\Observers\FollowObserver::class);
         \App\Report::observe(\App\Observers\ReportObserver::class);
-        \App\BadWord::observe(\App\Observers\BadWordObserver::class);
         \App\Notice::observe(\App\Observers\NoticeObserver::class);
-        \App\Contribute::observe(\App\Observers\ContributeObserver::class);
-        \Haxibiao\Media\Spider::observe(\App\Observers\SpiderObserver::class);
         \App\Spider::observe(\App\Observers\SpiderObserver::class);
-        \App\Gold::observe(\App\Observers\GoldObserver::class);
         \App\User::observe(\App\Observers\UserObserver::class);
+
+        \Haxibiao\Breeze\BadWord::observe(\App\Observers\BadWordObserver::class);
+        \Haxibiao\Task\Contribute::observe(\App\Observers\ContributeObserver::class);
+        \Haxibiao\Media\Spider::observe(\App\Observers\SpiderObserver::class);
+        \Haxibiao\Wallet\Gold::observe(\App\Observers\GoldObserver::class);
     }
 }

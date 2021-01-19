@@ -2,6 +2,7 @@
 
 namespace App\Nova\Metrics;
 
+use Haxibiao\Wallet\Wallet;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Value;
 
@@ -17,9 +18,9 @@ class WithDrawCount extends Value
      */
     public function calculate(Request $request)
     {
-        if($request->range=='0'){
-            return $this->result(\App\Wallet::where('type',0)->sum('total_withdraw_amount'));    
-        }else{
+        if ($request->range == '0') {
+            return $this->result(Wallet::where('type', 0)->sum('total_withdraw_amount'));
+        } else {
             return 0;
         }
     }

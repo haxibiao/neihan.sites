@@ -16,7 +16,7 @@ class Wallet extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Wallet';
+    public static $model = 'Haxibiao\Wallet\Wallet';
 
     // public static $displayInNavigation = false;
 

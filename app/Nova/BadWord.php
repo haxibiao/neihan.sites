@@ -14,7 +14,7 @@ class BadWord extends Resource
      *
      * @var string
      */
-    public static $model = 'App\BadWord';
+    public static $model = "Haxibiao\Breeze\BadWord";
 
     public static $displayInNavigation = false;
 

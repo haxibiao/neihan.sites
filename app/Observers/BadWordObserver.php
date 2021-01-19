@@ -2,8 +2,8 @@
 
 namespace App\Observers;
 
-use App\BadWord;
-use Haxibiao\Helpers\BadWordUtils;
+use Haxibiao\Breeze\BadWord;
+use Haxibiao\Helpers\utils\BadWordUtils;
 
 class BadWordObserver
 {

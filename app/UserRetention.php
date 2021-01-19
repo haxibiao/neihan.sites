@@ -2,17 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Haxibiao\Breeze\UserRetention as BreezeUserRetention;
 
-class UserRetention extends Model
+class UserRetention extends BreezeUserRetention
 {
-    const USERRETENTION_CACHE_KEY = 'user_retention_to_user_%s';
 
-    protected $fillable = [
-        'user_id',
-    ];
-
-    public function user(){
-        return $this->belongsTo(\App\User::class);
-    }
 }
