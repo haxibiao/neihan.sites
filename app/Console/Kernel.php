@@ -28,10 +28,11 @@ class Kernel extends ConsoleKernel
         //$schedule->command('video:process --codeinfo')->hourly();
 
         // 凌晨将金币转为钱包余额
-        $schedule->command('change:towallet')->daily();
+
+        $schedule->command('baidu:push')->daily('10:00');
         //每天凌晨3点标记一次热门分类
-        $schedule->command('mark:hotpost')->dailyAt('3:00');
-        $schedule->command('recount:novadata')->dailyAt('3:00');
+        // $schedule->command('mark:hotpost')->dailyAt('3:00');
+        // $schedule->command('recount:novadata')->dailyAt('3:00');
 
         //CMS的定时任务... cms provdier 自动加载
 
