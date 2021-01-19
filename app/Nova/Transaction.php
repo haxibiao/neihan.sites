@@ -2,15 +2,12 @@
 
 namespace App\Nova;
 
-use App\Nova\Wallet;
 use App\Nova\Resource;
-use Laravel\Nova\Fields\ID;
+use App\Nova\Wallet;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Http\Requests\NovaRequest;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Text;
 
 class Transaction extends Resource
 {
@@ -19,7 +16,7 @@ class Transaction extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Transaction';
+    public static $model = 'Haxibiao\Wallet\Transaction';
 
     public static $displayInNavigation = false;
 
@@ -36,9 +33,8 @@ class Transaction extends Resource
      * @var array
      */
     public static $search = [
-        'id','name'
+        'id', 'name',
     ];
-
 
     public static function label()
     {
@@ -56,10 +52,10 @@ class Transaction extends Resource
     {
         return [
             ID::make()->sortable(),
-            belongsTo::make('钱包ID', 'wallet',Wallet::class),
-            Text::make('类型','type'),
-            Text::make('记录','remark')->asHtml(),
-            Text::make('状态','status')
+            belongsTo::make('钱包ID', 'wallet', Wallet::class),
+            Text::make('类型', 'type'),
+            Text::make('记录', 'remark')->asHtml(),
+            Text::make('状态', 'status'),
         ];
     }
 
@@ -83,8 +79,8 @@ class Transaction extends Resource
     public function filters(Request $request)
     {
         return [
-            new  \App\Nova\Filters\Transaction\TransactionStatusType,
-            new  \App\Nova\Filters\Transaction\TransactionType,
+            new \App\Nova\Filters\Transaction\TransactionStatusType,
+            new \App\Nova\Filters\Transaction\TransactionType,
         ];
     }
 

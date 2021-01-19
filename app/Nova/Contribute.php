@@ -2,14 +2,12 @@
 
 namespace App\Nova;
 
-
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
-use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Contribute extends Resource
 {
@@ -18,7 +16,7 @@ class Contribute extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Contribute';
+    public static $model = 'Haxibiao\Task\Contribute';
 
     public static $with = ['user'];
 
@@ -49,7 +47,6 @@ class Contribute extends Resource
     public static $search = [
         'id',
     ];
-
 
     /**
      * Get the fields displayed by the resource.

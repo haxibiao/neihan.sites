@@ -14,7 +14,7 @@ class BlackList extends Resource
      *
      * @var string
      */
-    public static $model = 'App\BlackList';
+    public static $model = 'Haxibiao\Breeze\BlackList';
 
     /**
      * The single value that should be used to represent the resource when being displayed.

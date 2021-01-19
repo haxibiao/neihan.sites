@@ -2,7 +2,6 @@
 
 namespace App\Nova;
 
-use App\User as AppUser;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\DateTime;
@@ -17,7 +16,7 @@ class ReviewFlow extends Resource
      *
      * @var string
      */
-    public static $model = 'App\ReviewFlow';
+    public static $model = 'Haxibiao\Task\ReviewFlow';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -63,15 +62,15 @@ class ReviewFlow extends Resource
                 ->json(JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE)
                 ->showOnIndex(),
             Select::make('类型', 'type')->options([
-                \App\ReviewFlow::ADMIN_USER_SCOPE   => '运营选用',
-                \App\ReviewFlow::NORMAL_USER_SCOPE   => '用户可选用',
-            ])->displayUsingLabels()->withMeta(['type'=>0]),
+                \App\ReviewFlow::ADMIN_USER_SCOPE  => '运营选用',
+                \App\ReviewFlow::NORMAL_USER_SCOPE => '用户可选用',
+            ])->displayUsingLabels()->withMeta(['type' => 0]),
             Text::make('是否需要任务发布者检查', 'need_owner_review')->default(0),
             Text::make('是否需要官方人员检查', 'need_offical_review')->default(0),
             DateTime::make('开始时间', 'updated_at')->hideFromIndex(),
             DateTime::make('创建时间', 'created_at')->hideFromIndex(),
 
-            ];
+        ];
 
     }
 

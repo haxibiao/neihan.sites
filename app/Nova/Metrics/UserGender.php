@@ -2,8 +2,8 @@
 
 namespace App\Nova\Metrics;
 
-use App\Profile;
 use App\User;
+use Haxibiao\Breeze\UserProfile;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Partition;
 
@@ -18,7 +18,7 @@ class UserGender extends Partition
      */
     public function calculate(Request $request)
     {
-        return $this->count($request, Profile::class, 'gender')->label(function ($value) {
+        return $this->count($request, UserProfile::class, 'gender')->label(function ($value) {
             return in_array($value, User::getGenders()) ? $value : '未知';
         });
     }

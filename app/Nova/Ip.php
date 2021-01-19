@@ -20,7 +20,7 @@ class Ip extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Ip';
+    public static $model = 'Haxibiao\Breeze\Ip';
 
     /**
      * The single value that should be used to represent the resource when being displayed.

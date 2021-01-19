@@ -2,13 +2,12 @@
 
 namespace App\Nova;
 
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
-use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Gold extends Resource
 {
@@ -17,7 +16,7 @@ class Gold extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Gold';
+    public static $model = 'Haxibiao\Wallet\Gold';
 
     public static $with = ['user'];
 

@@ -15,7 +15,7 @@ class Withdraw extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Withdraw';
+    public static $model = 'Haxibiao\Wallet\Withdraw';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -50,22 +50,21 @@ class Withdraw extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('钱包ID','wallet_id'),
+            Text::make('钱包ID', 'wallet_id'),
             Select::make('状态', 'status')->options([
                 1  => '提现成功',
                 0  => '待处理',
                 -1 => '提现失败',
             ])->displayUsingLabels(),
 
-            Text::make('金额','amount'),
-            Text::make('提现账号',function(){
+            Text::make('金额', 'amount'),
+            Text::make('提现账号', function () {
                 return $this->wallet->pay_account;
             }),
-            Text::make('真实姓名',function(){
+            Text::make('真实姓名', function () {
                 return $this->wallet->real_name;
             }),
-            Text::make('支付平台','to_platform'),
-            
+            Text::make('支付平台', 'to_platform'),
 
             Text::make('备注', 'remark'),
             DateTime::make('创建时间', 'created_at'),
@@ -99,7 +98,7 @@ class Withdraw extends Resource
     public function filters(Request $request)
     {
         return [
-            new  \App\Nova\Filters\Transaction\WithDrawStatusType,
+            new \App\Nova\Filters\Transaction\WithDrawStatusType,
         ];
     }
 
