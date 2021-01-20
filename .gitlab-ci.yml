@@ -1,22 +1,27 @@
 go_production:
     stage: deploy
     script:
+        # 丢碟站群
         - ssh root@gz013 "cd /data/www/neihan.sites && git checkout master && git pull"
         - ssh root@gz013 "cd /data/www/neihan.sites && bash ops/bash/pull.sh"
         - ssh root@gz013 "cd /data/www/neihan.sites && bash ops/bash/env_beian.sh"
 
-        - ssh root@hk008 "cd /data/www/neihan.sites && git checkout master && git pull"
-        - ssh root@hk008 "cd /data/www/neihan.sites && bash ops/bash/pull.sh"
-        - ssh root@hk008 "cd /data/www/neihan.sites && bash ops/bash/env.sh"
+        # 影大全
+        # - ssh root@hk008 "cd /data/www/neihan.sites && git checkout master && git pull"
+        # - ssh root@hk008 "cd /data/www/neihan.sites && bash ops/bash/pull.sh"
+        # - ssh root@hk008 "cd /data/www/neihan.sites && bash ops/bash/env.sh"
 
+        # 曹汉站群
         - ssh root@jp002 "cd /data/www/neihan.sites && git checkout master && git pull"
         - ssh root@jp002 "cd /data/www/neihan.sites && bash ops/bash/pull.sh"
         - ssh root@jp002 "cd /data/www/neihan.sites && bash ops/bash/env.sh"
 
+        # 曹汉站群 2
         - ssh root@jp003 "cd /data/www/neihan.sites && git checkout master && git pull"
         - ssh root@jp003 "cd /data/www/neihan.sites && bash ops/bash/pull.sh"
         - ssh root@jp003 "cd /data/www/neihan.sites && bash ops/bash/env.sh"
 
+        # 曹汉站群 3
         - ssh root@jp004 "cd /data/www/neihan.sites && git checkout master && git pull"
         - ssh root@jp004 "cd /data/www/neihan.sites && bash ops/bash/pull.sh"
         - ssh root@jp004 "cd /data/www/neihan.sites && bash ops/bash/env.sh"
