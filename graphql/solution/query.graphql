@@ -1,30 +1,28 @@
-type  Solution{
-    id:Int,
-    issue:Issue,
-    user:User,
-    article:Int,
-    answer:String,
-    comments:[Comment]
-    image_urls:[String!],
-    image_url:String @rename(attribute: "image_cover")
-    count_likes:Int,
-    count_unlikes:Int,
-    count_comments:Int,
-    count_visits:Int,
-    created_at:DateTime,
-    updated_at:DateTime,
-    time_ago: String,
-    liked:Boolean,
+type Solution {
+    id: Int
+    issue: Issue
+    user: User
+    article: Int
+    answer: String
+    comments: [Comment]
+    image_urls: [String!]
+    image_url: String @rename(attribute: "image_cover")
+    count_likes: Int
+    count_unlikes: Int
+    count_comments: Int
+    count_visits: Int
+    created_at: DateTime
+    updated_at: DateTime
+    time_ago: String
+    liked: Boolean
 }
 extend type Query {
     #查询某个回答
-    solution(id:Int!@eq):Solution@field(resolver: "App\\Solution@querySolutionResolver")
+    solution(id: Int! @eq): Solution @field(resolver: "App\\Solution@querySolutionResolver")
     #查询某条问题的回答
-    solutions(issue_id:Int!):[Solution!]@paginate(defaultCount: 10  builder: "App\\Solution@querySolutionsResolver")
+    solutions(issue_id: Int!): [Solution!] @paginate(defaultCount: 10, builder: "App\\Solution@querySolutionsResolver")
 }
 
-extend type Query @middleware(checks: ["auth:api"]){
-    mySolutions(user_id:Int):[Solution!]@paginate(defaultCount: 10  builder: "App\\Solution@mySolutionsResolver")
+extend type Query @middleware(checks: ["auth:api"]) {
+    mySolutions(user_id: Int): [Solution!] @paginate(defaultCount: 10, builder: "App\\Solution@mySolutionsResolver")
 }
-
-

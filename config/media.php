@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Middleware\SetTheme;
-
 return [
     'hook'                           => env('MEDIA_HOOK'), //'http://datizhuanqian.com/api/media/hook'
     'spider'                         => [
@@ -13,10 +11,9 @@ return [
      * 电影模块配置
      */
     'movie'                          => [
-        'enable' => env('ENABLE_MOVIE', true),
+        'enable' => env('ENABLE_MOVIE', false),
         'middleware' => [
             'web',
-            SetTheme::class
         ],
     ],
 

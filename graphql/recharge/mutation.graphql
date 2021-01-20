@@ -1,0 +1,57 @@
+extend type Mutation {
+  """
+  获取充值订单签名
+  """
+  getRechargeSignature(
+    """
+    充值金额
+    """
+    amount: Float!
+    """
+    交易平台
+    """
+    platform: TradingPlatform = ALIPAY
+  ): PlatfromSignature @resolver(name: "Haxibiao\\Wallet\\Recharge@rsolverGetRechargeSignature")
+  """
+  效验 apple pay 状态
+  """
+  VerifyApplePay(
+    """
+    苹果回执
+    """
+    receipt: String!
+    """
+    内部交易单号
+    """
+    trade_no: String!
+    """
+    是否为沙箱环境
+    """
+    isSandBox: Boolean = true
+  ): Recharge @resolver(name: "Haxibiao\\Wallet\\Recharge@ResolverVerifyApplePay")
+}
+
+type PlatfromSignature {
+  ALIPAY: String
+  APPLE: String
+  WECHAT: JsonType
+  """
+  内部交易单号
+  """
+  trade_no: String
+}
+
+enum TradingPlatform {
+  """
+  微信
+  """
+  WECHAT
+  """
+  支付宝
+  """
+  ALIPAY
+  """
+  苹果
+  """
+  APPLE
+}

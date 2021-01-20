@@ -8,7 +8,7 @@ type Collection {
   """
   合集播放量
   """
-  count_views: String @rename(attribute:"count_plays")
+  count_views: String @rename(attribute: "count_plays")
   """
   封面图
   """
@@ -37,13 +37,13 @@ type Collection {
   ): PostPaginator @field(resolver: "App\\Collection@resolverPosts")
 }
 """
-  推荐集合列表
-  """
+推荐集合列表
+"""
 type CollectionsList {
-    topCover:String
-    topCollection: Collection
-    recommendCollectionsA: [Collection!]
-    recommendCollectionsB: [Collection!]
+  topCover: String
+  topCollection: Collection
+  recommendCollectionsA: [Collection!]
+  recommendCollectionsB: [Collection!]
 }
 
 extend type Query {
@@ -74,16 +74,31 @@ extend type Query {
   randomCollections(
     count: Int = 10
     page: Int = 1
+    order: PostOrderEnum = LATEST
   ): CollectionPaginator
     @field(resolver: "App\\Collection@resolveRandomCollections")
-
-
-    """
+  """
   推荐集合
   """
   recommendCollections: CollectionsList
-   @field(resolver:"App\\Collection@resolveRecommendCollections")
-  
+    @field(resolver: "App\\Collection@resolveRecommendCollections")
 
-
+  typeCollections(user_id:Int,type: CollectionEnum): [Collection]
+    @paginate(
+      defaultCount: 5
+      builder: "App\\Collection@resolveTypeCollections"
+    )
+    
 }
+
+
+enum IssueColumn {
+  HOT @enum(value: "count_answers")
+  LASTEST @enum(value: "created_at")
+}
+enum CollectionEnum {
+  POST @enum(value: "psots")
+  ARTICLE @enum(value: "articles")
+  AREA @enum(value: "areas")
+}
+

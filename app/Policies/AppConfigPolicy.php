@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\AppConfig;
-use App\User;
+use Haxibiao\Breeze\User;
+use Haxibiao\Config\AppConfig;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class AppConfigPolicy

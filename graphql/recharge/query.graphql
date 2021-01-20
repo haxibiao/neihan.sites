@@ -1,0 +1,22 @@
+type Recharge {
+  id: Int
+  user: User! @belongsTo
+  title: String
+  trade_no: String
+  status: String @rename(attribute: "status_msg")
+  amount: Float
+  platform: String @rename(attribute: "platform_msg")
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+extend type Query {
+  """
+  用户充值记录
+  """
+  recharges(user_id: Int! @eq): [Recharge!] @paginate(defaultCount: 10)
+  """
+  交易详情
+  """
+  recharge(trade_no: String! @eq): Recharge @find
+}

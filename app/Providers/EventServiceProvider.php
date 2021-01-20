@@ -13,21 +13,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\NewReport'  => [
-            'App\Listeners\SendNewReportNotification',
-        ],
-        'App\Events\NewLike'    => [
-            'App\Listeners\SendNewLikeNotification',
-        ],
-        'App\Events\NewFollow'  => [
-            'App\Listeners\SendNewFollowNotification',
-        ],
-        'App\Events\NewComment' => [
-            'App\Listeners\SendNewCommentNotification',
-        ],
-        'App\Events\NewMessage' => [
-            'App\Listeners\SendNewMessageNotification',
-        ],
+
     ];
     /**
      * 消息订阅者，
@@ -50,20 +36,5 @@ class EventServiceProvider extends ServiceProvider
 
         parent::boot();
 
-        // \App\Video::observe(\App\Observers\VideoObserver::class);
-        \App\Message::observe(\App\Observers\MessageObserver::class);
-        \App\Comment::observe(\App\Observers\CommentObserver::class);
-        \App\Like::observe(\App\Observers\LikeObserver::class);
-        // \App\Article::observe(\App\Observers\ArticleObserver::class);
-        \App\Follow::observe(\App\Observers\FollowObserver::class);
-        \App\Report::observe(\App\Observers\ReportObserver::class);
-        \App\Notice::observe(\App\Observers\NoticeObserver::class);
-        \App\Spider::observe(\App\Observers\SpiderObserver::class);
-        \App\User::observe(\App\Observers\UserObserver::class);
-
-        \Haxibiao\Breeze\BadWord::observe(\App\Observers\BadWordObserver::class);
-        \Haxibiao\Task\Contribute::observe(\App\Observers\ContributeObserver::class);
-        \Haxibiao\Media\Spider::observe(\App\Observers\SpiderObserver::class);
-        \Haxibiao\Wallet\Gold::observe(\App\Observers\GoldObserver::class);
     }
 }

@@ -2,11 +2,8 @@
 
 namespace App;
 
-use App\Model;
+use Haxibiao\Sns\Query as BaseQuery;
 
-class Query extends Model
+class Query extends BaseQuery
 {
-    protected $fillable = [
-    	'query',
-    ];
 }

@@ -3,13 +3,13 @@
 namespace App\Traits;
 
 use App\Exceptions\GQLException;
-use App\OAuth;
-use Haxibiao\Helpers\TikTokUtils;
+use Haxibiao\Breeze\OAuth;
+use Haxibiao\Helpers\utils\TikTokUtils;
 use Illuminate\Support\Arr;
 
 trait TikTokRepo
 {
-    public function bindTikTok($code,$isSignUp = false)
+    public function bindTikTok($code, $isSignUp = false)
     {
         throw_if(empty($code), GQLException::class, '绑定失败,参数错误!');
 
@@ -28,9 +28,9 @@ trait TikTokRepo
         $oauth->data    = $userInfo;
         $oauth->save();
 
-        if($isSignUp == true){
+        if ($isSignUp == true) {
             $this->avatar = Arr::get($accessTokens, 'avatar');
-            $this->name = Arr::get($accessTokens, 'nickname');
+            $this->name   = Arr::get($accessTokens, 'nickname');
             $this->save();
         }
 

@@ -2,9 +2,11 @@
 
 namespace App;
 
-use Haxibiao\Breeze\UserProfile;
+use Haxibiao\Breeze\UserProfile as BreezeUserProfile;
 
-class Profile extends UserProfile
+class Profile extends BreezeUserProfile
 {
+
+    
 
 }

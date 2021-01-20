@@ -2,12 +2,8 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Haxibiao\Sns\Querylog as BaseQuerylog;
 
-class Querylog extends Model
+class Querylog extends BaseQuerylog
 {
-    protected $fillable = [
-    	'user_id',
-    	'query',
-    ];
 }

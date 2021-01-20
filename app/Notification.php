@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Haxibiao\Breeze\User;
+use Haxibiao\Sns\Comment;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Notifications\DatabaseNotification;
 
@@ -17,18 +19,18 @@ class Notification extends DatabaseNotification
             case "App\\Notifications\\ArticleRejected":
                 return "拒绝了动态";
             case "App\\Notifications\\ArticleCommented":
-                $comment = \App\Comment::find($this->data['comment_id']);
+                $comment = Comment::find($this->data['comment_id']);
                 return str_limit($comment->body, 15, '...');
             case "App\\Notifications\\CommentedNotification":
-                $comment = \App\Comment::find($this->data['comment_id']);
+                $comment = Comment::find($this->data['comment_id']);
                 return str_limit($comment->body, 15, '...');
             case "App\\Notifications\\ArticleFavorited":
                 return "收藏了动态";
             case "App\\Notifications\\ArticleLiked":
                 return "喜欢了文章";
             case "App\\Notifications\\LikedNotification":
-                $type = data_get($this,'date.type');
-                if($type == 'comments'){
+                $type = data_get($this, 'date.type');
+                if ($type == 'comments') {
                     return "点赞了评论";
                 }
                 return "喜欢了动态";
@@ -45,10 +47,10 @@ class Notification extends DatabaseNotification
             case "App\\Notifications\\UserFollowed":
                 return "关注了";
             case "App\\Notifications\\ReplyComment":
-                $comment = \App\Comment::find($this->data['comment_id']);
+                $comment = Comment::find($this->data['comment_id']);
                 return str_limit($comment->body, 15, '...');
             case "App\\Notifications\\CommentAccepted":
-                $comment = \App\Comment::find($this->data['comment_id']);
+                $comment = Comment::find($this->data['comment_id']);
                 return str_limit($comment->body, 15, '...');
             case "App\\Notifications\\ReceiveAward":
                 return $this->data["subject"] . $this->data["gold"] . '金币';
@@ -74,7 +76,7 @@ class Notification extends DatabaseNotification
             case "App\\Notifications\\ArticleLiked":
                 return "喜欢了文章";
             case "App\\Notifications\\LikedNotification":
-                if(data_get($this,'data.type') == 'comments'){
+                if (data_get($this, 'data.type') == 'comments') {
                     return "点赞了评论";
                 }
                 return "喜欢了动态";
@@ -109,7 +111,7 @@ class Notification extends DatabaseNotification
     public function getUserAttribute()
     {
         if (isset($this->data['user_id'])) {
-            $user = \App\User::find($this->data['user_id']);
+            $user = User::find($this->data['user_id']);
             return $user;
         }
         return null;
@@ -117,55 +119,55 @@ class Notification extends DatabaseNotification
 
     public function getArticleAttribute()
     {
-        $modelType = data_get($this,'data.type');
-        if(!in_array($modelType,['posts','comments'])){
+        $modelType = data_get($this, 'data.type');
+        if (!in_array($modelType, ['posts', 'comments'])) {
             return null;
         }
-        if($modelType == 'posts'){
-            $modelId = data_get($this,'data.id');
-            if($modelId){
+        if ($modelType == 'posts') {
+            $modelId = data_get($this, 'data.id');
+            if ($modelId) {
                 $modelString = Relation::getMorphedModel($modelType);
                 return $modelString::withTrashed()->find($modelId);
             }
             return null;
         }
         $comment = $this->getCommentAttribute();
-        if(data_get($this,'type') == 'App\Notifications\LikedNotification'){
-            $commentable = data_get($comment,'commentable');
-            if($commentable instanceof  \App\Comment){
-                return data_get($comment,'commentable.commentable');
+        if (data_get($this, 'type') == 'App\Notifications\LikedNotification') {
+            $commentable = data_get($comment, 'commentable');
+            if ($commentable instanceof Comment) {
+                return data_get($comment, 'commentable.commentable');
             }
-            return data_get($comment,'commentable');
+            return data_get($comment, 'commentable');
         }
-        return data_get($comment,'commentable.commentable');
+        return data_get($comment, 'commentable.commentable');
     }
 
     public function getPostAttribute()
     {
-        $modelType = data_get($this,'data.type');
-        if(in_array($modelType,['posts','comments'])){
+        $modelType = data_get($this, 'data.type');
+        if (in_array($modelType, ['posts', 'comments'])) {
             return null;
         }
-        if($modelType == 'posts'){
-            $modelId = data_get($this,'data.id');
-            if($modelId){
+        if ($modelType == 'posts') {
+            $modelId = data_get($this, 'data.id');
+            if ($modelId) {
                 $modelString = Relation::getMorphedModel($modelType);
                 return $modelString::withTrashed()->find($modelId);
             }
             return null;
         }
         $comment = $this->getCommentAttribute();
-        return data_get($comment,'commentable.commentable');
+        return data_get($comment, 'commentable.commentable');
     }
 
     public function getCommentAttribute()
     {
-        $modelType = data_get($this,'data.type');
-        if($modelType != 'comments'){
+        $modelType = data_get($this, 'data.type');
+        if ($modelType != 'comments') {
             return null;
         }
-        $modelId = data_get($this,'data.id');
-        if($modelId){
+        $modelId = data_get($this, 'data.id');
+        if ($modelId) {
             $modelString = Relation::getMorphedModel($modelType);
             return $modelString::withTrashed()->find($modelId);
         }

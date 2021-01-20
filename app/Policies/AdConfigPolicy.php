@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\AdConfig;
-use App\User;
+use Haxibiao\Breeze\User;
+use Haxibiao\Config\AdConfig;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class AdConfigPolicy

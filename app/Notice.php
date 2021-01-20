@@ -2,41 +2,8 @@
 
 namespace App;
 
-use App\Traits\NoticeResolvers;
-use App\User;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Haxibiao\Sns\Notice as BaseNotice;
 
-class Notice extends Model
+class Notice extends BaseNotice
 {
-    use NoticeResolvers;
-    use SoftDeletes;
-
-    protected $fillable = [
-        'user_id',
-        'title',
-        'content',
-        'expires_at',
-    ];
-
-    protected $casts = [
-        'expires_at' => 'datetime',
-    ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    // public function users()
-    // {
-    //     return $this->belongsToMany(User::class)
-    //         ->using(NoticeUser::class)
-    //         ->withPivot('created_at');
-    // }
-
-    // public function getRouteAttribute()
-    // {
-    //     return 'NoticeItemDetail';
-    // }
 }

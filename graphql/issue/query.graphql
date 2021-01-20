@@ -24,8 +24,9 @@ extend type Query {
 
   issue(id:Int!@eq):Issue@find
 
-
 }
+
+
 
 enum IssueColumn {
   HOT @enum(value: "count_answers")
