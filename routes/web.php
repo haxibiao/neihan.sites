@@ -23,15 +23,8 @@ Auth::routes(['verify' => true]);
 //Route::get('/sitemap', 'SitemapController@index');
 Route::get('/sitemap/{site}/{type}', 'SitemapController@all');
 
-Route::get('/', 'IndexController@index');
-
 //隐私政策
 Route::redirect('/pivacy-and-policy', '/article/3098');
-
-//app
-Route::get('/app', 'IndexController@app');
-Route::get('/about-us', 'IndexController@aboutUs');
-Route::get('/trending', 'IndexController@trending');
 
 Route::any('/alipay/wap/notify', 'Alipay\WapController@wapNotify');
 Route::any('/alipay/wap/return', 'Alipay\WapController@wapReturn');
