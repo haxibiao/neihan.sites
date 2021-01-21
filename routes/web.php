@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +12,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
  */
-
-Auth::routes();
-Route::pattern('id', '\d+');
-Auth::routes(['verify' => true]);
 
 //sitemap
 //Route::get('/sitemap.xml', 'SitemapController@index');
