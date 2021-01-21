@@ -8,8 +8,6 @@ use FFMpeg\FFMpeg;
 use FFMpeg\FFProbe;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -36,25 +34,6 @@ class AppServiceProvider extends ServiceProvider
             '*',
             'App\Http\ViewComposers\SiteComposer'
         );
-
-        Blade::directive('timeago', function ($expression) {
-            return "<?php echo diffForHumansCN($expression); ?>";
-        });
-        //将秒数转换成 分:秒
-        Blade::directive('sectominute', function ($expression) {
-            return "<?php echo gmdate('i:s', $expression); ?>";
-        });
-        Blade::if('admin', function () {
-            return Auth::check() && Auth::user()->checkAdmin();
-        });
-
-        Blade::if('editor', function () {
-            return Auth::check() && Auth::user()->checkEditor();
-        });
-
-        Blade::if('weixin', function () {
-            return request('weixin');
-        });
 
         $this->registerSingleObject();
         // production环境url全部https
