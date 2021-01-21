@@ -2,7 +2,9 @@
 
 namespace App;
 
-class Novel extends Novel
+use Haxibiao\Content\Novel as ContentNovel;
+
+class Novel extends ContentNovel
 {
 
 }
