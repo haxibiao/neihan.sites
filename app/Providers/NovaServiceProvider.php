@@ -72,17 +72,17 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function cards()
     {
         return [
-            new \App\Nova\Metrics\UsersPerDay,
-            new \App\Nova\Metrics\ActiveUsersPerDay,
+            new \Haxibiao\Breeze\Nova\Metrics\UsersPerDay,
+            new \Haxibiao\Breeze\Nova\Metrics\ActiveUsersPerDay,
             // new \App\Nova\Metrics\WithdrawsPerDay,
             // new \App\Nova\Metrics\ArticlePerDay,
-            new \App\Nova\Metrics\PostPerDay,
-            new \App\Nova\Metrics\PostSpiderPerDay,
+            new \Haxibiao\Breeze\Nova\Metrics\PostPerDay,
+            new \Haxibiao\Breeze\Nova\Metrics\PostSpiderPerDay,
             // new \App\Nova\Metrics\ArticleSpiderPerDay,
-            new \App\Nova\Metrics\UserGender,
+            new \Haxibiao\Breeze\Nova\Metrics\UserGender,
             // new \App\Nova\Metrics\UserRetentionRate,
             // new \App\Nova\Metrics\ArticleCount,
-            new \App\Nova\Metrics\UserCount,
+            new \Haxibiao\Breeze\Nova\Metrics\UserCount,
             // new \App\Nova\Metrics\WithDrawCount,
             // new UserAppVersionPartition,
             // new \App\Nova\Metrics\TodayAdData,
