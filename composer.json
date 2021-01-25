@@ -100,7 +100,8 @@
             "Haxibiao\\Sns\\": "packages/haxibiao/sns/src/",
             "Haxibiao\\Cms\\": "packages/haxibiao/cms/src/",
             "Haxibiao\\Wallet\\": "packages/haxibiao/wallet/src/",
-            "Haxibiao\\Dimension\\": "packages/haxibiao/dimension/src/"
+            "Haxibiao\\Dimension\\": "packages/haxibiao/dimension/src/",
+            "Haxibiao\\Question\\": "packages/haxibiao/question/src/"
         },
         "classmap": [],
         "files": []
