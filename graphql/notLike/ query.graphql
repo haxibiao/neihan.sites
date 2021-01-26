@@ -1,4 +1,0 @@
-type NotLike {
-    id: ID
-    user: User
-}

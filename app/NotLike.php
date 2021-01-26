@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Haxibiao\Sns\NotLike as BaseNotLike;
+use Haxibiao\Sns\Dislike as BaseNotLike;
 
 class NotLike extends BaseNotLike
 {

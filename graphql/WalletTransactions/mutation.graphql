@@ -1,3 +1,0 @@
-extend type Mutation @middleware(checks: ["auth:api"]) {
-  gaoQian(amount: Int!, password: String!): WalletTransaction! @field(resolver: "App\\WalletTransaction@gaoQiao")
-}

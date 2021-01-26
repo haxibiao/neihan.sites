@@ -11,7 +11,7 @@ extend type Mutation {
     交易平台
     """
     platform: TradingPlatform = ALIPAY
-  ): PlatfromSignature @resolver(name: "Haxibiao\\Wallet\\Recharge@rsolverGetRechargeSignature")
+  ): Recharge @field(resolver: "Haxibiao\\Wallet\\Recharge@rsolverGetRechargeSignature")
   """
   效验 apple pay 状态
   """
@@ -28,7 +28,7 @@ extend type Mutation {
     是否为沙箱环境
     """
     isSandBox: Boolean = true
-  ): Recharge @resolver(name: "Haxibiao\\Wallet\\Recharge@ResolverVerifyApplePay")
+  ): Recharge @field(resolver: "Haxibiao\\Wallet\\Recharge@ResolverVerifyApplePay")
 }
 
 type PlatfromSignature {
