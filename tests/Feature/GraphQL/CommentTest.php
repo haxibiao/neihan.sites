@@ -30,7 +30,7 @@ class CommentTest extends GraphQLTestCase
     /**
      * @group  testAddCommentMutation
      */
-    public function atestCreateCommentMutation()
+    public function testCreateCommentMutation()
     {
         $token   = $this->user->api_token;
         $query   = file_get_contents(__DIR__ . '/Comment/Mutation/createCommentMutation.gql');
@@ -72,7 +72,7 @@ class CommentTest extends GraphQLTestCase
     /**
      * @group  testDeleteCommentMutation
      */
-    public function atestDeleteCommentMutation()
+    public function testDeleteCommentMutation()
     {
         $token   = $this->user->api_token;
         $query   = file_get_contents(__DIR__ . '/Comment/Mutation/deleteCommentMutation.gql');

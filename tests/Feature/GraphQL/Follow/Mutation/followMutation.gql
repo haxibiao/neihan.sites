@@ -1,5 +1,6 @@
-mutation followMutation($user_id: Int!, $type: FollowType!, $followed_id: Int!) {
-    follow(user_id: $user_id, followed_type: $type, followed_id: $followed_id) {
+mutation followMutation($id: Int!, $type: FollowedEnumType!) {
+    followToggle(id: $id, type: $type) {
         id
+        created_at
     }
 }
