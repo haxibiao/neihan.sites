@@ -1,0 +1,7 @@
+type Explanation {
+    id: Int
+    user: User @belongsTo
+    video: Video @belongsTo
+    images: [Image]
+    content: String
+}

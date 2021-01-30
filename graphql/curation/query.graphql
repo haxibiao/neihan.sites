@@ -1,0 +1,41 @@
+type Curation {
+    id: ID
+    """
+    用户
+    """
+    users: [User] @belongsTo
+    """
+    题目
+    """
+    question: Question @belongsTo
+    """
+    内容
+    """
+    content: String
+    """
+    类型0: 题目错误 1: 答案错误 2: 图片不清晰或损坏 3. 其他错误
+    """
+    type: Int
+    """
+    所获智慧点
+    """
+    gold_awarded: Int
+    """
+    备注
+    """
+    remark: String
+    """
+    状态
+    """
+    status: Int
+    created_at: String
+    updated_at: String
+}
+
+extend type Query {
+    """
+    纠题记录
+    """
+    curations: [Curation!]
+        @paginate(builder: "App\\Curation@resolveCurations", defaultCount: 10)
+}

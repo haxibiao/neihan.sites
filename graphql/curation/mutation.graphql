@@ -1,0 +1,7 @@
+extend type Mutation {
+    """
+    错题纠错
+    """
+    CreateCuration(question_id: Int!, type: Int, content: String): Curation
+        @field(resolver: "App\\Curation@resolveCurateQuestion")
+}

@@ -1,14 +1,9 @@
-extend type Mutation @middleware(checks: ["auth:api"]) {
-    tip(
-        tipable_id: Int!
-        tipable_type:TipType = POST,
-        gold:Int!,
-        message:String
-    ):Tip! @field(resolver: "App\\Tip@create")
+extend type Mutation @guard {
+    tip(tipable_id: Int!, tipable_type: TipType = articles, gold: Int!, message: String): Tip!
+        @field(resolver: "App\\Tip@create")
 }
 
 enum TipType {
-    POST @enum(value: "articles")
-    ISSUE @enum(value: "articles")
-    COMMENT @enum(value: "commemnt")
+    articles
+    commemnts
 }

@@ -1,10 +1,10 @@
 type Tip {
-  id: Int!
-  user: User!,
-  gold:Int,
-  amount:Float
+    id: Int!
+    user: User!
+    gold: Int
+    amount: Float
 }
 
 extend type Query {
-  tips(tipable_id: Int! @eq, tipable_type: String! @eq): [Tip!] @paginate
+    tips(tipable_id: Int! @eq, tipable_type: String! @eq): [Tip!] @paginate
 }

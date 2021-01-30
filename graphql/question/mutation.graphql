@@ -1,0 +1,60 @@
+extend type Mutation {
+    answerQuestion(id: Int!, answer: String): Int
+        @field(resolver: "App\\Question@resolveAnswerQuestion")
+    """
+    创建题目|动态
+    """
+    createQuestion(input: CreateQuestion! @spread): Question
+        @field(resolver: "App\\Question@resolverCreateQuestion")
+
+    """
+    删除草稿箱题目
+    """
+    deleteQuestion(id: Int!): Int
+        @field(resolver: "App\\Question@resolverDeleteQuestion")
+
+    """
+    撤回题目
+    """
+    removeQuestion(id: Int!): Int
+        @field(resolver: "App\\Question@resolverRemoveQuestion")
+
+    """
+    发布题目(精力不足出题后暂存的或者撤回的)
+    """
+    publishQuestion(id: Int!): Int
+        @field(resolver: "App\\Question@resolverPublishQuestion")
+}
+
+"""
+题目属性
+"""
+input CreateQuestion {
+    category_id: Int!
+    description: String!
+    selections: [QuestionSelectionInput!]! @spread
+    video_id: Int
+    answers: [String]!
+    """
+    base64
+    """
+    image: String
+    explanation_id: Int
+    gold: Int = 0
+}
+
+"""
+题目选项
+"""
+input QuestionSelectionInput {
+    Text: String
+    Value: String
+}
+
+enum QuestionForm {
+    CHOICE @enum(value: 0)
+    NORMAL @enum(value: 1)
+    OPEN @enum(value: 2)
+    NON_SELECTION @enum(value: 12)
+    ALL @enum(value: 123)
+}

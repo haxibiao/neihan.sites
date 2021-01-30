@@ -1,0 +1,9 @@
+extend type Mutation {
+    createExplanation(
+        content: String
+        video_id: Int
+        images: [String]
+        target_type: String
+        target_id: Int
+    ): Explanation @field(resolver: "App\\Explanation@resolveCreateExplanation")
+}

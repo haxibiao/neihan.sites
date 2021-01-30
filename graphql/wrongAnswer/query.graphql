@@ -1,0 +1,19 @@
+type WrongAnswer {
+    id: Int!
+    """
+    题目
+    """
+    question: Question
+    """
+    答案
+    """
+    answer: String
+}
+
+extend type Query {
+    """
+    错题记录
+    """
+    wrongAnswers(limit: Int): [WrongAnswer]
+        @field(resolver: "App\\Answer@resolveGetWrongAnswers")
+}

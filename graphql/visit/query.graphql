@@ -10,6 +10,7 @@ type Visit {
   category: Category
   time_ago: String!
   type: String!
+  duration:Int
 }
 
 extend type Query {
@@ -19,4 +20,5 @@ extend type Query {
 
 enum VisitType {
   POST @enum(value: "posts")
+  COLLECTION @enum(value: "collections")
 }

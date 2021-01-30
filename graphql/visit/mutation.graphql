@@ -1,7 +1,14 @@
-extend type Mutation {
+extend type Mutation @guard {
   addVisit(
     visited_id: [Int]!,
-    visited_type: VisitType=POST
+    visited_type: VisitType=POST,
   ): Boolean
     @field(resolver: "App\\Visit@resolveCreateVisit")
+
+  addVisitWithDuration(
+    visited_id: Int!,
+    visited_type: VisitType=COLLECTION,
+    duration:Int
+  ): Visit
+    @field(resolver: "App\\Visit@recordVisitTime")
 }

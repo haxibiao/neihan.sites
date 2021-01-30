@@ -1,24 +1,24 @@
 type Feedback {
-  id: Int!
-  content: String
-  user: User!
-  images: [Image]
-  comments: [Comment]
-  count_comment: Int
-  hot: Int
-  contact: String
-  contact_type: String
-  status_msg: String
-  rank: Int
-  top_at: DateTime
-  created_at: DateTime!
-  updated_at: DateTime!
+    id: Int!
+    content: String
+    user: User!
+    images: [Image]
+    comments: [Comment]
+    count_comment: Int
+    hot: Int
+    contact: String
+    contact_type: String
+    status_msg: String
+    rank: Int
+    top_at: DateTime
+    created_at: DateTime!
+    updated_at: DateTime!
 }
 
 extend type Query {
-  feedbacks: [Feedback] @paginate(defaultCount: 10, builder: "App\\Feedback@resolveAllFeedbacks")
+    feedbacks: [Feedback] @paginate(defaultCount: 10, builder: "App\\Feedback@resolveAllFeedbacks")
 }
 
-extend type Query @middleware(checks: ["auth:api"]) {
-  feedback(user_id: Int! @eq, orderBy: [OrderByClause!] @orderBy): [Feedback!] @paginate(defaultCount: 10)
+extend type Query @guard {
+    feedback(user_id: Int! @eq, orderBy: [OrderByClause!] @orderBy): [Feedback!] @paginate(defaultCount: 10)
 }

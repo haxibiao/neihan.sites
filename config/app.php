@@ -170,6 +170,7 @@ return [
         \Haxibiao\Cms\CmsServiceProvider::class,
         \Haxibiao\Dimension\DimensionServiceProvider::class,
         \Haxibiao\Wallet\WalletServiceProvider::class,
+        \Haxibiao\Question\QuestionServiceProvider::class,
 
         //2. Breeze层组合所有子模块，提供基础Starter kits...
         \Haxibiao\Breeze\BreezeServiceProvider::class,

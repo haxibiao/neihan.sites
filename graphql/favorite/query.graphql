@@ -3,14 +3,18 @@ type Favorite {
     user_id: Int
     user: User @belongsTo
     question: Question
-    post:Post
-    favorable_id:Int!
-    favorable_type:String!
+    post: Post
+    article: Article
+    favorable_id: Int!
+    favorable_type: String!
     created_at: DateTime
     updated_at: DateTime
 }
 
 extend type Query {
-    favorites(type: FavorableEnum!): [Favorite]
+    """
+    用户收藏的内容列表
+    """
+    favorites(type: FavorableEnum! = ARTICLE): [Favorite]
         @paginate(builder: "App\\Favorite@resolveFavorites", defaultCount: 10)
 }

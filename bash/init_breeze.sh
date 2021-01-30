@@ -14,4 +14,5 @@ git submodule add -f http://code.haxibiao.cn/packages/haxibiao-media ./packages/
 git submodule add -f http://code.haxibiao.cn/packages/haxibiao-live ./packages/haxibiao/live
 git submodule add -f http://code.haxibiao.cn/packages/haxibiao-content ./packages/haxibiao/content
 git submodule add -f http://code.haxibiao.cn/packages/haxibiao-cms ./packages/haxibiao/cms
+git submodule add -f http://code.haxibiao.cn/packages/haxibiao-question ./packages/haxibiao/question
 git submodule add -f http://code.haxibiao.cn/packages/haxibiao-breeze ./packages/haxibiao/breeze
