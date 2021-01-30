@@ -48,6 +48,18 @@ type Post {
     广告类型
     """
     ad_type: String
+     """
+    标签
+    """
+    tags:[Tag!] @paginate(defaultCount: 10, builder:"\\App\\Post@resovlePostTags")
+    """
+    合集
+    """
+    collections:[Collection]
+    """
+    关联的长电影
+    """
+    movies:[Movie]
 
     """
     发布时间（多久前）
@@ -105,6 +117,10 @@ extend type Query {
     ): [Post] @field(resolver: "App\\Post@resolvePostsByTag")
 
     postByVid(vid: String!): Post @field(resolver: "App\\Post@resolvePostByVid")
+    """
+    获取关联了电影的post列表
+    """
+    postWithMovies:[Post] @field(resolver: "App\\Post@postWithMovies")
 }
 
 enum PostTag {

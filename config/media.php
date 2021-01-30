@@ -11,7 +11,7 @@ return [
      * 电影模块配置
      */
     'movie'                          => [
-        'enable' => env('ENABLE_MOVIE', false),
+        'enable'     => env('ENABLE_MOVIE', true),
         'middleware' => [
             'web',
         ],
@@ -21,4 +21,8 @@ return [
      * 是否统计视频的播放量
      */
     'enabled_statistics_video_views' => false,
+
+    'image'                          => [
+        'auto_cut' => false,
+    ],
 ];

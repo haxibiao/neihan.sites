@@ -1,32 +1,33 @@
 type Withdraw {
-  id: ID
-  status: Int
-  amount: Float!
-  remark: String
-  biz_no:String
-  trade_no: String
-  to_account: String
-  to_platform: String
-  created_at: DateTime!
+    id: ID
+    status: Int
+    amount: Float!
+    remark: String
+    biz_no: String
+    trade_no: String
+    to_account: String
+    to_platform: String
+    created_at: DateTime!
 }
 
-extend type Query @middleware(checks: ["auth:api"]) {
-  withdraw(id: Int @eq): Withdraw! @find
-  withdraws(wallet_id: Int! @eq, orderBy: [OrderByClause!] @orderBy): [Withdraw]! @paginate(defaultCount: 10, builder: "App\\Withdraw@resolveWithdraws")
+extend type Query @guard {
+    withdraw(id: Int @eq): Withdraw! @find
+    withdraws(wallet_id: Int! @eq, orderBy: [OrderByClause!] @orderBy): [Withdraw]!
+        @paginate(defaultCount: 10, builder: "App\\Withdraw@resolveWithdraws")
 }
 
 extend type Query {
-  getWithdrawAmountList:[WithdrawInfo]! @field(resolver: "App\\Withdraw@getWithdrawAmountList")
+    getWithdrawAmountList: [WithdrawInfo]! @field(resolver: "App\\Withdraw@getWithdrawAmountList")
 }
 
-type WithdrawInfo{
-  amount:Float
-  description:String
-  tips:String
-  fontColor:String
-  bgColor:String
-  """
-  限量抢倍率
-  """
-  highWithdrawCardsRate: Int  @deprecated(reason: "随懂得赚的分离，这个属性废弃")
+type WithdrawInfo {
+    amount: Float
+    description: String
+    tips: String
+    fontColor: String
+    bgColor: String
+    """
+    限量抢倍率
+    """
+    highWithdrawCardsRate: Int @deprecated(reason: "随懂得赚的分离，这个属性废弃")
 }

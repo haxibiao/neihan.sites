@@ -1,4 +1,4 @@
-extend type Mutation @middleware(checks: ["auth:api"]) {
+extend type Mutation @guard {
   createPostContent(
     """
     正文
@@ -34,10 +34,38 @@ extend type Mutation @middleware(checks: ["auth:api"]) {
     定位信息
     """
     location: LocationInfo
-    
+
     """
     图片链接
     """
     images: [String!]
   ): Post! @field(resolver: "App\\Post@resolveCreateContent")
+
+  """
+  通过电影创建动态
+  """
+  MakePostByMovie(
+    series_id: Int!
+    startSec: Int
+    endSec: Int
+    title: String
+  ): Post @field(resolver: "App\\Post@MakePostByMovie")
+   updatePost(
+    """
+    动态ID
+    """
+    post_id: Int!
+    """
+    正文
+    """
+    content: String
+    """
+    正文
+    """
+    description: String,
+    """
+    标签名
+    """
+    tag_names: [String]
+  ): Post! @field(resolver: "App\\Post@resolveUpdatePost")
 }

@@ -1,12 +1,13 @@
 type Gold {
-  user: User @belongsTo
-  gold: Int!
-  balance: Int!
-  remark: String
-  created_at: DateTime!
-  time_ago: String
+    user: User @belongsTo
+    gold: Int!
+    balance: Int!
+    remark: String
+    created_at: DateTime!
+    time_ago: String
 }
 
-extend type Query @middleware(checks: ["auth:api"]) {
-  golds(user_id: Int! @eq, orderBy: [OrderByClause!] @orderBy): [Gold]! @paginate(defaultCount: 10, builder: "App\\Gold@resolveGolds")
+extend type Query @guard {
+    golds(user_id: Int! @eq, orderBy: [OrderByClause!] @orderBy): [Gold]!
+        @paginate(defaultCount: 10, builder: "App\\Gold@resolveGolds")
 }

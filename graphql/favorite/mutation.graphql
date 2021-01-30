@@ -4,7 +4,8 @@ extend type Mutation {
 }
 
 enum FavorableEnum {
-    questions
-    posts
-    articles
+    QUESTION @enum(value: "questions")
+    POSTS @enum(value: "posts")
+    ARTICLE @enum(value: "articles")
 }
+#TODO:favorable_type给默认值

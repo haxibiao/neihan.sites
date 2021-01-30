@@ -31,7 +31,7 @@
         "laravelcollective/html": "^6.1",
         "lokielse/omnipay-alipay": "^3.0",
         "mll-lab/laravel-graphql-playground": "^2.1",
-        "nuwave/lighthouse": "^4.10",
+        "nuwave/lighthouse": "^5.0",
         "overtrue/laravel-pinyin": "^4.0",
         "php-ffmpeg/php-ffmpeg": "^0.14.0",
         "piwik/piwik-php-tracker": "^2.0",

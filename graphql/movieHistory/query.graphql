@@ -11,12 +11,10 @@ type MovieHistory {
     """
     剧集索引
     """
-    series_index:Int @rename(attribute:"series_id")
+    series_index: Int @rename(attribute: "series_id")
     movie: Movie
 }
 
-extend type Query @middleware(checks:["auth:api"]){
-    showMovieHistory : [MovieHistory] 
-    @paginate(defaultCount: 10, builder: "App\\MovieHistory@showMovieHistoryResolver")
-
+extend type Query @guard {
+    showMovieHistory: [MovieHistory] @paginate(defaultCount: 10, builder: "App\\MovieHistory@showMovieHistoryResolver")
 }

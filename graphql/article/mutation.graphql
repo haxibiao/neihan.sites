@@ -1,33 +1,25 @@
-extend type Mutation @middleware(checks: ["auth:api"]) {
-
-    createPost(
-        body: String!
-        image_urls: [String!]
-        video_id: Int
-        category_ids: [Int!]
-    ): Article!  @field(resolver: "App\\Post@resolveCreateContent")
-    @deprecated(reason: "请使用createPostContent")
+extend type Mutation @guard {
+    createPost(body: String!, image_urls: [String!], video_id: Int, category_ids: [Int!]): Article!
+        @field(resolver: "App\\Post@resolveCreateContent")
+        @deprecated(reason: "请使用createPostContent")
 
     createContent(
         body: String!
         image_urls: [String!]
-        video_id: Int,
-        qcvod_fileid: String,
+        video_id: Int
+        qcvod_fileid: String
         category_ids: [Int!]
         images: [String!]
         type: ContenType!
         issueInput: IssueInfo
-    ):  Article! @field(resolver: "App\\Post@resolveCreateContent")
-    @deprecated(reason: "请使用createPostContent")
+    ): Article! @field(resolver: "App\\Post@resolveCreateContent") @deprecated(reason: "请使用createPostContent")
 
-    restoreArticle(id: Int!): Article
-    @field(resolver: "App\\Article@restoreArticle")
+    restoreArticle(id: Int!): Article @field(resolver: "App\\Article@restoreArticle")
 
     """
-    接口已经废弃,请使用deletePost
+    删除文章
     """
-    deleteArticle(id: Int!): Post @delete
-    @deprecated(reason: "接口已经废弃,请使用deletePost")
+    deleteArticle(id: Int!): Article @delete
 }
 
 enum ContenType {

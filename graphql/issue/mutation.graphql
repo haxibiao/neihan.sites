@@ -1,22 +1,16 @@
-extend type Mutation @middleware(checks: ["auth:api"]) {
+extend type Mutation @guard {
     """
     创建问答
     """
-    createIssue(
-        title:String!,
-        background:String,
-        category_id:Int,
-        cover_image: String
-    ):Issue!@field(resolver: "App\\Issue@createIssueResolver")
+    createIssue(title: String!, background: String, category_id: Int, cover_image: String): Issue!
+        @field(resolver: "App\\Issue@createIssueResolver")
     """
     删除问答
     """
-    deleteIssue(issue_id:Int!):Issue @field(resolver: "App\\Issue@deleteIssueResolver")
+    deleteIssue(issue_id: Int!): Issue @field(resolver: "App\\Issue@deleteIssueResolver")
     """
     邀请回答
     """
-    inviteAnswer(invited_user_id:Int!,issue_id:Int!)
-    :IssueInvite!
-    @field(resolver: "App\\Issue@inviteAnswerResolver")
-
+    inviteAnswer(invited_user_id: Int!, issue_id: Int!): IssueInvite!
+        @field(resolver: "App\\Issue@inviteAnswerResolver")
 }

@@ -1,117 +1,108 @@
 type Article {
-  id: Int!
-  type: String!
-  title: String @rename(attribute: "subject")
-  subject: String
-  description: String @rename(attribute: "subjectDescription")
-  subjectDescription: String
-  body: String
-  video_url: String
-  favorited: Int
-  time_ago: String!
-  liked: Boolean
-  liked_id: Int
-  favorited: Boolean
-  favorited_id: Int
-  cover: String
-  submit: Int
-  hits: Int!
-  count_words: Int
-  count_likes: Int
-  count_replies: Int
-  count_comments: Int
-  count_tips: Int!
-  pivot_time_ago: String
-  pivot_status: String
-  pivot_category: Category
-  user: User!
-  video: Video
-  images: [Image!]
-  artilceImages: [Image!]
-  category: Category
-  categories: [Category!]
-  collection: Collection
-  tips: [Tip!]
-  comments: [Comment]!
-  created_at: DateTime!
-  updated_at: DateTime!
-  isAdPosition: Boolean
-  answered_status: Int
-  question_reward: Int
-  issue: Issue
-  remark: String
+    id: Int!
+    type: String!
+    title: String @rename(attribute: "subject")
+    subject: String
+    description: String @rename(attribute: "subjectDescription")
+    subjectDescription: String
+    body: String
+    video_url: String
+    favorited: Int
+    time_ago: String!
+    liked: Boolean
+    liked_id: Int
+    favorited: Boolean
+    favorited_id: Int
+    cover: String
+    submit: Int
+    hits: Int!
+    count_words: Int
+    count_likes: Int
+    count_replies: Int
+    count_comments: Int
+    count_tips: Int!
+    pivot_time_ago: String
+    pivot_status: String
+    pivot_category: Category
+    user: User!
+    video: Video
+    images: [Image!]
+    artilceImages: [Image!]
+    category: Category
+    categories: [Category!]
+    collection: Collection
+    tips: [Tip!]
+    comments: [Comment]!
+    created_at: DateTime!
+    updated_at: DateTime!
+    isAdPosition: Boolean
+    answered_status: Int
+    question_reward: Int
+    issue: Issue
+    remark: String
 }
 
-extend type Query @middleware(checks: ["auth:api"]) {
-  followedArticles(user_id: Int!): [Article!]
-  @paginate(defaultCount: 10, builder: "App\\Article@resolveFollowedArticles")
+extend type Query @guard {
+    followedArticles(user_id: Int!): [Article!]
+        @paginate(defaultCount: 10, builder: "App\\Article@resolveFollowedArticles")
 
-  pendingArticles(category_id: Int): [Article!]
-  @field(resolver: "App\\Article@resolvePendingArticles")
+    pendingArticles(category_id: Int): [Article!] @field(resolver: "App\\Article@resolvePendingArticles")
 
-  trashArticles: [Article!]
-  @paginate(defaultCount: 10, builder: "App\\Article@resolveTrashArticles")
-
+    trashArticles: [Article!] @paginate(defaultCount: 10, builder: "App\\Article@resolveTrashArticles")
 }
 
 extend type Query {
-  """
-  获取推荐视频(废弃)
-  """
-  recommendVideos(count: Int = 5, page: Int = 1): ArticlePaginator
-  @field(resolver: "App\\Post@patchResolveRecommendPosts")
-  @deprecated(reason: "该接口已废弃，请使用recommendPosts")
+    """
+    获取推荐视频(废弃)
+    """
+    recommendVideos(count: Int = 5, page: Int = 1): ArticlePaginator
+        @field(resolver: "App\\Post@patchResolveRecommendPosts")
+        @deprecated(reason: "该接口已废弃，请使用recommendPosts")
 
-  """
-  获取推荐视频(废弃)
-  """
-  RecommendVideos(count: Int = 5, page: Int = 1): ArticlePaginator
-  @field(resolver: "App\\Post@patchResolveRecommendPosts")
-  @deprecated(reason: "该接口已废弃，请使用recommendPosts")
+    """
+    获取推荐视频(废弃)
+    """
+    RecommendVideos(count: Int = 5, page: Int = 1): ArticlePaginator
+        @field(resolver: "App\\Post@patchResolveRecommendPosts")
+        @deprecated(reason: "该接口已废弃，请使用recommendPosts")
 
+    """
+    文章详情
+    """
+    article(id: Int! @eq): Article @find(model: "App\\Article")
 
-  """
-  查询动态详情请使用post，文章详情暂时绕道
-  """
-  article(id: Int! @eq): Article @find(model: "App\\Post")
+    """
+    获取推荐文章
+    """
+    recommendArticles: [Article!] @paginate(defaultCount: 10, builder: "App\\Article@resolveRecommendArticles")
 
-  """
-  获取推荐文章
-  """
-  recommendArticles: [Article!]
-  @paginate(
-    defaultCount: 10
-    builder: "App\\Article@resolveRecommendArticles"
-  )
+    """
+    分享动态(废弃)
+    """
+    sharePost(id: ID!): String
+        @field(resolver: "App\\Article@getShareLink")
+        @deprecated(reason: "该接口已废弃，请使用shareNewPost")
 
-  """
-  分享动态(废弃)
-  """
-  sharePost(id:ID!):String @field(resolver: "App\\Article@getShareLink")
-  @deprecated(reason: "该接口已废弃，请使用shareNewPost")
-
-  articles(
-    status: ArticleStatus = all
-    user_id: Int
-    category_id: Int
-    submit: ArticleSubmitStatus = ALL
-    orderBy: [OrderByClause!] @orderBy
-  ): [Article!] @paginate(
-    defaultCount: 10
-    builder: "App\\Post@resolvePublicPosts"
-  )
-  @deprecated(reason: "该接口已废弃")
+    articles(
+        status: ArticleStatus = all
+        user_id: Int
+        category_id: Int
+        submit: ArticleSubmitStatus = ALL
+        orderBy: [OrderByClause!] @orderBy
+    ): [Article!]
+        @paginate(defaultCount: 10, builder: "App\\Post@resolvePublicPosts")
+        @deprecated(reason: "该接口已废弃")
 }
 
 enum ArticleStatus {
-  public @enum(value: 1)
-  draft @enum(value: 0)
-  all @enum(value: 10)
+    public @enum(value: 1)
+    draft @enum(value: 0)
+    all @enum(value: 10)
 }
 
 enum ArticleSubmitStatus {
-  REFUSED_SUBMIT @enum(value: -1)
-  REVIEW_SUBMIT @enum(value: 0)
-  SUBMITTED_SUBMIT @enum(value: 1)
-  ALL @enum(value: 10)
+    REFUSED_SUBMIT @enum(value: -1)
+    REVIEW_SUBMIT @enum(value: 0)
+    SUBMITTED_SUBMIT @enum(value: 1)
+    ALL @enum(value: 10)
 }

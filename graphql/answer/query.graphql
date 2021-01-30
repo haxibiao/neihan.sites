@@ -1,10 +1,25 @@
-type Answer{
-    id:Int!
-    question:Question @belongsTo
-    user:User @belongsTo
-    answered_count:Int
-    correct_count:Int
-    wrong_count:Int
-    gold_awarded:Int
-    created_at:DateTime
+type Answer {
+    id: ID
+    time: DateTime
+    user: User
+    """
+    描述
+    """
+    question: Question
+    """
+    回答次数
+    """
+    answered_count: Int
+    """
+    正确回答
+    """
+    correct_count: Int
+    """
+    统计：错误回答
+    """
+    worong_count: Int
+    """
+    总获智慧点
+    """
+    gold_awarded: Int
 }

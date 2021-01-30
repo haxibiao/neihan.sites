@@ -1,4 +1,4 @@
-extend type Mutation @middleware(checks: ["auth:api"]){
+extend type Mutation @guard {
     """
     创建合集
     """
@@ -18,13 +18,12 @@ extend type Mutation @middleware(checks: ["auth:api"]){
         """
         收藏资源类型
         """
-        collectable_type:CollectType=POST
+        collectable_type: CollectType = POST
         """
         收藏资源ID
         """
-        collectable_ids:[Int!]
-    )
-    : Collection! @field(resolver: "App\\Collection@resolveCreateCollection")
+        collectable_ids: [Int!]
+    ): Collection! @field(resolver: "App\\Collection@resolveCreateCollection")
 
     """
     修改合集信息
@@ -33,7 +32,7 @@ extend type Mutation @middleware(checks: ["auth:api"]){
         """
         合集标题
         """
-        collection_id:Int!
+        collection_id: Int!
         """
         合集标题
         """
@@ -45,13 +44,12 @@ extend type Mutation @middleware(checks: ["auth:api"]){
         """
         合集类型
         """
-        type:CollectType
+        type: CollectType
         """
         合集简介
         """
         description: String
-    )
-    : Collection! @field(resolver: "App\\Collection@resolveUpdateCollection")
+    ): Collection! @field(resolver: "App\\Collection@resolveUpdateCollection")
 
     """
     批量添加视频到合集中
@@ -60,17 +58,16 @@ extend type Mutation @middleware(checks: ["auth:api"]){
         """
         合集id
         """
-        collection_id:Int!
+        collection_id: Int!
         """
         资源对象ID List
         """
-        collectable_ids:[Int!]
+        collectable_ids: [Int!]
         """
         资源类型
         """
-        collectable_type:CollectType=POST
-    )
-    : Boolean! @field(resolver: "App\\Collection@resolveMoveInCollection")
+        collectable_type: CollectType = POST
+    ): Boolean! @field(resolver: "App\\Collection@resolveMoveInCollection")
     """
     从合集中移除动态
     """
@@ -78,25 +75,22 @@ extend type Mutation @middleware(checks: ["auth:api"]){
         """
         合集id
         """
-        collection_id:Int!
+        collection_id: Int!
         """
         资源对象ID List
         """
-        collectable_ids:[Int!]!
+        collectable_ids: [Int!]!
         """
         资源类型
         """
-        collectable_type:CollectType=POST
-    )
-    : Boolean! @field(resolver: "App\\Collection@resolveMoveOutCollection")
+        collectable_type: CollectType = POST
+    ): Boolean! @field(resolver: "App\\Collection@resolveMoveOutCollection")
 
     """
     删除合集
     """
     deleteCollection(id: Int!): Collection @delete
 }
-
-
 
 enum CollectType {
     """
@@ -112,5 +106,4 @@ enum CollectType {
     image合集，图片合集
     """
     IMAGE @enum(value: images)
-
 }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 return [
     /*
@@ -11,10 +11,10 @@ return [
     | Set the URI at which the GraphQL Playground can be viewed
     | and any additional configuration for the route.
     |
-    */
+     */
 
-    'route' => [
-        'uri' => '/graphql-playground',
+    'route'    => [
+        'uri'  => '/gqlp',
         'name' => 'graphql-playground',
         // 'middleware' => ['web']
         // 'prefix' => '',
@@ -30,7 +30,7 @@ return [
     | It assumes you are running GraphQL on the same domain
     | as GraphQL Playground, but can be set to any URL.
     |
-    */
+     */
 
     'endpoint' => '/graphql',
 
@@ -43,7 +43,7 @@ return [
     | This allows you to disable it in certain environments,
     | for example you might not want it active in production.
     |
-    */
+     */
 
-    'enabled' => env('GRAPHQL_PLAYGROUND_ENABLED', true),
+    'enabled'  => env('GRAPHQL_PLAYGROUND_ENABLED', true),
 ];

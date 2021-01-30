@@ -23,6 +23,6 @@ extend type Query {
     solutions(issue_id: Int!): [Solution!] @paginate(defaultCount: 10, builder: "App\\Solution@querySolutionsResolver")
 }
 
-extend type Query @middleware(checks: ["auth:api"]) {
+extend type Query @guard {
     mySolutions(user_id: Int): [Solution!] @paginate(defaultCount: 10, builder: "App\\Solution@mySolutionsResolver")
 }
