@@ -1,0 +1,18 @@
+# 收藏的文章
+query favoritedQuery($type: FavorableEnum!) {
+  favorites(type: $type) {
+    paginatorInfo {
+      currentPage
+      hasMorePages
+    }
+    data {
+      id
+      post {
+        id
+      }
+      question {
+        id
+      }
+    }
+  }
+}

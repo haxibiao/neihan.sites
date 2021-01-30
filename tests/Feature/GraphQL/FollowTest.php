@@ -19,7 +19,7 @@ class FollowTest extends GraphQLTestCase
     }
 
     /**
-     * @group  testAddCommentMutation
+     * @group  testFollowMutation
      */
     public function testFollowMutation()
     {

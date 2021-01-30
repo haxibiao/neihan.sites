@@ -1,0 +1,15 @@
+mutation favoriteMutation($id: Int!, $type: FavorableEnum!) {
+    toggleFavorite(id: $id, type: $type) {
+        id
+        user {
+            id
+        }
+        post {
+            id
+        }
+        question {
+            id
+        }
+        created_at
+    }
+}

@@ -2,6 +2,9 @@
 
 namespace Tests\Feature\GraphQL;
 
+use App\Article;
+use App\Post;
+use App\Question;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -13,7 +16,7 @@ class FavoriteTest extends GraphQLTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user = factory(User::class)->create([
+        $this->user = User::factory()->make([
             'api_token' => str_random(60),
         ]);
     }
@@ -22,44 +25,132 @@ class FavoriteTest extends GraphQLTestCase
     /* ------------------------------- Mutation ----------------------------- */
     /* --------------------------------------------------------------------- */
 
-    //FIXME: 接口没写
-    // public function testfavoriteArticleMutation()
-    // {
-    //     $query = file_get_contents(__DIR__ . '/Favorite/Mutation/favoriteArticleMutation.gql');
+    public function testfavoriteArticleMutation()
+    {
+        $query = file_get_contents(__DIR__ . '/Favorite/Mutation/favoriteMutation.gql');
 
-    //     $article = Article::inRandomOrder()->first();
+        $token   = $this->user->api_token;
+        $headers = [
+            'Authorization' => 'Bearer ' . $token,
+            'Accept'        => 'application/json',
+        ];
 
-    //     //添加favorite
-    //     $variables = [
-    //         'article_id' => $article->id,
-    //         'undo'       => true,
-    //     ];
+        $article = Article::inRandomOrder()->first();
 
-    //     //删除favorite
-    //     $variables = [
-    //         'article_id' => $article->id,
-    //         'undo'       => false,
-    //     ];
+        if (!$article) {
+            echo PHP_EOL . PHP_EOL . "By: \033[31mArticle Content for null!!!!\033[0m\n" . PHP_EOL;
+            return;
+        }
 
-    //     $this->startGraphQL($query, $variables);
-    // }
+        $variables = [
+            'id'   => $article->id,
+            'type' => "articles",
+        ];
+
+        $this->runGQL($query, $variables, $headers);
+    }
+
+    public function testfavoritePostMutation()
+    {
+        $query = file_get_contents(__DIR__ . '/Favorite/Mutation/favoriteMutation.gql');
+
+        $token   = $this->user->api_token;
+        $headers = [
+            'Authorization' => 'Bearer ' . $token,
+            'Accept'        => 'application/json',
+        ];
+
+        $post = Post::inRandomOrder()->first();
+
+        if (!$post) {
+            echo PHP_EOL . PHP_EOL . "By: \033[31mPost Content for null!!!!\033[0m\n" . PHP_EOL;
+            return;
+        }
+
+        $variables = [
+            'id'   => $post->id,
+            'type' => "posts",
+        ];
+
+        $this->runGQL($query, $variables, $headers);
+    }
+
+    public function testfavoritequestionMutation()
+    {
+        $query   = file_get_contents(__DIR__ . '/Favorite/Mutation/favoriteMutation.gql');
+        $token   = $this->user->api_token;
+        $headers = [
+            'Authorization' => 'Bearer ' . $token,
+            'Accept'        => 'application/json',
+        ];
+
+        $question = Question::inRandomOrder()->first();
+
+        if (!$question) {
+            echo PHP_EOL . PHP_EOL . "By: \033[31mQuestion Content for null!!!!\033[0m\n" . PHP_EOL;
+            return;
+        }
+
+        $variables = [
+            'id'   => $question->id,
+            'type' => "questions",
+        ];
+
+        $this->runGQL($query, $variables, $headers);
+    }
 
     /* --------------------------------------------------------------------- */
     /* ------------------------------- Query ----------------------------- */
     /* --------------------------------------------------------------------- */
-    public function testfavoritedArticlesQuery()
+    public function testfavoritedPostsQuery()
     {
-        $query = file_get_contents(__DIR__ . '/Favorite/Query/favoritedArticlesQuery.gql');
+        $query = file_get_contents(__DIR__ . '/Favorite/Query/favoritedQuery.gql');
 
-        $token = $this->user->api_token;
-
-        $user = User::inRandomOrder()->first();
-
-        $variables = [
-            'user_id' => $user->id,
+        $token   = $this->user->api_token;
+        $headers = [
+            'Authorization' => 'Bearer ' . $token,
+            'Accept'        => 'application/json',
         ];
 
-        $this->runGuestGQL($query, $variables);
+        $variables = [
+            'type' => "posts",
+        ];
+
+        $this->runGQL($query, $variables, $headers);
+    }
+
+    public function testfavoritedQuestionsQuery()
+    {
+        $query = file_get_contents(__DIR__ . '/Favorite/Query/favoritedQuery.gql');
+
+        $token   = $this->user->api_token;
+        $headers = [
+            'Authorization' => 'Bearer ' . $token,
+            'Accept'        => 'application/json',
+        ];
+
+        $variables = [
+            'type' => "questions",
+        ];
+
+        $this->runGQL($query, $variables, $headers);
+    }
+
+    public function testfavoritedArticlesQuery()
+    {
+        $query = file_get_contents(__DIR__ . '/Favorite/Query/favoritedQuery.gql');
+
+        $token   = $this->user->api_token;
+        $headers = [
+            'Authorization' => 'Bearer ' . $token,
+            'Accept'        => 'application/json',
+        ];
+
+        $variables = [
+            'type' => "articles",
+        ];
+
+        $this->runGQL($query, $variables, $headers);
     }
 
     protected function tearDown(): void
