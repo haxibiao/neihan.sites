@@ -1,5 +1,0 @@
-mutation acceptCommentMutation($comment_ids: [Int]!) {
-  acceptComments(comment_ids: $comment_ids) {
-    id
-  }
-}

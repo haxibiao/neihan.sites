@@ -1,0 +1,12 @@
+mutation createCommentMutation($type: CommentTableEnum, $id: Int, $content: String) {
+  createComment(type: $type, id: $id, content: $content) {
+    id
+    liked
+    time_ago
+    user {
+      id
+      name
+      avatar
+    }
+  }
+}
