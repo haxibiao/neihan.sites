@@ -108,6 +108,7 @@
             "packages/haxibiao/breeze/database/seeders",
             "packages/haxibiao/content/database/seeders",
             "packages/haxibiao/media/database/seeders",
+            "packages/haxibiao/question/database/seeders",
             "packages/haxibiao/sns/database/seeders"
         ]
     },
@@ -118,6 +119,7 @@
             "packages/haxibiao/breeze/database/factories",
             "packages/haxibiao/content/database/factories",
             "packages/haxibiao/media/database/factories",
+            "packages/haxibiao/question/database/factories",
             "packages/haxibiao/sns/database/factories"
         ]
     },
