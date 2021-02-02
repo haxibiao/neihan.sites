@@ -1,4 +1,0 @@
-#新用户奖励接口
-mutation newUserRewordMutation($rewardType: RewardType!) {
-    newUserReword(type: $rewardType)
-}

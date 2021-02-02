@@ -1,6 +1,0 @@
-mutation deleteQueryLogMutation($id: Int) {
-    deleteQueryLog(id: $id) {
-        id
-        query
-    }
-}

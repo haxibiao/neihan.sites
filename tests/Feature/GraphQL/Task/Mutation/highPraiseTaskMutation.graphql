@@ -1,4 +1,0 @@
-# 应用商店好评任务接口
-mutation highPraiseTaskMutation($id: Int!, $content: String) {
-  highPraiseTask(id: $id, content: $content)
-}

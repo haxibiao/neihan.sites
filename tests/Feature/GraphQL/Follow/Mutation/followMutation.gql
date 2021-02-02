@@ -1,6 +1,0 @@
-mutation followMutation($id: Int!, $type: FollowedEnumType!) {
-    followToggle(id: $id, type: $type) {
-        id
-        created_at
-    }
-}

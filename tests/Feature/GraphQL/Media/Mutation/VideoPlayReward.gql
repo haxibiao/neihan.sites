@@ -1,5 +1,0 @@
-mutation VideoPlayReward($input: videoPlayReport) {
-    videoPlayReward(input: $input) {
-        gold
-    }
-}

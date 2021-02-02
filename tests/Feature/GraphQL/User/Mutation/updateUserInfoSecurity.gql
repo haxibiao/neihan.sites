@@ -1,7 +1,0 @@
-mutation updateUserInfoSecurity($id: Int!, $phone: String!, $password: String!) {
-    updateUserInfo(id: $id, input: { phone: $phone, password: $password }) {
-        id
-        name
-        phone
-    }
-}

@@ -1,8 +1,0 @@
-mutation updateUserGender($id: Int!, $gender: String!) {
-    updateUserInfo(id: $id, input: { gender: $gender }) {
-        id
-        name
-        gender
-        introduction
-    }
-}

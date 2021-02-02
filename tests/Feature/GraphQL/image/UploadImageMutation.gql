@@ -1,4 +1,0 @@
-#上传图片
-mutation UploadImage($image: [String!]) {
-  uploadImage(image: $image)
-}
