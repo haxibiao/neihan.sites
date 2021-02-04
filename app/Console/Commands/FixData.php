@@ -2,11 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
-use Illuminate\Console\Command;
+use App\Article;
 use App\Movie;
+use Illuminate\Console\Command;
 
 class FixData extends Command
 {
@@ -29,8 +27,27 @@ class FixData extends Command
         return $this->error("必须提供你要修复数据的table");
     }
 
-    function movies() {
+    public function movies()
+    {
         $this->info("清空之前的movies");
         Movie::truncate();
+    }
+
+    public function fixMediaArticleSourceId()
+    {
+        $site = config('app.name');
+        \DB::connection('media')->where('source', $site)->table('articles')->chunkById(100, function ($articles) {
+            foreach ($articles as $mediaArticle) {
+                $article = Article::where('title', $mediaArticle->title)->first();
+                if (!$article) {
+                    $this->error("{$mediaArticle->id} 找不到对应的 article {$mediaArticle->title}");
+                    return;
+                }
+                $mediaArticle->update([
+                    'source_id' => $article->id,
+                ]);
+                $this->info("{$mediaArticle->source_id} 已修复 source_id article {$mediaArticle->title}");
+            }
+        });
     }
 }
