@@ -36,7 +36,7 @@ class FixData extends Command
     public function fixMediaArticleSourceId()
     {
         $site = config('app.name');
-        \DB::connection('media')->where('source', $site)->table('articles')->chunkById(100, function ($articles) {
+        \DB::connection('media')->table('articles')->where('source', $site)->chunkById(100, function ($articles) {
             foreach ($articles as $mediaArticle) {
                 $article = Article::where('title', $mediaArticle->title)->first();
                 if (!$article) {
