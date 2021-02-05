@@ -43,7 +43,7 @@ class FixData extends Command
                     $this->error("{$mediaArticle->id} 找不到对应的 article {$mediaArticle->title}");
                     return;
                 }
-                $mediaArticle->update([
+                \DB::connection('media')->table('articles')->where('id', $mediaArticle->id)->update([
                     'source_id' => $article->id,
                 ]);
                 $this->info("{$mediaArticle->source_id} 已修复 source_id article {$mediaArticle->title}");
